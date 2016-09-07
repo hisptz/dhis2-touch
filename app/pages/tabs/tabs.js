@@ -8,16 +8,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var home_1 = require('../home/home');
-var about_1 = require('../about/about');
-var contact_1 = require('../contact/contact');
+var apps_1 = require('../apps/apps');
+var account_1 = require('../account/account');
 var TabsPage = (function () {
     function TabsPage() {
         // this tells the tabs component which Pages
         // should be each tab's root Page
-        this.tab1Root = home_1.HomePage;
-        this.tab2Root = about_1.AboutPage;
-        this.tab3Root = contact_1.ContactPage;
+        this.tab1Root = apps_1.AppsPage;
+        this.tab2Root = account_1.AccountPage;
     }
     TabsPage = __decorate([
         core_1.Component({

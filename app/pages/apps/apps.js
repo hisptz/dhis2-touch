@@ -9,16 +9,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var ionic_angular_1 = require('ionic-angular');
-var AboutPage = (function () {
-    function AboutPage(navCtrl) {
+/*
+  Generated class for the AppsPage page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+*/
+var AppsPage = (function () {
+    function AppsPage(navCtrl) {
         this.navCtrl = navCtrl;
     }
-    AboutPage = __decorate([
+    AppsPage = __decorate([
         core_1.Component({
-            templateUrl: 'build/pages/about/about.html'
+            templateUrl: 'build/pages/apps/apps.html',
         }), 
         __metadata('design:paramtypes', [ionic_angular_1.NavController])
-    ], AboutPage);
-    return AboutPage;
+    ], AppsPage);
+    return AppsPage;
 })();
-exports.AboutPage = AboutPage;
+exports.AppsPage = AppsPage;
