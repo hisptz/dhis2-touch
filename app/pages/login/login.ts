@@ -4,9 +4,10 @@ import { NavController ,ToastController,Storage, LocalStorage } from 'ionic-angu
 
 import { TabsPage } from '../tabs/tabs';
 
-
 import { App } from '../../providers/app/app';
-//import {HttpClient} from '../../providers/http-client/http-client';
+import {User } from '../../providers/user/user';
+import {HttpClient} from '../../providers/http-client/http-client';
+
 
 /*
   Generated class for the LoginPage page.
@@ -16,66 +17,67 @@ import { App } from '../../providers/app/app';
 */
 @Component({
   templateUrl: 'build/pages/login/login.html',
-  providers: [App]
+  providers: [App,HttpClient,User]
 })
 export class LoginPage {
 
   private loginData : any ={};
   private localStorage: any;
 
-  constructor(private navCtrl: NavController,private app : App,private toastCtrl: ToastController) {
+  constructor(private navCtrl: NavController,private user: User,private app : App,private httpClient: HttpClient,private toastCtrl: ToastController) {
     this.loginData.logoUrl = 'img/logo.png';
     this.localStorage = new Storage(LocalStorage);
   }
 
   login(){
-    if(this.loginData.serveUrl){
-      this.app.getFormattedBaseUrl(this.loginData.serveUrl)
+    if(this.loginData.serverUrl){
+      this.app.getFormattedBaseUrl(this.loginData.serverUrl)
         .then(formattedBaseUrl => {
-          this.loginData.serveUrl = formattedBaseUrl;
+          this.loginData.serverUrl = formattedBaseUrl;
           if(!this.loginData.username){
             this.setToasterMessage('Please Enter username');
           }else if (!this.loginData.password){
             this.setToasterMessage('Please Enter password');
           }else{
-            this.app.getDataBaseName(this.loginData.serveUrl).then(databaseName=>{
-              console.log(databaseName);
-              console.log(this.loginData);
-              var user :any = {
-                username: this.loginData.username,
-                password: this.loginData.password,
-                serverUrl : this.loginData.serveUrl
-              };
-              console.log(user);
-              this.navCtrl.setRoot(TabsPage);
-              this.localStorage.set('user',JSON.stringify(user));
-              //this.httpClient.get('/me.json',user).subscribe(
-              //  data => {
-              //    console.log('success login');
-              //    this.setToasterMessage('success to login ' + JSON.stringify(data));
-              //    console.log(data);
-              //  },
-              //  err => {
-              //    this.setToasterMessage('Fail to login ' + JSON.stringify(err));
-              //    console.log('fail to login');
-              //    console.log(err);
-              //  }
-              //);
-
+            this.app.getDataBaseName(this.loginData.serverUrl).then(databaseName=>{
+              this.user.setCurrentUser(this.loginData).then(user=>{
+                let fields = "fields=[:all],userCredentials[userRoles[name,dataSets[id,name],programs[id,name]]";
+                this.httpClient.get('/api/me.json?'+fields,user).subscribe(
+                  data => {
+                    this.setStickToasterMessage('success to login ');
+                    this.user.setUserData(data).then(userData=>{
+                      this.navCtrl.setRoot(TabsPage);
+                    });
+                  },
+                  err => {
+                    this.setStickToasterMessage('Fail to login Fail to load System information, please checking your network connection');
+                    console.log(err);
+                  }
+                );
+              }).catch(err=>{
+                console.log(err);
+                this.setStickToasterMessage('Fail set current user');
+              })
             });
-
           }
         });
     }else{
       this.setToasterMessage('Please Enter server url');
     }
-
   }
 
   setToasterMessage(message){
     let toast = this.toastCtrl.create({
       message: message,
       duration: 3000
+    });
+    toast.present();
+  }
+
+  setStickToasterMessage(message){
+    let toast = this.toastCtrl.create({
+      message: message,
+      showCloseButton : true
     });
     toast.present();
   }
