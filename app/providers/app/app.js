@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 require('rxjs/add/operator/map');
+var ionic_angular_1 = require('ionic-angular');
 /*
  Generated class for the App provider.
 
@@ -17,9 +18,19 @@ require('rxjs/add/operator/map');
  for more info on providers and Angular 2 DI.
  */
 var App = (function () {
-    function App(http) {
+    function App(http, loadingController) {
         this.http = http;
+        this.loadingController = loadingController;
     }
+    App.prototype.showProgressMessage = function (message) {
+        this.loading = this.loadingController.create({
+            content: message
+        });
+        this.loading.present();
+    };
+    App.prototype.hideProgressMessage = function () {
+        this.loading.dismiss();
+    };
     App.prototype.getFormattedBaseUrl = function (url) {
         this.formattedBaseUrl = "";
         var urlToBeFormatted = "", urlArray = [], baseUrlString;
@@ -49,7 +60,7 @@ var App = (function () {
     };
     App = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
+        __metadata('design:paramtypes', [http_1.Http, ionic_angular_1.LoadingController])
     ], App);
     return App;
 })();

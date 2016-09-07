@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
+import { LoadingController } from 'ionic-angular';
 
 import {HttpClient} from '../../providers/http-client/http-client';
 
@@ -15,9 +16,20 @@ import {HttpClient} from '../../providers/http-client/http-client';
 export class App {
 
   private formattedBaseUrl :string;
-  private localStorage: Storage;
+  private loading : any;
 
-  constructor(private http: Http) {
+  constructor(private http: Http,private loadingController : LoadingController) {
+  }
+
+  showProgressMessage(message){
+    this.loading = this.loadingController.create({
+      content: message
+    });
+    this.loading.present();
+  }
+
+  hideProgressMessage(){
+    this.loading.dismiss();
   }
 
   getFormattedBaseUrl(url){
@@ -47,8 +59,6 @@ export class App {
     let databaseName = url.replace('://', '_').replace('/', '_').replace('.', '_').replace(':', '_');
     return Promise.resolve(databaseName);
   }
-
-
 
 }
 
