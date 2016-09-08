@@ -10,16 +10,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var ionic_angular_1 = require('ionic-angular');
 var ionic_native_1 = require('ionic-native');
-7;
-var tabs_1 = require('./pages/tabs/tabs');
+var login_1 = require('./pages/login/login');
 var MyApp = (function () {
     function MyApp(platform) {
         this.platform = platform;
-        this.rootPage = tabs_1.TabsPage;
+        this.rootPage = login_1.LoginPage;
         platform.ready().then(function () {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
             ionic_native_1.StatusBar.styleDefault();
+            ionic_native_1.Splashscreen.hide();
         });
     }
     MyApp = __decorate([

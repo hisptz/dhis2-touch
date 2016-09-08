@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController ,ToastController,Storage, LocalStorage } from 'ionic-angular';
+import { NavController ,ToastController } from 'ionic-angular';
 
 
 import { TabsPage } from '../tabs/tabs';
@@ -22,11 +22,21 @@ import {HttpClient} from '../../providers/http-client/http-client';
 export class LoginPage {
 
   private loginData : any ={};
-  private localStorage: any;
 
   constructor(private navCtrl: NavController,private user: User,private app : App,private httpClient: HttpClient,private toastCtrl: ToastController) {
     this.loginData.logoUrl = 'img/logo.png';
-    this.localStorage = new Storage(LocalStorage);
+    this.reAuthenticateUser();
+  }
+
+  reAuthenticateUser(){
+    this.user.getCurrentUser().then(user=>{
+      user = JSON.parse(user);
+      if(user.isLogin){
+        this.navCtrl.setRoot(TabsPage);
+      }else if(user.serverUrl){
+        this.loginData.serverUrl = user.serverUrl;
+      }
+    });
   }
 
   login(){
@@ -46,7 +56,10 @@ export class LoginPage {
                   data => {
                     this.setStickToasterMessage('success to login ');
                     this.user.setUserData(data).then(userData=>{
-                      this.navCtrl.setRoot(TabsPage);
+                      this.loginData.isLogin = true;
+                      this.user.setCurrentUser(this.loginData).then(user=>{
+                        this.navCtrl.setRoot(TabsPage);
+                      });
                     });
                   },
                   err => {
