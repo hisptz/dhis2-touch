@@ -4,11 +4,11 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 /*
- Generated class for the User provider.
+  Generated class for the User provider.
 
- See https://angular.io/docs/ts/latest/guide/dependency-injection.html
- for more info on providers and Angular 2 DI.
- */
+  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
+  for more info on providers and Angular 2 DI.
+*/
 @Injectable()
 export class User {
 
@@ -24,7 +24,7 @@ export class User {
   }
 
   setUserData(userDataResponse){
-    userDataResponse= eval('('+userDataResponse._body+')');
+    //userDataResponse= eval('('++')');
     let userData ={
       "Name": userDataResponse.name,
       "Employer": userDataResponse.employer,
@@ -37,6 +37,7 @@ export class User {
       "userRoles": userDataResponse.userCredentials.userRoles,
       "organisationUnits": userDataResponse.organisationUnits
     };
+
     this.localStorage.set('userData',JSON.stringify(userData));
 
     return Promise.resolve(userData);

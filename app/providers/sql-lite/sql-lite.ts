@@ -12,15 +12,15 @@ import {Observable} from 'rxjs/Rx';
 export class SqlLite {
 
   private dataBaseStructure: any= {
-    person : {
+    programs : {
       columns : [
-        {value: 'firstName', type: 'TEXT'},
-        {value: 'middleName', type: 'TEXT'},
-        {value: 'lastName', type: 'TEXT'},
-        {value: 'Bio',type:'LONGTEXT'}
+        {value: 'id', type: 'TEXT'},
+        {value: 'name', type: 'TEXT'},
+        {value: 'categoryCombo',type:'LONGTEXT'},
+        {value: 'organisationUnits',type:'LONGTEXT'},
+        {value: 'programStages',type:'LONGTEXT'}
       ],
-      fields : "fields",
-      filter:"filters"
+      fields : "id,name,categoryCombo[id,isDefault,categories[id,categoryOptions[id,name]]],organisationUnits[id],programStages[programStageDataElements[id,name,compulsory,sortOrder,dataElement[id,name,optionSetValue,valueType,optionSet[options[id,code,name]],categoryCombo[id,isDefault,categories[id,name]]]]]",
     }
   };
 
@@ -39,8 +39,8 @@ export class SqlLite {
       tableNames.forEach((tableName: any) => {
         promises.push(self.createTable(tableName,databaseName).then(()=>{
           resolve();
-          }).catch(err=>{
-            reject();
+          }).catch(error=>{
+            reject(error);
           })
         );
       });
@@ -48,8 +48,8 @@ export class SqlLite {
       Observable.forkJoin(promises).subscribe(() => {
           resolve()
         },
-        err => {
-          reject();
+        error => {
+          reject(error.failure);
         }
       );
     });
@@ -64,8 +64,8 @@ export class SqlLite {
         location: 'default'
       }).then(() => {
         resolve();
-      }, (err) => {
-        reject();
+      }, (error) => {
+        reject(error.failure);
       });
     });
 
@@ -89,15 +89,16 @@ export class SqlLite {
         }
       });
       query += ')';
+
       let db = new SQLite();
       db.openDatabase({name: databaseName,location: 'default'}).then(() => {
         db.executeSql(query, []).then((success) => {
           resolve();
-        }, (err) => {
-          reject();
+        }, (error) => {
+          reject(error.failure);
         });
-      }, (err) => {
-        reject();
+      }, (error) => {
+        reject(error.failure);
       });
     });
   }
@@ -141,11 +142,11 @@ export class SqlLite {
       db.openDatabase({name: databaseName,location: 'default'}).then(() => {
         db.executeSql(query, values).then((success) => {
           resolve();
-        }, (err) => {
-          reject();
+        }, (error) => {
+          reject(error.failure);
         });
-      }, (err) => {
-        reject();
+      }, (error) => {
+        reject(error.failure);
       });
     });
   }
@@ -171,11 +172,11 @@ export class SqlLite {
       db.openDatabase({name: databaseName,location: 'default'}).then(() => {
         db.executeSql(query, []).then((result) => {
           resolve(self.formatQueryReturnResult(result,columns));
-        }, (err) => {
-          reject();
+        }, (error) => {
+          reject(error.failure);
         });
-      }, (err) => {
-        reject();
+      }, (error) => {
+        reject(error.failure);
       });
     });
 
@@ -192,11 +193,11 @@ export class SqlLite {
       db.openDatabase({name: databaseName,location: 'default'}).then(() => {
         db.executeSql(query, []).then((result) => {
           resolve(self.formatQueryReturnResult(result,columns));
-        }, (err) => {
-          reject();
+        },(error) => {
+          reject(error.failure);
         });
-      }, (err) => {
-        reject();
+      }, (error) => {
+        reject(error.failure);
       });
     });
 

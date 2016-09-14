@@ -12,11 +12,11 @@ var ionic_angular_1 = require('ionic-angular');
 var http_1 = require('@angular/http');
 require('rxjs/add/operator/map');
 /*
- Generated class for the User provider.
+  Generated class for the User provider.
 
- See https://angular.io/docs/ts/latest/guide/dependency-injection.html
- for more info on providers and Angular 2 DI.
- */
+  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
+  for more info on providers and Angular 2 DI.
+*/
 var User = (function () {
     function User(http) {
         this.http = http;
@@ -27,7 +27,7 @@ var User = (function () {
         return Promise.resolve(user);
     };
     User.prototype.setUserData = function (userDataResponse) {
-        userDataResponse = eval('(' + userDataResponse._body + ')');
+        //userDataResponse= eval('('++')');
         var userData = {
             "Name": userDataResponse.name,
             "Employer": userDataResponse.employer,

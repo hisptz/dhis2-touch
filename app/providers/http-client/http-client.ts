@@ -3,6 +3,7 @@ import { Http ,Headers,RequestOptions,Response} from '@angular/http';
 import { Storage, LocalStorage } from 'ionic-angular';
 import   'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Rx';
+//import {Observable} from "../../../../sample/node_modules/rxjs/Observable";
 
 /*
  Generated class for the HttpClient provider.
@@ -26,7 +27,7 @@ export class HttpClient {
     return this.http.get(user.serverUrl + url, {headers: headers});
   }
 
-  post(url, data,user):Observable<Response> {
+  post(url, data, user):Observable<Response> {
     let headers = new Headers();
     headers.append('Authorization', 'Basic ' +
       btoa(user.username + ':' + user.password));

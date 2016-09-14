@@ -19,15 +19,15 @@ var Rx_1 = require('rxjs/Rx');
 var SqlLite = (function () {
     function SqlLite() {
         this.dataBaseStructure = {
-            person: {
+            programs: {
                 columns: [
-                    { value: 'firstName', type: 'TEXT' },
-                    { value: 'middleName', type: 'TEXT' },
-                    { value: 'lastName', type: 'TEXT' },
-                    { value: 'Bio', type: 'LONGTEXT' }
+                    { value: 'id', type: 'TEXT' },
+                    { value: 'name', type: 'TEXT' },
+                    { value: 'categoryCombo', type: 'LONGTEXT' },
+                    { value: 'organisationUnits', type: 'LONGTEXT' },
+                    { value: 'programStages', type: 'LONGTEXT' }
                 ],
-                fields: "fields",
-                filter: "filters"
+                fields: "id,name,categoryCombo[id,isDefault,categories[id,categoryOptions[id,name]]],organisationUnits[id],programStages[programStageDataElements[id,name,compulsory,sortOrder,dataElement[id,name,optionSetValue,valueType,optionSet[options[id,code,name]],categoryCombo[id,isDefault,categories[id,name]]]]]",
             }
         };
     }
@@ -42,14 +42,14 @@ var SqlLite = (function () {
             tableNames.forEach(function (tableName) {
                 promises.push(self.createTable(tableName, databaseName).then(function () {
                     resolve();
-                }).catch(function (err) {
-                    reject();
+                }).catch(function (error) {
+                    reject(error);
                 }));
             });
             Rx_1.Observable.forkJoin(promises).subscribe(function () {
                 resolve();
-            }, function (err) {
-                reject();
+            }, function (error) {
+                reject(error.failure);
             });
         });
     };
@@ -62,8 +62,8 @@ var SqlLite = (function () {
                 location: 'default'
             }).then(function () {
                 resolve();
-            }, function (err) {
-                reject();
+            }, function (error) {
+                reject(error.failure);
             });
         });
     };
@@ -89,11 +89,11 @@ var SqlLite = (function () {
             db.openDatabase({ name: databaseName, location: 'default' }).then(function () {
                 db.executeSql(query, []).then(function (success) {
                     resolve();
-                }, function (err) {
-                    reject();
+                }, function (error) {
+                    reject(error.failure);
                 });
-            }, function (err) {
-                reject();
+            }, function (error) {
+                reject(error.failure);
             });
         });
     };
@@ -132,11 +132,11 @@ var SqlLite = (function () {
             db.openDatabase({ name: databaseName, location: 'default' }).then(function () {
                 db.executeSql(query, values).then(function (success) {
                     resolve();
-                }, function (err) {
-                    reject();
+                }, function (error) {
+                    reject(error.failure);
                 });
-            }, function (err) {
-                reject();
+            }, function (error) {
+                reject(error.failure);
             });
         });
     };
@@ -159,11 +159,11 @@ var SqlLite = (function () {
             db.openDatabase({ name: databaseName, location: 'default' }).then(function () {
                 db.executeSql(query, []).then(function (result) {
                     resolve(self.formatQueryReturnResult(result, columns));
-                }, function (err) {
-                    reject();
+                }, function (error) {
+                    reject(error.failure);
                 });
-            }, function (err) {
-                reject();
+            }, function (error) {
+                reject(error.failure);
             });
         });
     };
@@ -177,11 +177,11 @@ var SqlLite = (function () {
             db.openDatabase({ name: databaseName, location: 'default' }).then(function () {
                 db.executeSql(query, []).then(function (result) {
                     resolve(self.formatQueryReturnResult(result, columns));
-                }, function (err) {
-                    reject();
+                }, function (error) {
+                    reject(error.failure);
                 });
-            }, function (err) {
-                reject();
+            }, function (error) {
+                reject(error.failure);
             });
         });
     };

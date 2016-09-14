@@ -4,6 +4,8 @@ import 'rxjs/add/operator/map';
 import { LoadingController } from 'ionic-angular';
 
 import {HttpClient} from '../../providers/http-client/http-client';
+import {Observable} from 'rxjs/Rx';
+import {SqlLite} from "../../providers/sql-lite/sql-lite";
 
 /*
  Generated class for the App provider.
@@ -18,7 +20,7 @@ export class App {
   private formattedBaseUrl :string;
   private loading : any;
 
-  constructor(private http: Http,private loadingController : LoadingController) {
+  constructor(private http: Http,private loadingController : LoadingController,private sqlLite:SqlLite) {
   }
 
   showProgressMessage(message){
@@ -59,6 +61,32 @@ export class App {
     let databaseName = url.replace('://', '_').replace('/', '_').replace('.', '_').replace(':', '_');
     return Promise.resolve(databaseName);
   }
+
+  saveMetadata(resource,resourceValues,databaseName){
+    let promises = [];
+    let self = this;
+
+    return new Promise(function(resolve, reject) {
+      resourceValues.forEach(resourceValue=>{
+        promises.push(
+          self.sqlLite.insertDataOnTable(resource,resourceValue,databaseName).then(()=>{
+            //saving success
+          },(error) => {
+          })
+        );
+      });
+
+      Observable.forkJoin(promises).subscribe(() => {
+          resolve();
+        },
+        (error) => {
+          reject(error.failure);
+        })
+    });
+
+  }
+
+
 
 }
 

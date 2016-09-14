@@ -11,6 +11,7 @@ var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 var ionic_angular_1 = require('ionic-angular');
 require('rxjs/add/operator/map');
+//import {Observable} from "../../../../sample/node_modules/rxjs/Observable";
 /*
  Generated class for the HttpClient provider.
 

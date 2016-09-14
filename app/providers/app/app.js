@@ -11,6 +11,8 @@ var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 require('rxjs/add/operator/map');
 var ionic_angular_1 = require('ionic-angular');
+var Rx_1 = require('rxjs/Rx');
+var sql_lite_1 = require("../../providers/sql-lite/sql-lite");
 /*
  Generated class for the App provider.
 
@@ -18,9 +20,10 @@ var ionic_angular_1 = require('ionic-angular');
  for more info on providers and Angular 2 DI.
  */
 var App = (function () {
-    function App(http, loadingController) {
+    function App(http, loadingController, sqlLite) {
         this.http = http;
         this.loadingController = loadingController;
+        this.sqlLite = sqlLite;
     }
     App.prototype.showProgressMessage = function (message) {
         this.loading = this.loadingController.create({
@@ -58,9 +61,26 @@ var App = (function () {
         var databaseName = url.replace('://', '_').replace('/', '_').replace('.', '_').replace(':', '_');
         return Promise.resolve(databaseName);
     };
+    App.prototype.saveMetadata = function (resource, resourceValues, databaseName) {
+        var promises = [];
+        var self = this;
+        return new Promise(function (resolve, reject) {
+            resourceValues.forEach(function (resourceValue) {
+                promises.push(self.sqlLite.insertDataOnTable(resource, resourceValue, databaseName).then(function () {
+                    //saving success
+                }, function (error) {
+                }));
+            });
+            Rx_1.Observable.forkJoin(promises).subscribe(function () {
+                resolve();
+            }, function (error) {
+                reject(error.failure);
+            });
+        });
+    };
     App = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http, ionic_angular_1.LoadingController])
+        __metadata('design:paramtypes', [http_1.Http, ionic_angular_1.LoadingController, sql_lite_1.SqlLite])
     ], App);
     return App;
 })();

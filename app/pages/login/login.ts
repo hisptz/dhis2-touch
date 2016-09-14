@@ -7,6 +7,7 @@ import { TabsPage } from '../tabs/tabs';
 import { App } from '../../providers/app/app';
 import {User } from '../../providers/user/user';
 import {HttpClient} from '../../providers/http-client/http-client';
+import {SqlLite} from "../../providers/sql-lite/sql-lite";
 
 
 /*
@@ -17,13 +18,15 @@ import {HttpClient} from '../../providers/http-client/http-client';
 */
 @Component({
   templateUrl: 'build/pages/login/login.html',
-  providers: [App,HttpClient,User]
+  providers: [App,HttpClient,User,SqlLite]
 })
 export class LoginPage {
 
   private loginData : any ={};
+  private loadingData : boolean = false;
+  private loadingMessages : any = [];
 
-  constructor(private navCtrl: NavController,private user: User,private app : App,private httpClient: HttpClient,private toastCtrl: ToastController) {
+  constructor(private navCtrl: NavController,private sqlLite : SqlLite,private user: User,private app : App,private httpClient: HttpClient,private toastCtrl: ToastController) {
     this.loginData.logoUrl = 'img/logo.png';
     this.reAuthenticateUser();
   }
@@ -49,34 +52,52 @@ export class LoginPage {
           }else if (!this.loginData.password){
             this.setToasterMessage('Please Enter password');
           }else{
+            this.loadingData = true;
+            this.loadingMessages = [];
+
             this.app.getDataBaseName(this.loginData.serverUrl).then(databaseName=>{
-              this.user.setCurrentUser(this.loginData).then(user=>{
-                let fields = "fields=[:all],userCredentials[userRoles[name,dataSets[id,name],programs[id,name]]";
-                this.httpClient.get('/api/me.json?'+fields,user).subscribe(
-                  data => {
-                    this.setStickToasterMessage('success to login ');
-                    this.user.setUserData(data).then(userData=>{
-                      this.loginData.isLogin = true;
-                      this.user.setCurrentUser(this.loginData).then(user=>{
-                        this.navCtrl.setRoot(TabsPage);
+              this.setLoadingMessages('Opening database');
+              this.sqlLite.generateTables(databaseName).then(()=>{
+                this.loginData.currentDatabase = databaseName;
+                this.setLoadingMessages('Authenticating user');
+                this.user.setCurrentUser(this.loginData).then(user=>{
+                  let fields = "fields=[:all],userCredentials[userRoles[name,dataSets[id,name],programs[id,name]]";
+                  this.httpClient.get('/api/me.json?'+fields,user).subscribe(
+                    data => {
+                      data = data.json();
+                      this.setStickToasterMessage('success to login ');
+                      this.user.setUserData(data).then(userData=>{
+                        //this.loginData.isLogin = true;
+                        this.user.setCurrentUser(this.loginData).then(user=>{
+                          this.navCtrl.setRoot(TabsPage);
+                        });
                       });
-                    });
-                  },
-                  err => {
-                    this.setStickToasterMessage('Fail to login Fail to load System information, please checking your network connection');
-                    console.log(err);
-                  }
-                );
-              }).catch(err=>{
-                console.log(err);
-                this.setStickToasterMessage('Fail set current user');
-              })
+                    },
+                    err => {
+                      this.setStickToasterMessage('Fail to login Fail to load System information, please checking your network connection');
+                      console.log(err);
+                    }
+                  );
+                }).catch(err=>{
+                  console.log(err);
+                  this.setStickToasterMessage('Fail set current user');
+                })
+              },()=>{
+                //error on create database
+                this.loadingData = false;
+                this.setStickToasterMessage('Fail to open local storage');
+              });
+
             });
           }
         });
     }else{
       this.setToasterMessage('Please Enter server url');
     }
+  }
+
+  setLoadingMessages(message){
+    this.loadingMessages.push(message);
   }
 
   setToasterMessage(message){
