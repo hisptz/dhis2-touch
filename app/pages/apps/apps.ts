@@ -22,6 +22,10 @@ export class AppsPage {
   private viewMapperObject : any;
 
   constructor(private navCtrl: NavController) {
+    this.generateViewAction();
+  }
+
+  generateViewAction(){
     this.viewMapperObject = {
       "dataEntry" : DataEntryHomePage,
       "eventCapture" : EventCaptureHomePage,

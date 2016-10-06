@@ -23,6 +23,9 @@ var tracker_capture_home_1 = require('../tracker-capture-home/tracker-capture-ho
 var AppsPage = (function () {
     function AppsPage(navCtrl) {
         this.navCtrl = navCtrl;
+        this.generateViewAction();
+    }
+    AppsPage.prototype.generateViewAction = function () {
         this.viewMapperObject = {
             "dataEntry": data_entry_home_1.DataEntryHomePage,
             "eventCapture": event_capture_home_1.EventCaptureHomePage,
@@ -30,7 +33,7 @@ var AppsPage = (function () {
             "dashboard": dashboard_home_1.DashboardHomePage,
             "trackerCapture": tracker_capture_home_1.TrackerCaptureHomePage
         };
-    }
+    };
     AppsPage.prototype.goToView = function (viewName) {
         this.navCtrl.push(this.viewMapperObject[viewName]);
     };

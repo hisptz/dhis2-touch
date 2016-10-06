@@ -6,6 +6,7 @@ import {ProfilePage} from '../profile/profile';
 import {HelpPage} from '../help/help';
 import {AboutPage} from '../about/about';
 import {UpdateManagerPage} from '../update-manager/update-manager';
+import { User } from '../../providers/user/user';
 
 /*
   Generated class for the AccountPage page.
@@ -15,12 +16,22 @@ import {UpdateManagerPage} from '../update-manager/update-manager';
 */
 @Component({
   templateUrl: 'build/pages/account/account.html',
+  providers: [User]
 })
 export class AccountPage {
 
   private viewMapperObject : any;
+  private currentUser : any;
 
-  constructor(private navCtrl: NavController) {
+
+  constructor(private navCtrl: NavController,private user : User) {
+    this.user.getCurrentUser().then(user=>{
+      this.currentUser = user;
+    });
+    this.generateViewAction();
+  }
+
+  generateViewAction(){
     this.viewMapperObject = {
       "profile" : ProfilePage,
       "about" : AboutPage,
@@ -35,7 +46,8 @@ export class AccountPage {
   }
 
   logOut(){
-
+    alert(JSON.stringify(this.currentUser));
+    alert(this.currentUser.isLogin)
   }
 
 }

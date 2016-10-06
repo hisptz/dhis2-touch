@@ -28,6 +28,8 @@ export class LoginPage {
 
   constructor(private navCtrl: NavController,private sqlLite : SqlLite,private user: User,private app : App,private httpClient: HttpClient,private toastCtrl: ToastController) {
     this.loginData.logoUrl = 'img/logo.png';
+    this.loadingData = true;
+    this.loadingMessages = [];
     this.user.getCurrentUser().then(user=>{
       this.reAuthenticateUser(user);
     });
@@ -38,6 +40,9 @@ export class LoginPage {
       this.navCtrl.setRoot(TabsPage);
     }else if(user.serverUrl){
       this.loginData.serverUrl = user.serverUrl;
+      if(user.username){
+        this.loginData.username = user.username;
+      }
     }
   }
 

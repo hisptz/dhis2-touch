@@ -33,6 +33,8 @@ var LoginPage = (function () {
         this.loadingData = false;
         this.loadingMessages = [];
         this.loginData.logoUrl = 'img/logo.png';
+        this.loadingData = true;
+        this.loadingMessages = [];
         this.user.getCurrentUser().then(function (user) {
             _this.reAuthenticateUser(user);
         });
@@ -43,6 +45,9 @@ var LoginPage = (function () {
         }
         else if (user.serverUrl) {
             this.loginData.serverUrl = user.serverUrl;
+            if (user.username) {
+                this.loginData.username = user.username;
+            }
         }
     };
     LoginPage.prototype.login = function () {

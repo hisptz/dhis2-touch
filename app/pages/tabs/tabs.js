@@ -10,18 +10,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var apps_1 = require('../apps/apps');
 var account_1 = require('../account/account');
+var user_1 = require('../../providers/user/user');
+var accountName_1 = require('../../pipes/accountName');
 var TabsPage = (function () {
-    function TabsPage() {
-        // this tells the tabs component which Pages
-        // should be each tab's root Page
+    function TabsPage(user) {
+        var _this = this;
+        this.user = user;
+        this.accountName = 'Account';
         this.tab1Root = apps_1.AppsPage;
         this.tab2Root = account_1.AccountPage;
+        this.user.getUserData().then(function (userData) {
+            _this.setUserAccountName(userData);
+        }, function (error) { });
     }
+    TabsPage.prototype.setUserAccountName = function (userData) {
+        this.accountName = userData.Name;
+        alert(userData.Name);
+    };
     TabsPage = __decorate([
         core_1.Component({
-            templateUrl: 'build/pages/tabs/tabs.html'
+            templateUrl: 'build/pages/tabs/tabs.html',
+            providers: [user_1.User],
+            pipes: [accountName_1.AccountName]
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [user_1.User])
     ], TabsPage);
     return TabsPage;
 })();
