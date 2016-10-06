@@ -5,6 +5,7 @@ import 'rxjs/add/operator/map';
 import {HttpClient} from '../../providers/http-client/http-client';
 import {Observable} from 'rxjs/Rx';
 import {SqlLite} from "../../providers/sql-lite/sql-lite";
+import { AppVersion } from 'ionic-native';
 
 /*
  Generated class for the App provider.
@@ -17,9 +18,44 @@ import {SqlLite} from "../../providers/sql-lite/sql-lite";
 export class AppProvider {
 
   private formattedBaseUrl :string;
-  private loading : any;
+  private multipleIdsData : any = [];
 
-  constructor(private http: Http,private sqlLite:SqlLite) {
+  constructor(private http: HttpClient,private sqlLite:SqlLite) {
+  }
+
+  getAppInformation(){
+    let appInformation = {};
+    let promises = [];
+
+    return new Promise(function(resolve, reject) {
+      promises.push(
+        AppVersion.getAppName().then(appName=>{
+          appInformation['appName'] = appName;
+        })
+      );
+      promises.push(
+        AppVersion.getPackageName().then(packageName=>{
+          appInformation['packageName'] = packageName;
+        })
+      );
+      promises.push(
+        AppVersion.getVersionCode().then(versionCode=>{
+          appInformation['versionCode'] = versionCode;
+        })
+      );
+      promises.push(
+        AppVersion.getVersionNumber().then(versionNumber=>{
+          appInformation['versionNumber'] = versionNumber;
+        })
+      );
+
+      Observable.forkJoin(promises).subscribe(() => {
+          resolve(appInformation);
+        },
+        (error) => {
+          reject();
+        })
+    });
   }
 
   getFormattedBaseUrl(url){
@@ -55,6 +91,9 @@ export class AppProvider {
     let self = this;
 
     return new Promise(function(resolve, reject) {
+      if(resourceValues.length == 0){
+        resolve();
+      }
       resourceValues.forEach(resourceValue=>{
         promises.push(
           self.sqlLite.insertDataOnTable(resource,resourceValue,databaseName).then(()=>{
@@ -71,10 +110,58 @@ export class AppProvider {
           reject(error.failure);
         })
     });
-
   }
 
+  downloadMetadata(user,resource, resourceId, fields, filter){
+    let self = this;
+    let resourceUrl = self.getResourceUrl(resource, resourceId, fields, filter);
+    return new Promise(function(resolve, reject) {
+      self.http.get(resourceUrl,user).subscribe(response=>{
+        response = response.json();
+        resolve(response);
+      },error=>{
+        reject(error);
+      });
+    });
+  }
+  downloadMetadataByResourceIds(user,resource, resourceIds, fields, filter){
+    let self = this;
+    let data = [];
+    let promises = [];
 
+    return new Promise(function(resolve, reject) {
+      self.multipleIdsData = [];
+      resourceIds.forEach(resourceId=>{
+        promises.push(
+          self.downloadMetadata(user,resource, resourceId, fields, filter).then(response=>{
+            data.push(response);
+          },error=>{})
+        );
+      });
+      Observable.forkJoin(promises).subscribe(() => {
+          resolve(data);
+        },
+        (error) => {
+          reject(error);
+        })
+    });
+  }
+
+  getResourceUrl(resource, resourceId, fields, filter){
+    let url = '/api/' + resource;
+    if (resourceId || resourceId != null) {
+      url += "/" + resourceId + ".json?paging=false";
+    } else {
+      url += ".json?paging=false";
+    }
+    if (fields || fields != null) {
+      url += '&fields=' + fields;
+    }
+    if (filter || filter != null) {
+      url += '&filter=' + filter;
+    }
+    return url;
+  }
 
 }
 

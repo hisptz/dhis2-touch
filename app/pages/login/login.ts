@@ -11,11 +11,11 @@ import {SqlLite} from "../../providers/sql-lite/sql-lite";
 
 
 /*
-  Generated class for the LoginPage page.
+ Generated class for the LoginPage page.
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
+ See http://ionicframework.com/docs/v2/components/#navigation for more info on
+ Ionic pages and navigation.
+ */
 @Component({
   templateUrl: 'build/pages/login/login.html',
   providers: [AppProvider,HttpClient,User,SqlLite]
@@ -68,12 +68,21 @@ export class LoginPage {
                   this.httpClient.get('/api/me.json?'+fields,user).subscribe(
                     data => {
                       data = data.json();
-                      this.setStickToasterMessage('success to login ');
                       this.user.setUserData(data).then(userData=>{
-                        this.loginData.isLogin = true;
-                        this.user.setCurrentUser(this.loginData).then(user=>{
-                          this.navCtrl.setRoot(TabsPage);
-                        });
+                        this.setLoadingMessages('Loading system information');
+                        this.httpClient.get('/api/system/info',user).subscribe(
+                          data => {
+                            data = data.json();
+                            this.user.setCurrentUserSystemInformation(data).then(()=>{
+                              this.downloadingOrganisationUnits(userData);
+                            },error=>{
+                              this.loadingData = false;
+                              this.setLoadingMessages('Fail to set system information');
+                            });
+                          },error=>{
+                            this.loadingData = false;
+                            this.setLoadingMessages('Fail to load system information');
+                          })
                       });
                     },
                     err => {
@@ -99,6 +108,132 @@ export class LoginPage {
     }else{
       this.setToasterMessage('Please Enter server url');
     }
+  }
+
+  downloadingOrganisationUnits(userData){
+    this.setLoadingMessages('Downloading assigned organisation data');
+    let resource = 'organisationUnits';
+    let ids = [];
+    userData.organisationUnits.forEach(organisationUnit=>{
+      if(organisationUnit.id){
+        ids.push(organisationUnit.id);
+      }
+    });
+    let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+    let fields = tableMetadata.fields;
+    this.app.downloadMetadataByResourceIds(this.loginData,resource,ids,fields,null).then(response=>{
+      this.setLoadingMessages('Start saving organisation data');
+      this.app.saveMetadata(resource,response,this.loginData.currentDatabase).then(()=>{
+        this.downloadingDataSets();
+      },error=>{
+        this.loadingData = false;
+        this.setStickToasterMessage('Fail to save organisation data. ' + JSON.stringify(error));
+      });
+    },error=>{
+      this.loadingData = false;
+      this.setStickToasterMessage('Fail to download organisation data. ' + JSON.stringify(error));
+    });
+  }
+
+  downloadingDataSets(){
+    this.setLoadingMessages('Downloading data entry forms');
+    let resource = 'dataSets';
+    let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+    let fields = tableMetadata.fields;
+    this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
+      this.setLoadingMessages('Start saving '+response[resource].length+' data entry form');
+      this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+        this.downloadingSections();
+      },error=>{
+        this.loadingData = false;
+        this.setStickToasterMessage('Fail to save data entry form. ' + JSON.stringify(error));
+      });
+    },error=>{
+      this.loadingData = false;
+      this.setStickToasterMessage('Fail to download data entry form. ' + JSON.stringify(error));
+    });
+  }
+
+  downloadingSections(){
+    this.setLoadingMessages('Downloading data entry form sections');
+    let resource = 'sections';
+    let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+    let fields = tableMetadata.fields;
+    this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
+      this.setLoadingMessages('Start saving '+response[resource].length+' data entry form sections');
+      this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+        this.downloadingIndicators();
+      },error=>{
+        this.loadingData = false;
+        this.setStickToasterMessage('Fail to save data entry form sections. ' + JSON.stringify(error));
+      });
+    },error=>{
+      this.loadingData = false;
+      this.setStickToasterMessage('Fail to download data entry form sections. ' + JSON.stringify(error));
+    });
+  }
+
+  downloadingIndicators(){
+    this.setLoadingMessages('Downloading indicators');
+    let resource = 'indicators';
+    let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+    let fields = tableMetadata.fields;
+    this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
+      this.setLoadingMessages('Start saving '+response[resource].length+' indicators');
+      this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+        this.downloadingReports();
+      },error=>{
+        this.loadingData = false;
+        this.setStickToasterMessage('Fail to save indicators. ' + JSON.stringify(error));
+      });
+    },error=>{
+      this.loadingData = false;
+      this.setStickToasterMessage('Fail to download indicators. ' + JSON.stringify(error));
+    });
+  }
+
+  downloadingReports(){
+    this.setLoadingMessages('Downloading reports');
+    let resource = 'reports';
+    let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+    let fields = tableMetadata.fields;
+    this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
+      this.setLoadingMessages('Start saving '+response[resource].length+' reports');
+      this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+        this.downloadingConstants();
+      },error=>{
+        this.loadingData = false;
+        this.setStickToasterMessage('Fail to save reports. ' + JSON.stringify(error));
+      });
+    },error=>{
+      this.loadingData = false;
+      this.setStickToasterMessage('Fail to download reports. ' + JSON.stringify(error));
+    });
+  }
+  downloadingConstants(){
+    this.setLoadingMessages('Downloading constants');
+    let resource = 'constants';
+    let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+    let fields = tableMetadata.fields;
+    this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
+      this.setLoadingMessages('Start saving '+response[resource].length+' constants');
+      this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+        this.setLandingPage();
+      },error=>{
+        this.loadingData = false;
+        this.setStickToasterMessage('Fail to save constants. ' + JSON.stringify(error));
+      });
+    },error=>{
+      this.loadingData = false;
+      this.setStickToasterMessage('Fail to download constants. ' + JSON.stringify(error));
+    });
+  }
+
+  setLandingPage(){
+    this.loginData.isLogin = true;
+    this.user.setCurrentUser(this.loginData).then(user=>{
+      this.navCtrl.setRoot(TabsPage);
+    });
   }
 
   setLoadingMessages(message){

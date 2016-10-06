@@ -26,8 +26,11 @@ var User = (function () {
         this.localStorage.set('user', JSON.stringify(user));
         return Promise.resolve(user);
     };
+    User.prototype.setCurrentUserSystemInformation = function (systemInformation) {
+        this.localStorage.set('systemInformation', JSON.stringify(systemInformation));
+        return Promise.resolve();
+    };
     User.prototype.setUserData = function (userDataResponse) {
-        //userDataResponse= eval('('++')');
         var userData = {
             "Name": userDataResponse.name,
             "Employer": userDataResponse.employer,
@@ -49,6 +52,19 @@ var User = (function () {
             self.localStorage.get('userData').then(function (userData) {
                 userData = JSON.parse(userData);
                 resolve(userData);
+            }, function (err) {
+                reject();
+            }).catch(function (err) {
+                reject();
+            });
+        });
+    };
+    User.prototype.getCurrentUserSystemInformation = function () {
+        var self = this;
+        return new Promise(function (resolve, reject) {
+            self.localStorage.get('systemInformation').then(function (systemInformation) {
+                systemInformation = JSON.parse(systemInformation);
+                resolve(systemInformation);
             }, function (err) {
                 reject();
             }).catch(function (err) {

@@ -27,6 +27,9 @@
         },
         "cordova-sqlite-storage": {
             "PACKAGE_NAME": "com.ionicframework.dhis2touch732690"
+        },
+        "cordova-plugin-app-version": {
+            "PACKAGE_NAME": "com.ionicframework.dhis2touch732690"
         }
     },
     "dependent_plugins": {}

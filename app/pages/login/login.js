@@ -15,11 +15,11 @@ var user_1 = require('../../providers/user/user');
 var http_client_1 = require('../../providers/http-client/http-client');
 var sql_lite_1 = require("../../providers/sql-lite/sql-lite");
 /*
-  Generated class for the LoginPage page.
+ Generated class for the LoginPage page.
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
+ See http://ionicframework.com/docs/v2/components/#navigation for more info on
+ Ionic pages and navigation.
+ */
 var LoginPage = (function () {
     function LoginPage(navCtrl, sqlLite, user, app, httpClient, toastCtrl) {
         var _this = this;
@@ -74,11 +74,19 @@ var LoginPage = (function () {
                                 var fields = "fields=[:all],userCredentials[userRoles[name,dataSets[id,name],programs[id,name]]";
                                 _this.httpClient.get('/api/me.json?' + fields, user).subscribe(function (data) {
                                     data = data.json();
-                                    _this.setStickToasterMessage('success to login ');
                                     _this.user.setUserData(data).then(function (userData) {
-                                        _this.loginData.isLogin = true;
-                                        _this.user.setCurrentUser(_this.loginData).then(function (user) {
-                                            _this.navCtrl.setRoot(tabs_1.TabsPage);
+                                        _this.setLoadingMessages('Loading system information');
+                                        _this.httpClient.get('/api/system/info', user).subscribe(function (data) {
+                                            data = data.json();
+                                            _this.user.setCurrentUserSystemInformation(data).then(function () {
+                                                _this.downloadingOrganisationUnits(userData);
+                                            }, function (error) {
+                                                _this.loadingData = false;
+                                                _this.setLoadingMessages('Fail to set system information');
+                                            });
+                                        }, function (error) {
+                                            _this.loadingData = false;
+                                            _this.setLoadingMessages('Fail to load system information');
                                         });
                                     });
                                 }, function (err) {
@@ -103,6 +111,133 @@ var LoginPage = (function () {
         else {
             this.setToasterMessage('Please Enter server url');
         }
+    };
+    LoginPage.prototype.downloadingOrganisationUnits = function (userData) {
+        var _this = this;
+        this.setLoadingMessages('Downloading assigned organisation data');
+        var resource = 'organisationUnits';
+        var ids = [];
+        userData.organisationUnits.forEach(function (organisationUnit) {
+            if (organisationUnit.id) {
+                ids.push(organisationUnit.id);
+            }
+        });
+        var tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+        var fields = tableMetadata.fields;
+        this.app.downloadMetadataByResourceIds(this.loginData, resource, ids, fields, null).then(function (response) {
+            _this.setLoadingMessages('Start saving organisation data');
+            _this.app.saveMetadata(resource, response, _this.loginData.currentDatabase).then(function () {
+                _this.downloadingDataSets();
+            }, function (error) {
+                _this.loadingData = false;
+                _this.setStickToasterMessage('Fail to save organisation data. ' + JSON.stringify(error));
+            });
+        }, function (error) {
+            _this.loadingData = false;
+            _this.setStickToasterMessage('Fail to download organisation data. ' + JSON.stringify(error));
+        });
+    };
+    LoginPage.prototype.downloadingDataSets = function () {
+        var _this = this;
+        this.setLoadingMessages('Downloading data entry forms');
+        var resource = 'dataSets';
+        var tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+        var fields = tableMetadata.fields;
+        this.app.downloadMetadata(this.loginData, resource, null, fields, null).then(function (response) {
+            _this.setLoadingMessages('Start saving ' + response[resource].length + ' data entry form');
+            _this.app.saveMetadata(resource, response[resource], _this.loginData.currentDatabase).then(function () {
+                _this.downloadingSections();
+            }, function (error) {
+                _this.loadingData = false;
+                _this.setStickToasterMessage('Fail to save data entry form. ' + JSON.stringify(error));
+            });
+        }, function (error) {
+            _this.loadingData = false;
+            _this.setStickToasterMessage('Fail to download data entry form. ' + JSON.stringify(error));
+        });
+    };
+    LoginPage.prototype.downloadingSections = function () {
+        var _this = this;
+        this.setLoadingMessages('Downloading data entry form sections');
+        var resource = 'sections';
+        var tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+        var fields = tableMetadata.fields;
+        this.app.downloadMetadata(this.loginData, resource, null, fields, null).then(function (response) {
+            _this.setLoadingMessages('Start saving ' + response[resource].length + ' data entry form sections');
+            _this.app.saveMetadata(resource, response[resource], _this.loginData.currentDatabase).then(function () {
+                _this.downloadingIndicators();
+            }, function (error) {
+                _this.loadingData = false;
+                _this.setStickToasterMessage('Fail to save data entry form sections. ' + JSON.stringify(error));
+            });
+        }, function (error) {
+            _this.loadingData = false;
+            _this.setStickToasterMessage('Fail to download data entry form sections. ' + JSON.stringify(error));
+        });
+    };
+    LoginPage.prototype.downloadingIndicators = function () {
+        var _this = this;
+        this.setLoadingMessages('Downloading indicators');
+        var resource = 'indicators';
+        var tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+        var fields = tableMetadata.fields;
+        this.app.downloadMetadata(this.loginData, resource, null, fields, null).then(function (response) {
+            _this.setLoadingMessages('Start saving ' + response[resource].length + ' indicators');
+            _this.app.saveMetadata(resource, response[resource], _this.loginData.currentDatabase).then(function () {
+                _this.downloadingReports();
+            }, function (error) {
+                _this.loadingData = false;
+                _this.setStickToasterMessage('Fail to save indicators. ' + JSON.stringify(error));
+            });
+        }, function (error) {
+            _this.loadingData = false;
+            _this.setStickToasterMessage('Fail to download indicators. ' + JSON.stringify(error));
+        });
+    };
+    LoginPage.prototype.downloadingReports = function () {
+        var _this = this;
+        this.setLoadingMessages('Downloading reports');
+        var resource = 'reports';
+        var tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+        var fields = tableMetadata.fields;
+        this.app.downloadMetadata(this.loginData, resource, null, fields, null).then(function (response) {
+            _this.setLoadingMessages('Start saving ' + response[resource].length + ' reports');
+            _this.app.saveMetadata(resource, response[resource], _this.loginData.currentDatabase).then(function () {
+                _this.downloadingConstants();
+            }, function (error) {
+                _this.loadingData = false;
+                _this.setStickToasterMessage('Fail to save reports. ' + JSON.stringify(error));
+            });
+        }, function (error) {
+            _this.loadingData = false;
+            _this.setStickToasterMessage('Fail to download reports. ' + JSON.stringify(error));
+        });
+    };
+    LoginPage.prototype.downloadingConstants = function () {
+        var _this = this;
+        this.setLoadingMessages('Downloading constants');
+        var resource = 'constants';
+        var tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+        var fields = tableMetadata.fields;
+        this.app.downloadMetadata(this.loginData, resource, null, fields, null).then(function (response) {
+            _this.setLoadingMessages('Start saving ' + response[resource].length + ' constants');
+            _this.app.saveMetadata(resource, response[resource], _this.loginData.currentDatabase).then(function () {
+                _this.setLandingPage();
+            }, function (error) {
+                _this.loadingData = false;
+                _this.setStickToasterMessage('Fail to save constants. ' + JSON.stringify(error));
+            });
+        }, function (error) {
+            _this.loadingData = false;
+            _this.setStickToasterMessage('Fail to download constants. ' + JSON.stringify(error));
+        });
+    };
+    LoginPage.prototype.setLandingPage = function () {
+        var _this = this;
+        this.loginData.isLogin = true;
+        this.user.setCurrentUser(this.loginData).then(function (user) {
+            _this.navCtrl.setRoot(tabs_1.TabsPage);
+        });
     };
     LoginPage.prototype.setLoadingMessages = function (message) {
         this.loadingMessages.push(message);

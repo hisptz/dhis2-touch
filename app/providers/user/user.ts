@@ -23,8 +23,12 @@ export class User {
     return Promise.resolve(user);
   }
 
+  setCurrentUserSystemInformation(systemInformation){
+    this.localStorage.set('systemInformation',JSON.stringify(systemInformation));
+    return Promise.resolve();
+  }
+
   setUserData(userDataResponse){
-    //userDataResponse= eval('('++')');
     let userData ={
       "Name": userDataResponse.name,
       "Employer": userDataResponse.employer,
@@ -49,6 +53,20 @@ export class User {
       self.localStorage.get('userData').then(userData=>{
         userData = JSON.parse(userData);
         resolve(userData);
+      },err=>{
+        reject();
+      }).catch(err=>{
+        reject();
+      })
+    });
+  }
+
+  getCurrentUserSystemInformation(){
+    let self = this;
+    return  new Promise(function(resolve,reject){
+      self.localStorage.get('systemInformation').then(systemInformation=>{
+        systemInformation = JSON.parse(systemInformation);
+        resolve(systemInformation);
       },err=>{
         reject();
       }).catch(err=>{

@@ -79,7 +79,7 @@ var SqlLite = (function () {
                     { value: 'designContent', type: 'LONGTEXT' }
                 ],
                 fields: "id,name,created,type,relativePeriods,reportParams,designContent",
-                filters: "type:eq:HTML&filter=name:like:mobile"
+                filter: "type:eq:HTML&filter=name:like:mobile"
             },
             constants: {
                 columns: [
