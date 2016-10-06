@@ -16,14 +16,34 @@ var ionic_angular_1 = require('ionic-angular');
   Ionic pages and navigation.
 */
 var ReportHomePage = (function () {
-    function ReportHomePage(navCtrl) {
+    function ReportHomePage(navCtrl, toastCtrl) {
         this.navCtrl = navCtrl;
+        this.toastCtrl = toastCtrl;
+        this.loadingData = false;
+        this.loadingMessages = [];
     }
+    ReportHomePage.prototype.setLoadingMessages = function (message) {
+        this.loadingMessages.push(message);
+    };
+    ReportHomePage.prototype.setToasterMessage = function (message) {
+        var toast = this.toastCtrl.create({
+            message: message,
+            duration: 3000
+        });
+        toast.present();
+    };
+    ReportHomePage.prototype.setStickToasterMessage = function (message) {
+        var toast = this.toastCtrl.create({
+            message: message,
+            showCloseButton: true
+        });
+        toast.present();
+    };
     ReportHomePage = __decorate([
         core_1.Component({
             templateUrl: 'build/pages/report-home/report-home.html',
         }), 
-        __metadata('design:paramtypes', [ionic_angular_1.NavController])
+        __metadata('design:paramtypes', [ionic_angular_1.NavController, ionic_angular_1.ToastController])
     ], ReportHomePage);
     return ReportHomePage;
 })();

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController,ToastController } from 'ionic-angular';
 
 
 /*
@@ -13,7 +13,31 @@ import { NavController } from 'ionic-angular';
 })
 export class DataEntryHomePage {
 
-  constructor(private navCtrl: NavController) {
+  private loadingData : boolean = false;
+  private loadingMessages : any = [];
+
+  constructor(private navCtrl: NavController,private toastCtrl: ToastController) {
 
   }
+
+  setLoadingMessages(message){
+    this.loadingMessages.push(message);
+  }
+
+  setToasterMessage(message){
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000
+    });
+    toast.present();
+  }
+
+  setStickToasterMessage(message){
+    let toast = this.toastCtrl.create({
+      message: message,
+      showCloseButton : true
+    });
+    toast.present();
+  }
+
 }

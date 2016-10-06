@@ -13,6 +13,25 @@
 </ion-header>
 
 
-<ion-content padding class="update-manager">
+<ion-content  class="update-manager">
+  <ion-grid>
+    <ion-row>
+      <div *ngIf="loadingData">
+        <ion-list>
+          <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
+            {{ message }}
+            <ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right></ion-icon>
+            <div style="text-align: center" item-right *ngIf="(currentIndex + 1) >= loadingMessages.length">
+              <ion-spinner name="crescent"></ion-spinner>
+            </div>
+          </ion-item>
+        </ion-list>
+      </div>
+    </ion-row>
+    <ion-row>
+      <div *ngIf="!loadingData"></div>
 
+    </ion-row>
+
+  </ion-grid>
 </ion-content>

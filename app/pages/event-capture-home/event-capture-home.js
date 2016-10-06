@@ -16,14 +16,34 @@ var ionic_angular_1 = require('ionic-angular');
   Ionic pages and navigation.
 */
 var EventCaptureHomePage = (function () {
-    function EventCaptureHomePage(navCtrl) {
+    function EventCaptureHomePage(navCtrl, toastCtrl) {
         this.navCtrl = navCtrl;
+        this.toastCtrl = toastCtrl;
+        this.loadingData = false;
+        this.loadingMessages = [];
     }
+    EventCaptureHomePage.prototype.setLoadingMessages = function (message) {
+        this.loadingMessages.push(message);
+    };
+    EventCaptureHomePage.prototype.setToasterMessage = function (message) {
+        var toast = this.toastCtrl.create({
+            message: message,
+            duration: 3000
+        });
+        toast.present();
+    };
+    EventCaptureHomePage.prototype.setStickToasterMessage = function (message) {
+        var toast = this.toastCtrl.create({
+            message: message,
+            showCloseButton: true
+        });
+        toast.present();
+    };
     EventCaptureHomePage = __decorate([
         core_1.Component({
             templateUrl: 'build/pages/event-capture-home/event-capture-home.html',
         }), 
-        __metadata('design:paramtypes', [ionic_angular_1.NavController])
+        __metadata('design:paramtypes', [ionic_angular_1.NavController, ionic_angular_1.ToastController])
     ], EventCaptureHomePage);
     return EventCaptureHomePage;
 })();

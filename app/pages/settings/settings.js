@@ -16,14 +16,34 @@ var ionic_angular_1 = require('ionic-angular');
   Ionic pages and navigation.
 */
 var SettingsPage = (function () {
-    function SettingsPage(navCtrl) {
+    function SettingsPage(navCtrl, toastCtrl) {
         this.navCtrl = navCtrl;
+        this.toastCtrl = toastCtrl;
+        this.loadingData = false;
+        this.loadingMessages = [];
     }
+    SettingsPage.prototype.setLoadingMessages = function (message) {
+        this.loadingMessages.push(message);
+    };
+    SettingsPage.prototype.setToasterMessage = function (message) {
+        var toast = this.toastCtrl.create({
+            message: message,
+            duration: 3000
+        });
+        toast.present();
+    };
+    SettingsPage.prototype.setStickToasterMessage = function (message) {
+        var toast = this.toastCtrl.create({
+            message: message,
+            showCloseButton: true
+        });
+        toast.present();
+    };
     SettingsPage = __decorate([
         core_1.Component({
             templateUrl: 'build/pages/settings/settings.html',
         }), 
-        __metadata('design:paramtypes', [ionic_angular_1.NavController])
+        __metadata('design:paramtypes', [ionic_angular_1.NavController, ionic_angular_1.ToastController])
     ], SettingsPage);
     return SettingsPage;
 })();

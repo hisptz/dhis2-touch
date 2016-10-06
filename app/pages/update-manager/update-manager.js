@@ -16,14 +16,34 @@ var ionic_angular_1 = require('ionic-angular');
   Ionic pages and navigation.
 */
 var UpdateManagerPage = (function () {
-    function UpdateManagerPage(navCtrl) {
+    function UpdateManagerPage(navCtrl, toastCtrl) {
         this.navCtrl = navCtrl;
+        this.toastCtrl = toastCtrl;
+        this.loadingData = false;
+        this.loadingMessages = [];
     }
+    UpdateManagerPage.prototype.setLoadingMessages = function (message) {
+        this.loadingMessages.push(message);
+    };
+    UpdateManagerPage.prototype.setToasterMessage = function (message) {
+        var toast = this.toastCtrl.create({
+            message: message,
+            duration: 3000
+        });
+        toast.present();
+    };
+    UpdateManagerPage.prototype.setStickToasterMessage = function (message) {
+        var toast = this.toastCtrl.create({
+            message: message,
+            showCloseButton: true
+        });
+        toast.present();
+    };
     UpdateManagerPage = __decorate([
         core_1.Component({
             templateUrl: 'build/pages/update-manager/update-manager.html',
         }), 
-        __metadata('design:paramtypes', [ionic_angular_1.NavController])
+        __metadata('design:paramtypes', [ionic_angular_1.NavController, ionic_angular_1.ToastController])
     ], UpdateManagerPage);
     return UpdateManagerPage;
 })();
