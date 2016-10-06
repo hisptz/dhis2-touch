@@ -41,6 +41,30 @@
               <h2>{{ entry.key }}</h2>
               <p>{{ entry.value }}</p>
             </ion-item>
+            <ion-item-divider light>
+              Assigned Organisation Units
+            </ion-item-divider>
+            <ion-item *ngFor="let assignOrgUnit of  assignOrgUnits;let currentIndex = index">
+              <p>{{ currentIndex + 1 }}&nbsp;{{ assignOrgUnit }}</p>
+            </ion-item>
+            <ion-item-divider light>
+              Assigned user roles
+            </ion-item-divider>
+            <ion-item *ngFor="let userRole of userRoles;let currentIndex = index">
+              <p>{{ currentIndex + 1 }}&nbsp;{{ userRole }}</p>
+            </ion-item>
+            <ion-item-divider light>
+              Assigned programs
+            </ion-item-divider>
+            <ion-item *ngFor="let assignedProgram of assignedPrograms ;let currentIndex = index">
+              <p>{{ currentIndex + 1 }}&nbsp;{{ assignedProgram }}</p>
+            </ion-item>
+            <ion-item-divider light>
+              Assigned forms
+            </ion-item-divider>
+            <ion-item *ngFor="let assignedForm  of assignedForms ;let currentIndex = index">
+              <p>{{ currentIndex + 1 }}&nbsp;{{ assignedForm }}</p>
+            </ion-item>
 
           </ion-item-group>
         </div>

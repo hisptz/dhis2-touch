@@ -15,13 +15,14 @@ var app_provider_1 = require('../../providers/app-provider/app-provider');
 var http_client_1 = require("../../providers/http-client/http-client");
 var sql_lite_1 = require("../../providers/sql-lite/sql-lite");
 /*
-  Generated class for the ProfilePage page.
+ Generated class for the ProfilePage page.
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
+ See http://ionicframework.com/docs/v2/components/#navigation for more info on
+ Ionic pages and navigation.
+ */
 var ProfilePage = (function () {
     function ProfilePage(navCtrl, toastCtrl, user, appProvider, sqlLite, httpClient) {
+        var _this = this;
         this.navCtrl = navCtrl;
         this.toastCtrl = toastCtrl;
         this.user = user;
@@ -30,21 +31,77 @@ var ProfilePage = (function () {
         this.httpClient = httpClient;
         this.loadingData = false;
         this.loadingMessages = [];
+        this.user.getCurrentUser().then(function (currentUser) {
+            _this.currentUser = currentUser;
+        });
         this.loadingProfileInformation();
     }
     ProfilePage.prototype.loadingProfileInformation = function () {
         var _this = this;
         this.loadingData = true;
         this.loadingMessages = [];
+        this.profileInformation = {};
         this.setLoadingMessages('Loading profiles information');
         this.user.getUserData().then(function (userData) {
-            _this.profileInformation = userData;
-            alert(JSON.stringify(userData));
-            alert(JSON.stringify(userData.userRoles));
-            alert(JSON.stringify(userData.organisationUnits));
+            for (var key in userData) {
+                var value = userData[key];
+                if (!(value instanceof Object)) {
+                    _this.profileInformation[key] = value;
+                }
+            }
+            _this.setUserRoles(userData);
         }, function (error) {
             _this.loadingData = false;
             _this.setToasterMessage('Fail to load profile information');
+        });
+    };
+    ProfilePage.prototype.setUserRoles = function (userData) {
+        var _this = this;
+        this.setLoadingMessages('Loading user roles');
+        this.userRoles = [];
+        this.assignedForms = [];
+        this.assignedPrograms = [];
+        userData.userRoles.forEach(function (userRole) {
+            _this.userRoles.push(userRole.name);
+            _this.setAssignedForms(userRole.dataSets);
+            _this.setAssignedPrograms(userRole.programs);
+        });
+        this.loadingAssignedOrganisationUnits(userData.organisationUnits);
+    };
+    ProfilePage.prototype.setAssignedForms = function (dataSets) {
+        var _this = this;
+        dataSets.forEach(function (dataSet) {
+            if (_this.assignedForms.indexOf(dataSet.name) == -1) {
+                _this.assignedForms.push(dataSet.name);
+            }
+        });
+    };
+    ProfilePage.prototype.setAssignedPrograms = function (programs) {
+        var _this = this;
+        programs.forEach(function (program) {
+            if (_this.assignedPrograms.indexOf(program.name) == -1) {
+                _this.assignedPrograms.push(program.name);
+            }
+        });
+    };
+    ProfilePage.prototype.loadingAssignedOrganisationUnits = function (organisationUnits) {
+        var _this = this;
+        this.setLoadingMessages('Loading assigned organisation units');
+        this.assignOrgUnits = [];
+        var resource = 'organisationUnits';
+        var attribute = 'id';
+        var attributeValue = [];
+        organisationUnits.forEach(function (organisationUnit) {
+            attributeValue.push(organisationUnit.id);
+        });
+        this.sqlLite.getDataFromTableByAttributes(resource, attribute, attributeValue, this.currentUser.currentDatabase).then(function (assignedOrganisationUnits) {
+            assignedOrganisationUnits.forEach(function (assignedOrganisationUnit) {
+                _this.assignOrgUnits.push(assignedOrganisationUnit.name);
+            });
+            _this.loadingData = false;
+        }, function (error) {
+            _this.loadingData = false;
+            _this.setToasterMessage('Fail to load assigned organisation units');
         });
     };
     ProfilePage.prototype.setLoadingMessages = function (message) {

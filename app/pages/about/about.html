@@ -13,7 +13,7 @@
 </ion-header>
 
 
-<ion-content padding class="about">
+<ion-content class="about">
   <ion-grid>
     <ion-row>
       <ion-col width="100">
@@ -31,27 +31,28 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <div *ngIf="!loadingData">
-        <ion-item-group>
-          <ion-item-divider light>
-            App Information
-          </ion-item-divider>
-          <ion-item *ngFor="let entry of appInformation | objectToArray">
-            <h2>{{ entry.key }}</h2>
-            <p>{{ entry.value }}</p>
-          </ion-item>
+      <ion-col width="100">
+        <div *ngIf="!loadingData">
+          <ion-item-group>
+            <ion-item-divider light>
+              App Information
+            </ion-item-divider>
+            <ion-item *ngFor="let entry of appInformation | objectToArray">
+              <h2>{{ entry.key }}</h2>
+              <p>{{ entry.value }}</p>
+            </ion-item>
 
-          <ion-item-divider light>
-            System Information
-          </ion-item-divider>
-          <ion-item *ngFor="let entry of systemInformation | objectToArray">
-            <h2>{{ entry.key }}</h2>
-            <p>{{ entry.value }}</p>
-          </ion-item>
+            <ion-item-divider light>
+              System Information
+            </ion-item-divider>
+            <ion-item *ngFor="let entry of systemInformation | objectToArray">
+              <h2>{{ entry.key }}</h2>
+              <p>{{ entry.value }}</p>
+            </ion-item>
 
-        </ion-item-group>
-      </div>
-
+          </ion-item-group>
+        </div>
+      </ion-col>
     </ion-row>
 
   </ion-grid>
