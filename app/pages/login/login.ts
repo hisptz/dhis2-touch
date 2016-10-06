@@ -4,7 +4,7 @@ import { NavController ,ToastController } from 'ionic-angular';
 
 import { TabsPage } from '../tabs/tabs';
 
-import { AppProvider } from '../../providers/app/app';
+import { AppProvider } from '../../providers/app-provider/app-provider';
 import {User } from '../../providers/user/user';
 import {HttpClient} from '../../providers/http-client/http-client';
 import {SqlLite} from "../../providers/sql-lite/sql-lite";
