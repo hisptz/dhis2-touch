@@ -44,11 +44,31 @@ export class User {
   }
 
   getUserData(){
-    return this.localStorage.get('userData');
+    let self = this;
+    return  new Promise(function(resolve,reject){
+      self.localStorage.get('userData').then(userData=>{
+        userData = JSON.parse(userData);
+        resolve(userData);
+      },err=>{
+        reject();
+      }).catch(err=>{
+        reject();
+      })
+    });
   }
 
   getCurrentUser(){
-    return this.localStorage.get('user');
+    let self = this;
+    return  new Promise(function(resolve,reject){
+      self.localStorage.get('user').then(user=>{
+        user = JSON.parse(user);
+        resolve(user);
+      },err=>{
+        reject();
+      }).catch(err=>{
+        reject();
+      })
+    })
   }
 
 }

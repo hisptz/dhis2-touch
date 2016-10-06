@@ -28,18 +28,17 @@ export class LoginPage {
 
   constructor(private navCtrl: NavController,private sqlLite : SqlLite,private user: User,private app : App,private httpClient: HttpClient,private toastCtrl: ToastController) {
     this.loginData.logoUrl = 'img/logo.png';
-    this.reAuthenticateUser();
+    this.user.getCurrentUser().then(user=>{
+      this.reAuthenticateUser(user);
+    });
   }
 
-  reAuthenticateUser(){
-    this.user.getCurrentUser().then(user=>{
-      user = JSON.parse(user);
-      if(user.isLogin){
-        this.navCtrl.setRoot(TabsPage);
-      }else if(user.serverUrl){
-        this.loginData.serverUrl = user.serverUrl;
-      }
-    });
+  reAuthenticateUser(user){
+    if(user.isLogin){
+      this.navCtrl.setRoot(TabsPage);
+    }else if(user.serverUrl){
+      this.loginData.serverUrl = user.serverUrl;
+    }
   }
 
   login(){
@@ -54,7 +53,6 @@ export class LoginPage {
           }else{
             this.loadingData = true;
             this.loadingMessages = [];
-
             this.app.getDataBaseName(this.loginData.serverUrl).then(databaseName=>{
               this.setLoadingMessages('Opening database');
               this.sqlLite.generateTables(databaseName).then(()=>{
@@ -67,7 +65,7 @@ export class LoginPage {
                       data = data.json();
                       this.setStickToasterMessage('success to login ');
                       this.user.setUserData(data).then(userData=>{
-                        //this.loginData.isLogin = true;
+                        this.loginData.isLogin = true;
                         this.user.setCurrentUser(this.loginData).then(user=>{
                           this.navCtrl.setRoot(TabsPage);
                         });

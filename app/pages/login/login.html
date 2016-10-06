@@ -50,14 +50,12 @@
       </ion-col>
     </ion-row>
 
-    <ion-row *ngIf="1loadingData">
-      <ion-col width-5></ion-col>
-      <ion-col width-90>
+    <ion-row *ngIf="!loadingData">
+      <ion-col width-100>
         <button (click)="login()" full>
           Login
         </button>
       </ion-col>
-      <ion-col width-5></ion-col>
     </ion-row>
 
     <ion-row>

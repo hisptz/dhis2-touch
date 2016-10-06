@@ -22,6 +22,7 @@ var sql_lite_1 = require("../../providers/sql-lite/sql-lite");
 */
 var LoginPage = (function () {
     function LoginPage(navCtrl, sqlLite, user, app, httpClient, toastCtrl) {
+        var _this = this;
         this.navCtrl = navCtrl;
         this.sqlLite = sqlLite;
         this.user = user;
@@ -32,19 +33,17 @@ var LoginPage = (function () {
         this.loadingData = false;
         this.loadingMessages = [];
         this.loginData.logoUrl = 'img/logo.png';
-        this.reAuthenticateUser();
-    }
-    LoginPage.prototype.reAuthenticateUser = function () {
-        var _this = this;
         this.user.getCurrentUser().then(function (user) {
-            user = JSON.parse(user);
-            if (user.isLogin) {
-                _this.navCtrl.setRoot(tabs_1.TabsPage);
-            }
-            else if (user.serverUrl) {
-                _this.loginData.serverUrl = user.serverUrl;
-            }
+            _this.reAuthenticateUser(user);
         });
+    }
+    LoginPage.prototype.reAuthenticateUser = function (user) {
+        if (user.isLogin) {
+            this.navCtrl.setRoot(tabs_1.TabsPage);
+        }
+        else if (user.serverUrl) {
+            this.loginData.serverUrl = user.serverUrl;
+        }
     };
     LoginPage.prototype.login = function () {
         var _this = this;
@@ -72,7 +71,7 @@ var LoginPage = (function () {
                                     data = data.json();
                                     _this.setStickToasterMessage('success to login ');
                                     _this.user.setUserData(data).then(function (userData) {
-                                        //this.loginData.isLogin = true;
+                                        _this.loginData.isLogin = true;
                                         _this.user.setCurrentUser(_this.loginData).then(function (user) {
                                             _this.navCtrl.setRoot(tabs_1.TabsPage);
                                         });

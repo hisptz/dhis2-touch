@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 require('rxjs/add/operator/map');
-var ionic_angular_1 = require('ionic-angular');
 var Rx_1 = require('rxjs/Rx');
 var sql_lite_1 = require("../../providers/sql-lite/sql-lite");
 /*
@@ -20,20 +19,10 @@ var sql_lite_1 = require("../../providers/sql-lite/sql-lite");
  for more info on providers and Angular 2 DI.
  */
 var App = (function () {
-    function App(http, loadingController, sqlLite) {
+    function App(http, sqlLite) {
         this.http = http;
-        this.loadingController = loadingController;
         this.sqlLite = sqlLite;
     }
-    App.prototype.showProgressMessage = function (message) {
-        this.loading = this.loadingController.create({
-            content: message
-        });
-        this.loading.present();
-    };
-    App.prototype.hideProgressMessage = function () {
-        this.loading.dismiss();
-    };
     App.prototype.getFormattedBaseUrl = function (url) {
         this.formattedBaseUrl = "";
         var urlToBeFormatted = "", urlArray = [], baseUrlString;
@@ -80,7 +69,7 @@ var App = (function () {
     };
     App = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http, ionic_angular_1.LoadingController, sql_lite_1.SqlLite])
+        __metadata('design:paramtypes', [http_1.Http, sql_lite_1.SqlLite])
     ], App);
     return App;
 })();

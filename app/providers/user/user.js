@@ -44,10 +44,30 @@ var User = (function () {
         return Promise.resolve(userData);
     };
     User.prototype.getUserData = function () {
-        return this.localStorage.get('userData');
+        var self = this;
+        return new Promise(function (resolve, reject) {
+            self.localStorage.get('userData').then(function (userData) {
+                userData = JSON.parse(userData);
+                resolve(userData);
+            }, function (err) {
+                reject();
+            }).catch(function (err) {
+                reject();
+            });
+        });
     };
     User.prototype.getCurrentUser = function () {
-        return this.localStorage.get('user');
+        var self = this;
+        return new Promise(function (resolve, reject) {
+            self.localStorage.get('user').then(function (user) {
+                user = JSON.parse(user);
+                resolve(user);
+            }, function (err) {
+                reject();
+            }).catch(function (err) {
+                reject();
+            });
+        });
     };
     User = __decorate([
         core_1.Injectable(), 
