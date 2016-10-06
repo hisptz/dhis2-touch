@@ -29,7 +29,26 @@
       </div>
     </ion-row>
     <ion-row>
-      <div *ngIf="!loadingData"></div>
+      <div *ngIf="!loadingData">
+        <ion-item-group>
+          <ion-item-divider light>
+            App Information
+          </ion-item-divider>
+          <ion-item *ngFor="let entry of appInformation | objectToArray">
+            <h2>{{ entry.key }}</h2>
+            <p>{{ entry.value }}</p>
+          </ion-item>
+
+          <ion-item-divider light>
+            System Information
+          </ion-item-divider>
+          <ion-item *ngFor="let entry of systemInformation | objectToArray">
+            <h2>{{ entry.key }}</h2>
+            <p>{{ entry.value }}</p>
+          </ion-item>
+
+        </ion-item-group>
+      </div>
 
     </ion-row>
 
