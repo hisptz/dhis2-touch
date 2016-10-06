@@ -36,12 +36,14 @@ export class LoginPage {
   }
 
   reAuthenticateUser(user){
-    if(user.isLogin){
-      this.navCtrl.setRoot(TabsPage);
-    }else if(user.serverUrl){
-      this.loginData.serverUrl = user.serverUrl;
-      if(user.username){
-        this.loginData.username = user.username;
+    if(user){
+      if(user.isLogin){
+        this.navCtrl.setRoot(TabsPage);
+      }else if(user.serverUrl){
+        this.loginData.serverUrl = user.serverUrl;
+        if(user.username){
+          this.loginData.username = user.username;
+        }
       }
     }
   }

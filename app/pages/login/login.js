@@ -40,13 +40,15 @@ var LoginPage = (function () {
         });
     }
     LoginPage.prototype.reAuthenticateUser = function (user) {
-        if (user.isLogin) {
-            this.navCtrl.setRoot(tabs_1.TabsPage);
-        }
-        else if (user.serverUrl) {
-            this.loginData.serverUrl = user.serverUrl;
-            if (user.username) {
-                this.loginData.username = user.username;
+        if (user) {
+            if (user.isLogin) {
+                this.navCtrl.setRoot(tabs_1.TabsPage);
+            }
+            else if (user.serverUrl) {
+                this.loginData.serverUrl = user.serverUrl;
+                if (user.username) {
+                    this.loginData.username = user.username;
+                }
             }
         }
     };
