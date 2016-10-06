@@ -14,7 +14,7 @@ import {SqlLite} from "../../providers/sql-lite/sql-lite";
  */
 
 @Injectable()
-export class App {
+export class AppProvider {
 
   private formattedBaseUrl :string;
   private loading : any;

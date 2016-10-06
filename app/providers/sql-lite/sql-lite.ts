@@ -12,6 +12,89 @@ import {Observable} from 'rxjs/Rx';
 export class SqlLite {
 
   private dataBaseStructure: any= {
+    organisationUnits: {
+      columns: [
+        {value: 'id', type: 'TEXT'},
+        {value: 'name', type: 'TEXT'},
+        {value: 'ancestors', type: 'LONGTEXT'},
+        {value: 'dataSets', type: 'LONGTEXT'},
+        {value: 'level', type: 'TEXT'},
+        {value: 'children', type: 'LONGTEXT'}
+      ],
+      fields : "id,name,ancestors[id,name],dataSets[id],level,children[id,name,ancestors[id,name],dataSets[id],level,children[id,name,ancestors[id,name],dataSets[id],level,children[id,name,ancestors[id,name],dataSets[id],level,children[id,name,ancestors[id,name],dataSets[id],level,children[id,name,ancestors[id,name]]]]]]"
+    },
+    dataSets: {
+      columns: [
+        {value: 'id', type: 'TEXT'},
+        {value: 'name', type: 'TEXT'},
+        {value: 'timelyDays', type: 'TEXT'},
+        {value: 'formType', type: 'TEXT'},
+        {value: 'periodType', type: 'TEXT'},
+        {value: 'openFuturePeriods', type: 'TEXT'},
+        {value: 'expiryDays', type: 'TEXT'},
+        {value: 'dataElements', type: 'LONGTEXT'},
+        {value: 'organisationUnits', type: 'LONGTEXT'},
+        {value: 'sections', type: 'LONGTEXT'},
+        {value: 'indicators', type: 'LONGTEXT'},
+        {value: 'categoryCombo', type: 'LONGTEXT'}
+      ],
+      fields : "id,name,timelyDays,formType,version,periodType,openFuturePeriods,expiryDays,dataElements[id,name,displayName,description,formName,attributeValues[value,attribute[name]],valueType,optionSet[name,options[name,id,code]],categoryCombo[id,name,categoryOptionCombos[id,name]]],organisationUnits[id,name],sections[id],indicators[id,name,indicatorType[factor],denominatorDescription,numeratorDescription,numerator,denominator],categoryCombo[id,name,categoryOptionCombos[id,name,categoryOptions[id]],categories[id,name,categoryOptions[id,name]]]"
+    },
+    sections: {
+      columns: [
+        {value: 'id', type: 'TEXT'},
+        {value: 'name', type: 'TEXT'},
+        {value: 'indicators', type: 'LONGTEXT'},
+        {value: 'dataElements', type: 'LONGTEXT'}
+      ],
+      fields : "id,name,indicators[id,name,indicatorType[factor],denominatorDescription,numeratorDescription,numerator,denominator],dataElements[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]"
+    },
+    indicators: {
+      columns: [
+        {value: 'id', type: 'TEXT'},
+        {value: 'name', type: 'TEXT'},
+        {value: 'denominatorDescription', type: 'TEXT'},
+        {value: 'numeratorDescription', type: 'TEXT'},
+        {value: 'numerator', type: 'TEXT'},
+        {value: 'denominator', type: 'TEXT'},
+        {value: 'indicatorType', type: 'LONGTEXT'}
+      ],
+      fields : ""
+    },
+    reports: {
+      columns: [
+        {value: 'id', type: 'TEXT'},
+        {value: 'name', type: 'TEXT'},
+        {value: 'created', type: 'TEXT'},
+        {value: 'type', type: 'TEXT'},
+        {value: 'relativePeriods', type: 'LONGTEXT'},
+        {value: 'reportParams', type: 'LONGTEXT'},
+        {value: 'designContent', type: 'LONGTEXT'}
+      ],
+      fields : "id,name,created,type,relativePeriods,reportParams,designContent",
+      filters : "type:eq:HTML&filter=name:like:mobile"
+    },
+    constants: {
+      columns: [
+        {value: 'id', type: 'TEXT'},
+        {value: 'value', type: 'TEXT'}
+      ],
+      fields : "id,value"
+    },
+    dataValues : {
+      columns: [
+        {value: 'id', type: 'TEXT'},
+        {value: 'de', type: 'TEXT'},
+        {value: 'co', type: 'TEXT'},
+        {value: 'pe', type: 'TEXT'},
+        {value: 'ou', type: 'TEXT'},
+        {value: 'cc', type: 'TEXT'},
+        {value: 'cp', type: 'TEXT'},
+        {value: 'value', type: 'TEXT'},
+        {value: 'syncStatus', type: 'TEXT'},
+        {value: 'dataSetId', type: 'TEXT'}
+      ]
+    },
     programs : {
       columns : [
         {value: 'id', type: 'TEXT'},
@@ -37,6 +120,7 @@ export class SqlLite {
       let promises = [];
       let tableNames = Object.keys(self.dataBaseStructure);
       tableNames.forEach((tableName: any) => {
+        console.log('Generate table for ' + tableName);
         promises.push(self.createTable(tableName,databaseName).then(()=>{
           resolve();
           }).catch(error=>{
@@ -222,7 +306,6 @@ export class SqlLite {
     }
     return data;
   }
-
 
 }
 

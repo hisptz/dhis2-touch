@@ -4,7 +4,7 @@ import { NavController ,ToastController } from 'ionic-angular';
 
 import { TabsPage } from '../tabs/tabs';
 
-import { App } from '../../providers/app/app';
+import { AppProvider } from '../../providers/app/app';
 import {User } from '../../providers/user/user';
 import {HttpClient} from '../../providers/http-client/http-client';
 import {SqlLite} from "../../providers/sql-lite/sql-lite";
@@ -18,7 +18,7 @@ import {SqlLite} from "../../providers/sql-lite/sql-lite";
 */
 @Component({
   templateUrl: 'build/pages/login/login.html',
-  providers: [App,HttpClient,User,SqlLite]
+  providers: [AppProvider,HttpClient,User,SqlLite]
 })
 export class LoginPage {
 
@@ -26,10 +26,8 @@ export class LoginPage {
   private loadingData : boolean = false;
   private loadingMessages : any = [];
 
-  constructor(private navCtrl: NavController,private sqlLite : SqlLite,private user: User,private app : App,private httpClient: HttpClient,private toastCtrl: ToastController) {
+  constructor(private navCtrl: NavController,private sqlLite : SqlLite,private user: User,private app : AppProvider,private httpClient: HttpClient,private toastCtrl: ToastController) {
     this.loginData.logoUrl = 'img/logo.png';
-    this.loadingData = true;
-    this.loadingMessages = [];
     this.user.getCurrentUser().then(user=>{
       this.reAuthenticateUser(user);
     });
@@ -79,12 +77,14 @@ export class LoginPage {
                       });
                     },
                     err => {
+                      this.loadingData = false;
                       this.setStickToasterMessage('Fail to login Fail to load System information, please checking your network connection');
                       console.log(err);
                     }
                   );
                 }).catch(err=>{
-                  console.log(err);
+                  console.log(JSON.stringify(err));
+                  this.loadingData = false;
                   this.setStickToasterMessage('Fail set current user');
                 })
               },()=>{

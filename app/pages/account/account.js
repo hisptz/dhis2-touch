@@ -14,6 +14,7 @@ var profile_1 = require('../profile/profile');
 var help_1 = require('../help/help');
 var about_1 = require('../about/about');
 var update_manager_1 = require('../update-manager/update-manager');
+var login_1 = require('../login/login');
 var user_1 = require('../../providers/user/user');
 /*
   Generated class for the AccountPage page.
@@ -22,10 +23,11 @@ var user_1 = require('../../providers/user/user');
   Ionic pages and navigation.
 */
 var AccountPage = (function () {
-    function AccountPage(navCtrl, user) {
+    function AccountPage(navCtrl, user, app) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.user = user;
+        this.app = app;
         this.user.getCurrentUser().then(function (user) {
             _this.currentUser = user;
         });
@@ -44,15 +46,19 @@ var AccountPage = (function () {
         this.navCtrl.push(this.viewMapperObject[viewName]);
     };
     AccountPage.prototype.logOut = function () {
-        alert(JSON.stringify(this.currentUser));
-        alert(this.currentUser.isLogin);
+        var _this = this;
+        this.currentUser.isLogin = false;
+        //todo delete org unit o a given user
+        this.user.setCurrentUser(this.currentUser).then(function (user) {
+            _this.app.getRootNav().setRoot(login_1.LoginPage);
+        }, function (error) { });
     };
     AccountPage = __decorate([
         core_1.Component({
             templateUrl: 'build/pages/account/account.html',
             providers: [user_1.User]
         }), 
-        __metadata('design:paramtypes', [ionic_angular_1.NavController, user_1.User])
+        __metadata('design:paramtypes', [ionic_angular_1.NavController, user_1.User, ionic_angular_1.App])
     ], AccountPage);
     return AccountPage;
 })();

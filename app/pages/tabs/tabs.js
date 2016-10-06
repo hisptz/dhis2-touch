@@ -25,7 +25,6 @@ var TabsPage = (function () {
     }
     TabsPage.prototype.setUserAccountName = function (userData) {
         this.accountName = userData.Name;
-        alert(userData.Name);
     };
     TabsPage = __decorate([
         core_1.Component({

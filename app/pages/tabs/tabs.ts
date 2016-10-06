@@ -28,6 +28,5 @@ export class TabsPage {
 
   setUserAccountName(userData){
     this.accountName = userData.Name;
-    alert(userData.Name)
   }
 }

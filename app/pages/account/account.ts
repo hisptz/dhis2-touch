@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController,App} from 'ionic-angular';
 
 import {SettingsPage} from '../settings/settings';
 import {ProfilePage} from '../profile/profile';
 import {HelpPage} from '../help/help';
 import {AboutPage} from '../about/about';
 import {UpdateManagerPage} from '../update-manager/update-manager';
+import {LoginPage} from '../login/login';
+
 import { User } from '../../providers/user/user';
 
 /*
@@ -24,7 +26,7 @@ export class AccountPage {
   private currentUser : any;
 
 
-  constructor(private navCtrl: NavController,private user : User) {
+  constructor(private navCtrl: NavController,private user : User,private app : App) {
     this.user.getCurrentUser().then(user=>{
       this.currentUser = user;
     });
@@ -46,8 +48,11 @@ export class AccountPage {
   }
 
   logOut(){
-    alert(JSON.stringify(this.currentUser));
-    alert(this.currentUser.isLogin)
+    this.currentUser.isLogin = false;
+    //todo delete org unit o a given user
+    this.user.setCurrentUser(this.currentUser).then(user=>{
+      this.app.getRootNav().setRoot(LoginPage);
+    },error=>{});
   }
 
 }

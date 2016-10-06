@@ -18,12 +18,12 @@ var sql_lite_1 = require("../../providers/sql-lite/sql-lite");
  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
  for more info on providers and Angular 2 DI.
  */
-var App = (function () {
-    function App(http, sqlLite) {
+var AppProvider = (function () {
+    function AppProvider(http, sqlLite) {
         this.http = http;
         this.sqlLite = sqlLite;
     }
-    App.prototype.getFormattedBaseUrl = function (url) {
+    AppProvider.prototype.getFormattedBaseUrl = function (url) {
         this.formattedBaseUrl = "";
         var urlToBeFormatted = "", urlArray = [], baseUrlString;
         if (!(url.split('/')[0] == "https:" || url.split('/')[0] == "http:")) {
@@ -46,11 +46,11 @@ var App = (function () {
         }
         return Promise.resolve(this.formattedBaseUrl);
     };
-    App.prototype.getDataBaseName = function (url) {
+    AppProvider.prototype.getDataBaseName = function (url) {
         var databaseName = url.replace('://', '_').replace('/', '_').replace('.', '_').replace(':', '_');
         return Promise.resolve(databaseName);
     };
-    App.prototype.saveMetadata = function (resource, resourceValues, databaseName) {
+    AppProvider.prototype.saveMetadata = function (resource, resourceValues, databaseName) {
         var promises = [];
         var self = this;
         return new Promise(function (resolve, reject) {
@@ -67,10 +67,10 @@ var App = (function () {
             });
         });
     };
-    App = __decorate([
+    AppProvider = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http, sql_lite_1.SqlLite])
-    ], App);
-    return App;
+    ], AppProvider);
+    return AppProvider;
 })();
-exports.App = App;
+exports.AppProvider = AppProvider;

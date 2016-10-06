@@ -33,8 +33,6 @@ var LoginPage = (function () {
         this.loadingData = false;
         this.loadingMessages = [];
         this.loginData.logoUrl = 'img/logo.png';
-        this.loadingData = true;
-        this.loadingMessages = [];
         this.user.getCurrentUser().then(function (user) {
             _this.reAuthenticateUser(user);
         });
@@ -84,11 +82,13 @@ var LoginPage = (function () {
                                         });
                                     });
                                 }, function (err) {
+                                    _this.loadingData = false;
                                     _this.setStickToasterMessage('Fail to login Fail to load System information, please checking your network connection');
                                     console.log(err);
                                 });
                             }).catch(function (err) {
-                                console.log(err);
+                                console.log(JSON.stringify(err));
+                                _this.loadingData = false;
                                 _this.setStickToasterMessage('Fail set current user');
                             });
                         }, function () {
@@ -124,9 +124,9 @@ var LoginPage = (function () {
     LoginPage = __decorate([
         core_1.Component({
             templateUrl: 'build/pages/login/login.html',
-            providers: [app_1.App, http_client_1.HttpClient, user_1.User, sql_lite_1.SqlLite]
+            providers: [app_1.AppProvider, http_client_1.HttpClient, user_1.User, sql_lite_1.SqlLite]
         }), 
-        __metadata('design:paramtypes', [ionic_angular_1.NavController, sql_lite_1.SqlLite, user_1.User, app_1.App, http_client_1.HttpClient, ionic_angular_1.ToastController])
+        __metadata('design:paramtypes', [ionic_angular_1.NavController, sql_lite_1.SqlLite, user_1.User, app_1.AppProvider, http_client_1.HttpClient, ionic_angular_1.ToastController])
     ], LoginPage);
     return LoginPage;
 })();
