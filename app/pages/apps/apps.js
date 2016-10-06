@@ -9,6 +9,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var ionic_angular_1 = require('ionic-angular');
+var dashboard_home_1 = require('../dashboard-home/dashboard-home');
+var data_entry_home_1 = require('../data-entry-home/data-entry-home');
+var event_capture_home_1 = require('../event-capture-home/event-capture-home');
+var report_home_1 = require('../report-home/report-home');
+var tracker_capture_home_1 = require('../tracker-capture-home/tracker-capture-home');
 /*
   Generated class for the AppsPage page.
 
@@ -18,7 +23,17 @@ var ionic_angular_1 = require('ionic-angular');
 var AppsPage = (function () {
     function AppsPage(navCtrl) {
         this.navCtrl = navCtrl;
+        this.viewMapperObject = {
+            "dataEntry": data_entry_home_1.DataEntryHomePage,
+            "eventCapture": event_capture_home_1.EventCaptureHomePage,
+            "report": report_home_1.ReportHomePage,
+            "dashboard": dashboard_home_1.DashboardHomePage,
+            "trackerCapture": tracker_capture_home_1.TrackerCaptureHomePage
+        };
     }
+    AppsPage.prototype.goToView = function (viewName) {
+        this.navCtrl.push(this.viewMapperObject[viewName]);
+    };
     AppsPage = __decorate([
         core_1.Component({
             templateUrl: 'build/pages/apps/apps.html',

@@ -17,7 +17,7 @@
 
   <ion-row >
 
-    <ion-col width-45 >
+    <ion-col width-45 (click)="goToView('profile')" >
       <ion-list >
         <ion-item >
           <ion-thumbnail >
@@ -27,7 +27,7 @@
         </ion-item>
       </ion-list>
     </ion-col>
-    <ion-col width-45 >
+    <ion-col width-45 (click)="goToView('about')" >
       <ion-list>
         <ion-item>
           <ion-thumbnail >
@@ -42,7 +42,7 @@
 
   <ion-row>
 
-    <ion-col width-45 >
+    <ion-col width-45 (click)="goToView('help')" >
       <ion-list>
         <ion-item>
           <ion-thumbnail >
@@ -52,7 +52,7 @@
         </ion-item>
       </ion-list>
     </ion-col>
-    <ion-col width-45 >
+    <ion-col width-45 (click)="goToView('settings')" >
       <ion-list >
         <ion-item >
           <ion-thumbnail >
@@ -66,7 +66,7 @@
   </ion-row>
 
   <ion-row>
-    <ion-col width-45 >
+    <ion-col width-45 (click)="goToView('updateManager')" >
       <ion-list>
         <ion-item>
           <ion-thumbnail >
@@ -76,7 +76,7 @@
         </ion-item>
       </ion-list>
     </ion-col>
-    <ion-col width-45 >
+    <ion-col width-45 (click)="logOut()" >
       <ion-list>
         <ion-item>
           <ion-thumbnail >

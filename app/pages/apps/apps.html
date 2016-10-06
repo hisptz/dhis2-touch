@@ -17,7 +17,7 @@
 
   <ion-row >
 
-    <ion-col >
+    <ion-col (click)="goToView('dataEntry')" >
       <ion-list >
         <ion-item >
           <ion-thumbnail >
@@ -27,7 +27,7 @@
         </ion-item>
       </ion-list>
     </ion-col>
-    <ion-col  >
+    <ion-col (click)="goToView('report')"  >
       <ion-list>
         <ion-item>
           <ion-thumbnail >
@@ -40,7 +40,7 @@
   </ion-row>
 
   <ion-row>
-    <ion-col width-45 >
+    <ion-col width-45 (click)="goToView('trackerCapture')" >
       <ion-list >
         <ion-item >
           <ion-thumbnail >
@@ -50,7 +50,7 @@
         </ion-item>
       </ion-list>
     </ion-col>
-    <ion-col width-45 >
+    <ion-col width-45 (click)="goToView('eventCapture')" >
       <ion-list >
         <ion-item >
           <ion-thumbnail >
@@ -63,7 +63,7 @@
 
   </ion-row>
   <ion-row>
-    <ion-col width-45 >
+    <ion-col width-45 (click)="goToView('dashboard')" >
       <ion-list>
         <ion-item>
           <ion-thumbnail >

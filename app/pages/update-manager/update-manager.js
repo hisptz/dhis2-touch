@@ -9,39 +9,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var ionic_angular_1 = require('ionic-angular');
-var settings_1 = require('../settings/settings');
-var profile_1 = require('../profile/profile');
-var help_1 = require('../help/help');
-var about_1 = require('../about/about');
-var update_manager_1 = require('../update-manager/update-manager');
 /*
-  Generated class for the AccountPage page.
+  Generated class for the UpdateManagerPage page.
 
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
 */
-var AccountPage = (function () {
-    function AccountPage(navCtrl) {
+var UpdateManagerPage = (function () {
+    function UpdateManagerPage(navCtrl) {
         this.navCtrl = navCtrl;
-        this.viewMapperObject = {
-            "profile": profile_1.ProfilePage,
-            "about": about_1.AboutPage,
-            "help": help_1.HelpPage,
-            "settings": settings_1.SettingsPage,
-            "updateManager": update_manager_1.UpdateManagerPage
-        };
     }
-    AccountPage.prototype.goToView = function (viewName) {
-        this.navCtrl.push(this.viewMapperObject[viewName]);
-    };
-    AccountPage.prototype.logOut = function () {
-    };
-    AccountPage = __decorate([
+    UpdateManagerPage = __decorate([
         core_1.Component({
-            templateUrl: 'build/pages/account/account.html',
+            templateUrl: 'build/pages/update-manager/update-manager.html',
         }), 
         __metadata('design:paramtypes', [ionic_angular_1.NavController])
-    ], AccountPage);
-    return AccountPage;
+    ], UpdateManagerPage);
+    return UpdateManagerPage;
 })();
-exports.AccountPage = AccountPage;
+exports.UpdateManagerPage = UpdateManagerPage;
