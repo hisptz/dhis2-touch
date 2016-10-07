@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController,ToastController } from 'ionic-angular';
 
+import {User} from '../../providers/user/user';
+import {AppProvider} from '../../providers/app-provider/app-provider';
+import {HttpClient} from "../../providers/http-client/http-client";
+import {SqlLite} from "../../providers/sql-lite/sql-lite";
 /*
   Generated class for the ReportHomePage page.
 
@@ -9,14 +13,47 @@ import { NavController,ToastController } from 'ionic-angular';
 */
 @Component({
   templateUrl: 'build/pages/report-home/report-home.html',
+  providers : [User,AppProvider,HttpClient,SqlLite],
 })
 export class ReportHomePage {
 
   private loadingData : boolean = false;
   private loadingMessages : any = [];
+  private currentUser : any;
+  private reportList :any;
 
-  constructor(private navCtrl: NavController,private toastCtrl: ToastController) {
+  constructor(private navCtrl: NavController,private toastCtrl: ToastController,private user : User,private appProvider : AppProvider,private sqlLite : SqlLite,private httpClient: HttpClient) {
+    this.user.getCurrentUser().then(currentUser=>{
+      this.currentUser = currentUser;
+      this.loadingAvailableReports();
+    });
+  }
 
+  loadingAvailableReports(){
+    this.loadingData = true;
+    this.loadingMessages = [];
+    this.setLoadingMessages('Loading offline reports');
+    let resource = 'reports';
+
+    this.sqlLite.getAllDataFromTable(resource,this.currentUser.currentDatabase).then((reports : any)=>{
+      this.reportList = reports;
+      this.loadingData = false;
+    },error=>{
+      this.loadingData = false;
+      this.setToasterMessage('Fail to load offline reports');
+    });
+  }
+
+  prepareSelectedReport(report){
+    let hasReportParams = this.doesReportHasReportParams(report.reportParams);
+  }
+
+  doesReportHasReportParams(reportParams){
+    let hasReportParams = false;
+    if(reportParams.paramReportingPeriod || reportParams.paramOrganisationUnit){
+      hasReportParams = true;
+    }
+    return hasReportParams;
   }
 
   setLoadingMessages(message){

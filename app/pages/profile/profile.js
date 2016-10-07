@@ -33,8 +33,8 @@ var ProfilePage = (function () {
         this.loadingMessages = [];
         this.user.getCurrentUser().then(function (currentUser) {
             _this.currentUser = currentUser;
+            _this.loadingProfileInformation();
         });
-        this.loadingProfileInformation();
     }
     ProfilePage.prototype.loadingProfileInformation = function () {
         var _this = this;

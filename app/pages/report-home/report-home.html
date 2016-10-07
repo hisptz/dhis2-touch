@@ -31,8 +31,19 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <div *ngIf="!loadingData"></div>
+      <ion-col width="100">
+        <div *ngIf="!loadingData">
+          <div *ngFor="let report of reportList">
+            <button ion-item (click)="prepareSelectedReport(report)">
+              <ion-icon name="list" item-left></ion-icon>
+              <h2>{{report.name}}</h2>
+              <p >Created : {{report.created|date:longDate}}</p>
+              <ion-icon name="arrow-round-forward" item-right></ion-icon>
+            </button>
+          </div>
 
+        </div>
+      </ion-col>
     </ion-row>
 
   </ion-grid>

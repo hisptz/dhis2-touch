@@ -32,8 +32,9 @@ export class ProfilePage {
   constructor(private navCtrl: NavController,private toastCtrl: ToastController,private user : User,private appProvider : AppProvider,private sqlLite : SqlLite,private httpClient: HttpClient) {
     this.user.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;
+      this.loadingProfileInformation();
     });
-    this.loadingProfileInformation();
+
   }
 
   loadingProfileInformation(){
