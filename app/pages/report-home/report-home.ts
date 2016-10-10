@@ -5,6 +5,9 @@ import {User} from '../../providers/user/user';
 import {AppProvider} from '../../providers/app-provider/app-provider';
 import {HttpClient} from "../../providers/http-client/http-client";
 import {SqlLite} from "../../providers/sql-lite/sql-lite";
+
+import {ReportViewPage} from '../report-view/report-view';
+import {ReportParameterSelectionPage} from '../report-parameter-selection/report-parameter-selection';
 /*
   Generated class for the ReportHomePage page.
 
@@ -46,6 +49,15 @@ export class ReportHomePage {
 
   prepareSelectedReport(report){
     let hasReportParams = this.doesReportHasReportParams(report.reportParams);
+    let parameter = {
+      reportName : report.name,
+      reportId : report.id
+    };
+    if(hasReportParams){
+      this.navCtrl.push(ReportParameterSelectionPage,parameter);
+    }else{
+      this.navCtrl.push(ReportViewPage,parameter);
+    }
   }
 
   doesReportHasReportParams(reportParams){

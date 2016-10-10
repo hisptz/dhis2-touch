@@ -251,7 +251,6 @@ export class SqlLite {
     query += inClauseValues;
     query += ")";
     let db = new SQLite();
-
     return new Promise(function(resolve, reject) {
       db.openDatabase({name: databaseName,location: 'default'}).then(() => {
         db.executeSql(query, []).then((result) => {
