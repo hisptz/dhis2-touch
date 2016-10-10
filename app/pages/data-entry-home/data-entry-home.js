@@ -13,6 +13,7 @@ var user_1 = require('../../providers/user/user');
 var app_provider_1 = require('../../providers/app-provider/app-provider');
 var http_client_1 = require("../../providers/http-client/http-client");
 var sql_lite_1 = require("../../providers/sql-lite/sql-lite");
+var organisation_units_1 = require("../organisation-units/organisation-units");
 /*
   Generated class for the DataEntryHomePage page.
 
@@ -20,7 +21,9 @@ var sql_lite_1 = require("../../providers/sql-lite/sql-lite");
   Ionic pages and navigation.
 */
 var DataEntryHomePage = (function () {
-    function DataEntryHomePage(navCtrl, toastCtrl, user, appProvider, sqlLite, httpClient) {
+    function DataEntryHomePage(modalCtrl, navCtrl, toastCtrl, user, appProvider, sqlLite, httpClient) {
+        var _this = this;
+        this.modalCtrl = modalCtrl;
         this.navCtrl = navCtrl;
         this.toastCtrl = toastCtrl;
         this.user = user;
@@ -29,7 +32,37 @@ var DataEntryHomePage = (function () {
         this.httpClient = httpClient;
         this.loadingData = false;
         this.loadingMessages = [];
+        this.user.getCurrentUser().then(function (currentUser) {
+            _this.currentUser = currentUser;
+            _this.loadOrganisationUnits();
+        });
     }
+    DataEntryHomePage.prototype.loadOrganisationUnits = function () {
+        var _this = this;
+        this.loadingData = true;
+        this.loadingMessages = [];
+        this.setLoadingMessages('Loading organisation units');
+        var resource = "organisationUnits";
+        this.sqlLite.getAllDataFromTable(resource, this.currentUser.currentDatabase).then(function (organisationUnits) {
+            _this.organisationUnits = organisationUnits;
+            _this.loadingData = false;
+        }, function (error) {
+            _this.loadingData = false;
+            _this.setToasterMessage('Fail to load organisation units');
+        });
+    };
+    DataEntryHomePage.prototype.openModal = function () {
+        var _this = this;
+        this.loadingMessages = [];
+        this.loadingData = true;
+        this.setLoadingMessages('Please wait...');
+        var modal = this.modalCtrl.create(organisation_units_1.OrganisationUnitsPage, { data: this.organisationUnits });
+        modal.onDidDismiss(function (data) {
+            _this.loadingData = false;
+            alert(JSON.stringify(data));
+        });
+        modal.present();
+    };
     DataEntryHomePage.prototype.setLoadingMessages = function (message) {
         this.loadingMessages.push(message);
     };
@@ -52,7 +85,7 @@ var DataEntryHomePage = (function () {
             templateUrl: 'build/pages/data-entry-home/data-entry-home.html',
             providers: [user_1.User, app_provider_1.AppProvider, http_client_1.HttpClient, sql_lite_1.SqlLite],
         }), 
-        __metadata('design:paramtypes', [ionic_angular_1.NavController, ionic_angular_1.ToastController, user_1.User, app_provider_1.AppProvider, sql_lite_1.SqlLite, http_client_1.HttpClient])
+        __metadata('design:paramtypes', [ionic_angular_1.ModalController, ionic_angular_1.NavController, ionic_angular_1.ToastController, user_1.User, app_provider_1.AppProvider, sql_lite_1.SqlLite, http_client_1.HttpClient])
     ], DataEntryHomePage);
     return DataEntryHomePage;
 })();
