@@ -31,7 +31,6 @@
   </ion-grid>
 
   <div *ngIf="!loadingData" >
-
     <div *ngFor="let orgUnit of organisationUnitsList">
       <ion-item>
         <ion-icon name="ios-arrow-forward" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && !hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
@@ -85,14 +84,6 @@
 
       </div>
     </div>
-
-
-    <!--<div *ngFor="let organisationUnit of organisationUnitsList" >-->
-      <!--<button ion-item (click)="setSelectedOrgUnit(organisationUnit)">-->
-        <!--<ion-icon name="list" item-left></ion-icon>-->
-        <!--<h2>{{organisationUnit.name }}</h2>-->
-      <!--</button>-->
-    <!--</div>-->
   </div>
 
 </ion-content>

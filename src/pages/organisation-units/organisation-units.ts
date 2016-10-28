@@ -33,32 +33,8 @@ export class OrganisationUnits {
     this.loadingMessages.push('Please wait, while setting organisation unit data');
     let orgUnits = this.params.get('data');
     this.loadingMessages.push('Loading organisation list ');
-    this.organisationUnitsList = orgUnits;//this.getOrganisationUnitsList(orgUnits);
+    this.organisationUnitsList = orgUnits;
     this.loadingData = false;
-  }
-
-  getOrganisationUnitsList(orgUnits){
-    var orgUnitsOutPut =[];
-    orgUnits.forEach(orgUnit=>{
-      orgUnitsOutPut.push({
-        id:orgUnit.id,
-        name: orgUnit.name,
-        ancestors: orgUnit.ancestors,
-        dataSets: orgUnit.dataSets,
-      });
-      if(orgUnit.children){
-        this.getOrganisationUnitsList(orgUnit.children).forEach(orgUnit=>{
-          orgUnitsOutPut.push({
-            id:orgUnit.id,
-            name: orgUnit.name,
-            ancestors: orgUnit.ancestors,
-            dataSets: orgUnit.dataSets,
-          });
-        })
-      }
-    });
-
-    return orgUnitsOutPut;
   }
 
   toggleOrgUnit(orgUnit) {

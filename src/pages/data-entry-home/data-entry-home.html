@@ -34,14 +34,31 @@
     <div *ngIf="!loadingData" >
       <ion-row >
         <ion-col width="100">
-          <button (click)="openOrganisationUnitModal()" ion-button full>
-            Open modal
+          <button (click)="openOrganisationUnitModal()" ion-button full color="light">
+            {{ selectedOrganisationUnitLabel }}
           </button>
-          selectedOrganisationUnit :: {{ selectedOrganisationUnit.name }}
-
-          assignedForms : {{ assignedForms| json}}
         </ion-col>
       </ion-row>
+      <ion-row >
+        <ion-col width="100">
+          <button (click)="openDataSetsModal()" ion-button full color="light">
+            {{ selectedDataSetLabel }}
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-row >
+        <ion-col width="100">
+
+        </ion-col>
+      </ion-row>
+      <ion-row >
+        <ion-col width="100">
+
+        </ion-col>
+      </ion-row>
+
+      {{ selectedDataSet|json }}
+
     </div>
   </ion-grid>
 

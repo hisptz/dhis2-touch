@@ -1,0 +1,23 @@
+<ion-header >
+  <ion-toolbar color="primary">
+    <ion-title>
+      Data Entry Form selection
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <ion-icon name="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding class = "dataEntryFormSelection">
+
+  <ion-item *ngFor="let dataSet of dataESetsList"   (click)="setSelectedDataSet(dataSet)">
+    <ion-icon name="list" item-left></ion-icon>
+    <span (click)="setSelectedDataSet(orgUnit)" >{{ dataSet.name }}</span>
+  </ion-item>
+  <ion-item *ngIf = "dataESetsList.length == 0">
+    There is no Data entry form to select
+  </ion-item>
+
+</ion-content>
