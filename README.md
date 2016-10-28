@@ -9,4 +9,4 @@ Application has been built to support:</p>
 <li>Support for default and section forms with pagination </li>
 <li>Support for all Android devices</li>
 </ol>
-<a href="https://play.google.com/store/apps/details?id=com.hipstz.dhis2.dhis2touch">Click to download</a>
+<a  target="_blank" href="https://play.google.com/store/apps/details?id=com.hipstz.dhis2.dhis2touch">Click to download</a>
