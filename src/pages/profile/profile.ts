@@ -54,14 +54,61 @@ export class Profile {
         }
       }
       this.profileInformation = this.getArrayFromObject(data);
-      alert(JSON.stringify(this.profileInformation));
-      //this.setUserRoles(userData);
+      this.setUserRoles(userData);
     },error=>{
       this.loadingData = false;
       this.setToasterMessage('Fail to load profile information');
     });
   }
 
+  setUserRoles(userData){
+    this.setLoadingMessages('Loading user roles');
+    this.userRoles = [];
+    this.assignedForms = [];
+    this.assignedPrograms = [];
+    userData.userRoles.forEach((userRole:any)=>{
+      this.userRoles.push(userRole.name);
+      this.setAssignedForms(userRole.dataSets);
+      this.setAssignedPrograms(userRole.programs);
+    });
+    this.loadingAssignedOrganisationUnits(userData.organisationUnits);
+  }
+
+  setAssignedForms(dataSets){
+    dataSets.forEach((dataSet:any)=>{
+      if(this.assignedForms.indexOf(dataSet.name) == -1){
+        this.assignedForms.push(dataSet.name);
+      }
+    });
+  }
+
+  setAssignedPrograms(programs){
+    programs.forEach((program:any)=>{
+      if(this.assignedPrograms.indexOf(program.name) == -1){
+        this.assignedPrograms.push(program.name);
+      }
+    });
+  }
+
+  loadingAssignedOrganisationUnits(organisationUnits){
+    this.setLoadingMessages('Loading assigned organisation units');
+    this.assignOrgUnits = [];
+    let resource = 'organisationUnits';
+    let attribute = 'id';
+    let attributeValue =[];
+    organisationUnits.forEach((organisationUnit:any)=>{
+      attributeValue.push(organisationUnit.id);
+    });
+    this.sqlLite.getDataFromTableByAttributes(resource,attribute,attributeValue,this.currentUser.currentDatabase).then((assignedOrganisationUnits:any)=>{
+      assignedOrganisationUnits.forEach((assignedOrganisationUnit : any)=>{
+        this.assignOrgUnits.push(assignedOrganisationUnit.name);
+      });
+      this.loadingData = false;
+    },error=>{
+      this.loadingData = false;
+      this.setToasterMessage('Fail to load assigned organisation units');
+    });
+  }
 
   getArrayFromObject(object){
     let array = [];

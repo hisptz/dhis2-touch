@@ -38,10 +38,10 @@
             <ion-item-divider light>
               App Information
             </ion-item-divider>
-            <!--<ion-item *ngFor="let entry of profileInformation | objectToArray">-->
-              <!--<h2>{{ entry.key }}</h2>-->
-              <!--<p>{{ entry.value }}</p>-->
-            <!--</ion-item>-->
+            <ion-item *ngFor="let entry of profileInformation">
+              <h2>{{ entry.key }}</h2>
+              <p>{{ entry.value }}</p>
+            </ion-item>
             <ion-item-divider light>
               Assigned Organisation Units
             </ion-item-divider>
