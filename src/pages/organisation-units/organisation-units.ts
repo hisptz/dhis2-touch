@@ -17,6 +17,7 @@ export class OrganisationUnits {
   public loadingMessages : any;
   public loadingData :boolean = false;
   public organisationUnitsList : any;
+  public hasOrgUnitChildrenOpened:any = {};
 
   constructor(public viewCtrl: ViewController,public params : NavParams){
     this.setModalData();
@@ -58,6 +59,14 @@ export class OrganisationUnits {
     });
 
     return orgUnitsOutPut;
+  }
+
+  toggleOrgUnit(orgUnit) {
+    if (this.hasOrgUnitChildrenOpened[orgUnit.id]) {
+      this.hasOrgUnitChildrenOpened[orgUnit.id] = !this.hasOrgUnitChildrenOpened[orgUnit.id];
+    } else {
+      this.hasOrgUnitChildrenOpened[orgUnit.id] = true;
+    }
   }
 
   setSelectedOrgUnit(selectedOrgUnit){
