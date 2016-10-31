@@ -1,12 +1,7 @@
 import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
-
-import { TabsPage } from '../pages/tabs/tabs';
-
-import {Observable} from 'rxjs/Rx';
 import {Login} from "../pages/login/login";
-
 
 @Component({
   template: `<ion-nav [root]="rootPage" color="primary"></ion-nav>`

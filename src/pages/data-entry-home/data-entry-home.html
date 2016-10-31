@@ -40,24 +40,25 @@
         </ion-col>
       </ion-row>
       <ion-row >
-        <ion-col width="100">
+        <ion-col width="100" *ngIf="selectedOrganisationUnit.id">
           <button (click)="openDataSetsModal()" ion-button full color="light">
             {{ selectedDataSetLabel }}
           </button>
         </ion-col>
       </ion-row>
       <ion-row >
-        <ion-col width="100">
-
+        <ion-col width="100" *ngIf="selectedDataSet.id">
+          <button (click)="openPeriodModal()" ion-button full color="light">
+            {{ selectedPeriodLabel }}
+          </button>
         </ion-col>
       </ion-row>
       <ion-row >
         <ion-col width="100">
-
+          selectedDataSet :: {{ selectedDataSet|json }}
         </ion-col>
       </ion-row>
 
-      {{ selectedDataSet|json }}
 
     </div>
   </ion-grid>

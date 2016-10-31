@@ -7,6 +7,7 @@ import {HttpClient} from "../../providers/http-client/http-client";
 import {SqlLite} from "../../providers/sql-lite/sql-lite";
 import {OrganisationUnits} from "../organisation-units/organisation-units";
 import {DataSetSelection} from "../data-set-selection/data-set-selection";
+import {PeriodSelection} from "../period-selection/period-selection";
 
 declare var dhis2: any;
 /*
@@ -32,6 +33,8 @@ export class DataEntryHome {
   public selectedDataSet : any = {};
   public selectedDataSetLabel : string;
   public dataSetIdsByUserRoles : any;
+  public selectedPeriod : any = {};
+  public selectedPeriodLabel : string;
 
   constructor(public modalCtrl: ModalController,public navCtrl: NavController,public toastCtrl: ToastController,public user : User,public appProvider : AppProvider,public sqlLite : SqlLite,public httpClient: HttpClient) {
     this.user.getCurrentUser().then(currentUser=>{
@@ -62,6 +65,7 @@ export class DataEntryHome {
   setDataEntrySelectionLabel(){
     this.setOrganisationSelectLabel();
     this.setSelectedDataSetLabel();
+    this.setSelectedPeriodLabel();
   }
 
   setOrganisationSelectLabel(){
@@ -76,7 +80,15 @@ export class DataEntryHome {
     if(this.selectedDataSet.id){
       this.selectedDataSetLabel = this.selectedDataSet.name;
     }else{
-      this.selectedDataSetLabel = "Touch to select Entry Form"
+      this.selectedDataSetLabel = "Touch to select Entry Form";
+    }
+  }
+
+  setSelectedPeriodLabel(){
+    if(this.selectedPeriod.name){
+      this.selectedPeriodLabel = this.selectedPeriod.name;
+    }else{
+      this.selectedPeriodLabel = "Touch to select Period";
     }
   }
 
@@ -97,8 +109,7 @@ export class DataEntryHome {
   openOrganisationUnitModal(){
     this.loadingMessages = [];
     this.loadingData = true;
-    let id = this.selectedOrganisationUnit.id?this.selectedOrganisationUnit.id : null;
-    let modal = this.modalCtrl.create(OrganisationUnits,{data : this.organisationUnits,selectedId : id });
+    let modal = this.modalCtrl.create(OrganisationUnits,{data : this.organisationUnits});
     modal.onDidDismiss((selectedOrganisationUnit:any) => {
       if(selectedOrganisationUnit.id){
         //todo empty values of orgUnitId changes
@@ -130,7 +141,8 @@ export class DataEntryHome {
           id: dataSet.id,
           name: dataSet.name,
           openFuturePeriods: dataSet.openFuturePeriods,
-          periodType : dataSet.periodType
+          periodType : dataSet.periodType,
+          categoryCombo : dataSet.categoryCombo
         });
       });
       this.loadingData = false;
@@ -144,12 +156,29 @@ export class DataEntryHome {
     this.loadingMessages = [];
     this.loadingData = true;
     this.setLoadingMessages('Please wait ...');
-    let id = this.selectedDataSet.id?this.selectedDataSet.id : null;
-    let modal = this.modalCtrl.create(DataSetSelection,{data : this.assignedDataSets,selectedId : id });
+    let modal = this.modalCtrl.create(DataSetSelection,{data : this.assignedDataSets});
     modal.onDidDismiss((selectedDataSet:any) => {
       if(selectedDataSet.id){
         //todo empty values of selectedDataSet changes
         this.selectedDataSet = selectedDataSet;
+        this.loadingData = false;
+        this.setSelectedDataSetLabel();
+      }else{
+        this.loadingData = false;
+      }
+    });
+    modal.present();
+  }
+
+  openPeriodModal(){
+    this.loadingMessages = [];
+    this.loadingData = true;
+    this.setLoadingMessages('Please wait ...');
+    let modal = this.modalCtrl.create(PeriodSelection,{data : this.assignedDataSets});
+    modal.onDidDismiss((selectedPeriod:any) => {
+      if(selectedPeriod.name){
+        //todo empty values of selectedPeriod changes
+        this.selectedPeriod = selectedPeriod;
         this.loadingData = false;
         this.setSelectedDataSetLabel();
       }else{
