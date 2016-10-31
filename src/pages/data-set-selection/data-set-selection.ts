@@ -13,7 +13,7 @@ import { ViewController,NavParams } from 'ionic-angular';
 })
 export class DataSetSelection {
 
-  public dataESetsList : any;
+  public dataSetsList : any;
 
   constructor(public viewCtrl: ViewController,public params : NavParams) {
     this.setModalData();
@@ -24,7 +24,7 @@ export class DataSetSelection {
   }
 
   setModalData(){
-    this.dataESetsList = this.params.get('data');
+    this.dataSetsList = this.params.get('data');
   }
 
   setSelectedDataSet(selectedDataSet){

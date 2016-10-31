@@ -16,7 +16,7 @@ export class DataSetDimension {
   constructor(public navCtrl: NavController) {}
 
   ionViewDidLoad() {
-    console.log('Hello DataSetDimension Page');
+    //console.log('Hello DataSetDimension Page');
   }
 
 }

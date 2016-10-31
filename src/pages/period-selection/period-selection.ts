@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ViewController,NavParams ,ToastController} from 'ionic-angular';
 
-declare var dhis2: any;
+declare var dhis2;
 /*
   Generated class for the PeriodSelection page.
 
@@ -15,6 +15,7 @@ declare var dhis2: any;
 export class PeriodSelection {
 
   public periodList : any;
+  public selectedDataSet : any;
   public periodType : any;
   public openFuturePeriods : number;
   public currentPeriodOffset : number;
@@ -29,32 +30,43 @@ export class PeriodSelection {
 
   setModalData(){
     this.periodList = [];
-    let selectedDataSet = this.params.get('data');
-    this.periodType = selectedDataSet.periodType;
-    this.openFuturePeriods = parseInt(selectedDataSet.openFuturePeriods);
+    this.selectedDataSet = this.params.get('data');
     this.currentPeriodOffset = 0;
     this.setPeriodSelections();
   }
 
   setPeriodSelections(){
-    //alert(JSON.stringify(dhis2));
-    //let periods = dhis2.period.generator.generateReversedPeriods(this.periodType, this.currentPeriodOffset);
-    //periods = dhis2.period.generator.filterOpenPeriods(this.periodType, periods, this.openFuturePeriods);
-    //if(periods.length > 0){
-    //  this.periodList = [];
-    //  periods.forEach((period:any)=>{
-    //    this.periodList.push({
-    //      endDate: period.endDate,
-    //      startDate: period.startDate,
-    //      iso: period.iso,
-    //      name: period.name
-    //    });
-    //  });
-    //}else{
-    //  this.setToasterMessage('There is no further period selection for this form');
-    //}
+    let periodType = this.selectedDataSet.periodType;
+    let openFuturePeriods = parseInt(this.selectedDataSet.openFuturePeriods);
+    let periods = dhis2.period.generator.generateReversedPeriods(periodType, this.currentPeriodOffset);
+    periods = dhis2.period.generator.filterOpenPeriods(periodType, periods, openFuturePeriods);
+    if(periods.length > 0){
+      this.periodList = [];
+      periods.forEach((period:any)=>{
+        this.periodList.push({
+          endDate: period.endDate,
+          startDate: period.startDate,
+          iso: period.iso,
+          name: period.name
+        });
+      });
+    }else{
+      this.setToasterMessage('There is no further period selection for this form');
+      this.currentPeriodOffset --;
+    }
   }
-  setSelectedDataSet(selectedPeriod){
+
+  previous(){
+    this.currentPeriodOffset --;
+    this.setPeriodSelections();
+  }
+
+  next(){
+    this.currentPeriodOffset ++;
+    this.setPeriodSelections();
+  }
+
+  setSelectedPeriod(selectedPeriod){
     this.viewCtrl.dismiss(selectedPeriod);
   }
 

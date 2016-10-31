@@ -40,23 +40,40 @@
         </ion-col>
       </ion-row>
       <ion-row >
-        <ion-col width="100" *ngIf="selectedOrganisationUnit.id">
-          <button (click)="openDataSetsModal()" ion-button full color="light">
-            {{ selectedDataSetLabel }}
-          </button>
+        <ion-col width="100" *ngIf="selectedOrganisationUnit">
+          <div *ngIf="selectedOrganisationUnit.id">
+            <button (click)="openDataSetsModal()" ion-button full color="light">
+              {{ selectedDataSetLabel }}
+            </button>
+          </div>
         </ion-col>
       </ion-row>
       <ion-row >
-        <ion-col width="100" *ngIf="selectedDataSet.id">
-          <button (click)="openPeriodModal()" ion-button full color="light">
-            {{ selectedPeriodLabel }}
-          </button>
+        <ion-col width="100" *ngIf="selectedDataSet">
+          <div *ngIf="selectedDataSet.id">
+            <button  (click)="openPeriodModal()" ion-button full color="light">
+              {{ selectedPeriodLabel }}
+            </button>
+          </div>
         </ion-col>
       </ion-row>
       <ion-row >
-        <ion-col width="100">
-          selectedDataSet :: {{ selectedDataSet|json }}
-        </ion-col>
+        <div *ngIf="selectedDataSet">
+          <div *ngIf="selectedDataSet.categoryCombo">
+            <div *ngIf="selectedDataSet.categoryCombo.name != 'default'">
+              <ion-col width="100" >
+                <!--<ion-item *ngFor="let category selectedDataSet.categoryCombo.categories ">-->
+                  <!--<ion-label>{{ category.name }}</ion-label>-->
+                  <!--<ion-select [(ngModel)]="selectedDataDimension">-->
+                    <!--<ion-option value="true">Yes</ion-option>-->
+                  <!--</ion-select>-->
+                <!--</ion-item>-->
+                {{ selectedDataSet.categoryCombo|json }}
+              </ion-col>
+            </div>
+          </div>
+        </div>
+
       </ion-row>
 
 

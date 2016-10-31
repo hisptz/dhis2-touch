@@ -35,6 +35,7 @@ export class DataEntryHome {
   public dataSetIdsByUserRoles : any;
   public selectedPeriod : any = {};
   public selectedPeriodLabel : string;
+  public selectedDataDimension : any = [];
 
   constructor(public modalCtrl: ModalController,public navCtrl: NavController,public toastCtrl: ToastController,public user : User,public appProvider : AppProvider,public sqlLite : SqlLite,public httpClient: HttpClient) {
     this.user.getCurrentUser().then(currentUser=>{
@@ -112,10 +113,14 @@ export class DataEntryHome {
     let modal = this.modalCtrl.create(OrganisationUnits,{data : this.organisationUnits});
     modal.onDidDismiss((selectedOrganisationUnit:any) => {
       if(selectedOrganisationUnit.id){
-        //todo empty values of orgUnitId changes
-        this.selectedOrganisationUnit = selectedOrganisationUnit;
-        this.loadingDataSets();
-        this.setOrganisationSelectLabel();
+        if(selectedOrganisationUnit.id != this.selectedOrganisationUnit.id){
+          this.selectedOrganisationUnit = selectedOrganisationUnit;
+          this.selectedDataSet = {};
+          this.loadingDataSets();
+          this.setDataEntrySelectionLabel();
+        }else{
+          this.loadingData = false;
+        }
       }else{
         this.loadingData = false;
       }
@@ -159,10 +164,14 @@ export class DataEntryHome {
     let modal = this.modalCtrl.create(DataSetSelection,{data : this.assignedDataSets});
     modal.onDidDismiss((selectedDataSet:any) => {
       if(selectedDataSet.id){
-        //todo empty values of selectedDataSet changes
-        this.selectedDataSet = selectedDataSet;
-        this.loadingData = false;
-        this.setSelectedDataSetLabel();
+        if(selectedDataSet.id != this.selectedDataSet.id){
+          this.selectedDataSet = selectedDataSet;
+          this.loadingData = false;
+          this.selectedPeriod = {};
+          this.setDataEntrySelectionLabel();
+        }else{
+          this.loadingData = false;
+        }
       }else{
         this.loadingData = false;
       }
@@ -174,13 +183,12 @@ export class DataEntryHome {
     this.loadingMessages = [];
     this.loadingData = true;
     this.setLoadingMessages('Please wait ...');
-    let modal = this.modalCtrl.create(PeriodSelection,{data : this.assignedDataSets});
+    let modal = this.modalCtrl.create(PeriodSelection,{data : this.selectedDataSet});
     modal.onDidDismiss((selectedPeriod:any) => {
       if(selectedPeriod.name){
-        //todo empty values of selectedPeriod changes
         this.selectedPeriod = selectedPeriod;
         this.loadingData = false;
-        this.setSelectedDataSetLabel();
+        this.setDataEntrySelectionLabel();
       }else{
         this.loadingData = false;
       }
