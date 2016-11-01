@@ -17,11 +17,12 @@ export class SqlLite {
         {value: 'id', type: 'TEXT'},
         {value: 'name', type: 'TEXT'},
         {value: 'ancestors', type: 'LONGTEXT'},
+        {value: 'programs', type: 'LONGTEXT'},
         {value: 'dataSets', type: 'LONGTEXT'},
         {value: 'level', type: 'TEXT'},
         {value: 'children', type: 'LONGTEXT'}
       ],
-      fields : "id,name,ancestors[id,name],dataSets[id],level,children[id,name,ancestors[id,name],dataSets[id],level,children[id,name,ancestors[id,name],dataSets[id],level,children[id,name,ancestors[id,name],dataSets[id],level,children[id,name,ancestors[id,name],dataSets[id],level,children[id,name,ancestors[id,name]]]]]]"
+      fields : "id,name,ancestors[id,name],dataSets[id],programs[id],level,children[id,name,ancestors[id,name],dataSets[id],programs[id],level,children[id,name,ancestors[id,name],dataSets[id],programs[id],level,children[id,name,ancestors[id,name],dataSets[id],programs[id],level,children[id,name,ancestors[id,name],dataSets[id],programs[id],level,children[id,name,ancestors[id,name]]]]]]"
     },
     dataSets: {
       columns: [
