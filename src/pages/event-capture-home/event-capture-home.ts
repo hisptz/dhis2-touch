@@ -98,7 +98,7 @@ export class EventCaptureHome {
   openOrganisationUnitModal(){
     this.loadingMessages = [];
     this.loadingData = true;
-    let modal = this.modalCtrl.create(OrganisationUnits,{data : this.organisationUnits});
+    let modal = this.modalCtrl.create(OrganisationUnits,{data : this.organisationUnits,selectedOrganisationUnit:this.selectedOrganisationUnit});
     modal.onDidDismiss((selectedOrganisationUnit:any) => {
       if(selectedOrganisationUnit.id){
         if(selectedOrganisationUnit.id != this.selectedOrganisationUnit.id){
