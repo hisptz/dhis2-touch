@@ -173,6 +173,25 @@ export class Login {
     this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
       this.setLoadingMessages('Start saving '+response[resource].length+' indicators');
       this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+        this.downloadingPrograms();
+      },error=>{
+        this.loadingData = false;
+        this.setStickToasterMessage('Fail to save indicators. ' + JSON.stringify(error));
+      });
+    },error=>{
+      this.loadingData = false;
+      this.setStickToasterMessage('Fail to download indicators. ' + JSON.stringify(error));
+    });
+  }
+
+  downloadingPrograms(){
+    this.setLoadingMessages('Downloading programs');
+    let resource = 'programs';
+    let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+    let fields = tableMetadata.fields;
+    this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
+      this.setLoadingMessages('Start saving '+response[resource].length+' indicators');
+      this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
         this.downloadingReports();
       },error=>{
         this.loadingData = false;
@@ -183,6 +202,7 @@ export class Login {
       this.setStickToasterMessage('Fail to download indicators. ' + JSON.stringify(error));
     });
   }
+
 
   downloadingReports(){
     this.setLoadingMessages('Downloading reports');

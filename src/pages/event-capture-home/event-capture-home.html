@@ -1,5 +1,5 @@
 <!--
-  Generated template for the EventCaptureHome page.
+  Generated template for the DataEntryHome page.
 
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
@@ -7,13 +7,14 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Event Capture Home</ion-title>
+    <ion-title>Data Entry Home</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content class="data-entry-home">
+<ion-content  class="data-entry-home">
+
   <ion-grid>
     <ion-row>
       <ion-col width="100">
@@ -33,12 +34,41 @@
     <div *ngIf="!loadingData" >
       <ion-row >
         <ion-col width="100">
-          <button (click)="openOrganisationUnitModal()" ion-button full>
-            Open modal
+          <button (click)="openOrganisationUnitModal()" ion-button full color="light">
+            {{ selectedOrganisationUnitLabel }}
           </button>
-          selectedOrganisationUnit :: {{ selectedOrganisationUnit.name }}
         </ion-col>
       </ion-row>
+      <ion-row >
+        <ion-col width="100" *ngIf="selectedOrganisationUnit">
+          <div *ngIf="selectedOrganisationUnit.id">
+            <button (click)="openProgramsModal()" ion-button full color="light">
+              {{ selectedProgramLabel }}
+            </button>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row >
+        <div *ngIf="selectedProgram">
+          <div *ngIf="selectedProgram.categoryCombo">
+            <div *ngIf="selectedProgram.categoryCombo.name != 'default'">
+              <ion-col width="100" >
+                <!--<ion-item *ngFor="let category selectedProgram.categoryCombo.categories ">-->
+                <!--<ion-label>{{ category.name }}</ion-label>-->
+                <!--<ion-select [(ngModel)]="selectedDataDimension">-->
+                <!--<ion-option value="true">Yes</ion-option>-->
+                <!--</ion-select>-->
+                <!--</ion-item>-->
+                {{ selectedProgram.categoryCombo|json }}
+              </ion-col>
+            </div>
+          </div>
+        </div>
+
+      </ion-row>
+
+
     </div>
   </ion-grid>
+
 </ion-content>

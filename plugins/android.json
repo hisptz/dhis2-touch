@@ -7,6 +7,9 @@
         "files": {}
     },
     "installed_plugins": {
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.ionicframework.dhis2touch992115"
+        },
         "cordova-plugin-app-version": {
             "PACKAGE_NAME": "com.ionicframework.dhis2touch992115"
         },
@@ -14,9 +17,6 @@
             "PACKAGE_NAME": "com.ionicframework.dhis2touch992115"
         },
         "cordova-plugin-device": {
-            "PACKAGE_NAME": "com.ionicframework.dhis2touch992115"
-        },
-        "cordova-plugin-splashscreen": {
             "PACKAGE_NAME": "com.ionicframework.dhis2touch992115"
         },
         "cordova-plugin-statusbar": {
