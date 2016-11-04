@@ -6,6 +6,7 @@ import {AppProvider} from '../../providers/app-provider/app-provider';
 import {HttpClient} from "../../providers/http-client/http-client";
 import {SqlLite} from "../../providers/sql-lite/sql-lite";
 import {OrganisationUnits} from "../organisation-units/organisation-units";
+import {ProgramSelection} from "../program-selection/program-selection";
 
 declare var dhis2: any;
 
@@ -27,16 +28,57 @@ export class EventCaptureHome {
   public currentUser : any;
   public organisationUnits : any;
   public selectedOrganisationUnit :any = {};
+  public selectedOrganisationUnitLabel :string;
+  public assignedPrograms : any;
+  public selectedProgram : any = {};
+  public selectedProgramLabel : string;
+  public programIdsByUserRoles : any;
 
   constructor(public modalCtrl: ModalController,public navCtrl: NavController,public toastCtrl: ToastController,public user : User,public appProvider : AppProvider,public sqlLite : SqlLite,public httpClient: HttpClient) {
     this.user.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;
+      this.getUserAssignedPrograms();
       this.loadOrganisationUnits();
+      this.setProgramSelectionLabel();
+    })
+  }
+
+  getUserAssignedPrograms(){
+    this.programIdsByUserRoles = [];
+    this.user.getUserData().then((userData : any)=>{
+      userData.userRoles.forEach((userRole:any)=>{
+        if (userRole.programs) {
+          userRole.programs.forEach((program:any)=>{
+            this.programIdsByUserRoles.push(program.id);
+          });
+        }
+      });
     })
   }
 
   ionViewDidLoad() {
 
+  }
+
+  setProgramSelectionLabel(){
+    this.setOrganisationSelectLabel();
+    this.setSelectedProgramLabel();
+  }
+
+  setOrganisationSelectLabel(){
+    if(this.selectedOrganisationUnit.id){
+      this.selectedOrganisationUnitLabel = this.selectedOrganisationUnit.name;
+    }else{
+      this.selectedOrganisationUnitLabel = "Touch to select Organisation Unit"
+    }
+  }
+
+  setSelectedProgramLabel(){
+    if(this.selectedProgram.id){
+      this.selectedProgramLabel = this.selectedProgram.name;
+    }else{
+      this.selectedProgramLabel = "Touch to select a Program";
+    }
   }
 
   loadOrganisationUnits():void{
@@ -56,13 +98,65 @@ export class EventCaptureHome {
   openOrganisationUnitModal(){
     this.loadingMessages = [];
     this.loadingData = true;
-    let id = this.selectedOrganisationUnit.id?this.selectedOrganisationUnit.id : null;
-    let modal = this.modalCtrl.create(OrganisationUnits,{data : this.organisationUnits,selectedId : id });
+    let modal = this.modalCtrl.create(OrganisationUnits,{data : this.organisationUnits});
     modal.onDidDismiss((selectedOrganisationUnit:any) => {
       if(selectedOrganisationUnit.id){
-        this.selectedOrganisationUnit = selectedOrganisationUnit;
-        //todo loading programs
+        if(selectedOrganisationUnit.id != this.selectedOrganisationUnit.id){
+          this.selectedOrganisationUnit = selectedOrganisationUnit;
+          this.selectedProgram = {};
+          this.loadingPrograms();
+          this.setProgramSelectionLabel();
+        }else{
+          this.loadingData = false;
+        }
+      }else{
         this.loadingData = false;
+      }
+    });
+    modal.present();
+  }
+
+  loadingPrograms(){
+    //todo empty programs
+    this.setLoadingMessages('Loading assigned programs');
+    let resource = 'programs';
+    let attribute = 'id';
+    let attributeValue =[];
+    this.assignedPrograms = [];
+    this.selectedOrganisationUnit.programs.forEach((program:any)=>{
+      if(this.programIdsByUserRoles.indexOf(program.id) != -1){
+        attributeValue.push(program.id);
+      }
+    });
+    this.sqlLite.getDataFromTableByAttributes(resource,attribute,attributeValue,this.currentUser.currentDatabase).then((programs : any)=>{
+      programs.forEach((program:any)=>{
+        this.assignedPrograms.push({
+          id: program.id,
+          name: program.name,
+          categoryCombo : program.categoryCombo
+        });
+      });
+      this.loadingData = false;
+    },error=>{
+      this.loadingData = false;
+      this.setToasterMessage('Fail to load assigned programs');
+    });
+  }
+
+  openProgramsModal(){
+    this.loadingMessages = [];
+    this.loadingData = true;
+    this.setLoadingMessages('Please wait ...');
+    let modal = this.modalCtrl.create(ProgramSelection,{data : this.assignedPrograms});
+    modal.onDidDismiss((selectedProgram:any) => {
+      if(selectedProgram.id){
+        if(selectedProgram.id != this.selectedProgram.id){
+          this.selectedProgram = selectedProgram;
+          this.loadingData = false;
+          this.setProgramSelectionLabel();
+        }else{
+          this.loadingData = false;
+        }
       }else{
         this.loadingData = false;
       }

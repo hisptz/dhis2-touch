@@ -21,6 +21,7 @@ import {AccountName} from "../pipes/account-name";
 import { Storage } from '@ionic/storage';
 import {DataSetSelection} from "../pages/data-set-selection/data-set-selection";
 import {PeriodSelection} from "../pages/period-selection/period-selection";
+import {ProgramSelection} from "../pages/program-selection/program-selection";
 import {DataSetDimension} from "../pages/data-set-dimension/data-set-dimension";
 
 @NgModule({
@@ -28,7 +29,8 @@ import {DataSetDimension} from "../pages/data-set-dimension/data-set-dimension";
     MyApp,About,DashBoardHome,EventCaptureHome,
     TabsPage,Help,Login,Profile,DataEntryHome,DataSetDimension,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,
-    Account,ReportHome,SettingHome,TrackerCaptureHome,ObjectToArray,AccountName
+    Account,ReportHome,SettingHome,TrackerCaptureHome,ObjectToArray,ProgramSelection,
+    AccountName
   ],
   imports: [
     IonicModule.forRoot(MyApp,{tabsPlacement: 'top'})
