@@ -35,9 +35,10 @@ export class DataEntryHome {
   public dataSetIdsByUserRoles : any;
   public selectedPeriod : any = {};
   public selectedPeriodLabel : string;
-  public selectedDataDimension : any = [];
+  public selectedDataDimension : any ;
 
   constructor(public modalCtrl: ModalController,public navCtrl: NavController,public toastCtrl: ToastController,public user : User,public appProvider : AppProvider,public sqlLite : SqlLite,public httpClient: HttpClient) {
+    this.selectedDataDimension = [];
     this.user.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;
       this.getUserAssignedDataSets();
@@ -110,7 +111,7 @@ export class DataEntryHome {
   openOrganisationUnitModal(){
     this.loadingMessages = [];
     this.loadingData = true;
-    let modal = this.modalCtrl.create(OrganisationUnits,{data : this.organisationUnits});
+    let modal = this.modalCtrl.create(OrganisationUnits,{data : this.organisationUnits,selectedOrganisationUnit:this.selectedOrganisationUnit});
     modal.onDidDismiss((selectedOrganisationUnit:any) => {
       if(selectedOrganisationUnit.id){
         if(selectedOrganisationUnit.id != this.selectedOrganisationUnit.id){
@@ -194,6 +195,40 @@ export class DataEntryHome {
       }
     });
     modal.present();
+  }
+
+
+  hasDataDimensionSet(){
+    let result = true;
+    if(this.selectedDataSet.categoryCombo.name != 'default'){
+      if(this.selectedDataDimension.length > 0){
+        this.selectedDataDimension.forEach((dimension : any)=>{
+          if(dimension == null){
+            result = false;
+          }
+        });
+      }else{
+        result = false;
+      }
+    }
+    return result;
+  }
+
+  goToEntryForm(){
+    if(this.hasDataDimensionSet()){
+      let cc = this.selectedDataSet.categoryCombo.id;
+      let cp = "";
+      cp += this.selectedDataDimension[0];
+      this.selectedDataDimension.forEach((dimension : any,index:any)=>{
+        if(index != 0){
+          cp += ";" + dimension;
+        }
+      });
+      alert(cc + " :: " + cp);
+      //cc
+      //cp
+    }
+    this.setToasterMessage('Entry form coming soon');
   }
 
   setLoadingMessages(message){

@@ -14,7 +14,6 @@
 
 
 <ion-content  class="data-entry-home">
-
   <ion-grid>
     <ion-row>
       <ion-col width="100">
@@ -57,27 +56,45 @@
           </div>
         </ion-col>
       </ion-row>
-      <ion-row >
-        <div *ngIf="selectedDataSet">
-          <div *ngIf="selectedDataSet.categoryCombo">
-            <div *ngIf="selectedDataSet.categoryCombo.name != 'default'">
-              <ion-col width="100" >
-                <!--<ion-item *ngFor="let category selectedDataSet.categoryCombo.categories ">-->
-                  <!--<ion-label>{{ category.name }}</ion-label>-->
-                  <!--<ion-select [(ngModel)]="selectedDataDimension">-->
-                    <!--<ion-option value="true">Yes</ion-option>-->
-                  <!--</ion-select>-->
-                <!--</ion-item>-->
-                {{ selectedDataSet.categoryCombo|json }}
+      <div *ngIf="selectedDataSet">
+        <div *ngIf="selectedDataSet.categoryCombo">
+          <div *ngIf="selectedDataSet.categoryCombo.name != 'default'">
+            <ion-row >
+              <ion-col width="100">
+                <ion-list>
+                  <ion-item *ngFor="let category of selectedDataSet.categoryCombo.categories;let categoryIndex = index ">
+                    <ion-label>{{ category.name }}</ion-label>
+                    <ion-select [(ngModel)]="selectedDataDimension[categoryIndex]">
+                      <ion-option *ngFor="let option of category.categoryOptions" value="{{option.id}}" >
+                        {{ option.name }}
+                      </ion-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-list>
               </ion-col>
+            </ion-row>
+
+            <div *ngIf="selectedPeriod.name && hasDataDimensionSet()">
+              <ion-card (click)="goToEntryForm()">
+                <ion-card-content>
+                  <p><b>Form</b> : {{ selectedDataSetLabel }}</p>
+                  <p><b>Organisation Unit</b> : {{ selectedOrganisationUnitLabel }}</p>
+                  <p><b>Period</b> : {{ selectedPeriodLabel }}</p>
+                </ion-card-content>
+              </ion-card>
             </div>
+
+            <!--<ion-row >-->
+            <!--<ion-col width="100">-->
+            <!--<button  ion-button full>-->
+            <!--Data Entry-->
+            <!--</button>-->
+            <!--</ion-col>-->
+            <!--</ion-row>-->
+
           </div>
         </div>
-
-      </ion-row>
-
-
+      </div>
     </div>
   </ion-grid>
-
 </ion-content>

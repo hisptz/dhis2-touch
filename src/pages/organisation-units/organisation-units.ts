@@ -35,6 +35,16 @@ export class OrganisationUnits {
     this.loadingMessages.push('Loading organisation list ');
     this.organisationUnitsList = orgUnits;
     this.loadingData = false;
+    this.reOpenTree();
+  }
+
+  reOpenTree(){
+    let selectedOrganisationUnit = this.params.get('selectedOrganisationUnit');
+    if(selectedOrganisationUnit && selectedOrganisationUnit.ancestors){
+      selectedOrganisationUnit.ancestors.forEach((ancestor : any)=>{
+        this.toggleOrgUnit(ancestor);
+      });
+    }
   }
 
   toggleOrgUnit(orgUnit) {
