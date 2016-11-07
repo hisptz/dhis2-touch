@@ -166,6 +166,7 @@ export class DataEntryHome {
     modal.onDidDismiss((selectedDataSet:any) => {
       if(selectedDataSet.id){
         if(selectedDataSet.id != this.selectedDataSet.id){
+          this.selectedDataDimension = [];
           this.selectedDataSet = selectedDataSet;
           this.loadingData = false;
           this.selectedPeriod = {};
@@ -215,20 +216,29 @@ export class DataEntryHome {
   }
 
   goToEntryForm(){
+    let data = {
+      orgUnit : {id :this.selectedOrganisationUnit.id,name :this.selectedOrganisationUnitLabel },
+      period : {iso : this.selectedPeriod.iso,name : this.selectedPeriod.name },
+      formId : this.selectedDataSet.id,
+      dataDimension : {}
+    };
     if(this.hasDataDimensionSet()){
-      let cc = this.selectedDataSet.categoryCombo.id;
-      let cp = "";
-      cp += this.selectedDataDimension[0];
-      this.selectedDataDimension.forEach((dimension : any,index:any)=>{
-        if(index != 0){
-          cp += ";" + dimension;
-        }
-      });
-      alert(cc + " :: " + cp);
-      //cc
-      //cp
+      data.dataDimension = this.getDataDimension();
     }
+    alert(JSON.stringify(data));
     this.setToasterMessage('Entry form coming soon');
+  }
+
+  getDataDimension(){
+    let cc = this.selectedDataSet.categoryCombo.id;
+    let cp = "";
+    cp += this.selectedDataDimension[0];
+    this.selectedDataDimension.forEach((dimension : any,index:any)=>{
+      if(index != 0){
+        cp += ";" + dimension;
+      }
+    });
+    return {cc : cc,cp:cp};
   }
 
   setLoadingMessages(message){
