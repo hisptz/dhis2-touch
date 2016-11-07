@@ -114,7 +114,7 @@ export class Login {
     let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
     let fields = tableMetadata.fields;
     this.app.downloadMetadataByResourceIds(this.loginData,resource,ids,fields,null).then(response=>{
-      this.setLoadingMessages('Start saving organisation data');
+      this.setLoadingMessages('Saving organisation data');
       this.app.saveMetadata(resource,response,this.loginData.currentDatabase).then(()=>{
         this.downloadingDataSets();
       },error=>{
@@ -133,7 +133,7 @@ export class Login {
     let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
     let fields = tableMetadata.fields;
     this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-      this.setLoadingMessages('Start saving '+response[resource].length+' data entry form');
+      this.setLoadingMessages('Saving '+response[resource].length+' data entry form');
       this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
         this.downloadingSections();
       },error=>{
@@ -152,7 +152,7 @@ export class Login {
     let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
     let fields = tableMetadata.fields;
     this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-      this.setLoadingMessages('Start saving '+response[resource].length+' data entry form sections');
+      this.setLoadingMessages('Saving '+response[resource].length+' data entry form sections');
       this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
         this.downloadingIndicators();
       },error=>{
@@ -171,7 +171,7 @@ export class Login {
     let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
     let fields = tableMetadata.fields;
     this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-      this.setLoadingMessages('Start saving '+response[resource].length+' indicators');
+      this.setLoadingMessages('Saving '+response[resource].length+' indicators');
       this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
         this.downloadingPrograms();
       },error=>{
@@ -190,7 +190,7 @@ export class Login {
     let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
     let fields = tableMetadata.fields;
     this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-      this.setLoadingMessages('Start saving '+response[resource].length+' indicators');
+      this.setLoadingMessages('Saving '+response[resource].length+' indicators');
       this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
         this.downloadingReports();
       },error=>{
@@ -210,7 +210,7 @@ export class Login {
     let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
     let fields = tableMetadata.fields;
     this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-      this.setLoadingMessages('Start saving '+response[resource].length+' reports');
+      this.setLoadingMessages('Saving '+response[resource].length+' reports');
       this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
         this.downloadingConstants();
       },error=>{
@@ -228,7 +228,7 @@ export class Login {
     let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
     let fields = tableMetadata.fields;
     this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-      this.setLoadingMessages('Start saving '+response[resource].length+' constants');
+      this.setLoadingMessages('Saving '+response[resource].length+' constants');
       this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
         this.setLandingPage();
       },error=>{

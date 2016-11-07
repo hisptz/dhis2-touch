@@ -40,7 +40,7 @@ import {DataSetDimension} from "../pages/data-set-dimension/data-set-dimension";
     MyApp,About,DashBoardHome,EventCaptureHome,
     TabsPage,Help,Login,Profile,DataEntryHome,DataSetDimension,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,
-    Account,ReportHome,SettingHome,TrackerCaptureHome,
+    Account,ReportHome,SettingHome,TrackerCaptureHome,ProgramSelection,
   ],
   providers: [Storage]
 })

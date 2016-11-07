@@ -104,7 +104,7 @@ export class SqlLite {
         {value: 'organisationUnits',type:'LONGTEXT'},
         {value: 'programStages',type:'LONGTEXT'}
       ],
-      fields : "id,version,categoryCombo[id,isDefault,categories[id]],organisationUnits[id],programStages[id,programStageSections[id],programStageDataElements[dataElement[id,optionSet[id,version]]]]",
+      fields : "id,version,name,categoryCombo[id,isDefault,categories[id]],organisationUnits[id],programStages[id,programStageSections[id],programStageDataElements[dataElement[id,optionSet[id,version]]]]",
     }
   };
 
