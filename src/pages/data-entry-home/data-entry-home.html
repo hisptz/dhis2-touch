@@ -73,25 +73,15 @@
                 </ion-list>
               </ion-col>
             </ion-row>
-
-            <div *ngIf="selectedPeriod.name && hasDataDimensionSet()">
-              <ion-card (click)="goToEntryForm()">
-                <ion-card-content>
-                  <p><b>Form</b> : {{ selectedDataSetLabel }}</p>
-                  <p><b>Organisation Unit</b> : {{ selectedOrganisationUnitLabel }}</p>
-                  <p><b>Period</b> : {{ selectedPeriodLabel }}</p>
-                </ion-card-content>
-              </ion-card>
-            </div>
-
-            <!--<ion-row >-->
-            <!--<ion-col width="100">-->
-            <!--<button  ion-button full>-->
-            <!--Data Entry-->
-            <!--</button>-->
-            <!--</ion-col>-->
-            <!--</ion-row>-->
-
+          </div>
+          <div *ngIf="selectedPeriod.name && hasDataDimensionSet()">
+            <ion-card (click)="goToEntryForm()">
+              <ion-card-content>
+                <p><b>Form</b> : {{ selectedDataSetLabel }}</p>
+                <p><b>Organisation Unit</b> : {{ selectedOrganisationUnitLabel }}</p>
+                <p><b>Period</b> : {{ selectedPeriodLabel }}</p>
+              </ion-card-content>
+            </ion-card>
           </div>
         </div>
       </div>
