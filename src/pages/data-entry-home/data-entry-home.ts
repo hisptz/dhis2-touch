@@ -8,6 +8,7 @@ import {SqlLite} from "../../providers/sql-lite/sql-lite";
 import {OrganisationUnits} from "../organisation-units/organisation-units";
 import {DataSetSelection} from "../data-set-selection/data-set-selection";
 import {PeriodSelection} from "../period-selection/period-selection";
+import {DataEntryForm} from "../data-entry-form/data-entry-form";
 
 declare var dhis2: any;
 /*
@@ -225,8 +226,7 @@ export class DataEntryHome {
     if(this.hasDataDimensionSet()){
       data.dataDimension = this.getDataDimension();
     }
-    alert(JSON.stringify(data));
-    this.setToasterMessage('Entry form coming soon');
+    this.navCtrl.push(DataEntryForm,{data : data});
   }
 
   getDataDimension(){
