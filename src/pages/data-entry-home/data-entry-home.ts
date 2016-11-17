@@ -232,9 +232,10 @@ export class DataEntryHome {
   getDataDimension(){
     let cc = this.selectedDataSet.categoryCombo.id;
     let cp = "";
-    cp += this.selectedDataDimension[0];
     this.selectedDataDimension.forEach((dimension : any,index:any)=>{
-      if(index != 0){
+      if(index == 0){
+        cp +=dimension;
+      }else{
         cp += ";" + dimension;
       }
     });
