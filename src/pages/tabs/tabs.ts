@@ -12,6 +12,7 @@ export class TabsPage {
   tab1Root: any = Apps;
   tab2Root: any = Account;
   public accountName : string = 'Account';
+  //@todo active tabs to have different style
   @ViewChild('myTabs') currentTab: Tabs;
 
   constructor(private user : User) {
