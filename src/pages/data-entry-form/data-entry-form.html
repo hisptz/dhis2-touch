@@ -35,6 +35,16 @@
         <ion-col width="100">
           {{ dataEntryFormSelectionParameter|json }}<hr>
           {{ dataSetAttributeOptionCombo }}<hr>
+
+          <div *ngFor="let section of entryFormSections">
+            {{ section.name }} :: {{ section.id }} <br>
+            <div *ngFor="let dataElement of section.dataElements">
+              {{ dataElement.name }} <br>
+            </div>
+            <hr>
+
+          </div>
+
         </ion-col>
       </ion-row>
     </div>

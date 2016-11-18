@@ -4,6 +4,7 @@ import {HttpClient} from "../../providers/http-client/http-client";
 import {User} from "../../providers/user/user";
 import {SqlLite} from "../../providers/sql-lite/sql-lite";
 import {DataValues} from "../../providers/data-values";
+import {EntryForm} from "../../providers/entry-form";
 
 /*
   Generated class for the DataEntryForm page.
@@ -14,7 +15,7 @@ import {DataValues} from "../../providers/data-values";
 @Component({
   selector: 'page-data-entry-form',
   templateUrl: 'data-entry-form.html',
-  providers : [User,HttpClient,SqlLite,DataValues],
+  providers : [User,HttpClient,SqlLite,DataValues,EntryForm],
 })
 export class DataEntryForm {
 
@@ -23,10 +24,16 @@ export class DataEntryForm {
   public currentUser : any;
   public dataEntryFormSelectionParameter : any;
   public selectedDataSet : any;
+  public entryFormSections : any;
+  public entryFormDataValues : any;
   public dataSetAttributeOptionCombo : any;
 
-  constructor(public params : NavParams,public toastCtrl: ToastController,private user : User,private httpClient: HttpClient,private sqlLite : SqlLite,private dataValues : DataValues) {
-    this.user.getCurrentUser().then((user:any)=>{
+  constructor(private params:NavParams, private toastCtrl:ToastController,
+              private user:User, private httpClient:HttpClient,
+              private entryForm:EntryForm, private sqlLite:SqlLite,
+              private dataValues:DataValues) {
+
+    this.user.getCurrentUser().then((user:any)=> {
       this.currentUser = user;
       this.dataEntryFormSelectionParameter = this.params.get('data');
       this.loadDataSet(this.dataEntryFormSelectionParameter.formId);
@@ -44,16 +51,36 @@ export class DataEntryForm {
     this.sqlLite.getDataFromTableByAttributes(resource,attribute,attributeValue,this.currentUser.currentDatabase).then((dataSets : any)=>{
       this.selectedDataSet = dataSets[0];
       this.dataSetAttributeOptionCombo = this.dataValues.getDataValuesSetAttributeOptionCombo(this.dataEntryFormSelectionParameter.dataDimension,dataSets[0].categoryCombo.categoryOptionCombos);
-      this.loadingData = false;
+      this.setEntryFormMetaData();
     },error=>{
       this.loadingData = false;
       this.setToasterMessage('Fail to load organisation units');
     })
   }
 
+  setEntryFormMetaData(){
+    this.setLoadingMessages('Setting Entry form');
+    this.entryForm.getEntryFormMetadata(this.selectedDataSet,this.currentUser).then((sections : any)=>{
+      this.entryFormSections = sections;
+      this.setLoadingMessages('Downloading data values form server');
+      let dataSetId = this.selectedDataSet.id;
+      let orgUnitId = this.dataEntryFormSelectionParameter.orgUnit.id;
+      let period = this.dataEntryFormSelectionParameter.period.iso;
+      this.dataValues.getDataValueSetFromServer(dataSetId,period,orgUnitId,this.dataSetAttributeOptionCombo,this.currentUser)
+        .then((dataValues : any)=>{
+          alert("dataValues :: " + JSON.stringify(dataValues));
+          this.loadingData = false;
+        },error=>{
+          this.setToasterMessage('Fail to download data values form server');
+          console.log("error : " + JSON.stringify(error));
+          this.loadingData = false;
+        });
+    })
+  }
+
 
   ionViewDidLoad() {
-    console.log('Hello DataEntryForm Page');
+    //console.log('Hello DataEntryForm Page');
   }
 
   setLoadingMessages(message){
