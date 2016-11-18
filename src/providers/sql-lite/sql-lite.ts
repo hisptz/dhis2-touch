@@ -34,12 +34,13 @@ export class SqlLite {
         {value: 'openFuturePeriods', type: 'TEXT'},
         {value: 'expiryDays', type: 'TEXT'},
         {value: 'dataElements', type: 'LONGTEXT'},
+        {value: 'dataSetElements', type: 'LONGTEXT'},
         {value: 'organisationUnits', type: 'LONGTEXT'},
         {value: 'sections', type: 'LONGTEXT'},
         {value: 'indicators', type: 'LONGTEXT'},
         {value: 'categoryCombo', type: 'LONGTEXT'}
       ],
-      fields : "id,name,timelyDays,formType,version,periodType,openFuturePeriods,expiryDays,dataElements[id,name,displayName,description,formName,attributeValues[value,attribute[name]],valueType,optionSet[name,options[name,id,code]],categoryCombo[id,name,categoryOptionCombos[id,name]]],organisationUnits[id,name],sections[id],indicators[id,name,indicatorType[factor],denominatorDescription,numeratorDescription,numerator,denominator],categoryCombo[id,name,categoryOptionCombos[id,name,categoryOptions[id]],categories[id,name,categoryOptions[id,name]]]"
+      fields : "id,name,timelyDays,formType,version,periodType,openFuturePeriods,expiryDays,dataSetElements[dataElement[id,name,displayName,description,formName,attributeValues[value,attribute[name]],valueType,optionSet[name,options[name,id,code]],categoryCombo[id,name,categoryOptionCombos[id,name]]]],dataElements[id,name,displayName,description,formName,attributeValues[value,attribute[name]],valueType,optionSet[name,options[name,id,code]],categoryCombo[id,name,categoryOptionCombos[id,name]]]organisationUnits[id,name],sections[id],indicators[id,name,indicatorType[factor],denominatorDescription,numeratorDescription,numerator,denominator],categoryCombo[id,name,categoryOptionCombos[id,name,categoryOptions[id]],categories[id,name,categoryOptions[id,name]]]"
     },
     sections: {
       columns: [
