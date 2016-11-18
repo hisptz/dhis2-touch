@@ -62,20 +62,39 @@ export class DataEntryForm {
     this.setLoadingMessages('Setting Entry form');
     this.entryForm.getEntryFormMetadata(this.selectedDataSet,this.currentUser).then((sections : any)=>{
       this.entryFormSections = sections;
-      this.setLoadingMessages('Downloading data values form server');
+      this.setLoadingMessages('Downloading data values from server');
       let dataSetId = this.selectedDataSet.id;
       let orgUnitId = this.dataEntryFormSelectionParameter.orgUnit.id;
       let period = this.dataEntryFormSelectionParameter.period.iso;
       this.dataValues.getDataValueSetFromServer(dataSetId,period,orgUnitId,this.dataSetAttributeOptionCombo,this.currentUser)
         .then((dataValues : any)=>{
-          alert("dataValues :: " + JSON.stringify(dataValues));
-          this.loadingData = false;
+          this.setLoadingMessages('Saving ' + dataValues.length + " data values from server");
+          let dataDimension = this.dataEntryFormSelectionParameter.dataDimension;
+          this.dataValues.saveDataValues(dataValues,dataSetId,period,orgUnitId,dataDimension,"synced",this.currentUser).then(()=>{
+            this.getDataValuesFromLocalStorage();
+          },error=>{
+            this.setToasterMessage('Fail to save data values from server');
+            this.getDataValuesFromLocalStorage();
+          });
         },error=>{
-          this.setToasterMessage('Fail to download data values form server');
+          this.setToasterMessage('Fail to download data values from server');
+          this.getDataValuesFromLocalStorage();
           console.log("error : " + JSON.stringify(error));
-          this.loadingData = false;
         });
     })
+  }
+
+  getDataValuesFromLocalStorage(){
+    let dataSetId = this.selectedDataSet.id;
+    let orgUnitId = this.dataEntryFormSelectionParameter.orgUnit.id;
+    let period = this.dataEntryFormSelectionParameter.period.iso;
+    let entryFormSections  = this.entryFormSections;
+    this.dataValues.getAllEntryFormDataValuesFromStorage(dataSetId,period,orgUnitId,entryFormSections,this.currentUser).then((dataValues : any)=>{
+      alert(JSON.stringify(dataValues));
+      this.loadingData = false;
+    },error=>{
+      this.loadingData = false;
+    });
   }
 
 
