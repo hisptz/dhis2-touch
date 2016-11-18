@@ -107,7 +107,7 @@ export class EntryForm {
     let sections = [];
     for(let index = 0; index < sectionsCounter; index ++){
       sections.push({
-        name : "Default " + (index + 1),
+        name : "defaultSection",
         id : index,
         dataElements :dataElements.splice(0,pager)
       });

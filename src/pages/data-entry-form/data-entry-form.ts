@@ -25,8 +25,22 @@ export class DataEntryForm {
   public dataEntryFormSelectionParameter : any;
   public selectedDataSet : any;
   public entryFormSections : any;
-  public entryFormDataValues : any;
   public dataSetAttributeOptionCombo : any;
+  //entry form data values and storage status
+  public entryFormDataValues : any;
+  public storageStatus : any = { online :0,local : 0};
+
+  //labels
+  public selectedDataSetLabel : string = "";
+  public selectedOrganisationUnitLabel : string = "";
+  public selectedPeriodLabel : string = "";
+  public paginationLabel : string = "";
+
+  //pagination controller
+  public currentPage : number ;
+
+  //dataSet completeness
+  public isDataSetCompleted : boolean = false;
 
   constructor(private params:NavParams, private toastCtrl:ToastController,
               private user:User, private httpClient:HttpClient,
@@ -35,6 +49,7 @@ export class DataEntryForm {
 
     this.user.getCurrentUser().then((user:any)=> {
       this.currentUser = user;
+      this.currentPage = 0;
       this.dataEntryFormSelectionParameter = this.params.get('data');
       this.loadDataSet(this.dataEntryFormSelectionParameter.formId);
     });
@@ -52,6 +67,8 @@ export class DataEntryForm {
       this.selectedDataSet = dataSets[0];
       this.dataSetAttributeOptionCombo = this.dataValues.getDataValuesSetAttributeOptionCombo(this.dataEntryFormSelectionParameter.dataDimension,dataSets[0].categoryCombo.categoryOptionCombos);
       this.setEntryFormMetaData();
+      //setting labels
+      this.setHeaderLabel();
     },error=>{
       this.loadingData = false;
       this.setToasterMessage('Fail to load organisation units');
@@ -62,6 +79,8 @@ export class DataEntryForm {
     this.setLoadingMessages('Setting Entry form');
     this.entryForm.getEntryFormMetadata(this.selectedDataSet,this.currentUser).then((sections : any)=>{
       this.entryFormSections = sections;
+      //setting initial label values
+      this.paginationLabel = (this.currentPage + 1) + "/"+this.entryFormSections.length;
       this.setLoadingMessages('Downloading data values from server');
       let dataSetId = this.selectedDataSet.id;
       let orgUnitId = this.dataEntryFormSelectionParameter.orgUnit.id;
@@ -89,14 +108,45 @@ export class DataEntryForm {
     let orgUnitId = this.dataEntryFormSelectionParameter.orgUnit.id;
     let period = this.dataEntryFormSelectionParameter.period.iso;
     let entryFormSections  = this.entryFormSections;
+
     this.dataValues.getAllEntryFormDataValuesFromStorage(dataSetId,period,orgUnitId,entryFormSections,this.currentUser).then((dataValues : any)=>{
-      alert(JSON.stringify(dataValues));
+      this.entryFormDataValues = {};
+      this.storageStatus.local = 0;
+      this.storageStatus.online = 0;
+      dataValues.forEach((dataValue : any)=>{
+        this.entryFormDataValues[dataValue.id] = dataValue.value;
+        dataValue.status == "synced" ? this.storageStatus.online ++ :this.storageStatus.local ++;
+      });
+
+      //alert(JSON.stringify(dataValues));
       this.loadingData = false;
     },error=>{
       this.loadingData = false;
     });
   }
 
+  setHeaderLabel(){
+    this.selectedDataSetLabel = this.selectedDataSet.name;
+    this.selectedOrganisationUnitLabel = this.dataEntryFormSelectionParameter.orgUnit.name;
+    this.selectedPeriodLabel = this.dataEntryFormSelectionParameter.period.name;
+  }
+
+  changePagination(page){
+    page = parseInt(page);
+    if(page == -1){
+      this.currentPage = 0;
+    }else if(page == this.entryFormSections.length){
+      this.currentPage = this.entryFormSections.length - 1;
+    }else{
+      this.currentPage = page;
+    }
+    this.paginationLabel = (this.currentPage + 1) + "/"+this.entryFormSections.length;
+  }
+
+  updateDataSetCompleteness(){
+    //@todo update data set completeness
+    this.isDataSetCompleted = !this.isDataSetCompleted;
+  }
 
   ionViewDidLoad() {
     //console.log('Hello DataEntryForm Page');

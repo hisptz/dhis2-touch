@@ -131,7 +131,6 @@ export class DataEntryHome {
   }
 
   loadingDataSets(){
-    //todo empty data set as well as period values
     this.setLoadingMessages('Loading assigned forms');
     let resource = 'dataSets';
     let attribute = 'id';

@@ -2,4 +2,14 @@ page-data-entry-form {
   .dataEntryForm{
     background-color: #f5f5f5;
   }
+  .sectionHeader{
+    padding-top : 0px;
+    padding-bottom: 0px;
+    color: #387ef5;
+    text-align: center;
+  }
+  .entryFormFields{
+    height:350px;
+    overflow:auto;
+  }
 }

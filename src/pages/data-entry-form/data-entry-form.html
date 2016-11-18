@@ -13,10 +13,10 @@
 
 <ion-content class="dataEntryForm">
 
-  <ion-grid>
-    <ion-row>
-      <ion-col width="100">
-        <div *ngIf="loadingData">
+  <div *ngIf="loadingData">
+    <ion-grid>
+      <ion-row>
+        <ion-col width="100">
           <ion-list>
             <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
               {{ message }}
@@ -26,29 +26,96 @@
               </div>
             </ion-item>
           </ion-list>
-        </div>
-      </ion-col>
-    </ion-row>
-
-    <div *ngIf="!loadingData">
-      <ion-row>
-        <ion-col width="100">
-          {{ dataEntryFormSelectionParameter|json }}<hr>
-          {{ dataSetAttributeOptionCombo }}<hr>
-
-          <div *ngFor="let section of entryFormSections">
-            {{ section.name }} :: {{ section.id }} <br>
-            <div *ngFor="let dataElement of section.dataElements">
-              {{ dataElement.name }} <br>
-            </div>
-            <hr>
-
-          </div>
-
         </ion-col>
       </ion-row>
-    </div>
+    </ion-grid>
+  </div>
 
-  </ion-grid>
+  <div *ngIf="!loadingData">
+
+    <ion-card>
+      <ion-card-content>
+        <p><b>Form</b> : {{ selectedDataSetLabel }}</p>
+        <p><b>Organisation Unit</b> : {{ selectedOrganisationUnitLabel }}</p>
+        <p><b>Period</b> : {{ selectedPeriodLabel }} </p>
+        <p> <b>Synced</b> : {{ storageStatus.online }} <b>Not synced</b> : {{storageStatus.local }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <div *ngFor="let section of entryFormSections">
+        <div *ngIf="section.id == currentPage">
+          <div *ngIf=" section.name != 'defaultSection'">
+            <ion-card-header>
+              <div class="sectionHeader">
+                <b>{{ section.name }}</b>
+              </div>
+            </ion-card-header>
+            <hr>
+          </div>
+          <div class="entryFormFields">
+            <ion-card-content>
+              <div *ngFor="let dataElement of section.dataElements">
+                {{ dataElement.name }} <br>
+              </div>
+            </ion-card-content>
+          </div>
+        </div>
+
+      </div>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-content>
+        <ion-row>
+          <ion-col width-33>
+            <button color="primary" ion-button full (click)="changePagination(currentPage - 1)">
+              Previous
+            </button>
+          </ion-col>
+          <ion-col width-33>
+            <button ion-button color="primary" full clear>
+              {{ paginationLabel }}
+            </button>
+          </ion-col>
+          <ion-col width-33>
+            <button color="primary" ion-button full (click)="changePagination(currentPage + 1)">
+              Next
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-content>
+
+        <ion-row>
+          <ion-col width-50>
+            <button color="secondary" ion-button full *ngIf="!isDataSetCompleted" (click)="updateDataSetCompleteness()">
+              Complete
+            </button>
+            <button color="danger" ion-button full *ngIf="isDataSetCompleted" (click)="updateDataSetCompleteness()">
+              Undo Complete
+            </button>
+          </ion-col>
+          <ion-col width-25>
+            <button color="primary" ion-button full (click)="changePagination(0)">
+              First
+            </button>
+          </ion-col>
+          <ion-col width-25>
+            <button color="primary" ion-button full (click)="changePagination(entryFormSections.length -1)">
+              Last
+            </button>
+          </ion-col>
+        </ion-row>
+
+        <div *ngIf="isDataSetCompleted">Completed by: <b>joseph chingalo</b> at: <b>34-04-2015</b></div>
+
+      </ion-card-content>
+    </ion-card>
+
+  </div>
 
 </ion-content>
