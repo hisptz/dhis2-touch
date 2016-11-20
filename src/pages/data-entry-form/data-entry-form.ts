@@ -39,6 +39,7 @@ export class DataEntryForm {
   //pagination controller
   public currentPage : number ;
 
+
   //dataSet completeness
   public isDataSetCompleted : boolean = false;
 
@@ -109,6 +110,7 @@ export class DataEntryForm {
     let period = this.dataEntryFormSelectionParameter.period.iso;
     let entryFormSections  = this.entryFormSections;
 
+    //@todo checking issues of date formatting
     this.dataValues.getAllEntryFormDataValuesFromStorage(dataSetId,period,orgUnitId,entryFormSections,this.currentUser).then((dataValues : any)=>{
       this.entryFormDataValues = {};
       this.storageStatus.local = 0;
@@ -123,6 +125,10 @@ export class DataEntryForm {
     },error=>{
       this.loadingData = false;
     });
+  }
+
+  updateValues(eventId){
+    alert(eventId + " :: " + this.entryFormDataValues[eventId]);
   }
 
   setHeaderLabel(){
