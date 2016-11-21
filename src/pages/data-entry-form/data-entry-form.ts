@@ -29,7 +29,6 @@ export class DataEntryForm {
   //entry form data values and storage status
   public entryFormDataValues : any;
   public storageStatus : any = { online :0,local : 0};
-
   //labels
   public selectedDataSetLabel : string = "";
   public selectedOrganisationUnitLabel : string = "";
@@ -38,7 +37,6 @@ export class DataEntryForm {
 
   //pagination controller
   public currentPage : number ;
-
 
   //dataSet completeness
   public isDataSetCompleted : boolean = false;
@@ -88,14 +86,18 @@ export class DataEntryForm {
       let period = this.dataEntryFormSelectionParameter.period.iso;
       this.dataValues.getDataValueSetFromServer(dataSetId,period,orgUnitId,this.dataSetAttributeOptionCombo,this.currentUser)
         .then((dataValues : any)=>{
-          this.setLoadingMessages('Saving ' + dataValues.length + " data values from server");
-          let dataDimension = this.dataEntryFormSelectionParameter.dataDimension;
-          this.dataValues.saveDataValues(dataValues,dataSetId,period,orgUnitId,dataDimension,"synced",this.currentUser).then(()=>{
+          if(dataValues.length > 0){
+            this.setLoadingMessages('Saving ' + dataValues.length + " data values from server");
+            let dataDimension = this.dataEntryFormSelectionParameter.dataDimension;
+            this.dataValues.saveDataValues(dataValues,dataSetId,period,orgUnitId,dataDimension,"synced",this.currentUser).then(()=>{
+              this.getDataValuesFromLocalStorage();
+            },error=>{
+              this.setToasterMessage('Fail to save data values from server');
+              this.getDataValuesFromLocalStorage();
+            });
+          }else{
             this.getDataValuesFromLocalStorage();
-          },error=>{
-            this.setToasterMessage('Fail to save data values from server');
-            this.getDataValuesFromLocalStorage();
-          });
+          }
         },error=>{
           this.setToasterMessage('Fail to download data values from server');
           this.getDataValuesFromLocalStorage();
@@ -110,7 +112,6 @@ export class DataEntryForm {
     let period = this.dataEntryFormSelectionParameter.period.iso;
     let entryFormSections  = this.entryFormSections;
 
-    //@todo checking issues of date formatting
     this.dataValues.getAllEntryFormDataValuesFromStorage(dataSetId,period,orgUnitId,entryFormSections,this.currentUser).then((dataValues : any)=>{
       this.entryFormDataValues = {};
       this.storageStatus.local = 0;
@@ -119,16 +120,40 @@ export class DataEntryForm {
         this.entryFormDataValues[dataValue.id] = dataValue.value;
         dataValue.status == "synced" ? this.storageStatus.online ++ :this.storageStatus.local ++;
       });
-
-      //alert(JSON.stringify(dataValues));
       this.loadingData = false;
     },error=>{
       this.loadingData = false;
     });
   }
 
-  updateValues(eventId){
-    alert(eventId + " :: " + this.entryFormDataValues[eventId]);
+  //@todo update status notifications
+  updateValues(fieldId){
+    if(this.entryFormDataValues[fieldId]){
+      let dataSetId = this.selectedDataSet.id;
+      let orgUnitId = this.dataEntryFormSelectionParameter.orgUnit.id;
+      let period = this.dataEntryFormSelectionParameter.period.iso;
+      let dataDimension = this.dataEntryFormSelectionParameter.dataDimension;
+
+      let fieldIdArray = fieldId.split("-");
+      let id = dataSetId + '-' + fieldIdArray[0] + '-' + fieldIdArray[1] + '-' + period + '-' + orgUnitId;
+      let newDataValue = [
+        {dataElement : fieldIdArray[0],categoryOptionCombo : fieldIdArray[1],value :this.entryFormDataValues[fieldId]}
+      ];
+      this.dataValues.getDataValuesById(id,this.currentUser).then((dataValues : any)=>{
+        if(dataValues.length > 0){
+          if(dataValues[0].value != this.entryFormDataValues[fieldId]){
+            this.dataValues.saveDataValues(newDataValue,dataSetId,period,orgUnitId,dataDimension,"synced",this.currentUser).then(()=>{
+              this.storageStatus.online --;
+              this.storageStatus.local ++;
+            },error=>{});
+          }
+        }else{
+          this.dataValues.saveDataValues(newDataValue,dataSetId,period,orgUnitId,dataDimension,"not synced",this.currentUser).then(()=>{
+            this.storageStatus.local ++;
+          },error=>{});
+        }
+      },error =>{});
+    }
   }
 
   setHeaderLabel(){

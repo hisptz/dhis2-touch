@@ -12,7 +12,10 @@ import {Observable} from 'rxjs/Rx';
 @Injectable()
 export class DataValues {
 
+  public resourceName :string;
+
   constructor(private httpClient : HttpClient,private sqlLite : SqlLite) {
+    this.resourceName = "dataValues";
   }
 
   /**
@@ -45,15 +48,17 @@ export class DataValues {
      */
   getFilteredDataValuesByDataSetAttributeOptionCombo(dataValuesResponse,attributeOptionCombo){
     let FilteredDataValues = [];
-    dataValuesResponse.dataValues.forEach((dataValue : any)=>{
-      if(dataValue.attributeOptionCombo == attributeOptionCombo){
-        FilteredDataValues.push({
-          categoryOptionCombo : dataValue.categoryOptionCombo,
-          dataElement : dataValue.dataElement,
-          value : dataValue.value
-        });
-      }
-    });
+    if(dataValuesResponse.dataValues){
+      dataValuesResponse.dataValues.forEach((dataValue : any)=>{
+        if(dataValue.attributeOptionCombo == attributeOptionCombo){
+          FilteredDataValues.push({
+            categoryOptionCombo : dataValue.categoryOptionCombo,
+            dataElement : dataValue.dataElement,
+            value : dataValue.value
+          });
+        }
+      });
+    }
     return FilteredDataValues;
   }
 
@@ -88,10 +93,18 @@ export class DataValues {
   }
 
 
+  /**
+   * get all data values fro local storage
+   * @param dataSetId
+   * @param period
+   * @param orgUnitId
+   * @param entryFormSections
+   * @param currentUser
+     * @returns {Promise<T>}
+     */
   getAllEntryFormDataValuesFromStorage(dataSetId,period,orgUnitId,entryFormSections,currentUser){
     let ids = [];
     let self = this;
-    let resource  = "dataValues";
     let entryFormDataValuesFromStorage =[];
     entryFormSections.forEach((section : any)=>{
       section.dataElements.forEach((dataElement : any)=>{
@@ -101,7 +114,7 @@ export class DataValues {
       });
     });
     return new Promise(function(resolve, reject) {
-      self.sqlLite.getDataFromTableByAttributes(resource,"id",ids,currentUser.currentDatabase).then((dataValues : any)=>{
+      self.sqlLite.getDataFromTableByAttributes(self.resourceName,"id",ids,currentUser.currentDatabase).then((dataValues : any)=>{
         dataValues.forEach((dataValue : any)=>{
           entryFormDataValuesFromStorage.push({
             id :dataValue.de + "-" +dataValue.co,
@@ -117,9 +130,32 @@ export class DataValues {
   }
 
 
+  getDataValuesById(id,currentUser){
+    let self = this;
+    let ids = [];
+    ids.push(id);
+    return new Promise(function(resolve, reject) {
+      self.sqlLite.getDataFromTableByAttributes(self.resourceName,"id",ids,currentUser.currentDatabase).then((dataValues : any)=>{
+        resolve(dataValues)
+      },error=>{
+        reject();
+      });
+    });
+  }
+
+  /**
+   * saving data davlues
+   * @param dataValues
+   * @param dataSetId
+   * @param period
+   * @param orgUnitId
+   * @param dataDimension
+   * @param syncStatus
+   * @param currentUser
+     * @returns {Promise<T>}
+     */
   saveDataValues(dataValues,dataSetId,period,orgUnitId,dataDimension,syncStatus,currentUser){
     let self = this;
-    let resource  = "dataValues";
     return new Promise(function(resolve, reject) {
       let promises = [];
       dataValues.forEach((dataValue : any)=>{
@@ -136,7 +172,7 @@ export class DataValues {
           dataSetId: dataSetId
         };
         promises.push(
-          self.sqlLite.insertDataOnTable(resource,data,currentUser.currentDatabase).then(response=>{
+          self.sqlLite.insertDataOnTable(self.resourceName,data,currentUser.currentDatabase).then(response=>{
           },error=>{
           })
         );
