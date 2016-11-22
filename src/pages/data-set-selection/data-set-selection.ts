@@ -14,6 +14,7 @@ import { ViewController,NavParams } from 'ionic-angular';
 export class DataSetSelection {
 
   public dataSetsList : any;
+  public dataSetsListCopy : any;
 
   constructor(public viewCtrl: ViewController,public params : NavParams) {
     this.setModalData();
@@ -25,6 +26,16 @@ export class DataSetSelection {
 
   setModalData(){
     this.dataSetsList = this.params.get('data');
+  }
+
+  getFilteredList(ev: any) {
+    let val = ev.target.value;
+    this.dataSetsList = this.params.get('data');
+    if(val && val.trim() != ''){
+      this.dataSetsList = this.dataSetsList.filter((dataSet:any) => {
+        return (dataSet.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
+    }
   }
 
   setSelectedDataSet(selectedDataSet){

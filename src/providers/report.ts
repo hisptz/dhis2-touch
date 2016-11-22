@@ -28,6 +28,26 @@ export class Report {
     })
   }
 
+  hasReportRequireParameterSelection(reportParams){
+    let requireReportParameter = false;
+    if(reportParams.paramReportingPeriod || reportParams.paramOrganisationUnit){
+      requireReportParameter = true;
+    }
+    return requireReportParameter;
+  }
 
+  getReportId(reportId,currentUser){
+    let self = this;
+    let attribute = "id";
+    let attributeArray = [];
+    attributeArray.push(reportId);
+    return new Promise(function(resolve, reject) {
+      self.sqlLite.getDataFromTableByAttributes(self.resourceName,attribute,attributeArray,currentUser.currentDatabase).then((reportList:any)=>{
+        resolve(reportList[0]);
+      },error=>{
+        reject(error);
+      })
+    })
+  }
 
 }

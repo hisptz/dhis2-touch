@@ -6,7 +6,7 @@ import {DataEntryHome} from "../data-entry-home/data-entry-home";
 import {DashBoardHome} from "../dash-board-home/dash-board-home";
 import {TrackerCaptureHome} from "../tracker-capture-home/tracker-capture-home";
 
-
+declare var dhis2;
 /*
   Generated class for the Apps page.
 
@@ -26,7 +26,11 @@ export class Apps {
   }
 
   ionViewDidLoad() {
-    //console.log('Hello Apps Page');
+    dhis2.formatQueryReturnResult = function(results,tableName){
+      return {
+        results : results,tableName : tableName
+      }
+    };
   }
 
   setViewAction():void{
@@ -42,5 +46,8 @@ export class Apps {
   goToView(viewName){
     this.navCtrl.push(this.viewMapperObject[viewName]);
   }
+
+
+
 
 }

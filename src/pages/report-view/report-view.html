@@ -1,5 +1,5 @@
 <!--
-  Generated template for the ReportHome page.
+  Generated template for the ReportView page.
 
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
@@ -7,14 +7,13 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Report List</ion-title>
+    <ion-title>Report View</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content class="report">
-
   <div *ngIf="loadingData">
     <ion-grid>
       <ion-row>
@@ -34,23 +33,15 @@
   </div>
 
   <div *ngIf="!loadingData">
-    <ion-searchbar animated="true" (ionInput)="getFilteredList($event)"></ion-searchbar>
-    <ion-grid>
-      <ion-row>
-        <ion-col width="100">
-          <ion-list>
-            <ion-item *ngFor="let report of reportList" (click)="selectReport(report)">
-              <ion-icon name="list" item-left></ion-icon>
-              <span >{{ report.name }}</span>
-            </ion-item>
-            <ion-item *ngIf = "reportList.length == 0">
-              There is no report to select
-            </ion-item>
-          </ion-list>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+    <ion-card>
+      <ion-card-content>
+        <p><b>Report  : </b> : {{ reportName }}</p>
+        <p><b>Organisation Unit</b> : </p>
+        <p><b>Period</b> : </p>
+      </ion-card-content>
+    </ion-card>
+    <!--{{ reportDesignContent }}-->
+    <!--<div class="reportView" [innerHTML]="reportDesignContent"></div>-->
+
   </div>
-
-
 </ion-content>

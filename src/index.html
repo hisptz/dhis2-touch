@@ -17,13 +17,13 @@
   <script src="cordova.js"></script>
 
   <!-- un-comment this code to enable service worker-->
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('service worker installed'))
-        .catch(err => console.log('Error', err));
-    }
-  </script>
+  <!--<script>-->
+    <!--if ('serviceWorker' in navigator) {-->
+      <!--navigator.serviceWorker.register('service-worker.js')-->
+        <!--.then(() => console.log('service worker installed'))-->
+        <!--.catch(err => console.log('Error', err));-->
+    <!--}-->
+  <!--</script>-->
 
   <link href="build/main.css" rel="stylesheet">
   <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.min.js"></script>
@@ -37,6 +37,8 @@
   <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.julian.min.js"></script>
   <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.nepali.min.js"></script>
   <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.thai.min.js"></script>
+
+  <script src="assets/library/reportModule.js"></script>
   <script src="assets/library/dhis2/dhis2.util.js"></script>
   <script src="assets/library/dhis2/dhis2.period.js"></script>
   <script>

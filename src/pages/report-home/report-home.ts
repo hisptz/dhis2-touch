@@ -4,6 +4,8 @@ import {HttpClient} from "../../providers/http-client/http-client";
 import {User} from "../../providers/user/user";
 import {SqlLite} from "../../providers/sql-lite/sql-lite";
 import {Report} from "../../providers/report";
+import {ReportView} from "../report-view/report-view";
+import {ReportParameterSelection} from "../report-parameter-selection/report-parameter-selection";
 
 /*
   Generated class for the ReportHome page.
@@ -22,6 +24,7 @@ export class ReportHome {
   public loadingMessages : any = [];
   public currentUser : any;
   public reportList : any;
+  public reportListCopy : any;
 
   constructor(public navCtrl: NavController,private toastCtrl:ToastController,
               private user:User, private httpClient:HttpClient,
@@ -32,19 +35,43 @@ export class ReportHome {
     this.reportList = [];
     this.user.getCurrentUser().then((user:any)=>{
       this.currentUser = user;
-      this.setLoadingMessages('Loading reports');
-      this.Report.getReportList(user).then((reportList : any)=>{
-        this.reportList = reportList;
-        this.loadingData = false;
-      },error=>{
-        this.loadingData = false;
-      });
+      this.loadReportsList(user);
     });
   }
 
+  loadReportsList(user){
+    this.setLoadingMessages('Loading reports');
+    this.Report.getReportList(user).then((reportList : any)=>{
+      this.reportList = reportList;
+      this.reportListCopy = reportList;
+      this.loadingData = false;
+    },error=>{
+      this.setToasterMessage('Fail to load reports');
+      this.loadingData = false;
+    });
+  }
 
   selectReport(report){
-    alert(report.name);
+    let parameter = {
+      id : report.id,name : report.name, reportParams:report.reportParams
+    };
+    if(this.Report.hasReportRequireParameterSelection(report.reportParams)){
+
+      this.navCtrl.push(ReportParameterSelection,parameter);
+    }else{
+      this.navCtrl.push(ReportView,parameter)
+    }
+  }
+
+
+  getFilteredList(ev: any) {
+    let val = ev.target.value;
+    this.reportList = this.reportListCopy;
+    if(val && val.trim() != ''){
+      this.reportList = this.reportList.filter((report:any) => {
+        return (report.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
+    }
   }
 
   ionViewDidLoad() {

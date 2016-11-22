@@ -74,7 +74,7 @@ export class SqlLite {
         {value: 'designContent', type: 'LONGTEXT'}
       ],
       fields : "id,name,created,type,relativePeriods,reportParams,designContent",
-      filter : "type:eq:HTML&filter=name:like:mobile"
+      filter : "type:eq:HTML&filter=name:like:Mobile"
     },
     constants: {
       columns: [
@@ -227,6 +227,25 @@ export class SqlLite {
     return new Promise(function(resolve, reject) {
       db.openDatabase({name: databaseName,location: 'default'}).then(() => {
         db.executeSql(query, values).then((success) => {
+          resolve();
+        }, (error) => {
+          reject(error.failure);
+        });
+      }, (error) => {
+        reject(error.failure);
+      });
+    });
+  }
+
+  deleteAllOnTable(tableName,databaseName){
+    let self = this;
+    databaseName = databaseName + '.db';
+    let query = "DELETE FROM " + tableName;
+
+    let db = new SQLite();
+    return new Promise(function(resolve, reject) {
+      db.openDatabase({name: databaseName,location: 'default'}).then(() => {
+        db.executeSql(query, []).then((success) => {
           resolve();
         }, (error) => {
           reject(error.failure);
