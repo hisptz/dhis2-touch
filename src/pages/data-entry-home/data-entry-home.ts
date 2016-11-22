@@ -151,6 +151,10 @@ export class DataEntryHome {
           categoryCombo : dataSet.categoryCombo
         });
       });
+      if(this.assignedDataSets.length == 1){
+        this.selectedDataSet =this.assignedDataSets[0];
+      }
+
       this.loadingData = false;
     },error=>{
       this.loadingData = false;

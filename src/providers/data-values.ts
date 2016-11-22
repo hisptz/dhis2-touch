@@ -13,7 +13,6 @@ import {Observable} from 'rxjs/Rx';
 export class DataValues {
 
   public resourceName :string;
-  //status :: synced , not synced
 
   constructor(private httpClient : HttpClient,private sqlLite : SqlLite) {
     this.resourceName = "dataValues";
@@ -39,6 +38,11 @@ export class DataValues {
     });
   }
 
+  /**
+   * uploaf data values to server
+   * @param dataValues
+   * @param currentUser
+     */
   uploadDataValues(dataValues,currentUser){
     let self = this;
     let formattedDataValues = self.getFormattedDataValueForUpload(dataValues);

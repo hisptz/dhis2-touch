@@ -43,6 +43,20 @@
               <p>{{ entry.value }}</p>
             </ion-item>
           </ion-item-group>
+          <ion-list></ion-list>
+          <ion-item-group>
+            <ion-item-divider light>
+              Data Values Status
+            </ion-item-divider>
+            <ion-item >
+              <h2>Synced</h2>
+              <p>{{ dataValuesStorage.online }}</p>
+            </ion-item>
+            <ion-item >
+              <h2>Not Synced</h2>
+              <p>{{ dataValuesStorage.offline }}</p>
+            </ion-item>
+          </ion-item-group>
           <ion-item-group>
             <ion-list></ion-list>
             <ion-item-divider light>

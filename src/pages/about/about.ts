@@ -4,6 +4,7 @@ import {User} from "../../providers/user/user";
 import {AppProvider} from "../../providers/app-provider/app-provider";
 import {HttpClient} from '../../providers/http-client/http-client';
 import {SqlLite} from "../../providers/sql-lite/sql-lite";
+import {DataValues} from "../../providers/data-values";
 
 
 /*
@@ -15,7 +16,7 @@ import {SqlLite} from "../../providers/sql-lite/sql-lite";
 @Component({
   selector: 'page-about',
   templateUrl: 'about.html',
-  providers : [User,AppProvider,HttpClient,SqlLite]
+  providers : [User,AppProvider,HttpClient,SqlLite,DataValues]
 })
 export class About {
 
@@ -23,8 +24,13 @@ export class About {
   public loadingMessages : any = [];
   public systemInformation : any;
   public appInformation : any;
+  public dataValuesStorage : any = { online : 0,offline : 0};
 
-  constructor(private toastCtrl: ToastController,private user : User,private appProvider : AppProvider,private httpClient : HttpClient,private sqlLite : SqlLite) {
+  constructor(private toastCtrl: ToastController,private user : User,
+              private appProvider : AppProvider,private httpClient : HttpClient,
+              private dataValues : DataValues,
+              private sqlLite : SqlLite) {
+
     this.loadingSystemInformation();
   }
 
@@ -35,6 +41,7 @@ export class About {
   loadingSystemInformation(){
     this.loadingData = true;
     this.loadingMessages = [];
+
     this.setLoadingMessages('Loading system information');
     this.user.getCurrentUserSystemInformation().then(systemInformation=>{
       this.systemInformation = this.getArrayFromObject(systemInformation);
@@ -46,8 +53,30 @@ export class About {
     this.setLoadingMessages('Loading app information');
     this.appProvider.getAppInformation().then(appInformation=>{
       this.appInformation = this.getArrayFromObject(appInformation);
-      this.loadingData = false;
+      this.loadingDataValueStatus();
     })
+  }
+
+  loadingDataValueStatus(){
+    //dataValues synced , not synced
+    this.setLoadingMessages('Loading data values storage status');
+    this.user.getCurrentUser().then(user=>{
+      this.dataValues.getDataValuesByStatus(user,"synced").then((syncedDataValues : any)=>{
+        this.dataValues.getDataValuesByStatus(user,"not synced").then((unSyncedDataValues : any)=>{
+          this.dataValuesStorage.offline = unSyncedDataValues.length;
+          this.dataValuesStorage.online = syncedDataValues.length;
+          this.loadingData = false;
+        },error=>{
+          this.setToasterMessage('Fail to loading data values storage status');
+          this.loadingData = false;
+        });
+      },error=>{
+        this.setToasterMessage('Fail to loading data values storage status');
+        this.loadingData = false;
+      });
+    });
+    //this.dataValues.getDataValuesByStatus()
+
   }
 
   getArrayFromObject(object){

@@ -55,12 +55,13 @@ export class ReportHome {
     let parameter = {
       id : report.id,name : report.name, reportParams:report.reportParams
     };
-    if(this.Report.hasReportRequireParameterSelection(report.reportParams)){
-
-      this.navCtrl.push(ReportParameterSelection,parameter);
-    }else{
-      this.navCtrl.push(ReportView,parameter)
-    }
+    this.navCtrl.push(ReportView,parameter);
+    //if(this.Report.hasReportRequireParameterSelection(report.reportParams)){
+    //
+    //  this.navCtrl.push(ReportParameterSelection,parameter);
+    //}else{
+    //  this.navCtrl.push(ReportView,parameter)
+    //}
   }
 
 
