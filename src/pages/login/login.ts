@@ -71,6 +71,9 @@ export class Login {
               this.setLoadingMessages('Opening database');
               this.sqlLite.generateTables(databaseName).then(()=>{
                 this.loginData.currentDatabase = databaseName;
+                //set authorization key and reset password
+                this.loginData.authorizationKey = btoa(this.loginData.username + ':' + this.loginData.password);
+                this.loginData.password = "";
                 this.user.setCurrentUser(this.loginData).then(()=>{
                   this.setLoadingMessages('Authenticating user');
                   let fields = "fields=[:all],userCredentials[userRoles[name,dataSets[id,name],programs[id,name]]";
