@@ -41,7 +41,7 @@ export class DataEntryForm {
   //dataSet completeness
   public isDataSetCompleted : boolean = false;
   public dataSetCompletenessInformation :any = {name:"",date:""};
-  public isDataSetCompeletenessUpdated : boolean = false;
+  public isDataSetCompletenessUpdated : boolean = false;
 
   constructor(private params:NavParams, private toastCtrl:ToastController,
               private user:User, private httpClient:HttpClient,
@@ -200,7 +200,7 @@ export class DataEntryForm {
 
   //@todo handle completeness of dataSet
   updateDataSetCompleteness(){
-    this.isDataSetCompeletenessUpdated = true;
+    this.isDataSetCompletenessUpdated = true;
     let dataSetId = this.selectedDataSet.id;
     let orgUnitId = this.dataEntryFormSelectionParameter.orgUnit.id;
     let period = this.dataEntryFormSelectionParameter.period.iso;
@@ -208,16 +208,16 @@ export class DataEntryForm {
     if(this.isDataSetCompleted){
       this.dataValues.unDoCompleteOnDataSetRegistrations(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then(()=>{
         this.isDataSetCompleted = !this.isDataSetCompleted;
-        this.isDataSetCompeletenessUpdated = false;
+        this.isDataSetCompletenessUpdated = false;
       },error=>{
-        this.isDataSetCompeletenessUpdated = false;
+        this.isDataSetCompletenessUpdated = false;
         this.setToasterMessage("Fail to undo complete  at moment, please try again later");
       });
     }else{
       this.dataValues.completeOnDataSetRegistrations(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then((response)=>{
         this.setCompletenessInformation();
       },error=>{
-        this.isDataSetCompeletenessUpdated = false;
+        this.isDataSetCompletenessUpdated = false;
         alert(JSON.stringify(error.json()));
         this.setToasterMessage("Fail to complete at moment, please try again later");
       });
@@ -233,7 +233,7 @@ export class DataEntryForm {
       this.isDataSetCompleted = response.complete;
       this.dataSetCompletenessInformation.name = response.storedBy;
       this.dataSetCompletenessInformation.date = response.date;
-      this.isDataSetCompeletenessUpdated = false;
+      this.isDataSetCompletenessUpdated = false;
     },error=>{});
   }
 

@@ -95,7 +95,7 @@ export class Login {
                       });
                     },err => {
                       this.loadingData = false;
-                      this.setStickToasterMessage('Fail to login Fail to load System information, please checking your network connection or username and password');
+                      this.setToasterMessage('Fail to login Fail to load System information, please checking your network connection or username and password');
                       console.log(err);
                     });
                 });
@@ -215,7 +215,8 @@ export class Login {
     let resource = 'reports';
     let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
     let fields = tableMetadata.fields;
-    this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
+    let filter = tableMetadata.filter;
+    this.app.downloadMetadata(this.loginData,resource,null,fields,filter).then(response=>{
       this.setLoadingMessages('Saving '+response[resource].length+' reports');
       this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
         this.downloadingConstants();
@@ -228,6 +229,7 @@ export class Login {
       this.setStickToasterMessage('Fail to download reports. ' + JSON.stringify(error));
     });
   }
+
   downloadingConstants(){
     this.setLoadingMessages('Downloading constants');
     let resource = 'constants';

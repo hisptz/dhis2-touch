@@ -13,6 +13,41 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content class="report">
+
+  <div *ngIf="loadingData">
+    <ion-grid>
+      <ion-row>
+        <ion-col width="100">
+          <ion-list>
+            <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
+              {{ message }}
+              <ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right></ion-icon>
+              <div style="text-align: center" item-right *ngIf="(currentIndex + 1) >= loadingMessages.length">
+                <ion-spinner name="crescent"></ion-spinner>
+              </div>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div *ngIf="!loadingData">
+    <ion-grid>
+      <ion-row>
+        <ion-col width="100">
+          <ion-item *ngFor="let report of reportList" (click)="selectReport(report)">
+            <ion-icon name="list" item-left></ion-icon>
+            <span >{{ report.name }}</span>
+          </ion-item>
+          <ion-item *ngIf = "reportList.length == 0">
+            There is no report to select
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
 
 </ion-content>
