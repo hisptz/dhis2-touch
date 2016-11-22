@@ -58,7 +58,12 @@
                   <div *ngFor="let dataElement of section.dataElements">
                     <br>
                     <div *ngFor="let categoryOptionCombos of dataElement.categoryCombo.categoryOptionCombos">
-                      <div class="inputLabel"><b>{{ dataElement.name }}<span *ngIf="dataElement.categoryCombo.name != 'default'">&nbsp;&nbsp;{{ categoryOptionCombos.name}}</span>&nbsp;&nbsp;</b></div>
+                      <div (click)="showTooltips(dataElement,categoryOptionCombos.name)" class="inputLabel">
+                        <b>{{ getDisplayName(dataElement) }}<span *ngIf="dataElement.categoryCombo.name != 'default'">&nbsp;&nbsp;{{ categoryOptionCombos.name}}</span>&nbsp;&nbsp;</b>
+                        <span *ngIf="dataElement.description">
+                          &nbsp;&nbsp;<ion-icon name="help-circle"></ion-icon>
+                        </span>
+                      </div>
                       <div *ngIf="dataElement.optionSet">
                         <ion-item>
                           <ion-label>Touch to select/update</ion-label>
@@ -170,6 +175,12 @@
     <ion-card>
       <ion-card-content>
 
+        <div *ngIf="isDataSetCompeletenessUpdated">
+          <div style="text-align: center;">
+            <ion-spinner name="crescent" color="primary"></ion-spinner>
+          </div>
+        </div>
+
         <ion-row>
           <ion-col width-50>
             <button color="secondary" ion-button full *ngIf="!isDataSetCompleted" (click)="updateDataSetCompleteness()">
@@ -191,7 +202,7 @@
           </ion-col>
         </ion-row>
 
-        <div *ngIf="isDataSetCompleted">Completed by: <b>joseph chingalo</b> at: <b>34-04-2015</b></div>
+        <div *ngIf="isDataSetCompleted">Completed by: <b>{{ dataSetCompletenessInformation.name }}</b> at: <b>{{ dataSetCompletenessInformation.date }}</b></div>
 
       </ion-card-content>
     </ion-card>

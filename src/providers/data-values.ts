@@ -13,10 +13,140 @@ import {Observable} from 'rxjs/Rx';
 export class DataValues {
 
   public resourceName :string;
+  //status :: synced , not synced
 
   constructor(private httpClient : HttpClient,private sqlLite : SqlLite) {
     this.resourceName = "dataValues";
   }
+
+  /**
+   * get data values by status
+   * @param currentUser
+   * @param status
+   * @returns {Promise<T>}
+     */
+  getDataValuesByStatus(currentUser,status){
+    let self = this;
+    let attribute = "syncStatus";
+    let attributeArray = [];
+    attributeArray.push(status);
+    return new Promise(function(resolve, reject) {
+      self.sqlLite.getDataFromTableByAttributes(self.resourceName,attribute,attributeArray,currentUser.currentDatabase).then((dataValues : any)=>{
+        resolve(dataValues);
+      },error=>{
+        reject(error);
+      })
+    });
+  }
+
+  uploadDataValues(dataValues,currentUser){
+    let self = this;
+    let formattedDataValues = self.getFormattedDataValueForUpload(dataValues);
+    formattedDataValues.forEach((formattedDataValue : any,index : any)=>{
+      this.httpClient.post('/api/dataValues?'+formattedDataValue,{},currentUser).subscribe(()=>{
+        let syncedDataValues = dataValues[index];
+        syncedDataValues["syncStatus"] = "synced";
+        self.sqlLite.insertDataOnTable(self.resourceName,syncedDataValues,currentUser.currentDatabase).then(response=>{
+        },error=>{});
+      },error=>{});
+    });
+  }
+
+  /**
+   * convert data values to parameter for uploading
+   * @param dataValues
+   * @returns {Array}
+     */
+  getFormattedDataValueForUpload(dataValues){
+    var formattedDataValues = [];
+    dataValues.forEach((dataValue : any)=>{
+      let formParameter = "de="+dataValue.de+"&pe="+dataValue.pe+"&ou=";
+      formParameter += dataValue.ou+"&co="+dataValue.co+"&value="+dataValue.value;
+      if(dataValue.cp != "0"){
+        formParameter = formParameter +"&cc="+dataValue.cc+"&cp="+dataValue.cp;
+      }
+      formattedDataValues.push(formParameter);
+    });
+    return formattedDataValues;
+  }
+
+
+  /**
+   * get parameter for dataSet completeness for a given form
+   * @param dataSetId
+   * @param period
+   * @param orgUnitId
+   * @param dataDimension
+   * @returns {string}
+     */
+  getDataSetCompletenessParameter(dataSetId,period,orgUnitId,dataDimension){
+    let parameter = "ds="+dataSetId+"&pe="+period+"&ou="+orgUnitId;
+    if(dataDimension.cp !=""){
+      parameter += "&cc="+dataDimension.cc+"&cp="+dataDimension.cp;
+    }
+    return parameter;
+  }
+
+  //@todo rechecking on dataSet completeness
+  completeOnDataSetRegistrations(dataSetId,period,orgUnitId,dataDimension,currentUser){
+    let self = this;
+    let parameter = self.getDataSetCompletenessParameter(dataSetId,period,orgUnitId,dataDimension);
+    let data :any = {};
+    return new Promise(function(resolve, reject) {
+      self.httpClient.post('/api/completeDataSetRegistrations?'+parameter,{},currentUser).subscribe(response=>{
+        resolve(response.json());
+      },error=>{
+        reject(error);
+      });
+    });
+  }
+
+  /**
+   * delete data set completeness information
+   * @param dataSetId
+   * @param period
+   * @param orgUnitId
+   * @param dataDimension
+   * @param currentUser
+     * @returns {Promise<T>}
+     */
+  unDoCompleteOnDataSetRegistrations(dataSetId,period,orgUnitId,dataDimension,currentUser){
+    let self = this;
+    let parameter = self.getDataSetCompletenessParameter(dataSetId,period,orgUnitId,dataDimension);
+    return new Promise(function(resolve, reject) {
+      self.httpClient.delete('/api/completeDataSetRegistrations?'+parameter,currentUser).subscribe(response=>{
+        resolve();
+      },error=>{
+        reject(error);
+      });
+    });
+  }
+
+  /**
+   * get data set completeness information
+   * @param dataSetId
+   * @param period
+   * @param orgUnitId
+   * @param dataDimension
+   * @param currentUser
+     * @returns {Promise<T>}
+     */
+  getDataSetCompletenessInfo(dataSetId,period,orgUnitId,dataDimension,currentUser){
+    let  self = this;
+    let parameter = "dataSetId="+dataSetId+"&periodId="+period+"&organisationUnitId="+orgUnitId;
+    if(dataDimension.cp !=""){
+      parameter += "&cc="+dataDimension.cc+"&cp="+dataDimension.cp;
+    }
+    return new Promise(function(resolve, reject) {
+      self.httpClient.get('/dhis-web-dataentry/getDataValues.action?'+parameter,currentUser).subscribe(response=>{
+        resolve(response.json());
+      },error=>{
+        reject();
+      });
+    });
+
+  }
+
 
   /**
    * get dataValues form server based on selected parameter
@@ -130,6 +260,12 @@ export class DataValues {
   }
 
 
+  /**
+   * furntion to get dataValue by id
+   * @param id
+   * @param currentUser
+   * @returns {Promise<T>}
+     */
   getDataValuesById(id,currentUser){
     let self = this;
     let ids = [];

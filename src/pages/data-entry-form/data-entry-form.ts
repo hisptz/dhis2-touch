@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController,NavParams,ToastController } from 'ionic-angular';
+import { NavController,NavParams,ToastController,ActionSheetController } from 'ionic-angular';
 import {HttpClient} from "../../providers/http-client/http-client";
 import {User} from "../../providers/user/user";
 import {SqlLite} from "../../providers/sql-lite/sql-lite";
@@ -40,9 +40,12 @@ export class DataEntryForm {
 
   //dataSet completeness
   public isDataSetCompleted : boolean = false;
+  public dataSetCompletenessInformation :any = {name:"",date:""};
+  public isDataSetCompeletenessUpdated : boolean = false;
 
   constructor(private params:NavParams, private toastCtrl:ToastController,
               private user:User, private httpClient:HttpClient,
+              private actionSheetCtrl: ActionSheetController,
               private entryForm:EntryForm, private sqlLite:SqlLite,
               private dataValues:DataValues) {
 
@@ -66,8 +69,9 @@ export class DataEntryForm {
       this.selectedDataSet = dataSets[0];
       this.dataSetAttributeOptionCombo = this.dataValues.getDataValuesSetAttributeOptionCombo(this.dataEntryFormSelectionParameter.dataDimension,dataSets[0].categoryCombo.categoryOptionCombos);
       this.setEntryFormMetaData();
-      //setting labels
+      //setting labels and loading completeness
       this.setHeaderLabel();
+      this.setCompletenessInformation();
     },error=>{
       this.loadingData = false;
       this.setToasterMessage('Fail to load organisation units');
@@ -126,7 +130,7 @@ export class DataEntryForm {
     });
   }
 
-  //@todo update status notifications
+  //@todo update status notifications in case has failed
   updateValues(fieldId){
     if(this.entryFormDataValues[fieldId]){
       let dataSetId = this.selectedDataSet.id;
@@ -156,6 +160,26 @@ export class DataEntryForm {
     }
   }
 
+  //@todo change usage of acton sheet to display tooltips
+  showTooltips(dataElement,categoryComboName){
+    let title = dataElement.name + (categoryComboName != 'default' ? " " +categoryComboName:"");
+    if(dataElement.description){
+      title = dataElement.description;
+    }
+    let actionSheet = this.actionSheetCtrl.create({
+      title: title
+    });
+    actionSheet.present();
+  }
+
+  //todo get input label attribute form setting
+  getDisplayName(dataElement){
+    return dataElement.displayName;
+    //return if()
+  }
+
+
+
   setHeaderLabel(){
     this.selectedDataSetLabel = this.selectedDataSet.name;
     this.selectedOrganisationUnitLabel = this.dataEntryFormSelectionParameter.orgUnit.name;
@@ -174,9 +198,43 @@ export class DataEntryForm {
     this.paginationLabel = (this.currentPage + 1) + "/"+this.entryFormSections.length;
   }
 
+  //@todo handle completeness of dataSet
   updateDataSetCompleteness(){
-    //@todo update data set completeness
-    this.isDataSetCompleted = !this.isDataSetCompleted;
+    this.isDataSetCompeletenessUpdated = true;
+    let dataSetId = this.selectedDataSet.id;
+    let orgUnitId = this.dataEntryFormSelectionParameter.orgUnit.id;
+    let period = this.dataEntryFormSelectionParameter.period.iso;
+    let dataDimension = this.dataEntryFormSelectionParameter.dataDimension;
+    if(this.isDataSetCompleted){
+      this.dataValues.unDoCompleteOnDataSetRegistrations(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then(()=>{
+        this.isDataSetCompleted = !this.isDataSetCompleted;
+        this.isDataSetCompeletenessUpdated = false;
+      },error=>{
+        this.isDataSetCompeletenessUpdated = false;
+        this.setToasterMessage("Fail to undo complete  at moment, please try again later");
+      });
+    }else{
+      this.dataValues.completeOnDataSetRegistrations(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then((response)=>{
+        this.setCompletenessInformation();
+      },error=>{
+        this.isDataSetCompeletenessUpdated = false;
+        alert(JSON.stringify(error.json()));
+        this.setToasterMessage("Fail to complete at moment, please try again later");
+      });
+    }
+  }
+
+  setCompletenessInformation(){
+    let dataSetId = this.selectedDataSet.id;
+    let orgUnitId = this.dataEntryFormSelectionParameter.orgUnit.id;
+    let period = this.dataEntryFormSelectionParameter.period.iso;
+    let dataDimension = this.dataEntryFormSelectionParameter.dataDimension;
+    this.dataValues.getDataSetCompletenessInfo(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then((response : any)=>{
+      this.isDataSetCompleted = response.complete;
+      this.dataSetCompletenessInformation.name = response.storedBy;
+      this.dataSetCompletenessInformation.date = response.date;
+      this.isDataSetCompeletenessUpdated = false;
+    },error=>{});
   }
 
   ionViewDidLoad() {

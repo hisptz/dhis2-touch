@@ -6,6 +6,8 @@ import {AppProvider} from "../../providers/app-provider/app-provider";
 import {TabsPage} from "../tabs/tabs";
 import {SqlLite} from "../../providers/sql-lite/sql-lite";
 import { Storage } from '@ionic/storage';
+import {Synchronization} from "../../providers/synchronization";
+import {DataValues} from "../../providers/data-values";
 
 /*
   Generated class for the Login page.
@@ -16,7 +18,7 @@ import { Storage } from '@ionic/storage';
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
-  providers : [AppProvider,HttpClient,User,SqlLite]
+  providers : [AppProvider,HttpClient,User,SqlLite,Synchronization,DataValues]
 })
 export class Login {
 
@@ -24,7 +26,10 @@ export class Login {
   public loadingData : boolean = false;
   public loadingMessages : any = [];
 
-  constructor(public navCtrl: NavController,private Storage : Storage,private sqlLite : SqlLite,private toastCtrl: ToastController,private app : AppProvider,private httpClient : HttpClient,private user : User) {
+  constructor(public navCtrl: NavController,private Storage : Storage,
+              private sqlLite : SqlLite,private synchronization:Synchronization,
+              private toastCtrl: ToastController,private DataValues: DataValues,
+              private app : AppProvider,private httpClient : HttpClient,private user : User) {
     this.loginData.logoUrl = 'assets/img/logo.png';
     this.user.getCurrentUser().then(user=>{
       this.reAuthenticateUser(user);
@@ -39,6 +44,7 @@ export class Login {
     console.log(user);
     if(user){
       if(user.isLogin){
+        this.synchronization.startSynchronization();
         this.navCtrl.setRoot(TabsPage);
       }else if(user.serverUrl){
         this.loginData.serverUrl = user.serverUrl;
@@ -190,16 +196,16 @@ export class Login {
     let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
     let fields = tableMetadata.fields;
     this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-      this.setLoadingMessages('Saving '+response[resource].length+' indicators');
+      this.setLoadingMessages('Saving '+response[resource].length+' programs');
       this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
         this.downloadingReports();
       },error=>{
         this.loadingData = false;
-        this.setStickToasterMessage('Fail to save indicators. ' + JSON.stringify(error));
+        this.setStickToasterMessage('Fail to save programs. ' + JSON.stringify(error));
       });
     },error=>{
       this.loadingData = false;
-      this.setStickToasterMessage('Fail to download indicators. ' + JSON.stringify(error));
+      this.setStickToasterMessage('Fail to download programs. ' + JSON.stringify(error));
     });
   }
 
@@ -244,6 +250,7 @@ export class Login {
   setLandingPage(){
     this.loginData.isLogin = true;
     this.user.setCurrentUser(this.loginData).then(()=>{
+      this.synchronization.startSynchronization();
       this.navCtrl.setRoot(TabsPage);
     });
   }

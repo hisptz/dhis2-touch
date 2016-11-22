@@ -26,7 +26,14 @@ export class HttpClient {
     let headers = new Headers();
     headers.append('Authorization', 'Basic ' +
       btoa(user.username + ':' + user.password));
-    return this.http.post(user.serverUrl + url, data, {headers: headers});
+    return this.http.post(user.serverUrl + url, data, { headers: headers });
+  }
+
+  delete(url,user):Observable<Response> {
+    let headers = new Headers();
+    headers.append('Authorization', 'Basic ' +
+      btoa(user.username + ':' + user.password));
+    return this.http.delete(user.serverUrl + url,{headers: headers});
   }
 
 }
