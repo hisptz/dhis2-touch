@@ -31,12 +31,13 @@ export class Synchronization {
 
   startSynchronization(){
     let self = this;
+    let timeInterval = 1000 * 60 * 2;
     self.getCurrentUser().then((user : any)=>{
       this.synchronizationTimer = setInterval(() => {
         self.dataValues.getDataValuesByStatus(user,"not synced").then((dataValues : any)=>{
           self.dataValues.uploadDataValues(dataValues,user);
         },error=>{});
-      }, 5000);
+      }, timeInterval);
 
     })
 
