@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 /*
@@ -14,7 +13,7 @@ export class User {
 
   public userData : any;
 
-  constructor(private http: Http,private storage : Storage) {
+  constructor(private storage : Storage) {
 
   }
 

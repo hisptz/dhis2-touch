@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import {SettingDetail} from "../setting-detail/setting-detail";
 
 /*
   Generated class for the SettingHome page.
@@ -9,14 +10,24 @@ import { NavController } from 'ionic-angular';
 */
 @Component({
   selector: 'page-setting-home',
-  templateUrl: 'setting-home.html'
+  templateUrl: 'setting-home.html',
+  providers : []
 })
 export class SettingHome {
 
-  constructor(public navCtrl: NavController) {}
+  constructor(public navCtrl : NavController) {
+  }
 
   ionViewDidLoad() {
-    console.log('Hello SettingHome Page');
+
   }
+
+  getSettingView(settingKey){
+    //SettingDetail
+    if(settingKey !=""){
+      this.navCtrl.push(SettingDetail,{settingKey : settingKey});
+    }
+  }
+
 
 }

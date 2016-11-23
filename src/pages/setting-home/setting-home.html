@@ -15,23 +15,20 @@
 
 <ion-content class="setting-home">
   <ion-item-group>
-    <ion-item-divider color="primary">Form setting</ion-item-divider>
-    <ion-item>
+    <ion-item-divider color="primary">App setting</ion-item-divider>
+    <ion-item (click)="getSettingView('synchronizationSetting')">
       <ion-icon name="list" item-left></ion-icon>
       Synchronization
       <ion-icon name="arrow-forward" item-right></ion-icon>
     </ion-item>
-    <ion-item>
+    <ion-item (click)="getSettingView('formLabelSetting')">
       <ion-icon name="list" item-left></ion-icon>
       Form Label
       <ion-icon name="arrow-forward" item-right></ion-icon>
     </ion-item>
-  </ion-item-group>
-  <ion-item-group>
-    <ion-item-divider color="primary">Security setting</ion-item-divider>
-    <ion-item>
+    <ion-item (click)="getSettingView('')">
       <ion-icon name="list" item-left></ion-icon>
-      Data Entry Values
+      Data Entry Values Security
       <ion-icon name="arrow-forward" item-right></ion-icon>
     </ion-item>
   </ion-item-group>
