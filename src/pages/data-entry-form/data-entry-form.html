@@ -67,7 +67,7 @@
                       <div *ngIf="dataElement.optionSet">
                         <ion-item>
                           <ion-label>Touch to select/update</ion-label>
-                          <ion-select (ionChange)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)" [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" interface="action-sheet" okText="Set" >
+                          <ion-select (ionChange)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)" [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" interface="action-sheet" >
                             <ion-option *ngFor="let option of dataElement.optionSet.options" value="{{option.code}}">{{option.name}}</ion-option>
                           </ion-select>
                         </ion-item>
@@ -82,7 +82,7 @@
                         <div *ngIf="dataElement.valueType == 'TRUE_ONLY'">
                           <ion-item>
                             <ion-label>Touch to select/update</ion-label>
-                            <ion-select (ionChange)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)" [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" interface="action-sheet" okText="Set" >
+                            <ion-select (ionChange)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)" [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" interface="action-sheet" >
                               <ion-option value="true">Yes</ion-option>
                             </ion-select>
                           </ion-item>
@@ -90,7 +90,7 @@
                         <div *ngIf="dataElement.valueType == 'BOOLEAN'">
                           <ion-item>
                             <ion-label>Touch to select/update</ion-label>
-                            <ion-select (ionChange)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)" [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" interface="action-sheet" okText="Set" >
+                            <ion-select (ionChange)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)" [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" interface="action-sheet" >
                               <ion-option value="true">Yes</ion-option>
                               <ion-option value="false">No</ion-option>
                             </ion-select>

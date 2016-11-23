@@ -38,7 +38,15 @@
       <ion-row>
         <ion-col width="100">
           <div *ngIf="settingKey =='formLabelSetting'">
-            form label setting
+            <ion-list>
+              <ion-item>
+                <ion-label></ion-label>
+                <ion-select [(ngModel)]="formLabel" interface="action-sheet">
+                  <ion-option value="displayName">DHIS2 Display Name</ion-option>
+                  <ion-option value="formName">DHIS2 Form Name</ion-option>
+                </ion-select>
+              </ion-item>
+            </ion-list>
           </div>
           <div *ngIf="settingKey =='synchronizationSetting'">
             Synchronization Setting
