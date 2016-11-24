@@ -19,11 +19,9 @@ export class SettingHome {
   }
 
   ionViewDidLoad() {
-
   }
 
   getSettingView(settingKey){
-    //SettingDetail
     if(settingKey !=""){
       this.navCtrl.push(SettingDetail,{settingKey : settingKey});
     }

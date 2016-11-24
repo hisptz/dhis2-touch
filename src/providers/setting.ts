@@ -27,10 +27,11 @@ export class Setting {
     });
   }
 
-  setDataEntryFormLabel(formLabel){
+  setDataEntrySetting(dataEntrySetting){
     let self = this;
     return  new Promise(function(resolve,reject){
-      self.storage.set('formLabelSetting', formLabel).then(() => {
+      dataEntrySetting= JSON.stringify(dataEntrySetting);
+      self.storage.set('dataEntrySetting', dataEntrySetting).then(() => {
         resolve();
       },error=>{
         reject();
@@ -50,11 +51,12 @@ export class Setting {
     });
   }
 
-  getDataEntryFormLabel(){
+  getDataEntrySetting(){
     let self = this;
     return  new Promise(function(resolve,reject){
-      self.storage.get('formLabelSetting').then(formLabelSetting=>{
-        resolve(formLabelSetting);
+      self.storage.get('dataEntrySetting').then(dataEntrySetting=>{
+        dataEntrySetting = JSON.parse(dataEntrySetting);
+        resolve(dataEntrySetting);
       },err=>{
         reject();
       })

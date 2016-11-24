@@ -75,13 +75,14 @@
             </ion-row>
           </div>
           <div *ngIf="selectedPeriod.name && hasDataDimensionSet()">
-            <ion-card (click)="goToEntryForm()">
+            <ion-card >
               <ion-card-content>
                 <p><b>Form</b> : {{ selectedDataSetLabel }}</p>
                 <p><b>Organisation Unit</b> : {{ selectedOrganisationUnitLabel }}</p>
                 <p><b>Period</b> : {{ selectedPeriodLabel }}</p>
               </ion-card-content>
             </ion-card>
+            <button ion-button full (click)="goToEntryForm()">Data Entry </button>
           </div>
         </div>
       </div>

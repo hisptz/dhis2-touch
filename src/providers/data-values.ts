@@ -14,7 +14,7 @@ export class DataValues {
 
   public resourceName :string;
 
-  constructor(private httpClient : HttpClient,private sqlLite : SqlLite) {
+  constructor(public httpClient : HttpClient,public sqlLite : SqlLite) {
     this.resourceName = "dataValues";
   }
 

@@ -8,6 +8,7 @@ import {SqlLite} from "../../providers/sql-lite/sql-lite";
 import { Storage } from '@ionic/storage';
 import {Synchronization} from "../../providers/synchronization";
 import {DataValues} from "../../providers/data-values";
+import {Setting} from "../../providers/setting";
 
 /*
   Generated class for the Login page.
@@ -18,7 +19,7 @@ import {DataValues} from "../../providers/data-values";
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
-  providers : [AppProvider,HttpClient,User,SqlLite,Synchronization,DataValues]
+  providers : [AppProvider,HttpClient,User,SqlLite,Synchronization,DataValues,Setting]
 })
 export class Login {
 
@@ -27,6 +28,7 @@ export class Login {
   public loadingMessages : any = [];
 
   constructor(public navCtrl: NavController,private Storage : Storage,
+              private Setting: Setting,
               private sqlLite : SqlLite,private synchronization:Synchronization,
               private toastCtrl: ToastController,private DataValues: DataValues,
               private app : AppProvider,private httpClient : HttpClient,private user : User) {
@@ -212,7 +214,6 @@ export class Login {
     });
   }
 
-
   downloadingReports(){
     this.setLoadingMessages('Downloading reports');
     let resource = 'reports';
@@ -255,8 +256,9 @@ export class Login {
   setLandingPage(){
     this.loginData.isLogin = true;
     this.user.setCurrentUser(this.loginData).then(()=>{
-      this.synchronization.startSynchronization();
-      this.navCtrl.setRoot(TabsPage);
+      this.synchronization.startSynchronization().then(()=>{
+        this.navCtrl.setRoot(TabsPage);
+      });
     });
   }
 

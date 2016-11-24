@@ -2,6 +2,13 @@ page-data-entry-form {
   .dataEntryForm{
     background-color: #f5f5f5;
   }
+
+  .dataEntryFormHeader{
+  }
+
+  .dataEntryFormBody{
+  }
+
   .entryFormContainer{
     box-shadow: 2px 2px 3px  #888888;
     padding: 4px;
@@ -11,10 +18,6 @@ page-data-entry-form {
     padding-bottom: 0px;
     color: #387ef5;
     text-align: center;
-  }
-  .entryFormFields{
-    height:350px;
-    overflow:auto;
   }
   .inputLabel{
     padding-bottom: 4px;

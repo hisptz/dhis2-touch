@@ -10,7 +10,15 @@ import {SqlLite} from "./sql-lite/sql-lite";
 @Injectable()
 export class EntryForm {
 
+  private dataEntrySetting : any;
   constructor(private sqlLite : SqlLite) {
+  //  this.Setting.getDataEntrySetting().then((dataEntrySetting : any)=>{
+  //    if(dataEntrySetting && dataEntrySetting.label){
+  //      this.dataEntrySetting = dataEntrySetting;
+  //    }else{
+  //      this.dataEntrySetting = {label : "displayName",maxDataElementOnDefaultForm : 4}
+  //    }
+  //  });
   }
 
 

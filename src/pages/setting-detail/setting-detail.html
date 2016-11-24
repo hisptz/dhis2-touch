@@ -37,19 +37,35 @@
     <ion-grid>
       <ion-row>
         <ion-col width="100">
-          <div *ngIf="settingKey =='formLabelSetting'">
+          <div *ngIf="settingKey =='dataEntrySetting'">
             <ion-list>
               <ion-item>
-                <ion-label></ion-label>
-                <ion-select [(ngModel)]="formLabel" interface="action-sheet">
+                <ion-label>Form Label</ion-label>
+                <ion-select [(ngModel)]="dataEntrySetting.label" interface="action-sheet">
                   <ion-option value="displayName">DHIS2 Display Name</ion-option>
                   <ion-option value="formName">DHIS2 Form Name</ion-option>
                 </ion-select>
               </ion-item>
+              <ion-item>
+                <ion-label floating>Max Data Element per section </ion-label>
+                <ion-input type="number"  min="1" [(ngModel)]="dataEntrySetting.maxDataElementOnDefaultForm"></ion-input>
+              </ion-item>
             </ion-list>
           </div>
           <div *ngIf="settingKey =='synchronizationSetting'">
-            Synchronization Setting
+            <ion-list>
+              <ion-item>
+                <ion-label floating>Synchronization time</ion-label>
+                <ion-input type="number"  min="1" [(ngModel)]="synchronizationSetting.time"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label>Type</ion-label>
+                <ion-select [(ngModel)]="synchronizationSetting.timeType" interface="action-sheet">
+                  <ion-option value="minutes">Minute(s)</ion-option>
+                  <ion-option value="hours">Hour(s)</ion-option>
+                </ion-select>
+              </ion-item>
+            </ion-list>
           </div>
         </ion-col>
     </ion-row>

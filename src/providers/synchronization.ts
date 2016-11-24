@@ -4,6 +4,7 @@ import {SqlLite} from "./sql-lite/sql-lite";
 import {Observable} from 'rxjs/Rx';
 import {User} from "./user/user";
 import {DataValues} from "./data-values";
+import {Setting} from "./setting";
 
 /*
   Generated class for the Synchronization provider.
@@ -16,7 +17,7 @@ export class Synchronization {
 
   public synchronizationTimer : any;
 
-  constructor(private httpClient: HttpClient,private user : User,private dataValues : DataValues) {
+  constructor(public Setting: Setting,public httpClient: HttpClient,public user : User,public dataValues : DataValues) {
 
   }
 
@@ -32,18 +33,32 @@ export class Synchronization {
   startSynchronization(){
     let self = this;
     let timeInterval = 1000 * 60 * 2;
-    self.getCurrentUser().then((user : any)=>{
-      this.synchronizationTimer = setInterval(() => {
-        self.dataValues.getDataValuesByStatus(user,"not synced").then((dataValues : any)=>{
-          self.dataValues.uploadDataValues(dataValues,user);
-        },error=>{});
-      }, timeInterval);
+    return  new Promise(function(resolve,reject){
+      self.Setting.getSynchronization().then((synchronization :any)=>{
+        if(synchronization){
+          timeInterval = synchronization.time?synchronization.time:timeInterval;
+        }
+        self.getCurrentUser().then((user : any)=>{
+          self.synchronizationTimer = setInterval(() => {
+            self.dataValues.getDataValuesByStatus(user,"not synced").then((dataValues : any)=>{
+              self.dataValues.uploadDataValues(dataValues,user);
+            },error=>{});
+          }, timeInterval);
+        });
+        resolve();
+      });
 
-    })
+    });
+
 
   }
 
   stopSynchronization(){
-    clearInterval(this.synchronizationTimer);
+    let self = this;
+    return  new Promise(function(resolve,reject){
+      clearInterval(self.synchronizationTimer);
+      resolve()
+    });
+
   }
 }

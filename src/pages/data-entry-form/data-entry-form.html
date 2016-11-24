@@ -33,179 +33,184 @@
 
   <div *ngIf="!loadingData">
 
-    <ion-card>
-      <ion-card-content>
-        <p><b>Form</b> : {{ selectedDataSetLabel }}</p>
-        <p><b>Organisation Unit</b> : {{ selectedOrganisationUnitLabel }}</p>
-        <p><b>Period</b> : {{ selectedPeriodLabel }} </p>
-        <p> <b>Synced</b> : {{ storageStatus.online }} <b>Not synced</b> : {{storageStatus.local }}</p>
-      </ion-card-content>
-    </ion-card>
+    <div class="dataEntryFormHeader">
+      <ion-card>
+        <ion-card-content>
+          <p><b>Form</b> : {{ selectedDataSetLabel }}</p>
+          <p><b>Organisation Unit</b> : {{ selectedOrganisationUnitLabel }}</p>
+          <p><b>Period</b> : {{ selectedPeriodLabel }} </p>
+          <p> <b>Synced</b> : {{ storageStatus.online }} <b>Not synced</b> : {{storageStatus.local }}</p>
+        </ion-card-content>
+      </ion-card>
+    </div>
 
-    <ion-grid>
-      <ion-row>
-        <ion-col width="100">
-          <div class="entryFormContainer">
-            <div *ngFor="let section of entryFormSections">
-              <div *ngIf="section.id == currentPage">
-                <div *ngIf=" section.name != 'defaultSection'">
-                  <div class="sectionHeader">
-                    <b>{{ section.name }}</b>
-                  </div>
-                  <hr>
-                </div>
-                <div class="entryFormFields">
-                  <div *ngFor="let dataElement of section.dataElements">
-                    <br>
-                    <div *ngFor="let categoryOptionCombos of dataElement.categoryCombo.categoryOptionCombos">
-                      <div (click)="showTooltips(dataElement,categoryOptionCombos.name)" class="inputLabel">
-                        <b>{{ getDisplayName(dataElement) }}<span *ngIf="dataElement.categoryCombo.name != 'default'">&nbsp;&nbsp;{{ categoryOptionCombos.name}}</span>&nbsp;&nbsp;</b>
+    <div class="dataEntryFormBody">
+      <div style="position: absolute">
+        <ion-grid>
+          <ion-row>
+            <ion-col width="100">
+              <div class="entryFormContainer">
+                <div *ngFor="let section of entryFormSections">
+                  <div *ngIf="section.id == currentPage">
+                    <div *ngIf=" section.name != 'defaultSection'">
+                      <div class="sectionHeader">
+                        <b>{{ section.name }}</b>
+                      </div>
+                      <hr>
+                    </div>
+                    <div *ngFor="let dataElement of section.dataElements">
+                      <br>
+                      <div *ngFor="let categoryOptionCombos of dataElement.categoryCombo.categoryOptionCombos">
+                        <div (click)="showTooltips(dataElement,categoryOptionCombos.name)" class="inputLabel">
+                          <b>{{ getDisplayName(dataElement) }}<span *ngIf="dataElement.categoryCombo.name != 'default'">&nbsp;&nbsp;{{ categoryOptionCombos.name}}</span>&nbsp;&nbsp;</b>
                         <span *ngIf="dataElement.description">
                           &nbsp;&nbsp;<ion-icon name="help-circle"></ion-icon>
                         </span>
-                      </div>
-                      <div *ngIf="dataElement.optionSet">
-                        <ion-item>
-                          <ion-label>Touch to select/update</ion-label>
-                          <ion-select (ionChange)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)" [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" interface="action-sheet" >
-                            <ion-option *ngFor="let option of dataElement.optionSet.options" value="{{option.code}}">{{option.name}}</ion-option>
-                          </ion-select>
-                        </ion-item>
-                      </div>
-                      <div *ngIf="!dataElement.optionSet">
-                        <div *ngIf="dataElement.valueType == 'DATE'">
+                        </div>
+                        <div *ngIf="dataElement.optionSet">
                           <ion-item>
-                            <ion-input type="date" (blur)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)"  [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" ></ion-input>
+                            <ion-label>Touch to select/update</ion-label>
+                            <ion-select (ionChange)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)" [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" interface="action-sheet" >
+                              <ion-option *ngFor="let option of dataElement.optionSet.options" value="{{option.code}}">{{option.name}}</ion-option>
+                            </ion-select>
                           </ion-item>
                         </div>
+                        <div *ngIf="!dataElement.optionSet">
+                          <div *ngIf="dataElement.valueType == 'DATE'">
+                            <ion-item>
+                              <ion-input type="date" (blur)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)"  [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" ></ion-input>
+                            </ion-item>
+                          </div>
 
-                        <div *ngIf="dataElement.valueType == 'TRUE_ONLY'">
-                          <ion-item>
-                            <ion-label>Touch to select/update</ion-label>
-                            <ion-select (ionChange)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)" [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" interface="action-sheet" >
-                              <ion-option value="true">Yes</ion-option>
-                            </ion-select>
-                          </ion-item>
+                          <div *ngIf="dataElement.valueType == 'TRUE_ONLY'">
+                            <ion-item>
+                              <ion-label>Touch to select/update</ion-label>
+                              <ion-select (ionChange)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)" [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" interface="action-sheet" >
+                                <ion-option value="true">Yes</ion-option>
+                              </ion-select>
+                            </ion-item>
+                          </div>
+                          <div *ngIf="dataElement.valueType == 'BOOLEAN'">
+                            <ion-item>
+                              <ion-label>Touch to select/update</ion-label>
+                              <ion-select (ionChange)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)" [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" interface="action-sheet" >
+                                <ion-option value="true">Yes</ion-option>
+                                <ion-option value="false">No</ion-option>
+                              </ion-select>
+                            </ion-item>
+                          </div>
+                          <div *ngIf="dataElement.valueType == 'INTEGER' ||dataElement.valueType == 'NUMBER'">
+                            <ion-item>
+                              <ion-input type="number" (blur)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)"  [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" ></ion-input>
+                            </ion-item>
+                          </div>
+                          <div *ngIf="dataElement.valueType == 'INTEGER_POSITIVE'">
+                            <ion-item>
+                              <ion-input type="number" (blur)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)"  [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" min="1" ></ion-input>
+                            </ion-item>
+                          </div>
+                          <div *ngIf="dataElement.valueType == 'INTEGER_NEGATIVE'">
+                            <ion-item>
+                              <ion-input type="number" (blur)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)"  [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" max="-1" ></ion-input>
+                            </ion-item>
+                          </div>
+                          <div *ngIf="dataElement.valueType == 'INTEGER_ZERO_OR_POSITIVE'">
+                            <ion-item>
+                              <ion-input type="number" (blur)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)"  [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" min="0" ></ion-input>
+                            </ion-item>
+                          </div>
+                          <div *ngIf="dataElement.valueType == 'UNIT_INTERVAL'">
+                            <ion-item>
+                              <ion-input type="text" (blur)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)"  [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" ></ion-input>
+                            </ion-item>
+                          </div>
+                          <div *ngIf="dataElement.valueType == 'PERCENTAGE'">
+                            <ion-item>
+                              <ion-input type="text" (blur)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)"  [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" ></ion-input>
+                            </ion-item>
+                          </div>
+                          <div *ngIf="dataElement.valueType == 'TEXT'">
+                            <ion-item>
+                              <ion-input type="text" (blur)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)"  [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" ></ion-input>
+                            </ion-item>
+                          </div>
+                          <div *ngIf="dataElement.valueType == 'COORDINATE'">
+                            <ion-item>
+                              <ion-input type="text" (blur)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)"  [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" ></ion-input>
+                            </ion-item>
+                          </div>
                         </div>
-                        <div *ngIf="dataElement.valueType == 'BOOLEAN'">
-                          <ion-item>
-                            <ion-label>Touch to select/update</ion-label>
-                            <ion-select (ionChange)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)" [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" interface="action-sheet" >
-                              <ion-option value="true">Yes</ion-option>
-                              <ion-option value="false">No</ion-option>
-                            </ion-select>
-                          </ion-item>
-                        </div>
-                        <div *ngIf="dataElement.valueType == 'INTEGER' ||dataElement.valueType == 'NUMBER'">
-                          <ion-item>
-                            <ion-input type="number" (blur)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)"  [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" ></ion-input>
-                          </ion-item>
-                        </div>
-                        <div *ngIf="dataElement.valueType == 'INTEGER_POSITIVE'">
-                          <ion-item>
-                            <ion-input type="number" (blur)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)"  [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" min="1" ></ion-input>
-                          </ion-item>
-                        </div>
-                        <div *ngIf="dataElement.valueType == 'INTEGER_NEGATIVE'">
-                          <ion-item>
-                            <ion-input type="number" (blur)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)"  [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" max="-1" ></ion-input>
-                          </ion-item>
-                        </div>
-                        <div *ngIf="dataElement.valueType == 'INTEGER_ZERO_OR_POSITIVE'">
-                          <ion-item>
-                            <ion-input type="number" (blur)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)"  [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" min="0" ></ion-input>
-                          </ion-item>
-                        </div>
-                        <div *ngIf="dataElement.valueType == 'UNIT_INTERVAL'">
-                          <ion-item>
-                            <ion-input type="text" (blur)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)"  [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" ></ion-input>
-                          </ion-item>
-                        </div>
-                        <div *ngIf="dataElement.valueType == 'PERCENTAGE'">
-                          <ion-item>
-                            <ion-input type="text" (blur)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)"  [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" ></ion-input>
-                          </ion-item>
-                        </div>
-                        <div *ngIf="dataElement.valueType == 'TEXT'">
-                          <ion-item>
-                            <ion-input type="text" (blur)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)"  [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" ></ion-input>
-                          </ion-item>
-                        </div>
-                        <div *ngIf="dataElement.valueType == 'COORDINATE'">
-                          <ion-item>
-                            <ion-input type="text" (blur)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)"  [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" ></ion-input>
-                          </ion-item>
-                        </div>
+                        <br>
                       </div>
-                      <br>
                     </div>
                   </div>
+
                 </div>
               </div>
 
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-card>
+          <ion-card-content>
+            <ion-row>
+              <ion-col width-33>
+                <button color="primary" ion-button full (click)="changePagination(currentPage - 1)">
+                  Previous
+                </button>
+              </ion-col>
+              <ion-col width-33>
+                <button ion-button color="primary" full clear>
+                  {{ paginationLabel }}
+                </button>
+              </ion-col>
+              <ion-col width-33>
+                <button color="primary" ion-button full (click)="changePagination(currentPage + 1)">
+                  Next
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card>
+          <ion-card-content>
+
+            <div *ngIf="isDataSetCompletenessUpdated">
+              <div style="text-align: center;">
+                <ion-spinner name="crescent" color="primary"></ion-spinner>
+              </div>
             </div>
-          </div>
 
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+            <ion-row>
+              <ion-col width-50>
+                <button color="secondary" ion-button full *ngIf="!isDataSetCompleted" (click)="updateDataSetCompleteness()">
+                  Complete
+                </button>
+                <button color="danger" ion-button full *ngIf="isDataSetCompleted" (click)="updateDataSetCompleteness()">
+                  Undo Complete
+                </button>
+              </ion-col>
+              <ion-col width-25>
+                <button color="primary" ion-button full (click)="changePagination(0)">
+                  First
+                </button>
+              </ion-col>
+              <ion-col width-25>
+                <button color="primary" ion-button full (click)="changePagination(entryFormSections.length -1)">
+                  Last
+                </button>
+              </ion-col>
+            </ion-row>
 
-    <ion-card>
-      <ion-card-content>
-        <ion-row>
-          <ion-col width-33>
-            <button color="primary" ion-button full (click)="changePagination(currentPage - 1)">
-              Previous
-            </button>
-          </ion-col>
-          <ion-col width-33>
-            <button ion-button color="primary" full clear>
-              {{ paginationLabel }}
-            </button>
-          </ion-col>
-          <ion-col width-33>
-            <button color="primary" ion-button full (click)="changePagination(currentPage + 1)">
-              Next
-            </button>
-          </ion-col>
-        </ion-row>
-      </ion-card-content>
-    </ion-card>
+            <div *ngIf="isDataSetCompleted">Completed by: <b>{{ dataSetCompletenessInformation.name }}</b> at: <b>{{ dataSetCompletenessInformation.date }}</b></div>
 
-    <ion-card>
-      <ion-card-content>
+          </ion-card-content>
+        </ion-card>
+      </div>
 
-        <div *ngIf="isDataSetCompletenessUpdated">
-          <div style="text-align: center;">
-            <ion-spinner name="crescent" color="primary"></ion-spinner>
-          </div>
-        </div>
-
-        <ion-row>
-          <ion-col width-50>
-            <button color="secondary" ion-button full *ngIf="!isDataSetCompleted" (click)="updateDataSetCompleteness()">
-              Complete
-            </button>
-            <button color="danger" ion-button full *ngIf="isDataSetCompleted" (click)="updateDataSetCompleteness()">
-              Undo Complete
-            </button>
-          </ion-col>
-          <ion-col width-25>
-            <button color="primary" ion-button full (click)="changePagination(0)">
-              First
-            </button>
-          </ion-col>
-          <ion-col width-25>
-            <button color="primary" ion-button full (click)="changePagination(entryFormSections.length -1)">
-              Last
-            </button>
-          </ion-col>
-        </ion-row>
-
-        <div *ngIf="isDataSetCompleted">Completed by: <b>{{ dataSetCompletenessInformation.name }}</b> at: <b>{{ dataSetCompletenessInformation.date }}</b></div>
-
-      </ion-card-content>
-    </ion-card>
+    </div>
 
   </div>
 
