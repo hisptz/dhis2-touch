@@ -4,6 +4,7 @@ import {User} from "../../providers/user/user";
 import {SqlLite} from "../../providers/sql-lite/sql-lite";
 import {Report} from "../../providers/report";
 import {HttpClient} from "../../providers/http-client/http-client";
+import { DomSanitizer, SafeHtml} from '@angular/platform-browser';
 
 /*
   Generated class for the ReportView page.
@@ -20,12 +21,13 @@ export class ReportView {
 
   public reportId : string;
   public reportName : string;
-  public reportDesignContent : any;
+  public _htmlMarkup : any;
   public loadingData : boolean = false;
   public loadingMessages : any = [];
   public currentUser : any;
 
   constructor(private params:NavParams,private user: User,
+              private sanitizer: DomSanitizer,
               private Report:Report,private toastCtrl:ToastController) {
 
 
@@ -42,12 +44,16 @@ export class ReportView {
     this.loadingMessages = [];
     this.setLoadingMessages('Loading report details');
     this.Report.getReportId(reportId,this.currentUser).then((report : any)=>{
-      this.reportDesignContent = report.designContent.replace("\n","");
+      this._htmlMarkup = report.designContent/*.replace("\n","");*/
       this.loadingData = false;
     },error=>{
       this.loadingData = false;
       this.setToasterMessage("Fail to load  report details");
     });
+  }
+
+  public get htmlMarkup(): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(this._htmlMarkup);
   }
 
   ionViewDidLoad() {
