@@ -135,6 +135,20 @@ export class SqlLite {
         {value: 'programStageDataElements', type: 'LONGTEXT'}
       ],
       fields : "id,name,programIndicators,sortOrder,programStageDataElements[id]"
+    },
+    events : {
+      columns : [
+        {value: 'id', type: 'TEXT'},
+        {value: 'program', type: 'TEXT'},
+        {value: 'programStage', type: 'TEXT'},
+        {value: 'orgUnit', type: 'TEXT'},
+        {value: 'status', type: 'TEXT'},
+        {value: 'eventDate', type: 'TEXT'},
+        {value: 'completedDate', type: 'TEXT'},
+        {value: 'attributeCategoryOptions', type: 'TEXT'},
+        {value: 'dataValues', type: 'LONGTEXT'},
+        {value: 'notes', type: 'LONGTEXT'}
+      ]
     }
   };
 
