@@ -7,14 +7,14 @@ import {Login} from "../pages/login/login";
   template: `<ion-nav [root]="rootPage" color="primary"></ion-nav>`
 })
 export class MyApp {
-  rootPage = Login;
 
-  constructor(platform: Platform) {
-    platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
+  public rootPage : any;
+
+  constructor(public platform: Platform) {
+    this.platform.ready().then(() => {
       StatusBar.styleDefault();
       Splashscreen.hide();
+      this.rootPage = Login;
     });
   }
 }

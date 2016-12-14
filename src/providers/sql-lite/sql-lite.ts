@@ -102,10 +102,39 @@ export class SqlLite {
         {value: 'id', type: 'TEXT'},
         {value: 'name', type: 'TEXT'},
         {value: 'categoryCombo',type:'LONGTEXT'},
-        {value: 'organisationUnits',type:'LONGTEXT'},
-        {value: 'programStages',type:'LONGTEXT'}
+        {value: 'programStages',type:'LONGTEXT'},
+        {value: 'programStageSections',type:'LONGTEXT'},
+        {value: 'programIndicators',type:'LONGTEXT'},
+        {value: 'translations',type:'LONGTEXT'},
+        {value: 'attributeValues',type:'LONGTEXT'},
+        {value: 'validationCriterias',type:'LONGTEXT'},
+        {value: 'programRuleVariables',type:'LONGTEXT'},
+        {value: 'programTrackedEntityAttributes',type:'LONGTEXT'},
+        {value: 'programRules',type:'LONGTEXT'},
+        {value: 'organisationUnits',type:'LONGTEXT'}
       ],
-      fields : "id,version,name,categoryCombo[id,isDefault,categories[id]],organisationUnits[id],programStages[id,programStageSections[id],programStageDataElements[dataElement[id,optionSet[id,version]]]]",
+      fields : "id,name,withoutRegistration,programType,categoryCombo[categories[id,name,categoryOptions[name,id]]],programStages[id,name,programStageDataElements[id],programStageSections[id]],organisationUnits[id],programIndicators,translations,attributeValues,validationCriterias,programRuleVariables,programTrackedEntityAttributes,programRules",
+    },
+    programStageDataElements : {
+      columns : [
+        {value: 'id', type: 'TEXT'},
+        {value: 'displayInReports', type: 'TEXT'},
+        {value: 'compulsory', type: 'TEXT'},
+        {value: 'allowProvidedElsewhere', type: 'TEXT'},
+        {value: 'allowFutureDate', type: 'TEXT'},
+        {value: 'dataElement', type: 'LONGTEXT'}
+      ],
+      fields : "id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]"
+    },
+    programStageSections : {
+      columns : [
+        {value: 'id', type: 'TEXT'},
+        {value: 'name', type: 'TEXT'},
+        {value: 'sortOrder', type: 'TEXT'},
+        {value: 'programIndicators', type: 'LONGTEXT'},
+        {value: 'programStageDataElements', type: 'LONGTEXT'}
+      ],
+      fields : "id,name,programIndicators,sortOrder,programStageDataElements[id]"
     }
   };
 
@@ -122,20 +151,17 @@ export class SqlLite {
       let promises = [];
       let tableNames = Object.keys(self.dataBaseStructure);
       tableNames.forEach((tableName: any) => {
-
         promises.push(self.createTable(tableName,databaseName).then(()=>{
           console.log('Generate table for ' + tableName);
-          }).catch(error=>{
-            reject(error);
-          })
+        })
         );
       });
 
-      Observable.forkJoin(promises).subscribe(() => {
-          resolve()
+      Observable.forkJoin(promises).subscribe((response) => {
+          resolve(response);
         },
         error => {
-          reject(error.failure);
+          reject(error);
         }
       );
     });
@@ -151,7 +177,7 @@ export class SqlLite {
       }).then(() => {
         resolve();
       }, (error) => {
-        reject(error.failure);
+        reject(error);
       });
     });
 
@@ -181,10 +207,10 @@ export class SqlLite {
         db.executeSql(query, []).then((success) => {
           resolve();
         }, (error) => {
-          reject(error.failure);
+          reject(error);
         });
       }, (error) => {
-        reject(error.failure);
+        reject(error);
       });
     });
   }

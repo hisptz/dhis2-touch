@@ -104,6 +104,8 @@ export class Login {
                       console.log(err);
                     });
                 });
+              },error=>{
+                this.setToasterMessage('Fail to open database. : ' + JSON.stringify(error) );
               })
             });
           }
@@ -203,7 +205,7 @@ export class Login {
     this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
       this.setLoadingMessages('Saving '+response[resource].length+' programs');
       this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-        this.downloadingReports();
+        this.downloadingProgramStageSections();
       },error=>{
         this.loadingData = false;
         this.setStickToasterMessage('Fail to save programs. ' + JSON.stringify(error));
@@ -213,6 +215,46 @@ export class Login {
       this.setStickToasterMessage('Fail to download programs. ' + JSON.stringify(error));
     });
   }
+
+  downloadingProgramStageSections(){
+    this.setLoadingMessages('Downloading program-stage sections');
+    let resource = 'programStageSections';
+    let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+    let fields = tableMetadata.fields;
+    this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
+      this.setLoadingMessages('Saving '+response[resource].length+' program-stage sections');
+      this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+        this.downloadingProgramStageDataElements();
+      },error=>{
+        this.loadingData = false;
+        this.setStickToasterMessage('Fail to save program-stage sections. ' + JSON.stringify(error));
+      });
+    },error=>{
+      this.loadingData = false;
+      this.setStickToasterMessage('Fail to download program-stage sections. ' + JSON.stringify(error));
+    });
+  }
+
+  downloadingProgramStageDataElements(){
+    this.setLoadingMessages('Downloading program-stage data-elements');
+    let resource = 'programStageDataElements';
+    let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+    let fields = tableMetadata.fields;
+    this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
+      this.setLoadingMessages('Saving '+response[resource].length+' program-stage data-elements');
+      this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+        this.downloadingReports();
+      },error=>{
+        this.loadingData = false;
+        this.setStickToasterMessage('Fail to save program-stage data-elements. ' + JSON.stringify(error));
+      });
+    },error=>{
+      this.loadingData = false;
+      this.setStickToasterMessage('Fail to download program-stage data-elements. ' + JSON.stringify(error));
+    });
+  }
+
+
 
   downloadingReports(){
     this.setLoadingMessages('Downloading reports');
