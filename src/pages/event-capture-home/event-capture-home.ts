@@ -7,8 +7,8 @@ import {HttpClient} from "../../providers/http-client/http-client";
 import {SqlLite} from "../../providers/sql-lite/sql-lite";
 import {OrganisationUnits} from "../organisation-units/organisation-units";
 import {ProgramSelection} from "../program-selection/program-selection";
-
-declare var dhis2: any;
+import {Program} from "../../providers/program";
+import {OrganisationUnit} from "../../providers/organisation-unit";
 
 /*
   Generated class for the EventCaptureHome page.
@@ -19,7 +19,7 @@ declare var dhis2: any;
 @Component({
   selector: 'page-event-capture-home',
   templateUrl: 'event-capture-home.html',
-  providers : [User,AppProvider,HttpClient,SqlLite]
+  providers : [User,AppProvider,HttpClient,SqlLite,Program,OrganisationUnit]
 })
 export class EventCaptureHome {
 
@@ -34,7 +34,7 @@ export class EventCaptureHome {
   public selectedProgramLabel : string;
   public programIdsByUserRoles : any;
 
-  constructor(public modalCtrl: ModalController,public navCtrl: NavController,public toastCtrl: ToastController,public user : User,public appProvider : AppProvider,public sqlLite : SqlLite,public httpClient: HttpClient) {
+  constructor(public OrganisationUnit : OrganisationUnit,public Program : Program,public modalCtrl: ModalController,public navCtrl: NavController,public toastCtrl: ToastController,public user : User,public appProvider : AppProvider,public sqlLite : SqlLite,public httpClient: HttpClient) {
     this.user.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;
       this.getUserAssignedPrograms();
@@ -85,14 +85,13 @@ export class EventCaptureHome {
     this.loadingData = true;
     this.loadingMessages=[];
     this.setLoadingMessages('Loading organisation units');
-    let resource  = "organisationUnits";
-    this.sqlLite.getAllDataFromTable(resource,this.currentUser.currentDatabase).then((organisationUnits : any)=>{
+    this.OrganisationUnit.getOrganisationUnits(this.currentUser).then((organisationUnits : any)=>{
       this.organisationUnits = organisationUnits;
       this.loadingData = false;
     },error=>{
       this.loadingData = false;
-      this.setToasterMessage('Fail to load organisation units');
-    })
+      this.setToasterMessage('Fail to load organisation units : ' + JSON.stringify(error));
+    });
   }
 
   openOrganisationUnitModal(){
@@ -119,16 +118,8 @@ export class EventCaptureHome {
   loadingPrograms(){
     //todo empty programs
     this.setLoadingMessages('Loading assigned programs');
-    let resource = 'programs';
-    let attribute = 'id';
-    let attributeValue =[];
     this.assignedPrograms = [];
-    this.selectedOrganisationUnit.programs.forEach((program:any)=>{
-      if(this.programIdsByUserRoles.indexOf(program.id) != -1){
-        attributeValue.push(program.id);
-      }
-    });
-    this.sqlLite.getDataFromTableByAttributes(resource,attribute,attributeValue,this.currentUser.currentDatabase).then((programs : any)=>{
+    this.Program.getProgramsAssigedOnOrgUnitAndUserRoles(this.selectedOrganisationUnit,this.programIdsByUserRoles,this.currentUser).then((programs : any)=>{
       programs.forEach((program:any)=>{
         this.assignedPrograms.push({
           id: program.id,

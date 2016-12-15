@@ -10,7 +10,21 @@ import {SqlLite} from "./sql-lite/sql-lite";
 @Injectable()
 export class OrganisationUnit {
 
+  public resource : string;
+
   constructor(private sqlLite : SqlLite) {
+    this.resource = "organisationUnits";
+  }
+
+  getOrganisationUnits(currentUser){
+    let self = this;
+    return new Promise(function(resolve, reject) {
+      self.sqlLite.getAllDataFromTable(self.resource,currentUser.currentDatabase).then((organisationUnits : any)=>{
+        resolve(organisationUnits)
+      },error=>{
+        reject(error);
+      })
+    });
   }
 
 }
