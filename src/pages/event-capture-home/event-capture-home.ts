@@ -9,6 +9,7 @@ import {OrganisationUnits} from "../organisation-units/organisation-units";
 import {ProgramSelection} from "../program-selection/program-selection";
 import {Program} from "../../providers/program";
 import {OrganisationUnit} from "../../providers/organisation-unit";
+import {Events} from "../../providers/events";
 
 /*
   Generated class for the EventCaptureHome page.
@@ -19,7 +20,7 @@ import {OrganisationUnit} from "../../providers/organisation-unit";
 @Component({
   selector: 'page-event-capture-home',
   templateUrl: 'event-capture-home.html',
-  providers : [User,AppProvider,HttpClient,SqlLite,Program,OrganisationUnit]
+  providers : [User,AppProvider,HttpClient,SqlLite,Program,OrganisationUnit,Events]
 })
 export class EventCaptureHome {
 
@@ -33,8 +34,10 @@ export class EventCaptureHome {
   public selectedProgram : any = {};
   public selectedProgramLabel : string;
   public programIdsByUserRoles : any;
+  public selectedDataDimension : any;
 
-  constructor(public OrganisationUnit : OrganisationUnit,public Program : Program,public modalCtrl: ModalController,public navCtrl: NavController,public toastCtrl: ToastController,public user : User,public appProvider : AppProvider,public sqlLite : SqlLite,public httpClient: HttpClient) {
+  constructor(public eventProvider :Events,public OrganisationUnit : OrganisationUnit,public Program : Program,public modalCtrl: ModalController,public navCtrl: NavController,public toastCtrl: ToastController,public user : User,public appProvider : AppProvider,public sqlLite : SqlLite,public httpClient: HttpClient) {
+    this.selectedDataDimension = [];
     this.user.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;
       this.getUserAssignedPrograms();
@@ -116,14 +119,14 @@ export class EventCaptureHome {
   }
 
   loadingPrograms(){
-    //todo empty programs
     this.setLoadingMessages('Loading assigned programs');
     this.assignedPrograms = [];
-    this.Program.getProgramsAssigedOnOrgUnitAndUserRoles(this.selectedOrganisationUnit,this.programIdsByUserRoles,this.currentUser).then((programs : any)=>{
+    this.Program.getProgramsAssignedOnOrgUnitAndUserRoles(this.selectedOrganisationUnit,this.programIdsByUserRoles,this.currentUser).then((programs : any)=>{
       programs.forEach((program:any)=>{
         this.assignedPrograms.push({
           id: program.id,
           name: program.name,
+          programStages : program.programStages,
           categoryCombo : program.categoryCombo
         });
       });
@@ -134,6 +137,7 @@ export class EventCaptureHome {
     });
   }
 
+
   openProgramsModal(){
     this.loadingMessages = [];
     this.loadingData = true;
@@ -142,9 +146,13 @@ export class EventCaptureHome {
     modal.onDidDismiss((selectedProgram:any) => {
       if(selectedProgram.id){
         if(selectedProgram.id != this.selectedProgram.id){
+          this.selectedDataDimension = [];
           this.selectedProgram = selectedProgram;
           this.loadingData = false;
           this.setProgramSelectionLabel();
+          if(selectedProgram.categoryCombo.categories[0].name =='default'){
+            this.loadEvents();
+          }
         }else{
           this.loadingData = false;
         }
@@ -153,6 +161,55 @@ export class EventCaptureHome {
       }
     });
     modal.present();
+  }
+
+  /**
+   * checking if category combination for program as  been selected or not
+   */
+  checkingForDataDimension(){
+    if(this.selectedDataDimension.length == this.selectedProgram.categoryCombo.categories.length){
+      let hasAllDataDimension = true;
+      this.selectedDataDimension.forEach((dataDimension : any)=>{
+        if(dataDimension.trim() == ""){
+          hasAllDataDimension = false;
+        }
+      });
+      if(hasAllDataDimension){
+        this.loadEvents();
+      }
+    }
+  }
+
+  /**
+   * load events
+   */
+  loadEvents(){
+    this.loadingData = true;
+    this.loadingMessages = [];
+    this.setLoadingMessages("Downloading most recent events");
+    this.eventProvider.loadEventsFromServer(this.selectedOrganisationUnit,this.selectedProgram,this.selectedDataDimension,this.currentUser).then((events : any)=>{
+      this.setLoadingMessages("Saving most recent events");
+      this.eventProvider.savingEventsFromServer(events,this.currentUser).then(()=>{
+        this.loadEventsFromOfflineStorage();
+      },error=>{
+        this.loadingData = false;
+        this.setToasterMessage("Fail to save most recent events");
+      });
+    },error=>{
+      this.setToasterMessage("Fail to download most recent events");
+      this.loadEventsFromOfflineStorage();
+    });
+  }
+
+  loadEventsFromOfflineStorage(){
+    this.setLoadingMessages("Loading events from offline storage");
+    this.eventProvider.loadingEventsFromStorage(this.selectedOrganisationUnit,this.selectedProgram,this.currentUser).then((events:any)=>{
+      alert(JSON.stringify(events));
+      this.loadingData = false;
+    },error=>{
+      this.loadingData = false;
+      this.setToasterMessage('Fail to load events from offline storage')
+    });
   }
 
   setLoadingMessages(message){

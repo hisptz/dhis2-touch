@@ -113,7 +113,7 @@ export class SqlLite {
         {value: 'programRules',type:'LONGTEXT'},
         {value: 'organisationUnits',type:'LONGTEXT'}
       ],
-      fields : "id,name,withoutRegistration,programType,categoryCombo[categories[id,name,categoryOptions[name,id]]],programStages[id,name,programStageDataElements[id],programStageSections[id]],organisationUnits[id],programIndicators,translations,attributeValues,validationCriterias,programRuleVariables,programTrackedEntityAttributes,programRules",
+      fields : "id,name,withoutRegistration,programType,categoryCombo[id,name,categories[id,name,categoryOptions[name,id]]],programStages[id,name,programStageDataElements[id],programStageSections[id]],organisationUnits[id],programIndicators,translations,attributeValues,validationCriterias,programRuleVariables,programTrackedEntityAttributes,programRules",
     },
     programStageDataElements : {
       columns : [
@@ -138,7 +138,7 @@ export class SqlLite {
     },
     events : {
       columns : [
-        {value: 'id', type: 'TEXT'},
+        {value: 'event', type: 'TEXT'},
         {value: 'program', type: 'TEXT'},
         {value: 'programStage', type: 'TEXT'},
         {value: 'orgUnit', type: 'TEXT'},
@@ -147,7 +147,8 @@ export class SqlLite {
         {value: 'completedDate', type: 'TEXT'},
         {value: 'attributeCategoryOptions', type: 'TEXT'},
         {value: 'dataValues', type: 'LONGTEXT'},
-        {value: 'notes', type: 'LONGTEXT'}
+        {value: 'notes', type: 'LONGTEXT'},
+        {value: 'syncStatus', type: 'TEXT'}
       ]
     }
   };

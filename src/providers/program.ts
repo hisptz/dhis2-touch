@@ -17,7 +17,7 @@ export class Program {
   }
 
 
-  getProgramsAssigedOnOrgUnitAndUserRoles(orgUnit,programIdsByUserRoles,currentUser){
+  getProgramsAssignedOnOrgUnitAndUserRoles(orgUnit,programIdsByUserRoles,currentUser){
     let attribute = 'id';
     let attributeValue =[];
     let assignedPrograms = [];
@@ -36,6 +36,7 @@ export class Program {
             assignedPrograms.push({
               id: program.id,
               name: program.name,
+              programStages : program.programStages,
               categoryCombo : program.categoryCombo
             });
           });

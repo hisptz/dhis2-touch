@@ -48,25 +48,31 @@
           </div>
         </ion-col>
       </ion-row>
-      <ion-row >
-        <div *ngIf="selectedProgram">
-          <div *ngIf="selectedProgram.categoryCombo">
-            <div *ngIf="selectedProgram.categoryCombo.name != 'default'">
-              <ion-col width="100" >
-                <!--<ion-item *ngFor="let category selectedProgram.categoryCombo.categories ">-->
-                <!--<ion-label>{{ category.name }}</ion-label>-->
-                <!--<ion-select [(ngModel)]="selectedDataDimension">-->
-                <!--<ion-option value="true">Yes</ion-option>-->
-                <!--</ion-select>-->
-                <!--</ion-item>-->
-                {{ selectedProgram.categoryCombo|json }}
-              </ion-col>
+
+
+
+      <div *ngIf="selectedProgram">
+        <div *ngIf="selectedProgram.categoryCombo">
+          <div *ngIf="selectedProgram.categoryCombo.categories[0].name !='default'">
+            <div *ngFor="let category of selectedProgram.categoryCombo.categories;let categoryIndex = index ">
+              <ion-row >
+                <ion-col width="100">
+                  <ion-list>
+                    <ion-item >
+                      <ion-label>{{ category.name }}</ion-label>
+                      <ion-select [(ngModel)]="selectedDataDimension[categoryIndex]" (ionChange)="checkingForDataDimension()" interface="action-sheet">
+                        <ion-option *ngFor="let option of category.categoryOptions" value="{{option.id}}" >
+                          {{ option.name }}
+                        </ion-option>
+                      </ion-select>
+                    </ion-item>
+                  </ion-list>
+                </ion-col>
+              </ion-row>
             </div>
           </div>
         </div>
-
-      </ion-row>
-
+      </div>
 
     </div>
   </ion-grid>
