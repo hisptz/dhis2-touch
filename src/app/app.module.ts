@@ -27,6 +27,7 @@ import {DataEntryForm} from "../pages/data-entry-form/data-entry-form";
 import {ReportView} from "../pages/report-view/report-view";
 import {ReportParameterSelection} from "../pages/report-parameter-selection/report-parameter-selection";
 import {SettingDetail} from "../pages/setting-detail/setting-detail";
+import {EventCaptureForm} from "../pages/event-capture-form/event-capture-form";
 
 @NgModule({
   declarations: [
@@ -34,7 +35,7 @@ import {SettingDetail} from "../pages/setting-detail/setting-detail";
     TabsPage,Help,Login,Profile,DataEntryHome,DataSetDimension,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,
     Account,ReportHome,SettingHome,TrackerCaptureHome,ObjectToArray,ProgramSelection,
-    AccountName,DataEntryForm,ReportView,ReportParameterSelection,SettingDetail
+    AccountName,DataEntryForm,ReportView,ReportParameterSelection,SettingDetail,EventCaptureForm
   ],
   imports: [
     IonicModule.forRoot(MyApp,{tabsPlacement: 'top'})
@@ -44,7 +45,7 @@ import {SettingDetail} from "../pages/setting-detail/setting-detail";
     MyApp,About,DashBoardHome,EventCaptureHome,
     TabsPage,Help,Login,Profile,DataEntryHome,DataSetDimension,SettingDetail,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,ReportParameterSelection,
-    Account,ReportHome,SettingHome,TrackerCaptureHome,ProgramSelection,DataEntryForm,ReportView
+    Account,ReportHome,SettingHome,TrackerCaptureHome,ProgramSelection,DataEntryForm,ReportView,EventCaptureForm
   ],
   providers: [Storage]
 })

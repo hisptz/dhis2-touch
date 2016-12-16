@@ -10,6 +10,7 @@ import {ProgramSelection} from "../program-selection/program-selection";
 import {Program} from "../../providers/program";
 import {OrganisationUnit} from "../../providers/organisation-unit";
 import {Events} from "../../providers/events";
+import {EventCaptureForm} from "../event-capture-form/event-capture-form";
 
 /*
   Generated class for the EventCaptureHome page.
@@ -236,11 +237,17 @@ export class EventCaptureHome {
   }
 
   showFieldSelectionMenu(){
-    this.setToasterMessage("showFieldSelectionMenu");
+    this.setToasterMessage("showFieldSelectionMenu coming soon!!");
   }
 
   goToEventRegister(){
-    this.setToasterMessage("goToEventRegister")
+    let params = {
+      orgUnitId : this.selectedOrganisationUnit.id,
+      programId : this.selectedProgram.id,
+      selectedDataDimension : this.selectedDataDimension,
+      event : ""
+    };
+    this.navCtrl.push(EventCaptureForm,{params:params});
   }
 
   setLoadingMessages(message){
