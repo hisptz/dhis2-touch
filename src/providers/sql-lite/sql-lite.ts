@@ -138,6 +138,7 @@ export class SqlLite {
     },
     events : {
       columns : [
+        {value: 'id', type: 'TEXT'},
         {value: 'event', type: 'TEXT'},
         {value: 'program', type: 'TEXT'},
         {value: 'programStage', type: 'TEXT'},

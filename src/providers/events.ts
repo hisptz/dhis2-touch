@@ -13,6 +13,7 @@ import {Observable} from 'rxjs/Rx';
 export class Events {
 
   public resource : string;
+  //id = programId+"-"+orgUnitId
 
   constructor(private sqlLite : SqlLite,public httpClient:HttpClient) {
     this.resource = "events";
@@ -31,7 +32,7 @@ export class Events {
     if(dataDimensions.length > 0){
       let attributeCos = dataDimensions.toString();
       attributeCos = attributeCos.replace(/,/g, ';');
-      url += "attributeCc="+program.categoryCombo.id+"&attributeCos="+attributeCos;
+      url += "&attributeCc="+program.categoryCombo.id+"&attributeCos="+attributeCos;
     }
     url += "&pageSize=50&page=1&totalPages=true";
     let self = this;
@@ -44,9 +45,25 @@ export class Events {
     });
   }
 
+
+  /**
+   * loading all events fro local storage using
+   * @param orgUnit
+   * @param program
+   * @param currentUser
+   * @returns {Promise<T>}
+     */
   loadingEventsFromStorage(orgUnit,program,currentUser){
+    let self = this;
+    let attribute = "id";
+    let attributeArray = [];
+    attributeArray.push(program.id + "-" +orgUnit.id);
     return new Promise(function(resolve, reject) {
-      resolve([]);
+      self.sqlLite.getDataFromTableByAttributes(self.resource,attribute,attributeArray,currentUser.currentDatabase).then((offlineEvents : any)=>{
+        resolve(offlineEvents);
+      },error=>{
+        reject(error);
+      })
     });
   }
 
@@ -64,10 +81,10 @@ export class Events {
         resolve();
       }else{
         eventsFromServer.events.forEach((event)=>{
-          let data = event;
-          data.status = "synced";
+          let eventData = event;
+          eventData["syncStatus"] = "synced";
           promises.push(
-            self.saveEvent(event,currentUser).then(()=>{},error=>{})
+            self.saveEvent(eventData,currentUser).then(()=>{},error=>{})
           );
         });
         Observable.forkJoin(promises).subscribe(() => {
@@ -88,6 +105,7 @@ export class Events {
      */
   saveEvent(event,currentUser){
     let self = this;
+    event["id"] = event.program + "-"+event.orgUnit;
     return new Promise(function(resolve, reject) {
       self.sqlLite.insertDataOnTable(self.resource,event,currentUser.currentDatabase).then((success)=>{
         resolve();
