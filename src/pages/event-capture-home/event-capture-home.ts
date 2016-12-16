@@ -35,9 +35,13 @@ export class EventCaptureHome {
   public selectedProgramLabel : string;
   public programIdsByUserRoles : any;
   public selectedDataDimension : any;
+  public currentEvents :any;
+  public isAllParameterSet : boolean;
 
   constructor(public eventProvider :Events,public OrganisationUnit : OrganisationUnit,public Program : Program,public modalCtrl: ModalController,public navCtrl: NavController,public toastCtrl: ToastController,public user : User,public appProvider : AppProvider,public sqlLite : SqlLite,public httpClient: HttpClient) {
     this.selectedDataDimension = [];
+    this.currentEvents = [];
+    this.isAllParameterSet = false;
     this.user.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;
       this.getUserAssignedPrograms();
@@ -108,6 +112,7 @@ export class EventCaptureHome {
           this.selectedProgram = {};
           this.loadingPrograms();
           this.setProgramSelectionLabel();
+          this.isAllParameterSet = false;
         }else{
           this.loadingData = false;
         }
@@ -133,7 +138,7 @@ export class EventCaptureHome {
       this.loadingData = false;
     },error=>{
       this.loadingData = false;
-      this.setToasterMessage('Fail to load assigned programs');
+      this.setToasterMessage("Fail to load assigned programs : " + JSON.stringify(error));
     });
   }
 
@@ -150,6 +155,7 @@ export class EventCaptureHome {
           this.selectedProgram = selectedProgram;
           this.loadingData = false;
           this.setProgramSelectionLabel();
+          this.isAllParameterSet = false;
           if(selectedProgram.categoryCombo.categories[0].name =='default'){
             this.loadEvents();
           }
@@ -186,6 +192,7 @@ export class EventCaptureHome {
   loadEvents(){
     this.loadingData = true;
     this.loadingMessages = [];
+    this.currentEvents = [];
     this.setLoadingMessages("Downloading most recent events");
     this.eventProvider.loadEventsFromServer(this.selectedOrganisationUnit,this.selectedProgram,this.selectedDataDimension,this.currentUser).then((events : any)=>{
       this.setLoadingMessages("Saving most recent events");
@@ -193,23 +200,47 @@ export class EventCaptureHome {
         this.loadEventsFromOfflineStorage();
       },error=>{
         this.loadingData = false;
-        this.setToasterMessage("Fail to save most recent events");
+        this.setToasterMessage("Fail to save most recent events : " + JSON.stringify(error));
       });
     },error=>{
-      this.setToasterMessage("Fail to download most recent events");
+      this.setToasterMessage("Fail to download most recent events : " + JSON.stringify(error));
       this.loadEventsFromOfflineStorage();
     });
   }
 
+  /**
+   * loading all events based on selected option from offline storage
+   */
   loadEventsFromOfflineStorage(){
     this.setLoadingMessages("Loading events from offline storage");
     this.eventProvider.loadingEventsFromStorage(this.selectedOrganisationUnit,this.selectedProgram,this.currentUser).then((events:any)=>{
-      alert(JSON.stringify(events));
+      if(this.selectedDataDimension.length > 0){
+        let attributeCategoryOptions = this.selectedDataDimension.toString();
+        attributeCategoryOptions = attributeCategoryOptions.replace(/,/g, ';');
+        events.forEach((event : any)=>{
+          if(event.attributeCategoryOptions == attributeCategoryOptions){
+            alert('yes');
+            this.currentEvents.push(event);
+          }
+        });
+      }else{
+        this.currentEvents = events;
+      }
+      this.currentEvents = events;
+      this.isAllParameterSet = true;
       this.loadingData = false;
     },error=>{
       this.loadingData = false;
-      this.setToasterMessage('Fail to load events from offline storage')
+      this.setToasterMessage("Fail to load events from offline storage : " + JSON.stringify(error));
     });
+  }
+
+  showFieldSelectionMenu(){
+    this.setToasterMessage("showFieldSelectionMenu");
+  }
+
+  goToEventRegister(){
+    this.setToasterMessage("goToEventRegister")
   }
 
   setLoadingMessages(message){

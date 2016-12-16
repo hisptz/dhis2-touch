@@ -48,9 +48,6 @@
           </div>
         </ion-col>
       </ion-row>
-
-
-
       <div *ngIf="selectedProgram">
         <div *ngIf="selectedProgram.categoryCombo">
           <div *ngIf="selectedProgram.categoryCombo.categories[0].name !='default'">
@@ -73,6 +70,34 @@
           </div>
         </div>
       </div>
+
+      <div *ngIf="isAllParameterSet">
+        <ion-row>
+          <ion-col width-33>
+            <button ion-button small full (click)="showFieldSelectionMenu()">
+              <ion-icon name="grid"></ion-icon>
+            </button>
+          </ion-col>
+          <ion-col width-33>
+            <button ion-button small full (click)="loadEvents()">
+              <ion-icon name="refresh"></ion-icon>
+            </button>
+          </ion-col>
+          <ion-col width-33>
+            <button ion-button small full (click)="goToEventRegister()">
+              <ion-icon name="add"></ion-icon>
+            </button>
+          </ion-col>
+        </ion-row>
+
+        <ion-card>
+          <ion-card-content>
+            {{ currentEvents|json}}
+          </ion-card-content>
+        </ion-card>
+      </div>
+
+
 
     </div>
   </ion-grid>
