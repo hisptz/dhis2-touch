@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {ToastController,NavParams } from 'ionic-angular';
+import {ToastController,NavParams,ActionSheetController } from 'ionic-angular';
 
 import {User} from '../../providers/user/user';
 import {HttpClient} from "../../providers/http-client/http-client";
@@ -10,6 +10,7 @@ import {OrganisationUnit} from "../../providers/organisation-unit";
 import {Events} from "../../providers/events";
 import {ProgramStageDataElements} from "../../providers/program-stage-data-elements";
 import {ProgramStageSections} from "../../providers/program-stage-sections";
+import {EventCaptureFormProvider} from "../../providers/event-capture-form-provider";
 
 /*
   Generated class for the EventCaptureForm page.
@@ -20,7 +21,7 @@ import {ProgramStageSections} from "../../providers/program-stage-sections";
 @Component({
   selector: 'page-event-capture-form',
   templateUrl: 'event-capture-form.html',
-  providers : [User,HttpClient,SqlLite,Program,Events,ProgramStageDataElements,ProgramStageSections]
+  providers : [User,HttpClient,SqlLite,Program,Events,ProgramStageDataElements,ProgramStageSections,EventCaptureFormProvider]
 })
 export class EventCaptureForm {
 
@@ -31,15 +32,25 @@ export class EventCaptureForm {
   public currentProgram : any;
   public programStageDataElements : any;
   public programStageSections : any;
+  public entryFormSections : any;
+  public event : any;
+  public dataValues : any;
+
+  //pagination controller
+  public currentPage : number ;
+  public paginationLabel : string = "";
+
 
   constructor(public params:NavParams,public eventProvider :Events,public Program : Program,
-              public toastCtrl: ToastController,public user : User,
+              public toastCtrl: ToastController,public user : User,public actionSheetCtrl: ActionSheetController,
               public ProgramStageDataElements : ProgramStageDataElements,
               public ProgramStageSections:ProgramStageSections,
+              public EventCaptureFormProvider : EventCaptureFormProvider,
               public sqlLite : SqlLite,public httpClient: HttpClient){
 
-    this.dataElements  = [];
-    this.entryFormSection = [];
+    this.programStageDataElements  = [];
+    this.programStageSections = [];
+    this.currentPage = 0;
     this.user.getCurrentUser().then(user=>{
       this.currentUser = user;
       this.entryFormParameter = this.params.get("params");
@@ -53,12 +64,35 @@ export class EventCaptureForm {
   ionViewDidLoad() {
   }
 
+  initiateNewEvent(entryFormParameter,program){
+    this.dataValues = {};
+    this.event = {
+      program : program.id,
+      programStage:program.programStages[0].id,
+      orgUnit : entryFormParameter.orgUnitId,
+      status : "ACTIVE",
+      eventDate : "",
+      dataValues : []
+    };
+    //add category combination
+    if(entryFormParameter.selectedDataDimension.length > 0){
+      let attributeCategoryOptions = entryFormParameter.selectedDataDimension.toString();
+      attributeCategoryOptions = attributeCategoryOptions.replace(/,/g, ';');
+      this.event["attributeCategoryOptions"] = attributeCategoryOptions;
+    }
+    //
+    // notes completedDate
+    //"status": "COMPLETED"
+  }
+
   loadProgramMetadata(programId){
     this.loadingData = true;
     this.loadingMessages = [];
     this.setLoadingMessages("Loading program metadata");
     this.Program.getProgramById(programId,this.currentUser).then((program : any)=>{
       this.currentProgram = program;
+      //initiate event
+      this.initiateNewEvent(this.entryFormParameter,program);
       if(program.programStageSections !=null || program.programStageSections){
         this.loadProgramStageSections(program.programStageSections);
       }else{
@@ -85,7 +119,14 @@ export class EventCaptureForm {
     this.setLoadingMessages("Loading Entry fields details");
     this.ProgramStageDataElements.getProgramStageDataElements(programStageDataElementsIds,this.currentUser).then((programStageDataElements:any)=>{
       this.programStageDataElements = programStageDataElements;
-      this.loadingData = false;
+      this.EventCaptureFormProvider.getEventCaptureEntryFormMetaData(this.programStageSections,this.programStageDataElements).then((entryFormSections:any)=>{
+        this.entryFormSections = entryFormSections;
+        this.paginationLabel = (this.currentPage + 1) + "/"+this.entryFormSections.length;
+        this.loadingData = false;
+      },error=>{
+        this.loadingData = false;
+      });
+
     },error=>{
       this.loadingData = false;
       this.setToasterMessage("Fail to load entry fields details : " + JSON.stringify(error));
@@ -93,7 +134,35 @@ export class EventCaptureForm {
   }
 
 
+  //@todo change usage of acton sheet to display tooltips
+  showTooltips(dataElement,categoryComboName){
+    let title = dataElement.name + (categoryComboName != 'default' ? " " +categoryComboName:"");
+    if(dataElement.description){
+      title = dataElement.description;
+    }
+    let actionSheet = this.actionSheetCtrl.create({
+      title: title
+    });
+    actionSheet.present();
+  }
 
+  //todo get input label attribute form setting
+  getDisplayName(dataElement){
+    return dataElement.displayName;
+    //return if()
+  }
+
+  changePagination(page){
+    page = parseInt(page);
+    if(page == -1){
+      this.currentPage = 0;
+    }else if(page == this.entryFormSections.length){
+      this.currentPage = this.entryFormSections.length - 1;
+    }else{
+      this.currentPage = page;
+    }
+    this.paginationLabel = (this.currentPage + 1) + "/"+this.entryFormSections.length;
+  }
 
   setLoadingMessages(message){
     this.loadingMessages.push(message);

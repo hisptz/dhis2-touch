@@ -27,11 +27,127 @@
   </div>
 
   <div *ngIf="!loadingData">
-    <ion-card>
-      <ion-card-content>
 
-      </ion-card-content>
-    </ion-card>
+    <ion-grid>
+      <ion-row>
+        <ion-col width="100">
+          <div class="entryFormContainer">
+            <div *ngFor="let section of entryFormSections">
+              <div *ngIf="section.id == currentPage">
+                <div *ngIf=" section.name != 'defaultSection'">
+                  <div class="sectionHeader">
+                    <b>{{ section.name }}</b>
+                  </div>
+                  <hr>
+                </div>
+              </div>
+
+              <div>
+                <div>
+                  <b>Report date <span class = "required">*</span></b>
+                </div>
+                <ion-item>
+                  <ion-input type="date" [(ngModel)]="event.eventDate" ></ion-input>
+                </ion-item>
+              </div>
+
+              <div *ngIf="event.eventDate !='' ">
+                <div *ngFor="let programStageDataElement of section.programStageDataElements">
+                  <br>
+                  <div (click)="showTooltips(programStageDataElement.dataElement,'')" class="inputLabel">
+                    <b>{{ getDisplayName(programStageDataElement.dataElement) }}</b>
+                    <span *ngIf="programStageDataElement.compulsory == 'true'" class = "required">*</span>
+                        <span *ngIf="programStageDataElement.dataElement.description">
+                          &nbsp;&nbsp;<ion-icon name="help-circle"></ion-icon>
+                        </span>
+                  </div>
+                  <div *ngIf="programStageDataElement.dataElement.optionSet">
+                    <ion-item>
+                      <ion-label>Touch to select/update</ion-label>
+                      <ion-select [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" interface="action-sheet" >
+                        <ion-option *ngFor="let option of programStageDataElement.dataElement.optionSet.options" value="{{option.code}}">{{option.name}}</ion-option>
+                      </ion-select>
+                    </ion-item>
+                  </div>
+
+                  <div *ngIf="!programStageDataElement.dataElement.optionSet">
+
+                    <div *ngIf="programStageDataElement.dataElement.valueType == 'DATE'">
+                      <ion-item>
+                        <ion-input type="date"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" ></ion-input>
+                      </ion-item>
+                    </div>
+
+                    <div *ngIf="programStageDataElement.dataElement.valueType == 'TRUE_ONLY'">
+                      <ion-item>
+                        <ion-label>Touch to select/update</ion-label>
+                        <ion-select [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" interface="action-sheet" >
+                          <ion-option value="true">Yes</ion-option>
+                        </ion-select>
+                      </ion-item>
+                    </div>
+                    <div *ngIf="programStageDataElement.dataElement.valueType == 'BOOLEAN'">
+                      <ion-item>
+                        <ion-label>Touch to select/update</ion-label>
+                        <ion-select [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" interface="action-sheet" >
+                          <ion-option value="true">Yes</ion-option>
+                          <ion-option value="false">No</ion-option>
+                        </ion-select>
+                      </ion-item>
+                    </div>
+                    <div *ngIf="programStageDataElement.dataElement.valueType == 'INTEGER' ||programStageDataElement.dataElement.valueType == 'NUMBER'">
+                      <ion-item>
+                        <ion-input type="number"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" ></ion-input>
+                      </ion-item>
+                    </div>
+                    <div *ngIf="programStageDataElement.dataElement.valueType == 'INTEGER_POSITIVE'">
+                      <ion-item>
+                        <ion-input type="number"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" min="1" ></ion-input>
+                      </ion-item>
+                    </div>
+                    <div *ngIf="programStageDataElement.dataElement.valueType == 'INTEGER_NEGATIVE'">
+                      <ion-item>
+                        <ion-input type="number"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" max="-1" ></ion-input>
+                      </ion-item>
+                    </div>
+                    <div *ngIf="programStageDataElement.dataElement.valueType == 'INTEGER_ZERO_OR_POSITIVE'">
+                      <ion-item>
+                        <ion-input type="number"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" min="0" ></ion-input>
+                      </ion-item>
+                    </div>
+                    <div *ngIf="programStageDataElement.dataElement.valueType == 'UNIT_INTERVAL'">
+                      <ion-item>
+                        <ion-input type="text"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" ></ion-input>
+                      </ion-item>
+                    </div>
+                    <div *ngIf="programStageDataElement.dataElement.valueType == 'PERCENTAGE'">
+                      <ion-item>
+                        <ion-input type="text"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" ></ion-input>
+                      </ion-item>
+                    </div>
+                    <div *ngIf="programStageDataElement.dataElement.valueType == 'TEXT'">
+                      <ion-item>
+                        <ion-input type="text"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" ></ion-input>
+                      </ion-item>
+                    </div>
+                    <div *ngIf="programStageDataElement.dataElement.valueType == 'COORDINATE'">
+                      <ion-item>
+                        <ion-input type="text"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" ></ion-input>
+                      </ion-item>
+                    </div>
+                  </div>
+                  <br>
+                </div>
+                <br>{{ dataValues|json}}<br><hr>
+                {{ event|json }}<hr>
+              </div>
+
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
   </div>
 
 

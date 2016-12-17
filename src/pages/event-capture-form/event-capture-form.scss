@@ -2,4 +2,24 @@ page-event-capture-form {
   .event-capture-form {
     background-color: #f5f5f5;
   }
+
+  .entryFormContainer{
+    box-shadow: 2px 2px 3px  #888888;
+    padding: 4px;
+  }
+  .sectionHeader{
+    padding-top : 0px;
+    padding-bottom: 0px;
+    color: #387ef5;
+    text-align: center;
+  }
+  .inputLabel{
+    padding-bottom: 4px;
+    padding-top: 4px;
+    margin-bottom: 4px;
+  }
+
+  .required{
+    color: #ff252f;
+  }
 }
