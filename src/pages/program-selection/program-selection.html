@@ -12,12 +12,20 @@
 </ion-header>
 <ion-content padding class = "programFormSelection">
 
-  <ion-item *ngFor="let program of programsList"   (click)="setSelectedProgram(program)">
-    <ion-icon name="list" item-left></ion-icon>
-    <span (click)="setSelectedProgram(program)" >{{ program.name}}</span>
-  </ion-item>
-  <ion-item *ngIf = "programsList.length == 0">
-    There is no Program to select
-  </ion-item>
-
+  <ion-searchbar animated="true"  (ionInput)="getFilteredList($event)"></ion-searchbar>
+  <ion-grid>
+    <ion-row>
+      <ion-col width="100">
+        <ion-list>
+          <ion-item *ngFor="let program of programsList"   (click)="setSelectedProgram(program)">
+            <ion-icon name="list" item-left></ion-icon>
+            <span (click)="setSelectedProgram(program)" >{{ program.name}}</span>
+          </ion-item>
+          <ion-item *ngIf = "programsList.length == 0">
+            There is no Program to select
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

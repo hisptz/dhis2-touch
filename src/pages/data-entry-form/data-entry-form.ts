@@ -218,7 +218,6 @@ export class DataEntryForm {
         this.setCompletenessInformation();
       },error=>{
         this.isDataSetCompletenessUpdated = false;
-        alert(JSON.stringify(error.json()));
         this.setToasterMessage("Fail to complete at moment, please try again later");
       });
     }

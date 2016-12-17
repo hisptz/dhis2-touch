@@ -220,8 +220,7 @@ export class EventCaptureHome {
         attributeCategoryOptions = attributeCategoryOptions.replace(/,/g, ';');
         events.forEach((event : any)=>{
           if(event.attributeCategoryOptions == attributeCategoryOptions){
-            alert('yes');
-            this.currentEvents.push(event);
+           this.currentEvents.push(event);
           }
         });
       }else{

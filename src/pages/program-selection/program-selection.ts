@@ -27,6 +27,16 @@ export class ProgramSelection {
     this.programsList = this.params.get('data');
   }
 
+  getFilteredList(ev: any) {
+    let val = ev.target.value;
+    this.programsList = this.params.get('data');
+    if(val && val.trim() != ''){
+      this.programsList = this.programsList.filter((program:any) => {
+        return (program.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
+    }
+  }
+
   setSelectedProgram(selectedProgram){
     this.viewCtrl.dismiss(selectedProgram);
   }
