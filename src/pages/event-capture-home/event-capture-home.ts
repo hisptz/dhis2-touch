@@ -65,7 +65,6 @@ export class EventCaptureHome {
   }
 
   ionViewDidLoad() {
-
   }
 
   setProgramSelectionLabel(){

@@ -150,7 +150,9 @@ export class EventCaptureForm {
         //empty event dataValues
         this.event.dataValues = [];
         //update event sync status
-        this.event["syncStatus"] = "not synced";
+        // if has been updated change status to 'not synced'
+        this.event["syncStatus"] = "new event";
+        this.event["event"]= Date.now();
         this.eventProvider.getEventDataValues(this.dataValues,programStageDataElements).then((dataValues:any)=>{
           dataValues.forEach(dataValue=>{
             this.event.dataValues.push(dataValue);

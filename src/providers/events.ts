@@ -87,12 +87,19 @@ export class Events {
      */
   loadingEventsFromStorage(orgUnit,program,currentUser){
     let self = this;
-    let attribute = "id";
+    let attribute = "orgUnit";
     let attributeArray = [];
-    attributeArray.push(program.id + "-" +orgUnit.id);
+    let events = [];
+    attributeArray.push(orgUnit.id);
     return new Promise(function(resolve, reject) {
       self.sqlLite.getDataFromTableByAttributes(self.resource,attribute,attributeArray,currentUser.currentDatabase).then((offlineEvents : any)=>{
-        resolve(offlineEvents);
+        //program.id
+        offlineEvents.forEach((offlineEvent:any)=>{
+          if(offlineEvent.program == program.id){
+            events.push(offlineEvent);
+          }
+        });
+        resolve(events);
       },error=>{
         reject(error);
       })
@@ -137,8 +144,7 @@ export class Events {
      */
   saveEvent(event,currentUser){
     let self = this;
-    event["id"] = event.program + "-"+event.orgUnit;
-    alert(JSON.stringify(event));
+    event["id"] = event.program + "-"+event.orgUnit+ "-" +event.event;
     return new Promise(function(resolve, reject) {
       self.sqlLite.insertDataOnTable(self.resource,event,currentUser.currentDatabase).then((success)=>{
         resolve();
