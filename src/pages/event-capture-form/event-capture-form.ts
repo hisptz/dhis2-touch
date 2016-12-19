@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {ToastController,NavParams,ActionSheetController } from 'ionic-angular';
+import {ToastController,NavParams,ActionSheetController,NavController } from 'ionic-angular';
 
 import {User} from '../../providers/user/user';
 import {HttpClient} from "../../providers/http-client/http-client";
@@ -35,6 +35,7 @@ export class EventCaptureForm {
   public entryFormSections : any;
   public event : any;
   public dataValues : any;
+  public eventComment : string;
 
   //pagination controller
   public currentPage : number ;
@@ -44,7 +45,7 @@ export class EventCaptureForm {
   constructor(public params:NavParams,public eventProvider :Events,public Program : Program,
               public toastCtrl: ToastController,public user : User,public actionSheetCtrl: ActionSheetController,
               public ProgramStageDataElements : ProgramStageDataElements,
-              public ProgramStageSections:ProgramStageSections,
+              public ProgramStageSections:ProgramStageSections,public navCtrl: NavController,
               public EventCaptureFormProvider : EventCaptureFormProvider,
               public sqlLite : SqlLite,public httpClient: HttpClient){
 
@@ -82,7 +83,6 @@ export class EventCaptureForm {
     }
     //
     // notes completedDate
-    //"status": "COMPLETED"
   }
 
   loadProgramMetadata(programId){
@@ -117,8 +117,11 @@ export class EventCaptureForm {
 
   loadProgramStageDataElements(programStageDataElementsIds){
     this.setLoadingMessages("Loading Entry fields details");
+    this.programStageDataElements = [];
     this.ProgramStageDataElements.getProgramStageDataElements(programStageDataElementsIds,this.currentUser).then((programStageDataElements:any)=>{
-      this.programStageDataElements = programStageDataElements;
+      programStageDataElements.forEach((programStageDataElement)=>{
+        this.programStageDataElements.push(programStageDataElement);
+      });
       this.EventCaptureFormProvider.getEventCaptureEntryFormMetaData(this.programStageSections,this.programStageDataElements).then((entryFormSections:any)=>{
         this.entryFormSections = entryFormSections;
         this.paginationLabel = (this.currentPage + 1) + "/"+this.entryFormSections.length;
@@ -133,6 +136,61 @@ export class EventCaptureForm {
     });
   }
 
+  saveEvent(){
+    this.loadingMessages = [];
+    this.loadingData = true;
+    this.setLoadingMessages("Preparing data for saving");
+    this.ProgramStageDataElements.getProgramStageDataElements(this.currentProgram.programStages[0].programStageDataElements,this.currentUser).then((programStageDataElements:any)=>{
+      let isFormValid = this.hasFormValidForSubmission(programStageDataElements);
+      if(isFormValid){
+        //checking for event status completion
+        this.event.status == "COMPLETED"? this.event["completedDate"] = this.eventProvider.getFormattedDate(new Date()) : delete this.event.completedDate;
+        //checking for event comments
+        this.eventComment !=""?this.event.notes = this.eventComment : delete this.event.notes;
+        //empty event dataValues
+        this.event.dataValues = [];
+        //update event sync status
+        this.event["syncStatus"] = "not synced";
+        this.eventProvider.getEventDataValues(this.dataValues,programStageDataElements).then((dataValues:any)=>{
+          dataValues.forEach(dataValue=>{
+            this.event.dataValues.push(dataValue);
+          });
+          //saving event to local storage
+          this.setLoadingMessages("Saving new event to local storage");
+          this.eventProvider.saveEvent(this.event,this.currentUser).then(()=>{
+            this.loadingData = false;
+            this.navCtrl.pop();
+          },error=>{
+            this.loadingData = false;
+            this.setToasterMessage("Fail to save new event to local storage : " + JSON.stringify(error));
+          });
+        })
+      }else{
+        this.loadingData = false;
+        this.setToasterMessage("Please make sure your enter all required fields, before saving");
+      }
+    });
+
+  }
+
+  cancel(){
+    this.navCtrl.pop();
+  }
+
+  /**
+   * checking if all required fields has been field
+   * @param programStageDataElements
+   * @returns {boolean}
+     */
+  hasFormValidForSubmission(programStageDataElements){
+    let isValid = true;
+    programStageDataElements.forEach((programStageDataElement:any)=>{
+      if(programStageDataElement.compulsory !="0" && !this.dataValues[programStageDataElement.dataElement.id]){
+        isValid = false;
+      }
+    });
+    return isValid;
+  }
 
   //@todo change usage of acton sheet to display tooltips
   showTooltips(dataElement,categoryComboName){

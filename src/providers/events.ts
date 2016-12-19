@@ -19,6 +19,38 @@ export class Events {
     this.resource = "events";
   }
 
+  getEventDataValues(dataElementValueObject,programStageDataElements){
+    let dataValues = [];
+    return new Promise(function(resolve, reject) {
+      programStageDataElements.forEach((programStageDataElement:any)=>{
+        let dataElementId = programStageDataElement.dataElement.id;
+        if(dataElementValueObject[dataElementId]){
+          dataValues.push({
+            dataElement : dataElementId, value : dataElementValueObject[dataElementId]
+          })
+        }
+      });
+      resolve(dataValues)
+    });
+  }
+
+  getFormattedDate(value){
+    let month,date = (new Date(value));
+    month = date.getMonth() + 1;
+    let formattedDate = date.getFullYear() + '-';
+    if(month > 9){
+      formattedDate = formattedDate + month + '-';
+    }else{
+      formattedDate = formattedDate + '0' + month + '-';
+    }
+    if(date.getDate() > 9){
+      formattedDate = formattedDate + date.getDate();
+    }else{
+      formattedDate = formattedDate + '0' +date.getDate();
+    }
+    return formattedDate;
+  }
+
   /**
    * loading 50 most recent events from the server
    * @param orgUnit
@@ -106,6 +138,7 @@ export class Events {
   saveEvent(event,currentUser){
     let self = this;
     event["id"] = event.program + "-"+event.orgUnit;
+    alert(JSON.stringify(event));
     return new Promise(function(resolve, reject) {
       self.sqlLite.insertDataOnTable(self.resource,event,currentUser.currentDatabase).then((success)=>{
         resolve();

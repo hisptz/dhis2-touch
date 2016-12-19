@@ -32,6 +32,7 @@
       <ion-row>
         <ion-col width="100">
           <div class="entryFormContainer">
+            <!-- event form fields rendered as sections-->
             <div *ngFor="let section of entryFormSections">
               <div *ngIf="section.id == currentPage">
                 <div *ngIf=" section.name != 'defaultSection'">
@@ -137,17 +138,87 @@
                     </div>
                   </div>
                 </div>
-                <br>{{ dataValues|json}}<br><hr>
-                {{ event|json }}<hr>
+
+
+
               </div>
 
             </div>
           </div>
+          <!-- comment  as well as event status -->
+          <br>
+          <div *ngIf="event">
+            <div *ngIf="event.eventDate !='' ">
+              <div class="entryFormContainer">
+                <div>
+                  <b>Is Event Completed ?</b>
+                </div>
+                <ion-item>
+                  <ion-label>Touch to select/update</ion-label>
+                  <ion-select [(ngModel)]="event.status" interface="action-sheet" >
+                    <ion-option value="COMPLETED">Yes</ion-option>
+                    <ion-option value="ACTIVE">No</ion-option>
+                  </ion-select>
+                </ion-item>
+
+                <div>
+                  <b>Comments</b>
+                </div>
+                <ion-item>
+                  <ion-textarea [(ngModel)]="eventComment" placeholder="Add your comment here"></ion-textarea>
+                </ion-item>
+              </div>
+            </div>
+          </div>
+
         </ion-col>
       </ion-row>
     </ion-grid>
 
+    <div *ngIf="event">
+      <div *ngIf="event.eventDate !='' ">
+        <ion-card>
+          <ion-card-content>
+            <ion-row>
+              <ion-col width-33>
+                <button color="primary" ion-button full (click)="changePagination(currentPage - 1)">
+                  Previous
+                </button>
+              </ion-col>
+              <ion-col width-33>
+                <button ion-button color="primary" full clear>
+                  {{ paginationLabel }}
+                </button>
+              </ion-col>
+              <ion-col width-33>
+                <button color="primary" ion-button full (click)="changePagination(currentPage + 1)">
+                  Next
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card>
+          <ion-card-content>
+            <ion-row>
+              <ion-col>
+                <button color="primary" ion-button full (click)="saveEvent()">
+                  Save
+                </button>
+              </ion-col>
+              <ion-col >
+                <button color="primary" ion-button full (click)="cancel()">
+                  cancel
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+        <hr>
+
+      </div>
+    </div>
+
   </div>
-
-
 </ion-content>
