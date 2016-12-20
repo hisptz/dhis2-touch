@@ -137,7 +137,7 @@ export class EventCaptureHome {
     this.Program.getProgramsAssignedOnOrgUnitAndUserRoles(this.selectedOrganisationUnit,this.programIdsByUserRoles,this.currentUser).then((programs : any)=>{
       programs.forEach((program:any)=>{
         //checking for program type
-        if(program.programType =  "WITHOUT_REGISTRATION"){
+        if(program.programType ==  "WITHOUT_REGISTRATION"){
           this.assignedPrograms.push({
             id: program.id,
             name: program.name,

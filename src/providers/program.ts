@@ -43,6 +43,7 @@ export class Program {
             assignedPrograms.push({
               id: program.id,
               name: program.name,
+              programType : program.programType,
               programStages : program.programStages,
               categoryCombo : program.categoryCombo
             });
