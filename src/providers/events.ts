@@ -234,6 +234,7 @@ export class Events {
       }else{
         eventsFromServer.events.forEach((event)=>{
           let eventData = event;
+          eventData["eventDate"] = self.getFormattedDate(event.eventDate);
           eventData["syncStatus"] = "synced";
           promises.push(
             self.saveEvent(eventData,currentUser).then(()=>{},error=>{})

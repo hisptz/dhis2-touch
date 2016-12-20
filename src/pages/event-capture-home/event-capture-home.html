@@ -90,13 +90,27 @@
           </ion-col>
         </ion-row>
 
-        <ion-card>
-          <ion-card-content>
-            {{ currentEvents|json}}
-            <hr>
-            {{ dataElementToDisplay|json }}
-          </ion-card-content>
-        </ion-card>
+        <!-- event list -->
+        <div *ngFor="let event of currentEvents">
+          <ion-card>
+            <ion-card-content>
+              <h2><b>Incident date</b> </h2>
+              <p>{{ event.eventDate }}</p>
+              <div *ngFor="let dataValue of event.dataValues">
+                <div *ngIf="dataElementToDisplay[dataValue.dataElement]">
+                  <h2><b>{{ dataElementToDisplay[dataValue.dataElement].name }}</b></h2>
+                  <p>{{ dataValue.value }}</p>
+                </div>
+              </div>
+              <h2><b>Status</b></h2>
+              <p>
+                <span *ngIf="event.syncStatus == 'new event' || event.syncStatus == 'not synced'">Offline</span>
+                <span *ngIf="!(event.syncStatus == 'new event' || event.syncStatus == 'not synced')">Online</span>
+              </p>
+            </ion-card-content>
+          </ion-card>
+        </div>
+
       </div>
 
 
