@@ -79,7 +79,7 @@
             </button>
           </ion-col>
           <ion-col width-33>
-            <button ion-button small full (click)="loadEvents()">
+            <button ion-button small full (click)="reLoadingEventList()">
               <ion-icon name="refresh"></ion-icon>
             </button>
           </ion-col>
@@ -93,6 +93,8 @@
         <ion-card>
           <ion-card-content>
             {{ currentEvents|json}}
+            <hr>
+            {{ programStageDataElements|json }}
           </ion-card-content>
         </ion-card>
       </div>

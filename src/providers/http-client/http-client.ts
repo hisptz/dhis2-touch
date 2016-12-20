@@ -30,6 +30,12 @@ export class HttpClient {
     return this.http.post(user.serverUrl + url, data, { headers: headers }).timeout(this.timeOutTime);
   }
 
+  put(url, data, user):Observable<Response> {
+    let headers = new Headers();
+    headers.append('Authorization', 'Basic ' +user.authorizationKey);
+    return this.http.put(user.serverUrl + url, data, { headers: headers }).timeout(this.timeOutTime);
+  }
+
   delete(url,user):Observable<Response> {
     let headers = new Headers();
     headers.append('Authorization', 'Basic ' +user.authorizationKey);

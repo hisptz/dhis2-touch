@@ -12,6 +12,8 @@ import {ProgramStageDataElements} from "../../providers/program-stage-data-eleme
 import {ProgramStageSections} from "../../providers/program-stage-sections";
 import {EventCaptureFormProvider} from "../../providers/event-capture-form-provider";
 
+declare var dhis2: any;
+
 /*
   Generated class for the EventCaptureForm page.
 
@@ -54,6 +56,16 @@ export class EventCaptureForm {
     this.currentPage = 0;
     this.user.getCurrentUser().then(user=>{
       this.currentUser = user;
+
+      //this.eventProvider.getEventsFromStorageByStatus(user,"new event").then((events :any)=>{
+      //  this.eventProvider.uploadEventsToServer(events,this.currentUser).then((response)=>{
+      //  },error=>{});
+      //  this.eventProvider.getEventsFromStorageByStatus(user,"not synced").then((events :any)=>{
+      //    this.eventProvider.uploadEventsToServer(events,this.currentUser).then((response)=>{
+      //    },error=>{});
+      //  });
+      //});
+
       this.entryFormParameter = this.params.get("params");
       if(this.entryFormParameter.programId){
         this.loadProgramMetadata(this.entryFormParameter.programId);
@@ -63,6 +75,7 @@ export class EventCaptureForm {
   }
 
   ionViewDidLoad() {
+
   }
 
   initiateNewEvent(entryFormParameter,program){
@@ -81,8 +94,6 @@ export class EventCaptureForm {
       attributeCategoryOptions = attributeCategoryOptions.replace(/,/g, ';');
       this.event["attributeCategoryOptions"] = attributeCategoryOptions;
     }
-    //
-    // notes completedDate
   }
 
   loadProgramMetadata(programId){
@@ -152,7 +163,7 @@ export class EventCaptureForm {
         //update event sync status
         // if has been updated change status to 'not synced'
         this.event["syncStatus"] = "new event";
-        this.event["event"]= Date.now();
+        this.event["event"]= dhis2.util.uid();
         this.eventProvider.getEventDataValues(this.dataValues,programStageDataElements).then((dataValues:any)=>{
           dataValues.forEach(dataValue=>{
             this.event.dataValues.push(dataValue);

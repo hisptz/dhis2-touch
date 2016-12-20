@@ -14,6 +14,12 @@ export class EventCaptureFormProvider {
     this.programStageDataElementsMapper = {};
   }
 
+  /**
+   * gey event capture form metadata
+   * @param programStageSections
+   * @param programStageDataElements
+   * @returns {Promise<T>}
+     */
   getEventCaptureEntryFormMetaData(programStageSections,programStageDataElements){
     this.programStageDataElementsMapper = {};
     programStageDataElements.forEach((programStageDataElement:any)=>{
@@ -30,6 +36,11 @@ export class EventCaptureFormProvider {
 
   }
 
+  /**
+   * get section form for event capture
+   * @param programStageSections
+   * @returns {Array}
+     */
   getSectionEntryForm(programStageSections){
     let sections = [];
     let self = this;
@@ -44,6 +55,11 @@ export class EventCaptureFormProvider {
     return sections;
   }
 
+  /**
+   * get program stage data element by section
+   * @param programStageDataElementsIdsArray
+   * @returns {Array}
+     */
   getSectionDataElements(programStageDataElementsIdsArray){
     let programStageDataElements = [];
     programStageDataElementsIdsArray.forEach((programStageDataElement :any)=>{
@@ -52,6 +68,11 @@ export class EventCaptureFormProvider {
     return programStageDataElements;
   }
 
+  /**
+   * get default form for event capture form
+   * @param programStageDataElements
+   * @returns {Array}
+     */
   getDefaultEntryForm(programStageDataElements){
     let pager = programStageDataElements.length;
     let sectionsCounter = Math.ceil(programStageDataElements.length/pager);

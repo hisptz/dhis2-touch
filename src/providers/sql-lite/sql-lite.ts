@@ -101,6 +101,8 @@ export class SqlLite {
       columns : [
         {value: 'id', type: 'TEXT'},
         {value: 'name', type: 'TEXT'},
+        {value: 'withoutRegistration', type: 'TEXT'},
+        {value: 'programType', type: 'TEXT'},
         {value: 'categoryCombo',type:'LONGTEXT'},
         {value: 'programStages',type:'LONGTEXT'},
         {value: 'programStageSections',type:'LONGTEXT'},
@@ -148,7 +150,7 @@ export class SqlLite {
         {value: 'completedDate', type: 'TEXT'},
         {value: 'attributeCategoryOptions', type: 'TEXT'},
         {value: 'dataValues', type: 'LONGTEXT'},
-        {value: 'notes', type: 'LONGTEXT'},
+        {value: 'notes', type: 'TEXT'},
         {value: 'syncStatus', type: 'TEXT'}
       ]
     }

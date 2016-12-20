@@ -79,6 +79,12 @@
                       </ion-item>
                     </div>
 
+                    <div *ngIf="programStageDataElement.dataElement.valueType == 'LONG_TEXT'">
+                      <ion-item>
+                        <ion-textarea [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" placeholder="Add your comment here"></ion-textarea>
+                      </ion-item>
+                    </div>
+
                     <div *ngIf="programStageDataElement.dataElement.valueType == 'TRUE_ONLY'">
                       <ion-item>
                         <ion-label>Touch to select/update</ion-label>
@@ -138,9 +144,14 @@
                     </div>
                   </div>
                 </div>
+              </div>
 
-
-
+              <!-- cancel event register -->
+              <div *ngIf="event">
+                <div *ngIf="event.eventDate =='' ">
+                  <br>
+                  <button color="light" ion-button full (click)="cancel()">Cancel</button>
+                </div>
               </div>
 
             </div>
@@ -177,7 +188,7 @@
 
     <div *ngIf="event">
       <div *ngIf="event.eventDate !='' ">
-        <ion-card>
+        <ion-card *ngIf="(entryFormSections.length > 1)">
           <ion-card-content>
             <ion-row>
               <ion-col width-33>
@@ -208,7 +219,7 @@
                 </button>
               </ion-col>
               <ion-col >
-                <button color="primary" ion-button full (click)="cancel()">
+                <button color="light" ion-button full (click)="cancel()">
                   cancel
                 </button>
               </ion-col>

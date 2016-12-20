@@ -11,6 +11,7 @@ import {Program} from "../../providers/program";
 import {OrganisationUnit} from "../../providers/organisation-unit";
 import {Events} from "../../providers/events";
 import {EventCaptureForm} from "../event-capture-form/event-capture-form";
+import {ProgramStageDataElements} from "../../providers/program-stage-data-elements";
 
 /*
   Generated class for the EventCaptureHome page.
@@ -21,7 +22,7 @@ import {EventCaptureForm} from "../event-capture-form/event-capture-form";
 @Component({
   selector: 'page-event-capture-home',
   templateUrl: 'event-capture-home.html',
-  providers : [User,AppProvider,HttpClient,SqlLite,Program,OrganisationUnit,Events]
+  providers : [User,AppProvider,HttpClient,SqlLite,Program,OrganisationUnit,Events,ProgramStageDataElements]
 })
 export class EventCaptureHome {
 
@@ -39,7 +40,13 @@ export class EventCaptureHome {
   public currentEvents :any;
   public isAllParameterSet : boolean;
 
-  constructor(public eventProvider :Events,public OrganisationUnit : OrganisationUnit,public Program : Program,public modalCtrl: ModalController,public navCtrl: NavController,public toastCtrl: ToastController,public user : User,public appProvider : AppProvider,public sqlLite : SqlLite,public httpClient: HttpClient) {
+  public dataElementMapper :any = {};
+  public dataElementToDisplay : any = {};
+  public programStageDataElements : any;
+
+  constructor(public eventProvider :Events,public OrganisationUnit : OrganisationUnit,
+              public ProgramStageDataElements : ProgramStageDataElements,
+              public Program : Program,public modalCtrl: ModalController,public navCtrl: NavController,public toastCtrl: ToastController,public user : User,public appProvider : AppProvider,public sqlLite : SqlLite,public httpClient: HttpClient) {
     this.selectedDataDimension = [];
     this.currentEvents = [];
     this.isAllParameterSet = false;
@@ -128,12 +135,15 @@ export class EventCaptureHome {
     this.assignedPrograms = [];
     this.Program.getProgramsAssignedOnOrgUnitAndUserRoles(this.selectedOrganisationUnit,this.programIdsByUserRoles,this.currentUser).then((programs : any)=>{
       programs.forEach((program:any)=>{
-        this.assignedPrograms.push({
-          id: program.id,
-          name: program.name,
-          programStages : program.programStages,
-          categoryCombo : program.categoryCombo
-        });
+        //checking for program type
+        if(program.programType =  "WITHOUT_REGISTRATION"){
+          this.assignedPrograms.push({
+            id: program.id,
+            name: program.name,
+            programStages : program.programStages,
+            categoryCombo : program.categoryCombo
+          });
+        }
       });
       this.loadingData = false;
     },error=>{
@@ -159,6 +169,7 @@ export class EventCaptureHome {
           if(selectedProgram.categoryCombo.categories[0].name =='default'){
             this.loadEvents();
           }
+          this.loadingProgramStageDataElements(selectedProgram);
         }else{
           this.loadingData = false;
         }
@@ -167,6 +178,14 @@ export class EventCaptureHome {
       }
     });
     modal.present();
+  }
+
+  loadingProgramStageDataElements(program){
+    this.ProgramStageDataElements.getProgramStageDataElements(program.programStages[0].programStageDataElements,this.currentUser).then((programStageDataElements:any)=>{
+      this.programStageDataElements = programStageDataElements;
+      
+      //dataElementToDisplay
+    })
   }
 
   /**
@@ -214,6 +233,7 @@ export class EventCaptureHome {
   loadEventsFromOfflineStorage(){
     this.setLoadingMessages("Loading events from offline storage");
     this.eventProvider.loadingEventsFromStorage(this.selectedOrganisationUnit,this.selectedProgram,this.currentUser).then((events:any)=>{
+      this.currentEvents = [];
       if(this.selectedDataDimension.length > 0){
         let attributeCategoryOptions = this.selectedDataDimension.toString();
         attributeCategoryOptions = attributeCategoryOptions.replace(/,/g, ';');
@@ -225,7 +245,6 @@ export class EventCaptureHome {
       }else{
         this.currentEvents = events;
       }
-      this.currentEvents = events;
       this.isAllParameterSet = true;
       this.loadingData = false;
     },error=>{
@@ -236,6 +255,12 @@ export class EventCaptureHome {
 
   showFieldSelectionMenu(){
     this.setToasterMessage("showFieldSelectionMenu coming soon!!");
+  }
+
+  reLoadingEventList(){
+    this.loadingMessages = [];
+    this.loadingData = true;
+    this.loadEventsFromOfflineStorage();
   }
 
   goToEventRegister(){
