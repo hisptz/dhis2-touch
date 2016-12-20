@@ -158,7 +158,7 @@ export class EventCaptureHome {
     this.loadingMessages = [];
     this.loadingData = true;
     this.setLoadingMessages('Please wait ...');
-    let modal = this.modalCtrl.create(ProgramSelection,{data : this.assignedPrograms});
+    let modal = this.modalCtrl.create(ProgramSelection,{data : this.assignedPrograms,selectedProgram : this.selectedProgram});
     modal.onDidDismiss((selectedProgram:any) => {
       if(selectedProgram.id){
         if(selectedProgram.id != this.selectedProgram.id){

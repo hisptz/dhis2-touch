@@ -166,7 +166,7 @@ export class DataEntryHome {
     this.loadingMessages = [];
     this.loadingData = true;
     this.setLoadingMessages('Please wait ...');
-    let modal = this.modalCtrl.create(DataSetSelection,{data : this.assignedDataSets});
+    let modal = this.modalCtrl.create(DataSetSelection,{data : this.assignedDataSets,selectedDataSet : this.selectedDataSet});
     modal.onDidDismiss((selectedDataSet:any) => {
       if(selectedDataSet.id){
         if(selectedDataSet.id != this.selectedDataSet.id){

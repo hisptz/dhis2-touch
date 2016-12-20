@@ -18,6 +18,7 @@ export class OrganisationUnits {
   public loadingData :boolean = false;
   public organisationUnitsList : any;
   public hasOrgUnitChildrenOpened:any = {};
+  public currentSelectedOrgUnitName : string;
 
   constructor(public viewCtrl: ViewController,public params : NavParams){
     this.setModalData();
@@ -28,6 +29,7 @@ export class OrganisationUnits {
   }
 
   setModalData(){
+    this.currentSelectedOrgUnitName = "";
     this.loadingData = false;
     this.loadingMessages = [];
     this.loadingMessages.push('Please wait, while setting organisation unit data');
@@ -41,6 +43,7 @@ export class OrganisationUnits {
   reOpenTree(){
     let selectedOrganisationUnit = this.params.get('selectedOrganisationUnit');
     if(selectedOrganisationUnit && selectedOrganisationUnit.ancestors){
+      this.currentSelectedOrgUnitName = selectedOrganisationUnit.name;
       selectedOrganisationUnit.ancestors.forEach((ancestor : any)=>{
         this.toggleOrgUnit(ancestor);
       });

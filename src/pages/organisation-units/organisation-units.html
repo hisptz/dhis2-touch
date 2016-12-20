@@ -36,7 +36,7 @@
         <ion-icon name="ios-arrow-forward" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && !hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
         <ion-icon name="ios-arrow-down" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
         <ion-icon name="list" *ngIf="orgUnit.children.length==0" item-left></ion-icon>
-        <span (click)="setSelectedOrgUnit(orgUnit)" >{{ orgUnit.name }}</span>
+        <span (click)="setSelectedOrgUnit(orgUnit)" [color]="(currentSelectedOrgUnitName == orgUnit.name) ?'current' : 'dark'"  >{{ orgUnit.name }}</span>
       </ion-item>
       <div *ngIf="hasOrgUnitChildrenOpened[orgUnit.id]" style="padding-left: 10px">
 
@@ -45,7 +45,7 @@
             <ion-icon name="ios-arrow-forward" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && !hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
             <ion-icon name="ios-arrow-down" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
             <ion-icon name="list" *ngIf="orgUnit.children.length==0" item-left></ion-icon>
-            <span (click)="setSelectedOrgUnit(orgUnit)" >{{ orgUnit.name }}</span>
+            <span (click)="setSelectedOrgUnit(orgUnit)" [color]="(currentSelectedOrgUnitName == orgUnit.name) ?'current' : 'dark'" >{{ orgUnit.name }}</span>
           </ion-item>
           <div *ngIf="hasOrgUnitChildrenOpened[orgUnit.id]" style="padding-left: 10px">
 
@@ -54,7 +54,7 @@
                 <ion-icon name="ios-arrow-forward" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && !hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
                 <ion-icon name="ios-arrow-down" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
                 <ion-icon name="list" *ngIf="orgUnit.children.length==0" item-left></ion-icon>
-                <span (click)="setSelectedOrgUnit(orgUnit)" >{{ orgUnit.name }}</span>
+                <span (click)="setSelectedOrgUnit(orgUnit)" [color]="(currentSelectedOrgUnitName == orgUnit.name) ?'current' : 'dark'"  >{{ orgUnit.name }}</span>
               </ion-item>
               <div *ngIf="hasOrgUnitChildrenOpened[orgUnit.id]" style="padding-left: 10px">
 
@@ -63,7 +63,7 @@
                     <ion-icon name="ios-arrow-forward" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && !hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
                     <ion-icon name="ios-arrow-down" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
                     <ion-icon name="list" *ngIf="orgUnit.children.length==0" item-left></ion-icon>
-                    <span (click)="setSelectedOrgUnit(orgUnit)" >{{ orgUnit.name }}</span>
+                    <span (click)="setSelectedOrgUnit(orgUnit)" [color]="(currentSelectedOrgUnitName == orgUnit.name) ?'current' : 'dark'" >{{ orgUnit.name }}</span>
                   </ion-item>
                   <div *ngIf="hasOrgUnitChildrenOpened[orgUnit.id]" style="padding-left: 10px">
 
@@ -72,7 +72,7 @@
                         <ion-icon name="ios-arrow-forward" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && !hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
                         <ion-icon name="ios-arrow-down" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
                         <ion-icon name="list" *ngIf="orgUnit.children.length==0" item-left></ion-icon>
-                        <span (click)="setSelectedOrgUnit(orgUnit)" >{{ orgUnit.name }}</span>
+                        <span (click)="setSelectedOrgUnit(orgUnit)" [color]="(currentSelectedOrgUnitName == orgUnit.name) ?'current' : 'dark'" >{{ orgUnit.name }}</span>
                       </ion-item>
                       <div *ngIf="hasOrgUnitChildrenOpened[orgUnit.id]" style="padding-left: 10px">
 
@@ -81,7 +81,7 @@
                             <ion-icon name="ios-arrow-forward" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && !hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
                             <ion-icon name="ios-arrow-down" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
                             <ion-icon name="list" *ngIf="orgUnit.children.length==0" item-left></ion-icon>
-                            <span (click)="setSelectedOrgUnit(orgUnit)" >{{ orgUnit.name }}</span>
+                            <span (click)="setSelectedOrgUnit(orgUnit)" [color]="(currentSelectedOrgUnitName == orgUnit.name) ?'current' : 'dark'" >{{ orgUnit.name }}</span>
                           </ion-item>
                           <div *ngIf="hasOrgUnitChildrenOpened[orgUnit.id]" style="padding-left: 10px">
 

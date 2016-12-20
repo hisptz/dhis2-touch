@@ -15,6 +15,7 @@ export class DataSetSelection {
 
   public dataSetsList : any;
   public dataSetsListCopy : any;
+  public currentSelectedDataSetName : string;
 
   constructor(public viewCtrl: ViewController,public params : NavParams) {
     this.setModalData();
@@ -25,7 +26,12 @@ export class DataSetSelection {
   }
 
   setModalData(){
+    this.currentSelectedDataSetName = "";
     this.dataSetsList = this.params.get('data');
+    let selectedDataSet = this.params.get('selectedDataSet');
+    if(selectedDataSet && selectedDataSet.name){
+      this.currentSelectedDataSetName = selectedDataSet.name;
+    }
   }
 
   getFilteredList(ev: any) {

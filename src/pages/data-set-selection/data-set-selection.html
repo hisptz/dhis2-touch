@@ -19,7 +19,7 @@
         <ion-list>
           <ion-item *ngFor="let dataSet of dataSetsList"   (click)="setSelectedDataSet(dataSet)">
             <ion-icon name="list" item-left></ion-icon>
-            <span (click)="setSelectedDataSet(orgUnit)" >{{ dataSet.name }}</span>
+            <span (click)="setSelectedDataSet(orgUnit)" [color]="(currentSelectedDataSetName == dataSet.name) ?'current' : 'dark'">{{ dataSet.name }}</span>
           </ion-item>
           <ion-item *ngIf = "dataSetsList.length == 0">
             There is no Data entry form to select
