@@ -5,6 +5,7 @@ import {AppProvider} from "../../providers/app-provider/app-provider";
 import {HttpClient} from '../../providers/http-client/http-client';
 import {SqlLite} from "../../providers/sql-lite/sql-lite";
 import {DataValues} from "../../providers/data-values";
+import {Events} from "../../providers/events";
 
 
 /*
@@ -16,22 +17,27 @@ import {DataValues} from "../../providers/data-values";
 @Component({
   selector: 'page-about',
   templateUrl: 'about.html',
-  providers : [User,AppProvider,HttpClient,SqlLite,DataValues]
+  providers : [User,AppProvider,HttpClient,SqlLite,DataValues,Events]
 })
 export class About {
 
   public loadingData : boolean = false;
   public loadingMessages : any = [];
+  public currentUser : any;
   public systemInformation : any;
   public appInformation : any;
   public dataValuesStorage : any = { online : 0,offline : 0};
+  public eventsStorage : any = { online : 0,offline : 0};
 
   constructor(private toastCtrl: ToastController,private user : User,
               private appProvider : AppProvider,private httpClient : HttpClient,
-              private dataValues : DataValues,
+              private dataValues : DataValues,public eventProvider :Events,
               private sqlLite : SqlLite) {
 
-    this.loadingSystemInformation();
+    this.user.getCurrentUser().then(user=>{
+      this.currentUser = user;
+      this.loadingSystemInformation();
+    });
   }
 
   ionViewDidLoad() {
@@ -60,23 +66,44 @@ export class About {
   loadingDataValueStatus(){
     //dataValues synced , not synced
     this.setLoadingMessages('Loading data values storage status');
-    this.user.getCurrentUser().then(user=>{
-      this.dataValues.getDataValuesByStatus(user,"synced").then((syncedDataValues : any)=>{
-        this.dataValues.getDataValuesByStatus(user,"not synced").then((unSyncedDataValues : any)=>{
-          this.dataValuesStorage.offline = unSyncedDataValues.length;
-          this.dataValuesStorage.online = syncedDataValues.length;
-          this.loadingData = false;
-        },error=>{
-          this.setToasterMessage('Fail to loading data values storage status');
-          this.loadingData = false;
-        });
+    this.dataValues.getDataValuesByStatus(this.currentUser,"synced").then((syncedDataValues : any)=>{
+      this.dataValues.getDataValuesByStatus(this.currentUser,"not synced").then((unSyncedDataValues : any)=>{
+        this.dataValuesStorage.offline = unSyncedDataValues.length;
+        this.dataValuesStorage.online = syncedDataValues.length;
+        this.loadingEvents();
       },error=>{
         this.setToasterMessage('Fail to loading data values storage status');
         this.loadingData = false;
       });
+    },error=>{
+      this.setToasterMessage('Fail to loading data values storage status');
+      this.loadingData = false;
     });
     //this.dataValues.getDataValuesByStatus()
 
+  }
+
+  loadingEvents(){
+    this.setLoadingMessages("Loading event storage status");
+    this.eventProvider.getEventsFromStorageByStatus(this.currentUser,"new event").then((events :any)=>{
+      this.eventsStorage.offline += events.length;
+      this.eventProvider.getEventsFromStorageByStatus(this.currentUser,"not synced").then((events :any)=>{
+        this.eventsStorage.offline += events.length;
+      },error=>{
+        this.loadingData = false;
+        this.setToasterMessage('Fail to loading event storage status : ' + JSON.stringify(error));
+      });
+      this.eventProvider.getEventsFromStorageByStatus(this.currentUser,"synced").then((events :any)=>{
+        this.eventsStorage.online += events.length;
+        this.loadingData = false;
+      },error=>{
+        this.loadingData = false;
+        this.setToasterMessage('Fail to loading event storage status : ' + JSON.stringify(error));
+      });
+    },error=>{
+      this.loadingData = false;
+      this.setToasterMessage('Fail to loading event storage status : ' + JSON.stringify(error));
+    });
   }
 
   getArrayFromObject(object){

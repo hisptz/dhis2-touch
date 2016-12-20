@@ -57,6 +57,19 @@
             </ion-item>
           </ion-item-group>
           <ion-item-group>
+            <ion-item-divider color="primary">
+              Event Storage Status
+            </ion-item-divider>
+            <ion-item >
+              <h2>Synced</h2>
+              <p>{{ eventsStorage.online }}</p>
+            </ion-item>
+            <ion-item >
+              <h2>Not Synced</h2>
+              <p>{{ eventsStorage.offline }}</p>
+            </ion-item>
+          </ion-item-group>
+          <ion-item-group>
             <ion-list></ion-list>
             <ion-item-divider color="primary">
               System Information

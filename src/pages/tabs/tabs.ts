@@ -33,9 +33,9 @@ export class TabsPage {
   swipeEvent(e) {
     //alert(JSON.stringify(e));
     if(e.velocityX > 0){
-      //this.currentTab.select(0);
+      this.currentTab.select(0);
     }else{
-      //this.currentTab.select(1);
+      this.currentTab.select(1);
     }
   }
 

@@ -81,13 +81,11 @@
                               <ion-input type="date" (blur)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)"  [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" ></ion-input>
                             </ion-item>
                           </div>
-
                           <div *ngIf="dataElement.valueType == 'LONG_TEXT'">
                             <ion-item>
                               <ion-textarea (blur)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)"  [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" ></ion-textarea>
                             </ion-item>
                           </div>
-
                           <div *ngIf="dataElement.valueType == 'TRUE_ONLY'">
                             <ion-item>
                               <ion-label>Touch to select/update</ion-label>
