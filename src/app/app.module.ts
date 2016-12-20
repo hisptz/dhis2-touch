@@ -28,10 +28,11 @@ import {ReportView} from "../pages/report-view/report-view";
 import {ReportParameterSelection} from "../pages/report-parameter-selection/report-parameter-selection";
 import {SettingDetail} from "../pages/setting-detail/setting-detail";
 import {EventCaptureForm} from "../pages/event-capture-form/event-capture-form";
+import {EventView} from "../pages/event-view/event-view";
 
 @NgModule({
   declarations: [
-    MyApp,About,DashBoardHome,EventCaptureHome,
+    MyApp,About,DashBoardHome,EventCaptureHome,EventView,
     TabsPage,Help,Login,Profile,DataEntryHome,DataSetDimension,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,
     Account,ReportHome,SettingHome,TrackerCaptureHome,ObjectToArray,ProgramSelection,
@@ -42,7 +43,7 @@ import {EventCaptureForm} from "../pages/event-capture-form/event-capture-form";
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,About,DashBoardHome,EventCaptureHome,
+    MyApp,About,DashBoardHome,EventCaptureHome,EventView,
     TabsPage,Help,Login,Profile,DataEntryHome,DataSetDimension,SettingDetail,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,ReportParameterSelection,
     Account,ReportHome,SettingHome,TrackerCaptureHome,ProgramSelection,DataEntryForm,ReportView,EventCaptureForm

@@ -92,21 +92,32 @@
 
         <!-- event list -->
         <div *ngFor="let event of currentEvents">
-          <ion-card>
+          <ion-card >
             <ion-card-content>
-              <h2><b>Incident date</b> </h2>
-              <p>{{ event.eventDate }}</p>
+              <p><b>Incident date</b>&nbsp;&nbsp;:&nbsp;&nbsp;{{ event.eventDate }}</p>
               <div *ngFor="let dataValue of event.dataValues">
                 <div *ngIf="dataElementToDisplay[dataValue.dataElement]">
-                  <h2><b>{{ dataElementToDisplay[dataValue.dataElement].name }}</b></h2>
-                  <p>{{ dataValue.value }}</p>
+                  <p><b>{{ dataElementToDisplay[dataValue.dataElement].name }}</b>&nbsp;&nbsp;:&nbsp;&nbsp;{{ dataValue.value }}</p>
                 </div>
               </div>
-              <h2><b>Status</b></h2>
-              <p>
-                <span *ngIf="event.syncStatus == 'new event' || event.syncStatus == 'not synced'">Offline</span>
-                <span *ngIf="!(event.syncStatus == 'new event' || event.syncStatus == 'not synced')">Online</span>
+              <p><b>Status</b>&nbsp;&nbsp;:&nbsp;&nbsp;
+                <span *ngIf="event.syncStatus == 'new event' || event.syncStatus == 'not synced'" >Offline</span>
+                <span *ngIf="!(event.syncStatus == 'new event' || event.syncStatus == 'not synced')" >Online</span>
               </p>
+              <!-- edit or view event actions -->
+              <ion-row>
+                <ion-col >
+                  <button ion-button full (click)="goToEventView(event)">
+                    <ion-icon name="eye"></ion-icon>&nbsp;&nbsp;View
+                  </button>
+                </ion-col>
+                <ion-col >
+                  <button ion-button full (click)="gotToEditEvent(event)">
+                    <ion-icon name="create"></ion-icon>&nbsp;&nbsp;Edit
+                  </button>
+                </ion-col>
+              </ion-row>
+
             </ion-card-content>
           </ion-card>
         </div>

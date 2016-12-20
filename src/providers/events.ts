@@ -13,7 +13,7 @@ import {Observable} from 'rxjs/Rx';
 export class Events {
 
   public resource : string;
-  //id = programId+"-"+orgUnitId
+  //id = programId+"-"+orgUnitId+"-"+eventId
 
   constructor(private sqlLite : SqlLite,public httpClient:HttpClient) {
     this.resource = "events";
@@ -91,6 +91,8 @@ export class Events {
   }
 
 
+
+
   /**
    * loading all events fro local storage using
    * @param orgUnit
@@ -113,6 +115,31 @@ export class Events {
           }
         });
         resolve(events);
+      },error=>{
+        reject(error);
+      })
+    });
+  }
+
+  /**
+   * get event by event table id
+   * eventTableId == programId+"-"+orgUnitId+"-"+eventId
+   * @param eventTableId
+   * @param currentUser
+   * @returns {Promise<T>}
+     */
+  loadingEventByIdFromStorage(eventTableId,currentUser){
+    let self = this;
+    let attribute = "id";
+    let attributeArray = [];
+    attributeArray.push(eventTableId);
+    return new Promise(function(resolve, reject) {
+      self.sqlLite.getDataFromTableByAttributes(self.resource,attribute,attributeArray,currentUser.currentDatabase).then((offlineEvents : any)=>{
+        if(offlineEvents.length > 0){
+          resolve(offlineEvents[0]);
+        }else{
+          resolve({});
+        }
       },error=>{
         reject(error);
       })

@@ -12,6 +12,7 @@ import {OrganisationUnit} from "../../providers/organisation-unit";
 import {Events} from "../../providers/events";
 import {EventCaptureForm} from "../event-capture-form/event-capture-form";
 import {ProgramStageDataElements} from "../../providers/program-stage-data-elements";
+import {EventView} from "../event-view/event-view";
 
 /*
   Generated class for the EventCaptureHome page.
@@ -267,6 +268,27 @@ export class EventCaptureHome {
     this.loadingMessages = [];
     this.loadingData = true;
     this.loadEventsFromOfflineStorage();
+  }
+
+  goToEventView(event){
+    let params = {
+      orgUnitId : this.selectedOrganisationUnit.id,
+      orgUnitName : this.selectedOrganisationUnit.name,
+      programId : this.selectedProgram.id,
+      programName : this.selectedProgram.name,
+      event : event.event
+    };
+    this.navCtrl.push(EventView,{params:params});
+  }
+
+  gotToEditEvent(event){
+    let params = {
+      orgUnitId : this.selectedOrganisationUnit.id,
+      programId : this.selectedProgram.id,
+      selectedDataDimension : this.selectedDataDimension,
+      event : event.event
+    };
+    this.navCtrl.push(EventCaptureForm,{params:params});
   }
 
   goToEventRegister(){

@@ -75,7 +75,6 @@ export class EventCaptureForm {
   }
 
   ionViewDidLoad() {
-
   }
 
   initiateNewEvent(entryFormParameter,program){
@@ -102,8 +101,12 @@ export class EventCaptureForm {
     this.setLoadingMessages("Loading program metadata");
     this.Program.getProgramById(programId,this.currentUser).then((program : any)=>{
       this.currentProgram = program;
-      //initiate event
-      this.initiateNewEvent(this.entryFormParameter,program);
+      if(this.entryFormParameter.event ==""){
+        //initiate new event
+        this.initiateNewEvent(this.entryFormParameter,program);
+      }else{
+        this.loadingEvent(this.entryFormParameter.programId,this.entryFormParameter.orgUnitId,this.entryFormParameter.event);
+      }
       if(program.programStageSections !=null || program.programStageSections){
         this.loadProgramStageSections(program.programStageSections);
       }else{
@@ -147,6 +150,23 @@ export class EventCaptureForm {
     });
   }
 
+  loadingEvent(programId,orgUnitId,eventId){
+    this.setLoadingMessages("Loading event");
+    let eventTableId = programId+"-"+orgUnitId+"-"+eventId;
+    this.dataValues = {};
+    this.eventProvider.loadingEventByIdFromStorage(eventTableId,this.currentUser).then((event:any)=>{
+      this.event = event;
+      if(event.notes !="0"){
+        this.eventComment = event.notes;
+      }
+      event.dataValues.forEach((dataValue : any)=>{
+        this.dataValues[dataValue.dataElement] = dataValue.value;
+      });
+    },error=>{
+      //fail to load event from local storage
+    });
+  }
+
   saveEvent(){
     this.loadingMessages = [];
     this.loadingData = true;
@@ -162,8 +182,12 @@ export class EventCaptureForm {
         this.event.dataValues = [];
         //update event sync status
         // if has been updated change status to 'not synced'
-        this.event["syncStatus"] = "new event";
-        this.event["event"]= dhis2.util.uid();
+        if(this.entryFormParameter.event ==""){
+          this.event["syncStatus"] = "new event";
+          this.event["event"]= dhis2.util.uid();
+        }else{
+          this.event["syncStatus"] = "not synced";
+        }
         this.eventProvider.getEventDataValues(this.dataValues,programStageDataElements).then((dataValues:any)=>{
           dataValues.forEach(dataValue=>{
             this.event.dataValues.push(dataValue);
