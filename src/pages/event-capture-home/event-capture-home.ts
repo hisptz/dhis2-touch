@@ -181,10 +181,16 @@ export class EventCaptureHome {
   }
 
   loadingProgramStageDataElements(program){
+    this.dataElementToDisplay = {};
+
     this.ProgramStageDataElements.getProgramStageDataElements(program.programStages[0].programStageDataElements,this.currentUser).then((programStageDataElements:any)=>{
       this.programStageDataElements = programStageDataElements;
-      
-      //dataElementToDisplay
+      programStageDataElements.forEach((programStageDataElement : any,index : any)=>{
+        if(index < 2){
+          this.dataElementToDisplay[programStageDataElement.dataElement.id] = programStageDataElement.dataElement;
+        }
+        this.dataElementMapper[programStageDataElement.dataElement.id] = programStageDataElement.dataElement;
+      });
     })
   }
 
