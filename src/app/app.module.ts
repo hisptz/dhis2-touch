@@ -30,6 +30,8 @@ import {SettingDetail} from "../pages/setting-detail/setting-detail";
 import {EventCaptureForm} from "../pages/event-capture-form/event-capture-form";
 import {EventView} from "../pages/event-view/event-view";
 
+import { ChartModule } from 'angular2-highcharts';
+
 @NgModule({
   declarations: [
     MyApp,About,DashBoardHome,EventCaptureHome,EventView,
@@ -39,7 +41,7 @@ import {EventView} from "../pages/event-view/event-view";
     AccountName,DataEntryForm,ReportView,ReportParameterSelection,SettingDetail,EventCaptureForm
   ],
   imports: [
-    IonicModule.forRoot(MyApp,{tabsPlacement: 'top'})
+    IonicModule.forRoot(MyApp,{tabsPlacement: 'top'}),ChartModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

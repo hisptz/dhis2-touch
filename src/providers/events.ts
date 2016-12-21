@@ -176,8 +176,10 @@ export class Events {
           let eventTobUploaded = event;
           let eventToUpload = self.formatEventForUpload(eventTobUploaded);
           let url = "/api/events";
+          console.log(JSON.stringify(eventToUpload));
           self.httpClient.post(url,eventToUpload,currentUser).subscribe(response=>{
             response = response.json();
+            console.log(JSON.stringify(response));
             self.updateUploadedLocalStoredEvent(event,response,currentUser).then(()=>{
             },error=>{
             });
