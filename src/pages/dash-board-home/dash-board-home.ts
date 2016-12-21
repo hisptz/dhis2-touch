@@ -19,10 +19,6 @@ export class DashBoardHome {
     this.options = {};
   }
 
-  eraseChart(){
-    this.options = {};
-  }
-
   drawChart(){
     this.options = {
       title: { text: 'simple chart' },

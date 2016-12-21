@@ -29,4 +29,15 @@ Application has been built to support:</p>
   3. Start the emulator or open an app from the phone when connected in debug mode by running
   
     `ionic run android`
+    
+## troubleshoots
+    Incase you encounter error "bundle failed: 'ChartModule' is not exported by node_modules/angular2-highcharts/index.js" on build app, 
+     work around <a  target="_blank" href="https://github.com/gevgeny/angular2-highcharts/issues/79">Follow this link</a> <b>or</b>
+      just edit "node_modules/@ionic/app-scripts/config/rollup.config.js"<br>
+      
+      replace commonjs(),  with <br>
+      commonjs({
+            namedExports: { 'node_modules/angular2-highcharts/index.js':['ChartModule']}
+          }),
+      
 

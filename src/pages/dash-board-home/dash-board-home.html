@@ -16,13 +16,16 @@
 <ion-content >
 
   <ion-grid>
+
     <ion-row>
-      <ion-col width="10">
-        <button ion-button small color="favorite" (click)="drawChart()">Draw chart</button><br>
-        <button ion-button small  color="danger" (click)="eraseChart()">Erase chart</button>
+      <ion-col >
+        <button ion-button small color="favorite" (click)="drawChart()">Draw chart</button>
       </ion-col>
-      <ion-col width="90">
-        <div style="overflow: auto;" *ngIf="options.title">
+    </ion-row>
+
+    <ion-row>
+      <ion-col width="100">
+        <div style="overflow: auto;width: 100%;" *ngIf="options.title">
           <chart [options]="options"></chart>
         </div>
       </ion-col>
