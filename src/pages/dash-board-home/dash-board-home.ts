@@ -13,10 +13,44 @@ import { NavController } from 'ionic-angular';
 })
 export class DashBoardHome {
 
-  constructor(public navCtrl: NavController) {}
+  public options : any;
+
+  constructor(public navCtrl: NavController) {
+    this.options = {};
+  }
+
+  eraseChart(){
+    this.options = {};
+  }
+
+  drawChart(){
+    this.options = {
+      title: { text: 'simple chart' },
+      chart: { type: 'spline' },
+      series: [
+        {
+        data: [49.9, 17.5, 10.4]
+        },
+        {
+          data: [6.9, 11.5, 16.4]
+        },
+        {
+          data: [42.9, 30.5, 14.8]
+        },
+        {
+          data: [39.9, 18.5, 20.4]
+        },
+        {
+          data: [16.9, 15.5, 1.4]
+        },
+        {
+          data: [32.9, 3.5, 17.8]
+        }
+      ]
+    };
+  }
 
   ionViewDidLoad() {
-    console.log('Hello DashBoardHome Page');
   }
 
 }

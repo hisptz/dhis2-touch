@@ -41,7 +41,8 @@ import { ChartModule } from 'angular2-highcharts';
     AccountName,DataEntryForm,ReportView,ReportParameterSelection,SettingDetail,EventCaptureForm
   ],
   imports: [
-    IonicModule.forRoot(MyApp,{tabsPlacement: 'top'}),ChartModule
+    ChartModule,
+    IonicModule.forRoot(MyApp,{tabsPlacement: 'top'})
   ],
   bootstrap: [IonicApp],
   entryComponents: [
