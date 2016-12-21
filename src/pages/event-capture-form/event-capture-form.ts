@@ -57,14 +57,14 @@ export class EventCaptureForm {
     this.user.getCurrentUser().then(user=>{
       this.currentUser = user;
 
-      //this.eventProvider.getEventsFromStorageByStatus(user,"new event").then((events :any)=>{
-      //  this.eventProvider.uploadEventsToServer(events,this.currentUser).then((response)=>{
-      //  },error=>{});
-      //  this.eventProvider.getEventsFromStorageByStatus(user,"not synced").then((events :any)=>{
-      //    this.eventProvider.uploadEventsToServer(events,this.currentUser).then((response)=>{
-      //    },error=>{});
-      //  });
-      //});
+      this.eventProvider.getEventsFromStorageByStatus(user,"new event").then((events :any)=>{
+        this.eventProvider.uploadEventsToServer(events,this.currentUser).then((response)=>{
+        },error=>{});
+        this.eventProvider.getEventsFromStorageByStatus(user,"not synced").then((events :any)=>{
+          this.eventProvider.uploadEventsToServer(events,this.currentUser).then((response)=>{
+          },error=>{});
+        });
+      });
 
       this.entryFormParameter = this.params.get("params");
       if(this.entryFormParameter.programId){
@@ -182,7 +182,7 @@ export class EventCaptureForm {
         this.event.dataValues = [];
         //update event sync status
         // if has been updated change status to 'not synced'
-        if(this.entryFormParameter.event ==""){
+        if(this.entryFormParameter.event =="" || this.event["syncStatus"] == "new event"){
           this.event["syncStatus"] = "new event";
           this.event["event"]= dhis2.util.uid();
         }else{

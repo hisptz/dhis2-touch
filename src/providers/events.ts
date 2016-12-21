@@ -176,18 +176,18 @@ export class Events {
           let eventTobUploaded = event;
           let eventToUpload = self.formatEventForUpload(eventTobUploaded);
           let url = "/api/events";
-          alert("to upload event : " + JSON.stringify(eventToUpload));
           self.httpClient.post(url,eventToUpload,currentUser).subscribe(response=>{
             response = response.json();
             self.updateUploadedLocalStoredEvent(event,response,currentUser).then(()=>{
             },error=>{
             });
           },error=>{
-            alert("error on post : " + JSON.stringify(error.json()));
+            console.log("error on post : " + JSON.stringify(error.json()));
           })
         }else{
-          let eventToUpload = self.formatEventForUpload(event);
-          let url = "/api/events/"+eventToUpload.event + ".json";
+          let eventTobUploaded = event;
+          let eventToUpload = self.formatEventForUpload(eventTobUploaded);
+          let url = "/api/events/"+eventToUpload.event;
           self.httpClient.put(url,eventToUpload,currentUser).subscribe(response=>{
             response = response.json();
             self.updateUploadedLocalStoredEvent(event,response,currentUser).then(()=>{
@@ -195,7 +195,7 @@ export class Events {
 
             });
           },error=>{
-            alert("error on put : " + JSON.stringify(error.json()));
+            console.log("error on put : " + JSON.stringify(error.json()));
           })
         }
       });
@@ -227,6 +227,7 @@ export class Events {
    * @returns {any}
      */
   formatEventForUpload(event){
+    //@todo update event notes to the server
     //delete some field unnecessary for uploading to server
     delete event.id;
     delete event.syncStatus;
