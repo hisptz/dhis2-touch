@@ -3,6 +3,7 @@ import { NavController,ToastController } from 'ionic-angular';
 import {HttpClient} from "../../providers/http-client/http-client";
 import {User} from "../../providers/user/user";
 import {Dashboard} from "../../providers/dashboard";
+import {DashBoardIterms} from "../dash-board-iterms/dash-board-iterms";
 
 /*
   Generated class for the DashBoardHome page.
@@ -16,9 +17,6 @@ import {Dashboard} from "../../providers/dashboard";
   providers : [User,HttpClient,Dashboard]
 })
 export class DashBoardHome {
-
-  public options : any;
-  public chartType : string;
 
   public currentUser : any;
   public loadingData : boolean = false;
@@ -52,7 +50,11 @@ export class DashBoardHome {
   }
 
   goToDashBoard(dashBoard){
-    alert(JSON.stringify(dashBoard));
+    let params = {
+      dashBordName : dashBoard.name,
+      dashBoard : dashBoard
+    };
+    this.navCtrl.push(DashBoardIterms,params);
   }
 
   getFilteredList(ev: any) {
@@ -63,20 +65,6 @@ export class DashBoardHome {
         return (dashBoard.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
       })
     }
-  }
-
-  changeType(type){
-    this.options = {};
-    this.options = this.dashboard.getDefaultDashBoard(type);
-  }
-
-  changeChart(){
-    this.changeType(this.chartType);
-  }
-
-  drawChart(){
-    this.options = {};
-    this.options = this.dashboard.getDefaultDashBoard("");
   }
 
   ionViewDidLoad() {

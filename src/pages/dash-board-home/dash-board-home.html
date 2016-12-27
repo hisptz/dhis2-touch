@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>DashBoardHome</ion-title>
+    <ion-title>Dashboard Home</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -34,10 +34,13 @@
         <ion-row>
           <ion-col width="100">
             <ion-list>
-              <ion-item *ngFor="let dashBoard of dashBoards" (click)="goToDashBoard(dashBoard)">
-                <ion-icon name="list" item-left></ion-icon>
-                <span >{{ dashBoard.name }}</span>
-              </ion-item>
+              <div *ngFor="let dashBoard of dashBoards">
+                <ion-item *ngIf="dashBoard.dashboardItems.length > 0"  (click)="goToDashBoard(dashBoard)">
+                  <ion-icon name="list" item-left color="favorite"></ion-icon>
+                  <span >{{ dashBoard.name }}</span>
+                  <ion-icon name="arrow-forward" item-right color="primary"></ion-icon>
+                </ion-item>
+              </div>
               <ion-item *ngIf = "dashBoards.length == 0">
                 There is no dashBoard from the server
               </ion-item>
