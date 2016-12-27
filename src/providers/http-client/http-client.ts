@@ -15,7 +15,7 @@ export class HttpClient {
 
   public timeOutTime : number;
   constructor(private http:Http) {
-    this.timeOutTime = 2*60*1000;
+    this.timeOutTime = 4*60*1000;
   }
 
   get(url,user):Observable<Response>{

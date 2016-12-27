@@ -243,7 +243,8 @@ export class Login {
     this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
       this.setLoadingMessages('Saving '+response[resource].length+' program-stage data-elements');
       this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-        this.downloadingReports();
+        //this.downloadingReports();
+        this.setLandingPage();
       },error=>{
         this.loadingData = false;
         this.setStickToasterMessage('Fail to save program-stage data-elements. ' + JSON.stringify(error));
