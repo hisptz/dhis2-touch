@@ -31,10 +31,11 @@ import {EventCaptureForm} from "../pages/event-capture-form/event-capture-form";
 import {EventView} from "../pages/event-view/event-view";
 
 import { ChartModule } from 'angular2-highcharts';
+import {DashboardItems} from "../pages/dashboard-items/dashboard-items";
 
 @NgModule({
   declarations: [
-    MyApp,About,DashBoardHome,EventCaptureHome,EventView,
+    MyApp,About,DashBoardHome,EventCaptureHome,EventView,DashboardItems,
     TabsPage,Help,Login,Profile,DataEntryHome,DataSetDimension,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,
     Account,ReportHome,SettingHome,TrackerCaptureHome,ObjectToArray,ProgramSelection,
@@ -46,7 +47,7 @@ import { ChartModule } from 'angular2-highcharts';
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,About,DashBoardHome,EventCaptureHome,EventView,
+    MyApp,About,DashBoardHome,EventCaptureHome,EventView,DashboardItems,
     TabsPage,Help,Login,Profile,DataEntryHome,DataSetDimension,SettingDetail,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,ReportParameterSelection,
     Account,ReportHome,SettingHome,TrackerCaptureHome,ProgramSelection,DataEntryForm,ReportView,EventCaptureForm

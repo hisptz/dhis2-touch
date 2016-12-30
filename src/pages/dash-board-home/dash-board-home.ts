@@ -3,7 +3,7 @@ import { NavController,ToastController } from 'ionic-angular';
 import {HttpClient} from "../../providers/http-client/http-client";
 import {User} from "../../providers/user/user";
 import {Dashboard} from "../../providers/dashboard";
-import {DashBoardIterms} from "../dash-board-iterms/dash-board-iterms";
+import {DashboardItems} from "../dashboard-items/dashboard-items";
 
 /*
   Generated class for the DashBoardHome page.
@@ -27,7 +27,6 @@ export class DashBoardHome {
   constructor(public navCtrl: NavController,public user : User,
               public toastCtrl:ToastController,public dashboard : Dashboard,
               public httpClient : HttpClient) {
-    this.drawChart();
     this.user.getCurrentUser().then(user=>{
       this.currentUser = user;
       this.getAllDataBase();
@@ -54,7 +53,7 @@ export class DashBoardHome {
       dashBordName : dashBoard.name,
       dashBoard : dashBoard
     };
-    this.navCtrl.push(DashBoardIterms,params);
+    this.navCtrl.push(DashboardItems,params);
   }
 
   getFilteredList(ev: any) {

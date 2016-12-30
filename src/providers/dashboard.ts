@@ -32,7 +32,7 @@ export class Dashboard {
   getDefaultDashBoard(type){
     let dashBoard = {
       title: { text: 'simple chart' },
-      chart: { type: type },
+      chart: { type: type, zoomType :'x' },
       series: [
         {
           data: [49.9, 17.5, 10.4]
@@ -53,7 +53,7 @@ export class Dashboard {
           data: [32.9, 3.5, 17.8]
         }
       ]
-    }
+    };
     return dashBoard;
   }
 

@@ -51,26 +51,4 @@
     </div>
   </div>
 
-  <ion-grid>
-    <ion-item >
-      <ion-label>Chart Type</ion-label>
-      <ion-select [(ngModel)]="chartType" (ionChange)="changeChart()">
-        <ion-option  value="" >Default</ion-option>
-        <ion-option  value="spline" >Spline</ion-option>
-        <ion-option  value="pie" >Pie</ion-option>
-        <ion-option  value="column" >Column</ion-option>
-        <ion-option  value="bar" >Bar</ion-option>
-        <ion-option  value="area" >Area</ion-option>
-      </ion-select>
-    </ion-item>
-
-    <ion-row>
-      <ion-col width="100">
-        <div style="overflow: auto;width: 100%;" *ngIf="options.title">
-          <chart [options]="options"></chart>
-        </div>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
 </ion-content>
