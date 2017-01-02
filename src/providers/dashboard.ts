@@ -15,10 +15,21 @@ export class Dashboard {
     console.log('Hello Dashboard Provider');
   }
 
+  /**
+   * get all dashBoards from server
+   * @param currentUser
+   * @returns {Promise<T>}
+     */
   getAllDashBoardsFromServer(currentUser){
-    let url = "/api/dashboards.json?paging=false&fields=name,id,itemCount,dashboardItems[id,name,interpretationCount," +
-      "interpretationLikeCount,type,shape,chart[id,name,type,series,category,relativePeriods,programIndicatorDimensions," +
-      "dataDimensionItems,dataElementDimensions,periods,organisationUnits,categoryDimensions]]";
+    let url = "/api/dashboards.json?paging=false&fields=:all,dashboardItems[id,lastsUpdated,created,type,shape," +
+      "chart[:all],reportTable[:all],map[id,lastUpdated,created,name,zoom,longitude,latitude,displayName," +
+      "mapViews[:all],:all],:all,program[id,name],programStage[id,name],columns[dimension,filter,legendSet[id,name]," +
+      "items[id,name]],rows[dimension,filter,legendSet[id,name],items[id,name]],filters[dimension,filter," +
+      "legendSet[id,name],items[id,name]],!lastUpdated,!href,!created,!publicAccess,!rewindRelativePeriods," +
+      "!userOrganisationUnit,!userOrganisationUnitChildren,!userOrganisationUnitGrandChildren,!externalAccess," +
+      "!access,!relativePeriods,!columnDimensions,!rowDimensions,!filterDimensions,!user,!organisationUnitGroups," +
+      "!itemOrganisationUnitGroups,!userGroupAccesses,!indicators,!dataElements,!dataElementOperands," +
+      "!dataElementGroups,!dataSets,!periods,!organisationUnitLevels,!organisationUnits]";
     let self = this;
     return new Promise(function(resolve, reject) {
       self.httpClient.get(url,currentUser).subscribe(response=>{
@@ -28,6 +39,113 @@ export class Dashboard {
       })
     });
   }
+
+  /**
+   * get formatted string neccessry for anlaytic
+   * @param enumString
+   * @returns {any}
+     */
+  formatEnumString(enumString){
+    enumString = enumString.replace(/_/g,' ');
+    enumString=enumString.toLowerCase();
+    return enumString.substr(0,1)+enumString.replace(/(\b)([a-zA-Z])/g,
+        function(firstLetter){
+          return   firstLetter.toUpperCase();
+        }).replace(/ /g,'').substr(1);
+  }
+
+  getDashBoardObject(dashboardItem,currentUser){
+    let self = this;
+    let url = "/api/"+self.formatEnumString(dashboardItem.type)+"s/"+dashboardItem[self.formatEnumString(dashboardItem.type)].id+".json?fields=:all,program[id,name],programStage[id,name],columns[dimension,filter,items[id,name],legendSet[id,name]],rows[dimension,filter,items[id,name],legendSet[id,name]],filters[dimension,filter,items[id,name],legendSet[id,name]],!lastUpdated,!href,!created,!publicAccess,!rewindRelativePeriods,!userOrganisationUnit,!userOrganisationUnitChildren,!userOrganisationUnitGrandChildren,!externalAccess,!access,!relativePeriods,!columnDimensions,!rowDimensions,!filterDimensions,!user,!organisationUnitGroups,!itemOrganisationUnitGroups,!userGroupAccesses,!indicators,!dataElements,!dataElementOperands,!dataElementGroups,!dataSets,!periods,!organisationUnitLevels,!organisationUnits,attributeDimensions[id,name,attribute[id,name,optionSet[id,name,options[id,name]]]],dataElementDimensions[id,name,dataElement[id,name,optionSet[id,name,options[id,name]]]],categoryDimensions[id,name,category[id,name,categoryOptions[id,name,options[id,name]]]]";
+    return new Promise(function(resolve, reject) {
+      self.httpClient.get(url,currentUser).subscribe(response=>{
+        let dashBoardObject = self.getDashBoardObjectWithAnalyticsUrl(response.json());
+        resolve(dashBoardObject);
+      },error=>{
+        reject(error.json());
+      });
+    });
+  }
+
+  getDashBoardObjectWithAnalyticsUrl(dashBoardObject){
+    let url = this.getDashBoardItemAnalyticsUrl(dashBoardObject);
+    dashBoardObject.url = url;
+    return dashBoardObject;
+  }
+
+  getDashBoardItemAnalyticsUrl(dashBoardObject){
+    let url = "/api/analytics";let column = "";let row = "";let filter = "";
+    //checking for columns
+    dashBoardObject.columns.forEach((dashBoardObjectColumn : any,index : any)=>{
+      let items = "";
+      if(dashBoardObjectColumn.dimension!="dy"){
+        (index == 0)? items = "dimension="+dashBoardObjectColumn.dimension+":": items += "&dimension="+dashBoardObjectColumn.dimension+":";
+        dashBoardObjectColumn.items.forEach((dashBoardObjectColumnItem : any)=>{
+          items += dashBoardObjectColumnItem.id + ";"
+        });
+        if(dashBoardObjectColumn.filter) {
+          items += dashBoardObjectColumn.filter+';';
+        }
+        column += items.slice(0, -1);
+      }
+    });
+    //checking for rows
+    dashBoardObject.rows.forEach((dashBoardObjectRow : any)=>{
+      let items = "";
+      if(dashBoardObjectRow.dimension!="dy"){
+        items += "&dimension="+dashBoardObjectRow.dimension+":";
+        dashBoardObjectRow.items.forEach((dashBoardObjectRowItem : any)=>{
+          items += dashBoardObjectRowItem.id + ";"
+        });
+        if(dashBoardObjectRow.filter) {
+          items += dashBoardObjectRow.filter+';';
+        }
+        row += items.slice(0, -1);
+      }
+    });
+    //checking for filters
+    dashBoardObject.filters.forEach((dashBoardObjectFilter : any)=>{
+      let items = "";
+      if(dashBoardObjectFilter.dimension!="dy"){
+        items += "&dimension="+dashBoardObjectFilter.dimension+":";
+        dashBoardObjectFilter.items.forEach((dashBoardObjectFilterItem : any)=>{
+          items += dashBoardObjectFilterItem.id + ";"
+        });
+        if(dashBoardObjectFilter.filter) {
+          items += dashBoardObjectFilter.filter+';';
+        }
+        filter += items.slice(0, -1);
+      }
+    });
+
+    //set url base on type
+    if( dashBoardObject.type=="EVENT_CHART" ) {
+      url += "/events/aggregate/"+dashBoardObject.program.id+".json?stage=" +dashBoardObject.programStage.id+"&";
+    }else if ( dashBoardObject.type=="EVENT_REPORT" ) {
+      if( dashBoardObject.dataType=="AGGREGATED_VALUES") {
+        url += "/events/aggregate/"+dashBoardObject.program.id+".json?stage=" +dashBoardObject.programStage.id+"&";
+      }else {
+        url += "/events/query/"+dashBoardObject.program.id+".json?stage=" +dashBoardObject.programStage.id+"&";
+      }
+
+    }else if ( dashBoardObject.type=="EVENT_MAP" ) {
+      url +="/events/aggregate/"+dashBoardObject.program.id+".json?stage="  +dashBoardObject.programStage.id+"&";
+    }else {
+      url += ".json?";
+    }
+
+    url += column+row;
+    ( filter == "" )? url+"" : url += filter;
+    url += "&displayProperty=NAME"+  dashBoardObject.type=="EVENT_CHART" ?
+      "&outputType=EVENT&"
+      : dashBoardObject.type=="EVENT_REPORT" ?
+      "&outputType=EVENT&displayProperty=NAME"
+      : dashBoardObject.type=="EVENT_MAP" ?
+      "&outputType=EVENT&displayProperty=NAME"
+      :"&displayProperty=NAME" ;
+    return url;
+  }
+
 
   getDefaultDashBoard(type){
     let dashBoard = {

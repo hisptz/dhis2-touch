@@ -182,7 +182,7 @@ export class EventCaptureForm {
         this.event.dataValues = [];
         //update event sync status
         // if has been updated change status to 'not synced'
-        if(this.entryFormParameter.event =="" || this.event["syncStatus"] == "new event"){
+        if(this.entryFormParameter.event ==""){
           this.event["syncStatus"] = "new event";
           this.event["event"]= dhis2.util.uid();
         }else{

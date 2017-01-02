@@ -37,10 +37,21 @@ export class DashboardItems {
       this.currentUser = user;
       this.dashBordName = this.params.get("dashBordName");
       this.dashBoardData = this.params.get("dashBoard");
+      this.getDashBoardItemObjects(this.dashBoardData);
     });
   }
 
   ionViewDidLoad() {}
+
+  getDashBoardItemObjects(dashBoardData){
+    this.dashboard.getDashBoardObject(dashBoardData.dashboardItems[0],this.currentUser).then((dashboardObject:any)=>{
+      alert(dashboardObject.url);
+      alert(JSON.stringify(dashboardObject));
+    },error=>{
+      this.loadingData = false;
+      this.setToasterMessage("Fail to load dashBoard object from server");
+    });
+  }
 
   changeType(type){
     this.options = {};

@@ -16,7 +16,9 @@ export class UpdateManagerHome {
   constructor(public navCtrl: NavController) {}
 
   ionViewDidLoad() {
-    console.log('Hello UpdateManagerHome Page');
   }
+
+
+
 
 }
