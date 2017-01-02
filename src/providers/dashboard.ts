@@ -54,12 +54,18 @@ export class Dashboard {
         }).replace(/ /g,'').substr(1);
   }
 
-  getDashBoardObject(dashboardItem,currentUser){
+  /**
+   * get dashBoardItemObject with analytic url
+   * @param dashboardItem
+   * @param currentUser
+   * @returns {Promise<T>}
+     */
+  getDashBoardItemObject(dashboardItem,currentUser){
     let self = this;
     let url = "/api/"+self.formatEnumString(dashboardItem.type)+"s/"+dashboardItem[self.formatEnumString(dashboardItem.type)].id+".json?fields=:all,program[id,name],programStage[id,name],columns[dimension,filter,items[id,name],legendSet[id,name]],rows[dimension,filter,items[id,name],legendSet[id,name]],filters[dimension,filter,items[id,name],legendSet[id,name]],!lastUpdated,!href,!created,!publicAccess,!rewindRelativePeriods,!userOrganisationUnit,!userOrganisationUnitChildren,!userOrganisationUnitGrandChildren,!externalAccess,!access,!relativePeriods,!columnDimensions,!rowDimensions,!filterDimensions,!user,!organisationUnitGroups,!itemOrganisationUnitGroups,!userGroupAccesses,!indicators,!dataElements,!dataElementOperands,!dataElementGroups,!dataSets,!periods,!organisationUnitLevels,!organisationUnits,attributeDimensions[id,name,attribute[id,name,optionSet[id,name,options[id,name]]]],dataElementDimensions[id,name,dataElement[id,name,optionSet[id,name,options[id,name]]]],categoryDimensions[id,name,category[id,name,categoryOptions[id,name,options[id,name]]]]";
     return new Promise(function(resolve, reject) {
       self.httpClient.get(url,currentUser).subscribe(response=>{
-        let dashBoardObject = self.getDashBoardObjectWithAnalyticsUrl(response.json());
+        let dashBoardObject = self.getDashBoardItemObjectWithAnalyticsUrl(response.json());
         resolve(dashBoardObject);
       },error=>{
         reject(error.json());
@@ -67,12 +73,35 @@ export class Dashboard {
     });
   }
 
-  getDashBoardObjectWithAnalyticsUrl(dashBoardObject){
+  getAnalyticDataForDashBoardItem(analyticsUrl,currentUser){
+    let self = this;
+    return new Promise(function(resolve, reject) {
+      self.httpClient.get(analyticsUrl,currentUser).subscribe(response=>{
+        resolve(response.json());
+      },error=>{
+        reject(error.json());
+      });
+    });
+  }
+
+  /**
+   * set analytic url on dashboard object
+   * @param dashBoardObject
+   * @returns {any}
+     */
+  getDashBoardItemObjectWithAnalyticsUrl(dashBoardObject){
     let url = this.getDashBoardItemAnalyticsUrl(dashBoardObject);
     dashBoardObject.url = url;
     return dashBoardObject;
   }
 
+
+
+  /**
+   * get analytic url
+   * @param dashBoardObject
+   * @returns {string}
+     */
   getDashBoardItemAnalyticsUrl(dashBoardObject){
     let url = "/api/analytics";let column = "";let row = "";let filter = "";
     //checking for columns

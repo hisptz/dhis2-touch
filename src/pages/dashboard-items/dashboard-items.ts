@@ -44,12 +44,16 @@ export class DashboardItems {
   ionViewDidLoad() {}
 
   getDashBoardItemObjects(dashBoardData){
-    this.dashboard.getDashBoardObject(dashBoardData.dashboardItems[0],this.currentUser).then((dashboardObject:any)=>{
-      alert(dashboardObject.url);
-      alert(JSON.stringify(dashboardObject));
+    this.dashboard.getDashBoardItemObject(dashBoardData.dashboardItems[0],this.currentUser).then((dashboardObject:any)=>{
+      this.dashboard.getAnalyticDataForDashBoardItem(dashboardObject.url,this.currentUser).then((analyticData : any)=>{
+        alert(JSON.stringify(analyticData));
+      },error=>{
+        this.loadingData = false;
+        this.setToasterMessage("Fail to load dashBoardItem data from server");
+      });
     },error=>{
       this.loadingData = false;
-      this.setToasterMessage("Fail to load dashBoard object from server");
+      this.setToasterMessage("Fail to load dashBoardItem object from server");
     });
   }
 
