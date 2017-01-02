@@ -12,7 +12,6 @@ import {Observable} from 'rxjs/Rx';
 export class Dashboard {
 
   constructor(public httpClient: HttpClient) {
-    console.log('Hello Dashboard Provider');
   }
 
   /**
@@ -54,6 +53,33 @@ export class Dashboard {
         }).replace(/ /g,'').substr(1);
   }
 
+
+  /**
+   * getDashBoardItemObjects
+   * @param dashboardItems
+   * @param currentUser
+   * @returns {Promise<T>}
+     */
+  getDashBoardItemObjects(dashboardItems,currentUser){
+    let dashBoardObjects = [];let self= this;
+    let promises = [];
+    return new Promise(function(resolve, reject) {
+      dashboardItems.forEach(dashboardItem=>{
+        promises.push(
+          self.getDashBoardItemObject(dashboardItem,currentUser).then(dashBoardObject=>{
+            dashBoardObjects.push(dashBoardObject);
+          },error=>{})
+        )
+      });
+      Observable.forkJoin(promises).subscribe(() => {
+          resolve(dashBoardObjects);
+        },
+        (error) => {
+          reject(error);
+        })
+    });
+  }
+
   /**
    * get dashBoardItemObject with analytic url
    * @param dashboardItem
@@ -73,6 +99,39 @@ export class Dashboard {
     });
   }
 
+  /**
+   * get analytic data for each object
+   * @param dashboardObjects
+   * @param currentUser
+   * @returns {Promise<T>}
+     */
+  getAnalyticDataForDashBoardItems(dashboardObjects,currentUser){
+    let data = {};let self= this;
+    let promises = [];
+    return new Promise(function(resolve, reject) {
+      dashboardObjects.forEach((dashboardObject:any)=> {
+        promises.push(
+          self.getAnalyticDataForDashBoardItem(dashboardObject.analyticsUrl,currentUser).then(analyticData=> {
+            data[dashboardObject.id] = analyticData;
+          }, error=> {
+          })
+        )
+      });
+      Observable.forkJoin(promises).subscribe(() => {
+          resolve(data);
+        },
+        (error) => {
+          reject(error);
+        })
+    });
+  }
+
+  /**
+   * get analytic data from login instance
+   * @param analyticsUrl
+   * @param currentUser
+   * @returns {Promise<T>}
+     */
   getAnalyticDataForDashBoardItem(analyticsUrl,currentUser){
     let self = this;
     return new Promise(function(resolve, reject) {
@@ -90,12 +149,10 @@ export class Dashboard {
    * @returns {any}
      */
   getDashBoardItemObjectWithAnalyticsUrl(dashBoardObject){
-    let url = this.getDashBoardItemAnalyticsUrl(dashBoardObject);
-    dashBoardObject.url = url;
+    let analyticsUrl = this.getDashBoardItemAnalyticsUrl(dashBoardObject);
+    dashBoardObject.analyticsUrl = analyticsUrl;
     return dashBoardObject;
   }
-
-
 
   /**
    * get analytic url
@@ -180,23 +237,48 @@ export class Dashboard {
     let dashBoard = {
       title: { text: 'simple chart' },
       chart: { type: type, zoomType :'x' },
+      xAxis: {
+        categories: ["2014","2015","2016"],
+        labels: {
+          rotation: -70,
+          style: {'color': '#000000', 'fontWeight': 'normal'}
+        }
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: ''
+        }, labels: {
+          style: {'color': '#000000', 'fontWeight': 'bold'}
+        }
+      },
+      labels: {
+        items: [{
+          html: '',
+          style: {
+            left: '20px',
+            top: '15px'
+          }
+        }]
+      },
       series: [
         {
+          name : "name 1",
           data: [49.9, 17.5, 10.4]
         },
-        {
+        {name : "name 6",
           data: [6.9, 11.5, 16.4]
         },
-        {
+        {name : "name 2",
           data: [42.9, 30.5, 14.8]
         },
-        {
+        {name : "name 3",
           data: [39.9, 18.5, 20.4]
         },
-        {
+        {name : "name 8",
           data: [16.9, 15.5, 1.4]
         },
-        {
+        {name : "name 10",
           data: [32.9, 3.5, 17.8]
         }
       ]

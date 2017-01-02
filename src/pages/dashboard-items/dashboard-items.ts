@@ -3,6 +3,7 @@ import { ToastController,NavParams } from 'ionic-angular';
 import {HttpClient} from "../../providers/http-client/http-client";
 import {Dashboard} from "../../providers/dashboard";
 import {User} from "../../providers/user/user";
+import {ChartVisualizer} from "../../providers/chart-visualizer";
 
 /*
   Generated class for the DashboardItems page.
@@ -13,57 +14,85 @@ import {User} from "../../providers/user/user";
 @Component({
   selector: 'page-dashboard-items',
   templateUrl: 'dashboard-items.html',
-  providers : [User,Dashboard,HttpClient]
+  providers : [User,Dashboard,HttpClient,ChartVisualizer]
 })
 export class DashboardItems {
 
   public dashBordName : string = "DashBoard Name";
   public options : any;
-  public chartType : string;
+  public chartType : any;
 
   public currentUser : any;
   public loadingData : boolean = false;
   public loadingMessages : any = [];
-  public dashBoardData :any;
+  public selectedDashBoard :any;
+  public selectedDashBoardData : any;//{dashBoardItemId : analyticData}
+  public dashBoardItemObjects : any;
+  public chartsObjects : any;
+
 
   constructor(public user : User,public params : NavParams,
+              private ChartVisualizer : ChartVisualizer,
               public toastCtrl:ToastController,public dashboard : Dashboard,
               public httpClient : HttpClient) {
 
     this.dashBordName = "DashBoard Name";
-    this.chartType = "";
-    this.drawChart();
+    this.chartType = {};
+    this.chartsObjects = {};
     this.user.getCurrentUser().then(user=>{
       this.currentUser = user;
       this.dashBordName = this.params.get("dashBordName");
-      this.dashBoardData = this.params.get("dashBoard");
-      this.getDashBoardItemObjects(this.dashBoardData);
+      this.selectedDashBoard = this.params.get("selectedDashBoard");
+      this.selectedDashBoardData = {};
+      this.getDashBoardItemObjectsAndData(this.selectedDashBoard);
     });
   }
 
   ionViewDidLoad() {}
 
-  getDashBoardItemObjects(dashBoardData){
-    this.dashboard.getDashBoardItemObject(dashBoardData.dashboardItems[0],this.currentUser).then((dashboardObject:any)=>{
-      this.dashboard.getAnalyticDataForDashBoardItem(dashboardObject.url,this.currentUser).then((analyticData : any)=>{
-        alert(JSON.stringify(analyticData));
+  getDashBoardItemObjectsAndData(selectedDashBoard){
+    this.loadingData = true;
+    this.loadingMessages = [];
+    this.setLoadingMessages("Loading dashboard items metadata");
+    this.dashboard.getDashBoardItemObjects(selectedDashBoard.dashboardItems,this.currentUser).then((dashBoardItemObjects:any)=>{
+      this.dashBoardItemObjects = dashBoardItemObjects;
+      this.setLoadingMessages("Loading dashboard items data");
+      this.dashboard.getAnalyticDataForDashBoardItems(dashBoardItemObjects,this.currentUser).then((analyticData : any)=>{
+        this.selectedDashBoardData = analyticData;
+        this.setChartsObjects(this.selectedDashBoardData,this.dashBoardItemObjects);
       },error=>{
         this.loadingData = false;
         this.setToasterMessage("Fail to load dashBoardItem data from server");
       });
     },error=>{
       this.loadingData = false;
-      this.setToasterMessage("Fail to load dashBoardItem object from server");
+      this.setToasterMessage("Fail to load dashboard items metadata from server");
     });
   }
 
-  changeType(type){
-    this.options = {};
-    this.options = this.dashboard.getDefaultDashBoard(type);
+  setChartsObjects(analyticData,dashBoardItemObjects){
+    this.chartsObjects = {};
+    this.setLoadingMessages("Prepare charts for visualization");
+    dashBoardItemObjects.forEach((dashBoardItemObject : any)=>{
+      let chartType = "";
+      if(dashBoardItemObject.type){
+        let typeArray = dashBoardItemObject.type.split("_");
+        chartType = typeArray[typeArray.length -1].toLowerCase();
+      }
+      let chartObject = this.ChartVisualizer.getChartObject(analyticData[dashBoardItemObject.id],dashBoardItemObject.category,[],dashBoardItemObject.series,[],dashBoardItemObject.name,chartType);
+      this.chartsObjects[dashBoardItemObject.id] = chartObject;
+    });
+    this.loadingData = false;
   }
 
-  changeChart(){
-    this.changeType(this.chartType);
+  changeType(type,dashBoardItemId){
+
+    //this.options = {};
+    //this.options = this.dashboard.getDefaultDashBoard(type);
+  }
+
+  changeChart(dashBoardItemId){
+
   }
 
   drawChart(){

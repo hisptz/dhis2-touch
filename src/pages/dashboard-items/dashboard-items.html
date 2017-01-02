@@ -32,51 +32,55 @@
   </div>
 
   <div *ngIf="!loadingData">
-    <div *ngIf="dashBoardData">
-      <div *ngFor="let dashboardItem of dashBoardData.dashboardItems">
-        <ion-card>
+    <div *ngIf="selectedDashBoard">
+      <div *ngFor="let dashboardItem of dashBoardItemObjects">
+        <div *ngIf="chartsObjects[dashboardItem.id]">
+          <ion-card>
+            <ion-card-content>
+              <ion-grid>
+                <ion-item >
+                  <ion-label>Chart Type</ion-label>
+                  <ion-select [(ngModel)]="chartType[dashboardItem.id]" (ionChange)="changeChart()">
+                    <ion-option  value="" >Default</ion-option>
+                    <ion-option  value="spline" >Spline</ion-option>
+                    <ion-option  value="pie" >Pie</ion-option>
+                    <ion-option  value="column" >Column</ion-option>
+                    <ion-option  value="bar" >Bar</ion-option>
+                    <ion-option  value="area" >Area</ion-option>
+                  </ion-select>
+                </ion-item>
 
-          <ion-card-content>
-            <ion-grid>
-              <ion-item >
-                <ion-label>Chart Type</ion-label>
-                <ion-select [(ngModel)]="chartType" (ionChange)="changeChart()">
-                  <ion-option  value="" >Default</ion-option>
-                  <ion-option  value="spline" >Spline</ion-option>
-                  <ion-option  value="pie" >Pie</ion-option>
-                  <ion-option  value="column" >Column</ion-option>
-                  <ion-option  value="bar" >Bar</ion-option>
-                  <ion-option  value="area" >Area</ion-option>
-                </ion-select>
-              </ion-item>
+                {{ chartsObjects[dashboardItem.id]|json }}
 
-              <ion-row>
-                <ion-col width="100">
-                  <div style="overflow: auto;width: 100%;" *ngIf="options.title">
-                    <chart [options]="options"></chart>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
+                <ion-row>
+                  <ion-col width="100">
+                    <div style="overflow: auto;width: 100%;" *ngIf="chartsObjects[dashboardItem.id].options">
+                      <chart [options]="chartsObjects[dashboardItem.id].options"></chart>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
 
-          </ion-card-content>
+            </ion-card-content>
 
-          <ion-row>
-            <ion-col>
-              <button ion-button icon-left clear small>
-                <ion-icon name="thumbs-up"></ion-icon>
-                <div>{{dashboardItem.interpretationLikeCount}} Interpretation Likes</div>
-              </button>
-            </ion-col>
-            <ion-col>
-              <button ion-button icon-left clear small>
-                <ion-icon name="text"></ion-icon>
-                <div>{{dashboardItem.interpretationCount}} Interpretation</div>
-              </button>
-            </ion-col>
-          </ion-row>
+            <ion-row>
+              <ion-col>
+                <button ion-button icon-left clear small>
+                  <ion-icon name="thumbs-up"></ion-icon>
+                  <div>{{dashboardItem.interpretationLikeCount}} Interpretation Likes</div>
+                </button>
+              </ion-col>
+              <ion-col>
+                <button ion-button icon-left clear small>
+                  <ion-icon name="text"></ion-icon>
+                  <div>{{dashboardItem.interpretationCount}} Interpretation</div>
+                </button>
+              </ion-col>
+            </ion-row>
 
-        </ion-card>
+          </ion-card>
+        </div>
+
       </div>
     </div>
   </div>

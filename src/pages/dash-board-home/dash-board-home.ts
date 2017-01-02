@@ -51,7 +51,7 @@ export class DashBoardHome {
   goToDashBoard(dashBoard){
     let params = {
       dashBordName : dashBoard.name,
-      dashBoard : dashBoard
+      selectedDashBoard : dashBoard
     };
     this.navCtrl.push(DashboardItems,params);
   }
