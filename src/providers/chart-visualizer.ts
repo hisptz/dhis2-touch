@@ -13,37 +13,83 @@ export class ChartVisualizer {
   public chartObjects : any;
 
   constructor() {
-    this.setChartsObjects();
   }
 
+  /**
+   * get all chars objects
+   * @param analyticDataMapper
+   * @param dashBoardItemObjects
+   * @returns {Promise<T>}
+     */
+  getChartObjects(analyticDataMapper,dashBoardItemObjects){
+    let self = this;
+    let chartsObjects = {};
+    return new Promise(function(resolve, reject) {
+      dashBoardItemObjects.forEach((dashBoardItemObject : any)=>{
+        let chartType = "";
+        if(dashBoardItemObject.type){
+          let typeArray = dashBoardItemObject.type.split("_");
+          chartType = typeArray[typeArray.length -1].toLowerCase();
+        }
+        let chartObject =  self.getChartObject(analyticDataMapper[dashBoardItemObject.id],dashBoardItemObject.category,[],dashBoardItemObject.series,[],dashBoardItemObject.name,chartType);
+        chartsObjects[dashBoardItemObject.id] = chartObject;
+      });
+      resolve(chartsObjects);
+    });
+  }
+
+
+  /**
+   * get chart object
+   * @param analyticsObject
+   * @param xAxisType
+   * @param xAxisItems
+   * @param yAxisType
+   * @param yAxisItems
+   * @param title
+   * @param chartType
+   * @returns {{options: {title: {text: any}, chart: {type: string, zoomType: string}, xAxis: {categories: Array, labels: {rotation: number, style: {color: string, fontWeight: string}}}, series: Array}}}
+     */
   getChartObject(analyticsObject, xAxisType,xAxisItems,yAxisType,yAxisItems,title,chartType){
     let self = this;
-    let chartObject = this.chartObjects.defaultChartObject;
+    let chartObject = {
+      options : {
+        title: {text: title },
+        chart: { type: "", zoomType :'x' },
+        xAxis: {categories: [], labels: {rotation: -40,style: {'color': '#000000', 'fontWeight': 'normal'}}},
+        series: []
+      }
+    };
     if(chartType){
       chartObject.options.chart.type = chartType;
     }
-    chartObject.options.title = title;
     let metaDataObject = self.prepareCategories(analyticsObject, xAxisType,xAxisItems,yAxisType,yAxisItems);
-    metaDataObject.xAxisItems.forEach((xAxisItem)=>{
-      //chartObject.options.xAxis.categories.push(xAxisItem.name);
-
-    });
-    alert(title);
     metaDataObject.xAxisItems.forEach((xAxisItem:any)=>{
-      let data = [];let self = this;
-      metaDataObject.yAxisItems.forEach((yAxisItem:any)=>{
+      chartObject.options.xAxis.categories.push(xAxisItem.name);
+    });
+    metaDataObject.yAxisItems.forEach((yAxisItem:any)=>{
+      let data = [];
+      metaDataObject.xAxisItems.forEach((xAxisItem:any)=>{
         let number = self.getDataValue(analyticsObject,xAxisType,xAxisItem.uid,yAxisType,yAxisItem.uid);
         data.push(number);
       });
       chartObject.options.series.push({
-        name : xAxisItem.name,
+        name : yAxisItem.name,
         data: data
       })
     });
-    alert(JSON.stringify(chartObject));
     return chartObject;
   }
 
+  /**
+   * prepareCategories
+   * @param analyticsObject
+   * @param xAxisType
+   * @param xAxisItems
+   * @param yAxisType
+   * @param yAxisItems
+   * @returns {{xAxisItems: Array, yAxisItems: Array}}
+     */
   prepareCategories(analyticsObject, xAxisType,xAxisItems,yAxisType,yAxisItems){
     let structure = {'xAxisItems':[],'yAxisItems':[]};
     let self = this;
@@ -69,6 +115,12 @@ export class ChartVisualizer {
     return structure;
   }
 
+  /**
+   *
+   * @param analyticsObject
+   * @param metadataType
+   * @returns {Array}
+     */
   getMetadataArray(analyticsObject,metadataType){
     let metadataArray = [];
     if(analyticsObject.metaData && analyticsObject.metaData[metadataType]){
@@ -77,6 +129,15 @@ export class ChartVisualizer {
     return metadataArray;
   }
 
+  /**
+   *
+   * @param analyticsObject
+   * @param xAxisType
+   * @param xAxisUid
+   * @param yAxisType
+   * @param yAxisUid
+     * @returns {number}
+     */
   getDataValue(analyticsObject,xAxisType,xAxisUid,yAxisType,yAxisUid){
     let self = this;let num = 0;
     for ( let value of analyticsObject.rows) {
@@ -88,6 +149,12 @@ export class ChartVisualizer {
     return num;
   }
 
+  /**
+   *
+   * @param analyticsObjectHeaders
+   * @param name
+   * @returns {number}
+     */
   getTitleIndex(analyticsObjectHeaders,name){
     let index = 0;let counter = 0;
     analyticsObjectHeaders.forEach((header:any)=>{
@@ -97,33 +164,6 @@ export class ChartVisualizer {
       counter++;
     });
     return index;
-  }
-
-
-  /**
-   * setter for define all charts objects
-   */
-  setChartsObjects(){
-    this.chartObjects = {
-      defaultChartObject : {
-        options : {
-          title: {
-            text: ''
-          },
-          chart: { type: "", zoomType :'x' },
-          //xAxis: {
-          //  categories: [],
-          //  labels: {
-          //    rotation: -90,
-          //    style: {'color': '#000000', 'fontWeight': 'normal'}
-          //  }
-          //},
-          series: []
-        }
-
-
-      }
-    }
   }
 
 }

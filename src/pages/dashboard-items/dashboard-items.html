@@ -40,18 +40,15 @@
               <ion-grid>
                 <ion-item >
                   <ion-label>Chart Type</ion-label>
-                  <ion-select [(ngModel)]="chartType[dashboardItem.id]" (ionChange)="changeChart()">
-                    <ion-option  value="" >Default</ion-option>
+                  <ion-select [(ngModel)]="chartType[dashboardItem.id]" (ionChange)="changeChart(dashboardItem.id)">
+                    <ion-option  value="" >Line</ion-option>
                     <ion-option  value="spline" >Spline</ion-option>
-                    <ion-option  value="pie" >Pie</ion-option>
+                    <!--<ion-option  value="pie" >Pie</ion-option>-->
                     <ion-option  value="column" >Column</ion-option>
                     <ion-option  value="bar" >Bar</ion-option>
                     <ion-option  value="area" >Area</ion-option>
                   </ion-select>
                 </ion-item>
-
-                {{ chartsObjects[dashboardItem.id]|json }}
-
                 <ion-row>
                   <ion-col width="100">
                     <div style="overflow: auto;width: 100%;" *ngIf="chartsObjects[dashboardItem.id].options">

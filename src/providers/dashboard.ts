@@ -92,6 +92,8 @@ export class Dashboard {
     return new Promise(function(resolve, reject) {
       self.httpClient.get(url,currentUser).subscribe(response=>{
         let dashBoardObject = self.getDashBoardItemObjectWithAnalyticsUrl(response.json());
+        dashBoardObject.interpretationLikeCount = dashboardItem.interpretationLikeCount;
+        dashBoardObject.interpretationCount = dashboardItem.interpretationCount;
         resolve(dashBoardObject);
       },error=>{
         reject(error.json());

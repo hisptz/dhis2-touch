@@ -62,42 +62,37 @@ export class DashboardItems {
         this.setChartsObjects(this.selectedDashBoardData,this.dashBoardItemObjects);
       },error=>{
         this.loadingData = false;
-        this.setToasterMessage("Fail to load dashBoardItem data from server");
+        this.setToasterMessage("Fail to load dashBoardItem data from server " + JSON.stringify(error));
       });
     },error=>{
       this.loadingData = false;
-      this.setToasterMessage("Fail to load dashboard items metadata from server");
+      this.setToasterMessage("Fail to load dashboard items metadata from server " + JSON.stringify(error));
     });
   }
 
   setChartsObjects(analyticData,dashBoardItemObjects){
     this.chartsObjects = {};
     this.setLoadingMessages("Prepare charts for visualization");
-    dashBoardItemObjects.forEach((dashBoardItemObject : any)=>{
-      let chartType = "";
-      if(dashBoardItemObject.type){
-        let typeArray = dashBoardItemObject.type.split("_");
-        chartType = typeArray[typeArray.length -1].toLowerCase();
-      }
-      let chartObject = this.ChartVisualizer.getChartObject(analyticData[dashBoardItemObject.id],dashBoardItemObject.category,[],dashBoardItemObject.series,[],dashBoardItemObject.name,chartType);
-      this.chartsObjects[dashBoardItemObject.id] = chartObject;
+    this.ChartVisualizer.getChartObjects(analyticData,dashBoardItemObjects).then(chartObjects=>{
+      this.chartsObjects = chartObjects;
+      this.loadingData = false;
+    },error=>{
+      this.loadingData = false;
+      this.setToasterMessage("Fail to set charts on the view " + JSON.stringify(error));
     });
-    this.loadingData = false;
-  }
-
-  changeType(type,dashBoardItemId){
-
-    //this.options = {};
-    //this.options = this.dashboard.getDefaultDashBoard(type);
   }
 
   changeChart(dashBoardItemId){
-
-  }
-
-  drawChart(){
-    this.options = {};
-    this.options = this.dashboard.getDefaultDashBoard("");
+    let dashBoardItemObject;
+    let chartType = this.chartType[dashBoardItemId];
+    for (let dashBoardItem of this.dashBoardItemObjects){
+      if(dashBoardItem.id == dashBoardItemId){
+        dashBoardItemObject = dashBoardItem;
+      }
+    }
+    let chartObject =  this.ChartVisualizer.getChartObject(this.selectedDashBoardData[dashBoardItemObject.id],dashBoardItemObject.category,[],dashBoardItemObject.series,[],dashBoardItemObject.name,chartType);
+    this.chartsObjects[dashBoardItemId].options = {};
+    this.chartsObjects[dashBoardItemId] = chartObject;
   }
 
   setLoadingMessages(message){
