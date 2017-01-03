@@ -26,7 +26,7 @@ export class ChartVisualizer {
     let chartsObjects = {};
     return new Promise(function(resolve, reject) {
       dashBoardItemObjects.forEach((dashBoardItemObject : any)=>{
-        let chartType = "";
+        let chartType = "line";
         if(dashBoardItemObject.type){
           let typeArray = dashBoardItemObject.type.split("_");
           chartType = typeArray[typeArray.length -1].toLowerCase();
@@ -57,6 +57,7 @@ export class ChartVisualizer {
         title: {text: title },
         chart: { type: "", zoomType :'x' },
         xAxis: {categories: [], labels: {rotation: -40,style: {'color': '#000000', 'fontWeight': 'normal'}}},
+        credits: {enabled: false},
         series: []
       }
     };

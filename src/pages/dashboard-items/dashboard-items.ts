@@ -75,6 +75,10 @@ export class DashboardItems {
     this.setLoadingMessages("Prepare charts for visualization");
     this.ChartVisualizer.getChartObjects(analyticData,dashBoardItemObjects).then(chartObjects=>{
       this.chartsObjects = chartObjects;
+      for (let dashBoardItem of this.dashBoardItemObjects){
+        let dashBoardItemId = dashBoardItem.id;
+        this.chartType[dashBoardItemId] = chartObjects[dashBoardItemId].options.chart.type;
+      }
       this.loadingData = false;
     },error=>{
       this.loadingData = false;

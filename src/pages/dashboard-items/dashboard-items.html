@@ -14,11 +14,6 @@
 
 
 <ion-content >
-
-
-
-
-
   <div *ngIf="loadingData">
     <ion-list>
       <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
@@ -37,26 +32,24 @@
         <div *ngIf="chartsObjects[dashboardItem.id]">
           <ion-card>
             <ion-card-content>
-              <ion-grid>
-                <ion-item >
-                  <ion-label>Chart Type</ion-label>
-                  <ion-select [(ngModel)]="chartType[dashboardItem.id]" (ionChange)="changeChart(dashboardItem.id)">
-                    <ion-option  value="" >Line</ion-option>
-                    <ion-option  value="spline" >Spline</ion-option>
-                    <!--<ion-option  value="pie" >Pie</ion-option>-->
-                    <ion-option  value="column" >Column</ion-option>
-                    <ion-option  value="bar" >Bar</ion-option>
-                    <ion-option  value="area" >Area</ion-option>
-                  </ion-select>
-                </ion-item>
-                <ion-row>
-                  <ion-col width="100">
-                    <div style="overflow: auto;width: 100%;" *ngIf="chartsObjects[dashboardItem.id].options">
-                      <chart [options]="chartsObjects[dashboardItem.id].options"></chart>
-                    </div>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
+
+              <ion-item >
+                <ion-label>
+                  <ion-icon name="list-box"></ion-icon>&nbsp;&nbsp;Chart
+                </ion-label>
+                <ion-select [(ngModel)]="chartType[dashboardItem.id]" (ionChange)="changeChart(dashboardItem.id)">
+                  <ion-option  value="line" >Line</ion-option>
+                  <ion-option  value="spline" >Spline</ion-option>
+                  <!--<ion-option  value="pie" >Pie</ion-option>-->
+                  <ion-option  value="column" >Column</ion-option>
+                  <ion-option  value="bar" >Bar</ion-option>
+                  <ion-option  value="area" >Area</ion-option>
+                </ion-select>
+              </ion-item>
+
+              <div style="overflow: auto;width: 100%;" *ngIf="chartsObjects[dashboardItem.id].options">
+                <chart [options]="chartsObjects[dashboardItem.id].options"></chart>
+              </div>
 
             </ion-card-content>
 
