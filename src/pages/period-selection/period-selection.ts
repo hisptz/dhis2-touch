@@ -30,8 +30,8 @@ export class PeriodSelection {
 
   setModalData(){
     this.periodList = [];
-    this.selectedDataSet = this.params.get('data');
-    this.currentPeriodOffset = 0;
+    this.selectedDataSet = this.params.get('selectedDataSet');
+    this.currentPeriodOffset = parseInt(this.params.get('currentPeriodOffset'));
     this.setPeriodSelections();
   }
 
@@ -52,7 +52,9 @@ export class PeriodSelection {
       });
     }else{
       this.setToasterMessage('There is no further period selection for this form');
-      this.currentPeriodOffset --;
+      if(this.currentPeriodOffset != 0){
+        this.currentPeriodOffset --;
+      }
     }
   }
 
@@ -67,7 +69,7 @@ export class PeriodSelection {
   }
 
   setSelectedPeriod(selectedPeriod){
-    this.viewCtrl.dismiss(selectedPeriod);
+    this.viewCtrl.dismiss({selectedPeriod: selectedPeriod,currentPeriodOffset : this.currentPeriodOffset});
   }
 
   dismiss() {

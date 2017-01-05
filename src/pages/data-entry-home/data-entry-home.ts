@@ -38,6 +38,7 @@ export class DataEntryHome {
   public selectedPeriod : any = {};
   public selectedPeriodLabel : string;
   public selectedDataDimension : any ;
+  public currentPeriodOffset : number;
 
   constructor(public modalCtrl: ModalController,public navCtrl: NavController,
               public OrganisationUnit : OrganisationUnit,
@@ -55,6 +56,7 @@ export class DataEntryHome {
 
   getUserAssignedDataSets(){
     this.dataSetIdsByUserRoles = [];
+    this.currentPeriodOffset = 0;
     this.user.getUserData().then((userData : any)=>{
       userData.userRoles.forEach((userRole:any)=>{
         if (userRole.dataSets) {
@@ -142,6 +144,7 @@ export class DataEntryHome {
     let attribute = 'id';
     let attributeValue =[];
     this.assignedDataSets = [];
+    this.currentPeriodOffset = 0;
     this.selectedOrganisationUnit.dataSets.forEach((dataSet:any)=>{
       if(this.dataSetIdsByUserRoles.indexOf(dataSet.id) != -1){
         attributeValue.push(dataSet.id);
@@ -195,12 +198,17 @@ export class DataEntryHome {
     this.loadingMessages = [];
     this.loadingData = true;
     this.setLoadingMessages('Please wait ...');
-    let modal = this.modalCtrl.create(PeriodSelection,{data : this.selectedDataSet});
-    modal.onDidDismiss((selectedPeriod:any) => {
-      if(selectedPeriod.name){
-        this.selectedPeriod = selectedPeriod;
-        this.loadingData = false;
-        this.setDataEntrySelectionLabel();
+    let modal = this.modalCtrl.create(PeriodSelection,{selectedDataSet : this.selectedDataSet,currentPeriodOffset : this.currentPeriodOffset});
+    modal.onDidDismiss((selectedPeriodResponse:any) => {
+      if(selectedPeriodResponse.selectedPeriod){
+        if(selectedPeriodResponse.selectedPeriod.name){
+          this.selectedPeriod = selectedPeriodResponse.selectedPeriod;
+          this.currentPeriodOffset = selectedPeriodResponse.currentPeriodOffset;
+          this.loadingData = false;
+          this.setDataEntrySelectionLabel();
+        }else{
+          this.loadingData = false;
+        }
       }else{
         this.loadingData = false;
       }
