@@ -33,7 +33,7 @@
 
   <div *ngIf="!loadingData">
 
-    <div class="dataEntryFormHeader">
+    <div class="dataEntryFormHeader" (click)="navCtrl.pop()">
       <ion-card>
         <ion-card-content>
           <p><b>Form</b> : {{ selectedDataSetLabel }}</p>

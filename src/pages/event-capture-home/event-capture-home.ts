@@ -13,6 +13,7 @@ import {Events} from "../../providers/events";
 import {EventCaptureForm} from "../event-capture-form/event-capture-form";
 import {ProgramStageDataElements} from "../../providers/program-stage-data-elements";
 import {EventView} from "../event-view/event-view";
+import {EventFieldSelectionMenu} from "../event-field-selection-menu/event-field-selection-menu";
 
 /*
   Generated class for the EventCaptureHome page.
@@ -183,7 +184,6 @@ export class EventCaptureHome {
 
   loadingProgramStageDataElements(program){
     this.dataElementToDisplay = {};
-
     this.ProgramStageDataElements.getProgramStageDataElements(program.programStages[0].programStageDataElements,this.currentUser).then((programStageDataElements:any)=>{
       this.programStageDataElements = programStageDataElements;
       programStageDataElements.forEach((programStageDataElement : any,index : any)=>{
@@ -261,7 +261,9 @@ export class EventCaptureHome {
   }
 
   showFieldSelectionMenu(){
-    this.setToasterMessage("showFieldSelectionMenu coming soon!!");
+    let modal = this.modalCtrl.create(EventFieldSelectionMenu,{dataElementToDisplay: this.dataElementToDisplay,dataElementMapper:this.dataElementMapper});
+    modal.onDidDismiss((response:any)=>{});
+    modal.present();
   }
 
   reLoadingEventList(){

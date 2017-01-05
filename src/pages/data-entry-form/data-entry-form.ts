@@ -45,6 +45,7 @@ export class DataEntryForm {
 
   constructor(private params:NavParams, private toastCtrl:ToastController,
               private user:User, private httpClient:HttpClient,
+              public navCtrl :NavController,
               private actionSheetCtrl: ActionSheetController,
               private entryForm:EntryForm, private sqlLite:SqlLite,
               private dataValues:DataValues) {

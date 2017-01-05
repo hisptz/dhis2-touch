@@ -207,7 +207,6 @@ export class EventCaptureForm {
         this.setToasterMessage("Please make sure your enter all required fields, before saving");
       }
     });
-
   }
 
   cancel(){
@@ -229,7 +228,7 @@ export class EventCaptureForm {
     return isValid;
   }
 
-  //@todo change usage of acton sheet to display tooltips
+  //@todo add more informations
   showTooltips(dataElement,categoryComboName){
     let title = dataElement.name + (categoryComboName != 'default' ? " " +categoryComboName:"");
     if(dataElement.description){
@@ -244,7 +243,6 @@ export class EventCaptureForm {
   //todo get input label attribute form setting
   getDisplayName(dataElement){
     return dataElement.displayName;
-    //return if()
   }
 
   changePagination(page){
