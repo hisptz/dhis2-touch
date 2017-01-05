@@ -9,6 +9,7 @@ import {OrganisationUnits} from "../organisation-units/organisation-units";
 import {DataSetSelection} from "../data-set-selection/data-set-selection";
 import {PeriodSelection} from "../period-selection/period-selection";
 import {DataEntryForm} from "../data-entry-form/data-entry-form";
+import {OrganisationUnit} from "../../providers/organisation-unit";
 
 declare var dhis2: any;
 /*
@@ -20,7 +21,7 @@ declare var dhis2: any;
 @Component({
   selector: 'page-data-entry-home',
   templateUrl: 'data-entry-home.html',
-  providers : [User,AppProvider,HttpClient,SqlLite],
+  providers : [User,AppProvider,HttpClient,SqlLite,OrganisationUnit],
 })
 export class DataEntryHome {
 
@@ -38,7 +39,11 @@ export class DataEntryHome {
   public selectedPeriodLabel : string;
   public selectedDataDimension : any ;
 
-  constructor(public modalCtrl: ModalController,public navCtrl: NavController,public toastCtrl: ToastController,public user : User,public appProvider : AppProvider,public sqlLite : SqlLite,public httpClient: HttpClient) {
+  constructor(public modalCtrl: ModalController,public navCtrl: NavController,
+              public OrganisationUnit : OrganisationUnit,
+              public toastCtrl: ToastController,public user : User,
+              public appProvider : AppProvider,public sqlLite : SqlLite,
+              public httpClient: HttpClient) {
     this.selectedDataDimension = [];
     this.user.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;
@@ -99,14 +104,13 @@ export class DataEntryHome {
     this.loadingData = true;
     this.loadingMessages=[];
     this.setLoadingMessages('Loading organisation units');
-    let resource  = "organisationUnits";
-    this.sqlLite.getAllDataFromTable(resource,this.currentUser.currentDatabase).then((organisationUnits : any)=>{
+    this.OrganisationUnit.getOrganisationUnits(this.currentUser).then((organisationUnits : any)=>{
       this.organisationUnits = organisationUnits;
       this.loadingData = false;
     },error=>{
       this.loadingData = false;
-      this.setToasterMessage('Fail to load organisation units');
-    })
+      this.setToasterMessage('Fail to load organisation units : ' + JSON.stringify(error));
+    });
   }
 
   openOrganisationUnitModal(){
@@ -130,6 +134,8 @@ export class DataEntryHome {
     modal.present();
   }
 
+
+  //@todo services for data sets managements
   loadingDataSets(){
     this.setLoadingMessages('Loading assigned forms');
     let resource = 'dataSets';
