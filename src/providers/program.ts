@@ -54,9 +54,14 @@ export class Program {
         });
       }
     });
-
   }
 
+  /**
+   * get program by id
+   * @param programId
+   * @param currentUser
+   * @returns {Promise<T>}
+     */
   getProgramById(programId,currentUser){
     let attribute = 'id';
     let attributeValue =[];

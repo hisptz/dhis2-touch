@@ -10,8 +10,6 @@ import {Observable} from 'rxjs/Rx';
 @Injectable()
 export class ChartVisualizer {
 
-  public chartObjects : any;
-
   constructor() {
   }
 
