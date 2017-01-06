@@ -39,18 +39,21 @@ export class EventCaptureHome {
   public selectedProgramLabel : string;
   public programIdsByUserRoles : any;
   public selectedDataDimension : any;
-  public currentEvents :any;
+  public eventListSections : any;
   public isAllParameterSet : boolean;
 
   public dataElementMapper :any = {};
   public dataElementToDisplay : any = {};
   public programStageDataElements : any;
 
+  //pagination controller
+  public currentPage : number ;
+  public paginationLabel : string = "";
+
   constructor(public eventProvider :Events,public OrganisationUnit : OrganisationUnit,
               public ProgramStageDataElements : ProgramStageDataElements,
               public Program : Program,public modalCtrl: ModalController,public navCtrl: NavController,public toastCtrl: ToastController,public user : User,public appProvider : AppProvider,public sqlLite : SqlLite,public httpClient: HttpClient) {
     this.selectedDataDimension = [];
-    this.currentEvents = [];
     this.isAllParameterSet = false;
     this.user.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;
@@ -218,7 +221,6 @@ export class EventCaptureHome {
   loadEvents(){
     this.loadingData = true;
     this.loadingMessages = [];
-    this.currentEvents = [];
     this.setLoadingMessages("Downloading most recent events");
     this.eventProvider.loadEventsFromServer(this.selectedOrganisationUnit,this.selectedProgram,this.selectedDataDimension,this.currentUser).then((events : any)=>{
       this.setLoadingMessages("Saving most recent events");
@@ -240,20 +242,25 @@ export class EventCaptureHome {
   loadEventsFromOfflineStorage(){
     this.setLoadingMessages("Loading events from offline storage");
     this.eventProvider.loadingEventsFromStorage(this.selectedOrganisationUnit,this.selectedProgram,this.currentUser).then((events:any)=>{
-      this.currentEvents = [];
+      let currentEvents = [];
       if(this.selectedDataDimension.length > 0){
         let attributeCategoryOptions = this.selectedDataDimension.toString();
         attributeCategoryOptions = attributeCategoryOptions.replace(/,/g, ';');
         events.forEach((event : any)=>{
           if(event.attributeCategoryOptions == attributeCategoryOptions){
-           this.currentEvents.push(event);
+           currentEvents.push(event);
           }
         });
       }else{
-        this.currentEvents = events;
+        currentEvents = events;
       }
-      this.isAllParameterSet = true;
-      this.loadingData = false;
+      this.eventProvider.getEventSections(currentEvents).then((eventSections:any)=>{
+        this.eventListSections = eventSections;
+        this.changePagination(0);
+        this.isAllParameterSet = true;
+        this.loadingData = false;
+      });
+
     },error=>{
       this.loadingData = false;
       this.setToasterMessage("Fail to load events from offline storage : " + JSON.stringify(error));
@@ -269,12 +276,19 @@ export class EventCaptureHome {
     modal.present();
   }
 
+  /**
+   * reload event
+   */
   reLoadingEventList(){
     this.loadingMessages = [];
     this.loadingData = true;
     this.loadEventsFromOfflineStorage();
   }
 
+  /**
+   * navigate to event
+   * @param event
+     */
   goToEventView(event){
     let params = {
       orgUnitId : this.selectedOrganisationUnit.id,
@@ -286,6 +300,10 @@ export class EventCaptureHome {
     this.navCtrl.push(EventView,{params:params});
   }
 
+  /**
+   * edit event
+   * @param event
+     */
   gotToEditEvent(event){
     let params = {
       orgUnitId : this.selectedOrganisationUnit.id,
@@ -294,6 +312,18 @@ export class EventCaptureHome {
       event : event.event
     };
     this.navCtrl.push(EventCaptureForm,{params:params});
+  }
+
+  changePagination(page){
+    page = parseInt(page);
+    if(page == -1){
+      this.currentPage = 0;
+    }else if(page == this.eventListSections.length){
+      this.currentPage = this.eventListSections.length - 1;
+    }else{
+      this.currentPage = page;
+    }
+    this.paginationLabel = (this.currentPage + 1) + "/"+this.eventListSections.length;
   }
 
   goToEventRegister(){

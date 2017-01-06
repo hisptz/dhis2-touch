@@ -166,6 +166,27 @@ export class Events {
     })
   }
 
+  /**
+   * get event list as sections for easy paginations
+   * @param events
+     */
+  getEventSections(events){
+    let pager = 4;
+    let sectionsCounter = Math.ceil(events.length/pager);
+    let sections = [];
+    return new Promise(function(resolve, reject) {
+      for(let index = 0; index < sectionsCounter; index ++){
+        sections.push({
+          name : "defaultSection",
+          id : index,
+          events :events.splice(0,pager)
+        });
+      }
+      resolve(sections);
+    });
+
+  }
+
   uploadEventsToServer(events,currentUser){
     let self = this;
     let promises = [];

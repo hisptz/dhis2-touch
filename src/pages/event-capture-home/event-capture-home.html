@@ -90,37 +90,60 @@
           </ion-col>
         </ion-row>
 
-        <!-- event list -->
-        <div *ngFor="let event of currentEvents">
-          <ion-card >
-            <ion-card-content>
-              <p><b>Incident date</b>&nbsp;&nbsp;:&nbsp;&nbsp;{{ event.eventDate }}</p>
-              <div *ngFor="let dataValue of event.dataValues">
-                <div *ngIf="dataElementToDisplay[dataValue.dataElement]">
-                  <p><b>{{ dataElementToDisplay[dataValue.dataElement].name }}</b>&nbsp;&nbsp;:&nbsp;&nbsp;{{ dataValue.value }}</p>
-                </div>
-              </div>
-              <p><b>Status</b>&nbsp;&nbsp;:&nbsp;&nbsp;
-                <span *ngIf="event.syncStatus == 'new event' || event.syncStatus == 'not synced'" >Offline</span>
-                <span *ngIf="!(event.syncStatus == 'new event' || event.syncStatus == 'not synced')" >Online</span>
-              </p>
-              <!-- edit or view event actions -->
-              <ion-row>
-                <ion-col >
-                  <button ion-button full (click)="goToEventView(event)">
-                    <ion-icon name="eye"></ion-icon>&nbsp;&nbsp;View
-                  </button>
-                </ion-col>
-                <ion-col >
-                  <button ion-button full (click)="gotToEditEvent(event)">
-                    <ion-icon name="create"></ion-icon>&nbsp;&nbsp;Edit
-                  </button>
-                </ion-col>
-              </ion-row>
+        <hr>
 
-            </ion-card-content>
-          </ion-card>
+        <div *ngFor="let section of eventListSections">
+          <div *ngIf="section.id == currentPage">
+            <div *ngFor="let event of section.events">
+              <ion-card >
+                <ion-card-content>
+                  <p><b>Incident date</b>&nbsp;&nbsp;:&nbsp;&nbsp;{{ event.eventDate }}</p>
+                  <div *ngFor="let dataValue of event.dataValues">
+                    <div *ngIf="dataElementToDisplay[dataValue.dataElement]">
+                      <p><b>{{ dataElementToDisplay[dataValue.dataElement].name }}</b>&nbsp;&nbsp;:&nbsp;&nbsp;{{ dataValue.value }}</p>
+                    </div>
+                  </div>
+                  <p><b>Status</b>&nbsp;&nbsp;:&nbsp;&nbsp;
+                    <span *ngIf="event.syncStatus == 'new event' || event.syncStatus == 'not synced'" >Offline</span>
+                    <span *ngIf="!(event.syncStatus == 'new event' || event.syncStatus == 'not synced')" >Online</span>
+                  </p>
+                  <!-- edit or view event actions -->
+                  <ion-row>
+                    <ion-col >
+                      <button ion-button full (click)="goToEventView(event)">
+                        <ion-icon name="eye"></ion-icon>&nbsp;&nbsp;View
+                      </button>
+                    </ion-col>
+                    <ion-col >
+                      <button ion-button full (click)="gotToEditEvent(event)">
+                        <ion-icon name="create"></ion-icon>&nbsp;&nbsp;Edit
+                      </button>
+                    </ion-col>
+                  </ion-row>
+
+                </ion-card-content>
+              </ion-card>
+            </div>
+          </div>
         </div>
+        <!-- pagination -->
+        <ion-row>
+          <ion-col width-33>
+            <button color="primary" ion-button full (click)="changePagination(currentPage - 1)">
+              Previous
+            </button>
+          </ion-col>
+          <ion-col width-33>
+            <button ion-button color="primary" full clear>
+              {{ paginationLabel }}
+            </button>
+          </ion-col>
+          <ion-col width-33>
+            <button color="primary" ion-button full (click)="changePagination(currentPage + 1)">
+              Next
+            </button>
+          </ion-col>
+        </ion-row>
 
       </div>
 

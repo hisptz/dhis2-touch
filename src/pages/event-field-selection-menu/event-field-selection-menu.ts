@@ -24,6 +24,9 @@ export class EventFieldSelectionMenu {
     this.getAndSetParameter();
   }
 
+  /**
+   * get and set all parameter
+   */
   getAndSetParameter(){
     this.selectedDataElementIdsModel = {};
     this.dataElementToDisplay = this.params.get("dataElementToDisplay");
@@ -52,6 +55,10 @@ export class EventFieldSelectionMenu {
     this.viewCtrl.dismiss(parameter);
   }
 
+  /**
+   * handling auto-select
+   * @param selectType
+     */
   autoSelect(selectType){
     let ids = Object.keys(this.selectedDataElementIdsModel);
     if(selectType == 'selectAll'){
@@ -61,6 +68,11 @@ export class EventFieldSelectionMenu {
     }
   }
 
+  /**
+   * sekt values for select all or un select all
+   * @param ids
+   * @param value
+     */
   setSelectionValue(ids,value :boolean){
     ids.forEach(id=>{
       this.selectedDataElementIdsModel[id] = value;
@@ -68,6 +80,11 @@ export class EventFieldSelectionMenu {
     this.hasAllSelected = this.getAllSelectedStatus(this.selectedDataElementIdsModel);
   }
 
+  /**
+   * get all selected data elements
+   * @param selectedDataElementIdsModel
+   * @returns {boolean}
+     */
   getAllSelectedStatus(selectedDataElementIdsModel){
     let hasAllSelected = true;
     let ids = Object.keys(selectedDataElementIdsModel);
@@ -79,6 +96,11 @@ export class EventFieldSelectionMenu {
     return hasAllSelected;
   }
 
+  /**
+   * get data elements for event list
+   * @param selectedDataElementIdsModel
+   * @returns {{}}
+     */
   getSelectedDataElementsToDisplay(selectedDataElementIdsModel){
     let selectedDataElementToDisplay = {};
     Object.keys(selectedDataElementIdsModel).forEach((id:any)=>{

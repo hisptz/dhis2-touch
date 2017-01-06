@@ -46,6 +46,10 @@ export class EventView {
   ionViewDidLoad() {
   }
 
+  /**
+   *
+   * @param programId
+     */
   loadProgramMetadata(programId){
     this.loadingData = true;
     this.loadingMessages = [];
@@ -59,6 +63,10 @@ export class EventView {
     });
   }
 
+  /**
+   *
+   * @param programStageDataElementsIds
+     */
   loadProgramStageDataElements(programStageDataElementsIds){
     this.dataElementMapper = {};
     this.ProgramStageDataElements.getProgramStageDataElements(programStageDataElementsIds,this.currentUser).then((programStageDataElements:any)=>{
@@ -72,6 +80,12 @@ export class EventView {
     });
   }
 
+  /**
+   *
+   * @param programId
+   * @param orgUnitId
+   * @param eventId
+     */
   loadingEvent(programId,orgUnitId,eventId){
     this.setLoadingMessages("Loading event");
     let eventTableId = programId+"-"+orgUnitId+"-"+eventId;
