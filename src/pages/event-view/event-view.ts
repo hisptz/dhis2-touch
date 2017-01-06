@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {ToastController,NavParams,ActionSheetController,NavController } from 'ionic-angular';
+import {NavController,ToastController,NavParams,ActionSheetController } from 'ionic-angular';
 
 import {User} from '../../providers/user/user';
 import {HttpClient} from "../../providers/http-client/http-client";

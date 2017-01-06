@@ -34,11 +34,13 @@
   </ion-grid>
 
   <div *ngIf="!loadingData">
-    <ion-card *ngIf="params">
-      <ion-card-content *ngIf="params.orgUnitId">
-        <p><b>Organisation Unit</b> : {{ params.orgUnitName }}</p>
-        <p><b>Program</b> : {{ params.programName }}</p>
-      </ion-card-content>
+    <ion-card *ngIf="params" >
+      <div (click)="navCtrl.pop()">
+        <ion-card-content *ngIf="params.orgUnitId">
+          <p><b>Organisation Unit</b> : {{ params.orgUnitName }}</p>
+          <p><b>Program</b> : {{ params.programName }}</p>
+        </ion-card-content>
+      </div>
     </ion-card>
 
     <ion-card  *ngIf="event">

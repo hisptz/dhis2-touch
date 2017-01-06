@@ -262,7 +262,10 @@ export class EventCaptureHome {
 
   showFieldSelectionMenu(){
     let modal = this.modalCtrl.create(EventFieldSelectionMenu,{dataElementToDisplay: this.dataElementToDisplay,dataElementMapper:this.dataElementMapper});
-    modal.onDidDismiss((response:any)=>{});
+    modal.onDidDismiss((dataElementToDisplayResponse:any)=>{
+      this.dataElementToDisplay = {};
+      this.dataElementToDisplay = dataElementToDisplayResponse;
+    });
     modal.present();
   }
 

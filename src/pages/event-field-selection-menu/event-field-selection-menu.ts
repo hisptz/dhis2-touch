@@ -13,36 +13,80 @@ import { ViewController,NavParams } from 'ionic-angular';
 })
 export class EventFieldSelectionMenu {
 
-  public dataElementToDisplay : any;
+  public selectedDataElementIdsModel : any;
+  public dataElementsIds : any;
   public dataElementMapper : any;
-  public selectedDataElementIds : any;
+  public dataElementToDisplay : any;
+  public hasDataLoaded :boolean = false;
+  public hasAllSelected : boolean = false;
 
   constructor(public viewCtrl: ViewController,public params : NavParams) {
     this.getAndSetParameter();
   }
 
   getAndSetParameter(){
-    this.selectedDataElementIds = {
-      pepperoni1 : false,
-      pepperoni2 : true,
-      pepperoni3 : false,
-    };
-    this.dataElementMapper = this.params.get("dataElementMapper");
+    this.selectedDataElementIdsModel = {};
     this.dataElementToDisplay = this.params.get("dataElementToDisplay");
+    this.dataElementMapper = this.params.get("dataElementMapper");
+    this.dataElementsIds  = Object.keys(this.dataElementMapper);
+    this.dataElementsIds.forEach((dataElementId : any)=>{
+      if(this.dataElementToDisplay[dataElementId]){
+        this.selectedDataElementIdsModel[dataElementId] = true;
+      }else{
+        this.selectedDataElementIdsModel[dataElementId] = false;
+      }
+    });
+    this.hasAllSelected = this.getAllSelectedStatus(this.selectedDataElementIdsModel);
+    this.hasDataLoaded = true;
   }
 
-  ionViewDidLoad() {}
+  ionViewDidLoad() {
+  }
 
   onSavingChanges(){
     this.dismiss();
   }
 
-  dismiss(response?) {
-    let parameter = {};
-    if(response){
-      parameter = response;
-    }
+  dismiss() {
+    let parameter = this.getSelectedDataElementsToDisplay(this.selectedDataElementIdsModel);
     this.viewCtrl.dismiss(parameter);
+  }
+
+  autoSelect(selectType){
+    let ids = Object.keys(this.selectedDataElementIdsModel);
+    if(selectType == 'selectAll'){
+      this.setSelectionValue(ids,true);
+    }else{
+      this.setSelectionValue(ids,false);
+    }
+  }
+
+  setSelectionValue(ids,value :boolean){
+    ids.forEach(id=>{
+      this.selectedDataElementIdsModel[id] = value;
+    });
+    this.hasAllSelected = this.getAllSelectedStatus(this.selectedDataElementIdsModel);
+  }
+
+  getAllSelectedStatus(selectedDataElementIdsModel){
+    let hasAllSelected = true;
+    let ids = Object.keys(selectedDataElementIdsModel);
+    ids.forEach(id=>{
+      if(!this.selectedDataElementIdsModel[id]){
+        hasAllSelected = false;
+      }
+    });
+    return hasAllSelected;
+  }
+
+  getSelectedDataElementsToDisplay(selectedDataElementIdsModel){
+    let selectedDataElementToDisplay = {};
+    Object.keys(selectedDataElementIdsModel).forEach((id:any)=>{
+      if(selectedDataElementIdsModel[id]){
+        selectedDataElementToDisplay[id] = this.dataElementMapper[id];
+      }
+    });
+    return selectedDataElementToDisplay;
   }
 
 }

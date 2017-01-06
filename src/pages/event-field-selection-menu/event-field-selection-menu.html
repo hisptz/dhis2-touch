@@ -7,7 +7,7 @@
 <ion-header >
   <ion-toolbar color="primary">
     <ion-title>
-      Event Fields selection
+      Event List Fields selection
     </ion-title>
     <ion-buttons start>
       <button ion-button (click)="dismiss()">
@@ -18,23 +18,27 @@
 </ion-header>
 
 
-<ion-content class="eventListSelection">
-  <button ion-button full (click)="onSavingChanges()">return</button>
-  {{ selectedDataElementIds|json}}
-  <ion-list>
-    <ion-item>
-      <ion-label>Pepperoni1</ion-label>
-      <ion-checkbox [(ngModel)]="selectedDataElementIds['pepperoni1']"></ion-checkbox>
-    </ion-item>
-    <ion-item>
-      <ion-label>Pepperoni2</ion-label>
-      <ion-checkbox [(ngModel)]="selectedDataElementIds['pepperoni2']"></ion-checkbox>
-    </ion-item>
-    <ion-item>
-      <ion-label>Pepperoni3</ion-label>
-      <ion-checkbox [(ngModel)]="selectedDataElementIds['pepperoni3']"></ion-checkbox>
-    </ion-item>
-  </ion-list>
-  {{ dataElementToDisplay|json }}<hr>
-  {{ dataElementMapper | json }}<hr>
+<ion-content class="eventListSelection" >
+  <ion-grid>
+    <ion-row>
+      <ion-col width="50">
+        <button ion-button full (click)="onSavingChanges()">Done</button>
+      </ion-col>
+      <ion-col width="50">
+        <button ion-button full (click)="autoSelect('selectAll')" *ngIf="!hasAllSelected"> Select All</button>
+        <button ion-button full (click)="autoSelect('unSelectAll')" *ngIf="hasAllSelected">Un-select all</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <div *ngIf="hasDataLoaded" padding>
+    <ion-list >
+      <div *ngFor="let dataElementsId of dataElementsIds">
+        <ion-item>
+          <ion-label>{{ dataElementMapper[dataElementsId].name }}</ion-label>
+          <ion-checkbox [(ngModel)]="selectedDataElementIdsModel[dataElementsId]" color="favorite"></ion-checkbox>
+        </ion-item>
+      </div>
+    </ion-list>
+    <button ion-button full (click)="onSavingChanges()">Done</button>
+  </div>
 </ion-content>
