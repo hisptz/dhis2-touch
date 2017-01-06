@@ -5,6 +5,7 @@ import {User} from "../../providers/user/user";
 import {SqlLite} from "../../providers/sql-lite/sql-lite";
 import {DataValues} from "../../providers/data-values";
 import {EntryForm} from "../../providers/entry-form";
+import {DataSets} from "../../providers/data-sets";
 
 /*
   Generated class for the DataEntryForm page.
@@ -15,7 +16,7 @@ import {EntryForm} from "../../providers/entry-form";
 @Component({
   selector: 'page-data-entry-form',
   templateUrl: 'data-entry-form.html',
-  providers : [User,HttpClient,SqlLite,DataValues,EntryForm],
+  providers : [User,HttpClient,SqlLite,DataValues,EntryForm,DataSets],
 })
 export class DataEntryForm {
 
@@ -45,7 +46,7 @@ export class DataEntryForm {
 
   constructor(private params:NavParams, private toastCtrl:ToastController,
               private user:User, private httpClient:HttpClient,
-              public navCtrl :NavController,
+              public navCtrl :NavController,public DataSets : DataSets,
               private actionSheetCtrl: ActionSheetController,
               private entryForm:EntryForm, private sqlLite:SqlLite,
               private dataValues:DataValues) {
@@ -62,21 +63,17 @@ export class DataEntryForm {
     this.loadingData = true;
     this.loadingMessages=[];
     this.setLoadingMessages('Loading entry form details');
-    let resource  = "dataSets";
-    let attribute = "id";
-    let attributeValue = [];
-    attributeValue.push(dataSetId);
-    this.sqlLite.getDataFromTableByAttributes(resource,attribute,attributeValue,this.currentUser.currentDatabase).then((dataSets : any)=>{
-      this.selectedDataSet = dataSets[0];
-      this.dataSetAttributeOptionCombo = this.dataValues.getDataValuesSetAttributeOptionCombo(this.dataEntryFormSelectionParameter.dataDimension,dataSets[0].categoryCombo.categoryOptionCombos);
+    this.DataSets.getDataSetById(dataSetId,this.currentUser).then((dataSet : any)=>{
+      this.selectedDataSet = dataSet;
+      this.dataSetAttributeOptionCombo = this.dataValues.getDataValuesSetAttributeOptionCombo(this.dataEntryFormSelectionParameter.dataDimension,dataSet.categoryCombo.categoryOptionCombos);
       this.setEntryFormMetaData();
       //setting labels and loading completeness
       this.setHeaderLabel();
       this.setCompletenessInformation();
     },error=>{
       this.loadingData = false;
-      this.setToasterMessage('Fail to load organisation units');
-    })
+      this.setToasterMessage('Fail to load organisation units : ' + JSON.stringify(error));
+    });
   }
 
   setEntryFormMetaData(){

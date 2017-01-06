@@ -22,7 +22,8 @@ export class SqlLite {
         {value: 'level', type: 'TEXT'},
         {value: 'children', type: 'LONGTEXT'}
       ],
-      fields : "id,name,ancestors[id,name],dataSets[id],programs[id],level,children[id,name,ancestors[id,name],dataSets[id],programs[id],level,children[id,name,ancestors[id,name],dataSets[id],programs[id],level,children[id,name,ancestors[id,name],dataSets[id],programs[id],level,children[id,name,ancestors[id,name],dataSets[id],programs[id],level,children[id,name,ancestors[id,name]]]]]]"
+      fields : "id,name,ancestors[id,name],dataSets[id],programs[id],level,children[id,name,ancestors[id,name],dataSets[id],programs[id],level,children[id,name,ancestors[id,name],dataSets[id],programs[id],level,children[id,name,ancestors[id,name],dataSets[id],programs[id],level,children[id,name,ancestors[id,name],dataSets[id],programs[id],level,children[id,name,ancestors[id,name]]]]]]",
+      canUpdated : true
     },
     dataSets: {
       columns: [
@@ -40,7 +41,8 @@ export class SqlLite {
         {value: 'indicators', type: 'LONGTEXT'},
         {value: 'categoryCombo', type: 'LONGTEXT'}
       ],
-      fields : "id,name,timelyDays,formType,version,periodType,openFuturePeriods,expiryDays,dataSetElements[dataElement[id,name,displayName,description,formName,attributeValues[value,attribute[name]],valueType,optionSet[name,options[name,id,code]],categoryCombo[id,name,categoryOptionCombos[id,name]]]],dataElements[id,name,displayName,description,formName,attributeValues[value,attribute[name]],valueType,optionSet[name,options[name,id,code]],categoryCombo[id,name,categoryOptionCombos[id,name]]]organisationUnits[id,name],sections[id],indicators[id,name,indicatorType[factor],denominatorDescription,numeratorDescription,numerator,denominator],categoryCombo[id,name,categoryOptionCombos[id,name,categoryOptions[id]],categories[id,name,categoryOptions[id,name]]]"
+      fields : "id,name,timelyDays,formType,version,periodType,openFuturePeriods,expiryDays,dataSetElements[dataElement[id,name,displayName,description,formName,attributeValues[value,attribute[name]],valueType,optionSet[name,options[name,id,code]],categoryCombo[id,name,categoryOptionCombos[id,name]]]],dataElements[id,name,displayName,description,formName,attributeValues[value,attribute[name]],valueType,optionSet[name,options[name,id,code]],categoryCombo[id,name,categoryOptionCombos[id,name]]]organisationUnits[id,name],sections[id],indicators[id,name,indicatorType[factor],denominatorDescription,numeratorDescription,numerator,denominator],categoryCombo[id,name,categoryOptionCombos[id,name,categoryOptions[id]],categories[id,name,categoryOptions[id,name]]]",
+      canUpdated : true
     },
     sections: {
       columns: [
@@ -49,7 +51,8 @@ export class SqlLite {
         {value: 'indicators', type: 'LONGTEXT'},
         {value: 'dataElements', type: 'LONGTEXT'}
       ],
-      fields : "id,name,indicators[id,name,indicatorType[factor],denominatorDescription,numeratorDescription,numerator,denominator],dataElements[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]"
+      fields : "id,name,indicators[id,name,indicatorType[factor],denominatorDescription,numeratorDescription,numerator,denominator],dataElements[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]",
+      canUpdated : true
     },
     indicators: {
       columns: [
@@ -61,7 +64,8 @@ export class SqlLite {
         {value: 'denominator', type: 'TEXT'},
         {value: 'indicatorType', type: 'LONGTEXT'}
       ],
-      fields : ""
+      fields : "id,name,denominatorDescription,numeratorDescription,numerator,denominator,indicatorType[:all]",
+      canUpdated : true
     },
     reports: {
       columns: [
@@ -74,14 +78,16 @@ export class SqlLite {
         {value: 'designContent', type: 'LONGTEXT'}
       ],
       fields : "id,name,created,type,relativePeriods,reportParams,designContent",
-      filter : "type:eq:HTML&filter=name:like:Mobile"
+      filter : "type:eq:HTML&filter=name:like:Mobile",
+      canUpdated : true
     },
     constants: {
       columns: [
         {value: 'id', type: 'TEXT'},
         {value: 'value', type: 'TEXT'}
       ],
-      fields : "id,value"
+      fields : "id,value",
+      canUpdated : true
     },
     dataValues : {
       columns: [
@@ -95,7 +101,8 @@ export class SqlLite {
         {value: 'value', type: 'TEXT'},
         {value: 'syncStatus', type: 'TEXT'},
         {value: 'dataSetId', type: 'TEXT'}
-      ]
+      ],
+      canUpdated : false
     },
     programs : {
       columns : [
@@ -116,6 +123,7 @@ export class SqlLite {
         {value: 'organisationUnits',type:'LONGTEXT'}
       ],
       fields : "id,name,withoutRegistration,programType,categoryCombo[id,name,categories[id,name,categoryOptions[name,id]]],programStages[id,name,programStageDataElements[id],programStageSections[id]],organisationUnits[id],programIndicators,translations,attributeValues,validationCriterias,programRuleVariables,programTrackedEntityAttributes,programRules",
+      canUpdated : true
     },
     programStageDataElements : {
       columns : [
@@ -126,7 +134,8 @@ export class SqlLite {
         {value: 'allowFutureDate', type: 'TEXT'},
         {value: 'dataElement', type: 'LONGTEXT'}
       ],
-      fields : "id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]"
+      fields : "id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]",
+      canUpdated : true
     },
     programStageSections : {
       columns : [
@@ -136,7 +145,8 @@ export class SqlLite {
         {value: 'programIndicators', type: 'LONGTEXT'},
         {value: 'programStageDataElements', type: 'LONGTEXT'}
       ],
-      fields : "id,name,programIndicators,sortOrder,programStageDataElements[id]"
+      fields : "id,name,programIndicators,sortOrder,programStageDataElements[id]",
+      canUpdated : true
     },
     events : {
       columns : [
@@ -152,7 +162,8 @@ export class SqlLite {
         {value: 'dataValues', type: 'LONGTEXT'},
         {value: 'notes', type: 'TEXT'},
         {value: 'syncStatus', type: 'TEXT'}
-      ]
+      ],
+      canUpdated : false
     }
   };
 

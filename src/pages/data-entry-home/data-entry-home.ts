@@ -10,6 +10,7 @@ import {DataSetSelection} from "../data-set-selection/data-set-selection";
 import {PeriodSelection} from "../period-selection/period-selection";
 import {DataEntryForm} from "../data-entry-form/data-entry-form";
 import {OrganisationUnit} from "../../providers/organisation-unit";
+import {DataSets} from "../../providers/data-sets";
 
 declare var dhis2: any;
 /*
@@ -21,7 +22,7 @@ declare var dhis2: any;
 @Component({
   selector: 'page-data-entry-home',
   templateUrl: 'data-entry-home.html',
-  providers : [User,AppProvider,HttpClient,SqlLite,OrganisationUnit],
+  providers : [User,AppProvider,HttpClient,SqlLite,OrganisationUnit,DataSets],
 })
 export class DataEntryHome {
 
@@ -41,20 +42,20 @@ export class DataEntryHome {
   public currentPeriodOffset : number;
 
   constructor(public modalCtrl: ModalController,public navCtrl: NavController,
-              public OrganisationUnit : OrganisationUnit,
+              public OrganisationUnit : OrganisationUnit,public DataSets : DataSets,
               public toastCtrl: ToastController,public user : User,
               public appProvider : AppProvider,public sqlLite : SqlLite,
               public httpClient: HttpClient) {
     this.selectedDataDimension = [];
     this.user.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;
-      this.getUserAssignedDataSets();
+      this.setDataSetIdsByUserRoles();
       this.loadOrganisationUnits();
       this.setDataEntrySelectionLabel();
     })
   }
 
-  getUserAssignedDataSets(){
+  setDataSetIdsByUserRoles(){
     this.dataSetIdsByUserRoles = [];
     this.currentPeriodOffset = 0;
     this.user.getUserData().then((userData : any)=>{
@@ -140,34 +141,17 @@ export class DataEntryHome {
   //@todo services for data sets managements
   loadingDataSets(){
     this.setLoadingMessages('Loading assigned forms');
-    let resource = 'dataSets';
-    let attribute = 'id';
-    let attributeValue =[];
     this.assignedDataSets = [];
     this.currentPeriodOffset = 0;
-    this.selectedOrganisationUnit.dataSets.forEach((dataSet:any)=>{
-      if(this.dataSetIdsByUserRoles.indexOf(dataSet.id) != -1){
-        attributeValue.push(dataSet.id);
-      }
-    });
-    this.sqlLite.getDataFromTableByAttributes(resource,attribute,attributeValue,this.currentUser.currentDatabase).then((dataSets : any)=>{
-      dataSets.forEach((dataSet:any)=>{
-        this.assignedDataSets.push({
-          id: dataSet.id,
-          name: dataSet.name,
-          openFuturePeriods: dataSet.openFuturePeriods,
-          periodType : dataSet.periodType,
-          categoryCombo : dataSet.categoryCombo
-        });
-      });
+    this.DataSets.getAssignedDataSetsByOrgUnit(this.selectedOrganisationUnit,this.dataSetIdsByUserRoles,this.currentUser).then((dataSets : any)=>{
+      this.assignedDataSets = dataSets;
       if(this.assignedDataSets.length == 1){
         this.selectedDataSet =this.assignedDataSets[0];
       }
-
       this.loadingData = false;
     },error=>{
       this.loadingData = false;
-      this.setToasterMessage('Fail to load assigned forms');
+      this.setToasterMessage('Fail to load assigned forms : ' + JSON.stringify(error));
     });
   }
 

@@ -228,7 +228,7 @@ export class EventCaptureForm {
     return isValid;
   }
 
-  //@todo add more informations
+  //@todo add more information
   showTooltips(dataElement,categoryComboName){
     let title = dataElement.name + (categoryComboName != 'default' ? " " +categoryComboName:"");
     if(dataElement.description){

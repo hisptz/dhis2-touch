@@ -167,7 +167,7 @@ export class Events {
   }
 
   /**
-   * get event list as sections for easy paginations
+   * get event list as sections for easy pagination
    * @param events
      */
   getEventSections(events){
