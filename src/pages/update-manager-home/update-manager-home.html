@@ -13,7 +13,7 @@
 </ion-header>
 
 
-<ion-content padding class="updateManager">
+<ion-content class="updateManager">
   <div *ngIf="loadingData">
     <ion-list>
       <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
@@ -27,7 +27,17 @@
   </div>
 
   <div *ngIf="!loadingData">
-    {{ resources|json}}
+    <ion-grid>
+      <ion-row>
+        <ion-col width="50">
+          <button ion-button full (click)="checkingForResourceUpdate()">Update</button>
+        </ion-col>
+        <ion-col width="50">
+          <button ion-button full (click)="autoSelect('selectAll')" *ngIf="!hasAllSelected"> Select All</button>
+          <button ion-button full (click)="autoSelect('unSelectAll')" *ngIf="hasAllSelected">Un-select all</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
     <ion-list >
       <div *ngFor="let resourceObject of resources">
         <ion-item>
@@ -36,6 +46,7 @@
         </ion-item>
       </div>
     </ion-list>
+    <button ion-button full (click)="checkingForResourceUpdate()">Update</button>
   </div>
 
 </ion-content>
