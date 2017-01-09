@@ -38,15 +38,18 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-    <ion-list >
-      <div *ngFor="let resourceObject of resources">
-        <ion-item>
-          <ion-label>{{ resourceObject.displayName }}</ion-label>
-          <ion-checkbox [(ngModel)]="resourceObject.status" color="favorite"></ion-checkbox>
-        </ion-item>
-      </div>
-    </ion-list>
-    <button ion-button full (click)="checkingForResourceUpdate()">Update</button>
+    <div padding>
+      <ion-list >
+        <div *ngFor="let resourceObject of resources">
+          <ion-item>
+            <ion-label>{{ resourceObject.displayName }}</ion-label>
+            <ion-checkbox [(ngModel)]="resourceObject.status" color="favorite"></ion-checkbox>
+          </ion-item>
+        </div>
+      </ion-list>
+      <button ion-button full (click)="checkingForResourceUpdate()">Update</button>
+    </div>
+
   </div>
 
 </ion-content>

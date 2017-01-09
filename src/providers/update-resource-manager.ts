@@ -31,7 +31,7 @@ export class UpdateResourceManager {
         if(resourceName != "organisationUnits"){
           promises.push(
             self.appProvider.downloadMetadata(currentUser,resourceName,null,fields,filter).then((response : any) =>{
-              data[resource.name] = response;
+              data[resource.name] = response[resource.name];
               //resource["response"] = response;
             },error=>{})
           );
@@ -63,13 +63,17 @@ export class UpdateResourceManager {
     let promises = [];
 
     return new Promise(function(resolve, reject) {
-      resourcesWithData.forEach((resource:any)=>{
+      resources.forEach((resource:any)=>{
         let resourceName = resource.name;
-        promises.push(
-          self.appProvider.saveMetadata(resourceName,data[resourceName],currentUser.currentDatabase).then((
-          )=>{
-          },error=>{});
-        );
+        if(data[resourceName]){
+          alert("Update : " + resourceName +" : " + data[resourceName].length + "");
+          promises.push(
+            self.appProvider.saveMetadata(resourceName,data[resourceName],currentUser.currentDatabase).then((
+            )=>{
+              alert("Success apply "+ resourceName);
+            },error=>{})
+          );
+        }
       });
 
       Observable.forkJoin(promises).subscribe(() => {

@@ -95,7 +95,7 @@ export class UpdateManagerHome {
     this.setLoadingMessages("Downloading updates");
     this.updateResourceManager.downloadResources(resources,this.currentUser).then((resourcesData)=>{
       this.setLoadingMessages("Applying updates");
-      this.updateResourceManager.savingResources(resourcesWithData,resourcesData,this.currentUser).then(()=>{
+      this.updateResourceManager.savingResources(resources,resourcesData,this.currentUser).then(()=>{
         this.loadingData = false;
       },error=>{
         this.loadingData = false;
