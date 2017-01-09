@@ -19,6 +19,12 @@ export class UpdateResourceManager {
     this.dataBaseStructure = this.sqlLite.getDataBaseStructure();
   }
 
+  /***
+   *
+   * @param resources
+   * @param currentUser
+   * @returns {Promise<T>}
+     */
   downloadResources(resources,currentUser){
     let self = this;
     let promises = [];
@@ -32,7 +38,6 @@ export class UpdateResourceManager {
           promises.push(
             self.appProvider.downloadMetadata(currentUser,resourceName,null,fields,filter).then((response : any) =>{
               data[resource.name] = response[resource.name];
-              //resource["response"] = response;
             },error=>{})
           );
         }else{
@@ -42,7 +47,6 @@ export class UpdateResourceManager {
           });
           promises.push(
             self.appProvider.downloadMetadataByResourceIds(currentUser,resourceName,orgUnitIds,fields,filter).then((response : any) =>{
-              //resource["response"] = response;
               data[resource.name] = response;
             },error=>{})
           );
@@ -58,6 +62,31 @@ export class UpdateResourceManager {
     });
   }
 
+  prepareDeviceToApplyChanges(resources,currentUser){
+    let self = this;
+    let promises = [];
+    return new Promise(function(resolve, reject) {
+      resources.forEach((resource:any)=>{
+        promises.push(
+          self.sqlLite.deleteAllOnTable(resource.name,currentUser.currentDatabase).then(()=>{
+          },error=>{
+
+          })
+        )
+      });
+
+      Observable.forkJoin(promises).subscribe(() => {
+          resolve();
+        },
+        (error) => {
+          reject(error);
+        })
+    });
+
+  }
+
+
+
   savingResources(resources,data,currentUser){
     let self = this;
     let promises = [];
@@ -66,11 +95,9 @@ export class UpdateResourceManager {
       resources.forEach((resource:any)=>{
         let resourceName = resource.name;
         if(data[resourceName]){
-          alert("Update : " + resourceName +" : " + data[resourceName].length + "");
           promises.push(
             self.appProvider.saveMetadata(resourceName,data[resourceName],currentUser.currentDatabase).then((
             )=>{
-              alert("Success apply "+ resourceName);
             },error=>{})
           );
         }

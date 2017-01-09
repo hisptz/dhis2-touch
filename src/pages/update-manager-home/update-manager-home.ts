@@ -94,77 +94,34 @@ export class UpdateManagerHome {
     this.loadingMessages = [];
     this.setLoadingMessages("Downloading updates");
     this.updateResourceManager.downloadResources(resources,this.currentUser).then((resourcesData)=>{
-      this.setLoadingMessages("Applying updates");
-      this.updateResourceManager.savingResources(resources,resourcesData,this.currentUser).then(()=>{
-        this.loadingData = false;
+      this.setLoadingMessages("Preparing device to apply updates");
+      this.updateResourceManager.prepareDeviceToApplyChanges(resources,this.currentUser).then(()=>{
+        let updateCounts = 0;
+        this.setLoadingMessages("Applying update " + this.getPercentage(updateCounts,resources.length) + " %");
+        resources.forEach((resource:any)=>{
+          let resourceName = resource.name;
+          this.appProvider.saveMetadata(resourceName,resourcesData[resourceName],this.currentUser.currentDatabase).then((
+          )=>{
+            updateCounts ++;
+            this.loadingMessages[2] = "Applying update " + this.getPercentage(updateCounts,resources.length) + " %";
+            if(updateCounts == resources.length){
+              this.loadingData = false;
+              this.autoSelect("un-selectAll");
+              this.setToasterMessage("All updates has been applied successfully");
+            }
+          },error=>{
+            this.loadingData = false;
+            this.setToasterMessage("Fail to apply updates : " + JSON.stringify(error));
+          })
+        });
       },error=>{
         this.loadingData = false;
-        this.setToasterMessage("Fail to apply updates : " + JSON.stringify(error));
+        this.setToasterMessage("Fail to prepare device to apply updates " + JSON.stringify(error));
       });
     },error=>{
       this.loadingData = false;
       this.setToasterMessage("Fail to download updates : " + JSON.stringify(error));
     });
-  }
-
-  updateResourcessds(resources){
-    //hasSelectedResourceUpdated
-    let numberOfDownload : number = 0;
-    let numberOfUpdateResources : number = 0;
-    this.loadingData = true;
-    this.loadingMessages = [];
-    this.setLoadingMessages("Download percent : 0 %");
-    this.setLoadingMessages("Update percent : 0 %" );
-    for(let resource of resources){
-      let resourceName = resource.name;
-      let fields = this.dataBaseStructure[resourceName].fields;
-      let filter = this.dataBaseStructure[resourceName].filter;
-      if(resourceName != "organisationUnits"){
-        this.setLoadingMessages("Downloading " + resource.displayName);
-        this.appProvider.downloadMetadata(this.currentUser,resourceName,null,fields,filter).then((response : any) =>{
-          numberOfDownload ++;
-          this.loadingMessages[0] = "Download percent : " +this.getPercentage(numberOfDownload,resources.length)+" %";
-          this.setLoadingMessages("Updating " + resource.displayName);
-          this.appProvider.saveMetadata(resourceName,response[resourceName],this.currentUser.currentDatabase).then(()=>{
-            numberOfUpdateResources ++;
-            this.loadingMessages[1] = "Update percent : " +this.getPercentage(numberOfUpdateResources,resources.length)+" %";
-            if(numberOfUpdateResources == resources.length){
-              this.hasSelectedResourceUpdated = true;
-              this.loadingData = false;
-            }
-          },error=>{
-            this.setToasterMessage("Fail to update " + resource.displayName + " : " + JSON.stringify(error));
-          })
-        },error=>{
-          this.loadingData = false;
-          this.setToasterMessage("Fail to download " + resource.displayName + " : " + JSON.stringify(error));
-        })
-      }else{
-        let orgUnitIds = [];
-        this.currentUser["organisationUnits"].forEach((orgUnit:any)=>{
-          orgUnitIds.push(orgUnit.id);
-        });
-        this.setLoadingMessages("Downloading " + resource.displayName);
-        this.appProvider.downloadMetadataByResourceIds(this.currentUser,resourceName,orgUnitIds,fields,filter).then((response : any) =>{
-          numberOfDownload ++;
-          this.loadingMessages[0] = "Download percent : " +this.getPercentage(numberOfDownload,resources.length)+" %";
-          this.setLoadingMessages("Updating " + resource.displayName);
-          this.appProvider.saveMetadata(resourceName,response,this.currentUser.currentDatabase).then(()=>{
-            numberOfUpdateResources ++;
-            this.loadingMessages[1] = "Update percent : " +this.getPercentage(numberOfUpdateResources,resources.length)+" %";
-            if(numberOfUpdateResources == resources.length){
-              this.hasSelectedResourceUpdated = true;
-              this.loadingData = false;
-            }
-          },error=>{
-            this.setToasterMessage("Fail to update " + resource.displayName + " : " + JSON.stringify(error));
-          })
-        },error=>{
-          this.loadingData = false;
-          this.setToasterMessage("Fail to download " + resource.displayName + " : " + JSON.stringify(error));
-        })
-      }
-    }
   }
 
   getPercentage(numerator : number,denominator : number){
