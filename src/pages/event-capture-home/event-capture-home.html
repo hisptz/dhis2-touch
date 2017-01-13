@@ -15,83 +15,89 @@
 
 <ion-content  class="event-capture-home">
 
-  <ion-grid>
-    <ion-row>
+  <div *ngIf="loadingData">
+    <ion-list>
+      <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
+        {{ message }}
+        <ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right color="primary"></ion-icon>
+        <div style="text-align: center" item-right *ngIf="(currentIndex + 1) >= loadingMessages.length">
+          <ion-spinner name="crescent" color="secondary"></ion-spinner>
+        </div>
+      </ion-item>
+    </ion-list>
+
+  </div>
+  <div *ngIf="!loadingData">
+    <ion-row >
       <ion-col width="100">
-        <div *ngIf="loadingData">
-          <ion-list>
-            <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
-              {{ message }}
-              <ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right color="primary"></ion-icon>
-              <div style="text-align: center" item-right *ngIf="(currentIndex + 1) >= loadingMessages.length">
-                <ion-spinner name="crescent" color="secondary"></ion-spinner>
-              </div>
-            </ion-item>
-          </ion-list>
+        <button (click)="openOrganisationUnitModal()" ion-button full color="light">
+          {{ selectedOrganisationUnitLabel }}
+        </button>
+      </ion-col>
+    </ion-row>
+    <ion-row >
+      <ion-col width="100">
+        <div >
+          <button (click)="openProgramsModal()" [disabled] ="!currentSelectionStatus.program" ion-button full color="light">
+            {{ selectedProgramLabel }}
+          </button>
         </div>
       </ion-col>
     </ion-row>
-    <div *ngIf="!loadingData" >
-      <ion-row >
-        <ion-col width="100">
-          <button (click)="openOrganisationUnitModal()" ion-button full color="light">
-            {{ selectedOrganisationUnitLabel }}
-          </button>
-        </ion-col>
-      </ion-row>
-      <ion-row >
-        <ion-col width="100" *ngIf="selectedOrganisationUnit">
-          <div *ngIf="selectedOrganisationUnit.id">
-            <button (click)="openProgramsModal()" ion-button full color="light">
-              {{ selectedProgramLabel }}
-            </button>
-          </div>
-        </ion-col>
-      </ion-row>
-      <div *ngIf="selectedProgram">
-        <div *ngIf="selectedProgram.categoryCombo">
-          <div *ngIf="selectedProgram.categoryCombo.categories[0].name !='default'">
-            <div *ngFor="let category of selectedProgram.categoryCombo.categories;let categoryIndex = index ">
-              <ion-row >
-                <ion-col width="100">
-                  <ion-list>
-                    <ion-item >
-                      <ion-label>{{ category.name }}</ion-label>
-                      <ion-select [(ngModel)]="selectedDataDimension[categoryIndex]" (ionChange)="checkingForDataDimension()" interface="action-sheet">
-                        <ion-option *ngFor="let option of category.categoryOptions" value="{{option.id}}" >
-                          {{ option.name }}
-                        </ion-option>
-                      </ion-select>
-                    </ion-item>
-                  </ion-list>
-                </ion-col>
-              </ion-row>
-            </div>
+    <div *ngIf="selectedProgram">
+      <div *ngIf="selectedProgram.categoryCombo">
+        <div *ngIf="selectedProgram.categoryCombo.categories[0].name !='default'">
+          <div *ngFor="let category of selectedProgram.categoryCombo.categories;let categoryIndex = index ">
+            <ion-row >
+              <ion-col width="100">
+                <ion-list>
+                  <ion-item >
+                    <ion-label>{{ category.name }}</ion-label>
+                    <ion-select [(ngModel)]="selectedDataDimension[categoryIndex]" (ionChange)="checkingForDataDimension()" interface="action-sheet">
+                      <ion-option *ngFor="let option of category.categoryOptions" value="{{option.id}}" >
+                        {{ option.name }}
+                      </ion-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-list>
+              </ion-col>
+            </ion-row>
           </div>
         </div>
       </div>
+    </div>
 
-      <div *ngIf="isAllParameterSet">
-        <ion-row>
-          <ion-col width-33>
-            <button ion-button full (click)="showFieldSelectionMenu()">
-              <ion-icon name="grid"></ion-icon>
-            </button>
-          </ion-col>
-          <ion-col width-33>
-            <button ion-button full (click)="reLoadingEventList()">
-              <ion-icon name="refresh"></ion-icon>
-            </button>
-          </ion-col>
-          <ion-col width-33>
-            <button ion-button full (click)="goToEventRegister()">
-              <ion-icon name="add"></ion-icon>
-            </button>
-          </ion-col>
-        </ion-row>
+    <div *ngIf="isAllParameterSet">
+      <ion-row>
+        <ion-col width-33>
+          <button ion-button full (click)="showFieldSelectionMenu()" color="light">
+            <ion-icon name="grid"></ion-icon>
+          </button>
+        </ion-col>
+        <ion-col width-33>
+          <button ion-button full (click)="goToEventRegister()" color="secondary">
+            <ion-icon name="add"></ion-icon>
+          </button>
+        </ion-col>
+        <ion-col width-33>
+          <button ion-button full [disabled]="true">
+            <ion-icon name="settings"></ion-icon>
+          </button>
+        </ion-col>
 
-        <hr>
+      </ion-row>
 
+      <hr>
+
+      <div *ngIf="eventListSections.length == 0">
+        <ion-card >
+          <ion-card-content>
+            <p>There are no events, to register new event  <span (click)="goToEventRegister()" color="primary"><b>click here</b></span></p>
+          </ion-card-content>
+        </ion-card>
+      </div>
+      <div *ngIf="eventListSections.length > 0">
+        <!-- event list --->
         <div *ngFor="let section of eventListSections">
           <div *ngIf="section.id == currentPage">
             <div *ngFor="let event of section.events">
@@ -127,7 +133,7 @@
           </div>
         </div>
         <!-- pagination -->
-        <ion-row>
+        <ion-row >
           <ion-col width-33>
             <button color="primary" ion-button full (click)="changePagination(currentPage - 1)">
               Previous
@@ -144,12 +150,9 @@
             </button>
           </ion-col>
         </ion-row>
-
       </div>
-
-
-
     </div>
-  </ion-grid>
+
+  </div>
 
 </ion-content>

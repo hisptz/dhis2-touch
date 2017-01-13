@@ -41,6 +41,7 @@ export class EventCaptureHome {
   public selectedDataDimension : any;
   public eventListSections : any;
   public isAllParameterSet : boolean;
+  public currentSelectionStatus :any;
 
   public dataElementMapper :any = {};
   public dataElementToDisplay : any = {};
@@ -55,6 +56,10 @@ export class EventCaptureHome {
               public Program : Program,public modalCtrl: ModalController,public navCtrl: NavController,public toastCtrl: ToastController,public user : User,public appProvider : AppProvider,public sqlLite : SqlLite,public httpClient: HttpClient) {
     this.selectedDataDimension = [];
     this.isAllParameterSet = false;
+    this.currentSelectionStatus = {
+      orgUnit : false,
+      program : false
+    };
     this.user.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;
       this.getUserAssignedPrograms();
@@ -76,7 +81,10 @@ export class EventCaptureHome {
     })
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
+    if(this.isAllParameterSet){
+      this.reLoadingEventList();
+    }
   }
 
   setProgramSelectionLabel(){
@@ -87,8 +95,10 @@ export class EventCaptureHome {
   setOrganisationSelectLabel(){
     if(this.selectedOrganisationUnit.id){
       this.selectedOrganisationUnitLabel = this.selectedOrganisationUnit.name;
+      this.currentSelectionStatus.program = true;
     }else{
-      this.selectedOrganisationUnitLabel = "Touch to select Organisation Unit"
+      this.selectedOrganisationUnitLabel = "Touch to select Organisation Unit";
+      this.currentSelectionStatus.program = false;
     }
   }
 
