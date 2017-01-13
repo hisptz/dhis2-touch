@@ -49,7 +49,7 @@ export class DataEntryHome {
               public httpClient: HttpClient) {
     this.selectedDataDimension = [];
     this.currentSelectionStatus = {
-      orgUnit : true,
+      orgUnit : false,
       dataSet : false,
       period : false
     };
@@ -148,7 +148,7 @@ export class DataEntryHome {
     modal.present();
   }
 
-  
+
   loadingDataSets(){
     this.setLoadingMessages('Loading assigned forms');
     this.assignedDataSets = [];
