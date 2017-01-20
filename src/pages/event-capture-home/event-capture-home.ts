@@ -109,6 +109,8 @@ export class EventCaptureHome {
   setSelectedProgramLabel(){
     if(this.selectedProgram.id){
       this.selectedProgramLabel = this.selectedProgram.name;
+      this.currentSelectionStatus.program = true;
+      this.currentSelectionStatus.message = "";
     }else{
       this.selectedProgramLabel = "Touch to select a Program";
       if (this.currentSelectionStatus.program && !this.isAllParameterSet) {
