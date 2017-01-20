@@ -75,26 +75,39 @@
       </div>
     </div>
 
+
+
     <div *ngIf="!(currentSelectionStatus.allParameterSet)">
-      <ion-card>
-        <ion-card-content>
-          <ion-icon name="help-circle" color="primary"></ion-icon> &nbsp;&nbsp;
-          <b>
-            {{ currentSelectionStatus.message }}<span *ngIf="currentSelectionStatus.message==''">Please Select all entry form dimensions</span>
-          </b>
-        </ion-card-content>
-      </ion-card>
+      <ion-row >
+        <ion-col width="100">
+          <ion-item-group >
+            <ion-item-divider>
+              <ion-icon name="help-circle" color="primary"></ion-icon> &nbsp;&nbsp;
+              <b>
+                {{ currentSelectionStatus.message }}<span *ngIf="currentSelectionStatus.message==''">Please Select all entry form dimensions</span>
+              </b>
+            </ion-item-divider>
+          </ion-item-group>
+          <ion-list></ion-list>
+        </ion-col>
+      </ion-row>
+
     </div>
 
     <div *ngIf="selectedPeriod">
       <div *ngIf="selectedPeriod.name && hasDataDimensionSet()">
-        <ion-card (click)="goToEntryForm()">
-          <ion-card-content>
-            <p><b>Organisation Unit</b> : {{ selectedOrganisationUnitLabel }}</p>
-            <p><b>Form</b> : {{ selectedDataSetLabel }}</p>
-            <p><b>Period</b> : {{ selectedPeriodLabel }}</p>
-          </ion-card-content>
-        </ion-card>
+        <ion-row >
+          <ion-col width="100">
+            <ion-item-group (click)="goToEntryForm()">
+              <ion-item-divider>
+                <p style="color: #000;"><b>Organisation Unit</b> : {{ selectedOrganisationUnitLabel }}</p>
+                <p style="color: #000;"><b>Form</b> : {{ selectedDataSetLabel }}</p>
+                <p style="color: #000;"><b>Period</b> : {{ selectedPeriodLabel }}</p>
+              </ion-item-divider>
+            </ion-item-group>
+            <ion-list></ion-list>
+          </ion-col>
+        </ion-row>
         <ion-row >
           <ion-col width="100">
             <button ion-button full (click)="goToEntryForm()">Data Entry </button>

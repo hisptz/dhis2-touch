@@ -33,35 +33,103 @@
 
   <div *ngIf="!loadingData">
 
-    <!--<div class="dataEntryFormHeader" (click)="navCtrl.pop()">-->
-      <!--<ion-card>-->
-        <!--<ion-card-content>-->
-          <!--<p><b>Form</b> : {{ selectedDataSetLabel }}</p>-->
-          <!--<p><b>Organisation Unit</b> : {{ selectedOrganisationUnitLabel }}</p>-->
-          <!--<p><b>Period</b> : {{ selectedPeriodLabel }} </p>-->
-          <!--<p> <b>Synced</b> : {{ storageStatus.online }} <b>Not synced</b> : {{storageStatus.local }}</p>-->
-        <!--</ion-card-content>-->
-      <!--</ion-card>-->
-    <!--</div>-->
+    <!-- entry form details -->
+    <ion-item-group (click)="navCtrl.pop()">
+      <ion-item-divider>
+        <p style="color: #000;"><b>Organisation Unit</b> : {{ selectedOrganisationUnitLabel }}</p>
+        <p style="color: #000;"><b>Form</b> : {{ selectedDataSetLabel }}</p>
+        <p style="color: #000;"><b>Period</b> : {{ selectedPeriodLabel }} </p>
+        <p style="color: #000;"><b>Synced</b> : {{ storageStatus.online }} <b>Not synced</b> : {{storageStatus.local }}</p>
+      </ion-item-divider>
+    </ion-item-group>
+    <ion-list></ion-list>
 
-    <!--<div *ngFor="let section of entryFormSections">-->
-      <!--<div *ngIf="section.id == currentPage">-->
-        <!--<div *ngIf=" section.name != 'defaultSection'">-->
-          <!--<div class="sectionHeader">-->
-            <!--<b>{{ section.name }}</b>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
+    <!-- entry form-->
+    <ion-item-group>
+      <div *ngFor="let section of entryFormSections">
+        <div *ngIf="section.id == currentPage">
+          <div *ngIf=" section.name != 'defaultSection'">
+            <ion-item-divider>
+              <b>{{ section.name }}</b>
+            </ion-item-divider>
+          </div>
+        </div>
+      </div>
+      <div *ngFor="let section of entryFormSections">
+        <div *ngIf="section.id == currentPage">
+          <div *ngFor="let dataElement of section.dataElements">
+            {{ dataElement.name }}<hr>
+          </div>
+        </div>
+      </div>
+    </ion-item-group>
+    <ion-list></ion-list>
 
-    <div *ngFor="let section of entryFormSections">
-      {{ section.name }}<br>
-      <!--<div *ngIf="section.id == currentPage">-->
-        <!--<div *ngFor="let dataElement of section.dataElements">-->
-          <!--{{ dataElement.name }}-->
-        <!--</div>-->
-      <!--</div>-->
-    </div>
+    <!-- pagination -->
+    <ion-item-group>
+      <ion-item-divider>
+        <ion-row>
+          <ion-col>
+            <button color="dark" ion-button full clear small (click)="changePagination(0)">
+              <ion-icon name="ios-arrow-back-outline"></ion-icon>
+              <ion-icon name="ios-arrow-back-outline"></ion-icon>
+              <ion-icon name="ios-arrow-back-outline"></ion-icon>
+              <ion-icon name="ios-arrow-back-outline"></ion-icon>
+            </button>
+          </ion-col>
+          <ion-col>
+            <button color="dark" ion-button full clear small (click)="changePagination(currentPage - 1)">
+              <ion-icon name="ios-arrow-back-outline"></ion-icon>
+              <ion-icon name="ios-arrow-back-outline"></ion-icon>
+            </button>
+          </ion-col>
+          <ion-col>
+            <button ion-button color="dark" full clear small >
+              {{ paginationLabel }}
+            </button>
+          </ion-col>
+          <ion-col >
+            <button color="dark" ion-button full clear small (click)="changePagination(currentPage + 1)">
+              <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+              <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+            </button>
+          </ion-col>
+
+          <ion-col >
+            <button color="dark" ion-button full clear small (click)="changePagination(entryFormSections.length -1)">
+              <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+              <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+              <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+              <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+            </button>
+          </ion-col>
+
+        </ion-row>
+      </ion-item-divider>
+    </ion-item-group>
+
+
+    <!--<ion-card>-->
+      <!--<ion-card-content>-->
+        <!--<ion-row>-->
+          <!--<ion-col>-->
+            <!--<button color="primary" ion-button full clear small (click)="changePagination(currentPage - 1)">-->
+              <!--<ion-icon name="ios-arrow-back-outline"></ion-icon>-->
+            <!--</button>-->
+          <!--</ion-col>-->
+          <!--<ion-col>-->
+            <!--<button ion-button color="primary" full clear small >-->
+              <!--{{ paginationLabel }}-->
+            <!--</button>-->
+          <!--</ion-col>-->
+          <!--<ion-col >-->
+            <!--<button color="primary" ion-button full clear small (click)="changePagination(currentPage + 1)">-->
+              <!--<ion-icon name="ios-arrow-forward-outline"></ion-icon>-->
+            <!--</button>-->
+          <!--</ion-col>-->
+        <!--</ion-row>-->
+      <!--</ion-card-content>-->
+    <!--</ion-card>-->
 
     <!--<div class="dataEntryFormBody">-->
       <!--<div style="position: absolute">-->
