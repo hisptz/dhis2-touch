@@ -285,6 +285,7 @@ export class EventCaptureHome {
     });
   }
 
+  //@todo includes status and incident date on selection
   showFieldSelectionMenu(){
     let modal = this.modalCtrl.create(EventFieldSelectionMenu,{dataElementToDisplay: this.dataElementToDisplay,dataElementMapper:this.dataElementMapper});
     modal.onDidDismiss((dataElementToDisplayResponse:any)=>{
@@ -325,7 +326,9 @@ export class EventCaptureHome {
   gotToEditEvent(event){
     let params = {
       orgUnitId : this.selectedOrganisationUnit.id,
+      orgUnitName : this.selectedOrganisationUnit.name,
       programId : this.selectedProgram.id,
+      programName : this.selectedProgram.name,
       selectedDataDimension : this.selectedDataDimension,
       event : event.event
     };
@@ -347,7 +350,9 @@ export class EventCaptureHome {
   goToEventRegister(){
     let params = {
       orgUnitId : this.selectedOrganisationUnit.id,
+      orgUnitName : this.selectedOrganisationUnit.name,
       programId : this.selectedProgram.id,
+      programName : this.selectedProgram.name,
       selectedDataDimension : this.selectedDataDimension,
       event : ""
     };

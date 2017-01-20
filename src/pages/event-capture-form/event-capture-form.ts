@@ -56,7 +56,6 @@ export class EventCaptureForm {
     this.currentPage = 0;
     this.user.getCurrentUser().then(user=>{
       this.currentUser = user;
-
       this.eventProvider.getEventsFromStorageByStatus(user,"new event").then((events :any)=>{
         this.eventProvider.uploadEventsToServer(events,this.currentUser).then((response)=>{
         },error=>{});
@@ -65,7 +64,6 @@ export class EventCaptureForm {
           },error=>{});
         });
       });
-
       this.entryFormParameter = this.params.get("params");
       if(this.entryFormParameter.programId){
         this.loadProgramMetadata(this.entryFormParameter.programId);

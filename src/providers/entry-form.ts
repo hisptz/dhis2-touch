@@ -36,7 +36,6 @@ export class EntryForm {
         self.getEntryFormSectionsObject(dataSet.sections,currentUser).then(entryFormSectionsObject=>{
           dataSet.sections.forEach((section:any,index:any)=>{
             let sectionObject = entryFormSectionsObject[section.id];
-            console.log(sectionObject.name);
             if(sectionObject.id){
               entryFormSections.push({
                 name : sectionObject.name,id : index,dataElements : sectionObject.dataElements
