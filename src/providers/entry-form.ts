@@ -32,7 +32,17 @@ export class EntryForm {
     let self = this;
     return new Promise(function(resolve, reject) {
       if(dataSet.sections.length > 0){
-        self.getEntryFormSections(dataSet.sections,currentUser).then(entryFormSections=>{
+        let entryFormSections = [];
+        self.getEntryFormSectionsObject(dataSet.sections,currentUser).then(entryFormSectionsObject=>{
+          dataSet.sections.forEach((section:any,index:any)=>{
+            let sectionObject = entryFormSectionsObject[section.id];
+            console.log(sectionObject.name);
+            if(sectionObject.id){
+              entryFormSections.push({
+                name : sectionObject.name,id : index,dataElements : sectionObject.dataElements
+              })
+            }
+          });
           resolve(entryFormSections);
         },error=>{
           reject(error);
@@ -51,24 +61,20 @@ export class EntryForm {
    * @param currentUser
    * @returns {Array}
      */
-  getEntryFormSections(sections,currentUser){
+  getEntryFormSectionsObject(sections,currentUser){
     let self = this;
     let ids = [];
     let resource = "sections";
+    let entryFormSectionsObject = {};
     sections.forEach((section : any)=>{
       ids.push(section.id);
     });
     return new Promise(function(resolve, reject) {
-      let entryFormSections = [];
       self.sqlLite.getDataFromTableByAttributes(resource,"id",ids,currentUser.currentDatabase).then((selectedSections : any)=>{
-        selectedSections.forEach((section: any,index : any)=>{
-          entryFormSections.push({
-            name : section.name,
-            id : index,
-            dataElements : section.dataElements
-          })
+        selectedSections.forEach((section: any)=>{
+          entryFormSectionsObject[section.id] = section;
         });
-        resolve(entryFormSections);
+        resolve(entryFormSectionsObject);
       });
     });
   }

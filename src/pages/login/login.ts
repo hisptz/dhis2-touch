@@ -167,7 +167,8 @@ export class Login {
     this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
       this.setLoadingMessages('Saving '+response[resource].length+' data entry form sections');
       this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-        this.downloadingIndicators();
+        this.downloadingPrograms();
+        //this.setLandingPage();
       },error=>{
         this.loadingData = false;
         this.setStickToasterMessage('Fail to save data entry form sections. ' + JSON.stringify(error));
@@ -175,25 +176,6 @@ export class Login {
     },error=>{
       this.loadingData = false;
       this.setStickToasterMessage('Fail to download data entry form sections. ' + JSON.stringify(error));
-    });
-  }
-
-  downloadingIndicators(){
-    this.setLoadingMessages('Downloading indicators');
-    let resource = 'indicators';
-    let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-    let fields = tableMetadata.fields;
-    this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-      this.setLoadingMessages('Saving '+response[resource].length+' indicators');
-      this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-        this.downloadingPrograms();
-      },error=>{
-        this.loadingData = false;
-        this.setStickToasterMessage('Fail to save indicators. ' + JSON.stringify(error));
-      });
-    },error=>{
-      this.loadingData = false;
-      this.setStickToasterMessage('Fail to download indicators. ' + JSON.stringify(error));
     });
   }
 
@@ -243,7 +225,7 @@ export class Login {
     this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
       this.setLoadingMessages('Saving '+response[resource].length+' program-stage data-elements');
       this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-        //this.downloadingReports();
+        //this.downloadingIndicators();
         this.setLandingPage();
       },error=>{
         this.loadingData = false;
@@ -255,7 +237,24 @@ export class Login {
     });
   }
 
-
+  downloadingIndicators(){
+    this.setLoadingMessages('Downloading indicators');
+    let resource = 'indicators';
+    let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+    let fields = tableMetadata.fields;
+    this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
+      this.setLoadingMessages('Saving '+response[resource].length+' indicators');
+      this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+        this.downloadingReports();
+      },error=>{
+        this.loadingData = false;
+        this.setStickToasterMessage('Fail to save indicators. ' + JSON.stringify(error));
+      });
+    },error=>{
+      this.loadingData = false;
+      this.setStickToasterMessage('Fail to download indicators. ' + JSON.stringify(error));
+    });
+  }
 
   downloadingReports(){
     this.setLoadingMessages('Downloading reports');
@@ -324,6 +323,5 @@ export class Login {
     });
     toast.present();
   }
-
 
 }

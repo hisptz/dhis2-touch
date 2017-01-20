@@ -13,76 +13,66 @@
 </ion-header>
 
 
-<ion-content class="about">
-  <ion-grid>
-    <ion-row>
-      <ion-col width="100">
-        <div *ngIf="loadingData">
-          <ion-list>
-            <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
-              {{ message }}
-              <ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right color="primary"></ion-icon>
-              <div style="text-align: center" item-right *ngIf="(currentIndex + 1) >= loadingMessages.length">
-                <ion-spinner name="crescent" color="secondary"></ion-spinner>
-              </div>
-            </ion-item>
-          </ion-list>
+<ion-content class="about" padding>
+  <div *ngIf="loadingData">
+    <ion-list>
+      <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
+        {{ message }}
+        <ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right color="primary"></ion-icon>
+        <div style="text-align: center" item-right *ngIf="(currentIndex + 1) >= loadingMessages.length">
+          <ion-spinner name="crescent" color="secondary"></ion-spinner>
         </div>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col width="100">
-        <div *ngIf="!loadingData">
-          <ion-item-group>
-            <ion-item-divider color="primary">
-              App Information
-            </ion-item-divider>
-            <ion-item *ngFor="let entry of appInformation ">
-              <h2>{{ entry.key }}</h2>
-              <p>{{ entry.value }}</p>
-            </ion-item>
-          </ion-item-group>
-          <ion-list></ion-list>
-          <ion-item-group>
-            <ion-item-divider color="primary">
-              Data Values Status
-            </ion-item-divider>
-            <ion-item >
-              <h2>Synced</h2>
-              <p>{{ dataValuesStorage.online }}</p>
-            </ion-item>
-            <ion-item >
-              <h2>Not Synced</h2>
-              <p>{{ dataValuesStorage.offline }}</p>
-            </ion-item>
-          </ion-item-group>
-          <ion-list></ion-list>
-          <ion-item-group>
-            <ion-item-divider color="primary">
-              Event Storage Status
-            </ion-item-divider>
-            <ion-item >
-              <h2>Synced</h2>
-              <p>{{ eventsStorage.online }}</p>
-            </ion-item>
-            <ion-item >
-              <h2>Not Synced</h2>
-              <p>{{ eventsStorage.offline }}</p>
-            </ion-item>
-          </ion-item-group>
-          <ion-list></ion-list>
-          <ion-item-group>
-            <ion-item-divider color="primary">
-              System Information
-            </ion-item-divider>
-            <ion-item *ngFor="let entry of systemInformation">
-              <h2>{{ entry.key }}</h2>
-              <p>{{ entry.value }}</p>
-            </ion-item>
-          </ion-item-group>
-        </div>
-      </ion-col>
-    </ion-row>
+      </ion-item>
+    </ion-list>
+  </div>
 
-  </ion-grid>
+  <div *ngIf="!loadingData">
+    <ion-item-group>
+      <ion-item-divider color="primary">
+        <b>App Information</b>
+      </ion-item-divider>
+      <ion-item *ngFor="let entry of appInformation ">
+        <h2>{{ entry.key }}</h2>
+        <p>{{ entry.value }}</p>
+      </ion-item>
+    </ion-item-group>
+    <ion-list></ion-list>
+    <ion-item-group>
+      <ion-item-divider color="primary">
+        <b>Data Values Status</b>
+      </ion-item-divider>
+      <ion-item >
+        <h2>Synced</h2>
+        <p>{{ dataValuesStorage.online }}</p>
+      </ion-item>
+      <ion-item >
+        <h2>Not Synced</h2>
+        <p>{{ dataValuesStorage.offline }}</p>
+      </ion-item>
+    </ion-item-group>
+    <ion-list></ion-list>
+    <ion-item-group>
+      <ion-item-divider color="primary">
+        <b>Event Storage Status</b>
+      </ion-item-divider>
+      <ion-item >
+        <h2>Synced</h2>
+        <p>{{ eventsStorage.online }}</p>
+      </ion-item>
+      <ion-item >
+        <h2>Not Synced</h2>
+        <p>{{ eventsStorage.offline }}</p>
+      </ion-item>
+    </ion-item-group>
+    <ion-list></ion-list>
+    <ion-item-group>
+      <ion-item-divider color="primary">
+        <b>System Information</b>
+      </ion-item-divider>
+      <ion-item *ngFor="let entry of systemInformation">
+        <h2>{{ entry.key }}</h2>
+        <p>{{ entry.value }}</p>
+      </ion-item>
+    </ion-item-group>
+  </div>
 </ion-content>

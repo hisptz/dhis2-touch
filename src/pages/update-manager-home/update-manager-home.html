@@ -13,12 +13,13 @@
 </ion-header>
 
 
-<ion-content class="updateManager">
+<ion-content class="updateManager" padding>
   <div *ngIf="loadingData">
     <ion-list>
       <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
         {{ message }}
-        <ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right color="primary"></ion-icon>
+        <ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right
+                  color="primary"></ion-icon>
         <div style="text-align: center" item-right *ngIf="(currentIndex + 1) >= loadingMessages.length">
           <ion-spinner name="crescent" color="secondary"></ion-spinner>
         </div>
@@ -27,28 +28,33 @@
   </div>
 
   <div *ngIf="!loadingData">
-    <ion-grid>
-      <ion-row>
-        <ion-col width="50">
-          <button ion-button full (click)="checkingForResourceUpdate()">Update</button>
-        </ion-col>
-        <ion-col width="50">
-          <button ion-button full (click)="autoSelect('selectAll')" *ngIf="!hasAllSelected"> Select All</button>
-          <button ion-button full (click)="autoSelect('unSelectAll')" *ngIf="hasAllSelected">Un-select all</button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-    <div padding>
-      <ion-list >
-        <div *ngFor="let resourceObject of resources">
-          <ion-item>
-            <ion-label>{{ resourceObject.displayName }}</ion-label>
-            <ion-checkbox [(ngModel)]="resourceObject.status" color="favorite"></ion-checkbox>
-          </ion-item>
-        </div>
-      </ion-list>
-      <button ion-button full (click)="checkingForResourceUpdate()">Update</button>
-    </div>
+    <ion-row>
+      <ion-col width="50">
+        <button ion-button full (click)="checkingForResourceUpdate()">Update</button>
+      </ion-col>
+      <ion-col width="50">
+        <button ion-button full (click)="autoSelect('selectAll')" *ngIf="!hasAllSelected"> Select All</button>
+        <button ion-button full (click)="autoSelect('unSelectAll')" *ngIf="hasAllSelected">Un-select all</button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col >
+        <ion-list>
+          <div *ngFor="let resourceObject of resources">
+            <ion-item>
+              <ion-label>{{ resourceObject.displayName }}</ion-label>
+              <ion-checkbox [(ngModel)]="resourceObject.status" color="favorite"></ion-checkbox>
+            </ion-item>
+          </div>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col >
+        <button ion-button full (click)="checkingForResourceUpdate()">Update</button>
+      </ion-col>
+    </ion-row>
 
   </div>
 

@@ -11,9 +11,9 @@
 </ion-header>
 
 
-<ion-content  class="data-entry-home">
+<ion-content  class="data-entry-home" padding>
 
-  <div *ngIf="loadingData" padding>
+  <div *ngIf="loadingData" >
     <ion-list>
       <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
         {{ message }}
@@ -71,9 +71,19 @@
               </ion-col>
             </ion-row>
           </div>
-
         </div>
       </div>
+    </div>
+
+    <div *ngIf="!(currentSelectionStatus.allParameterSet)">
+      <ion-card>
+        <ion-card-content>
+          <ion-icon name="help-circle" color="primary"></ion-icon> &nbsp;&nbsp;
+          <b>
+            {{ currentSelectionStatus.message }}<span *ngIf="currentSelectionStatus.message==''">Please Select all entry form dimensions</span>
+          </b>
+        </ion-card-content>
+      </ion-card>
     </div>
 
     <div *ngIf="selectedPeriod">

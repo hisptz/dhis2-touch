@@ -18,8 +18,7 @@
 </ion-header>
 
 
-<ion-content class="eventListSelection" >
-  <ion-grid>
+<ion-content class="eventListSelection" padding>
     <ion-row>
       <ion-col width="50">
         <button ion-button full (click)="onSavingChanges()">Update</button>
@@ -29,16 +28,15 @@
         <button ion-button full (click)="autoSelect('unSelectAll')" *ngIf="hasAllSelected">Un-select all</button>
       </ion-col>
     </ion-row>
-  </ion-grid>
-  <div *ngIf="hasDataLoaded" padding>
-    <ion-list >
-      <div *ngFor="let dataElementsId of dataElementsIds">
-        <ion-item>
-          <ion-label>{{ dataElementMapper[dataElementsId].name }}</ion-label>
-          <ion-checkbox [(ngModel)]="selectedDataElementIdsModel[dataElementsId]" color="favorite"></ion-checkbox>
-        </ion-item>
-      </div>
-    </ion-list>
-    <button ion-button full (click)="onSavingChanges()">Done</button>
-  </div>
+    <div *ngIf="hasDataLoaded" padding>
+      <ion-list >
+        <div *ngFor="let dataElementsId of dataElementsIds">
+          <ion-item>
+            <ion-label>{{ dataElementMapper[dataElementsId].name }}</ion-label>
+            <ion-checkbox [(ngModel)]="selectedDataElementIdsModel[dataElementsId]" color="favorite"></ion-checkbox>
+          </ion-item>
+        </div>
+      </ion-list>
+      <button ion-button full (click)="onSavingChanges()">Done</button>
+    </div>
 </ion-content>

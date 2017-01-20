@@ -13,66 +13,56 @@
 </ion-header>
 
 
-<ion-content class="profile">
-  <ion-grid>
+<ion-content class="profile" padding>
+  <div *ngIf="loadingData">
+    <ion-list>
+      <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
+        {{ message }}
+        <ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right color="primary"></ion-icon>
+        <div style="text-align: center" item-right *ngIf="(currentIndex + 1) >= loadingMessages.length">
+          <ion-spinner name="crescent" color="secondary"></ion-spinner>
+        </div>
+      </ion-item>
+    </ion-list>
+  </div>
+  <div *ngIf="!loadingData">
     <ion-row>
       <ion-col width="100">
-        <div *ngIf="loadingData">
-          <ion-list>
-            <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
-              {{ message }}
-              <ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right color="primary"></ion-icon>
-              <div style="text-align: center" item-right *ngIf="(currentIndex + 1) >= loadingMessages.length">
-                <ion-spinner name="crescent" color="secondary"></ion-spinner>
-              </div>
-            </ion-item>
-          </ion-list>
-        </div>
+        <ion-item-group>
+          <ion-item-divider color="primary">
+            <b>App Information</b>
+          </ion-item-divider>
+          <ion-item *ngFor="let entry of profileInformation">
+            <h2>{{ entry.key }}</h2>
+            <p>{{ entry.value }}</p>
+          </ion-item>
+          <ion-item-divider color="primary">
+            <b>Assigned Organisation Units</b>
+          </ion-item-divider>
+          <ion-item *ngFor="let assignOrgUnit of  assignOrgUnits;let currentIndex = index">
+            <p>{{ currentIndex + 1 }}&nbsp;.&nbsp;{{ assignOrgUnit }}</p>
+          </ion-item>
+          <ion-item-divider color="primary">
+            <b>Assigned user roles</b>
+          </ion-item-divider>
+          <ion-item *ngFor="let userRole of userRoles;let currentIndex = index">
+            <p>{{ currentIndex + 1 }}&nbsp;.&nbsp;{{ userRole }}</p>
+          </ion-item>
+          <ion-item-divider color="primary">
+            <b>Assigned programs</b>
+          </ion-item-divider>
+          <ion-item *ngFor="let assignedProgram of assignedPrograms ;let currentIndex = index">
+            <p>{{ currentIndex + 1 }}&nbsp;.&nbsp;{{ assignedProgram }}</p>
+          </ion-item>
+          <ion-item-divider color="primary">
+            <b>Assigned forms</b>
+          </ion-item-divider>
+          <ion-item *ngFor="let assignedForm  of assignedForms ;let currentIndex = index">
+            <p>{{ currentIndex + 1 }}&nbsp;.&nbsp;{{ assignedForm }}</p>
+          </ion-item>
+        </ion-item-group>
       </ion-col>
     </ion-row>
-
-    <div *ngIf="!loadingData">
-      <ion-row>
-        <ion-col width="100">
-          <ion-item-group>
-            <ion-item-divider color="primary">
-              App Information
-            </ion-item-divider>
-            <ion-item *ngFor="let entry of profileInformation">
-              <h2>{{ entry.key }}</h2>
-              <p>{{ entry.value }}</p>
-            </ion-item>
-            <ion-item-divider color="primary">
-              Assigned Organisation Units
-            </ion-item-divider>
-            <ion-item *ngFor="let assignOrgUnit of  assignOrgUnits;let currentIndex = index">
-              <p>{{ currentIndex + 1 }}&nbsp;.&nbsp;{{ assignOrgUnit }}</p>
-            </ion-item>
-            <ion-item-divider color="primary">
-              Assigned user roles
-            </ion-item-divider>
-            <ion-item *ngFor="let userRole of userRoles;let currentIndex = index">
-              <p>{{ currentIndex + 1 }}&nbsp;.&nbsp;{{ userRole }}</p>
-            </ion-item>
-            <ion-item-divider color="primary">
-              Assigned programs
-            </ion-item-divider>
-            <ion-item *ngFor="let assignedProgram of assignedPrograms ;let currentIndex = index">
-              <p>{{ currentIndex + 1 }}&nbsp;.&nbsp;{{ assignedProgram }}</p>
-            </ion-item>
-            <ion-item-divider color="primary">
-              Assigned forms
-            </ion-item-divider>
-            <ion-item *ngFor="let assignedForm  of assignedForms ;let currentIndex = index">
-              <p>{{ currentIndex + 1 }}&nbsp;.&nbsp;{{ assignedForm }}</p>
-            </ion-item>
-
-          </ion-item-group>
-        </ion-col>
-      </ion-row>
-    </div>
-
-  </ion-grid>
-
+  </div>
 
 </ion-content>

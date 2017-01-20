@@ -13,7 +13,7 @@
 </ion-header>
 
 
-<ion-content  class="event-capture-home">
+<ion-content  class="event-capture-home" padding >
 
   <div *ngIf="loadingData">
     <ion-list>
@@ -65,6 +65,17 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div *ngIf="!isAllParameterSet">
+      <ion-card>
+        <ion-card-content>
+          <ion-icon name="help-circle" color="primary"></ion-icon> &nbsp;&nbsp;
+          <b>
+            {{ currentSelectionStatus.message }}<span *ngIf="currentSelectionStatus.message==''">Please Select all program dimensions</span>
+          </b>
+        </ion-card-content>
+      </ion-card>
     </div>
 
     <div *ngIf="isAllParameterSet">

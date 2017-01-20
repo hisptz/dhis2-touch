@@ -13,7 +13,7 @@
 </ion-header>
 
 
-<ion-content >
+<ion-content padding class="dashboardItems">
   <div *ngIf="loadingData">
     <ion-list>
       <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
@@ -32,7 +32,6 @@
         <div *ngIf="chartsObjects[dashboardItem.id]">
           <ion-card>
             <ion-card-content>
-
               <ion-item >
                 <ion-label>
                   <ion-icon name="list-box"></ion-icon>&nbsp;&nbsp;Chart
@@ -46,28 +45,24 @@
                   <ion-option  value="area" >Area</ion-option>
                 </ion-select>
               </ion-item>
-
               <div style="overflow: auto;width: 100%;" *ngIf="chartsObjects[dashboardItem.id].options">
                 <chart [options]="chartsObjects[dashboardItem.id].options"></chart>
               </div>
-
             </ion-card-content>
-
-            <ion-row>
-              <ion-col>
-                <button ion-button icon-left clear small>
-                  <ion-icon name="thumbs-up"></ion-icon>
-                  <div>{{dashboardItem.interpretationLikeCount}} Interpretation Likes</div>
-                </button>
-              </ion-col>
-              <ion-col>
-                <button ion-button icon-left clear small>
-                  <ion-icon name="text"></ion-icon>
-                  <div>{{dashboardItem.interpretationCount}} Interpretation</div>
-                </button>
-              </ion-col>
-            </ion-row>
-
+            <!--<ion-row>-->
+              <!--<ion-col>-->
+                <!--<button ion-button icon-left clear small>-->
+                  <!--<ion-icon name="thumbs-up"></ion-icon>-->
+                  <!--<div>{{dashboardItem.interpretationLikeCount}} Interpretation Likes</div>-->
+                <!--</button>-->
+              <!--</ion-col>-->
+              <!--<ion-col>-->
+                <!--<button ion-button icon-left clear small>-->
+                  <!--<ion-icon name="text"></ion-icon>-->
+                  <!--<div>{{dashboardItem.interpretationCount}} Interpretation</div>-->
+                <!--</button>-->
+              <!--</ion-col>-->
+            <!--</ion-row>-->
           </ion-card>
         </div>
 

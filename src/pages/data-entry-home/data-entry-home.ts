@@ -49,9 +49,11 @@ export class DataEntryHome {
               public httpClient: HttpClient) {
     this.selectedDataDimension = [];
     this.currentSelectionStatus = {
-      orgUnit : false,
+      orgUnit : true,
       dataSet : false,
-      period : false
+      period : false,
+      allParameterSet : false,
+      message : ""
     };
     this.user.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;
@@ -92,6 +94,10 @@ export class DataEntryHome {
     }else{
       this.selectedOrganisationUnitLabel = "Touch to select Organisation Unit";
       this.currentSelectionStatus.dataSet = false;
+      this.currentSelectionStatus.allParameterSet = false;
+      if (this.currentSelectionStatus.orgUnit && !this.currentSelectionStatus.dataSet) {
+        this.currentSelectionStatus.message = "Please select organisation unit";
+      }
     }
   }
 
@@ -102,14 +108,24 @@ export class DataEntryHome {
     }else{
       this.selectedDataSetLabel = "Touch to select Entry Form";
       this.currentSelectionStatus.period = false;
+      this.currentSelectionStatus.allParameterSet = false;
+      if (this.currentSelectionStatus.dataSet && !this.currentSelectionStatus.period) {
+        this.currentSelectionStatus.message = "Please select entry form";
+      }
     }
   }
 
   setSelectedPeriodLabel(){
     if(this.selectedPeriod.name){
       this.selectedPeriodLabel = this.selectedPeriod.name;
+      this.currentSelectionStatus.message = "";
+      this.hasDataDimensionSet();
     }else{
       this.selectedPeriodLabel = "Touch to select Period";
+      if(this.currentSelectionStatus.period){
+        this.currentSelectionStatus.message = "Please select period for entry form";
+      }
+      this.currentSelectionStatus.allParameterSet = false;
     }
   }
 
@@ -147,7 +163,6 @@ export class DataEntryHome {
     });
     modal.present();
   }
-
 
   loadingDataSets(){
     this.setLoadingMessages('Loading assigned forms');
@@ -218,7 +233,6 @@ export class DataEntryHome {
     }
   }
 
-
   hasDataDimensionSet(){
     let result = true;
     if(this.selectedDataSet.categoryCombo.name != 'default'){
@@ -232,6 +246,7 @@ export class DataEntryHome {
         result = false;
       }
     }
+    this.currentSelectionStatus.allParameterSet = (result && (this.selectedPeriodLabel.indexOf("Touch to select Period") < 0 ))?true:false;
     return result;
   }
 

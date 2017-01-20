@@ -57,8 +57,9 @@ export class EventCaptureHome {
     this.selectedDataDimension = [];
     this.isAllParameterSet = false;
     this.currentSelectionStatus = {
-      orgUnit : false,
-      program : false
+      orgUnit : true,
+      program : false,
+      message : ""
     };
     this.user.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;
@@ -99,6 +100,9 @@ export class EventCaptureHome {
     }else{
       this.selectedOrganisationUnitLabel = "Touch to select Organisation Unit";
       this.currentSelectionStatus.program = false;
+      if (this.currentSelectionStatus.orgUnit && !this.currentSelectionStatus.program) {
+        this.currentSelectionStatus.message = "Please select organisation unit";
+      }
     }
   }
 
@@ -107,6 +111,9 @@ export class EventCaptureHome {
       this.selectedProgramLabel = this.selectedProgram.name;
     }else{
       this.selectedProgramLabel = "Touch to select a Program";
+      if (this.currentSelectionStatus.program && !this.isAllParameterSet) {
+        this.currentSelectionStatus.message = "Please select program";
+      }
     }
   }
 
@@ -166,7 +173,6 @@ export class EventCaptureHome {
       this.setToasterMessage("Fail to load assigned programs : " + JSON.stringify(error));
     });
   }
-
 
   openProgramsModal(){
     this.loadingMessages = [];
