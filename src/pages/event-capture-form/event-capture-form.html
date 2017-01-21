@@ -43,6 +43,9 @@
       <ion-item>
         <ion-input type="date" [(ngModel)]="event.eventDate"></ion-input>
       </ion-item>
+      <button color="light" ion-button full (click)="cancel()" *ngIf="event.eventDate =='' ">
+        cancel
+      </button>
 
       <div *ngIf="event.eventDate !='' ">
         <ion-item-group>

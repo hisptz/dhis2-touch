@@ -187,6 +187,49 @@ export class Events {
 
   }
 
+  getEventListInTableFormat(events,dataElementToDisplay){
+    let self = this;
+    return new Promise(function(resolve, reject) {
+      let tableFormat = {
+        header : [],rows : []
+      };
+      //set headers
+      Object.keys(dataElementToDisplay).forEach((dataElementId:any)=>{
+        tableFormat.header.push({
+          id : dataElementId,name : dataElementToDisplay[dataElementId].name
+        })
+      });
+      //setting rows
+      self.getEventDataValuesMapper(events).then((eventDataValuesMapper:any)=>{
+        events.forEach((event:any)=>{
+
+          let dataValueMapper = eventDataValuesMapper[event.event];
+          let row = {event : event.event,data : []};
+          tableFormat.header.forEach((header : any)=>{
+            let value =(dataValueMapper[header.id])? dataValueMapper[header.id] : "";
+            row.data.push(value)
+          });
+          tableFormat.rows.push(row);
+        });
+        resolve(tableFormat);
+      })
+    });
+  }
+
+  getEventDataValuesMapper(events){
+    return new Promise(function(resolve, reject) {
+      let eventDataValuesMapper = {};
+      events.forEach((event : any)=>{
+        let dataValueMapper = {};
+        event.dataValues.forEach((dataValue : any)=>{
+          dataValueMapper[dataValue.dataElement] = dataValue.value;
+        });
+        eventDataValuesMapper[event.event] = dataValueMapper;
+      });
+      resolve(eventDataValuesMapper);
+    });
+  }
+
   uploadEventsToServer(events,currentUser){
     let self = this;
     let promises = [];

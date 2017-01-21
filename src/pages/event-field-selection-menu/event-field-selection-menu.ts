@@ -103,11 +103,18 @@ export class EventFieldSelectionMenu {
      */
   getSelectedDataElementsToDisplay(selectedDataElementIdsModel){
     let selectedDataElementToDisplay = {};
+    let oneOptionHasSelected = false;
     Object.keys(selectedDataElementIdsModel).forEach((id:any)=>{
       if(selectedDataElementIdsModel[id]){
+        oneOptionHasSelected = true;
         selectedDataElementToDisplay[id] = this.dataElementMapper[id];
       }
     });
+    if(!oneOptionHasSelected){
+      let defaultId = Object.keys(selectedDataElementIdsModel)[0];
+      selectedDataElementToDisplay[defaultId] = this.dataElementMapper[defaultId];
+    }
+
     return selectedDataElementToDisplay;
   }
 

@@ -46,6 +46,9 @@ export class EventCaptureHome {
   public dataElementMapper :any = {};
   public dataElementToDisplay : any = {};
   public programStageDataElements : any;
+  public tableFormat : any;
+  public currentEvents : any;
+  public hasEvents : boolean = false;
 
   //pagination controller
   public currentPage : number ;
@@ -272,13 +275,14 @@ export class EventCaptureHome {
       }else{
         currentEvents = events;
       }
-      this.eventProvider.getEventSections(currentEvents).then((eventSections:any)=>{
-        this.eventListSections = eventSections;
-        this.changePagination(0);
-        this.isAllParameterSet = true;
-        this.loadingData = false;
-      });
-
+      if(currentEvents.length > 0){
+        this.hasEvents = true;
+      }else{
+        this.hasEvents = false;
+      }
+      this.currentEvents = currentEvents;
+      //this.loadEventListAsTable();
+      this.loadEventListAsListOfCards();
     },error=>{
       this.loadingData = false;
       this.setToasterMessage("Fail to load events from offline storage : " + JSON.stringify(error));
@@ -291,8 +295,30 @@ export class EventCaptureHome {
     modal.onDidDismiss((dataElementToDisplayResponse:any)=>{
       this.dataElementToDisplay = {};
       this.dataElementToDisplay = dataElementToDisplayResponse;
+      //this.loadEventListAsTable();
+      //this.loadEventListAsListOfCards();
     });
     modal.present();
+  }
+
+  loadEventListAsTable(){
+    this.eventProvider.getEventListInTableFormat(this.currentEvents,this.dataElementToDisplay).then((table:any)=>{
+      this.tableFormat = table;
+      this.eventListSections = [];
+      this.isAllParameterSet = true;
+      this.loadingData = false;
+    });
+  }
+
+  loadEventListAsListOfCards(){
+    let currentEvents = this.currentEvents;
+    this.eventProvider.getEventSections(currentEvents).then((eventSections:any)=>{
+      this.eventListSections = eventSections;
+      this.tableFormat =  null;
+      this.changePagination(0);
+      this.isAllParameterSet = true;
+      this.loadingData = false;
+    });
   }
 
   /**
