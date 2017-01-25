@@ -11,108 +11,132 @@
 </ion-header>
 
 
-<ion-content  class="data-entry-home" padding>
+<ion-content  class="data-entry-home">
 
-  <div *ngIf="loadingData" >
-    <ion-list>
-      <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
-        {{ message }}
-        <ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right color="primary"></ion-icon>
-        <div style="text-align: center" item-right *ngIf="(currentIndex + 1) >= loadingMessages.length">
-          <ion-spinner name="crescent" color="secondary"></ion-spinner>
-        </div>
-      </ion-item>
-    </ion-list>
+  <div *ngIf="loadingData">
+    <ion-grid>
+      <ion-row >
+        <ion-col>
+          <ion-list>
+            <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
+              {{ message }}
+              <ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right color="primary"></ion-icon>
+              <div style="text-align: center" item-right *ngIf="(currentIndex + 1) >= loadingMessages.length">
+                <ion-spinner name="crescent" color="secondary"></ion-spinner>
+              </div>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </div>
 
   <div *ngIf="!loadingData">
 
-    <ion-row >
-      <ion-col width="100">
-        <button (click)="openOrganisationUnitModal()" ion-button full color="light">
+    <ion-card (click)="openOrganisationUnitModal()">
+      <ion-card-content>
+        <div class="selectionLabel">
           {{ selectedOrganisationUnitLabel }}
-        </button>
-      </ion-col>
-    </ion-row>
-    <ion-row >
-      <ion-col width="100">
-        <div >
-          <button (click)="openDataSetsModal()" [disabled] = "!currentSelectionStatus.dataSet" ion-button full color="light">
-            {{ selectedDataSetLabel }}
-          </button>
         </div>
-      </ion-col>
-    </ion-row>
-    <ion-row >
-      <ion-col width="100">
-        <div >
-          <button  (click)="openPeriodModal()" [disabled] = "!currentSelectionStatus.period" ion-button full color="light">
-            {{ selectedPeriodLabel }}
-          </button>
+      </ion-card-content>
+    </ion-card>
+    <ion-card (click)="openDataSetsModal()">
+      <ion-card-content>
+        <div class="selectionLabel">
+          {{ selectedDataSetLabel }}
         </div>
-      </ion-col>
-    </ion-row>
-    <div *ngIf="selectedPeriod">
-      <div *ngIf="selectedPeriod.name">
-        <div *ngIf="selectedDataSet.categoryCombo">
-          <div *ngIf="selectedDataSet.categoryCombo.name != 'default'">
-            <ion-row >
-              <ion-col width="100">
-                <ion-list>
-                  <ion-item *ngFor="let category of selectedDataSet.categoryCombo.categories;let categoryIndex = index ">
-                    <ion-label>{{ category.name }}</ion-label>
-                    <ion-select [(ngModel)]="selectedDataDimension[categoryIndex]">
-                      <ion-option *ngFor="let option of category.categoryOptions" value="{{option.id}}" >
-                        {{ option.name }}
-                      </ion-option>
-                    </ion-select>
-                  </ion-item>
-                </ion-list>
-              </ion-col>
-            </ion-row>
+      </ion-card-content>
+    </ion-card>
+    <ion-card (click)="openPeriodModal()">
+      <ion-card-content>
+        <div class="selectionLabel">
+          {{ selectedPeriodLabel }}
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-grid>
+      <div *ngIf="selectedPeriod">
+        <div *ngIf="selectedPeriod.name">
+          <div *ngIf="selectedDataSet.categoryCombo">
+            <div *ngIf="selectedDataSet.categoryCombo.name != 'default'">
+              <ion-row >
+                <ion-col width="100">
+                  <ion-list>
+                    <ion-item *ngFor="let category of selectedDataSet.categoryCombo.categories;let categoryIndex = index ">
+                      <ion-label>{{ category.name }}</ion-label>
+                      <ion-select [(ngModel)]="selectedDataDimension[categoryIndex]">
+                        <ion-option *ngFor="let option of category.categoryOptions" value="{{option.id}}" >
+                          {{ option.name }}
+                        </ion-option>
+                      </ion-select>
+                    </ion-item>
+                  </ion-list>
+                </ion-col>
+              </ion-row>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-
-
-    <div *ngIf="!(currentSelectionStatus.allParameterSet)">
-      <ion-row >
-        <ion-col width="100">
-          <ion-item-group >
-            <ion-item-divider>
-              <ion-icon name="help-circle" color="primary"></ion-icon> &nbsp;&nbsp;
-              <b>
-                {{ currentSelectionStatus.message }}<span *ngIf="currentSelectionStatus.message==''">Please Select all entry form dimensions</span>
-              </b>
-            </ion-item-divider>
-          </ion-item-group>
-          <ion-list></ion-list>
-        </ion-col>
-      </ion-row>
-    </div>
-
-    <div *ngIf="selectedPeriod">
-      <div *ngIf="selectedPeriod.name && hasDataDimensionSet()">
+      <div *ngIf="!(currentSelectionStatus.allParameterSet)">
         <ion-row >
           <ion-col width="100">
-            <ion-item-group (click)="goToEntryForm()">
+            <ion-item-group >
               <ion-item-divider>
-                <p style="color: #000;"><b>Organisation Unit</b> : {{ selectedOrganisationUnitLabel }}</p>
-                <p style="color: #000;"><b>Form</b> : {{ selectedDataSetLabel }}</p>
-                <p style="color: #000;"><b>Period</b> : {{ selectedPeriodLabel }}</p>
+                <div >
+                  <p class="selectionHints">
+                    <ion-icon *ngIf="!currentSelectionStatus.isOrgUnitSelected" name="help-circle" color="font-color"></ion-icon>
+                    <ion-icon *ngIf="currentSelectionStatus.isOrgUnitSelected" name="done-all" color="primary"></ion-icon>
+                    &nbsp;&nbsp;
+                    Select organisation unit
+                  </p>
+                  <p class="selectionHints">
+                    <ion-icon *ngIf="!currentSelectionStatus.isDataSetSelected" name="help-circle" color="font-color"></ion-icon>
+                    <ion-icon *ngIf="currentSelectionStatus.isDataSetSelected" name="done-all" color="primary"></ion-icon>
+                    &nbsp;&nbsp;
+                    Select Entry Form
+                  </p>
+                  <p class="selectionHints">
+                    <ion-icon *ngIf="!currentSelectionStatus.isPeriodSelected" name="help-circle" color="font-color"></ion-icon>
+                    <ion-icon *ngIf="currentSelectionStatus.isPeriodSelected" name="done-all" color="primary"></ion-icon>
+                    &nbsp;&nbsp;
+                    Select Period
+                  </p>
+                  <p class="selectionHints" *ngIf="currentSelectionStatus.message==''">
+                    <ion-icon name="help-circle" color="font-color"></ion-icon>
+                    &nbsp;&nbsp;
+                    Select all entry form dimensions
+                  </p>
+                </div>
               </ion-item-divider>
             </ion-item-group>
-          </ion-col>
-        </ion-row>
-        <ion-row >
-          <ion-col width="100">
-            <button ion-button full (click)="goToEntryForm()">Data Entry </button>
+            <ion-list></ion-list>
           </ion-col>
         </ion-row>
       </div>
-    </div>
+
+      <div *ngIf="selectedPeriod">
+        <div *ngIf="selectedPeriod.name && hasDataDimensionSet()">
+          <ion-row >
+            <ion-col width="100">
+              <ion-item-group (click)="goToEntryForm()">
+                <ion-item-divider>
+                  <p ><b>Organisation Unit</b> : {{ selectedOrganisationUnitLabel }}</p>
+                  <p ><b>Form</b> : {{ selectedDataSetLabel }}</p>
+                  <p ><b>Period</b> : {{ selectedPeriodLabel }}</p>
+                </ion-item-divider>
+              </ion-item-group>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <button class="dataEntryButton" ion-button full large (click)="goToEntryForm()" color="whitecolor">Data Entry</button>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+    </ion-grid>
 
   </div>
 

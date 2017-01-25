@@ -43,7 +43,7 @@
       <ion-item>
         <ion-input type="date" [(ngModel)]="event.eventDate"></ion-input>
       </ion-item>
-      <button color="light" ion-button full (click)="cancel()" *ngIf="event.eventDate =='' ">
+      <button color="light" ion-button large full (click)="cancel()" *ngIf="event.eventDate =='' ">
         cancel
       </button>
 
@@ -68,7 +68,7 @@
             <div *ngIf="section.id == currentPage">
               <div *ngFor="let programStageDataElement of section.programStageDataElements">
                 <br>
-                <div (click)="showTooltips(programStageDataElement.dataElement,'')" class="inputLabel">
+                <div (click)="showTooltips(programStageDataElement.dataElement,'',programStageDataElement)" class="inputLabel">
                   <b>{{ getDisplayName(programStageDataElement.dataElement) }}</b>
                   <span *ngIf="programStageDataElement.compulsory == 'true'" class="required">*</span>
                   <span *ngIf="programStageDataElement.dataElement.description">
@@ -209,12 +209,12 @@
             <!-- saving and cancel button for event capture form -->
             <ion-row>
               <ion-col>
-                <button color="primary" ion-button full (click)="saveEvent()">
+                <button color="primary" large ion-button full (click)="saveEvent()">
                   Save
                 </button>
               </ion-col>
               <ion-col >
-                <button color="light" ion-button full (click)="cancel()">
+                <button color="light" large ion-button full (click)="cancel()">
                   cancel
                 </button>
               </ion-col>

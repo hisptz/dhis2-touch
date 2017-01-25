@@ -11,26 +11,28 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class = "periodSelection" padding>
+<ion-content class = "periodSelection">
 
-  <ion-row>
-    <ion-col width="50">
-      <button ion-button full (click)="previous()">Previous</button>
-    </ion-col>
-    <ion-col width="50">
-      <button ion-button full (click)="next()">Next</button>
-    </ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col width="100">
-      <ion-item *ngFor="let period of periodList" (click)="setSelectedPeriod(period)">
-        <ion-icon name="list" item-left></ion-icon>
-        <span >{{ period.name }}</span>
-      </ion-item>
-      <ion-item *ngIf = "periodList.length == 0">
-        There is no period to select
-      </ion-item>
-    </ion-col>
-  </ion-row>
+  <ion-grid>
+    <ion-row>
+      <ion-col width="50">
+        <button class="dataEntryButton" ion-button full large (click)="previous()" color="whitecolor">Previous</button>
+      </ion-col>
+      <ion-col width="50">
+        <button class="dataEntryButton" ion-button full large (click)="next()" color="whitecolor">Next</button>
+      </ion-col>
+    </ion-row>
 
+    <ion-row>
+      <ion-col width="100">
+        <ion-item *ngFor="let period of periodList" (click)="setSelectedPeriod(period)">
+          <ion-icon name="list" item-left></ion-icon>
+          <span >{{ period.name }}</span>
+        </ion-item>
+        <ion-item *ngIf = "periodList.length == 0">
+          There is no period to select
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

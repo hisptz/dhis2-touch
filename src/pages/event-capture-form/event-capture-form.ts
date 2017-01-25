@@ -68,8 +68,7 @@ export class EventCaptureForm {
       if(this.entryFormParameter.programId){
         this.loadProgramMetadata(this.entryFormParameter.programId);
       }
-    })
-
+    });
   }
 
   ionViewDidLoad() {
@@ -227,13 +226,19 @@ export class EventCaptureForm {
   }
 
   //@todo add more information
-  showTooltips(dataElement,categoryComboName){
+  showTooltips(dataElement,categoryComboName,isMandatory){
     let title = dataElement.name + (categoryComboName != 'default' ? " " +categoryComboName:"");
+    let subTitle = "";
+    title += ". " + (isMandatory)? "This field is mandatory" : " This field is optional";
     if(dataElement.description){
-      title = dataElement.description;
+      title += ". Description : " + dataElement.description;
+    }
+    title += ". Value Type : " +dataElement.valueType.toLocaleLowerCase().replace(/_/g," ");
+    if(dataElement.optionSet){
+      title += ". It has " +dataElement.optionSet.options.length + " options to select.";
     }
     let actionSheet = this.actionSheetCtrl.create({
-      title: title
+      title: title,subTitle:subTitle
     });
     actionSheet.present();
   }

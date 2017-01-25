@@ -11,7 +11,7 @@
 </ion-header>
 
 
-<ion-content class="dataEntryForm" padding >
+<ion-content class="dataEntryForm" >
 
   <div *ngIf="loadingData">
     <ion-grid>
@@ -31,15 +31,15 @@
     </ion-grid>
   </div>
 
-  <div *ngIf="!loadingData">
+  <div *ngIf="!loadingData" padding>
 
     <!-- entry form details -->
     <ion-item-group (click)="navCtrl.pop()">
       <ion-item-divider>
-        <p style="color: #000;"><b>Organisation Unit</b> : {{ selectedOrganisationUnitLabel }}</p>
-        <p style="color: #000;"><b>Form</b> : {{ selectedDataSetLabel }}</p>
-        <p style="color: #000;"><b>Period</b> : {{ selectedPeriodLabel }} </p>
-        <p style="color: #000;"><b>Synced</b> : {{ storageStatus.online }} <b>Not synced</b> : {{storageStatus.local }}</p>
+        <p ><b>Organisation Unit</b> : {{ selectedOrganisationUnitLabel }}</p>
+        <p ><b>Form</b> : {{ selectedDataSetLabel }}</p>
+        <p ><b>Period</b> : {{ selectedPeriodLabel }} </p>
+        <p ><b>Synced</b> : {{ storageStatus.online }} <b>Not synced</b> : {{storageStatus.local }}</p>
       </ion-item-divider>
     </ion-item-group>
     <ion-list></ion-list>
@@ -163,7 +163,7 @@
       <ion-item-divider>
         <ion-row>
           <ion-col>
-            <button color="dark" ion-button full clear small (click)="changePagination(0)">
+            <button color="font-color" ion-button full clear small (click)="changePagination(0)">
               <ion-icon name="ios-arrow-back-outline"></ion-icon>
               <ion-icon name="ios-arrow-back-outline"></ion-icon>
               <ion-icon name="ios-arrow-back-outline"></ion-icon>
@@ -171,25 +171,25 @@
             </button>
           </ion-col>
           <ion-col>
-            <button color="dark" ion-button full clear small (click)="changePagination(currentPage - 1)">
+            <button color="font-color" ion-button full clear small (click)="changePagination(currentPage - 1)">
               <ion-icon name="ios-arrow-back-outline"></ion-icon>
               <ion-icon name="ios-arrow-back-outline"></ion-icon>
             </button>
           </ion-col>
           <ion-col>
-            <button ion-button color="dark" full clear small >
+            <button ion-button color="font-color" full clear small >
               {{ paginationLabel }}
             </button>
           </ion-col>
           <ion-col >
-            <button color="dark" ion-button full clear small (click)="changePagination(currentPage + 1)">
+            <button color="font-color" ion-button full clear small (click)="changePagination(currentPage + 1)">
               <ion-icon name="ios-arrow-forward-outline"></ion-icon>
               <ion-icon name="ios-arrow-forward-outline"></ion-icon>
             </button>
           </ion-col>
 
           <ion-col >
-            <button color="dark" ion-button full clear small (click)="changePagination(entryFormSections.length -1)">
+            <button color="font-color" ion-button full clear small (click)="changePagination(entryFormSections.length -1)">
               <ion-icon name="ios-arrow-forward-outline"></ion-icon>
               <ion-icon name="ios-arrow-forward-outline"></ion-icon>
               <ion-icon name="ios-arrow-forward-outline"></ion-icon>

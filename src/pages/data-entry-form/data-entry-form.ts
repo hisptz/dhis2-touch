@@ -159,13 +159,18 @@ export class DataEntryForm {
   }
 
   //@todo change usage of acton sheet to display tooltips
-  showTooltips(dataElement,categoryComboName){
+  showTooltips(dataElement,categoryComboName,programStageDataElement){
     let title = dataElement.name + (categoryComboName != 'default' ? " " +categoryComboName:"");
+    let subTitle = "";
     if(dataElement.description){
-      title = dataElement.description;
+      title += ". Description : " + dataElement.description ;
+    }
+    title += ". Value Type : " +dataElement.valueType.toLocaleLowerCase().replace(/_/g," ");
+    if(dataElement.optionSet){
+      title += ". It has " +dataElement.optionSet.options.length + " options to select.";
     }
     let actionSheet = this.actionSheetCtrl.create({
-      title: title
+      title: title,subTitle:subTitle
     });
     actionSheet.present();
   }

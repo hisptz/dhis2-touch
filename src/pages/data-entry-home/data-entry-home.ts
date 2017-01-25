@@ -50,8 +50,11 @@ export class DataEntryHome {
     this.selectedDataDimension = [];
     this.currentSelectionStatus = {
       orgUnit : true,
+      isOrgUnitSelected : false,
       dataSet : false,
+      isDataSetSelected : false,
       period : false,
+      isPeriodSelected : false,
       allParameterSet : false,
       message : ""
     };
@@ -90,10 +93,12 @@ export class DataEntryHome {
   setOrganisationSelectLabel(){
     if(this.selectedOrganisationUnit.id){
       this.selectedOrganisationUnitLabel = this.selectedOrganisationUnit.name;
+      this.currentSelectionStatus.isOrgUnitSelected = true;
       this.currentSelectionStatus.dataSet = true;
     }else{
       this.selectedOrganisationUnitLabel = "Touch to select Organisation Unit";
       this.currentSelectionStatus.dataSet = false;
+      this.currentSelectionStatus.isOrgUnitSelected = false;
       this.currentSelectionStatus.allParameterSet = false;
       if (this.currentSelectionStatus.orgUnit && !this.currentSelectionStatus.dataSet) {
         this.currentSelectionStatus.message = "Please select organisation unit";
@@ -105,9 +110,11 @@ export class DataEntryHome {
     if(this.selectedDataSet.id){
       this.selectedDataSetLabel = this.selectedDataSet.name;
       this.currentSelectionStatus.period = true;
+      this.currentSelectionStatus.isDataSetSelected = true;
     }else{
       this.selectedDataSetLabel = "Touch to select Entry Form";
       this.currentSelectionStatus.period = false;
+      this.currentSelectionStatus.isDataSetSelected = false;
       this.currentSelectionStatus.allParameterSet = false;
       if (this.currentSelectionStatus.dataSet && !this.currentSelectionStatus.period) {
         this.currentSelectionStatus.message = "Please select entry form";
@@ -118,10 +125,12 @@ export class DataEntryHome {
   setSelectedPeriodLabel(){
     if(this.selectedPeriod.name){
       this.selectedPeriodLabel = this.selectedPeriod.name;
+      this.currentSelectionStatus.isPeriodSelected = true;
       this.currentSelectionStatus.message = "";
       this.hasDataDimensionSet();
     }else{
       this.selectedPeriodLabel = "Touch to select Period";
+      this.currentSelectionStatus.isPeriodSelected = false;
       if(this.currentSelectionStatus.period){
         this.currentSelectionStatus.message = "Please select period for entry form";
       }
@@ -181,7 +190,7 @@ export class DataEntryHome {
   }
 
   openDataSetsModal(){
-    if(this.selectedOrganisationUnit && this.selectedOrganisationUnit.id){
+    if(this.currentSelectionStatus.dataSet){
       this.loadingMessages = [];
       this.loadingData = true;
       this.setLoadingMessages('Please wait ...');
@@ -208,7 +217,7 @@ export class DataEntryHome {
   }
 
   openPeriodModal(){
-    if(this.selectedDataSet && this.selectedDataSet.id){
+    if(this.currentSelectionStatus.period){
       this.loadingMessages = [];
       this.loadingData = true;
       this.setLoadingMessages('Please wait ...');

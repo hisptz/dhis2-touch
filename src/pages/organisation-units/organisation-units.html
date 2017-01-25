@@ -11,75 +11,78 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class = "organisation-units" padding>
-  <div *ngIf="loadingData">
-    <ion-list>
-      <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
-        {{ message }}
-        <ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right></ion-icon>
-        <div style="text-align: center" item-right *ngIf="(currentIndex + 1) >= loadingMessages.length">
-          <ion-spinner name="crescent"></ion-spinner>
-        </div>
-      </ion-item>
-    </ion-list>
-  </div>
+<ion-content class = "organisation-units">
+  <ion-grid>
+    <div *ngIf="loadingData">
+      <ion-list>
+        <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
+          {{ message }}
+          <ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right></ion-icon>
+          <div style="text-align: center" item-right *ngIf="(currentIndex + 1) >= loadingMessages.length">
+            <ion-spinner name="crescent"></ion-spinner>
+          </div>
+        </ion-item>
+      </ion-list>
+    </div>
 
-  <div *ngIf="!loadingData" >
-    <div *ngFor="let orgUnit of organisationUnitsList">
-      <ion-item>
-        <ion-icon name="ios-add-circle-outline" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && !hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
-        <ion-icon name="ios-remove-circle-outline" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
-        <!--<ion-icon name="ios-folder-outline" *ngIf="orgUnit.children.length==0" item-left></ion-icon>-->
-        <span (click)="setSelectedOrgUnit(orgUnit)" [color]="(currentSelectedOrgUnitName == orgUnit.name) ?'current' : 'dark'"  >{{ orgUnit.name }}</span>
-      </ion-item>
-      <div *ngIf="hasOrgUnitChildrenOpened[orgUnit.id]" style="padding-left: 10px">
+    <div *ngIf="!loadingData" >
+      <div *ngFor="let orgUnit of organisationUnitsList">
+        <ion-item>
+          <ion-icon name="ios-add-circle-outline" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && !hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
+          <ion-icon name="ios-remove-circle-outline" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
+          <!--<ion-icon name="ios-folder-outline" *ngIf="orgUnit.children.length==0" item-left></ion-icon>-->
+          <span (click)="setSelectedOrgUnit(orgUnit)" [color]="(currentSelectedOrgUnitName == orgUnit.name) ?'current' : 'font-color'"  >{{ orgUnit.name }}</span>
+        </ion-item>
+        <div *ngIf="hasOrgUnitChildrenOpened[orgUnit.id]" style="padding-left: 10px">
 
-        <div *ngFor="let orgUnit of orgUnit.children">
-          <ion-item>
-            <ion-icon name="ios-add-circle-outline" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && !hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
-            <ion-icon name="ios-remove-circle-outline" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
-            <!--<ion-icon name="ios-folder-outline" *ngIf="orgUnit.children.length==0" item-left></ion-icon>-->
-            <span (click)="setSelectedOrgUnit(orgUnit)" [color]="(currentSelectedOrgUnitName == orgUnit.name) ?'current' : 'dark'" >{{ orgUnit.name }}</span>
-          </ion-item>
-          <div *ngIf="hasOrgUnitChildrenOpened[orgUnit.id]" style="padding-left: 10px">
+          <div *ngFor="let orgUnit of orgUnit.children">
+            <ion-item>
+              <ion-icon name="ios-add-circle-outline" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && !hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
+              <ion-icon name="ios-remove-circle-outline" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
+              <!--<ion-icon name="ios-folder-outline" *ngIf="orgUnit.children.length==0" item-left></ion-icon>-->
+              <span (click)="setSelectedOrgUnit(orgUnit)" [color]="(currentSelectedOrgUnitName == orgUnit.name) ?'current' : 'font-color'" >{{ orgUnit.name }}</span>
+            </ion-item>
+            <div *ngIf="hasOrgUnitChildrenOpened[orgUnit.id]" style="padding-left: 10px">
 
-            <div *ngFor="let orgUnit of orgUnit.children">
-              <ion-item>
-                <ion-icon name="ios-add-circle-outline" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && !hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
-                <ion-icon name="ios-remove-circle-outline" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
-                <!--<ion-icon name="ios-folder-outline" *ngIf="orgUnit.children.length==0" item-left></ion-icon>-->
-                <span (click)="setSelectedOrgUnit(orgUnit)" [color]="(currentSelectedOrgUnitName == orgUnit.name) ?'current' : 'dark'"  >{{ orgUnit.name }}</span>
-              </ion-item>
-              <div *ngIf="hasOrgUnitChildrenOpened[orgUnit.id]" style="padding-left: 10px">
+              <div *ngFor="let orgUnit of orgUnit.children">
+                <ion-item>
+                  <ion-icon name="ios-add-circle-outline" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && !hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
+                  <ion-icon name="ios-remove-circle-outline" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
+                  <!--<ion-icon name="ios-folder-outline" *ngIf="orgUnit.children.length==0" item-left></ion-icon>-->
+                  <span (click)="setSelectedOrgUnit(orgUnit)" [color]="(currentSelectedOrgUnitName == orgUnit.name) ?'current' : 'font-color'"  >{{ orgUnit.name }}</span>
+                </ion-item>
+                <div *ngIf="hasOrgUnitChildrenOpened[orgUnit.id]" style="padding-left: 10px">
 
-                <div *ngFor="let orgUnit of orgUnit.children">
-                  <ion-item>
-                    <ion-icon name="ios-add-circle-outline" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && !hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
-                    <ion-icon name="ios-remove-circle-outline" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
-                    <!--<ion-icon name="ios-folder-outline" *ngIf="orgUnit.children.length==0" item-left></ion-icon>-->
-                    <span (click)="setSelectedOrgUnit(orgUnit)" [color]="(currentSelectedOrgUnitName == orgUnit.name) ?'current' : 'dark'" >{{ orgUnit.name }}</span>
-                  </ion-item>
-                  <div *ngIf="hasOrgUnitChildrenOpened[orgUnit.id]" style="padding-left: 10px">
+                  <div *ngFor="let orgUnit of orgUnit.children">
+                    <ion-item>
+                      <ion-icon name="ios-add-circle-outline" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && !hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
+                      <ion-icon name="ios-remove-circle-outline" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
+                      <!--<ion-icon name="ios-folder-outline" *ngIf="orgUnit.children.length==0" item-left></ion-icon>-->
+                      <span (click)="setSelectedOrgUnit(orgUnit)" [color]="(currentSelectedOrgUnitName == orgUnit.name) ?'current' : 'font-color'" >{{ orgUnit.name }}</span>
+                    </ion-item>
+                    <div *ngIf="hasOrgUnitChildrenOpened[orgUnit.id]" style="padding-left: 10px">
 
-                    <div *ngFor="let orgUnit of orgUnit.children">
-                      <ion-item>
-                        <ion-icon name="ios-add-circle-outline" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && !hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
-                        <ion-icon name="ios-remove-circle-outline" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
-                        <!--<ion-icon name="ios-folder-outline" *ngIf="orgUnit.children.length==0" item-left></ion-icon>-->
-                        <span (click)="setSelectedOrgUnit(orgUnit)" [color]="(currentSelectedOrgUnitName == orgUnit.name) ?'current' : 'dark'" >{{ orgUnit.name }}</span>
-                      </ion-item>
-                      <div *ngIf="hasOrgUnitChildrenOpened[orgUnit.id]" style="padding-left: 10px">
+                      <div *ngFor="let orgUnit of orgUnit.children">
+                        <ion-item>
+                          <ion-icon name="ios-add-circle-outline" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && !hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
+                          <ion-icon name="ios-remove-circle-outline" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
+                          <!--<ion-icon name="ios-folder-outline" *ngIf="orgUnit.children.length==0" item-left></ion-icon>-->
+                          <span (click)="setSelectedOrgUnit(orgUnit)" [color]="(currentSelectedOrgUnitName == orgUnit.name) ?'current' : 'font-color'" >{{ orgUnit.name }}</span>
+                        </ion-item>
+                        <div *ngIf="hasOrgUnitChildrenOpened[orgUnit.id]" style="padding-left: 10px">
 
-                        <div *ngFor="let orgUnit of orgUnit.children">
-                          <ion-item>
-                            <ion-icon name="ios-add-circle-outline" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && !hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
-                            <ion-icon name="ios-remove-circle-outline" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
-                            <!--<ion-icon name="ios-folder-outline" *ngIf="orgUnit.children.length==0" item-left></ion-icon>-->
-                            <span (click)="setSelectedOrgUnit(orgUnit)" [color]="(currentSelectedOrgUnitName == orgUnit.name) ?'current' : 'dark'" >{{ orgUnit.name }}</span>
-                          </ion-item>
-                          <div *ngIf="hasOrgUnitChildrenOpened[orgUnit.id]" style="padding-left: 10px">
+                          <div *ngFor="let orgUnit of orgUnit.children">
+                            <ion-item>
+                              <ion-icon name="ios-add-circle-outline" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && !hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
+                              <ion-icon name="ios-remove-circle-outline" (click)="toggleOrgUnit(orgUnit)" *ngIf="orgUnit.children.length>0 && hasOrgUnitChildrenOpened[orgUnit.id]" item-left></ion-icon>
+                              <!--<ion-icon name="ios-folder-outline" *ngIf="orgUnit.children.length==0" item-left></ion-icon>-->
+                              <span (click)="setSelectedOrgUnit(orgUnit)" [color]="(currentSelectedOrgUnitName == orgUnit.name) ?'current' : 'font-color'" >{{ orgUnit.name }}</span>
+                            </ion-item>
+                            <div *ngIf="hasOrgUnitChildrenOpened[orgUnit.id]" style="padding-left: 10px">
 
+                            </div>
                           </div>
+
                         </div>
 
                       </div>
@@ -89,16 +92,15 @@
                   </div>
 
                 </div>
-
               </div>
+
             </div>
 
           </div>
 
         </div>
-
       </div>
     </div>
-  </div>
+  </ion-grid>
 
 </ion-content>

@@ -61,7 +61,9 @@ export class EventCaptureHome {
     this.isAllParameterSet = false;
     this.currentSelectionStatus = {
       orgUnit : true,
+      isOrgUnitSelected : false,
       program : false,
+      isProgramSelected : false,
       message : ""
     };
     this.user.getCurrentUser().then(currentUser=>{
@@ -100,8 +102,10 @@ export class EventCaptureHome {
     if(this.selectedOrganisationUnit.id){
       this.selectedOrganisationUnitLabel = this.selectedOrganisationUnit.name;
       this.currentSelectionStatus.program = true;
+      this.currentSelectionStatus.isOrgUnitSelected = true;
     }else{
       this.selectedOrganisationUnitLabel = "Touch to select Organisation Unit";
+      this.currentSelectionStatus.isOrgUnitSelected = false;
       this.currentSelectionStatus.program = false;
       if (this.currentSelectionStatus.orgUnit && !this.currentSelectionStatus.program) {
         this.currentSelectionStatus.message = "Please select organisation unit";
@@ -113,9 +117,11 @@ export class EventCaptureHome {
     if(this.selectedProgram.id){
       this.selectedProgramLabel = this.selectedProgram.name;
       this.currentSelectionStatus.program = true;
+      this.currentSelectionStatus.isProgramSelected = true;
       this.currentSelectionStatus.message = "";
     }else{
       this.selectedProgramLabel = "Touch to select a Program";
+      this.currentSelectionStatus.isProgramSelected = false;
       if (this.currentSelectionStatus.program && !this.isAllParameterSet) {
         this.currentSelectionStatus.message = "Please select program";
       }
@@ -180,30 +186,34 @@ export class EventCaptureHome {
   }
 
   openProgramsModal(){
-    this.loadingMessages = [];
-    this.loadingData = true;
-    this.setLoadingMessages('Please wait ...');
-    let modal = this.modalCtrl.create(ProgramSelection,{data : this.assignedPrograms,selectedProgram : this.selectedProgram});
-    modal.onDidDismiss((selectedProgram:any) => {
-      if(selectedProgram.id){
-        if(selectedProgram.id != this.selectedProgram.id){
-          this.selectedDataDimension = [];
-          this.selectedProgram = selectedProgram;
-          this.loadingData = false;
-          this.setProgramSelectionLabel();
-          this.isAllParameterSet = false;
-          if(selectedProgram.categoryCombo.categories[0].name =='default'){
-            this.loadEvents();
+    if(this.currentSelectionStatus.program){
+      this.loadingMessages = [];
+      this.loadingData = true;
+      this.setLoadingMessages('Please wait ...');
+      let modal = this.modalCtrl.create(ProgramSelection,{data : this.assignedPrograms,selectedProgram : this.selectedProgram});
+      modal.onDidDismiss((selectedProgram:any) => {
+        if(selectedProgram.id){
+          if(selectedProgram.id != this.selectedProgram.id){
+            this.selectedDataDimension = [];
+            this.selectedProgram = selectedProgram;
+            this.loadingData = false;
+            this.setProgramSelectionLabel();
+            this.isAllParameterSet = false;
+            if(selectedProgram.categoryCombo.categories[0].name =='default'){
+              this.loadEvents();
+            }
+            this.loadingProgramStageDataElements(selectedProgram);
+          }else{
+            this.loadingData = false;
           }
-          this.loadingProgramStageDataElements(selectedProgram);
         }else{
           this.loadingData = false;
         }
-      }else{
-        this.loadingData = false;
-      }
-    });
-    modal.present();
+      });
+      modal.present();
+    }else{
+      this.setToasterMessage("Please select organisation unit first");
+    }
   }
 
   loadingProgramStageDataElements(program){
