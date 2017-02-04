@@ -18,14 +18,15 @@
 </ion-header>
 
 
-<ion-content class="eventListSelection" padding>
+<ion-content class="eventListSelection">
+  <ion-grid>
     <ion-row>
       <ion-col >
-        <button ion-button full (click)="onSavingChanges()">Done</button>
+        <button ion-button full text-capitalize (click)="onSavingChanges()">Save</button>
       </ion-col>
       <ion-col >
-        <button ion-button full (click)="autoSelect('selectAll')" *ngIf="!hasAllSelected"> Select All</button>
-        <button ion-button full (click)="autoSelect('unSelectAll')" *ngIf="hasAllSelected">Un-select all</button>
+        <button ion-button full text-capitalize (click)="autoSelect('selectAll')" *ngIf="!hasAllSelected"> Select All</button>
+        <button ion-button full text-capitalize (click)="autoSelect('unSelectAll')" *ngIf="hasAllSelected">Un-select all</button>
       </ion-col>
     </ion-row>
     <div *ngIf="hasDataLoaded">
@@ -43,8 +44,9 @@
       </ion-row>
       <ion-row>
         <ion-col >
-          <button ion-button full (click)="onSavingChanges()">Done</button>
+          <button ion-button full text-capitalize (click)="onSavingChanges()">Save</button>
         </ion-col>
       </ion-row>
     </div>
+  </ion-grid>
 </ion-content>

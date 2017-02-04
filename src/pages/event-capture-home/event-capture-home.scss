@@ -2,34 +2,4 @@ page-event-capture-home {
   .event-capture-home {
     background-color: #E4E4E4;
   }
-
-  .selectionLabel{
-    font-size: 18px !important;
-  }
-
-  .selectionHints{
-    font-size: 18px !important;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  /* Zebra striping */
-  tr:nth-of-type(odd) {
-    background: #EAEFF5;
-  }
-  tr:nth-of-type(even) {
-    background: #FBFBFB;
-  }
-  th {
-    background: #FBFBFB;
-    color: #39547D;
-    font-weight: bold;
-  }
-  td, th {
-    padding: 6px;
-    border: 1px solid #ADB7C5;
-    text-align: left;
-  }
 }

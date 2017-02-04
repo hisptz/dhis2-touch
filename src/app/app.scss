@@ -44,6 +44,42 @@
   z-index: 100;
 }
 
+//selections
+.selectionLabel{
+  font-size: 18px !important;
+}
+.selectionLabel{
+  font-size: 18px !important;
+}
+
+.selectionHints{
+  word-wrap: break-word!important;
+  font-size: 18px !important;
+}
+
+//table styling
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+/* Zebra striping */
+tr:nth-of-type(odd) {
+  background: #EAEFF5;
+}
+tr:nth-of-type(even) {
+  background: #FBFBFB;
+}
+th {
+  background: #FBFBFB;
+  color: #39547D;
+  font-weight: bold;
+}
+td, th {
+  padding: 6px;
+  border: 1px solid #ADB7C5;
+  text-align: left;
+}
+
 //items in listing
 .item-md {
   position: relative;

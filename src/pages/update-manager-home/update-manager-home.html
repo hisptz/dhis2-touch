@@ -30,11 +30,11 @@
   <div *ngIf="!loadingData">
     <ion-row>
       <ion-col width="50">
-        <button ion-button full (click)="checkingForResourceUpdate()">Update</button>
+        <button ion-button full text-capitalize (click)="checkingForResourceUpdate()">Update</button>
       </ion-col>
       <ion-col width="50">
-        <button ion-button full (click)="autoSelect('selectAll')" *ngIf="!hasAllSelected"> Select All</button>
-        <button ion-button full (click)="autoSelect('unSelectAll')" *ngIf="hasAllSelected">Un-select all</button>
+        <button ion-button full text-capitalize (click)="autoSelect('selectAll')" *ngIf="!hasAllSelected"> Select All</button>
+        <button ion-button full text-capitalize (click)="autoSelect('unSelectAll')" *ngIf="hasAllSelected">Un-select all</button>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -52,7 +52,7 @@
 
     <ion-row>
       <ion-col >
-        <button ion-button full (click)="checkingForResourceUpdate()">Update</button>
+        <button ion-button full text-capitalize (click)="checkingForResourceUpdate()">Update</button>
       </ion-col>
     </ion-row>
 
