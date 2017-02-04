@@ -14,7 +14,7 @@ export class User {
 
   public userData : any;
 
-  constructor(private storage : Storage,public httpClient : HttpClient) {
+  constructor(public storage : Storage,public httpClient : HttpClient) {
 
   }
 

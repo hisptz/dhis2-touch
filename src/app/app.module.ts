@@ -33,6 +33,11 @@ import { ChartModule } from 'angular2-highcharts';
 import {DashboardItems} from "../pages/dashboard-items/dashboard-items";
 import {EventFieldSelectionMenu} from "../pages/event-field-selection-menu/event-field-selection-menu";
 import {ProgressBarPage} from "../pages/progress-bar/progress-bar";
+import {HttpClient} from "../providers/http-client/http-client";
+import {SqlLite} from "../providers/sql-lite/sql-lite";
+import {DataValues} from "../providers/data-values";
+import {EventCaptureFormProvider} from "../providers/event-capture-form-provider";
+import {Synchronization} from "../providers/synchronization";
 
 @NgModule({
   declarations: [
@@ -55,6 +60,6 @@ import {ProgressBarPage} from "../pages/progress-bar/progress-bar";
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,ReportParameterSelection,
     Account,ReportHome,SettingHome,TrackerCaptureHome,ProgramSelection,DataEntryForm,ReportView,EventCaptureForm
   ],
-  providers: [Storage]
+  providers: [Storage,HttpClient,SqlLite,DataValues,EventCaptureFormProvider,Synchronization]
 })
 export class AppModule {}
