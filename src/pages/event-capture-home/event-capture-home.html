@@ -51,7 +51,6 @@
           </button>
         </ion-col>
       </ion-row>
-
       <!-- program data dimensions -->
       <div *ngIf="selectedProgram">
         <div *ngIf="selectedProgram.categoryCombo">
@@ -109,38 +108,58 @@
       </div>
       <div *ngIf="isAllParameterSet">
 
-        <!-- list options as well as register new event -->
-        <ion-row>
-          <ion-col>
-            <button ion-button large full (click)="showFieldSelectionMenu()" color="light">
-              <ion-icon name="grid"></ion-icon>
-            </button>
-          </ion-col>
-          <ion-col>
-            <button ion-button large full (click)="goToEventRegister()" color="favorite">
-              <ion-icon name="add"></ion-icon>
-            </button>
-          </ion-col>
-          <ion-col>
-            <button ion-button large full [disabled]="true">
-              <ion-icon name="settings"></ion-icon>
-            </button>
-          </ion-col>
-        </ion-row>
 
-        <ion-row>
-          <ion-col width="100">
-            <hr>
-          </ion-col>
-        </ion-row>
+        <!-- pagination for event list-->
+        <ion-item-group *ngIf="eventListSections.length > 0">
+          <ion-item-divider>
+            <ion-row>
+              <ion-col>
+                <button color="dark" ion-button full clear small (click)="changePagination(0)">
+                  <ion-icon name="ios-arrow-back-outline"></ion-icon>
+                  <ion-icon name="ios-arrow-back-outline"></ion-icon>
+                  <ion-icon name="ios-arrow-back-outline"></ion-icon>
+                  <ion-icon name="ios-arrow-back-outline"></ion-icon>
+                </button>
+              </ion-col>
+              <ion-col>
+                <button color="dark" ion-button full clear small (click)="changePagination(currentPage - 1)">
+                  <ion-icon name="ios-arrow-back-outline"></ion-icon>
+                  <ion-icon name="ios-arrow-back-outline"></ion-icon>
+                </button>
+              </ion-col>
+              <ion-col>
+                <button ion-button color="dark" full clear small >
+                  {{ paginationLabel }}
+                </button>
+              </ion-col>
+              <ion-col >
+                <button color="dark" ion-button full clear small (click)="changePagination(currentPage + 1)">
+                  <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+                  <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+                </button>
+              </ion-col>
+
+              <ion-col >
+                <button color="dark" ion-button full clear small (click)="changePagination(entryFormSections.length -1)">
+                  <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+                  <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+                  <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+                  <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+                </button>
+              </ion-col>
+
+            </ion-row>
+          </ion-item-divider>
+        </ion-item-group>
+
 
         <!-- notification if no event list found from local as well login instance-->
         <div *ngIf="!hasEvents">
           <ion-row>
             <ion-col width="100">
-              <ion-item-group>
-                <ion-item-divider>
-                  <p>There are no events, to register new event  <span (click)="goToEventRegister()" color="primary"><b>click here</b></span></p>
+              <ion-item-group wrap text>
+                <ion-item-divider wrap text>
+                  <p wrap text >There are no events, to register new event  <span (click)="goToEventRegister()" color="primary"><b>click here</b></span></p>
                 </ion-item-divider>
               </ion-item-group>
             </ion-col>
@@ -206,53 +225,23 @@
               </div>
             </div>
           </div>
-
-          <!-- pagination -->
-          <ion-item-group *ngIf="eventListSections.length > 0">
-            <ion-item-divider>
-              <ion-row>
-                <ion-col>
-                  <button color="dark" ion-button full clear small (click)="changePagination(0)">
-                    <ion-icon name="ios-arrow-back-outline"></ion-icon>
-                    <ion-icon name="ios-arrow-back-outline"></ion-icon>
-                    <ion-icon name="ios-arrow-back-outline"></ion-icon>
-                    <ion-icon name="ios-arrow-back-outline"></ion-icon>
-                  </button>
-                </ion-col>
-                <ion-col>
-                  <button color="dark" ion-button full clear small (click)="changePagination(currentPage - 1)">
-                    <ion-icon name="ios-arrow-back-outline"></ion-icon>
-                    <ion-icon name="ios-arrow-back-outline"></ion-icon>
-                  </button>
-                </ion-col>
-                <ion-col>
-                  <button ion-button color="dark" full clear small >
-                    {{ paginationLabel }}
-                  </button>
-                </ion-col>
-                <ion-col >
-                  <button color="dark" ion-button full clear small (click)="changePagination(currentPage + 1)">
-                    <ion-icon name="ios-arrow-forward-outline"></ion-icon>
-                    <ion-icon name="ios-arrow-forward-outline"></ion-icon>
-                  </button>
-                </ion-col>
-
-                <ion-col >
-                  <button color="dark" ion-button full clear small (click)="changePagination(entryFormSections.length -1)">
-                    <ion-icon name="ios-arrow-forward-outline"></ion-icon>
-                    <ion-icon name="ios-arrow-forward-outline"></ion-icon>
-                    <ion-icon name="ios-arrow-forward-outline"></ion-icon>
-                    <ion-icon name="ios-arrow-forward-outline"></ion-icon>
-                  </button>
-                </ion-col>
-
-              </ion-row>
-            </ion-item-divider>
-          </ion-item-group>
         </div>
       </div>
     </ion-grid>
-
   </div>
 
 </ion-content>
+
+<!--- menu as well as add new event as fab icon-->
+<div *ngIf="isAllParameterSet" >
+  <ion-fab bottom left>
+    <button ion-fab (click)="showFieldSelectionMenu()" color="light">
+      <ion-icon name="grid"></ion-icon>
+    </button>
+  </ion-fab>
+  <ion-fab bottom right >
+    <button ion-fab (click)="goToEventRegister()" color="favorite">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+</div>
