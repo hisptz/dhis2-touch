@@ -112,6 +112,23 @@ export class AppProvider {
     });
   }
 
+  getMetaDataCountFromServer(user,resource, resourceId, fields, filter){
+    let self = this;
+    let resourceUrl = self.getResourceUrl(resource, resourceId, fields, filter);
+    return new Promise(function(resolve, reject) {
+      self.http.get(resourceUrl,user).subscribe(response=>{
+        response = response.json();
+        resolve(self.getResourceCounter(response,resource));
+      },error=>{
+        reject(error);
+      });
+    });
+  }
+
+  getResourceCounter(response,resource){
+    return response[resource]? response[resource].length : 0;
+  }
+
   downloadMetadata(user,resource, resourceId, fields, filter){
     let self = this;
     let resourceUrl = self.getResourceUrl(resource, resourceId, fields, filter);

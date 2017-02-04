@@ -9,6 +9,7 @@ import { Storage } from '@ionic/storage';
 import {Synchronization} from "../../providers/synchronization";
 import {DataValues} from "../../providers/data-values";
 import {Setting} from "../../providers/setting";
+import {NetworkAvailability} from "../../providers/network-availability";
 
 /*
   Generated class for the Login page.
@@ -19,7 +20,7 @@ import {Setting} from "../../providers/setting";
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
-  providers : [AppProvider,HttpClient,User,SqlLite,Synchronization,DataValues,Setting]
+  providers : [AppProvider,HttpClient,User,SqlLite,Synchronization,DataValues,Setting,NetworkAvailability]
 })
 export class Login {
 
@@ -28,13 +29,17 @@ export class Login {
   public loadingMessages : any = [];
 
   constructor(public navCtrl: NavController,private Storage : Storage,
-              private Setting: Setting,
+              private Setting: Setting,public NetworkAvailability : NetworkAvailability,
               private sqlLite : SqlLite,private synchronization:Synchronization,
               private toastCtrl: ToastController,private DataValues: DataValues,
               private app : AppProvider,private httpClient : HttpClient,private user : User) {
     this.loginData.logoUrl = 'assets/img/logo.png';
+    this.loadingData = true;
+    this.loadingMessages = [];
+    this.setLoadingMessages("Please waiting..");
     this.user.getCurrentUser().then(user=>{
       this.reAuthenticateUser(user);
+
     });
   }
 
@@ -42,19 +47,32 @@ export class Login {
     //console.log('Hello Login Page');
   }
 
+  setLandingPage(){
+    this.loginData.isLogin = true;
+    this.user.setCurrentUser(this.loginData).then(()=>{
+      this.synchronization.startSynchronization().then(()=>{
+        this.navCtrl.setRoot(TabsPage);
+      });
+    });
+  }
+
   reAuthenticateUser(user){
-    //this.navCtrl.setRoot(TabsPage);
     if(user){
       if(user.isLogin){
-        this.synchronization.startSynchronization();
-        this.navCtrl.setRoot(TabsPage);
+        this.loginData = user;
+        this.setLandingPage();
+        this.loadingData = false;
       }else if(user.serverUrl){
         this.loginData.serverUrl = user.serverUrl;
         if(user.username){
           this.loginData.username = user.username;
         }
       }
+      this.loadingData = false;
+    }else{
+      this.loadingData = false;
     }
+    alert(JSON.stringify(this.NetworkAvailability.getNetWorkStatus()));
   }
 
   login(){
