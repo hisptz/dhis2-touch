@@ -43,7 +43,7 @@ export class Login {
   }
 
   reAuthenticateUser(user){
-    console.log(user);
+    //this.navCtrl.setRoot(TabsPage);
     if(user){
       if(user.isLogin){
         this.synchronization.startSynchronization();

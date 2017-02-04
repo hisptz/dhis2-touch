@@ -14,3 +14,35 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+//items
+.item-md p {
+  font-size: 18px !important;
+}
+.item-md h2 {
+  font-size: 20px !important;
+  font-weight: 300;
+}
+//tabs button
+.tabs-md .tab-button {
+  font-size: 18px !important;
+}
+.tabs-md .tab-button[aria-selected=true] {
+  font-size: 18px !important;
+}
+
+//buttons
+.button-md {
+  font-weight: normal;
+}
+
+//items in listing
+.item-md {
+  position: relative;
+  padding-right: 0;
+  padding-left: 16px;
+  font-size: 18px !important;
+  font-weight: normal;
+}
+
+

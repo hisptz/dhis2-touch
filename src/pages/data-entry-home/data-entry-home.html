@@ -33,27 +33,29 @@
 
   <div *ngIf="!loadingData">
 
-    <ion-card (click)="openOrganisationUnitModal()">
-      <ion-card-content>
-        <div class="selectionLabel">
-          {{ selectedOrganisationUnitLabel }}
-        </div>
-      </ion-card-content>
-    </ion-card>
-    <ion-card (click)="openDataSetsModal()">
-      <ion-card-content>
-        <div class="selectionLabel">
-          {{ selectedDataSetLabel }}
-        </div>
-      </ion-card-content>
-    </ion-card>
-    <ion-card (click)="openPeriodModal()">
-      <ion-card-content>
-        <div class="selectionLabel">
-          {{ selectedPeriodLabel }}
-        </div>
-      </ion-card-content>
-    </ion-card>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <button class="dataEntryButton" text-capitalize ion-button full large (click)="openOrganisationUnitModal()" color="whitecolor">
+            {{ selectedOrganisationUnitLabel }}
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <button class="dataEntryButton" text-capitalize ion-button full large (click)="openDataSetsModal()" color="whitecolor">
+            {{ selectedDataSetLabel }}
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <button class="dataEntryButton" text-capitalize ion-button full large (click)="openPeriodModal()" color="whitecolor">
+            {{ selectedPeriodLabel }}
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 
     <ion-grid>
       <div *ngIf="selectedPeriod">

@@ -65,7 +65,7 @@
             <div *ngFor="let categoryOptionCombos of dataElement.categoryCombo.categoryOptionCombos">
               <br>
               <div (click)="showTooltips(dataElement,categoryOptionCombos.name)" class="inputLabel">
-                <b>{{ getDisplayName(dataElement) }}<span *ngIf="dataElement.categoryCombo.name != 'default'">&nbsp;&nbsp;{{ categoryOptionCombos.name}}</span>&nbsp;&nbsp;</b>
+                {{ getDisplayName(dataElement) }}<span *ngIf="dataElement.categoryCombo.name != 'default'">&nbsp;&nbsp;{{ categoryOptionCombos.name}}</span>&nbsp;&nbsp;
                         <span *ngIf="dataElement.description">
                           &nbsp;&nbsp;<ion-icon name="help-circle"></ion-icon>
                         </span>
