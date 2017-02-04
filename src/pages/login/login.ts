@@ -47,21 +47,11 @@ export class Login {
     //console.log('Hello Login Page');
   }
 
-  setLandingPage(){
-    this.loginData.isLogin = true;
-    this.user.setCurrentUser(this.loginData).then(()=>{
-      this.synchronization.startSynchronization().then(()=>{
-        this.navCtrl.setRoot(TabsPage);
-      });
-    });
-  }
-
   reAuthenticateUser(user){
     if(user){
       if(user.isLogin){
         this.loginData = user;
         this.setLandingPage();
-        this.loadingData = false;
       }else if(user.serverUrl){
         this.loginData.serverUrl = user.serverUrl;
         if(user.username){
@@ -72,7 +62,7 @@ export class Login {
     }else{
       this.loadingData = false;
     }
-    alert(JSON.stringify(this.NetworkAvailability.getNetWorkStatus()));
+    //alert(JSON.stringify(this.NetworkAvailability.getNetWorkStatus()));
   }
 
   login(){
@@ -318,6 +308,7 @@ export class Login {
     this.user.setCurrentUser(this.loginData).then(()=>{
       this.synchronization.startSynchronization().then(()=>{
         this.navCtrl.setRoot(TabsPage);
+        this.loadingData = false;
       });
     });
   }

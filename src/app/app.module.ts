@@ -32,12 +32,13 @@ import {EventView} from "../pages/event-view/event-view";
 import { ChartModule } from 'angular2-highcharts';
 import {DashboardItems} from "../pages/dashboard-items/dashboard-items";
 import {EventFieldSelectionMenu} from "../pages/event-field-selection-menu/event-field-selection-menu";
+import {ProgressBarPage} from "../pages/progress-bar/progress-bar";
 
 @NgModule({
   declarations: [
     MyApp,About,DashBoardHome,EventCaptureHome,EventView,DashboardItems,
     TabsPage,Help,Login,Profile,DataEntryHome,
-    EventFieldSelectionMenu,
+    EventFieldSelectionMenu,ProgressBarPage,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,
     Account,ReportHome,SettingHome,TrackerCaptureHome,ObjectToArray,ProgramSelection,
     AccountName,DataEntryForm,ReportView,ReportParameterSelection,SettingDetail,EventCaptureForm
@@ -50,7 +51,7 @@ import {EventFieldSelectionMenu} from "../pages/event-field-selection-menu/event
   entryComponents: [
     MyApp,About,DashBoardHome,EventCaptureHome,EventView,DashboardItems,
     TabsPage,Help,Login,Profile,DataEntryHome,SettingDetail,
-    EventFieldSelectionMenu,
+    EventFieldSelectionMenu,ProgressBarPage,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,ReportParameterSelection,
     Account,ReportHome,SettingHome,TrackerCaptureHome,ProgramSelection,DataEntryForm,ReportView,EventCaptureForm
   ],
