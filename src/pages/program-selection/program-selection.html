@@ -19,7 +19,7 @@
         <ion-list>
           <ion-item *ngFor="let program of programsList"   (click)="setSelectedProgram(program)">
             <ion-icon name="list" item-left></ion-icon>
-            <span (click)="setSelectedProgram(program)" [color]="(currentSelectectedProgram == program.name)? 'current': 'dark'" >{{ program.name}}</span>
+            <span (click)="setSelectedProgram(program)" [color]="(currentSelectectedProgram == program.name)? 'current': 'font-color'" >{{ program.name}}</span>
           </ion-item>
           <ion-item *ngIf = "programsList.length == 0">
             There is no Program to select

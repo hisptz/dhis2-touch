@@ -12,7 +12,7 @@
 
 </ion-header>
 
-<ion-content class="event-capture-form" padding >
+<ion-content class="event-capture-form" >
   <div *ngIf="loadingData">
     <ion-list>
       <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
@@ -38,7 +38,7 @@
     <div *ngIf="event">
       <!-- event date field -->
       <div>
-        <b>Report date <span class="required">*</span></b>
+        Report date <span class="required">*</span>
       </div>
       <ion-item>
         <ion-input type="date" [(ngModel)]="event.eventDate"></ion-input>
@@ -69,7 +69,7 @@
               <div *ngFor="let programStageDataElement of section.programStageDataElements">
                 <br>
                 <div (click)="showTooltips(programStageDataElement.dataElement,'',programStageDataElement)" class="inputLabel">
-                  <b>{{ getDisplayName(programStageDataElement.dataElement) }}</b>
+                  {{ getDisplayName(programStageDataElement.dataElement) }}&nbsp;&nbsp;
                   <span *ngIf="programStageDataElement.compulsory == 'true'" class="required">*</span>
                   <span *ngIf="programStageDataElement.dataElement.description">
                   &nbsp;&nbsp;<ion-icon name="help-circle"></ion-icon>
@@ -163,9 +163,9 @@
           </div>
 
           <hr><hr>
-          <!-- event comletion as well as event comments -->
+          <!-- event completion as well as event comments -->
           <div>
-            <b>Is Event Completed ?</b>
+            Is Event Completed ?
           </div>
           <ion-item>
             <ion-label>Touch to select/update</ion-label>
@@ -219,7 +219,6 @@
                 </button>
               </ion-col>
             </ion-row>
-
           </ion-item-divider>
         </ion-item-group>
 
