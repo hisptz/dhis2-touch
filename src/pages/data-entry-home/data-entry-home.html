@@ -36,21 +36,21 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          <button class="dataEntryButton" text-capitalize ion-button full large (click)="openOrganisationUnitModal()" color="whitecolor">
+          <button [disabled]="!currentSelectionStatus.orgUnit" class="dataEntryButton" text-capitalize ion-button full large (click)="openOrganisationUnitModal()" color="whitecolor">
             {{ selectedOrganisationUnitLabel }}
           </button>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col>
-          <button class="dataEntryButton" text-capitalize ion-button full large (click)="openDataSetsModal()" color="whitecolor">
+          <button [disabled]="!currentSelectionStatus.dataSet" class="dataEntryButton" text-capitalize ion-button full large (click)="openDataSetsModal()" color="whitecolor">
             {{ selectedDataSetLabel }}
           </button>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col>
-          <button class="dataEntryButton" text-capitalize ion-button full large (click)="openPeriodModal()" color="whitecolor">
+          <button [disabled]="!currentSelectionStatus.period" class="dataEntryButton" text-capitalize ion-button full large (click)="openPeriodModal()" color="whitecolor">
             {{ selectedPeriodLabel }}
           </button>
         </ion-col>

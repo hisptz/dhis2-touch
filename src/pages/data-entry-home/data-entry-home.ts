@@ -144,7 +144,14 @@ export class DataEntryHome {
     this.setLoadingMessages('Loading organisation units');
     this.OrganisationUnit.getOrganisationUnits(this.currentUser).then((organisationUnits : any)=>{
       this.organisationUnits = organisationUnits;
-      this.loadingData = false;
+      if(organisationUnits.length > 0){
+        this.selectedOrganisationUnit = organisationUnits[0];
+        this.setDataEntrySelectionLabel();
+        this.loadingDataSets();
+        this.setDataEntrySelectionLabel();
+      }else{
+        this.loadingData = false;
+      }
     },error=>{
       this.loadingData = false;
       this.setToasterMessage('Fail to load organisation units : ' + JSON.stringify(error));

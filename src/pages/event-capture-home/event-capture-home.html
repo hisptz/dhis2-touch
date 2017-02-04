@@ -36,23 +36,23 @@
 
   <div *ngIf="!loadingData">
 
-    <ion-card (click)="openOrganisationUnitModal()">
-      <ion-card-content>
-        <div class="selectionLabel">
-          {{ selectedOrganisationUnitLabel }}
-        </div>
-      </ion-card-content>
-    </ion-card>
-
-    <ion-card (click)="openProgramsModal()">
-      <ion-card-content>
-        <div class="selectionLabel">
-          {{ selectedProgramLabel }}
-        </div>
-      </ion-card-content>
-    </ion-card>
-
     <ion-grid>
+      <ion-row>
+        <ion-col>
+          <button [disabled]="!currentSelectionStatus.orgUnit" class="dataEntryButton" text-capitalize ion-button full large (click)="openOrganisationUnitModal()" color="whitecolor">
+            {{ selectedOrganisationUnitLabel }}
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <button [disabled]="!currentSelectionStatus.program" class="dataEntryButton" text-capitalize ion-button full large (click)="openProgramsModal()" color="whitecolor">
+            {{ selectedProgramLabel }}
+          </button>
+        </ion-col>
+      </ion-row>
+
+      <!-- program data dimensions -->
       <div *ngIf="selectedProgram">
         <div *ngIf="selectedProgram.categoryCombo">
           <div *ngIf="selectedProgram.categoryCombo.categories[0].name !='default'">
