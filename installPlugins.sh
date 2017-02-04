@@ -7,3 +7,5 @@ ionic plugin add cordova-plugin-statusbar
 ionic plugin add cordova-plugin-whitelist
 ionic plugin add cordova-sqlite-storage
 ionic plugin add ionic-plugin-keyboard
+ionic plugin add cordova-plugin-network-information
+cordova plugin add cordova-plugin-network-information
