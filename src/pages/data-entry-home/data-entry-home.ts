@@ -40,7 +40,7 @@ export class DataEntryHome {
   public selectedPeriodLabel : string;
   public selectedDataDimension : any ;
   public currentPeriodOffset : number;
-  public currentSelectionStatus :any;
+  public currentSelectionStatus :any = {};
 
   constructor(public modalCtrl: ModalController,public navCtrl: NavController,
               public OrganisationUnit : OrganisationUnit,public DataSets : DataSets,
@@ -48,16 +48,7 @@ export class DataEntryHome {
               public appProvider : AppProvider,public sqlLite : SqlLite,
               public httpClient: HttpClient) {
     this.selectedDataDimension = [];
-    this.currentSelectionStatus = {
-      orgUnit : true,
-      isOrgUnitSelected : false,
-      dataSet : false,
-      isDataSetSelected : false,
-      period : false,
-      isPeriodSelected : false,
-      allParameterSet : false,
-      message : ""
-    };
+
     this.user.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;
       this.setDataSetIdsByUserRoles();
@@ -81,7 +72,16 @@ export class DataEntryHome {
   }
 
   ionViewDidLoad() {
-
+    this.currentSelectionStatus.orgUnit = true;
+    this.currentSelectionStatus.isOrgUnitSelected = false;
+    this.currentSelectionStatus.isOrgUnitLoaded = false;
+    this.currentSelectionStatus.dataSet = false;
+    this.currentSelectionStatus.isDataSetSelected = false;
+    this.currentSelectionStatus.isDataSetLoaded = false;
+    this.currentSelectionStatus.period = false;
+    this.currentSelectionStatus.isPeriodSelected = false;
+    this.currentSelectionStatus.allParameterSet = false;
+    this.currentSelectionStatus.message = "";
   }
 
   setDataEntrySelectionLabel(){
@@ -139,21 +139,18 @@ export class DataEntryHome {
   }
 
   loadOrganisationUnits():void{
-    this.loadingData = true;
-    this.loadingMessages=[];
-    this.setLoadingMessages('Loading organisation units');
+    this.currentSelectionStatus.isDataSetLoaded = true;
+    this.currentSelectionStatus.isOrgUnitLoaded = false;
     this.OrganisationUnit.getOrganisationUnits(this.currentUser).then((organisationUnits : any)=>{
       this.organisationUnits = organisationUnits;
+      this.currentSelectionStatus.isOrgUnitLoaded = true;
       if(organisationUnits.length > 0){
         this.selectedOrganisationUnit = organisationUnits[0];
         this.setDataEntrySelectionLabel();
         this.loadingDataSets();
         this.setDataEntrySelectionLabel();
-      }else{
-        this.loadingData = false;
       }
     },error=>{
-      this.loadingData = false;
       this.setToasterMessage('Fail to load organisation units : ' + JSON.stringify(error));
     });
   }
@@ -181,40 +178,32 @@ export class DataEntryHome {
   }
 
   loadingDataSets(){
-    this.setLoadingMessages('Loading assigned forms');
+    this.currentSelectionStatus.isDataSetLoaded = false;
     this.assignedDataSets = [];
     this.currentPeriodOffset = 0;
     this.DataSets.getAssignedDataSetsByOrgUnit(this.selectedOrganisationUnit,this.dataSetIdsByUserRoles,this.currentUser).then((dataSets : any)=>{
       this.assignedDataSets = dataSets;
       if(this.assignedDataSets.length == 1){
         this.selectedDataSet =this.assignedDataSets[0];
+        this.setDataEntrySelectionLabel();
       }
-      this.loadingData = false;
+      this.currentSelectionStatus.isDataSetLoaded = true;
     },error=>{
-      this.loadingData = false;
       this.setToasterMessage('Fail to load assigned forms : ' + JSON.stringify(error));
     });
   }
 
   openDataSetsModal(){
     if(this.currentSelectionStatus.dataSet){
-      this.loadingMessages = [];
-      this.loadingData = true;
-      this.setLoadingMessages('Please wait ...');
       let modal = this.modalCtrl.create(DataSetSelection,{data : this.assignedDataSets,selectedDataSet : this.selectedDataSet});
       modal.onDidDismiss((selectedDataSet:any) => {
         if(selectedDataSet.id){
           if(selectedDataSet.id != this.selectedDataSet.id){
             this.selectedDataDimension = [];
             this.selectedDataSet = selectedDataSet;
-            this.loadingData = false;
             this.selectedPeriod = {};
             this.setDataEntrySelectionLabel();
-          }else{
-            this.loadingData = false;
           }
-        }else{
-          this.loadingData = false;
         }
       });
       modal.present();
@@ -225,22 +214,14 @@ export class DataEntryHome {
 
   openPeriodModal(){
     if(this.currentSelectionStatus.period){
-      this.loadingMessages = [];
-      this.loadingData = true;
-      this.setLoadingMessages('Please wait ...');
       let modal = this.modalCtrl.create(PeriodSelection,{selectedDataSet : this.selectedDataSet,currentPeriodOffset : this.currentPeriodOffset});
       modal.onDidDismiss((selectedPeriodResponse:any) => {
         if(selectedPeriodResponse.selectedPeriod){
           if(selectedPeriodResponse.selectedPeriod.name){
             this.selectedPeriod = selectedPeriodResponse.selectedPeriod;
             this.currentPeriodOffset = selectedPeriodResponse.currentPeriodOffset;
-            this.loadingData = false;
             this.setDataEntrySelectionLabel();
-          }else{
-            this.loadingData = false;
           }
-        }else{
-          this.loadingData = false;
         }
       });
       modal.present();

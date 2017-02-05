@@ -13,38 +13,31 @@
 
 <ion-content  class="data-entry-home">
 
-  <div *ngIf="loadingData">
-    <ion-grid>
-      <ion-row >
-        <ion-col>
-          <ion-list>
-            <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
-              {{ message }}
-              <ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right color="primary"></ion-icon>
-              <div style="text-align: center" item-right *ngIf="(currentIndex + 1) >= loadingMessages.length">
-                <ion-spinner name="crescent" color="secondary"></ion-spinner>
-              </div>
-            </ion-item>
-          </ion-list>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
-
-  <div *ngIf="!loadingData">
-
+  <div>
     <ion-grid>
       <ion-row>
         <ion-col>
           <button [disabled]="!currentSelectionStatus.orgUnit" class="dataEntryButton" text-capitalize ion-button full large (click)="openOrganisationUnitModal()" color="whitecolor">
-            {{ selectedOrganisationUnitLabel }}
+           <span *ngIf="!currentSelectionStatus.isOrgUnitLoaded" >
+              <ion-spinner  name="crescent" color="secondary"></ion-spinner>&nbsp;&nbsp;
+              Loading organisation units
+            </span>
+            <span *ngIf="currentSelectionStatus.isOrgUnitLoaded" >
+              {{ selectedOrganisationUnitLabel }}
+            </span>
           </button>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col>
           <button [disabled]="!currentSelectionStatus.dataSet" class="dataEntryButton" text-capitalize ion-button full large (click)="openDataSetsModal()" color="whitecolor">
-            {{ selectedDataSetLabel }}
+            <span *ngIf="!currentSelectionStatus.isDataSetLoaded" >
+              <ion-spinner  name="crescent" color="secondary"></ion-spinner>&nbsp;&nbsp;
+              Loading entry forms
+            </span>
+            <span *ngIf="currentSelectionStatus.isDataSetLoaded" >
+              {{ selectedDataSetLabel }}
+            </span>
           </button>
         </ion-col>
       </ion-row>
@@ -80,44 +73,7 @@
           </div>
         </div>
       </div>
-
-      <div *ngIf="!(currentSelectionStatus.allParameterSet)">
-        <ion-row >
-          <ion-col width="100">
-            <ion-item-group >
-              <ion-item-divider>
-                <div >
-                  <p class="selectionHints">
-                    <ion-icon *ngIf="!currentSelectionStatus.isOrgUnitSelected" name="help-circle" color="font-color"></ion-icon>
-                    <ion-icon *ngIf="currentSelectionStatus.isOrgUnitSelected" name="done-all" color="primary"></ion-icon>
-                    &nbsp;&nbsp;
-                    Select organisation unit
-                  </p>
-                  <p class="selectionHints">
-                    <ion-icon *ngIf="!currentSelectionStatus.isDataSetSelected" name="help-circle" color="font-color"></ion-icon>
-                    <ion-icon *ngIf="currentSelectionStatus.isDataSetSelected" name="done-all" color="primary"></ion-icon>
-                    &nbsp;&nbsp;
-                    Select Entry Form
-                  </p>
-                  <p class="selectionHints">
-                    <ion-icon *ngIf="!currentSelectionStatus.isPeriodSelected" name="help-circle" color="font-color"></ion-icon>
-                    <ion-icon *ngIf="currentSelectionStatus.isPeriodSelected" name="done-all" color="primary"></ion-icon>
-                    &nbsp;&nbsp;
-                    Select Period
-                  </p>
-                  <p class="selectionHints" *ngIf="currentSelectionStatus.message==''">
-                    <ion-icon name="help-circle" color="font-color"></ion-icon>
-                    &nbsp;&nbsp;
-                    Select all entry form dimensions
-                  </p>
-                </div>
-              </ion-item-divider>
-            </ion-item-group>
-            <ion-list></ion-list>
-          </ion-col>
-        </ion-row>
-      </div>
-
+      
       <div *ngIf="selectedPeriod">
         <div *ngIf="selectedPeriod.name && hasDataDimensionSet()">
           <ion-row >
