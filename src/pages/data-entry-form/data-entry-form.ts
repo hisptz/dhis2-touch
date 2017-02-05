@@ -82,33 +82,36 @@ export class DataEntryForm {
       this.entryFormSections = sections;
       //setting initial label values
       this.paginationLabel = (this.currentPage + 1) + "/"+this.entryFormSections.length;
-      this.setLoadingMessages('Downloading data values from server');
-      let dataSetId = this.selectedDataSet.id;
-      let orgUnitId = this.dataEntryFormSelectionParameter.orgUnit.id;
-      let period = this.dataEntryFormSelectionParameter.period.iso;
-      this.dataValues.getDataValueSetFromServer(dataSetId,period,orgUnitId,this.dataSetAttributeOptionCombo,this.currentUser)
-        .then((dataValues : any)=>{
-          if(dataValues.length > 0){
-            this.setLoadingMessages('Saving ' + dataValues.length + " data values from server");
-            let dataDimension = this.dataEntryFormSelectionParameter.dataDimension;
-            this.dataValues.saveDataValues(dataValues,dataSetId,period,orgUnitId,dataDimension,"synced",this.currentUser).then(()=>{
-              this.getDataValuesFromLocalStorage();
-            },error=>{
-              this.setToasterMessage('Fail to save data values from server');
-              this.getDataValuesFromLocalStorage();
-            });
-          }else{
-            this.getDataValuesFromLocalStorage();
-          }
-        },error=>{
-          this.setToasterMessage('Fail to download data values from server');
-          this.getDataValuesFromLocalStorage();
-          console.log("error : " + JSON.stringify(error));
-        });
+      this.getDataValuesFromLocalStorage();
+      //this.setLoadingMessages('Downloading data values from server');
+      //let dataSetId = this.selectedDataSet.id;
+      //let orgUnitId = this.dataEntryFormSelectionParameter.orgUnit.id;
+      //let period = this.dataEntryFormSelectionParameter.period.iso;
+      //this.dataValues.getDataValueSetFromServer(dataSetId,period,orgUnitId,this.dataSetAttributeOptionCombo,this.currentUser)
+      //  .then((dataValues : any)=>{
+      //    if(dataValues.length > 0){
+      //      this.setLoadingMessages('Saving ' + dataValues.length + " data values from server");
+      //      let dataDimension = this.dataEntryFormSelectionParameter.dataDimension;
+      //      this.dataValues.saveDataValues(dataValues,dataSetId,period,orgUnitId,dataDimension,"synced",this.currentUser).then(()=>{
+      //        this.getDataValuesFromLocalStorage();
+      //      },error=>{
+      //        this.setToasterMessage('Fail to save data values from server');
+      //        this.getDataValuesFromLocalStorage();
+      //      });
+      //    }else{
+      //      this.getDataValuesFromLocalStorage();
+      //    }
+      //  },error=>{
+      //    this.setToasterMessage('Fail to download data values from server');
+      //    this.getDataValuesFromLocalStorage();
+      //    console.log("error : " + JSON.stringify(error));
+      //  });
+      
     })
   }
 
   getDataValuesFromLocalStorage(){
+    this.setLoadingMessages('Checking data values');
     let dataSetId = this.selectedDataSet.id;
     let orgUnitId = this.dataEntryFormSelectionParameter.orgUnit.id;
     let period = this.dataEntryFormSelectionParameter.period.iso;
