@@ -27,19 +27,19 @@ export class Login {
   public loginData : any ={};
   public loadingData : boolean = false;
   public loadingMessages : any = [];
+  public logoUrl : string;
 
   constructor(public navCtrl: NavController,private Storage : Storage,
               private Setting: Setting,public NetworkAvailability : NetworkAvailability,
               private sqlLite : SqlLite,private synchronization:Synchronization,
               private toastCtrl: ToastController,private DataValues: DataValues,
               private app : AppProvider,private httpClient : HttpClient,private user : User) {
-    this.loginData.logoUrl = 'assets/img/logo.png';
+    this.logoUrl = 'assets/img/logo-2.png';
     this.loadingData = true;
     this.loadingMessages = [];
     this.setLoadingMessages("Please waiting..");
     this.user.getCurrentUser().then(user=>{
       this.reAuthenticateUser(user);
-
     });
   }
 
