@@ -41,7 +41,7 @@ export class EventCaptureHome {
   public selectedDataDimension : any;
   public eventListSections : any;
   public isAllParameterSet : boolean;
-  public currentSelectionStatus :any;
+  public currentSelectionStatus :any = {};
 
   public dataElementMapper :any = {};
   public dataElementToDisplay : any = {};
@@ -58,14 +58,9 @@ export class EventCaptureHome {
               public ProgramStageDataElements : ProgramStageDataElements,
               public Program : Program,public modalCtrl: ModalController,public navCtrl: NavController,public toastCtrl: ToastController,public user : User,public appProvider : AppProvider,public sqlLite : SqlLite,public httpClient: HttpClient) {
     this.selectedDataDimension = [];
+    this.currentEvents = [];
+    this.eventListSections = [];
     this.isAllParameterSet = false;
-    this.currentSelectionStatus = {
-      orgUnit : true,
-      isOrgUnitSelected : false,
-      program : false,
-      isProgramSelected : false,
-      message : ""
-    };
     this.user.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;
       this.getUserAssignedPrograms();
@@ -85,6 +80,16 @@ export class EventCaptureHome {
         }
       });
     })
+  }
+
+  ionViewDidLoad() {
+    this.currentSelectionStatus.isProgramLoaded = false;
+    this.currentSelectionStatus.orgUnit = true;
+    this.currentSelectionStatus.isOrgUnitSelected = false;
+    this.currentSelectionStatus.isOrgUnitLoaded = false;
+    this.currentSelectionStatus.program = false;
+    this.currentSelectionStatus.isProgramSelected = false;
+    this.currentSelectionStatus.message = "";
   }
 
   ionViewDidEnter() {
@@ -129,25 +134,24 @@ export class EventCaptureHome {
   }
 
   loadOrganisationUnits():void{
-    this.loadingData = true;
-    this.loadingMessages=[];
-    this.setLoadingMessages('Loading organisation units');
+    this.currentSelectionStatus.isOrgUnitLoaded = false;
+    this.currentSelectionStatus.isProgramLoaded = true;
     this.OrganisationUnit.getOrganisationUnits(this.currentUser).then((organisationUnits : any)=>{
       this.organisationUnits = organisationUnits;
-
+      this.currentSelectionStatus.isOrgUnitLoaded = true;
+      this.setProgramSelectionLabel();
       if(organisationUnits.length > 0){
         this.selectedOrganisationUnit = organisationUnits[0];
         this.selectedProgram = {};
         this.loadingPrograms();
         this.setProgramSelectionLabel();
-      }else{
-        this.loadingData = false;
       }
     },error=>{
       this.loadingData = false;
       this.setToasterMessage('Fail to load organisation units : ' + JSON.stringify(error));
     });
   }
+
 
   openOrganisationUnitModal(){
     this.loadingMessages = [];
@@ -172,7 +176,8 @@ export class EventCaptureHome {
   }
 
   loadingPrograms(){
-    this.setLoadingMessages('Loading assigned programs');
+    this.currentSelectionStatus.isProgramLoaded = false;
+    //this.setLoadingMessages('Loading assigned programs');
     this.assignedPrograms = [];
     this.Program.getProgramsAssignedOnOrgUnitAndUserRoles(this.selectedOrganisationUnit,this.programIdsByUserRoles,this.currentUser).then((programs : any)=>{
       programs.forEach((program:any)=>{
@@ -186,6 +191,7 @@ export class EventCaptureHome {
           });
         }
       });
+      this.currentSelectionStatus.isProgramLoaded = true;
       this.loadingData = false;
     },error=>{
       this.loadingData = false;
@@ -195,9 +201,6 @@ export class EventCaptureHome {
 
   openProgramsModal(){
     if(this.currentSelectionStatus.program){
-      this.loadingMessages = [];
-      this.loadingData = true;
-      this.setLoadingMessages('Please wait ...');
       let modal = this.modalCtrl.create(ProgramSelection,{data : this.assignedPrograms,selectedProgram : this.selectedProgram});
       modal.onDidDismiss((selectedProgram:any) => {
         if(selectedProgram.id){
@@ -258,28 +261,31 @@ export class EventCaptureHome {
    * load events
    */
   loadEvents(){
-    this.loadingData = true;
-    this.loadingMessages = [];
-    this.setLoadingMessages("Downloading most recent events");
-    this.eventProvider.loadEventsFromServer(this.selectedOrganisationUnit,this.selectedProgram,this.selectedDataDimension,this.currentUser).then((events : any)=>{
-      this.setLoadingMessages("Saving most recent events");
-      this.eventProvider.savingEventsFromServer(events,this.currentUser).then(()=>{
-        this.loadEventsFromOfflineStorage();
-      },error=>{
-        this.loadingData = false;
-        this.setToasterMessage("Fail to save most recent events : " + JSON.stringify(error));
-      });
-    },error=>{
-      this.setToasterMessage("Fail to download most recent events : " + JSON.stringify(error));
-      this.loadEventsFromOfflineStorage();
-    });
+    this.isAllParameterSet = true;
+    this.loadEventsFromOfflineStorage();
+
+    //this.loadingData = true;
+    //this.loadingMessages = [];
+    //this.setLoadingMessages("Downloading most recent events");
+    //this.eventProvider.loadEventsFromServer(this.selectedOrganisationUnit,this.selectedProgram,this.selectedDataDimension,this.currentUser).then((events : any)=>{
+    //  this.setLoadingMessages("Saving most recent events");
+    //  this.eventProvider.savingEventsFromServer(events,this.currentUser).then(()=>{
+    //    this.loadEventsFromOfflineStorage();
+    //  },error=>{
+    //    this.loadingData = false;
+    //    this.setToasterMessage("Fail to save most recent events : " + JSON.stringify(error));
+    //  });
+    //},error=>{
+    //  this.setToasterMessage("Fail to download most recent events : " + JSON.stringify(error));
+    //  this.loadEventsFromOfflineStorage();
+    //});
   }
 
   /**
    * loading all events based on selected option from offline storage
    */
   loadEventsFromOfflineStorage(){
-    this.setLoadingMessages("Loading events from offline storage");
+    this.setNotificationToasterMessage("Checking offline events");
     this.eventProvider.loadingEventsFromStorage(this.selectedOrganisationUnit,this.selectedProgram,this.currentUser).then((events:any)=>{
       let currentEvents = [];
       if(this.selectedDataDimension.length > 0){
@@ -411,6 +417,15 @@ export class EventCaptureHome {
     let toast = this.toastCtrl.create({
       message: message,
       duration: 3000
+    });
+    toast.present();
+  }
+
+  setNotificationToasterMessage(message){
+    let toast = this.toastCtrl.create({
+      message: message,
+      position : 'top',
+      duration: 1500
     });
     toast.present();
   }

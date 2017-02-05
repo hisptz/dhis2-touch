@@ -14,40 +14,32 @@
 
 
 <ion-content  class="event-capture-home" >
-
-  <div *ngIf="loadingData">
-    <ion-grid>
-      <ion-row >
-        <ion-col>
-          <ion-list>
-            <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
-              {{ message }}
-              <ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right color="primary"></ion-icon>
-              <div style="text-align: center" item-right *ngIf="(currentIndex + 1) >= loadingMessages.length">
-                <ion-spinner name="crescent" color="secondary"></ion-spinner>
-              </div>
-            </ion-item>
-          </ion-list>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
-
-
-  <div *ngIf="!loadingData">
-
+  <div>
     <ion-grid>
       <ion-row>
         <ion-col>
           <button [disabled]="!currentSelectionStatus.orgUnit" class="dataEntryButton" text-capitalize ion-button full large (click)="openOrganisationUnitModal()" color="whitecolor">
-            {{ selectedOrganisationUnitLabel }}
+            <span *ngIf="currentSelectionStatus.isOrgUnitLoaded" >
+              {{ selectedOrganisationUnitLabel }}
+            </span>
+            <span *ngIf="!currentSelectionStatus.isOrgUnitLoaded" >
+              <ion-spinner  name="crescent" color="secondary"></ion-spinner>&nbsp;&nbsp;
+              Loading organisation units
+            </span>
           </button>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col>
           <button [disabled]="!currentSelectionStatus.program" class="dataEntryButton" text-capitalize ion-button full large (click)="openProgramsModal()" color="whitecolor">
-            {{ selectedProgramLabel }}
+            <span *ngIf="!currentSelectionStatus.isProgramLoaded" >
+              <ion-spinner  name="crescent" color="secondary"></ion-spinner>&nbsp;&nbsp;
+              Loading programs
+            </span>
+            <span *ngIf="currentSelectionStatus.isProgramLoaded" >
+              {{ selectedProgramLabel }}
+            </span>
+
           </button>
         </ion-col>
       </ion-row>
@@ -74,84 +66,54 @@
           </div>
         </div>
       </div>
-      <!-- guide messages during parameter selection-->
-      <div *ngIf="!isAllParameterSet">
-        <ion-row >
+
+      <div *ngIf="isAllParameterSet">
+        <!-- pagination for event list-->
+        <ion-row *ngIf="eventListSections.length > 0">
           <ion-col width="100">
             <ion-item-group >
               <ion-item-divider>
-                <div >
-                  <p class="selectionHints">
-                    <ion-icon *ngIf="!currentSelectionStatus.isOrgUnitSelected" name="help-circle" color="font-color"></ion-icon>
-                    <ion-icon *ngIf="currentSelectionStatus.isOrgUnitSelected" name="done-all" color="primary"></ion-icon>
-                    &nbsp;&nbsp;
-                    Select organisation unit
-                  </p>
-                  <p class="selectionHints">
-                    <ion-icon *ngIf="!currentSelectionStatus.isProgramSelected" name="help-circle" color="font-color"></ion-icon>
-                    <ion-icon *ngIf="currentSelectionStatus.isProgramSelected" name="done-all" color="primary"></ion-icon>
-                    &nbsp;&nbsp;
-                    Select program
-                  </p>
-                  <p class="selectionHints" *ngIf="currentSelectionStatus.message==''">
-                    <ion-icon name="help-circle" color="font-color"></ion-icon>
-                    &nbsp;&nbsp;
-                    Select all program dimensions
-                  </p>
-                </div>
+                <ion-row>
+                  <ion-col>
+                    <button color="dark" ion-button full clear small (click)="changePagination(0)">
+                      <ion-icon name="ios-arrow-back-outline"></ion-icon>
+                      <ion-icon name="ios-arrow-back-outline"></ion-icon>
+                      <ion-icon name="ios-arrow-back-outline"></ion-icon>
+                      <ion-icon name="ios-arrow-back-outline"></ion-icon>
+                    </button>
+                  </ion-col>
+                  <ion-col>
+                    <button color="dark" ion-button full clear small (click)="changePagination(currentPage - 1)">
+                      <ion-icon name="ios-arrow-back-outline"></ion-icon>
+                      <ion-icon name="ios-arrow-back-outline"></ion-icon>
+                    </button>
+                  </ion-col>
+                  <ion-col>
+                    <button ion-button color="dark" full clear small >
+                      {{ paginationLabel }}
+                    </button>
+                  </ion-col>
+                  <ion-col >
+                    <button color="dark" ion-button full clear small (click)="changePagination(currentPage + 1)">
+                      <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+                      <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+                    </button>
+                  </ion-col>
+
+                  <ion-col >
+                    <button color="dark" ion-button full clear small (click)="changePagination(entryFormSections.length -1)">
+                      <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+                      <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+                      <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+                      <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+                    </button>
+                  </ion-col>
+
+                </ion-row>
               </ion-item-divider>
             </ion-item-group>
-            <ion-list></ion-list>
           </ion-col>
         </ion-row>
-
-      </div>
-      <div *ngIf="isAllParameterSet">
-
-
-        <!-- pagination for event list-->
-        <ion-item-group *ngIf="eventListSections.length > 0">
-          <ion-item-divider>
-            <ion-row>
-              <ion-col>
-                <button color="dark" ion-button full clear small (click)="changePagination(0)">
-                  <ion-icon name="ios-arrow-back-outline"></ion-icon>
-                  <ion-icon name="ios-arrow-back-outline"></ion-icon>
-                  <ion-icon name="ios-arrow-back-outline"></ion-icon>
-                  <ion-icon name="ios-arrow-back-outline"></ion-icon>
-                </button>
-              </ion-col>
-              <ion-col>
-                <button color="dark" ion-button full clear small (click)="changePagination(currentPage - 1)">
-                  <ion-icon name="ios-arrow-back-outline"></ion-icon>
-                  <ion-icon name="ios-arrow-back-outline"></ion-icon>
-                </button>
-              </ion-col>
-              <ion-col>
-                <button ion-button color="dark" full clear small >
-                  {{ paginationLabel }}
-                </button>
-              </ion-col>
-              <ion-col >
-                <button color="dark" ion-button full clear small (click)="changePagination(currentPage + 1)">
-                  <ion-icon name="ios-arrow-forward-outline"></ion-icon>
-                  <ion-icon name="ios-arrow-forward-outline"></ion-icon>
-                </button>
-              </ion-col>
-
-              <ion-col >
-                <button color="dark" ion-button full clear small (click)="changePagination(entryFormSections.length -1)">
-                  <ion-icon name="ios-arrow-forward-outline"></ion-icon>
-                  <ion-icon name="ios-arrow-forward-outline"></ion-icon>
-                  <ion-icon name="ios-arrow-forward-outline"></ion-icon>
-                  <ion-icon name="ios-arrow-forward-outline"></ion-icon>
-                </button>
-              </ion-col>
-
-            </ion-row>
-          </ion-item-divider>
-        </ion-item-group>
-
 
         <!-- notification if no event list found from local as well login instance-->
         <div *ngIf="!hasEvents">
