@@ -101,7 +101,6 @@ export class Login {
 
   reAuthenticateUser(user){
     if(user){
-      alert(JSON.stringify(user));
       if(user.isLogin){
         this.loginData = user;
         this.setLandingPage();
@@ -189,7 +188,6 @@ export class Login {
   }
 
   downloadingOrganisationUnits(userData){
-    this.setLoadingMessages('Downloading assigned organisation data');
     let resource = 'organisationUnits';
     let ids = [];
     userData.organisationUnits.forEach(organisationUnit=>{
@@ -217,7 +215,6 @@ export class Login {
   }
 
   downloadingDataSets(){
-    this.setLoadingMessages('Downloading data entry forms');
     let resource = 'dataSets';
     let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
     let fields = tableMetadata.fields;
@@ -239,7 +236,6 @@ export class Login {
   }
 
   downloadingSections(){
-    this.setLoadingMessages('Downloading data entry form sections');
     let resource = 'sections';
     let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
     let fields = tableMetadata.fields;
@@ -261,7 +257,6 @@ export class Login {
   }
 
   downloadingPrograms(){
-    this.setLoadingMessages('Downloading programs');
     let resource = 'programs';
     let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
     let fields = tableMetadata.fields;
@@ -283,7 +278,6 @@ export class Login {
   }
 
   downloadingProgramStageSections(){
-    this.setLoadingMessages('Downloading program-stage sections');
     let resource = 'programStageSections';
     let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
     let fields = tableMetadata.fields;
@@ -305,7 +299,6 @@ export class Login {
   }
 
   downloadingProgramStageDataElements(){
-    this.setLoadingMessages('Downloading program-stage data-elements');
     let resource = 'programStageDataElements';
     let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
     let fields = tableMetadata.fields;
@@ -328,7 +321,6 @@ export class Login {
   }
 
   downloadingIndicators(){
-    this.setLoadingMessages('Downloading indicators');
     let resource = 'indicators';
     let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
     let fields = tableMetadata.fields;
@@ -350,7 +342,6 @@ export class Login {
   }
 
   downloadingReports(){
-    this.setLoadingMessages('Downloading reports');
     let resource = 'reports';
     let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
     let fields = tableMetadata.fields;
@@ -397,9 +388,9 @@ export class Login {
     this.loginData.password = "";
     this.user.setCurrentUser(this.loginData).then(()=>{
       this.synchronization.startSynchronization().then(()=>{
+        this.navCtrl.setRoot(TabsPage);
         this.loadingData = false;
         this.isLoginProcessActive = false;
-        this.navCtrl.setRoot(TabsPage);
       });
     });
   }
