@@ -60,65 +60,70 @@ export class Login {
       }
       this.loadingData = false;
     }else{
+      this.loginData = {
+        serverUrl : "http://tl.dhis2.org/dhis",username : "mukulu",password : "DHIS2016"
+      }
       this.loadingData = false;
     }
     //alert(JSON.stringify(this.NetworkAvailability.getNetWorkStatus()));
   }
 
-  login(){
-    if(this.loginData.serverUrl){
-      this.app.getFormattedBaseUrl(this.loginData.serverUrl)
-        .then(formattedBaseUrl => {
-          this.loginData.serverUrl = formattedBaseUrl;
-          if(!this.loginData.username){
-            this.setToasterMessage('Please Enter username');
-          }else if (!this.loginData.password){
-            this.setToasterMessage('Please Enter password');
-          }else{
-            this.loadingData = true;
-            this.loadingMessages = [];
-            this.app.getDataBaseName(this.loginData.serverUrl).then(databaseName=>{
-              this.setLoadingMessages('Opening database');
-              this.sqlLite.generateTables(databaseName).then(()=>{
-                this.loginData.currentDatabase = databaseName;
-                //set authorization key and reset password
-                this.loginData.authorizationKey = btoa(this.loginData.username + ':' + this.loginData.password);
-                this.loginData.password = "";
-                this.user.setCurrentUser(this.loginData).then(()=>{
-                  this.setLoadingMessages('Authenticating user');
-                  let fields = "fields=[:all],userCredentials[userRoles[name,dataSets[id,name],programs[id,name]]";
-                  this.httpClient.get('/api/me.json?'+fields,this.loginData).subscribe(
-                    data => {
-                      data = data.json();
-                      this.user.setUserData(data).then(userData=>{
-                        this.setLoadingMessages('Loading system information');
-                        this.httpClient.get('/api/system/info',this.loginData).subscribe(
-                          data => {
-                            data = data.json();
-                            this.user.setCurrentUserSystemInformation(data).then(()=>{
-                              this.downloadingOrganisationUnits(userData);
-                            },error=>{
-                              this.loadingData = false;
-                              this.setLoadingMessages('Fail to set system information');
-                            });
-                          },error=>{
-                            this.loadingData = false;
-                            this.setLoadingMessages('Fail to load system information');
-                          })
+  login() {
+    if (this.loginData.serverUrl) {
+      if (!this.loginData.username) {
+        this.setToasterMessage('Please Enter username');
+      } else if (!this.loginData.password) {
+        this.setToasterMessage('Please Enter password');
+      } else {
+        this.loadingData = true;
+        this.loadingMessages = [];
+        this.app.getFormattedBaseUrl(this.loginData.serverUrl)
+          .then(formattedBaseUrl => {
+            this.loginData.serverUrl = formattedBaseUrl;
+            this.setLoadingMessages('Authenticating user');
+            this.user.authenticateUser(this.loginData).then((response:any)=> {
+              this.loginData = response.user;
+              //set authorization key and reset password
+              this.loginData.authorizationKey = btoa(this.loginData.username + ':' + this.loginData.password);
+              this.user.setUserData(JSON.parse(response.data)).then(userData=>{
+                this.app.getDataBaseName(this.loginData.serverUrl).then(databaseName=>{
+                  this.setLoadingMessages('Opening database');
+                  this.sqlLite.generateTables(databaseName).then(()=>{
+                    this.loginData.currentDatabase = databaseName;
+                    this.setLoadingMessages('Loading system information');
+                    this.httpClient.get('/api/system/info',this.loginData).subscribe(
+                      data => {
+                        data = data.json();
+                        this.user.setCurrentUserSystemInformation(data).then(()=>{
+                          this.downloadingOrganisationUnits(userData);
+                        },error=>{
+                          this.loadingData = false;
+                          this.setLoadingMessages('Fail to set system information');
+                        });
+                      },error=>{
+                        this.loadingData = false;
+                        this.setLoadingMessages('Fail to load system information');
                       });
-                    },err => {
-                      this.loadingData = false;
-                      this.setToasterMessage('Fail to login Fail to load System information, please checking your network connection or username and password');
-                      console.log(err);
-                    });
-                });
-              },error=>{
-                this.setToasterMessage('Fail to open database. : ' + JSON.stringify(error) );
-              })
+
+                  },error=>{
+                    this.setToasterMessage('Fail to open database. : ' + JSON.stringify(error) );
+                  })
+                })
+              });
+            }, error=> {
+              this.loadingData = false;
+              if (error.status == 0) {
+                this.setToasterMessage("Please check your network connection");
+              } else if (error.status == 401) {
+                this.setToasterMessage('You have enter wrong username or password');
+              } else {
+                this.setToasterMessage('Please check server url');
+              }
             });
-          }
-        });
-    }else {
+          });
+      }
+
+    } else {
       this.setToasterMessage('Please Enter server url');
     }
   }
@@ -305,6 +310,7 @@ export class Login {
 
   setLandingPage(){
     this.loginData.isLogin = true;
+    this.loginData.password = "";
     this.user.setCurrentUser(this.loginData).then(()=>{
       this.synchronization.startSynchronization().then(()=>{
         this.navCtrl.setRoot(TabsPage);

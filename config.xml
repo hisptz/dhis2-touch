@@ -37,6 +37,7 @@
     <plugin name="cordova-plugin-statusbar" spec="2.2.1" />
     <plugin name="cordova-plugin-device" spec="1.1.4" />
     <plugin name="cordova-plugin-splashscreen" spec="~4.0.1" />
+    <preference name="AndroidPersistentFileLocation" value="Compatibility" />
     <!--<preference name="xwalkVersion" value="17+" />-->
     <!--<plugin name="cordova-plugin-crosswalk-webview" spec="~1.6.1" />-->
     <!--<preference name="xwalkCommandLine" value="&#45;&#45;disable-pull-to-refresh-effect" />-->

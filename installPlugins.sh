@@ -9,3 +9,4 @@ ionic plugin add cordova-sqlite-storage
 ionic plugin add ionic-plugin-keyboard
 ionic plugin add cordova-plugin-network-information
 cordova plugin add cordova-plugin-network-information
+ionic plugin add cordova-plugin-http

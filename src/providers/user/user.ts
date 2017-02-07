@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/map';
-import {HttpClient} from "../http-client/http-client";
+import { HTTP } from 'ionic-native';
 
 /*
   Generated class for the User provider.
@@ -14,21 +14,36 @@ export class User {
 
   public userData : any;
 
-  constructor(public storage : Storage,public httpClient : HttpClient) {
+  constructor(public storage : Storage) {
 
   }
 
   authenticateUser(user){
-    let fields = "fields=[:all],userCredentials[userRoles[name,dataSets[id,name],programs[id,name]]";
+    HTTP.useBasicAuth(user.username, user.password);
     let self = this;
-    return  new Promise(function(resolve,reject){
-      self.httpClient.get('/api/me.json?'+fields,user).subscribe(
-        data => {
-          resolve(data.json());
-        },error=>{
-          reject(error.json());
-        }
-      )
+    let fields = "fields=[:all],userCredentials[userRoles[name,dataSets[id,name],programs[id,name]]";
+    let url = user.serverUrl + "/api/me.json?" + fields;
+    return new Promise(function(resolve, reject) {
+      HTTP.get(url, {}, {})
+        .then((data:any)  => {
+          resolve({data : data.data,user : user});
+        })
+        .catch(error => {
+          if(error.status == 301 || error.status == 302){
+            if(error.headers.Location){
+              let urlArray = error.headers.Location.split("/api/me.json");
+              user.serverUrl = urlArray[0];
+              self.authenticateUser(user).then((data:any) => {
+                  resolve({data : data.data,user : user});
+                })
+                .catch(error => {
+                  reject(error);
+                });
+            }
+          }else{
+            reject(error);
+          }
+        });
     });
   }
 
