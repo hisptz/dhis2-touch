@@ -33,6 +33,7 @@ export class Login {
   //progress tracker object
   public progress : string = "0";
   public progressTracker : any;
+  public completedTrackedProcess : any;
   //organisationUnit, entryForm,event
 
   constructor(public navCtrl: NavController,private Storage : Storage,
@@ -43,6 +44,7 @@ export class Login {
     this.logoUrl = 'assets/img/logo-2.png';
     this.loadingData = true;
     this.loadingMessages = [];
+    this.completedTrackedProcess = [];
     this.progressTracker = this.getEmptyProgressTracker();
     this.setLoadingMessages("Please waiting..");
     this.user.getCurrentUser().then(user=>{
@@ -95,6 +97,19 @@ export class Login {
     this.progress = value.toFixed(2);
   }
 
+  getCompletedTrackedProcess(){
+    let completedTrackedProcess = [];
+    Object.keys(this.progressTracker).forEach(key=>{
+      let process = this.progressTracker[key];
+      process.passStep.forEach((completedProcessName)=>{
+        if(completedTrackedProcess.indexOf(completedProcessName) == -1){
+          completedTrackedProcess.push(completedProcessName);
+        }
+      });
+    });
+    return completedTrackedProcess;
+  };
+
   ionViewDidLoad() {
     //console.log('Hello Login Page');
   }
@@ -115,9 +130,6 @@ export class Login {
       }
       this.loadingData = false;
     }else{
-      this.loginData = {
-        serverUrl : "http://tl.dhis2.org/dhis",username : "mukulu",password : "DHIS2016"
-      };
       this.loginData["progressTracker"] = this.getEmptyProgressTracker();
       this.progressTracker = this.getEmptyProgressTracker();
       this.loadingData = false;
@@ -132,6 +144,11 @@ export class Login {
       } else if (!this.loginData.password) {
         this.setToasterMessage('Please Enter password');
       } else {
+        //empty communication as well as organisation unit
+        this.progressTracker.communication.passStep = [];
+        this.progressTracker.organisationUnit.passStep = [];
+        this.updateProgressBarPercentage();
+        this.completedTrackedProcess = this.getCompletedTrackedProcess();
         this.loadingData = true;
         this.isLoginProcessActive = true;
         this.app.getFormattedBaseUrl(this.loginData.serverUrl)
@@ -216,171 +233,203 @@ export class Login {
 
   downloadingDataSets(){
     let resource = 'dataSets';
-    let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-    let fields = tableMetadata.fields;
-    this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-      this.setLoadingMessages('Saving '+response[resource].length+' data entry form');
-      this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-        this.updateProgressTracker(resource);
-        this.downloadingSections();
+    if(this.completedTrackedProcess.indexOf() > -1){
+      this.downloadingSections();
+    }else{
+      let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+      let fields = tableMetadata.fields;
+      this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
+        this.setLoadingMessages('Saving '+response[resource].length+' data entry form');
+        this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+          this.updateProgressTracker(resource);
+          this.downloadingSections();
+        },error=>{
+          this.loadingData = false;
+          this.isLoginProcessActive = false;
+          this.setStickToasterMessage('Fail to save data entry form. ' + JSON.stringify(error));
+        });
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
-        this.setStickToasterMessage('Fail to save data entry form. ' + JSON.stringify(error));
+        this.setStickToasterMessage('Fail to download data entry form. ' + JSON.stringify(error));
       });
-    },error=>{
-      this.loadingData = false;
-      this.isLoginProcessActive = false;
-      this.setStickToasterMessage('Fail to download data entry form. ' + JSON.stringify(error));
-    });
+    }
   }
 
   downloadingSections(){
     let resource = 'sections';
-    let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-    let fields = tableMetadata.fields;
-    this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-      this.setLoadingMessages('Saving '+response[resource].length+' data entry form sections');
-      this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-        this.updateProgressTracker(resource);
-        this.downloadingPrograms();
+    if(this.completedTrackedProcess.indexOf() > -1){
+      this.downloadingPrograms();
+    }else{
+      let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+      let fields = tableMetadata.fields;
+      this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
+        this.setLoadingMessages('Saving '+response[resource].length+' data entry form sections');
+        this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+          this.updateProgressTracker(resource);
+          this.downloadingPrograms();
+        },error=>{
+          this.loadingData = false;
+          this.isLoginProcessActive = false;
+          this.setStickToasterMessage('Fail to save data entry form sections. ' + JSON.stringify(error));
+        });
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
-        this.setStickToasterMessage('Fail to save data entry form sections. ' + JSON.stringify(error));
+        this.setStickToasterMessage('Fail to download data entry form sections. ' + JSON.stringify(error));
       });
-    },error=>{
-      this.loadingData = false;
-      this.isLoginProcessActive = false;
-      this.setStickToasterMessage('Fail to download data entry form sections. ' + JSON.stringify(error));
-    });
+    }
   }
 
   downloadingPrograms(){
     let resource = 'programs';
-    let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-    let fields = tableMetadata.fields;
-    this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-      this.setLoadingMessages('Saving '+response[resource].length+' programs');
-      this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-        this.updateProgressTracker(resource);
-        this.downloadingProgramStageSections();
+    if(this.completedTrackedProcess.indexOf() > -1){
+      this.downloadingProgramStageSections();
+    }else{
+      let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+      let fields = tableMetadata.fields;
+      this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
+        this.setLoadingMessages('Saving '+response[resource].length+' programs');
+        this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+          this.updateProgressTracker(resource);
+          this.downloadingProgramStageSections();
+        },error=>{
+          this.loadingData = false;
+          this.isLoginProcessActive = false;
+          this.setStickToasterMessage('Fail to save programs. ' + JSON.stringify(error));
+        });
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
-        this.setStickToasterMessage('Fail to save programs. ' + JSON.stringify(error));
+        this.setStickToasterMessage('Fail to download programs. ' + JSON.stringify(error));
       });
-    },error=>{
-      this.loadingData = false;
-      this.isLoginProcessActive = false;
-      this.setStickToasterMessage('Fail to download programs. ' + JSON.stringify(error));
-    });
+    }
   }
 
   downloadingProgramStageSections(){
     let resource = 'programStageSections';
-    let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-    let fields = tableMetadata.fields;
-    this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-      this.setLoadingMessages('Saving '+response[resource].length+' program-stage sections');
-      this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-        this.updateProgressTracker(resource);
-        this.downloadingProgramStageDataElements();
+    if(this.completedTrackedProcess.indexOf() > -1){
+      this.downloadingProgramStageDataElements();
+    }else{
+      let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+      let fields = tableMetadata.fields;
+      this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
+        this.setLoadingMessages('Saving '+response[resource].length+' program-stage sections');
+        this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+          this.updateProgressTracker(resource);
+          this.downloadingProgramStageDataElements();
+        },error=>{
+          this.loadingData = false;
+          this.isLoginProcessActive = false;
+          this.setStickToasterMessage('Fail to save program-stage sections. ' + JSON.stringify(error));
+        });
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
-        this.setStickToasterMessage('Fail to save program-stage sections. ' + JSON.stringify(error));
+        this.setStickToasterMessage('Fail to download program-stage sections. ' + JSON.stringify(error));
       });
-    },error=>{
-      this.loadingData = false;
-      this.isLoginProcessActive = false;
-      this.setStickToasterMessage('Fail to download program-stage sections. ' + JSON.stringify(error));
-    });
+    }
   }
 
   downloadingProgramStageDataElements(){
     let resource = 'programStageDataElements';
-    let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-    let fields = tableMetadata.fields;
-    this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-      this.setLoadingMessages('Saving '+response[resource].length+' program-stage data-elements');
-      this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-        this.updateProgressTracker(resource);
-        //this.downloadingIndicators();
-        this.setLandingPage();
+    if(this.completedTrackedProcess.indexOf() > -1){
+      //this.downloadingIndicators();
+      this.setLandingPage();
+    }else{
+      let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+      let fields = tableMetadata.fields;
+      this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
+        this.setLoadingMessages('Saving '+response[resource].length+' program-stage data-elements');
+        this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+          this.updateProgressTracker(resource);
+          //this.downloadingIndicators();
+          this.setLandingPage();
+        },error=>{
+          this.loadingData = false;
+          this.isLoginProcessActive = false;
+          this.setStickToasterMessage('Fail to save program-stage data-elements. ' + JSON.stringify(error));
+        });
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
-        this.setStickToasterMessage('Fail to save program-stage data-elements. ' + JSON.stringify(error));
+        this.setStickToasterMessage('Fail to download program-stage data-elements. ' + JSON.stringify(error));
       });
-    },error=>{
-      this.loadingData = false;
-      this.isLoginProcessActive = false;
-      this.setStickToasterMessage('Fail to download program-stage data-elements. ' + JSON.stringify(error));
-    });
+    }
   }
 
   downloadingIndicators(){
     let resource = 'indicators';
-    let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-    let fields = tableMetadata.fields;
-    this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-      this.setLoadingMessages('Saving '+response[resource].length+' indicators');
-      this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-        this.updateProgressTracker(resource);
-        this.downloadingReports();
+    if(this.completedTrackedProcess.indexOf() > -1){
+      this.downloadingReports();
+    }else{
+      let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+      let fields = tableMetadata.fields;
+      this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
+        this.setLoadingMessages('Saving '+response[resource].length+' indicators');
+        this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+          this.updateProgressTracker(resource);
+          this.downloadingReports();
+        },error=>{
+          this.loadingData = false;
+          this.isLoginProcessActive = false;
+          this.setStickToasterMessage('Fail to save indicators. ' + JSON.stringify(error));
+        });
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
-        this.setStickToasterMessage('Fail to save indicators. ' + JSON.stringify(error));
+        this.setStickToasterMessage('Fail to download indicators. ' + JSON.stringify(error));
       });
-    },error=>{
-      this.loadingData = false;
-      this.isLoginProcessActive = false;
-      this.setStickToasterMessage('Fail to download indicators. ' + JSON.stringify(error));
-    });
+    }
   }
 
   downloadingReports(){
     let resource = 'reports';
-    let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-    let fields = tableMetadata.fields;
-    let filter = tableMetadata.filter;
-    this.app.downloadMetadata(this.loginData,resource,null,fields,filter).then(response=>{
-      this.setLoadingMessages('Saving '+response[resource].length+' reports');
-      this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-        this.updateProgressTracker(resource);
-        this.downloadingConstants();
+    if(this.completedTrackedProcess.indexOf() > -1){
+      this.downloadingConstants();
+    }else{
+      let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+      let fields = tableMetadata.fields;
+      let filter = tableMetadata.filter;
+      this.app.downloadMetadata(this.loginData,resource,null,fields,filter).then(response=>{
+        this.setLoadingMessages('Saving '+response[resource].length+' reports');
+        this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+          this.updateProgressTracker(resource);
+          this.downloadingConstants();
+        },error=>{
+          this.loadingData = false;
+          this.isLoginProcessActive = false;
+          this.setStickToasterMessage('Fail to save reports. ' + JSON.stringify(error));
+        });
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
-        this.setStickToasterMessage('Fail to save reports. ' + JSON.stringify(error));
+        this.setStickToasterMessage('Fail to download reports. ' + JSON.stringify(error));
       });
-    },error=>{
-      this.loadingData = false;
-      this.isLoginProcessActive = false;
-      this.setStickToasterMessage('Fail to download reports. ' + JSON.stringify(error));
-    });
+    }
   }
 
   downloadingConstants(){
-    this.setLoadingMessages('Downloading constants');
     let resource = 'constants';
-    let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-    let fields = tableMetadata.fields;
-    this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-      this.setLoadingMessages('Saving '+response[resource].length+' constants');
-      this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-        this.updateProgressTracker(resource);
-        this.setLandingPage();
+    if(this.completedTrackedProcess.indexOf() > -1){
+      this.setLandingPage();
+    }else{
+      let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+      let fields = tableMetadata.fields;
+      this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
+        this.setLoadingMessages('Saving '+response[resource].length+' constants');
+        this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+          this.updateProgressTracker(resource);
+          this.setLandingPage();
+        },error=>{
+          this.loadingData = false;
+          this.setStickToasterMessage('Fail to save constants. ' + JSON.stringify(error));
+        });
       },error=>{
         this.loadingData = false;
-        this.setStickToasterMessage('Fail to save constants. ' + JSON.stringify(error));
+        this.setStickToasterMessage('Fail to download constants. ' + JSON.stringify(error));
       });
-    },error=>{
-      this.loadingData = false;
-      this.setStickToasterMessage('Fail to download constants. ' + JSON.stringify(error));
-    });
+    }
   }
 
   setLandingPage(){
