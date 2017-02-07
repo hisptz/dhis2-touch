@@ -60,9 +60,6 @@ export class Login {
       }
       this.loadingData = false;
     }else{
-      this.loginData = {
-        serverUrl : "http://tl.dhis2.org/dhis",username : "mukulu",password : "DHIS2016"
-      }
       this.loadingData = false;
     }
     //alert(JSON.stringify(this.NetworkAvailability.getNetWorkStatus()));
