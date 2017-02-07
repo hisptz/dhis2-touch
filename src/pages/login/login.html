@@ -8,8 +8,8 @@
 
 
 <ion-content padding class="login">
-  <ion-grid>
 
+  <ion-grid>
     <ion-row>
       <ion-col class="topSLogan">
         <div class="logo">
@@ -17,14 +17,48 @@
         </div>
         <p >Routine and survey data on your pocket</p>
       </ion-col>
-
     </ion-row>
+
+  </ion-grid>
+
+  <div *ngIf="isLoginProcessActive">
+    <page-progress-bar [progress] = "progress"></page-progress-bar>
+    <br>
+    <div *ngIf="loadingData">
+      <ion-list>
+        <ion-item >
+          Establish connection to server
+          <div style="text-align: center" item-right >
+
+          </div>
+        </ion-item>
+        <ion-item >
+          Load assigned organisation unit(s)
+          <div style="text-align: center" item-right >
+
+          </div>
+        </ion-item>
+        <ion-item >
+          Load aggregate metadata
+          <div style="text-align: center" item-right >
+
+          </div>
+        </ion-item>
+        <ion-item >
+          Load tracker metadata
+          <div style="text-align: center" item-right >
+
+          </div>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+
+  <ion-grid>
 
     <ion-row >
       <ion-col >
-
         <div *ngIf="!loadingData">
-
           <ion-item>
             <ion-input [(ngModel)]="loginData.serverUrl" type="url" placeholder="Enter server URL"></ion-input>
           </ion-item>
@@ -36,21 +70,7 @@
           <ion-item>
             <ion-input [(ngModel)]="loginData.password" type="password" placeholder="Enter password"></ion-input>
           </ion-item>
-
         </div>
-
-        <div *ngIf="loadingData">
-          <ion-list>
-            <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
-              {{ message }}
-              <ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right color="primary"></ion-icon>
-              <div style="text-align: center" item-right *ngIf="(currentIndex + 1) >= loadingMessages.length">
-                <ion-spinner name="crescent" color="secondary"></ion-spinner>
-              </div>
-            </ion-item>
-          </ion-list>
-        </div>
-
       </ion-col>
     </ion-row>
 

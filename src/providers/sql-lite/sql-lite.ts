@@ -23,7 +23,8 @@ export class SqlLite {
         {value: 'children', type: 'LONGTEXT'}
       ],
       fields : "id,name,ancestors[id,name],dataSets[id],programs[id],level,children[id,name,ancestors[id,name],dataSets[id],programs[id],level,children[id,name,ancestors[id,name],dataSets[id],programs[id],level,children[id,name,ancestors[id,name],dataSets[id],programs[id],level,children[id,name,ancestors[id,name],dataSets[id],programs[id],level,children[id,name,ancestors[id,name]]]]]]",
-      canBeUpdated : true
+      canBeUpdated : true,
+      resourceType : "organisationUnit"
     },
     dataSets: {
       columns: [
@@ -42,7 +43,8 @@ export class SqlLite {
         {value: 'categoryCombo', type: 'LONGTEXT'}
       ],
       fields : "id,name,timelyDays,formType,version,periodType,openFuturePeriods,expiryDays,dataSetElements[dataElement[id,name,displayName,description,formName,attributeValues[value,attribute[name]],valueType,optionSet[name,options[name,id,code]],categoryCombo[id,name,categoryOptionCombos[id,name]]]],dataElements[id,name,displayName,description,formName,attributeValues[value,attribute[name]],valueType,optionSet[name,options[name,id,code]],categoryCombo[id,name,categoryOptionCombos[id,name]]]organisationUnits[id,name],sections[id],indicators[id,name,indicatorType[factor],denominatorDescription,numeratorDescription,numerator,denominator],categoryCombo[id,name,categoryOptionCombos[id,name,categoryOptions[id]],categories[id,name,categoryOptions[id,name]]]",
-      canBeUpdated : true
+      canBeUpdated : true,
+      resourceType : "entryForm"
     },
     sections: {
       columns: [
@@ -52,7 +54,8 @@ export class SqlLite {
         {value: 'dataElements', type: 'LONGTEXT'}
       ],
       fields : "id,name,indicators[id,name,indicatorType[factor],denominatorDescription,numeratorDescription,numerator,denominator],dataElements[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]",
-      canBeUpdated : true
+      canBeUpdated : true,
+      resourceType : "entryForm"
     },
     indicators: {
       columns: [
@@ -87,7 +90,7 @@ export class SqlLite {
         {value: 'value', type: 'TEXT'}
       ],
       fields : "id,value",
-      canBeUpdated : true
+      canBeUpdated : true,
     },
     dataValues : {
       columns: [
@@ -123,7 +126,8 @@ export class SqlLite {
         {value: 'organisationUnits',type:'LONGTEXT'}
       ],
       fields : "id,name,withoutRegistration,programType,categoryCombo[id,name,categories[id,name,categoryOptions[name,id]]],programStages[id,name,programStageDataElements[id],programStageSections[id]],organisationUnits[id],programIndicators,translations,attributeValues,validationCriterias,programRuleVariables,programTrackedEntityAttributes,programRules",
-      canBeUpdated : true
+      canBeUpdated : true,
+      resourceType : "event"
     },
     programStageDataElements : {
       columns : [
@@ -135,7 +139,8 @@ export class SqlLite {
         {value: 'dataElement', type: 'LONGTEXT'}
       ],
       fields : "id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]",
-      canBeUpdated : true
+      canBeUpdated : true,
+      resourceType : "event"
     },
     programStageSections : {
       columns : [
@@ -146,7 +151,8 @@ export class SqlLite {
         {value: 'programStageDataElements', type: 'LONGTEXT'}
       ],
       fields : "id,name,programIndicators,sortOrder,programStageDataElements[id]",
-      canBeUpdated : true
+      canBeUpdated : true,
+      resourceType : "event"
     },
     events : {
       columns : [

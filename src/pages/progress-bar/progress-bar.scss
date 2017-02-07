@@ -15,7 +15,7 @@ page-progress-bar {
     padding: 5px;
     font-size: 18px;
     border-radius: 10px;
-    background-color: map-get($colors, favorite);
+    background-color: map-get($colors, primary);
     transition: width .4s ease-in-out;
   }
 }

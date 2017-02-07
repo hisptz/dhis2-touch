@@ -26,8 +26,14 @@ export class Login {
 
   public loginData : any ={};
   public loadingData : boolean = false;
+  public isLoginProcessActive :boolean = false;
   public loadingMessages : any = [];
   public logoUrl : string;
+
+  //progress tracker object
+  public progress : string = "0";
+  public progressTracker : any;
+  //organisationUnit, entryForm,event
 
   constructor(public navCtrl: NavController,private Storage : Storage,
               private Setting: Setting,public NetworkAvailability : NetworkAvailability,
@@ -37,10 +43,56 @@ export class Login {
     this.logoUrl = 'assets/img/logo-2.png';
     this.loadingData = true;
     this.loadingMessages = [];
+    this.progressTracker = this.getEmptyProgressTracker();
     this.setLoadingMessages("Please waiting..");
     this.user.getCurrentUser().then(user=>{
       this.reAuthenticateUser(user);
     });
+  }
+
+  getEmptyProgressTracker(){
+    let dataBaseStructure =  this.sqlLite.getDataBaseStructure();
+    let progressTracker = {};
+    Object.keys(dataBaseStructure).forEach(key=>{
+      let table = dataBaseStructure[key];
+      if(table.canBeUpdated && table.resourceType){
+        if(!progressTracker[table.resourceType]){
+          progressTracker[table.resourceType] = {count : 1,passStep :[]};
+        }else{
+          progressTracker[table.resourceType].count += 1;
+        }
+      }
+    });
+    progressTracker["communication"] = {count : 3,passStep :[]};
+    return progressTracker;
+  }
+
+  updateProgressTracker(resourceName){
+    let dataBaseStructure =  this.sqlLite.getDataBaseStructure();
+    let resourceType = "communication";
+    if(dataBaseStructure[resourceName]){
+      let table = dataBaseStructure[resourceName];
+      if(table.canBeUpdated && table.resourceType){
+        resourceType = table.resourceType
+      }
+    }
+    if(this.progressTracker[resourceType].passStep.indexOf(resourceName)  == -1){
+      this.progressTracker[resourceType].passStep.push(resourceName);
+      this.loginData["progressTracker"] = this.progressTracker;
+      this.user.setCurrentUser(this.loginData).then(()=>{});
+    }
+    this.updateProgressBarPercentage();
+  }
+
+  updateProgressBarPercentage(){
+    let total = 0; let completed = 0;
+    Object.keys(this.progressTracker).forEach(key=>{
+      let process = this.progressTracker[key];
+      completed += process.passStep.length;
+      total += process.count;
+    });
+    let value = (completed/total) * 100;
+    this.progress = value.toFixed(2);
   }
 
   ionViewDidLoad() {
@@ -49,6 +101,7 @@ export class Login {
 
   reAuthenticateUser(user){
     if(user){
+      alert(JSON.stringify(user));
       if(user.isLogin){
         this.loginData = user;
         this.setLandingPage();
@@ -58,12 +111,20 @@ export class Login {
           this.loginData.username = user.username;
         }
       }
+      if(user.progressTracker){
+        this.progressTracker = user.progressTracker;
+      }
       this.loadingData = false;
     }else{
+      this.loginData = {
+        serverUrl : "http://tl.dhis2.org/dhis",username : "mukulu",password : "DHIS2016"
+      };
+      this.loginData["progressTracker"] = this.getEmptyProgressTracker();
+      this.progressTracker = this.getEmptyProgressTracker();
       this.loadingData = false;
     }
-    //alert(JSON.stringify(this.NetworkAvailability.getNetWorkStatus()));
   }
+
 
   login() {
     if (this.loginData.serverUrl) {
@@ -73,21 +134,21 @@ export class Login {
         this.setToasterMessage('Please Enter password');
       } else {
         this.loadingData = true;
-        this.loadingMessages = [];
+        this.isLoginProcessActive = true;
         this.app.getFormattedBaseUrl(this.loginData.serverUrl)
           .then(formattedBaseUrl => {
             this.loginData.serverUrl = formattedBaseUrl;
-            this.setLoadingMessages('Authenticating user');
+            this.updateProgressTracker('Authenticating user');
             this.user.authenticateUser(this.loginData).then((response:any)=> {
               this.loginData = response.user;
               //set authorization key and reset password
               this.loginData.authorizationKey = btoa(this.loginData.username + ':' + this.loginData.password);
               this.user.setUserData(JSON.parse(response.data)).then(userData=>{
                 this.app.getDataBaseName(this.loginData.serverUrl).then(databaseName=>{
-                  this.setLoadingMessages('Opening database');
+                  this.updateProgressTracker('Opening database');
                   this.sqlLite.generateTables(databaseName).then(()=>{
                     this.loginData.currentDatabase = databaseName;
-                    this.setLoadingMessages('Loading system information');
+                    this.updateProgressTracker('Loading system information');
                     this.httpClient.get('/api/system/info',this.loginData).subscribe(
                       data => {
                         data = data.json();
@@ -95,10 +156,12 @@ export class Login {
                           this.downloadingOrganisationUnits(userData);
                         },error=>{
                           this.loadingData = false;
+                          this.isLoginProcessActive = false;
                           this.setLoadingMessages('Fail to set system information');
                         });
                       },error=>{
                         this.loadingData = false;
+                        this.isLoginProcessActive = false;
                         this.setLoadingMessages('Fail to load system information');
                       });
 
@@ -109,6 +172,7 @@ export class Login {
               });
             }, error=> {
               this.loadingData = false;
+              this.isLoginProcessActive = false;
               if (error.status == 0) {
                 this.setToasterMessage("Please check your network connection");
               } else if (error.status == 401) {
@@ -138,13 +202,16 @@ export class Login {
     this.app.downloadMetadataByResourceIds(this.loginData,resource,ids,fields,null).then(response=>{
       this.setLoadingMessages('Saving organisation data');
       this.app.saveMetadata(resource,response,this.loginData.currentDatabase).then(()=>{
+        this.updateProgressTracker(resource);
         this.downloadingDataSets();
       },error=>{
         this.loadingData = false;
+        this.isLoginProcessActive = false;
         this.setStickToasterMessage('Fail to save organisation data. ' + JSON.stringify(error));
       });
     },error=>{
       this.loadingData = false;
+      this.isLoginProcessActive = false;
       this.setStickToasterMessage('Fail to download organisation data. ' + JSON.stringify(error));
     });
   }
@@ -157,13 +224,16 @@ export class Login {
     this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
       this.setLoadingMessages('Saving '+response[resource].length+' data entry form');
       this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+        this.updateProgressTracker(resource);
         this.downloadingSections();
       },error=>{
         this.loadingData = false;
+        this.isLoginProcessActive = false;
         this.setStickToasterMessage('Fail to save data entry form. ' + JSON.stringify(error));
       });
     },error=>{
       this.loadingData = false;
+      this.isLoginProcessActive = false;
       this.setStickToasterMessage('Fail to download data entry form. ' + JSON.stringify(error));
     });
   }
@@ -176,14 +246,16 @@ export class Login {
     this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
       this.setLoadingMessages('Saving '+response[resource].length+' data entry form sections');
       this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+        this.updateProgressTracker(resource);
         this.downloadingPrograms();
-        //this.setLandingPage();
       },error=>{
         this.loadingData = false;
+        this.isLoginProcessActive = false;
         this.setStickToasterMessage('Fail to save data entry form sections. ' + JSON.stringify(error));
       });
     },error=>{
       this.loadingData = false;
+      this.isLoginProcessActive = false;
       this.setStickToasterMessage('Fail to download data entry form sections. ' + JSON.stringify(error));
     });
   }
@@ -196,13 +268,16 @@ export class Login {
     this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
       this.setLoadingMessages('Saving '+response[resource].length+' programs');
       this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+        this.updateProgressTracker(resource);
         this.downloadingProgramStageSections();
       },error=>{
         this.loadingData = false;
+        this.isLoginProcessActive = false;
         this.setStickToasterMessage('Fail to save programs. ' + JSON.stringify(error));
       });
     },error=>{
       this.loadingData = false;
+      this.isLoginProcessActive = false;
       this.setStickToasterMessage('Fail to download programs. ' + JSON.stringify(error));
     });
   }
@@ -215,13 +290,16 @@ export class Login {
     this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
       this.setLoadingMessages('Saving '+response[resource].length+' program-stage sections');
       this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+        this.updateProgressTracker(resource);
         this.downloadingProgramStageDataElements();
       },error=>{
         this.loadingData = false;
+        this.isLoginProcessActive = false;
         this.setStickToasterMessage('Fail to save program-stage sections. ' + JSON.stringify(error));
       });
     },error=>{
       this.loadingData = false;
+      this.isLoginProcessActive = false;
       this.setStickToasterMessage('Fail to download program-stage sections. ' + JSON.stringify(error));
     });
   }
@@ -234,14 +312,17 @@ export class Login {
     this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
       this.setLoadingMessages('Saving '+response[resource].length+' program-stage data-elements');
       this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+        this.updateProgressTracker(resource);
         //this.downloadingIndicators();
         this.setLandingPage();
       },error=>{
         this.loadingData = false;
+        this.isLoginProcessActive = false;
         this.setStickToasterMessage('Fail to save program-stage data-elements. ' + JSON.stringify(error));
       });
     },error=>{
       this.loadingData = false;
+      this.isLoginProcessActive = false;
       this.setStickToasterMessage('Fail to download program-stage data-elements. ' + JSON.stringify(error));
     });
   }
@@ -254,13 +335,16 @@ export class Login {
     this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
       this.setLoadingMessages('Saving '+response[resource].length+' indicators');
       this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+        this.updateProgressTracker(resource);
         this.downloadingReports();
       },error=>{
         this.loadingData = false;
+        this.isLoginProcessActive = false;
         this.setStickToasterMessage('Fail to save indicators. ' + JSON.stringify(error));
       });
     },error=>{
       this.loadingData = false;
+      this.isLoginProcessActive = false;
       this.setStickToasterMessage('Fail to download indicators. ' + JSON.stringify(error));
     });
   }
@@ -274,13 +358,16 @@ export class Login {
     this.app.downloadMetadata(this.loginData,resource,null,fields,filter).then(response=>{
       this.setLoadingMessages('Saving '+response[resource].length+' reports');
       this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+        this.updateProgressTracker(resource);
         this.downloadingConstants();
       },error=>{
         this.loadingData = false;
+        this.isLoginProcessActive = false;
         this.setStickToasterMessage('Fail to save reports. ' + JSON.stringify(error));
       });
     },error=>{
       this.loadingData = false;
+      this.isLoginProcessActive = false;
       this.setStickToasterMessage('Fail to download reports. ' + JSON.stringify(error));
     });
   }
@@ -293,6 +380,7 @@ export class Login {
     this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
       this.setLoadingMessages('Saving '+response[resource].length+' constants');
       this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+        this.updateProgressTracker(resource);
         this.setLandingPage();
       },error=>{
         this.loadingData = false;
@@ -309,8 +397,9 @@ export class Login {
     this.loginData.password = "";
     this.user.setCurrentUser(this.loginData).then(()=>{
       this.synchronization.startSynchronization().then(()=>{
-        this.navCtrl.setRoot(TabsPage);
         this.loadingData = false;
+        this.isLoginProcessActive = false;
+        this.navCtrl.setRoot(TabsPage);
       });
     });
   }
