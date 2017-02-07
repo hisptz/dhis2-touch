@@ -122,7 +122,6 @@ export class Login {
             });
           });
       }
-
     } else {
       this.setToasterMessage('Please Enter server url');
     }

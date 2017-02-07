@@ -11,7 +11,7 @@
   <ion-grid>
 
     <ion-row>
-      <ion-col class="topSLogan" width-100 >
+      <ion-col class="topSLogan">
         <div class="logo">
           <img [src]="logoUrl" >
         </div>
@@ -21,9 +21,9 @@
     </ion-row>
 
     <ion-row >
-      <ion-col width-100 class="loginForm">
+      <ion-col >
 
-        <ion-list *ngIf="!loadingData">
+        <div *ngIf="!loadingData">
 
           <ion-item>
             <ion-input [(ngModel)]="loginData.serverUrl" type="url" placeholder="Enter server URL"></ion-input>
@@ -37,7 +37,7 @@
             <ion-input [(ngModel)]="loginData.password" type="password" placeholder="Enter password"></ion-input>
           </ion-item>
 
-        </ion-list>
+        </div>
 
         <div *ngIf="loadingData">
           <ion-list>

@@ -210,6 +210,9 @@
             </button>
           </ion-col>
         </ion-row>
+
+        <div *ngIf="isDataSetCompleted">Completed by: <b>{{ dataSetCompletenessInformation.name }}</b> at: <b>{{ dataSetCompletenessInformation.date }}</b></div>
+
       </ion-item-divider>
     </ion-item-group>
 
