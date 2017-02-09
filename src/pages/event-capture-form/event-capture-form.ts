@@ -233,7 +233,7 @@ export class EventCaptureForm {
     if(dataElement.description){
       title += ". Description : " + dataElement.description;
     }
-    title += ". Value Type : " +dataElement.valueType.toLocaleLowerCase().replace(/_/g," ");
+    subTitle += "Value Type : " +dataElement.valueType.toLocaleLowerCase().replace(/_/g," ");
     if(dataElement.optionSet){
       title += ". It has " +dataElement.optionSet.options.length + " options to select.";
     }

@@ -15,6 +15,22 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
+
+//action sheet style for tool tips
+.action-sheet-md .action-sheet-title {
+  padding: 5px 16px 5px;
+  font-size: 18px;
+  text-align: left;
+  color: #757575;
+}
+
+.action-sheet-sub-title{
+  padding: 0px 16px 17px;
+  font-size: 18px;
+  text-align: left;
+  color: #757575;
+}
+
 //items
 .item-md p {
   font-size: 18px !important;
