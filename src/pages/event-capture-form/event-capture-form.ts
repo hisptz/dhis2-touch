@@ -229,7 +229,11 @@ export class EventCaptureForm {
   showTooltips(dataElement,categoryComboName,isMandatory){
     let title = dataElement.name + (categoryComboName != 'default' ? " " +categoryComboName:"");
     let subTitle = "";
-    title += ". " + (isMandatory)? "This field is mandatory" : " This field is optional";
+    if(isMandatory == "true"){
+      title += ". This field is mandatory";
+    }else{
+      title += ". This field is optional";
+    }
     if(dataElement.description){
       title += ". Description : " + dataElement.description;
     }

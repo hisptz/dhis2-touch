@@ -74,7 +74,7 @@
             <div *ngIf="section.id == currentPage">
               <div *ngFor="let programStageDataElement of section.programStageDataElements">
                 <br>
-                <div (click)="showTooltips(programStageDataElement.dataElement,'',programStageDataElement)" class="inputLabel">
+                <div (click)="showTooltips(programStageDataElement.dataElement,'',programStageDataElement.compulsory)" class="inputLabel">
                   {{ getDisplayName(programStageDataElement.dataElement) }}&nbsp;&nbsp;
                   <span *ngIf="programStageDataElement.compulsory == 'true'" class="required">*</span>
                   <span *ngIf="programStageDataElement.dataElement.description">

@@ -36,8 +36,9 @@ export class Launcher {
               private app : AppProvider,private httpClient : HttpClient,private user : User) {
 
     this.logoUrl = 'assets/img/logo-2.png';
-    this.loadingData = false;
+    this.loadingData = true;
     this.loadingMessages = [];
+    this.setLoadingMessages("Please wait..");
     this.user.getCurrentUser().then(user=>{
       this.reAuthenticateUser(user);
     });
