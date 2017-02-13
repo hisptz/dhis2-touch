@@ -34,6 +34,7 @@ export class Login {
   public progress : string = "0";
   public progressTracker : any;
   public completedTrackedProcess : any;
+  public currentResourceType : string = "";
   //organisationUnit, entryForm,event
 
   constructor(public navCtrl: NavController,private Storage : Storage,
@@ -136,6 +137,7 @@ export class Login {
         this.progressTracker.communication.passStep = [];
         this.progressTracker.organisationUnit.passStep = [];
         let resource = "Authenticating user";
+        this.currentResourceType = "communication";
         this.updateProgressBarPercentage();
         this.completedTrackedProcess = this.getCompletedTrackedProcess();
         this.loadingData = true;
@@ -154,10 +156,12 @@ export class Login {
               this.user.setUserData(JSON.parse(response.data)).then(userData=>{
                 this.app.getDataBaseName(this.loginData.serverUrl).then(databaseName=>{
                   resource = 'Opening database';
+                  this.currentResourceType = "communication";
                   this.sqlLite.generateTables(databaseName).then(()=>{
                     this.loginData.currentDatabase = databaseName;
                     this.updateProgressTracker(resource);
                     resource = 'Loading system information';
+                    this.currentResourceType = "communication";
                     this.httpClient.get('/api/system/info',this.loginData).subscribe(
                       data => {
                         data = data.json();
@@ -200,6 +204,7 @@ export class Login {
 
   downloadingOrganisationUnits(userData){
     let resource = 'organisationUnits';
+    this.currentResourceType = "organisationUnit";
     let ids = [];
     userData.organisationUnits.forEach(organisationUnit=>{
       if(organisationUnit.id){
@@ -227,6 +232,7 @@ export class Login {
 
   downloadingDataSets(){
     let resource = 'dataSets';
+    this.currentResourceType = "entryForm";
     if(this.completedTrackedProcess.indexOf() > -1){
       this.downloadingSections();
     }else{
@@ -252,6 +258,7 @@ export class Login {
 
   downloadingSections(){
     let resource = 'sections';
+    this.currentResourceType = "entryForm";
     if(this.completedTrackedProcess.indexOf() > -1){
       this.downloadingPrograms();
     }else{
@@ -277,6 +284,7 @@ export class Login {
 
   downloadingPrograms(){
     let resource = 'programs';
+    this.currentResourceType = "event";
     if(this.completedTrackedProcess.indexOf() > -1){
       this.downloadingProgramStageSections();
     }else{
@@ -302,6 +310,7 @@ export class Login {
 
   downloadingProgramStageSections(){
     let resource = 'programStageSections';
+    this.currentResourceType = "event";
     if(this.completedTrackedProcess.indexOf() > -1){
       this.downloadingProgramStageDataElements();
     }else{
@@ -327,6 +336,7 @@ export class Login {
 
   downloadingProgramStageDataElements(){
     let resource = 'programStageDataElements';
+    this.currentResourceType = "event";
     if(this.completedTrackedProcess.indexOf() > -1){
       //this.downloadingIndicators();
       this.setLandingPage();
@@ -354,6 +364,7 @@ export class Login {
 
   downloadingIndicators(){
     let resource = 'indicators';
+    this.currentResourceType = "report";
     if(this.completedTrackedProcess.indexOf() > -1){
       this.downloadingReports();
     }else{
@@ -379,6 +390,7 @@ export class Login {
 
   downloadingReports(){
     let resource = 'reports';
+    this.currentResourceType = "report";
     if(this.completedTrackedProcess.indexOf() > -1){
       this.downloadingConstants();
     }else{
@@ -405,6 +417,7 @@ export class Login {
 
   downloadingConstants(){
     let resource = 'constants';
+    this.currentResourceType = "report";
     if(this.completedTrackedProcess.indexOf() > -1){
       this.setLandingPage();
     }else{
