@@ -36,9 +36,8 @@ export class Launcher {
               private app : AppProvider,private httpClient : HttpClient,private user : User) {
 
     this.logoUrl = 'assets/img/logo-2.png';
-    this.loadingData = true;
+    this.loadingData = false;
     this.loadingMessages = [];
-    this.setLoadingMessages("Please waiting..");
     this.user.getCurrentUser().then(user=>{
       this.reAuthenticateUser(user);
     });
@@ -50,10 +49,10 @@ export class Launcher {
 
   reAuthenticateUser(user){
     if(user && user.isLogin){
-      this.navCtrl.push(TabsPage);
+      this.navCtrl.setRoot(TabsPage);
       this.loadingData = false;
     }else{
-      this.navCtrl.push(Login);
+      this.navCtrl.setRoot(Login);
       this.loadingData = false;
     }
   }

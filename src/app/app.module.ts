@@ -38,11 +38,12 @@ import {SqlLite} from "../providers/sql-lite/sql-lite";
 import {DataValues} from "../providers/data-values";
 import {EventCaptureFormProvider} from "../providers/event-capture-form-provider";
 import {Synchronization} from "../providers/synchronization";
+import {Launcher} from "../pages/launcher/launcher";
 
 @NgModule({
   declarations: [
     MyApp,About,DashBoardHome,EventCaptureHome,EventView,DashboardItems,
-    TabsPage,Help,Login,Profile,DataEntryHome,
+    TabsPage,Help,Login,Profile,DataEntryHome,Launcher,
     EventFieldSelectionMenu,ProgressBarPage,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,
     Account,ReportHome,SettingHome,TrackerCaptureHome,ObjectToArray,ProgramSelection,
@@ -55,7 +56,7 @@ import {Synchronization} from "../providers/synchronization";
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,About,DashBoardHome,EventCaptureHome,EventView,DashboardItems,
-    TabsPage,Help,Login,Profile,DataEntryHome,SettingDetail,
+    TabsPage,Help,Login,Profile,DataEntryHome,SettingDetail,Launcher,
     EventFieldSelectionMenu,ProgressBarPage,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,ReportParameterSelection,
     Account,ReportHome,SettingHome,TrackerCaptureHome,ProgramSelection,DataEntryForm,ReportView,EventCaptureForm

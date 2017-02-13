@@ -42,11 +42,8 @@ export class Login {
               private toastCtrl: ToastController,private DataValues: DataValues,
               private app : AppProvider,private httpClient : HttpClient,private user : User) {
     this.logoUrl = 'assets/img/logo-2.png';
-    this.loadingData = true;
-    this.loadingMessages = [];
     this.completedTrackedProcess = [];
     this.progressTracker = this.getEmptyProgressTracker();
-    this.setLoadingMessages("Please waiting..");
     this.user.getCurrentUser().then(user=>{
       this.reAuthenticateUser(user);
     });
@@ -116,19 +113,10 @@ export class Login {
 
   reAuthenticateUser(user){
     if(user){
-      if(user.isLogin){
-        this.loginData = user;
-        this.setLandingPage();
-      }else if(user.serverUrl){
-        this.loginData.serverUrl = user.serverUrl;
-        if(user.username){
-          this.loginData.username = user.username;
-        }
-      }
+      this.loginData = user;
       if(user.progressTracker){
         this.progressTracker = user.progressTracker;
       }
-      this.loadingData = false;
     }else{
       this.loginData["progressTracker"] = this.getEmptyProgressTracker();
       this.progressTracker = this.getEmptyProgressTracker();
@@ -156,7 +144,9 @@ export class Login {
           .then(formattedBaseUrl => {
             this.loginData.serverUrl = formattedBaseUrl;
             this.user.authenticateUser(this.loginData).then((response:any)=> {
-              response = response.data;
+              if(response.data.data){
+                response = response.data;
+              }
               this.loginData = response.user;
               //set authorization key and reset password
               this.loginData.authorizationKey = btoa(this.loginData.username + ':' + this.loginData.password);
