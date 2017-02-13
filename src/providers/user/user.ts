@@ -18,23 +18,59 @@ export class User {
 
   }
 
-  authenticateUser(user){
+  getUserDataFromServer(user){
     HTTP.useBasicAuth(user.username, user.password);
-    let self = this;
     let fields = "fields=[:all],userCredentials[userRoles[name,dataSets[id,name],programs[id,name]]";
     let url = user.serverUrl + "/api/me.json?" + fields;
     return new Promise(function(resolve, reject) {
       HTTP.get(url, {}, {})
         .then((data:any)  => {
-          resolve({data : data.data,user : user});
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
+  authenticateUser(user){
+    HTTP.useBasicAuth(user.username, user.password);
+    let self = this;
+    return new Promise(function(resolve, reject) {
+      HTTP.get(user.serverUrl + "", {}, {})
+        .then((data:any)  => {
+          if(data.status == 200){
+            let setCookieArray = data.headers["Set-Cookie"].split(";");
+            let path = "";let url = "";
+            let serverUrlArray = user.serverUrl.split("/");
+            setCookieArray.forEach((value : any)=>{
+              if(value.indexOf("Path=/") > -1){
+                let pathValues = value.split("Path=/");
+                path = pathValues[pathValues.length -1].split("/")[0];
+              }
+            });
+            if(serverUrlArray[serverUrlArray.length -1] != path){
+              url = (serverUrlArray[serverUrlArray.length -1] == "")? user.serverUrl + path : user.serverUrl + "/"+ path;
+            }else{
+              url = user.serverUrl;
+            }
+            user.serverUrl = url;
+            self.getUserDataFromServer(user).then((data:any) => {
+                resolve({data : data.data,user : user});
+              })
+              .catch(error => {
+                reject(error);
+              });
+          }else{
+            reject(data);
+          }
         })
         .catch(error => {
           if(error.status == 301 || error.status == 302){
             if(error.headers.Location){
-              let urlArray = error.headers.Location.split("/api/me.json");
-              user.serverUrl = urlArray[0];
+              user.serverUrl = error.headers.Location;
               self.authenticateUser(user).then((data:any) => {
-                  resolve({data : data.data,user : user});
+                  resolve({data : data,user : user});
                 })
                 .catch(error => {
                   reject(error);

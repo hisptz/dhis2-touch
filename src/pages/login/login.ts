@@ -147,6 +147,7 @@ export class Login {
         //empty communication as well as organisation unit
         this.progressTracker.communication.passStep = [];
         this.progressTracker.organisationUnit.passStep = [];
+        let resource = "Authenticating user";
         this.updateProgressBarPercentage();
         this.completedTrackedProcess = this.getCompletedTrackedProcess();
         this.loadingData = true;
@@ -154,20 +155,23 @@ export class Login {
         this.app.getFormattedBaseUrl(this.loginData.serverUrl)
           .then(formattedBaseUrl => {
             this.loginData.serverUrl = formattedBaseUrl;
-            this.updateProgressTracker('Authenticating user');
             this.user.authenticateUser(this.loginData).then((response:any)=> {
+              response = response.data;
               this.loginData = response.user;
               //set authorization key and reset password
               this.loginData.authorizationKey = btoa(this.loginData.username + ':' + this.loginData.password);
+              this.updateProgressTracker(resource);
               this.user.setUserData(JSON.parse(response.data)).then(userData=>{
                 this.app.getDataBaseName(this.loginData.serverUrl).then(databaseName=>{
-                  this.updateProgressTracker('Opening database');
+                  resource = 'Opening database';
                   this.sqlLite.generateTables(databaseName).then(()=>{
                     this.loginData.currentDatabase = databaseName;
-                    this.updateProgressTracker('Loading system information');
+                    this.updateProgressTracker(resource);
+                    resource = 'Loading system information';
                     this.httpClient.get('/api/system/info',this.loginData).subscribe(
                       data => {
                         data = data.json();
+                        this.updateProgressTracker(resource);
                         this.user.setCurrentUserSystemInformation(data).then(()=>{
                           this.downloadingOrganisationUnits(userData);
                         },error=>{
@@ -182,7 +186,7 @@ export class Login {
                       });
 
                   },error=>{
-                    this.setToasterMessage('Fail to open database. : ' + JSON.stringify(error) );
+                    this.setToasterMessage('Fail to open database.');
                   })
                 })
               });
@@ -222,12 +226,12 @@ export class Login {
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
-        this.setStickToasterMessage('Fail to save organisation data. ' + JSON.stringify(error));
+        this.setStickToasterMessage('Fail to save organisation data.');
       });
     },error=>{
       this.loadingData = false;
       this.isLoginProcessActive = false;
-      this.setStickToasterMessage('Fail to download organisation data. ' + JSON.stringify(error));
+      this.setStickToasterMessage('Fail to download organisation data.');
     });
   }
 
@@ -246,12 +250,12 @@ export class Login {
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
-          this.setStickToasterMessage('Fail to save data entry form. ' + JSON.stringify(error));
+          this.setStickToasterMessage('Fail to save data entry form.');
         });
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
-        this.setStickToasterMessage('Fail to download data entry form. ' + JSON.stringify(error));
+        this.setStickToasterMessage('Fail to download data entry form.');
       });
     }
   }
@@ -271,12 +275,12 @@ export class Login {
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
-          this.setStickToasterMessage('Fail to save data entry form sections. ' + JSON.stringify(error));
+          this.setStickToasterMessage('Fail to save data entry form sections.');
         });
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
-        this.setStickToasterMessage('Fail to download data entry form sections. ' + JSON.stringify(error));
+        this.setStickToasterMessage('Fail to download data entry form sections.');
       });
     }
   }
@@ -296,12 +300,12 @@ export class Login {
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
-          this.setStickToasterMessage('Fail to save programs. ' + JSON.stringify(error));
+          this.setStickToasterMessage('Fail to save programs.');
         });
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
-        this.setStickToasterMessage('Fail to download programs. ' + JSON.stringify(error));
+        this.setStickToasterMessage('Fail to download programs.');
       });
     }
   }
@@ -321,12 +325,12 @@ export class Login {
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
-          this.setStickToasterMessage('Fail to save program-stage sections. ' + JSON.stringify(error));
+          this.setStickToasterMessage('Fail to save program-stage sections.');
         });
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
-        this.setStickToasterMessage('Fail to download program-stage sections. ' + JSON.stringify(error));
+        this.setStickToasterMessage('Fail to download program-stage sections.');
       });
     }
   }
@@ -348,12 +352,12 @@ export class Login {
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
-          this.setStickToasterMessage('Fail to save program-stage data-elements. ' + JSON.stringify(error));
+          this.setStickToasterMessage('Fail to save program-stage data-elements.');
         });
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
-        this.setStickToasterMessage('Fail to download program-stage data-elements. ' + JSON.stringify(error));
+        this.setStickToasterMessage('Fail to download program-stage data-elements.');
       });
     }
   }
@@ -373,12 +377,12 @@ export class Login {
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
-          this.setStickToasterMessage('Fail to save indicators. ' + JSON.stringify(error));
+          this.setStickToasterMessage('Fail to save indicators.');
         });
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
-        this.setStickToasterMessage('Fail to download indicators. ' + JSON.stringify(error));
+        this.setStickToasterMessage('Fail to download indicators.');
       });
     }
   }
@@ -399,12 +403,12 @@ export class Login {
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
-          this.setStickToasterMessage('Fail to save reports. ' + JSON.stringify(error));
+          this.setStickToasterMessage('Fail to save reports.');
         });
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
-        this.setStickToasterMessage('Fail to download reports. ' + JSON.stringify(error));
+        this.setStickToasterMessage('Fail to download reports.');
       });
     }
   }
@@ -423,11 +427,11 @@ export class Login {
           this.setLandingPage();
         },error=>{
           this.loadingData = false;
-          this.setStickToasterMessage('Fail to save constants. ' + JSON.stringify(error));
+          this.setStickToasterMessage('Fail to save constants.');
         });
       },error=>{
         this.loadingData = false;
-        this.setStickToasterMessage('Fail to download constants. ' + JSON.stringify(error));
+        this.setStickToasterMessage('Fail to download constants.');
       });
     }
   }
