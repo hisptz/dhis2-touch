@@ -24,10 +24,15 @@ export class About {
   public loadingData : boolean = false;
   public loadingMessages : any = [];
   public currentUser : any;
-  public systemInformation : any;
+  public systemInformation : any = [];
   public appInformation : any;
   public dataValuesStorage : any = { online : 0,offline : 0};
   public eventsStorage : any = { online : 0,offline : 0};
+  public hideAndShowObject : any = {
+    systemInformation : {
+      status : false,count : 4
+    }
+  };
 
   constructor(private toastCtrl: ToastController,private user : User,
               private appProvider : AppProvider,private httpClient : HttpClient,
@@ -117,6 +122,15 @@ export class About {
       array.push({key : newKey,value : newValue})
     }
     return array;
+  }
+
+  hideAndShowDetails(key,totalCount){
+    if(this.hideAndShowObject[key].status){
+      this.hideAndShowObject[key].count = 3;
+    }else{
+      this.hideAndShowObject[key].count = totalCount;
+    }
+    this.hideAndShowObject[key].status = !this.hideAndShowObject[key].status;
   }
 
   setLoadingMessages(message){

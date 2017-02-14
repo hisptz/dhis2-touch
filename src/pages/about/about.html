@@ -5,13 +5,10 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
   <ion-navbar color="primary">
     <ion-title>About</ion-title>
   </ion-navbar>
-
 </ion-header>
-
 
 <ion-content class="about" >
   <div *ngIf="loadingData">
@@ -37,7 +34,7 @@
       <ion-item-divider color="primary">
         <b>App Information</b>
       </ion-item-divider>
-      <ion-item *ngFor="let entry of appInformation ">
+      <ion-item *ngFor="let entry of appInformation;let currentAppInfoIndex = index ">
         <h2>{{ entry.key }}</h2>
         <p>{{ entry.value }}</p>
       </ion-item>
@@ -75,10 +72,25 @@
       <ion-item-divider color="primary">
         <b>System Information</b>
       </ion-item-divider>
-      <ion-item *ngFor="let entry of systemInformation">
-        <h2>{{ entry.key }}</h2>
-        <p>{{ entry.value }}</p>
+      <div *ngFor="let entry of systemInformation;let currentSystemInfoIndex = index">
+        <ion-item  *ngIf="currentSystemInfoIndex < hideAndShowObject.systemInformation.count">
+          <h2>{{ entry.key }}</h2>
+          <p>{{ entry.value }}</p>
+        </ion-item>
+      </div>
+      <ion-item *ngIf="hideAndShowObject.systemInformation.count <= systemInformation.length " >
+        <div item-right>
+          <button class="normalButton" ion-button clear  text-capitalize (click)="hideAndShowDetails('systemInformation',systemInformation.length)">
+            <div *ngIf="hideAndShowObject.systemInformation.status">
+              Show less
+            </div>
+            <div *ngIf="!hideAndShowObject.systemInformation.status">
+              Show more
+            </div>
+          </button>
+        </div>
       </ion-item>
+
     </ion-item-group>
   </div>
 </ion-content>
