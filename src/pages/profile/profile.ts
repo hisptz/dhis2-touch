@@ -22,13 +22,23 @@ export class Profile {
   public loadingData : boolean = false;
   public loadingMessages : any = [];
   public currentUser : any;
-  public profileInformation : any;
-  public userRoles : any;
-  public assignedForms : any;
-  public assignedPrograms : any;
-  public assignOrgUnits : any;
+  public profileInformation : any = [];
+  public userRoles : any = [];
+  public assignedForms : any = [];
+  public assignedPrograms : any = [];
+  public assignOrgUnits : any = [];
+  public hideAndShowObject : any = {
+    profileInformation : { status : false,count : 3 },
+    assignOrgUnits : { status : false,count : 3 },
+    userRoles : { status : false,count : 3 },
+    assignedPrograms : { status : false,count : 3 },
+    assignedForms :{ status : false,count : 3 }
+  };
 
-  constructor(public toastCtrl: ToastController,public user : User,public appProvider : AppProvider,public sqlLite : SqlLite,public httpClient: HttpClient) {
+  constructor(public toastCtrl: ToastController,public user : User,
+              public appProvider : AppProvider,public sqlLite : SqlLite,
+              public httpClient: HttpClient) {
+
     this.user.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;
       this.loadingProfileInformation();
@@ -121,6 +131,15 @@ export class Profile {
       array.push({key : newKey,value : newValue})
     }
     return array;
+  }
+
+  hideAndShowDetails(key,totalCount){
+    if(this.hideAndShowObject[key].status){
+      this.hideAndShowObject[key].count = 4;
+    }else{
+      this.hideAndShowObject[key].count = totalCount;
+    }
+    this.hideAndShowObject[key].status = !this.hideAndShowObject[key].status;
   }
 
   setLoadingMessages(message){

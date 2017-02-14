@@ -126,7 +126,7 @@ export class About {
 
   hideAndShowDetails(key,totalCount){
     if(this.hideAndShowObject[key].status){
-      this.hideAndShowObject[key].count = 3;
+      this.hideAndShowObject[key].count = 4;
     }else{
       this.hideAndShowObject[key].count = totalCount;
     }
