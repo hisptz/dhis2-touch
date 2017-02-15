@@ -39,11 +39,13 @@ import {DataValues} from "../providers/data-values";
 import {EventCaptureFormProvider} from "../providers/event-capture-form-provider";
 import {Synchronization} from "../providers/synchronization";
 import {Launcher} from "../pages/launcher/launcher";
+import {EntryFormSelection} from "../providers/entry-form-selection";
+import {SendDataViaSms} from "../pages/send-data-via-sms/send-data-via-sms";
 
 @NgModule({
   declarations: [
     MyApp,About,DashBoardHome,EventCaptureHome,EventView,DashboardItems,
-    TabsPage,Help,Login,Profile,DataEntryHome,Launcher,
+    TabsPage,Help,Login,Profile,DataEntryHome,Launcher,SendDataViaSms,
     EventFieldSelectionMenu,ProgressBarPage,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,
     Account,ReportHome,SettingHome,TrackerCaptureHome,ObjectToArray,ProgramSelection,
@@ -56,11 +58,11 @@ import {Launcher} from "../pages/launcher/launcher";
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,About,DashBoardHome,EventCaptureHome,EventView,DashboardItems,
-    TabsPage,Help,Login,Profile,DataEntryHome,SettingDetail,Launcher,
+    TabsPage,Help,Login,Profile,DataEntryHome,SettingDetail,Launcher,SendDataViaSms,
     EventFieldSelectionMenu,ProgressBarPage,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,ReportParameterSelection,
     Account,ReportHome,SettingHome,TrackerCaptureHome,ProgramSelection,DataEntryForm,ReportView,EventCaptureForm
   ],
-  providers: [Storage,HttpClient,SqlLite,DataValues,EventCaptureFormProvider,Synchronization]
+  providers: [Storage,HttpClient,SqlLite,DataValues,EventCaptureFormProvider,Synchronization,EntryFormSelection]
 })
 export class AppModule {}
