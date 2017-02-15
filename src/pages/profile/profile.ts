@@ -28,11 +28,11 @@ export class Profile {
   public assignedPrograms : any = [];
   public assignOrgUnits : any = [];
   public hideAndShowObject : any = {
-    profileInformation : { status : false,count : 3 },
-    assignOrgUnits : { status : false,count : 3 },
-    userRoles : { status : false,count : 3 },
-    assignedPrograms : { status : false,count : 3 },
-    assignedForms :{ status : false,count : 3 }
+    profileInformation : { status : false,count : 4 },
+    assignOrgUnits : { status : false,count : 4 },
+    userRoles : { status : false,count : 4},
+    assignedPrograms : { status : false,count : 4 },
+    assignedForms :{ status : false,count : 4 }
   };
 
   constructor(public toastCtrl: ToastController,public user : User,
