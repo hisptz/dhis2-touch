@@ -48,7 +48,6 @@ export class DataSets {
     let attribute = "id";
     let attributeValue = [];
     attributeValue.push(dataSetId);
-    let dataSet;
     let self = this;
     return new Promise(function(resolve, reject) {
       self.sqlLite.getDataFromTableByAttributes(self.resource,attribute,attributeValue,currentUser.currentDatabase).then((dataSets : any)=>{

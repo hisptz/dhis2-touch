@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs/Rx';
 
 /*
  Generated class for the ChartVisualizer provider.

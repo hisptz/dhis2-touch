@@ -2,9 +2,6 @@ import { Component } from '@angular/core';
 import { NavController,ToastController,ModalController } from 'ionic-angular';
 
 import {User} from '../../providers/user/user';
-import {AppProvider} from '../../providers/app-provider/app-provider';
-import {HttpClient} from "../../providers/http-client/http-client";
-import {SqlLite} from "../../providers/sql-lite/sql-lite";
 import {OrganisationUnits} from "../organisation-units/organisation-units";
 import {DataSetSelection} from "../data-set-selection/data-set-selection";
 import {PeriodSelection} from "../period-selection/period-selection";
@@ -22,7 +19,7 @@ declare var dhis2: any;
 @Component({
   selector: 'page-data-entry-home',
   templateUrl: 'data-entry-home.html',
-  providers : [User,AppProvider,HttpClient,SqlLite,OrganisationUnit,DataSets],
+  providers : [User,OrganisationUnit,DataSets],
 })
 export class DataEntryHome {
 
@@ -44,9 +41,7 @@ export class DataEntryHome {
 
   constructor(public modalCtrl: ModalController,public navCtrl: NavController,
               public OrganisationUnit : OrganisationUnit,public DataSets : DataSets,
-              public toastCtrl: ToastController,public user : User,
-              public appProvider : AppProvider,public sqlLite : SqlLite,
-              public httpClient: HttpClient) {
+              public toastCtrl: ToastController,public user : User) {
     this.selectedDataDimension = [];
 
     this.user.getCurrentUser().then(currentUser=>{

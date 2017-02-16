@@ -4,9 +4,7 @@ import {ToastController,NavParams,ActionSheetController,NavController } from 'io
 import {User} from '../../providers/user/user';
 import {HttpClient} from "../../providers/http-client/http-client";
 import {SqlLite} from "../../providers/sql-lite/sql-lite";
-import {ProgramSelection} from "../program-selection/program-selection";
 import {Program} from "../../providers/program";
-import {OrganisationUnit} from "../../providers/organisation-unit";
 import {Events} from "../../providers/events";
 import {ProgramStageDataElements} from "../../providers/program-stage-data-elements";
 import {ProgramStageSections} from "../../providers/program-stage-sections";

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import {Observable} from 'rxjs/Rx';
 
 /*
   Generated class for the EntryFormSelection provider.

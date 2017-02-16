@@ -95,7 +95,6 @@ export class DataValues {
   completeOnDataSetRegistrations(dataSetId,period,orgUnitId,dataDimension,currentUser){
     let self = this;
     let parameter = self.getDataSetCompletenessParameter(dataSetId,period,orgUnitId,dataDimension);
-    let data :any = {};
     return new Promise(function(resolve, reject) {
       self.httpClient.post('/api/completeDataSetRegistrations?'+parameter,{},currentUser).subscribe(response=>{
         resolve(response.json());

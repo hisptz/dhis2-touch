@@ -232,7 +232,6 @@ export class Events {
 
   uploadEventsToServer(events,currentUser){
     let self = this;
-    let promises = [];
     return new Promise(function(resolve, reject) {
       events.forEach((event:any)=> {
         if(event["syncStatus"] == "new event"){

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "./http-client/http-client";
 import {SqlLite} from "./sql-lite/sql-lite";
-import {Observable} from 'rxjs/Rx';
 
 /*
   Generated class for the Report provider.

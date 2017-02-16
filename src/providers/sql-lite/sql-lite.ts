@@ -299,7 +299,6 @@ export class SqlLite {
   }
 
   deleteAllOnTable(tableName,databaseName){
-    let self = this;
     databaseName = databaseName + '.db';
     let query = "DELETE FROM " + tableName;
 
