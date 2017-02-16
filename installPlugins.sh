@@ -10,3 +10,4 @@ ionic plugin add ionic-plugin-keyboard
 ionic plugin add cordova-plugin-network-information
 cordova plugin add cordova-plugin-network-information
 ionic plugin add cordova-plugin-http
+ionic plugin add cordova-sms-plugin

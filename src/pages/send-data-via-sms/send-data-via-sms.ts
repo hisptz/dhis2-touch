@@ -37,6 +37,7 @@ export class SendDataViaSms {
   public currentPeriodOffset : number;
   public currentSelectionStatus :any = {};
   public sendDataViaSmsObject : any = {
+    reportingSms : "",
     orgUnit : {},dataSet : {},period : {},dataDimension : {},mobileNumber : "",isLoading : false,loadingMessage : ""
   };
 
@@ -115,6 +116,9 @@ export class SendDataViaSms {
     }else{
       this.selectedDataSetLabel = "Touch to select Entry Form";
       this.currentSelectionStatus.period = false;
+      this.sendDataViaSmsObject.mobileNumber = "";
+      this.sendDataViaSmsObject.isLoading = false;
+      this.sendDataViaSmsObject.loadingMessage = "";
       this.currentSelectionStatus.isDataSetSelected = false;
       this.currentSelectionStatus.allParameterSet = false;
       if (this.currentSelectionStatus.dataSet && !this.currentSelectionStatus.period) {
@@ -275,13 +279,33 @@ export class SendDataViaSms {
       this.sendDataViaSmsObject.dataDimension = this.getDataDimension();
     }
     this.sendDataViaSmsObject.isLoading = true;
-    this.sendDataViaSmsObject.loadingMessage = "Sms Configuration";
+    this.sendDataViaSmsObject.loadingMessage = "Loading Sms Configuration";
     this.SmsCommand.getSmsCommandForDataSet(this.selectedDataSet.id,this.currentUser).then((smsCommand:any)=>{
-      alert(smsCommand.id);
+      this.sendDataViaSmsObject.loadingMessage = "Preparing Data";
+      let dataElements = this.SmsCommand.getEntryFormDataElements(this.selectedDataSet);
+      this.SmsCommand.getEntryFormDataValuesObjectFromStorage(this.selectedDataSet.id,this.selectedPeriod.iso,this.selectedOrganisationUnit.id,dataElements,this.currentUser).then((entryFormDataValuesObject:any)=>{
+        let key = Object.keys(entryFormDataValuesObject);
+        if(key.length > 0){
+          this.sendDataViaSmsObject.loadingMessage = "Preparing sms";
+          this.SmsCommand.getSmsForReportingData(smsCommand,entryFormDataValuesObject).then((reportingSms:any)=>{
+            this.sendDataViaSmsObject.reportingSms = reportingSms;
+            this.sendDataViaSmsObject.isLoading = false;
+            this.sendDataViaSmsObject.loadingMessage = "";
+          });
+        }else{
+          this.sendDataViaSmsObject.isLoading = false;
+          this.sendDataViaSmsObject.loadingMessage = "";
+          this.setToasterMessage("There is no data to be sent via sms for " + this.selectedDataSet.name);
+        }
+      },error=>{
+        this.sendDataViaSmsObject.isLoading = false;
+        this.sendDataViaSmsObject.loadingMessage = "";
+        this.setToasterMessage("Fail to prepare data for " +this.selectedDataSet.name);
+      });
     },error=>{
       this.sendDataViaSmsObject.isLoading = false;
       this.sendDataViaSmsObject.loadingMessage = "";
-      this.setToasterMessage("Fail to get sms configuration for " +this.selectedDataSet.name);
+      this.setToasterMessage("Fail to load sms configuration for " +this.selectedDataSet.name);
     });
 
   }

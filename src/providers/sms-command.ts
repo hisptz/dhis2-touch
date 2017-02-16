@@ -3,6 +3,8 @@ import {HttpClient} from "./http-client/http-client";
 import {SqlLite} from "./sql-lite/sql-lite";
 import {Observable} from 'rxjs/Rx';
 
+import { SMS } from 'ionic-native';
+
 /*
   Generated class for the SmsCommand provider.
 
@@ -36,6 +38,12 @@ export class SmsCommand {
     });
   }
 
+  /**
+   * get dataSet command configuration
+   * @param dataSetId
+   * @param currentUser
+   * @returns {Promise<T>}
+     */
   getSmsCommandForDataSet(dataSetId,currentUser){
     let self = this;
     let ids = [];
@@ -51,6 +59,90 @@ export class SmsCommand {
         reject();
       });
     });
+  }
+
+  /**
+   * @param dataSetId
+   * @param period
+   * @param orgUnitId
+   * @param dataElements
+   * @param currentUser
+     * @returns {Promise<T>}
+     */
+  getEntryFormDataValuesObjectFromStorage(dataSetId,period,orgUnitId,dataElements,currentUser){
+    let ids = [];
+    let self = this;
+    let entryFormDataValuesObjectFromStorage = {};
+    dataElements.forEach((dataElement : any)=>{
+      dataElement.categoryCombo.categoryOptionCombos.forEach((categoryOptionCombo : any)=>{
+        ids.push(dataSetId + '-' + dataElement.id + '-' + categoryOptionCombo.id + '-' + period + '-' + orgUnitId);
+      });
+    });
+    return new Promise(function(resolve, reject) {
+      self.SqlLite.getDataFromTableByAttributes("dataValues","id",ids,currentUser.currentDatabase).then((dataValues : any)=>{
+        dataValues.forEach((dataValue : any)=>{
+          let id = dataValue.de + "-" +dataValue.co;
+          entryFormDataValuesObjectFromStorage[id] = dataValue.value;
+        });
+        resolve(entryFormDataValuesObjectFromStorage)
+      },error=>{
+        reject();
+      });
+    });
+  }
+
+  getSmsForReportingData(smsCommand,entryFormDataValuesObject){
+    return new Promise(function(resolve, reject) {
+      let smsForReportingData = smsCommand.commandName + " ";
+      let firstValuesFound = false;
+      smsCommand.smsCode.forEach((smsCodeObject:any)=>{
+        let id = smsCodeObject.dataElement.id + "-" +smsCodeObject.categoryOptionCombos;
+        if(entryFormDataValuesObject[id]){
+          let value = entryFormDataValuesObject[id];
+          if(!firstValuesFound){
+            firstValuesFound = true;
+          }else{
+            smsForReportingData = smsForReportingData + "|";
+          }
+          smsForReportingData = smsForReportingData + smsCodeObject.smsCode + smsCommand.separator + value;
+        }
+      });
+
+      resolve(smsForReportingData);
+    });
+  };
+
+  sendSmsForReportingData(phoneNumber,message){
+    var options={
+      replaceLineBreaks: false,
+      android: {
+        intent: ''
+      }
+    };
+    return new Promise(function(resolve, reject) {
+      SMS.send(phoneNumber,message, options).then((success)=>{
+        resolve(success);
+      },(error)=>{
+        reject(error);
+      });
+    })
+  }
+
+  /**
+   * get dataElements of a given data set
+   * @param dataSet
+   * @returns {Array}
+     */
+  getEntryFormDataElements(dataSet){
+    let dataElements = [];
+    if(dataSet.dataElements && dataSet.dataElements.length > 0){
+      dataElements = dataSet.dataElements;
+    }else if(dataSet.dataSetElements && dataSet.dataSetElements.length > 0){
+      dataSet.dataSetElements.forEach((dataSetElement :any)=>{
+        dataElements.push(dataSetElement.dataElement);
+      });
+    }
+    return dataElements;
   }
 
   /**

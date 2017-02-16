@@ -63,7 +63,7 @@ export class SqlLite {
         {value: 'commandName', type: 'TEXT'},
         {value: 'parserType', type: 'TEXT'},
         {value: 'separator', type: 'TEXT'},
-        {value: 'indicators', type: 'LONGTEXT'},
+        {value: 'smsCode', type: 'LONGTEXT'},
       ],
       fields : "",
       canBeUpdated : true,
