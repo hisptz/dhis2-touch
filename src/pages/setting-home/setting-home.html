@@ -24,7 +24,6 @@
             Synchronization
             <ion-icon *ngIf="!settingObject.synchronizationSetting.isExpanded" name="ios-arrow-forward" item-right></ion-icon>
             <ion-icon *ngIf="settingObject.synchronizationSetting.isExpanded" name="ios-arrow-down" item-right></ion-icon>
-
           </ion-item>
           <div class="settingContents" *ngIf="settingObject.synchronizationSetting.isExpanded" >
             <ion-row>
@@ -40,7 +39,7 @@
                     <ion-option value="hours">Hour(s)</ion-option>
                   </ion-select>
                 </ion-item>
-                <button [disabled]="!settingObject.synchronizationSetting.isSaved" [color]="settingObject.synchronizationSetting.isSaved?'primary':'whitecolor'"  ion-button full text-capitalize (click)="saveSetting('synchronizationSetting')">
+                <button [disabled]="!settingObject.synchronizationSetting.isSaved" [color]="settingObject.synchronizationSetting.isSaved?'primary':'whitecolor'" class="normalButton" ion-button full large text-capitalize (click)="saveSetting('synchronizationSetting')">
                   <span *ngIf="!settingObject.synchronizationSetting.isSaved" >
                     <ion-spinner  name="crescent" color="secondary"></ion-spinner>
                     <span margin-top="0px">&nbsp;&nbsp;Saving</span>
@@ -76,7 +75,7 @@
                   <ion-label floating>Max Data Element per section </ion-label>
                   <ion-input type="number"  min="1" [(ngModel)]="dataEntrySetting.maxDataElementOnDefaultForm"></ion-input>
                 </ion-item>
-                <button [disabled]="!settingObject.dataEntrySetting.isSaved" [color]="settingObject.dataEntrySetting.isSaved?'primary':'whitecolor'" ion-button full text-capitalize (click)="saveSetting('dataEntrySetting')">
+                <button [disabled]="!settingObject.dataEntrySetting.isSaved" [color]="settingObject.dataEntrySetting.isSaved?'primary':'whitecolor'" class="normalButton" ion-button full large text-capitalize (click)="saveSetting('dataEntrySetting')">
                   <span *ngIf="!settingObject.dataEntrySetting.isSaved" >
                     <ion-spinner  name="crescent" color="secondary"></ion-spinner>
                     <span margin-top="0px">&nbsp;&nbsp;Saving</span>
