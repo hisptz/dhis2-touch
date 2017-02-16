@@ -57,6 +57,18 @@ export class SqlLite {
       canBeUpdated : true,
       resourceType : "entryForm"
     },
+    smsCommand: {
+      columns: [
+        {value: 'id', type: 'TEXT'},
+        {value: 'commandName', type: 'TEXT'},
+        {value: 'parserType', type: 'TEXT'},
+        {value: 'separator', type: 'TEXT'},
+        {value: 'indicators', type: 'LONGTEXT'},
+      ],
+      fields : "",
+      canBeUpdated : true,
+      resourceType : "entryForm"
+    },
     indicators: {
       columns: [
         {value: 'id', type: 'TEXT'},

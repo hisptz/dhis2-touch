@@ -40,6 +40,7 @@ import {Synchronization} from "../providers/synchronization";
 import {Launcher} from "../pages/launcher/launcher";
 import {EntryFormSelection} from "../providers/entry-form-selection";
 import {SendDataViaSms} from "../pages/send-data-via-sms/send-data-via-sms";
+import {SmsCommand} from "../providers/sms-command";
 
 @NgModule({
   declarations: [
@@ -62,6 +63,6 @@ import {SendDataViaSms} from "../pages/send-data-via-sms/send-data-via-sms";
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,ReportParameterSelection,
     Account,ReportHome,SettingHome,TrackerCaptureHome,ProgramSelection,DataEntryForm,ReportView,EventCaptureForm
   ],
-  providers: [Storage,HttpClient,SqlLite,DataValues,EventCaptureFormProvider,Synchronization,EntryFormSelection]
+  providers: [Storage,HttpClient,SqlLite,DataValues,EventCaptureFormProvider,Synchronization,EntryFormSelection,SmsCommand]
 })
 export class AppModule {}

@@ -7,6 +7,7 @@ import {DataSetSelection} from "../data-set-selection/data-set-selection";
 import {PeriodSelection} from "../period-selection/period-selection";
 import {OrganisationUnit} from "../../providers/organisation-unit";
 import {DataSets} from "../../providers/data-sets";
+import {SmsCommand} from "../../providers/sms-command";
 
 declare var dhis2: any;
 /*
@@ -18,7 +19,7 @@ declare var dhis2: any;
 @Component({
   selector: 'page-send-data-via-sms',
   templateUrl: 'send-data-via-sms.html',
-  providers : [User,OrganisationUnit,DataSets]
+  providers : [User,OrganisationUnit,DataSets,SmsCommand]
 })
 export class SendDataViaSms {
 

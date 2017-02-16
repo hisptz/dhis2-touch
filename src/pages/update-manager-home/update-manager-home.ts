@@ -55,7 +55,7 @@ export class UpdateManagerHome {
     this.resources = [];
     this.dataBaseStructure = this.sqlLite.getDataBaseStructure();
     Object.keys(this.dataBaseStructure).forEach((resource:any)=>{
-      if(this.dataBaseStructure[resource].canBeUpdated){
+      if(this.dataBaseStructure[resource].canBeUpdated && this.dataBaseStructure[resource].fields !=""){
         this.resources.push({
           name : resource,
           displayName : this.getResourceDisplayName(resource),

@@ -10,6 +10,7 @@ import {Synchronization} from "../../providers/synchronization";
 import {DataValues} from "../../providers/data-values";
 import {Setting} from "../../providers/setting";
 import {NetworkAvailability} from "../../providers/network-availability";
+import {SmsCommand} from "../../providers/sms-command";
 
 /*
   Generated class for the Login page.
@@ -20,7 +21,7 @@ import {NetworkAvailability} from "../../providers/network-availability";
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
-  providers : [AppProvider,HttpClient,User,SqlLite,Synchronization,DataValues,Setting,NetworkAvailability]
+  providers : [AppProvider,HttpClient,User,SqlLite,Synchronization,DataValues,Setting,NetworkAvailability,SmsCommand]
 })
 export class Login {
 
@@ -41,7 +42,9 @@ export class Login {
               private Setting: Setting,public NetworkAvailability : NetworkAvailability,
               private sqlLite : SqlLite,private synchronization:Synchronization,
               private toastCtrl: ToastController,private DataValues: DataValues,
-              private app : AppProvider,private httpClient : HttpClient,private user : User) {
+              private app : AppProvider,
+              public SmsCommand : SmsCommand,
+              private httpClient : HttpClient,private user : User) {
     this.logoUrl = 'assets/img/logo-2.png';
     this.completedTrackedProcess = [];
     this.progressTracker = this.getEmptyProgressTracker();
@@ -167,7 +170,8 @@ export class Login {
                         data = data.json();
                         this.updateProgressTracker(resource);
                         this.user.setCurrentUserSystemInformation(data).then(()=>{
-                          this.downloadingOrganisationUnits(userData);
+                          //this.downloadingOrganisationUnits(userData);
+                          this.downloadingSmsCommand();
                         },error=>{
                           this.loadingData = false;
                           this.isLoginProcessActive = false;
@@ -221,12 +225,12 @@ export class Login {
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
-        this.setStickToasterMessage('Fail to save organisation data.');
+        this.setToasterMessage('Fail to save organisation data.');
       });
     },error=>{
       this.loadingData = false;
       this.isLoginProcessActive = false;
-      this.setStickToasterMessage('Fail to download organisation data.');
+      this.setToasterMessage('Fail to download organisation data.');
     });
   }
 
@@ -246,12 +250,12 @@ export class Login {
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
-          this.setStickToasterMessage('Fail to save data entry form.');
+          this.setToasterMessage('Fail to save data entry form.');
         });
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
-        this.setStickToasterMessage('Fail to download data entry form.');
+        this.setToasterMessage('Fail to download data entry form.');
       });
     }
   }
@@ -272,12 +276,39 @@ export class Login {
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
-          this.setStickToasterMessage('Fail to save data entry form sections.');
+          this.setToasterMessage('Fail to save data entry form sections.');
         });
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
-        this.setStickToasterMessage('Fail to download data entry form sections.');
+        this.setToasterMessage('Fail to download data entry form sections.');
+      });
+    }
+  }
+
+  downloadingSmsCommand(){
+    let resource = "smsCommand";
+    this.currentResourceType = "entryForm";
+    if(this.completedTrackedProcess.indexOf() > -1){
+      //this.downloadingSections();
+      this.loadingData = false;
+      this.isLoginProcessActive = false;
+    }else{
+      this.SmsCommand.getSmsCommandFromServer(this.loginData).then((response:any)=>{
+        if(response.length > 0){
+          alert("Success : " + JSON.stringify(response[0]));
+        }else{
+          alert("Success : " + JSON.stringify(response));
+        }
+
+        this.loadingData = false;
+        this.isLoginProcessActive = false;
+        //this.updateProgressTracker(resource);
+        //this.downloadingPrograms();
+      },(error:any)=>{
+        this.loadingData = false;
+        this.isLoginProcessActive = false;
+        this.setToasterMessage('Fail to download metadata for send data via sms');
       });
     }
   }
@@ -298,12 +329,12 @@ export class Login {
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
-          this.setStickToasterMessage('Fail to save programs.');
+          this.setToasterMessage('Fail to save programs.');
         });
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
-        this.setStickToasterMessage('Fail to download programs.');
+        this.setToasterMessage('Fail to download programs.');
       });
     }
   }
@@ -324,12 +355,12 @@ export class Login {
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
-          this.setStickToasterMessage('Fail to save program-stage sections.');
+          this.setToasterMessage('Fail to save program-stage sections.');
         });
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
-        this.setStickToasterMessage('Fail to download program-stage sections.');
+        this.setToasterMessage('Fail to download program-stage sections.');
       });
     }
   }
@@ -352,12 +383,12 @@ export class Login {
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
-          this.setStickToasterMessage('Fail to save program-stage data-elements.');
+          this.setToasterMessage('Fail to save program-stage data-elements.');
         });
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
-        this.setStickToasterMessage('Fail to download program-stage data-elements.');
+        this.setToasterMessage('Fail to download program-stage data-elements.');
       });
     }
   }
@@ -378,12 +409,12 @@ export class Login {
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
-          this.setStickToasterMessage('Fail to save indicators.');
+          this.setToasterMessage('Fail to save indicators.');
         });
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
-        this.setStickToasterMessage('Fail to download indicators.');
+        this.setToasterMessage('Fail to download indicators.');
       });
     }
   }
@@ -405,12 +436,12 @@ export class Login {
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
-          this.setStickToasterMessage('Fail to save reports.');
+          this.setToasterMessage('Fail to save reports.');
         });
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
-        this.setStickToasterMessage('Fail to download reports.');
+        this.setToasterMessage('Fail to download reports.');
       });
     }
   }
@@ -430,11 +461,11 @@ export class Login {
           this.setLandingPage();
         },error=>{
           this.loadingData = false;
-          this.setStickToasterMessage('Fail to save constants.');
+          this.setToasterMessage('Fail to save constants.');
         });
       },error=>{
         this.loadingData = false;
-        this.setStickToasterMessage('Fail to download constants.');
+        this.setToasterMessage('Fail to download constants.');
       });
     }
   }
