@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "./http-client/http-client";
 import {SqlLite} from "./sql-lite/sql-lite";
+import {Observable} from 'rxjs/Rx';
 
 /*
   Generated class for the SmsCommand provider.
@@ -23,6 +24,35 @@ export class SmsCommand {
       },error=>{
         resolve([]);
       });
+    });
+  }
+
+  savingSmsCommand(smsCommands,databaseName){
+    let promises = [];
+    let self = this;
+    let resource = "smsCommand";
+
+    return new Promise(function(resolve, reject) {
+      if(smsCommands.length == 0){
+        resolve();
+      }
+      smsCommands.forEach((smsCommand:any)=>{
+        smsCommand["id"] = smsCommand.commandName;
+        promises.push(
+          self.SqlLite.insertDataOnTable(resource,smsCommand,databaseName).then(()=>{
+            //saving success
+            console.log("smsCommand " + smsCommand["id"]);
+          },(error) => {
+          })
+        );
+      });
+
+      Observable.forkJoin(promises).subscribe(() => {
+          resolve();
+        },
+        (error) => {
+          reject(error);
+        })
     });
   }
 

@@ -170,8 +170,7 @@ export class Login {
                         data = data.json();
                         this.updateProgressTracker(resource);
                         this.user.setCurrentUserSystemInformation(data).then(()=>{
-                          //this.downloadingOrganisationUnits(userData);
-                          this.downloadingSmsCommand();
+                          this.downloadingOrganisationUnits(userData);
                         },error=>{
                           this.loadingData = false;
                           this.isLoginProcessActive = false;
@@ -264,7 +263,7 @@ export class Login {
     let resource = 'sections';
     this.currentResourceType = "entryForm";
     if(this.completedTrackedProcess.indexOf() > -1){
-      this.downloadingPrograms();
+      this.downloadingSmsCommand();
     }else{
       let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
       let fields = tableMetadata.fields;
@@ -272,7 +271,7 @@ export class Login {
         this.setLoadingMessages('Saving '+response[resource].length+' data entry form sections');
         this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
           this.updateProgressTracker(resource);
-          this.downloadingPrograms();
+          this.downloadingSmsCommand();
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
@@ -290,21 +289,17 @@ export class Login {
     let resource = "smsCommand";
     this.currentResourceType = "entryForm";
     if(this.completedTrackedProcess.indexOf() > -1){
-      //this.downloadingSections();
-      this.loadingData = false;
-      this.isLoginProcessActive = false;
+      this.downloadingPrograms();
     }else{
       this.SmsCommand.getSmsCommandFromServer(this.loginData).then((response:any)=>{
-        if(response.length > 0){
-          alert("Success : " + JSON.stringify(response[0]));
-        }else{
-          alert("Success : " + JSON.stringify(response));
-        }
-
-        this.loadingData = false;
-        this.isLoginProcessActive = false;
-        //this.updateProgressTracker(resource);
-        //this.downloadingPrograms();
+        this.SmsCommand.savingSmsCommand(response,this.loginData.currentDatabase).then(()=>{
+          this.updateProgressTracker(resource);
+          this.downloadingPrograms();
+        },error=>{
+          this.loadingData = false;
+          this.isLoginProcessActive = false;
+          this.setToasterMessage('Fail to save metadata for send data via sms');
+        });
       },(error:any)=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
