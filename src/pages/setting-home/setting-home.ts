@@ -20,7 +20,7 @@ export class SettingHome {
   public synchronizationSetting : any = {};
 
   public settingObject : any = {
-    synchronizationSetting : {isExpanded : false,isSaved : true},
+    synchronizationSetting : {isExpanded : true,isSaved : true},
     dataEntrySetting : {isExpanded : false,isSaved : true},
     sendDataViaSms : {isExpanded : false,isSaved : true},
     security : {isExpanded : false,isSaved : true}
