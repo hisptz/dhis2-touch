@@ -13,23 +13,119 @@
 </ion-header>
 
 
-<ion-content class="setting-home" padding>
-  <ion-item-group>
-    <ion-item-divider color="primary">App setting</ion-item-divider>
-    <ion-item (click)="getSettingView('synchronizationSetting')">
-      <ion-icon name="list" item-left></ion-icon>
-      Synchronization
-      <ion-icon name="arrow-forward" item-right></ion-icon>
-    </ion-item>
-    <ion-item (click)="getSettingView('dataEntrySetting')">
-      <ion-icon name="list" item-left></ion-icon>
-      Data Entry Form
-      <ion-icon name="arrow-forward" item-right></ion-icon>
-    </ion-item>
-    <ion-item (click)="getSettingView('')">
-      <ion-icon name="list" item-left></ion-icon>
-      Security
-      <ion-icon name="arrow-forward" item-right></ion-icon>
-    </ion-item>
-  </ion-item-group>
+<ion-content class="setting-home" >
+
+  <ion-grid>
+    <ion-item-group>
+
+      <ion-row>
+        <ion-col>
+          <ion-item (click)="hideAndShowContents('synchronizationSetting')">
+            Synchronization
+            <ion-icon *ngIf="!settingObject.synchronizationSetting.isExpanded" name="ios-arrow-forward" item-right></ion-icon>
+            <ion-icon *ngIf="settingObject.synchronizationSetting.isExpanded" name="ios-arrow-down" item-right></ion-icon>
+
+          </ion-item>
+          <div class="settingContents" *ngIf="settingObject.synchronizationSetting.isExpanded" >
+            <ion-row>
+              <ion-col>
+                <ion-item>
+                  <ion-label floating>Synchronization time</ion-label>
+                  <ion-input type="number"  min="1" [(ngModel)]="synchronizationSetting.time"></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Type</ion-label>
+                  <ion-select [(ngModel)]="synchronizationSetting.timeType" interface="action-sheet">
+                    <ion-option value="minutes">Minute(s)</ion-option>
+                    <ion-option value="hours">Hour(s)</ion-option>
+                  </ion-select>
+                </ion-item>
+                <button [disabled]="!settingObject.synchronizationSetting.isSaved" [color]="settingObject.synchronizationSetting.isSaved?'primary':'whitecolor'"  ion-button full text-capitalize (click)="saveSetting('synchronizationSetting')">
+                  <span *ngIf="!settingObject.synchronizationSetting.isSaved" >
+                    <ion-spinner  name="crescent" color="secondary"></ion-spinner>
+                    <span margin-top="0px">&nbsp;&nbsp;Saving</span>
+                  </span>
+                  <span *ngIf="settingObject.synchronizationSetting.isSaved" >
+                    Save
+                  </span>
+                </button>
+              </ion-col>
+            </ion-row>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item (click)="hideAndShowContents('dataEntrySetting')">
+            Data Entry Form
+            <ion-icon *ngIf="!settingObject.dataEntrySetting.isExpanded" name="ios-arrow-forward" item-right></ion-icon>
+            <ion-icon *ngIf="settingObject.dataEntrySetting.isExpanded" name="ios-arrow-down" item-right></ion-icon>
+          </ion-item>
+          <div class="settingContents" *ngIf="settingObject.dataEntrySetting.isExpanded" >
+            <ion-row>
+              <ion-col>
+                <ion-item>
+                  <ion-label>Form Label</ion-label>
+                  <ion-select [(ngModel)]="dataEntrySetting.label" interface="action-sheet">
+                    <ion-option value="displayName">DHIS2 Display Name</ion-option>
+                    <ion-option value="formName">DHIS2 Form Name</ion-option>
+                  </ion-select>
+                </ion-item>
+                <ion-item>
+                  <ion-label floating>Max Data Element per section </ion-label>
+                  <ion-input type="number"  min="1" [(ngModel)]="dataEntrySetting.maxDataElementOnDefaultForm"></ion-input>
+                </ion-item>
+                <button [disabled]="!settingObject.dataEntrySetting.isSaved" [color]="settingObject.dataEntrySetting.isSaved?'primary':'whitecolor'" ion-button full text-capitalize (click)="saveSetting('dataEntrySetting')">
+                  <span *ngIf="!settingObject.dataEntrySetting.isSaved" >
+                    <ion-spinner  name="crescent" color="secondary"></ion-spinner>
+                    <span margin-top="0px">&nbsp;&nbsp;Saving</span>
+                  </span>
+                  <span *ngIf="settingObject.dataEntrySetting.isSaved" >
+                    Save
+                  </span>
+                </button>
+              </ion-col>
+            </ion-row>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item (click)="hideAndShowContents('sendDataViaSms')">
+            Send Data Via Sms
+            <ion-icon *ngIf="!settingObject.sendDataViaSms.isExpanded" name="ios-arrow-forward" item-right></ion-icon>
+            <ion-icon *ngIf="settingObject.sendDataViaSms.isExpanded" name="ios-arrow-down" item-right></ion-icon>
+          </ion-item>
+          <div class="settingContents" *ngIf="settingObject.sendDataViaSms.isExpanded" >
+            <ion-row>
+              <ion-col>
+                <page-send-data-via-sms></page-send-data-via-sms>
+              </ion-col>
+            </ion-row>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item (click)="hideAndShowContents('security')">
+            Security
+            <ion-icon *ngIf="!settingObject.security.isExpanded" name="ios-arrow-forward" item-right></ion-icon>
+            <ion-icon *ngIf="settingObject.security.isExpanded" name="ios-arrow-down"  item-right></ion-icon>
+          </ion-item>
+          <div class="settingContents" *ngIf="settingObject.security.isExpanded" >
+            <ion-row>
+              <ion-col>
+                Security setting
+              </ion-col>
+            </ion-row>
+          </div>
+        </ion-col>
+      </ion-row>
+
+    </ion-item-group>
+  </ion-grid>
+
 </ion-content>

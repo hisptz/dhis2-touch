@@ -84,14 +84,17 @@
                   <p ><b>Form</b> : {{ selectedDataSetLabel }}</p>
                   <p ><b>Period</b> : {{ selectedPeriodLabel }}</p>
                 </ion-item-divider>
+                <button class="dataEntryButton" ion-button full large color="whitecolor">
+                  ENTER DATA &nbsp;&nbsp;&nbsp;<ion-icon name="ios-arrow-forward-outline"></ion-icon>
+                </button>
               </ion-item-group>
             </ion-col>
           </ion-row>
-          <ion-row>
-            <ion-col>
-              <button class="dataEntryButton" ion-button full large (click)="goToEntryForm()" color="whitecolor">ENTER DATA</button>
-            </ion-col>
-          </ion-row>
+          <!--<ion-row>-->
+            <!--<ion-col>-->
+              <!--<button class="dataEntryButton" ion-button full large (click)="goToEntryForm()" color="whitecolor">ENTER DATA</button>-->
+            <!--</ion-col>-->
+          <!--</ion-row>-->
         </div>
       </div>
     </ion-grid>

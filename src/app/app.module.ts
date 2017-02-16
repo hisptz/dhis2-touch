@@ -25,7 +25,6 @@ import {ProgramSelection} from "../pages/program-selection/program-selection";
 import {DataEntryForm} from "../pages/data-entry-form/data-entry-form";
 import {ReportView} from "../pages/report-view/report-view";
 import {ReportParameterSelection} from "../pages/report-parameter-selection/report-parameter-selection";
-import {SettingDetail} from "../pages/setting-detail/setting-detail";
 import {EventCaptureForm} from "../pages/event-capture-form/event-capture-form";
 import {EventView} from "../pages/event-view/event-view";
 
@@ -49,7 +48,7 @@ import {SendDataViaSms} from "../pages/send-data-via-sms/send-data-via-sms";
     EventFieldSelectionMenu,ProgressBarPage,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,
     Account,ReportHome,SettingHome,TrackerCaptureHome,ObjectToArray,ProgramSelection,
-    AccountName,DataEntryForm,ReportView,ReportParameterSelection,SettingDetail,EventCaptureForm
+    AccountName,DataEntryForm,ReportView,ReportParameterSelection,EventCaptureForm
   ],
   imports: [
     ChartModule,
@@ -58,7 +57,7 @@ import {SendDataViaSms} from "../pages/send-data-via-sms/send-data-via-sms";
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,About,DashBoardHome,EventCaptureHome,EventView,DashboardItems,
-    TabsPage,Help,Login,Profile,DataEntryHome,SettingDetail,Launcher,SendDataViaSms,
+    TabsPage,Help,Login,Profile,DataEntryHome,Launcher,SendDataViaSms,
     EventFieldSelectionMenu,ProgressBarPage,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,ReportParameterSelection,
     Account,ReportHome,SettingHome,TrackerCaptureHome,ProgramSelection,DataEntryForm,ReportView,EventCaptureForm
