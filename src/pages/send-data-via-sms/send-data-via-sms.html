@@ -70,8 +70,14 @@
         </ion-row>
         <ion-row >
           <ion-col>
-            <button class="normalButton" [disabled]="sendDataViaSmsObject.mobileNumber ==''" ion-button text-capitalize full large color="primary" (click)="sendDataViaSms()">
-              Send Data &nbsp;&nbsp;&nbsp;<ion-icon name="ios-arrow-forward-outline"></ion-icon>
+            <button class="normalButton" [disabled]="sendDataViaSmsObject.mobileNumber ==''||sendDataViaSmsObject.isLoading" ion-button text-capitalize full large color="primary" (click)="sendDataViaSms()">
+              <span *ngIf="sendDataViaSmsObject.isLoading" >
+                <ion-spinner  name="crescent" color="secondary"></ion-spinner>
+                <span margin-top="0px">&nbsp;&nbsp;{{ sendDataViaSmsObject.loadingMessage }}</span>
+              </span>
+              <span *ngIf="!sendDataViaSmsObject.isLoading" >
+                Send Data &nbsp;&nbsp;&nbsp;<ion-icon name="ios-arrow-forward-outline"></ion-icon>
+              </span>
             </button>
           </ion-col>
         </ion-row>

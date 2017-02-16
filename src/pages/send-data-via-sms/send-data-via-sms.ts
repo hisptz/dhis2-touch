@@ -37,11 +37,11 @@ export class SendDataViaSms {
   public currentPeriodOffset : number;
   public currentSelectionStatus :any = {};
   public sendDataViaSmsObject : any = {
-    orgUnit : {},dataSet : {},period : {},dataDimension : {},mobileNumber : ""
+    orgUnit : {},dataSet : {},period : {},dataDimension : {},mobileNumber : "",isLoading : false,loadingMessage : ""
   };
 
 
-  constructor(public modalCtrl: ModalController,
+  constructor(public modalCtrl: ModalController,public SmsCommand : SmsCommand,
               public OrganisationUnit : OrganisationUnit,public DataSets : DataSets,
               public toastCtrl: ToastController,public user : User) {
 
@@ -255,6 +255,37 @@ export class SendDataViaSms {
     return result;
   }
 
+
+  sendDataViaSms(){
+    this.sendDataViaSmsObject.orgUnit = {
+      id :this.selectedOrganisationUnit.id,
+      name :this.selectedOrganisationUnitLabel
+    };
+    this.sendDataViaSmsObject.dataSet = {
+      id : this.selectedDataSet.id,
+      name : this.selectedDataSet.name,
+      dataElements :this.selectedDataSet.dataElements,
+      dataSetElements:this.selectedDataSet.dataSetElements
+    };
+    this.sendDataViaSmsObject.period = {
+      iso : this.selectedPeriod.iso,
+      name : this.selectedPeriod.name
+    };
+    if(this.hasDataDimensionSet()){
+      this.sendDataViaSmsObject.dataDimension = this.getDataDimension();
+    }
+    this.sendDataViaSmsObject.isLoading = true;
+    this.sendDataViaSmsObject.loadingMessage = "Sms Configuration";
+    this.SmsCommand.getSmsCommandForDataSet(this.selectedDataSet.id,this.currentUser).then((smsCommand:any)=>{
+      alert(smsCommand.id);
+    },error=>{
+      this.sendDataViaSmsObject.isLoading = false;
+      this.sendDataViaSmsObject.loadingMessage = "";
+      this.setToasterMessage("Fail to get sms configuration for " +this.selectedDataSet.name);
+    });
+
+  }
+
   setToasterMessage(message){
     let toast = this.toastCtrl.create({
       message: message,
@@ -263,15 +294,6 @@ export class SendDataViaSms {
     toast.present();
   }
 
-  sendDataViaSms(){
-    this.sendDataViaSmsObject.orgUnit = {id :this.selectedOrganisationUnit.id,name :this.selectedOrganisationUnitLabel };
-    this.sendDataViaSmsObject.dataSet = {id : this.selectedDataSet.id, name : this.selectedDataSet.name};
-    this.sendDataViaSmsObject.period = {iso : this.selectedPeriod.iso,name : this.selectedPeriod.name };
 
-    if(this.hasDataDimensionSet()){
-      this.sendDataViaSmsObject.dataDimension = this.getDataDimension();
-    }
-    this.setToasterMessage("Ready to prepare data to be sent via sms")
-  }
 
 }

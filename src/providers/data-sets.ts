@@ -34,7 +34,9 @@ export class DataSets {
             name: dataSet.name,
             openFuturePeriods: dataSet.openFuturePeriods,
             periodType : dataSet.periodType,
-            categoryCombo : dataSet.categoryCombo
+            categoryCombo : dataSet.categoryCombo,
+            dataElements : dataSet.dataElements,
+            dataSetElements : dataSet.dataSetElements
           });
         });
         resolve(assignedDataSetsByOrgUnit)

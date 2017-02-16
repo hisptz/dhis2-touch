@@ -12,8 +12,17 @@ import {Observable} from 'rxjs/Rx';
 @Injectable()
 export class SmsCommand {
 
-  constructor(public HttpClient : HttpClient,public SqlLite : SqlLite) { }
+  public resourceName :string;
 
+  constructor(public HttpClient : HttpClient,public SqlLite : SqlLite) {
+    this.resourceName = "smsCommand";
+  }
+
+  /**
+   * getting sms commands from login instance
+   * @param user
+   * @returns {Promise<T>}
+     */
   getSmsCommandFromServer(user){
     let self = this;
     return new Promise(function(resolve, reject) {
@@ -27,11 +36,32 @@ export class SmsCommand {
     });
   }
 
+  getSmsCommandForDataSet(dataSetId,currentUser){
+    let self = this;
+    let ids = [];
+    ids.push(dataSetId);
+    return new Promise(function(resolve, reject) {
+      self.SqlLite.getDataFromTableByAttributes(self.resourceName,"id",ids,currentUser.currentDatabase).then((smsCommands : any)=>{
+        if(smsCommands.length > 0){
+          resolve(smsCommands[0]);
+        }else{
+          reject();
+        }
+      },error=>{
+        reject();
+      });
+    });
+  }
+
+  /**
+   * saving sms commands
+   * @param smsCommands
+   * @param databaseName
+   * @returns {Promise<T>}
+     */
   savingSmsCommand(smsCommands,databaseName){
     let promises = [];
     let self = this;
-    let resource = "smsCommand";
-
     return new Promise(function(resolve, reject) {
       if(smsCommands.length == 0){
         resolve();
@@ -39,14 +69,13 @@ export class SmsCommand {
       smsCommands.forEach((smsCommand:any)=>{
         smsCommand["id"] = smsCommand.commandName;
         promises.push(
-          self.SqlLite.insertDataOnTable(resource,smsCommand,databaseName).then(()=>{
+          self.SqlLite.insertDataOnTable(self.resourceName,smsCommand,databaseName).then(()=>{
             //saving success
             console.log("smsCommand " + smsCommand["id"]);
           },(error) => {
           })
         );
       });
-
       Observable.forkJoin(promises).subscribe(() => {
           resolve();
         },
