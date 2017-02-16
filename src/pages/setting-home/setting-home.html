@@ -21,7 +21,10 @@
       <ion-row>
         <ion-col>
           <ion-item (click)="hideAndShowContents('synchronizationSetting')">
-            Synchronization
+            <span [color]="(settingObject.synchronizationSetting.isExpanded) ?'current' : 'font-color'">
+              Synchronization
+            </span>
+
             <ion-icon *ngIf="!settingObject.synchronizationSetting.isExpanded" name="ios-arrow-forward" item-right></ion-icon>
             <ion-icon *ngIf="settingObject.synchronizationSetting.isExpanded" name="ios-arrow-down" item-right></ion-icon>
           </ion-item>
@@ -57,7 +60,9 @@
       <ion-row>
         <ion-col>
           <ion-item (click)="hideAndShowContents('dataEntrySetting')">
-            Data Entry Form
+            <span [color]="(settingObject.dataEntrySetting.isExpanded) ?'current' : 'font-color'">
+              Data Entry Form
+            </span>
             <ion-icon *ngIf="!settingObject.dataEntrySetting.isExpanded" name="ios-arrow-forward" item-right></ion-icon>
             <ion-icon *ngIf="settingObject.dataEntrySetting.isExpanded" name="ios-arrow-down" item-right></ion-icon>
           </ion-item>
@@ -93,7 +98,9 @@
       <ion-row>
         <ion-col>
           <ion-item (click)="hideAndShowContents('sendDataViaSms')">
-            Send Data Via Sms
+            <span [color]="(settingObject.sendDataViaSms.isExpanded) ?'current' : 'font-color'">
+              Send Data Via Sms
+            </span>
             <ion-icon *ngIf="!settingObject.sendDataViaSms.isExpanded" name="ios-arrow-forward" item-right></ion-icon>
             <ion-icon *ngIf="settingObject.sendDataViaSms.isExpanded" name="ios-arrow-down" item-right></ion-icon>
           </ion-item>
@@ -110,7 +117,9 @@
       <!--<ion-row>-->
         <!--<ion-col>-->
           <!--<ion-item (click)="hideAndShowContents('security')">-->
-            <!--Security-->
+            <!--<span [color]="(settingObject.security.isExpanded) ?'current' : 'font-color'">-->
+              <!--Security-->
+            <!--</span>            -->
             <!--<ion-icon *ngIf="!settingObject.security.isExpanded" name="ios-arrow-forward" item-right></ion-icon>-->
             <!--<ion-icon *ngIf="settingObject.security.isExpanded" name="ios-arrow-down"  item-right></ion-icon>-->
           <!--</ion-item>-->
