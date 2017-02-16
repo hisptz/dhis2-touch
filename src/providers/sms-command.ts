@@ -91,6 +91,12 @@ export class SmsCommand {
     });
   }
 
+  /**
+   *
+   * @param smsCommand
+   * @param entryFormDataValuesObject
+   * @returns {Promise<T>}
+     */
   getSmsForReportingData(smsCommand,entryFormDataValuesObject){
     return new Promise(function(resolve, reject) {
       let smsForReportingData = smsCommand.commandName + " ";
@@ -112,6 +118,12 @@ export class SmsCommand {
     });
   };
 
+  /**
+   * 
+   * @param phoneNumber
+   * @param message
+   * @returns {Promise<T>}
+     */
   sendSmsForReportingData(phoneNumber,message){
     var options={
       replaceLineBreaks: false,

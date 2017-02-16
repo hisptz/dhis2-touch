@@ -37,7 +37,6 @@ export class SendDataViaSms {
   public currentPeriodOffset : number;
   public currentSelectionStatus :any = {};
   public sendDataViaSmsObject : any = {
-    reportingSms : "",
     orgUnit : {},dataSet : {},period : {},dataDimension : {},mobileNumber : "",isLoading : false,loadingMessage : ""
   };
 
@@ -261,20 +260,9 @@ export class SendDataViaSms {
 
 
   sendDataViaSms(){
-    this.sendDataViaSmsObject.orgUnit = {
-      id :this.selectedOrganisationUnit.id,
-      name :this.selectedOrganisationUnitLabel
-    };
-    this.sendDataViaSmsObject.dataSet = {
-      id : this.selectedDataSet.id,
-      name : this.selectedDataSet.name,
-      dataElements :this.selectedDataSet.dataElements,
-      dataSetElements:this.selectedDataSet.dataSetElements
-    };
-    this.sendDataViaSmsObject.period = {
-      iso : this.selectedPeriod.iso,
-      name : this.selectedPeriod.name
-    };
+    this.sendDataViaSmsObject.orgUnit = {id :this.selectedOrganisationUnit.id,name :this.selectedOrganisationUnitLabel};
+    this.sendDataViaSmsObject.dataSet = {id : this.selectedDataSet.id,name : this.selectedDataSet.name};
+    this.sendDataViaSmsObject.period = {iso : this.selectedPeriod.iso,name : this.selectedPeriod.name };
     if(this.hasDataDimensionSet()){
       this.sendDataViaSmsObject.dataDimension = this.getDataDimension();
     }
@@ -288,14 +276,21 @@ export class SendDataViaSms {
         if(key.length > 0){
           this.sendDataViaSmsObject.loadingMessage = "Preparing sms";
           this.SmsCommand.getSmsForReportingData(smsCommand,entryFormDataValuesObject).then((reportingSms:any)=>{
-            this.sendDataViaSmsObject.reportingSms = reportingSms;
-            this.sendDataViaSmsObject.isLoading = false;
-            this.sendDataViaSmsObject.loadingMessage = "";
+            this.sendDataViaSmsObject.loadingMessage = "Sending sms";
+            this.SmsCommand.sendSmsForReportingData(this.sendDataViaSmsObject.mobileNumber,reportingSms).then((response)=>{
+              this.sendDataViaSmsObject.isLoading = false;
+              this.sendDataViaSmsObject.loadingMessage = "";
+              this.setToasterMessage("SMS has been sent");
+            },error=>{
+              this.sendDataViaSmsObject.isLoading = false;
+              this.sendDataViaSmsObject.loadingMessage = "";
+              this.setToasterMessage("Fail to send SMS");
+            });
           });
         }else{
           this.sendDataViaSmsObject.isLoading = false;
           this.sendDataViaSmsObject.loadingMessage = "";
-          this.setToasterMessage("There is no data to be sent via sms for " + this.selectedDataSet.name);
+          this.setToasterMessage("There is no data to be sent via SMS for " + this.selectedDataSet.name);
         }
       },error=>{
         this.sendDataViaSmsObject.isLoading = false;
@@ -307,7 +302,6 @@ export class SendDataViaSms {
       this.sendDataViaSmsObject.loadingMessage = "";
       this.setToasterMessage("Fail to load sms configuration for " +this.selectedDataSet.name);
     });
-
   }
 
   setToasterMessage(message){
