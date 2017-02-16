@@ -1,1 +1,82 @@
-send data via sms component
+<div>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <button [disabled]="!currentSelectionStatus.orgUnit" class="dataEntryButton" text-capitalize ion-button full large (click)="openOrganisationUnitModal()" color="whitecolor">
+           <span *ngIf="!currentSelectionStatus.isOrgUnitLoaded" >
+              <ion-spinner  name="crescent" color="secondary"></ion-spinner>&nbsp;&nbsp;
+              Loading organisation units
+            </span>
+            <span *ngIf="currentSelectionStatus.isOrgUnitLoaded" >
+              {{ selectedOrganisationUnitLabel }}
+            </span>
+        </button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button [disabled]="!currentSelectionStatus.dataSet" class="dataEntryButton" text-capitalize ion-button full large (click)="openDataSetsModal()" color="whitecolor">
+            <span *ngIf="!currentSelectionStatus.isDataSetLoaded" >
+              <ion-spinner  name="crescent" color="secondary"></ion-spinner>&nbsp;&nbsp;
+              Loading entry forms
+            </span>
+            <span *ngIf="currentSelectionStatus.isDataSetLoaded" >
+              {{ selectedDataSetLabel }}
+            </span>
+        </button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button [disabled]="!currentSelectionStatus.period" class="dataEntryButton" text-capitalize ion-button full large (click)="openPeriodModal()" color="whitecolor">
+          {{ selectedPeriodLabel }}
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    <div *ngIf="selectedPeriod">
+      <div *ngIf="selectedPeriod.name">
+        <div *ngIf="selectedDataSet.categoryCombo">
+          <div *ngIf="selectedDataSet.categoryCombo.name != 'default'">
+            <ion-row >
+              <ion-col width="100">
+                <ion-list>
+                  <ion-item *ngFor="let category of selectedDataSet.categoryCombo.categories;let categoryIndex = index ">
+                    <ion-label>{{ category.name }}</ion-label>
+                    <ion-select [(ngModel)]="selectedDataDimension[categoryIndex]">
+                      <ion-option *ngFor="let option of category.categoryOptions" value="{{option.id}}" >
+                        {{ option.name }}
+                      </ion-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-list>
+              </ion-col>
+            </ion-row>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="selectedPeriod">
+      <div *ngIf="selectedPeriod.name && hasDataDimensionSet()">
+        <ion-row >
+          <ion-col>
+            <ion-item>
+              <ion-input type="text" placeholder="Mobile Number"  [(ngModel)]="sendDataViaSmsObject.mobileNumber"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row >
+          <ion-col>
+            <button class="normalButton" [disabled]="sendDataViaSmsObject.mobileNumber ==''" ion-button text-capitalize full large color="primary" (click)="sendDataViaSms()">
+              Send Data &nbsp;&nbsp;&nbsp;<ion-icon name="ios-arrow-forward-outline"></ion-icon>
+            </button>
+          </ion-col>
+        </ion-row>
+      </div>
+    </div>
+  </ion-grid>
+
+</div>

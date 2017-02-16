@@ -107,22 +107,22 @@
         </ion-col>
       </ion-row>
 
-      <ion-row>
-        <ion-col>
-          <ion-item (click)="hideAndShowContents('security')">
-            Security
-            <ion-icon *ngIf="!settingObject.security.isExpanded" name="ios-arrow-forward" item-right></ion-icon>
-            <ion-icon *ngIf="settingObject.security.isExpanded" name="ios-arrow-down"  item-right></ion-icon>
-          </ion-item>
-          <div class="settingContents" *ngIf="settingObject.security.isExpanded" >
-            <ion-row>
-              <ion-col>
-                Security setting
-              </ion-col>
-            </ion-row>
-          </div>
-        </ion-col>
-      </ion-row>
+      <!--<ion-row>-->
+        <!--<ion-col>-->
+          <!--<ion-item (click)="hideAndShowContents('security')">-->
+            <!--Security-->
+            <!--<ion-icon *ngIf="!settingObject.security.isExpanded" name="ios-arrow-forward" item-right></ion-icon>-->
+            <!--<ion-icon *ngIf="settingObject.security.isExpanded" name="ios-arrow-down"  item-right></ion-icon>-->
+          <!--</ion-item>-->
+          <!--<div class="settingContents" *ngIf="settingObject.security.isExpanded" >-->
+            <!--<ion-row>-->
+              <!--<ion-col>-->
+                <!--Security setting-->
+              <!--</ion-col>-->
+            <!--</ion-row>-->
+          <!--</div>-->
+        <!--</ion-col>-->
+      <!--</ion-row>-->
 
     </ion-item-group>
   </ion-grid>
