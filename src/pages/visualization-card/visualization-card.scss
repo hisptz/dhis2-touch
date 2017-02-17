@@ -1,0 +1,23 @@
+page-visualization-card {
+  chart {
+    display: block;
+  }
+
+  .chart-icon{
+    width : 20px!important;
+    margin: auto;
+  }
+  .fab[mini] {
+    margin: 4px 5px 4px 0px!important
+  }
+
+  .fab {
+    display: inline-block !important;
+  }
+
+  img{
+    border-radius: 20px;
+    width : 40px!important;
+    margin : auto;
+  }
+}

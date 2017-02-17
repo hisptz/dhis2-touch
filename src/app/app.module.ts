@@ -41,12 +41,13 @@ import {Launcher} from "../pages/launcher/launcher";
 import {EntryFormSelection} from "../providers/entry-form-selection";
 import {SendDataViaSms} from "../pages/send-data-via-sms/send-data-via-sms";
 import {SmsCommand} from "../providers/sms-command";
+import {VisualizationCardPage} from "../pages/visualization-card/visualization-card";
 
 @NgModule({
   declarations: [
     MyApp,About,DashBoardHome,EventCaptureHome,EventView,DashboardItems,
     TabsPage,Help,Login,Profile,DataEntryHome,Launcher,SendDataViaSms,
-    EventFieldSelectionMenu,ProgressBarPage,
+    EventFieldSelectionMenu,ProgressBarPage,VisualizationCardPage,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,
     Account,ReportHome,SettingHome,TrackerCaptureHome,ObjectToArray,ProgramSelection,
     AccountName,DataEntryForm,ReportView,ReportParameterSelection,EventCaptureForm
@@ -59,7 +60,7 @@ import {SmsCommand} from "../providers/sms-command";
   entryComponents: [
     MyApp,About,DashBoardHome,EventCaptureHome,EventView,DashboardItems,
     TabsPage,Help,Login,Profile,DataEntryHome,Launcher,SendDataViaSms,
-    EventFieldSelectionMenu,ProgressBarPage,
+    EventFieldSelectionMenu,ProgressBarPage,VisualizationCardPage,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,ReportParameterSelection,
     Account,ReportHome,SettingHome,TrackerCaptureHome,ProgramSelection,DataEntryForm,ReportView,EventCaptureForm
   ],
