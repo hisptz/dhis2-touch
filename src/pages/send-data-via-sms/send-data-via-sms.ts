@@ -284,7 +284,7 @@ export class SendDataViaSms {
             },error=>{
               this.sendDataViaSmsObject.isLoading = false;
               this.sendDataViaSmsObject.loadingMessage = "";
-              this.setToasterMessage("Fail to send SMS");
+              this.setToasterMessage("Fail to send SMS, either you have entered wrong number or SMS is too long");
             });
           });
         }else{
