@@ -13,41 +13,43 @@
 </ion-header>
 
 
-<ion-content  padding class="dashboardHome">
+<ion-content class="dashboardHome">
 
-  <div *ngIf="loadingData">
-    <ion-list>
-      <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
-        {{ message }}
-        <ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right color="primary"></ion-icon>
-        <div style="text-align: center" item-right *ngIf="(currentIndex + 1) >= loadingMessages.length">
-          <ion-spinner name="crescent" color="secondary"></ion-spinner>
-        </div>
-      </ion-item>
-    </ion-list>
-  </div>
+  <page-visualization-card [chartObject] ="options" ></page-visualization-card>
 
-  <div *ngIf="!loadingData">
-    <div *ngIf="dashBoards">
-      <ion-searchbar animated="true" (ionInput)="getFilteredList($event)"></ion-searchbar>
-      <ion-grid>
-        <ion-row>
-          <ion-col width="100">
-            <ion-list>
-              <div *ngFor="let dashBoard of dashBoards">
-                <ion-item *ngIf="dashBoard.dashboardItems.length > 0"  (click)="goToDashBoard(dashBoard)">
-                  <ion-icon name="list" item-left color="favorite"></ion-icon>
-                  <span >{{ dashBoard.name }}</span>
-                  <ion-icon name="arrow-forward" item-right color="primary"></ion-icon>
-                </ion-item>
-              </div>
-              <ion-item *ngIf = "dashBoards.length == 0">
-                There is no dashBoard from the server
-              </ion-item>
-            </ion-list>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </div>
-  </div>
+  <!--<div *ngIf="loadingData">-->
+    <!--<ion-list>-->
+      <!--<ion-item *ngFor="let message of loadingMessages; let currentIndex = index">-->
+        <!--{{ message }}-->
+        <!--<ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right color="primary"></ion-icon>-->
+        <!--<div style="text-align: center" item-right *ngIf="(currentIndex + 1) >= loadingMessages.length">-->
+          <!--<ion-spinner name="crescent" color="secondary"></ion-spinner>-->
+        <!--</div>-->
+      <!--</ion-item>-->
+    <!--</ion-list>-->
+  <!--</div>-->
+
+  <!--<div *ngIf="!loadingData">-->
+    <!--<div *ngIf="dashBoards">-->
+      <!--<ion-searchbar animated="true" (ionInput)="getFilteredList($event)"></ion-searchbar>-->
+      <!--<ion-grid>-->
+        <!--<ion-row>-->
+          <!--<ion-col width="100">-->
+            <!--<ion-list>-->
+              <!--<div *ngFor="let dashBoard of dashBoards">-->
+                <!--<ion-item *ngIf="dashBoard.dashboardItems.length > 0"  (click)="goToDashBoard(dashBoard)">-->
+                  <!--<ion-icon name="list" item-left color="favorite"></ion-icon>-->
+                  <!--<span >{{ dashBoard.name }}</span>-->
+                  <!--<ion-icon name="arrow-forward" item-right color="primary"></ion-icon>-->
+                <!--</ion-item>-->
+              <!--</div>-->
+              <!--<ion-item *ngIf = "dashBoards.length == 0">-->
+                <!--There is no dashBoard from the server-->
+              <!--</ion-item>-->
+            <!--</ion-list>-->
+          <!--</ion-col>-->
+        <!--</ion-row>-->
+      <!--</ion-grid>-->
+    <!--</div>-->
+  <!--</div>-->
 </ion-content>

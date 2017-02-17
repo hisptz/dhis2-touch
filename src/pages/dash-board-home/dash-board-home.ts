@@ -24,12 +24,14 @@ export class DashBoardHome {
   public dashBoards :any;
   public dashBoardsCopy :any;
 
+  public options : any = {};
+
   constructor(public navCtrl: NavController,public user : User,
               public toastCtrl:ToastController,public dashboard : Dashboard,
               public httpClient : HttpClient) {
     this.user.getCurrentUser().then(user=>{
       this.currentUser = user;
-      this.getAllDataBase();
+      //this.getAllDataBase();
     });
   }
 
