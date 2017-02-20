@@ -20,15 +20,12 @@ export class Dashboard {
    * @returns {Promise<T>}
      */
   getAllDashBoardsFromServer(currentUser){
-    let url = "/api/dashboards.json?paging=false&fields=:all,dashboardItems[id,lastsUpdated,created,type,shape," +
-      "chart[:all],reportTable[:all],map[id,lastUpdated,created,name,zoom,longitude,latitude,displayName," +
-      "mapViews[:all],:all],:all,program[id,name],programStage[id,name],columns[dimension,filter,legendSet[id,name]," +
-      "items[id,name]],rows[dimension,filter,legendSet[id,name],items[id,name]],filters[dimension,filter," +
-      "legendSet[id,name],items[id,name]],!lastUpdated,!href,!created,!publicAccess,!rewindRelativePeriods," +
-      "!userOrganisationUnit,!userOrganisationUnitChildren,!userOrganisationUnitGrandChildren,!externalAccess," +
-      "!access,!relativePeriods,!columnDimensions,!rowDimensions,!filterDimensions,!user,!organisationUnitGroups," +
-      "!itemOrganisationUnitGroups,!userGroupAccesses,!indicators,!dataElements,!dataElementOperands," +
-      "!dataElementGroups,!dataSets,!periods,!organisationUnitLevels,!organisationUnits]";
+    let url = "paging=false&filter=itemCount:gt:0&fields=name,id," +
+      "dashboardItems[id,type,shape,chart[:all],reportTable[:all]," +
+      "map[id,lastUpdated,created,name,zoom,longitude,latitude,displayName,mapViews[:all],:all],:all,program[id,name]," +
+      "programStage[id,name],columns[dimension,filter,legendSet[id,name],items[id,name]]," +
+      "rows[dimension,filter,legendSet[id,name],items[id,name]]," +
+      "filters[dimension,filter,legendSet[id,name],items[id,name]],!lastUpdated,!href,!created,!publicAccess,!rewindRelativePeriods,!userOrganisationUnit,!userOrganisationUnitChildren,!userOrganisationUnitGrandChildren,!externalAccess,!access,!relativePeriods,!columnDimensions,!rowDimensions,!filterDimensions,!user,!organisationUnitGroups,!itemOrganisationUnitGroups,!userGroupAccesses,!indicators,!dataElements,!dataElementOperands,!dataElementGroups,!dataSets,!periods,!organisationUnitLevels,!organisationUnits]";
     let self = this;
     return new Promise(function(resolve, reject) {
       self.httpClient.get(url,currentUser).subscribe(response=>{

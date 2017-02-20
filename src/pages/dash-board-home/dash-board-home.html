@@ -15,7 +15,24 @@
 
 <ion-content class="dashboardHome">
 
-  <page-visualization-card [chartObject] ="options" ></page-visualization-card>
+  <ion-grid>
+    <ion-row>
+      <ion-col width-100>
+        <ion-item >
+          <ion-select interface="action-sheet"  [(ngModel)]="selectedDashBoardId" (ionChange)="changeDashBoard()">
+            <ion-option *ngFor="let dashBoard of dashBoards" value="{{dashBoard.id}}" >{{dashBoard.name}}</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <!-- dashBoard items -->
+    <ion-row>
+      <ion-col>
+        <page-visualization-card [chartObject] ="options" ></page-visualization-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
   <!--<div *ngIf="loadingData">-->
     <!--<ion-list>-->

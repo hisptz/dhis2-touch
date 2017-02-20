@@ -2,4 +2,14 @@ page-dash-board-home {
   .dashboardHome{
     background-color: #E4E4E4;
   }
+
+  ion-select {
+    max-width: 100%;
+  }
+  .select-md .select-icon {
+    position: inherit;
+  }
+  .select-ios .select-icon {
+    position: inherit;
+  }
 }

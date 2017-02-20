@@ -1,52 +1,45 @@
-<ion-grid>
-  <ion-card>
-    <ion-card-content>
-      <div *ngIf="options.title" style="min-height : 200px;max-height: 400px;overflow:auto">
-        <div *ngIf="dashBoard.selected !='table'">
-          <ion-row>
-            <ion-col width-90>
-              <chart [options]="options"></chart>
-            </ion-col>
-            <ion-col width-10 text-center>
-              <div *ngFor="let chart of charts" class="chart-icon">
-                <button [disabled]="setSelectedChart == chart.type"  mini ion-fab color="light" (click)="drawChart(chart.type)">
-                  <img [src]="chart.path" >
-                </button>
-              </div>
-            </ion-col>
-          </ion-row>
+<div *ngIf="options.title" class="visualizationCard">
+  <div *ngIf="dashBoard.selected !='table'">
+    <ion-row >
+      <ion-col width-90>
+        <chart [options]="options"></chart>
+      </ion-col>
+      <ion-col width-10>
+        <div *ngFor="let chart of charts" class="chart-icon">
+          <button [disabled]="setSelectedChart == chart.type"  mini ion-fab color="light" (click)="drawChart(chart.type)">
+            <img [src]="chart.path" >
+          </button>
         </div>
-        <div *ngIf="dashBoard.selected =='table'">
-          <ion-row>
-            <ion-col>
-              <table >
-                <thead>
-                <tr>
-                  <th *ngFor="let header of table.header">{{header}}</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let row of table.rows" >
-                  <td *ngFor="let column of row">{{column}} </td>
-                </tr>
-                </tbody>
-              </table>
-            </ion-col>
-          </ion-row>
-        </div>
-      </div>
+      </ion-col>
 
-      <ion-row>
-        <ion-col >
+    </ion-row>
+  </div>
+  <div *ngIf="dashBoard.selected =='table'">
+    <ion-row>
+      <ion-col>
+        <table >
+          <thead>
+          <tr>
+            <th *ngFor="let header of table.header">{{header}}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let row of table.rows" >
+            <td *ngFor="let column of row">{{column}} </td>
+          </tr>
+          </tbody>
+        </table>
+      </ion-col>
+    </ion-row>
+  </div>
+  <ion-row>
+    <ion-col >
             <span *ngFor="let chart of dashBoard.button" class="chart-icon">
               <button [disabled]="dashBoard.selected == chart.type" mini ion-fab color="light" (click)="changeVisualization(chart.type)">
                 <img [src]="chart.path" >
               </button>
             </span>
-        </ion-col>
-      </ion-row>
+    </ion-col>
+  </ion-row>
+</div>
 
-    </ion-card-content>
-  </ion-card>
-
-</ion-grid>

@@ -36,6 +36,7 @@ export class VisualizationCardPage {
     rows : []
   };
 
+  public dashBoards :any;
   constructor() {
     this.drawChart('line');
     this.changeVisualization("charts");
