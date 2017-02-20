@@ -25,7 +25,7 @@ export class VisualizationCardPage {
   public dashBoard = {
     top: [],
     button: [
-      {type: "table", path: "assets/dashboard/column-stacked.png"},
+      {type: "table", path: "assets/dashboard/table.png"},
       {type: "charts", path: "assets/dashboard/combined.png"}
     ],
     selected : ""
