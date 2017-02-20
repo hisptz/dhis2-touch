@@ -42,6 +42,7 @@ import {EntryFormSelection} from "../providers/entry-form-selection";
 import {SendDataViaSms} from "../pages/send-data-via-sms/send-data-via-sms";
 import {SmsCommand} from "../providers/sms-command";
 import {VisualizationCardPage} from "../pages/visualization-card/visualization-card";
+import {VisulizerService} from "../providers/visulizer.service";
 
 @NgModule({
   declarations: [
@@ -64,6 +65,8 @@ import {VisualizationCardPage} from "../pages/visualization-card/visualization-c
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,ReportParameterSelection,
     Account,ReportHome,SettingHome,TrackerCaptureHome,ProgramSelection,DataEntryForm,ReportView,EventCaptureForm
   ],
-  providers: [Storage,HttpClient,SqlLite,DataValues,EventCaptureFormProvider,Synchronization,EntryFormSelection,SmsCommand]
+  providers: [Storage,HttpClient,SqlLite,DataValues,
+    VisulizerService,
+    EventCaptureFormProvider,Synchronization,EntryFormSelection,SmsCommand]
 })
 export class AppModule {}
