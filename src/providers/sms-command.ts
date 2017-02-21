@@ -95,11 +95,14 @@ export class SmsCommand {
    *
    * @param smsCommand
    * @param entryFormDataValuesObject
+   * @param selectedPeriod
    * @returns {Promise<T>}
      */
-  getSmsForReportingData(smsCommand,entryFormDataValuesObject){
+  getSmsForReportingData(smsCommand,entryFormDataValuesObject,selectedPeriod){
     return new Promise(function(resolve, reject) {
-      let smsForReportingData = smsCommand.commandName + " ";
+      let sms = [];
+      let smsLimit = 135;
+      let smsForReportingData = smsCommand.commandName + " " + selectedPeriod.iso + " ";
       let firstValuesFound = false;
       smsCommand.smsCode.forEach((smsCodeObject:any)=>{
         let id = smsCodeObject.dataElement.id + "-" +smsCodeObject.categoryOptionCombos;
@@ -107,37 +110,69 @@ export class SmsCommand {
           let value = entryFormDataValuesObject[id];
           if(!firstValuesFound){
             firstValuesFound = true;
-          }else{
+          }else if((smsForReportingData + smsCodeObject.smsCode + smsCommand.separator + value).length > smsLimit){
+            sms.push(smsForReportingData);
+            firstValuesFound = false;
+            smsForReportingData = smsCommand.commandName + " " + selectedPeriod.iso + " ";
+          }else {
             smsForReportingData = smsForReportingData + "|";
           }
           smsForReportingData = smsForReportingData + smsCodeObject.smsCode + smsCommand.separator + value;
         }
       });
-
-      resolve(smsForReportingData);
+      sms.push(smsForReportingData);
+      resolve(sms);
     });
   };
 
   /**
-   * 
+   *
    * @param phoneNumber
-   * @param message
+   * @param messages
    * @returns {Promise<T>}
      */
-  sendSmsForReportingData(phoneNumber,message){
+  sendSmsForReportingData(phoneNumber,messages){
+    let self = this;
+    return new Promise(function(resolve, reject) {
+      self.sendSms(phoneNumber,messages,0).then((success)=>{
+        resolve()
+      },error=>{
+        reject()})
+    });
+  }
+
+
+  /**
+   * sending messages recursively
+   * @param phoneNumber
+   * @param messages
+   * @param messageIndex
+   * @returns {Promise<T>}
+     */
+  sendSms(phoneNumber,messages,messageIndex){
     var options={
       replaceLineBreaks: false,
       android: {
         intent: ''
       }
     };
+    let self = this;
     return new Promise(function(resolve, reject) {
-      SMS.send(phoneNumber,message, options).then((success)=>{
-        resolve(success);
+      SMS.send(phoneNumber,messages[messageIndex], options).then((success)=>{
+        messageIndex = messageIndex + 1;
+        if(messageIndex < messages.length){
+          self.sendSms(phoneNumber,messages,messageIndex).then(()=>{
+            resolve();
+          },error=>{
+            reject(error);
+          });
+        }else{
+          resolve(success);
+        }
       },(error)=>{
         reject(error);
       });
-    })
+    });
   }
 
   /**

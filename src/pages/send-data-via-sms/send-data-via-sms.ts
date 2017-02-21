@@ -275,8 +275,8 @@ export class SendDataViaSms {
         let key = Object.keys(entryFormDataValuesObject);
         if(key.length > 0){
           this.sendDataViaSmsObject.loadingMessage = "Preparing sms";
-          this.SmsCommand.getSmsForReportingData(smsCommand,entryFormDataValuesObject).then((reportingSms:any)=>{
-            this.sendDataViaSmsObject.loadingMessage = "Sending sms";
+          this.SmsCommand.getSmsForReportingData(smsCommand,entryFormDataValuesObject,this.selectedPeriod).then((reportingSms:any)=>{
+           this.sendDataViaSmsObject.loadingMessage = "Sending "+reportingSms.length+" sms ";
             this.SmsCommand.sendSmsForReportingData(this.sendDataViaSmsObject.mobileNumber,reportingSms).then((response)=>{
               this.sendDataViaSmsObject.isLoading = false;
               this.sendDataViaSmsObject.loadingMessage = "";
@@ -284,7 +284,7 @@ export class SendDataViaSms {
             },error=>{
               this.sendDataViaSmsObject.isLoading = false;
               this.sendDataViaSmsObject.loadingMessage = "";
-              this.setToasterMessage("Fail to send SMS, either you have entered wrong number or SMS is too long");
+              this.setToasterMessage("Fail to send some of SMS, Please go into your SMS inbox and resend them manually");
             });
           });
         }else{
