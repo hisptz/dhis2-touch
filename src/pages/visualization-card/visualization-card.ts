@@ -22,6 +22,7 @@ export class VisualizationCardPage {
     {type: "stacked_column", path: "assets/dashboard/column-stacked.png",isDisabled : true},
     {type: "stacked_bar", path: "assets/dashboard/bar-stacked.png",isDisabled : true},
     {type: "combined", path: "assets/dashboard/combined.png",isDisabled : true},
+    {type: "area", path: "assets/dashboard/area.png",isDisabled : false},
     {type: "pie", path: "assets/dashboard/pie.png",isDisabled : false},
     {type: "gauge", path: "assets/dashboard/gauge.jpg",isDisabled : true},
     {type: "radar", path: "assets/dashboard/radar.png",isDisabled : true},
