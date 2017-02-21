@@ -25,13 +25,34 @@
         </ion-item>
       </ion-col>
     </ion-row>
+    <div class="dashHeaderSeparator"></div>
 
     <!-- dashBoard items -->
-    <ion-row>
-      <ion-col>
-        <page-visualization-card [chartObject] ="options" ></page-visualization-card>
-      </ion-col>
-    </ion-row>
+    <div *ngFor="let dashBoard of dashBoards">
+      <div *ngIf="dashBoard.id == selectedDashBoardId">
+        <div *ngFor="let dashboardItem of dashBoard.dashboardItems">
+          <ion-row >
+            <ion-col>
+              <div class="visualizationHeader" >
+                <ion-item (click)="hideAndShowVisualizationCard(dashboardItem.id)" >
+                  <span [color]="(selectedDashBoardItemId == dashboardItem.id) ?'current' : 'font-color'">
+                    <span  *ngIf="dashboardItem.chart">{{ dashboardItem.chart.name }}</span>
+                    <span *ngIf="dashboardItem.reportTable">{{ dashboardItem.reportTable.name }}</span>
+                   </span>
+                  <ion-icon [color]="(selectedDashBoardItemId == dashboardItem.id) ?'current' : 'font-color'"  name="ios-arrow-forward" *ngIf="selectedDashBoardItemId != dashboardItem.id" item-right></ion-icon>
+                  <ion-icon [color]="(selectedDashBoardItemId == dashboardItem.id) ?'current' : 'font-color'"  name="ios-arrow-down" *ngIf="selectedDashBoardItemId == dashboardItem.id" item-right></ion-icon>
+                </ion-item>
+                <div class="visualizerHeaderSeparator"></div>
+                <div *ngIf="selectedDashBoardItemId == dashboardItem.id">
+                  <page-visualization-card [chartObject] ="options" ></page-visualization-card>
+                </div>
+              </div>
+
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+    </div>
   </ion-grid>
 
   <!--<div *ngIf="loadingData">-->

@@ -12,4 +12,28 @@ page-dash-board-home {
   .select-ios .select-icon {
     position: inherit;
   }
+
+  .visualizationHeader {
+    background: #FFFFFF;
+  }
+  ion-label {
+    white-space: normal;
+  }
+  ion-col {
+    padding-top:0px;
+    padding-left:5px;
+    padding-left:5px;
+    padding-button:5px;
+  }
+
+  .dashHeaderSeparator{
+    height: 10px;
+    background-color: #E4E4E4;
+  }
+
+  .visualizerHeaderSeparator{
+    height: 3px;
+    background-color: #E4E4E4;
+  }
+
 }

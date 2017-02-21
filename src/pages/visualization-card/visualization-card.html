@@ -6,7 +6,7 @@
       </ion-col>
       <ion-col width-10>
         <div *ngFor="let chart of charts" class="chart-icon">
-          <button [disabled]="setSelectedChart == chart.type"  mini ion-fab color="light" (click)="drawChart(chart.type)">
+          <button [disabled]="setSelectedChart == chart.type|| chart.isDisabled"  mini ion-fab color="light" (click)="drawChart(chart.type)">
             <img [src]="chart.path" >
           </button>
         </div>

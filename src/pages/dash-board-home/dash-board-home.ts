@@ -21,9 +21,11 @@ export class DashBoardHome {
   public currentUser : any;
   public loadingData : boolean = false;
   public loadingMessages : any = [];
+  public dashBoardsCopy : any;
   public dashBoards :any;
-  public dashBoardsCopy :any;
-  public selectedDashBoardId :string = "";
+  public selectedDashBoardId : string;
+  public selectedDashBoardItemId : string;
+  public dashBoardToDashBoardItem : any = {};
 
   public options : any = {};
 
@@ -33,9 +35,11 @@ export class DashBoardHome {
     this.user.getCurrentUser().then(user=>{
       this.currentUser = user;
       this.dashBoards = this.getHardcodedDashBoards();
-      if(this.dashBoards.length > 0){
-        this.selectedDashBoardId = this.dashBoards[0].id;
+      this.selectedDashBoardId = this.dashBoards[0].id;
+      for(let dashBoard of  this.dashBoards){
+        this.dashBoardToDashBoardItem[dashBoard.id] = dashBoard.dashboardItems;
       }
+      this.selectedDashBoardItemId = this.dashBoards[0].dashboardItems[0].id;
       //this.getAllDataBase();
     });
   }
@@ -55,8 +59,16 @@ export class DashBoardHome {
     });
   }
 
+  hideAndShowVisualizationCard(dashBoardItemId){
+    if(this.selectedDashBoardItemId == dashBoardItemId){
+      this.selectedDashBoardItemId = "";
+    }else{
+      this.selectedDashBoardItemId = dashBoardItemId
+    }
+  }
   changeDashBoard(){
-    console.log(this.selectedDashBoardId);
+    console.log("Selected charts : " + this.selectedDashBoardId);
+    this.selectedDashBoardItemId = this.dashBoardToDashBoardItem[this.selectedDashBoardId][0].id;
   }
 
   goToDashBoard(dashBoard){

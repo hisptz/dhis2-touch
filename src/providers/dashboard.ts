@@ -20,7 +20,7 @@ export class Dashboard {
    * @returns {Promise<T>}
      */
   getAllDashBoardsFromServer(currentUser){
-    let url = "paging=false&filter=itemCount:gt:0&fields=name,id," +
+    let url = "/api/dashboards.json?paging=false&filter=itemCount:gt:0&fields=name,id," +
       "dashboardItems[id,type,shape,chart[:all],reportTable[:all]," +
       "map[id,lastUpdated,created,name,zoom,longitude,latitude,displayName,mapViews[:all],:all],:all,program[id,name]," +
       "programStage[id,name],columns[dimension,filter,legendSet[id,name],items[id,name]]," +

@@ -16,10 +16,15 @@ export class VisualizationCardPage {
   public options:any = {};
   public setSelectedChart : string;
   public charts = [
-    {type: "line", path: "assets/dashboard/line.png"},
-    {type: "bar", path: "assets/dashboard/column.png"},
-    {type: "column", path: "assets/dashboard/bar.png"},
-    {type: "area", path: "assets/dashboard/area.png"}
+    {type: "line", path: "assets/dashboard/line.png",isDisabled : false},
+    {type: "bar", path: "assets/dashboard/column.png",isDisabled : false},
+    {type: "column", path: "assets/dashboard/bar.png",isDisabled : false},
+    {type: "stacked_column", path: "assets/dashboard/column-stacked.png",isDisabled : true},
+    {type: "stacked_bar", path: "assets/dashboard/bar-stacked.png",isDisabled : true},
+    {type: "combined", path: "assets/dashboard/combined.png",isDisabled : true},
+    {type: "pie", path: "assets/dashboard/pie.png",isDisabled : false},
+    {type: "gauge", path: "assets/dashboard/gauge.jpg",isDisabled : true},
+    {type: "radar", path: "assets/dashboard/radar.png",isDisabled : true},
   ];
 
   public dashBoard = {
@@ -92,7 +97,7 @@ export class VisualizationCardPage {
 
   drawChart(type) {
     this.options = {
-      title: {text: 'Sample Population'},
+      title: {text: 'Sample data'},
       chart: {type: type},
       credits: {enabled: false},
       series: [
