@@ -95,25 +95,6 @@
         </ion-col>
       </ion-row>
 
-      <ion-row>
-        <ion-col>
-          <ion-item (click)="hideAndShowContents('sendDataViaSms')">
-            <span [color]="(settingObject.sendDataViaSms.isExpanded) ?'current' : 'font-color'">
-              Send Data Via Sms
-            </span>
-            <ion-icon *ngIf="!settingObject.sendDataViaSms.isExpanded" name="ios-arrow-forward" item-right></ion-icon>
-            <ion-icon *ngIf="settingObject.sendDataViaSms.isExpanded" name="ios-arrow-down" item-right></ion-icon>
-          </ion-item>
-          <div class="settingContents" *ngIf="settingObject.sendDataViaSms.isExpanded" >
-            <ion-row>
-              <ion-col>
-                <page-send-data-via-sms></page-send-data-via-sms>
-              </ion-col>
-            </ion-row>
-          </div>
-        </ion-col>
-      </ion-row>
-
       <!--<ion-row>-->
         <!--<ion-col>-->
           <!--<ion-item (click)="hideAndShowContents('security')">-->

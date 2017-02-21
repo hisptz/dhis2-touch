@@ -22,7 +22,6 @@ export class SettingHome {
   public settingObject : any = {
     synchronizationSetting : {isExpanded : true,isSaved : true},
     dataEntrySetting : {isExpanded : false,isSaved : true},
-    sendDataViaSms : {isExpanded : false,isSaved : true},
     security : {isExpanded : false,isSaved : true}
   };
 

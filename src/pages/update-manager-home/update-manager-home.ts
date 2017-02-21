@@ -27,6 +27,11 @@ export class UpdateManagerHome {
   public hasAllSelected : boolean;
   public hasSelectedResourceUpdated : boolean = false;
 
+  public updateManagerObject : any = {
+    updateMetadata : {isExpanded : false,isSaved : true},
+    sendDataViaSms : {isExpanded : true,isSaved : true}
+  };
+
   constructor(public navCtrl: NavController,public sqlLite : SqlLite,
               public user : User,public toastCtrl: ToastController,
               public appProvider : AppProvider,public updateResourceManager : UpdateResourceManager,
@@ -49,6 +54,17 @@ export class UpdateManagerHome {
   }
 
   ionViewDidLoad() {
+  }
+
+  hideAndShowContents(updateManagerKey){
+    if(!this.updateManagerObject[updateManagerKey].isExpanded){
+      Object.keys(this.updateManagerObject).forEach(key=>{
+        if(key != updateManagerKey){
+          this.updateManagerObject[key].isExpanded = false;
+        }
+      });
+    }
+    this.updateManagerObject[updateManagerKey].isExpanded = !this.updateManagerObject[updateManagerKey].isExpanded;
   }
 
   setUpdateManagerList(){
