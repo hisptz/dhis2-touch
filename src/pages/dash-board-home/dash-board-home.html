@@ -28,8 +28,8 @@
     <div class="dashHeaderSeparator"></div>
     <div *ngIf="!loadingData ">
       <div *ngIf="dashBoards.length == 0 ||dashBoards.length > 0 && !dashBoardProgressTracker.dashBoardItemObjectsAndData[selectedDashBoardId]">
-        <div class="refreshPanel">
-          <button (click)="getAllDataBase()" ion-button clear large full text-capitalize class="normalButton">
+        <div class="refreshPanel" text-center>
+          <button (click)="getAllDataBase()" ion-button clear large text-capitalize class="normalButton">
             <ion-icon name="refresh"></ion-icon>
           </button>
         </div>
