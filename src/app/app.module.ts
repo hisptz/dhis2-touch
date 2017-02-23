@@ -29,7 +29,6 @@ import {EventCaptureForm} from "../pages/event-capture-form/event-capture-form";
 import {EventView} from "../pages/event-view/event-view";
 
 import { ChartModule } from 'angular2-highcharts';
-import {DashboardItems} from "../pages/dashboard-items/dashboard-items";
 import {EventFieldSelectionMenu} from "../pages/event-field-selection-menu/event-field-selection-menu";
 import {ProgressBarPage} from "../pages/progress-bar/progress-bar";
 import {HttpClient} from "../providers/http-client/http-client";
@@ -46,7 +45,7 @@ import {VisulizerService} from "../providers/visulizer.service";
 
 @NgModule({
   declarations: [
-    MyApp,About,DashBoardHome,EventCaptureHome,EventView,DashboardItems,
+    MyApp,About,DashBoardHome,EventCaptureHome,EventView,
     TabsPage,Help,Login,Profile,DataEntryHome,Launcher,SendDataViaSms,
     EventFieldSelectionMenu,ProgressBarPage,VisualizationCardPage,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,
@@ -59,7 +58,7 @@ import {VisulizerService} from "../providers/visulizer.service";
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,About,DashBoardHome,EventCaptureHome,EventView,DashboardItems,
+    MyApp,About,DashBoardHome,EventCaptureHome,EventView,
     TabsPage,Help,Login,Profile,DataEntryHome,Launcher,SendDataViaSms,
     EventFieldSelectionMenu,ProgressBarPage,VisualizationCardPage,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,ReportParameterSelection,

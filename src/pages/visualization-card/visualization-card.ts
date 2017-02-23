@@ -50,16 +50,13 @@ export class VisualizationCardPage implements OnInit{
   }
 
   ngOnInit() {
-    this.setToasterMessage("Loading data");
-    //this.dashboardItem
     this.User.getCurrentUser().then((user)=>{
       this.currentUser = user;
       this.Dashboard.getAnalyticDataForDashBoardItem(this.dashboardItem.analyticsUrl,user).then((analyticData:any)=>{
         this.analyticData = analyticData;
         this.drawChart();
-        this.setToasterMessage("success loading  data");
       },error=>{
-        this.setToasterMessage("fail to load  data");
+        this.setToasterMessage("fail to load data for " + (this.dashboardItem.title) ? this.dashboardItem.title : this.dashboardItem.name);
       });
     })
   }

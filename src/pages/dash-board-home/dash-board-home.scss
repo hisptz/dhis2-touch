@@ -1,5 +1,5 @@
 page-dash-board-home {
-  .dashboardHome{
+  .dashboardHome {
     background-color: #E4E4E4;
   }
 
@@ -20,19 +20,26 @@ page-dash-board-home {
     white-space: normal;
   }
   ion-col {
-    padding-top:0px;
-    padding-left:5px;
-    padding-left:5px;
-    padding-button:5px;
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-left: 5px;
+    padding-button: 5px;
   }
 
-  .dashHeaderSeparator{
+  .loadingMessage {
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-left: 5px;
+    padding-button: 5px;
+  }
+
+  .dashHeaderSeparator {
     height: 10px;
     background-color: #E4E4E4;
   }
 
-  .visualizerHeaderSeparator{
-    height: 3px;
+  .visualizerHeaderSeparator {
+    height: 1px;
     background-color: #E4E4E4;
   }
 

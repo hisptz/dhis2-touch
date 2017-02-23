@@ -1,52 +1,63 @@
-<div *ngIf="chartObject" class="visualizationCard">
-  <div *ngIf="visualizationSelection.bottom !='table'">
-    <ion-row >
-      <ion-col width-90>
-        <chart [options]="chartObject"></chart>
-      </ion-col>
-      <ion-col width-10>
-        <div *ngFor="let chart of visualizationOptions.right" class="chart-icon">
-          <button [disabled]="visualizationSelection.right == chart.type|| chart.isDisabled"  mini ion-fab color="light" (click)="drawChart(chart.type)">
-            <img [src]="chart.path" >
-          </button>
-        </div>
-      </ion-col>
 
-    </ion-row>
+<div class="visualizationCard">
+  <div *ngIf="!chartObject">
+    <div text-center class="visualizationLoader">
+      <ion-spinner name="crescent" color="secondary"></ion-spinner>
+    </div>
   </div>
-  <div *ngIf="visualizationSelection.bottom =='table'">
+
+  <div *ngIf="chartObject" >
+    <div *ngIf="visualizationSelection.bottom !='table'">
+      <ion-row >
+        <ion-col width-90>
+          <chart [options]="chartObject"></chart>
+        </ion-col>
+        <ion-col width-10>
+          <div *ngFor="let chart of visualizationOptions.right" class="chart-icon">
+            <button [disabled]="visualizationSelection.right == chart.type|| chart.isDisabled"  mini ion-fab color="light" (click)="drawChart(chart.type)">
+              <img [src]="chart.path" >
+            </button>
+          </div>
+        </ion-col>
+
+      </ion-row>
+    </div>
+    <div *ngIf="visualizationSelection.bottom =='table'">
+
+      <ion-row>
+        <ion-col>
+          <table class="table table-bordered">
+            <thead>
+            <tr *ngFor="let header of tableObject.headers">
+              <th *ngFor="let table_column of tableObject.columns"></th>
+              <th *ngFor="let header_column of header.items" [colSpan]="header_column.span" style="text-align: center">
+                {{ header_column.name }}
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let row of tableObject.rows">
+              <td *ngFor="let header_column of row.items" style="text-align: center;vertical-align: middle" [attr.rowspan]="header_column.row_span">
+                {{ header_column.val }}
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </ion-col>
+      </ion-row>
+    </div>
 
     <ion-row>
-      <ion-col>
-        <table class="table table-bordered">
-          <thead>
-          <tr *ngFor="let header of tableObject.headers">
-            <th *ngFor="let table_column of tableObject.columns"></th>
-            <th *ngFor="let header_column of header.items" [colSpan]="header_column.span" style="text-align: center">
-              {{ header_column.name }}
-            </th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let row of tableObject.rows">
-            <td *ngFor="let header_column of row.items" style="text-align: center;vertical-align: middle" [attr.rowspan]="header_column.row_span">
-              {{ header_column.val }}
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </ion-col>
-    </ion-row>
-  </div>
-
-  <ion-row>
-    <ion-col >
+      <ion-col >
             <span *ngFor="let visualization of visualizationOptions.bottom" class="chart-icon">
-              <button [disabled]="visualizationSelection.button == visualization.type" mini ion-fab color="light" (click)="changeVisualization(visualization.type)">
+              <button [disabled]="visualizationSelection.bottom == visualization.type" mini ion-fab color="light" (click)="changeVisualization(visualization.type)">
                 <img [src]="visualization.path" >
               </button>
             </span>
-    </ion-col>
-  </ion-row>
+      </ion-col>
+    </ion-row>
+  </div>
+
 </div>
+
 
