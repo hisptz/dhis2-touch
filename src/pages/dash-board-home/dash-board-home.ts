@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { NavController,ToastController } from 'ionic-angular';
 import {HttpClient} from "../../providers/http-client/http-client";
 import {User} from "../../providers/user/user";
 import {Dashboard} from "../../providers/dashboard";
+import {NetworkAvailability} from "../../providers/network-availability";
 
 /*
   Generated class for the DashBoardHome page.
@@ -13,14 +14,13 @@ import {Dashboard} from "../../providers/dashboard";
 @Component({
   selector: 'page-dash-board-home',
   templateUrl: 'dash-board-home.html',
-  providers : [User,HttpClient,Dashboard]
+  providers : [User,HttpClient,Dashboard,NetworkAvailability]
 })
-export class DashBoardHome {
+export class DashBoardHome implements OnInit{
 
   public currentUser : any;
   public loadingData : boolean = false;
-  public dashBoardsCopy : any;
-  public dashBoards :any;
+  public dashBoards :any = [];
   public selectedDashBoardId : string;
   public selectedDashBoardItemId : string;
   public dashBoardToDashBoardItem : any = {};
@@ -33,15 +33,23 @@ export class DashBoardHome {
     dashBoardVisualizationData : {},
     currentStep : ""
   };
-
-  public options : any = {};
+  public network : any;
 
   constructor(public navCtrl: NavController,public user : User,
+              public NetworkAvailability : NetworkAvailability,
               public toastCtrl:ToastController,public dashboard : Dashboard,
               public httpClient : HttpClient) {
+  }
+
+  ngOnInit() {
+    this.network = this.NetworkAvailability.getNetWorkStatus();
     this.user.getCurrentUser().then(user=>{
       this.currentUser = user;
-      this.getAllDataBase();
+      if(this.network.isAvailable){
+        this.getAllDataBase();
+      }else{
+        this.setToasterMessage(this.network.message);
+      }
     });
   }
 
@@ -50,15 +58,16 @@ export class DashBoardHome {
     this.dashBoardProgressTracker.currentStep = 'dashBoards';
     this.dashboard.getAllDashBoardsFromServer(this.currentUser).then((dashBoardResponse:any)=>{
       this.loadingData = false;
-      this.dashBoardProgressTracker.isDashBoardsLoaded = true;
       this.dashBoards = dashBoardResponse.dashboards;
-      this.dashBoardsCopy = dashBoardResponse.dashboards;
-      this.selectedDashBoardId = this.dashBoards[0].id;
-      for(let dashBoard of  this.dashBoards){
-        this.dashBoardToDashBoardItem[dashBoard.id] = dashBoard.dashboardItems;
+      if(dashBoardResponse.dashboards.length > 0){
+        this.dashBoardProgressTracker.isDashBoardsLoaded = true;
+        this.selectedDashBoardId = this.dashBoards[0].id;
+        for(let dashBoard of  this.dashBoards){
+          this.dashBoardToDashBoardItem[dashBoard.id] = dashBoard.dashboardItems;
+        }
+        this.selectedDashBoardItemId = this.dashBoards[0].dashboardItems[0].id;
+        this.getDashBoardItemObjectsAndData(this.dashBoards[0].dashboardItems);
       }
-      this.selectedDashBoardItemId = this.dashBoards[0].dashboardItems[0].id;
-      this.getDashBoardItemObjectsAndData(this.dashBoards[0].dashboardItems);
     },error=>{
       this.loadingData = false;
       this.dashBoards = [];
