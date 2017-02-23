@@ -149,9 +149,7 @@ export class Login {
           .then(formattedBaseUrl => {
             this.loginData.serverUrl = formattedBaseUrl;
             this.user.authenticateUser(this.loginData).then((response:any)=> {
-              if(response.data.data){
-                response = response.data;
-              }
+              response = this.getResponseData(response);
               this.loginData = response.user;
               //set authorization key and reset password
               this.loginData.authorizationKey = btoa(this.loginData.username + ':' + this.loginData.password);
@@ -202,6 +200,14 @@ export class Login {
       }
     } else {
       this.setToasterMessage('Please Enter server url');
+    }
+  }
+
+  getResponseData(response){
+    if(response.data.data){
+      return this.getResponseData(response.data);
+    }else{
+      return response;
     }
   }
 

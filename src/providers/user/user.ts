@@ -21,7 +21,10 @@ export class User {
   getUserDataFromServer(user){
     HTTP.useBasicAuth(user.username, user.password);
     let fields = "fields=[:all],userCredentials[userRoles[name,dataSets[id,name],programs[id,name]]";
-    let url = user.serverUrl + "/api/me.json?" + fields;
+    let url = user.serverUrl.split("/dhis-web-commons")[0];
+    url = url.split("/dhis-web-dashboard-integration")[0];
+    user.serverUrl = url;
+    url += "/api/me.json?" + fields;
     return new Promise(function(resolve, reject) {
       HTTP.get(url, {}, {})
         .then((data:any)  => {
@@ -54,10 +57,11 @@ export class User {
             }else{
               url = user.serverUrl;
             }
-            user.serverUrl = url.split("/dhis-web-commons")[0];
-            //alert(user.serverUrl);
-            //alert(url)
+            user.serverUrl = url;
             self.getUserDataFromServer(user).then((data:any) => {
+                let url = user.serverUrl.split("/dhis-web-commons")[0];
+                url = url.split("/dhis-web-dashboard-integration")[0];
+                user.serverUrl = url;
                 resolve({data : data.data,user : user});
               })
               .catch(error => {
@@ -72,6 +76,9 @@ export class User {
             if(error.headers.Location){
               user.serverUrl = error.headers.Location;
               self.authenticateUser(user).then((data:any) => {
+                  let url = user.serverUrl.split("/dhis-web-commons")[0];
+                  url = url.split("/dhis-web-dashboard-integration")[0];
+                  user.serverUrl = url;
                   resolve({data : data,user : user});
                 })
                 .catch(error => {
