@@ -91,7 +91,6 @@ export class DashBoardHome {
     if(this.dashBoardProgressTracker.dashBoardItemObjectsAndData[this.selectedDashBoardId]){
       this.initiateSelectedDashBoardItem();
       this.loadingData = false;
-      //this.getAnalyticDataForDashBoardItems(this.dashBoardProgressTracker.dashBoardItemObjectsAndData[this.selectedDashBoardId]);
     }else{
       this.dashBoardProgressTracker.isDashBoardItemObjectsAndDataLoaded = false;
       this.dashboard.getDashBoardItemObjects(dashboardItems,this.currentUser).then((dashBoardItemObjects:any)=>{
@@ -99,7 +98,6 @@ export class DashBoardHome {
         this.dashBoardProgressTracker.isDashBoardItemObjectsAndDataLoaded = true;
         this.initiateSelectedDashBoardItem();
         this.loadingData = false;
-        //this.getAnalyticDataForDashBoardItems(this.dashBoardProgressTracker.dashBoardItemObjectsAndData[this.selectedDashBoardId]);
       },error=>{
         this.loadingData = false;
         this.setToasterMessage("Fail to load dashboard items metadata from server " + JSON.stringify(error));
@@ -115,9 +113,6 @@ export class DashBoardHome {
       this.dashBoardProgressTracker.dashBoardItemObjectsAndData[this.selectedDashBoardId] = analyticData;
       this.dashBoardProgressTracker.isisVisualizationDataLoaded = true;
       this.loadingData = false;
-      //dashBoardVisualizationData
-      //this.selectedDashBoardData = analyticData;
-      //this.setChartsObjects(this.selectedDashBoardData,this.dashBoardItemObjects);
     },error=>{
       this.loadingData = false;
       this.setToasterMessage("Fail to load dashBoardItem data from server " + JSON.stringify(error));

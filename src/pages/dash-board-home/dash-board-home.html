@@ -103,9 +103,9 @@
                     <ion-icon [color]="(selectedDashBoardItemId == dashboardItem.id) ?'current' : 'font-color'"  name="ios-arrow-forward" *ngIf="selectedDashBoardItemId != dashboardItem.id" item-right></ion-icon>
                     <ion-icon [color]="(selectedDashBoardItemId == dashboardItem.id) ?'current' : 'font-color'"  name="ios-arrow-down" *ngIf="selectedDashBoardItemId == dashboardItem.id" item-right></ion-icon>
                   </ion-item>
-                  <div class="visualizerHeaderSeparator"></div>
+                  <!--<div class="visualizerHeaderSeparator"></div>-->
                   <div *ngIf="selectedDashBoardItemId == dashboardItem.id">
-                    <page-visualization-card [chartObject] ="options" ></page-visualization-card>
+                    <page-visualization-card [dashboardItem] ="dashboardItem" ></page-visualization-card>
                   </div>
                 </div>
               </ion-col>
@@ -114,7 +114,6 @@
         </div>
       </div>
     </div>
-
 
   </ion-grid>
 

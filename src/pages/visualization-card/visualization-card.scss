@@ -8,6 +8,13 @@ page-visualization-card {
     }
   }
 
+  .item-md.item-block .item-inner {
+    border-bottom: 0px solid #dedede!important;
+  }
+  .item-ios.item-block .item-inner {
+    border-bottom: 0px solid #c8c7cc!important;;
+  }
+
   ion-col[width-90] {
     max-width: 86.5%;
   }
@@ -30,8 +37,4 @@ page-visualization-card {
     display: inline-block !important;
   }
 
-  img{
-    //width : 40px!important;
-    //margin : auto;
-  }
 }

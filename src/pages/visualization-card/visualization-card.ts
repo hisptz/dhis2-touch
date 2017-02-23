@@ -1,4 +1,8 @@
-import { Component ,Input} from '@angular/core';
+import { Component ,Input,OnInit} from '@angular/core';
+import { ToastController } from 'ionic-angular';
+import {Dashboard} from "../../providers/dashboard";
+import {VisulizerService} from "../../providers/visulizer.service";
+import {User} from "../../providers/user/user";
 /*
   Generated class for the VisualizationCard page.
 
@@ -9,126 +13,111 @@ import { Component ,Input} from '@angular/core';
   selector: 'page-visualization-card',
   templateUrl: 'visualization-card.html'
 })
-export class VisualizationCardPage {
+export class VisualizationCardPage implements OnInit{
 
-  @Input('chartObject') chartObject;
+  @Input() dashboardItem;
 
-  public options:any = {};
-  public setSelectedChart : string;
-  public charts = [
-    {type: "line", path: "assets/dashboard/line.png",isDisabled : false},
-    {type: "bar", path: "assets/dashboard/column.png",isDisabled : false},
-    {type: "column", path: "assets/dashboard/bar.png",isDisabled : false},
-    {type: "stacked_column", path: "assets/dashboard/column-stacked.png",isDisabled : true},
-    {type: "stacked_bar", path: "assets/dashboard/bar-stacked.png",isDisabled : true},
-    {type: "combined", path: "assets/dashboard/combined.png",isDisabled : true},
-    {type: "area", path: "assets/dashboard/area.png",isDisabled : false},
-    {type: "pie", path: "assets/dashboard/pie.png",isDisabled : false},
-    {type: "gauge", path: "assets/dashboard/gauge.jpg",isDisabled : true},
-    {type: "radar", path: "assets/dashboard/radar.png",isDisabled : true},
-  ];
 
-  public dashBoard = {
-    top: [],
-    button: [
+  public currentUser : any;
+  public analyticData : any;
+  public chartObject : any;
+  public tableObject : any;
+  public visualizationOptions : any = {
+    top : [],
+    bottom :  [
       {type: "table", path: "assets/dashboard/table.png"},
       {type: "charts", path: "assets/dashboard/combined.png"}
     ],
-    selected : ""
+    right : [
+      {type: "line", path: "assets/dashboard/line.png",isDisabled : false},
+      {type: "bar", path: "assets/dashboard/column.png",isDisabled : false},
+      {type: "column", path: "assets/dashboard/bar.png",isDisabled : false},
+      {type: "stacked_column", path: "assets/dashboard/column-stacked.png",isDisabled : false},
+      {type: "stacked_bar", path: "assets/dashboard/bar-stacked.png",isDisabled : false},
+      {type: "combined", path: "assets/dashboard/combined.png",isDisabled : false},
+      {type: "area", path: "assets/dashboard/area.png",isDisabled : false},
+      {type: "pie", path: "assets/dashboard/pie.png",isDisabled : false},
+    ],
+    left : []
+  };
+  public visualizationSelection : any = {
+    top : {},bottom : "charts",right : "",left : ""
   };
 
-  public table = {
-    header : [],
-    rows : []
-  };
-
-  public dashBoards :any;
-  constructor() {
-    this.drawChart('line');
-    this.changeVisualization("charts");
+  constructor(public Dashboard : Dashboard,public User : User,
+              public toastCtrl:ToastController,
+              public visualizationService : VisulizerService) {
   }
 
-  ionViewDidLoad() {
-
-  }
-
-  changeVisualization(type){
-    if(type == "table"){
-      this.table.header = [];
-      this.table.rows = [];
-      this.getTableObject();
-    }
-    this.dashBoard.selected = type;
-  }
-
-  getTableObject(){
-    let counter = 1;
-    let numberOfRows = this.getMaximumNumberOfRows();
-    this.options.series.forEach((series:any)=>{
-      let headerName = "Series " + counter;
-      if(series.name){
-        headerName = series.name;
-      }else{
-        counter ++;
-      }
-      this.table.header.push(headerName);
-    });
-    for(let index = 0; index < numberOfRows; index ++){
-      let row = [];
-      this.options.series.forEach((series:any)=>{
-        if(series.data[index]){
-          row.push(series.data[index]);
-        }else{
-          row.push("");
-        }
+  ngOnInit() {
+    this.setToasterMessage("Loading data");
+    //this.dashboardItem
+    this.User.getCurrentUser().then((user)=>{
+      this.currentUser = user;
+      this.Dashboard.getAnalyticDataForDashBoardItem(this.dashboardItem.analyticsUrl,user).then((analyticData:any)=>{
+        this.analyticData = analyticData;
+        this.drawChart();
+        this.setToasterMessage("success loading  data");
+      },error=>{
+        this.setToasterMessage("fail to load  data");
       });
-      this.table.rows.push(row);
-    }
+    })
   }
 
-  getMaximumNumberOfRows(){
-    let numberOfRows = 0;
-    this.options.series.forEach((series:any)=>{
-      if(numberOfRows < series.data.length){
-        numberOfRows = series.data.length;
-      }
-    });
-    return numberOfRows;
-  }
+  ionViewDidLoad() {}
 
-  drawChart(type) {
-    this.options = {
-      title: {text: 'Sample data'},
-      chart: {type: type},
-      credits: {enabled: false},
-      series: [
-        {
-          name: "2011",
-          data: [9.9, 1.5, 0.44, 12.2, 49, 57.9, 6.6],
-        },
-        {
-          name: "2012",
-          data: [19.9, 19.5, 1.44, 11.2, 9, 57.6, 5],
-        },
-        {
-          name: "2013",
-          data: [39.9, 18.5, 104, 12.9, 13, 15.6, 6],
-        },
-        {
-          name: "2014",
-          data: [49.9, 17.5, 10.44, 12.2, 9, 57.6, 5.6],
-        },
-        {
-          name: "2015",
-          data: [49.9, 11.5, 16.44, 19.2, 0.9, 5, 56.2],
-        },
-        {
-          name: "2016",
-          data: [42.9, 17.5, 1.44, 19.2, 9, 7.09, 56]
-        }
-      ]
+  drawChart(chartType?:string) {
+    let itemChartType = (this.dashboardItem.type) ? this.dashboardItem.type.toLowerCase() : 'bar';
+    let chartConfiguration = {
+      'type': chartType ? chartType : itemChartType,
+      'title': "",
+      'xAxisType': this.dashboardItem.category ? this.dashboardItem.category : 'pe',
+      'yAxisType': this.dashboardItem.series ? this.dashboardItem.series : 'dx'
     };
-    this.setSelectedChart = type;
+    this.visualizationSelection.right = chartConfiguration.type;
+    this.chartObject = this.visualizationService.drawChart(this.analyticData, chartConfiguration);
+    this.chartObject["credits"] =  {enabled: false}
   }
+
+  drawTable() {
+    let dashboardObject = this.dashboardItem;
+    let tableConfiguration = {rows: [], columns: []};
+    //get columns
+    if(dashboardObject.hasOwnProperty('columns')) {
+      dashboardObject.columns.forEach(colValue => {
+        tableConfiguration.columns.push(colValue.dimension);
+      });
+    } else {
+      tableConfiguration.columns = ['co'];
+    }
+
+    //get rows
+    if(dashboardObject.hasOwnProperty('rows')) {
+      dashboardObject.rows.forEach(rowValue => {
+        tableConfiguration.rows.push(rowValue.dimension)
+      })
+    } else {
+      tableConfiguration.rows = ['ou', 'dx', 'pe'];
+    }
+    this.tableObject = this.visualizationService.drawTable(this.analyticData, tableConfiguration);
+  }
+
+  changeVisualization(visualizationType){
+    if(visualizationType == "table"){
+      this.drawTable();
+    }
+    this.visualizationSelection.bottom = visualizationType;
+  }
+
+
+  setToasterMessage(message){
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000
+    });
+    toast.present();
+  }
+
+
 
 }

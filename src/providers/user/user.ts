@@ -54,7 +54,9 @@ export class User {
             }else{
               url = user.serverUrl;
             }
-            user.serverUrl = url;
+            user.serverUrl = url.split("/dhis-web-commons")[0];
+            //alert(user.serverUrl);
+            //alert(url)
             self.getUserDataFromServer(user).then((data:any) => {
                 resolve({data : data.data,user : user});
               })
