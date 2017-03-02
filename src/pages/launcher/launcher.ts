@@ -25,8 +25,6 @@ import {Login} from "../login/login";
 })
 export class Launcher {
 
-  public loadingData : boolean = false;
-  public loadingMessages : any = [];
   public logoUrl : string;
 
   constructor(public navCtrl: NavController,private Storage : Storage,
@@ -36,30 +34,20 @@ export class Launcher {
               private app : AppProvider,private httpClient : HttpClient,private user : User) {
 
     this.logoUrl = 'assets/img/logo-2.png';
-    this.loadingData = true;
-    this.loadingMessages = [];
-    this.setLoadingMessages("Please wait..");
     this.user.getCurrentUser().then(user=>{
       this.reAuthenticateUser(user);
     });
   }
 
-  ionViewDidLoad() {
-
-  }
+  ionViewDidLoad() {}
 
   reAuthenticateUser(user){
     if(user && user.isLogin){
       this.navCtrl.setRoot(TabsPage);
-      this.loadingData = false;
     }else{
       this.navCtrl.setRoot(Login);
-      this.loadingData = false;
     }
   }
 
-  setLoadingMessages(message){
-    this.loadingMessages.push(message);
-  }
 
 }

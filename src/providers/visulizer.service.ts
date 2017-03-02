@@ -549,7 +549,7 @@ export class VisulizerService {
     for (let i = 0; i < column_items_array.length; i++ ) {
       if ( table_columns_array.length === 0 ) {
         for ( let item of column_items_array[i] ) {
-          table_columns_array.push( item );
+          table_columns_array.push( [item] );
         }
       }else {
         let temp_arr = table_columns_array.concat();
@@ -779,7 +779,7 @@ export class VisulizerService {
       return {
         chart: {
           type: 'solidgauge',
-            events: {
+          events: {
             load: function(chart) {
               setTimeout(function() {
                 chart.target.reflow();
@@ -794,14 +794,14 @@ export class VisulizerService {
 
         pane: {
           center: ['50%', '85%'],
-            size: '140%',
-            startAngle: -90,
-            endAngle: 90,
-            background: {
+          size: '140%',
+          startAngle: -90,
+          endAngle: 90,
+          background: {
             backgroundColor: '#EEE',
-              innerRadius: '60%',
-              outerRadius: '100%',
-              shape: 'arc'
+            innerRadius: '60%',
+            outerRadius: '100%',
+            shape: 'arc'
           }
         },
 
@@ -816,16 +816,16 @@ export class VisulizerService {
             [0.5, '#DDDF0D'], // yellow
             [0.9, '#55BF3B'] // red
           ],
-            lineWidth: 0,
-            minorTickInterval: null,
-            tickPixelInterval: 400,
-            tickWidth: 0,
-            labels: {
+          lineWidth: 0,
+          minorTickInterval: null,
+          tickPixelInterval: 400,
+          tickWidth: 0,
+          labels: {
             y: 16
           },
           min: 0,
-            max: 100,
-            title: {
+          max: 100,
+          title: {
             text: ''
           }
         },
@@ -834,8 +834,8 @@ export class VisulizerService {
           solidgauge: {
             dataLabels: {
               y: 5,
-                borderWidth: 0,
-                useHTML: true
+              borderWidth: 0,
+              useHTML: true
             }
           }
         },
