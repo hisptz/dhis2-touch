@@ -27,7 +27,6 @@ import {ReportView} from "../pages/report-view/report-view";
 import {ReportParameterSelection} from "../pages/report-parameter-selection/report-parameter-selection";
 import {EventCaptureForm} from "../pages/event-capture-form/event-capture-form";
 import {EventView} from "../pages/event-view/event-view";
-
 import { ChartModule } from 'angular2-highcharts';
 import {EventFieldSelectionMenu} from "../pages/event-field-selection-menu/event-field-selection-menu";
 import {ProgressBarPage} from "../pages/progress-bar/progress-bar";
@@ -42,12 +41,13 @@ import {SendDataViaSms} from "../pages/send-data-via-sms/send-data-via-sms";
 import {SmsCommand} from "../providers/sms-command";
 import {VisualizationCardPage} from "../pages/visualization-card/visualization-card";
 import {VisulizerService} from "../providers/visulizer.service";
+import {LoadingPage} from "../pages/loading/loading";
 
 @NgModule({
   declarations: [
     MyApp,About,DashBoardHome,EventCaptureHome,EventView,
     TabsPage,Help,Login,Profile,DataEntryHome,Launcher,SendDataViaSms,
-    EventFieldSelectionMenu,ProgressBarPage,VisualizationCardPage,
+    EventFieldSelectionMenu,ProgressBarPage,VisualizationCardPage,LoadingPage,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,
     Account,ReportHome,SettingHome,TrackerCaptureHome,ObjectToArray,ProgramSelection,
     AccountName,DataEntryForm,ReportView,ReportParameterSelection,EventCaptureForm
@@ -60,12 +60,14 @@ import {VisulizerService} from "../providers/visulizer.service";
   entryComponents: [
     MyApp,About,DashBoardHome,EventCaptureHome,EventView,
     TabsPage,Help,Login,Profile,DataEntryHome,Launcher,SendDataViaSms,
-    EventFieldSelectionMenu,ProgressBarPage,VisualizationCardPage,
+    EventFieldSelectionMenu,ProgressBarPage,VisualizationCardPage,LoadingPage,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,ReportParameterSelection,
     Account,ReportHome,SettingHome,TrackerCaptureHome,ProgramSelection,DataEntryForm,ReportView,EventCaptureForm
   ],
   providers: [Storage,HttpClient,SqlLite,DataValues,
     VisulizerService,
-    EventCaptureFormProvider,Synchronization,EntryFormSelection,SmsCommand]
+    EventCaptureFormProvider,Synchronization,
+    EntryFormSelection,SmsCommand
+  ]
 })
 export class AppModule {}

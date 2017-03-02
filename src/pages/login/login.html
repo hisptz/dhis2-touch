@@ -25,9 +25,9 @@
     <ion-list>
       <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
         {{ message }}
-        <ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right color="primary"></ion-icon>
+        <ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right color="favorite"></ion-icon>
         <div style="text-align: center" item-right *ngIf="(currentIndex + 1) >= loadingMessages.length">
-          <ion-spinner name="crescent" color="secondary"></ion-spinner>
+          <page-loading loadingSize="small"></page-loading>
         </div>
       </ion-item>
     </ion-list>
@@ -41,11 +41,11 @@
         <ion-item >
           <div style="text-align: center" item-left >
             <div *ngIf="progressTracker.communication.passStep.length == progressTracker.communication.count">
-              <ion-icon name="done-all" color="primary"></ion-icon>
+              <ion-icon name="done-all" color="favorite"></ion-icon>
             </div>
             <div *ngIf="currentResourceType == 'communication'">
               <div *ngIf="progressTracker.communication.passStep.length != progressTracker.communication.count">
-                <ion-spinner name="crescent" color="secondary"></ion-spinner>
+                <page-loading loadingSize="small"></page-loading>
               </div>
             </div>
           </div>
@@ -59,11 +59,11 @@
         <ion-item >
           <div style="text-align: center" item-left >
             <div *ngIf="progressTracker.organisationUnit.passStep.length == progressTracker.organisationUnit.count">
-              <ion-icon name="done-all" color="primary"></ion-icon>
+              <ion-icon name="done-all" color="favorite"></ion-icon>
             </div>
             <div *ngIf="currentResourceType == 'organisationUnit'">
               <div *ngIf="progressTracker.organisationUnit.passStep.length != progressTracker.organisationUnit.count">
-                <ion-spinner name="crescent" color="secondary"></ion-spinner>
+                <page-loading loadingSize="small"></page-loading>
               </div>
             </div>
           </div>
@@ -77,11 +77,11 @@
         <ion-item >
           <div style="text-align: center" item-left >
             <div *ngIf="progressTracker.entryForm.passStep.length == progressTracker.entryForm.count">
-              <ion-icon name="done-all" color="primary"></ion-icon>
+              <ion-icon name="done-all" color="favorite"></ion-icon>
             </div>
             <div *ngIf="currentResourceType == 'entryForm'">
               <div *ngIf="progressTracker.entryForm.passStep.length != progressTracker.entryForm.count">
-                <ion-spinner name="crescent" color="secondary"></ion-spinner>
+                <page-loading loadingSize="small"></page-loading>
               </div>
             </div>
           </div>
@@ -95,11 +95,11 @@
         <ion-item >
           <div style="text-align: center" item-left >
             <div *ngIf="progressTracker.event.passStep.length == progressTracker.event.count">
-              <ion-icon name="done-all" color="primary"></ion-icon>
+              <ion-icon name="done-all" color="favorite"></ion-icon>
             </div>
             <div *ngIf="currentResourceType == 'event'">
               <div *ngIf="progressTracker.event.passStep.length != progressTracker.event.count">
-                <ion-spinner name="crescent" color="secondary"></ion-spinner>
+                <page-loading loadingSize="small"></page-loading>
               </div>
             </div>
           </div>

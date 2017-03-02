@@ -45,7 +45,7 @@
               <ion-icon name="done-all" color="primary"></ion-icon>
             </div>
             <div *ngIf="!dashBoardProgressTracker.isDashBoardsLoaded">
-              <ion-spinner name="crescent" color="secondary"></ion-spinner>
+              <page-loading loadingSize="small"></page-loading>
             </div>
           </div>
           <span [color]="(dashBoardProgressTracker.currentStep == 'dashBoards')?'current' : 'font-color'" >
@@ -58,7 +58,7 @@
               <ion-icon name="done-all" color="primary"></ion-icon>
             </div>
             <div *ngIf="!dashBoardProgressTracker.isDashBoardItemObjectsAndDataLoaded">
-              <ion-spinner name="crescent" color="secondary"></ion-spinner>
+              <page-loading loadingSize="small"></page-loading>
             </div>
           </div>
           <span [color]="(dashBoardProgressTracker.currentStep == 'visualizationMetadata')?'current' : 'font-color'" >
