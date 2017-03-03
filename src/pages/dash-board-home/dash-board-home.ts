@@ -53,36 +53,41 @@ export class DashBoardHome implements OnInit{
     this.network = this.NetworkAvailability.getNetWorkStatus();
     this.user.getCurrentUser().then(user=>{
       this.currentUser = user;
-      if(this.network.isAvailable){
-        this.getAllDataBase();
-      }else{
-        this.setToasterMessage(this.network.message);
-        this.dashBoardProgressTracker.isDashBoardsLoaded = true;
-      }
+      this.getAllDataBase();
+
     });
   }
 
   getAllDataBase(){
     this.dashBoardProgressTracker.isDashBoardsLoaded = false;
-    this.dashboard.getAllDashBoardsFromServer(this.currentUser).then((dashBoardResponse:any)=>{
-      this.dashBoards = dashBoardResponse.dashboards;
-      this.dashBoardsCopy = dashBoardResponse.dashboards;
-      if(dashBoardResponse.dashboards.length > 0){
-        this.dashBoardProgressTracker.isDashBoardsLoaded = true;
-        this.selectedDashBoardId = this.dashBoards[0].id;
-        this.selectedDashBoardName = this.dashBoards[0].name;
-        for(let dashBoard of  this.dashBoards){
-          this.dashBoardToDashBoardItem[dashBoard.id] = dashBoard.dashboardItems;
+    this.dashBoardProgressTracker.isDashBoardItemObjectsAndDataLoaded = false;
+    if(this.network.isAvailable){
+      this.dashboard.getAllDashBoardsFromServer(this.currentUser).then((dashBoardResponse:any)=>{
+        this.dashBoards = dashBoardResponse.dashboards;
+        this.dashBoardsCopy = dashBoardResponse.dashboards;
+        if(dashBoardResponse.dashboards.length > 0){
+          this.dashBoardProgressTracker.isDashBoardsLoaded = true;
+          this.selectedDashBoardId = this.dashBoards[0].id;
+          this.selectedDashBoardName = this.dashBoards[0].name;
+          for(let dashBoard of  this.dashBoards){
+            this.dashBoardToDashBoardItem[dashBoard.id] = dashBoard.dashboardItems;
+          }
+          this.getDashBoardItemObjectsAndData(this.dashBoards[0].dashboardItems);
         }
-        this.getDashBoardItemObjectsAndData(this.dashBoards[0].dashboardItems);
-      }
-    },error=>{
-      this.dashBoards = [];
-      this.dashBoardsCopy = [];
+      },error=>{
+        this.dashBoards = [];
+        this.dashBoardsCopy = [];
+        this.selectedDashBoardName = "There is no dashboard found";
+        this.dashBoardProgressTracker.isDashBoardItemObjectsAndDataLoaded = true;
+        this.dashBoardProgressTracker.isDashBoardsLoaded = true;
+        this.setToasterMessage("Fail to load dashboards from the server");
+      });
+    }else{
+      this.setNotificationToasterMessage(this.network.message);
       this.selectedDashBoardName = "There is no dashboard found";
+      this.dashBoardProgressTracker.isDashBoardItemObjectsAndDataLoaded = true;
       this.dashBoardProgressTracker.isDashBoardsLoaded = true;
-      this.setToasterMessage("Fail to load dashboards from the server");
-    });
+    }
   }
 
   hideAndShowVisualizationCard(dashBoardItemId){
@@ -113,16 +118,17 @@ export class DashBoardHome implements OnInit{
 
 
   getDashBoardItemObjectsAndData(dashboardItems){
+    this.dashBoardProgressTracker.isDashBoardItemObjectsAndDataLoaded = false;
     if(this.dashBoardProgressTracker.dashBoardItemObjectsAndData[this.selectedDashBoardId]){
       this.initiateSelectedDashBoardItem();
     }else{
-      this.dashBoardProgressTracker.isDashBoardItemObjectsAndDataLoaded = false;
       this.dashboard.getDashBoardItemObjects(dashboardItems,this.currentUser).then((dashBoardItemObjects:any)=>{
         this.dashBoardProgressTracker.dashBoardItemObjectsAndData[this.selectedDashBoardId] = dashBoardItemObjects;
         this.initiateSelectedDashBoardItem();
       },error=>{
         this.dashBoardProgressTracker.isDashBoardItemObjectsAndDataLoaded = true;
-        this.setToasterMessage("Fail to load dashboard items metadata from server " + JSON.stringify(error));
+        this.setToasterMessage("Fail to load dashboard items metadata from server " );
+        console.log(JSON.stringify(error));
       });
     }
   }
@@ -143,20 +149,16 @@ export class DashBoardHome implements OnInit{
     }
   }
 
-  getAnalyticDataForDashBoardItems(dashBoardItemObjects){
-    this.loadingData = true;
-    this.dashBoardProgressTracker.currentStep = 'visualizationData';
-    this.dashboard.getAnalyticDataForDashBoardItems(dashBoardItemObjects,this.currentUser).then((analyticData : any)=>{
-      this.dashBoardProgressTracker.dashBoardItemObjectsAndData[this.selectedDashBoardId] = analyticData;
-      this.dashBoardProgressTracker.isisVisualizationDataLoaded = true;
-      this.loadingData = false;
-    },error=>{
-      this.loadingData = false;
-      this.setToasterMessage("Fail to load dashBoardItem data from server " + JSON.stringify(error));
-    });
+  ionViewDidLoad() {
   }
 
-  ionViewDidLoad() {
+  setNotificationToasterMessage(message){
+    let toast = this.toastCtrl.create({
+      message: message,
+      position : 'top',
+      duration: 1500
+    });
+    toast.present();
   }
 
   setToasterMessage(message){

@@ -48,6 +48,9 @@
             <ion-item *ngFor="let dashboard of dashBoards" (click)="setCurrentDashboard(dashboard)" class="list-separator">
               <span [color]="(selectedDashBoardName == dashboard.name) ?'current' : 'font-color'" >{{ dashboard.name }}</span>
             </ion-item>
+            <ion-item *ngIf="dashBoards.length == 0">
+              There no dashboard found
+            </ion-item>
           </ion-list>
         </ion-col>
       </ion-row>
