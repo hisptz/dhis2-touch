@@ -149,6 +149,10 @@ export class DashBoardHome implements OnInit{
     }
   }
 
+  updateDashBoardVisualizationData(analyticData,dashboardItemId){
+    this.dashBoardProgressTracker.dashBoardVisualizationData[dashboardItemId] = analyticData;
+  }
+
   ionViewDidLoad() {
   }
 

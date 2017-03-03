@@ -80,7 +80,11 @@
                     </ion-item>
                     <div *ngIf="selectedDashBoardItemId == dashboardItem.id">
                       <div class="list-separator"></div>
-                       <page-visualization-card [dashboardItem] ="dashboardItem" ></page-visualization-card>
+                      <page-visualization-card [dashboardItem]="dashboardItem"
+                                               (dashboardItemAnalyticData)="updateDashBoardVisualizationData($event,dashboardItem.id)"
+                                               [dashboardItemData]="dashBoardProgressTracker.dashBoardVisualizationData[dashboardItem.id]">
+
+                      </page-visualization-card>
                     </div>
                   </div>
                 </ion-col>

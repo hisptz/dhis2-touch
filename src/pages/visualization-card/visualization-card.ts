@@ -1,4 +1,4 @@
-import { Component ,Input,OnInit} from '@angular/core';
+import { Component ,Input,Output, EventEmitter,OnInit} from '@angular/core';
 import { ToastController } from 'ionic-angular';
 import {Dashboard} from "../../providers/dashboard";
 import {VisulizerService} from "../../providers/visulizer.service";
@@ -16,12 +16,15 @@ import {User} from "../../providers/user/user";
 export class VisualizationCardPage implements OnInit{
 
   @Input() dashboardItem;
+  @Input() dashboardItemData;
+  @Output() dashboardItemAnalyticData = new EventEmitter();
 
 
   public currentUser : any;
   public analyticData : any;
   public chartObject : any;
   public tableObject : any;
+  isVisualizationLoading : boolean = false;
   public visualizationOptions : any = {
     top : [],
     bottom :  [
@@ -52,12 +55,18 @@ export class VisualizationCardPage implements OnInit{
   ngOnInit() {
     this.User.getCurrentUser().then((user)=>{
       this.currentUser = user;
-      this.Dashboard.getAnalyticDataForDashBoardItem(this.dashboardItem.analyticsUrl,user).then((analyticData:any)=>{
-        this.analyticData = analyticData;
+      if(this.dashboardItemData){
+        this.analyticData = this.dashboardItemData;
         this.drawChart();
-      },error=>{
-        this.setToasterMessage("fail to load data for " + (this.dashboardItem.title) ? this.dashboardItem.title : this.dashboardItem.name);
-      });
+      }else{
+        this.Dashboard.getAnalyticDataForDashBoardItem(this.dashboardItem.analyticsUrl,user).then((analyticData:any)=>{
+          this.analyticData = analyticData;
+          this.dashboardItemAnalyticData.emit(analyticData);
+          this.drawChart();
+        },error=>{
+          this.setToasterMessage("fail to load data for " + (this.dashboardItem.title) ? this.dashboardItem.title : this.dashboardItem.name);
+        });
+      }
     })
   }
 
