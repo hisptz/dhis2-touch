@@ -13,6 +13,7 @@ import { Component ,Input} from '@angular/core';
 export class LoadingPage {
 
   @Input() loadingSize;
+  @Input() loadingMessage;
 
   constructor() {
   }

@@ -23,7 +23,7 @@
               {{ selectedOrganisationUnitLabel }}
             </span>
             <span *ngIf="!currentSelectionStatus.isOrgUnitLoaded" >
-              <ion-spinner  name="crescent" color="secondary"></ion-spinner>&nbsp;&nbsp;
+              <page-loading loadingSize="small"></page-loading>
               Loading organisation units
             </span>
           </button>
@@ -33,7 +33,7 @@
         <ion-col>
           <button [disabled]="!currentSelectionStatus.program" class="dataEntryButton" text-capitalize ion-button full large (click)="openProgramsModal()" color="whitecolor">
             <span *ngIf="!currentSelectionStatus.isProgramLoaded" >
-              <ion-spinner  name="crescent" color="secondary"></ion-spinner>&nbsp;&nbsp;
+              <page-loading loadingSize="small"></page-loading>
               Loading programs
             </span>
             <span *ngIf="currentSelectionStatus.isProgramLoaded" >

@@ -19,7 +19,7 @@
         <ion-col>
           <button [disabled]="!currentSelectionStatus.orgUnit" class="dataEntryButton" text-capitalize ion-button full large (click)="openOrganisationUnitModal()" color="whitecolor">
            <span *ngIf="!currentSelectionStatus.isOrgUnitLoaded" >
-              <ion-spinner  name="crescent" color="secondary"></ion-spinner>&nbsp;&nbsp;
+              <page-loading loadingSize="small"></page-loading>
               Loading organisation units
             </span>
             <span *ngIf="currentSelectionStatus.isOrgUnitLoaded" >
@@ -32,7 +32,7 @@
         <ion-col>
           <button [disabled]="!currentSelectionStatus.dataSet" class="dataEntryButton" text-capitalize ion-button full large (click)="openDataSetsModal()" color="whitecolor">
             <span *ngIf="!currentSelectionStatus.isDataSetLoaded" >
-              <ion-spinner  name="crescent" color="secondary"></ion-spinner>&nbsp;&nbsp;
+              <page-loading loadingSize="small"></page-loading>
               Loading entry forms
             </span>
             <span *ngIf="currentSelectionStatus.isDataSetLoaded" >
@@ -76,7 +76,7 @@
 
       <div *ngIf="selectedPeriod">
         <div *ngIf="selectedPeriod.name && hasDataDimensionSet()">
-          <ion-row >
+          <ion-row class="slide-in-from-right">
             <ion-col width="100">
               <ion-item-group (click)="goToEntryForm()">
                 <ion-item-divider>
