@@ -20,8 +20,16 @@ export class DashBoardHome implements OnInit{
 
   public currentUser : any;
   public loadingData : boolean = false;
+
+  public isDashboardListMenuOpen : boolean = false;
+  public isDashboardListLoaded : boolean = false;
+  public isDashboardItemsLoaded : boolean = false;
+
   public dashBoards :any = [];
+  public dashBoardsCopy : any = [];
+
   public selectedDashBoardId : string;
+  public selectedDashBoardName : string;
   public selectedDashBoardItemId : string;
   public dashBoardToDashBoardItem : any = {};
   public dashBoardProgressTracker : any = {
@@ -49,28 +57,30 @@ export class DashBoardHome implements OnInit{
         this.getAllDataBase();
       }else{
         this.setToasterMessage(this.network.message);
+        this.dashBoardProgressTracker.isDashBoardsLoaded = true;
       }
     });
   }
 
   getAllDataBase(){
-    this.loadingData = true;
-    this.dashBoardProgressTracker.currentStep = 'dashBoards';
+    this.dashBoardProgressTracker.isDashBoardsLoaded = false;
     this.dashboard.getAllDashBoardsFromServer(this.currentUser).then((dashBoardResponse:any)=>{
-      this.loadingData = false;
       this.dashBoards = dashBoardResponse.dashboards;
+      this.dashBoardsCopy = dashBoardResponse.dashboards;
       if(dashBoardResponse.dashboards.length > 0){
         this.dashBoardProgressTracker.isDashBoardsLoaded = true;
         this.selectedDashBoardId = this.dashBoards[0].id;
+        this.selectedDashBoardName = this.dashBoards[0].name;
         for(let dashBoard of  this.dashBoards){
           this.dashBoardToDashBoardItem[dashBoard.id] = dashBoard.dashboardItems;
         }
-        this.selectedDashBoardItemId = this.dashBoards[0].dashboardItems[0].id;
         this.getDashBoardItemObjectsAndData(this.dashBoards[0].dashboardItems);
       }
     },error=>{
-      this.loadingData = false;
       this.dashBoards = [];
+      this.dashBoardsCopy = [];
+      this.selectedDashBoardName = "There is no dashboard found";
+      this.dashBoardProgressTracker.isDashBoardsLoaded = true;
       this.setToasterMessage("Fail to load dashboards from the server");
     });
   }
@@ -83,36 +93,54 @@ export class DashBoardHome implements OnInit{
     }
   }
 
-  changeDashBoard(){
-    this.loadingData = true;
-    let selectedDashBoards = this.dashBoardToDashBoardItem[this.selectedDashBoardId];
-    this.getDashBoardItemObjectsAndData(selectedDashBoards);
+  toggleDashBoardList(){
+    this.dashBoards = this.dashBoardsCopy;
+    this.isDashboardListMenuOpen = !this.isDashboardListMenuOpen;
+  }
+
+  setCurrentDashboard(dashboard){
+    if(dashboard.name != this.selectedDashBoardName){
+      this.dashBoardProgressTracker.isDashBoardItemObjectsAndDataLoaded = false;
+      this.selectedDashBoardId = dashboard.id;
+      this.selectedDashBoardName = dashboard.name;
+      this.toggleDashBoardList();
+      let selectedDashBoards = this.dashBoardToDashBoardItem[this.selectedDashBoardId];
+      this.getDashBoardItemObjectsAndData(selectedDashBoards);
+    }else{
+      this.toggleDashBoardList();
+    }
+  }
+
+
+  getDashBoardItemObjectsAndData(dashboardItems){
+    if(this.dashBoardProgressTracker.dashBoardItemObjectsAndData[this.selectedDashBoardId]){
+      this.initiateSelectedDashBoardItem();
+    }else{
+      this.dashBoardProgressTracker.isDashBoardItemObjectsAndDataLoaded = false;
+      this.dashboard.getDashBoardItemObjects(dashboardItems,this.currentUser).then((dashBoardItemObjects:any)=>{
+        this.dashBoardProgressTracker.dashBoardItemObjectsAndData[this.selectedDashBoardId] = dashBoardItemObjects;
+        this.initiateSelectedDashBoardItem();
+      },error=>{
+        this.dashBoardProgressTracker.isDashBoardItemObjectsAndDataLoaded = true;
+        this.setToasterMessage("Fail to load dashboard items metadata from server " + JSON.stringify(error));
+      });
+    }
   }
 
   initiateSelectedDashBoardItem(){
     let selectedDashBoardItems = this.dashBoardProgressTracker.dashBoardItemObjectsAndData[this.selectedDashBoardId];
     this.selectedDashBoardItemId = selectedDashBoardItems[0].id;
+    this.dashBoardProgressTracker.isDashBoardItemObjectsAndDataLoaded = true;
   }
 
-  getDashBoardItemObjectsAndData(dashboardItems){
-    this.loadingData = true;
-    this.dashBoardProgressTracker.currentStep = "visualizationMetadata";
-    if(this.dashBoardProgressTracker.dashBoardItemObjectsAndData[this.selectedDashBoardId]){
-      this.initiateSelectedDashBoardItem();
-      this.loadingData = false;
-    }else{
-      this.dashBoardProgressTracker.isDashBoardItemObjectsAndDataLoaded = false;
-      this.dashboard.getDashBoardItemObjects(dashboardItems,this.currentUser).then((dashBoardItemObjects:any)=>{
-        this.dashBoardProgressTracker.dashBoardItemObjectsAndData[this.selectedDashBoardId] = dashBoardItemObjects;
-        this.dashBoardProgressTracker.isDashBoardItemObjectsAndDataLoaded = true;
-        this.initiateSelectedDashBoardItem();
-        this.loadingData = false;
-      },error=>{
-        this.loadingData = false;
-        this.setToasterMessage("Fail to load dashboard items metadata from server " + JSON.stringify(error));
-      });
+  getFilteredList(ev: any) {
+    let val = ev.target.value;
+    this.dashBoards = this.dashBoardsCopy;
+    if(val && val.trim() != ''){
+      this.dashBoards = this.dashBoards.filter((dashBoard:any) => {
+        return (dashBoard.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
     }
-
   }
 
   getAnalyticDataForDashBoardItems(dashBoardItemObjects){

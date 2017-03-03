@@ -16,18 +16,78 @@
 <ion-content class="dashboardHome">
 
   <ion-grid>
+
     <ion-row>
       <ion-col width-100>
-        <ion-item >
-          <ion-select disabled="{{loadingData}}" interface="action-sheet"  [(ngModel)]="selectedDashBoardId" (ionChange)="changeDashBoard()">
-            <ion-option *ngFor="let dashBoard of dashBoards" value="{{dashBoard.id}}" >{{dashBoard.name}}</ion-option>
-          </ion-select>
-        </ion-item>
+        <div *ngIf="!dashBoardProgressTracker.isDashBoardsLoaded" >
+          <ion-item >
+            <div style="text-align: center" item-left >
+              <page-loading loadingSize="small"></page-loading>
+            </div>
+            Loading DashBoards
+          </ion-item>
+        </div>
+        <div *ngIf="dashBoardProgressTracker.isDashBoardsLoaded">
+          <ion-item (click)="toggleDashBoardList()" >
+            {{ selectedDashBoardName }}
+            <div style="text-align: center"item-right >
+              <button ion-button color="dark" clear>
+                <img src="assets/dashboard/menu.png" width="20" height="20">
+              </button>
+            </div>
+          </ion-item>
+        </div>
       </ion-col>
     </ion-row>
-    <div class="dashHeaderSeparator"></div>
-    <div *ngIf="!loadingData ">
-      <div *ngIf="dashBoards.length == 0 ||dashBoards.length > 0 && !dashBoardProgressTracker.dashBoardItemObjectsAndData[selectedDashBoardId]">
+
+    <div *ngIf="isDashboardListMenuOpen" class="slide-in-from-right">
+      <ion-searchbar animated="true"autocomplete="on" placeholder="Search dashboard"  (ionInput)="getFilteredList($event)"></ion-searchbar>
+      <ion-row>
+        <ion-col width="100">
+          <ion-list>
+            <ion-item *ngFor="let dashboard of dashBoards" (click)="setCurrentDashboard(dashboard)" class="list-separator">
+              <span [color]="(selectedDashBoardName == dashboard.name) ?'current' : 'font-color'" >{{ dashboard.name }}</span>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <div *ngIf="!isDashboardListMenuOpen" >
+      <ion-row *ngIf="!dashBoardProgressTracker.isDashBoardItemObjectsAndDataLoaded && dashBoardProgressTracker.isDashBoardsLoaded">
+        <ion-col width="100">
+          <page-loading loadingSize="large" loadingMessage="Loading visualization metadata"></page-loading>
+        </ion-col>
+      </ion-row>
+
+      <div *ngIf="dashBoardProgressTracker.isDashBoardItemObjectsAndDataLoaded && dashBoardProgressTracker.isDashBoardsLoaded">
+        <div *ngFor="let dashBoard of dashBoards">
+          <div *ngIf="dashBoard.id == selectedDashBoardId && dashBoardProgressTracker.dashBoardItemObjectsAndData[selectedDashBoardId]">
+            <div *ngFor="let dashboardItem of dashBoardProgressTracker.dashBoardItemObjectsAndData[selectedDashBoardId]">
+              <ion-row >
+                <ion-col>
+                  <div class="visualizationHeader" >
+                    <ion-item (click)="hideAndShowVisualizationCard(dashboardItem.id)" >
+                    <span [color]="(selectedDashBoardItemId == dashboardItem.id) ?'current' : 'font-color'">
+                      <span *ngIf="dashboardItem.title" >{{ dashboardItem.title }}</span>
+                      <span *ngIf="!dashboardItem.title">{{ dashboardItem.name }}</span>
+                     </span>
+                        <ion-icon [color]="(selectedDashBoardItemId == dashboardItem.id) ?'current' : 'font-color'"  name="ios-arrow-down" *ngIf="selectedDashBoardItemId != dashboardItem.id" item-right></ion-icon>
+                        <ion-icon [color]="(selectedDashBoardItemId == dashboardItem.id) ?'current' : 'font-color'"  name="ios-arrow-up" *ngIf="selectedDashBoardItemId == dashboardItem.id" item-right></ion-icon>
+                    </ion-item>
+                    <div *ngIf="selectedDashBoardItemId == dashboardItem.id">
+                      <div class="list-separator"></div>
+                       <page-visualization-card [dashboardItem] ="dashboardItem" ></page-visualization-card>
+                    </div>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="dashBoardsCopy.length == 0 && dashBoardProgressTracker.isDashBoardsLoaded">
         <div class="refreshPanel" text-center>
           <button (click)="getAllDataBase()" ion-button clear large text-capitalize class="normalButton">
             <ion-icon name="refresh"></ion-icon>
@@ -36,63 +96,5 @@
       </div>
     </div>
 
-    <div *ngIf="loadingData" class="loadingMessage">
-
-      <ion-list >
-        <ion-item >
-          <div style="text-align: center" item-left >
-            <div *ngIf="dashBoardProgressTracker.isDashBoardsLoaded">
-              <ion-icon name="done-all" color="primary"></ion-icon>
-            </div>
-            <div *ngIf="!dashBoardProgressTracker.isDashBoardsLoaded">
-              <page-loading loadingSize="small"></page-loading>
-            </div>
-          </div>
-          <span [color]="(dashBoardProgressTracker.currentStep == 'dashBoards')?'current' : 'font-color'" >
-            Loading DashBoards
-          </span>
-        </ion-item>
-        <ion-item >
-          <div style="text-align: center" item-left >
-            <div *ngIf="dashBoardProgressTracker.isDashBoardItemObjectsAndDataLoaded">
-              <ion-icon name="done-all" color="primary"></ion-icon>
-            </div>
-            <div *ngIf="!dashBoardProgressTracker.isDashBoardItemObjectsAndDataLoaded">
-              <page-loading loadingSize="small"></page-loading>
-            </div>
-          </div>
-          <span [color]="(dashBoardProgressTracker.currentStep == 'visualizationMetadata')?'current' : 'font-color'" >
-            Loading Visualization metadata
-          </span>
-        </ion-item>
-      </ion-list>
-    </div>
-    <div *ngIf="!loadingData">
-      <!-- dashBoard items -->
-      <div *ngFor="let dashBoard of dashBoards">
-        <div *ngIf="dashBoard.id == selectedDashBoardId && dashBoardProgressTracker.dashBoardItemObjectsAndData[selectedDashBoardId]">
-          <div *ngFor="let dashboardItem of dashBoardProgressTracker.dashBoardItemObjectsAndData[selectedDashBoardId]">
-           <ion-row >
-              <ion-col>
-                <div class="visualizationHeader" >
-                  <ion-item (click)="hideAndShowVisualizationCard(dashboardItem.id)" >
-                  <span [color]="(selectedDashBoardItemId == dashboardItem.id) ?'current' : 'font-color'">
-                    <span *ngIf="dashboardItem.title" >{{ dashboardItem.title }}</span>
-                    <span *ngIf="!dashboardItem.title">{{ dashboardItem.name }}</span>
-                   </span>
-                    <ion-icon [color]="(selectedDashBoardItemId == dashboardItem.id) ?'current' : 'font-color'"  name="ios-arrow-forward" *ngIf="selectedDashBoardItemId != dashboardItem.id" item-right></ion-icon>
-                    <ion-icon [color]="(selectedDashBoardItemId == dashboardItem.id) ?'current' : 'font-color'"  name="ios-arrow-down" *ngIf="selectedDashBoardItemId == dashboardItem.id" item-right></ion-icon>
-                  </ion-item>
-                  <div class="visualizerHeaderSeparator"></div>
-                  <div *ngIf="selectedDashBoardItemId == dashboardItem.id">
-                    <page-visualization-card [dashboardItem] ="dashboardItem" ></page-visualization-card>
-                  </div>
-                </div>
-              </ion-col>
-            </ion-row>
-          </div>
-        </div>
-      </div>
-    </div>
   </ion-grid>
 </ion-content>
