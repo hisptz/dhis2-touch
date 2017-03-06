@@ -23,8 +23,8 @@
             <span [color]="(updateManagerObject.sendDataViaSms.isExpanded) ?'current' : 'font-color'">
               Send Data Via Sms
             </span>
-            <ion-icon *ngIf="!updateManagerObject.sendDataViaSms.isExpanded" name="ios-arrow-forward" item-right></ion-icon>
-            <ion-icon *ngIf="updateManagerObject.sendDataViaSms.isExpanded" name="ios-arrow-down" item-right></ion-icon>
+            <ion-icon *ngIf="!updateManagerObject.sendDataViaSms.isExpanded" name="ios-arrow-down" item-right></ion-icon>
+            <ion-icon *ngIf="updateManagerObject.sendDataViaSms.isExpanded" name="ios-arrow-up" item-right></ion-icon>
           </ion-item>
           <div class="updateManagerContents" *ngIf="updateManagerObject.sendDataViaSms.isExpanded" >
             <ion-row>
@@ -43,8 +43,8 @@
               Metadata update
             </span>
 
-            <ion-icon *ngIf="!updateManagerObject.updateMetadata.isExpanded" name="ios-arrow-forward" item-right></ion-icon>
-            <ion-icon *ngIf="updateManagerObject.updateMetadata.isExpanded" name="ios-arrow-down" item-right></ion-icon>
+            <ion-icon *ngIf="!updateManagerObject.updateMetadata.isExpanded" name="ios-arrow-down" item-right></ion-icon>
+            <ion-icon *ngIf="updateManagerObject.updateMetadata.isExpanded" name="ios-arrow-up" item-right></ion-icon>
           </ion-item>
           <div class="updateManagerContents" *ngIf="updateManagerObject.updateMetadata.isExpanded" >
             <ion-row>
