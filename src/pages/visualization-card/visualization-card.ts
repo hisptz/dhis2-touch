@@ -126,6 +126,8 @@ export class VisualizationCardPage implements OnInit{
   changeVisualization(visualizationType?){
     if(visualizationType == "table"){
       this.drawTable();
+    }else{
+      this.drawChart();
     }
     this.visualizationSelection.bottom = visualizationType;
   }
