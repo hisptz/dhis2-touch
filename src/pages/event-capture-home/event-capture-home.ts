@@ -14,6 +14,7 @@ import {EventCaptureForm} from "../event-capture-form/event-capture-form";
 import {ProgramStageDataElements} from "../../providers/program-stage-data-elements";
 import {EventView} from "../event-view/event-view";
 import {EventFieldSelectionMenu} from "../event-field-selection-menu/event-field-selection-menu";
+import {NetworkAvailability} from "../../providers/network-availability";
 
 /*
   Generated class for the EventCaptureHome page.
@@ -24,7 +25,9 @@ import {EventFieldSelectionMenu} from "../event-field-selection-menu/event-field
 @Component({
   selector: 'page-event-capture-home',
   templateUrl: 'event-capture-home.html',
-  providers : [User,AppProvider,HttpClient,SqlLite,Program,OrganisationUnit,Events,ProgramStageDataElements]
+  providers : [User,AppProvider,HttpClient,SqlLite,Program,
+    NetworkAvailability,
+    OrganisationUnit,Events,ProgramStageDataElements]
 })
 export class EventCaptureHome {
 
@@ -54,8 +57,12 @@ export class EventCaptureHome {
   public currentPage : number ;
   public paginationLabel : string = "";
 
+  //network
+  public network : any;
+
   constructor(public eventProvider :Events,public OrganisationUnit : OrganisationUnit,
               public ProgramStageDataElements : ProgramStageDataElements,
+              public NetworkAvailability : NetworkAvailability,
               public Program : Program,public modalCtrl: ModalController,public navCtrl: NavController,public toastCtrl: ToastController,public user : User,public appProvider : AppProvider,public sqlLite : SqlLite,public httpClient: HttpClient) {
     this.selectedDataDimension = [];
     this.currentEvents = [];
@@ -262,23 +269,28 @@ export class EventCaptureHome {
    */
   loadEvents(){
     this.isAllParameterSet = true;
-    this.loadEventsFromOfflineStorage();
+    this.network = this.NetworkAvailability.getNetWorkStatus();
+    if(!this.network.isAvailable){
+      this.loadEventsFromOfflineStorage();
+    }else{
+      this.setNotificationToasterMessage("Checking most recent events from server");
+      this.eventProvider.loadEventsFromServer(this.selectedOrganisationUnit,this.selectedProgram,this.selectedDataDimension,this.currentUser).then((events : any)=>{
+        this.setNotificationToasterMessage("Saving most recent events");
+        this.eventProvider.savingEventsFromServer(events,this.currentUser).then(()=>{
+          this.loadEventsFromOfflineStorage();
+        },error=>{
+          this.setToasterMessage("Fail to save most recent events ");
+          console.log(JSON.stringify(error));
+        });
+      },error=>{
+        this.setToasterMessage("Fail to download most recent events ");
+        this.loadEventsFromOfflineStorage();
+        console.log(JSON.stringify(error));
+      });
+    }
 
-    //this.loadingData = true;
-    //this.loadingMessages = [];
-    //this.setLoadingMessages("Downloading most recent events");
-    //this.eventProvider.loadEventsFromServer(this.selectedOrganisationUnit,this.selectedProgram,this.selectedDataDimension,this.currentUser).then((events : any)=>{
-    //  this.setLoadingMessages("Saving most recent events");
-    //  this.eventProvider.savingEventsFromServer(events,this.currentUser).then(()=>{
-    //    this.loadEventsFromOfflineStorage();
-    //  },error=>{
-    //    this.loadingData = false;
-    //    this.setToasterMessage("Fail to save most recent events : " + JSON.stringify(error));
-    //  });
-    //},error=>{
-    //  this.setToasterMessage("Fail to download most recent events : " + JSON.stringify(error));
-    //  this.loadEventsFromOfflineStorage();
-    //});
+
+
   }
 
   /**

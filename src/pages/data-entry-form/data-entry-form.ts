@@ -6,6 +6,7 @@ import {SqlLite} from "../../providers/sql-lite/sql-lite";
 import {DataValues} from "../../providers/data-values";
 import {EntryForm} from "../../providers/entry-form";
 import {DataSets} from "../../providers/data-sets";
+import {NetworkAvailability} from "../../providers/network-availability";
 
 /*
   Generated class for the DataEntryForm page.
@@ -16,7 +17,7 @@ import {DataSets} from "../../providers/data-sets";
 @Component({
   selector: 'page-data-entry-form',
   templateUrl: 'data-entry-form.html',
-  providers : [User,HttpClient,SqlLite,DataValues,EntryForm,DataSets],
+  providers : [User,HttpClient,SqlLite,DataValues,EntryForm,DataSets,NetworkAvailability],
 })
 export class DataEntryForm {
 
@@ -44,13 +45,17 @@ export class DataEntryForm {
   public dataSetCompletenessInformation :any = {name:"",date:""};
   public isDataSetCompletenessUpdated : boolean = false;
 
+  //network
+  public network : any;
+
   constructor(private params:NavParams, private toastCtrl:ToastController,
               private user:User, private httpClient:HttpClient,
               public navCtrl :NavController,public DataSets : DataSets,
-              private actionSheetCtrl: ActionSheetController,
+              private actionSheetCtrl: ActionSheetController,public NetworkAvailability : NetworkAvailability,
               private entryForm:EntryForm, private sqlLite:SqlLite,
               private dataValues:DataValues) {
 
+    this.network = this.NetworkAvailability.getNetWorkStatus();
     this.user.getCurrentUser().then((user:any)=> {
       this.currentUser = user;
       this.currentPage = 0;
@@ -82,31 +87,34 @@ export class DataEntryForm {
       this.entryFormSections = sections;
       //setting initial label values
       this.paginationLabel = (this.currentPage + 1) + "/"+this.entryFormSections.length;
-      this.getDataValuesFromLocalStorage();
-      //this.setLoadingMessages('Downloading data values from server');
-      //let dataSetId = this.selectedDataSet.id;
-      //let orgUnitId = this.dataEntryFormSelectionParameter.orgUnit.id;
-      //let period = this.dataEntryFormSelectionParameter.period.iso;
-      //this.dataValues.getDataValueSetFromServer(dataSetId,period,orgUnitId,this.dataSetAttributeOptionCombo,this.currentUser)
-      //  .then((dataValues : any)=>{
-      //    if(dataValues.length > 0){
-      //      this.setLoadingMessages('Saving ' + dataValues.length + " data values from server");
-      //      let dataDimension = this.dataEntryFormSelectionParameter.dataDimension;
-      //      this.dataValues.saveDataValues(dataValues,dataSetId,period,orgUnitId,dataDimension,"synced",this.currentUser).then(()=>{
-      //        this.getDataValuesFromLocalStorage();
-      //      },error=>{
-      //        this.setToasterMessage('Fail to save data values from server');
-      //        this.getDataValuesFromLocalStorage();
-      //      });
-      //    }else{
-      //      this.getDataValuesFromLocalStorage();
-      //    }
-      //  },error=>{
-      //    this.setToasterMessage('Fail to download data values from server');
-      //    this.getDataValuesFromLocalStorage();
-      //    console.log("error : " + JSON.stringify(error));
-      //  });
-
+      this.network = this.NetworkAvailability.getNetWorkStatus();
+      if(!this.network.isAvailable){
+        this.getDataValuesFromLocalStorage();
+      }else{
+        this.setLoadingMessages('Downloading data values from server');
+        let dataSetId = this.selectedDataSet.id;
+        let orgUnitId = this.dataEntryFormSelectionParameter.orgUnit.id;
+        let period = this.dataEntryFormSelectionParameter.period.iso;
+        this.dataValues.getDataValueSetFromServer(dataSetId,period,orgUnitId,this.dataSetAttributeOptionCombo,this.currentUser)
+          .then((dataValues : any)=>{
+            if(dataValues.length > 0){
+              this.setLoadingMessages('Saving ' + dataValues.length + " data values from server");
+              let dataDimension = this.dataEntryFormSelectionParameter.dataDimension;
+              this.dataValues.saveDataValues(dataValues,dataSetId,period,orgUnitId,dataDimension,"synced",this.currentUser).then(()=>{
+                this.getDataValuesFromLocalStorage();
+              },error=>{
+                this.setToasterMessage('Fail to save data values from server');
+                this.getDataValuesFromLocalStorage();
+              });
+            }else{
+              this.getDataValuesFromLocalStorage();
+            }
+          },error=>{
+            this.setToasterMessage('Fail to download data values from server');
+            this.getDataValuesFromLocalStorage();
+            console.log("error : " + JSON.stringify(error));
+          });
+      }
     })
   }
 

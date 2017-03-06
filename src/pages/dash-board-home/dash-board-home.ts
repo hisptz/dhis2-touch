@@ -50,7 +50,6 @@ export class DashBoardHome implements OnInit{
   }
 
   ngOnInit() {
-    this.network = this.NetworkAvailability.getNetWorkStatus();
     this.user.getCurrentUser().then(user=>{
       this.currentUser = user;
       this.getAllDataBase();
@@ -61,6 +60,7 @@ export class DashBoardHome implements OnInit{
   getAllDataBase(){
     this.dashBoardProgressTracker.isDashBoardsLoaded = false;
     this.dashBoardProgressTracker.isDashBoardItemObjectsAndDataLoaded = false;
+    this.network = this.NetworkAvailability.getNetWorkStatus();
     if(this.network.isAvailable){
       this.dashboard.getAllDashBoardsFromServer(this.currentUser).then((dashBoardResponse:any)=>{
         this.dashBoards = dashBoardResponse.dashboards;

@@ -24,7 +24,7 @@ export class VisualizationCardPage implements OnInit{
   public analyticData : any;
   public chartObject : any;
   public tableObject : any;
-  isVisualizationLoading : boolean = false;
+  public isVisualizationDataLoaded : boolean = false;
   public visualizationOptions : any = {
     top : [],
     bottom :  [
@@ -47,6 +47,8 @@ export class VisualizationCardPage implements OnInit{
     top : {},bottom : "charts",right : "",left : ""
   };
 
+  //visualizationType
+
   constructor(public Dashboard : Dashboard,public User : User,
               public toastCtrl:ToastController,
               public visualizationService : VisulizerService) {
@@ -57,22 +59,33 @@ export class VisualizationCardPage implements OnInit{
       this.currentUser = user;
       if(this.dashboardItemData){
         this.analyticData = this.dashboardItemData;
-        this.drawChart();
+        this.initiateVisualization();
       }else{
         this.Dashboard.getAnalyticDataForDashBoardItem(this.dashboardItem.analyticsUrl,user).then((analyticData:any)=>{
           this.analyticData = analyticData;
           this.dashboardItemAnalyticData.emit(analyticData);
-          this.drawChart();
+          this.initiateVisualization();
         },error=>{
+          this.isVisualizationDataLoaded = true;
           this.setToasterMessage("fail to load data for " + (this.dashboardItem.title) ? this.dashboardItem.title : this.dashboardItem.name);
         });
       }
     })
   }
 
+  initiateVisualization(){
+    if((this.dashboardItem.visualizationType == 'CHART') || (this.dashboardItem.visualizationType == 'EVENT_CHART')) {
+      this.drawChart();
+    } else if ((this.dashboardItem.visualizationType == 'TABLE') || (this.dashboardItem.visualizationType == 'EVENT_REPORT') || (this.dashboardItem.visualizationType == 'REPORT_TABLE')) {
+      this.visualizationSelection.bottom = "table";
+      this.drawTable();
+    }
+  }
+
   ionViewDidLoad() {}
 
   drawChart(chartType?:string) {
+    this.isVisualizationDataLoaded = false;
     let itemChartType = (this.dashboardItem.type) ? this.dashboardItem.type.toLowerCase() : 'bar';
     let chartConfiguration = {
       'type': chartType ? chartType : itemChartType,
@@ -82,10 +95,12 @@ export class VisualizationCardPage implements OnInit{
     };
     this.visualizationSelection.right = chartConfiguration.type;
     this.chartObject = this.visualizationService.drawChart(this.analyticData, chartConfiguration);
-    this.chartObject["credits"] =  {enabled: false}
+    this.chartObject["credits"] =  {enabled: false};
+    this.isVisualizationDataLoaded = true;
   }
 
   drawTable() {
+    this.isVisualizationDataLoaded = false;
     let dashboardObject = this.dashboardItem;
     let tableConfiguration = {rows: [], columns: []};
     //get columns
@@ -96,7 +111,6 @@ export class VisualizationCardPage implements OnInit{
     } else {
       tableConfiguration.columns = ['co'];
     }
-
     //get rows
     if(dashboardObject.hasOwnProperty('rows')) {
       dashboardObject.rows.forEach(rowValue => {
@@ -106,14 +120,19 @@ export class VisualizationCardPage implements OnInit{
       tableConfiguration.rows = ['ou', 'dx', 'pe'];
     }
     this.tableObject = this.visualizationService.drawTable(this.analyticData, tableConfiguration);
+    this.isVisualizationDataLoaded = true;
   }
 
-  changeVisualization(visualizationType){
+  changeVisualization(visualizationType?){
     if(visualizationType == "table"){
       this.drawTable();
     }
     this.visualizationSelection.bottom = visualizationType;
   }
+
+
+
+
 
 
   setToasterMessage(message){

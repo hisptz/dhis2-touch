@@ -21,7 +21,8 @@ declare var dhis2: any;
 @Component({
   selector: 'page-event-capture-form',
   templateUrl: 'event-capture-form.html',
-  providers : [User,HttpClient,SqlLite,Program,Events,ProgramStageDataElements,ProgramStageSections,EventCaptureFormProvider]
+  providers : [User,HttpClient,SqlLite,Program,Events,ProgramStageDataElements,
+    ProgramStageSections,EventCaptureFormProvider]
 })
 export class EventCaptureForm {
 
@@ -40,6 +41,9 @@ export class EventCaptureForm {
   //pagination controller
   public currentPage : number ;
   public paginationLabel : string = "";
+
+  //network
+  public network : any;
 
 
   constructor(public params:NavParams,public eventProvider :Events,public Program : Program,

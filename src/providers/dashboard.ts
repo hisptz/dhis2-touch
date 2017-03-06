@@ -60,13 +60,16 @@ export class Dashboard {
   getDashBoardItemObjects(dashboardItems,currentUser){
     let dashBoardObjects = [];let self= this;
     let promises = [];
+    let allowedDashboardItems = ["CHART","EVENT_CHART","TABLE","REPORT_TABLE","EVENT_REPORT"];
     return new Promise(function(resolve, reject) {
       dashboardItems.forEach(dashboardItem=>{
-        promises.push(
-          self.getDashBoardItemObject(dashboardItem,currentUser).then(dashBoardObject=>{
-            dashBoardObjects.push(dashBoardObject);
-          },error=>{})
-        )
+        if(allowedDashboardItems.indexOf(dashboardItem.type) > -1){
+          promises.push(
+            self.getDashBoardItemObject(dashboardItem,currentUser).then(dashBoardObject=>{
+              dashBoardObjects.push(dashBoardObject);
+            },error=>{})
+          )
+        }
       });
       Observable.forkJoin(promises).subscribe(() => {
           resolve(dashBoardObjects);
@@ -91,6 +94,7 @@ export class Dashboard {
         let dashBoardObject = self.getDashBoardItemObjectWithAnalyticsUrl(response.json());
         dashBoardObject.interpretationLikeCount = dashboardItem.interpretationLikeCount;
         dashBoardObject.interpretationCount = dashboardItem.interpretationCount;
+        dashBoardObject.visualizationType = dashboardItem.type;
         resolve(dashBoardObject);
       },error=>{
         reject(error.json());

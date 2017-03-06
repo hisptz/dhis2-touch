@@ -1,14 +1,14 @@
 
 <div class="visualizationCard">
-  <div *ngIf="!chartObject">
+  <div *ngIf="!isVisualizationDataLoaded">
     <div class="visualizationLoader">
       <page-loading loadingSize="large"></page-loading>
     </div>
   </div>
 
-  <div *ngIf="chartObject" >
+  <div *ngIf="isVisualizationDataLoaded" >
     <div *ngIf="visualizationSelection.bottom !='table'">
-      <ion-row >
+      <ion-row *ngIf="chartObject">
         <ion-col width-90>
           <chart [options]="chartObject"></chart>
         </ion-col>
@@ -24,7 +24,7 @@
     </div>
     <div *ngIf="visualizationSelection.bottom =='table'">
 
-      <ion-row>
+      <ion-row *ngIf="tableObject">
         <ion-col>
           <table class="table table-bordered">
             <thead>
@@ -47,7 +47,7 @@
       </ion-row>
     </div>
 
-    <ion-row>
+    <ion-row *ngIf="tableObject || chartObject">
       <ion-col >
             <span *ngFor="let visualization of visualizationOptions.bottom" class="chart-icon">
               <button [disabled]="visualizationSelection.bottom == visualization.type" mini ion-fab color="light" (click)="changeVisualization(visualization.type)">
