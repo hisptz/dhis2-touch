@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { ToastController } from 'ionic-angular';
 import {Setting} from "../../providers/setting";
 import {Synchronization} from "../../providers/synchronization";
@@ -14,7 +14,7 @@ import {Synchronization} from "../../providers/synchronization";
   templateUrl: 'setting-home.html',
   providers : [Setting,Synchronization]
 })
-export class SettingHome {
+export class SettingHome implements OnInit{
 
   public dataEntrySetting : any = {};
   public synchronizationSetting : any = {};
@@ -29,6 +29,9 @@ export class SettingHome {
               public Setting : Setting,
               public toastCtrl:ToastController) {
 
+  }
+
+  ngOnInit() {
     this.loadingSetting();
   }
 

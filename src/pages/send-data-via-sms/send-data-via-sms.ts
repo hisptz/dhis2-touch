@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { ToastController,ModalController } from 'ionic-angular';
 
 import {User} from '../../providers/user/user';
@@ -21,7 +21,7 @@ declare var dhis2: any;
   templateUrl: 'send-data-via-sms.html',
   providers : [User,OrganisationUnit,DataSets,SmsCommand]
 })
-export class SendDataViaSms {
+export class SendDataViaSms implements OnInit{
 
   public currentUser : any;
   public organisationUnits : any;
@@ -45,6 +45,9 @@ export class SendDataViaSms {
               public OrganisationUnit : OrganisationUnit,public DataSets : DataSets,
               public toastCtrl: ToastController,public user : User) {
 
+  }
+
+  ngOnInit() {
     this.selectedDataDimension = [];
     this.user.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;
@@ -52,7 +55,7 @@ export class SendDataViaSms {
       this.setDataSetIdsByUserRoles();
       this.loadOrganisationUnits();
       this.setDataEntrySelectionLabel();
-    })
+    });
   }
 
   setDataSetIdsByUserRoles(){

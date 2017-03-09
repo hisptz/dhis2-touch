@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { ViewController,NavParams ,ToastController} from 'ionic-angular';
 
 declare var dhis2;
@@ -12,7 +12,7 @@ declare var dhis2;
   selector: 'page-period-selection',
   templateUrl: 'period-selection.html'
 })
-export class PeriodSelection {
+export class PeriodSelection implements OnInit{
 
   public periodList : any;
   public selectedDataSet : any;
@@ -22,6 +22,10 @@ export class PeriodSelection {
 
   constructor(public viewCtrl: ViewController,public params : NavParams,public toastCtrl: ToastController) {
     this.setModalData();
+  }
+
+  ngOnInit() {
+
   }
 
   ionViewDidLoad() {

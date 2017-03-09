@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { ToastController } from 'ionic-angular';
 
 import {User} from '../../providers/user/user';
@@ -17,7 +17,7 @@ import {SqlLite} from "../../providers/sql-lite/sql-lite";
   templateUrl: 'profile.html',
   providers : [User,AppProvider,HttpClient,SqlLite]
 })
-export class Profile {
+export class Profile implements OnInit{
 
   public loadingData : boolean = false;
   public loadingMessages : any = [];
@@ -39,6 +39,9 @@ export class Profile {
               public appProvider : AppProvider,public sqlLite : SqlLite,
               public httpClient: HttpClient) {
 
+  }
+
+  ngOnInit() {
     this.user.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;
       this.loadingProfileInformation();

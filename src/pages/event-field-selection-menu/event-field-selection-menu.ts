@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { ViewController,NavParams } from 'ionic-angular';
 
 /*
@@ -11,7 +11,7 @@ import { ViewController,NavParams } from 'ionic-angular';
   selector: 'page-event-field-selection-menu',
   templateUrl: 'event-field-selection-menu.html'
 })
-export class EventFieldSelectionMenu {
+export class EventFieldSelectionMenu implements OnInit{
 
   public selectedDataElementIdsModel : any;
   public dataElementsIds : any;
@@ -21,6 +21,10 @@ export class EventFieldSelectionMenu {
   public hasAllSelected : boolean = false;
 
   constructor(public viewCtrl: ViewController,public params : NavParams) {
+
+  }
+
+  ngOnInit() {
     this.getAndSetParameter();
   }
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { NavController,ToastController,ModalController } from 'ionic-angular';
 
 import {User} from '../../providers/user/user';
@@ -21,7 +21,7 @@ declare var dhis2: any;
   templateUrl: 'data-entry-home.html',
   providers : [User,OrganisationUnit,DataSets],
 })
-export class DataEntryHome {
+export class DataEntryHome implements OnInit{
 
   public loadingData : boolean = false;
   public loadingMessages : any = [];
@@ -42,8 +42,10 @@ export class DataEntryHome {
   constructor(public modalCtrl: ModalController,public navCtrl: NavController,
               public OrganisationUnit : OrganisationUnit,public DataSets : DataSets,
               public toastCtrl: ToastController,public user : User) {
-    this.selectedDataDimension = [];
+  }
 
+  ngOnInit() {
+    this.selectedDataDimension = [];
     this.user.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;
       this.setDataSetIdsByUserRoles();

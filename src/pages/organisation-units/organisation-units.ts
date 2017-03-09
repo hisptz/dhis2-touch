@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { ViewController,NavParams } from 'ionic-angular';
 
 /*
@@ -11,7 +11,7 @@ import { ViewController,NavParams } from 'ionic-angular';
   selector: 'page-organisation-units',
   templateUrl: 'organisation-units.html'
 })
-export class OrganisationUnits {
+export class OrganisationUnits implements OnInit{
 
   public data : any;
   public loadingMessages : any;
@@ -21,6 +21,9 @@ export class OrganisationUnits {
   public currentSelectedOrgUnitName : string;
 
   constructor(public viewCtrl: ViewController,public params : NavParams){
+  }
+
+  ngOnInit() {
     this.setModalData();
   }
 

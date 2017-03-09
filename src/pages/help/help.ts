@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 /*
@@ -11,9 +11,13 @@ import { NavController } from 'ionic-angular';
   selector: 'page-help',
   templateUrl: 'help.html'
 })
-export class Help {
+export class Help implements OnInit{
 
   constructor(public navCtrl: NavController) {}
+
+  ngOnInit() {
+
+  }
 
   ionViewDidLoad() {
     console.log('Hello Help Page');

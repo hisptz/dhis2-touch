@@ -14,7 +14,7 @@ import { ViewController,NavParams } from 'ionic-angular';
 export class ProgramSelection {
 
   public programsList : any;
-  public currentSelectectedProgram : string;
+  public currentSelectedProgram : string;
 
   constructor(public viewCtrl: ViewController,public params : NavParams) {
     this.setModalData();
@@ -25,11 +25,11 @@ export class ProgramSelection {
   }
 
   setModalData(){
-    this.currentSelectectedProgram = "";
+    this.currentSelectedProgram = "";
     this.programsList = this.params.get('data');
     let selectedProgram = this.params.get('selectedProgram');
     if(selectedProgram && selectedProgram.name){
-      this.currentSelectectedProgram = selectedProgram.name;
+      this.currentSelectedProgram = selectedProgram.name;
     }
   }
 

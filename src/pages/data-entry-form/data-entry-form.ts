@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit} from '@angular/core';
 import { NavController,NavParams,ToastController,ActionSheetController } from 'ionic-angular';
 import {HttpClient} from "../../providers/http-client/http-client";
 import {User} from "../../providers/user/user";
@@ -19,7 +19,7 @@ import {NetworkAvailability} from "../../providers/network-availability";
   templateUrl: 'data-entry-form.html',
   providers : [User,HttpClient,SqlLite,DataValues,EntryForm,DataSets,NetworkAvailability],
 })
-export class DataEntryForm {
+export class DataEntryForm implements OnInit{
 
   public loadingData : boolean = false;
   public loadingMessages : any = [];
@@ -55,6 +55,9 @@ export class DataEntryForm {
               private entryForm:EntryForm, private sqlLite:SqlLite,
               private dataValues:DataValues) {
 
+  }
+
+  ngOnInit() {
     this.network = this.NetworkAvailability.getNetWorkStatus();
     this.user.getCurrentUser().then((user:any)=> {
       this.currentUser = user;

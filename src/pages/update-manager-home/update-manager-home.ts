@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import {ToastController,NavController } from 'ionic-angular';
 
 import {User} from '../../providers/user/user';
@@ -17,7 +17,7 @@ import {UpdateResourceManager} from "../../providers/update-resource-manager";
   templateUrl: 'update-manager-home.html',
   providers : [User,HttpClient,SqlLite,AppProvider,UpdateResourceManager]
 })
-export class UpdateManagerHome {
+export class UpdateManagerHome implements OnInit{
 
   public dataBaseStructure :  any;
   public resources : any;
@@ -37,7 +37,9 @@ export class UpdateManagerHome {
               public appProvider : AppProvider,public updateResourceManager : UpdateResourceManager,
               public httpClient : HttpClient) {
 
+  }
 
+  ngOnInit() {
     this.hasAllSelected = false;
     this.loadingData = true;
     this.loadingMessages = [];
@@ -50,7 +52,6 @@ export class UpdateManagerHome {
         this.loadingData = false;
       });
     });
-
   }
 
   ionViewDidLoad() {

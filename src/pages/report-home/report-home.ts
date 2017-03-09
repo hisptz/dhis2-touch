@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { NavController,ToastController } from 'ionic-angular';
 import {HttpClient} from "../../providers/http-client/http-client";
 import {User} from "../../providers/user/user";
@@ -18,7 +18,7 @@ import {ReportParameterSelection} from "../report-parameter-selection/report-par
   templateUrl: 'report-home.html',
   providers : [User,HttpClient,SqlLite,Report],
 })
-export class ReportHome {
+export class ReportHome implements OnInit{
 
   public loadingData : boolean = false;
   public loadingMessages : any = [];
@@ -30,6 +30,9 @@ export class ReportHome {
               private user:User, private httpClient:HttpClient,
               private sqlLite:SqlLite,private Report : Report) {
 
+  }
+
+  ngOnInit() {
     this.loadingMessages = [];
     this.loadingData = true;
     this.reportList = [];

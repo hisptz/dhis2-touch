@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import {NavController,ToastController,NavParams,ActionSheetController } from 'ionic-angular';
 
 import {User} from '../../providers/user/user';
@@ -19,7 +19,7 @@ import {ProgramStageDataElements} from "../../providers/program-stage-data-eleme
   templateUrl: 'event-view.html',
   providers : [User,HttpClient,SqlLite,Program,Events,ProgramStageDataElements]
 })
-export class EventView {
+export class EventView implements OnInit{
 
   public loadingData : boolean = false;
   public loadingMessages : any = [];
@@ -36,6 +36,9 @@ export class EventView {
               public sqlLite : SqlLite,public httpClient: HttpClient){
 
 
+  }
+
+  ngOnInit() {
     this.user.getCurrentUser().then(user=>{
       this.currentUser = user;
       this.params = this.NavParams.get("params");

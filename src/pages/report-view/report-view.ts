@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { NavParams,ToastController } from 'ionic-angular';
 import {User} from "../../providers/user/user";
 import {SqlLite} from "../../providers/sql-lite/sql-lite";
@@ -17,7 +17,7 @@ import { DomSanitizer, SafeHtml} from '@angular/platform-browser';
   templateUrl: 'report-view.html',
   providers : [User,HttpClient,SqlLite,Report],
 })
-export class ReportView {
+export class ReportView implements OnInit{
 
   public reportId : string;
   public reportName : string;
@@ -30,7 +30,9 @@ export class ReportView {
               private sanitizer: DomSanitizer,
               private Report:Report,private toastCtrl:ToastController) {
 
+  }
 
+  ngOnInit() {
     this.user.getCurrentUser().then(user=>{
       this.currentUser = user;
       this.reportId = this.params.get("id");

@@ -1,5 +1,5 @@
 import { Component,OnInit } from '@angular/core';
-import { NavController,ToastController } from 'ionic-angular';
+import { ToastController } from 'ionic-angular';
 import {HttpClient} from "../../providers/http-client/http-client";
 import {User} from "../../providers/user/user";
 import {Dashboard} from "../../providers/dashboard";
@@ -41,19 +41,18 @@ export class DashBoardHome implements OnInit{
     dashBoardVisualizationData : {},
     currentStep : ""
   };
+
   public network : any;
 
-  constructor(public navCtrl: NavController,public user : User,
+  constructor(public user : User,
               public NetworkAvailability : NetworkAvailability,
-              public toastCtrl:ToastController,public dashboard : Dashboard,
-              public httpClient : HttpClient) {
+              public toastCtrl:ToastController,public dashboard : Dashboard) {
   }
 
   ngOnInit() {
     this.user.getCurrentUser().then(user=>{
       this.currentUser = user;
       this.getAllDataBase();
-
     });
   }
 

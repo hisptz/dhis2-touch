@@ -1,4 +1,4 @@
-import { Component,ViewChild } from '@angular/core';
+import { Component,ViewChild,OnInit} from '@angular/core';
 import {Tabs } from 'ionic-angular';
 import { Apps } from '../apps/apps';
 import { Account } from '../account/account';
@@ -8,14 +8,18 @@ import {User} from "../../providers/user/user";
   templateUrl: 'tabs.html',
   providers : [User]
 })
-export class TabsPage {
+export class TabsPage implements OnInit{
   tab1Root: any = Apps;
   tab2Root: any = Account;
   public accountName : string = 'Account';
   //@todo active tabs to have different style
   @ViewChild('myTabs') currentTab: Tabs;
 
-  constructor(private user : User) {
+  constructor(public user : User) {
+
+  }
+
+  ngOnInit() {
     this.user.getUserData().then(userData=>{
       this.setUserAccountName(userData);
     },error=>{})

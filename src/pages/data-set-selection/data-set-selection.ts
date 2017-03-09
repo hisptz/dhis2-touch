@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component ,OnInit} from '@angular/core';
 import { ViewController,NavParams } from 'ionic-angular';
 
 /*
@@ -11,13 +11,15 @@ import { ViewController,NavParams } from 'ionic-angular';
   selector: 'page-data-set-selection',
   templateUrl: 'data-set-selection.html'
 })
-export class DataSetSelection {
+export class DataSetSelection implements OnInit{
 
   public dataSetsList : any;
-  public dataSetsListCopy : any;
   public currentSelectedDataSetName : string;
 
   constructor(public viewCtrl: ViewController,public params : NavParams) {
+  }
+
+  ngOnInit() {
     this.setModalData();
   }
 

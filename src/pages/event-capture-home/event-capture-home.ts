@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { NavController,ToastController,ModalController } from 'ionic-angular';
 
 import {User} from '../../providers/user/user';
@@ -29,7 +29,7 @@ import {NetworkAvailability} from "../../providers/network-availability";
     NetworkAvailability,
     OrganisationUnit,Events,ProgramStageDataElements]
 })
-export class EventCaptureHome {
+export class EventCaptureHome implements OnInit{
 
   public loadingData : boolean = false;
   public loadingMessages : any = [];
@@ -64,6 +64,10 @@ export class EventCaptureHome {
               public ProgramStageDataElements : ProgramStageDataElements,
               public NetworkAvailability : NetworkAvailability,
               public Program : Program,public modalCtrl: ModalController,public navCtrl: NavController,public toastCtrl: ToastController,public user : User,public appProvider : AppProvider,public sqlLite : SqlLite,public httpClient: HttpClient) {
+
+  }
+
+  ngOnInit() {
     this.selectedDataDimension = [];
     this.currentEvents = [];
     this.eventListSections = [];
@@ -73,7 +77,7 @@ export class EventCaptureHome {
       this.getUserAssignedPrograms();
       this.loadOrganisationUnits();
       this.setProgramSelectionLabel();
-    })
+    });
   }
 
   getUserAssignedPrograms(){

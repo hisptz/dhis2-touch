@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import {ToastController,NavParams,ActionSheetController,NavController } from 'ionic-angular';
-
 import {User} from '../../providers/user/user';
 import {HttpClient} from "../../providers/http-client/http-client";
 import {SqlLite} from "../../providers/sql-lite/sql-lite";
@@ -24,7 +23,7 @@ declare var dhis2: any;
   providers : [User,HttpClient,SqlLite,Program,Events,ProgramStageDataElements,
     ProgramStageSections,EventCaptureFormProvider]
 })
-export class EventCaptureForm {
+export class EventCaptureForm implements OnInit{
 
   public loadingData : boolean = false;
   public loadingMessages : any = [];
@@ -53,6 +52,9 @@ export class EventCaptureForm {
               public EventCaptureFormProvider : EventCaptureFormProvider,
               public sqlLite : SqlLite,public httpClient: HttpClient){
 
+  }
+
+  ngOnInit() {
     this.programStageDataElements  = [];
     this.programStageSections = [];
     this.currentPage = 0;
