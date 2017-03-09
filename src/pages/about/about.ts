@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { ToastController } from 'ionic-angular';
 import {User} from "../../providers/user/user";
 import {AppProvider} from "../../providers/app-provider/app-provider";
@@ -19,7 +19,7 @@ import {Events} from "../../providers/events";
   templateUrl: 'about.html',
   providers : [User,AppProvider,HttpClient,SqlLite,DataValues,Events]
 })
-export class About {
+export class About implements OnInit{
 
   public loadingData : boolean = false;
   public loadingMessages : any = [];
@@ -39,6 +39,9 @@ export class About {
               private dataValues : DataValues,public eventProvider :Events,
               private sqlLite : SqlLite) {
 
+  }
+
+  ngOnInit() {
     this.user.getCurrentUser().then(user=>{
       this.currentUser = user;
       this.loadingSystemInformation();

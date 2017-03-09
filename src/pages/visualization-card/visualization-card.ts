@@ -29,7 +29,8 @@ export class VisualizationCardPage implements OnInit{
     top : [],
     bottom :  [
       {type: "table", path: "assets/dashboard/table.png"},
-      {type: "charts", path: "assets/dashboard/combined.png"}
+      {type: "charts", path: "assets/dashboard/combined.png"},
+      {type: "dictionary", path: "assets/dashboard/dictionary.png"}
     ],
     right : [
       {type: "line", path: "assets/dashboard/line.png",isDisabled : false},
@@ -126,15 +127,13 @@ export class VisualizationCardPage implements OnInit{
   changeVisualization(visualizationType?){
     if(visualizationType == "table"){
       this.drawTable();
-    }else{
+    }else if(visualizationType == "charts"){
       this.drawChart();
+    }else if(visualizationType == "dictionary"){
+
     }
     this.visualizationSelection.bottom = visualizationType;
   }
-
-
-
-
 
 
   setToasterMessage(message){

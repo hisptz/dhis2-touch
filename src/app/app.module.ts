@@ -42,10 +42,12 @@ import {SmsCommand} from "../providers/sms-command";
 import {VisualizationCardPage} from "../pages/visualization-card/visualization-card";
 import {VisulizerService} from "../providers/visulizer.service";
 import {LoadingPage} from "../pages/loading/loading";
+import {MetadataDictionary} from "../pages/metadata-dictionary/metadata-dictionary";
+import {MetadataDictionaryService} from "../providers/metadata-dictionary-service";
 
 @NgModule({
   declarations: [
-    MyApp,About,DashBoardHome,EventCaptureHome,EventView,
+    MyApp,About,DashBoardHome,EventCaptureHome,EventView,MetadataDictionary,
     TabsPage,Help,Login,Profile,DataEntryHome,Launcher,SendDataViaSms,
     EventFieldSelectionMenu,ProgressBarPage,VisualizationCardPage,LoadingPage,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,
@@ -58,14 +60,14 @@ import {LoadingPage} from "../pages/loading/loading";
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,About,DashBoardHome,EventCaptureHome,EventView,
+    MyApp,About,DashBoardHome,EventCaptureHome,EventView,MetadataDictionary,
     TabsPage,Help,Login,Profile,DataEntryHome,Launcher,SendDataViaSms,
     EventFieldSelectionMenu,ProgressBarPage,VisualizationCardPage,LoadingPage,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,ReportParameterSelection,
     Account,ReportHome,SettingHome,TrackerCaptureHome,ProgramSelection,DataEntryForm,ReportView,EventCaptureForm
   ],
   providers: [Storage,HttpClient,SqlLite,DataValues,
-    VisulizerService,
+    VisulizerService,MetadataDictionaryService,
     EventCaptureFormProvider,Synchronization,
     EntryFormSelection,SmsCommand
   ]

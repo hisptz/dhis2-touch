@@ -2,12 +2,12 @@
 <div class="visualizationCard">
   <div *ngIf="!isVisualizationDataLoaded">
     <div class="visualizationLoader">
-      <page-loading loadingSize="large"></page-loading>
+      <page-loading loadingSize="large" loadingMessage = "Loading Visualization data"></page-loading>
     </div>
   </div>
 
   <div *ngIf="isVisualizationDataLoaded" >
-    <div *ngIf="visualizationSelection.bottom !='table'">
+    <div *ngIf="visualizationSelection.bottom =='charts'">
       <ion-row *ngIf="chartObject">
         <ion-col width-90>
           <chart [options]="chartObject"></chart>
@@ -22,8 +22,8 @@
 
       </ion-row>
     </div>
-    <div *ngIf="visualizationSelection.bottom =='table'">
 
+    <div *ngIf="visualizationSelection.bottom =='table'">
       <ion-row *ngIf="tableObject">
         <ion-col>
           <table class="table table-bordered">
@@ -45,6 +45,10 @@
           </table>
         </ion-col>
       </ion-row>
+    </div>
+
+    <div *ngIf="visualizationSelection.bottom =='dictionary'">
+      <page-metadata-dictionary></page-metadata-dictionary>
     </div>
 
     <ion-row *ngIf="tableObject || chartObject">
