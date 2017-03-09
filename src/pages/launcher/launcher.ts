@@ -1,15 +1,7 @@
-import { Component } from '@angular/core';
+import { Component ,OnInit} from '@angular/core';
 import { NavController } from 'ionic-angular';
 import {User} from "../../providers/user/user";
-import {HttpClient} from "../../providers/http-client/http-client";
-import {AppProvider} from "../../providers/app-provider/app-provider";
 import {TabsPage} from "../tabs/tabs";
-import {SqlLite} from "../../providers/sql-lite/sql-lite";
-import { Storage } from '@ionic/storage';
-import {Synchronization} from "../../providers/synchronization";
-import {DataValues} from "../../providers/data-values";
-import {Setting} from "../../providers/setting";
-import {NetworkAvailability} from "../../providers/network-availability";
 import {Login} from "../login/login";
 
 /*
@@ -21,18 +13,16 @@ import {Login} from "../login/login";
 @Component({
   selector: 'page-launcher',
   templateUrl: 'launcher.html',
-  providers : [AppProvider,HttpClient,User,SqlLite,Synchronization,DataValues,Setting,NetworkAvailability]
+  providers : [User]
 })
-export class Launcher {
+export class Launcher implements OnInit{
 
-  public logoUrl : string;
+  public logoUrl : string = "";
 
-  constructor(public navCtrl: NavController,private Storage : Storage,
-              private Setting: Setting,public NetworkAvailability : NetworkAvailability,
-              private sqlLite : SqlLite,private synchronization:Synchronization,
-              private DataValues: DataValues,
-              private app : AppProvider,private httpClient : HttpClient,private user : User) {
+  constructor(public navCtrl: NavController,public user : User) {
+  }
 
+  ngOnInit() {
     this.logoUrl = 'assets/img/logo-2.png';
     this.user.getCurrentUser().then(user=>{
       this.reAuthenticateUser(user);

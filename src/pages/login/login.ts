@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { NavController,ToastController } from 'ionic-angular';
 import {User} from "../../providers/user/user";
 import {HttpClient} from "../../providers/http-client/http-client";
@@ -23,7 +23,7 @@ import {SmsCommand} from "../../providers/sms-command";
   templateUrl: 'login.html',
   providers : [AppProvider,HttpClient,User,SqlLite,Synchronization,DataValues,Setting,NetworkAvailability,SmsCommand]
 })
-export class Login {
+export class Login implements OnInit{
 
   public loginData : any ={};
   public loadingData : boolean = false;
@@ -38,13 +38,17 @@ export class Login {
   public currentResourceType : string = "";
   //organisationUnit, entryForm,event
 
-  constructor(public navCtrl: NavController,private Storage : Storage,
-              private Setting: Setting,public NetworkAvailability : NetworkAvailability,
-              private sqlLite : SqlLite,private synchronization:Synchronization,
-              private toastCtrl: ToastController,private DataValues: DataValues,
-              private app : AppProvider,
+  constructor(public navCtrl: NavController,public Storage : Storage,
+              public Setting: Setting,public NetworkAvailability : NetworkAvailability,
+              public sqlLite : SqlLite,public synchronization:Synchronization,
+              public toastCtrl: ToastController,public DataValues: DataValues,
+              public app : AppProvider,
               public SmsCommand : SmsCommand,
-              private httpClient : HttpClient,private user : User) {
+              public httpClient : HttpClient,public user : User) {
+
+  }
+
+  ngOnInit() {
     this.logoUrl = 'assets/img/logo-2.png';
     this.completedTrackedProcess = [];
     this.progressTracker = this.getEmptyProgressTracker();
@@ -499,6 +503,15 @@ export class Login {
     let toast = this.toastCtrl.create({
       message: message,
       showCloseButton : true
+    });
+    toast.present();
+  }
+
+  setNotificationToasterMessage(message){
+    let toast = this.toastCtrl.create({
+      message: message,
+      position : 'top',
+      duration: 1500
     });
     toast.present();
   }
