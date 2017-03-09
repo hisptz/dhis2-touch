@@ -1,4 +1,4 @@
-import { Component,OnInit } from '@angular/core';
+import { Component,OnInit,Input } from '@angular/core';
 import {MetadataDictionaryService} from "../../providers/metadata-dictionary-service";
 
 /*
@@ -13,6 +13,8 @@ import {MetadataDictionaryService} from "../../providers/metadata-dictionary-ser
   providers : [MetadataDictionaryService]
 })
 export class MetadataDictionary implements OnInit{
+
+  @Input() metadataIdentifiers;
 
   constructor() {}
 

@@ -48,6 +48,9 @@ export class VisualizationCardPage implements OnInit{
     top : {},bottom : "charts",right : "",left : ""
   };
 
+
+  public metadataIdentifiers: string;
+
   //visualizationType
 
   constructor(public Dashboard : Dashboard,public User : User,
@@ -130,7 +133,7 @@ export class VisualizationCardPage implements OnInit{
     }else if(visualizationType == "charts"){
       this.drawChart();
     }else if(visualizationType == "dictionary"){
-
+      this.metadataIdentifiers = this.Dashboard.getDashboardItemMetadataIdentifiers(this.dashboardItem)
     }
     this.visualizationSelection.bottom = visualizationType;
   }

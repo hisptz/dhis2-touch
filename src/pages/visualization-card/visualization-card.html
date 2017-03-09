@@ -48,7 +48,7 @@
     </div>
 
     <div *ngIf="visualizationSelection.bottom =='dictionary'">
-      <page-metadata-dictionary></page-metadata-dictionary>
+      <page-metadata-dictionary [metadataIdentifiers] = "metadataIdentifiers" ></page-metadata-dictionary>
     </div>
 
     <ion-row *ngIf="tableObject || chartObject">

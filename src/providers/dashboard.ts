@@ -235,5 +235,26 @@ export class Dashboard {
     return url;
   }
 
+  getDashboardItemMetadataIdentifiers(dashBoardObject){
+    let items = "";
+    dashBoardObject.rows.forEach((dashBoardObjectRow : any)=>{
+      if(dashBoardObjectRow.dimension === "dx"){
+        dashBoardObjectRow.items.forEach((dashBoardObjectRowItem : any)=>{
+          items += dashBoardObjectRowItem.id + ";"
+        });
+      } else {
+        //find identifiers in the column if not in row
+        dashBoardObject.columns.forEach((dashBoardObjectColumn : any) => {
+          if(dashBoardObjectColumn.dimension === "dx") {
+            dashBoardObjectColumn.items.forEach((dashBoardObjectColumnItem: any)=> {
+              items += dashBoardObjectColumnItem.id + ";"
+            });
+          }
+        });
+      }
+    });
+    return items.slice(0, -1);
+  }
+
 
 }
