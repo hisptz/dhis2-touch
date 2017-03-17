@@ -17,9 +17,8 @@ var dhis2 = {
       db.transaction(function (tx) {
         var query = "SELECT * FROM " + tableName + " WHERE " + attribute + " = ?";
         tx.executeSql(query, [id], function (tx, results) {
-          console.log('Table name :: getDataFromTableById ' + tableName);
-          alert(JSON.stringify(dhis2.formatQueryReturnResult(results,tableName)))
-          defer.resolve(dhis2.formatQueryReturnResult(results,tableName));
+          var data = dhis2.formatQueryReturnResult(results,tableName).length > 0 ? dhis2.formatQueryReturnResult(results,tableName)[0] : {};
+          defer.resolve(data);
         }, function (error) {
           defer.reject(error);
         });
@@ -46,7 +45,7 @@ var dhis2 = {
             ids.splice(index, 1);
             data.push(json);
           }
-          console.log('Table name :: getDataFromTableByIds ' + tableName);
+          ('Table name :: getDataFromTableByIds ' + tableName);
           defer.resolve(data, ids);
         }, function (error) {
           defer.reject(error);
@@ -65,7 +64,6 @@ var dhis2 = {
       db.transaction(function (tx) {
         var query = "SELECT * FROM " + tableName + " WHERE " + questionMarks;
         tx.executeSql(query, [], function (tx, results) {
-          console.log('Table name :: searchDataFromTableByIds ' + tableName);
           defer.resolve(dhis2.formatQueryReturnResult(results,tableName));
         }, function (error) {
           defer.reject(error);
@@ -76,11 +74,9 @@ var dhis2 = {
     getAllDataFromTable: function (tableName) {
       var defer = $.Deferred();
       var db = window.sqlitePlugin.openDatabase({name: dhis2.database,location: 'default'});
-      console.log('query ::' + query);
       db.transaction(function (tx) {
         var query = "SELECT * FROM " + tableName + ";";
         tx.executeSql(query, [], function (tx, results) {
-          console.log('Table name :: getAllDataFromTable ' + tableName);
           defer.resolve(dhis2.formatQueryReturnResult(results,tableName));
         }, function (error) {
           defer.reject(error);
@@ -121,6 +117,9 @@ dhis2.de = {
       .done(function (item) {
         if (item) {
           var val = item.value;
+          if(isNaN(new Number(item.value))){
+            console.log("NAN2:" +JSON.stringify(item));
+          }
           if (val && dhis2.validation.isNumber(val)) {
             defer.resolve(new Number(item.value), match);
           } else {
@@ -245,13 +244,11 @@ dhis2.de = {
             ids.push(dataSet + "-" + dataElement + "-%-" + dhis2.report.period + "-" + dhis2.report.organisationUnit.id);
           });
           dhis2.de.sqlLiteServices.searchDataFromTableByIds("dataValues", dataElements).done(function (items) {
-            console.log('items.length :: ' + items.length);
             if(items.length > 0){
               $.each(items, function (dataElementIndex, dataElement) {
                 data.rows.push([dataElement.de, dhis2.report.period, dataElement.value + ""]);
               });
             }
-            console.log('data rows : ' + data.rows.length);
             if(data.rows.length == 0){
               var message = "This report has no data. To view the report with data, open data entry form related to this report to download existing data or to enter new data";
               dhis2.progressMessageStick(message);

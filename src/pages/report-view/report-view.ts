@@ -47,6 +47,8 @@ export class ReportView implements OnInit{
     this.setLoadingMessages('Loading report details');
     this.Report.getReportId(reportId,this.currentUser).then((report : any)=>{
       this._htmlMarkup = report.designContent/*.replace("\n","");*/
+      let scriptsContents = this.getScriptsContents(this._htmlMarkup);
+      this.setScriptsOnHtmlContent(scriptsContents);
       this.loadingData = false;
     },error=>{
       this.loadingData = false;
@@ -57,6 +59,26 @@ export class ReportView implements OnInit{
   public get htmlMarkup(): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(this._htmlMarkup);
   }
+
+  getScriptsContents(html){
+    var scriptsWithClosingScript = [];
+    html.match(/<script[^>]*>([\w|\W]*)<\/script>/im)[0].split("<script>").forEach((scriptFunctionWithCLosingScriptTag:any)=>{
+      if(scriptFunctionWithCLosingScriptTag !=""){
+        scriptsWithClosingScript.push(scriptFunctionWithCLosingScriptTag.split("</script>")[0]);
+      }
+    });
+    return scriptsWithClosingScript;
+  }
+
+  setScriptsOnHtmlContent(scriptsContentsArray){
+    scriptsContentsArray.forEach(scriptsContents=>{
+      let script = document.createElement("script");
+      script.type = "text/javascript";
+      script.innerHTML = scriptsContents;
+      this.elementRef.nativeElement.appendChild(script);
+    });
+  }
+
 
   ionViewDidLoad() {
     //console.log('Hello ReportView Page');
