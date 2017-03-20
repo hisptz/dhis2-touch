@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Report Parameter Selection</ion-title>
+    <ion-title>{{ reportName }}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -15,9 +15,41 @@
 
 <ion-content class="report">
 
+  <ion-grid>
+    <ion-row *ngIf="reportParams.paramOrganisationUnit">
+      <ion-col>
+        <button [disabled]="!currentSelectionStatus.orgUnit" class="dataEntryButton" text-capitalize ion-button full large (click)="openOrganisationUnitModal()" color="whitecolor">
+            <span *ngIf="currentSelectionStatus.isOrgUnitLoaded" >
+              {{ selectedOrganisationUnitLabel }}
+            </span>
+            <span *ngIf="!currentSelectionStatus.isOrgUnitLoaded" >
+              <page-loading loadingSize="small"></page-loading>
+              Loading organisation units
+            </span>
+        </button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="reportParams.paramReportingPeriod" >
+      <ion-col>
+        <button [disabled]="!currentSelectionStatus.period" class="dataEntryButton" text-capitalize ion-button full large (click)="openReportPeriodSelection()" color="whitecolor">
+            <span *ngIf="!currentSelectionStatus.isPeriodLoaded" >
+              <page-loading loadingSize="small"></page-loading>
+              Loading period
+            </span>
+            <span *ngIf="currentSelectionStatus.isPeriodLoaded" >
+              {{ selectedPeriodLabel }}
+            </span>
+        </button>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+
   reportName : {{ reportName }}<br>
   reportId : {{ reportId }}<br>
-  reportParams : {{ reportParams|json }}
+  reportParams : {{ reportParams|json }}<br>
+
 
   <button ion-button (click)="goToView()">view</button>
 

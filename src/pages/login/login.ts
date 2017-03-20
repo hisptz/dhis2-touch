@@ -383,8 +383,8 @@ export class Login implements OnInit{
         this.setLoadingMessages('Saving '+response[resource].length+' program-stage data-elements');
         this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
           this.updateProgressTracker(resource);
-          //this.downloadingIndicators();
-          this.setLandingPage();
+          this.downloadingIndicators();
+          //achingalothis.setLandingPage();
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;

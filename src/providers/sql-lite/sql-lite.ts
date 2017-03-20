@@ -80,7 +80,8 @@ export class SqlLite {
         {value: 'indicatorType', type: 'LONGTEXT'}
       ],
       fields : "id,name,denominatorDescription,numeratorDescription,numerator,denominator,indicatorType[:all]",
-      canBeUpdated : true
+      canBeUpdated : true,
+      resourceType : "report"
     },
     reports: {
       columns: [
@@ -93,8 +94,9 @@ export class SqlLite {
         {value: 'designContent', type: 'LONGTEXT'}
       ],
       fields : "id,name,created,type,relativePeriods,reportParams,designContent",
-      filter : "type:eq:HTML&filter=name:like:Mobile",
-      canBeUpdated : true
+      filter : "type:eq:HTML&filter=name:ilike:mobile",
+      canBeUpdated : true,
+      resourceType : "report"
     },
     constants: {
       columns: [
@@ -103,6 +105,7 @@ export class SqlLite {
       ],
       fields : "id,value",
       canBeUpdated : true,
+      resourceType : "report"
     },
     dataValues : {
       columns: [

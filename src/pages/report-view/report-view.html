@@ -14,34 +14,36 @@
 
 
 <ion-content class="report">
-  <div *ngIf="loadingData">
-    <ion-grid>
-      <ion-row>
+  <ion-grid>
+    <div *ngIf="loadingData"></div>
+    <ion-row >
+      <ion-col width="100">
+        <page-loading loadingSize="large" loadingMessage="Loading report metadata"></page-loading>
+      </ion-col>
+    </ion-row>
+
+    <div *ngIf="!loadingData">
+
+      <ion-row >
         <ion-col width="100">
-          <ion-list>
-            <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
-              {{ message }}
-              <ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right color="favorite"></ion-icon>
-              <div style="text-align: center" item-right *ngIf="(currentIndex + 1) >= loadingMessages.length">
-                <page-loading loadingSize="small"></page-loading>
-              </div>
-            </ion-item>
-          </ion-list>
+          <ion-item-group (click)="navCtrl.pop()">
+            <ion-item-divider>
+              <p><b>Report  : </b> : {{ reportName }}</p>
+              <p><b>Organisation Unit</b> : </p>
+              <p><b>Period</b> : </p>
+            </ion-item-divider>
+          </ion-item-group>
         </ion-col>
       </ion-row>
-    </ion-grid>
-  </div>
 
-  <div *ngIf="!loadingData">
-    <ion-card>
-      <ion-card-content>
-        <p><b>Report  : </b> : {{ reportName }}</p>
-        <p><b>Organisation Unit</b> : </p>
-        <p><b>Period</b> : </p>
-      </ion-card-content>
-    </ion-card>
-    <!--{{ reportDesignContent }}-->
-    <div class="reportView" [innerHTML]="htmlMarkup"></div>
+      <ion-row >
+        <ion-col width="100">
+          <div class="reportView" [innerHTML]="htmlMarkup"></div>
+        </ion-col>
+      </ion-row>
 
-  </div>
+    </div>
+
+  </ion-grid>
+
 </ion-content>

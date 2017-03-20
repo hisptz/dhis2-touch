@@ -1,10 +1,12 @@
-import { Component,OnInit } from '@angular/core';
-import { NavParams,ToastController } from 'ionic-angular';
+import { Component,OnInit,ElementRef } from '@angular/core';
+import { NavController,NavParams,ToastController } from 'ionic-angular';
 import {User} from "../../providers/user/user";
 import {SqlLite} from "../../providers/sql-lite/sql-lite";
 import {Report} from "../../providers/report";
 import {HttpClient} from "../../providers/http-client/http-client";
 import { DomSanitizer, SafeHtml} from '@angular/platform-browser';
+
+declare var dhis2;
 
 /*
   Generated class for the ReportView page.
@@ -23,30 +25,38 @@ export class ReportView implements OnInit{
   public reportName : string;
   public _htmlMarkup : any;
   public loadingData : boolean = false;
-  public loadingMessages : any = [];
   public currentUser : any;
 
-  constructor(private params:NavParams,private user: User,
-              private sanitizer: DomSanitizer,
-              private Report:Report,private toastCtrl:ToastController) {
+  constructor(public navCtrl:NavController,public params:NavParams,public user: User,
+              public sanitizer: DomSanitizer,public elementRef : ElementRef,
+              public Report:Report,public toastCtrl:ToastController) {
 
   }
 
   ngOnInit() {
-    this.user.getCurrentUser().then(user=>{
+
+
+
+    this.user.getCurrentUser().then((user : any)=>{
       this.currentUser = user;
+      dhis2.database = user.currentDatabase;
       this.reportId = this.params.get("id");
       this.reportName = this.params.get("name");
+      dhis2.report = {
+        organisationUnit :{id : "id",name :"name"},
+        organisationUnitChildren : [],
+        organisationUnitHierarchy : [],
+        period : "2017"
+      };
+
       this.loadReportDesignContent(this.reportId);
     });
   }
 
   loadReportDesignContent(reportId){
     this.loadingData = true;
-    this.loadingMessages = [];
-    this.setLoadingMessages('Loading report details');
     this.Report.getReportId(reportId,this.currentUser).then((report : any)=>{
-      this._htmlMarkup = report.designContent/*.replace("\n","");*/
+      this._htmlMarkup = report.designContent;
       let scriptsContents = this.getScriptsContents(this._htmlMarkup);
       this.setScriptsOnHtmlContent(scriptsContents);
       this.loadingData = false;
@@ -61,6 +71,7 @@ export class ReportView implements OnInit{
   }
 
   getScriptsContents(html){
+    //@todo handling for scripts with href
     var scriptsWithClosingScript = [];
     html.match(/<script[^>]*>([\w|\W]*)<\/script>/im)[0].split("<script>").forEach((scriptFunctionWithCLosingScriptTag:any)=>{
       if(scriptFunctionWithCLosingScriptTag !=""){
@@ -79,14 +90,6 @@ export class ReportView implements OnInit{
     });
   }
 
-
-  ionViewDidLoad() {
-    //console.log('Hello ReportView Page');
-  }
-
-  setLoadingMessages(message){
-    this.loadingMessages.push(message);
-  }
   setToasterMessage(message){
     let toast = this.toastCtrl.create({
       message: message,

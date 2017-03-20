@@ -49,7 +49,16 @@
         </ion-item>
       </ion-list>
     </ion-col>
-    <ion-col width-45></ion-col>
+    <ion-col (click)="goToView('report')"  >
+      <ion-list>
+        <ion-item>
+          <ion-thumbnail >
+            <img class="menu-app-icon-list" src="assets/img/reports.png">
+          </ion-thumbnail>
+          <h2 >Standard Reports</h2>
+        </ion-item>
+      </ion-list>
+    </ion-col>
   </ion-row>
   <!--<ion-col (click)="goToView('report')"  >-->
   <!--<ion-list>-->
