@@ -13,6 +13,9 @@ var dhis2 = {
     getDataFromTableById: function (tableName, id) {
       var defer = $.Deferred();
       var attribute = "id";
+      if(dhis2.database.indexOf(".db") == -1){
+        dhis2.database = dhis2.database + ".db";
+      }
       var db = window.sqlitePlugin.openDatabase({name: dhis2.database,location: 'default'});
       db.transaction(function (tx) {
         var query = "SELECT * FROM " + tableName + " WHERE " + attribute + " = ?";
@@ -26,9 +29,11 @@ var dhis2 = {
       return defer.promise();
     },
     getDataFromTableByIds: function (tableName, ids) {
-      console.log(dhis2.database);
       var defer = $.Deferred();
       var attribute = "id";
+      if(dhis2.database.indexOf(".db") == -1){
+        dhis2.database = dhis2.database + ".db";
+      }
       var db = window.sqlitePlugin.openDatabase({name: dhis2.database,location: 'default'});
       var questionMarks = "?";
       for (var i = 1; i < ids.length; i++) {
@@ -40,6 +45,7 @@ var dhis2 = {
           var len = results.rows.length;
           var data = [];
           var formattedResults = dhis2.formatQueryReturnResult(results,tableName);
+          console.log("found len : " + len);
           for (var i = 0; i < len; i++) {
             var json = formattedResults[i];
             var index = ids.indexOf(json.id);
@@ -55,7 +61,9 @@ var dhis2 = {
     },
     searchDataFromTableByIds: function (tableName, ids) {
       var defer = $.Deferred();
-      var attribute = "id";
+      if(dhis2.database.indexOf(".db") == -1){
+        dhis2.database = dhis2.database + ".db";
+      }
       var db = window.sqlitePlugin.openDatabase({name: dhis2.database,location: 'default'});
       var questionMarks = "id LIKE '%" + ids[0] + "%'";
       for (var i = 1; i < ids.length; i++) {
@@ -73,6 +81,9 @@ var dhis2 = {
     },
     getAllDataFromTable: function (tableName) {
       var defer = $.Deferred();
+      if(dhis2.database.indexOf(".db") == -1){
+        dhis2.database = dhis2.database + ".db";
+      }
       var db = window.sqlitePlugin.openDatabase({name: dhis2.database,location: 'default'});
       db.transaction(function (tx) {
         var query = "SELECT * FROM " + tableName + ";";
@@ -86,7 +97,30 @@ var dhis2 = {
     }
   },
   report: {},
-  de : {}
+  de : {},
+  formatQueryReturnResult : function(results,tableName){
+    var dataBaseStructure = dhis2.dataBaseStructure;
+    var columns = (dataBaseStructure[tableName])? dataBaseStructure[tableName].columns : [];
+    //@todo make sure we make reusable functions
+    var len = results.rows.length;
+    var data = [];
+    for (var i = 0; i < len; i++) {
+      var row = {};
+      var currentRow = results.rows.item(i);
+      for (var j = 0; j < columns.length; j++) {
+        var column = columns[j];
+        var columnName = column.value;
+        if (column.type != "LONGTEXT") {
+          row[columnName] = currentRow[columnName]
+        } else {
+          row[columnName] = eval("(" + currentRow[columnName] + ")");
+        }
+      }
+      data.push(row);
+    }
+    return data;
+
+  }
 };
 dhis2.de = {
   getDataElementTotalValue: function (de, dataSet, match) {

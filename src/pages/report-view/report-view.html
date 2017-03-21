@@ -15,12 +15,14 @@
 
 <ion-content class="report">
   <ion-grid>
-    <div *ngIf="loadingData"></div>
-    <ion-row >
-      <ion-col width="100">
-        <page-loading loadingSize="large" loadingMessage="Loading report metadata"></page-loading>
-      </ion-col>
-    </ion-row>
+
+    <div *ngIf="loadingData">
+      <ion-row >
+        <ion-col width="100">
+          <page-loading loadingSize="large" loadingMessage="Loading report metadata"></page-loading>
+        </ion-col>
+      </ion-row>
+    </div>
 
     <div *ngIf="!loadingData">
 

@@ -37,6 +37,9 @@ export class ReportView implements OnInit{
     this.loadingData = true;
     this.user.getCurrentUser().then((user : any)=>{
       this.currentUser = user;
+
+
+
       dhis2.database = user.currentDatabase;
       this.reportId = this.params.get("id");
       this.reportName = this.params.get("name");

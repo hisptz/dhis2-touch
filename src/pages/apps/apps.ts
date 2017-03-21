@@ -5,14 +5,15 @@ import {ReportHome} from "../report-home/report-home";
 import {DataEntryHome} from "../data-entry-home/data-entry-home";
 import {DashBoardHome} from "../dash-board-home/dash-board-home";
 import {TrackerCaptureHome} from "../tracker-capture-home/tracker-capture-home";
+import {SqlLite} from "../../providers/sql-lite/sql-lite";
 
 declare var dhis2;
 /*
-  Generated class for the Apps page.
+ Generated class for the Apps page.
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
+ See http://ionicframework.com/docs/v2/components/#navigation for more info on
+ Ionic pages and navigation.
+ */
 @Component({
   selector: 'page-apps',
   templateUrl: 'apps.html'
@@ -21,19 +22,16 @@ export class Apps {
 
   public viewMapperObject : any;
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController,public SqlLite : SqlLite ) {
     this.setViewAction();
   }
 
   ionViewDidLoad() {
-    dhis2.formatQueryReturnResult = function(results,tableName){
-      return {
-        results : results,tableName : tableName
-      }
-    };
+
   }
 
   setViewAction():void{
+    dhis2.dataBaseStructure =  this.SqlLite.getDataBaseStructure();
     this.viewMapperObject = {
       "dataEntry" : DataEntryHome,
       "eventCapture" : EventCaptureHome,
