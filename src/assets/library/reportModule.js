@@ -26,6 +26,7 @@ var dhis2 = {
       return defer.promise();
     },
     getDataFromTableByIds: function (tableName, ids) {
+      console.log(dhis2.database);
       var defer = $.Deferred();
       var attribute = "id";
       var db = window.sqlitePlugin.openDatabase({name: dhis2.database,location: 'default'});
@@ -45,7 +46,6 @@ var dhis2 = {
             ids.splice(index, 1);
             data.push(json);
           }
-          ('Table name :: getDataFromTableByIds ' + tableName);
           defer.resolve(data, ids);
         }, function (error) {
           defer.reject(error);
@@ -85,7 +85,8 @@ var dhis2 = {
       return defer.promise();
     }
   },
-  report: {}
+  report: {},
+  de : {}
 };
 dhis2.de = {
   getDataElementTotalValue: function (de, dataSet, match) {

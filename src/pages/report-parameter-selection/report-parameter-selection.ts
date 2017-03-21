@@ -29,7 +29,6 @@ export class ReportParameterSelection implements OnInit{
   public selectedOrganisationUnit :any = {};
   public selectedOrganisationUnitLabel :string;
   public currentSelectionStatus :any = {};
-
   public selectedPeriodLabel : string;
   public selectedPeriod : any = {};
 
@@ -63,7 +62,6 @@ export class ReportParameterSelection implements OnInit{
     });
   }
 
-
   openOrganisationUnitModal(){
     let modal = this.modalCtrl.create(OrganisationUnits,{data : this.organisationUnits,selectedOrganisationUnit:this.selectedOrganisationUnit});
     modal.onDidDismiss((selectedOrganisationUnit:any) => {
@@ -88,7 +86,6 @@ export class ReportParameterSelection implements OnInit{
     });
     modal.present();
   }
-
 
   setReportSelectionLabel(){
     this.setOrganisationSelectLabel();
@@ -117,7 +114,6 @@ export class ReportParameterSelection implements OnInit{
     }
   }
 
-
   ionViewDidLoad() {
     this.currentSelectionStatus.orgUnit = true;
     this.currentSelectionStatus.isOrgUnitSelected = false;
@@ -129,10 +125,12 @@ export class ReportParameterSelection implements OnInit{
 
   goToView(){
     let parameter = {
-      id : this.reportId,name : this.reportName
+      id : this.reportId,name : this.reportName,
+      period : this.selectedPeriod.iso,organisationUnit : this.selectedOrganisationUnit,organisationUnitChildren :[]
     };
     this.navCtrl.push(ReportView,parameter);
   }
+
 
 
   setToasterMessage(message){

@@ -34,23 +34,32 @@ export class ReportView implements OnInit{
   }
 
   ngOnInit() {
-
-
-
+    this.loadingData = true;
     this.user.getCurrentUser().then((user : any)=>{
       this.currentUser = user;
       dhis2.database = user.currentDatabase;
       this.reportId = this.params.get("id");
       this.reportName = this.params.get("name");
       dhis2.report = {
-        organisationUnit :{id : "id",name :"name"},
-        organisationUnitChildren : [],
-        organisationUnitHierarchy : [],
-        period : "2017"
+        organisationUnit :this.params.get("organisationUnit"),
+        organisationUnitChildren : this.params.get("organisationUnitChildren"),
+        organisationUnitHierarchy : this.getOrganisationUnitHierarchy(this.params.get("organisationUnit")),
+        period : this.params.get("period")
       };
-
       this.loadReportDesignContent(this.reportId);
     });
+  }
+
+  getOrganisationUnitHierarchy(organisationUnit){
+    let organisationUnitHierarchy = [];
+    organisationUnitHierarchy.push({id : organisationUnit.id,name : organisationUnit.name});
+    if(organisationUnit.ancestors){
+      let length = organisationUnit.ancestors.length;
+      for(let index = length -1; index >= 0; index --){
+        organisationUnitHierarchy.push(organisationUnit.ancestors[index]);
+      }
+    }
+    return organisationUnitHierarchy;
   }
 
   loadReportDesignContent(reportId){
@@ -58,8 +67,8 @@ export class ReportView implements OnInit{
     this.Report.getReportId(reportId,this.currentUser).then((report : any)=>{
       this._htmlMarkup = report.designContent;
       let scriptsContents = this.getScriptsContents(this._htmlMarkup);
-      this.setScriptsOnHtmlContent(scriptsContents);
       this.loadingData = false;
+      this.setScriptsOnHtmlContent(scriptsContents);
     },error=>{
       this.loadingData = false;
       this.setToasterMessage("Fail to load  report details");

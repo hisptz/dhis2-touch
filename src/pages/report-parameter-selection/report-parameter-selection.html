@@ -44,17 +44,30 @@
       </ion-col>
     </ion-row>
 
+    <!-- todo cross-checking report parameter first from server against this-->
+
+    <div *ngIf="(currentSelectionStatus.isPeriodSelected && currentSelectionStatus.isOrgUnitLoaded)">
+      <ion-row class="slide-in-from-right">
+        <ion-col width="100">
+          <ion-item-group (click)="goToView()">
+            <ion-item-divider>
+              <p ><b>Report name</b> : {{ reportName }}</p>
+              <p ><b>Organisation unit</b> : {{ selectedOrganisationUnitLabel }}</p>
+              <p ><b>Period</b> : {{ selectedPeriodLabel }}</p>
+            </ion-item-divider>
+            <button class="dataEntryButton" ion-button full large color="whitecolor">
+              Generate Report &nbsp;&nbsp;&nbsp;<ion-icon name="ios-arrow-forward-outline"></ion-icon>
+            </button>
+          </ion-item-group>
+        </ion-col>
+      </ion-row>
+    </div>
+
   </ion-grid>
 
-  reportName : {{ reportName }}<br>
-  reportId : {{ reportId }}<br>
-  reportParams : {{ reportParams|json }}<br>
-  selectedPeriod :: {{ selectedPeriod|json }}
-
-  <br>
-  {{ selectedOrganisationUnit.ancestors|json}}
 
 
-  <button ion-button (click)="goToView()">view</button>
+
+
 
 </ion-content>

@@ -15,6 +15,8 @@ export class ReportSelectionPeriod implements OnInit{
 
   public periodList : any = [];
 
+  //todo soft-code all period selection, need  to be revised
+
   constructor(public viewCtrl: ViewController,public params : NavParams,public toastCtrl: ToastController) {
   }
 
