@@ -81,7 +81,7 @@ export class AppProvider {
   }
 
   getDataBaseName(url){
-    let databaseName = url.replace('://', '_').replace('/', '_').replace('.', '_').replace(':', '_');
+    let databaseName = url.replace('://', '_').replace(/[/\s]/g, '_').replace('.', '_').replace(':', '_');
     return Promise.resolve(databaseName);
   }
 

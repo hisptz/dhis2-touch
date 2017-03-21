@@ -49,6 +49,10 @@
   reportName : {{ reportName }}<br>
   reportId : {{ reportId }}<br>
   reportParams : {{ reportParams|json }}<br>
+  selectedPeriod :: {{ selectedPeriod|json }}
+
+  <br>
+  {{ selectedOrganisationUnit.ancestors|json}}
 
 
   <button ion-button (click)="goToView()">view</button>

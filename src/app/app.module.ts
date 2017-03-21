@@ -44,6 +44,7 @@ import {VisulizerService} from "../providers/visulizer.service";
 import {LoadingPage} from "../pages/loading/loading";
 import {MetadataDictionary} from "../pages/metadata-dictionary/metadata-dictionary";
 import {MetadataDictionaryService} from "../providers/metadata-dictionary-service";
+import {ReportSelectionPeriod} from "../pages/report-selection-period/report-selection-period";
 
 @NgModule({
   declarations: [
@@ -52,7 +53,7 @@ import {MetadataDictionaryService} from "../providers/metadata-dictionary-servic
     EventFieldSelectionMenu,ProgressBarPage,VisualizationCardPage,LoadingPage,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,
     Account,ReportHome,SettingHome,TrackerCaptureHome,ObjectToArray,ProgramSelection,
-    AccountName,DataEntryForm,ReportView,ReportParameterSelection,EventCaptureForm
+    AccountName,DataEntryForm,ReportView,ReportParameterSelection,EventCaptureForm,ReportSelectionPeriod
   ],
   imports: [
     ChartModule,
@@ -61,7 +62,7 @@ import {MetadataDictionaryService} from "../providers/metadata-dictionary-servic
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,About,DashBoardHome,EventCaptureHome,EventView,MetadataDictionary,
-    TabsPage,Help,Login,Profile,DataEntryHome,Launcher,SendDataViaSms,
+    TabsPage,Help,Login,Profile,DataEntryHome,Launcher,SendDataViaSms,ReportSelectionPeriod,
     EventFieldSelectionMenu,ProgressBarPage,VisualizationCardPage,LoadingPage,
     Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,ReportParameterSelection,
     Account,ReportHome,SettingHome,TrackerCaptureHome,ProgramSelection,DataEntryForm,ReportView,EventCaptureForm

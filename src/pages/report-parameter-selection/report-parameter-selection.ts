@@ -5,6 +5,7 @@ import {ReportView} from "../report-view/report-view";
 import {User} from '../../providers/user/user';
 import {OrganisationUnit} from "../../providers/organisation-unit";
 import {OrganisationUnits} from "../organisation-units/organisation-units";
+import {ReportSelectionPeriod} from "../report-selection-period/report-selection-period";
 
 /*
   Generated class for the ReportParameterSelection page.
@@ -30,6 +31,7 @@ export class ReportParameterSelection implements OnInit{
   public currentSelectionStatus :any = {};
 
   public selectedPeriodLabel : string;
+  public selectedPeriod : any = {};
 
   constructor(public navCtrl: NavController,private params:NavParams,
               public OrganisationUnit : OrganisationUnit,
@@ -50,15 +52,10 @@ export class ReportParameterSelection implements OnInit{
 
   loadOrganisationUnits(){
     this.currentSelectionStatus.isOrgUnitLoaded = false;
-    //this.currentSelectionStatus.isProgramLoaded = true;
+    this.currentSelectionStatus.isPeriodLoaded = true;
     this.OrganisationUnit.getOrganisationUnits(this.currentUser).then((organisationUnits : any)=>{
       this.organisationUnits = organisationUnits;
       this.setReportSelectionLabel();
-      //if(organisationUnits.length > 0){
-      //  this.selectedOrganisationUnit = organisationUnits[0];
-      //  //this.selectedProgram = {};
-      //  //this.loadingPrograms();
-      //}
       this.currentSelectionStatus.isOrgUnitLoaded = true;
     },error=>{
       this.loadingData = false;
@@ -73,6 +70,7 @@ export class ReportParameterSelection implements OnInit{
       if(selectedOrganisationUnit.id){
         if(selectedOrganisationUnit.id != this.selectedOrganisationUnit.id){
           this.selectedOrganisationUnit = selectedOrganisationUnit;
+          this.selectedPeriod = {};
           this.setReportSelectionLabel();
         }
       }
@@ -81,7 +79,14 @@ export class ReportParameterSelection implements OnInit{
   }
 
   openReportPeriodSelection(){
-    alert("openReportPeriodSelection ");
+    let modal = this.modalCtrl.create(ReportSelectionPeriod,{});
+    modal.onDidDismiss((selectedPeriod:any) => {
+      if(selectedPeriod && selectedPeriod.iso){
+        this.selectedPeriod = selectedPeriod;
+        this.setReportSelectionLabel();
+      }
+    });
+    modal.present();
   }
 
 
@@ -99,22 +104,27 @@ export class ReportParameterSelection implements OnInit{
       this.selectedOrganisationUnitLabel = "Touch to select Organisation Unit";
       this.currentSelectionStatus.isOrgUnitSelected = false;
       this.currentSelectionStatus.period = false;
-      if (this.currentSelectionStatus.orgUnit && !this.currentSelectionStatus.period) {
-        this.currentSelectionStatus.message = "Please select organisation unit";
-      }
     }
   }
 
   setSelectedPeriod(){
-
+    if(this.selectedPeriod.iso){
+      this.selectedPeriodLabel = this.selectedPeriod.name;
+      this.currentSelectionStatus.isPeriodSelected = true;
+    }else{
+      this.selectedPeriodLabel = "Touch to select period";
+      this.currentSelectionStatus.isPeriodSelected = false;
+    }
   }
 
 
   ionViewDidLoad() {
-    this.currentSelectionStatus.isProgramLoaded = false;
     this.currentSelectionStatus.orgUnit = true;
     this.currentSelectionStatus.isOrgUnitSelected = false;
     this.currentSelectionStatus.isOrgUnitLoaded = false;
+    this.currentSelectionStatus.period = false;
+    this.currentSelectionStatus.isPeriodSelected = false;
+    this.currentSelectionStatus.isPeriodLoaded = false;
   }
 
   goToView(){

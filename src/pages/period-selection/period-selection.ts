@@ -21,11 +21,11 @@ export class PeriodSelection implements OnInit{
   public currentPeriodOffset : number;
 
   constructor(public viewCtrl: ViewController,public params : NavParams,public toastCtrl: ToastController) {
-    this.setModalData();
+
   }
 
   ngOnInit() {
-
+    this.setModalData();
   }
 
   ionViewDidLoad() {

@@ -246,7 +246,7 @@ export class Login implements OnInit{
   downloadingDataSets(){
     let resource = 'dataSets';
     this.currentResourceType = "entryForm";
-    if(this.completedTrackedProcess.indexOf() > -1){
+    if(this.completedTrackedProcess.indexOf(resource) > -1){
       this.downloadingSections();
     }else{
       let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
@@ -272,7 +272,7 @@ export class Login implements OnInit{
   downloadingSections(){
     let resource = 'sections';
     this.currentResourceType = "entryForm";
-    if(this.completedTrackedProcess.indexOf() > -1){
+    if(this.completedTrackedProcess.indexOf(resource) > -1){
       this.downloadingSmsCommand();
     }else{
       let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
@@ -298,7 +298,7 @@ export class Login implements OnInit{
   downloadingSmsCommand(){
     let resource = "smsCommand";
     this.currentResourceType = "entryForm";
-    if(this.completedTrackedProcess.indexOf() > -1){
+    if(this.completedTrackedProcess.indexOf(resource) > -1){
       this.downloadingPrograms();
     }else{
       this.SmsCommand.getSmsCommandFromServer(this.loginData).then((response:any)=>{
@@ -321,7 +321,7 @@ export class Login implements OnInit{
   downloadingPrograms(){
     let resource = 'programs';
     this.currentResourceType = "event";
-    if(this.completedTrackedProcess.indexOf() > -1){
+    if(this.completedTrackedProcess.indexOf(resource) > -1){
       this.downloadingProgramStageSections();
     }else{
       let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
@@ -347,7 +347,7 @@ export class Login implements OnInit{
   downloadingProgramStageSections(){
     let resource = 'programStageSections';
     this.currentResourceType = "event";
-    if(this.completedTrackedProcess.indexOf() > -1){
+    if(this.completedTrackedProcess.indexOf(resource) > -1){
       this.downloadingProgramStageDataElements();
     }else{
       let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
@@ -373,9 +373,9 @@ export class Login implements OnInit{
   downloadingProgramStageDataElements(){
     let resource = 'programStageDataElements';
     this.currentResourceType = "event";
-    if(this.completedTrackedProcess.indexOf() > -1){
-      //this.downloadingIndicators();
-      this.setLandingPage();
+    if(this.completedTrackedProcess.indexOf(resource) > -1){
+      this.downloadingIndicators();
+      //this.setLandingPage();
     }else{
       let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
       let fields = tableMetadata.fields;
@@ -384,7 +384,7 @@ export class Login implements OnInit{
         this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
           this.updateProgressTracker(resource);
           this.downloadingIndicators();
-          //achingalothis.setLandingPage();
+          //this.setLandingPage();
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
@@ -401,7 +401,7 @@ export class Login implements OnInit{
   downloadingIndicators(){
     let resource = 'indicators';
     this.currentResourceType = "report";
-    if(this.completedTrackedProcess.indexOf() > -1){
+    if(this.completedTrackedProcess.indexOf(resource) > -1){
       this.downloadingReports();
     }else{
       let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
@@ -427,7 +427,7 @@ export class Login implements OnInit{
   downloadingReports(){
     let resource = 'reports';
     this.currentResourceType = "report";
-    if(this.completedTrackedProcess.indexOf() > -1){
+    if(this.completedTrackedProcess.indexOf(resource) > -1){
       this.downloadingConstants();
     }else{
       let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
@@ -454,7 +454,7 @@ export class Login implements OnInit{
   downloadingConstants(){
     let resource = 'constants';
     this.currentResourceType = "report";
-    if(this.completedTrackedProcess.indexOf() > -1){
+    if(this.completedTrackedProcess.indexOf(resource) > -1){
       this.setLandingPage();
     }else{
       let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
