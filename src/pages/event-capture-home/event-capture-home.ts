@@ -101,6 +101,8 @@ export class EventCaptureHome implements OnInit{
     this.currentSelectionStatus.program = false;
     this.currentSelectionStatus.isProgramSelected = false;
     this.currentSelectionStatus.message = "";
+    this.currentSelectionStatus.isEventsLoadedFromServer = false;
+    this.currentSelectionStatus.eventsLoadingStatus =  "";
   }
 
   ionViewDidEnter() {
@@ -277,9 +279,11 @@ export class EventCaptureHome implements OnInit{
     if(!this.network.isAvailable){
       this.loadEventsFromOfflineStorage();
     }else{
-      this.setNotificationToasterMessage("Checking most recent events from server");
+      //this.setNotificationToasterMessage("Checking most recent events from server");
+      this.currentSelectionStatus.eventsLoadingStatus = "Checking most recent events from server";
       this.eventProvider.loadEventsFromServer(this.selectedOrganisationUnit,this.selectedProgram,this.selectedDataDimension,this.currentUser).then((events : any)=>{
-        this.setNotificationToasterMessage("Saving most recent events");
+        //this.setNotificationToasterMessage("Saving most recent events");
+        this.currentSelectionStatus.eventsLoadingStatus = "Saving most recent events";
         this.eventProvider.savingEventsFromServer(events,this.currentUser).then(()=>{
           this.loadEventsFromOfflineStorage();
         },error=>{
@@ -301,7 +305,8 @@ export class EventCaptureHome implements OnInit{
    * loading all events based on selected option from offline storage
    */
   loadEventsFromOfflineStorage(){
-    this.setNotificationToasterMessage("Checking offline events");
+    //this.setNotificationToasterMessage("Checking offline events");
+    this.currentSelectionStatus.eventsLoadingStatus = "Checking available offline events";
     this.eventProvider.loadingEventsFromStorage(this.selectedOrganisationUnit,this.selectedProgram,this.currentUser).then((events:any)=>{
       let currentEvents = [];
       if(this.selectedDataDimension.length > 0){
@@ -323,6 +328,7 @@ export class EventCaptureHome implements OnInit{
       this.currentEvents = currentEvents;
       //this.loadEventListAsTable();
       this.loadEventListAsListOfCards();
+      this.currentSelectionStatus.isEventsLoadedFromServer = true;
     },error=>{
       this.loadingData = false;
       this.setToasterMessage("Fail to load events from offline storage : " + JSON.stringify(error));

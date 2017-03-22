@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule ,enableProdMode} from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -45,6 +45,8 @@ import {LoadingPage} from "../pages/loading/loading";
 import {MetadataDictionary} from "../pages/metadata-dictionary/metadata-dictionary";
 import {MetadataDictionaryService} from "../providers/metadata-dictionary-service";
 import {ReportSelectionPeriod} from "../pages/report-selection-period/report-selection-period";
+
+enableProdMode();
 
 @NgModule({
   declarations: [

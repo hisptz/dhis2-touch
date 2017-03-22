@@ -62,6 +62,7 @@ export class VisulizerService {
         chartObject = this.drawOtherCharts(analyticObject, chartConfiguration);
         break;
     }
+    chartObject.credits =  {enabled: false};
     return chartObject;
   }
 
@@ -82,6 +83,17 @@ export class VisulizerService {
       counter++;
     }
     return index;
+  }
+
+  _sanitizeIncomingAnalytics( analyticsObject:any ){
+    for(let header of analyticsObject.headers ){
+      if(header.hasOwnProperty("optionSet")){
+        for( let item of analyticsObject.metaData[header.name] ){
+          analyticsObject.metaData.names[item] = item;
+        }
+      }
+    }
+    return analyticsObject;
   }
 
   /**
@@ -114,6 +126,7 @@ export class VisulizerService {
    */
   getDetailedMetadataArray ( analyticsObject, metadataType: string ) {
     let metadataArray = [];
+    analyticsObject = this._sanitizeIncomingAnalytics(analyticsObject);
     for (let item of analyticsObject.metaData[metadataType]) {
       metadataArray.push({
         id:item,
@@ -134,6 +147,7 @@ export class VisulizerService {
    * @returns {{xAxisItems: Array, yAxisItems: Array}}
    */
   prepareCategories ( analyticsObject, xAxis: string, yAxis: string, xAxisItems = [],  yAxisItems = []){
+    analyticsObject = this._sanitizeIncomingAnalytics(analyticsObject);
     let structure = {
       'xAxisItems':[],
       'yAxisItems':[]
@@ -166,6 +180,7 @@ export class VisulizerService {
    * @returns {{xAxisItems: Array, yAxisItems: Array}}
    */
   prepareSingleCategories ( analyticsObject, itemIdentifier , preDefinedItems = [] ){
+    analyticsObject = this._sanitizeIncomingAnalytics(analyticsObject);
     let structure = [];
     if ( preDefinedItems.length === 0 ) {
       for ( let val of this.getMetadataArray(analyticsObject, itemIdentifier )){
@@ -246,7 +261,7 @@ export class VisulizerService {
     chartObject.series.push({
       name: chartConfiguration.title ,
       data: serie,
-      showInLegend: true,
+      showInLegend: false,
       dataLabels: {
         enabled: false
       } });
@@ -660,7 +675,7 @@ export class VisulizerService {
         xAxis: {
           categories: [],
           labels: {
-            rotation: -60,
+            rotation: 0,
             style: {'color': '#000000', 'fontWeight': 'normal'}
           }
         },
@@ -861,11 +876,15 @@ export class VisulizerService {
         },
         plotOptions: {
           pie: {
+            borderWidth: 0,
             allowPointSelect: true,
             cursor: 'pointer',
             dataLabels: {
               enabled: true,
-              format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+              format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+              style: {
+                color: 'black'
+              }
             }
           }
         },
@@ -873,6 +892,4 @@ export class VisulizerService {
       };
     }
   }
-
-
 }
