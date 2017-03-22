@@ -171,7 +171,7 @@ export class EventCaptureHome implements OnInit{
     this.loadingData = true;
     let modal = this.modalCtrl.create(OrganisationUnits,{data : this.organisationUnits,selectedOrganisationUnit:this.selectedOrganisationUnit});
     modal.onDidDismiss((selectedOrganisationUnit:any) => {
-      if(selectedOrganisationUnit.id){
+      if(selectedOrganisationUnit && selectedOrganisationUnit.id){
         if(selectedOrganisationUnit.id != this.selectedOrganisationUnit.id){
           this.selectedOrganisationUnit = selectedOrganisationUnit;
           this.selectedProgram = {};
@@ -216,7 +216,7 @@ export class EventCaptureHome implements OnInit{
     if(this.currentSelectionStatus.program){
       let modal = this.modalCtrl.create(ProgramSelection,{data : this.assignedPrograms,selectedProgram : this.selectedProgram});
       modal.onDidDismiss((selectedProgram:any) => {
-        if(selectedProgram.id){
+        if(selectedProgram && selectedProgram.id){
           if(selectedProgram.id != this.selectedProgram.id){
             this.selectedDataDimension = [];
             this.selectedProgram = selectedProgram;
@@ -339,10 +339,12 @@ export class EventCaptureHome implements OnInit{
   showFieldSelectionMenu(){
     let modal = this.modalCtrl.create(EventFieldSelectionMenu,{dataElementToDisplay: this.dataElementToDisplay,dataElementMapper:this.dataElementMapper});
     modal.onDidDismiss((dataElementToDisplayResponse:any)=>{
-      this.dataElementToDisplay = {};
-      this.dataElementToDisplay = dataElementToDisplayResponse;
-      //this.loadEventListAsTable();
-      //this.loadEventListAsListOfCards();
+      if(dataElementToDisplayResponse){
+        this.dataElementToDisplay = {};
+        this.dataElementToDisplay = dataElementToDisplayResponse;
+        //this.loadEventListAsTable();
+        //this.loadEventListAsListOfCards();
+      }
     });
     modal.present();
   }

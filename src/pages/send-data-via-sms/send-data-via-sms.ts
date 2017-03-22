@@ -165,7 +165,7 @@ export class SendDataViaSms implements OnInit{
   openOrganisationUnitModal(){
     let modal = this.modalCtrl.create(OrganisationUnits,{data : this.organisationUnits,selectedOrganisationUnit:this.selectedOrganisationUnit});
     modal.onDidDismiss((selectedOrganisationUnit:any) => {
-      if(selectedOrganisationUnit.id){
+      if(selectedOrganisationUnit && selectedOrganisationUnit.id){
         if(selectedOrganisationUnit.id != this.selectedOrganisationUnit.id){
           this.selectedOrganisationUnit = selectedOrganisationUnit;
           this.selectedDataSet = {};
@@ -198,7 +198,7 @@ export class SendDataViaSms implements OnInit{
     if(this.currentSelectionStatus.dataSet){
       let modal = this.modalCtrl.create(DataSetSelection,{data : this.assignedDataSets,selectedDataSet : this.selectedDataSet});
       modal.onDidDismiss((selectedDataSet:any) => {
-        if(selectedDataSet.id){
+        if(selectedDataSet && selectedDataSet.id){
           if(selectedDataSet.id != this.selectedDataSet.id){
             this.selectedDataDimension = [];
             this.selectedDataSet = selectedDataSet;
@@ -217,7 +217,7 @@ export class SendDataViaSms implements OnInit{
     if(this.currentSelectionStatus.period){
       let modal = this.modalCtrl.create(PeriodSelection,{selectedDataSet : this.selectedDataSet,currentPeriodOffset : this.currentPeriodOffset});
       modal.onDidDismiss((selectedPeriodResponse:any) => {
-        if(selectedPeriodResponse.selectedPeriod){
+        if(selectedPeriodResponse && selectedPeriodResponse.selectedPeriod){
           if(selectedPeriodResponse.selectedPeriod.name){
             this.selectedPeriod = selectedPeriodResponse.selectedPeriod;
             this.currentPeriodOffset = selectedPeriodResponse.currentPeriodOffset;

@@ -59,7 +59,7 @@ export class TrackerCaptureHome {
     let id = this.selectedOrganisationUnit.id?this.selectedOrganisationUnit.id : null;
     let modal = this.modalCtrl.create(OrganisationUnits,{data : this.organisationUnits,selectedId : id });
     modal.onDidDismiss((selectedOrganisationUnit:any) => {
-      if(selectedOrganisationUnit.id){
+      if(selectedOrganisationUnit && selectedOrganisationUnit.id){
         this.selectedOrganisationUnit = selectedOrganisationUnit;
         //todo loading programs
         this.loadingData = false;
