@@ -34,7 +34,7 @@
 
   <div *ngIf="!loadingData">
     <ion-card *ngIf="params" >
-      <div (click)="navCtrl.pop()">
+      <div (tap)="navCtrl.pop()">
         <ion-card-content *ngIf="params.orgUnitId">
           <p><b>Organisation Unit</b> : {{ params.orgUnitName }}</p>
           <p><b>Program</b> : {{ params.programName }}</p>

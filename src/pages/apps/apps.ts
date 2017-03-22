@@ -41,7 +41,7 @@ export class Apps {
     }
   }
 
-  goToView(viewName){
+  goToView(event,viewName){
     this.navCtrl.push(this.viewMapperObject[viewName]);
   }
 

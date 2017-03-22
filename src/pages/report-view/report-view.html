@@ -19,7 +19,7 @@
     <div *ngIf="loadingData">
       <ion-row >
         <ion-col width="100">
-          <page-loading loadingSize="large" loadingMessage="Loading report metadata"></page-loading>
+          <page-loading loadingSize="large" loadingMessage="loadingMessage"></page-loading>
         </ion-col>
       </ion-row>
     </div>
@@ -28,7 +28,7 @@
 
       <ion-row >
         <ion-col width="100">
-          <ion-item-group (click)="navCtrl.pop()">
+          <ion-item-group (tap)="backToPreviousView()">
             <ion-item-divider>
               <p><b>Report  : </b> : {{ reportName }}</p>
               <p><b>Organisation Unit</b> : </p>

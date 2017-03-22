@@ -39,7 +39,7 @@
       <ion-row>
         <ion-col width="100">
           <ion-list>
-            <ion-item *ngFor="let report of reportList" (click)="selectReport(report)">
+            <ion-item *ngFor="let report of reportList" (tap)="selectReport(report)">
               <ion-icon name="ios-folder-outline" item-left></ion-icon>
               <span >{{ report.name }}</span>
             </ion-item>

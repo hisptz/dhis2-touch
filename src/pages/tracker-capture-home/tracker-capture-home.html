@@ -33,7 +33,7 @@
     <div *ngIf="!loadingData" >
       <ion-row >
         <ion-col width="100">
-          <button (click)="openOrganisationUnitModal()" ion-button full>
+          <button (tap)="openOrganisationUnitModal()" ion-button full>
             Open modal
           </button>
           selectedOrganisationUnit :: {{ selectedOrganisationUnit.name }}

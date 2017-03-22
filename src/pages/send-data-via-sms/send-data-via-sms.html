@@ -2,7 +2,7 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <button [disabled]="!currentSelectionStatus.orgUnit" class="dataEntryButton" text-capitalize ion-button full large (click)="openOrganisationUnitModal()" color="whitecolor">
+        <button [disabled]="!currentSelectionStatus.orgUnit" class="dataEntryButton" text-capitalize ion-button full large (tap)="openOrganisationUnitModal()" color="whitecolor">
            <span *ngIf="!currentSelectionStatus.isOrgUnitLoaded" >
               <ion-spinner  name="crescent" color="secondary"></ion-spinner>&nbsp;&nbsp;
               Loading organisation units
@@ -15,7 +15,7 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <button [disabled]="!currentSelectionStatus.dataSet" class="dataEntryButton" text-capitalize ion-button full large (click)="openDataSetsModal()" color="whitecolor">
+        <button [disabled]="!currentSelectionStatus.dataSet" class="dataEntryButton" text-capitalize ion-button full large (tap)="openDataSetsModal()" color="whitecolor">
             <span *ngIf="!currentSelectionStatus.isDataSetLoaded" >
               <ion-spinner  name="crescent" color="secondary"></ion-spinner>&nbsp;&nbsp;
               Loading entry forms
@@ -28,7 +28,7 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <button [disabled]="!currentSelectionStatus.period" class="dataEntryButton" text-capitalize ion-button full large (click)="openPeriodModal()" color="whitecolor">
+        <button [disabled]="!currentSelectionStatus.period" class="dataEntryButton" text-capitalize ion-button full large (tap)="openPeriodModal()" color="whitecolor">
           {{ selectedPeriodLabel }}
         </button>
       </ion-col>
@@ -70,7 +70,7 @@
         </ion-row>
         <ion-row >
           <ion-col>
-            <button class="normalButton" [disabled]="sendDataViaSmsObject.mobileNumber ==''||sendDataViaSmsObject.isLoading" ion-button text-capitalize full large color="primary" (click)="sendDataViaSms()">
+            <button class="normalButton" [disabled]="sendDataViaSmsObject.mobileNumber ==''||sendDataViaSmsObject.isLoading" ion-button text-capitalize full large color="primary" (tap)="sendDataViaSms()">
               <span *ngIf="sendDataViaSmsObject.isLoading" >
                 <ion-spinner  name="crescent" color="secondary"></ion-spinner>
                 <span margin-top="0px">&nbsp;&nbsp;{{ sendDataViaSmsObject.loadingMessage }}</span>

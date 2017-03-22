@@ -4,7 +4,7 @@
       Period selection
     </ion-title>
     <ion-buttons start>
-      <button class="normalButton" ion-button text-capitalize full large (click)="dismiss()">
+      <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
         close
         <!--<ion-icon name="md-close"></ion-icon>-->
 
@@ -18,16 +18,16 @@
   <ion-grid>
     <ion-row>
       <ion-col width="50">
-        <button class="dataEntryButton" text-capitalize ion-button full large (click)="previous()" color="whitecolor">Previous</button>
+        <button class="dataEntryButton" text-capitalize ion-button full large (tap)="previous()" color="whitecolor">Previous</button>
       </ion-col>
       <ion-col width="50">
-        <button class="dataEntryButton" text-capitalize ion-button full large (click)="next()" color="whitecolor">Next</button>
+        <button class="dataEntryButton" text-capitalize ion-button full large (tap)="next()" color="whitecolor">Next</button>
       </ion-col>
     </ion-row>
 
     <ion-row>
       <ion-col width="100">
-        <ion-item *ngFor="let period of periodList" (click)="setSelectedPeriod(period)">
+        <ion-item *ngFor="let period of periodList" (tap)="setSelectedPeriod(period)">
           <ion-icon name="list" item-left></ion-icon>
           <span >{{ period.name }}</span>
         </ion-item>

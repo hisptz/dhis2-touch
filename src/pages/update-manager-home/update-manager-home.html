@@ -19,7 +19,7 @@
     <ion-item-group>
       <ion-row>
         <ion-col>
-          <ion-item (click)="hideAndShowContents('sendDataViaSms')">
+          <ion-item (tap)="hideAndShowContents('sendDataViaSms')">
             <span [color]="(updateManagerObject.sendDataViaSms.isExpanded) ?'current' : 'font-color'">
               Send Data Via Sms
             </span>
@@ -38,7 +38,7 @@
 
       <ion-row>
         <ion-col>
-          <ion-item (click)="hideAndShowContents('updateMetadata')">
+          <ion-item (tap)="hideAndShowContents('updateMetadata')">
             <span [color]="(updateManagerObject.updateMetadata.isExpanded) ?'current' : 'font-color'">
               Metadata update
             </span>
@@ -49,11 +49,11 @@
           <div class="updateManagerContents" *ngIf="updateManagerObject.updateMetadata.isExpanded" >
             <ion-row>
               <ion-col width="50">
-                <button [disabled]="!updateManagerObject.updateMetadata.isSaved" ion-button large full text-capitalize class="normalButton" (click)="checkingForResourceUpdate()">Update</button>
+                <button [disabled]="!updateManagerObject.updateMetadata.isSaved" ion-button large full text-capitalize class="normalButton" (tap)="checkingForResourceUpdate()">Update</button>
               </ion-col>
               <ion-col width="50">
-                <button [disabled]="!updateManagerObject.updateMetadata.isSaved" ion-button large full text-capitalize class="normalButton" (click)="autoSelect('selectAll')" *ngIf="!hasAllSelected"> Select All</button>
-                <button [disabled]="!updateManagerObject.updateMetadata.isSaved" ion-button large full text-capitalize class="normalButton" (click)="autoSelect('unSelectAll')" *ngIf="hasAllSelected">Un-select all</button>
+                <button [disabled]="!updateManagerObject.updateMetadata.isSaved" ion-button large full text-capitalize class="normalButton" (tap)="autoSelect('selectAll')" *ngIf="!hasAllSelected"> Select All</button>
+                <button [disabled]="!updateManagerObject.updateMetadata.isSaved" ion-button large full text-capitalize class="normalButton" (tap)="autoSelect('unSelectAll')" *ngIf="hasAllSelected">Un-select all</button>
               </ion-col>
             </ion-row>
             <ion-row>
@@ -71,7 +71,7 @@
 
             <ion-row>
               <ion-col >
-                <button ion-button large full text-capitalize class="normalButton" (click)="checkingForResourceUpdate()">Update</button>
+                <button ion-button large full text-capitalize class="normalButton" (tap)="checkingForResourceUpdate()">Update</button>
               </ion-col>
             </ion-row>
           </div>

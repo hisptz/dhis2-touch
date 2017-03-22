@@ -80,7 +80,7 @@
       </div>
       <ion-item *ngIf="hideAndShowObject.systemInformation.count <= systemInformation.length " >
         <div item-right>
-          <button class="normalButton" ion-button clear  text-capitalize (click)="hideAndShowDetails('systemInformation',systemInformation.length)">
+          <button class="normalButton" ion-button clear  text-capitalize (tap)="hideAndShowDetails('systemInformation',systemInformation.length)">
             <div *ngIf="hideAndShowObject.systemInformation.status">
               Show less
             </div>

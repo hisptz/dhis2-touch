@@ -17,7 +17,7 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          <button [disabled]="!currentSelectionStatus.orgUnit" class="dataEntryButton" text-capitalize ion-button full large (click)="openOrganisationUnitModal()" color="whitecolor">
+          <button [disabled]="!currentSelectionStatus.orgUnit" class="dataEntryButton" text-capitalize ion-button full large (tap)="openOrganisationUnitModal()" color="whitecolor">
            <span *ngIf="!currentSelectionStatus.isOrgUnitLoaded" >
               <page-loading loadingSize="small"></page-loading>
               Loading organisation units
@@ -30,7 +30,7 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <button [disabled]="!currentSelectionStatus.dataSet" class="dataEntryButton" text-capitalize ion-button full large (click)="openDataSetsModal()" color="whitecolor">
+          <button [disabled]="!currentSelectionStatus.dataSet" class="dataEntryButton" text-capitalize ion-button full large (tap)="openDataSetsModal()" color="whitecolor">
             <span *ngIf="!currentSelectionStatus.isDataSetLoaded" >
               <page-loading loadingSize="small"></page-loading>
               Loading entry forms
@@ -43,7 +43,7 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <button [disabled]="!currentSelectionStatus.period" class="dataEntryButton" text-capitalize ion-button full large (click)="openPeriodModal()" color="whitecolor">
+          <button [disabled]="!currentSelectionStatus.period" class="dataEntryButton" text-capitalize ion-button full large (tap)="openPeriodModal()" color="whitecolor">
             {{ selectedPeriodLabel }}
           </button>
         </ion-col>
@@ -78,7 +78,7 @@
         <div *ngIf="selectedPeriod.name && hasDataDimensionSet()">
           <ion-row class="slide-in-from-right">
             <ion-col width="100">
-              <ion-item-group (click)="goToEntryForm()">
+              <ion-item-group (tap)="goToEntryForm()">
                 <ion-item-divider>
                   <p ><b>Organisation Unit</b> : {{ selectedOrganisationUnitLabel }}</p>
                   <p ><b>Form</b> : {{ selectedDataSetLabel }}</p>
@@ -92,7 +92,7 @@
           </ion-row>
           <!--<ion-row>-->
             <!--<ion-col>-->
-              <!--<button class="dataEntryButton" ion-button full large (click)="goToEntryForm()" color="whitecolor">ENTER DATA</button>-->
+              <!--<button class="dataEntryButton" ion-button full large (tap)="goToEntryForm()" color="whitecolor">ENTER DATA</button>-->
             <!--</ion-col>-->
           <!--</ion-row>-->
         </div>

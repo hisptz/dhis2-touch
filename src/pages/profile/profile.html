@@ -48,7 +48,7 @@
             </div>
             <ion-item *ngIf="hideAndShowObject.profileInformation.count <= profileInformation.length " >
               <div item-right>
-                <button class="normalButton" ion-button clear  text-capitalize (click)="hideAndShowDetails('profileInformation',profileInformation.length)">
+                <button class="normalButton" ion-button clear  text-capitalize (tap)="hideAndShowDetails('profileInformation',profileInformation.length)">
                   <div *ngIf="hideAndShowObject.profileInformation.status">
                     Show less
                   </div>
@@ -71,7 +71,7 @@
             </div>
             <ion-item *ngIf="hideAndShowObject.assignOrgUnits.count <= assignOrgUnits.length " >
               <div item-right>
-                <button class="normalButton" ion-button clear  text-capitalize (click)="hideAndShowDetails('assignOrgUnits',assignOrgUnits.length)">
+                <button class="normalButton" ion-button clear  text-capitalize (tap)="hideAndShowDetails('assignOrgUnits',assignOrgUnits.length)">
                   <div *ngIf="hideAndShowObject.assignOrgUnits.status">
                     Show less
                   </div>
@@ -94,7 +94,7 @@
             </div>
             <ion-item *ngIf="hideAndShowObject.userRoles.count <= userRoles.length " >
               <div item-right>
-                <button class="normalButton" ion-button clear  text-capitalize (click)="hideAndShowDetails('userRoles',userRoles.length)">
+                <button class="normalButton" ion-button clear  text-capitalize (tap)="hideAndShowDetails('userRoles',userRoles.length)">
                   <div *ngIf="hideAndShowObject.userRoles.status">
                     Show less
                   </div>
@@ -117,7 +117,7 @@
             </div>
             <ion-item *ngIf="hideAndShowObject.assignedPrograms.count <= assignedPrograms.length " >
               <div item-right>
-                <button class="normalButton" ion-button clear  text-capitalize (click)="hideAndShowDetails('assignedPrograms',assignedPrograms.length)">
+                <button class="normalButton" ion-button clear  text-capitalize (tap)="hideAndShowDetails('assignedPrograms',assignedPrograms.length)">
                   <div *ngIf="hideAndShowObject.assignedPrograms.status">
                     Show less
                   </div>
@@ -140,7 +140,7 @@
             </div>
             <ion-item *ngIf="hideAndShowObject.assignedForms.count <= assignedForms.length " >
               <div item-right>
-                <button class="normalButton" ion-button clear  text-capitalize (click)="hideAndShowDetails('assignedForms',assignedForms.length)">
+                <button class="normalButton" ion-button clear  text-capitalize (tap)="hideAndShowDetails('assignedForms',assignedForms.length)">
                   <div *ngIf="hideAndShowObject.assignedForms.status">
                     Show less
                   </div>

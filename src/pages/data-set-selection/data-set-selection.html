@@ -4,7 +4,7 @@
       Data Entry Form selection
     </ion-title>
     <ion-buttons start>
-      <button class="normalButton" ion-button text-capitalize full large (click)="dismiss()">
+      <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
         close
         <!--<ion-icon name="md-close"></ion-icon>-->
       </button>
@@ -18,9 +18,9 @@
     <ion-row>
       <ion-col width="100">
         <ion-list>
-          <ion-item *ngFor="let dataSet of dataSetsList"   (click)="setSelectedDataSet(dataSet)">
+          <ion-item *ngFor="let dataSet of dataSetsList"   (tap)="setSelectedDataSet(dataSet)">
             <ion-icon name="list" item-left></ion-icon>
-            <span (click)="setSelectedDataSet(orgUnit)" [color]="(currentSelectedDataSetName == dataSet.name) ?'current' : 'font-color'">{{ dataSet.name }}</span>
+            <span (tap)="setSelectedDataSet(orgUnit)" [color]="(currentSelectedDataSetName == dataSet.name) ?'current' : 'font-color'">{{ dataSet.name }}</span>
           </ion-item>
           <ion-item *ngIf = "dataSetsList.length == 0">
             There is no Data entry form to select

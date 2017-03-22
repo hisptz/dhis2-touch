@@ -25,6 +25,7 @@ export class ReportView implements OnInit{
   public reportName : string;
   public _htmlMarkup : any;
   public loadingData : boolean = false;
+  public loadingMessage : string = "";
   public currentUser : any;
 
   constructor(public navCtrl:NavController,public params:NavParams,public user: User,
@@ -37,9 +38,6 @@ export class ReportView implements OnInit{
     this.loadingData = true;
     this.user.getCurrentUser().then((user : any)=>{
       this.currentUser = user;
-
-
-
       dhis2.database = user.currentDatabase;
       this.reportId = this.params.get("id");
       this.reportName = this.params.get("name");
@@ -51,6 +49,12 @@ export class ReportView implements OnInit{
       };
       this.loadReportDesignContent(this.reportId);
     });
+  }
+
+  backToPreviousView(){
+    this.loadingData = true;
+    this.loadingMessage = "Closing report";
+    this.navCtrl.pop();
   }
 
   getOrganisationUnitHierarchy(organisationUnit){
@@ -67,6 +71,7 @@ export class ReportView implements OnInit{
 
   loadReportDesignContent(reportId){
     this.loadingData = true;
+    this.loadingMessage = "Loading report metadata";
     this.Report.getReportId(reportId,this.currentUser).then((report : any)=>{
       this._htmlMarkup = report.designContent;
       let scriptsContents = this.getScriptsContents(this._htmlMarkup);

@@ -14,7 +14,7 @@
         </ion-col>
         <ion-col width-10>
           <div *ngFor="let chart of visualizationOptions.right" class="chart-icon">
-            <button [disabled]="visualizationSelection.right == chart.type|| chart.isDisabled"  mini ion-fab color="light" (click)="drawChart(chart.type)">
+            <button [disabled]="visualizationSelection.right == chart.type|| chart.isDisabled"  mini ion-fab color="light" (tap)="drawChart(chart.type)">
               <img [src]="chart.path" >
             </button>
           </div>
@@ -54,7 +54,7 @@
     <ion-row *ngIf="tableObject || chartObject">
       <ion-col >
             <span *ngFor="let visualization of visualizationOptions.bottom" class="chart-icon">
-              <button [disabled]="visualizationSelection.bottom == visualization.type" mini ion-fab color="light" (click)="changeVisualization(visualization.type)">
+              <button [disabled]="visualizationSelection.bottom == visualization.type" mini ion-fab color="light" (tap)="changeVisualization(visualization.type)">
                 <img [src]="visualization.path" >
               </button>
             </span>

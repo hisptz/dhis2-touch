@@ -28,7 +28,7 @@
           </ion-item>
         </div>
         <div *ngIf="dashBoardProgressTracker.isDashBoardsLoaded">
-          <ion-item (click)="toggleDashBoardList()" >
+          <ion-item (tap)="toggleDashBoardList()" >
             {{ selectedDashBoardName }}
             <div style="text-align: center"item-right >
               <button ion-button color="dark" clear>
@@ -45,7 +45,7 @@
       <ion-row>
         <ion-col width="100">
           <ion-list>
-            <ion-item *ngFor="let dashboard of dashBoards" (click)="setCurrentDashboard(dashboard)" class="list-separator">
+            <ion-item *ngFor="let dashboard of dashBoards" (tap)="setCurrentDashboard(dashboard)" class="list-separator">
               <span [color]="(selectedDashBoardName == dashboard.name) ?'current' : 'font-color'" >{{ dashboard.name }}</span>
             </ion-item>
             <ion-item *ngIf="dashBoards.length == 0">
@@ -70,7 +70,7 @@
               <ion-row >
                 <ion-col>
                   <div class="visualizationHeader" >
-                    <ion-item (click)="hideAndShowVisualizationCard(dashboardItem.id)" >
+                    <ion-item (tap)="hideAndShowVisualizationCard(dashboardItem.id)" >
                     <span [color]="(selectedDashBoardItemId == dashboardItem.id) ?'current' : 'font-color'">
                       <span *ngIf="dashboardItem.title" >{{ dashboardItem.title }}</span>
                       <span *ngIf="!dashboardItem.title">{{ dashboardItem.name }}</span>
@@ -96,7 +96,7 @@
 
       <div *ngIf="dashBoardsCopy.length == 0 && dashBoardProgressTracker.isDashBoardsLoaded">
         <div class="refreshPanel" text-center>
-          <button (click)="getAllDataBase()" ion-button clear large text-capitalize class="normalButton">
+          <button (tap)="getAllDataBase()" ion-button clear large text-capitalize class="normalButton">
             <ion-icon name="refresh"></ion-icon>
           </button>
         </div>

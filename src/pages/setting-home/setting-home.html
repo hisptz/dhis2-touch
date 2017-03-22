@@ -20,7 +20,7 @@
 
       <ion-row>
         <ion-col>
-          <ion-item (click)="hideAndShowContents('synchronizationSetting')">
+          <ion-item (tap)="hideAndShowContents('synchronizationSetting')">
             <span [color]="(settingObject.synchronizationSetting.isExpanded) ?'current' : 'font-color'">
               Synchronization
             </span>
@@ -42,7 +42,7 @@
                     <ion-option value="hours">Hour(s)</ion-option>
                   </ion-select>
                 </ion-item>
-                <button [disabled]="!settingObject.synchronizationSetting.isSaved" [color]="settingObject.synchronizationSetting.isSaved?'primary':'whitecolor'" class="normalButton" ion-button full large text-capitalize (click)="saveSetting('synchronizationSetting')">
+                <button [disabled]="!settingObject.synchronizationSetting.isSaved" [color]="settingObject.synchronizationSetting.isSaved?'primary':'whitecolor'" class="normalButton" ion-button full large text-capitalize (tap)="saveSetting('synchronizationSetting')">
                   <span *ngIf="!settingObject.synchronizationSetting.isSaved" >
                     <ion-spinner  name="crescent" color="secondary"></ion-spinner>
                     <span margin-top="0px">&nbsp;&nbsp;Saving</span>
@@ -59,7 +59,7 @@
 
       <ion-row>
         <ion-col>
-          <ion-item (click)="hideAndShowContents('dataEntrySetting')">
+          <ion-item (tap)="hideAndShowContents('dataEntrySetting')">
             <span [color]="(settingObject.dataEntrySetting.isExpanded) ?'current' : 'font-color'">
               Data Entry Form
             </span>
@@ -80,7 +80,7 @@
                   <ion-label floating>Max Data Element per section </ion-label>
                   <ion-input type="number"  min="1" [(ngModel)]="dataEntrySetting.maxDataElementOnDefaultForm"></ion-input>
                 </ion-item>
-                <button [disabled]="!settingObject.dataEntrySetting.isSaved" [color]="settingObject.dataEntrySetting.isSaved?'primary':'whitecolor'" class="normalButton" ion-button full large text-capitalize (click)="saveSetting('dataEntrySetting')">
+                <button [disabled]="!settingObject.dataEntrySetting.isSaved" [color]="settingObject.dataEntrySetting.isSaved?'primary':'whitecolor'" class="normalButton" ion-button full large text-capitalize (tap)="saveSetting('dataEntrySetting')">
                   <span *ngIf="!settingObject.dataEntrySetting.isSaved" >
                     <ion-spinner  name="crescent" color="secondary"></ion-spinner>
                     <span margin-top="0px">&nbsp;&nbsp;Saving</span>
@@ -97,7 +97,7 @@
 
       <!--<ion-row>-->
         <!--<ion-col>-->
-          <!--<ion-item (click)="hideAndShowContents('security')">-->
+          <!--<ion-item (tap)="hideAndShowContents('security')">-->
             <!--<span [color]="(settingObject.security.isExpanded) ?'current' : 'font-color'">-->
               <!--Security-->
             <!--</span>            -->

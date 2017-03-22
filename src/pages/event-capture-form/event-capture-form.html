@@ -33,7 +33,7 @@
 
   <div *ngIf="!loadingData" padding>
     <!-- selected orgUnit labels -->
-    <ion-item-group (click)="navCtrl.pop()" *ngIf="entryFormParameter">
+    <ion-item-group (tap)="navCtrl.pop()" *ngIf="entryFormParameter">
       <ion-item-divider>
         <p ><b>Organisation Unit</b> : {{ entryFormParameter.orgUnitName }}</p>
         <p ><b>Form</b> : {{ entryFormParameter.programName }}</p>
@@ -49,7 +49,7 @@
       <ion-item>
         <ion-input type="date" [(ngModel)]="event.eventDate"></ion-input>
       </ion-item>
-      <button color="light" ion-button large full (click)="cancel()" *ngIf="event.eventDate =='' ">
+      <button color="light" ion-button large full (tap)="cancel()" *ngIf="event.eventDate =='' ">
         cancel
       </button>
 
@@ -74,7 +74,7 @@
             <div *ngIf="section.id == currentPage">
               <div *ngFor="let programStageDataElement of section.programStageDataElements">
                 <br>
-                <div (click)="showTooltips(programStageDataElement.dataElement,'',programStageDataElement.compulsory)" class="inputLabel">
+                <div (tap)="showTooltips(programStageDataElement.dataElement,'',programStageDataElement.compulsory)" class="inputLabel">
                   {{ getDisplayName(programStageDataElement.dataElement) }}&nbsp;&nbsp;
                   <span *ngIf="programStageDataElement.compulsory == 'true'" class="required">*</span>
                   <span *ngIf="programStageDataElement.dataElement.description">
@@ -195,7 +195,7 @@
             <!-- pagination for entry form  -->
             <ion-row *ngIf="(entryFormSections.length > 1)">
               <ion-col>
-                <button color="dark" ion-button full clear small (click)="changePagination(currentPage - 1)">
+                <button color="dark" ion-button full clear small (tap)="changePagination(currentPage - 1)">
                   <ion-icon name="ios-arrow-back-outline"></ion-icon>
                   <ion-icon name="ios-arrow-back-outline"></ion-icon>
                 </button>
@@ -206,7 +206,7 @@
                 </button>
               </ion-col>
               <ion-col >
-                <button color="dark" ion-button full clear small (click)="changePagination(currentPage + 1)">
+                <button color="dark" ion-button full clear small (tap)="changePagination(currentPage + 1)">
                   <ion-icon name="ios-arrow-forward-outline"></ion-icon>
                   <ion-icon name="ios-arrow-forward-outline"></ion-icon>
                 </button>
@@ -215,12 +215,12 @@
             <!-- saving and cancel button for event capture form -->
             <ion-row>
               <ion-col>
-                <button color="primary" large ion-button full (click)="saveEvent()">
+                <button color="primary" large ion-button full (tap)="saveEvent()">
                   Save
                 </button>
               </ion-col>
               <ion-col >
-                <button color="light" large ion-button full (click)="cancel()">
+                <button color="light" large ion-button full (tap)="cancel()">
                   cancel
                 </button>
               </ion-col>

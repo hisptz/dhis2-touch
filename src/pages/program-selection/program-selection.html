@@ -4,7 +4,7 @@
       Program selection selection
     </ion-title>
     <ion-buttons start>
-      <button class="normalButton" ion-button text-capitalize full large (click)="dismiss()">
+      <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
         close
         <!--<ion-icon name="md-close"></ion-icon>-->
       </button>
@@ -18,9 +18,9 @@
     <ion-row>
       <ion-col width="100">
         <ion-list>
-          <ion-item *ngFor="let program of programsList"   (click)="setSelectedProgram(program)">
+          <ion-item *ngFor="let program of programsList"   (tap)="setSelectedProgram(program)">
             <ion-icon name="list" item-left></ion-icon>
-            <span (click)="setSelectedProgram(program)" [color]="(currentSelectedProgram == program.name)? 'current': 'font-color'" >{{ program.name}}</span>
+            <span (tap)="setSelectedProgram(program)" [color]="(currentSelectedProgram == program.name)? 'current': 'font-color'" >{{ program.name}}</span>
           </ion-item>
           <ion-item *ngIf = "programsList.length == 0">
             There is no Program to select

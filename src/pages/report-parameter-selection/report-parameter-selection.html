@@ -18,7 +18,7 @@
   <ion-grid>
     <ion-row *ngIf="reportParams.paramOrganisationUnit">
       <ion-col>
-        <button [disabled]="!currentSelectionStatus.orgUnit" class="dataEntryButton" text-capitalize ion-button full large (click)="openOrganisationUnitModal()" color="whitecolor">
+        <button [disabled]="!currentSelectionStatus.orgUnit" class="dataEntryButton" text-capitalize ion-button full large (tap)="openOrganisationUnitModal()" color="whitecolor">
             <span *ngIf="currentSelectionStatus.isOrgUnitLoaded" >
               {{ selectedOrganisationUnitLabel }}
             </span>
@@ -32,7 +32,7 @@
 
     <ion-row *ngIf="reportParams.paramReportingPeriod" >
       <ion-col>
-        <button [disabled]="!currentSelectionStatus.period" class="dataEntryButton" text-capitalize ion-button full large (click)="openReportPeriodSelection()" color="whitecolor">
+        <button [disabled]="!currentSelectionStatus.period" class="dataEntryButton" text-capitalize ion-button full large (tap)="openReportPeriodSelection()" color="whitecolor">
             <span *ngIf="!currentSelectionStatus.isPeriodLoaded" >
               <page-loading loadingSize="small"></page-loading>
               Loading period
@@ -49,7 +49,7 @@
     <div *ngIf="(currentSelectionStatus.isPeriodSelected && currentSelectionStatus.isOrgUnitLoaded)">
       <ion-row class="slide-in-from-right">
         <ion-col width="100">
-          <ion-item-group (click)="goToView()">
+          <ion-item-group (tap)="goToView()">
             <ion-item-divider>
               <p ><b>Report name</b> : {{ reportName }}</p>
               <p ><b>Organisation unit</b> : {{ selectedOrganisationUnitLabel }}</p>

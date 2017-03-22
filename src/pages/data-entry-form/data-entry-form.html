@@ -34,7 +34,7 @@
   <div *ngIf="!loadingData" padding>
 
     <!-- entry form details -->
-    <ion-item-group (click)="navCtrl.pop()">
+    <ion-item-group (tap)="navCtrl.pop()">
       <ion-item-divider>
         <p ><b>Organisation Unit</b> : {{ selectedOrganisationUnitLabel }}</p>
         <p ><b>Form</b> : {{ selectedDataSetLabel }}</p>
@@ -64,7 +64,7 @@
           <div *ngFor="let dataElement of section.dataElements">
             <div *ngFor="let categoryOptionCombos of dataElement.categoryCombo.categoryOptionCombos">
               <br>
-              <div (click)="showTooltips(dataElement,categoryOptionCombos.name)" class="inputLabel">
+              <div (tap)="showTooltips(dataElement,categoryOptionCombos.name)" class="inputLabel">
                 {{ getDisplayName(dataElement) }}<span *ngIf="dataElement.categoryCombo.name != 'default'">&nbsp;&nbsp;{{ categoryOptionCombos.name}}</span>&nbsp;&nbsp;
                         <span *ngIf="dataElement.description">
                           &nbsp;&nbsp;<ion-icon name="help-circle"></ion-icon>
@@ -163,7 +163,7 @@
       <ion-item-divider>
         <ion-row>
           <ion-col>
-            <button color="font-color" ion-button full clear small (click)="changePagination(0)">
+            <button color="font-color" ion-button full clear small (tap)="changePagination(0)">
               <ion-icon name="ios-arrow-back-outline"></ion-icon>
               <ion-icon name="ios-arrow-back-outline"></ion-icon>
               <ion-icon name="ios-arrow-back-outline"></ion-icon>
@@ -171,7 +171,7 @@
             </button>
           </ion-col>
           <ion-col>
-            <button color="font-color" ion-button full clear small (click)="changePagination(currentPage - 1)">
+            <button color="font-color" ion-button full clear small (tap)="changePagination(currentPage - 1)">
               <ion-icon name="ios-arrow-back-outline"></ion-icon>
               <ion-icon name="ios-arrow-back-outline"></ion-icon>
             </button>
@@ -182,14 +182,14 @@
             </button>
           </ion-col>
           <ion-col >
-            <button color="font-color" ion-button full clear small (click)="changePagination(currentPage + 1)">
+            <button color="font-color" ion-button full clear small (tap)="changePagination(currentPage + 1)">
               <ion-icon name="ios-arrow-forward-outline"></ion-icon>
               <ion-icon name="ios-arrow-forward-outline"></ion-icon>
             </button>
           </ion-col>
 
           <ion-col >
-            <button color="font-color" ion-button full clear small (click)="changePagination(entryFormSections.length -1)">
+            <button color="font-color" ion-button full clear small (tap)="changePagination(entryFormSections.length -1)">
               <ion-icon name="ios-arrow-forward-outline"></ion-icon>
               <ion-icon name="ios-arrow-forward-outline"></ion-icon>
               <ion-icon name="ios-arrow-forward-outline"></ion-icon>
@@ -200,12 +200,12 @@
         </ion-row>
         <ion-row>
           <ion-col>
-            <button color="favorite" ion-button full [disabled] ="isDataSetCompleted" (click)="updateDataSetCompleteness()">
+            <button color="favorite" ion-button full [disabled] ="isDataSetCompleted" (tap)="updateDataSetCompleteness()">
               Complete
             </button>
           </ion-col>
           <ion-col>
-            <button color="danger" ion-button full [disabled] = "!isDataSetCompleted" (click)="updateDataSetCompleteness()">
+            <button color="danger" ion-button full [disabled] = "!isDataSetCompleted" (tap)="updateDataSetCompleteness()">
               Undo Complete
             </button>
           </ion-col>

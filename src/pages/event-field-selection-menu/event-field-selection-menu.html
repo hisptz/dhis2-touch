@@ -10,7 +10,7 @@
       Event List Fields selection
     </ion-title>
     <ion-buttons start>
-      <button class="normalButton" ion-button full large  (click)="dismiss()">
+      <button class="normalButton" ion-button full large  (tap)="dismiss()">
         <ion-icon name="md-close"></ion-icon>
       </button>
     </ion-buttons>
@@ -22,11 +22,11 @@
   <ion-grid>
     <ion-row>
       <ion-col >
-        <button ion-button full text-capitalize (click)="onSavingChanges()">Save</button>
+        <button ion-button full text-capitalize (tap)="onSavingChanges()">Save</button>
       </ion-col>
       <ion-col >
-        <button ion-button full text-capitalize (click)="autoSelect('selectAll')" *ngIf="!hasAllSelected"> Select All</button>
-        <button ion-button full text-capitalize (click)="autoSelect('unSelectAll')" *ngIf="hasAllSelected">Un-select all</button>
+        <button ion-button full text-capitalize (tap)="autoSelect('selectAll')" *ngIf="!hasAllSelected"> Select All</button>
+        <button ion-button full text-capitalize (tap)="autoSelect('unSelectAll')" *ngIf="hasAllSelected">Un-select all</button>
       </ion-col>
     </ion-row>
     <div *ngIf="hasDataLoaded">
@@ -44,7 +44,7 @@
       </ion-row>
       <ion-row>
         <ion-col >
-          <button ion-button full text-capitalize (click)="onSavingChanges()">Save</button>
+          <button ion-button full text-capitalize (tap)="onSavingChanges()">Save</button>
         </ion-col>
       </ion-row>
     </div>

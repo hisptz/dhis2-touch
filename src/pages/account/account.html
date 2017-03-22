@@ -17,7 +17,7 @@
 
   <ion-row >
 
-    <ion-col width-45 (click)="goToView('profile')" >
+    <ion-col width-45 (tap)="goToView($event,'profile')" >
       <ion-list >
         <ion-item >
           <ion-thumbnail >
@@ -27,7 +27,7 @@
         </ion-item>
       </ion-list>
     </ion-col>
-    <ion-col width-45 (click)="goToView('about')" >
+    <ion-col width-45 (tap)="goToView($event,'about')" >
       <ion-list>
         <ion-item>
           <ion-thumbnail >
@@ -42,7 +42,7 @@
 
   <ion-row>
 
-    <ion-col width-45 (click)="goToView('help')" >
+    <ion-col width-45 (tap)="goToView($event,'help')" >
       <ion-list>
         <ion-item>
           <ion-thumbnail >
@@ -52,7 +52,7 @@
         </ion-item>
       </ion-list>
     </ion-col>
-    <ion-col width-45 (click)="goToView('settings')" >
+    <ion-col width-45 (tap)="goToView($event,'settings')" >
       <ion-list >
         <ion-item >
           <ion-thumbnail >
@@ -66,7 +66,7 @@
   </ion-row>
 
   <ion-row>
-    <ion-col width-45 (click)="goToView('updateManager')" >
+    <ion-col width-45 (tap)="goToView($event,'updateManager')" >
       <ion-list>
         <ion-item>
           <ion-thumbnail >
