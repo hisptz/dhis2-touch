@@ -20,7 +20,7 @@ export class Dashboard {
    * @returns {Promise<T>}
      */
   getAllDashBoardsFromServer(currentUser){
-    let url = "/api/dashboards.json?paging=false&filter=itemCount:gt:0&fields=name,id," +
+    let url = "/api/25/dashboards.json?paging=false&filter=itemCount:gt:0&fields=name,id," +
       "dashboardItems[id,type,shape,chart[:all],reportTable[:all]," +
       "map[id,lastUpdated,created,name,zoom,longitude,latitude,displayName,mapViews[:all],:all],:all,program[id,name]," +
       "programStage[id,name],columns[dimension,filter,legendSet[id,name],items[id,name]]," +
@@ -88,7 +88,7 @@ export class Dashboard {
      */
   getDashBoardItemObject(dashboardItem,currentUser){
     let self = this;
-    let url = "/api/"+self.formatEnumString(dashboardItem.type)+"s/"+dashboardItem[self.formatEnumString(dashboardItem.type)].id+".json?fields=:all,program[id,name],programStage[id,name],columns[dimension,filter,items[id,name],legendSet[id,name]],rows[dimension,filter,items[id,name],legendSet[id,name]],filters[dimension,filter,items[id,name],legendSet[id,name]],!lastUpdated,!href,!created,!publicAccess,!rewindRelativePeriods,!userOrganisationUnit,!userOrganisationUnitChildren,!userOrganisationUnitGrandChildren,!externalAccess,!access,!relativePeriods,!columnDimensions,!rowDimensions,!filterDimensions,!user,!organisationUnitGroups,!itemOrganisationUnitGroups,!userGroupAccesses,!indicators,!dataElements,!dataElementOperands,!dataElementGroups,!dataSets,!periods,!organisationUnitLevels,!organisationUnits,attributeDimensions[id,name,attribute[id,name,optionSet[id,name,options[id,name]]]],dataElementDimensions[id,name,dataElement[id,name,optionSet[id,name,options[id,name]]]],categoryDimensions[id,name,category[id,name,categoryOptions[id,name,options[id,name]]]]";
+    let url = "/api/25/"+self.formatEnumString(dashboardItem.type)+"s/"+dashboardItem[self.formatEnumString(dashboardItem.type)].id+".json?fields=:all,program[id,name],programStage[id,name],columns[dimension,filter,items[id,name],legendSet[id,name]],rows[dimension,filter,items[id,name],legendSet[id,name]],filters[dimension,filter,items[id,name],legendSet[id,name]],!lastUpdated,!href,!created,!publicAccess,!rewindRelativePeriods,!userOrganisationUnit,!userOrganisationUnitChildren,!userOrganisationUnitGrandChildren,!externalAccess,!access,!relativePeriods,!columnDimensions,!rowDimensions,!filterDimensions,!user,!organisationUnitGroups,!itemOrganisationUnitGroups,!userGroupAccesses,!indicators,!dataElements,!dataElementOperands,!dataElementGroups,!dataSets,!periods,!organisationUnitLevels,!organisationUnits,attributeDimensions[id,name,attribute[id,name,optionSet[id,name,options[id,name]]]],dataElementDimensions[id,name,dataElement[id,name,optionSet[id,name,options[id,name]]]],categoryDimensions[id,name,category[id,name,categoryOptions[id,name,options[id,name]]]]";
     return new Promise(function(resolve, reject) {
       self.httpClient.get(url,currentUser).subscribe(response=>{
         let dashBoardObject = self.getDashBoardItemObjectWithAnalyticsUrl(response.json());
@@ -163,7 +163,7 @@ export class Dashboard {
    * @returns {string}
      */
   getDashBoardItemAnalyticsUrl(dashBoardObject){
-    let url = "/api/analytics";let column = "";let row = "";let filter = "";
+    let url = "/api/25/analytics";let column = "";let row = "";let filter = "";
     //checking for columns
     dashBoardObject.columns.forEach((dashBoardObjectColumn : any,index : any)=>{
       let items = "";
