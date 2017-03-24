@@ -268,6 +268,7 @@ export class EventCaptureHomePage implements OnInit{
    */
   loadEvents(){
     this.isAllParameterSet = true;
+    this.currentSelectionStatus.isEventsLoadedFromServer = false;
     this.network = this.NetworkAvailability.getNetWorkStatus();
     if(!this.network.isAvailable){
       this.loadEventsFromOfflineStorage();
