@@ -1,10 +1,6 @@
 import { Component,OnInit } from '@angular/core';
 import { NavController,ToastController,ModalController } from 'ionic-angular';
 
-import {User} from '../../providers/user/user';
-import {AppProvider} from '../../providers/app-provider/app-provider';
-import {HttpClient} from "../../providers/http-client/http-client";
-import {SqlLite} from "../../providers/sql-lite/sql-lite";
 import {OrganisationUnits} from "../organisation-units/organisation-units";
 import {ProgramSelection} from "../program-selection/program-selection";
 import {Program} from "../../providers/program";
@@ -15,6 +11,7 @@ import {ProgramStageDataElements} from "../../providers/program-stage-data-eleme
 import {EventView} from "../event-view/event-view";
 import {EventFieldSelectionMenu} from "../event-field-selection-menu/event-field-selection-menu";
 import {NetworkAvailability} from "../../providers/network-availability";
+import {User} from "../../providers/user";
 
 /*
   Generated class for the EventCaptureHome page.
@@ -25,11 +22,9 @@ import {NetworkAvailability} from "../../providers/network-availability";
 @Component({
   selector: 'page-event-capture-home',
   templateUrl: 'event-capture-home.html',
-  providers : [User,AppProvider,HttpClient,SqlLite,Program,
-    NetworkAvailability,
-    OrganisationUnit,Events,ProgramStageDataElements]
+  providers : [Events]
 })
-export class EventCaptureHome implements OnInit{
+export class EventCaptureHomePage implements OnInit{
 
   public loadingData : boolean = false;
   public loadingMessages : any = [];
@@ -63,9 +58,8 @@ export class EventCaptureHome implements OnInit{
   constructor(public eventProvider :Events,public OrganisationUnit : OrganisationUnit,
               public ProgramStageDataElements : ProgramStageDataElements,
               public NetworkAvailability : NetworkAvailability,
-              public Program : Program,public modalCtrl: ModalController,public navCtrl: NavController,public toastCtrl: ToastController,public user : User,public appProvider : AppProvider,public sqlLite : SqlLite,public httpClient: HttpClient) {
-
-  }
+              public Program : Program,public modalCtrl: ModalController,public navCtrl: NavController,
+              public toastCtrl: ToastController,public user : User ) {}
 
   ngOnInit() {
     this.selectedDataDimension = [];
@@ -146,7 +140,7 @@ export class EventCaptureHome implements OnInit{
     }
   }
 
-  loadOrganisationUnits():void{
+  loadOrganisationUnits(){
     this.currentSelectionStatus.isOrgUnitLoaded = false;
     this.currentSelectionStatus.isProgramLoaded = true;
     this.OrganisationUnit.getOrganisationUnits(this.currentUser).then((organisationUnits : any)=>{
@@ -164,7 +158,6 @@ export class EventCaptureHome implements OnInit{
       this.setToasterMessage('Fail to load organisation units : ' + JSON.stringify(error));
     });
   }
-
 
   openOrganisationUnitModal(){
     this.loadingMessages = [];
@@ -314,7 +307,7 @@ export class EventCaptureHome implements OnInit{
         attributeCategoryOptions = attributeCategoryOptions.replace(/,/g, ';');
         events.forEach((event : any)=>{
           if(event.attributeCategoryOptions == attributeCategoryOptions){
-           currentEvents.push(event);
+            currentEvents.push(event);
           }
         });
       }else{
@@ -381,7 +374,7 @@ export class EventCaptureHome implements OnInit{
   /**
    * navigate to event
    * @param event
-     */
+   */
   goToEventView(event){
     let params = {
       orgUnitId : this.selectedOrganisationUnit.id,
@@ -396,7 +389,7 @@ export class EventCaptureHome implements OnInit{
   /**
    * edit event
    * @param event
-     */
+   */
   gotToEditEvent(event){
     let params = {
       orgUnitId : this.selectedOrganisationUnit.id,

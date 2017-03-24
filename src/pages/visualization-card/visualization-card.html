@@ -9,10 +9,10 @@
   <div *ngIf="isVisualizationDataLoaded" >
     <div *ngIf="visualizationSelection.bottom =='charts'">
       <ion-row *ngIf="chartObject">
-        <ion-col width-90>
+        <ion-col col-10>
           <chart [options]="chartObject"></chart>
         </ion-col>
-        <ion-col width-10>
+        <ion-col col-2>
           <div *ngFor="let chart of visualizationOptions.right" class="chart-icon">
             <button [disabled]="visualizationSelection.right == chart.type|| chart.isDisabled"  mini ion-fab color="light" (tap)="drawChart(chart.type)">
               <img [src]="chart.path" >

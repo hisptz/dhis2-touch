@@ -1,8 +1,8 @@
 import { Component ,Input,Output, EventEmitter,OnInit} from '@angular/core';
 import { ToastController } from 'ionic-angular';
 import {Dashboard} from "../../providers/dashboard";
-import {VisulizerService} from "../../providers/visulizer.service";
-import {User} from "../../providers/user/user";
+import {User} from "../../providers/user";
+import {VisualizerService} from "../../providers/visualizer-service";
 /*
   Generated class for the VisualizationCard page.
 
@@ -55,7 +55,7 @@ export class VisualizationCardPage implements OnInit{
 
   constructor(public Dashboard : Dashboard,public User : User,
               public toastCtrl:ToastController,
-              public visualizationService : VisulizerService) {
+              public visualizationService : VisualizerService) {
   }
 
   ngOnInit() {

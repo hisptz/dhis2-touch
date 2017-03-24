@@ -1,12 +1,11 @@
-import { Component,OnInit} from '@angular/core';
-import { NavController,NavParams,ToastController,ActionSheetController } from 'ionic-angular';
-import {HttpClient} from "../../providers/http-client/http-client";
-import {User} from "../../providers/user/user";
-import {SqlLite} from "../../providers/sql-lite/sql-lite";
+import { Component,OnInit,ViewChild} from '@angular/core';
+import { NavParams,ToastController,ActionSheetController,Content } from 'ionic-angular';
+
 import {DataValues} from "../../providers/data-values";
 import {EntryForm} from "../../providers/entry-form";
 import {DataSets} from "../../providers/data-sets";
 import {NetworkAvailability} from "../../providers/network-availability";
+import {User} from "../../providers/user";
 
 /*
   Generated class for the DataEntryForm page.
@@ -16,8 +15,7 @@ import {NetworkAvailability} from "../../providers/network-availability";
 */
 @Component({
   selector: 'page-data-entry-form',
-  templateUrl: 'data-entry-form.html',
-  providers : [User,HttpClient,SqlLite,DataValues,EntryForm,DataSets,NetworkAvailability],
+  templateUrl: 'data-entry-form.html'
 })
 export class DataEntryForm implements OnInit{
 
@@ -48,11 +46,12 @@ export class DataEntryForm implements OnInit{
   //network
   public network : any;
 
+  @ViewChild(Content) content: Content;
+
   constructor(private params:NavParams, private toastCtrl:ToastController,
-              private user:User, private httpClient:HttpClient,
-              public navCtrl :NavController,public DataSets : DataSets,
+              private user:User,public DataSets : DataSets,
               private actionSheetCtrl: ActionSheetController,public NetworkAvailability : NetworkAvailability,
-              private entryForm:EntryForm, private sqlLite:SqlLite,
+              private entryForm:EntryForm,
               private dataValues:DataValues) {
 
   }
@@ -213,6 +212,7 @@ export class DataEntryForm implements OnInit{
       this.currentPage = page;
     }
     this.paginationLabel = (this.currentPage + 1) + "/"+this.entryFormSections.length;
+    this.content.scrollToTop(1000);
   }
 
   //@todo handle completeness of dataSet

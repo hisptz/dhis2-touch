@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {SqlLite} from "./sql-lite/sql-lite";
-import {HttpClient} from "./http-client/http-client";
 import {Observable} from 'rxjs/Rx';
+import {SqlLite} from "./sql-lite";
+import {HttpClient} from "./http-client";
 
 /*
   Generated class for the Events provider.

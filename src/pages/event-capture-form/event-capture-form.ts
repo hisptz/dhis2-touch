@@ -1,13 +1,11 @@
 import { Component,OnInit } from '@angular/core';
 import {ToastController,NavParams,ActionSheetController,NavController } from 'ionic-angular';
-import {User} from '../../providers/user/user';
-import {HttpClient} from "../../providers/http-client/http-client";
-import {SqlLite} from "../../providers/sql-lite/sql-lite";
 import {Program} from "../../providers/program";
 import {Events} from "../../providers/events";
 import {ProgramStageDataElements} from "../../providers/program-stage-data-elements";
 import {ProgramStageSections} from "../../providers/program-stage-sections";
 import {EventCaptureFormProvider} from "../../providers/event-capture-form-provider";
+import {User} from "../../providers/user";
 
 declare var dhis2: any;
 
@@ -20,8 +18,7 @@ declare var dhis2: any;
 @Component({
   selector: 'page-event-capture-form',
   templateUrl: 'event-capture-form.html',
-  providers : [User,HttpClient,SqlLite,Program,Events,ProgramStageDataElements,
-    ProgramStageSections,EventCaptureFormProvider]
+  providers : [Events]
 })
 export class EventCaptureForm implements OnInit{
 
@@ -40,17 +37,14 @@ export class EventCaptureForm implements OnInit{
   //pagination controller
   public currentPage : number ;
   public paginationLabel : string = "";
-
   //network
   public network : any;
-
 
   constructor(public params:NavParams,public eventProvider :Events,public Program : Program,
               public toastCtrl: ToastController,public user : User,public actionSheetCtrl: ActionSheetController,
               public ProgramStageDataElements : ProgramStageDataElements,
               public ProgramStageSections:ProgramStageSections,public navCtrl: NavController,
-              public EventCaptureFormProvider : EventCaptureFormProvider,
-              public sqlLite : SqlLite,public httpClient: HttpClient){
+              public EventCaptureFormProvider : EventCaptureFormProvider){
 
   }
 

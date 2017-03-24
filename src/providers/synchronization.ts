@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "./http-client/http-client";
-import {User} from "./user/user";
-import {DataValues} from "./data-values";
 import {Setting} from "./setting";
+import {HttpClient} from "./http-client";
+import {User} from "./user";
+import {DataValues} from "./data-values";
 
 /*
   Generated class for the Synchronization provider.

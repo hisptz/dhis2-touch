@@ -1,19 +1,17 @@
-import { Component,ViewChild,OnInit} from '@angular/core';
-import {Tabs } from 'ionic-angular';
-import { Apps } from '../apps/apps';
-import { Account } from '../account/account';
-import {User} from "../../providers/user/user";
+import { Component,OnInit } from '@angular/core';
+import {AccountPage} from "../account/account";
+import {AppsPage} from "../apps/apps";
+import {User} from "../../providers/user";
 
 @Component({
-  templateUrl: 'tabs.html',
-  providers : [User]
+  templateUrl: 'tabs.html'
 })
 export class TabsPage implements OnInit{
-  tab1Root: any = Apps;
-  tab2Root: any = Account;
+  // this tells the tabs component which Pages
+  // should be each tab's root Page
+  tab1Root: any = AppsPage;
+  tab2Root: any = AccountPage;
   public accountName : string = 'Account';
-  //@todo active tabs to have different style
-  @ViewChild('myTabs') currentTab: Tabs;
 
   constructor(public user : User) {
 
@@ -22,25 +20,17 @@ export class TabsPage implements OnInit{
   ngOnInit() {
     this.user.getUserData().then(userData=>{
       this.setUserAccountName(userData);
-    },error=>{})
+    });
   }
 
   setUserAccountName(userData){
     let newValue = "";
-    let nameList = userData.Name.split(' ');
-    nameList.forEach(name=>{
-      newValue += name.charAt(0).toUpperCase();
-    });
-    this.accountName = newValue;
-  }
-
-  swipeEvent(e) {
-    //alert(JSON.stringify(e));
-    if(e.velocityX > 0){
-      //this.currentTab.select(0);
-    }else{
-      //this.currentTab.select(1);
+    if(userData && userData.Name){
+      let nameList = userData.Name.split(' ');
+      nameList.forEach(name=>{
+        newValue += name.charAt(0).toUpperCase();
+      });
+      this.accountName = newValue;
     }
   }
-
 }

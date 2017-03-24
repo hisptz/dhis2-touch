@@ -1,51 +1,40 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import {EventCaptureHome} from "../event-capture-home/event-capture-home";
-import {ReportHome} from "../report-home/report-home";
-import {DataEntryHome} from "../data-entry-home/data-entry-home";
-import {DashBoardHome} from "../dash-board-home/dash-board-home";
-import {TrackerCaptureHome} from "../tracker-capture-home/tracker-capture-home";
-import {SqlLite} from "../../providers/sql-lite/sql-lite";
+import {SqlLite} from "../../providers/sql-lite";
+import {DataEntryHomePage} from "../data-entry-home/data-entry-home";
+import {EventCaptureHomePage} from "../event-capture-home/event-capture-home";
+import {DashBoardHomePage} from "../dash-board-home/dash-board-home";
+import {ReportHomePage} from "../report-home/report-home";
 
 declare var dhis2;
 /*
- Generated class for the Apps page.
+  Generated class for the Apps page.
 
- See http://ionicframework.com/docs/v2/components/#navigation for more info on
- Ionic pages and navigation.
- */
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+*/
 @Component({
   selector: 'page-apps',
   templateUrl: 'apps.html'
 })
-export class Apps {
+export class AppsPage implements OnInit{
 
   public viewMapperObject : any;
 
-  constructor(public navCtrl: NavController,public SqlLite : SqlLite ) {
-    this.setViewAction();
-  }
+  constructor(public navCtrl: NavController,public SqlLite : SqlLite) {}
 
-  ionViewDidLoad() {
-
-  }
-
-  setViewAction():void{
+  ngOnInit() {
     dhis2.dataBaseStructure =  this.SqlLite.getDataBaseStructure();
     this.viewMapperObject = {
-      "dataEntry" : DataEntryHome,
-      "eventCapture" : EventCaptureHome,
-      "report" : ReportHome,
-      "dashboard" : DashBoardHome,
-      "trackerCapture" : TrackerCaptureHome
+      "dataEntry" : DataEntryHomePage,
+      "eventCapture" : EventCaptureHomePage,
+      "report" : ReportHomePage,
+      "dashboard" : DashBoardHomePage
     }
   }
 
-  goToView(event,viewName){
+  goToView(viewName){
     this.navCtrl.push(this.viewMapperObject[viewName]);
   }
-
-
-
 
 }

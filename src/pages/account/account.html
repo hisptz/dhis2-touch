@@ -6,87 +6,85 @@
 -->
 <ion-header>
 
-  <ion-navbar color="primary">
+  <ion-navbar color="primary" mode="md">
     <ion-title>Account</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding class="account">
+<ion-content class="account">
 
-  <ion-row >
+  <ion-grid>
+    <ion-row >
+      <ion-col (tap)="goToView('profile')" >
+        <ion-list >
+          <ion-item >
+            <ion-thumbnail >
+              <img class="menu-app-icon-list" src="assets/img/profile.png">
+            </ion-thumbnail>
+            <p class="menu-app" >Profile</p>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col (tap)="goToView('about')" >
+        <ion-list>
+          <ion-item>
+            <ion-thumbnail >
+              <img class="menu-app-icon-list" src="assets/img/about.png">
+            </ion-thumbnail>
+            <p class="menu-app" >About</p>
+          </ion-item>
+        </ion-list>
+      </ion-col>
 
-    <ion-col width-45 (tap)="goToView($event,'profile')" >
-      <ion-list >
-        <ion-item >
-          <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/img/profile.png">
-          </ion-thumbnail>
-          <p class="menu-app" >Profile</p>
-        </ion-item>
-      </ion-list>
-    </ion-col>
-    <ion-col width-45 (tap)="goToView($event,'about')" >
-      <ion-list>
-        <ion-item>
-          <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/img/about.png">
-          </ion-thumbnail>
-          <p class="menu-app" >About</p>
-        </ion-item>
-      </ion-list>
-    </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col (tap)="goToView('help')" >
+        <ion-list>
+          <ion-item>
+            <ion-thumbnail >
+              <img class="menu-app-icon-list" src="assets/img/help.png">
+            </ion-thumbnail>
+            <p class="menu-app" >Help</p>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col (tap)="goToView('settings')" >
+        <ion-list >
+          <ion-item >
+            <ion-thumbnail >
+              <img class="menu-app-icon-list" src="assets/img/settings.png">
+            </ion-thumbnail>
+            <p class="menu-app" >Settings</p>
+          </ion-item>
+        </ion-list>
+      </ion-col>
 
-  </ion-row>
+    </ion-row>
+    <ion-row>
+      <ion-col (tap)="goToView('updateManager')" >
+        <ion-list>
+          <ion-item>
+            <ion-thumbnail >
+              <img class="menu-app-icon-list" src="assets/img/updateManager.png">
+            </ion-thumbnail>
+            <p class="menu-app" >Update Manager</p>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col (tap)="logOut()" >
+        <ion-list>
+          <ion-item>
+            <ion-thumbnail >
+              <img class="menu-app-icon-list" src="assets/img/logout.png">
+            </ion-thumbnail>
+            <p class="menu-app" >Logout</p>
+          </ion-item>
+        </ion-list>
+      </ion-col>
 
-  <ion-row>
-
-    <ion-col width-45 (tap)="goToView($event,'help')" >
-      <ion-list>
-        <ion-item>
-          <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/img/help.png">
-          </ion-thumbnail>
-          <p class="menu-app" >Help</p>
-        </ion-item>
-      </ion-list>
-    </ion-col>
-    <ion-col width-45 (tap)="goToView($event,'settings')" >
-      <ion-list >
-        <ion-item >
-          <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/img/settings.png">
-          </ion-thumbnail>
-          <p class="menu-app" >Settings</p>
-        </ion-item>
-      </ion-list>
-    </ion-col>
-
-  </ion-row>
-
-  <ion-row>
-    <ion-col width-45 (tap)="goToView($event,'updateManager')" >
-      <ion-list>
-        <ion-item>
-          <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/img/updateManager.png">
-          </ion-thumbnail>
-          <p class="menu-app" >Update Manager</p>
-        </ion-item>
-      </ion-list>
-    </ion-col>
-    <ion-col width-45 (click)="logOut()" >
-      <ion-list>
-        <ion-item>
-          <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/img/logout.png">
-          </ion-thumbnail>
-          <p class="menu-app" >Logout</p>
-        </ion-item>
-      </ion-list>
-    </ion-col>
-
-  </ion-row>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>

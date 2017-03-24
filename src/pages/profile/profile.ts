@@ -1,10 +1,7 @@
 import { Component,OnInit } from '@angular/core';
 import { ToastController } from 'ionic-angular';
-
-import {User} from '../../providers/user/user';
-import {AppProvider} from '../../providers/app-provider/app-provider';
-import {HttpClient} from "../../providers/http-client/http-client";
-import {SqlLite} from "../../providers/sql-lite/sql-lite";
+import {User} from "../../providers/user";
+import {SqlLite} from "../../providers/sql-lite";
 
 /*
   Generated class for the Profile page.
@@ -14,10 +11,9 @@ import {SqlLite} from "../../providers/sql-lite/sql-lite";
 */
 @Component({
   selector: 'page-profile',
-  templateUrl: 'profile.html',
-  providers : [User,AppProvider,HttpClient,SqlLite]
+  templateUrl: 'profile.html'
 })
-export class Profile implements OnInit{
+export class ProfilePage implements OnInit{
 
   public loadingData : boolean = false;
   public loadingMessages : any = [];
@@ -35,11 +31,7 @@ export class Profile implements OnInit{
     assignedForms :{ status : false,count : 4 }
   };
 
-  constructor(public toastCtrl: ToastController,public user : User,
-              public appProvider : AppProvider,public sqlLite : SqlLite,
-              public httpClient: HttpClient) {
-
-  }
+  constructor(public toastCtrl: ToastController,public user : User,public sqlLite : SqlLite) {}
 
   ngOnInit() {
     this.user.getCurrentUser().then(currentUser=>{
@@ -48,15 +40,9 @@ export class Profile implements OnInit{
     });
   }
 
-  ionViewDidLoad() {
-    //console.log('Hello Profile Page');
-  }
-
   loadingProfileInformation(){
     this.loadingData = true;
     this.loadingMessages = [];
-
-
     this.setLoadingMessages('Loading profiles information');
     this.user.getUserData().then((userData :any)=>{
       let data = {};
@@ -153,14 +139,6 @@ export class Profile implements OnInit{
     let toast = this.toastCtrl.create({
       message: message,
       duration: 3000
-    });
-    toast.present();
-  }
-
-  setStickToasterMessage(message){
-    let toast = this.toastCtrl.create({
-      message: message,
-      showCloseButton : true
     });
     toast.present();
   }

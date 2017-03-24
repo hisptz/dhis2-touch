@@ -2,10 +2,10 @@ import { Component, OnInit} from '@angular/core';
 import { NavController,NavParams,ToastController,ModalController } from 'ionic-angular';
 import {ReportView} from "../report-view/report-view";
 
-import {User} from '../../providers/user/user';
-import {OrganisationUnit} from "../../providers/organisation-unit";
 import {OrganisationUnits} from "../organisation-units/organisation-units";
 import {ReportSelectionPeriod} from "../report-selection-period/report-selection-period";
+import {OrganisationUnit} from "../../providers/organisation-unit";
+import {User} from "../../providers/user";
 
 /*
   Generated class for the ReportParameterSelection page.
@@ -16,7 +16,6 @@ import {ReportSelectionPeriod} from "../report-selection-period/report-selection
 @Component({
   selector: 'page-report-parameter-selection',
   templateUrl: 'report-parameter-selection.html',
-  providers : [User,OrganisationUnit]
 })
 export class ReportParameterSelection implements OnInit{
 

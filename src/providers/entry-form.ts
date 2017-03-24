@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {SqlLite} from "./sql-lite/sql-lite";
+import {SqlLite} from "./sql-lite";
 
 /*
   Generated class for the EntryForm provider.

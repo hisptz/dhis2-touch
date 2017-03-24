@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { ViewController,NavParams } from 'ionic-angular';
 
 /*
@@ -11,17 +11,15 @@ import { ViewController,NavParams } from 'ionic-angular';
   selector: 'page-program-selection',
   templateUrl: 'program-selection.html'
 })
-export class ProgramSelection {
+export class ProgramSelection implements OnInit{
 
   public programsList : any;
   public currentSelectedProgram : string;
 
-  constructor(public viewCtrl: ViewController,public params : NavParams) {
-    this.setModalData();
-  }
+  constructor(public viewCtrl: ViewController,public params : NavParams) {}
 
-  ionViewDidLoad() {
-    //console.log('Hello ProgramSelection Page');
+  ngOnInit() {
+    this.setModalData();
   }
 
   setModalData(){

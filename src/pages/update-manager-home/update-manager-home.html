@@ -6,25 +6,24 @@
 -->
 <ion-header>
 
-  <ion-navbar color="primary">
-    <ion-title>Update Manager</ion-title>
+  <ion-navbar color="primary" mode="md">
+    <ion-title>Update Manager Home</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content class="updateManager" >
-
+<ion-content class="updateManager">
   <ion-grid>
     <ion-item-group>
       <ion-row>
         <ion-col>
           <ion-item (tap)="hideAndShowContents('sendDataViaSms')">
-            <span [color]="(updateManagerObject.sendDataViaSms.isExpanded) ?'current' : 'font-color'">
+            <span ion-text [color]="(updateManagerObject.sendDataViaSms.isExpanded) ?'current' : 'font-color'">
               Send Data Via Sms
             </span>
-            <ion-icon *ngIf="!updateManagerObject.sendDataViaSms.isExpanded" name="ios-arrow-down" item-right></ion-icon>
-            <ion-icon *ngIf="updateManagerObject.sendDataViaSms.isExpanded" name="ios-arrow-up" item-right></ion-icon>
+            <ion-icon [color]="(updateManagerObject.sendDataViaSms.isExpanded) ?'current' : 'font-color'" *ngIf="!updateManagerObject.sendDataViaSms.isExpanded" name="ios-arrow-down" item-right></ion-icon>
+            <ion-icon [color]="(updateManagerObject.sendDataViaSms.isExpanded) ?'current' : 'font-color'" *ngIf="updateManagerObject.sendDataViaSms.isExpanded" name="ios-arrow-up" item-right></ion-icon>
           </ion-item>
           <div class="updateManagerContents" *ngIf="updateManagerObject.sendDataViaSms.isExpanded" >
             <ion-row>
@@ -39,12 +38,12 @@
       <ion-row>
         <ion-col>
           <ion-item (tap)="hideAndShowContents('updateMetadata')">
-            <span [color]="(updateManagerObject.updateMetadata.isExpanded) ?'current' : 'font-color'">
+            <span ion-text [color]="(updateManagerObject.updateMetadata.isExpanded) ?'current' : 'font-color'">
               Metadata update
             </span>
 
-            <ion-icon *ngIf="!updateManagerObject.updateMetadata.isExpanded" name="ios-arrow-down" item-right></ion-icon>
-            <ion-icon *ngIf="updateManagerObject.updateMetadata.isExpanded" name="ios-arrow-up" item-right></ion-icon>
+            <ion-icon [color]="(updateManagerObject.updateMetadata.isExpanded) ?'current' : 'font-color'"  *ngIf="!updateManagerObject.updateMetadata.isExpanded" name="ios-arrow-down" item-right></ion-icon>
+            <ion-icon [color]="(updateManagerObject.updateMetadata.isExpanded) ?'current' : 'font-color'" *ngIf="updateManagerObject.updateMetadata.isExpanded" name="ios-arrow-up" item-right></ion-icon>
           </ion-item>
           <div class="updateManagerContents" *ngIf="updateManagerObject.updateMetadata.isExpanded" >
             <ion-row>
@@ -80,5 +79,4 @@
 
     </ion-item-group>
   </ion-grid>
-
 </ion-content>

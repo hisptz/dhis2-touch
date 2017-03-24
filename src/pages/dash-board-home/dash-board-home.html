@@ -6,19 +6,18 @@
 -->
 <ion-header>
 
-  <ion-navbar color="primary">
-    <ion-title>Dashboard Home</ion-title>
+  <ion-navbar color="primary" mode="md">
+    <ion-title>DashBoard Home</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content class="dashboardHome">
-
   <ion-grid>
 
     <ion-row>
-      <ion-col width-100>
+      <ion-col >
         <div *ngIf="!dashBoardProgressTracker.isDashBoardsLoaded" >
           <ion-item >
             <div style="text-align: center" item-left >
@@ -46,7 +45,7 @@
         <ion-col width="100">
           <ion-list>
             <ion-item *ngFor="let dashboard of dashBoards" (tap)="setCurrentDashboard(dashboard)" class="list-separator">
-              <span [color]="(selectedDashBoardName == dashboard.name) ?'current' : 'font-color'" >{{ dashboard.name }}</span>
+              <span ion-text [color]="(selectedDashBoardName == dashboard.name) ?'current' : 'font-color'" >{{ dashboard.name }}</span>
             </ion-item>
             <ion-item *ngIf="dashBoards.length == 0">
               There no dashboard found
@@ -71,12 +70,12 @@
                 <ion-col>
                   <div class="visualizationHeader" >
                     <ion-item (tap)="hideAndShowVisualizationCard(dashboardItem.id)" >
-                    <span [color]="(selectedDashBoardItemId == dashboardItem.id) ?'current' : 'font-color'">
+                    <span ion-text [color]="(selectedDashBoardItemId == dashboardItem.id) ?'current' : 'font-color'">
                       <span *ngIf="dashboardItem.title" >{{ dashboardItem.title }}</span>
                       <span *ngIf="!dashboardItem.title">{{ dashboardItem.name }}</span>
                      </span>
-                        <ion-icon [color]="(selectedDashBoardItemId == dashboardItem.id) ?'current' : 'font-color'"  name="ios-arrow-down" *ngIf="selectedDashBoardItemId != dashboardItem.id" item-right></ion-icon>
-                        <ion-icon [color]="(selectedDashBoardItemId == dashboardItem.id) ?'current' : 'font-color'"  name="ios-arrow-up" *ngIf="selectedDashBoardItemId == dashboardItem.id" item-right></ion-icon>
+                      <ion-icon [color]="(selectedDashBoardItemId == dashboardItem.id) ?'current' : 'font-color'"  name="ios-arrow-down" *ngIf="selectedDashBoardItemId != dashboardItem.id" item-right></ion-icon>
+                      <ion-icon [color]="(selectedDashBoardItemId == dashboardItem.id) ?'current' : 'font-color'"  name="ios-arrow-up" *ngIf="selectedDashBoardItemId == dashboardItem.id" item-right></ion-icon>
                     </ion-item>
                     <div *ngIf="selectedDashBoardItemId == dashboardItem.id">
                       <div class="list-separator"></div>

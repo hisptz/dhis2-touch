@@ -1,15 +1,16 @@
 import { Component,OnInit } from '@angular/core';
 import { NavController,ToastController,ModalController } from 'ionic-angular';
 
-import {User} from '../../providers/user/user';
 import {OrganisationUnits} from "../organisation-units/organisation-units";
 import {DataSetSelection} from "../data-set-selection/data-set-selection";
 import {PeriodSelection} from "../period-selection/period-selection";
 import {DataEntryForm} from "../data-entry-form/data-entry-form";
 import {OrganisationUnit} from "../../providers/organisation-unit";
 import {DataSets} from "../../providers/data-sets";
+import {User} from "../../providers/user";
 
 declare var dhis2: any;
+
 /*
   Generated class for the DataEntryHome page.
 
@@ -18,10 +19,9 @@ declare var dhis2: any;
 */
 @Component({
   selector: 'page-data-entry-home',
-  templateUrl: 'data-entry-home.html',
-  providers : [User,OrganisationUnit,DataSets],
+  templateUrl: 'data-entry-home.html'
 })
-export class DataEntryHome implements OnInit{
+export class DataEntryHomePage implements OnInit{
 
   public loadingData : boolean = false;
   public loadingMessages : any = [];
@@ -41,8 +41,7 @@ export class DataEntryHome implements OnInit{
 
   constructor(public modalCtrl: ModalController,public navCtrl: NavController,
               public OrganisationUnit : OrganisationUnit,public DataSets : DataSets,
-              public toastCtrl: ToastController,public user : User) {
-  }
+              public toastCtrl: ToastController,public user : User) {}
 
   ngOnInit() {
     this.selectedDataDimension = [];
@@ -135,7 +134,7 @@ export class DataEntryHome implements OnInit{
     }
   }
 
-  loadOrganisationUnits():void{
+  loadOrganisationUnits(){
     this.currentSelectionStatus.isDataSetLoaded = true;
     this.currentSelectionStatus.isOrgUnitLoaded = false;
     this.OrganisationUnit.getOrganisationUnits(this.currentUser).then((organisationUnits : any)=>{
@@ -278,14 +277,6 @@ export class DataEntryHome implements OnInit{
     let toast = this.toastCtrl.create({
       message: message,
       duration: 3000
-    });
-    toast.present();
-  }
-
-  setStickToasterMessage(message){
-    let toast = this.toastCtrl.create({
-      message: message,
-      showCloseButton : true
     });
     toast.present();
   }

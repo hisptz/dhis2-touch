@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { SQLite} from 'ionic-native';
+import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import {Observable} from 'rxjs/Rx';
 
 /*
-  Generated class for the SqlLite provider.
+ Generated class for the SqlLite provider.
 
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular 2 DI.
-*/
+ See https://angular.io/docs/ts/latest/guide/dependency-injection.html
+ for more info on providers and Angular 2 DI.
+ */
 @Injectable()
 export class SqlLite {
 
@@ -188,13 +188,22 @@ export class SqlLite {
     }
   };
 
-  constructor() {
+  constructor(public sqlite: SQLite) {
   }
 
+  /**
+   *
+   * @returns {any}
+     */
   getDataBaseStructure(){
     return this.dataBaseStructure;
   }
 
+  /**
+   *
+   * @param databaseName
+   * @returns {Promise<T>}
+     */
   generateTables(databaseName){
     let self = this;
     return new Promise(function(resolve, reject) {
@@ -202,8 +211,8 @@ export class SqlLite {
       let tableNames = Object.keys(self.dataBaseStructure);
       tableNames.forEach((tableName: any) => {
         promises.push(self.createTable(tableName,databaseName).then(()=>{
-          console.log('Generate table for ' + tableName);
-        })
+            console.log('Generate table for ' + tableName);
+          })
         );
       });
 
@@ -217,22 +226,12 @@ export class SqlLite {
     });
   }
 
-  openDatabase(databaseName){
-    return new Promise(function(resolve, reject) {
-      databaseName = databaseName + '.db';
-      let db = new SQLite();
-      db.openDatabase({
-        name: databaseName,
-        location: 'default'
-      }).then(() => {
-        resolve();
-      }, (error) => {
-        reject(error);
-      });
-    });
-
-  }
-
+  /**
+   *
+   * @param tableName
+   * @param databaseName
+   * @returns {Promise<T>}
+     */
   createTable(tableName,databaseName){
     let self = this;
     databaseName = databaseName + '.db';
@@ -252,19 +251,27 @@ export class SqlLite {
       });
       query += ')';
 
-      let db = new SQLite();
-      db.openDatabase({name: databaseName,location: 'default'}).then(() => {
-        db.executeSql(query, []).then((success) => {
+      self.sqlite.create({name: databaseName,location: 'default'}).then((db: SQLiteObject)=>{
+        db.executeSql(query, []).then(() => {
           resolve();
         }, (error) => {
           reject(error);
         });
-      }, (error) => {
-        reject(error);
+      }).catch(e => {
+        reject();
+        console.log(e);
       });
+
     });
   }
 
+  /**
+   *
+   * @param tableName
+   * @param fieldsValues
+   * @param databaseName
+   * @returns {Promise<T>}
+     */
   insertDataOnTable(tableName, fieldsValues,databaseName){
     let self = this;
     databaseName = databaseName + '.db';
@@ -298,39 +305,53 @@ export class SqlLite {
 
     });
     let query = "INSERT OR REPLACE INTO " + tableName + " (" + columnNames + ") VALUES (" + questionMarks + ")";
-    let db = new SQLite();
 
     return new Promise(function(resolve, reject) {
-      db.openDatabase({name: databaseName,location: 'default'}).then(() => {
-        db.executeSql(query, values).then((success) => {
+      self.sqlite.create({name: databaseName,location: 'default'}).then((db: SQLiteObject)=>{
+        db.executeSql(query, values).then(() => {
           resolve();
         }, (error) => {
-          reject(error.failure);
+          reject(error);
         });
-      }, (error) => {
-        reject(error.failure);
+      }).catch(e => {
+        reject();
+        console.log(e);
       });
     });
   }
 
+  /**
+   *
+   * @param tableName
+   * @param databaseName
+   * @returns {Promise<T>}
+     */
   deleteAllOnTable(tableName,databaseName){
     databaseName = databaseName + '.db';
     let query = "DELETE FROM " + tableName;
-
-    let db = new SQLite();
+    let self = this;
     return new Promise(function(resolve, reject) {
-      db.openDatabase({name: databaseName,location: 'default'}).then(() => {
+      self.sqlite.create({name: databaseName,location: 'default'}).then((db: SQLiteObject)=>{
         db.executeSql(query, []).then((success) => {
           resolve();
         }, (error) => {
-          reject(error.failure);
+          reject(error);
         });
-      }, (error) => {
-        reject(error.failure);
+      }).catch(e => {
+        reject();
+        console.log(e);
       });
     });
   }
 
+  /**
+   *
+   * @param tableName
+   * @param attribute
+   * @param attributesValuesArray
+   * @param databaseName
+   * @returns {Promise<T>}
+     */
   getDataFromTableByAttributes(tableName, attribute, attributesValuesArray,databaseName){
     let self = this;
     databaseName = databaseName + '.db';
@@ -346,46 +367,55 @@ export class SqlLite {
     });
     query += inClauseValues;
     query += ")";
-    let db = new SQLite();
     return new Promise(function(resolve, reject) {
-      db.openDatabase({name: databaseName,location: 'default'}).then(() => {
+      self.sqlite.create({name: databaseName,location: 'default'}).then((db: SQLiteObject)=>{
         db.executeSql(query, []).then((result) => {
           resolve(self.formatQueryReturnResult(result,columns));
         }, (error) => {
-          reject(error.failure);
+          reject(error);
         });
-      }, (error) => {
-        reject(error.failure);
+      }).catch(e => {
+        reject();
+        console.log(e);
       });
     });
-
   }
 
+  /**
+   *
+   * @param tableName
+   * @param databaseName
+   * @returns {Promise<T>}
+     */
   getAllDataFromTable(tableName,databaseName){
     let self = this;
     databaseName = databaseName + '.db';
     let columns = self.dataBaseStructure[tableName].columns;
     let query = "SELECT * FROM " + tableName + ";";
-    let db = new SQLite();
 
     return new Promise(function(resolve, reject) {
-      db.openDatabase({name: databaseName,location: 'default'}).then(() => {
+      self.sqlite.create({name: databaseName,location: 'default'}).then((db: SQLiteObject)=>{
         db.executeSql(query, []).then((result) => {
           resolve(self.formatQueryReturnResult(result,columns));
         },(error) => {
-          reject(error.failure);
+          reject(error);
         });
-      }, (error) => {
-        reject(error.failure);
+      }).catch(e => {
+        reject();
+        console.log(e);
       });
     });
-
   }
 
+  /**
+   *
+   * @param result
+   * @param columns
+   * @returns {Array}
+     */
   formatQueryReturnResult(result, columns){
     let len = result.rows.length;
     let data = [];
-
     for (var i = 0; i < len; i++) {
       let row = {};
       let currentRow = result.rows.item(i);

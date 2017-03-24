@@ -1,29 +1,24 @@
 import { Component,OnInit } from '@angular/core';
 import { NavController,ToastController } from 'ionic-angular';
-import {User} from "../../providers/user/user";
-import {HttpClient} from "../../providers/http-client/http-client";
-import {AppProvider} from "../../providers/app-provider/app-provider";
-import {TabsPage} from "../tabs/tabs";
-import {SqlLite} from "../../providers/sql-lite/sql-lite";
-import { Storage } from '@ionic/storage';
-import {Synchronization} from "../../providers/synchronization";
-import {DataValues} from "../../providers/data-values";
-import {Setting} from "../../providers/setting";
-import {NetworkAvailability} from "../../providers/network-availability";
+import {User} from "../../providers/user";
+import {HttpClient} from "../../providers/http-client";
 import {SmsCommand} from "../../providers/sms-command";
+import {Synchronization} from "../../providers/synchronization";
+import {AppProvider} from "../../providers/app-provider";
+import {SqlLite} from "../../providers/sql-lite";
+import {TabsPage} from "../tabs/tabs";
 
 /*
-  Generated class for the Login page.
+ Generated class for the Login page.
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
+ See http://ionicframework.com/docs/v2/components/#navigation for more info on
+ Ionic pages and navigation.
+ */
 @Component({
   selector: 'page-login',
-  templateUrl: 'login.html',
-  providers : [AppProvider,HttpClient,User,SqlLite,Synchronization,DataValues,Setting,NetworkAvailability,SmsCommand]
+  templateUrl: 'login.html'
 })
-export class Login implements OnInit{
+export class LoginPage implements OnInit{
 
   public loginData : any ={};
   public loadingData : boolean = false;
@@ -37,24 +32,32 @@ export class Login implements OnInit{
   public completedTrackedProcess : any;
   public currentResourceType : string = "";
   //organisationUnit, entryForm,event
-
-  constructor(public navCtrl: NavController,public Storage : Storage,
-              public Setting: Setting,public NetworkAvailability : NetworkAvailability,
-              public sqlLite : SqlLite,public synchronization:Synchronization,
-              public toastCtrl: ToastController,public DataValues: DataValues,
-              public app : AppProvider,
+  constructor(public navCtrl: NavController,
+              public synchronization:Synchronization,
+              public toastCtrl: ToastController,public app : AppProvider,
               public SmsCommand : SmsCommand,
-              public httpClient : HttpClient,public user : User) {
-
-  }
+              public httpClient : HttpClient,
+              public user : User,public sqlLite : SqlLite) {}
 
   ngOnInit() {
     this.logoUrl = 'assets/img/logo-2.png';
     this.completedTrackedProcess = [];
-    this.progressTracker = this.getEmptyProgressTracker();
     this.user.getCurrentUser().then(user=>{
       this.reAuthenticateUser(user);
     });
+  }
+
+  reAuthenticateUser(user){
+    if(user){
+      this.loginData = user;
+      if(user.progressTracker){
+        this.progressTracker = user.progressTracker;
+      }
+    }else{
+      this.loginData["progressTracker"] = this.getEmptyProgressTracker();
+      this.progressTracker = this.getEmptyProgressTracker();
+      this.loadingData = false;
+    }
   }
 
   getEmptyProgressTracker(){
@@ -114,24 +117,6 @@ export class Login implements OnInit{
     });
     return completedTrackedProcess;
   };
-
-  ionViewDidLoad() {
-    //console.log('Hello Login Page');
-  }
-
-  reAuthenticateUser(user){
-    if(user){
-      this.loginData = user;
-      if(user.progressTracker){
-        this.progressTracker = user.progressTracker;
-      }
-    }else{
-      this.loginData["progressTracker"] = this.getEmptyProgressTracker();
-      this.progressTracker = this.getEmptyProgressTracker();
-      this.loadingData = false;
-    }
-  }
-
 
   login() {
     if (this.loginData.serverUrl) {
@@ -495,14 +480,6 @@ export class Login implements OnInit{
     let toast = this.toastCtrl.create({
       message: message,
       duration: 3000
-    });
-    toast.present();
-  }
-
-  setStickToasterMessage(message){
-    let toast = this.toastCtrl.create({
-      message: message,
-      showCloseButton : true
     });
     toast.present();
   }

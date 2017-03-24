@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class VisulizerService {
+export class VisualizerService {
   enable_labels:boolean = false;
   constructor() { }
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "./http-client/http-client";
 import {Observable} from 'rxjs/Rx';
+import {HttpClient} from "./http-client";
 
 /*
   Generated class for the Dashboard provider.

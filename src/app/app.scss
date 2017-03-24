@@ -15,6 +15,7 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
+
 @-webkit-keyframes slideInFromLeft {
   0% {
     -webkit-transform: translate3d(-100%,0,0);
@@ -91,18 +92,18 @@
 
 //items
 .item-md p {
-  font-size: 18px !important;
+  font-size: 17px !important;
 }
 .item-md h2 {
-  font-size: 20px !important;
+  font-size: 19px !important;
   font-weight: 300;
 }
 //tabs button
 .tabs-md .tab-button {
-  font-size: 18px !important;
+  font-size: 17px !important;
 }
 .tabs-md .tab-button[aria-selected=true] {
-  font-size: 18px !important;
+  font-size: 17px !important;
 }
 
 //buttons
@@ -111,11 +112,11 @@
 }
 
 .normalButton {
-  font-size: 18px !important;
+  font-size: 17px !important;
 }
 .dataEntryButton{
   color: #7A7A7A;
-  font-size: 18px !important;
+  font-size: 17px !important;
 }
 
 .button-fab {
@@ -124,15 +125,15 @@
 
 //selections
 .selectionLabel{
-  font-size: 18px !important;
+  font-size: 17px !important;
 }
 .selectionLabel{
-  font-size: 18px !important;
+  font-size: 17px !important;
 }
 
 .selectionHints{
   word-wrap: break-word!important;
-  font-size: 18px !important;
+  font-size: 17px !important;
 }
 
 //table styling
@@ -163,7 +164,7 @@ td, th {
   position: relative;
   padding-right: 0;
   padding-left: 16px;
-  font-size: 18px !important;
+  font-size: 17px !important;
   font-weight: normal;
 }
 
@@ -174,7 +175,7 @@ td, th {
 }
 .card-header-md {
   padding: 16px;
-  font-size: 19px;
+  font-size: 17px;
   color : #7A7A7A;
 }
 .card-md h2 {
@@ -185,7 +186,7 @@ td, th {
 .card-md h4,
 .card-md h5,
 .card-md h6 {
-  font-size: 18px;
+  font-size: 17px;
   color : #7A7A7A;
 }
 
@@ -196,17 +197,17 @@ td, th {
   margin-bottom: 4px;
 }
 p,h3,h4,h5,h6{
-  font-size: 18px;
+  font-size: 17px;
 }
 h2{
-  font-size: 19px;
+  font-size: 18px;
 }
 h1{
-  font-size: 20px;
+  font-size: 19px;
 }
 
 .card-md p {
-  font-size: 18px;
+  font-size: 17px;;
   color : #7A7A7A;
 }
 

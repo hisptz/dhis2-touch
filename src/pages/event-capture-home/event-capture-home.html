@@ -1,19 +1,20 @@
 <!--
-  Generated template for the DataEntryHome page.
+  Generated template for the EventCaptureHome page.
 
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
 -->
 <ion-header>
 
-  <ion-navbar color="primary">
+  <ion-navbar color="primary" mode="md">
     <ion-title>Event Capture Home</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content  class="event-capture-home" >
+<ion-content class="event-capture-home">
+
   <div>
     <ion-grid>
       <ion-row>
@@ -49,7 +50,7 @@
           <div *ngIf="selectedProgram.categoryCombo.categories[0].name !='default'">
             <div *ngFor="let category of selectedProgram.categoryCombo.categories;let categoryIndex = index ">
               <ion-row >
-                <ion-col width="100">
+                <ion-col >
                   <ion-list>
                     <ion-item >
                       <ion-label>{{ category.name }}</ion-label>
@@ -70,7 +71,7 @@
       <div *ngIf="isAllParameterSet">
 
         <div *ngIf="!currentSelectionStatus.isEventsLoadedFromServer" >
-          <ion-col width="100">
+          <ion-col >
             <page-loading loadingSize="large" loadingMessage="{{currentSelectionStatus.eventsLoadingStatus}}"></page-loading>
           </ion-col>
         </div>
@@ -79,7 +80,7 @@
         <div *ngIf="currentSelectionStatus.isEventsLoadedFromServer" >
           <!-- pagination for event list-->
           <ion-row *ngIf="eventListSections.length > 0">
-            <ion-col width="100">
+            <ion-col >
               <ion-item-group >
                 <ion-item-divider>
                   <ion-row>
@@ -127,7 +128,7 @@
           <!-- notification if no event list found from local as well login instance-->
           <div *ngIf="!hasEvents">
             <ion-row>
-              <ion-col width="100">
+              <ion-col >
                 <ion-item-group wrap text>
                   <ion-item-divider wrap text>
                     <p wrap text >There are no events at the moment</p>
@@ -161,7 +162,7 @@
               <div *ngIf="section.id == currentPage">
                 <div *ngFor="let event of section.events">
                   <ion-row>
-                    <ion-col width="100">
+                    <ion-col >
                       <ion-item-group>
                         <ion-item-divider>
                           <p><b>Incident date</b>&nbsp;&nbsp;:&nbsp;&nbsp;{{ event.eventDate }}</p>

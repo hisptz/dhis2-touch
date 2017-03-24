@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "./http-client/http-client";
-import {SqlLite} from "./sql-lite/sql-lite";
 import {Observable} from 'rxjs/Rx';
 
-import { SMS } from 'ionic-native';
+import { SMS } from '@ionic-native/sms';
+import {HttpClient} from "./http-client";
+import {SqlLite} from "./sql-lite";
 
 /*
   Generated class for the SmsCommand provider.
@@ -16,7 +16,7 @@ export class SmsCommand {
 
   public resourceName :string;
 
-  constructor(public HttpClient : HttpClient,public SqlLite : SqlLite) {
+  constructor(public HttpClient : HttpClient,public SqlLite : SqlLite,public sms: SMS) {
     this.resourceName = "smsCommand";
   }
 
@@ -28,7 +28,7 @@ export class SmsCommand {
   getSmsCommandFromServer(user){
     let self = this;
     return new Promise(function(resolve, reject) {
-      let smsCommandUrl = "/api/dataStore/sms/commands";
+      let smsCommandUrl = "/api/25/dataStore/sms/commands";
       self.HttpClient.get(smsCommandUrl,user).subscribe(response=>{
         response = response.json();
         resolve(response);
@@ -158,7 +158,7 @@ export class SmsCommand {
     };
     let self = this;
     return new Promise(function(resolve, reject) {
-      SMS.send(phoneNumber,messages[messageIndex], options).then((success)=>{
+      self.sms.send(phoneNumber,messages[messageIndex], options).then((success)=>{
         messageIndex = messageIndex + 1;
         if(messageIndex < messages.length){
           self.sendSms(phoneNumber,messages,messageIndex).then(()=>{

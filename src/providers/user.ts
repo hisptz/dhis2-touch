@@ -1,32 +1,39 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/map';
-import { HTTP } from 'ionic-native';
+import { HTTP } from '@ionic-native/http';
 
 /*
-  Generated class for the User provider.
+ Generated class for the User provider.
 
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular 2 DI.
-*/
+ See https://angular.io/docs/ts/latest/guide/dependency-injection.html
+ for more info on providers and Angular 2 DI.
+ */
 @Injectable()
 export class User {
 
   public userData : any;
 
-  constructor(public storage : Storage) {
+  constructor(public storage : Storage,public http: HTTP) {
 
   }
 
+  /**
+   *
+   * @param user
+   * @returns {Promise<T>}
+     */
   getUserDataFromServer(user){
-    HTTP.useBasicAuth(user.username, user.password);
+    let self = this;
+    self.http.useBasicAuth(user.username, user.password);
     let fields = "fields=[:all],userCredentials[userRoles[name,dataSets[id,name],programs[id,name]]";
     let url = user.serverUrl.split("/dhis-web-commons")[0];
     url = url.split("/dhis-web-dashboard-integration")[0];
     user.serverUrl = url;
-    url += "/api/me.json?" + fields;
+    url += "/api/25/me.json?" + fields;
+
     return new Promise(function(resolve, reject) {
-      HTTP.get(url, {}, {})
+      self.http.get(url, {}, {})
         .then((data:any)  => {
           resolve(data);
         })
@@ -36,11 +43,17 @@ export class User {
     });
   }
 
+  /**
+   *
+   * @param user
+   * @returns {Promise<T>}
+     */
   authenticateUser(user){
-    HTTP.useBasicAuth(user.username, user.password);
     let self = this;
+    self.http.useBasicAuth(user.username, user.password);
+
     return new Promise(function(resolve, reject) {
-      HTTP.get(user.serverUrl + "", {}, {})
+      self.http.get(user.serverUrl + "", {}, {})
         .then((data:any)  => {
           if(data.status == 200){
             let setCookieArray = data.headers["Set-Cookie"].split(";");
@@ -92,6 +105,11 @@ export class User {
     });
   }
 
+  /**
+   *
+   * @param user
+   * @returns {Promise<T>}
+     */
   setCurrentUser(user : any){
     let self = this;
     user = JSON.stringify(user);
@@ -105,6 +123,11 @@ export class User {
     });
   }
 
+  /**
+   *
+   * @param systemInformation
+   * @returns {Promise<T>}
+     */
   setCurrentUserSystemInformation(systemInformation : any){
     let self = this;
     return  new Promise(function(resolve,reject){
@@ -117,6 +140,11 @@ export class User {
     });
   }
 
+  /**
+   *
+   * @param userDataResponse
+   * @returns {Promise<T>}
+     */
   setUserData(userDataResponse){
     this.userData = {};
     this.userData ={
@@ -142,6 +170,10 @@ export class User {
     });
   }
 
+  /**
+   *
+   * @returns {Promise<T>}
+     */
   getUserData(){
     let self = this;
     return  new Promise(function(resolve,reject){
@@ -156,6 +188,10 @@ export class User {
     });
   }
 
+  /**
+   *
+   * @returns {Promise<T>}
+     */
   getCurrentUserSystemInformation(){
     let self = this;
     return  new Promise(function(resolve,reject){
@@ -170,6 +206,10 @@ export class User {
     });
   }
 
+  /**
+   *
+   * @returns {Promise<T>}
+     */
   getCurrentUser(){
     let self = this;
     return  new Promise(function(resolve,reject){

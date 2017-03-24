@@ -1,13 +1,13 @@
 import { Component,OnInit } from '@angular/core';
 import { ToastController,ModalController } from 'ionic-angular';
 
-import {User} from '../../providers/user/user';
 import {OrganisationUnits} from "../organisation-units/organisation-units";
 import {DataSetSelection} from "../data-set-selection/data-set-selection";
 import {PeriodSelection} from "../period-selection/period-selection";
+import {SmsCommand} from "../../providers/sms-command";
 import {OrganisationUnit} from "../../providers/organisation-unit";
 import {DataSets} from "../../providers/data-sets";
-import {SmsCommand} from "../../providers/sms-command";
+import {User} from "../../providers/user";
 
 declare var dhis2: any;
 /*
@@ -19,7 +19,6 @@ declare var dhis2: any;
 @Component({
   selector: 'page-send-data-via-sms',
   templateUrl: 'send-data-via-sms.html',
-  providers : [User,OrganisationUnit,DataSets,SmsCommand]
 })
 export class SendDataViaSms implements OnInit{
 

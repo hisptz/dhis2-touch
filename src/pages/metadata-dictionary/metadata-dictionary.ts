@@ -10,20 +10,15 @@ import {MetadataDictionaryService} from "../../providers/metadata-dictionary-ser
 @Component({
   selector: 'page-metadata-dictionary',
   templateUrl: 'metadata-dictionary.html',
-  providers : [MetadataDictionaryService]
 })
 export class MetadataDictionary implements OnInit{
 
   @Input() metadataIdentifiers;
 
-  constructor() {}
+  constructor(public MetadataDictionaryService : MetadataDictionaryService) {}
 
   ngOnInit() {
 
-  }
-
-  ionViewDidLoad() {
-    console.log('Hello MetadataDictionary Page');
   }
 
 }

@@ -1,25 +1,17 @@
 import { Component,OnInit } from '@angular/core';
+
 import { ToastController } from 'ionic-angular';
-import {User} from "../../providers/user/user";
-import {AppProvider} from "../../providers/app-provider/app-provider";
-import {HttpClient} from '../../providers/http-client/http-client';
-import {SqlLite} from "../../providers/sql-lite/sql-lite";
-import {DataValues} from "../../providers/data-values";
 import {Events} from "../../providers/events";
+import {User} from "../../providers/user";
+import {AppProvider} from "../../providers/app-provider";
+import {DataValues} from "../../providers/data-values";
 
-
-/*
-  Generated class for the About page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Component({
   selector: 'page-about',
   templateUrl: 'about.html',
-  providers : [User,AppProvider,HttpClient,SqlLite,DataValues,Events]
+  providers : [Events]
 })
-export class About implements OnInit{
+export class AboutPage implements OnInit{
 
   public loadingData : boolean = false;
   public loadingMessages : any = [];
@@ -34,11 +26,9 @@ export class About implements OnInit{
     }
   };
 
-  constructor(private toastCtrl: ToastController,private user : User,
-              private appProvider : AppProvider,private httpClient : HttpClient,
-              private dataValues : DataValues,public eventProvider :Events,
-              private sqlLite : SqlLite) {
-
+  constructor(public user : User,public toastCtrl : ToastController,
+              public appProvider : AppProvider,
+              public dataValues : DataValues,public eventProvider :Events) {
   }
 
   ngOnInit() {
@@ -46,10 +36,6 @@ export class About implements OnInit{
       this.currentUser = user;
       this.loadingSystemInformation();
     });
-  }
-
-  ionViewDidLoad() {
-    //console.log('Hello About Page');
   }
 
   loadingSystemInformation(){
@@ -147,13 +133,4 @@ export class About implements OnInit{
     });
     toast.present();
   }
-
-  setStickToasterMessage(message){
-    let toast = this.toastCtrl.create({
-      message: message,
-      showCloseButton : true
-    });
-    toast.present();
-  }
-
 }

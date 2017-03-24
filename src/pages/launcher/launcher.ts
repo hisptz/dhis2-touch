@@ -1,8 +1,8 @@
-import { Component ,OnInit} from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import {User} from "../../providers/user/user";
+import {User} from "../../providers/user";
 import {TabsPage} from "../tabs/tabs";
-import {Login} from "../login/login";
+import {LoginPage} from "../login/login";
 
 /*
   Generated class for the Launcher page.
@@ -12,32 +12,23 @@ import {Login} from "../login/login";
 */
 @Component({
   selector: 'page-launcher',
-  templateUrl: 'launcher.html',
-  providers : [User]
+  templateUrl: 'launcher.html'
 })
-export class Launcher implements OnInit{
+export class LauncherPage implements OnInit{
 
   public logoUrl : string = "";
 
-  constructor(public navCtrl: NavController,public user : User) {
-  }
+  constructor(public navCtrl: NavController,public user : User) {}
 
   ngOnInit() {
     this.logoUrl = 'assets/img/logo-2.png';
-    this.user.getCurrentUser().then(user=>{
-      this.reAuthenticateUser(user);
+    this.user.getCurrentUser().then((user : any)=>{
+      if(user && user.isLogin){
+        this.navCtrl.setRoot(TabsPage);
+      }else{
+        this.navCtrl.setRoot(LoginPage);
+      }
     });
   }
-
-  ionViewDidLoad() {}
-
-  reAuthenticateUser(user){
-    if(user && user.isLogin){
-      this.navCtrl.setRoot(TabsPage);
-    }else{
-      this.navCtrl.setRoot(Login);
-    }
-  }
-
 
 }

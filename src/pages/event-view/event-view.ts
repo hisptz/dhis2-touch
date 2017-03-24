@@ -1,12 +1,10 @@
 import { Component,OnInit } from '@angular/core';
-import {NavController,ToastController,NavParams,ActionSheetController } from 'ionic-angular';
+import {NavController,ToastController,NavParams } from 'ionic-angular';
 
-import {User} from '../../providers/user/user';
-import {HttpClient} from "../../providers/http-client/http-client";
-import {SqlLite} from "../../providers/sql-lite/sql-lite";
 import {Program} from "../../providers/program";
 import {Events} from "../../providers/events";
 import {ProgramStageDataElements} from "../../providers/program-stage-data-elements";
+import {User} from "../../providers/user";
 
 /*
   Generated class for the EventView page.
@@ -17,7 +15,7 @@ import {ProgramStageDataElements} from "../../providers/program-stage-data-eleme
 @Component({
   selector: 'page-event-view',
   templateUrl: 'event-view.html',
-  providers : [User,HttpClient,SqlLite,Program,Events,ProgramStageDataElements]
+  providers : [Events]
 })
 export class EventView implements OnInit{
 
@@ -31,9 +29,8 @@ export class EventView implements OnInit{
   public dataElementMapper : any;
 
   constructor(public NavParams:NavParams,public eventProvider :Events,public Program : Program,
-              public toastCtrl: ToastController,public user : User,public actionSheetCtrl: ActionSheetController,
-              public ProgramStageDataElements : ProgramStageDataElements,public navCtrl: NavController,
-              public sqlLite : SqlLite,public httpClient: HttpClient){
+              public toastCtrl: ToastController,public user : User,
+              public ProgramStageDataElements : ProgramStageDataElements,public navCtrl: NavController){
 
 
   }

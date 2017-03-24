@@ -1,78 +1,110 @@
-import { NgModule ,enableProdMode} from '@angular/core';
-import { IonicApp, IonicModule } from 'ionic-angular';
-import { MyApp } from './app.component';
-import { TabsPage } from '../pages/tabs/tabs';
-import {Apps} from "../pages/apps/apps";
-import {Account} from "../pages/account/account";
-import {TrackerCaptureHome} from "../pages/tracker-capture-home/tracker-capture-home";
-import {SettingHome} from "../pages/setting-home/setting-home";
-import {ReportHome} from "../pages/report-home/report-home";
-import {UpdateManagerHome} from "../pages/update-manager-home/update-manager-home";
-import {OrganisationUnits} from "../pages/organisation-units/organisation-units";
-import {Profile} from "../pages/profile/profile";
-import {Login} from "../pages/login/login";
-import {Help} from "../pages/help/help";
-import {EventCaptureHome} from "../pages/event-capture-home/event-capture-home";
-import {DashBoardHome} from "../pages/dash-board-home/dash-board-home";
-import {About} from "../pages/about/about";
-import {DataEntryHome} from "../pages/data-entry-home/data-entry-home";
-import {ObjectToArray} from "../pipes/object-to-array";
-import {AccountName} from "../pipes/account-name";
-import { Storage } from '@ionic/storage';
-import {DataSetSelection} from "../pages/data-set-selection/data-set-selection";
-import {PeriodSelection} from "../pages/period-selection/period-selection";
-import {ProgramSelection} from "../pages/program-selection/program-selection";
-import {DataEntryForm} from "../pages/data-entry-form/data-entry-form";
-import {ReportView} from "../pages/report-view/report-view";
-import {ReportParameterSelection} from "../pages/report-parameter-selection/report-parameter-selection";
-import {EventCaptureForm} from "../pages/event-capture-form/event-capture-form";
-import {EventView} from "../pages/event-view/event-view";
-import { ChartModule } from 'angular2-highcharts';
-import {EventFieldSelectionMenu} from "../pages/event-field-selection-menu/event-field-selection-menu";
-import {ProgressBarPage} from "../pages/progress-bar/progress-bar";
-import {HttpClient} from "../providers/http-client/http-client";
-import {SqlLite} from "../providers/sql-lite/sql-lite";
-import {DataValues} from "../providers/data-values";
-import {EventCaptureFormProvider} from "../providers/event-capture-form-provider";
-import {Synchronization} from "../providers/synchronization";
-import {Launcher} from "../pages/launcher/launcher";
-import {EntryFormSelection} from "../providers/entry-form-selection";
-import {SendDataViaSms} from "../pages/send-data-via-sms/send-data-via-sms";
-import {SmsCommand} from "../providers/sms-command";
-import {VisualizationCardPage} from "../pages/visualization-card/visualization-card";
-import {VisulizerService} from "../providers/visulizer.service";
-import {LoadingPage} from "../pages/loading/loading";
-import {MetadataDictionary} from "../pages/metadata-dictionary/metadata-dictionary";
-import {MetadataDictionaryService} from "../providers/metadata-dictionary-service";
-import {ReportSelectionPeriod} from "../pages/report-selection-period/report-selection-period";
+import { NgModule, ErrorHandler } from '@angular/core';
+import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 
-enableProdMode();
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { IonicStorageModule } from '@ionic/storage';
+import { SQLite } from '@ionic-native/sqlite';
+import { HTTP } from '@ionic-native/http';
+import { SMS } from '@ionic-native/sms';
+import { AppVersion } from '@ionic-native/app-version';
+import {AppProvider} from "../providers/app-provider";
+import {HttpClient} from "../providers/http-client";
+import {SqlLite} from "../providers/sql-lite";
+import {User} from "../providers/user";
+import {SmsCommand} from "../providers/sms-command";
+import {VisualizerService} from "../providers/visualizer-service";
+import {Dashboard} from "../providers/dashboard";
+import {DataSets} from "../providers/data-sets";
+import {DataValues} from "../providers/data-values";
+import {EntryForm} from "../providers/entry-form";
+import {EventCaptureFormProvider} from "../providers/event-capture-form-provider";
+import {MetadataDictionaryService} from "../providers/metadata-dictionary-service";
+import {Report} from "../providers/report";
+import {ProgramStageSections} from "../providers/program-stage-sections";
+import {ProgramStageDataElements} from "../providers/program-stage-data-elements";
+import {Program} from "../providers/program";
+import {OrganisationUnit} from "../providers/organisation-unit";
+import {UpdateResourceManager} from "../providers/update-resource-manager";
+import {Setting} from "../providers/setting";
+import {Synchronization} from "../providers/synchronization";
+import { ChartModule } from 'angular2-highcharts';
+import {NetworkAvailability} from "../providers/network-availability";
+
+import { MyApp } from './app.component';
+import { AboutPage } from '../pages/about/about';
+import { TabsPage } from '../pages/tabs/tabs';
+
+import {AccountPage} from "../pages/account/account";
+import {AppsPage} from "../pages/apps/apps";
+import {DashBoardHomePage} from "../pages/dash-board-home/dash-board-home";
+import {ReportHomePage} from "../pages/report-home/report-home";
+import {EventCaptureHomePage} from "../pages/event-capture-home/event-capture-home";
+import {DataEntryHomePage} from "../pages/data-entry-home/data-entry-home";
+import {UpdateManagerHomePage} from "../pages/update-manager-home/update-manager-home";
+import {SettingHomePage} from "../pages/setting-home/setting-home";
+import {HelpPage} from "../pages/help/help";
+import {ProfilePage} from "../pages/profile/profile";
+import {LoginPage} from "../pages/login/login";
+import {LoadingPage} from "../pages/loading/loading";
+import {LauncherPage} from "../pages/launcher/launcher";
+import {ProgressBarPage} from "../pages/progress-bar/progress-bar";
+import {DataSetSelection} from "../pages/data-set-selection/data-set-selection";
+import {VisualizationCardPage} from "../pages/visualization-card/visualization-card";
+import {SendDataViaSms} from "../pages/send-data-via-sms/send-data-via-sms";
+import {ProgramSelection} from "../pages/program-selection/program-selection";
+import {OrganisationUnits} from "../pages/organisation-units/organisation-units";
+import {PeriodSelection} from "../pages/period-selection/period-selection";
+import {MetadataDictionary} from "../pages/metadata-dictionary/metadata-dictionary";
+import {ReportParameterSelection} from "../pages/report-parameter-selection/report-parameter-selection";
+import {ReportView} from "../pages/report-view/report-view";
+import {EventView} from "../pages/event-view/event-view";
+import {EventCaptureForm} from "../pages/event-capture-form/event-capture-form";
+import {EventFieldSelectionMenu} from "../pages/event-field-selection-menu/event-field-selection-menu";
+import {DataEntryForm} from "../pages/data-entry-form/data-entry-form";
+
+
+
 
 @NgModule({
   declarations: [
-    MyApp,About,DashBoardHome,EventCaptureHome,EventView,MetadataDictionary,
-    TabsPage,Help,Login,Profile,DataEntryHome,Launcher,SendDataViaSms,
-    EventFieldSelectionMenu,ProgressBarPage,VisualizationCardPage,LoadingPage,
-    Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,
-    Account,ReportHome,SettingHome,TrackerCaptureHome,ObjectToArray,ProgramSelection,
-    AccountName,DataEntryForm,ReportView,ReportParameterSelection,EventCaptureForm,ReportSelectionPeriod
+    MyApp,
+    AboutPage,
+    AppsPage,
+    OrganisationUnits,ProgramSelection,SendDataViaSms,VisualizationCardPage,DataSetSelection,PeriodSelection,
+    DataEntryHomePage,EventCaptureHomePage,ReportHomePage,DashBoardHomePage,
+    ProfilePage,AboutPage,HelpPage,SettingHomePage,UpdateManagerHomePage,
+    AccountPage,LauncherPage,LoadingPage,LoginPage,MetadataDictionary,
+    ProgressBarPage,ReportParameterSelection,ReportView,EventView,EventCaptureForm,EventFieldSelectionMenu,
+    DataEntryForm,
+    TabsPage
   ],
   imports: [
+    IonicModule.forRoot(MyApp),
     ChartModule,
-    IonicModule.forRoot(MyApp,{tabsPlacement: 'top'})
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,About,DashBoardHome,EventCaptureHome,EventView,MetadataDictionary,
-    TabsPage,Help,Login,Profile,DataEntryHome,Launcher,SendDataViaSms,ReportSelectionPeriod,
-    EventFieldSelectionMenu,ProgressBarPage,VisualizationCardPage,LoadingPage,
-    Apps,OrganisationUnits,UpdateManagerHome,DataSetSelection,PeriodSelection,ReportParameterSelection,
-    Account,ReportHome,SettingHome,TrackerCaptureHome,ProgramSelection,DataEntryForm,ReportView,EventCaptureForm
+    MyApp,
+    AboutPage,
+    AppsPage,
+    OrganisationUnits,ProgramSelection,SendDataViaSms,VisualizationCardPage,DataSetSelection,PeriodSelection,
+    DataEntryHomePage,EventCaptureHomePage,ReportHomePage,DashBoardHomePage,
+    ProfilePage,AboutPage,HelpPage,SettingHomePage,UpdateManagerHomePage,
+    AccountPage,LauncherPage,LoadingPage,LoginPage,MetadataDictionary,
+    ProgressBarPage,ReportParameterSelection,ReportView,EventView,EventCaptureForm,EventFieldSelectionMenu,
+    DataEntryForm,
+    TabsPage
   ],
-  providers: [Storage,HttpClient,SqlLite,DataValues,
-    VisulizerService,MetadataDictionaryService,
-    EventCaptureFormProvider,Synchronization,
-    EntryFormSelection,SmsCommand
+  providers: [
+    StatusBar,NetworkAvailability,
+    SplashScreen,SQLite,HTTP,AppVersion,SMS,
+    Dashboard,DataSets,DataValues,EntryForm,EventCaptureFormProvider,
+    MetadataDictionaryService,UpdateResourceManager,OrganisationUnit,Program,
+    ProgramStageDataElements,ProgramStageSections,Report,Setting,Synchronization,
+    AppProvider,HttpClient,SqlLite,User,SmsCommand,VisualizerService,
+    {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
 export class AppModule {}

@@ -1,11 +1,9 @@
 import { Component,OnInit } from '@angular/core';
 import { NavController,ToastController } from 'ionic-angular';
-import {HttpClient} from "../../providers/http-client/http-client";
-import {User} from "../../providers/user/user";
-import {SqlLite} from "../../providers/sql-lite/sql-lite";
+import {User} from "../../providers/user";
 import {Report} from "../../providers/report";
-import {ReportView} from "../report-view/report-view";
 import {ReportParameterSelection} from "../report-parameter-selection/report-parameter-selection";
+import {ReportView} from "../report-view/report-view";
 
 /*
   Generated class for the ReportHome page.
@@ -15,10 +13,9 @@ import {ReportParameterSelection} from "../report-parameter-selection/report-par
 */
 @Component({
   selector: 'page-report-home',
-  templateUrl: 'report-home.html',
-  providers : [User,HttpClient,SqlLite,Report],
+  templateUrl: 'report-home.html'
 })
-export class ReportHome implements OnInit{
+export class ReportHomePage implements OnInit{
 
   public loadingData : boolean = false;
   public loadingMessages : any = [];
@@ -26,11 +23,8 @@ export class ReportHome implements OnInit{
   public reportList : any;
   public reportListCopy : any;
 
-  constructor(public navCtrl: NavController,private toastCtrl:ToastController,
-              private user:User, private httpClient:HttpClient,
-              private sqlLite:SqlLite,private Report : Report) {
-
-  }
+  constructor(public navCtrl: NavController,public toastCtrl:ToastController,
+              public user:User,public Report : Report) {}
 
   ngOnInit() {
     this.loadingMessages = [];
@@ -61,10 +55,9 @@ export class ReportHome implements OnInit{
     if(this.Report.hasReportRequireParameterSelection(report.reportParams)){
       this.navCtrl.push(ReportParameterSelection,parameter);
     }else{
-      this.navCtrl.push(ReportView,parameter)
+      this.navCtrl.push(ReportView,parameter);
     }
   }
-
 
   getFilteredList(ev: any) {
     let val = ev.target.value;
@@ -76,10 +69,6 @@ export class ReportHome implements OnInit{
     }
   }
 
-  ionViewDidLoad() {
-    //console.log('Hello ReportHome Page');
-  }
-
   setLoadingMessages(message){
     this.loadingMessages.push(message);
   }
@@ -88,14 +77,6 @@ export class ReportHome implements OnInit{
     let toast = this.toastCtrl.create({
       message: message,
       duration: 3000
-    });
-    toast.present();
-  }
-
-  setStickToasterMessage(message){
-    let toast = this.toastCtrl.create({
-      message: message,
-      showCloseButton : true
     });
     toast.present();
   }

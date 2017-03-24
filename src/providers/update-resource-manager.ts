@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs/Rx';
-import {AppProvider} from "./app-provider/app-provider";
-import {SqlLite} from "./sql-lite/sql-lite";
-import {HttpClient} from "./http-client/http-client";
+import {HttpClient} from "./http-client";
+import {SqlLite} from "./sql-lite";
+import {AppProvider} from "./app-provider";
 
 /*
   Generated class for the UpdateResourceManager provider.

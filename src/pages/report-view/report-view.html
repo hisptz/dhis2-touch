@@ -27,7 +27,7 @@
     <div *ngIf="!loadingData">
 
       <ion-row >
-        <ion-col width="100">
+        <ion-col>
           <ion-item-group (tap)="backToPreviousView()">
             <ion-item-divider>
               <p><b>Report  : </b> : {{ reportName }}</p>
@@ -39,7 +39,7 @@
       </ion-row>
 
       <ion-row >
-        <ion-col width="100">
+        <ion-col>
           <div class="reportView" [innerHTML]="htmlMarkup"></div>
         </ion-col>
       </ion-row>

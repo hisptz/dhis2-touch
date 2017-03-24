@@ -1,7 +1,7 @@
 import { Component,OnInit } from '@angular/core';
 import { ToastController } from 'ionic-angular';
-import {Setting} from "../../providers/setting";
 import {Synchronization} from "../../providers/synchronization";
+import {Setting} from "../../providers/setting";
 
 /*
   Generated class for the SettingHome page.
@@ -11,10 +11,9 @@ import {Synchronization} from "../../providers/synchronization";
 */
 @Component({
   selector: 'page-setting-home',
-  templateUrl: 'setting-home.html',
-  providers : [Setting,Synchronization]
+  templateUrl: 'setting-home.html'
 })
-export class SettingHome implements OnInit{
+export class SettingHomePage implements OnInit{
 
   public dataEntrySetting : any = {};
   public synchronizationSetting : any = {};
@@ -27,15 +26,10 @@ export class SettingHome implements OnInit{
 
   constructor(public Synchronization: Synchronization,
               public Setting : Setting,
-              public toastCtrl:ToastController) {
-
-  }
+              public toastCtrl:ToastController) {}
 
   ngOnInit() {
     this.loadingSetting();
-  }
-
-  ionViewDidLoad() {
   }
 
   saveSetting(settingKey){

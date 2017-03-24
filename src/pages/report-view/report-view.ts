@@ -1,10 +1,8 @@
 import { Component,OnInit,ElementRef } from '@angular/core';
 import { NavController,NavParams,ToastController } from 'ionic-angular';
-import {User} from "../../providers/user/user";
-import {SqlLite} from "../../providers/sql-lite/sql-lite";
-import {Report} from "../../providers/report";
-import {HttpClient} from "../../providers/http-client/http-client";
 import { DomSanitizer, SafeHtml} from '@angular/platform-browser';
+import {User} from "../../providers/user";
+import {Report} from "../../providers/report";
 
 declare var dhis2;
 
@@ -17,7 +15,6 @@ declare var dhis2;
 @Component({
   selector: 'page-report-view',
   templateUrl: 'report-view.html',
-  providers : [User,HttpClient,SqlLite,Report],
 })
 export class ReportView implements OnInit{
 

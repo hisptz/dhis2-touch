@@ -1,11 +1,10 @@
 import { Component,OnInit } from '@angular/core';
-import {ToastController,NavController } from 'ionic-angular';
-
-import {User} from '../../providers/user/user';
-import {HttpClient} from "../../providers/http-client/http-client";
-import {SqlLite} from "../../providers/sql-lite/sql-lite";
-import {AppProvider} from "../../providers/app-provider/app-provider";
+import { ToastController } from 'ionic-angular';
+import {SqlLite} from "../../providers/sql-lite";
+import {User} from "../../providers/user";
+import {AppProvider} from "../../providers/app-provider";
 import {UpdateResourceManager} from "../../providers/update-resource-manager";
+
 /*
   Generated class for the UpdateManagerHome page.
 
@@ -14,10 +13,10 @@ import {UpdateResourceManager} from "../../providers/update-resource-manager";
 */
 @Component({
   selector: 'page-update-manager-home',
-  templateUrl: 'update-manager-home.html',
-  providers : [User,HttpClient,SqlLite,AppProvider,UpdateResourceManager]
+  templateUrl: 'update-manager-home.html'
 })
-export class UpdateManagerHome implements OnInit{
+
+export class UpdateManagerHomePage implements OnInit{
 
   public dataBaseStructure :  any;
   public resources : any;
@@ -32,12 +31,9 @@ export class UpdateManagerHome implements OnInit{
     sendDataViaSms : {isExpanded : true,isSaved : true}
   };
 
-  constructor(public navCtrl: NavController,public sqlLite : SqlLite,
+  constructor(public sqlLite : SqlLite,
               public user : User,public toastCtrl: ToastController,
-              public appProvider : AppProvider,public updateResourceManager : UpdateResourceManager,
-              public httpClient : HttpClient) {
-
-  }
+              public appProvider : AppProvider,public updateResourceManager : UpdateResourceManager) {}
 
   ngOnInit() {
     this.hasAllSelected = false;
@@ -52,9 +48,6 @@ export class UpdateManagerHome implements OnInit{
         this.loadingData = false;
       });
     });
-  }
-
-  ionViewDidLoad() {
   }
 
   hideAndShowContents(updateManagerKey){

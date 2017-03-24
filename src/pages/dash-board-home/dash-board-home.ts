@@ -1,9 +1,8 @@
 import { Component,OnInit } from '@angular/core';
 import { ToastController } from 'ionic-angular';
-import {HttpClient} from "../../providers/http-client/http-client";
-import {User} from "../../providers/user/user";
 import {Dashboard} from "../../providers/dashboard";
 import {NetworkAvailability} from "../../providers/network-availability";
+import {User} from "../../providers/user";
 
 /*
   Generated class for the DashBoardHome page.
@@ -13,10 +12,9 @@ import {NetworkAvailability} from "../../providers/network-availability";
 */
 @Component({
   selector: 'page-dash-board-home',
-  templateUrl: 'dash-board-home.html',
-  providers : [User,HttpClient,Dashboard,NetworkAvailability]
+  templateUrl: 'dash-board-home.html'
 })
-export class DashBoardHome implements OnInit{
+export class DashBoardHomePage implements OnInit{
 
   public currentUser : any;
   public loadingData : boolean = false;
@@ -46,8 +44,7 @@ export class DashBoardHome implements OnInit{
 
   constructor(public user : User,
               public NetworkAvailability : NetworkAvailability,
-              public toastCtrl:ToastController,public dashboard : Dashboard) {
-  }
+              public toastCtrl:ToastController,public dashboard : Dashboard) {}
 
   ngOnInit() {
     this.user.getCurrentUser().then(user=>{
@@ -55,7 +52,6 @@ export class DashBoardHome implements OnInit{
       this.getAllDataBase();
     });
   }
-
   getAllDataBase(){
     this.dashBoardProgressTracker.isDashBoardsLoaded = false;
     this.dashBoardProgressTracker.isDashBoardItemObjectsAndDataLoaded = false;
@@ -115,7 +111,6 @@ export class DashBoardHome implements OnInit{
     }
   }
 
-
   getDashBoardItemObjectsAndData(dashboardItems){
     this.dashBoardProgressTracker.isDashBoardItemObjectsAndDataLoaded = false;
     if(this.dashBoardProgressTracker.dashBoardItemObjectsAndData[this.selectedDashBoardId]){
@@ -152,9 +147,6 @@ export class DashBoardHome implements OnInit{
     this.dashBoardProgressTracker.dashBoardVisualizationData[dashboardItemId] = analyticData;
   }
 
-  ionViewDidLoad() {
-  }
-
   setNotificationToasterMessage(message){
     let toast = this.toastCtrl.create({
       message: message,
@@ -171,5 +163,4 @@ export class DashBoardHome implements OnInit{
     });
     toast.present();
   }
-
 }

@@ -18,24 +18,50 @@ export class HttpClient {
     this.timeOutTime = 4*60*1000;
   }
 
+  /**
+   *
+   * @param url
+   * @param user
+   * @returns {any}
+     */
   get(url,user):Observable<Response>{
     let headers = new Headers();
     headers.append('Authorization', 'Basic ' +user.authorizationKey);
     return this.http.get(user.serverUrl + url, {headers: headers}).timeout(this.timeOutTime);
   }
 
+  /**
+   *
+   * @param url
+   * @param data
+   * @param user
+   * @returns {any}
+     */
   post(url, data, user):Observable<Response> {
     let headers = new Headers();
     headers.append('Authorization', 'Basic ' +user.authorizationKey);
     return this.http.post(user.serverUrl + url, data, { headers: headers }).timeout(this.timeOutTime);
   }
 
+  /**
+   *
+   * @param url
+   * @param data
+   * @param user
+   * @returns {any}
+     */
   put(url, data, user):Observable<Response> {
     let headers = new Headers();
     headers.append('Authorization', 'Basic ' +user.authorizationKey);
     return this.http.put(user.serverUrl + url, data, { headers: headers }).timeout(this.timeOutTime);
   }
 
+  /**
+   *
+   * @param url
+   * @param user
+   * @returns {any}
+     */
   delete(url,user):Observable<Response> {
     let headers = new Headers();
     headers.append('Authorization', 'Basic ' +user.authorizationKey);

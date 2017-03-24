@@ -11,7 +11,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class Setting {
 
-  constructor(private storage : Storage) {
+  constructor(public storage : Storage) {
 
   }
 

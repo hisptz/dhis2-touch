@@ -6,14 +6,14 @@
 -->
 <ion-header>
 
-  <ion-navbar color="primary">
-    <ion-title>Setting</ion-title>
+  <ion-navbar color="primary" mode="md">
+    <ion-title>Setting Home</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content class="setting-home" >
+<ion-content class="setting-home">
 
   <ion-grid>
     <ion-item-group>
@@ -21,12 +21,12 @@
       <ion-row>
         <ion-col>
           <ion-item (tap)="hideAndShowContents('synchronizationSetting')">
-            <span [color]="(settingObject.synchronizationSetting.isExpanded) ?'current' : 'font-color'">
+            <span ion-text [color]="(settingObject.synchronizationSetting.isExpanded) ?'current' : 'font-color'">
               Synchronization
             </span>
 
-            <ion-icon *ngIf="!settingObject.synchronizationSetting.isExpanded" name="ios-arrow-down" item-right></ion-icon>
-            <ion-icon *ngIf="settingObject.synchronizationSetting.isExpanded" name="ios-arrow-up" item-right></ion-icon>
+            <ion-icon [color]="(settingObject.synchronizationSetting.isExpanded) ?'current' : 'font-color'" *ngIf="!settingObject.synchronizationSetting.isExpanded" name="ios-arrow-down" item-right></ion-icon>
+            <ion-icon [color]="(settingObject.synchronizationSetting.isExpanded) ?'current' : 'font-color'" *ngIf="settingObject.synchronizationSetting.isExpanded" name="ios-arrow-up" item-right></ion-icon>
           </ion-item>
           <div class="settingContents" *ngIf="settingObject.synchronizationSetting.isExpanded" >
             <ion-row>
@@ -60,11 +60,11 @@
       <ion-row>
         <ion-col>
           <ion-item (tap)="hideAndShowContents('dataEntrySetting')">
-            <span [color]="(settingObject.dataEntrySetting.isExpanded) ?'current' : 'font-color'">
+            <span ion-text [color]="(settingObject.dataEntrySetting.isExpanded) ?'current' : 'font-color'">
               Data Entry Form
             </span>
-            <ion-icon *ngIf="!settingObject.dataEntrySetting.isExpanded" name="ios-arrow-down" item-right></ion-icon>
-            <ion-icon *ngIf="settingObject.dataEntrySetting.isExpanded" name="ios-arrow-up" item-right></ion-icon>
+            <ion-icon [color]="(settingObject.dataEntrySetting.isExpanded) ?'current' : 'font-color'" *ngIf="!settingObject.dataEntrySetting.isExpanded" name="ios-arrow-down" item-right></ion-icon>
+            <ion-icon [color]="(settingObject.dataEntrySetting.isExpanded) ?'current' : 'font-color'" *ngIf="settingObject.dataEntrySetting.isExpanded" name="ios-arrow-up" item-right></ion-icon>
           </ion-item>
           <div class="settingContents" *ngIf="settingObject.dataEntrySetting.isExpanded" >
             <ion-row>
@@ -96,22 +96,22 @@
       </ion-row>
 
       <!--<ion-row>-->
-        <!--<ion-col>-->
-          <!--<ion-item (tap)="hideAndShowContents('security')">-->
-            <!--<span [color]="(settingObject.security.isExpanded) ?'current' : 'font-color'">-->
-              <!--Security-->
-            <!--</span>            -->
-            <!--<ion-icon *ngIf="!settingObject.security.isExpanded" name="ios-arrow-down" item-right></ion-icon>-->
-            <!--<ion-icon *ngIf="settingObject.security.isExpanded" name="ios-arrow-up"  item-right></ion-icon>-->
-          <!--</ion-item>-->
-          <!--<div class="settingContents" *ngIf="settingObject.security.isExpanded" >-->
-            <!--<ion-row>-->
-              <!--<ion-col>-->
-                <!--Security setting-->
-              <!--</ion-col>-->
-            <!--</ion-row>-->
-          <!--</div>-->
-        <!--</ion-col>-->
+      <!--<ion-col>-->
+      <!--<ion-item (tap)="hideAndShowContents('security')">-->
+      <!--<span ion-text [color]="(settingObject.security.isExpanded) ?'current' : 'font-color'">-->
+      <!--Security-->
+      <!--</span>            -->
+      <!--<ion-icon *ngIf="!settingObject.security.isExpanded" name="ios-arrow-down" item-right></ion-icon>-->
+      <!--<ion-icon *ngIf="settingObject.security.isExpanded" name="ios-arrow-up"  item-right></ion-icon>-->
+      <!--</ion-item>-->
+      <!--<div class="settingContents" *ngIf="settingObject.security.isExpanded" >-->
+      <!--<ion-row>-->
+      <!--<ion-col>-->
+      <!--Security setting-->
+      <!--</ion-col>-->
+      <!--</ion-row>-->
+      <!--</div>-->
+      <!--</ion-col>-->
       <!--</ion-row>-->
 
     </ion-item-group>

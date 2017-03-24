@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
+import { Component,OnInit} from '@angular/core';
 import { NavController,App } from 'ionic-angular';
-import {Profile} from "../profile/profile";
-import {About} from "../about/about";
-import {Help} from "../help/help";
-import {UpdateManagerHome} from "../update-manager-home/update-manager-home";
-import {Login} from "../login/login";
-import {SettingHome} from "../setting-home/setting-home";
-import {User} from "../../providers/user/user";
+import {User} from "../../providers/user";
+import {UpdateManagerHomePage} from "../update-manager-home/update-manager-home";
+import {SettingHomePage} from "../setting-home/setting-home";
+import {AboutPage} from "../about/about";
+import {ProfilePage} from "../profile/profile";
+import {HelpPage} from "../help/help";
+import {LoginPage} from "../login/login";
 
 /*
   Generated class for the Account page.
@@ -16,36 +16,29 @@ import {User} from "../../providers/user/user";
 */
 @Component({
   selector: 'page-account',
-  templateUrl: 'account.html',
-  providers : [User]
+  templateUrl: 'account.html'
 })
-export class Account {
+export class AccountPage implements OnInit{
 
   private viewMapperObject : any;
   private currentUser : any;
 
-  constructor(public navCtrl: NavController,public app : App,private user : User) {
+  constructor(public navCtrl: NavController,public app : App,private user : User) {}
+
+  ngOnInit() {
+    this.viewMapperObject = {
+      "profile" : ProfilePage,
+      "about" : AboutPage,
+      "help" : HelpPage,
+      "settings" : SettingHomePage,
+      "updateManager" : UpdateManagerHomePage
+    }
     this.user.getCurrentUser().then(user=>{
       this.currentUser = user;
-    });
-    this.setViewAction();
+    })
   }
 
-  ionViewDidLoad() {
-
-  }
-
-  setViewAction():void{
-    this.viewMapperObject = {
-      "profile" : Profile,
-      "about" : About,
-      "help" : Help,
-      "settings" : SettingHome,
-      "updateManager" : UpdateManagerHome
-    }
-  }
-
-  goToView(event,viewName){
+  goToView(viewName){
     this.navCtrl.push(this.viewMapperObject[viewName]);
   }
 
@@ -53,7 +46,7 @@ export class Account {
     //@todo delete all assign org unit form database
     this.currentUser.isLogin = false;
     this.user.setCurrentUser(this.currentUser).then(user=>{
-      this.app.getRootNav().setRoot(Login);
+      this.app.getRootNav().setRoot(LoginPage);
     },error=>{});
   }
 

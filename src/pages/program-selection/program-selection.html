@@ -16,11 +16,11 @@
   <ion-searchbar animated="true"  (ionInput)="getFilteredList($event)"></ion-searchbar>
   <ion-grid>
     <ion-row>
-      <ion-col width="100">
+      <ion-col >
         <ion-list>
           <ion-item *ngFor="let program of programsList"   (tap)="setSelectedProgram(program)">
             <ion-icon name="list" item-left></ion-icon>
-            <span (tap)="setSelectedProgram(program)" [color]="(currentSelectedProgram == program.name)? 'current': 'font-color'" >{{ program.name}}</span>
+            <span (tap)="setSelectedProgram(program)" ion-text [color]="(currentSelectedProgram == program.name)? 'current': 'font-color'" >{{ program.name}}</span>
           </ion-item>
           <ion-item *ngIf = "programsList.length == 0">
             There is no Program to select

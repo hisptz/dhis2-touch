@@ -28,9 +28,6 @@ export class PeriodSelection implements OnInit{
     this.setModalData();
   }
 
-  ionViewDidLoad() {
-    //console.log('Hello PeriodSelection Page');
-  }
 
   setModalData(){
     this.periodList = [];

@@ -6,86 +6,60 @@
 -->
 <ion-header>
 
-  <ion-navbar color="primary">
+  <ion-navbar color="primary" mode="md">
     <ion-title>Apps</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding class="apps">
+<ion-content class="apps">
 
-  <ion-row >
-    <ion-col (tap)="goToView($event,'dataEntry')" >
-      <ion-list >
-        <ion-item >
-          <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/img/dataEntry.png">
-          </ion-thumbnail>
-          <p class="menu-app" >Data Entry</p>
-        </ion-item>
-      </ion-list>
-    </ion-col>
-    <ion-col width-45 (tap)="goToView($event,'eventCapture')" >
-      <ion-list >
-        <ion-item>
-          <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/img/eventCapture.png">
-          </ion-thumbnail>
-          <p class="menu-app" >Event Capture</p>
-        </ion-item>
-      </ion-list>
-    </ion-col>
-  </ion-row>
-
-  <ion-row>
-    <ion-col width-45 (tap)="goToView($event,'dashboard')" >
-      <ion-list>
-        <ion-item>
-          <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/img/dashboard.png">
-          </ion-thumbnail>
-          <p class="menu-app">Dashboard</p>
-        </ion-item>
-      </ion-list>
-    </ion-col>
-    <ion-col (tap)="goToView($event,'report')"  >
-      <ion-list>
-        <ion-item>
-          <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/img/reports.png">
-          </ion-thumbnail>
-          <h2 >Standard Reports</h2>
-        </ion-item>
-      </ion-list>
-    </ion-col>
-  </ion-row>
-  <!--<ion-col (tap)="goToView($event,'report')"  >-->
-  <!--<ion-list>-->
-  <!--<ion-item>-->
-  <!--<ion-thumbnail >-->
-  <!--<img class="menu-app-icon-list" src="assets/img/reports.png">-->
-  <!--</ion-thumbnail>-->
-  <!--<h2 >Standard Reports</h2>-->
-  <!--</ion-item>-->
-  <!--</ion-list>-->
-  <!--</ion-col>-->
-  <!--<ion-row>-->
-    <!--<ion-col width-45 (tap)="goToView($event,'trackerCapture')" >-->
-      <!--<ion-list >-->
-        <!--<ion-item >-->
-          <!--<ion-thumbnail >-->
-            <!--<img class="menu-app-icon-list" src="assets/img/trackerCapture.png">-->
-          <!--</ion-thumbnail>-->
-          <!--<h2 >Tracker Capture</h2>-->
-        <!--</ion-item>-->
-      <!--</ion-list>-->
-    <!--</ion-col>-->
-    <!--<ion-col width-45 >-->
-
-    <!--</ion-col>-->
-
-  <!--</ion-row>-->
-
+  <ion-grid>
+    <ion-row >
+      <ion-col (tap)="goToView('dataEntry')" >
+        <ion-list >
+          <ion-item >
+            <ion-thumbnail >
+              <img class="menu-app-icon-list" src="assets/img/dataEntry.png">
+            </ion-thumbnail>
+            <p class="menu-app" >Data Entry</p>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col (tap)="goToView('eventCapture')" >
+        <ion-list >
+          <ion-item>
+            <ion-thumbnail >
+              <img class="menu-app-icon-list" src="assets/img/eventCapture.png">
+            </ion-thumbnail>
+            <p class="menu-app" >Event Capture</p>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col (tap)="goToView('dashboard')" >
+        <ion-list>
+          <ion-item>
+            <ion-thumbnail >
+              <img class="menu-app-icon-list" src="assets/img/dashboard.png">
+            </ion-thumbnail>
+            <p class="menu-app">Dashboard</p>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col (tap)="goToView('report')"  >
+        <ion-list>
+          <ion-item>
+            <ion-thumbnail >
+              <img class="menu-app-icon-list" src="assets/img/reports.png">
+            </ion-thumbnail>
+            <p class="menu-app">Standard Reports</p>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>
