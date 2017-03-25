@@ -200,18 +200,28 @@
         </ion-row>
         <ion-row>
           <ion-col>
-            <button color="favorite" ion-button full [disabled] ="isDataSetCompleted" (tap)="updateDataSetCompleteness()">
+            <button color="favorite" ion-button full [disabled] ="isDataSetCompleted || isDataSetCompletenessProcessRunning" (tap)="updateDataSetCompleteness()">
               Complete
             </button>
           </ion-col>
           <ion-col>
-            <button color="danger" ion-button full [disabled] = "!isDataSetCompleted" (tap)="updateDataSetCompleteness()">
+            <button color="danger" ion-button full [disabled] = "!isDataSetCompleted || isDataSetCompletenessProcessRunning" (tap)="updateDataSetCompleteness()">
               Undo Complete
             </button>
           </ion-col>
         </ion-row>
 
-        <div *ngIf="isDataSetCompleted">Completed by: <b>{{ dataSetCompletenessInformation.name }}</b> at: <b>{{ dataSetCompletenessInformation.date }}</b></div>
+
+        <div *ngIf="isDataSetCompletenessProcessRunning">
+          <ion-item >
+            <div style="text-align: center" item-left >
+              <page-loading loadingSize="small"></page-loading>
+            </div>
+            Please wait ...
+          </ion-item>
+        </div>
+
+        <div *ngIf="isDataSetCompleted && !isDataSetCompletenessProcessRunning">Completed by: <b>{{ dataSetCompletenessInformation.name }}</b> at: <b>{{ dataSetCompletenessInformation.date }}</b></div>
 
       </ion-item-divider>
     </ion-item-group>

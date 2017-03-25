@@ -1,5 +1,5 @@
 import { Component,OnInit,ViewChild} from '@angular/core';
-import { NavParams,ToastController,ActionSheetController,Content } from 'ionic-angular';
+import { NavController,NavParams,ToastController,ActionSheetController,Content } from 'ionic-angular';
 
 import {DataValues} from "../../providers/data-values";
 import {EntryForm} from "../../providers/entry-form";
@@ -41,18 +41,18 @@ export class DataEntryForm implements OnInit{
   //dataSet completeness
   public isDataSetCompleted : boolean = false;
   public dataSetCompletenessInformation :any = {name:"",date:""};
-  public isDataSetCompletenessUpdated : boolean = false;
+  public isDataSetCompletenessProcessRunning : boolean = false;
 
   //network
   public network : any;
 
   @ViewChild(Content) content: Content;
 
-  constructor(private params:NavParams, private toastCtrl:ToastController,
-              private user:User,public DataSets : DataSets,
-              private actionSheetCtrl: ActionSheetController,public NetworkAvailability : NetworkAvailability,
-              private entryForm:EntryForm,
-              private dataValues:DataValues) {
+  constructor(public navCtrl : NavController,public params:NavParams, public toastCtrl:ToastController,
+              public user:User,public DataSets : DataSets,
+              public actionSheetCtrl: ActionSheetController,public NetworkAvailability : NetworkAvailability,
+              public entryForm:EntryForm,
+              public dataValues:DataValues) {
 
   }
 
@@ -217,7 +217,7 @@ export class DataEntryForm implements OnInit{
 
   //@todo handle completeness of dataSet
   updateDataSetCompleteness(){
-    this.isDataSetCompletenessUpdated = true;
+    this.isDataSetCompletenessProcessRunning = true;
     let dataSetId = this.selectedDataSet.id;
     let orgUnitId = this.dataEntryFormSelectionParameter.orgUnit.id;
     let period = this.dataEntryFormSelectionParameter.period.iso;
@@ -225,16 +225,16 @@ export class DataEntryForm implements OnInit{
     if(this.isDataSetCompleted){
       this.dataValues.unDoCompleteOnDataSetRegistrations(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then(()=>{
         this.isDataSetCompleted = !this.isDataSetCompleted;
-        this.isDataSetCompletenessUpdated = false;
+        this.isDataSetCompletenessProcessRunning = false;
       },error=>{
-        this.isDataSetCompletenessUpdated = false;
+        this.isDataSetCompletenessProcessRunning = false;
         this.setToasterMessage("Fail to undo complete  at moment, please try again later");
       });
     }else{
       this.dataValues.completeOnDataSetRegistrations(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then((response)=>{
         this.setCompletenessInformation();
       },error=>{
-        this.isDataSetCompletenessUpdated = false;
+        this.isDataSetCompletenessProcessRunning = false;
         this.setToasterMessage("Fail to complete at moment, please try again later");
       });
     }
@@ -249,7 +249,7 @@ export class DataEntryForm implements OnInit{
       this.isDataSetCompleted = response.complete;
       this.dataSetCompletenessInformation.name = response.storedBy;
       this.dataSetCompletenessInformation.date = response.date;
-      this.isDataSetCompletenessUpdated = false;
+      this.isDataSetCompletenessProcessRunning = false;
     },error=>{});
   }
 
