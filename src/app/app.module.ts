@@ -62,6 +62,7 @@ import {EventView} from "../pages/event-view/event-view";
 import {EventCaptureForm} from "../pages/event-capture-form/event-capture-form";
 import {EventFieldSelectionMenu} from "../pages/event-field-selection-menu/event-field-selection-menu";
 import {DataEntryForm} from "../pages/data-entry-form/data-entry-form";
+import {ReportSelectionPeriod} from "../pages/report-selection-period/report-selection-period";
 
 
 
@@ -76,7 +77,7 @@ import {DataEntryForm} from "../pages/data-entry-form/data-entry-form";
     ProfilePage,AboutPage,HelpPage,SettingHomePage,UpdateManagerHomePage,
     AccountPage,LauncherPage,LoadingPage,LoginPage,MetadataDictionary,
     ProgressBarPage,ReportParameterSelection,ReportView,EventView,EventCaptureForm,EventFieldSelectionMenu,
-    DataEntryForm,
+    DataEntryForm,ReportSelectionPeriod,
     TabsPage
   ],
   imports: [
@@ -94,7 +95,7 @@ import {DataEntryForm} from "../pages/data-entry-form/data-entry-form";
     ProfilePage,AboutPage,HelpPage,SettingHomePage,UpdateManagerHomePage,
     AccountPage,LauncherPage,LoadingPage,LoginPage,MetadataDictionary,
     ProgressBarPage,ReportParameterSelection,ReportView,EventView,EventCaptureForm,EventFieldSelectionMenu,
-    DataEntryForm,
+    DataEntryForm,ReportSelectionPeriod,
     TabsPage
   ],
   providers: [
