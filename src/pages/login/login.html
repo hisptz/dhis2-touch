@@ -23,11 +23,11 @@
         <ion-list>
           <ion-item >
             <div style="text-align: center" item-left >
-              <div *ngIf="progressTracker.communication.passStep.length == progressTracker.communication.count">
+              <div *ngIf="progressTracker.communication.passStepCount == progressTracker.communication.count">
                 <ion-icon name="done-all" color="favorite"></ion-icon>
               </div>
               <div *ngIf="currentResourceType == 'communication'">
-                <div *ngIf="progressTracker.communication.passStep.length != progressTracker.communication.count">
+                <div *ngIf="progressTracker.communication.passStepCount != progressTracker.communication.count">
                   <page-loading loadingSize="small"></page-loading>
                 </div>
               </div>
@@ -36,16 +36,16 @@
             Establish connection to server
           </span>
             <div style="text-align: center" item-right >
-              {{ progressTracker.communication.passStep.length}}/{{ progressTracker.communication.count}}
+              {{ progressTracker.communication.passStepCount}}/{{ progressTracker.communication.count}}
             </div>
           </ion-item>
           <ion-item >
             <div style="text-align: center" item-left >
-              <div *ngIf="progressTracker.organisationUnit.passStep.length == progressTracker.organisationUnit.count">
+              <div *ngIf="progressTracker.organisationUnit.passStepCount == progressTracker.organisationUnit.count">
                 <ion-icon name="done-all" color="favorite"></ion-icon>
               </div>
               <div *ngIf="currentResourceType == 'organisationUnit'">
-                <div *ngIf="progressTracker.organisationUnit.passStep.length != progressTracker.organisationUnit.count">
+                <div *ngIf="progressTracker.organisationUnit.passStepCount != progressTracker.organisationUnit.count">
                   <page-loading loadingSize="small"></page-loading>
                 </div>
               </div>
@@ -54,16 +54,16 @@
             Load assigned organisation unit(s)
           </span>
             <div style="text-align: center" item-right >
-              {{ progressTracker.organisationUnit.passStep.length}}/{{ progressTracker.organisationUnit.count}}
+              {{ progressTracker.organisationUnit.passStepCount }}/{{ progressTracker.organisationUnit.count}}
             </div>
           </ion-item>
           <ion-item >
             <div style="text-align: center" item-left >
-              <div *ngIf="progressTracker.entryForm.passStep.length == progressTracker.entryForm.count">
+              <div *ngIf="progressTracker.entryForm.passStepCount == progressTracker.entryForm.count">
                 <ion-icon name="done-all" color="favorite"></ion-icon>
               </div>
               <div *ngIf="currentResourceType == 'entryForm'">
-                <div *ngIf="progressTracker.entryForm.passStep.length != progressTracker.entryForm.count">
+                <div *ngIf="progressTracker.entryForm.passStepCount != progressTracker.entryForm.count">
                   <page-loading loadingSize="small"></page-loading>
                 </div>
               </div>
@@ -72,16 +72,16 @@
             Load aggregate metadata
           </span>
             <div style="text-align: center" item-right >
-              {{ progressTracker.entryForm.passStep.length}}/{{ progressTracker.entryForm.count}}
+              {{ progressTracker.entryForm.passStepCount}}/{{ progressTracker.entryForm.count}}
             </div>
           </ion-item>
           <ion-item >
             <div style="text-align: center" item-left >
-              <div *ngIf="progressTracker.event.passStep.length == progressTracker.event.count">
+              <div *ngIf="progressTracker.event.passStepCount == progressTracker.event.count">
                 <ion-icon name="done-all" color="favorite"></ion-icon>
               </div>
               <div *ngIf="currentResourceType == 'event'">
-                <div *ngIf="progressTracker.event.passStep.length != progressTracker.event.count">
+                <div *ngIf="progressTracker.event.passStepCount != progressTracker.event.count">
                   <page-loading loadingSize="small"></page-loading>
                 </div>
               </div>
@@ -91,16 +91,16 @@
           </span>
 
             <div style="text-align: center" item-right >
-              {{ progressTracker.event.passStep.length}}/{{ progressTracker.event.count}}
+              {{ progressTracker.event.passStepCount}}/{{ progressTracker.event.count}}
             </div>
           </ion-item>
           <ion-item >
             <div style="text-align: center" item-left >
-              <div *ngIf="progressTracker.report.passStep.length == progressTracker.report.count">
+              <div *ngIf="progressTracker.report.passStepCount == progressTracker.report.count">
                 <ion-icon name="done-all" color="favorite"></ion-icon>
               </div>
               <div *ngIf="currentResourceType == 'report'">
-                <div *ngIf="progressTracker.report.passStep.length != progressTracker.report.count">
+                <div *ngIf="progressTracker.report.passStepCount != progressTracker.report.count">
                   <page-loading loadingSize="small"></page-loading>
                 </div>
               </div>
@@ -110,7 +110,7 @@
           </span>
 
             <div style="text-align: center" item-right >
-              {{ progressTracker.report.passStep.length}}/{{ progressTracker.report.count}}
+              {{ progressTracker.report.passStepCount}}/{{ progressTracker.report.count}}
             </div>
           </ion-item>
         </ion-list>

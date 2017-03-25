@@ -52,12 +52,30 @@ export class LoginPage implements OnInit{
 
 
   reInitiateProgressTrackerObject(user){
-    this.progressTracker = this.getEmptyProgressTracker();
     if(user.progressTracker && user.currentDatabase && user.progressTracker[user.currentDatabase]){
       this.progressTracker = user.progressTracker[user.currentDatabase];
+      this.resetPassSteps();
     }else{
       this.loginData["progressTracker"] = {};
+      this.progressTracker = {};
+      this.progressTracker = this.getEmptyProgressTracker();
     }
+  }
+
+  resetPassSteps(){
+    let dataBaseStructure =  this.sqlLite.getDataBaseStructure();
+    this.progressTracker["communication"].passStepCount = 0;
+    Object.keys(dataBaseStructure).forEach(key=>{
+      let table = dataBaseStructure[key];
+      if(table.canBeUpdated && table.resourceType){
+        if(this.progressTracker[table.resourceType]){
+          this.progressTracker[table.resourceType].passStepCount = 0;
+          this.progressTracker[table.resourceType].passStep.forEach((passStep : any)=>{
+            passStep.hasPassed = false;
+          })
+        }
+      }
+    });
   }
 
   getEmptyProgressTracker(){
@@ -67,13 +85,14 @@ export class LoginPage implements OnInit{
       let table = dataBaseStructure[key];
       if(table.canBeUpdated && table.resourceType){
         if(!progressTracker[table.resourceType]){
-          progressTracker[table.resourceType] = {count : 1,passStep :[]};
+          progressTracker[table.resourceType] = {count : 1,passStep :[],passStepCount : 0};
         }else{
           progressTracker[table.resourceType].count += 1;
         }
       }
     });
-    progressTracker["communication"] = {count : 3,passStep :[]};
+    progressTracker["communication"] = {count : 3,passStep :[],passStepCount : 0};
+    progressTracker["finalization"] = {count :0.5,passStep :[],passStepCount : 0};
     return progressTracker;
   }
 
@@ -86,12 +105,20 @@ export class LoginPage implements OnInit{
         resourceType = table.resourceType
       }
     }
-    if(this.progressTracker[resourceType].passStep.indexOf(resourceName)  == -1){
-      this.progressTracker[resourceType].passStep.push(resourceName);
-      this.loginData["progressTracker"][this.loginData.currentDatabase] = this.progressTracker;
-      this.completedTrackedProcess = this.getCompletedTrackedProcess();
-      this.user.setCurrentUser(this.loginData).then(()=>{});
+
+    if(this.progressTracker[resourceType].passStep.length == this.progressTracker[resourceType].count){
+      this.progressTracker[resourceType].passStep.forEach((passStep:any)=>{
+        if(passStep.name == resourceName && passStep.hasDownloaded){
+          passStep.hasPassed = true;
+        }
+      });
+    }else{
+      this.progressTracker[resourceType].passStep.push({name : resourceName,hasDownloaded : true,hasPassed : true});
     }
+    this.progressTracker[resourceType].passStepCount = this.progressTracker[resourceType].passStepCount + 1;
+    this.loginData["progressTracker"][this.loginData.currentDatabase] = this.progressTracker;
+    this.user.setCurrentUser(this.loginData).then(()=>{});
+    this.completedTrackedProcess = this.getCompletedTrackedProcess();
     this.updateProgressBarPercentage();
   }
 
@@ -99,7 +126,11 @@ export class LoginPage implements OnInit{
     let total = 0; let completed = 0;
     Object.keys(this.progressTracker).forEach(key=>{
       let process = this.progressTracker[key];
-      completed += process.passStep.length;
+      process.passStep.forEach((passStep : any)=>{
+        if(passStep.name && passStep.hasPassed){
+          completed = completed + 1;
+        }
+      });
       total += process.count;
     });
     let value = (completed/total) * 100;
@@ -110,9 +141,11 @@ export class LoginPage implements OnInit{
     let completedTrackedProcess = [];
     Object.keys(this.progressTracker).forEach(key=>{
       let process = this.progressTracker[key];
-      process.passStep.forEach((completedProcessName)=>{
-        if(completedTrackedProcess.indexOf(completedProcessName) == -1){
-          completedTrackedProcess.push(completedProcessName);
+      process.passStep.forEach((passStep : any)=>{
+        if(passStep.name && passStep.hasDownloaded){
+          if(completedTrackedProcess.indexOf(passStep.name) == -1){
+            completedTrackedProcess.push(passStep.name);
+          }
         }
       });
     });
@@ -127,6 +160,7 @@ export class LoginPage implements OnInit{
         this.setToasterMessage('Please Enter password');
       } else {
         let resource = "Authenticating user";
+        this.progress = "0";
         //empty communication as well as organisation unit
         this.progressTracker.communication.passStep = [];
         this.progressTracker.organisationUnit.passStep = [];
@@ -145,6 +179,7 @@ export class LoginPage implements OnInit{
               this.user.setUserData(JSON.parse(response.data)).then(userData=>{
                 this.app.getDataBaseName(this.loginData.serverUrl).then(databaseName=>{
                   //update authenticate  process
+                  this.loginData.currentDatabase = databaseName;
                   this.reInitiateProgressTrackerObject(this.loginData);
                   this.updateProgressTracker(resource);
 
@@ -152,7 +187,6 @@ export class LoginPage implements OnInit{
                   resource = 'Opening database';
                   this.currentResourceType = "communication";
                   this.sqlLite.generateTables(databaseName).then(()=>{
-                    this.loginData.currentDatabase = databaseName;
                     this.updateProgressTracker(resource);
                     resource = 'Loading system information';
                     this.currentResourceType = "communication";
