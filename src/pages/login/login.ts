@@ -42,20 +42,21 @@ export class LoginPage implements OnInit{
   ngOnInit() {
     this.logoUrl = 'assets/img/logo-2.png';
     this.completedTrackedProcess = [];
-    this.user.getCurrentUser().then(user=>{
-      this.reAuthenticateUser(user);
+    this.user.getCurrentUser().then((user: any)=>{
+      if(user){
+        this.loginData = user
+      }
+      this.reInitiateProgressTrackerObject(this.loginData);
     });
   }
 
-  reAuthenticateUser(user){
+
+  reInitiateProgressTrackerObject(user){
     this.progressTracker = this.getEmptyProgressTracker();
-    if(user){
-      this.loginData = user;
-      if(user.progressTracker && user.currentDatabase && user.progressTracker[user.currentDatabase]){
-        this.progressTracker = user.progressTracker[user.currentDatabase];
-      }
+    if(user.progressTracker && user.currentDatabase && user.progressTracker[user.currentDatabase]){
+      this.progressTracker = user.progressTracker[user.currentDatabase];
     }else{
-      this.loadingData = false;
+      this.loginData["progressTracker"] = {};
     }
   }
 
@@ -88,6 +89,7 @@ export class LoginPage implements OnInit{
     if(this.progressTracker[resourceType].passStep.indexOf(resourceName)  == -1){
       this.progressTracker[resourceType].passStep.push(resourceName);
       this.loginData["progressTracker"][this.loginData.currentDatabase] = this.progressTracker;
+      this.completedTrackedProcess = this.getCompletedTrackedProcess();
       this.user.setCurrentUser(this.loginData).then(()=>{});
     }
     this.updateProgressBarPercentage();
@@ -124,13 +126,11 @@ export class LoginPage implements OnInit{
       } else if (!this.loginData.password) {
         this.setToasterMessage('Please Enter password');
       } else {
+        let resource = "Authenticating user";
         //empty communication as well as organisation unit
         this.progressTracker.communication.passStep = [];
         this.progressTracker.organisationUnit.passStep = [];
-        let resource = "Authenticating user";
         this.currentResourceType = "communication";
-        this.updateProgressBarPercentage();
-        this.completedTrackedProcess = this.getCompletedTrackedProcess();
         this.loadingData = true;
         this.isLoginProcessActive = true;
         this.app.getFormattedBaseUrl(this.loginData.serverUrl)
@@ -141,9 +141,14 @@ export class LoginPage implements OnInit{
               this.loginData = response.user;
               //set authorization key and reset password
               this.loginData.authorizationKey = btoa(this.loginData.username + ':' + this.loginData.password);
-              this.updateProgressTracker(resource);
+
               this.user.setUserData(JSON.parse(response.data)).then(userData=>{
                 this.app.getDataBaseName(this.loginData.serverUrl).then(databaseName=>{
+                  //update authenticate  process
+                  this.reInitiateProgressTrackerObject(this.loginData);
+                  this.updateProgressTracker(resource);
+
+
                   resource = 'Opening database';
                   this.currentResourceType = "communication";
                   this.sqlLite.generateTables(databaseName).then(()=>{
