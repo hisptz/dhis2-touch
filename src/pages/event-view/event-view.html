@@ -63,3 +63,12 @@
 
 
 </ion-content>
+
+<!--- menu as well as add new event as fab icon-->
+<div *ngIf="!loadingData && event" >
+  <ion-fab bottom right >
+    <button ion-fab (tap)="gotToEditEvent()" color="favorite">
+      <ion-icon name="md-create"></ion-icon>
+    </button>
+  </ion-fab>
+</div>
