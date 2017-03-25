@@ -3,6 +3,9 @@ import {Observable} from 'rxjs/Rx';
 import {HttpClient} from "./http-client";
 import {SqlLite} from "./sql-lite";
 
+import {ToastController} from 'ionic-angular';
+import {NetworkAvailability} from "./network-availability";
+
 /*
   Generated class for the DataValues provider.
 
@@ -14,8 +17,19 @@ export class DataValues {
 
   public resourceName :string;
 
-  constructor(public httpClient : HttpClient,public sqlLite : SqlLite) {
+  constructor(public httpClient : HttpClient,public sqlLite : SqlLite,
+              public NetworkAvailability : NetworkAvailability,
+              public toastCtrl:ToastController) {
     this.resourceName = "dataValues";
+  }
+
+  setNotificationToasterMessage(message){
+    let toast = this.toastCtrl.create({
+      message: message,
+      position : 'top',
+      duration: 2000
+    });
+    toast.present();
   }
 
   /**
@@ -44,17 +58,29 @@ export class DataValues {
    * @param currentUser
      */
   uploadDataValues(dataValues,currentUser){
+
     let self = this;
     let formattedDataValues = self.getFormattedDataValueForUpload(dataValues);
-    formattedDataValues.forEach((formattedDataValue : any,index : any)=>{
-      this.httpClient.post('/api/25/dataValues?'+formattedDataValue,{},currentUser).subscribe(()=>{
-        let syncedDataValues = dataValues[index];
-        syncedDataValues["syncStatus"] = "synced";
-        console.log("uploading " + index + 1);
-        self.sqlLite.insertDataOnTable(self.resourceName,syncedDataValues,currentUser.currentDatabase).then(response=>{
-        },error=>{});
-      },error=>{});
-    });
+    let uploadedDataValues = 0;
+    let network = self.NetworkAvailability.getNetWorkStatus();
+    if(formattedDataValues.length > 0 && network.isAvailable){
+      this.setNotificationToasterMessage("Starting data synchronization process");
+      formattedDataValues.forEach((formattedDataValue:any, index:any)=> {
+        self.httpClient.post('/api/25/dataValues?' + formattedDataValue, {}, currentUser).subscribe(()=> {
+          let syncedDataValues = dataValues[index];
+          syncedDataValues["syncStatus"] = "synced";
+          uploadedDataValues = uploadedDataValues + 1;
+          if(uploadedDataValues == formattedDataValues.length){
+            self.setNotificationToasterMessage( uploadedDataValues + " data has been synced successfully");
+            console.log("upload is success : " + uploadedDataValues);
+          }
+          self.sqlLite.insertDataOnTable(self.resourceName, syncedDataValues, currentUser.currentDatabase).then(response=> {
+          }, error=> {
+          })
+        }, error=> {
+        });
+      });
+    }
   }
 
   /**
@@ -92,13 +118,21 @@ export class DataValues {
     return parameter;
   }
 
-  //@todo rechecking on dataSet completeness
+  /**
+   *
+   * @param dataSetId
+   * @param period
+   * @param orgUnitId
+   * @param dataDimension
+   * @param currentUser
+     * @returns {Promise<T>}
+     */
   completeOnDataSetRegistrations(dataSetId,period,orgUnitId,dataDimension,currentUser){
     let self = this;
     let parameter = self.getDataSetCompletenessParameter(dataSetId,period,orgUnitId,dataDimension);
     return new Promise(function(resolve, reject) {
       self.httpClient.post('/api/25/completeDataSetRegistrations?'+parameter,{},currentUser).subscribe(response=>{
-        resolve(response.json());
+        resolve();
       },error=>{
         reject(error);
       });
