@@ -73,7 +73,7 @@ export class Events {
    * @returns {Promise<T>}
      */
   loadEventsFromServer(orgUnit,program,dataDimensions,currentUser){
-    let url = "/api/events.json?orgUnit="+orgUnit.id + "&programStage="+program.programStages[0].id;
+    let url = "/api/25/events.json?orgUnit="+orgUnit.id + "&programStage="+program.programStages[0].id;
     if(dataDimensions.length > 0){
       let attributeCos = dataDimensions.toString();
       attributeCos = attributeCos.replace(/,/g, ';');
@@ -238,7 +238,7 @@ export class Events {
           //delete event id for new event
           let eventTobUploaded = event;
           let eventToUpload = self.formatEventForUpload(eventTobUploaded);
-          let url = "/api/events";
+          let url = "/api/25/events";
           console.log(JSON.stringify(eventToUpload));
           self.httpClient.post(url,eventToUpload,currentUser).subscribe(response=>{
             response = response.json();
@@ -252,7 +252,7 @@ export class Events {
         }else{
           let eventTobUploaded = event;
           let eventToUpload = self.formatEventForUpload(eventTobUploaded);
-          let url = "/api/events/"+eventToUpload.event;
+          let url = "/api/25/events/"+eventToUpload.event;
           self.httpClient.put(url,eventToUpload,currentUser).subscribe(response=>{
             response = response.json();
             self.updateUploadedLocalStoredEvent(event,response,currentUser).then(()=>{

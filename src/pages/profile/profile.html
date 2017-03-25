@@ -16,7 +16,7 @@
   <div *ngIf="loadingData">
     <ion-grid>
       <ion-row>
-        <ion-col width="100">
+        <ion-col >
           <ion-list>
             <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
               {{ message }}
@@ -34,9 +34,9 @@
   <div *ngIf="!loadingData">
     <ion-grid>
       <ion-row>
-        <ion-col width="100">
+        <ion-col >
           <ion-item-group>
-            <ion-item-divider color="primary">
+            <ion-item-divider color="whitecolor">
               <b>User Information</b>
             </ion-item-divider>
             <div *ngFor="let entry of profileInformation;let currentProfileInformationIndex = index">
@@ -60,7 +60,7 @@
           </ion-item-group>
           <ion-list></ion-list>
           <ion-item-group>
-            <ion-item-divider color="primary">
+            <ion-item-divider color="whitecolor">
               <b>Assigned Organisation Units</b>
             </ion-item-divider>
             <div *ngFor="let assignOrgUnit of  assignOrgUnits;let currentAssignedOrgUnitIndex = index">
@@ -83,7 +83,7 @@
           </ion-item-group>
           <ion-list></ion-list>
           <ion-item-group>
-            <ion-item-divider color="primary">
+            <ion-item-divider color="whitecolor">
               <b>Assigned user roles</b>
             </ion-item-divider>
             <div *ngFor="let userRole of userRoles;let currentAssignedUserRolesIndex = index">
@@ -106,7 +106,7 @@
           </ion-item-group>
           <ion-list></ion-list>
           <ion-item-group>
-            <ion-item-divider color="primary">
+            <ion-item-divider color="whitecolor">
               <b>Assigned programs</b>
             </ion-item-divider>
             <div *ngFor="let assignedProgram of assignedPrograms ;let currentAssignedProgramIndex = index">
@@ -129,7 +129,7 @@
           </ion-item-group>
           <ion-list></ion-list>
           <ion-item-group>
-            <ion-item-divider color="primary">
+            <ion-item-divider color="whitecolor">
               <b>Assigned forms</b>
             </ion-item-divider>
             <div *ngFor="let assignedForm  of assignedForms ;let currentAssignedFormsIndex = index">

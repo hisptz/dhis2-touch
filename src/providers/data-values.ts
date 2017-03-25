@@ -47,9 +47,10 @@ export class DataValues {
     let self = this;
     let formattedDataValues = self.getFormattedDataValueForUpload(dataValues);
     formattedDataValues.forEach((formattedDataValue : any,index : any)=>{
-      this.httpClient.post('/api/dataValues?'+formattedDataValue,{},currentUser).subscribe(()=>{
+      this.httpClient.post('/api/25/dataValues?'+formattedDataValue,{},currentUser).subscribe(()=>{
         let syncedDataValues = dataValues[index];
         syncedDataValues["syncStatus"] = "synced";
+        console.log("uploading " + index + 1);
         self.sqlLite.insertDataOnTable(self.resourceName,syncedDataValues,currentUser.currentDatabase).then(response=>{
         },error=>{});
       },error=>{});
@@ -96,7 +97,7 @@ export class DataValues {
     let self = this;
     let parameter = self.getDataSetCompletenessParameter(dataSetId,period,orgUnitId,dataDimension);
     return new Promise(function(resolve, reject) {
-      self.httpClient.post('/api/completeDataSetRegistrations?'+parameter,{},currentUser).subscribe(response=>{
+      self.httpClient.post('/api/25/completeDataSetRegistrations?'+parameter,{},currentUser).subscribe(response=>{
         resolve(response.json());
       },error=>{
         reject(error);
@@ -117,7 +118,7 @@ export class DataValues {
     let self = this;
     let parameter = self.getDataSetCompletenessParameter(dataSetId,period,orgUnitId,dataDimension);
     return new Promise(function(resolve, reject) {
-      self.httpClient.delete('/api/completeDataSetRegistrations?'+parameter,currentUser).subscribe(response=>{
+      self.httpClient.delete('/api/25/completeDataSetRegistrations?'+parameter,currentUser).subscribe(response=>{
         resolve();
       },error=>{
         reject(error);
@@ -164,7 +165,7 @@ export class DataValues {
     let parameter = 'dataSet='+dataSet+'&period='+period+'&orgUnit='+orgUnit;
     let self = this;
     return new Promise(function(resolve, reject) {
-      self.httpClient.get('/api/dataValueSets.json?'+parameter,currentUser).subscribe(response=>{
+      self.httpClient.get('/api/25/dataValueSets.json?'+parameter,currentUser).subscribe(response=>{
         resolve(self.getFilteredDataValuesByDataSetAttributeOptionCombo(response.json(),attributeOptionCombo))
       },error=>{
         reject(error.json());
