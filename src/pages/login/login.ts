@@ -48,14 +48,13 @@ export class LoginPage implements OnInit{
   }
 
   reAuthenticateUser(user){
+    this.progressTracker = this.getEmptyProgressTracker();
     if(user){
       this.loginData = user;
-      if(user.progressTracker){
-        this.progressTracker = user.progressTracker;
+      if(user.progressTracker && user.currentDatabase && user.progressTracker[user.currentDatabase]){
+        this.progressTracker = user.progressTracker[user.currentDatabase];
       }
     }else{
-      this.loginData["progressTracker"] = this.getEmptyProgressTracker();
-      this.progressTracker = this.getEmptyProgressTracker();
       this.loadingData = false;
     }
   }
@@ -88,7 +87,7 @@ export class LoginPage implements OnInit{
     }
     if(this.progressTracker[resourceType].passStep.indexOf(resourceName)  == -1){
       this.progressTracker[resourceType].passStep.push(resourceName);
-      this.loginData["progressTracker"] = this.progressTracker;
+      this.loginData["progressTracker"][this.loginData.currentDatabase] = this.progressTracker;
       this.user.setCurrentUser(this.loginData).then(()=>{});
     }
     this.updateProgressBarPercentage();

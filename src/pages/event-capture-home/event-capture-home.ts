@@ -300,6 +300,7 @@ export class EventCaptureHomePage implements OnInit{
    */
   loadEventsFromOfflineStorage(){
     //this.setNotificationToasterMessage("Checking offline events");
+    this.currentSelectionStatus.isEventsLoadedFromServer = false;
     this.currentSelectionStatus.eventsLoadingStatus = "Checking available offline events";
     this.eventProvider.loadingEventsFromStorage(this.selectedOrganisationUnit,this.selectedProgram,this.currentUser).then((events:any)=>{
       let currentEvents = [];
@@ -320,8 +321,8 @@ export class EventCaptureHomePage implements OnInit{
         this.hasEvents = false;
       }
       this.currentEvents = currentEvents;
-      //this.loadEventListAsTable();
-      this.loadEventListAsListOfCards();
+      this.loadEventListAsTable();
+      //this.loadEventListAsListOfCards();
       this.currentSelectionStatus.isEventsLoadedFromServer = true;
     },error=>{
       this.loadingData = false;
@@ -336,7 +337,7 @@ export class EventCaptureHomePage implements OnInit{
       if(dataElementToDisplayResponse){
         this.dataElementToDisplay = {};
         this.dataElementToDisplay = dataElementToDisplayResponse;
-        //this.loadEventListAsTable();
+        this.loadEventListAsTable();
         //this.loadEventListAsListOfCards();
       }
     });
