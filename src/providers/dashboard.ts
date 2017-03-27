@@ -3,11 +3,11 @@ import {Observable} from 'rxjs/Rx';
 import {HttpClient} from "./http-client";
 
 /*
-  Generated class for the Dashboard provider.
+ Generated class for the Dashboard provider.
 
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular 2 DI.
-*/
+ See https://angular.io/docs/ts/latest/guide/dependency-injection.html
+ for more info on providers and Angular 2 DI.
+ */
 @Injectable()
 export class Dashboard {
 
@@ -18,7 +18,7 @@ export class Dashboard {
    * get all dashBoards from server
    * @param currentUser
    * @returns {Promise<T>}
-     */
+   */
   getAllDashBoardsFromServer(currentUser){
     let url = "/api/25/dashboards.json?paging=false&filter=itemCount:gt:0&fields=name,id," +
       "dashboardItems[id,type,shape,chart[:all],reportTable[:all]," +
@@ -40,7 +40,7 @@ export class Dashboard {
    * get formatted string neccessry for anlaytic
    * @param enumString
    * @returns {any}
-     */
+   */
   formatEnumString(enumString){
     enumString = enumString.replace(/_/g,' ');
     enumString=enumString.toLowerCase();
@@ -56,10 +56,12 @@ export class Dashboard {
    * @param dashboardItems
    * @param currentUser
    * @returns {Promise<T>}
-     */
+   */
   getDashBoardItemObjects(dashboardItems,currentUser){
     let dashBoardObjects = [];let self= this;
     let promises = [];
+    let rejectedDashboardItems = 0;
+    let rejectedDashboardsType = "";
     let allowedDashboardItems = ["CHART","EVENT_CHART","TABLE","REPORT_TABLE","EVENT_REPORT"];
     return new Promise(function(resolve, reject) {
       dashboardItems.forEach(dashboardItem=>{
@@ -69,6 +71,15 @@ export class Dashboard {
               dashBoardObjects.push(dashBoardObject);
             },error=>{})
           )
+        }else{
+          rejectedDashboardItems ++;
+          if(rejectedDashboardItems == dashboardItems.length){
+            if(rejectedDashboardsType.indexOf(dashboardItem.type.toLowerCase()) == -1){
+              rejectedDashboardsType = rejectedDashboardsType + dashboardItem.type.toLowerCase() + ", ";
+            }
+            console.log("Here we are : " + rejectedDashboardsType);
+            reject({errorMessage : "Selected dashboard has dashboard items of type " + rejectedDashboardsType + " which are not supported at the moment"});
+          }
         }
       });
       Observable.forkJoin(promises).subscribe(() => {
@@ -85,7 +96,7 @@ export class Dashboard {
    * @param dashboardItem
    * @param currentUser
    * @returns {Promise<T>}
-     */
+   */
   getDashBoardItemObject(dashboardItem,currentUser){
     let self = this;
     let url = "/api/25/"+self.formatEnumString(dashboardItem.type)+"s/"+dashboardItem[self.formatEnumString(dashboardItem.type)].id+".json?fields=:all,program[id,name],programStage[id,name],columns[dimension,filter,items[id,name],legendSet[id,name]],rows[dimension,filter,items[id,name],legendSet[id,name]],filters[dimension,filter,items[id,name],legendSet[id,name]],!lastUpdated,!href,!created,!publicAccess,!rewindRelativePeriods,!userOrganisationUnit,!userOrganisationUnitChildren,!userOrganisationUnitGrandChildren,!externalAccess,!access,!relativePeriods,!columnDimensions,!rowDimensions,!filterDimensions,!user,!organisationUnitGroups,!itemOrganisationUnitGroups,!userGroupAccesses,!indicators,!dataElements,!dataElementOperands,!dataElementGroups,!dataSets,!periods,!organisationUnitLevels,!organisationUnits,attributeDimensions[id,name,attribute[id,name,optionSet[id,name,options[id,name]]]],dataElementDimensions[id,name,dataElement[id,name,optionSet[id,name,options[id,name]]]],categoryDimensions[id,name,category[id,name,categoryOptions[id,name,options[id,name]]]]";
@@ -107,7 +118,7 @@ export class Dashboard {
    * @param dashboardObjects
    * @param currentUser
    * @returns {Promise<T>}
-     */
+   */
   getAnalyticDataForDashBoardItems(dashboardObjects,currentUser){
     let data = {};let self= this;
     let promises = [];
@@ -134,7 +145,7 @@ export class Dashboard {
    * @param analyticsUrl
    * @param currentUser
    * @returns {Promise<T>}
-     */
+   */
   getAnalyticDataForDashBoardItem(analyticsUrl,currentUser){
     let self = this;
     return new Promise(function(resolve, reject) {
@@ -150,7 +161,7 @@ export class Dashboard {
    * set analytic url on dashboard object
    * @param dashBoardObject
    * @returns {any}
-     */
+   */
   getDashBoardItemObjectWithAnalyticsUrl(dashBoardObject){
     let analyticsUrl = this.getDashBoardItemAnalyticsUrl(dashBoardObject);
     dashBoardObject.analyticsUrl = analyticsUrl;
@@ -161,7 +172,7 @@ export class Dashboard {
    * get analytic url
    * @param dashBoardObject
    * @returns {string}
-     */
+   */
   getDashBoardItemAnalyticsUrl(dashBoardObject){
     let url = "/api/25/analytics";let column = "";let row = "";let filter = "";
     //checking for columns

@@ -5,11 +5,11 @@ import {NetworkAvailability} from "../../providers/network-availability";
 import {User} from "../../providers/user";
 
 /*
-  Generated class for the DashBoardHome page.
+ Generated class for the DashBoardHome page.
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
+ See http://ionicframework.com/docs/v2/components/#navigation for more info on
+ Ionic pages and navigation.
+ */
 @Component({
   selector: 'page-dash-board-home',
   templateUrl: 'dash-board-home.html'
@@ -121,7 +121,11 @@ export class DashBoardHomePage implements OnInit{
         this.initiateSelectedDashBoardItem();
       },error=>{
         this.dashBoardProgressTracker.isDashBoardItemObjectsAndDataLoaded = true;
-        this.setToasterMessage("Fail to load dashboard items metadata from server " );
+        if(error.errorMessage){
+          this.setToasterMessage(error.errorMessage);
+        }else{
+          this.setToasterMessage("Fail to load dashboard items metadata from server " );
+        }
         console.log(JSON.stringify(error));
       });
     }
