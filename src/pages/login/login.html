@@ -33,7 +33,12 @@
               </div>
             </div>
           <span ion-text [color]="(currentResourceType == 'communication')?'current' : 'font-color'" >
-            Establish connection to server
+            <span *ngIf="progressTracker.communication.message != '' ">
+              {{ progressTracker.communication.message }}
+            </span>
+            <span *ngIf="progressTracker.communication.message == '' ">
+              Establish connection to server
+            </span>
           </span>
             <div style="text-align: center" item-right >
               {{ progressTracker.communication.passStepCount}}/{{ progressTracker.communication.count}}
@@ -51,7 +56,12 @@
               </div>
             </div>
           <span ion-text [color]="(currentResourceType == 'organisationUnit')?'current' : 'font-color'" >
-            Load assigned organisation unit(s)
+            <span *ngIf="progressTracker.organisationUnit.message != '' ">
+              {{ progressTracker.organisationUnit.message }}
+            </span>
+            <span *ngIf="progressTracker.organisationUnit.message == '' ">
+              Load assigned organisation unit(s)
+            </span>
           </span>
             <div style="text-align: center" item-right >
               {{ progressTracker.organisationUnit.passStepCount }}/{{ progressTracker.organisationUnit.count}}
@@ -69,7 +79,12 @@
               </div>
             </div>
           <span ion-text [color]="(currentResourceType == 'entryForm')?'current' : 'font-color'" >
-            Load aggregate metadata
+            <span *ngIf="progressTracker.entryForm.message != '' ">
+              {{ progressTracker.entryForm.message }}
+            </span>
+            <span *ngIf="progressTracker.entryForm.message == '' ">
+              Load aggregate metadata
+            </span>
           </span>
             <div style="text-align: center" item-right >
               {{ progressTracker.entryForm.passStepCount}}/{{ progressTracker.entryForm.count}}
@@ -87,7 +102,12 @@
               </div>
             </div>
           <span ion-text [color]="(currentResourceType == 'event')?'current' : 'font-color'" >
-            Load tracker metadata
+            <span *ngIf="progressTracker.event.message != '' ">
+              {{ progressTracker.event.message }}
+            </span>
+            <span *ngIf="progressTracker.event.message == '' ">
+              Load tracker metadata
+            </span>
           </span>
 
             <div style="text-align: center" item-right >
@@ -106,7 +126,12 @@
               </div>
             </div>
           <span ion-text [color]="(currentResourceType == 'report')?'current' : 'font-color'" >
-            Load Report metadata
+            <span *ngIf="progressTracker.report.message != '' ">
+              {{ progressTracker.report.message }}
+            </span>
+            <span *ngIf="progressTracker.report.message == '' ">
+              Load Report metadata
+            </span>
           </span>
 
             <div style="text-align: center" item-right >

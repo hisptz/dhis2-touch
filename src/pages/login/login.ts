@@ -65,11 +65,13 @@ export class LoginPage implements OnInit{
   resetPassSteps(){
     let dataBaseStructure =  this.sqlLite.getDataBaseStructure();
     this.progressTracker["communication"].passStepCount = 0;
+    this.progressTracker["communication"].message = "";
     Object.keys(dataBaseStructure).forEach(key=>{
       let table = dataBaseStructure[key];
       if(table.canBeUpdated && table.resourceType){
         if(this.progressTracker[table.resourceType]){
           this.progressTracker[table.resourceType].passStepCount = 0;
+          this.progressTracker[table.resourceType].message = "";
           this.progressTracker[table.resourceType].passStep.forEach((passStep : any)=>{
             passStep.hasPassed = false;
           })
@@ -85,14 +87,14 @@ export class LoginPage implements OnInit{
       let table = dataBaseStructure[key];
       if(table.canBeUpdated && table.resourceType){
         if(!progressTracker[table.resourceType]){
-          progressTracker[table.resourceType] = {count : 1,passStep :[],passStepCount : 0};
+          progressTracker[table.resourceType] = {count : 1,passStep :[],passStepCount : 0,message :""};
         }else{
           progressTracker[table.resourceType].count += 1;
         }
       }
     });
-    progressTracker["communication"] = {count : 3,passStep :[],passStepCount : 0};
-    progressTracker["finalization"] = {count :0.5,passStep :[],passStepCount : 0};
+    progressTracker["communication"] = {count : 3,passStep :[],passStepCount : 0, message : ""};
+    progressTracker["finalization"] = {count :0.5,passStep :[],passStepCount : 0, message : ""};
     return progressTracker;
   }
 
@@ -163,6 +165,7 @@ export class LoginPage implements OnInit{
         this.progress = "0";
         //empty communication as well as organisation unit
         this.progressTracker.communication.passStep = [];
+        this.progressTracker.communication.message = "Establish connection to server";
         this.progressTracker.organisationUnit.passStep = [];
         this.currentResourceType = "communication";
         this.loadingData = true;
@@ -181,19 +184,21 @@ export class LoginPage implements OnInit{
                   //update authenticate  process
                   this.loginData.currentDatabase = databaseName;
                   this.reInitiateProgressTrackerObject(this.loginData);
-                  this.updateProgressTracker(resource);
-
-
-                  resource = 'Opening database';
                   this.currentResourceType = "communication";
+                  this.updateProgressTracker(resource);
+                  this.progressTracker[this.currentResourceType].message = "Establish connection to server";
+                  resource = 'Opening database';
                   this.sqlLite.generateTables(databaseName).then(()=>{
+                    //Establish connection to server
                     this.updateProgressTracker(resource);
                     resource = 'Loading system information';
                     this.currentResourceType = "communication";
+                    this.progressTracker[this.currentResourceType].message = "Opening local storage";
                     this.httpClient.get('/api/system/info',this.loginData).subscribe(
                       data => {
                         data = data.json();
                         this.updateProgressTracker(resource);
+                        this.progressTracker[this.currentResourceType].message = "Loading system information";
                         this.user.setCurrentUserSystemInformation(data).then(()=>{
                           this.downloadingOrganisationUnits(userData);
                         },error=>{
@@ -241,6 +246,7 @@ export class LoginPage implements OnInit{
   downloadingOrganisationUnits(userData){
     let resource = 'organisationUnits';
     this.currentResourceType = "organisationUnit";
+    this.progressTracker[this.currentResourceType].message = "Loading assigned organisation unit";
     let ids = [];
     userData.organisationUnits.forEach(organisationUnit=>{
       if(organisationUnit.id){
@@ -250,7 +256,6 @@ export class LoginPage implements OnInit{
     let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
     let fields = tableMetadata.fields;
     this.app.downloadMetadataByResourceIds(this.loginData,resource,ids,fields,null).then(response=>{
-      this.setLoadingMessages('Saving organisation data');
       this.app.saveMetadata(resource,response,this.loginData.currentDatabase).then(()=>{
         this.updateProgressTracker(resource);
         this.downloadingDataSets();
@@ -269,13 +274,14 @@ export class LoginPage implements OnInit{
   downloadingDataSets(){
     let resource = 'dataSets';
     this.currentResourceType = "entryForm";
+    this.progressTracker[this.currentResourceType].message = "Loading entry forms";
     if(this.completedTrackedProcess.indexOf(resource) > -1){
+      this.updateProgressTracker(resource);
       this.downloadingSections();
     }else{
       let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
       let fields = tableMetadata.fields;
       this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-        this.setLoadingMessages('Saving '+response[resource].length+' data entry form');
         this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
           this.updateProgressTracker(resource);
           this.downloadingSections();
@@ -295,13 +301,14 @@ export class LoginPage implements OnInit{
   downloadingSections(){
     let resource = 'sections';
     this.currentResourceType = "entryForm";
+    this.progressTracker[this.currentResourceType].message = "Loading entry forms's sections";
     if(this.completedTrackedProcess.indexOf(resource) > -1){
+      this.updateProgressTracker(resource);
       this.downloadingSmsCommand();
     }else{
       let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
       let fields = tableMetadata.fields;
       this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-        this.setLoadingMessages('Saving '+response[resource].length+' data entry form sections');
         this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
           this.updateProgressTracker(resource);
           this.downloadingSmsCommand();
@@ -321,7 +328,9 @@ export class LoginPage implements OnInit{
   downloadingSmsCommand(){
     let resource = "smsCommand";
     this.currentResourceType = "entryForm";
+    this.progressTracker[this.currentResourceType].message = "Loading sms commands";
     if(this.completedTrackedProcess.indexOf(resource) > -1){
+      this.updateProgressTracker(resource);
       this.downloadingPrograms();
     }else{
       this.SmsCommand.getSmsCommandFromServer(this.loginData).then((response:any)=>{
@@ -344,13 +353,14 @@ export class LoginPage implements OnInit{
   downloadingPrograms(){
     let resource = 'programs';
     this.currentResourceType = "event";
+    this.progressTracker[this.currentResourceType].message = "Loading programs";
     if(this.completedTrackedProcess.indexOf(resource) > -1){
+      this.updateProgressTracker(resource);
       this.downloadingProgramStageSections();
     }else{
       let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
       let fields = tableMetadata.fields;
       this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-        this.setLoadingMessages('Saving '+response[resource].length+' programs');
         this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
           this.updateProgressTracker(resource);
           this.downloadingProgramStageSections();
@@ -370,13 +380,14 @@ export class LoginPage implements OnInit{
   downloadingProgramStageSections(){
     let resource = 'programStageSections';
     this.currentResourceType = "event";
+    this.progressTracker[this.currentResourceType].message = "Loading program stage's sections";
     if(this.completedTrackedProcess.indexOf(resource) > -1){
+      this.updateProgressTracker(resource);
       this.downloadingProgramStageDataElements();
     }else{
       let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
       let fields = tableMetadata.fields;
       this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-        this.setLoadingMessages('Saving '+response[resource].length+' program-stage sections');
         this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
           this.updateProgressTracker(resource);
           this.downloadingProgramStageDataElements();
@@ -396,18 +407,17 @@ export class LoginPage implements OnInit{
   downloadingProgramStageDataElements(){
     let resource = 'programStageDataElements';
     this.currentResourceType = "event";
+    this.progressTracker[this.currentResourceType].message = "Loading programstage data elements";
     if(this.completedTrackedProcess.indexOf(resource) > -1){
+      this.updateProgressTracker(resource);
       this.downloadingIndicators();
-      //this.setLandingPage();
     }else{
       let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
       let fields = tableMetadata.fields;
       this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-        this.setLoadingMessages('Saving '+response[resource].length+' program-stage data-elements');
         this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
           this.updateProgressTracker(resource);
           this.downloadingIndicators();
-          //this.setLandingPage();
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
@@ -424,13 +434,14 @@ export class LoginPage implements OnInit{
   downloadingIndicators(){
     let resource = 'indicators';
     this.currentResourceType = "report";
+    this.progressTracker[this.currentResourceType].message = "Loading indicators";
     if(this.completedTrackedProcess.indexOf(resource) > -1){
+      this.updateProgressTracker(resource);
       this.downloadingReports();
     }else{
       let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
       let fields = tableMetadata.fields;
       this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-        this.setLoadingMessages('Saving '+response[resource].length+' indicators');
         this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
           this.updateProgressTracker(resource);
           this.downloadingReports();
@@ -450,14 +461,15 @@ export class LoginPage implements OnInit{
   downloadingReports(){
     let resource = 'reports';
     this.currentResourceType = "report";
+    this.progressTracker[this.currentResourceType].message = "Loading reports";
     if(this.completedTrackedProcess.indexOf(resource) > -1){
+      this.updateProgressTracker(resource);
       this.downloadingConstants();
     }else{
       let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
       let fields = tableMetadata.fields;
       let filter = tableMetadata.filter;
       this.app.downloadMetadata(this.loginData,resource,null,fields,filter).then(response=>{
-        this.setLoadingMessages('Saving '+response[resource].length+' reports');
         this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
           this.updateProgressTracker(resource);
           this.downloadingConstants();
@@ -477,13 +489,14 @@ export class LoginPage implements OnInit{
   downloadingConstants(){
     let resource = 'constants';
     this.currentResourceType = "report";
+    this.progressTracker[this.currentResourceType].message = "Loading constants";
     if(this.completedTrackedProcess.indexOf(resource) > -1){
+      this.updateProgressTracker(resource);
       this.setLandingPage();
     }else{
       let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
       let fields = tableMetadata.fields;
       this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-        this.setLoadingMessages('Saving '+response[resource].length+' constants');
         this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
           this.updateProgressTracker(resource);
           this.setLandingPage();
