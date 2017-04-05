@@ -212,10 +212,12 @@ export class DataEntryForm implements OnInit{
       this.currentPage = page;
     }
     this.paginationLabel = (this.currentPage + 1) + "/"+this.entryFormSections.length;
-    this.content.scrollToTop(1000);
+    //scroll form to the top
+    setTimeout(() => {
+      this.content.scrollToTop(1300);
+    },200);
   }
 
-  //@todo handle completeness of dataSet
   updateDataSetCompleteness(){
     this.isDataSetCompletenessProcessRunning = true;
     let dataSetId = this.selectedDataSet.id;

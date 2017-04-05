@@ -78,32 +78,32 @@
 //action sheet style for tool tips
 .action-sheet-md .action-sheet-title {
   padding: 5px 16px 5px;
-  font-size: 18px;
+  font-size: 1.8rem;
   text-align: left;
   color: #757575;
 }
 
 .action-sheet-sub-title{
   padding: 0px 16px 17px;
-  font-size: 18px;
+  font-size: 1.8rem;
   text-align: left;
   color: #757575;
 }
 
 //items
 .item-md p {
-  font-size: 17px !important;
+  font-size: 1.7rem !important;
 }
 .item-md h2 {
-  font-size: 19px !important;
+  font-size: 1.8rem !important;
   font-weight: 300;
 }
 //tabs button
 .tabs-md .tab-button {
-  font-size: 17px !important;
+  font-size: 1.7rem !important;
 }
 .tabs-md .tab-button[aria-selected=true] {
-  font-size: 17px !important;
+  font-size: 1.7rem !important;
 }
 
 //buttons
@@ -112,11 +112,11 @@
 }
 
 .normalButton {
-  font-size: 17px !important;
+  font-size: 1.7rem !important;
 }
 .dataEntryButton{
   color: #7A7A7A;
-  font-size: 17px !important;
+  font-size: 1.7rem !important;
 }
 
 .button-fab {
@@ -125,15 +125,15 @@
 
 //selections
 .selectionLabel{
-  font-size: 17px !important;
+  font-size: 1.7rem !important;
 }
 .selectionLabel{
-  font-size: 17px !important;
+  font-size: 1.7rem !important;
 }
 
 .selectionHints{
   word-wrap: break-word!important;
-  font-size: 17px !important;
+  font-size: 1.7rem !important;
 }
 
 //table styling
@@ -156,7 +156,8 @@ th {
 td, th {
   padding: 6px;
   border: 1px solid #ADB7C5;
-  text-align: left;
+  text-align: center;
+  min-height: 2.1rem;
 }
 
 //items in listing
@@ -164,18 +165,18 @@ td, th {
   position: relative;
   padding-right: 0;
   padding-left: 16px;
-  font-size: 17px !important;
+  font-size: 1.7rem !important;
   font-weight: normal;
 }
 
 //cards
 .card-md h1 {
-  font-size: 22px;
+  font-size: 1.8rem;
   color : #7A7A7A;
 }
 .card-header-md {
   padding: 16px;
-  font-size: 17px;
+  font-size: 1.7rem;
   color : #7A7A7A;
 }
 .card-md h2 {
@@ -186,7 +187,7 @@ td, th {
 .card-md h4,
 .card-md h5,
 .card-md h6 {
-  font-size: 17px;
+  font-size: 1.7rem;
   color : #7A7A7A;
 }
 
@@ -197,17 +198,17 @@ td, th {
   margin-bottom: 4px;
 }
 p,h3,h4,h5,h6{
-  font-size: 17px;
+  font-size: 1.7rem;
 }
 h2{
-  font-size: 18px;
+  font-size: 1.8rem;
 }
 h1{
-  font-size: 19px;
+  font-size: 1.8rem;
 }
 
 .card-md p {
-  font-size: 17px;;
+  font-size: 1.7rem;;
   color : #7A7A7A;
 }
 
