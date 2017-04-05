@@ -43,7 +43,7 @@
     </ion-card>
 
     <ion-card  *ngIf="event">
-      <ion-card-content *ngIf="event.event">
+      <ion-card-content *ngIf="event.event" (tap)="gotToEditEvent(event)">
         <p><b>Incident date</b>&nbsp;&nbsp;:&nbsp;&nbsp;{{ event.eventDate }}</p>
         <div *ngFor="let dataValue of event.dataValues">
           <div *ngIf="dataElementMapper[dataValue.dataElement]">
