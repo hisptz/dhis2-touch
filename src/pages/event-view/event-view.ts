@@ -5,6 +5,7 @@ import {Program} from "../../providers/program";
 import {Events} from "../../providers/events";
 import {ProgramStageDataElements} from "../../providers/program-stage-data-elements";
 import {User} from "../../providers/user";
+import {EventCaptureForm} from "../event-capture-form/event-capture-form";
 
 /*
   Generated class for the EventView page.
@@ -43,7 +44,10 @@ export class EventView implements OnInit{
     });
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter(){
+    if(this.params && this.params.programId){
+      this.loadProgramMetadata(this.params.programId);
+    }
   }
 
   /**
@@ -100,6 +104,18 @@ export class EventView implements OnInit{
 
   setLoadingMessages(message){
     this.loadingMessages.push(message);
+  }
+
+  gotToEditEvent(event){
+    let params = {
+      orgUnitId : this.params.orgUnitId,
+      orgUnitName : this.params.orgUnitName,
+      programId : this.params.programId,
+      programName : this.params.programName,
+      selectedDataDimension : this.params.selectedDataDimension,
+      event : event.event
+    };
+    this.navCtrl.push(EventCaptureForm,{params:params});
   }
 
   setToasterMessage(message){
