@@ -31,8 +31,8 @@
           <ion-item-group (tap)="backToPreviousView()">
             <ion-item-divider>
               <p><b>Report  : </b> : {{ reportName }}</p>
-              <p><b>Organisation Unit</b> : </p>
-              <p><b>Period</b> : </p>
+              <p><b>Organisation Unit</b> : {{ organisationUnitName }} </p>
+              <p><b>Period</b> : {{ periodName }}</p>
             </ion-item-divider>
           </ion-item-group>
         </ion-col>
@@ -40,7 +40,7 @@
 
       <ion-row >
         <ion-col>
-          <div class="reportView" [innerHTML]="htmlMarkup"></div>
+          <div class="reportView" [innerHTML]="_htmlMarkup"></div>
         </ion-col>
       </ion-row>
 

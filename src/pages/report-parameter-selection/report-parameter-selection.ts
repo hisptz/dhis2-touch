@@ -125,7 +125,9 @@ export class ReportParameterSelection implements OnInit{
   goToView(){
     let parameter = {
       id : this.reportId,name : this.reportName,
-      period : this.selectedPeriod.iso,organisationUnit : this.selectedOrganisationUnit,organisationUnitChildren :[]
+      period : this.selectedPeriod,
+      organisationUnit : this.selectedOrganisationUnit,
+      organisationUnitChildren :[]
     };
     this.navCtrl.push(ReportView,parameter);
   }

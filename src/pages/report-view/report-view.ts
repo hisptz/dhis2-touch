@@ -20,7 +20,12 @@ export class ReportView implements OnInit{
 
   public reportId : string;
   public reportName : string;
-  public _htmlMarkup : any;
+  public periodName : string = "";
+  public organisationUnitName : string = "";
+  public selectedPeriod : any;
+  public selectedOrganisationUnit : any;
+  public _htmlMarkup : SafeHtml;
+  public hasScriptSet : boolean = false;
   public loadingData : boolean = false;
   public loadingMessage : string = "";
   public currentUser : any;
@@ -38,11 +43,15 @@ export class ReportView implements OnInit{
       dhis2.database = user.currentDatabase;
       this.reportId = this.params.get("id");
       this.reportName = this.params.get("name");
+      this.selectedPeriod  =  this.params.get("period");
+      this.selectedOrganisationUnit = this.params.get("organisationUnit");
+      this.organisationUnitName = (this.selectedOrganisationUnit.name)?this.selectedOrganisationUnit.name:"";
+      this.periodName = (this.selectedPeriod.name)?this.selectedPeriod.name : "";
       dhis2.report = {
-        organisationUnit :this.params.get("organisationUnit"),
+        organisationUnit :this.selectedOrganisationUnit,
         organisationUnitChildren : this.params.get("organisationUnitChildren"),
         organisationUnitHierarchy : this.getOrganisationUnitHierarchy(this.params.get("organisationUnit")),
-        period : this.params.get("period")
+        period : this.selectedPeriod.iso
       };
       this.loadReportDesignContent(this.reportId);
     });
@@ -70,18 +79,16 @@ export class ReportView implements OnInit{
     this.loadingData = true;
     this.loadingMessage = "Loading report metadata";
     this.Report.getReportId(reportId,this.currentUser).then((report : any)=>{
-      this._htmlMarkup = report.designContent;
-      let scriptsContents = this.getScriptsContents(this._htmlMarkup);
+      if(report && report.designContent){
+        let scriptsContents = this.getScriptsContents(report.designContent);
+        this.setScriptsOnHtmlContent(scriptsContents);
+        this._htmlMarkup = this.sanitizer.bypassSecurityTrustHtml(report.designContent);
+      }
       this.loadingData = false;
-      this.setScriptsOnHtmlContent(scriptsContents);
     },error=>{
       this.loadingData = false;
       this.setToasterMessage("Fail to load  report details");
     });
-  }
-
-  public get htmlMarkup(): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(this._htmlMarkup);
   }
 
   getScriptsContents(html){
@@ -96,12 +103,15 @@ export class ReportView implements OnInit{
   }
 
   setScriptsOnHtmlContent(scriptsContentsArray){
-    scriptsContentsArray.forEach(scriptsContents=>{
-      let script = document.createElement("script");
-      script.type = "text/javascript";
-      script.innerHTML = scriptsContents;
-      this.elementRef.nativeElement.appendChild(script);
-    });
+    if(!this.hasScriptSet){
+      scriptsContentsArray.forEach(scriptsContents=>{
+        let script = document.createElement("script");
+        script.type = "text/javascript";
+        script.innerHTML = scriptsContents;
+        this.elementRef.nativeElement.appendChild(script);
+      });
+      this.hasScriptSet = true;
+    }
   }
 
   setToasterMessage(message){
