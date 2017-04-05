@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
+ionic plugin add cordova-plugin-console
 ionic plugin add cordova-plugin-app-version --save
-ionic plugin add cordova-plugin-console --save
 ionic plugin add cordova-plugin-device --save
 ionic plugin add cordova-plugin-splashscreen --save
 ionic plugin add cordova-plugin-statusbar --save
