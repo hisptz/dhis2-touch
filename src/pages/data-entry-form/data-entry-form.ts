@@ -154,6 +154,7 @@ export class DataEntryForm implements OnInit{
       let newDataValue = [
         {dataElement : fieldIdArray[0],categoryOptionCombo : fieldIdArray[1],value :this.entryFormDataValues[fieldId]}
       ];
+      console.log("Saving : " + JSON.stringify(newDataValue));
       this.dataValues.getDataValuesById(id,this.currentUser).then((dataValues : any)=>{
         if(dataValues.length > 0){
           if(dataValues[0].value != this.entryFormDataValues[fieldId]){
