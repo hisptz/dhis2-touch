@@ -176,9 +176,9 @@ export class LoginPage implements OnInit{
             this.user.authenticateUser(this.loginData).then((response:any)=> {
               response = this.getResponseData(response);
               this.loginData = response.user;
+              this.setNotificationToasterMessage("You have been logged in into " + this.loginData.serverUrl);
               //set authorization key and reset password
               this.loginData.authorizationKey = btoa(this.loginData.username + ':' + this.loginData.password);
-
               this.user.setUserData(JSON.parse(response.data)).then(userData=>{
                 this.app.getDataBaseName(this.loginData.serverUrl).then(databaseName=>{
                   //update authenticate  process
