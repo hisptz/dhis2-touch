@@ -66,6 +66,10 @@ export class DataEntryForm implements OnInit{
     });
   }
 
+  ionViewDidEnter() {
+
+  }
+
   loadDataSet(dataSetId){
     this.loadingData = true;
     this.loadingMessages=[];
@@ -148,23 +152,23 @@ export class DataEntryForm implements OnInit{
       let orgUnitId = this.dataEntryFormSelectionParameter.orgUnit.id;
       let period = this.dataEntryFormSelectionParameter.period.iso;
       let dataDimension = this.dataEntryFormSelectionParameter.dataDimension;
+      let syncStatus = "not synced";
 
       let fieldIdArray = fieldId.split("-");
       let id = dataSetId + '-' + fieldIdArray[0] + '-' + fieldIdArray[1] + '-' + period + '-' + orgUnitId;
       let newDataValue = [
         {dataElement : fieldIdArray[0],categoryOptionCombo : fieldIdArray[1],value :this.entryFormDataValues[fieldId]}
       ];
-      console.log("Saving : " + JSON.stringify(newDataValue));
       this.dataValues.getDataValuesById(id,this.currentUser).then((dataValues : any)=>{
         if(dataValues.length > 0){
           if(dataValues[0].value != this.entryFormDataValues[fieldId]){
-            this.dataValues.saveDataValues(newDataValue,dataSetId,period,orgUnitId,dataDimension,"synced",this.currentUser).then(()=>{
-              this.storageStatus.online --;
+            this.dataValues.saveDataValues(newDataValue,dataSetId,period,orgUnitId,dataDimension,syncStatus,this.currentUser).then(()=>{
+              this.storageStatus.online = (this.storageStatus.online > 0)? this.storageStatus.online -- : 0;
               this.storageStatus.local ++;
             },error=>{});
           }
         }else{
-          this.dataValues.saveDataValues(newDataValue,dataSetId,period,orgUnitId,dataDimension,"not synced",this.currentUser).then(()=>{
+          this.dataValues.saveDataValues(newDataValue,dataSetId,period,orgUnitId,dataDimension,syncStatus,this.currentUser).then(()=>{
             this.storageStatus.local ++;
           },error=>{});
         }
