@@ -163,8 +163,10 @@ export class DataEntryForm implements OnInit{
         if(dataValues.length > 0){
           if(dataValues[0].value != this.entryFormDataValues[fieldId]){
             this.dataValues.saveDataValues(newDataValue,dataSetId,period,orgUnitId,dataDimension,syncStatus,this.currentUser).then(()=>{
-              this.storageStatus.online = (this.storageStatus.online > 0)? this.storageStatus.online -- : 0;
-              this.storageStatus.local ++;
+              if(dataValues[0].syncStatus != syncStatus){
+                this.storageStatus.online --;
+                this.storageStatus.local ++;
+              }
             },error=>{});
           }
         }else{

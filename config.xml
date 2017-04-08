@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.ionicframework.dhis2touch992115" version="2.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>dhis-2-touch</name>
+  <name>hisptz touch</name>
   <description>Hybrid mobile application for DHIS </description>
   <author email="profschigalo@gmail.com" href="">Joseph Chingalo</author>
   <content src="index.html"/>
