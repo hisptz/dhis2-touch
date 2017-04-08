@@ -30,6 +30,14 @@ export class OrganisationUnit {
   }
 
   /**
+   * reset organisation unit
+   */
+  resetOrganisationUnit(){
+    this.organisationUnits = [];
+    this.currentOrganisationUnit = null;
+  }
+
+  /**
    * get user assigned organisation unit
    * @param currentUser
      */
