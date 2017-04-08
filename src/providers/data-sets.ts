@@ -28,6 +28,7 @@ export class DataSets {
         }
       });
       self.sqlLite.getDataFromTableByAttributes(self.resource,attribute,attributeValue,currentUser.currentDatabase).then((dataSets : any)=>{
+        self.sortDataSetList(dataSets);
         dataSets.forEach((dataSet : any)=>{
           assignedDataSetsByOrgUnit.push({
             id: dataSet.id,
@@ -39,11 +40,25 @@ export class DataSets {
             dataSetElements : dataSet.dataSetElements
           });
         });
-        resolve(assignedDataSetsByOrgUnit)
+        resolve(assignedDataSetsByOrgUnit);
       },error=>{
         reject(error);
       })
     });
+  }
+
+  sortDataSetList(dataSetList){
+    dataSetList.sort((a, b) => {
+      if (a.name > b.name) {
+        return 1;
+      }
+      if (a.name < b.name) {
+        return -1;
+      }
+      // a must be equal to b
+      return 0;
+    });
+    return dataSetList;
   }
 
   getDataSetById(dataSetId,currentUser){
