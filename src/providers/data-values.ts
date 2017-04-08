@@ -62,6 +62,8 @@ export class DataValues {
     let self = this;
     let formattedDataValues = self.getFormattedDataValueForUpload(dataValues);
     let uploadedDataValues = 0;
+    let failOnUploadedDataValues = 0;
+    let statusMessage = "";
     let network = self.NetworkAvailability.getNetWorkStatus();
     if(formattedDataValues.length > 0 && network.isAvailable){
       this.setNotificationToasterMessage("Starting data synchronization process");
@@ -70,14 +72,19 @@ export class DataValues {
           let syncedDataValues = dataValues[index];
           syncedDataValues["syncStatus"] = "synced";
           uploadedDataValues = uploadedDataValues + 1;
-          if(uploadedDataValues == formattedDataValues.length){
-            self.setNotificationToasterMessage( uploadedDataValues + " data has been synced successfully");
-            console.log("upload is success : " + uploadedDataValues);
+          if((uploadedDataValues + failOnUploadedDataValues) == formattedDataValues.length){
+            statusMessage =  uploadedDataValues + " data has been synced successfully .  " + failOnUploadedDataValues + " has failed to sync";
+            self.setNotificationToasterMessage(statusMessage);
           }
           self.sqlLite.insertDataOnTable(self.resourceName, syncedDataValues, currentUser.currentDatabase).then(response=> {
           }, error=> {
           })
         }, error=> {
+          failOnUploadedDataValues = failOnUploadedDataValues + 1;
+          if((uploadedDataValues + failOnUploadedDataValues) == formattedDataValues.length){
+            statusMessage =  uploadedDataValues + " data has been synced successfully .  " + failOnUploadedDataValues + " has failed to sync";
+            self.setNotificationToasterMessage(statusMessage);
+          }
         });
       });
     }
