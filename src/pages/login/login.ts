@@ -7,6 +7,8 @@ import {Synchronization} from "../../providers/synchronization";
 import {AppProvider} from "../../providers/app-provider";
 import {SqlLite} from "../../providers/sql-lite";
 import {TabsPage} from "../tabs/tabs";
+import {OrganisationUnit} from "../../providers/organisation-unit";
+import {NetworkAvailability} from "../../providers/network-availability";
 
 /*
  Generated class for the Login page.
@@ -25,6 +27,8 @@ export class LoginPage implements OnInit{
   public isLoginProcessActive :boolean = false;
   public loadingMessages : any = [];
   public logoUrl : string;
+  public loggedInInInstance : string = "";
+  public isLoginProcessCancelled : boolean = false;
 
   //progress tracker object
   public progress : string = "0";
@@ -35,8 +39,8 @@ export class LoginPage implements OnInit{
   constructor(public navCtrl: NavController,
               public synchronization:Synchronization,
               public toastCtrl: ToastController,public app : AppProvider,
-              public SmsCommand : SmsCommand,
-              public httpClient : HttpClient,
+              public SmsCommand : SmsCommand,public NetworkAvailability : NetworkAvailability,
+              public httpClient : HttpClient,public OrganisationUnit : OrganisationUnit,
               public user : User,public sqlLite : SqlLite) {}
 
   ngOnInit() {
@@ -55,6 +59,9 @@ export class LoginPage implements OnInit{
     if(user.progressTracker && user.currentDatabase && user.progressTracker[user.currentDatabase]){
       this.progressTracker = user.progressTracker[user.currentDatabase];
       this.resetPassSteps();
+    }else if(user.currentDatabase && user.progressTracker){
+      this.loginData.progressTracker[user.currentDatabase] = this.getEmptyProgressTracker();
+      this.progressTracker = this.loginData.progressTracker[user.currentDatabase]
     }else{
       this.loginData["progressTracker"] = {};
       this.progressTracker = {};
@@ -154,6 +161,12 @@ export class LoginPage implements OnInit{
     return completedTrackedProcess;
   };
 
+  cancelLoginProcess(){
+    this.isLoginProcessCancelled = true;
+    this.loadingData = false;
+    this.isLoginProcessActive = false;
+  }
+
   login() {
     if (this.loginData.serverUrl) {
       if (!this.loginData.username) {
@@ -161,12 +174,16 @@ export class LoginPage implements OnInit{
       } else if (!this.loginData.password) {
         this.setToasterMessage('Please Enter password');
       } else {
+        this.isLoginProcessCancelled = false;
+        this.loggedInInInstance = "";
         let resource = "Authenticating user";
         this.progress = "0";
         //empty communication as well as organisation unit
         this.progressTracker.communication.passStep = [];
+        this.progressTracker.communication.passStepCount = 0;
         this.progressTracker.communication.message = "Establish connection to server";
         this.progressTracker.organisationUnit.passStep = [];
+        this.progressTracker.organisationUnit.passStepCount = 0;
         this.currentResourceType = "communication";
         this.loadingData = true;
         this.isLoginProcessActive = true;
@@ -176,52 +193,64 @@ export class LoginPage implements OnInit{
             this.user.authenticateUser(this.loginData).then((response:any)=> {
               response = this.getResponseData(response);
               this.loginData = response.user;
-              this.setNotificationToasterMessage("You have been logged in into " + this.loginData.serverUrl);
+              this.loggedInInInstance = this.loginData.serverUrl;
               //set authorization key and reset password
               this.loginData.authorizationKey = btoa(this.loginData.username + ':' + this.loginData.password);
-              this.user.setUserData(JSON.parse(response.data)).then(userData=>{
-                this.app.getDataBaseName(this.loginData.serverUrl).then(databaseName=>{
-                  //update authenticate  process
-                  this.loginData.currentDatabase = databaseName;
-                  this.reInitiateProgressTrackerObject(this.loginData);
-                  this.currentResourceType = "communication";
-                  this.updateProgressTracker(resource);
-                  this.progressTracker[this.currentResourceType].message = "Establish connection to server";
-                  resource = 'Opening database';
-                  this.sqlLite.generateTables(databaseName).then(()=>{
-                    //Establish connection to server
-                    this.updateProgressTracker(resource);
-                    resource = 'Loading system information';
+              if(!this.isLoginProcessCancelled){
+                this.user.setUserData(JSON.parse(response.data)).then(userData=>{
+                  this.app.getDataBaseName(this.loginData.serverUrl).then(databaseName=>{
+                    //update authenticate  process
+                    this.loginData.currentDatabase = databaseName;
+                    this.reInitiateProgressTrackerObject(this.loginData);
                     this.currentResourceType = "communication";
-                    this.progressTracker[this.currentResourceType].message = "Opening local storage";
-                    this.httpClient.get('/api/system/info',this.loginData).subscribe(
-                      data => {
-                        data = data.json();
-                        this.updateProgressTracker(resource);
-                        this.progressTracker[this.currentResourceType].message = "Loading system information";
-                        this.user.setCurrentUserSystemInformation(data).then(()=>{
-                          this.downloadingOrganisationUnits(userData);
-                        },error=>{
-                          this.loadingData = false;
-                          this.isLoginProcessActive = false;
-                          this.setLoadingMessages('Fail to set system information');
-                        });
-                      },error=>{
-                        this.loadingData = false;
-                        this.isLoginProcessActive = false;
-                        this.setLoadingMessages('Fail to load system information');
-                      });
-
-                  },error=>{
-                    this.setToasterMessage('Fail to open database.');
+                    this.updateProgressTracker(resource);
+                    this.progressTracker[this.currentResourceType].message = "Establish connection to server";
+                    resource = 'Opening database';
+                    this.sqlLite.generateTables(databaseName).then(()=>{
+                      //Establish connection to server
+                      this.updateProgressTracker(resource);
+                      resource = 'Loading system information';
+                      this.currentResourceType = "communication";
+                      this.progressTracker[this.currentResourceType].message = "Opening local storage";
+                      if(!this.isLoginProcessCancelled){
+                        this.httpClient.get('/api/system/info',this.loginData).subscribe(
+                          data => {
+                            data = data.json();
+                            this.updateProgressTracker(resource);
+                            this.progressTracker[this.currentResourceType].message = "Loading system information";
+                            if(!this.isLoginProcessCancelled){
+                              this.user.setCurrentUserSystemInformation(data).then(()=>{
+                                if(!this.isLoginProcessCancelled){
+                                  this.downloadingOrganisationUnits(userData);
+                                }
+                              },error=>{
+                                this.loadingData = false;
+                                this.isLoginProcessActive = false;
+                                if(!this.isLoginProcessCancelled){
+                                  this.setLoadingMessages('Fail to set system information');
+                                }
+                              });
+                            }
+                          },error=>{
+                            this.loadingData = false;
+                            this.isLoginProcessActive = false;
+                            if(!this.isLoginProcessCancelled){
+                              this.setLoadingMessages('Fail to load system information');
+                            }
+                          });
+                      }
+                    },error=>{
+                      this.setToasterMessage('Fail to open database.');
+                    })
                   })
-                })
-              });
+                });
+              }
             }, error=> {
               this.loadingData = false;
               this.isLoginProcessActive = false;
-              if (error.status == 0) {
-                this.setToasterMessage("Please check your network connection");
+              let networkAvailability = this.NetworkAvailability.getNetWorkStatus();
+              if (error.status == 0 || !networkAvailability.isAvailable) {
+                this.setToasterMessage(networkAvailability.message);
               } else if (error.status == 401) {
                 this.setToasterMessage('You have enter wrong username or password');
               } else {
@@ -244,283 +273,367 @@ export class LoginPage implements OnInit{
   }
 
   downloadingOrganisationUnits(userData){
-    let resource = 'organisationUnits';
-    this.currentResourceType = "organisationUnit";
-    this.progressTracker[this.currentResourceType].message = "Loading assigned organisation unit";
-    let ids = [];
-    userData.organisationUnits.forEach(organisationUnit=>{
-      if(organisationUnit.id){
-        ids.push(organisationUnit.id);
-      }
-    });
-    let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-    let fields = tableMetadata.fields;
-    this.app.downloadMetadataByResourceIds(this.loginData,resource,ids,fields,null).then(response=>{
-      this.app.saveMetadata(resource,response,this.loginData.currentDatabase).then(()=>{
-        this.updateProgressTracker(resource);
-        this.downloadingDataSets();
+    if(!this.isLoginProcessCancelled){
+      let resource = 'organisationUnits';
+      this.currentResourceType = "organisationUnit";
+      this.progressTracker[this.currentResourceType].message = "Loading assigned organisation unit";
+      let ids = [];
+      userData.organisationUnits.forEach(organisationUnit=>{
+        if(organisationUnit.id){
+          ids.push(organisationUnit.id);
+        }
+      });
+      let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+      let fields = tableMetadata.fields;
+      this.app.downloadMetadataByResourceIds(this.loginData,resource,ids,fields,null).then(response=>{
+        if(!this.isLoginProcessCancelled){
+          this.app.saveMetadata(resource,response,this.loginData.currentDatabase).then(()=>{
+            this.updateProgressTracker(resource);
+            this.downloadingDataSets();
+          },error=>{
+            this.loadingData = false;
+            this.isLoginProcessActive = false;
+            this.setToasterMessage('Fail to save organisation data.');
+          });
+        }
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
-        this.setToasterMessage('Fail to save organisation data.');
+        console.log(resource);
+        console.log(JSON.stringify(error));
+        if(!this.isLoginProcessCancelled){
+          this.setToasterMessage('Fail to download organisation data.');
+        }
       });
-    },error=>{
-      this.loadingData = false;
-      this.isLoginProcessActive = false;
-      this.setToasterMessage('Fail to download organisation data.');
-    });
+    }
   }
 
   downloadingDataSets(){
-    let resource = 'dataSets';
-    this.currentResourceType = "entryForm";
-    this.progressTracker[this.currentResourceType].message = "Loading entry forms";
-    if(this.completedTrackedProcess.indexOf(resource) > -1){
-      this.updateProgressTracker(resource);
-      this.downloadingSections();
-    }else{
-      let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-      let fields = tableMetadata.fields;
-      this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-        this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-          this.updateProgressTracker(resource);
-          this.downloadingSections();
+    if(!this.isLoginProcessCancelled){
+      let resource = 'dataSets';
+      this.currentResourceType = "entryForm";
+      this.progressTracker[this.currentResourceType].message = "Loading entry forms";
+      if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.updateProgressTracker(resource);
+        this.downloadingSections();
+      }else{
+        let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+        let fields = tableMetadata.fields;
+        this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
+          if(!this.isLoginProcessCancelled){
+            this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+              this.updateProgressTracker(resource);
+              this.downloadingSections();
+            },error=>{
+              this.loadingData = false;
+              this.isLoginProcessActive = false;
+              this.setToasterMessage('Fail to save data entry form.');
+            });
+          }
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
-          this.setToasterMessage('Fail to save data entry form.');
+          console.log(resource);
+          console.log(JSON.stringify(error));
+          if(!this.isLoginProcessCancelled){
+            this.setToasterMessage('Fail to download data entry form.');
+          }
         });
-      },error=>{
-        this.loadingData = false;
-        this.isLoginProcessActive = false;
-        this.setToasterMessage('Fail to download data entry form.');
-      });
+      }
     }
   }
 
   downloadingSections(){
-    let resource = 'sections';
-    this.currentResourceType = "entryForm";
-    this.progressTracker[this.currentResourceType].message = "Loading entry forms's sections";
-    if(this.completedTrackedProcess.indexOf(resource) > -1){
-      this.updateProgressTracker(resource);
-      this.downloadingSmsCommand();
-    }else{
-      let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-      let fields = tableMetadata.fields;
-      this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-        this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-          this.updateProgressTracker(resource);
-          this.downloadingSmsCommand();
+    if(!this.isLoginProcessCancelled){
+      let resource = 'sections';
+      this.currentResourceType = "entryForm";
+      this.progressTracker[this.currentResourceType].message = "Loading entry forms's sections";
+      if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.updateProgressTracker(resource);
+        this.downloadingSmsCommand();
+      }else{
+        let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+        let fields = tableMetadata.fields;
+        this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
+          if(!this.isLoginProcessCancelled){
+            this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+              this.updateProgressTracker(resource);
+              this.downloadingSmsCommand();
+            },error=>{
+              this.loadingData = false;
+              this.isLoginProcessActive = false;
+              this.setToasterMessage('Fail to save data entry form sections.');
+            });
+          }
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
-          this.setToasterMessage('Fail to save data entry form sections.');
+          console.log(resource);
+          console.log(JSON.stringify(error));
+          if(!this.isLoginProcessCancelled){
+            this.setToasterMessage('Fail to download data entry form sections.');
+          }
         });
-      },error=>{
-        this.loadingData = false;
-        this.isLoginProcessActive = false;
-        this.setToasterMessage('Fail to download data entry form sections.');
-      });
+      }
     }
   }
 
   downloadingSmsCommand(){
-    let resource = "smsCommand";
-    this.currentResourceType = "entryForm";
-    this.progressTracker[this.currentResourceType].message = "Loading sms commands";
-    if(this.completedTrackedProcess.indexOf(resource) > -1){
-      this.updateProgressTracker(resource);
-      this.downloadingPrograms();
-    }else{
-      this.SmsCommand.getSmsCommandFromServer(this.loginData).then((response:any)=>{
-        this.SmsCommand.savingSmsCommand(response,this.loginData.currentDatabase).then(()=>{
-          this.updateProgressTracker(resource);
-          this.downloadingPrograms();
-        },error=>{
+    if(!this.isLoginProcessCancelled){
+      let resource = "smsCommand";
+      this.currentResourceType = "entryForm";
+      this.progressTracker[this.currentResourceType].message = "Loading sms commands";
+      if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.updateProgressTracker(resource);
+        this.downloadingPrograms();
+      }else{
+        this.SmsCommand.getSmsCommandFromServer(this.loginData).then((response:any)=>{
+          if(!this.isLoginProcessCancelled){
+            this.SmsCommand.savingSmsCommand(response,this.loginData.currentDatabase).then(()=>{
+              this.updateProgressTracker(resource);
+              this.downloadingPrograms();
+            },error=>{
+              this.loadingData = false;
+              this.isLoginProcessActive = false;
+              this.setToasterMessage('Fail to save metadata for send data via sms');
+            });
+          }
+        },(error:any)=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
-          this.setToasterMessage('Fail to save metadata for send data via sms');
+          console.log(resource);
+          console.log(JSON.stringify(error));
+          if(!this.isLoginProcessCancelled){
+            this.setToasterMessage('Fail to download metadata for send data via sms');
+          }
         });
-      },(error:any)=>{
-        this.loadingData = false;
-        this.isLoginProcessActive = false;
-        this.setToasterMessage('Fail to download metadata for send data via sms');
-      });
+      }
     }
   }
 
   downloadingPrograms(){
-    let resource = 'programs';
-    this.currentResourceType = "event";
-    this.progressTracker[this.currentResourceType].message = "Loading programs";
-    if(this.completedTrackedProcess.indexOf(resource) > -1){
-      this.updateProgressTracker(resource);
-      this.downloadingProgramStageSections();
-    }else{
-      let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-      let fields = tableMetadata.fields;
-      this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-        this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-          this.updateProgressTracker(resource);
-          this.downloadingProgramStageSections();
+    if(!this.isLoginProcessCancelled){
+      let resource = 'programs';
+      this.currentResourceType = "event";
+      this.progressTracker[this.currentResourceType].message = "Loading programs";
+      if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.updateProgressTracker(resource);
+        this.downloadingProgramStageSections();
+      }else{
+        let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+        let fields = tableMetadata.fields;
+        this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
+          if(!this.isLoginProcessCancelled){
+            this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+              this.updateProgressTracker(resource);
+              this.downloadingProgramStageSections();
+            },error=>{
+              this.loadingData = false;
+              this.isLoginProcessActive = false;
+              this.setToasterMessage('Fail to save programs.');
+            });
+          }
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
-          this.setToasterMessage('Fail to save programs.');
+          console.log(resource);
+          console.log(JSON.stringify(error));
+          if(!this.isLoginProcessCancelled){
+            this.setToasterMessage('Fail to download programs.');
+          }
         });
-      },error=>{
-        this.loadingData = false;
-        this.isLoginProcessActive = false;
-        this.setToasterMessage('Fail to download programs.');
-      });
+      }
     }
   }
 
   downloadingProgramStageSections(){
-    let resource = 'programStageSections';
-    this.currentResourceType = "event";
-    this.progressTracker[this.currentResourceType].message = "Loading program stage's sections";
-    if(this.completedTrackedProcess.indexOf(resource) > -1){
-      this.updateProgressTracker(resource);
-      this.downloadingProgramStageDataElements();
-    }else{
-      let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-      let fields = tableMetadata.fields;
-      this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-        this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-          this.updateProgressTracker(resource);
-          this.downloadingProgramStageDataElements();
+    if(!this.isLoginProcessCancelled){
+      let resource = 'programStageSections';
+      this.currentResourceType = "event";
+      this.progressTracker[this.currentResourceType].message = "Loading program stage's sections";
+      if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.updateProgressTracker(resource);
+        this.downloadingProgramStageDataElements();
+      }else{
+        let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+        let fields = tableMetadata.fields;
+        this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
+          if(!this.isLoginProcessCancelled){
+            this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+              this.updateProgressTracker(resource);
+              this.downloadingProgramStageDataElements();
+            },error=>{
+              this.loadingData = false;
+              this.isLoginProcessActive = false;
+              this.setToasterMessage('Fail to save program-stage sections.');
+            });
+          }
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
-          this.setToasterMessage('Fail to save program-stage sections.');
+          console.log(resource);
+          console.log(JSON.stringify(error));
+          if(!this.isLoginProcessCancelled){
+            this.setToasterMessage('Fail to download program-stage sections.');
+          }
         });
-      },error=>{
-        this.loadingData = false;
-        this.isLoginProcessActive = false;
-        this.setToasterMessage('Fail to download program-stage sections.');
-      });
+      }
     }
   }
 
   downloadingProgramStageDataElements(){
-    let resource = 'programStageDataElements';
-    this.currentResourceType = "event";
-    this.progressTracker[this.currentResourceType].message = "Loading programstage data elements";
-    if(this.completedTrackedProcess.indexOf(resource) > -1){
-      this.updateProgressTracker(resource);
-      this.downloadingIndicators();
-    }else{
-      let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-      let fields = tableMetadata.fields;
-      this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-        this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-          this.updateProgressTracker(resource);
-          this.downloadingIndicators();
+    if(!this.isLoginProcessCancelled){
+      let resource = 'programStageDataElements';
+      this.currentResourceType = "event";
+      this.progressTracker[this.currentResourceType].message = "Loading programstage data elements";
+      if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.updateProgressTracker(resource);
+        this.downloadingIndicators();
+      }else{
+        let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+        let fields = tableMetadata.fields;
+        this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
+          if(!this.isLoginProcessCancelled){
+            this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+              this.updateProgressTracker(resource);
+              this.downloadingIndicators();
+            },error=>{
+              this.loadingData = false;
+              this.isLoginProcessActive = false;
+              this.setToasterMessage('Fail to save program-stage data-elements.');
+            });
+          }
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
-          this.setToasterMessage('Fail to save program-stage data-elements.');
+          console.log(resource);
+          console.log(JSON.stringify(error));
+          if(!this.isLoginProcessCancelled){
+            this.setToasterMessage('Fail to download program-stage data-elements.');
+          }
         });
-      },error=>{
-        this.loadingData = false;
-        this.isLoginProcessActive = false;
-        this.setToasterMessage('Fail to download program-stage data-elements.');
-      });
+      }
     }
   }
 
   downloadingIndicators(){
-    let resource = 'indicators';
-    this.currentResourceType = "report";
-    this.progressTracker[this.currentResourceType].message = "Loading indicators";
-    if(this.completedTrackedProcess.indexOf(resource) > -1){
-      this.updateProgressTracker(resource);
-      this.downloadingReports();
-    }else{
-      let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-      let fields = tableMetadata.fields;
-      this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-        this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-          this.updateProgressTracker(resource);
-          this.downloadingReports();
+    if(!this.isLoginProcessCancelled){
+      let resource = 'indicators';
+      this.currentResourceType = "report";
+      this.progressTracker[this.currentResourceType].message = "Loading indicators";
+      if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.updateProgressTracker(resource);
+        this.downloadingReports();
+      }else{
+        let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+        let fields = tableMetadata.fields;
+        this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
+          if(!this.isLoginProcessCancelled){
+            this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+              this.updateProgressTracker(resource);
+              this.downloadingReports();
+            },error=>{
+              this.loadingData = false;
+              this.isLoginProcessActive = false;
+              this.setToasterMessage('Fail to save indicators.');
+            });
+          }
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
-          this.setToasterMessage('Fail to save indicators.');
+          console.log(resource);
+          console.log(JSON.stringify(error));
+          if(!this.isLoginProcessCancelled){
+            this.setToasterMessage('Fail to download indicators.');
+          }
         });
-      },error=>{
-        this.loadingData = false;
-        this.isLoginProcessActive = false;
-        this.setToasterMessage('Fail to download indicators.');
-      });
+      }
     }
   }
 
   downloadingReports(){
-    let resource = 'reports';
-    this.currentResourceType = "report";
-    this.progressTracker[this.currentResourceType].message = "Loading reports";
-    if(this.completedTrackedProcess.indexOf(resource) > -1){
-      this.updateProgressTracker(resource);
-      this.downloadingConstants();
-    }else{
-      let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-      let fields = tableMetadata.fields;
-      let filter = tableMetadata.filter;
-      this.app.downloadMetadata(this.loginData,resource,null,fields,filter).then(response=>{
-        this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-          this.updateProgressTracker(resource);
-          this.downloadingConstants();
+    if(!this.isLoginProcessCancelled){
+      let resource = 'reports';
+      this.currentResourceType = "report";
+      this.progressTracker[this.currentResourceType].message = "Loading reports";
+      if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.updateProgressTracker(resource);
+        this.downloadingConstants();
+      }else{
+        let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+        let fields = tableMetadata.fields;
+        let filter = tableMetadata.filter;
+        this.app.downloadMetadata(this.loginData,resource,null,fields,filter).then(response=>{
+          if(!this.isLoginProcessCancelled){
+            this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+              this.updateProgressTracker(resource);
+              this.downloadingConstants();
+            },error=>{
+              this.loadingData = false;
+              this.isLoginProcessActive = false;
+              this.setToasterMessage('Fail to save reports.');
+            });
+          }
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
-          this.setToasterMessage('Fail to save reports.');
+          console.log(resource);
+          console.log(JSON.stringify(error));
+          if(!this.isLoginProcessCancelled){
+            this.setToasterMessage('Fail to download reports.');
+          }
         });
-      },error=>{
-        this.loadingData = false;
-        this.isLoginProcessActive = false;
-        this.setToasterMessage('Fail to download reports.');
-      });
+      }
     }
   }
 
   downloadingConstants(){
-    let resource = 'constants';
-    this.currentResourceType = "report";
-    this.progressTracker[this.currentResourceType].message = "Loading constants";
-    if(this.completedTrackedProcess.indexOf(resource) > -1){
-      this.updateProgressTracker(resource);
-      this.setLandingPage();
-    }else{
-      let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-      let fields = tableMetadata.fields;
-      this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-        this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-          this.updateProgressTracker(resource);
-          this.setLandingPage();
+    if(!this.isLoginProcessCancelled){
+      let resource = 'constants';
+      this.currentResourceType = "report";
+      this.progressTracker[this.currentResourceType].message = "Loading constants";
+      if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.updateProgressTracker(resource);
+        this.setLandingPage();
+      }else{
+        let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+        let fields = tableMetadata.fields;
+        this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
+          if(!this.isLoginProcessCancelled){
+            this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+              this.updateProgressTracker(resource);
+              this.setLandingPage();
+            },error=>{
+              this.loadingData = false;
+              this.setToasterMessage('Fail to save constants.');
+            });
+          }
         },error=>{
           this.loadingData = false;
-          this.setToasterMessage('Fail to save constants.');
+          this.isLoginProcessActive = false;
+          console.log(resource);
+          console.log(JSON.stringify(error));
+          if(!this.isLoginProcessCancelled){
+            this.setToasterMessage('Fail to download constants.');
+          }
         });
-      },error=>{
-        this.loadingData = false;
-        this.setToasterMessage('Fail to download constants.');
-      });
+      }
     }
   }
 
   setLandingPage(){
-    this.loginData.isLogin = true;
-    this.loginData.password = "";
-    this.user.setCurrentUser(this.loginData).then(()=>{
-      this.synchronization.startSynchronization().then(()=>{
-        this.navCtrl.setRoot(TabsPage);
-        this.loadingData = false;
-        this.isLoginProcessActive = false;
+    if(!this.isLoginProcessCancelled) {
+      this.loginData.isLogin = true;
+      this.loginData.password = "";
+      this.user.setCurrentUser(this.loginData).then(()=> {
+        this.synchronization.startSynchronization().then(()=> {
+          this.OrganisationUnit.resetOrganisationUnit();
+          this.navCtrl.setRoot(TabsPage);
+          this.loadingData = false;
+          this.isLoginProcessActive = false;
+        });
       });
-    });
+    }
   }
 
   setLoadingMessages(message){

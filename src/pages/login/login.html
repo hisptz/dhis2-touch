@@ -17,6 +17,14 @@
 
     <!-- progress tracker on the app -->
     <div *ngIf="isLoginProcessActive">
+      <ion-list *ngIf="loggedInInInstance != ''">
+        <ion-item (tap)="cancelLoginProcess()">
+          logged in : {{ loggedInInInstance }}
+          <div style="text-align: center" item-right >
+            <ion-icon name="md-close" color="danger"></ion-icon>
+          </div>
+        </ion-item>
+      </ion-list>
       <page-progress-bar [progress] = "progress"></page-progress-bar>
       <br>
       <div *ngIf="loadingData">
