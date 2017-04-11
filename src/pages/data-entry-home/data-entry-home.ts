@@ -229,7 +229,7 @@ export class DataEntryHomePage implements OnInit{
   hasDataDimensionSet(){
     let result = true;
     if(this.selectedDataSet.categoryCombo.name != 'default'){
-      if(this.selectedDataDimension.length > 0){
+      if(this.selectedDataDimension.length > 0 && (this.selectedDataDimension.length == this.selectedDataSet.categoryCombo.categories.length)){
         this.selectedDataDimension.forEach((dimension : any)=>{
           if(dimension == null){
             result = false;
