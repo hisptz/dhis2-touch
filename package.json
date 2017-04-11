@@ -21,7 +21,7 @@
     "@angular/platform-server": "2.4.8",
     "@ionic-native/app-version": "^3.2.1",
     "@ionic-native/core": "3.1.0",
-    "@ionic-native/http": "^3.2.1",
+    "@ionic-native/http": "^3.4.4",
     "@ionic-native/sms": "^3.2.1",
     "@ionic-native/splash-screen": "^3.1.0",
     "@ionic-native/sqlite": "^3.2.1",

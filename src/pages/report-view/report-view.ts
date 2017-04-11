@@ -43,17 +43,19 @@ export class ReportView implements OnInit{
       dhis2.database = user.currentDatabase;
       this.reportId = this.params.get("id");
       this.reportName = this.params.get("name");
-      this.selectedPeriod  =  this.params.get("period");
-      this.selectedOrganisationUnit = this.params.get("organisationUnit");
-      this.organisationUnitName = (this.selectedOrganisationUnit.name)?this.selectedOrganisationUnit.name:"";
-      this.periodName = (this.selectedPeriod.name)?this.selectedPeriod.name : "";
-      dhis2.report = {
-        organisationUnit :this.selectedOrganisationUnit,
-        organisationUnitChildren : this.params.get("organisationUnitChildren"),
-        organisationUnitHierarchy : this.getOrganisationUnitHierarchy(this.params.get("organisationUnit")),
-        period : this.selectedPeriod.iso,
-        date : this.selectedPeriod.iso + "-01-01"
-      };
+      if( this.params.get("period")){
+        this.selectedPeriod  =  this.params.get("period");
+        this.selectedOrganisationUnit = this.params.get("organisationUnit");
+        this.organisationUnitName = (this.selectedOrganisationUnit.name)?this.selectedOrganisationUnit.name:"";
+        this.periodName = (this.selectedPeriod.name)?this.selectedPeriod.name : "";
+        dhis2.report = {
+          organisationUnit :this.selectedOrganisationUnit,
+          organisationUnitChildren : this.params.get("organisationUnitChildren"),
+          organisationUnitHierarchy : this.getOrganisationUnitHierarchy(this.params.get("organisationUnit")),
+          period : this.selectedPeriod.iso,
+          date : this.selectedPeriod.iso + "-01-01"
+        };
+      }
       this.loadReportDesignContent(this.reportId);
     });
   }
@@ -93,7 +95,6 @@ export class ReportView implements OnInit{
   }
 
   getScriptsContents(html){
-    //@todo handling for scripts with href
     var scriptsWithClosingScript = [];
     html.match(/<script[^>]*>([\w|\W]*)<\/script>/im)[0].split("<script>").forEach((scriptFunctionWithCLosingScriptTag:any)=>{
       if(scriptFunctionWithCLosingScriptTag !=""){
@@ -106,13 +107,30 @@ export class ReportView implements OnInit{
   setScriptsOnHtmlContent(scriptsContentsArray){
     if(!this.hasScriptSet){
       scriptsContentsArray.forEach(scriptsContents=>{
-        let script = document.createElement("script");
-        script.type = "text/javascript";
-        script.innerHTML = scriptsContents;
-        this.elementRef.nativeElement.appendChild(script);
+        if(scriptsContents.indexOf("<script") > -1){
+          let srcUrl = this.getScriptUrl(scriptsContents);
+          let script = document.createElement("script");
+          script.src = srcUrl;
+          this.elementRef.nativeElement.appendChild(script);
+        }else {
+          let script = document.createElement("script");
+          script.type = "text/javascript";
+          script.innerHTML = scriptsContents;
+          this.elementRef.nativeElement.appendChild(script);
+        }
       });
       this.hasScriptSet = true;
     }
+  }
+
+  getScriptUrl(scriptsContents){
+    let url = "";
+    scriptsContents.split("<script").forEach((scriptsContent:any)=>{
+      if(scriptsContent !=""){
+        url = scriptsContent.split("src=")[1].split(">")[0];
+      }
+    });
+    return url;
   }
 
   setToasterMessage(message){

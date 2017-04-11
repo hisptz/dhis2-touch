@@ -62,28 +62,32 @@ export class ReportParameterSelection implements OnInit{
   }
 
   openOrganisationUnitModal(){
-    let modal = this.modalCtrl.create(OrganisationUnits,{data : this.organisationUnits,selectedOrganisationUnit:this.selectedOrganisationUnit});
-    modal.onDidDismiss((selectedOrganisationUnit:any) => {
-      if(selectedOrganisationUnit && selectedOrganisationUnit.id){
-        if(selectedOrganisationUnit.id != this.selectedOrganisationUnit.id){
-          this.selectedOrganisationUnit = selectedOrganisationUnit;
-          this.selectedPeriod = {};
-          this.setReportSelectionLabel();
+    if(this.currentSelectionStatus && this.currentSelectionStatus.orgUnit){
+      let modal = this.modalCtrl.create(OrganisationUnits,{data : this.organisationUnits,selectedOrganisationUnit:this.selectedOrganisationUnit});
+      modal.onDidDismiss((selectedOrganisationUnit:any) => {
+        if(selectedOrganisationUnit && selectedOrganisationUnit.id){
+          if(selectedOrganisationUnit.id != this.selectedOrganisationUnit.id){
+            this.selectedOrganisationUnit = selectedOrganisationUnit;
+            this.selectedPeriod = {};
+            this.setReportSelectionLabel();
+          }
         }
-      }
-    });
-    modal.present();
+      });
+      modal.present();
+    }
   }
 
   openReportPeriodSelection(){
-    let modal = this.modalCtrl.create(ReportSelectionPeriod,{});
-    modal.onDidDismiss((selectedPeriod:any) => {
-      if(selectedPeriod && selectedPeriod.iso){
-        this.selectedPeriod = selectedPeriod;
-        this.setReportSelectionLabel();
-      }
-    });
-    modal.present();
+    if(this.currentSelectionStatus && this.currentSelectionStatus.period){
+      let modal = this.modalCtrl.create(ReportSelectionPeriod,{});
+      modal.onDidDismiss((selectedPeriod:any) => {
+        if(selectedPeriod && selectedPeriod.iso){
+          this.selectedPeriod = selectedPeriod;
+          this.setReportSelectionLabel();
+        }
+      });
+      modal.present();
+    }
   }
 
   setReportSelectionLabel(){

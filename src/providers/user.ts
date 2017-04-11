@@ -27,8 +27,9 @@ export class User {
     let self = this;
     self.http.useBasicAuth(user.username, user.password);
     let fields = "fields=[:all],userCredentials[userRoles[name,dataSets[id,name],programs[id,name]]";
-    let url = user.serverUrl.split("/dhis-web")[0];
-    url = url.split("/api/")[0];
+    let url = user.serverUrl.split("/dhis-web-commons")[0];
+    url = url.split("/dhis-web-dashboard-integration")[0];
+    url = url.split("/api/apps")[0];
     user.serverUrl = url;
     url += "/api/25/me.json?" + fields;
 

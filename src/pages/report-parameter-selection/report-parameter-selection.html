@@ -18,29 +18,38 @@
   <ion-grid>
     <ion-row *ngIf="reportParams.paramOrganisationUnit">
       <ion-col>
-        <button [disabled]="!currentSelectionStatus.orgUnit" class="dataEntryButton" text-capitalize ion-button full large (tap)="openOrganisationUnitModal()" color="whitecolor">
-            <span *ngIf="currentSelectionStatus.isOrgUnitLoaded" >
-              {{ selectedOrganisationUnitLabel }}
-            </span>
-            <span *ngIf="!currentSelectionStatus.isOrgUnitLoaded" >
+        <ion-item text-capitalize (tap)="openOrganisationUnitModal()">
+          <div style="text-align: center" item-left>
+            <div *ngIf="!currentSelectionStatus.isOrgUnitLoaded">
               <page-loading loadingSize="small"></page-loading>
+            </div>
+          </div>
+          <div *ngIf="currentSelectionStatus.isOrgUnitLoaded" style="text-align: center">
+            {{ selectedOrganisationUnitLabel }}
+          </div>
+            <span *ngIf="!currentSelectionStatus.isOrgUnitLoaded" >
               Loading organisation units
             </span>
-        </button>
+        </ion-item>
       </ion-col>
     </ion-row>
 
     <ion-row *ngIf="reportParams.paramReportingPeriod" >
       <ion-col>
-        <button [disabled]="!currentSelectionStatus.period" class="dataEntryButton" text-capitalize ion-button full large (tap)="openReportPeriodSelection()" color="whitecolor">
-            <span *ngIf="!currentSelectionStatus.isPeriodLoaded" >
+
+        <ion-item text-capitalize (tap)="openOrganisationUnitModal()">
+          <div style="text-align: center" item-left>
+            <div *ngIf="!currentSelectionStatus.period">
               <page-loading loadingSize="small"></page-loading>
+            </div>
+          </div>
+          <div *ngIf="currentSelectionStatus.period" style="text-align: center">
+            {{ selectedPeriodLabel }}
+          </div>
+            <span *ngIf="!currentSelectionStatus.period" >
               Loading period
             </span>
-            <span *ngIf="currentSelectionStatus.isPeriodLoaded" >
-              {{ selectedPeriodLabel }}
-            </span>
-        </button>
+        </ion-item>
       </ion-col>
     </ion-row>
 
