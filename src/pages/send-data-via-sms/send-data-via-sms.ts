@@ -52,7 +52,6 @@ export class SendDataViaSms implements OnInit{
       this.currentUser = currentUser;
       this.initiateDefaultValues();
       this.setDataSetIdsByUserRoles();
-      this.loadOrganisationUnits();
       this.setDataEntrySelectionLabel();
     });
   }
@@ -68,7 +67,8 @@ export class SendDataViaSms implements OnInit{
           });
         }
       });
-    })
+      this.loadOrganisationUnits();
+    });
   }
 
   ionViewDidLoad() {

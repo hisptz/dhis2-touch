@@ -48,7 +48,6 @@ export class DataEntryHomePage implements OnInit{
     this.user.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;
       this.setDataSetIdsByUserRoles();
-      this.loadOrganisationUnits();
       this.setDataEntrySelectionLabel();
     })
   }
@@ -64,6 +63,7 @@ export class DataEntryHomePage implements OnInit{
           });
         }
       });
+      this.loadOrganisationUnits();
     })
   }
 
