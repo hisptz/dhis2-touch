@@ -277,7 +277,7 @@ export class DataValues {
    * @param currentUser
      * @returns {Promise<T>}
      */
-  getAllEntryFormDataValuesFromStorage(dataSetId,period,orgUnitId,entryFormSections,currentUser){
+  getAllEntryFormDataValuesFromStorage(dataSetId,period,orgUnitId,entryFormSections,dataDimension,currentUser){
     let ids = [];
     let self = this;
     let entryFormDataValuesFromStorage =[];
@@ -291,11 +291,13 @@ export class DataValues {
     return new Promise(function(resolve, reject) {
       self.sqlLite.getDataFromTableByAttributes(self.resourceName,"id",ids,currentUser.currentDatabase).then((dataValues : any)=>{
         dataValues.forEach((dataValue : any)=>{
-          entryFormDataValuesFromStorage.push({
-            id :dataValue.de + "-" +dataValue.co,
-            value : dataValue.value,
-            status : dataValue.syncStatus
-          });
+          if(dataDimension.cp == dataValue.cp && dataDimension.cc == dataValue.cc){
+            entryFormDataValuesFromStorage.push({
+              id :dataValue.de + "-" +dataValue.co,
+              value : dataValue.value,
+              status : dataValue.syncStatus
+            });
+          }
         });
         resolve(entryFormDataValuesFromStorage)
       },error=>{

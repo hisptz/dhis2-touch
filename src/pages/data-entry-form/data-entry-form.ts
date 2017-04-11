@@ -148,8 +148,9 @@ export class DataEntryForm implements OnInit{
     let orgUnitId = this.dataEntryFormSelectionParameter.orgUnit.id;
     let period = this.dataEntryFormSelectionParameter.period.iso;
     let entryFormSections  = this.entryFormSections;
+    let dataDimension = this.dataEntryFormSelectionParameter.dataDimension;
 
-    this.dataValues.getAllEntryFormDataValuesFromStorage(dataSetId,period,orgUnitId,entryFormSections,this.currentUser).then((dataValues : any)=>{
+    this.dataValues.getAllEntryFormDataValuesFromStorage(dataSetId,period,orgUnitId,entryFormSections,dataDimension,this.currentUser).then((dataValues : any)=>{
       this.entryFormDataValues = {};
       this.storageStatus.local = 0;
       this.storageStatus.online = 0;
