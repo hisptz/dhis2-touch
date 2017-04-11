@@ -254,6 +254,7 @@ export class LoginPage implements OnInit{
               } else if (error.status == 401) {
                 this.setToasterMessage('You have enter wrong username or password');
               } else {
+                console.log(JSON.stringify(error));
                 this.setToasterMessage('Please check server url');
               }
             });
