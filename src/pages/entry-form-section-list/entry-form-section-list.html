@@ -28,7 +28,7 @@
       <ion-col width="100">
         <ion-list>
           <ion-item *ngFor="let entryFormSection of entryFormSections" (tap)="setCurrentEntryFormSection(entryFormSection)" class="list-separator">
-            <span ion-text [color]="(selectedDashboardName == entryFormSection.name) ?'current' : 'font-color'" >{{ entryFormSection.name }}</span>
+            <span ion-text [color]="(currentEntryFormId == entryFormSection.id) ?'current' : 'font-color'" >{{ entryFormSection.name }}</span>
           </ion-item>
           <ion-item *ngIf="entryFormSections.length == 0">
             There no entry form section found

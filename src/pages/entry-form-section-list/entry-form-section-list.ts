@@ -16,12 +16,14 @@ export class EntryFormSectionListPage implements OnInit{
 
   public entryFormSections : any;
   public entryFormSectionsCopy : any;
+  public currentEntryFormId : string;
 
   constructor(public navParams: NavParams,
 
               public viewCtrl: ViewController) {}
 
   ngOnInit() {
+    this.currentEntryFormId = this.navParams.get("currentEntryFormId");
     this.entryFormSections = this.navParams.get("entryFormSections");
     this.entryFormSectionsCopy = this.navParams.get("entryFormSections");
   }
@@ -36,9 +38,8 @@ export class EntryFormSectionListPage implements OnInit{
     }
   }
 
-  setCurrentEntryFormSection(selectedEntryFormSection,selectedIndex = 0){
-
-    this.viewCtrl.dismiss({selectedEntryFormSection : selectedEntryFormSection,selectedIndex : selectedIndex});
+  setCurrentEntryFormSection(selectedEntryFormSection){
+    this.viewCtrl.dismiss({currentEntryFormId : selectedEntryFormSection.id});
   }
 
   dismiss() {

@@ -221,8 +221,13 @@ export class DataEntryForm implements OnInit{
 
   openEntryFormSectionList(){
     let modal = this.modalCtrl.create(EntryFormSectionListPage,{entryFormSections:this.entryFormSections,currentEntryFormId : this.currentPage});
-    modal.onDidDismiss(()=>{
-      alert("Modal closed")
+    modal.onDidDismiss((currentEntry : any)=>{
+      if(currentEntry){
+        if(currentEntry.currentEntryFormId != this.currentPage){
+          this.currentPage = currentEntry.currentEntryFormId;
+          this.changePagination(this.currentPage);
+        }
+      }
     });
     modal.present();
   }
