@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {SqlLite} from "./sql-lite";
+import {Setting} from "./setting";
 
 /*
   Generated class for the EntryForm provider.
@@ -10,7 +11,7 @@ import {SqlLite} from "./sql-lite";
 @Injectable()
 export class EntryForm {
 
-  constructor(private sqlLite : SqlLite) {}
+  constructor(private sqlLite : SqlLite,public Setting : Setting) {}
 
 
   /**
@@ -77,9 +78,18 @@ export class EntryForm {
   getDefaultEntryForm(dataSet){
     let self = this;
     return new Promise(function(resolve, reject) {
-      let dataElements = self.getDataElements(dataSet);
-      let defaultEntryForm = self.getDataElementSections(dataElements);
-      resolve(defaultEntryForm);
+      self.Setting.getDataEntrySetting().then((dataEntrySetting: any)=>{
+        let maxDataElements = 4;
+        if(dataEntrySetting && dataEntrySetting.label && dataEntrySetting.maxDataElementOnDefaultForm){
+          maxDataElements = dataEntrySetting.maxDataElementOnDefaultForm;
+        }
+        let dataElements = self.getDataElements(dataSet);
+        let defaultEntryForm = self.getDataElementSections(dataElements,maxDataElements);
+        resolve(defaultEntryForm);
+      },error=>{
+        reject();
+      })
+
     });
   }
 
@@ -105,15 +115,14 @@ export class EntryForm {
    * @param dataElements
    * @returns {Array}
      */
-  getDataElementSections(dataElements){
-    let pager = 4;
-    let sectionsCounter = Math.ceil(dataElements.length/pager);
+  getDataElementSections(dataElements,maxDataElements){
+    let sectionsCounter = Math.ceil(dataElements.length/maxDataElements);
     let sections = [];
     for(let index = 0; index < sectionsCounter; index ++){
       sections.push({
         name : "defaultSection",
         id : index,
-        dataElements :dataElements.splice(0,pager)
+        dataElements :dataElements.splice(0,maxDataElements)
       });
     }
     return sections;

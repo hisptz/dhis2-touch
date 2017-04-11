@@ -1,11 +1,13 @@
 import { Component,OnInit,ViewChild} from '@angular/core';
-import { NavController,NavParams,ToastController,ActionSheetController,Content } from 'ionic-angular';
+import { NavController,NavParams,ToastController,ActionSheetController,Content,ModalController } from 'ionic-angular';
 
 import {DataValues} from "../../providers/data-values";
 import {EntryForm} from "../../providers/entry-form";
 import {DataSets} from "../../providers/data-sets";
 import {NetworkAvailability} from "../../providers/network-availability";
 import {User} from "../../providers/user";
+import {Setting} from "../../providers/setting";
+import {EntryFormSectionListPage} from "../entry-form-section-list/entry-form-section-list";
 
 /*
   Generated class for the DataEntryForm page.
@@ -24,7 +26,7 @@ export class DataEntryForm implements OnInit{
   public currentUser : any;
   public dataEntryFormSelectionParameter : any;
   public selectedDataSet : any;
-  public entryFormSections : any;
+  public entryFormSections : any = [];
   public dataSetAttributeOptionCombo : any;
   //entry form data values and storage status
   public entryFormDataValues : any;
@@ -43,15 +45,18 @@ export class DataEntryForm implements OnInit{
   public dataSetCompletenessInformation :any = {name:"",date:""};
   public isDataSetCompletenessProcessRunning : boolean = false;
 
+  //settings
+  public dataEntrySetting : any;
+
   //network
   public network : any;
 
   @ViewChild(Content) content: Content;
 
-  constructor(public navCtrl : NavController,public params:NavParams, public toastCtrl:ToastController,
+  constructor(public modalCtrl: ModalController,public navCtrl : NavController,public params:NavParams, public toastCtrl:ToastController,
               public user:User,public DataSets : DataSets,
               public actionSheetCtrl: ActionSheetController,public NetworkAvailability : NetworkAvailability,
-              public entryForm:EntryForm,
+              public entryForm:EntryForm,public Setting : Setting,
               public dataValues:DataValues) {
 
   }
@@ -63,11 +68,24 @@ export class DataEntryForm implements OnInit{
       this.currentPage = 0;
       this.dataEntryFormSelectionParameter = this.params.get('data');
       this.loadDataSet(this.dataEntryFormSelectionParameter.formId);
+      this.loadEntryFormSetting();
     });
   }
 
   ionViewDidEnter() {
+    if(this.dataEntrySetting && this.dataEntrySetting.label){
+      this.loadEntryFormSetting();
+    }
+  }
 
+  loadEntryFormSetting(){
+    this.Setting.getDataEntrySetting().then((dataEntrySetting: any)=>{
+      if(dataEntrySetting && dataEntrySetting.label){
+        this.dataEntrySetting = dataEntrySetting;
+      }else{
+        this.dataEntrySetting = {label : "displayName",maxDataElementOnDefaultForm : 4}
+      }
+    })
   }
 
   loadDataSet(dataSetId){
@@ -197,8 +215,16 @@ export class DataEntryForm implements OnInit{
 
   //todo get input label attribute form setting
   getDisplayName(dataElement){
-    return dataElement.displayName;
-    //return if()
+    let label = this.dataEntrySetting.label;
+    return (dataElement[label])? dataElement[label] :dataElement.displayName;
+  }
+
+  openEntryFormSectionList(){
+    let modal = this.modalCtrl.create(EntryFormSectionListPage,{entryFormSections:this.entryFormSections,currentEntryFormId : this.currentPage});
+    modal.onDidDismiss(()=>{
+      alert("Modal closed")
+    });
+    modal.present();
   }
 
 

@@ -27,7 +27,7 @@ export class Setting {
     });
   }
 
-  setDataEntrySetting(dataEntrySetting){
+   setDataEntrySetting(dataEntrySetting){
     let self = this;
     return  new Promise(function(resolve,reject){
       dataEntrySetting= JSON.stringify(dataEntrySetting);

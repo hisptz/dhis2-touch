@@ -27,7 +27,7 @@ export class DataValues {
     let toast = this.toastCtrl.create({
       message: message,
       position : 'top',
-      duration: 2000
+      duration: 3000
     });
     toast.present();
   }
