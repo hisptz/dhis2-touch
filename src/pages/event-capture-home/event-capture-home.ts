@@ -69,7 +69,6 @@ export class EventCaptureHomePage implements OnInit{
     this.user.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;
       this.getUserAssignedPrograms();
-      this.loadOrganisationUnits();
       this.setProgramSelectionLabel();
     });
   }
@@ -84,7 +83,8 @@ export class EventCaptureHomePage implements OnInit{
           });
         }
       });
-    })
+      this.loadOrganisationUnits();
+    });
   }
 
   ionViewDidLoad() {
@@ -160,25 +160,27 @@ export class EventCaptureHomePage implements OnInit{
   }
 
   openOrganisationUnitModal(){
-    this.loadingMessages = [];
-    this.loadingData = true;
-    let modal = this.modalCtrl.create(OrganisationUnits,{data : this.organisationUnits,selectedOrganisationUnit:this.selectedOrganisationUnit});
-    modal.onDidDismiss((selectedOrganisationUnit:any) => {
-      if(selectedOrganisationUnit && selectedOrganisationUnit.id){
-        if(selectedOrganisationUnit.id != this.selectedOrganisationUnit.id){
-          this.selectedOrganisationUnit = selectedOrganisationUnit;
-          this.selectedProgram = {};
-          this.loadingPrograms();
-          this.setProgramSelectionLabel();
-          this.isAllParameterSet = false;
+    if(this.currentSelectionStatus && this.currentSelectionStatus.orgUnit){
+      this.loadingMessages = [];
+      this.loadingData = true;
+      let modal = this.modalCtrl.create(OrganisationUnits,{data : this.organisationUnits,selectedOrganisationUnit:this.selectedOrganisationUnit});
+      modal.onDidDismiss((selectedOrganisationUnit:any) => {
+        if(selectedOrganisationUnit && selectedOrganisationUnit.id){
+          if(selectedOrganisationUnit.id != this.selectedOrganisationUnit.id){
+            this.selectedOrganisationUnit = selectedOrganisationUnit;
+            this.selectedProgram = {};
+            this.loadingPrograms();
+            this.setProgramSelectionLabel();
+            this.isAllParameterSet = false;
+          }else{
+            this.loadingData = false;
+          }
         }else{
           this.loadingData = false;
         }
-      }else{
-        this.loadingData = false;
-      }
-    });
-    modal.present();
+      });
+      modal.present();
+    }
   }
 
   loadingPrograms(){
@@ -206,28 +208,32 @@ export class EventCaptureHomePage implements OnInit{
   }
 
   openProgramsModal(){
-    if(this.currentSelectionStatus.program){
-      let modal = this.modalCtrl.create(ProgramSelection,{data : this.assignedPrograms,selectedProgram : this.selectedProgram});
-      modal.onDidDismiss((selectedProgram:any) => {
-        if(selectedProgram && selectedProgram.id){
-          if(selectedProgram.id != this.selectedProgram.id){
-            this.selectedDataDimension = [];
-            this.selectedProgram = selectedProgram;
-            this.loadingData = false;
-            this.setProgramSelectionLabel();
-            this.isAllParameterSet = false;
-            if(selectedProgram.categoryCombo.categories[0].name =='default'){
-              this.loadEvents();
+    if(this.currentSelectionStatus && this.currentSelectionStatus.program){
+      if(this.assignedPrograms.length > 0){
+        let modal = this.modalCtrl.create(ProgramSelection,{data : this.assignedPrograms,selectedProgram : this.selectedProgram});
+        modal.onDidDismiss((selectedProgram:any) => {
+          if(selectedProgram && selectedProgram.id){
+            if(selectedProgram.id != this.selectedProgram.id){
+              this.selectedDataDimension = [];
+              this.selectedProgram = selectedProgram;
+              this.loadingData = false;
+              this.setProgramSelectionLabel();
+              this.isAllParameterSet = false;
+              if(selectedProgram.categoryCombo.categories[0].name =='default'){
+                this.loadEvents();
+              }
+              this.loadingProgramStageDataElements(selectedProgram);
+            }else{
+              this.loadingData = false;
             }
-            this.loadingProgramStageDataElements(selectedProgram);
           }else{
             this.loadingData = false;
           }
-        }else{
-          this.loadingData = false;
-        }
-      });
-      modal.present();
+        });
+        modal.present();
+      }else{
+        this.setToasterMessage("No program to select on " + this.selectedOrganisationUnitLabel);
+      }
     }else{
       this.setToasterMessage("Please select organisation unit first");
     }
