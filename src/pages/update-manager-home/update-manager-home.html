@@ -20,7 +20,7 @@
         <ion-col>
           <ion-item (tap)="hideAndShowContents('sendDataViaSms')">
             <span ion-text [color]="(updateManagerObject.sendDataViaSms.isExpanded) ?'current' : 'font-color'">
-              Send Data Via Sms
+              Upload Data Via Sms
             </span>
             <ion-icon [color]="(updateManagerObject.sendDataViaSms.isExpanded) ?'current' : 'font-color'" *ngIf="!updateManagerObject.sendDataViaSms.isExpanded" name="ios-arrow-down" item-right></ion-icon>
             <ion-icon [color]="(updateManagerObject.sendDataViaSms.isExpanded) ?'current' : 'font-color'" *ngIf="updateManagerObject.sendDataViaSms.isExpanded" name="ios-arrow-up" item-right></ion-icon>
