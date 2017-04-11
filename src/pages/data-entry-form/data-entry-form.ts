@@ -220,6 +220,9 @@ export class DataEntryForm implements OnInit{
   }
 
   openEntryFormSectionList(){
+    this.loadingData = true;
+    this.loadingMessages = [];
+    this.setLoadingMessages("Please wait");
     let modal = this.modalCtrl.create(EntryFormSectionListPage,{entryFormSections:this.entryFormSections,currentEntryFormId : this.currentPage});
     modal.onDidDismiss((currentEntry : any)=>{
       if(currentEntry){
@@ -228,11 +231,10 @@ export class DataEntryForm implements OnInit{
           this.changePagination(this.currentPage);
         }
       }
+      this.loadingData = false;
     });
     modal.present();
   }
-
-
 
   setHeaderLabel(){
     this.selectedDataSetLabel = this.selectedDataSet.name;
@@ -271,12 +273,31 @@ export class DataEntryForm implements OnInit{
         this.setToasterMessage("Fail to undo complete  at moment, please try again later");
       });
     }else{
-      this.dataValues.completeOnDataSetRegistrations(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then((response)=>{
-        this.setCompletenessInformation();
-      },error=>{
-        this.isDataSetCompletenessProcessRunning = false;
-        this.setToasterMessage("Fail to complete at moment, please try again later");
-      });
+      let dataValues = [];
+      if(this.entryFormDataValues){
+        Object.keys(this.entryFormDataValues).forEach((fieldId:any)=>{
+          let fieldIdArray = fieldId.split("-");
+          dataValues.push({
+            de: fieldIdArray[0],
+            co: fieldIdArray[1],
+            pe: period,
+            ou: orgUnitId,
+            cc: dataDimension.cc,
+            cp: dataDimension.cp,
+            value: this.entryFormDataValues[fieldId]
+          });
+        });
+      }
+      if(dataValues.length > 0){
+        this.dataValues.completeOnDataSetRegistrations(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then((response)=>{
+          this.setCompletenessInformation();
+        },error=>{
+          this.isDataSetCompletenessProcessRunning = false;
+          this.setToasterMessage("Fail to complete at moment, please try again later");
+        });
+      }else{
+        this.setToasterMessage("You can not complete empty form");
+      }
     }
   }
 

@@ -50,7 +50,7 @@
         <div *ngIf="section.id == currentPage">
           <div *ngIf=" section.name != 'defaultSection'">
             <ion-item >
-              <p color="font-color" align="center">
+              <p ion-text color="font-color" align="center">
                 <b>{{ section.name }}</b>
               </p>
               <div style="text-align: center"item-right (tap)="openEntryFormSectionList()">

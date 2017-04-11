@@ -152,25 +152,27 @@ export class DataEntryHomePage implements OnInit{
   }
 
   openOrganisationUnitModal(){
-    this.loadingMessages = [];
-    this.loadingData = true;
-    let modal = this.modalCtrl.create(OrganisationUnits,{data : this.organisationUnits,selectedOrganisationUnit:this.selectedOrganisationUnit});
-    modal.onDidDismiss((selectedOrganisationUnit:any) => {
-      if(selectedOrganisationUnit && selectedOrganisationUnit.id){
-        if(selectedOrganisationUnit.id != this.selectedOrganisationUnit.id){
-          this.selectedOrganisationUnit = selectedOrganisationUnit;
-          this.selectedDataSet = {};
-          this.selectedPeriod = {};
-          this.loadingDataSets();
-          this.setDataEntrySelectionLabel();
+    if(this.currentSelectionStatus && this.currentSelectionStatus.isDataSetLoaded){
+      this.loadingMessages = [];
+      this.loadingData = true;
+      let modal = this.modalCtrl.create(OrganisationUnits,{data : this.organisationUnits,selectedOrganisationUnit:this.selectedOrganisationUnit});
+      modal.onDidDismiss((selectedOrganisationUnit:any) => {
+        if(selectedOrganisationUnit && selectedOrganisationUnit.id){
+          if(selectedOrganisationUnit.id != this.selectedOrganisationUnit.id){
+            this.selectedOrganisationUnit = selectedOrganisationUnit;
+            this.selectedDataSet = {};
+            this.selectedPeriod = {};
+            this.loadingDataSets();
+            this.setDataEntrySelectionLabel();
+          }else{
+            this.loadingData = false;
+          }
         }else{
           this.loadingData = false;
         }
-      }else{
-        this.loadingData = false;
-      }
-    });
-    modal.present();
+      });
+      modal.present();
+    }
   }
 
   loadingDataSets(){
@@ -190,26 +192,31 @@ export class DataEntryHomePage implements OnInit{
   }
 
   openDataSetsModal(){
-    if(this.currentSelectionStatus.dataSet){
-      let modal = this.modalCtrl.create(DataSetSelection,{data : this.assignedDataSets,selectedDataSet : this.selectedDataSet});
-      modal.onDidDismiss((selectedDataSet:any) => {
-        if(selectedDataSet && selectedDataSet.id){
-          if(selectedDataSet.id != this.selectedDataSet.id){
-            this.selectedDataDimension = [];
-            this.selectedDataSet = selectedDataSet;
-            this.selectedPeriod = {};
-            this.setDataEntrySelectionLabel();
+    if(this.currentSelectionStatus && this.currentSelectionStatus.dataSet){
+      if(this.assignedDataSets.length > 0){
+        let modal = this.modalCtrl.create(DataSetSelection,{data : this.assignedDataSets,selectedDataSet : this.selectedDataSet});
+        modal.onDidDismiss((selectedDataSet:any) => {
+          if(selectedDataSet && selectedDataSet.id){
+            if(selectedDataSet.id != this.selectedDataSet.id){
+              this.selectedDataDimension = [];
+              this.selectedDataSet = selectedDataSet;
+              this.selectedPeriod = {};
+              this.setDataEntrySelectionLabel();
+            }
           }
-        }
-      });
-      modal.present();
+        });
+        modal.present();
+      }else{
+        this.setToasterMessage("No entry form to select on " + this.selectedOrganisationUnitLabel);
+      }
+
     }else{
       this.setToasterMessage("Please select organisation first");
     }
   }
 
   openPeriodModal(){
-    if(this.currentSelectionStatus.period){
+    if(this.currentSelectionStatus && this.currentSelectionStatus.period){
       let modal = this.modalCtrl.create(PeriodSelection,{selectedDataSet : this.selectedDataSet,currentPeriodOffset : this.currentPeriodOffset});
       modal.onDidDismiss((selectedPeriodResponse:any) => {
         if(selectedPeriodResponse && selectedPeriodResponse.selectedPeriod){
