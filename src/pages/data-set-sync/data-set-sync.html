@@ -1,0 +1,8 @@
+
+<div *ngIf="hasDataPrepared">
+  <div *ngFor="let dataSetId of dataSetIds">
+    id : {{dataSetsSyncObjects[dataSetId].id}}
+    name : {{dataSetsSyncObjects[dataSetId].name}}
+    data Values count : {{dataSetsSyncObjects[dataSetId].dataValues.length}}
+  </div>
+</div>

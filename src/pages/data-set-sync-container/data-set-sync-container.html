@@ -1,0 +1,24 @@
+<!--
+  Generated template for the DataSetSyncContainer page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="primary" mode="md">
+    <ion-title>Entry forms sync status</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="data-set-sync-container">
+  <div *ngIf="loading">
+    <page-loading [loadingSize]="large" [loadingMessage] = "loadingMessages"></page-loading>
+  </div>
+  <div *ngIf="!loading && hasDataPrepared">
+    <page-data-set-sync [dataSetsSyncObjects]="dataSetsSyncObjects" [dataSetIds]="dataSetIds" [hasDataPrepared]="hasDataPrepared" ></page-data-set-sync>
+  </div>
+
+</ion-content>

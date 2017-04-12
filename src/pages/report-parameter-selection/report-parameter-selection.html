@@ -37,7 +37,7 @@
     <ion-row *ngIf="reportParams.paramReportingPeriod" >
       <ion-col>
 
-        <ion-item text-capitalize (tap)="openOrganisationUnitModal()">
+        <ion-item text-capitalize (tap)="openReportPeriodSelection()">
           <div style="text-align: center" item-left>
             <div *ngIf="!currentSelectionStatus.period">
               <page-loading loadingSize="small"></page-loading>
