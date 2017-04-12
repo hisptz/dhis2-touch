@@ -89,7 +89,11 @@ export class AboutPage implements OnInit{
   }
 
   viewDataValuesSynchronisationStatusByDataSets(syncStatus){
-    this.navCtrl.push(DataSetSyncContainerPage,{dataValues : this.dataValuesStorage[syncStatus],syncStatus:syncStatus});
+    if(this.dataValuesStorage[syncStatus].length > 0){
+      this.navCtrl.push(DataSetSyncContainerPage,{dataValues : this.dataValuesStorage[syncStatus],syncStatus:syncStatus});
+    }else{
+      this.setToasterMessage("There is nothing to view");
+    }
   }
 
   loadingEvents(ionRefresher?){
