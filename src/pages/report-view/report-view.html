@@ -19,7 +19,7 @@
     <div *ngIf="loadingData">
       <ion-row >
         <ion-col width="100">
-          <page-loading loadingSize="large" loadingMessage="loadingMessage"></page-loading>
+          <page-loading loadingSize="large" [loadingMessage]="loadingMessage"></page-loading>
         </ion-col>
       </ion-row>
     </div>

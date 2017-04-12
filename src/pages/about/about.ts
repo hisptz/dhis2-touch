@@ -88,8 +88,8 @@ export class AboutPage implements OnInit{
     });
   }
 
-  viewDataValuesSynchronisationStatusByDataSets(status){
-    this.navCtrl.push(DataSetSyncContainerPage,{dataValues : this.dataValuesStorage[status],status:status});
+  viewDataValuesSynchronisationStatusByDataSets(syncStatus){
+    this.navCtrl.push(DataSetSyncContainerPage,{dataValues : this.dataValuesStorage[syncStatus],syncStatus:syncStatus});
   }
 
   loadingEvents(ionRefresher?){

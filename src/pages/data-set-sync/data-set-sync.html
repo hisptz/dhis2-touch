@@ -1,8 +1,17 @@
 
 <div *ngIf="hasDataPrepared">
-  <div *ngFor="let dataSetId of dataSetIds">
-    id : {{dataSetsSyncObjects[dataSetId].id}}
-    name : {{dataSetsSyncObjects[dataSetId].name}}
-    data Values count : {{dataSetsSyncObjects[dataSetId].dataValues.length}}
+  <div *ngIf="isLoading">
+    <page-loading loadingSize="large" [loadingMessage] = "loadingMessage"></page-loading>
   </div>
+  <div *ngIf="!isLoading">
+    syncStatus :: {{ syncStatus}}<br>
+    <div *ngFor="let dataSetId of dataSetIds" >
+      <div *ngIf="dataSetsSyncObjects[dataSetId].name != ''">
+        id : {{dataSetsSyncObjects[dataSetId].id}}
+        name : {{dataSetsSyncObjects[dataSetId].name}}
+        data Values count : {{dataSetsSyncObjects[dataSetId].dataValues.length}}
+      </div>
+    </div>
+  </div>
+
 </div>

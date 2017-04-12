@@ -18,16 +18,18 @@ export class DataSetSyncContainerPage  implements OnInit{
   public hasDataPrepared : boolean = false;
   public dataSetsSyncObjects : any = {};
   public dataSetIds : any = [];
+  public syncStatus : string = "";
 
   constructor(public navParams: NavParams) {}
 
   ngOnInit() {
+    this.syncStatus = (this.navParams.get("syncStatus") == "synced")? "Synced" : "Not Synced";
     this.navParams.get("dataValues").forEach((dataValue : any)=>{
       this.loadingMessages = "Grouping data by entry form";
       if(!this.dataSetsSyncObjects[dataValue.dataSetId]){
         this.dataSetIds.push(dataValue.dataSetId);
         this.dataSetsSyncObjects[dataValue.dataSetId] = {
-          id :dataValue.dataSetId,name : "name",dataValues : []
+          id :dataValue.dataSetId,name : "",dataValues : []
         };
       }
       this.dataSetsSyncObjects[dataValue.dataSetId].dataValues.push(dataValue);

@@ -16,6 +16,34 @@ export class DataSets {
     this.resource = "dataSets";
   }
 
+  /**
+   * getDataSetsByIds
+   * @param dataSetsIds
+   * @param currentUser
+   * @returns {Promise<T>}
+     */
+  getDataSetsByIds(dataSetsIds,currentUser){
+    let attribute = 'id';
+    let dataSetsResponse = [];
+    let self = this;
+    return new Promise(function(resolve, reject) {
+      self.sqlLite.getDataFromTableByAttributes(self.resource,attribute,dataSetsIds,currentUser.currentDatabase).then((dataSets : any)=>{
+        self.sortDataSetList(dataSets);
+        dataSets.forEach((dataSet : any)=>{
+          dataSetsResponse.push({
+            id: dataSet.id,
+            name: dataSet.name,
+            dataElements : dataSet.dataElements,
+            dataSetElements : dataSet.dataSetElements
+          });
+        });
+        resolve(dataSetsResponse);
+      },error=>{
+        reject(error);
+      })
+    });
+  }
+
   getAssignedDataSetsByOrgUnit(selectedOrgUnit,dataSetIdsByUserRoles,currentUser){
     let attribute = 'id';
     let attributeValue =[];
