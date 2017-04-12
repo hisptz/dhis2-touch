@@ -22,7 +22,7 @@ export class SqlLite {
         {value: 'level', type: 'TEXT'},
         {value: 'children', type: 'LONGTEXT'}
       ],
-      fields : "id,name,ancestors[id,name],dataSets[id],programs[id],level,children[id,name,ancestors[id,name],dataSets[id],programs[id],level,children[id,name,ancestors[id,name],dataSets[id],programs[id],level,children[id,name,ancestors[id,name],dataSets[id],programs[id],level,children[id,name,ancestors[id,name],dataSets[id],programs[id],level,children[id,name,ancestors[id,name]]]]]]",
+      fields : "id,name,ancestors[id,name],dataSets[id,name],programs[id,name],level,children[id,name,ancestors[id,name],dataSets[id,name],programs[id,name],level,children[id,name,ancestors[id,name],dataSets[id,name],programs[id,name],level,children[id,name,ancestors[id,name],dataSets[id,name],programs[id,name],level,children[id,name,ancestors[id,name],dataSets[id,name],programs[id,name],level,children[id,name,ancestors[id,name]]]]]]",
       canBeUpdated : true,
       resourceType : "organisationUnit"
     },

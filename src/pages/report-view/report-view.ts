@@ -53,7 +53,8 @@ export class ReportView implements OnInit{
           organisationUnitChildren : this.params.get("organisationUnitChildren"),
           organisationUnitHierarchy : this.getOrganisationUnitHierarchy(this.params.get("organisationUnit")),
           period : this.selectedPeriod.iso,
-          date : this.selectedPeriod.iso + "-01-01"
+          date : this.selectedPeriod.iso + "-01-01",
+          dataSets :this.selectedOrganisationUnit.dataSets
         };
       }
       this.loadReportDesignContent(this.reportId);
