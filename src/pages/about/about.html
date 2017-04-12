@@ -43,11 +43,11 @@
             <ion-item-divider color="whitecolor">
               <b>Data Values Status</b>
             </ion-item-divider>
-            <ion-item >
+            <ion-item (tap)="viewDataValuesSynchronisationStatusByDataSets('synced')">
               <h2>Synced</h2>
               <p>{{ dataValuesStorage.online }}</p>
             </ion-item>
-            <ion-item >
+            <ion-item (tap)="viewDataValuesSynchronisationStatusByDataSets('not_synced')">
               <h2>Not Synced</h2>
               <p>{{ dataValuesStorage.offline }}</p>
             </ion-item>

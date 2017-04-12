@@ -64,8 +64,10 @@ import {EventFieldSelectionMenu} from "../pages/event-field-selection-menu/event
 import {DataEntryForm} from "../pages/data-entry-form/data-entry-form";
 import {ReportSelectionPeriod} from "../pages/report-selection-period/report-selection-period";
 import {EntryFormSectionListPage} from "../pages/entry-form-section-list/entry-form-section-list";
-
-
+import {DataSetSyncPage} from "../pages/data-set-sync/data-set-sync";
+import {DataSetSyncContainerPage} from "../pages/data-set-sync-container/data-set-sync-container";
+import {DataElementSyncContainerPage} from "../pages/data-element-sync-container/data-element-sync-container";
+import {DataElementSyncPage} from "../pages/data-element-sync/data-element-sync";
 
 
 @NgModule({
@@ -73,16 +75,26 @@ import {EntryFormSectionListPage} from "../pages/entry-form-section-list/entry-f
     MyApp,
     AboutPage,
     AppsPage,
-    OrganisationUnits,ProgramSelection,SendDataViaSms,VisualizationCardPage,DataSetSelection,PeriodSelection,
-    DataEntryHomePage,EventCaptureHomePage,ReportHomePage,DashBoardHomePage,
-    ProfilePage,AboutPage,HelpPage,SettingHomePage,UpdateManagerHomePage,
-    AccountPage,LauncherPage,LoadingPage,LoginPage,MetadataDictionary,
-    ProgressBarPage,ReportParameterSelection,ReportView,EventView,EventCaptureForm,EventFieldSelectionMenu,
-    DataEntryForm,ReportSelectionPeriod,EntryFormSectionListPage,
+    OrganisationUnits, ProgramSelection, SendDataViaSms, VisualizationCardPage, DataSetSelection, PeriodSelection,
+    DataEntryHomePage, EventCaptureHomePage, ReportHomePage, DashBoardHomePage,
+    ProfilePage, AboutPage, HelpPage, SettingHomePage, UpdateManagerHomePage,
+    AccountPage, LauncherPage, LoadingPage, LoginPage, MetadataDictionary,
+    ProgressBarPage, ReportParameterSelection, ReportView, EventView, EventCaptureForm, EventFieldSelectionMenu,
+    DataEntryForm, ReportSelectionPeriod, EntryFormSectionListPage, DataElementSyncPage, DataElementSyncContainerPage,
+    DataSetSyncContainerPage, DataSetSyncPage,
     TabsPage
   ],
   imports: [
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {
+        backButtonText: 'Back',
+        iconMode: 'md',
+        backButtonIcon: "ios-arrow-back-outline",
+        modalEnter: 'modal-slide-in',
+        modalLeave: 'modal-slide-out',
+        tabsPlacement: 'top',
+        pageTransition: 'ios'
+      }, {}
+    ),
     ChartModule,
     IonicStorageModule.forRoot()
   ],
@@ -91,22 +103,24 @@ import {EntryFormSectionListPage} from "../pages/entry-form-section-list/entry-f
     MyApp,
     AboutPage,
     AppsPage,
-    OrganisationUnits,ProgramSelection,SendDataViaSms,VisualizationCardPage,DataSetSelection,PeriodSelection,
-    DataEntryHomePage,EventCaptureHomePage,ReportHomePage,DashBoardHomePage,
-    ProfilePage,AboutPage,HelpPage,SettingHomePage,UpdateManagerHomePage,
-    AccountPage,LauncherPage,LoadingPage,LoginPage,MetadataDictionary,
-    ProgressBarPage,ReportParameterSelection,ReportView,EventView,EventCaptureForm,EventFieldSelectionMenu,
-    DataEntryForm,ReportSelectionPeriod,EntryFormSectionListPage,
+    OrganisationUnits, ProgramSelection, SendDataViaSms, VisualizationCardPage, DataSetSelection, PeriodSelection,
+    DataEntryHomePage, EventCaptureHomePage, ReportHomePage, DashBoardHomePage,
+    ProfilePage, AboutPage, HelpPage, SettingHomePage, UpdateManagerHomePage,
+    AccountPage, LauncherPage, LoadingPage, LoginPage, MetadataDictionary,
+    ProgressBarPage, ReportParameterSelection, ReportView, EventView, EventCaptureForm, EventFieldSelectionMenu,
+    DataEntryForm, ReportSelectionPeriod, EntryFormSectionListPage, DataElementSyncPage, DataElementSyncContainerPage,
+    DataSetSyncContainerPage, DataSetSyncPage,
     TabsPage
   ],
   providers: [
-    StatusBar,NetworkAvailability,
-    SplashScreen,SQLite,HTTP,AppVersion,SMS,
-    Dashboard,DataSets,DataValues,EntryForm,EventCaptureFormProvider,
-    MetadataDictionaryService,UpdateResourceManager,OrganisationUnit,Program,
-    ProgramStageDataElements,ProgramStageSections,Report,Setting,Synchronization,
-    AppProvider,HttpClient,SqlLite,User,SmsCommand,VisualizerService,
+    StatusBar, NetworkAvailability,
+    SplashScreen, SQLite, HTTP, AppVersion, SMS,
+    Dashboard, DataSets, DataValues, EntryForm, EventCaptureFormProvider,
+    MetadataDictionaryService, UpdateResourceManager, OrganisationUnit, Program,
+    ProgramStageDataElements, ProgramStageSections, Report, Setting, Synchronization,
+    AppProvider, HttpClient, SqlLite, User, SmsCommand, VisualizerService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
-export class AppModule {}
+export class AppModule {
+}

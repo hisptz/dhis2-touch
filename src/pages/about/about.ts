@@ -1,10 +1,11 @@
 import { Component,OnInit } from '@angular/core';
 
-import { ToastController } from 'ionic-angular';
+import { ToastController,NavController } from 'ionic-angular';
 import {Events} from "../../providers/events";
 import {User} from "../../providers/user";
 import {AppProvider} from "../../providers/app-provider";
 import {DataValues} from "../../providers/data-values";
+import {DataSetSyncContainerPage} from "../data-set-sync-container/data-set-sync-container";
 
 @Component({
   selector: 'page-about',
@@ -27,7 +28,7 @@ export class AboutPage implements OnInit{
   };
 
   constructor(public user : User,public toastCtrl : ToastController,
-              public appProvider : AppProvider,
+              public appProvider : AppProvider,public navCtrl: NavController,
               public dataValues : DataValues,public eventProvider :Events) {
   }
 
@@ -64,6 +65,8 @@ export class AboutPage implements OnInit{
       this.dataValues.getDataValuesByStatus(this.currentUser,"not synced").then((unSyncedDataValues : any)=>{
         this.dataValuesStorage.offline = unSyncedDataValues.length;
         this.dataValuesStorage.online = syncedDataValues.length;
+        this.dataValuesStorage["synced"] = syncedDataValues;
+        this.dataValuesStorage["not_synced"] = unSyncedDataValues;
         this.loadingEvents();
       },error=>{
         this.setToasterMessage('Fail to loading data values storage status');
@@ -73,8 +76,10 @@ export class AboutPage implements OnInit{
       this.setToasterMessage('Fail to loading data values storage status');
       this.loadingData = false;
     });
-    //this.dataValues.getDataValuesByStatus()
+  }
 
+  viewDataValuesSynchronisationStatusByDataSets(status){
+    this.navCtrl.push(DataSetSyncContainerPage,{dataValues : this.dataValuesStorage[status],status:status});
   }
 
   loadingEvents(){
