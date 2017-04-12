@@ -26,10 +26,13 @@ export class UpdateManagerHomePage implements OnInit{
   public hasAllSelected : boolean;
   public hasSelectedResourceUpdated : boolean = false;
 
+
   public updateManagerObject : any = {
-    updateMetadata : {isExpanded : false,isSaved : true},
+    updateMetadata : {isExpanded : false,isSaved : true,isProcessRunning : false},
     sendDataViaSms : {isExpanded : true,isSaved : true}
   };
+
+  public updateMetadataLoadingMessages : string = "";
 
   constructor(public sqlLite : SqlLite,
               public user : User,public toastCtrl: ToastController,
@@ -100,45 +103,38 @@ export class UpdateManagerHomePage implements OnInit{
 
 
   updateResources(resources){
-    this.loadingData = true;
-    this.loadingMessages = [];
-    this.setLoadingMessages("Downloading updates");
+    this.updateMetadataLoadingMessages = "Downloading updates";
+    this.updateManagerObject.updateMetadata.isProcessRunning = true;
     this.updateResourceManager.downloadResources(resources,this.currentUser).then((resourcesData)=>{
-      this.setLoadingMessages("Preparing device to apply updates");
+      this.updateMetadataLoadingMessages = "Preparing device to apply updates";
       this.updateResourceManager.prepareDeviceToApplyChanges(resources,this.currentUser).then(()=>{
         let updateCounts = 0;
-        this.setLoadingMessages("Applying update " + this.getPercentage(updateCounts,resources.length) + " %");
+        this.updateMetadataLoadingMessages = "Applying updates ";
         resources.forEach((resource:any)=>{
           let resourceName = resource.name;
           this.appProvider.saveMetadata(resourceName,resourcesData[resourceName],this.currentUser.currentDatabase).then((
           )=>{
             updateCounts ++;
-            this.loadingMessages[2] = "Applying update " + this.getPercentage(updateCounts,resources.length) + " %";
             if(updateCounts == resources.length){
-              this.loadingData = false;
               this.autoSelect("un-selectAll");
+              this.updateManagerObject.updateMetadata.isProcessRunning = false;
               this.setToasterMessage("All updates has been applied successfully");
             }
           },error=>{
-            this.loadingData = false;
+            this.updateManagerObject.updateMetadata.isProcessRunning = false;
             this.setToasterMessage("Fail to apply updates : " + JSON.stringify(error));
           })
         });
       },error=>{
-        this.loadingData = false;
+        this.updateManagerObject.updateMetadata.isProcessRunning = false;
         this.setToasterMessage("Fail to prepare device to apply updates " + JSON.stringify(error));
       });
     },error=>{
-      this.loadingData = false;
+      this.updateManagerObject.updateMetadata.isProcessRunning = false;
       this.setToasterMessage("Fail to download updates : " + JSON.stringify(error));
     });
   }
 
-  getPercentage(numerator : number,denominator : number){
-    let fraction : number;
-    fraction = (numerator/denominator) *100;
-    return fraction.toFixed(2)
-  }
 
   autoSelect(selectType){
     if(selectType == 'selectAll'){
