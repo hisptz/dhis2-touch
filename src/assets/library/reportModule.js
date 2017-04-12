@@ -278,7 +278,7 @@ dhis2.de = {
           $.each(dataElements, function (dataElementIndex, dataElement) {
             ids.push(dataSet + "-" + dataElement + "-%-" + dhis2.report.period + "-" + dhis2.report.organisationUnit.id);
           });
-          dhis2.de.sqlLiteServices.searchDataFromTableByIds("dataValues", dataElements).done(function (items) {
+          dhis2.sqlLiteServices.searchDataFromTableByIds("dataValues", dataElements).done(function (items) {
             if(items.length > 0){
               $.each(items, function (dataElementIndex, dataElement) {
                 data.rows.push([dataElement.de, dhis2.report.period, dataElement.value + ""]);
@@ -286,7 +286,7 @@ dhis2.de = {
             }
             if(data.rows.length == 0){
               var message = "This report has no data. To view the report with data, open data entry form related to this report to download existing data or to enter new data";
-              dhis2.progressMessageStick(message);
+              //dhis2.progressMessageStick(message);
             }
             defer.resolve(data);
           });
