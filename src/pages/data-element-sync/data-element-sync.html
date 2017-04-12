@@ -1,13 +1,21 @@
-<ion-grid>
-  <ion-row>
-    <ion-col >
-      <div *ngFor="let dataElement of dataElements" >
-        <div class="contents">
-          <p ><b>Form Label : </b>{{ dataElement.name }}<br>
-          <b>Period : </b>{{ dataElement.period}}<br>
-          <b>value : </b>{{ dataElement.value }}</p>
+
+<div *ngIf="isLoading">
+  <page-loading loadingSize="large" [loadingMessage] = "loadingMessage"></page-loading>
+</div>
+<div *ngIf="!isLoading">
+  <ion-grid>
+    <ion-row>
+      <ion-col >
+        <div *ngFor="let dataElement of dataElements" >
+          <div class="contents">
+            <p ><b>Form Label : </b>{{ dataElement.name }}<br>
+              <b>Period : </b>{{ dataElement.period}}<br>
+              <b>value : </b>{{ dataElement.value }}</p>
+          </div>
         </div>
-      </div>
-    </ion-col>
-  </ion-row>
-</ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>
+
+

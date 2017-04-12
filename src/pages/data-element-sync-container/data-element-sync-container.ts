@@ -18,7 +18,7 @@ import {Setting} from "../../providers/setting";
 export class DataElementSyncContainerPage  implements OnInit{
 
   public isLoading :boolean = true;
-  public loadingMessage : string = "";
+  public loadingMessage : string = "Loading entry form information";
   public syncStatus : string;
   public entryFormName : string =  "Entry Form Sync Summary";
   public dataValues : any;
@@ -32,7 +32,6 @@ export class DataElementSyncContainerPage  implements OnInit{
               public user : User) {}
 
   ngOnInit() {
-    this.loadingMessage = "Loading entry form information";
     this.syncStatus = this.navParams.get("syncStatus");
     this.entryFormName = this.navParams.get("entryFormName");
     let dataSetId = this.navParams.get("dataSetId");
@@ -56,15 +55,29 @@ export class DataElementSyncContainerPage  implements OnInit{
       if(dataEntrySetting && dataEntrySetting.label){
         label = dataEntrySetting.label;
       }
+      let count = 0;
       dataValues.forEach((dataValue : any)=>{
+        count ++;
         this.dataElements.push({
           name : this.getDataElementName(dataValue,dataElementObject[dataValue.de],label),
           id : dataValue.de,
           value : dataValue.value,
           period : dataValue.pe
         });
+        if(count == dataValues.length){
+          this.dataElements.sort((a, b) => {
+            if (a.period > b.period) {
+              return -1;
+            }
+            if (a.period < b.period) {
+              return 1;
+            }
+            return 0;
+          });
+          this.isLoading = false;
+        }
       });
-      this.isLoading = false;
+
     })
   }
 

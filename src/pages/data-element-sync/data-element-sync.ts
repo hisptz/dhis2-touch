@@ -14,9 +14,15 @@ import { NavController, NavParams } from 'ionic-angular';
 export class DataElementSyncPage  implements OnInit{
 
   @Input() dataElements;
+  public loadingMessage : string = "Preparing data";
+  public isLoading : boolean = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    if(this.dataElements){
+      this.isLoading = false;
+    }
+  }
 
 }

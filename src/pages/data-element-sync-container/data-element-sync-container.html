@@ -14,11 +14,11 @@
 
 
 <ion-content class="data-element-sync-container">
-  <div *ngIf="loading">
-    <page-loading [loadingSize]="large" [loadingMessage] = "loadingMessages"></page-loading>
+  <div *ngIf="isLoading">
+    <page-loading loadingSize="large" [loadingMessage] = "loadingMessages"></page-loading>
   </div>
-  <div *ngIf="!loading">
-    <page-data-element-sync [dataElements]="dataElements"></page-data-element-sync>
+  <div *ngIf="!isLoading">
+    <page-data-element-sync [dataElements]="dataElements" ></page-data-element-sync>
   </div>
 
 
