@@ -166,7 +166,7 @@
     <!-- pagination -->
     <ion-item-group>
       <ion-item-divider>
-        <ion-row *ngIf="entryFormSections.length > 0">
+        <ion-row *ngIf="entryFormSections.length > 1">
           <ion-col>
             <button color="font-color" ion-button full clear small (tap)="changePagination(0)">
               <ion-icon name="ios-arrow-back-outline"></ion-icon>
@@ -222,7 +222,7 @@
             <div style="text-align: center" item-left >
               <page-loading loadingSize="small"></page-loading>
             </div>
-            Please wait ...
+            {{ dataSetCompletenessProgressMessage }}
           </ion-item>
         </div>
 

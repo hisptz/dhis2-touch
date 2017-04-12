@@ -44,6 +44,7 @@ export class DataEntryForm implements OnInit{
   public isDataSetCompleted : boolean = false;
   public dataSetCompletenessInformation :any = {name:"",date:""};
   public isDataSetCompletenessProcessRunning : boolean = false;
+  public dataSetCompletenessProgressMessage :string = "";
 
   //settings
   public dataEntrySetting : any;
@@ -214,7 +215,6 @@ export class DataEntryForm implements OnInit{
     actionSheet.present();
   }
 
-  //todo get input label attribute form setting
   getDisplayName(dataElement){
     let label = this.dataEntrySetting.label;
     return (dataElement[label])? dataElement[label] :dataElement.displayName;
@@ -260,44 +260,63 @@ export class DataEntryForm implements OnInit{
   }
 
   updateDataSetCompleteness(){
-    this.isDataSetCompletenessProcessRunning = true;
-    let dataSetId = this.selectedDataSet.id;
-    let orgUnitId = this.dataEntryFormSelectionParameter.orgUnit.id;
-    let period = this.dataEntryFormSelectionParameter.period.iso;
-    let dataDimension = this.dataEntryFormSelectionParameter.dataDimension;
-    if(this.isDataSetCompleted){
-      this.dataValues.unDoCompleteOnDataSetRegistrations(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then(()=>{
-        this.isDataSetCompleted = !this.isDataSetCompleted;
-        this.isDataSetCompletenessProcessRunning = false;
-      },error=>{
-        this.isDataSetCompletenessProcessRunning = false;
-        this.setToasterMessage("Fail to undo complete  at moment, please try again later");
-      });
-    }else{
-      let dataValues = [];
-      if(this.entryFormDataValues){
-        Object.keys(this.entryFormDataValues).forEach((fieldId:any)=>{
-          let fieldIdArray = fieldId.split("-");
-          dataValues.push({
-            de: fieldIdArray[0],
-            co: fieldIdArray[1],
-            pe: period,
-            ou: orgUnitId,
-            cc: dataDimension.cc,
-            cp: dataDimension.cp,
-            value: this.entryFormDataValues[fieldId]
-          });
-        });
-      }
-      if(dataValues.length > 0){
-        this.dataValues.completeOnDataSetRegistrations(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then((response)=>{
-          this.setCompletenessInformation();
+    let network = this.NetworkAvailability.getNetWorkStatus();
+    if(!network.isAvailable){
+      this.setNotificationToasterMessage(network.message);
+    }else {
+      this.isDataSetCompletenessProcessRunning = true;
+      this.dataSetCompletenessProgressMessage = "Please wait";
+      let dataSetId = this.selectedDataSet.id;
+      let orgUnitId = this.dataEntryFormSelectionParameter.orgUnit.id;
+      let period = this.dataEntryFormSelectionParameter.period.iso;
+      let dataDimension = this.dataEntryFormSelectionParameter.dataDimension;
+      if(this.isDataSetCompleted){
+        this.dataSetCompletenessProgressMessage = "Undo the completion of  entry form";
+        this.dataValues.unDoCompleteOnDataSetRegistrations(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then(()=>{
+          this.isDataSetCompleted = !this.isDataSetCompleted;
+          this.isDataSetCompletenessProcessRunning = false;
         },error=>{
           this.isDataSetCompletenessProcessRunning = false;
-          this.setToasterMessage("Fail to complete at moment, please try again later");
+          this.setToasterMessage("Fail to undo complete  at moment, please try again later");
         });
       }else{
-        this.setToasterMessage("You can not complete empty form");
+        let dataValues = [];
+        if(this.entryFormDataValues){
+          Object.keys(this.entryFormDataValues).forEach((fieldId:any)=>{
+            let fieldIdArray = fieldId.split("-");
+            if(this.entryFormDataValues[fieldId]){
+              dataValues.push({
+                de: fieldIdArray[0],
+                co: fieldIdArray[1],
+                pe: period,
+                ou: orgUnitId,
+                cc: dataDimension.cc,
+                cp: dataDimension.cp,
+                value: this.entryFormDataValues[fieldId]
+              });
+            }
+          });
+        }
+        if(dataValues.length > 0){
+          this.dataSetCompletenessProgressMessage = "Uploading data to the server";
+          this.dataValues.uploadAllDataValuesOnCompleteForm(dataValues,this.currentUser).then((uploadResponse : any)=>{
+            this.storageStatus.local = uploadResponse.failOnUploadedDataValues;
+            this.storageStatus.online = uploadResponse.uploadedDataValues;
+            this.dataSetCompletenessProgressMessage = "Completing entry form";
+            this.dataValues.completeOnDataSetRegistrations(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then((response)=>{
+              this.setCompletenessInformation();
+            },error=>{
+              this.isDataSetCompletenessProcessRunning = false;
+              this.setToasterMessage("Fail to complete at moment, please try again later");
+            });
+          },error=>{
+            this.isDataSetCompletenessProcessRunning = false;
+            this.setToasterMessage("Fail to upload data to the server");
+          });
+        }else{
+          this.setToasterMessage("You can not complete empty form");
+          this.isDataSetCompletenessProcessRunning = false;
+        }
       }
     }
   }
@@ -307,6 +326,7 @@ export class DataEntryForm implements OnInit{
     let orgUnitId = this.dataEntryFormSelectionParameter.orgUnit.id;
     let period = this.dataEntryFormSelectionParameter.period.iso;
     let dataDimension = this.dataEntryFormSelectionParameter.dataDimension;
+    this.dataSetCompletenessProgressMessage = "Update entry form completion status";
     this.dataValues.getDataSetCompletenessInfo(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then((response : any)=>{
       this.isDataSetCompleted = response.complete;
       this.dataSetCompletenessInformation.name = response.storedBy;
@@ -335,6 +355,15 @@ export class DataEntryForm implements OnInit{
     let toast = this.toastCtrl.create({
       message: message,
       showCloseButton : true
+    });
+    toast.present();
+  }
+
+  setNotificationToasterMessage(message){
+    let toast = this.toastCtrl.create({
+      message: message,
+      position : 'top',
+      duration: 3000
     });
     toast.present();
   }

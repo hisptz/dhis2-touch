@@ -66,7 +66,7 @@ export class DataValues {
     let statusMessage = "";
     let network = self.NetworkAvailability.getNetWorkStatus();
     if(formattedDataValues.length > 0 && network.isAvailable){
-      this.setNotificationToasterMessage("Starting data synchronization process");
+      self.setNotificationToasterMessage("Starting data synchronization process");
       formattedDataValues.forEach((formattedDataValue:any, index:any)=> {
         self.httpClient.post('/api/25/dataValues?' + formattedDataValue, {}, currentUser).subscribe(()=> {
           let syncedDataValues = dataValues[index];
@@ -80,6 +80,7 @@ export class DataValues {
           }, error=> {
           })
         }, error=> {
+          console.log(JSON.stringify(error));
           failOnUploadedDataValues = failOnUploadedDataValues + 1;
           if((uploadedDataValues + failOnUploadedDataValues) == formattedDataValues.length){
             statusMessage =  uploadedDataValues + " data has been synced successfully .  " + failOnUploadedDataValues + " has failed to sync";
@@ -88,6 +89,39 @@ export class DataValues {
         });
       });
     }
+  }
+
+  /**
+   * uploadAllDataValuesOnCompleteForm
+   * @param dataValues
+   * @param currentUser
+   * @returns {Promise<T>}
+     */
+  uploadAllDataValuesOnCompleteForm(dataValues,currentUser){
+    let self = this;
+    let formattedDataValues = self.getFormattedDataValueForUpload(dataValues);
+    let uploadedDataValues = 0;
+    let failOnUploadedDataValues = 0;
+    return new Promise(function(resolve, reject) {
+      formattedDataValues.forEach((formattedDataValue : any, index:any)=>{
+        self.httpClient.post('/api/25/dataValues?' + formattedDataValue, {}, currentUser).subscribe(()=> {
+          let syncedDataValues = dataValues[index];
+          syncedDataValues["syncStatus"] = "synced";
+          uploadedDataValues = uploadedDataValues + 1;
+          if((uploadedDataValues + failOnUploadedDataValues) == formattedDataValues.length){
+            resolve({uploadedDataValues : uploadedDataValues,failOnUploadedDataValues : failOnUploadedDataValues})
+          }
+          self.sqlLite.insertDataOnTable(self.resourceName, syncedDataValues, currentUser.currentDatabase).then(response=> {
+          }, error=> {
+          })
+        },error=>{
+          failOnUploadedDataValues = failOnUploadedDataValues + 1;
+          if((uploadedDataValues + failOnUploadedDataValues) == formattedDataValues.length){
+            resolve({uploadedDataValues : uploadedDataValues,failOnUploadedDataValues : failOnUploadedDataValues})
+          }
+        })
+      });
+    });
   }
 
   /**
@@ -100,7 +134,7 @@ export class DataValues {
     dataValues.forEach((dataValue : any)=>{
       let formParameter = "de="+dataValue.de+"&pe="+dataValue.pe+"&ou=";
       formParameter += dataValue.ou+"&co="+dataValue.co+"&value="+dataValue.value;
-      if(dataValue.cp != "0"){
+      if(dataValue.cp != "0" && dataValue.cp != ""){
         formParameter = formParameter +"&cc="+dataValue.cc+"&cp="+dataValue.cp;
       }
       formattedDataValues.push(formParameter);
