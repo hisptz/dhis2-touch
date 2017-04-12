@@ -7,14 +7,19 @@
 <ion-header>
 
   <ion-navbar color="primary" mode="md">
-    <ion-title>dataElementSyncContainer</ion-title>
+    <ion-title>{{ entryFormName }}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content class="data-element-sync-container">
+  <div *ngIf="loading">
+    <page-loading [loadingSize]="large" [loadingMessage] = "loadingMessages"></page-loading>
+  </div>
+  <div *ngIf="!loading">
+    <page-data-element-sync [dataElements]="dataElements"></page-data-element-sync>
+  </div>
 
-  <page-data-element-sync></page-data-element-sync>
 
 </ion-content>

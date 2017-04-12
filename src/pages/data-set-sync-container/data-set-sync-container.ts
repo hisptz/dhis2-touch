@@ -19,11 +19,16 @@ export class DataSetSyncContainerPage  implements OnInit{
   public dataSetsSyncObjects : any = {};
   public dataSetIds : any = [];
   public syncStatus : string = "";
+  public headerLabel : string;
 
   constructor(public navParams: NavParams) {}
 
   ngOnInit() {
+    this.headerLabel = "List of ";
+    this.headerLabel += (this.navParams.get("syncStatus") == "synced")? "synced": "un synced ";
+    this.headerLabel += " entry forms";
     this.syncStatus = (this.navParams.get("syncStatus") == "synced")? "Synced" : "Not Synced";
+
     this.navParams.get("dataValues").forEach((dataValue : any)=>{
       this.loadingMessages = "Grouping data by entry form";
       if(!this.dataSetsSyncObjects[dataValue.dataSetId]){

@@ -2,6 +2,7 @@ import { Component,OnInit,Input } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import {DataSets} from "../../providers/data-sets";
 import {User} from "../../providers/user";
+import {DataElementSyncContainerPage} from "../data-element-sync-container/data-element-sync-container";
 
 /*
   Generated class for the DataSetSync page.
@@ -49,6 +50,15 @@ export class DataSetSyncPage  implements OnInit{
       this.isLoading = false;
     },error=>{
       this.isLoading = false;
+    })
+  }
+
+  viewMoreDetailsOnEntryForm(dataSetId){
+    this.navCtrl.push(DataElementSyncContainerPage,{
+      syncStatus : this.syncStatus,
+      dataSetId:dataSetId,
+      entryFormName : this.dataSetsSyncObjects[dataSetId].name,
+      dataValues : this.dataSetsSyncObjects[dataSetId].dataValues
     })
   }
 

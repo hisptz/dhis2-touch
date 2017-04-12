@@ -4,14 +4,23 @@
     <page-loading loadingSize="large" [loadingMessage] = "loadingMessage"></page-loading>
   </div>
   <div *ngIf="!isLoading">
-    syncStatus :: {{ syncStatus}}<br>
-    <div *ngFor="let dataSetId of dataSetIds" >
-      <div *ngIf="dataSetsSyncObjects[dataSetId].name != ''">
-        id : {{dataSetsSyncObjects[dataSetId].id}}
-        name : {{dataSetsSyncObjects[dataSetId].name}}
-        data Values count : {{dataSetsSyncObjects[dataSetId].dataValues.length}}
-      </div>
-    </div>
+    <ion-grid>
+      <ion-row>
+        <ion-col >
+          <div *ngFor="let dataSetId of dataSetIds" >
+            <div *ngIf="dataSetsSyncObjects[dataSetId].name != ''">
+              <ion-item-group (tap)="viewMoreDetailsOnEntryForm(dataSetId)">
+                <ion-item-divider>
+                  <p ><b>Form : </b>{{dataSetsSyncObjects[dataSetId].name}}</p>
+                  <p ><b>Data : </b>{{dataSetsSyncObjects[dataSetId].dataValues.length}}</p>
+                </ion-item-divider>
+              </ion-item-group>
+              <ion-list></ion-list>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </div>
 
 </div>

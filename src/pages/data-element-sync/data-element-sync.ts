@@ -1,4 +1,4 @@
-import { Component,OnInit } from '@angular/core';
+import { Component,OnInit,Input } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 /*
@@ -12,6 +12,8 @@ import { NavController, NavParams } from 'ionic-angular';
   templateUrl: 'data-element-sync.html'
 })
 export class DataElementSyncPage  implements OnInit{
+
+  @Input() dataElements;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
