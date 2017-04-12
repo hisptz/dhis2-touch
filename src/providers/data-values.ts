@@ -80,7 +80,7 @@ export class DataValues {
           }, error=> {
           })
         }, error=> {
-          console.log(JSON.stringify(error));
+          console.log("Fail on uploading datavalues : " + JSON.stringify(error));
           failOnUploadedDataValues = failOnUploadedDataValues + 1;
           if((uploadedDataValues + failOnUploadedDataValues) == formattedDataValues.length){
             statusMessage =  uploadedDataValues + " data has been synced successfully .  " + failOnUploadedDataValues + " has failed to sync";
@@ -325,7 +325,7 @@ export class DataValues {
     return new Promise(function(resolve, reject) {
       self.sqlLite.getDataFromTableByAttributes(self.resourceName,"id",ids,currentUser.currentDatabase).then((dataValues : any)=>{
         dataValues.forEach((dataValue : any)=>{
-          if(dataDimension.cp == dataValue.cp && dataDimension.cc == dataValue.cc){
+          if((dataDimension.cp == dataValue.cp || dataValue.cp == "" || dataValue.cp == "0") && dataDimension.cc == dataValue.cc){
             entryFormDataValuesFromStorage.push({
               id :dataValue.de + "-" +dataValue.co,
               value : dataValue.value,
