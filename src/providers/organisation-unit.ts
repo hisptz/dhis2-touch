@@ -144,7 +144,7 @@ export class OrganisationUnit {
       if( childrenOrganisationUnitIds && childrenOrganisationUnitIds.length > 0){
         self.sqlLite.getDataFromTableByAttributes(self.resource,"id",childrenOrganisationUnitIds,currentUser.currentDatabase).then((organisationUnits : any)=>{
           self.getSortedOrganisationUnits(organisationUnits).then((organisationUnits:any)=>{
-            self.organisationUnits = organisationUnits;
+           // self.organisationUnits = organisationUnits;
             resolve(organisationUnits)
           });
         },error=>{
