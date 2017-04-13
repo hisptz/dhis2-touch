@@ -80,7 +80,7 @@ export class DataValues {
           }, error=> {
           })
         }, error=> {
-          console.log("Fail on uploading datavalues : " + JSON.stringify(error));
+          console.log("Fail on uploading dataValues : " + JSON.stringify(error));
           failOnUploadedDataValues = failOnUploadedDataValues + 1;
           if((uploadedDataValues + failOnUploadedDataValues) == formattedDataValues.length){
             statusMessage =  uploadedDataValues + " data has been synced successfully .  " + failOnUploadedDataValues + " has failed to sync";

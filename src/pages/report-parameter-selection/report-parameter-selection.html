@@ -39,14 +39,14 @@
 
         <ion-item text-capitalize (tap)="openReportPeriodSelection()">
           <div style="text-align: center" item-left>
-            <div *ngIf="!currentSelectionStatus.period">
+            <div *ngIf="!currentSelectionStatus.isPeriodLoaded">
               <page-loading loadingSize="small"></page-loading>
             </div>
           </div>
-          <div *ngIf="currentSelectionStatus.period" style="text-align: center">
+          <div *ngIf="currentSelectionStatus.isPeriodLoaded" style="text-align: center">
             {{ selectedPeriodLabel }}
           </div>
-            <span *ngIf="!currentSelectionStatus.period" >
+            <span *ngIf="!currentSelectionStatus.isPeriodLoaded" >
               Loading period
             </span>
         </ion-item>

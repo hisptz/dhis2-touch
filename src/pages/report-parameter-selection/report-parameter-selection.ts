@@ -123,7 +123,7 @@ export class ReportParameterSelection implements OnInit{
     this.currentSelectionStatus.isOrgUnitLoaded = false;
     this.currentSelectionStatus.period = false;
     this.currentSelectionStatus.isPeriodSelected = false;
-    this.currentSelectionStatus.isPeriodLoaded = false;
+    this.currentSelectionStatus.isPeriodLoaded = true;
   }
 
   goToView(){

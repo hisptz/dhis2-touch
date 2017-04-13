@@ -73,7 +73,7 @@ export class DataEntryHomePage implements OnInit{
     this.currentSelectionStatus.isOrgUnitLoaded = false;
     this.currentSelectionStatus.dataSet = false;
     this.currentSelectionStatus.isDataSetSelected = false;
-    this.currentSelectionStatus.isDataSetLoaded = false;
+    this.currentSelectionStatus.isDataSetLoaded = true;
     this.currentSelectionStatus.period = false;
     this.currentSelectionStatus.isPeriodSelected = false;
     this.currentSelectionStatus.allParameterSet = false;

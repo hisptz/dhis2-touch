@@ -88,7 +88,7 @@ export class EventCaptureHomePage implements OnInit{
   }
 
   ionViewDidLoad() {
-    this.currentSelectionStatus.isProgramLoaded = false;
+    this.currentSelectionStatus.isProgramLoaded = true;
     this.currentSelectionStatus.orgUnit = true;
     this.currentSelectionStatus.isOrgUnitSelected = false;
     this.currentSelectionStatus.isOrgUnitLoaded = false;
