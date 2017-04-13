@@ -278,25 +278,24 @@ export class LoginPage implements OnInit{
       let resource = 'organisationUnits';
       this.currentResourceType = "organisationUnit";
       this.progressTracker[this.currentResourceType].message = "Loading assigned organisation unit";
-      let ids = [];
+      this.currentResourceType = "organisationUnit";
+      let orgUnitIds = [];
       userData.organisationUnits.forEach(organisationUnit=>{
         if(organisationUnit.id){
-          ids.push(organisationUnit.id);
+          orgUnitIds.push(organisationUnit.id);
         }
       });
-      let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-      let fields = tableMetadata.fields;
-      this.app.downloadMetadataByResourceIds(this.loginData,resource,ids,fields,null).then(response=>{
-        if(!this.isLoginProcessCancelled){
-          this.app.saveMetadata(resource,response,this.loginData.currentDatabase).then(()=>{
-            this.updateProgressTracker(resource);
-            this.downloadingDataSets();
-          },error=>{
-            this.loadingData = false;
-            this.isLoginProcessActive = false;
-            this.setToasterMessage('Fail to save organisation data.');
-          });
-        }
+      this.loginData["userOrgUnitIds"] = orgUnitIds;
+      this.OrganisationUnit.downloadingOrganisationUnitsFromServer(orgUnitIds,this.loginData).then((orgUnits:any)=>{
+        this.progressTracker[this.currentResourceType].message = "Saving assigned organisation unit(s)";
+        this.OrganisationUnit.savingOrganisationUnitsFromServer(orgUnits,this.loginData).then(()=>{
+          this.updateProgressTracker(resource);
+          this.downloadingDataSets();
+        },error=>{
+          this.loadingData = false;
+          this.isLoginProcessActive = false;
+          this.setToasterMessage('Fail to save organisation data.');
+        });
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
@@ -320,8 +319,9 @@ export class LoginPage implements OnInit{
       }else{
         let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
         let fields = tableMetadata.fields;
-        this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
+        this.app.downloadMetadata(this.loginData,resource,null,fields,null).then((response : any)=>{
           if(!this.isLoginProcessCancelled){
+            this.progressTracker[this.currentResourceType].message = "Saving "+response[resource].length+" entry forms";
             this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
               this.updateProgressTracker(resource);
               this.downloadingSections();
@@ -357,6 +357,7 @@ export class LoginPage implements OnInit{
         let fields = tableMetadata.fields;
         this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
           if(!this.isLoginProcessCancelled){
+            this.progressTracker[this.currentResourceType].message = "Saving entry forms's sections";
             this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
               this.updateProgressTracker(resource);
               this.downloadingSmsCommand();
@@ -390,6 +391,7 @@ export class LoginPage implements OnInit{
       }else{
         this.SmsCommand.getSmsCommandFromServer(this.loginData).then((response:any)=>{
           if(!this.isLoginProcessCancelled){
+            this.progressTracker[this.currentResourceType].message = "Saving sms commands";
             this.SmsCommand.savingSmsCommand(response,this.loginData.currentDatabase).then(()=>{
               this.updateProgressTracker(resource);
               this.downloadingPrograms();
@@ -425,6 +427,7 @@ export class LoginPage implements OnInit{
         let fields = tableMetadata.fields;
         this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
           if(!this.isLoginProcessCancelled){
+            this.progressTracker[this.currentResourceType].message = "Saving programs";
             this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
               this.updateProgressTracker(resource);
               this.downloadingProgramStageSections();
@@ -460,6 +463,7 @@ export class LoginPage implements OnInit{
         let fields = tableMetadata.fields;
         this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
           if(!this.isLoginProcessCancelled){
+            this.progressTracker[this.currentResourceType].message = "Saving program stage's sections";
             this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
               this.updateProgressTracker(resource);
               this.downloadingProgramStageDataElements();
@@ -495,6 +499,7 @@ export class LoginPage implements OnInit{
         let fields = tableMetadata.fields;
         this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
           if(!this.isLoginProcessCancelled){
+            this.progressTracker[this.currentResourceType].message = "Saving programstage data elements";
             this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
               this.updateProgressTracker(resource);
               this.downloadingIndicators();
@@ -530,6 +535,7 @@ export class LoginPage implements OnInit{
         let fields = tableMetadata.fields;
         this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
           if(!this.isLoginProcessCancelled){
+            this.progressTracker[this.currentResourceType].message = "Saving indicators";
             this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
               this.updateProgressTracker(resource);
               this.downloadingReports();
@@ -566,6 +572,7 @@ export class LoginPage implements OnInit{
         let filter = tableMetadata.filter;
         this.app.downloadMetadata(this.loginData,resource,null,fields,filter).then(response=>{
           if(!this.isLoginProcessCancelled){
+            this.progressTracker[this.currentResourceType].message = "Saving reports";
             this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
               this.updateProgressTracker(resource);
               this.downloadingConstants();
@@ -601,6 +608,7 @@ export class LoginPage implements OnInit{
         let fields = tableMetadata.fields;
         this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
           if(!this.isLoginProcessCancelled){
+            this.progressTracker[this.currentResourceType].message = "Saving constants";
             this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
               this.updateProgressTracker(resource);
               this.setLandingPage();

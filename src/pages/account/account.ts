@@ -7,6 +7,7 @@ import {AboutPage} from "../about/about";
 import {ProfilePage} from "../profile/profile";
 import {HelpPage} from "../help/help";
 import {LoginPage} from "../login/login";
+import {SqlLite} from "../../providers/sql-lite";
 
 /*
   Generated class for the Account page.
@@ -23,7 +24,7 @@ export class AccountPage implements OnInit{
   private viewMapperObject : any;
   private currentUser : any;
 
-  constructor(public navCtrl: NavController,public app : App,private user : User) {}
+  constructor(public navCtrl: NavController,public app : App,private user : User,private SqlLite : SqlLite) {}
 
   ngOnInit() {
     this.viewMapperObject = {
@@ -32,7 +33,7 @@ export class AccountPage implements OnInit{
       "help" : HelpPage,
       "settings" : SettingHomePage,
       "updateManager" : UpdateManagerHomePage
-    }
+    };
     this.user.getCurrentUser().then(user=>{
       this.currentUser = user;
     })
@@ -43,8 +44,9 @@ export class AccountPage implements OnInit{
   }
 
   logOut(){
-    //@todo delete all assign org unit form database
     this.currentUser.isLogin = false;
+    this.SqlLite.dropTable("organisationUnits",this.currentUser.currentDatabase).then(()=>{
+    },error=>{});
     this.user.setCurrentUser(this.currentUser).then(user=>{
       this.app.getRootNav().setRoot(LoginPage);
     },error=>{});

@@ -158,7 +158,10 @@ export class User {
       "Nationality": userDataResponse.nationality,
       "Interests": userDataResponse.interests,
       "userRoles": userDataResponse.userCredentials.userRoles,
-      "organisationUnits": userDataResponse.organisationUnits
+      "organisationUnits": userDataResponse.organisationUnits,
+      "settings" : userDataResponse.settings,
+      "authorities" : userDataResponse.authorities,
+      "dataViewOrganisationUnits" : userDataResponse.dataViewOrganisationUnits
     };
     let userData = JSON.stringify(this.userData);
     let self = this;

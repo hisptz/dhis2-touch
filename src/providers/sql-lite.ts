@@ -16,13 +16,15 @@ export class SqlLite {
       columns: [
         {value: 'id', type: 'TEXT'},
         {value: 'name', type: 'TEXT'},
+        {value: 'level', type: 'TEXT'},
+        {value: 'path', type: 'TEXT'},
         {value: 'ancestors', type: 'LONGTEXT'},
         {value: 'programs', type: 'LONGTEXT'},
         {value: 'dataSets', type: 'LONGTEXT'},
-        {value: 'level', type: 'TEXT'},
+        {value: 'parent', type: 'LONGTEXT'},
         {value: 'children', type: 'LONGTEXT'}
       ],
-      fields : "id,name,ancestors[id,name],dataSets[id,name],programs[id,name],level,children[id,name,ancestors[id,name],dataSets[id,name],programs[id,name],level,children[id,name,ancestors[id,name],dataSets[id,name],programs[id,name],level,children[id,name,ancestors[id,name],dataSets[id,name],programs[id,name],level,children[id,name,ancestors[id,name],dataSets[id,name],programs[id,name],level,children[id,name,ancestors[id,name]]]]]]",
+      fields : "",
       canBeUpdated : true,
       resourceType : "organisationUnit"
     },
@@ -117,6 +119,7 @@ export class SqlLite {
         {value: 'cc', type: 'TEXT'},
         {value: 'cp', type: 'TEXT'},
         {value: 'value', type: 'TEXT'},
+        {value: 'period', type: 'TEXT'},
         {value: 'syncStatus', type: 'TEXT'},
         {value: 'dataSetId', type: 'TEXT'}
       ],
@@ -194,7 +197,7 @@ export class SqlLite {
   /**
    *
    * @returns {any}
-     */
+   */
   getDataBaseStructure(){
     return this.dataBaseStructure;
   }
@@ -203,7 +206,7 @@ export class SqlLite {
    *
    * @param databaseName
    * @returns {Promise<T>}
-     */
+   */
   generateTables(databaseName){
     let self = this;
     return new Promise(function(resolve, reject) {
@@ -231,7 +234,7 @@ export class SqlLite {
    * @param tableName
    * @param databaseName
    * @returns {Promise<T>}
-     */
+   */
   createTable(tableName,databaseName){
     let self = this;
     databaseName = databaseName + '.db';
@@ -253,8 +256,11 @@ export class SqlLite {
 
       self.sqlite.create({name: databaseName,location: 'default'}).then((db: SQLiteObject)=>{
         db.executeSql(query, []).then(() => {
+          console.log("Success create table "  + tableName);
           resolve();
         }, (error) => {
+          console.log("Success create table "  + tableName );
+          console.log("Error occurred " + JSON.stringify(error));
           reject(error);
         });
       }).catch(e => {
@@ -271,7 +277,7 @@ export class SqlLite {
    * @param fieldsValues
    * @param databaseName
    * @returns {Promise<T>}
-     */
+   */
   insertDataOnTable(tableName, fieldsValues,databaseName){
     let self = this;
     databaseName = databaseName + '.db';
@@ -305,7 +311,6 @@ export class SqlLite {
 
     });
     let query = "INSERT OR REPLACE INTO " + tableName + " (" + columnNames + ") VALUES (" + questionMarks + ")";
-
     return new Promise(function(resolve, reject) {
       self.sqlite.create({name: databaseName,location: 'default'}).then((db: SQLiteObject)=>{
         db.executeSql(query, values).then(() => {
@@ -325,10 +330,34 @@ export class SqlLite {
    * @param tableName
    * @param databaseName
    * @returns {Promise<T>}
-     */
+   */
   deleteAllOnTable(tableName,databaseName){
     databaseName = databaseName + '.db';
     let query = "DELETE FROM " + tableName;
+    let self = this;
+    return new Promise(function(resolve, reject) {
+      self.sqlite.create({name: databaseName,location: 'default'}).then((db: SQLiteObject)=>{
+        db.executeSql(query, []).then((success) => {
+          resolve();
+        }, (error) => {
+          reject(error);
+        });
+      }).catch(e => {
+        reject();
+        console.log(e);
+      });
+    });
+  }
+
+  /**
+   *
+   * @param tableName
+   * @param databaseName
+   * @returns {Promise<T>}
+   */
+  dropTable(tableName,databaseName){
+    databaseName = databaseName + '.db';
+    let query = "DROP TABLE " + tableName;
     let self = this;
     return new Promise(function(resolve, reject) {
       self.sqlite.create({name: databaseName,location: 'default'}).then((db: SQLiteObject)=>{
@@ -351,7 +380,7 @@ export class SqlLite {
    * @param attributesValuesArray
    * @param databaseName
    * @returns {Promise<T>}
-     */
+   */
   getDataFromTableByAttributes(tableName, attribute, attributesValuesArray,databaseName){
     let self = this;
     databaseName = databaseName + '.db';
@@ -386,7 +415,7 @@ export class SqlLite {
    * @param tableName
    * @param databaseName
    * @returns {Promise<T>}
-     */
+   */
   getAllDataFromTable(tableName,databaseName){
     let self = this;
     databaseName = databaseName + '.db';
@@ -407,12 +436,13 @@ export class SqlLite {
     });
   }
 
+
   /**
    *
    * @param result
    * @param columns
    * @returns {Array}
-     */
+   */
   formatQueryReturnResult(result, columns){
     let len = result.rows.length;
     let data = [];
