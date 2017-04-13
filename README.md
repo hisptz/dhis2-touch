@@ -1,4 +1,4 @@
-# DHIS 2 Touch
+# hisptz Touch
 <p>District Health Information Software 2 Mobile Application that features full blown support for aggregate routine and survey data collection.
 Application has been built to support:</p>
 <ol>
@@ -10,6 +10,10 @@ Application has been built to support:</p>
 <li>Support for all Android devices</li>
 </ol>
 <a  target="_blank" href="https://play.google.com/store/apps/details?id=com.hipstz.dhis2.dhis2touch">Click to download</a>
+
+##Dhis version support
+  Currently It has been tested and work perfectyly for dhis 2 version 2.25 and 2.26
+  
 ##Prerequisites
   Make sure you have the following installed
   
@@ -17,8 +21,9 @@ Application has been built to support:</p>
   2. ionic
   3. cordova
   4. Emulator (android studio etc.) or android phone for testing
+  5. Clone the project
   
-## Installation
+## Installation 
 
   1.  `npm install`
   
@@ -33,8 +38,7 @@ Application has been built to support:</p>
 ## troubleshoots
   In case you encounter error "bundle failed: 'ChartModule' is not exported by node_modules/angular2-highcharts/index.js" on build app, 
      
-  Edit "node_modules/@ionic/app-scripts/config/rollup.config.js"
-  
+  Edit "node_modules/@ionic/app-scripts/config/rollup.config.js"  
       
       replace commonjs(),  
       
