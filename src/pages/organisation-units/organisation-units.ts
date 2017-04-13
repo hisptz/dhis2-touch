@@ -43,29 +43,10 @@ export class OrganisationUnits implements OnInit{
 
   }
 
-  reOpenTree(){
-    let selectedOrganisationUnit = this.params.get('selectedOrganisationUnit');
-    if(selectedOrganisationUnit && selectedOrganisationUnit.ancestors){
-      this.currentSelectedOrgUnitName = selectedOrganisationUnit.name;
-      selectedOrganisationUnit.ancestors.forEach((ancestor : any)=>{
-        this.toggleOrgUnit(ancestor);
-      });
-    }
+  setSelectedOrganisationUnit(selectedOrganisationUnit){
+    this.viewCtrl.dismiss(selectedOrganisationUnit);
   }
 
-  toggleOrgUnit(orgUnit) {
-    if (this.hasOrgUnitChildrenOpened[orgUnit.id]) {
-      this.hasOrgUnitChildrenOpened[orgUnit.id] = !this.hasOrgUnitChildrenOpened[orgUnit.id];
-    } else {
-
-
-      this.hasOrgUnitChildrenOpened[orgUnit.id] = true;
-    }
-  }
-
-  setSelectedOrgUnit(selectedOrgUnit){
-    this.viewCtrl.dismiss(selectedOrgUnit);
-  }
 
   dismiss() {
     var parameter = {};

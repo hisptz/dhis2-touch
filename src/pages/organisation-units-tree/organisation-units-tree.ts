@@ -18,6 +18,7 @@ export class OrganisationUnitsTreePage implements OnInit {
   @Input() organisationUnit;
   @Input() hasOrgUnitChildrenOpened;
   @Input() hasOrgUnitChildrenLoaded;
+  @Output() selectedOrganisationUnit = new EventEmitter();
 
   public currentSelectedOrgUnitName : string;
   public isOrganisationUnitsFetched : boolean = true;
@@ -30,15 +31,19 @@ export class OrganisationUnitsTreePage implements OnInit {
     this.currentSelectedOrgUnitName = "";
   }
 
-  setSelectedOrganisationUnit(organisationUnit){
-    console.log("Name : " + organisationUnit.name);
-    console.log("Id : " + organisationUnit.id);
-    console.log("Level : " + organisationUnit.level);
+  setSelectedOrganisationUnit(selectedOrganisationUnit){
+    let children = [];
+    for(let childOrgUnit of selectedOrganisationUnit.children){
+      children.push({
+        id : childOrgUnit.id,
+        name : childOrgUnit.name
+      });
+    }
+    selectedOrganisationUnit.children = children;
+    this.selectedOrganisationUnit.emit(selectedOrganisationUnit)
   }
 
   toggleOrganisationUnit(organisationUnit){
-    console.log("Name : " + organisationUnit.name);
-    console.log("Number of children : " +organisationUnit.children.length);
     if (this.hasOrgUnitChildrenOpened[organisationUnit.id]) {
       this.hasOrgUnitChildrenOpened[organisationUnit.id] = !this.hasOrgUnitChildrenOpened[organisationUnit.id];
     } else {
@@ -66,8 +71,6 @@ export class OrganisationUnitsTreePage implements OnInit {
     }
     return childrenIds;
   }
-
-
 
   setToasterMessage(message) {
     let toast = this.toastCtrl.create({

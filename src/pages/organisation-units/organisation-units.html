@@ -21,6 +21,7 @@
           <page-organisation-units-tree [organisationUnit]="organisationUnit"
                                         [hasOrgUnitChildrenLoaded]="hasOrgUnitChildrenLoaded"
                                         [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened"
+                                        (selectedOrganisationUnit)="setSelectedOrganisationUnit($event)"
                                         [currentUser]="currentUser"></page-organisation-units-tree>
         </div>
       </ion-col>
