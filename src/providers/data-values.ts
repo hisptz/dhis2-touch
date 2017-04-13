@@ -386,7 +386,8 @@ export class DataValues {
           cp: dataDimension.cp,
           value: dataValue.value,
           syncStatus: syncStatus,
-          dataSetId: dataSetId
+          dataSetId: dataSetId,
+          period : dataValue.period
         };
         promises.push(
           self.sqlLite.insertDataOnTable(self.resourceName,data,currentUser.currentDatabase).then(response=>{

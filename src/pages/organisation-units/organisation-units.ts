@@ -17,8 +17,12 @@ export class OrganisationUnits implements OnInit{
   public loadingMessages : any;
   public loadingData :boolean = false;
   public organisationUnitsList : any;
-  public hasOrgUnitChildrenOpened:any = {};
   public currentSelectedOrgUnitName : string;
+
+  public currentUser : any;
+  public organisationUnits : any;
+  public hasOrgUnitChildrenLoaded : boolean;
+  public hasOrgUnitChildrenOpened:any = {};
 
   constructor(public viewCtrl: ViewController,public params : NavParams){
   }
@@ -32,15 +36,11 @@ export class OrganisationUnits implements OnInit{
   }
 
   setModalData(){
-    this.currentSelectedOrgUnitName = "";
-    this.loadingData = false;
-    this.loadingMessages = [];
-    this.loadingMessages.push('Please wait, while setting organisation unit data');
-    let orgUnits = this.params.get('data');
-    this.loadingMessages.push('Loading organisation list ');
-    this.organisationUnitsList = orgUnits;
-    this.loadingData = false;
-    this.reOpenTree();
+
+    this.currentUser = this.params.get("currentUser");
+    this.organisationUnits = this.params.get('organisationUnits');
+    this.hasOrgUnitChildrenLoaded = false;
+
   }
 
   reOpenTree(){
@@ -57,6 +57,8 @@ export class OrganisationUnits implements OnInit{
     if (this.hasOrgUnitChildrenOpened[orgUnit.id]) {
       this.hasOrgUnitChildrenOpened[orgUnit.id] = !this.hasOrgUnitChildrenOpened[orgUnit.id];
     } else {
+
+
       this.hasOrgUnitChildrenOpened[orgUnit.id] = true;
     }
   }

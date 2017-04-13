@@ -1,0 +1,37 @@
+
+<ion-item>
+  <ion-icon name="ios-add-circle-outline" (tap)="toggleOrganisationUnit(organisationUnit)" *ngIf="organisationUnit.children.length>0 && !hasOrgUnitChildrenOpened[organisationUnit.id]" item-left></ion-icon>
+  <ion-icon name="ios-remove-circle-outline" (tap)="toggleOrganisationUnit(organisationUnit)" *ngIf="organisationUnit.children.length>0 && hasOrgUnitChildrenOpened[organisationUnit.id]" item-left></ion-icon>
+
+  <div (tap)="setSelectedOrganisationUnit(organisationUnit)">
+    <span ion-text  [color]="(currentSelectedOrgUnitName == organisationUnit.name) ?'current' : 'font-color'"  >{{ organisationUnit.name }}</span>
+  </div>
+
+</ion-item>
+<div *ngIf="hasOrgUnitChildrenOpened[organisationUnit.id]" style="padding-left: 10px">
+  <div *ngIf="!(isOrganisationUnitsFetched && hasOrgUnitChildrenLoaded)">
+    <ion-item>
+      <div style="text-align: center" item-left>
+        <page-loading loadingSize="small"></page-loading>
+      </div>
+      <span >
+        Loading organisation units
+      </span>
+    </ion-item>
+  </div>
+
+  <div *ngIf="hasErrorOccurred">
+    <ion-item>
+      Fail to load children for {{ organisationUnit.name }}
+    </ion-item>
+  </div>
+
+  <div *ngIf="isOrganisationUnitsFetched && hasOrgUnitChildrenLoaded && !hasErrorOccurred">
+    <div *ngFor="let organisationUnit of organisationUnit.children">
+      <page-organisation-units-tree [organisationUnit]="organisationUnit"
+                                    [hasOrgUnitChildrenLoaded]="hasOrgUnitChildrenLoaded"
+                                    [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened"
+                                    [currentUser]="currentUser"></page-organisation-units-tree>
+    </div>
+  </div>
+</div>

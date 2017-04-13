@@ -177,7 +177,12 @@ export class DataEntryForm implements OnInit{
       let fieldIdArray = fieldId.split("-");
       let id = dataSetId + '-' + fieldIdArray[0] + '-' + fieldIdArray[1] + '-' + period + '-' + orgUnitId;
       let newDataValue = [
-        {dataElement : fieldIdArray[0],categoryOptionCombo : fieldIdArray[1],value :this.entryFormDataValues[fieldId]}
+        {
+          dataElement : fieldIdArray[0],
+          categoryOptionCombo : fieldIdArray[1],
+          value :this.entryFormDataValues[fieldId],
+          period : this.dataEntryFormSelectionParameter.period.name
+        }
       ];
       this.dataValues.getDataValuesById(id,this.currentUser).then((dataValues : any)=>{
         if(dataValues.length > 0){
@@ -200,7 +205,7 @@ export class DataEntryForm implements OnInit{
 
   //@todo change usage of acton sheet to display tooltips
   showTooltips(dataElement,categoryComboName,programStageDataElement){
-    let title = dataElement.name + (categoryComboName != 'default' ? " " +categoryComboName:"");
+    let title = this.getDisplayName(dataElement) + (categoryComboName != 'default' ? " " +categoryComboName:"");
     let subTitle = "";
     if(dataElement.description){
       title += ". Description : " + dataElement.description ;

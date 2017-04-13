@@ -63,7 +63,12 @@ export class ReportParameterSelection implements OnInit{
 
   openOrganisationUnitModal(){
     if(this.currentSelectionStatus && this.currentSelectionStatus.orgUnit){
-      let modal = this.modalCtrl.create(OrganisationUnits,{data : this.organisationUnits,selectedOrganisationUnit:this.selectedOrganisationUnit});
+      let modal = this.modalCtrl.create(OrganisationUnits,{
+        organisationUnits : this.organisationUnits,
+        currentUser : this.currentUser,
+        data : this.organisationUnits,
+        selectedOrganisationUnit:this.selectedOrganisationUnit
+      });
       modal.onDidDismiss((selectedOrganisationUnit:any) => {
         if(selectedOrganisationUnit && selectedOrganisationUnit.id){
           if(selectedOrganisationUnit.id != this.selectedOrganisationUnit.id){

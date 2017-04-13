@@ -68,6 +68,7 @@ import {DataSetSyncPage} from "../pages/data-set-sync/data-set-sync";
 import {DataSetSyncContainerPage} from "../pages/data-set-sync-container/data-set-sync-container";
 import {DataElementSyncContainerPage} from "../pages/data-element-sync-container/data-element-sync-container";
 import {DataElementSyncPage} from "../pages/data-element-sync/data-element-sync";
+import {OrganisationUnitsTreePage} from "../pages/organisation-units-tree/organisation-units-tree";
 
 
 @NgModule({
@@ -81,7 +82,7 @@ import {DataElementSyncPage} from "../pages/data-element-sync/data-element-sync"
     AccountPage, LauncherPage, LoadingPage, LoginPage, MetadataDictionary,
     ProgressBarPage, ReportParameterSelection, ReportView, EventView, EventCaptureForm, EventFieldSelectionMenu,
     DataEntryForm, ReportSelectionPeriod, EntryFormSectionListPage, DataElementSyncPage, DataElementSyncContainerPage,
-    DataSetSyncContainerPage, DataSetSyncPage,
+    DataSetSyncContainerPage, DataSetSyncPage,OrganisationUnitsTreePage,
     TabsPage
   ],
   imports: [
@@ -109,7 +110,7 @@ import {DataElementSyncPage} from "../pages/data-element-sync/data-element-sync"
     AccountPage, LauncherPage, LoadingPage, LoginPage, MetadataDictionary,
     ProgressBarPage, ReportParameterSelection, ReportView, EventView, EventCaptureForm, EventFieldSelectionMenu,
     DataEntryForm, ReportSelectionPeriod, EntryFormSectionListPage, DataElementSyncPage, DataElementSyncContainerPage,
-    DataSetSyncContainerPage, DataSetSyncPage,
+    DataSetSyncContainerPage, DataSetSyncPage,OrganisationUnitsTreePage,
     TabsPage
   ],
   providers: [

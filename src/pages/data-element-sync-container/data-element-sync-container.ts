@@ -62,14 +62,16 @@ export class DataElementSyncContainerPage  implements OnInit{
           name : this.getDataElementName(dataValue,dataElementObject[dataValue.de],label),
           id : dataValue.de,
           value : dataValue.value,
-          period : dataValue.pe
+          period : dataValue.period,
+          iso : dataValue.pe
+
         });
         if(count == dataValues.length){
           this.dataElements.sort((a, b) => {
-            if (a.period > b.period) {
+            if (a.iso > b.iso) {
               return -1;
             }
-            if (a.period < b.period) {
+            if (a.iso < b.iso) {
               return 1;
             }
             return 0;

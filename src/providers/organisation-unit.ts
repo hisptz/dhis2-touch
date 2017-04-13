@@ -138,6 +138,26 @@ export class OrganisationUnit {
     });
   }
 
+  getChildrenOrganisationUnits(childrenOrganisationUnitIds,currentUser){
+    let self = this;
+    return new Promise(function(resolve, reject) {
+      if( childrenOrganisationUnitIds && childrenOrganisationUnitIds.length > 0){
+        self.sqlLite.getDataFromTableByAttributes(self.resource,"id",childrenOrganisationUnitIds,currentUser.currentDatabase).then((organisationUnits : any)=>{
+          self.getSortedOrganisationUnits(organisationUnits).then((organisationUnits:any)=>{
+            self.organisationUnits = organisationUnits;
+            resolve(organisationUnits)
+          });
+        },error=>{
+          console.log(error);
+          reject(error);
+        });
+      }else{
+        resolve([]);
+      }
+    });
+
+  }
+
   /**
    * getSortedOrganisationUnits
    * @param organisationUnits
