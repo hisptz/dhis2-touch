@@ -144,7 +144,6 @@ export class OrganisationUnit {
       if( childrenOrganisationUnitIds && childrenOrganisationUnitIds.length > 0){
         self.sqlLite.getDataFromTableByAttributes(self.resource,"id",childrenOrganisationUnitIds,currentUser.currentDatabase).then((organisationUnits : any)=>{
           self.getSortedOrganisationUnits(organisationUnits).then((organisationUnits:any)=>{
-           // self.organisationUnits = organisationUnits;
             resolve(organisationUnits)
           });
         },error=>{
@@ -166,6 +165,16 @@ export class OrganisationUnit {
   getSortedOrganisationUnits(organisationUnits){
     let self = this;
     return new Promise(function(resolve, reject) {
+      organisationUnits.sort((a, b) => {
+        if (a.name > b.name) {
+          return 1;
+        }
+        if (a.name < b.name) {
+          return -1;
+        }
+        // a must be equal to b
+        return 0;
+      });
       organisationUnits.forEach((organisationUnit:any)=>{
         self.sortOrganisationUnits(organisationUnit);
       });

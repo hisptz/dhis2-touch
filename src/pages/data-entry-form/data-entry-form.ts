@@ -123,6 +123,9 @@ export class DataEntryForm implements OnInit{
         this.dataValues.getDataValueSetFromServer(dataSetId,period,orgUnitId,this.dataSetAttributeOptionCombo,this.currentUser)
           .then((dataValues : any)=>{
             if(dataValues.length > 0){
+              dataValues.forEach((dataValue)=>{
+                dataValue["period"] = this.dataEntryFormSelectionParameter.period.name;
+              });
               this.setLoadingMessages('Saving ' + dataValues.length + " data values from server");
               let dataDimension = this.dataEntryFormSelectionParameter.dataDimension;
               this.dataValues.saveDataValues(dataValues,dataSetId,period,orgUnitId,dataDimension,"synced",this.currentUser).then(()=>{
