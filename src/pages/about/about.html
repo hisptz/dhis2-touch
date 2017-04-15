@@ -62,11 +62,11 @@
             <ion-item-divider color="whitecolor">
               <b>Event Storage Status</b>
             </ion-item-divider>
-            <ion-item >
+            <ion-item (tap)="viewEventsSynchronisationStatusByProgram('synced')">
               <h2>Synced</h2>
               <p>{{ eventsStorage.online }}</p>
             </ion-item>
-            <ion-item >
+            <ion-item (tap)="viewEventsSynchronisationStatusByProgram('not_synced')">
               <h2>Not Synced</h2>
               <p>{{ eventsStorage.offline }}</p>
             </ion-item>

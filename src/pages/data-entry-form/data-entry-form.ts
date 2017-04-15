@@ -125,6 +125,7 @@ export class DataEntryForm implements OnInit{
             if(dataValues.length > 0){
               dataValues.forEach((dataValue)=>{
                 dataValue["period"] = this.dataEntryFormSelectionParameter.period.name;
+                dataValue["orgUnit"] = this.dataEntryFormSelectionParameter.orgUnit.name;
               });
               this.setLoadingMessages('Saving ' + dataValues.length + " data values from server");
               let dataDimension = this.dataEntryFormSelectionParameter.dataDimension;
@@ -181,6 +182,7 @@ export class DataEntryForm implements OnInit{
       let id = dataSetId + '-' + fieldIdArray[0] + '-' + fieldIdArray[1] + '-' + period + '-' + orgUnitId;
       let newDataValue = [
         {
+          orgUnit : this.dataEntryFormSelectionParameter.orgUnit.name,
           dataElement : fieldIdArray[0],
           categoryOptionCombo : fieldIdArray[1],
           value :this.entryFormDataValues[fieldId],

@@ -56,10 +56,16 @@ export class EventCaptureForm implements OnInit{
       this.currentUser = user;
       this.eventProvider.getEventsFromStorageByStatus(user,"new event").then((events :any)=>{
         this.eventProvider.uploadEventsToServer(events,this.currentUser).then((response)=>{
-        },error=>{});
+          console.log("Uploading event : " + JSON.stringify(response));
+        },error=>{
+          console.log("Error on uploading event : " + JSON.stringify(error));
+        });
         this.eventProvider.getEventsFromStorageByStatus(user,"not synced").then((events :any)=>{
           this.eventProvider.uploadEventsToServer(events,this.currentUser).then((response)=>{
-          },error=>{});
+            console.log("Uploading event : " + JSON.stringify(response));
+          },error=>{
+            console.log("Error on uploading event : " + JSON.stringify(error));
+          });
         });
       });
       this.entryFormParameter = this.params.get("params");
@@ -189,6 +195,8 @@ export class EventCaptureForm implements OnInit{
           });
           //saving event to local storage
           this.setLoadingMessages("Saving new event to local storage");
+          this.event["orgUnitName"] = this.entryFormParameter.orgUnitName;
+          this.event["programName"] = this.entryFormParameter.programName;
           this.eventProvider.saveEvent(this.event,this.currentUser).then(()=>{
             this.loadingData = false;
             this.navCtrl.pop();

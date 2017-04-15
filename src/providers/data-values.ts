@@ -387,7 +387,8 @@ export class DataValues {
           value: dataValue.value,
           syncStatus: syncStatus,
           dataSetId: dataSetId,
-          period : dataValue.period
+          period : dataValue.period,
+          orgUnit : dataValue.orgUnit
         };
         promises.push(
           self.sqlLite.insertDataOnTable(self.resourceName,data,currentUser.currentDatabase).then(response=>{

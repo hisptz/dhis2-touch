@@ -96,12 +96,29 @@ export class AboutPage implements OnInit{
     }
   }
 
+  viewEventsSynchronisationStatusByProgram(syncStatus){
+    if(this.eventsStorage[syncStatus].length > 0){
+      this.setToasterMessage("Viewing " + this.eventsStorage[syncStatus].length + " events coming soon");
+      //this.navCtrl.push(DataSetSyncContainerPage,{dataValues : this.dataValuesStorage[syncStatus],syncStatus:syncStatus});
+    }else{
+      this.setToasterMessage("There is nothing to view");
+    }
+  }
+
   loadingEvents(ionRefresher?){
     this.setLoadingMessages("Loading event storage status");
+    this.eventsStorage["synced"] = [];
+    this.eventsStorage["not_synced"] = [];
     this.eventProvider.getEventsFromStorageByStatus(this.currentUser,"new event").then((events :any)=>{
       this.eventsStorage.offline += events.length;
+      for(let event of events ){
+        this.eventsStorage["not_synced"].push(event);
+      }
       this.eventProvider.getEventsFromStorageByStatus(this.currentUser,"not synced").then((events :any)=>{
         this.eventsStorage.offline += events.length;
+        for(let event of events ){
+          this.eventsStorage["not_synced"].push(event);
+        }
         if(ionRefresher){
           ionRefresher.complete();
         }
@@ -113,6 +130,9 @@ export class AboutPage implements OnInit{
         this.setToasterMessage('Fail to loading event storage status : ' + JSON.stringify(error));
       });
       this.eventProvider.getEventsFromStorageByStatus(this.currentUser,"synced").then((events :any)=>{
+        for(let event of events ){
+          this.eventsStorage["synced"].push(event);
+        }
         this.eventsStorage.online += events.length;
         this.loadingData = false;
         if(ionRefresher){

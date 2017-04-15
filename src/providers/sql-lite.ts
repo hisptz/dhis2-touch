@@ -120,6 +120,7 @@ export class SqlLite {
         {value: 'cp', type: 'TEXT'},
         {value: 'value', type: 'TEXT'},
         {value: 'period', type: 'TEXT'},
+        {value: 'orgUnit', type: 'TEXT'},
         {value: 'syncStatus', type: 'TEXT'},
         {value: 'dataSetId', type: 'TEXT'}
       ],
@@ -177,8 +178,10 @@ export class SqlLite {
         {value: 'id', type: 'TEXT'},
         {value: 'event', type: 'TEXT'},
         {value: 'program', type: 'TEXT'},
+        {value: 'programName', type: 'TEXT'},
         {value: 'programStage', type: 'TEXT'},
         {value: 'orgUnit', type: 'TEXT'},
+        {value: 'orgUnitName', type: 'TEXT'},
         {value: 'status', type: 'TEXT'},
         {value: 'eventDate', type: 'TEXT'},
         {value: 'completedDate', type: 'TEXT'},

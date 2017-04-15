@@ -287,7 +287,10 @@ export class EventCaptureHomePage implements OnInit{
       //this.setNotificationToasterMessage("Checking most recent events from server");
       this.currentSelectionStatus.eventsLoadingStatus = "Checking most recent events from server";
       this.eventProvider.loadEventsFromServer(this.selectedOrganisationUnit,this.selectedProgram,this.selectedDataDimension,this.currentUser).then((events : any)=>{
-        //this.setNotificationToasterMessage("Saving most recent events");
+        events.forEach((event)=>{
+          event["orgUnitName"] = this.selectedOrganisationUnit.name;
+          event["programName"] = this.selectedProgram.name;
+        });
         this.currentSelectionStatus.eventsLoadingStatus = "Saving most recent events";
         this.eventProvider.savingEventsFromServer(events,this.currentUser).then(()=>{
           this.loadEventsFromOfflineStorage();

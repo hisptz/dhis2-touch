@@ -63,8 +63,8 @@ export class DataElementSyncContainerPage  implements OnInit{
           id : dataValue.de,
           value : dataValue.value,
           period : dataValue.period,
-          iso : dataValue.pe
-
+          iso : dataValue.pe,
+          orgUnit : dataValue.orgUnit
         });
         if(count == dataValues.length){
           this.dataElements.sort((a, b) => {

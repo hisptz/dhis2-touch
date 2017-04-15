@@ -287,15 +287,17 @@ export class LoginPage implements OnInit{
       });
       this.loginData["userOrgUnitIds"] = orgUnitIds;
       this.OrganisationUnit.downloadingOrganisationUnitsFromServer(orgUnitIds,this.loginData).then((orgUnits:any)=>{
-        this.progressTracker[this.currentResourceType].message = "Saving assigned organisation unit(s)";
-        this.OrganisationUnit.savingOrganisationUnitsFromServer(orgUnits,this.loginData).then(()=>{
-          this.updateProgressTracker(resource);
-          this.downloadingDataSets();
-        },error=>{
-          this.loadingData = false;
-          this.isLoginProcessActive = false;
-          this.setToasterMessage('Fail to save organisation data.');
-        });
+        if(!this.isLoginProcessCancelled){
+          this.progressTracker[this.currentResourceType].message = "Saving assigned organisation unit(s)";
+          this.OrganisationUnit.savingOrganisationUnitsFromServer(orgUnits,this.loginData).then(()=>{
+            this.updateProgressTracker(resource);
+            this.downloadingDataSets();
+          },error=>{
+            this.loadingData = false;
+            this.isLoginProcessActive = false;
+            this.setToasterMessage('Fail to save organisation data.');
+          });
+        }
       },error=>{
         this.loadingData = false;
         this.isLoginProcessActive = false;
