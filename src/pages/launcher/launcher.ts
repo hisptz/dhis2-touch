@@ -28,7 +28,6 @@ export class LauncherPage implements OnInit{
     this.user.getCurrentUser().then((user : any)=>{
       if(user && user.isLogin){
         this.synchronization.startSynchronization().then(()=>{
-
         });
         this.navCtrl.setRoot(TabsPage);
       }else{

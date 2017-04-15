@@ -24,7 +24,7 @@ export interface OrganisationUnitModel {
 export class OrganisationUnit {
 
   organisationUnits : OrganisationUnitModel[];
-  currentOrganisationUnit : OrganisationUnitModel;
+  lastSelectedOrgUnit : OrganisationUnitModel;
 
   public resource : string;
 
@@ -37,7 +37,7 @@ export class OrganisationUnit {
    */
   resetOrganisationUnit(){
     this.organisationUnits = [];
-    this.currentOrganisationUnit = null;
+    this.lastSelectedOrgUnit = null;
   }
 
   /**
@@ -109,6 +109,14 @@ export class OrganisationUnit {
     })
   }
 
+  /**
+   *
+   * @param lastSelectedOrgUnit
+     */
+  setLastSelectedOrganisationUnitUnit(lastSelectedOrgUnit){
+    this.lastSelectedOrgUnit = lastSelectedOrgUnit;
+  }
+
 
   /**
    * get user assigned organisation unit
@@ -119,13 +127,19 @@ export class OrganisationUnit {
     let userOrgUnitIds = currentUser.userOrgUnitIds;
     return new Promise(function(resolve, reject) {
       if(self.organisationUnits && self.organisationUnits.length > 0){
-        resolve(self.organisationUnits);
+        resolve({organisationUnits : self.organisationUnits,lastSelectedOrgUnit :  self.lastSelectedOrgUnit})
       }else{
         if( userOrgUnitIds && userOrgUnitIds.length > 0){
           self.sqlLite.getDataFromTableByAttributes(self.resource,"id",userOrgUnitIds,currentUser.currentDatabase).then((organisationUnits : any)=>{
             self.getSortedOrganisationUnits(organisationUnits).then((organisationUnits:any)=>{
-              self.organisationUnits = organisationUnits;
-              resolve(organisationUnits)
+              if(organisationUnits.length > 0){
+                self.organisationUnits = organisationUnits;
+                self.setLastSelectedOrganisationUnitUnit(organisationUnits[0]);
+                resolve({organisationUnits : organisationUnits,lastSelectedOrgUnit : organisationUnits[0]})
+              }else{
+
+              }
+
             });
           },error=>{
             console.log(error);
@@ -138,6 +152,12 @@ export class OrganisationUnit {
     });
   }
 
+  /**
+   *
+   * @param childrenOrganisationUnitIds
+   * @param currentUser
+   * @returns {Promise<T>}
+     */
   getChildrenOrganisationUnits(childrenOrganisationUnitIds,currentUser){
     let self = this;
     return new Promise(function(resolve, reject) {

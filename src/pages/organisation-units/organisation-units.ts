@@ -1,5 +1,7 @@
 import { Component,OnInit } from '@angular/core';
 import { ViewController,NavParams } from 'ionic-angular';
+import {OrganisationUnitModel} from "../../providers/organisation-unit";
+import {OrganisationUnit} from "../../providers/organisation-unit";
 
 /*
   Generated class for the OrganisationUnits page.
@@ -16,34 +18,32 @@ export class OrganisationUnits implements OnInit{
   public data : any;
   public loadingMessages : any;
   public loadingData :boolean = false;
-  public organisationUnitsList : any;
-  public currentSelectedOrgUnitName : string;
 
   public currentUser : any;
-  public organisationUnits : any;
+  public lastSelectedOrgUnit : OrganisationUnitModel;
+  public organisationUnits : OrganisationUnitModel[];
   public hasOrgUnitChildrenLoaded : boolean;
   public hasOrgUnitChildrenOpened:any = {};
 
-  constructor(public viewCtrl: ViewController,public params : NavParams){
+  constructor(public viewCtrl: ViewController,public params : NavParams,public OrganisationUnit: OrganisationUnit){
   }
 
   ngOnInit() {
     this.setModalData();
   }
 
-  ionViewDidLoad() {
-    //console.log('Hello OrganisationUnits Page');
-  }
-
   setModalData(){
-
+    //@todo reopen tree based on last selected organisation unit
+    this.lastSelectedOrgUnit = this.params.get("lastSelectedOrgUnit");
     this.currentUser = this.params.get("currentUser");
     this.organisationUnits = this.params.get('organisationUnits');
     this.hasOrgUnitChildrenLoaded = false;
-
+    console.log(this.lastSelectedOrgUnit.path);
+    console.log(this.lastSelectedOrgUnit.ancestors);
   }
 
   setSelectedOrganisationUnit(selectedOrganisationUnit){
+    this.OrganisationUnit.setLastSelectedOrganisationUnitUnit(selectedOrganisationUnit);
     this.viewCtrl.dismiss(selectedOrganisationUnit);
   }
 

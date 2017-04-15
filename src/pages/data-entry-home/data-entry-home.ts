@@ -137,15 +137,13 @@ export class DataEntryHomePage implements OnInit{
   loadOrganisationUnits(){
     this.currentSelectionStatus.isDataSetLoaded = true;
     this.currentSelectionStatus.isOrgUnitLoaded = false;
-    this.OrganisationUnit.getOrganisationUnits(this.currentUser).then((organisationUnits : any)=>{
-      this.organisationUnits = organisationUnits;
+    this.OrganisationUnit.getOrganisationUnits(this.currentUser).then((organisationUnitsResponse : any)=>{
+      this.organisationUnits = organisationUnitsResponse.organisationUnits;
       this.currentSelectionStatus.isOrgUnitLoaded = true;
-      if(organisationUnits.length > 0){
-        this.selectedOrganisationUnit = organisationUnits[0];
-        this.setDataEntrySelectionLabel();
-        this.loadingDataSets();
-        this.setDataEntrySelectionLabel();
-      }
+      this.selectedOrganisationUnit = organisationUnitsResponse.lastSelectedOrgUnit;
+      this.setDataEntrySelectionLabel();
+      this.loadingDataSets();
+      this.setDataEntrySelectionLabel();
     },error=>{
       this.setToasterMessage('Fail to load organisation units : ' + JSON.stringify(error));
     });
@@ -158,8 +156,7 @@ export class DataEntryHomePage implements OnInit{
       let modal = this.modalCtrl.create(OrganisationUnits,{
         organisationUnits : this.organisationUnits,
         currentUser : this.currentUser,
-        data : this.organisationUnits,
-        selectedOrganisationUnit:this.selectedOrganisationUnit
+        lastSelectedOrgUnit:this.selectedOrganisationUnit
       });
       modal.onDidDismiss((selectedOrganisationUnit:any) => {
         if(selectedOrganisationUnit && selectedOrganisationUnit.id){

@@ -143,16 +143,15 @@ export class EventCaptureHomePage implements OnInit{
   loadOrganisationUnits(){
     this.currentSelectionStatus.isOrgUnitLoaded = false;
     this.currentSelectionStatus.isProgramLoaded = true;
-    this.OrganisationUnit.getOrganisationUnits(this.currentUser).then((organisationUnits : any)=>{
-      this.organisationUnits = organisationUnits;
+    this.OrganisationUnit.getOrganisationUnits(this.currentUser).then((organisationUnitsResponse : any)=>{
+      this.organisationUnits = organisationUnitsResponse.organisationUnits;
       this.currentSelectionStatus.isOrgUnitLoaded = true;
       this.setProgramSelectionLabel();
-      if(organisationUnits.length > 0){
-        this.selectedOrganisationUnit = organisationUnits[0];
-        this.selectedProgram = {};
-        this.loadingPrograms();
-        this.setProgramSelectionLabel();
-      }
+      this.selectedOrganisationUnit = organisationUnitsResponse.lastSelectedOrgUnit;
+      this.selectedProgram = {};
+      this.loadingPrograms();
+      this.setProgramSelectionLabel();
+
     },error=>{
       this.loadingData = false;
       this.setToasterMessage('Fail to load organisation units : ' + JSON.stringify(error));
@@ -166,8 +165,7 @@ export class EventCaptureHomePage implements OnInit{
       let modal = this.modalCtrl.create(OrganisationUnits,{
         organisationUnits : this.organisationUnits,
         currentUser : this.currentUser,
-        data : this.organisationUnits,
-        selectedOrganisationUnit:this.selectedOrganisationUnit
+        lastSelectedOrgUnit:this.selectedOrganisationUnit
       });
       modal.onDidDismiss((selectedOrganisationUnit:any) => {
         if(selectedOrganisationUnit && selectedOrganisationUnit.id){
@@ -286,13 +284,15 @@ export class EventCaptureHomePage implements OnInit{
     }else{
       //this.setNotificationToasterMessage("Checking most recent events from server");
       this.currentSelectionStatus.eventsLoadingStatus = "Checking most recent events from server";
-      this.eventProvider.loadEventsFromServer(this.selectedOrganisationUnit,this.selectedProgram,this.selectedDataDimension,this.currentUser).then((events : any)=>{
-        events.forEach((event)=>{
-          event["orgUnitName"] = this.selectedOrganisationUnit.name;
-          event["programName"] = this.selectedProgram.name;
-        });
+      this.eventProvider.loadEventsFromServer(this.selectedOrganisationUnit,this.selectedProgram,this.selectedDataDimension,this.currentUser).then((eventsFromServer : any)=>{
+        if(eventsFromServer.events && eventsFromServer.events.length > 0){
+          eventsFromServer.events.forEach((event)=>{
+            event["orgUnitName"] = this.selectedOrganisationUnit.name;
+            event["programName"] = this.selectedProgram.name;
+          });
+        }
         this.currentSelectionStatus.eventsLoadingStatus = "Saving most recent events";
-        this.eventProvider.savingEventsFromServer(events,this.currentUser).then(()=>{
+        this.eventProvider.savingEventsFromServer(eventsFromServer,this.currentUser).then(()=>{
           this.loadEventsFromOfflineStorage();
         },error=>{
           this.setToasterMessage("Fail to save most recent events ");
