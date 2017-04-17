@@ -14,7 +14,7 @@ import {SqlLite} from "../providers/sql-lite";
 import {User} from "../providers/user";
 import {SmsCommand} from "../providers/sms-command";
 import {VisualizerService} from "../providers/visualizer-service";
-import {Dashboard} from "../providers/dashboard";
+import {DashboardService} from "../providers/dashboard-service";
 import {DataSets} from "../providers/data-sets";
 import {DataValues} from "../providers/data-values";
 import {EntryForm} from "../providers/entry-form";
@@ -69,6 +69,7 @@ import {DataSetSyncContainerPage} from "../pages/data-set-sync-container/data-se
 import {DataElementSyncContainerPage} from "../pages/data-element-sync-container/data-element-sync-container";
 import {DataElementSyncPage} from "../pages/data-element-sync/data-element-sync";
 import {OrganisationUnitsTreePage} from "../pages/organisation-units-tree/organisation-units-tree";
+import {DashboardSearchPage} from "../pages/dashboard-search/dashboard-search";
 
 
 @NgModule({
@@ -82,7 +83,7 @@ import {OrganisationUnitsTreePage} from "../pages/organisation-units-tree/organi
     AccountPage, LauncherPage, LoadingPage, LoginPage, MetadataDictionary,
     ProgressBarPage, ReportParameterSelection, ReportView, EventView, EventCaptureForm, EventFieldSelectionMenu,
     DataEntryForm, ReportSelectionPeriod, EntryFormSectionListPage, DataElementSyncPage, DataElementSyncContainerPage,
-    DataSetSyncContainerPage, DataSetSyncPage,OrganisationUnitsTreePage,
+    DataSetSyncContainerPage, DataSetSyncPage,OrganisationUnitsTreePage,DashboardSearchPage,
     TabsPage
   ],
   imports: [
@@ -110,13 +111,13 @@ import {OrganisationUnitsTreePage} from "../pages/organisation-units-tree/organi
     AccountPage, LauncherPage, LoadingPage, LoginPage, MetadataDictionary,
     ProgressBarPage, ReportParameterSelection, ReportView, EventView, EventCaptureForm, EventFieldSelectionMenu,
     DataEntryForm, ReportSelectionPeriod, EntryFormSectionListPage, DataElementSyncPage, DataElementSyncContainerPage,
-    DataSetSyncContainerPage, DataSetSyncPage,OrganisationUnitsTreePage,
+    DataSetSyncContainerPage, DataSetSyncPage,OrganisationUnitsTreePage,DashboardSearchPage,
     TabsPage
   ],
   providers: [
     StatusBar, NetworkAvailability,
     SplashScreen, SQLite, HTTP, AppVersion, SMS,
-    Dashboard, DataSets, DataValues, EntryForm, EventCaptureFormProvider,
+    DataSets, DataValues, EntryForm, EventCaptureFormProvider,DashboardService,
     MetadataDictionaryService, UpdateResourceManager, OrganisationUnit, Program,
     ProgramStageDataElements, ProgramStageSections, Report, Setting, Synchronization,
     AppProvider, HttpClient, SqlLite, User, SmsCommand, VisualizerService,

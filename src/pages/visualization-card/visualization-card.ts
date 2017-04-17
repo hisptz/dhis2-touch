@@ -1,8 +1,8 @@
 import { Component ,Input,Output, EventEmitter,OnInit} from '@angular/core';
 import { ToastController } from 'ionic-angular';
-import {Dashboard} from "../../providers/dashboard";
 import {User} from "../../providers/user";
 import {VisualizerService} from "../../providers/visualizer-service";
+import {DashboardService} from "../../providers/dashboard-service";
 /*
   Generated class for the VisualizationCard page.
 
@@ -53,7 +53,7 @@ export class VisualizationCardPage implements OnInit{
 
   //visualizationType
 
-  constructor(public Dashboard : Dashboard,public User : User,
+  constructor(public DashboardService : DashboardService,public User : User,
               public toastCtrl:ToastController,
               public visualizationService : VisualizerService) {
   }
@@ -65,7 +65,7 @@ export class VisualizationCardPage implements OnInit{
         this.analyticData = this.dashboardItemData;
         this.initiateVisualization();
       }else{
-        this.Dashboard.getAnalyticDataForDashBoardItem(this.dashboardItem.analyticsUrl,user).then((analyticData:any)=>{
+        this.DashboardService.getAnalyticDataForDashboardItem(this.dashboardItem.analyticsUrl,user).then((analyticData:any)=>{
           this.analyticData = analyticData;
           this.dashboardItemAnalyticData.emit(analyticData);
           this.initiateVisualization();
@@ -91,22 +91,36 @@ export class VisualizationCardPage implements OnInit{
   drawChart(chartType?:string) {
     this.isVisualizationDataLoaded = false;
     let itemChartType = (this.dashboardItem.type) ? this.dashboardItem.type.toLowerCase() : 'bar';
+    let layout: any = {};
+    layout['series'] = this.dashboardItem.series ? this.dashboardItem.series : (this.dashboardItem.columns.length > 0) ?this.dashboardItem.columns[0].dimension :  'pe';
+    layout['category'] = this.dashboardItem.category ? this.dashboardItem.category :(this.dashboardItem.rows.length > 0)? this.dashboardItem.rows[0].dimension : 'dx';
+
+
     let chartConfiguration = {
       'type': chartType ? chartType : itemChartType,
       'title': "",
-      'xAxisType': this.dashboardItem.category ? this.dashboardItem.category : 'pe',
-      'yAxisType': this.dashboardItem.series ? this.dashboardItem.series : 'dx'
+      'show_labels': true,
+      'xAxisType': layout.category,
+      'yAxisType': layout.series
     };
     this.visualizationSelection.right = chartConfiguration.type;
     this.chartObject = this.visualizationService.drawChart(this.analyticData, chartConfiguration);
+    this.chartObject.chart["zoomType"] ="xy";
     this.chartObject["credits"] =  {enabled: false};
     this.isVisualizationDataLoaded = true;
   }
 
   drawTable() {
     this.isVisualizationDataLoaded = false;
+
     let dashboardObject = this.dashboardItem;
-    let tableConfiguration = {rows: [], columns: []};
+    let display_list: boolean = false;
+    if(this.dashboardItem.visualizationType == 'EVENT_REPORT'){
+      if (dashboardObject.dataType == 'EVENTS') {
+        display_list = true;
+      }
+    }
+    let tableConfiguration = {rows: [], columns: [],hide_zeros: true,display_list:display_list};
     //get columns
     if(dashboardObject.hasOwnProperty('columns')) {
       dashboardObject.columns.forEach(colValue => {
@@ -133,7 +147,7 @@ export class VisualizationCardPage implements OnInit{
     }else if(visualizationType == "charts"){
       this.drawChart();
     }else if(visualizationType == "dictionary"){
-      this.metadataIdentifiers = this.Dashboard.getDashboardItemMetadataIdentifiers(this.dashboardItem)
+      this.metadataIdentifiers = this.DashboardService.getDashboardItemMetadataIdentifiers(this.dashboardItem)
     }
     this.visualizationSelection.bottom = visualizationType;
   }
