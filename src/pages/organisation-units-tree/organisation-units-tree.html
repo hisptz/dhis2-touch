@@ -1,4 +1,3 @@
-
 <ion-item>
   <ion-icon name="ios-add-circle-outline" (tap)="toggleOrganisationUnit(organisationUnit)" *ngIf="organisationUnit.children.length>0 && !hasOrgUnitChildrenOpened[organisationUnit.id]" item-left></ion-icon>
   <ion-icon name="ios-remove-circle-outline" (tap)="toggleOrganisationUnit(organisationUnit)" *ngIf="organisationUnit.children.length>0 && hasOrgUnitChildrenOpened[organisationUnit.id]" item-left></ion-icon>
@@ -29,6 +28,7 @@
   <div *ngIf="isOrganisationUnitsFetched && hasOrgUnitChildrenLoaded && !hasErrorOccurred">
     <div *ngFor="let organisationUnit of organisationUnit.children">
       <page-organisation-units-tree [organisationUnit]="organisationUnit"
+                                    [currentSelectedOrgUnitName]="currentSelectedOrgUnitName"
                                     [hasOrgUnitChildrenLoaded]="hasOrgUnitChildrenLoaded"
                                     [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened"
                                     (selectedOrganisationUnit)="setSelectedOrganisationUnit($event)"

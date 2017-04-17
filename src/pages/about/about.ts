@@ -109,6 +109,8 @@ export class AboutPage implements OnInit{
     this.setLoadingMessages("Loading event storage status");
     this.eventsStorage["synced"] = [];
     this.eventsStorage["not_synced"] = [];
+    this.eventsStorage.offline = 0;
+    this.eventsStorage.online = 0
     this.eventProvider.getEventsFromStorageByStatus(this.currentUser,"new event").then((events :any)=>{
       this.eventsStorage.offline += events.length;
       for(let event of events ){

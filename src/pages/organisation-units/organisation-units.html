@@ -13,20 +13,23 @@
 </ion-header>
 
 <ion-content class = "organisation-units">
-
-  {{ lastSelectedOrgUnit.name }}<br>
-  ancestors :: {{ lastSelectedOrgUnit.ancestors|json }}
-
   <ion-grid>
     <ion-row>
       <ion-col >
-        <div *ngFor="let organisationUnit of organisationUnits">
-          <page-organisation-units-tree [organisationUnit]="organisationUnit"
-                                        [hasOrgUnitChildrenLoaded]="hasOrgUnitChildrenLoaded"
-                                        [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened"
-                                        (selectedOrganisationUnit)="setSelectedOrganisationUnit($event)"
-                                        [currentUser]="currentUser"></page-organisation-units-tree>
+        <div *ngIf="loadingData">
+          <page-loading loadingSize="large" [loadingMessage]="loadingMessage"></page-loading>
         </div>
+        <div *ngIf="!loadingData">
+          <div *ngFor="let organisationUnit of organisationUnits">
+            <page-organisation-units-tree [organisationUnit]="organisationUnit"
+                                          [currentSelectedOrgUnitName]="lastSelectedOrgUnit.name"
+                                          [hasOrgUnitChildrenLoaded]="hasOrgUnitChildrenLoaded"
+                                          [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened"
+                                          (selectedOrganisationUnit)="setSelectedOrganisationUnit($event)"
+                                          [currentUser]="currentUser"></page-organisation-units-tree>
+          </div>
+        </div>
+
       </ion-col>
     </ion-row>
   </ion-grid>
