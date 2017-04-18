@@ -39,6 +39,7 @@ export class Program {
           }
         });
         self.sqlLite.getDataFromTableByAttributes(self.resource,attribute,attributeValue,currentUser.currentDatabase).then((programs : any)=>{
+          self.sortProgramList(programs);
           programs.forEach((program:any)=>{
             assignedPrograms.push({
               id: program.id,
@@ -54,6 +55,25 @@ export class Program {
         });
       }
     });
+  }
+
+  /**
+   * sortProgramList
+   * @param dataSetList
+   * @returns {any}
+     */
+  sortProgramList(dataSetList){
+    dataSetList.sort((a, b) => {
+      if (a.name > b.name) {
+        return 1;
+      }
+      if (a.name < b.name) {
+        return -1;
+      }
+      // a must be equal to b
+      return 0;
+    });
+    return dataSetList;
   }
 
   /**
