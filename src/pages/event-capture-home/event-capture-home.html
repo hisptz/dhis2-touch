@@ -20,7 +20,7 @@
       <ion-row>
         <ion-col>
           <ion-item text-capitalize (tap)="openOrganisationUnitModal()">
-            <div style="text-align: center" item-left>
+            <div style="text-align: center" >
               <div *ngIf="!currentSelectionStatus.isOrgUnitLoaded">
                 <page-loading loadingSize="small"></page-loading>
               </div>
@@ -28,9 +28,9 @@
             <div *ngIf="currentSelectionStatus.isOrgUnitLoaded" style="text-align: center">
               {{ selectedOrganisationUnitLabel }}
             </div>
-            <span *ngIf="!currentSelectionStatus.isOrgUnitLoaded" >
-              Loading organisation units
-            </span>
+            <!--<span *ngIf="!currentSelectionStatus.isOrgUnitLoaded" >-->
+              <!--Loading organisation units-->
+            <!--</span>-->
           </ion-item>
         </ion-col>
       </ion-row>
@@ -38,7 +38,7 @@
         <ion-col>
 
           <ion-item text-capitalize (tap)="openProgramsModal()">
-            <div style="text-align: center" item-left>
+            <div style="text-align: center" >
               <div *ngIf="!currentSelectionStatus.isProgramLoaded">
                 <page-loading loadingSize="small"></page-loading>
               </div>
@@ -46,9 +46,9 @@
             <div *ngIf="currentSelectionStatus.isProgramLoaded" style="text-align: center">
               {{ selectedProgramLabel }}
             </div>
-            <span *ngIf="!currentSelectionStatus.isProgramLoaded" >
-              Loading programs
-            </span>
+            <!--<span *ngIf="!currentSelectionStatus.isProgramLoaded" >-->
+              <!--Loading programs-->
+            <!--</span>-->
           </ion-item>
         </ion-col>
       </ion-row>

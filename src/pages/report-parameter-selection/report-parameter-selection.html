@@ -19,7 +19,7 @@
     <ion-row *ngIf="reportParams.paramOrganisationUnit">
       <ion-col>
         <ion-item text-capitalize (tap)="openOrganisationUnitModal()">
-          <div style="text-align: center" item-left>
+          <div style="text-align: center" >
             <div *ngIf="!currentSelectionStatus.isOrgUnitLoaded">
               <page-loading loadingSize="small"></page-loading>
             </div>
@@ -27,9 +27,9 @@
           <div *ngIf="currentSelectionStatus.isOrgUnitLoaded" style="text-align: center">
             {{ selectedOrganisationUnitLabel }}
           </div>
-            <span *ngIf="!currentSelectionStatus.isOrgUnitLoaded" >
-              Loading organisation units
-            </span>
+            <!--<span *ngIf="!currentSelectionStatus.isOrgUnitLoaded" >-->
+              <!--Loading organisation units-->
+            <!--</span>-->
         </ion-item>
       </ion-col>
     </ion-row>
@@ -38,7 +38,7 @@
       <ion-col>
 
         <ion-item text-capitalize (tap)="openReportPeriodSelection()">
-          <div style="text-align: center" item-left>
+          <div style="text-align: center" >
             <div *ngIf="!currentSelectionStatus.isPeriodLoaded">
               <page-loading loadingSize="small"></page-loading>
             </div>
@@ -46,9 +46,9 @@
           <div *ngIf="currentSelectionStatus.isPeriodLoaded" style="text-align: center">
             {{ selectedPeriodLabel }}
           </div>
-            <span *ngIf="!currentSelectionStatus.isPeriodLoaded" >
-              Loading period
-            </span>
+            <!--<span *ngIf="!currentSelectionStatus.isPeriodLoaded" >-->
+              <!--Loading period-->
+            <!--</span>-->
         </ion-item>
       </ion-col>
     </ion-row>

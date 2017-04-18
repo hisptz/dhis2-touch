@@ -49,11 +49,11 @@
       <div *ngFor="let section of entryFormSections">
         <div *ngIf="section.id == currentPage">
           <div *ngIf=" section.name != 'defaultSection'">
-            <ion-item >
+            <ion-item  (tap)="openEntryFormSectionList()">
               <p ion-text color="font-color" align="center">
                 <b>{{ section.name }}</b>
               </p>
-              <div style="text-align: center"item-right (tap)="openEntryFormSectionList()">
+              <div style="text-align: center"item-right >
                 <button ion-button color="dark" clear>
                   <img src="assets/dashboard/menu.png" width="20" height="20">
                 </button>

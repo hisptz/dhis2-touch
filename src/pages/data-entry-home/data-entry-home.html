@@ -19,7 +19,7 @@
     <ion-row>
       <ion-col>
         <ion-item text-capitalize (tap)="openOrganisationUnitModal()">
-          <div style="text-align: center" item-left>
+          <div style="text-align: center" >
             <div *ngIf="!currentSelectionStatus.isOrgUnitLoaded">
               <page-loading loadingSize="small"></page-loading>
             </div>
@@ -27,16 +27,16 @@
           <div *ngIf="currentSelectionStatus.isOrgUnitLoaded" style="text-align: center">
             {{ selectedOrganisationUnitLabel }}
           </div>
-            <span *ngIf="!currentSelectionStatus.isOrgUnitLoaded" >
-              Loading organisation units
-            </span>
+            <!--<span *ngIf="!currentSelectionStatus.isOrgUnitLoaded" >-->
+              <!--Loading organisation units-->
+            <!--</span>-->
         </ion-item>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
         <ion-item text-capitalize (tap)="openDataSetsModal()" >
-          <div style="text-align: center" item-left>
+          <div style="text-align: center" >
             <div *ngIf="!currentSelectionStatus.isDataSetLoaded">
               <page-loading loadingSize="small"></page-loading>
             </div>
@@ -44,9 +44,9 @@
           <div *ngIf="currentSelectionStatus.isDataSetLoaded" style="text-align: center" >
             {{ selectedDataSetLabel }}
           </div>
-            <span *ngIf="!currentSelectionStatus.isDataSetLoaded" >
-              Loading entry forms
-            </span>
+            <!--<span *ngIf="!currentSelectionStatus.isDataSetLoaded" >-->
+              <!--Loading entry forms-->
+            <!--</span>-->
         </ion-item>
       </ion-col>
     </ion-row>
