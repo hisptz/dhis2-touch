@@ -11,7 +11,7 @@ import {Observable} from 'rxjs/Rx';
 @Injectable()
 export class SqlLite {
 
-  private dataBaseStructure: any= {
+  private dataBaseStructure:any = {
     organisationUnits: {
       columns: [
         {value: 'id', type: 'TEXT'},
@@ -24,9 +24,9 @@ export class SqlLite {
         {value: 'parent', type: 'LONGTEXT'},
         {value: 'children', type: 'LONGTEXT'}
       ],
-      fields : "",
-      canBeUpdated : true,
-      resourceType : "organisationUnit"
+      fields: "",
+      canBeUpdated: true,
+      resourceType: "organisationUnit"
     },
     dataSets: {
       columns: [
@@ -44,9 +44,9 @@ export class SqlLite {
         {value: 'indicators', type: 'LONGTEXT'},
         {value: 'categoryCombo', type: 'LONGTEXT'}
       ],
-      fields : "id,name,timelyDays,formType,version,periodType,openFuturePeriods,expiryDays,dataSetElements[dataElement[id,name,displayName,description,formName,attributeValues[value,attribute[name]],valueType,optionSet[name,options[name,id,code]],categoryCombo[id,name,categoryOptionCombos[id,name]]]],dataElements[id,name,displayName,description,formName,attributeValues[value,attribute[name]],valueType,optionSet[name,options[name,id,code]],categoryCombo[id,name,categoryOptionCombos[id,name]]]organisationUnits[id,name],sections[id],indicators[id,name,indicatorType[factor],denominatorDescription,numeratorDescription,numerator,denominator],categoryCombo[id,name,categoryOptionCombos[id,name,categoryOptions[id]],categories[id,name,categoryOptions[id,name]]]",
-      canBeUpdated : true,
-      resourceType : "entryForm"
+      fields: "id,name,timelyDays,formType,version,periodType,openFuturePeriods,expiryDays,dataSetElements[dataElement[id,name,displayName,description,formName,attributeValues[value,attribute[name]],valueType,optionSet[name,options[name,id,code]],categoryCombo[id,name,categoryOptionCombos[id,name]]]],dataElements[id,name,displayName,description,formName,attributeValues[value,attribute[name]],valueType,optionSet[name,options[name,id,code]],categoryCombo[id,name,categoryOptionCombos[id,name]]]organisationUnits[id,name],sections[id],indicators[id,name,indicatorType[factor],denominatorDescription,numeratorDescription,numerator,denominator],categoryCombo[id,name,categoryOptionCombos[id,name,categoryOptions[id]],categories[id,name,categoryOptions[id,name]]]",
+      canBeUpdated: true,
+      resourceType: "entryForm"
     },
     sections: {
       columns: [
@@ -55,9 +55,25 @@ export class SqlLite {
         {value: 'indicators', type: 'LONGTEXT'},
         {value: 'dataElements', type: 'LONGTEXT'}
       ],
-      fields : "id,name,indicators[id,name,indicatorType[factor],denominatorDescription,numeratorDescription,numerator,denominator],dataElements[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]",
-      canBeUpdated : true,
-      resourceType : "entryForm"
+      fields: "id,name,indicators[id,name,indicatorType[factor],denominatorDescription,numeratorDescription,numerator,denominator],dataElements[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]",
+      canBeUpdated: true,
+      resourceType: "entryForm"
+    },
+    dataElements: {
+      columns: [
+        {value: 'id', type: 'TEXT'},
+        {value: 'name', type: 'TEXT'},
+        {value: 'displayName', type: 'TEXT'},
+        {value: 'formName', type: 'TEXT'},
+        {value: 'valueType', type: 'TEXT'},
+        {value: 'description', type: 'LONGTEXT'},
+        {value: 'attributeValues', type: 'LONGTEXT'},
+        {value: 'optionSet', type: 'LONGTEXT'},
+        {value: 'categoryCombo', type: 'LONGTEXT'}
+      ],
+      fields: "id,name,displayName,valueType,description,formName,attributeValues[value,attribute[name]],valueType,optionSet[name,options[name,id,code]],categoryCombo[id,name,categoryOptionCombos[id,name]]",
+      canBeUpdated: false,
+      resourceType: ""
     },
     smsCommand: {
       columns: [
@@ -67,9 +83,9 @@ export class SqlLite {
         {value: 'separator', type: 'TEXT'},
         {value: 'smsCode', type: 'LONGTEXT'},
       ],
-      fields : "",
-      canBeUpdated : true,
-      resourceType : "entryForm"
+      fields: "",
+      canBeUpdated: true,
+      resourceType: "entryForm"
     },
     indicators: {
       columns: [
@@ -81,9 +97,9 @@ export class SqlLite {
         {value: 'denominator', type: 'TEXT'},
         {value: 'indicatorType', type: 'LONGTEXT'}
       ],
-      fields : "id,name,denominatorDescription,numeratorDescription,numerator,denominator,indicatorType[:all]",
-      canBeUpdated : true,
-      resourceType : "report"
+      fields: "id,name,denominatorDescription,numeratorDescription,numerator,denominator,indicatorType[:all]",
+      canBeUpdated: true,
+      resourceType: "report"
     },
     reports: {
       columns: [
@@ -95,21 +111,21 @@ export class SqlLite {
         {value: 'reportParams', type: 'LONGTEXT'},
         {value: 'designContent', type: 'LONGTEXT'}
       ],
-      fields : "id,name,created,type,relativePeriods,reportParams,designContent",
-      filter : "type:eq:HTML&filter=name:ilike:mobile",
-      canBeUpdated : true,
-      resourceType : "report"
+      fields: "id,name,created,type,relativePeriods,reportParams,designContent",
+      filter: "type:eq:HTML&filter=name:ilike:mobile",
+      canBeUpdated: true,
+      resourceType: "report"
     },
     constants: {
       columns: [
         {value: 'id', type: 'TEXT'},
         {value: 'value', type: 'TEXT'}
       ],
-      fields : "id,value",
-      canBeUpdated : true,
-      resourceType : "report"
+      fields: "id,value",
+      canBeUpdated: true,
+      resourceType: "report"
     },
-    dataValues : {
+    dataValues: {
       columns: [
         {value: 'id', type: 'TEXT'},
         {value: 'de', type: 'TEXT'},
@@ -124,32 +140,32 @@ export class SqlLite {
         {value: 'syncStatus', type: 'TEXT'},
         {value: 'dataSetId', type: 'TEXT'}
       ],
-      canBeUpdated : false
+      canBeUpdated: false
     },
-    programs : {
-      columns : [
+    programs: {
+      columns: [
         {value: 'id', type: 'TEXT'},
         {value: 'name', type: 'TEXT'},
         {value: 'withoutRegistration', type: 'TEXT'},
         {value: 'programType', type: 'TEXT'},
-        {value: 'categoryCombo',type:'LONGTEXT'},
-        {value: 'programStages',type:'LONGTEXT'},
-        {value: 'programStageSections',type:'LONGTEXT'},
-        {value: 'programIndicators',type:'LONGTEXT'},
-        {value: 'translations',type:'LONGTEXT'},
-        {value: 'attributeValues',type:'LONGTEXT'},
-        {value: 'validationCriterias',type:'LONGTEXT'},
-        {value: 'programRuleVariables',type:'LONGTEXT'},
-        {value: 'programTrackedEntityAttributes',type:'LONGTEXT'},
-        {value: 'programRules',type:'LONGTEXT'},
-        {value: 'organisationUnits',type:'LONGTEXT'}
+        {value: 'categoryCombo', type: 'LONGTEXT'},
+        {value: 'programStages', type: 'LONGTEXT'},
+        {value: 'programStageSections', type: 'LONGTEXT'},
+        {value: 'programIndicators', type: 'LONGTEXT'},
+        {value: 'translations', type: 'LONGTEXT'},
+        {value: 'attributeValues', type: 'LONGTEXT'},
+        {value: 'validationCriterias', type: 'LONGTEXT'},
+        {value: 'programRuleVariables', type: 'LONGTEXT'},
+        {value: 'programTrackedEntityAttributes', type: 'LONGTEXT'},
+        {value: 'programRules', type: 'LONGTEXT'},
+        {value: 'organisationUnits', type: 'LONGTEXT'}
       ],
-      fields : "id,name,withoutRegistration,programType,categoryCombo[id,name,categories[id,name,categoryOptions[name,id]]],programStages[id,name,programStageDataElements[id],programStageSections[id]],organisationUnits[id],programIndicators,translations,attributeValues,validationCriterias,programRuleVariables,programTrackedEntityAttributes,programRules",
-      canBeUpdated : true,
-      resourceType : "event"
+      fields: "id,name,withoutRegistration,programType,categoryCombo[id,name,categories[id,name,categoryOptions[name,id]]],programStages[id,name,programStageDataElements[id],programStageSections[id]],organisationUnits[id],programIndicators,translations,attributeValues,validationCriterias,programRuleVariables,programTrackedEntityAttributes,programRules",
+      canBeUpdated: true,
+      resourceType: "event"
     },
-    programStageDataElements : {
-      columns : [
+    programStageDataElements: {
+      columns: [
         {value: 'id', type: 'TEXT'},
         {value: 'displayInReports', type: 'TEXT'},
         {value: 'compulsory', type: 'TEXT'},
@@ -157,24 +173,24 @@ export class SqlLite {
         {value: 'allowFutureDate', type: 'TEXT'},
         {value: 'dataElement', type: 'LONGTEXT'}
       ],
-      fields : "id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]",
-      canBeUpdated : true,
-      resourceType : "event"
+      fields: "id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]",
+      canBeUpdated: true,
+      resourceType: "event"
     },
-    programStageSections : {
-      columns : [
+    programStageSections: {
+      columns: [
         {value: 'id', type: 'TEXT'},
         {value: 'name', type: 'TEXT'},
         {value: 'sortOrder', type: 'TEXT'},
         {value: 'programIndicators', type: 'LONGTEXT'},
         {value: 'programStageDataElements', type: 'LONGTEXT'}
       ],
-      fields : "id,name,programIndicators,sortOrder,programStageDataElements[id]",
-      canBeUpdated : true,
-      resourceType : "event"
+      fields: "id,name,programIndicators,sortOrder,programStageDataElements[id]",
+      canBeUpdated: true,
+      resourceType: "event"
     },
-    events : {
-      columns : [
+    events: {
+      columns: [
         {value: 'id', type: 'TEXT'},
         {value: 'event', type: 'TEXT'},
         {value: 'program', type: 'TEXT'},
@@ -190,18 +206,18 @@ export class SqlLite {
         {value: 'notes', type: 'TEXT'},
         {value: 'syncStatus', type: 'TEXT'}
       ],
-      canBeUpdated : false
+      canBeUpdated: false
     }
   };
 
-  constructor(public sqlite: SQLite) {
+  constructor(public sqlite:SQLite) {
   }
 
   /**
    *
    * @returns {any}
    */
-  getDataBaseStructure(){
+  getDataBaseStructure() {
     return this.dataBaseStructure;
   }
 
@@ -210,13 +226,13 @@ export class SqlLite {
    * @param databaseName
    * @returns {Promise<T>}
    */
-  generateTables(databaseName){
+  generateTables(databaseName) {
     let self = this;
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       let promises = [];
       let tableNames = Object.keys(self.dataBaseStructure);
-      tableNames.forEach((tableName: any) => {
-        promises.push(self.createTable(tableName,databaseName).then(()=>{
+      tableNames.forEach((tableName:any) => {
+        promises.push(self.createTable(tableName, databaseName).then(()=> {
             console.log('Generate table for ' + tableName);
           })
         );
@@ -238,14 +254,14 @@ export class SqlLite {
    * @param databaseName
    * @returns {Promise<T>}
    */
-  createTable(tableName,databaseName){
+  createTable(tableName, databaseName) {
     let self = this;
     databaseName = databaseName + '.db';
 
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       let query = 'CREATE TABLE IF NOT EXISTS ' + tableName + ' (';
       let columns = self.dataBaseStructure[tableName].columns;
-      columns.forEach((column: any,index:any) => {
+      columns.forEach((column:any, index:any) => {
         if (column.value == "id") {
           query += column.value + " " + column.type + ' primary key';
         } else {
@@ -257,12 +273,12 @@ export class SqlLite {
       });
       query += ')';
 
-      self.sqlite.create({name: databaseName,location: 'default'}).then((db: SQLiteObject)=>{
+      self.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
         db.executeSql(query, []).then(() => {
-          console.log("Success create table "  + tableName);
+          console.log("Success create table " + tableName);
           resolve();
         }, (error) => {
-          console.log("Success create table "  + tableName );
+          console.log("Success create table " + tableName);
           console.log("Error occurred " + JSON.stringify(error));
           reject(error);
         });
@@ -281,7 +297,7 @@ export class SqlLite {
    * @param databaseName
    * @returns {Promise<T>}
    */
-  insertDataOnTable(tableName, fieldsValues,databaseName){
+  insertDataOnTable(tableName, fieldsValues, databaseName) {
     let self = this;
     databaseName = databaseName + '.db';
     let columns = self.dataBaseStructure[tableName].columns;
@@ -289,8 +305,8 @@ export class SqlLite {
     let questionMarks = "";
     let values = [];
 
-    columns.forEach((column: any,index:any)=>{
-      let columnValue :any;
+    columns.forEach((column:any, index:any)=> {
+      let columnValue:any;
       let columnName = column.value;
       columnNames += columnName;
 
@@ -314,8 +330,8 @@ export class SqlLite {
 
     });
     let query = "INSERT OR REPLACE INTO " + tableName + " (" + columnNames + ") VALUES (" + questionMarks + ")";
-    return new Promise(function(resolve, reject) {
-      self.sqlite.create({name: databaseName,location: 'default'}).then((db: SQLiteObject)=>{
+    return new Promise(function (resolve, reject) {
+      self.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
         db.executeSql(query, values).then(() => {
           resolve();
         }, (error) => {
@@ -334,12 +350,12 @@ export class SqlLite {
    * @param databaseName
    * @returns {Promise<T>}
    */
-  deleteAllOnTable(tableName,databaseName){
+  deleteAllOnTable(tableName, databaseName) {
     databaseName = databaseName + '.db';
     let query = "DELETE FROM " + tableName;
     let self = this;
-    return new Promise(function(resolve, reject) {
-      self.sqlite.create({name: databaseName,location: 'default'}).then((db: SQLiteObject)=>{
+    return new Promise(function (resolve, reject) {
+      self.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
         db.executeSql(query, []).then((success) => {
           resolve();
         }, (error) => {
@@ -358,12 +374,12 @@ export class SqlLite {
    * @param databaseName
    * @returns {Promise<T>}
    */
-  dropTable(tableName,databaseName){
+  dropTable(tableName, databaseName) {
     databaseName = databaseName + '.db';
     let query = "DROP TABLE " + tableName;
     let self = this;
-    return new Promise(function(resolve, reject) {
-      self.sqlite.create({name: databaseName,location: 'default'}).then((db: SQLiteObject)=>{
+    return new Promise(function (resolve, reject) {
+      self.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
         db.executeSql(query, []).then((success) => {
           resolve();
         }, (error) => {
@@ -384,14 +400,14 @@ export class SqlLite {
    * @param databaseName
    * @returns {Promise<T>}
    */
-  getDataFromTableByAttributes(tableName, attribute, attributesValuesArray,databaseName){
+  getDataFromTableByAttributes(tableName, attribute, attributesValuesArray, databaseName) {
     let self = this;
     databaseName = databaseName + '.db';
     let columns = self.dataBaseStructure[tableName].columns;
     let query = "SELECT * FROM " + tableName + " WHERE " + attribute + " IN (";
     let inClauseValues = "";
 
-    attributesValuesArray.forEach( (attributesValue:any, index:any)=> {
+    attributesValuesArray.forEach((attributesValue:any, index:any)=> {
       inClauseValues += "'" + attributesValue + "'";
       if ((index + 1) < attributesValuesArray.length) {
         inClauseValues += ',';
@@ -399,10 +415,10 @@ export class SqlLite {
     });
     query += inClauseValues;
     query += ")";
-    return new Promise(function(resolve, reject) {
-      self.sqlite.create({name: databaseName,location: 'default'}).then((db: SQLiteObject)=>{
+    return new Promise(function (resolve, reject) {
+      self.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
         db.executeSql(query, []).then((result) => {
-          resolve(self.formatQueryReturnResult(result,columns));
+          resolve(self.formatQueryReturnResult(result, columns));
         }, (error) => {
           reject(error);
         });
@@ -419,17 +435,17 @@ export class SqlLite {
    * @param databaseName
    * @returns {Promise<T>}
    */
-  getAllDataFromTable(tableName,databaseName){
+  getAllDataFromTable(tableName, databaseName) {
     let self = this;
     databaseName = databaseName + '.db';
     let columns = self.dataBaseStructure[tableName].columns;
     let query = "SELECT * FROM " + tableName + ";";
 
-    return new Promise(function(resolve, reject) {
-      self.sqlite.create({name: databaseName,location: 'default'}).then((db: SQLiteObject)=>{
+    return new Promise(function (resolve, reject) {
+      self.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
         db.executeSql(query, []).then((result) => {
-          resolve(self.formatQueryReturnResult(result,columns));
-        },(error) => {
+          resolve(self.formatQueryReturnResult(result, columns));
+        }, (error) => {
           reject(error);
         });
       }).catch(e => {
@@ -446,13 +462,13 @@ export class SqlLite {
    * @param columns
    * @returns {Array}
    */
-  formatQueryReturnResult(result, columns){
+  formatQueryReturnResult(result, columns) {
     let len = result.rows.length;
     let data = [];
     for (var i = 0; i < len; i++) {
       let row = {};
       let currentRow = result.rows.item(i);
-      columns.forEach((column) =>{
+      columns.forEach((column) => {
         var columnName = column.value;
         if (column.type != "LONGTEXT") {
           row[columnName] = currentRow[columnName]

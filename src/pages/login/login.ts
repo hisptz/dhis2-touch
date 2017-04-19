@@ -9,6 +9,7 @@ import {SqlLite} from "../../providers/sql-lite";
 import {TabsPage} from "../tabs/tabs";
 import {OrganisationUnit} from "../../providers/organisation-unit";
 import {NetworkAvailability} from "../../providers/network-availability";
+import {DataSets} from "../../providers/data-sets";
 
 /*
  Generated class for the Login page.
@@ -38,6 +39,7 @@ export class LoginPage implements OnInit{
   //organisationUnit, entryForm,event
   constructor(public navCtrl: NavController,
               public synchronization:Synchronization,
+              public DataSets : DataSets,
               public toastCtrl: ToastController,public app : AppProvider,
               public SmsCommand : SmsCommand,public NetworkAvailability : NetworkAvailability,
               public httpClient : HttpClient,public OrganisationUnit : OrganisationUnit,
@@ -295,7 +297,9 @@ export class LoginPage implements OnInit{
           },error=>{
             this.loadingData = false;
             this.isLoginProcessActive = false;
-            this.setToasterMessage('Fail to save organisation data.');
+            if(!this.isLoginProcessCancelled){
+              this.setToasterMessage('Fail to save organisation data.');
+            }
           });
         }
       },error=>{
@@ -319,18 +323,18 @@ export class LoginPage implements OnInit{
         this.updateProgressTracker(resource);
         this.downloadingSections();
       }else{
-        let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-        let fields = tableMetadata.fields;
-        this.app.downloadMetadata(this.loginData,resource,null,fields,null).then((response : any)=>{
+        this.DataSets.downloadDataSetsFromServer(this.loginData).then((dataSets : any)=>{
           if(!this.isLoginProcessCancelled){
-            this.progressTracker[this.currentResourceType].message = "Saving "+response[resource].length+" entry forms";
-            this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+            this.progressTracker[this.currentResourceType].message = "Saving "+dataSets.length+" entry forms";
+            this.DataSets.saveDataSetsFromServer(dataSets,this.loginData).then(()=>{
               this.updateProgressTracker(resource);
               this.downloadingSections();
             },error=>{
               this.loadingData = false;
               this.isLoginProcessActive = false;
-              this.setToasterMessage('Fail to save data entry form.');
+              if(!this.isLoginProcessCancelled){
+                this.setToasterMessage('Fail to save data entry form.');
+              }
             });
           }
         },error=>{
@@ -342,6 +346,30 @@ export class LoginPage implements OnInit{
             this.setToasterMessage('Fail to download data entry form.');
           }
         });
+
+        //let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
+        //let fields = tableMetadata.fields;
+        //this.app.downloadMetadata(this.loginData,resource,null,fields,null).then((response : any)=>{
+        //  if(!this.isLoginProcessCancelled){
+        //    this.progressTracker[this.currentResourceType].message = "Saving "+response[resource].length+" entry forms";
+        //    this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+        //      this.updateProgressTracker(resource);
+        //      this.downloadingSections();
+        //    },error=>{
+        //      this.loadingData = false;
+        //      this.isLoginProcessActive = false;
+        //      this.setToasterMessage('Fail to save data entry form.');
+        //    });
+        //  }
+        //},error=>{
+        //  this.loadingData = false;
+        //  this.isLoginProcessActive = false;
+        //  console.log(resource);
+        //  console.log(JSON.stringify(error));
+        //  if(!this.isLoginProcessCancelled){
+        //    this.setToasterMessage('Fail to download data entry form.');
+        //  }
+        //});
       }
     }
   }
@@ -366,7 +394,9 @@ export class LoginPage implements OnInit{
             },error=>{
               this.loadingData = false;
               this.isLoginProcessActive = false;
-              this.setToasterMessage('Fail to save data entry form sections.');
+              if(!this.isLoginProcessCancelled){
+                this.setToasterMessage('Fail to save data entry form sections.');
+              }
             });
           }
         },error=>{
