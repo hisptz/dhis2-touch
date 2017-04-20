@@ -369,6 +369,33 @@ export class SqlLite {
   }
 
   /**
+   * deleteFromTableByAttribute
+   * @param tableName
+   * @param attribute
+   * @param attributesValue
+   * @param databaseName
+   * @returns {Promise<T>}
+     */
+  deleteFromTableByAttribute(tableName,attribute, attributesValue, databaseName) {
+    let self = this;
+    databaseName = databaseName + '.db';
+    let query = "DELETE FROM " + tableName + " WHERE "+attribute+" = '"+attributesValue+"'";
+    return new Promise(function (resolve, reject) {
+      self.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
+        db.executeSql(query, []).then((success) => {
+          resolve();
+        }, (error) => {
+          console.log(JSON.stringify(error));
+          reject(error);
+        });
+      }).catch(e => {
+        reject();
+        console.log(e);
+      });
+    });
+  }
+
+  /**
    *
    * @param tableName
    * @param databaseName

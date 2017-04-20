@@ -39,6 +39,12 @@ export class AboutPage implements OnInit{
     });
   }
 
+  ionViewDidEnter() {
+    if(this.dataValuesStorage.offline > 0 || this.dataValuesStorage.online > 0){
+      this.loadingSystemInformation();
+    }
+  }
+
   reLoadContents(ionRefresher){
     this.loadingSystemInformation(ionRefresher);
   }

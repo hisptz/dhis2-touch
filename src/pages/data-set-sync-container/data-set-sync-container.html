@@ -18,7 +18,12 @@
     <page-loading [loadingSize]="large" [loadingMessage] = "loadingMessages"></page-loading>
   </div>
   <div *ngIf="!loading && hasDataPrepared">
-    <page-data-set-sync [dataSetsSyncObjects]="dataSetsSyncObjects" [syncStatus]="syncStatus" [dataSetIds]="dataSetIds" [hasDataPrepared]="hasDataPrepared" ></page-data-set-sync>
+    <page-data-set-sync [dataSetsSyncObjects]="dataSetsSyncObjects"
+                        [syncStatus]="syncStatus"
+                        [dataSetIds]="dataSetIds"
+                        [isDataSetDataDeletionOnProgress]="isDataSetDataDeletionOnProgress"
+                        (onDeleteDataSetData)="onDeleteDataSetData($event)"
+                        [hasDataPrepared]="hasDataPrepared"></page-data-set-sync>
   </div>
 
 </ion-content>

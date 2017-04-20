@@ -1,5 +1,5 @@
-import { Component,OnInit,Input } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { Component,OnInit,Input,Output,EventEmitter } from '@angular/core';
+import { NavController,AlertController } from 'ionic-angular';
 import {DataSets} from "../../providers/data-sets";
 import {User} from "../../providers/user";
 import {DataElementSyncContainerPage} from "../data-element-sync-container/data-element-sync-container";
@@ -20,13 +20,18 @@ export class DataSetSyncPage  implements OnInit{
   @Input() hasDataPrepared;
   @Input() dataSetIds;
   @Input() syncStatus;
+  @Input() isDataSetDataDeletionOnProgress;
+
+  @Output() onDeleteDataSetData = new EventEmitter();
 
   public loadingMessage : string = "";
   public isLoading : boolean = true;
   public currentUser : any;
   public dataSets :any;
 
-  constructor(public navCtrl: NavController, public DataSets : DataSets,public user : User) {}
+  constructor(public navCtrl: NavController, public DataSets : DataSets,
+              public alertCtrl: AlertController,
+              public user : User) {}
 
   ngOnInit() {
     if(this.hasDataPrepared){
@@ -40,6 +45,33 @@ export class DataSetSyncPage  implements OnInit{
         }
       })
     }
+  }
+
+  dataSetDataDeleteConfirmation(dataSetName,dataSetId){
+    let alert = this.alertCtrl.create({
+      title: 'Clear Data Confirmation',
+      message: 'Are you want to clear all data on '+ dataSetName +' ?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Clear',
+          handler: () => {
+            this.deleteDataSetData(dataSetName,dataSetId);
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  deleteDataSetData(dataSetName,dataSetId){
+    this.onDeleteDataSetData.emit({dataSetId : dataSetId,dataSetName:dataSetName});
   }
 
   loadDataSetsByIds(dataSetIds,currentUser){

@@ -45,9 +45,7 @@ export class OrganisationUnits implements OnInit{
         fetchLevel = parseInt(organisationUnit.level);
       }
     }
-    console.log(JSON.stringify(parents));
     parents.splice(0,fetchLevel);
-    console.log(JSON.stringify(parents));
     if( level > 1 && parents.length > 0){
       this.OrganisationUnit.getOrganisationUnitsByLevels(parents,this.currentUser).then((organisationUnitResponse :any)=>{
         if(organisationUnitResponse && organisationUnitResponse.id){
