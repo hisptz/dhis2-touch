@@ -44,8 +44,7 @@
                 </ion-item>
                 <button [disabled]="!settingObject.synchronizationSetting.isSaved" [color]="settingObject.synchronizationSetting.isSaved?'primary':'whitecolor'" class="normalButton" ion-button full large text-capitalize (tap)="saveSetting('synchronizationSetting')">
                   <span *ngIf="!settingObject.synchronizationSetting.isSaved" >
-                    <ion-spinner  name="crescent" color="secondary"></ion-spinner>
-                    <span margin-top="0px">&nbsp;&nbsp;Saving</span>
+                    <page-loading loadingSize="small"></page-loading>
                   </span>
                   <span *ngIf="settingObject.synchronizationSetting.isSaved" >
                     Save
@@ -82,8 +81,7 @@
                 </ion-item>
                 <button [disabled]="!settingObject.dataEntrySetting.isSaved" [color]="settingObject.dataEntrySetting.isSaved?'primary':'whitecolor'" class="normalButton" ion-button full large text-capitalize (tap)="saveSetting('dataEntrySetting')">
                   <span *ngIf="!settingObject.dataEntrySetting.isSaved" >
-                    <ion-spinner  name="crescent" color="secondary"></ion-spinner>
-                    <span margin-top="0px">&nbsp;&nbsp;Saving</span>
+                    <page-loading loadingSize="small"></page-loading>
                   </span>
                   <span *ngIf="settingObject.dataEntrySetting.isSaved" >
                     Save
@@ -99,7 +97,7 @@
         <ion-col>
           <ion-item (tap)="hideAndShowContents('dataDeletion')">
             <span ion-text [color]="(settingObject.dataDeletion.isExpanded) ?'current' : 'font-color'">
-              Data
+              Clear Offline Data
             </span>
             <ion-icon [color]="(settingObject.dataDeletion.isExpanded) ?'current' : 'font-color'" *ngIf="!settingObject.dataDeletion.isExpanded" name="ios-arrow-down" item-right></ion-icon>
             <ion-icon [color]="(settingObject.dataDeletion.isExpanded) ?'current' : 'font-color'" *ngIf="settingObject.dataDeletion.isExpanded" name="ios-arrow-up"  item-right></ion-icon>
@@ -107,7 +105,24 @@
           <div class="settingContents" *ngIf="settingObject.dataDeletion.isExpanded" >
             <ion-row>
               <ion-col>
-                Data deletion
+                <ion-item>
+                  <ion-label>Data values</ion-label>
+                  <ion-checkbox [(ngModel)]="settingObject.dataDeletion.selectedItems.dataValues" (ionChange)="resetDeletedItems()"></ion-checkbox>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Events </ion-label>
+                  <ion-checkbox [(ngModel)]="settingObject.dataDeletion.selectedItems.events" (ionChange)="resetDeletedItems()" ></ion-checkbox>
+                </ion-item>
+
+                <button [disabled]="settingObject.dataDeletion.itemsToBeDeleted.length < 1" [color]="settingObject.dataDeletion.isDataCleared?'primary':'whitecolor'" class="normalButton" ion-button full large text-capitalize (tap)="clearDataConfirmation()">
+                  <span *ngIf="!settingObject.dataDeletion.isDataCleared" >
+                    <page-loading loadingSize="small"></page-loading>
+                  </span>
+                  <span *ngIf="settingObject.dataDeletion.isDataCleared" >
+                    Clear data
+                  </span>
+                </button>
+
               </ion-col>
             </ion-row>
           </div>

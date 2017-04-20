@@ -13,7 +13,6 @@ import {HttpClient} from "./http-client";
 export class Events {
 
   public resource : string;
-  //id = programId+"-"+orgUnitId+"-"+eventId
 
   constructor(private sqlLite : SqlLite,public httpClient:HttpClient) {
     this.resource = "events";
