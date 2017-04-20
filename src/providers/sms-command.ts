@@ -210,7 +210,6 @@ export class SmsCommand {
         promises.push(
           self.SqlLite.insertDataOnTable(self.resourceName,smsCommand,databaseName).then(()=>{
             //saving success
-            console.log("smsCommand " + smsCommand["id"]);
           },(error) => {
           })
         );

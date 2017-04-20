@@ -95,6 +95,25 @@
         </ion-col>
       </ion-row>
 
+      <ion-row>
+        <ion-col>
+          <ion-item (tap)="hideAndShowContents('dataDeletion')">
+            <span ion-text [color]="(settingObject.dataDeletion.isExpanded) ?'current' : 'font-color'">
+              Data
+            </span>
+            <ion-icon [color]="(settingObject.dataDeletion.isExpanded) ?'current' : 'font-color'" *ngIf="!settingObject.dataDeletion.isExpanded" name="ios-arrow-down" item-right></ion-icon>
+            <ion-icon [color]="(settingObject.dataDeletion.isExpanded) ?'current' : 'font-color'" *ngIf="settingObject.dataDeletion.isExpanded" name="ios-arrow-up"  item-right></ion-icon>
+          </ion-item>
+          <div class="settingContents" *ngIf="settingObject.dataDeletion.isExpanded" >
+            <ion-row>
+              <ion-col>
+                Data deletion
+              </ion-col>
+            </ion-row>
+          </div>
+        </ion-col>
+      </ion-row>
+
       <!--<ion-row>-->
       <!--<ion-col>-->
       <!--<ion-item (tap)="hideAndShowContents('security')">-->

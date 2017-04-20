@@ -38,28 +38,32 @@ export class OrganisationUnits implements OnInit{
     this.currentUser = this.params.get("currentUser");
     this.organisationUnits = this.params.get('organisationUnits');
     let level = parseInt(this.lastSelectedOrgUnit.level);
-    if( level > 1){
-      let parents = this.lastSelectedOrgUnit.path.substring(1, this.lastSelectedOrgUnit.path.length).split("/");
-      let fetchLevel = 0;
-      for(let organisationUnit of this.organisationUnits){
-        if(parents.indexOf(organisationUnit.id) > -1){
-          fetchLevel = parseInt(organisationUnit.level);
-        }
+    let parents = this.lastSelectedOrgUnit.path.substring(1, this.lastSelectedOrgUnit.path.length).split("/");
+    let fetchLevel = 0;
+    for(let organisationUnit of this.organisationUnits){
+      if(parents.indexOf(organisationUnit.id) > -1){
+        fetchLevel = parseInt(organisationUnit.level);
       }
-      parents.splice(0,fetchLevel);
+    }
+    console.log(JSON.stringify(parents));
+    parents.splice(0,fetchLevel);
+    console.log(JSON.stringify(parents));
+    if( level > 1 && parents.length > 0){
       this.OrganisationUnit.getOrganisationUnitsByLevels(parents,this.currentUser).then((organisationUnitResponse :any)=>{
-        this.organisationUnits.forEach((organisationUnit:any)=>{
-          organisationUnit.children.forEach((childOrgUnit)=>{
-            if(childOrgUnit.id == organisationUnitResponse.id){
-              childOrgUnit = organisationUnitResponse;
-              for(let ancestor of this.lastSelectedOrgUnit.ancestors){
-                this.hasOrgUnitChildrenOpened[ancestor.id] = true;
+        if(organisationUnitResponse && organisationUnitResponse.id){
+          this.organisationUnits.forEach((organisationUnit:any)=>{
+            organisationUnit.children.forEach((childOrgUnit)=>{
+              if(childOrgUnit.id == organisationUnitResponse.id){
+                childOrgUnit = organisationUnitResponse;
+                for(let ancestor of this.lastSelectedOrgUnit.ancestors){
+                  this.hasOrgUnitChildrenOpened[ancestor.id] = true;
+                }
+                this.hasOrgUnitChildrenLoaded = true;
+                this.loadingData = false;
               }
-              this.hasOrgUnitChildrenLoaded = true;
-              this.loadingData = false;
-            }
+            });
           });
-        });
+        }
       },error=>{
         this.loadingData = false;
       });

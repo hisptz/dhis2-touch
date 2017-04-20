@@ -21,6 +21,7 @@ export class SettingHomePage implements OnInit{
   public settingObject : any = {
     synchronizationSetting : {isExpanded : true,isSaved : true},
     dataEntrySetting : {isExpanded : false,isSaved : true},
+    dataDeletion : {isExpanded : false,isSaved : true},
     security : {isExpanded : false,isSaved : true}
   };
 

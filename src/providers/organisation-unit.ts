@@ -137,9 +137,8 @@ export class OrganisationUnit {
                 self.setLastSelectedOrganisationUnitUnit(organisationUnits[0]);
                 resolve({organisationUnits : organisationUnits,lastSelectedOrgUnit : organisationUnits[0]})
               }else{
-
+                resolve({organisationUnits : [],lastSelectedOrgUnit : {}})
               }
-
             });
           },error=>{
             console.log(error);
@@ -166,8 +165,10 @@ export class OrganisationUnit {
           self.getSortedOrganisationUnits(organisationUnits).then((organisationUnits:any)=>{
             let orgUnitIds = [];
             for(let organisationUnit of organisationUnits){
-              for(let child of organisationUnit.children){
-                orgUnitIds.push(child.id);
+              if(organisationUnit && organisationUnit.children){
+                for(let child of organisationUnit.children){
+                  orgUnitIds.push(child.id);
+                }
               }
             }
             self.getOrganisationUnitsByIds(orgUnitIds,currentUser).then((childrenOrganisationUnits : any)=> {
@@ -176,13 +177,14 @@ export class OrganisationUnit {
                 childrenOrganisationUnitsMapper[childrenOrganisationUnit.id] = childrenOrganisationUnit;
               }
               organisationUnits.forEach((organisationUnit:any)=> {
-                organisationUnit.children.forEach((child:any)=> {
-                  if (childrenOrganisationUnitsMapper[child.id]) {
-                    child = childrenOrganisationUnitsMapper[child.id];
-                  }
-                })
+                if(organisationUnit && organisationUnit.children){
+                  organisationUnit.children.forEach((child:any)=> {
+                    if (childrenOrganisationUnitsMapper[child.id]) {
+                      child = childrenOrganisationUnitsMapper[child.id];
+                    }
+                  })
+                }
               });
-
               resolve(organisationUnits)
             },error=>{
               reject(error);
@@ -222,20 +224,22 @@ export class OrganisationUnit {
     var self = this;
     var parentId = parentIds.splice(0,1)[0];
     var newChildren = [];
-    if(orgUnit)
-    orgUnit.children.forEach(function(child){
-      if(child.id == parentId){
-        newChildren.push(organisationUnitIdToOrganisationUnits[parentId]);
-      }else{
-        newChildren.push(child);
-      }
-    });
-    orgUnit.children = newChildren;
-    orgUnit.children.forEach(function(child){
-      if(child.id == parentId){
-        self.recursiveFetch(parentIds,organisationUnitIdToOrganisationUnits,child);
-      }
-    })
+    if(orgUnit && orgUnit.children){
+      orgUnit.children.forEach(function(child){
+        if(child.id == parentId){
+          newChildren.push(organisationUnitIdToOrganisationUnits[parentId]);
+        }else{
+          newChildren.push(child);
+        }
+      });
+      orgUnit.children = newChildren;
+      orgUnit.children.forEach(function(child){
+        if(child.id == parentId){
+          self.recursiveFetch(parentIds,organisationUnitIdToOrganisationUnits,child);
+        }
+      })
+    }
+
   }
 
 

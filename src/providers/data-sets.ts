@@ -64,7 +64,6 @@ export class DataSets {
     return new Promise(function(resolve, reject) {
       let counts = 0;
       for(let dataSet of dataSets){
-        console.log("dataSet : " + JSON.stringify(dataSet));
         self.sqlLite.insertDataOnTable(self.resource,dataSet,currentUser.currentDatabase).then(()=>{
           counts = counts + 1;
           if(counts == dataSets.length){
