@@ -9,9 +9,13 @@ page-visualization-card {
     }
   }
 
-  .item-md.item-block .item-inner {
-
+  .fab[mini] {
+    margin: 10px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
   }
+
   .item-ios.item-block .item-inner {
     border-bottom: 0px solid #c8c7cc!important;;
   }

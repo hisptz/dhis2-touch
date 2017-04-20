@@ -7,15 +7,29 @@
     <ion-grid>
       <ion-row>
         <ion-col >
+          <div *ngFor="let dataElement of dataElements" >
+            <div class="contents">
+              <p ><b>Form Label : </b>{{ dataElement.name }}<br>
+                <b>Period : </b>{{ dataElement.period}}<br>
+                <b>value : </b>{{ dataElement.value }}<br>
+                <b>Organisation Unit : </b>{{ dataElement.orgUnit}}</p>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col >
           <div *ngFor="let dataSetId of dataSetIds" >
             <div *ngIf="dataSetsSyncObjects[dataSetId].name != ''">
-              <ion-item-group (tap)="viewMoreDetailsOnEntryForm(dataSetId)">
-                <ion-item-divider>
-                  <p ><b>Form : </b>{{dataSetsSyncObjects[dataSetId].name}}</p>
-                  <p ><b>Data : </b>{{dataSetsSyncObjects[dataSetId].dataValues.length}}</p>
-                </ion-item-divider>
-              </ion-item-group>
-              <ion-list></ion-list>
+              <div class="contents" (tap)="viewMoreDetailsOnEntryForm(dataSetId)">
+                <p >
+                  <b>Form : </b>{{dataSetsSyncObjects[dataSetId].name}}<br>
+                  <b>Data : </b>{{dataSetsSyncObjects[dataSetId].dataValues.length}}
+                </p>
+              </div>
             </div>
           </div>
         </ion-col>
