@@ -32,6 +32,9 @@
   </div>
 
   <div *ngIf="!loadingData">
+    <ion-refresher (ionRefresh)="reLoadContents($event)">
+      <ion-refresher-content ></ion-refresher-content>
+    </ion-refresher>
     <ion-grid>
       <ion-row>
         <ion-col >

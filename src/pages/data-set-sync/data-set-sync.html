@@ -4,20 +4,6 @@
     <page-loading loadingSize="large" [loadingMessage] = "loadingMessage"></page-loading>
   </div>
   <div *ngIf="!isLoading">
-    <ion-grid>
-      <ion-row>
-        <ion-col >
-          <div *ngFor="let dataElement of dataElements" >
-            <div class="contents">
-              <p ><b>Form Label : </b>{{ dataElement.name }}<br>
-                <b>Period : </b>{{ dataElement.period}}<br>
-                <b>value : </b>{{ dataElement.value }}<br>
-                <b>Organisation Unit : </b>{{ dataElement.orgUnit}}</p>
-            </div>
-          </div>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
 
     <ion-grid>
       <ion-row>

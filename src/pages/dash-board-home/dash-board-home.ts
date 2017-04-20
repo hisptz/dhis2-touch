@@ -142,7 +142,9 @@ export class DashBoardHomePage implements OnInit{
 
   initiateSelectedDashboardItem(){
     let selectedDashboardItems = this.dashBoardProgressTracker.dashBoardItemObjectsAndData[this.selectedDashboardId];
-    this.selectedDashboardItemId = selectedDashboardItems[0].id;
+    if(selectedDashboardItems.length > 0){
+      this.selectedDashboardItemId = selectedDashboardItems[0].id;
+    }
     this.dashBoardProgressTracker.isDashboardItemObjectsAndDataLoaded = true;
   }
 

@@ -40,7 +40,11 @@ export class ProfilePage implements OnInit{
     });
   }
 
-  loadingProfileInformation(){
+  reLoadContents(ionRefresher){
+    this.loadingProfileInformation(ionRefresher);
+  }
+
+  loadingProfileInformation(ionRefresher?){
     this.loadingData = true;
     this.loadingMessages = [];
     this.setLoadingMessages('Loading profiles information');
@@ -53,14 +57,17 @@ export class ProfilePage implements OnInit{
         }
       }
       this.profileInformation = this.getArrayFromObject(data);
-      this.setUserRoles(userData);
+      this.setUserRoles(userData,ionRefresher);
     },error=>{
+      if(ionRefresher){
+        ionRefresher.complete();
+      }
       this.loadingData = false;
       this.setToasterMessage('Fail to load profile information');
     });
   }
 
-  setUserRoles(userData){
+  setUserRoles(userData,ionRefresher?){
     this.setLoadingMessages('Loading user roles');
     this.userRoles = [];
     this.assignedForms = [];
@@ -70,7 +77,7 @@ export class ProfilePage implements OnInit{
       this.setAssignedForms(userRole.dataSets);
       this.setAssignedPrograms(userRole.programs);
     });
-    this.loadingAssignedOrganisationUnits(userData.organisationUnits);
+    this.loadingAssignedOrganisationUnits(userData.organisationUnits,ionRefresher);
   }
 
   setAssignedForms(dataSets){
@@ -89,7 +96,7 @@ export class ProfilePage implements OnInit{
     });
   }
 
-  loadingAssignedOrganisationUnits(organisationUnits){
+  loadingAssignedOrganisationUnits(organisationUnits,ionRefresher?){
     this.setLoadingMessages('Loading assigned organisation units');
     this.assignOrgUnits = [];
     let resource = 'organisationUnits';
@@ -103,7 +110,13 @@ export class ProfilePage implements OnInit{
         this.assignOrgUnits.push(assignedOrganisationUnit.name);
       });
       this.loadingData = false;
+      if(ionRefresher){
+        ionRefresher.complete();
+      }
     },error=>{
+      if(ionRefresher){
+        ionRefresher.complete();
+      }
       this.loadingData = false;
       this.setToasterMessage('Fail to load assigned organisation units');
     });
