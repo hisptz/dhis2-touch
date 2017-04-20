@@ -18,48 +18,87 @@
   <ion-grid>
     <ion-row >
       <ion-col (tap)="goToView('dataEntry')" >
-        <ion-list >
-          <ion-item >
-            <ion-thumbnail >
-              <img class="menu-app-icon-list" src="assets/img/dataEntry.png">
-            </ion-thumbnail>
-            <p class="menu-app" >Data Entry</p>
-          </ion-item>
-        </ion-list>
+        <div class="contents" padding>
+          <ion-thumbnail >
+            <img class="menu-app-icon-list" src="assets/img/dataEntry.png">
+          </ion-thumbnail>
+          <p class="menu-app" >Data Entry</p>
+        </div>
       </ion-col>
       <ion-col (tap)="goToView('eventCapture')" >
-        <ion-list >
-          <ion-item>
-            <ion-thumbnail >
-              <img class="menu-app-icon-list" src="assets/img/eventCapture.png">
-            </ion-thumbnail>
-            <p class="menu-app" >Event Capture</p>
-          </ion-item>
-        </ion-list>
+        <div class="contents" padding>
+          <ion-thumbnail >
+            <img class="menu-app-icon-list" src="assets/img/eventCapture.png">
+          </ion-thumbnail>
+          <p class="menu-app" >Event Capture</p>
+        </div>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col (tap)="goToView('dashboard')" >
-        <ion-list>
-          <ion-item>
-            <ion-thumbnail >
-              <img class="menu-app-icon-list" src="assets/img/dashboard.png">
-            </ion-thumbnail>
-            <p class="menu-app">Dashboard</p>
-          </ion-item>
-        </ion-list>
+        <div class="contents" padding>
+          <ion-thumbnail >
+            <img class="menu-app-icon-list" src="assets/img/dashboard.png">
+          </ion-thumbnail>
+          <p class="menu-app">Dashboard</p>
+        </div>
       </ion-col>
       <ion-col (tap)="goToView('report')"  >
-        <ion-list>
-          <ion-item>
-            <ion-thumbnail >
-              <img class="menu-app-icon-list" src="assets/img/reports.png">
-            </ion-thumbnail>
-            <p class="menu-app">Standard Reports</p>
-          </ion-item>
-        </ion-list>
+        <div class="contents" padding>
+          <ion-thumbnail >
+            <img class="menu-app-icon-list" src="assets/img/reports.png">
+          </ion-thumbnail>
+          <p class="menu-app">Standard Reports</p>
+        </div>
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <!--<ion-grid>-->
+    <!--<ion-row >-->
+      <!--<ion-col (tap)="goToView('dataEntry')" >-->
+        <!--<ion-list >-->
+          <!--<ion-item >-->
+            <!--<ion-thumbnail >-->
+              <!--<img class="menu-app-icon-list" src="assets/img/dataEntry.png">-->
+            <!--</ion-thumbnail>-->
+            <!--<p class="menu-app" >Data Entry</p>-->
+          <!--</ion-item>-->
+        <!--</ion-list>-->
+      <!--</ion-col>-->
+      <!--<ion-col (tap)="goToView('eventCapture')" >-->
+        <!--<ion-list >-->
+          <!--<ion-item>-->
+            <!--<ion-thumbnail >-->
+              <!--<img class="menu-app-icon-list" src="assets/img/eventCapture.png">-->
+            <!--</ion-thumbnail>-->
+            <!--<p class="menu-app" >Event Capture</p>-->
+          <!--</ion-item>-->
+        <!--</ion-list>-->
+      <!--</ion-col>-->
+    <!--</ion-row>-->
+    <!--<ion-row>-->
+      <!--<ion-col (tap)="goToView('dashboard')" >-->
+        <!--<ion-list>-->
+          <!--<ion-item>-->
+            <!--<ion-thumbnail >-->
+              <!--<img class="menu-app-icon-list" src="assets/img/dashboard.png">-->
+            <!--</ion-thumbnail>-->
+            <!--<p class="menu-app">Dashboard</p>-->
+          <!--</ion-item>-->
+        <!--</ion-list>-->
+      <!--</ion-col>-->
+      <!--<ion-col (tap)="goToView('report')"  >-->
+        <!--<ion-list>-->
+          <!--<ion-item>-->
+            <!--<ion-thumbnail >-->
+              <!--<img class="menu-app-icon-list" src="assets/img/reports.png">-->
+            <!--</ion-thumbnail>-->
+            <!--<p class="menu-app">Standard Reports</p>-->
+          <!--</ion-item>-->
+        <!--</ion-list>-->
+      <!--</ion-col>-->
+    <!--</ion-row>-->
+  <!--</ion-grid>-->
 
 </ion-content>

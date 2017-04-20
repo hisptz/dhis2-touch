@@ -18,73 +18,133 @@
   <ion-grid>
     <ion-row >
       <ion-col (tap)="goToView('profile')" >
-        <ion-list >
-          <ion-item >
-            <ion-thumbnail >
-              <img class="menu-app-icon-list" src="assets/img/profile.png">
-            </ion-thumbnail>
-            <p class="menu-app" >Profile</p>
-          </ion-item>
-        </ion-list>
+        <div class="contents" padding>
+          <ion-thumbnail >
+            <img class="menu-app-icon-list" src="assets/img/profile.png">
+          </ion-thumbnail>
+          <p class="menu-app" >Profile</p>
+        </div>
       </ion-col>
       <ion-col (tap)="goToView('about')" >
-        <ion-list>
-          <ion-item>
-            <ion-thumbnail >
-              <img class="menu-app-icon-list" src="assets/img/about.png">
-            </ion-thumbnail>
-            <p class="menu-app" >About</p>
-          </ion-item>
-        </ion-list>
+        <div class="contents" padding>
+          <ion-thumbnail >
+            <img class="menu-app-icon-list" src="assets/img/about.png">
+          </ion-thumbnail>
+          <p class="menu-app" >About</p>
+        </div>
       </ion-col>
 
     </ion-row>
     <ion-row>
       <ion-col (tap)="goToView('help')" >
-        <ion-list>
-          <ion-item>
-            <ion-thumbnail >
-              <img class="menu-app-icon-list" src="assets/img/help.png">
-            </ion-thumbnail>
-            <p class="menu-app" >Help</p>
-          </ion-item>
-        </ion-list>
+        <div class="contents" padding>
+          <ion-thumbnail >
+            <img class="menu-app-icon-list" src="assets/img/help.png">
+          </ion-thumbnail>
+          <p class="menu-app" >Help</p>
+        </div>
       </ion-col>
       <ion-col (tap)="goToView('settings')" >
-        <ion-list >
-          <ion-item >
-            <ion-thumbnail >
-              <img class="menu-app-icon-list" src="assets/img/settings.png">
-            </ion-thumbnail>
-            <p class="menu-app" >Settings</p>
-          </ion-item>
-        </ion-list>
+        <div class="contents" padding>
+          <ion-thumbnail >
+            <img class="menu-app-icon-list" src="assets/img/settings.png">
+          </ion-thumbnail>
+          <p class="menu-app" >Settings</p>
+        </div>
       </ion-col>
 
     </ion-row>
     <ion-row>
       <ion-col (tap)="goToView('updateManager')" >
-        <ion-list>
-          <ion-item>
-            <ion-thumbnail >
-              <img class="menu-app-icon-list" src="assets/img/updateManager.png">
-            </ion-thumbnail>
-            <p class="menu-app" >Update Manager</p>
-          </ion-item>
-        </ion-list>
+        <div class="contents" padding>
+          <ion-thumbnail >
+            <img class="menu-app-icon-list" src="assets/img/updateManager.png">
+          </ion-thumbnail>
+          <p class="menu-app" >Update Manager</p>
+        </div>
       </ion-col>
       <ion-col (tap)="logOut()" >
-        <ion-list>
-          <ion-item>
-            <ion-thumbnail >
-              <img class="menu-app-icon-list" src="assets/img/logout.png">
-            </ion-thumbnail>
-            <p class="menu-app" >Logout</p>
-          </ion-item>
-        </ion-list>
+        <div class="contents" padding>
+          <ion-thumbnail >
+            <img class="menu-app-icon-list" src="assets/img/logout.png">
+          </ion-thumbnail>
+          <p class="menu-app" >Logout</p>
+        </div>
       </ion-col>
 
     </ion-row>
   </ion-grid>
+
+  <!--<ion-grid>-->
+    <!--<ion-row >-->
+      <!--<ion-col (tap)="goToView('profile')" >-->
+        <!--<ion-list >-->
+          <!--<ion-item >-->
+            <!--<ion-thumbnail >-->
+              <!--<img class="menu-app-icon-list" src="assets/img/profile.png">-->
+            <!--</ion-thumbnail>-->
+            <!--<p class="menu-app" >Profile</p>-->
+          <!--</ion-item>-->
+        <!--</ion-list>-->
+      <!--</ion-col>-->
+      <!--<ion-col (tap)="goToView('about')" >-->
+        <!--<ion-list>-->
+          <!--<ion-item>-->
+            <!--<ion-thumbnail >-->
+              <!--<img class="menu-app-icon-list" src="assets/img/about.png">-->
+            <!--</ion-thumbnail>-->
+            <!--<p class="menu-app" >About</p>-->
+          <!--</ion-item>-->
+        <!--</ion-list>-->
+      <!--</ion-col>-->
+
+    <!--</ion-row>-->
+    <!--<ion-row>-->
+      <!--<ion-col (tap)="goToView('help')" >-->
+        <!--<ion-list>-->
+          <!--<ion-item>-->
+            <!--<ion-thumbnail >-->
+              <!--<img class="menu-app-icon-list" src="assets/img/help.png">-->
+            <!--</ion-thumbnail>-->
+            <!--<p class="menu-app" >Help</p>-->
+          <!--</ion-item>-->
+        <!--</ion-list>-->
+      <!--</ion-col>-->
+      <!--<ion-col (tap)="goToView('settings')" >-->
+        <!--<ion-list >-->
+          <!--<ion-item >-->
+            <!--<ion-thumbnail >-->
+              <!--<img class="menu-app-icon-list" src="assets/img/settings.png">-->
+            <!--</ion-thumbnail>-->
+            <!--<p class="menu-app" >Settings</p>-->
+          <!--</ion-item>-->
+        <!--</ion-list>-->
+      <!--</ion-col>-->
+
+    <!--</ion-row>-->
+    <!--<ion-row>-->
+      <!--<ion-col (tap)="goToView('updateManager')" >-->
+        <!--<ion-list>-->
+          <!--<ion-item>-->
+            <!--<ion-thumbnail >-->
+              <!--<img class="menu-app-icon-list" src="assets/img/updateManager.png">-->
+            <!--</ion-thumbnail>-->
+            <!--<p class="menu-app" >Update Manager</p>-->
+          <!--</ion-item>-->
+        <!--</ion-list>-->
+      <!--</ion-col>-->
+      <!--<ion-col (tap)="logOut()" >-->
+        <!--<ion-list>-->
+          <!--<ion-item>-->
+            <!--<ion-thumbnail >-->
+              <!--<img class="menu-app-icon-list" src="assets/img/logout.png">-->
+            <!--</ion-thumbnail>-->
+            <!--<p class="menu-app" >Logout</p>-->
+          <!--</ion-item>-->
+        <!--</ion-list>-->
+      <!--</ion-col>-->
+
+    <!--</ion-row>-->
+  <!--</ion-grid>-->
 
 </ion-content>
