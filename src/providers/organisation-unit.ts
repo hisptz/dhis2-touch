@@ -52,7 +52,7 @@ export class OrganisationUnit {
     return new Promise(function(resolve, reject) {
       let counts = 0;
       for(let orgUnitId of orgUnitIds){
-        let fields ="fields=id,name,path,ancestors[id,name],dataSets,programs,level,children[id,name],parent";
+        let fields ="fields=id,name,path,ancestors[id,name],dataSets,programs,level,children[id,name,children[id]],parent";
         let filter="filter=path:ilike:";
         let url = "/api/25/"+self.resource+".json?paging=false&";
         url += fields + "&" + filter + orgUnitId;

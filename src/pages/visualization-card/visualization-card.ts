@@ -30,7 +30,7 @@ export class VisualizationCardPage implements OnInit{
     bottom :  [
       {type: "table", path: "assets/dashboard/table.png"},
       {type: "charts", path: "assets/dashboard/combined.png"},
-      {type: "dictionary", path: "assets/dashboard/dictionary.png"}
+      //{type: "dictionary", path: "assets/dashboard/dictionary.png"}
     ],
     right : [
       {type: "line", path: "assets/dashboard/line.png",isDisabled : false},

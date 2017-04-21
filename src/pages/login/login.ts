@@ -186,8 +186,8 @@ export class LoginPage implements OnInit{
         this.progressTracker.communication.passStep = [];
         this.progressTracker.communication.passStepCount = 0;
         this.progressTracker.communication.message = "Establish connection to server";
-        this.progressTracker.organisationUnit.passStep = [];
-        this.progressTracker.organisationUnit.passStepCount = 0;
+        //this.progressTracker.organisationUnit.passStep = [];
+        //this.progressTracker.organisationUnit.passStepCount = 0;
         this.currentResourceType = "communication";
         this.loadingData = true;
         this.isLoginProcessActive = true;
@@ -204,7 +204,7 @@ export class LoginPage implements OnInit{
                 this.user.setUserData(JSON.parse(response.data)).then(userData=>{
                   this.app.getDataBaseName(this.loginData.serverUrl).then(databaseName=>{
                     //update authenticate  process
-                    this.loginData.currentDatabase = databaseName;
+                    this.loginData.currentDatabase = databaseName //+ "_"+this.loginData.username;
                     this.reInitiateProgressTrackerObject(this.loginData);
                     this.currentResourceType = "communication";
                     this.updateProgressTracker(resource);
@@ -290,29 +290,35 @@ export class LoginPage implements OnInit{
         }
       });
       this.loginData["userOrgUnitIds"] = orgUnitIds;
-      this.OrganisationUnit.downloadingOrganisationUnitsFromServer(orgUnitIds,this.loginData).then((orgUnits:any)=>{
-        if(!this.isLoginProcessCancelled){
-          this.progressTracker[this.currentResourceType].message = "Saving assigned organisation unit(s)";
-          this.OrganisationUnit.savingOrganisationUnitsFromServer(orgUnits,this.loginData).then(()=>{
-            this.updateProgressTracker(resource);
-            this.downloadingDataSets();
-          },error=>{
-            this.loadingData = false;
-            this.isLoginProcessActive = false;
-            if(!this.isLoginProcessCancelled){
-              this.setToasterMessage('Fail to save organisation data.');
-            }
-          });
-        }
-      },error=>{
-        this.loadingData = false;
-        this.isLoginProcessActive = false;
-        console.log(resource);
-        console.log(JSON.stringify(error));
-        if(!this.isLoginProcessCancelled){
-          this.setToasterMessage('Fail to download organisation data.');
-        }
-      });
+      if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.updateProgressTracker(resource);
+        this.downloadingDataSets();
+      }else{
+        this.OrganisationUnit.downloadingOrganisationUnitsFromServer(orgUnitIds,this.loginData).then((orgUnits:any)=>{
+          if(!this.isLoginProcessCancelled){
+            this.progressTracker[this.currentResourceType].message = "Saving assigned organisation unit(s)";
+            this.OrganisationUnit.savingOrganisationUnitsFromServer(orgUnits,this.loginData).then(()=>{
+              this.updateProgressTracker(resource);
+              this.downloadingDataSets();
+            },error=>{
+              this.loadingData = false;
+              this.isLoginProcessActive = false;
+              if(!this.isLoginProcessCancelled){
+                this.setToasterMessage('Fail to save organisation data.');
+              }
+            });
+          }
+        },error=>{
+          this.loadingData = false;
+          this.isLoginProcessActive = false;
+          console.log(resource);
+          console.log(JSON.stringify(error));
+          if(!this.isLoginProcessCancelled){
+            this.setToasterMessage('Fail to download organisation data.');
+          }
+        });
+      }
+
     }
   }
 
