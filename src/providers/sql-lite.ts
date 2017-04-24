@@ -99,7 +99,7 @@ export class SqlLite {
       ],
       fields: "id,name,denominatorDescription,numeratorDescription,numerator,denominator,indicatorType[:all]",
       canBeUpdated: true,
-      resourceType: "report"
+      //resourceType: "report"
     },
     reports: {
       columns: [
@@ -123,7 +123,7 @@ export class SqlLite {
       ],
       fields: "id,value",
       canBeUpdated: true,
-      resourceType: "report"
+      //resourceType: "report"
     },
     dataValues: {
       columns: [
