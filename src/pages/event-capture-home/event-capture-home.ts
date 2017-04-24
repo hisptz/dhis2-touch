@@ -206,6 +206,11 @@ export class EventCaptureHomePage implements OnInit{
           });
         }
       });
+      if(!(this.selectedProgram && this.selectedProgram.id) && programs.length > 0){
+        this.selectedProgram = programs[0];
+        this.Program.setLastSelectedProgram(this.selectedProgram);
+        this.setSelectedProgram(this.selectedProgram);
+      }
       this.currentSelectionStatus.isProgramLoaded = true;
       this.loadingData = false;
     },error=>{
@@ -241,14 +246,21 @@ export class EventCaptureHomePage implements OnInit{
   }
 
   setSelectedProgram(selectedProgram){
+    this.loadingProgramStageDataElements(selectedProgram);
     this.selectedDataDimension = [];
     this.loadingData = false;
     this.setProgramSelectionLabel();
     this.isAllParameterSet = false;
     if(selectedProgram.categoryCombo.categories[0].name =='default'){
       this.loadEvents();
+    }else {
+      let index = 0;
+      for(let category of selectedProgram.categoryCombo.categories){
+        this.selectedDataDimension[index] = category.categoryOptions[0].id;
+        index = index + 1;
+      }
+      this.checkingForDataDimension();
     }
-    this.loadingProgramStageDataElements(selectedProgram);
   }
 
   loadingProgramStageDataElements(program){
