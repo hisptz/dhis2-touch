@@ -163,41 +163,39 @@ export class OrganisationUnit {
       if( organisationUnitIds && organisationUnitIds.length > 0){
         self.sqlLite.getDataFromTableByAttributes(self.resource,"id",organisationUnitIds,currentUser.currentDatabase).then((organisationUnits : any)=>{
           self.getSortedOrganisationUnits(organisationUnits).then((organisationUnits:any)=>{
-            if(organisationUnits && organisationUnits.length > 0){
-              if(organisationUnits.children && organisationUnits.children.length > 0 && organisationUnits.children[0].children){
+            if(organisationUnits && organisationUnits.length > 0) {
+              if (organisationUnits[0].children && organisationUnits[0].children.length > 0 && organisationUnits[0].children[0].children) {
                 resolve(organisationUnits);
-              }
-            }else{
-              //support for old tree
-              let orgUnitIds = [];a
-              for(let organisationUnit of organisationUnits){
-                if(organisationUnit && organisationUnit.children){
-                  for(let child of organisationUnit.children){
-                    orgUnitIds.push(child.id);
+              } else {
+                //support for old tree
+                let orgUnitIds = [];
+                for (let organisationUnit of organisationUnits) {
+                  if (organisationUnit && organisationUnit.children) {
+                    for (let child of organisationUnit.children) {
+                      orgUnitIds.push(child.id);
+                    }
                   }
                 }
-              }
-              self.getOrganisationUnitsByIds(orgUnitIds,currentUser).then((childrenOrganisationUnits : any)=> {
-                let childrenOrganisationUnitsMapper = {};
-                for (let childrenOrganisationUnit of childrenOrganisationUnits) {
-                  childrenOrganisationUnitsMapper[childrenOrganisationUnit.id] = childrenOrganisationUnit;
-                }
-                organisationUnits.forEach((organisationUnit:any)=> {
-                  if(organisationUnit && organisationUnit.children){
-                    organisationUnit.children.forEach((child:any)=> {
-                      if (childrenOrganisationUnitsMapper[child.id]) {
-                        child = childrenOrganisationUnitsMapper[child.id];
-                      }
-                    })
+                self.getOrganisationUnitsByIds(orgUnitIds, currentUser).then((childrenOrganisationUnits:any)=> {
+                  let childrenOrganisationUnitsMapper = {};
+                  for (let childrenOrganisationUnit of childrenOrganisationUnits) {
+                    childrenOrganisationUnitsMapper[childrenOrganisationUnit.id] = childrenOrganisationUnit;
                   }
+                  organisationUnits.forEach((organisationUnit:any)=> {
+                    if (organisationUnit && organisationUnit.children) {
+                      organisationUnit.children.forEach((child:any)=> {
+                        if (childrenOrganisationUnitsMapper[child.id]) {
+                          child = childrenOrganisationUnitsMapper[child.id];
+                        }
+                      })
+                    }
+                  });
+                  resolve(organisationUnits);
+                }, error=> {
+                  reject(error);
                 });
-                resolve(organisationUnits);
-              },error=>{
-                reject(error);
-              });
+              }
             }
-
-
           });
         },error=>{
           reject(error);
