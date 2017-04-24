@@ -20,9 +20,9 @@ export class ProgramStageDataElements {
     let attribute = 'id';
     let attributeValue =[];
     let self = this;
-    programStageDataElementsIdsArray.forEach((programStageDataElement:any)=>{
+    for(let programStageDataElement of programStageDataElementsIdsArray){
       attributeValue.push(programStageDataElement.id);
-    });
+    }
     return new Promise(function(resolve, reject) {
       self.sqlLite.getDataFromTableByAttributes(self.resource,attribute,attributeValue,currentUser.currentDatabase).then(programStageDataElements=>{
         resolve(programStageDataElements);

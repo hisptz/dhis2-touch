@@ -11,6 +11,7 @@ import {OrganisationUnit} from "../../providers/organisation-unit";
 import {NetworkAvailability} from "../../providers/network-availability";
 import {DataSets} from "../../providers/data-sets";
 import {DashboardService} from "../../providers/dashboard-service";
+import {Program} from "../../providers/program";
 
 /*
  Generated class for the Login page.
@@ -41,6 +42,7 @@ export class LoginPage implements OnInit{
   constructor(public navCtrl: NavController,
               public synchronization:Synchronization,
               public DataSets : DataSets,
+              public Program : Program,
               public DashboardService: DashboardService,
               public toastCtrl: ToastController,public app : AppProvider,
               public SmsCommand : SmsCommand,public NetworkAvailability : NetworkAvailability,
@@ -612,7 +614,6 @@ export class LoginPage implements OnInit{
   }
 
 
-
   downloadingConstants(){
     if(!this.isLoginProcessCancelled){
       let resource = 'constants';
@@ -656,6 +657,7 @@ export class LoginPage implements OnInit{
         this.synchronization.startSynchronization().then(()=> {
           this.OrganisationUnit.resetOrganisationUnit();
           this.DashboardService.resetDashboards();
+          this.Program.resetPrograms();
           this.navCtrl.setRoot(TabsPage);
           this.loadingData = false;
           this.isLoginProcessActive = false;

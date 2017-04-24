@@ -188,12 +188,16 @@ export class EventCaptureHomePage implements OnInit{
 
   loadingPrograms(){
     this.currentSelectionStatus.isProgramLoaded = false;
-    //this.setLoadingMessages('Loading assigned programs');
     this.assignedPrograms = [];
+    let lastSelectedProgram = this.Program.getLastSelectedProgram();
     this.Program.getProgramsAssignedOnOrgUnitAndUserRoles(this.selectedOrganisationUnit,this.programIdsByUserRoles,this.currentUser).then((programs : any)=>{
       programs.forEach((program:any)=>{
         //checking for program type
         if(program.programType ==  "WITHOUT_REGISTRATION"){
+          if(lastSelectedProgram && lastSelectedProgram.id){
+            this.selectedProgram = lastSelectedProgram;
+            this.setSelectedProgram(lastSelectedProgram);
+          }
           this.assignedPrograms.push({
             id: program.id,
             name: program.name,
@@ -217,15 +221,9 @@ export class EventCaptureHomePage implements OnInit{
         modal.onDidDismiss((selectedProgram:any) => {
           if(selectedProgram && selectedProgram.id){
             if(selectedProgram.id != this.selectedProgram.id){
-              this.selectedDataDimension = [];
               this.selectedProgram = selectedProgram;
-              this.loadingData = false;
-              this.setProgramSelectionLabel();
-              this.isAllParameterSet = false;
-              if(selectedProgram.categoryCombo.categories[0].name =='default'){
-                this.loadEvents();
-              }
-              this.loadingProgramStageDataElements(selectedProgram);
+              this.Program.setLastSelectedProgram(selectedProgram);
+              this.setSelectedProgram(selectedProgram);
             }else{
               this.loadingData = false;
             }
@@ -242,16 +240,29 @@ export class EventCaptureHomePage implements OnInit{
     }
   }
 
+  setSelectedProgram(selectedProgram){
+    this.selectedDataDimension = [];
+    this.loadingData = false;
+    this.setProgramSelectionLabel();
+    this.isAllParameterSet = false;
+    if(selectedProgram.categoryCombo.categories[0].name =='default'){
+      this.loadEvents();
+    }
+    this.loadingProgramStageDataElements(selectedProgram);
+  }
+
   loadingProgramStageDataElements(program){
     this.dataElementToDisplay = {};
     this.ProgramStageDataElements.getProgramStageDataElements(program.programStages[0].programStageDataElements,this.currentUser).then((programStageDataElements:any)=>{
       this.programStageDataElements = programStageDataElements;
-      programStageDataElements.forEach((programStageDataElement : any,index : any)=>{
+      let index = 0;
+      for(let programStageDataElement of programStageDataElements){
         if(index < 2){
           this.dataElementToDisplay[programStageDataElement.dataElement.id] = programStageDataElement.dataElement;
         }
         this.dataElementMapper[programStageDataElement.dataElement.id] = programStageDataElement.dataElement;
-      });
+        index = index + 1;
+      }
     })
   }
 

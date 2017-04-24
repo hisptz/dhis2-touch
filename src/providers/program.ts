@@ -11,9 +11,22 @@ import {SqlLite} from "./sql-lite";
 export class Program {
 
   public resource : string;
+  public lastSelectedProgram : any;
 
   constructor(private sqlLite : SqlLite) {
     this.resource = "programs";
+  }
+
+  setLastSelectedProgram(program){
+    this.lastSelectedProgram = program;
+  }
+
+  getLastSelectedProgram(){
+    return this.lastSelectedProgram;
+  }
+
+  resetPrograms(){
+    this.lastSelectedProgram = null;
   }
 
 
