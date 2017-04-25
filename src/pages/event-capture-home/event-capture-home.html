@@ -19,7 +19,7 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          <ion-item text-capitalize (tap)="openOrganisationUnitModal()">
+          <div class="entry-selection-container entry-selection" text-capitalize (tap)="openOrganisationUnitModal()">
             <div style="text-align: center" >
               <div *ngIf="!currentSelectionStatus.isOrgUnitLoaded">
                 <page-loading loadingSize="small"></page-loading>
@@ -28,13 +28,12 @@
             <div *ngIf="currentSelectionStatus.isOrgUnitLoaded" style="text-align: center">
               {{ selectedOrganisationUnitLabel }}
             </div>
-          </ion-item>
+          </div>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col>
-
-          <ion-item text-capitalize (tap)="openProgramsModal()">
+          <div class="entry-selection-container entry-selection" text-capitalize (tap)="openProgramsModal()">
             <div style="text-align: center" >
               <div *ngIf="!currentSelectionStatus.isProgramLoaded">
                 <page-loading loadingSize="small"></page-loading>
@@ -43,7 +42,7 @@
             <div *ngIf="currentSelectionStatus.isProgramLoaded" style="text-align: center">
               {{ selectedProgramLabel }}
             </div>
-          </ion-item>
+          </div>
         </ion-col>
       </ion-row>
       <!-- program data dimensions -->
@@ -130,11 +129,9 @@
           <div *ngIf="!hasEvents">
             <ion-row>
               <ion-col >
-                <ion-item-group wrap text>
-                  <ion-item-divider wrap text>
-                    <p wrap text >There are no events at the moment</p>
-                  </ion-item-divider>
-                </ion-item-group>
+                <div  style="text-align: center;">
+                  There are no events at the moment
+                </div>
               </ion-col>
             </ion-row>
           </div>

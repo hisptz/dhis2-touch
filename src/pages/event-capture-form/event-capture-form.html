@@ -33,12 +33,10 @@
 
   <div *ngIf="!loadingData" padding>
     <!-- selected orgUnit labels -->
-    <ion-item-group (tap)="navCtrl.pop()" *ngIf="entryFormParameter">
-      <ion-item-divider>
-        <p ><b>Organisation Unit</b> : {{ entryFormParameter.orgUnitName }}</p>
-        <p ><b>Form</b> : {{ entryFormParameter.programName }}</p>
-      </ion-item-divider>
-    </ion-item-group>
+    <div  class="entry-selection-container" padding (tap)="navCtrl.pop()" *ngIf="entryFormParameter">
+      <div ><b>Organisation Unit</b> : {{ entryFormParameter.orgUnitName }}<br>
+        <b>Form</b> : {{ entryFormParameter.programName }}</div>
+    </div>
     <ion-list></ion-list>
 
     <div *ngIf="event">
@@ -47,7 +45,7 @@
         Report date <span class="required">*</span>
       </div>
       <ion-item>
-        <ion-input type="date" [(ngModel)]="event.eventDate"></ion-input>
+        <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [(ngModel)]="event.eventDate"></ion-datetime>
       </ion-item>
       <button color="light" ion-button large full (tap)="cancel()" *ngIf="event.eventDate =='' ">
         cancel

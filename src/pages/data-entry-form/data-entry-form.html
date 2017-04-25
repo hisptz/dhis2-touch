@@ -34,14 +34,12 @@
   <div *ngIf="!loadingData" padding>
 
     <!-- entry form details -->
-    <ion-item-group (tap)="navCtrl.pop()">
-      <ion-item-divider>
-        <p ><b>Organisation Unit</b> : {{ selectedOrganisationUnitLabel }}</p>
-        <p ><b>Form</b> : {{ selectedDataSetLabel }}</p>
-        <p ><b>Period</b> : {{ selectedPeriodLabel }} </p>
-        <p ><b>Synced</b> : {{ storageStatus.online }} <b>Not synced</b> : {{storageStatus.local }}</p>
-      </ion-item-divider>
-    </ion-item-group>
+    <div class="entry-selection-container" (tap)="navCtrl.pop()">
+      <div ><b>Organisation Unit</b> : {{ selectedOrganisationUnitLabel }}<br>
+        <b>Form</b> : {{ selectedDataSetLabel }}<br>
+        <b>Period</b> : {{ selectedPeriodLabel }} <br>
+        <b>Synced</b> : {{ storageStatus.online }} <b>Not synced</b> : {{storageStatus.local }}</div>
+    </div>
     <ion-list></ion-list>
 
     <!-- entry form introduction and status-->
