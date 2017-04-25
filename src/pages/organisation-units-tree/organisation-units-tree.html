@@ -1,6 +1,6 @@
 <ion-item>
-  <ion-icon name="ios-add-circle-outline" (tap)="toggleOrganisationUnit(organisationUnit)" *ngIf="organisationUnit.children.length>0 && !hasOrgUnitChildrenOpened[organisationUnit.id]" item-left></ion-icon>
-  <ion-icon name="ios-remove-circle-outline" (tap)="toggleOrganisationUnit(organisationUnit)" *ngIf="organisationUnit.children.length>0 && hasOrgUnitChildrenOpened[organisationUnit.id]" item-left></ion-icon>
+  <ion-icon name="ios-add-circle-outline" (tap)="toggleOrganisationUnit(organisationUnit)" *ngIf="(organisationUnit && organisationUnit.children && organisationUnit.children.length>0) && !hasOrgUnitChildrenOpened[organisationUnit.id]" item-left></ion-icon>
+  <ion-icon name="ios-remove-circle-outline" (tap)="toggleOrganisationUnit(organisationUnit)" *ngIf="(organisationUnit && organisationUnit.children && organisationUnit.children.length>0) && hasOrgUnitChildrenOpened[organisationUnit.id]" item-left></ion-icon>
 
   <div (tap)="setSelectedOrganisationUnit(organisationUnit)">
     <span ion-text  [color]="(currentSelectedOrgUnitName == organisationUnit.name) ?'current' : 'font-color'"  >{{ organisationUnit.name }}</span>
