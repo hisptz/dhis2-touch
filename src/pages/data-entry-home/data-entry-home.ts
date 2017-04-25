@@ -162,8 +162,6 @@ export class DataEntryHomePage implements OnInit{
         if(selectedOrganisationUnit && selectedOrganisationUnit.id){
           if(selectedOrganisationUnit.id != this.selectedOrganisationUnit.id){
             this.selectedOrganisationUnit = selectedOrganisationUnit;
-            this.selectedDataSet = {};
-            this.selectedPeriod = {};
             this.loadingDataSets();
             this.setDataEntrySelectionLabel();
           }else{
@@ -183,10 +181,19 @@ export class DataEntryHomePage implements OnInit{
     this.currentPeriodOffset = 0;
     this.DataSets.getAssignedDataSetsByOrgUnit(this.selectedOrganisationUnit,this.dataSetIdsByUserRoles,this.currentUser).then((dataSets : any)=>{
       this.assignedDataSets = dataSets;
-      if(this.assignedDataSets.length == 1){
+      let lastSelectedDataSet = this.DataSets.getLastSelectedDataSet();
+      if(lastSelectedDataSet && lastSelectedDataSet.id){
+        for(let dataSet of dataSets){
+          if(dataSet.id = lastSelectedDataSet.id){
+            this.selectedDataSet = lastSelectedDataSet;
+          }
+        }
+      }else if(this.assignedDataSets.length > 0){
         this.selectedDataSet =this.assignedDataSets[0];
-        this.setDataEntrySelectionLabel();
+        this.DataSets.setLastSelectedDataSet(this.assignedDataSets[0]);
+        this.selectedPeriod = {};
       }
+      this.setDataEntrySelectionLabel();
       this.currentSelectionStatus.isDataSetLoaded = true;
     },error=>{
       this.setToasterMessage('Fail to load assigned forms : ' + JSON.stringify(error));
@@ -199,12 +206,11 @@ export class DataEntryHomePage implements OnInit{
         let modal = this.modalCtrl.create(DataSetSelection,{data : this.assignedDataSets,selectedDataSet : this.selectedDataSet});
         modal.onDidDismiss((selectedDataSet:any) => {
           if(selectedDataSet && selectedDataSet.id){
-            if(selectedDataSet.id != this.selectedDataSet.id){
-              this.selectedDataDimension = [];
-              this.selectedDataSet = selectedDataSet;
-              this.selectedPeriod = {};
-              this.setDataEntrySelectionLabel();
-            }
+            this.selectedDataDimension = [];
+            this.selectedDataSet = selectedDataSet;
+            this.selectedPeriod = {};
+            this.setDataEntrySelectionLabel();
+            this.DataSets.setLastSelectedDataSet(selectedDataSet);
           }
         });
         modal.present();

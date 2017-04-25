@@ -658,6 +658,7 @@ export class LoginPage implements OnInit{
           this.OrganisationUnit.resetOrganisationUnit();
           this.DashboardService.resetDashboards();
           this.Program.resetPrograms();
+          this.DataSets.resetDataSets();
           this.navCtrl.setRoot(TabsPage);
           this.loadingData = false;
           this.isLoginProcessActive = false;
@@ -673,7 +674,7 @@ export class LoginPage implements OnInit{
   setToasterMessage(message){
     let toast = this.toastCtrl.create({
       message: message,
-      duration: 3000
+      duration: 3500
     });
     toast.present();
   }
@@ -682,8 +683,8 @@ export class LoginPage implements OnInit{
     let toast = this.toastCtrl.create({
       message: message,
       position : 'top',
-      duration: 1500
-    });
+      duration: 3500
+    })
     toast.present();
   }
 

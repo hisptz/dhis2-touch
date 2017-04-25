@@ -12,9 +12,22 @@ import {HttpClient} from "./http-client";
 export class DataSets {
 
   public resource : string;
+  public lastSelectedDataSet : any;
 
   constructor(private sqlLite : SqlLite,public HttpClient : HttpClient) {
     this.resource = "dataSets";
+  }
+
+  resetDataSets(){
+    this.lastSelectedDataSet = null;
+  }
+
+  setLastSelectedDataSet(dataSet){
+    this.lastSelectedDataSet = dataSet;
+  }
+
+  getLastSelectedDataSet(){
+    return this.lastSelectedDataSet;
   }
 
 
