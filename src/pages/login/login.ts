@@ -12,6 +12,7 @@ import {NetworkAvailability} from "../../providers/network-availability";
 import {DataSets} from "../../providers/data-sets";
 import {DashboardService} from "../../providers/dashboard-service";
 import {Program} from "../../providers/program";
+import {PeriodService} from "../../providers/period-service";
 
 /*
  Generated class for the Login page.
@@ -43,6 +44,7 @@ export class LoginPage implements OnInit{
               public synchronization:Synchronization,
               public DataSets : DataSets,
               public Program : Program,
+              public PeriodService : PeriodService,
               public DashboardService: DashboardService,
               public toastCtrl: ToastController,public app : AppProvider,
               public SmsCommand : SmsCommand,public NetworkAvailability : NetworkAvailability,
@@ -204,7 +206,7 @@ export class LoginPage implements OnInit{
                 this.user.setUserData(JSON.parse(response.data)).then(userData=>{
                   this.app.getDataBaseName(this.loginData.serverUrl).then(databaseName=>{
                     //update authenticate  process
-                    this.loginData.currentDatabase = databaseName //+ "_"+this.loginData.username;
+                    this.loginData.currentDatabase = databaseName + "_"+this.loginData.username;
                     this.reInitiateProgressTrackerObject(this.loginData);
                     this.currentResourceType = "communication";
                     this.updateProgressTracker(resource);
@@ -659,6 +661,7 @@ export class LoginPage implements OnInit{
           this.DashboardService.resetDashboards();
           this.Program.resetPrograms();
           this.DataSets.resetDataSets();
+          this.PeriodService.resetPeriod();
           this.navCtrl.setRoot(TabsPage);
           this.loadingData = false;
           this.isLoginProcessActive = false;

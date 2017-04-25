@@ -8,15 +8,15 @@ import {DataEntryForm} from "../data-entry-form/data-entry-form";
 import {OrganisationUnit} from "../../providers/organisation-unit";
 import {DataSets} from "../../providers/data-sets";
 import {User} from "../../providers/user";
+import {PeriodService} from "../../providers/period-service";
 
-declare var dhis2: any;
 
 /*
-  Generated class for the DataEntryHome page.
+ Generated class for the DataEntryHome page.
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
+ See http://ionicframework.com/docs/v2/components/#navigation for more info on
+ Ionic pages and navigation.
+ */
 @Component({
   selector: 'page-data-entry-home',
   templateUrl: 'data-entry-home.html'
@@ -40,6 +40,7 @@ export class DataEntryHomePage implements OnInit{
   public currentSelectionStatus :any = {};
 
   constructor(public modalCtrl: ModalController,public navCtrl: NavController,
+              public PeriodService : PeriodService,
               public OrganisationUnit : OrganisationUnit,public DataSets : DataSets,
               public toastCtrl: ToastController,public user : User) {}
 
@@ -190,12 +191,16 @@ export class DataEntryHomePage implements OnInit{
             this.selectedDataSet = lastSelectedDataSet;
             if(lastSelectedPeriod && lastSelectedPeriod.name){
               this.selectedPeriod = lastSelectedPeriod;
+              this.preSelectDataSetDataDimension(lastSelectedDataSet);
+            }else{
+              this.preSelectPeriod(lastSelectedDataSet);
             }
           }
         }
       }else if(this.assignedDataSets.length > 0){
         this.selectedDataSet =this.assignedDataSets[0];
         this.DataSets.setLastSelectedDataSet(this.assignedDataSets[0]);
+        this.preSelectPeriod(this.assignedDataSets[0]);
       }
       this.setDataEntrySelectionLabel();
       this.currentSelectionStatus.isDataSetLoaded = true;
@@ -232,11 +237,33 @@ export class DataEntryHomePage implements OnInit{
       }else{
         this.setToasterMessage("No entry form to select on " + this.selectedOrganisationUnitLabel);
       }
-
     }else{
       this.setToasterMessage("Please select organisation first");
     }
   }
+
+  preSelectPeriod(selectedDataSet){
+    this.preSelectDataSetDataDimension(selectedDataSet);
+    let periods = this.PeriodService.getPeriods(selectedDataSet,this.currentPeriodOffset);
+    if(periods.length == 0){
+      this.currentPeriodOffset = this.currentPeriodOffset + 1;
+      periods = this.PeriodService.getPeriods(selectedDataSet,this.currentPeriodOffset);
+    }
+    this.selectedPeriod = periods[0];
+  }
+
+
+  preSelectDataSetDataDimension(selectedDataSet){
+    if(selectedDataSet.categoryCombo.name != 'default'){
+      this.selectedDataDimension = [];
+      let categoryIndex = 0;
+      for(let category of selectedDataSet.categoryCombo.categories){
+        this.selectedDataDimension[categoryIndex] = category.categoryOptions[0].id;
+        categoryIndex = categoryIndex + 1;
+      }
+    }
+  }
+
 
   openPeriodModal(){
     if(this.currentSelectionStatus && this.currentSelectionStatus.period){

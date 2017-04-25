@@ -70,6 +70,7 @@ import {DataElementSyncContainerPage} from "../pages/data-element-sync-container
 import {DataElementSyncPage} from "../pages/data-element-sync/data-element-sync";
 import {OrganisationUnitsTreePage} from "../pages/organisation-units-tree/organisation-units-tree";
 import {DashboardSearchPage} from "../pages/dashboard-search/dashboard-search";
+import {PeriodService} from "../providers/period-service";
 
 
 @NgModule({
@@ -116,7 +117,7 @@ import {DashboardSearchPage} from "../pages/dashboard-search/dashboard-search";
   ],
   providers: [
     StatusBar, NetworkAvailability,
-    SplashScreen, SQLite, HTTP, AppVersion, SMS,
+    SplashScreen, SQLite, HTTP, AppVersion, SMS,PeriodService,
     DataSets, DataValues, EntryForm, EventCaptureFormProvider,DashboardService,
     MetadataDictionaryService, UpdateResourceManager, OrganisationUnit, Program,
     ProgramStageDataElements, ProgramStageSections, Report, Setting, Synchronization,

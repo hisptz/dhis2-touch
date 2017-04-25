@@ -194,7 +194,7 @@ export class EventCaptureHomePage implements OnInit{
       programs.forEach((program:any)=>{
         //checking for program type
         if(program.programType ==  "WITHOUT_REGISTRATION"){
-          if(lastSelectedProgram && lastSelectedProgram.id){
+          if(lastSelectedProgram && lastSelectedProgram.id && lastSelectedProgram.id == program.id){
             this.selectedProgram = lastSelectedProgram;
             this.setSelectedProgram(lastSelectedProgram);
           }

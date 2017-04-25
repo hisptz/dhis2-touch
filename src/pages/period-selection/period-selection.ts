@@ -1,5 +1,6 @@
 import { Component,OnInit } from '@angular/core';
 import { ViewController,NavParams ,ToastController} from 'ionic-angular';
+import {PeriodService} from "../../providers/period-service";
 
 declare var dhis2;
 /*
@@ -20,7 +21,9 @@ export class PeriodSelection implements OnInit{
   public openFuturePeriods : number;
   public currentPeriodOffset : number;
 
-  constructor(public viewCtrl: ViewController,public params : NavParams,public toastCtrl: ToastController) {
+  constructor(public viewCtrl: ViewController,public params : NavParams,
+              public PeriodService : PeriodService,
+              public toastCtrl: ToastController) {
 
   }
 
@@ -37,26 +40,32 @@ export class PeriodSelection implements OnInit{
   }
 
   setPeriodSelections(){
-    let periodType = this.selectedDataSet.periodType;
-    let openFuturePeriods = parseInt(this.selectedDataSet.openFuturePeriods);
-    let periods = dhis2.period.generator.generateReversedPeriods(periodType, this.currentPeriodOffset);
-    periods = dhis2.period.generator.filterOpenPeriods(periodType, periods, openFuturePeriods);
+    let periods = this.PeriodService.getPeriods(this.selectedDataSet,this.currentPeriodOffset);
     if(periods.length > 0){
-      this.periodList = [];
-      periods.forEach((period:any)=>{
-        this.periodList.push({
-          endDate: period.endDate,
-          startDate: period.startDate,
-          iso: period.iso,
-          name: period.name
-        });
-      });
-    }else{
+      this.setPeriodList(periods);
+    }else if(periods.length == 0 && this.currentPeriodOffset == 0){
+      this.currentPeriodOffset = this.currentPeriodOffset -1;
+      periods = this.PeriodService.getPeriods(this.selectedDataSet,this.currentPeriodOffset);
+      this.setPeriodList(periods);
+    }
+    else{
       this.setToasterMessage('There is no further period selection for this form');
       if(this.currentPeriodOffset != 0){
         this.currentPeriodOffset --;
       }
     }
+  }
+
+  setPeriodList(periods){
+    this.periodList = [];
+    periods.forEach((period:any)=>{
+      this.periodList.push({
+        endDate: period.endDate,
+        startDate: period.startDate,
+        iso: period.iso,
+        name: period.name
+      });
+    });
   }
 
   previous(){
