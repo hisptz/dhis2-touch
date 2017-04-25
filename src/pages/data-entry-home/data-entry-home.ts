@@ -182,10 +182,14 @@ export class DataEntryHomePage implements OnInit{
     this.DataSets.getAssignedDataSetsByOrgUnit(this.selectedOrganisationUnit,this.dataSetIdsByUserRoles,this.currentUser).then((dataSets : any)=>{
       this.assignedDataSets = dataSets;
       let lastSelectedDataSet = this.DataSets.getLastSelectedDataSet();
+      let lastSelectedPeriod = this.DataSets.getLastSelectedDataSetPeriod();
       if(lastSelectedDataSet && lastSelectedDataSet.id){
         for(let dataSet of dataSets){
           if(dataSet.id = lastSelectedDataSet.id){
             this.selectedDataSet = lastSelectedDataSet;
+            if(lastSelectedPeriod && lastSelectedPeriod.name){
+              this.selectedPeriod = lastSelectedPeriod;
+            }
           }
         }
       }else if(this.assignedDataSets.length > 0){
@@ -207,8 +211,19 @@ export class DataEntryHomePage implements OnInit{
         modal.onDidDismiss((selectedDataSet:any) => {
           if(selectedDataSet && selectedDataSet.id){
             this.selectedDataDimension = [];
-            this.selectedDataSet = selectedDataSet;
             this.selectedPeriod = {};
+            this.selectedDataSet = selectedDataSet;
+            let lastSelectedDataSet = this.DataSets.getLastSelectedDataSet();
+            let lastSelectedPeriod = this.DataSets.getLastSelectedDataSetPeriod();
+            if(lastSelectedPeriod && lastSelectedPeriod.name){
+              let periodTypeCurrent = this.selectedDataSet.periodType;
+              let openFuturePeriodsCurrent  = parseInt(this.selectedDataSet.openFuturePeriods);
+              let periodTypePrevious = lastSelectedDataSet.periodType;
+              let openFuturePeriodsPrevious = parseInt(lastSelectedDataSet.openFuturePeriods);
+              if((periodTypeCurrent == periodTypePrevious) && (openFuturePeriodsCurrent ==openFuturePeriodsPrevious)){
+                this.selectedPeriod = lastSelectedPeriod;
+              }
+            }
             this.setDataEntrySelectionLabel();
             this.DataSets.setLastSelectedDataSet(selectedDataSet);
           }
@@ -229,6 +244,7 @@ export class DataEntryHomePage implements OnInit{
       modal.onDidDismiss((selectedPeriodResponse:any) => {
         if(selectedPeriodResponse && selectedPeriodResponse.selectedPeriod){
           if(selectedPeriodResponse.selectedPeriod.name){
+            this.DataSets.setLastSelectedDataSetPeriod(selectedPeriodResponse.selectedPeriod);
             this.selectedPeriod = selectedPeriodResponse.selectedPeriod;
             this.currentPeriodOffset = selectedPeriodResponse.currentPeriodOffset;
             this.setDataEntrySelectionLabel();

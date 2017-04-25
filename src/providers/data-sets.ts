@@ -13,6 +13,7 @@ export class DataSets {
 
   public resource : string;
   public lastSelectedDataSet : any;
+  public lastSelectedDataSetPeriod : any;
 
   constructor(private sqlLite : SqlLite,public HttpClient : HttpClient) {
     this.resource = "dataSets";
@@ -20,17 +21,39 @@ export class DataSets {
 
   resetDataSets(){
     this.lastSelectedDataSet = null;
+    this.lastSelectedDataSetPeriod = null;
   }
 
+  /**
+   *
+   * @param dataSet
+     */
   setLastSelectedDataSet(dataSet){
     this.lastSelectedDataSet = dataSet;
   }
 
+  /**
+   *
+   * @returns {any}
+     */
   getLastSelectedDataSet(){
     return this.lastSelectedDataSet;
   }
 
+  setLastSelectedDataSetPeriod(period){
+    this.lastSelectedDataSetPeriod = period;
+  }
 
+  getLastSelectedDataSetPeriod(){
+    return this.lastSelectedDataSetPeriod;
+  }
+
+
+  /**
+   *
+   * @param currentUser
+   * @returns {Promise<T>}
+     */
   downloadDataSetsFromServer(currentUser){
     let dataSets = [];
     let self = this;
@@ -72,6 +95,12 @@ export class DataSets {
     return dataSetArray;
   }
 
+  /**
+   *
+   * @param dataSets
+   * @param currentUser
+   * @returns {Promise<T>}
+     */
   saveDataSetsFromServer(dataSets,currentUser){
     let self = this;
     return new Promise(function(resolve, reject) {
