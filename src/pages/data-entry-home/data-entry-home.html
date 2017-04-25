@@ -18,7 +18,7 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <ion-item text-capitalize (tap)="openOrganisationUnitModal()">
+        <div class="entry-selection-container entry-selection"  text-capitalize (tap)="openOrganisationUnitModal()">
           <div style="text-align: center" >
             <div *ngIf="!currentSelectionStatus.isOrgUnitLoaded">
               <page-loading loadingSize="small"></page-loading>
@@ -27,12 +27,12 @@
           <div *ngIf="currentSelectionStatus.isOrgUnitLoaded" style="text-align: center">
             {{ selectedOrganisationUnitLabel }}
           </div>
-        </ion-item>
+        </div>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-item text-capitalize (tap)="openDataSetsModal()" >
+        <div class="entry-selection-container entry-selection" text-capitalize (tap)="openDataSetsModal()" >
           <div style="text-align: center" >
             <div *ngIf="!currentSelectionStatus.isDataSetLoaded">
               <page-loading loadingSize="small"></page-loading>
@@ -41,16 +41,16 @@
           <div *ngIf="currentSelectionStatus.isDataSetLoaded" style="text-align: center" >
             {{ selectedDataSetLabel }}
           </div>
-        </ion-item>
+        </div>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-item text-capitalize (tap)="openPeriodModal()" >
+        <div class="entry-selection-container entry-selection" text-capitalize (tap)="openPeriodModal()" >
           <div style="text-align: center">
             {{ selectedPeriodLabel }}
           </div>
-        </ion-item>
+        </div>
       </ion-col>
     </ion-row>
 
@@ -82,16 +82,14 @@
       <div *ngIf="selectedPeriod.name && hasDataDimensionSet()">
         <ion-row class="slide-in-from-right">
           <ion-col >
-            <ion-item-group (tap)="goToEntryForm()">
-              <ion-item-divider>
-                <p ><b>Organisation Unit</b> : {{ selectedOrganisationUnitLabel }}</p>
-                <p ><b>Form</b> : {{ selectedDataSetLabel }}</p>
-                <p ><b>Period</b> : {{ selectedPeriodLabel }}</p>
-              </ion-item-divider>
+            <div class="entry-selection-container" (tap)="goToEntryForm()">
+                <div><b>Organisation Unit</b> : {{ selectedOrganisationUnitLabel }}<br>
+                <b>Form</b> : {{ selectedDataSetLabel }}<br>
+                <b>Period</b> : {{ selectedPeriodLabel }}</div>
               <button class="dataEntryButton" ion-button full large color="whitecolor">
                 ENTER DATA&nbsp;&nbsp;&nbsp;<ion-icon name="md-create"></ion-icon>
               </button>
-            </ion-item-group>
+            </div>
           </ion-col>
         </ion-row>
       </div>

@@ -15,6 +15,20 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
+.apps-contents{
+  border: 1px solid #E6E6E7;
+  border-radius: 1.1rem;
+}
+.entry-selection-container{
+  border: 1px solid #E6E6E7;
+  border-radius: 0.7rem;
+  padding: 5px 10px 5px;
+}
+.entry-selection{
+  padding-top : 1.3rem;
+  padding-bottom : 1.3rem;
+}
+
 
 @-webkit-keyframes slideInFromLeft {
   0% {

@@ -18,7 +18,7 @@
   <ion-grid>
     <ion-row >
       <ion-col (tap)="goToView('profile')" >
-        <div class="contents" padding>
+        <div class="apps-contents" padding>
           <ion-thumbnail >
             <img class="menu-app-icon-list" src="assets/img/profile.png">
           </ion-thumbnail>
@@ -26,7 +26,7 @@
         </div>
       </ion-col>
       <ion-col (tap)="goToView('about')" >
-        <div class="contents" padding>
+        <div class="apps-contents" padding>
           <ion-thumbnail >
             <img class="menu-app-icon-list" src="assets/img/about.png">
           </ion-thumbnail>
@@ -37,7 +37,7 @@
     </ion-row>
     <ion-row>
       <ion-col (tap)="goToView('help')" >
-        <div class="contents" padding>
+        <div class="apps-contents" padding>
           <ion-thumbnail >
             <img class="menu-app-icon-list" src="assets/img/help.png">
           </ion-thumbnail>
@@ -45,7 +45,7 @@
         </div>
       </ion-col>
       <ion-col (tap)="goToView('settings')" >
-        <div class="contents" padding>
+        <div class="apps-contents" padding>
           <ion-thumbnail >
             <img class="menu-app-icon-list" src="assets/img/settings.png">
           </ion-thumbnail>
@@ -56,7 +56,7 @@
     </ion-row>
     <ion-row>
       <ion-col (tap)="goToView('updateManager')" >
-        <div class="contents" padding>
+        <div class="apps-contents" padding>
           <ion-thumbnail >
             <img class="menu-app-icon-list" src="assets/img/updateManager.png">
           </ion-thumbnail>
@@ -64,7 +64,7 @@
         </div>
       </ion-col>
       <ion-col (tap)="logOut()" >
-        <div class="contents" padding>
+        <div class="apps-contents" padding>
           <ion-thumbnail >
             <img class="menu-app-icon-list" src="assets/img/logout.png">
           </ion-thumbnail>
@@ -74,77 +74,5 @@
 
     </ion-row>
   </ion-grid>
-
-  <!--<ion-grid>-->
-    <!--<ion-row >-->
-      <!--<ion-col (tap)="goToView('profile')" >-->
-        <!--<ion-list >-->
-          <!--<ion-item >-->
-            <!--<ion-thumbnail >-->
-              <!--<img class="menu-app-icon-list" src="assets/img/profile.png">-->
-            <!--</ion-thumbnail>-->
-            <!--<p class="menu-app" >Profile</p>-->
-          <!--</ion-item>-->
-        <!--</ion-list>-->
-      <!--</ion-col>-->
-      <!--<ion-col (tap)="goToView('about')" >-->
-        <!--<ion-list>-->
-          <!--<ion-item>-->
-            <!--<ion-thumbnail >-->
-              <!--<img class="menu-app-icon-list" src="assets/img/about.png">-->
-            <!--</ion-thumbnail>-->
-            <!--<p class="menu-app" >About</p>-->
-          <!--</ion-item>-->
-        <!--</ion-list>-->
-      <!--</ion-col>-->
-
-    <!--</ion-row>-->
-    <!--<ion-row>-->
-      <!--<ion-col (tap)="goToView('help')" >-->
-        <!--<ion-list>-->
-          <!--<ion-item>-->
-            <!--<ion-thumbnail >-->
-              <!--<img class="menu-app-icon-list" src="assets/img/help.png">-->
-            <!--</ion-thumbnail>-->
-            <!--<p class="menu-app" >Help</p>-->
-          <!--</ion-item>-->
-        <!--</ion-list>-->
-      <!--</ion-col>-->
-      <!--<ion-col (tap)="goToView('settings')" >-->
-        <!--<ion-list >-->
-          <!--<ion-item >-->
-            <!--<ion-thumbnail >-->
-              <!--<img class="menu-app-icon-list" src="assets/img/settings.png">-->
-            <!--</ion-thumbnail>-->
-            <!--<p class="menu-app" >Settings</p>-->
-          <!--</ion-item>-->
-        <!--</ion-list>-->
-      <!--</ion-col>-->
-
-    <!--</ion-row>-->
-    <!--<ion-row>-->
-      <!--<ion-col (tap)="goToView('updateManager')" >-->
-        <!--<ion-list>-->
-          <!--<ion-item>-->
-            <!--<ion-thumbnail >-->
-              <!--<img class="menu-app-icon-list" src="assets/img/updateManager.png">-->
-            <!--</ion-thumbnail>-->
-            <!--<p class="menu-app" >Update Manager</p>-->
-          <!--</ion-item>-->
-        <!--</ion-list>-->
-      <!--</ion-col>-->
-      <!--<ion-col (tap)="logOut()" >-->
-        <!--<ion-list>-->
-          <!--<ion-item>-->
-            <!--<ion-thumbnail >-->
-              <!--<img class="menu-app-icon-list" src="assets/img/logout.png">-->
-            <!--</ion-thumbnail>-->
-            <!--<p class="menu-app" >Logout</p>-->
-          <!--</ion-item>-->
-        <!--</ion-list>-->
-      <!--</ion-col>-->
-
-    <!--</ion-row>-->
-  <!--</ion-grid>-->
 
 </ion-content>

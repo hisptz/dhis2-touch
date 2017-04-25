@@ -179,6 +179,7 @@ export class DataEntryHomePage implements OnInit{
     this.currentSelectionStatus.isDataSetLoaded = false;
     this.assignedDataSets = [];
     this.currentPeriodOffset = 0;
+    this.selectedPeriod = {};
     this.DataSets.getAssignedDataSetsByOrgUnit(this.selectedOrganisationUnit,this.dataSetIdsByUserRoles,this.currentUser).then((dataSets : any)=>{
       this.assignedDataSets = dataSets;
       let lastSelectedDataSet = this.DataSets.getLastSelectedDataSet();
@@ -195,7 +196,6 @@ export class DataEntryHomePage implements OnInit{
       }else if(this.assignedDataSets.length > 0){
         this.selectedDataSet =this.assignedDataSets[0];
         this.DataSets.setLastSelectedDataSet(this.assignedDataSets[0]);
-        this.selectedPeriod = {};
       }
       this.setDataEntrySelectionLabel();
       this.currentSelectionStatus.isDataSetLoaded = true;
