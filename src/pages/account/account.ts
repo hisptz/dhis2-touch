@@ -45,8 +45,6 @@ export class AccountPage implements OnInit{
 
   logOut(){
     this.currentUser.isLogin = false;
-    this.SqlLite.dropTable("organisationUnits",this.currentUser.currentDatabase).then(()=>{
-    },error=>{});
     this.user.setCurrentUser(this.currentUser).then(user=>{
       this.app.getRootNav().setRoot(LoginPage);
     },error=>{});
