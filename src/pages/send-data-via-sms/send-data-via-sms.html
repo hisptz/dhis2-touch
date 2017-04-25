@@ -11,9 +11,6 @@
           <div *ngIf="currentSelectionStatus.isOrgUnitLoaded" style="text-align: center">
             {{ selectedOrganisationUnitLabel }}
           </div>
-            <!--<span *ngIf="!currentSelectionStatus.isOrgUnitLoaded" >-->
-              <!--Loading organisation units-->
-            <!--</span>-->
         </ion-item>
       </ion-col>
     </ion-row>
@@ -28,9 +25,6 @@
           <div *ngIf="currentSelectionStatus.isDataSetLoaded" style="text-align: center" >
             {{ selectedDataSetLabel }}
           </div>
-            <!--<span *ngIf="!currentSelectionStatus.isDataSetLoaded" >-->
-              <!--Loading entry forms-->
-            <!--</span>-->
         </ion-item>
       </ion-col>
     </ion-row>
@@ -51,14 +45,18 @@
             <ion-row >
               <ion-col width="100">
                 <ion-list>
-                  <ion-item *ngFor="let category of selectedDataSet.categoryCombo.categories;let categoryIndex = index ">
-                    <ion-label>{{ category.name }}</ion-label>
-                    <ion-select [(ngModel)]="selectedDataDimension[categoryIndex]">
-                      <ion-option *ngFor="let option of category.categoryOptions" value="{{option.id}}" >
-                        {{ option.name }}
-                      </ion-option>
-                    </ion-select>
-                  </ion-item>
+                  <ion-col >
+                    <div *ngFor="let category of selectedDataSet.categoryCombo.categories;let categoryIndex = index ">
+                      <ion-item >
+                        <ion-label>{{ category.name }}</ion-label>
+                        <ion-select [(ngModel)]="selectedDataDimension[categoryIndex]">
+                          <ion-option *ngFor="let option of category.categoryOptions" value="{{option.id}}" >
+                            {{ option.name }}
+                          </ion-option>
+                        </ion-select>
+                      </ion-item><br>
+                    </div>
+                  </ion-col>
                 </ion-list>
               </ion-col>
             </ion-row>

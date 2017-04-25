@@ -8,8 +8,8 @@ import {SmsCommand} from "../../providers/sms-command";
 import {OrganisationUnit} from "../../providers/organisation-unit";
 import {DataSets} from "../../providers/data-sets";
 import {User} from "../../providers/user";
+import {PeriodService} from "../../providers/period-service";
 
-declare var dhis2: any;
 /*
   Generated class for the SendDataViaSms page.
 
@@ -22,6 +22,8 @@ declare var dhis2: any;
 })
 export class SendDataViaSms implements OnInit{
 
+  public loadingData : boolean = false;
+  public loadingMessages : any = [];
   public currentUser : any;
   public organisationUnits : any;
   public selectedOrganisationUnit :any = {};
@@ -41,6 +43,7 @@ export class SendDataViaSms implements OnInit{
 
 
   constructor(public modalCtrl: ModalController,public SmsCommand : SmsCommand,
+              public PeriodService : PeriodService,
               public OrganisationUnit : OrganisationUnit,public DataSets : DataSets,
               public toastCtrl: ToastController,public user : User) {
 
@@ -161,6 +164,8 @@ export class SendDataViaSms implements OnInit{
 
   openOrganisationUnitModal(){
     if(this.currentSelectionStatus && this.currentSelectionStatus.isDataSetLoaded){
+      this.loadingMessages = [];
+      this.loadingData = true;
       let modal = this.modalCtrl.create(OrganisationUnits,{
         organisationUnits : this.organisationUnits,
         currentUser : this.currentUser,
@@ -170,11 +175,13 @@ export class SendDataViaSms implements OnInit{
         if(selectedOrganisationUnit && selectedOrganisationUnit.id){
           if(selectedOrganisationUnit.id != this.selectedOrganisationUnit.id){
             this.selectedOrganisationUnit = selectedOrganisationUnit;
-            this.selectedDataSet = {};
-            this.selectedPeriod = {};
             this.loadingDataSets();
             this.setDataEntrySelectionLabel();
+          }else{
+            this.loadingData = false;
           }
+        }else{
+          this.loadingData = false;
         }
       });
       modal.present();
@@ -185,12 +192,29 @@ export class SendDataViaSms implements OnInit{
     this.currentSelectionStatus.isDataSetLoaded = false;
     this.assignedDataSets = [];
     this.currentPeriodOffset = 0;
+    this.selectedPeriod = {};
     this.DataSets.getAssignedDataSetsByOrgUnit(this.selectedOrganisationUnit,this.dataSetIdsByUserRoles,this.currentUser).then((dataSets : any)=>{
       this.assignedDataSets = dataSets;
-      if(this.assignedDataSets.length == 1){
+      let lastSelectedDataSet = this.DataSets.getLastSelectedDataSet();
+      let lastSelectedPeriod = this.DataSets.getLastSelectedDataSetPeriod();
+      if(lastSelectedDataSet && lastSelectedDataSet.id){
+        for(let dataSet of dataSets){
+          if(dataSet.id = lastSelectedDataSet.id){
+            this.selectedDataSet = lastSelectedDataSet;
+            if(lastSelectedPeriod && lastSelectedPeriod.name){
+              this.selectedPeriod = lastSelectedPeriod;
+              this.preSelectDataSetDataDimension(lastSelectedDataSet);
+            }else{
+              this.preSelectPeriod(lastSelectedDataSet);
+            }
+          }
+        }
+      }else if(this.assignedDataSets.length > 0){
         this.selectedDataSet =this.assignedDataSets[0];
-        this.setDataEntrySelectionLabel();
+        this.DataSets.setLastSelectedDataSet(this.assignedDataSets[0]);
+        this.preSelectPeriod(this.assignedDataSets[0]);
       }
+      this.setDataEntrySelectionLabel();
       this.currentSelectionStatus.isDataSetLoaded = true;
     },error=>{
       this.setToasterMessage('Fail to load assigned forms : ' + JSON.stringify(error));
@@ -203,12 +227,22 @@ export class SendDataViaSms implements OnInit{
         let modal = this.modalCtrl.create(DataSetSelection,{data : this.assignedDataSets,selectedDataSet : this.selectedDataSet});
         modal.onDidDismiss((selectedDataSet:any) => {
           if(selectedDataSet && selectedDataSet.id){
-            if(selectedDataSet.id != this.selectedDataSet.id){
-              this.selectedDataDimension = [];
-              this.selectedDataSet = selectedDataSet;
-              this.selectedPeriod = {};
-              this.setDataEntrySelectionLabel();
+            this.selectedDataDimension = [];
+            this.selectedPeriod = {};
+            this.selectedDataSet = selectedDataSet;
+            let lastSelectedDataSet = this.DataSets.getLastSelectedDataSet();
+            let lastSelectedPeriod = this.DataSets.getLastSelectedDataSetPeriod();
+            if(lastSelectedPeriod && lastSelectedPeriod.name){
+              let periodTypeCurrent = this.selectedDataSet.periodType;
+              let openFuturePeriodsCurrent  = parseInt(this.selectedDataSet.openFuturePeriods);
+              let periodTypePrevious = lastSelectedDataSet.periodType;
+              let openFuturePeriodsPrevious = parseInt(lastSelectedDataSet.openFuturePeriods);
+              if((periodTypeCurrent == periodTypePrevious) && (openFuturePeriodsCurrent ==openFuturePeriodsPrevious)){
+                this.selectedPeriod = lastSelectedPeriod;
+              }
             }
+            this.setDataEntrySelectionLabel();
+            this.DataSets.setLastSelectedDataSet(selectedDataSet);
           }
         });
         modal.present();
@@ -220,12 +254,36 @@ export class SendDataViaSms implements OnInit{
     }
   }
 
+  preSelectPeriod(selectedDataSet){
+    this.preSelectDataSetDataDimension(selectedDataSet);
+    let periods = this.PeriodService.getPeriods(selectedDataSet,this.currentPeriodOffset);
+    if(periods.length == 0){
+      this.currentPeriodOffset = this.currentPeriodOffset + 1;
+      periods = this.PeriodService.getPeriods(selectedDataSet,this.currentPeriodOffset);
+    }
+    this.selectedPeriod = periods[0];
+  }
+
+
+  preSelectDataSetDataDimension(selectedDataSet){
+    if(selectedDataSet.categoryCombo.name != 'default'){
+      this.selectedDataDimension = [];
+      let categoryIndex = 0;
+      for(let category of selectedDataSet.categoryCombo.categories){
+        this.selectedDataDimension[categoryIndex] = category.categoryOptions[0].id;
+        categoryIndex = categoryIndex + 1;
+      }
+    }
+  }
+
+
   openPeriodModal(){
     if(this.currentSelectionStatus && this.currentSelectionStatus.period){
       let modal = this.modalCtrl.create(PeriodSelection,{selectedDataSet : this.selectedDataSet,currentPeriodOffset : this.currentPeriodOffset});
       modal.onDidDismiss((selectedPeriodResponse:any) => {
         if(selectedPeriodResponse && selectedPeriodResponse.selectedPeriod){
           if(selectedPeriodResponse.selectedPeriod.name){
+            this.DataSets.setLastSelectedDataSetPeriod(selectedPeriodResponse.selectedPeriod);
             this.selectedPeriod = selectedPeriodResponse.selectedPeriod;
             this.currentPeriodOffset = selectedPeriodResponse.currentPeriodOffset;
             this.setDataEntrySelectionLabel();
@@ -286,7 +344,7 @@ export class SendDataViaSms implements OnInit{
         if(key.length > 0){
           this.sendDataViaSmsObject.loadingMessage = "Preparing sms";
           this.SmsCommand.getSmsForReportingData(smsCommand,entryFormDataValuesObject,this.selectedPeriod).then((reportingSms:any)=>{
-           this.sendDataViaSmsObject.loadingMessage = "Uploading "+reportingSms.length+ (reportingSms.length == 1)?" SMS " : " SMSes";
+           this.sendDataViaSmsObject.loadingMessage = "Sending "+reportingSms.length+ (reportingSms.length == 1)?" SMS " : " SMSes";
             this.SmsCommand.sendSmsForReportingData(this.sendDataViaSmsObject.mobileNumber,reportingSms).then((response)=>{
               this.sendDataViaSmsObject.isLoading = false;
               this.sendDataViaSmsObject.loadingMessage = "";
