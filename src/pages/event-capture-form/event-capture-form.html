@@ -93,7 +93,7 @@
 
                   <div *ngIf="programStageDataElement.dataElement.valueType == 'DATE'">
                     <ion-item>
-                      <ion-input type="date"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" ></ion-input>
+                      <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [(ngModel)]="dataValues[programStageDataElement.dataElement.id]"></ion-datetime>
                     </ion-item>
                   </div>
 

@@ -34,7 +34,7 @@
   <div *ngIf="!loadingData" padding>
 
     <!-- entry form details -->
-    <div class="entry-selection-container" (tap)="navCtrl.pop()">
+    <div class="entry-selection-container" padding (tap)="navCtrl.pop()">
       <div ><b>Organisation Unit</b> : {{ selectedOrganisationUnitLabel }}<br>
         <b>Form</b> : {{ selectedDataSetLabel }}<br>
         <b>Period</b> : {{ selectedPeriodLabel }} <br>
@@ -46,18 +46,16 @@
     <ion-item-group>
       <div *ngFor="let section of entryFormSections">
         <div *ngIf="section.id == currentPage">
-          <div *ngIf=" section.name != 'defaultSection'">
-            <ion-item  (tap)="openEntryFormSectionList()">
-              <p ion-text color="font-color" align="center">
-                <b>{{ section.name }}</b>
-              </p>
-              <div style="text-align: center"item-right >
-                <button ion-button color="dark" clear>
-                  <img src="assets/dashboard/menu.png" width="20" height="20">
-                </button>
-              </div>
-            </ion-item>
-          </div>
+          <ion-item  (tap)="openEntryFormSectionList()">
+            <p ion-text color="font-color" align="center">
+              <b>{{ section.name }}</b>
+            </p>
+            <div style="text-align: center"item-right >
+              <button ion-button color="dark" clear>
+                <img src="assets/dashboard/menu.png" width="20" height="20">
+              </button>
+            </div>
+          </ion-item>
         </div>
       </div>
       <hr>
@@ -87,7 +85,7 @@
               <div *ngIf="!dataElement.optionSet">
                 <div *ngIf="dataElement.valueType == 'DATE'">
                   <ion-item>
-                    <ion-input type="date" (blur)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)"  [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]" ></ion-input>
+                    <ion-datetime displayFormat="YYYY-MM-DD" (ionChange)="updateValues(dataElement.id + '-' +categoryOptionCombos.id)" pickerFormat="YYYY MM DD" [(ngModel)]="entryFormDataValues[dataElement.id + '-' +categoryOptionCombos.id]"></ion-datetime>
                   </ion-item>
                 </div>
                 <div *ngIf="dataElement.valueType == 'LONG_TEXT'">
