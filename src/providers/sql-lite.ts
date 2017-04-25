@@ -26,7 +26,7 @@ export class SqlLite {
       ],
       fields: "",
       canBeUpdated: true,
-      resourceType: "organisationUnit"
+      resourceType: "communication"
     },
     dataSets: {
       columns: [

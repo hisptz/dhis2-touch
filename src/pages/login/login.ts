@@ -98,6 +98,8 @@ export class LoginPage implements OnInit{
   getEmptyProgressTracker(){
     let dataBaseStructure =  this.sqlLite.getDataBaseStructure();
     let progressTracker = {};
+    progressTracker["communication"] = {count : 3,passStep :[],passStepCount : 0, message : ""};
+    progressTracker["finalization"] = {count :0.5,passStep :[],passStepCount : 0, message : ""};
     Object.keys(dataBaseStructure).forEach(key=>{
       let table = dataBaseStructure[key];
       if(table.canBeUpdated && table.resourceType){
@@ -108,8 +110,6 @@ export class LoginPage implements OnInit{
         }
       }
     });
-    progressTracker["communication"] = {count : 3,passStep :[],passStepCount : 0, message : ""};
-    progressTracker["finalization"] = {count :0.5,passStep :[],passStepCount : 0, message : ""};
     return progressTracker;
   }
 
@@ -169,6 +169,24 @@ export class LoginPage implements OnInit{
     return completedTrackedProcess;
   };
 
+  resetFirstStep(){
+    let hasOrgUnitProcessPass = false;
+    for(let step of this.progressTracker.communication.passStep){
+      if(step.name == "organisationUnits"){
+        hasOrgUnitProcessPass = true;
+      }
+    }
+    this.progressTracker.communication.passStep = [];
+    this.progressTracker.communication.passStepCount = 0;
+    if(hasOrgUnitProcessPass){
+      this.progressTracker.communication.passStep.push(
+        {name : "organisationUnits",hasDownloaded : true,hasPassed : true}
+      );
+      this.progressTracker.communication.passStepCount = 1;
+    }
+
+  }
+
   cancelLoginProcess(){
     this.isLoginProcessCancelled = true;
     this.loadingData = false;
@@ -187,8 +205,7 @@ export class LoginPage implements OnInit{
         let resource = "Authenticating user";
         this.progress = "0";
         //empty communication as well as organisation unit
-        this.progressTracker.communication.passStep = [];
-        this.progressTracker.communication.passStepCount = 0;
+        this.resetFirstStep();
         this.progressTracker.communication.message = "Establish connection to server";
         this.currentResourceType = "communication";
         this.loadingData = true;
@@ -199,14 +216,16 @@ export class LoginPage implements OnInit{
             this.user.authenticateUser(this.loginData).then((response:any)=> {
               response = this.getResponseData(response);
               this.loginData = response.user;
-              this.loggedInInInstance = this.loginData.serverUrl;
+              let url = this.loginData.serverUrl;
+              this.loggedInInInstance = url.split("://")[1];
               //set authorization key and reset password
               this.loginData.authorizationKey = btoa(this.loginData.username + ':' + this.loginData.password);
               if(!this.isLoginProcessCancelled){
                 this.user.setUserData(JSON.parse(response.data)).then(userData=>{
                   this.app.getDataBaseName(this.loginData.serverUrl).then(databaseName=>{
                     //update authenticate  process
-                    this.loginData.currentDatabase = databaseName + "_"+this.loginData.username;
+                    databaseName = databaseName + "_"+this.loginData.username;
+                    this.loginData.currentDatabase = databaseName;
                     this.reInitiateProgressTrackerObject(this.loginData);
                     this.currentResourceType = "communication";
                     this.updateProgressTracker(resource);
@@ -258,10 +277,10 @@ export class LoginPage implements OnInit{
               if (error.status == 0 || !networkAvailability.isAvailable) {
                 this.setToasterMessage(networkAvailability.message);
               } else if (error.status == 401) {
-                this.setToasterMessage('You have enter wrong username or password');
+                this.setToasterMessage('You have enter wrong username or password or server address');
               } else {
                 console.log(JSON.stringify(error));
-                this.setToasterMessage('Please check server url');
+                this.setToasterMessage('Please check server address');
               }
             });
           });
@@ -282,9 +301,9 @@ export class LoginPage implements OnInit{
   downloadingOrganisationUnits(userData){
     if(!this.isLoginProcessCancelled){
       let resource = 'organisationUnits';
-      this.currentResourceType = "organisationUnit";
+      this.currentResourceType = "communication";
+      //this.currentResourceType = "organisationUnit";
       this.progressTracker[this.currentResourceType].message = "Loading assigned organisation unit";
-      this.currentResourceType = "organisationUnit";
       let orgUnitIds = [];
       userData.organisationUnits.forEach(organisationUnit=>{
         if(organisationUnit.id){
@@ -511,7 +530,7 @@ export class LoginPage implements OnInit{
       this.progressTracker[this.currentResourceType].message = "Loading programstage data elements";
       if(this.completedTrackedProcess.indexOf(resource) > -1){
         this.updateProgressTracker(resource);
-        this.downloadingIndicators();
+        this.downloadingReports();
       }else{
         let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
         let fields = tableMetadata.fields;
@@ -520,7 +539,7 @@ export class LoginPage implements OnInit{
             this.progressTracker[this.currentResourceType].message = "Saving programstage data elements";
             this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
               this.updateProgressTracker(resource);
-              this.downloadingIndicators();
+              this.downloadingReports();
             },error=>{
               this.loadingData = false;
               this.isLoginProcessActive = false;

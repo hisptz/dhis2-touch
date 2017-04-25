@@ -19,7 +19,10 @@
     <div *ngIf="isLoginProcessActive">
       <ion-list *ngIf="loggedInInInstance != ''">
         <ion-item (tap)="cancelLoginProcess()">
-          logged in : {{ loggedInInInstance }}
+          <div style="text-align: center" item-left >
+            <ion-icon name="md-unlock" color="primary"></ion-icon>
+          </div>
+          {{ loggedInInInstance }}
           <div style="text-align: center" item-right >
             <ion-icon name="md-close" color="danger"></ion-icon>
           </div>
@@ -52,29 +55,7 @@
               {{ progressTracker.communication.passStepCount}}/{{ progressTracker.communication.count}}
             </div>
           </ion-item>
-          <ion-item >
-            <div style="text-align: center" item-left >
-              <div *ngIf="progressTracker.organisationUnit.passStepCount == progressTracker.organisationUnit.count">
-                <ion-icon name="done-all" color="favorite"></ion-icon>
-              </div>
-              <div *ngIf="currentResourceType == 'organisationUnit'">
-                <div *ngIf="progressTracker.organisationUnit.passStepCount != progressTracker.organisationUnit.count">
-                  <page-loading loadingSize="small"></page-loading>
-                </div>
-              </div>
-            </div>
-          <span ion-text [color]="(currentResourceType == 'organisationUnit')?'current' : 'font-color'" >
-            <span *ngIf="progressTracker.organisationUnit.message != '' ">
-              {{ progressTracker.organisationUnit.message }}
-            </span>
-            <span *ngIf="progressTracker.organisationUnit.message == '' ">
-              Load assigned organisation unit(s)
-            </span>
-          </span>
-            <div style="text-align: center" item-right >
-              {{ progressTracker.organisationUnit.passStepCount }}/{{ progressTracker.organisationUnit.count}}
-            </div>
-          </ion-item>
+
           <ion-item >
             <div style="text-align: center" item-left >
               <div *ngIf="progressTracker.entryForm.passStepCount == progressTracker.entryForm.count">
@@ -156,7 +137,7 @@
         <ion-row >
           <ion-col >
             <ion-item>
-              <ion-input [(ngModel)]="loginData.serverUrl" type="text" name ="serverUrl" placeholder="Enter server URL"></ion-input>
+              <ion-input [(ngModel)]="loginData.serverUrl" type="text" name ="serverUrl" placeholder="Enter server address"></ion-input>
             </ion-item>
 
             <ion-item>
