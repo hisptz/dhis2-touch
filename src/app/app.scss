@@ -30,6 +30,17 @@
   padding-bottom : 1.3rem;
 }
 
+.pagination-button{
+  border-radius: 4rem;
+  text-align: center;
+  padding: 2.1rem;
+  border: 1px solid #E6E6E7;
+}
+.pagination-label{
+  text-align: center;
+  padding-top: 2.1rem;
+  padding-bottom: 2.1rem;
+}
 
 @-webkit-keyframes slideInFromLeft {
   0% {
