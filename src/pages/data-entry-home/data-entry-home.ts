@@ -181,13 +181,14 @@ export class DataEntryHomePage implements OnInit{
     this.assignedDataSets = [];
     this.currentPeriodOffset = 0;
     this.selectedPeriod = {};
+    this.selectedDataSet = {};
     this.DataSets.getAssignedDataSetsByOrgUnit(this.selectedOrganisationUnit,this.dataSetIdsByUserRoles,this.currentUser).then((dataSets : any)=>{
       this.assignedDataSets = dataSets;
       let lastSelectedDataSet = this.DataSets.getLastSelectedDataSet();
       let lastSelectedPeriod = this.DataSets.getLastSelectedDataSetPeriod();
       if(lastSelectedDataSet && lastSelectedDataSet.id){
         for(let dataSet of dataSets){
-          if(dataSet.id = lastSelectedDataSet.id){
+          if(dataSet.id == lastSelectedDataSet.id){
             this.selectedDataSet = lastSelectedDataSet;
             if(lastSelectedPeriod && lastSelectedPeriod.name){
               this.selectedPeriod = lastSelectedPeriod;
@@ -197,7 +198,8 @@ export class DataEntryHomePage implements OnInit{
             }
           }
         }
-      }else if(this.assignedDataSets.length > 0){
+      }
+      if(this.assignedDataSets.length > 0 && !(this.selectedDataSet && this.selectedDataSet.id)){
         this.selectedDataSet =this.assignedDataSets[0];
         this.DataSets.setLastSelectedDataSet(this.assignedDataSets[0]);
         this.preSelectPeriod(this.assignedDataSets[0]);
