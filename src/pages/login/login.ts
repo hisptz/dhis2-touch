@@ -206,7 +206,7 @@ export class LoginPage implements OnInit{
         this.progress = "0";
         //empty communication as well as organisation unit
         this.resetFirstStep();
-        this.progressTracker.communication.message = "Establish connection to server";
+        this.progressTracker.communication.message = "Establishing connection to server";
         this.currentResourceType = "communication";
         this.loadingData = true;
         this.isLoginProcessActive = true;
@@ -229,14 +229,14 @@ export class LoginPage implements OnInit{
                     this.reInitiateProgressTrackerObject(this.loginData);
                     this.currentResourceType = "communication";
                     this.updateProgressTracker(resource);
-                    this.progressTracker[this.currentResourceType].message = "Establish connection to server";
+                    this.progressTracker[this.currentResourceType].message = "Establishing connection to server";
                     resource = 'Opening database';
                     this.sqlLite.generateTables(databaseName).then(()=>{
                       //Establish connection to server
                       this.updateProgressTracker(resource);
                       resource = 'Loading system information';
                       this.currentResourceType = "communication";
-                      this.progressTracker[this.currentResourceType].message = "Opening local storage";
+                      this.progressTracker[this.currentResourceType].message = "Preparing local storage";
                       if(!this.isLoginProcessCancelled){
                         this.httpClient.get('/api/system/info',this.loginData).subscribe(
                           data => {
@@ -251,6 +251,7 @@ export class LoginPage implements OnInit{
                               },error=>{
                                 this.loadingData = false;
                                 this.isLoginProcessActive = false;
+                                console.log(JSON.stringify(error));
                                 if(!this.isLoginProcessCancelled){
                                   this.setLoadingMessages('Fail to set system information');
                                 }
@@ -259,13 +260,15 @@ export class LoginPage implements OnInit{
                           },error=>{
                             this.loadingData = false;
                             this.isLoginProcessActive = false;
+                            console.log(JSON.stringify(error));
                             if(!this.isLoginProcessCancelled){
                               this.setLoadingMessages('Fail to load system information');
                             }
                           });
                       }
                     },error=>{
-                      this.setToasterMessage('Fail to open database.');
+                      console.log(JSON.stringify(error));
+                      this.setToasterMessage('Fail to prepare local storage.');
                     })
                   })
                 });
@@ -324,6 +327,7 @@ export class LoginPage implements OnInit{
             },error=>{
               this.loadingData = false;
               this.isLoginProcessActive = false;
+              console.log(JSON.stringify(error));
               if(!this.isLoginProcessCancelled){
                 this.setToasterMessage('Fail to save organisation data.');
               }
@@ -332,10 +336,9 @@ export class LoginPage implements OnInit{
         },error=>{
           this.loadingData = false;
           this.isLoginProcessActive = false;
-          console.log(resource);
           console.log(JSON.stringify(error));
           if(!this.isLoginProcessCancelled){
-            this.setToasterMessage('Fail to download organisation data.');
+            this.setToasterMessage('Fail to load organisation data.');
           }
         });
       }
@@ -372,7 +375,7 @@ export class LoginPage implements OnInit{
           console.log(resource);
           console.log(JSON.stringify(error));
           if(!this.isLoginProcessCancelled){
-            this.setToasterMessage('Fail to download data entry form.');
+            this.setToasterMessage('Fail to load data entry form.');
           }
         });
       }
@@ -410,7 +413,7 @@ export class LoginPage implements OnInit{
           console.log(resource);
           console.log(JSON.stringify(error));
           if(!this.isLoginProcessCancelled){
-            this.setToasterMessage('Fail to download data entry form sections.');
+            this.setToasterMessage('Fail to load data entry form sections.');
           }
         });
       }
@@ -444,7 +447,7 @@ export class LoginPage implements OnInit{
           console.log(resource);
           console.log(JSON.stringify(error));
           if(!this.isLoginProcessCancelled){
-            this.setToasterMessage('Fail to download metadata for send data via sms');
+            this.setToasterMessage('Fail to load metadata for send data via sms');
           }
         });
       }
@@ -480,7 +483,7 @@ export class LoginPage implements OnInit{
           console.log(resource);
           console.log(JSON.stringify(error));
           if(!this.isLoginProcessCancelled){
-            this.setToasterMessage('Fail to download programs.');
+            this.setToasterMessage('Fail to load programs.');
           }
         });
       }
@@ -516,7 +519,7 @@ export class LoginPage implements OnInit{
           console.log(resource);
           console.log(JSON.stringify(error));
           if(!this.isLoginProcessCancelled){
-            this.setToasterMessage('Fail to download program-stage sections.');
+            this.setToasterMessage('Fail to load program-stage sections.');
           }
         });
       }
@@ -552,7 +555,7 @@ export class LoginPage implements OnInit{
           console.log(resource);
           console.log(JSON.stringify(error));
           if(!this.isLoginProcessCancelled){
-            this.setToasterMessage('Fail to download program-stage data-elements.');
+            this.setToasterMessage('Fail to load program-stage data-elements.');
           }
         });
       }
@@ -591,7 +594,7 @@ export class LoginPage implements OnInit{
           console.log(resource);
           console.log(JSON.stringify(error));
           if(!this.isLoginProcessCancelled){
-            this.setToasterMessage('Fail to download reports.');
+            this.setToasterMessage('Fail to load reports.');
           }
         });
       }
@@ -627,7 +630,7 @@ export class LoginPage implements OnInit{
           console.log(resource);
           console.log(JSON.stringify(error));
           if(!this.isLoginProcessCancelled){
-            this.setToasterMessage('Fail to download indicators.');
+            this.setToasterMessage('Fail to load indicators.');
           }
         });
       }
@@ -663,7 +666,7 @@ export class LoginPage implements OnInit{
           console.log(resource);
           console.log(JSON.stringify(error));
           if(!this.isLoginProcessCancelled){
-            this.setToasterMessage('Fail to download constants.');
+            this.setToasterMessage('Fail to load constants.');
           }
         });
       }
@@ -698,15 +701,6 @@ export class LoginPage implements OnInit{
       message: message,
       duration: 3500
     });
-    toast.present();
-  }
-
-  setNotificationToasterMessage(message){
-    let toast = this.toastCtrl.create({
-      message: message,
-      position : 'top',
-      duration: 3500
-    })
     toast.present();
   }
 
