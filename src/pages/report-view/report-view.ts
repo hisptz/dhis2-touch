@@ -3,15 +3,16 @@ import { NavController,NavParams,ToastController } from 'ionic-angular';
 import { DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {User} from "../../providers/user";
 import {Report} from "../../providers/report";
+import {DataSets} from "../../providers/data-sets";
 
 declare var dhis2;
 
 /*
-  Generated class for the ReportView page.
+ Generated class for the ReportView page.
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
+ See http://ionicframework.com/docs/v2/components/#navigation for more info on
+ Ionic pages and navigation.
+ */
 @Component({
   selector: 'page-report-view',
   templateUrl: 'report-view.html',
@@ -32,6 +33,7 @@ export class ReportView implements OnInit{
 
   constructor(public navCtrl:NavController,public params:NavParams,public user: User,
               public sanitizer: DomSanitizer,public elementRef : ElementRef,
+              public DataSets : DataSets,
               public Report:Report,public toastCtrl:ToastController) {
 
   }
@@ -48,14 +50,23 @@ export class ReportView implements OnInit{
         this.selectedOrganisationUnit = this.params.get("organisationUnit");
         this.organisationUnitName = (this.selectedOrganisationUnit.name)?this.selectedOrganisationUnit.name:"";
         this.periodName = (this.selectedPeriod.name)?this.selectedPeriod.name : "";
+        let ids = [];
         dhis2.report = {
           organisationUnit :this.selectedOrganisationUnit,
           organisationUnitChildren : this.params.get("organisationUnitChildren"),
           organisationUnitHierarchy : this.getOrganisationUnitHierarchy(this.params.get("organisationUnit")),
           period : this.selectedPeriod.iso,
           date : this.selectedPeriod.iso + "-01-01",
-          dataSets :this.selectedOrganisationUnit.dataSets
+          dataSets :[]
         };
+        for(let dataSet of this.selectedOrganisationUnit.dataSets){
+          ids.push(dataSet.id);
+        }
+        this.DataSets.getDataSetsByIds(ids,user).then(DataSets=>{
+          for(let dataSet of DataSets){
+            dhis2.report.dataSets.push({id : dataSet.id,name : dataSet.name});
+          }
+        },error=>{});
       }
       this.loadReportDesignContent(this.reportId);
     });
