@@ -206,7 +206,7 @@ export class SmsCommand {
         resolve();
       }
       smsCommands.forEach((smsCommand:any)=>{
-        smsCommand["id"] = smsCommand.commandName;
+        smsCommand["id"] = smsCommand.dataSetId;
         promises.push(
           self.SqlLite.insertDataOnTable(self.resourceName,smsCommand,databaseName).then(()=>{
             //saving success
