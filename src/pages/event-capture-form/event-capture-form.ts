@@ -24,6 +24,7 @@ export class EventCaptureForm implements OnInit{
 
   public loadingData : boolean = false;
   public loadingMessages : any = [];
+  public loadingMessage : string ="";
   public currentUser : any;
   public entryFormParameter : any;
   public currentProgram : any;
@@ -271,6 +272,7 @@ export class EventCaptureForm implements OnInit{
   }
 
   setLoadingMessages(message){
+    this.loadingMessage = message;
     this.loadingMessages.push(message);
   }
 

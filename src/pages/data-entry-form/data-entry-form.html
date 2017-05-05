@@ -17,15 +17,18 @@
     <ion-grid>
       <ion-row>
         <ion-col width="100">
-          <ion-list>
-            <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
-              {{ message }}
-              <ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right color="favorite"></ion-icon>
-              <div style="text-align: center" item-right *ngIf="(currentIndex + 1) >= loadingMessages.length">
-                <page-loading loadingSize="small"></page-loading>
-              </div>
-            </ion-item>
-          </ion-list>
+          <page-loading loadingSize="large" [loadingMessage]="loadingMessage"></page-loading>
+          <!--<ion-list>-->
+            <!--<page-loading loadingSize="large" [loadingMessage]="loadingMessage"></page-loading>-->
+            <!---->
+            <!--<ion-item *ngFor="let message of loadingMessages; let currentIndex = index">-->
+              <!--{{ message }}-->
+              <!--<ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right color="favorite"></ion-icon>-->
+              <!--<div style="text-align: center" item-right *ngIf="(currentIndex + 1) >= loadingMessages.length">-->
+                <!--<page-loading loadingSize="small"></page-loading>-->
+              <!--</div>-->
+            <!--</ion-item>-->
+          <!--</ion-list>-->
         </ion-col>
       </ion-row>
     </ion-grid>

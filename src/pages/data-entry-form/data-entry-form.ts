@@ -23,6 +23,7 @@ export class DataEntryForm implements OnInit{
 
   public loadingData : boolean = false;
   public loadingMessages : any = [];
+  public loadingMessage : string ="";
   public currentUser : any;
   public dataEntryFormSelectionParameter : any;
   public selectedDataSet : any;
@@ -350,6 +351,7 @@ export class DataEntryForm implements OnInit{
   }
 
   setLoadingMessages(message){
+    this.loadingMessage = message;
     this.loadingMessages.push(message);
   }
 
