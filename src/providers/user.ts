@@ -24,8 +24,8 @@ export class User {
    * @returns {Promise<T>}
      */
   getUserDataFromServer(user){
-    let self = this;
-    self.http.useBasicAuth(user.username, user.password);
+
+    this.http.useBasicAuth(user.username, user.password);
     let fields = "fields=[:all],userCredentials[userRoles[name,dataSets[id,name],programs[id,name]]";
     let url = user.serverUrl.split("/dhis-web-commons")[0];
     url = url.split("/dhis-web-dashboard-integration")[0];
@@ -33,8 +33,8 @@ export class User {
     user.serverUrl = url;
     url += "/api/25/me.json?" + fields;
 
-    return new Promise(function(resolve, reject) {
-      self.http.get(url, {}, {})
+    return new Promise((resolve, reject)=> {
+      this.http.get(url, {}, {})
         .then((data:any)  => {
           resolve(data);
         })
@@ -50,11 +50,11 @@ export class User {
    * @returns {Promise<T>}
      */
   authenticateUser(user){
-    let self = this;
-    self.http.useBasicAuth(user.username, user.password);
 
-    return new Promise(function(resolve, reject) {
-      self.http.get(user.serverUrl + "", {}, {})
+    this.http.useBasicAuth(user.username, user.password);
+
+    return new Promise((resolve, reject)=> {
+      this.http.get(user.serverUrl + "", {}, {})
         .then((data:any)  => {
           if(data.status == 200){
             let setCookieArray = data.headers["Set-Cookie"].split(";");
@@ -72,7 +72,7 @@ export class User {
               url = user.serverUrl;
             }
             user.serverUrl = url;
-            self.getUserDataFromServer(user).then((data:any) => {
+            this.getUserDataFromServer(user).then((data:any) => {
                 let url = user.serverUrl.split("/dhis-web-commons")[0];
                 url = url.split("/dhis-web-dashboard-integration")[0];
                 user.serverUrl = url;
@@ -89,7 +89,7 @@ export class User {
           if(error.status == 301 || error.status == 302){
             if(error.headers.Location){
               user.serverUrl = error.headers.Location;
-              self.authenticateUser(user).then((data:any) => {
+              this.authenticateUser(user).then((data:any) => {
                   let url = user.serverUrl.split("/dhis-web-commons")[0];
                   url = url.split("/dhis-web-dashboard-integration")[0];
                   user.serverUrl = url;
@@ -112,11 +112,10 @@ export class User {
    * @returns {Promise<T>}
      */
   setCurrentUser(user : any){
-    let self = this;
-    user = JSON.stringify(user);
-    return  new Promise(function(resolve,reject){
 
-      self.storage.set('user', user).then(() => {
+    user = JSON.stringify(user);
+    return  new Promise((resolve,reject) => {
+      this.storage.set('user', user).then(() => {
         resolve();
       },error=>{
         reject();
@@ -130,10 +129,10 @@ export class User {
    * @returns {Promise<T>}
      */
   setCurrentUserSystemInformation(systemInformation : any){
-    let self = this;
-    return  new Promise(function(resolve,reject){
+
+    return  new Promise((resolve,reject) => {
       systemInformation = JSON.stringify(systemInformation);
-      self.storage.set('systemInformation', systemInformation).then(() => {
+      this.storage.set('systemInformation', systemInformation).then(() => {
         resolve();
       },error=>{
         reject();
@@ -164,10 +163,10 @@ export class User {
       "dataViewOrganisationUnits" : userDataResponse.dataViewOrganisationUnits
     };
     let userData = JSON.stringify(this.userData);
-    let self = this;
-    return  new Promise(function(resolve,reject){
-      self.storage.set('userData', userData).then(() => {
-        resolve(self.userData);
+
+    return  new Promise((resolve,reject) => {
+      this.storage.set('userData', userData).then(() => {
+        resolve(this.userData);
       },error=>{
         reject();
       });
@@ -179,9 +178,9 @@ export class User {
    * @returns {Promise<T>}
      */
   getUserData(){
-    let self = this;
-    return  new Promise(function(resolve,reject){
-      self.storage.get('userData').then(userData=>{
+
+    return  new Promise((resolve,reject) => {
+      this.storage.get('userData').then(userData=>{
         userData = JSON.parse(userData);
         resolve(userData);
       },err=>{
@@ -197,9 +196,9 @@ export class User {
    * @returns {Promise<T>}
      */
   getCurrentUserSystemInformation(){
-    let self = this;
-    return  new Promise(function(resolve,reject){
-      self.storage.get('systemInformation').then(systemInformation=>{
+
+    return  new Promise((resolve,reject) => {
+      this.storage.get('systemInformation').then(systemInformation=>{
         systemInformation = JSON.parse(systemInformation);
         resolve(systemInformation);
       },err=>{
@@ -215,9 +214,9 @@ export class User {
    * @returns {Promise<T>}
      */
   getCurrentUser(){
-    let self = this;
-    return  new Promise(function(resolve,reject){
-      self.storage.get('user').then(user=>{
+
+    return  new Promise((resolve,reject) => {
+      this.storage.get('user').then(user=>{
         user = JSON.parse(user);
         resolve(user);
       },err=>{

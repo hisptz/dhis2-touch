@@ -19,12 +19,11 @@ export class ProgramStageDataElements {
   getProgramStageDataElements(programStageDataElementsIdsArray,currentUser){
     let attribute = 'id';
     let attributeValue =[];
-    let self = this;
     for(let programStageDataElement of programStageDataElementsIdsArray){
       attributeValue.push(programStageDataElement.id);
     }
-    return new Promise(function(resolve, reject) {
-      self.sqlLite.getDataFromTableByAttributes(self.resource,attribute,attributeValue,currentUser.currentDatabase).then(programStageDataElements=>{
+    return new Promise((resolve, reject) =>{
+      this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeValue,currentUser.currentDatabase).then(programStageDataElements=>{
         resolve(programStageDataElements);
       },error=>{
         reject(error);

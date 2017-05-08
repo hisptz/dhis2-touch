@@ -43,13 +43,11 @@ export class EventCaptureFormProvider {
      */
   getSectionEntryForm(programStageSections){
     let sections = [];
-    let self = this;
-
     programStageSections.forEach((programStageSection: any,index : any)=>{
       sections.push({
         name : programStageSection.name,
         id : index,
-        programStageDataElements : self.getSectionDataElements(programStageSection.programStageDataElements)
+        programStageDataElements : this.getSectionDataElements(programStageSection.programStageDataElements)
       })
     });
     return sections;

@@ -27,7 +27,7 @@ export class Events {
      */
   getEventDataValues(dataElementValueObject,programStageDataElements){
     let dataValues = [];
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject) =>{
       programStageDataElements.forEach((programStageDataElement:any)=>{
         let dataElementId = programStageDataElement.dataElement.id;
         if(dataElementValueObject[dataElementId]){
@@ -79,9 +79,8 @@ export class Events {
       url += "&attributeCc="+program.categoryCombo.id+"&attributeCos="+attributeCos;
     }
     url += "&pageSize=50&page=1&totalPages=true";
-    let self = this;
-    return new Promise(function(resolve, reject) {
-      self.httpClient.get(url,currentUser).subscribe(events=>{
+    return new Promise((resolve, reject) =>{
+      this.httpClient.get(url,currentUser).subscribe(events=>{
         resolve(events.json())
       },error=>{
         reject(error.json());
@@ -100,13 +99,12 @@ export class Events {
    * @returns {Promise<T>}
      */
   loadingEventsFromStorage(orgUnit,program,currentUser){
-    let self = this;
     let attribute = "orgUnit";
     let attributeArray = [];
     let events = [];
     attributeArray.push(orgUnit.id);
-    return new Promise(function(resolve, reject) {
-      self.sqlLite.getDataFromTableByAttributes(self.resource,attribute,attributeArray,currentUser.currentDatabase).then((offlineEvents : any)=>{
+    return new Promise((resolve, reject)=>{
+      this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeArray,currentUser.currentDatabase).then((offlineEvents : any)=>{
         //program.id
         offlineEvents.forEach((offlineEvent:any)=>{
           if(offlineEvent.program == program.id){
@@ -128,12 +126,11 @@ export class Events {
    * @returns {Promise<T>}
      */
   loadingEventByIdFromStorage(eventTableId,currentUser){
-    let self = this;
     let attribute = "id";
     let attributeArray = [];
     attributeArray.push(eventTableId);
-    return new Promise(function(resolve, reject) {
-      self.sqlLite.getDataFromTableByAttributes(self.resource,attribute,attributeArray,currentUser.currentDatabase).then((offlineEvents : any)=>{
+    return new Promise((resolve, reject)=>{
+      this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeArray,currentUser.currentDatabase).then((offlineEvents : any)=>{
         if(offlineEvents.length > 0){
           resolve(offlineEvents[0]);
         }else{
@@ -152,12 +149,11 @@ export class Events {
    * @returns {Promise<T>}
      */
   getEventsFromStorageByStatus(currentUser,status){
-    let self = this;
     let attribute = "syncStatus";
     let attributeArray = [];
     attributeArray.push(status);
-    return new Promise(function(resolve, reject) {
-      self.sqlLite.getDataFromTableByAttributes(self.resource,attribute,attributeArray,currentUser.currentDatabase).then((events : any)=>{
+    return new Promise((resolve, reject)=>{
+      this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeArray,currentUser.currentDatabase).then((events : any)=>{
         resolve(events);
       },error=>{
         reject(error)
@@ -173,7 +169,7 @@ export class Events {
     let pager = 4;
     let sectionsCounter = Math.ceil(events.length/pager);
     let sections = [];
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject)=>{
       for(let index = 0; index < sectionsCounter; index ++){
         sections.push({
           name : "defaultSection",
@@ -187,8 +183,7 @@ export class Events {
   }
 
   getEventListInTableFormat(events,dataElementToDisplay){
-    let self = this;
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject)=>{
       let tableFormat = {
         header : [],rows : []
       };
@@ -199,7 +194,7 @@ export class Events {
         })
       });
       //setting rows
-      self.getEventDataValuesMapper(events).then((eventDataValuesMapper:any)=>{
+      this.getEventDataValuesMapper(events).then((eventDataValuesMapper:any)=>{
         events.forEach((event:any)=>{
 
           let dataValueMapper = eventDataValuesMapper[event.event];
@@ -216,7 +211,7 @@ export class Events {
   }
 
   getEventDataValuesMapper(events){
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject)=>{
       let eventDataValuesMapper = {};
       events.forEach((event : any)=>{
         let dataValueMapper = {};
@@ -230,19 +225,18 @@ export class Events {
   }
 
   uploadEventsToServer(events,currentUser){
-    let self = this;
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject)=>{
       events.forEach((event:any)=> {
         if(event["syncStatus"] == "new event"){
           //delete event id for new event
           let eventTobUploaded = event;
-          let eventToUpload = self.formatEventForUpload(eventTobUploaded);
+          let eventToUpload = this.formatEventForUpload(eventTobUploaded);
           let url = "/api/25/events";
           console.log(JSON.stringify(eventToUpload));
-          self.httpClient.post(url,eventToUpload,currentUser).subscribe(response=>{
+          this.httpClient.post(url,eventToUpload,currentUser).subscribe(response=>{
             response = response.json();
             console.log(JSON.stringify(response));
-            self.updateUploadedLocalStoredEvent(event,response,currentUser).then(()=>{
+            this.updateUploadedLocalStoredEvent(event,response,currentUser).then(()=>{
             },error=>{
             });
           },error=>{
@@ -250,11 +244,11 @@ export class Events {
           })
         }else{
           let eventTobUploaded = event;
-          let eventToUpload = self.formatEventForUpload(eventTobUploaded);
+          let eventToUpload = this.formatEventForUpload(eventTobUploaded);
           let url = "/api/25/events/"+eventToUpload.event;
-          self.httpClient.put(url,eventToUpload,currentUser).subscribe(response=>{
+          this.httpClient.put(url,eventToUpload,currentUser).subscribe(response=>{
             response = response.json();
-            self.updateUploadedLocalStoredEvent(event,response,currentUser).then(()=>{
+            this.updateUploadedLocalStoredEvent(event,response,currentUser).then(()=>{
             },error=>{
 
             });
@@ -270,14 +264,13 @@ export class Events {
 
 
   updateUploadedLocalStoredEvent(event,response,currentUser){
-    let self = this;
     response = response.response;
     if(response.importSummaries[0].reference){
       event.event = response.importSummaries[0].reference;
     }
     event["syncStatus"] = "synced";
-    return new Promise(function(resolve, reject) {
-      self.saveEvent(event,currentUser).then(response=>{
+    return new Promise((resolve, reject)=>{
+      this.saveEvent(event,currentUser).then(response=>{
         resolve();
       },error=>{
         reject();
@@ -291,8 +284,6 @@ export class Events {
    * @returns {any}
      */
   formatEventForUpload(event){
-    //@todo update event notes to the server
-    //delete some field unnecessary for uploading to server
     delete event.id;
     delete event.syncStatus;
 
@@ -318,18 +309,17 @@ export class Events {
    * @returns {Promise<T>}
      */
   savingEventsFromServer(eventsFromServer,currentUser){
-    let self = this;
     let promises = [];
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject)=>{
       if(eventsFromServer.events.length == 0){
         resolve();
       }else{
         eventsFromServer.events.forEach((event)=>{
           let eventData = event;
-          eventData["eventDate"] = self.getFormattedDate(event.eventDate);
+          eventData["eventDate"] = this.getFormattedDate(event.eventDate);
           eventData["syncStatus"] = "synced";
           promises.push(
-            self.saveEvent(eventData,currentUser).then(()=>{},error=>{})
+            this.saveEvent(eventData,currentUser).then(()=>{},error=>{})
           );
         });
         Observable.forkJoin(promises).subscribe(() => {
@@ -349,10 +339,9 @@ export class Events {
    * @returns {Promise<T>}
      */
   saveEvent(event,currentUser){
-    let self = this;
     event["id"] = event.program + "-"+event.orgUnit+ "-" +event.event;
-    return new Promise(function(resolve, reject) {
-      self.sqlLite.insertDataOnTable(self.resource,event,currentUser.currentDatabase).then((success)=>{
+    return new Promise((resolve, reject)=>{
+      this.sqlLite.insertDataOnTable(this.resource,event,currentUser.currentDatabase).then((success)=>{
         resolve();
       },error=>{
         reject();

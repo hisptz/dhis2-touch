@@ -27,26 +27,25 @@ export class AppProvider {
   getAppInformation(){
     let appInformation = {};
     let promises = [];
-    let self = this;
 
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject)=> {
       promises.push(
-        self.appVersion.getAppName().then(appName=>{
+        this.appVersion.getAppName().then(appName=>{
           appInformation['appName'] = appName;
         })
       );
       promises.push(
-        self.appVersion.getPackageName().then(packageName=>{
+        this.appVersion.getPackageName().then(packageName=>{
           appInformation['packageName'] = packageName;
         })
       );
       promises.push(
-        self.appVersion.getVersionCode().then(versionCode=>{
+        this.appVersion.getVersionCode().then(versionCode=>{
           appInformation['versionCode'] = versionCode;
         })
       );
       promises.push(
-        self.appVersion.getVersionNumber().then(versionNumber=>{
+        this.appVersion.getVersionNumber().then(versionNumber=>{
           appInformation['versionNumber'] = versionNumber;
         })
       );
@@ -107,15 +106,15 @@ export class AppProvider {
      */
   saveMetadata(resource,resourceValues,databaseName){
     let promises = [];
-    let self = this;
 
-    return new Promise(function(resolve, reject) {
+
+    return new Promise((resolve, reject)=> {
       if(resourceValues.length == 0){
         resolve();
       }
       resourceValues.forEach(resourceValue=>{
         promises.push(
-          self.sqlLite.insertDataOnTable(resource,resourceValue,databaseName).then(()=>{
+          this.sqlLite.insertDataOnTable(resource,resourceValue,databaseName).then(()=>{
             //saving success
           },(error) => {
           })
@@ -141,12 +140,12 @@ export class AppProvider {
      * @returns {Promise<T>}
      */
   getMetaDataCountFromServer(user,resource, resourceId, fields, filter){
-    let self = this;
-    let resourceUrl = self.getResourceUrl(resource, resourceId, fields, filter);
-    return new Promise(function(resolve, reject) {
-      self.http.get(resourceUrl,user).subscribe(response=>{
+
+    let resourceUrl = this.getResourceUrl(resource, resourceId, fields, filter);
+    return new Promise((resolve, reject)=> {
+      this.http.get(resourceUrl,user).subscribe(response=>{
         response = response.json();
-        resolve(self.getResourceCounter(response,resource));
+        resolve(this.getResourceCounter(response,resource));
       },error=>{
         reject(error);
       });
@@ -173,10 +172,10 @@ export class AppProvider {
      * @returns {Promise<T>}
      */
   downloadMetadata(user,resource, resourceId, fields, filter){
-    let self = this;
-    let resourceUrl = self.getResourceUrl(resource, resourceId, fields, filter);
-    return new Promise(function(resolve, reject) {
-      self.http.get(resourceUrl,user).subscribe(response=>{
+
+    let resourceUrl = this.getResourceUrl(resource, resourceId, fields, filter);
+    return new Promise((resolve, reject)=> {
+      this.http.get(resourceUrl,user).subscribe(response=>{
         response = response.json();
         resolve(response);
       },error=>{
@@ -195,15 +194,15 @@ export class AppProvider {
    * @returns {Promise<T>}
      */
   downloadMetadataByResourceIds(user,resource, resourceIds, fields, filter){
-    let self = this;
+
     let data = [];
     let promises = [];
 
-    return new Promise(function(resolve, reject) {
-      self.multipleIdsData = [];
+    return new Promise((resolve, reject)=> {
+      this.multipleIdsData = [];
       resourceIds.forEach(resourceId=>{
         promises.push(
-          self.downloadMetadata(user,resource, resourceId, fields, filter).then(response=>{
+          this.downloadMetadata(user,resource, resourceId, fields, filter).then(response=>{
             data.push(response);
           },error=>{})
         );

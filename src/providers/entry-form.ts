@@ -21,11 +21,11 @@ export class EntryForm {
    * @returns {Promise<T>}
      */
   getEntryFormMetadata(dataSet,currentUser){
-    let self = this;
-    return new Promise(function(resolve, reject) {
+
+    return new Promise((resolve, reject)=> {
       if(dataSet.sections.length > 0){
         let entryFormSections = [];
-        self.getEntryFormSectionsObject(dataSet.sections,currentUser).then(entryFormSectionsObject=>{
+        this.getEntryFormSectionsObject(dataSet.sections,currentUser).then(entryFormSectionsObject=>{
           dataSet.sections.forEach((section:any,index:any)=>{
             let sectionObject = entryFormSectionsObject[section.id];
             if(sectionObject.id){
@@ -39,7 +39,7 @@ export class EntryForm {
           reject(error);
         });
       }else{
-        self.getDefaultEntryForm(dataSet).then(defaultEntryForm=>{
+        this.getDefaultEntryForm(dataSet).then(defaultEntryForm=>{
           resolve(defaultEntryForm);
         });
       }
@@ -53,15 +53,14 @@ export class EntryForm {
    * @returns {Array}
      */
   getEntryFormSectionsObject(sections,currentUser){
-    let self = this;
     let ids = [];
     let resource = "sections";
     let entryFormSectionsObject = {};
     sections.forEach((section : any)=>{
       ids.push(section.id);
     });
-    return new Promise(function(resolve, reject) {
-      self.sqlLite.getDataFromTableByAttributes(resource,"id",ids,currentUser.currentDatabase).then((selectedSections : any)=>{
+    return new Promise((resolve, reject) =>{
+      this.sqlLite.getDataFromTableByAttributes(resource,"id",ids,currentUser.currentDatabase).then((selectedSections : any)=>{
         selectedSections.forEach((section: any)=>{
           entryFormSectionsObject[section.id] = section;
         });
@@ -76,15 +75,14 @@ export class EntryForm {
    * @returns {Promise<T>}
      */
   getDefaultEntryForm(dataSet){
-    let self = this;
-    return new Promise(function(resolve, reject) {
-      self.Setting.getDataEntrySetting().then((dataEntrySetting: any)=>{
+    return new Promise((resolve, reject) =>{
+      this.Setting.getDataEntrySetting().then((dataEntrySetting: any)=>{
         let maxDataElements = 4;
         if(dataEntrySetting && dataEntrySetting.label && dataEntrySetting.maxDataElementOnDefaultForm){
           maxDataElements = dataEntrySetting.maxDataElementOnDefaultForm;
         }
-        let dataElements = self.getDataElements(dataSet);
-        let defaultEntryForm = self.getDataElementSections(dataElements,maxDataElements);
+        let dataElements = this.getDataElements(dataSet);
+        let defaultEntryForm = this.getDataElementSections(dataElements,maxDataElements);
         resolve(defaultEntryForm);
       },error=>{
         reject();

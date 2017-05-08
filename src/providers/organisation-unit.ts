@@ -47,19 +47,18 @@ export class OrganisationUnit {
    * @returns {Promise<T>}
    */
   downloadingOrganisationUnitsFromServer(orgUnitIds,currentUser){
-    let self= this;
     let orgUnits= [];
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject)=> {
       let counts = 0;
       for(let orgUnitId of orgUnitIds){
         let fields ="fields=id,name,path,ancestors[id,name],dataSets,programs,level,children[id,name,children[id]],parent";
         let filter="filter=path:ilike:";
-        let url = "/api/25/"+self.resource+".json?paging=false&";
+        let url = "/api/25/"+this.resource+".json?paging=false&";
         url += fields + "&" + filter + orgUnitId;
-        self.HttpClient.get(url,currentUser).subscribe(response=>{
+        this.HttpClient.get(url,currentUser).subscribe(response=>{
           response = response.json();
           counts = counts + 1;
-          orgUnits = self.appendOrgUnitsFromServerToOrgUnitArray(orgUnits,response);
+          orgUnits = this.appendOrgUnitsFromServerToOrgUnitArray(orgUnits,response);
           if(counts == orgUnitIds.length){
             resolve(orgUnits);
           }
@@ -92,11 +91,10 @@ export class OrganisationUnit {
    * @returns {Promise<T>}
    */
   savingOrganisationUnitsFromServer(orgUnits,currentUser){
-    let self= this;
     let counts = 0;
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject)=> {
       for(let orgUnit of orgUnits){
-        self.sqlLite.insertDataOnTable(self.resource,orgUnit,currentUser.currentDatabase).then(()=>{
+        this.sqlLite.insertDataOnTable(this.resource,orgUnit,currentUser.currentDatabase).then(()=>{
           counts = counts + 1;
           if(counts == orgUnits.length){
             resolve();
@@ -123,18 +121,17 @@ export class OrganisationUnit {
    * @param currentUser
    */
   getOrganisationUnits(currentUser){
-    let self = this;
     let userOrgUnitIds = currentUser.userOrgUnitIds;
-    return new Promise(function(resolve, reject) {
-      if(self.organisationUnits && self.organisationUnits.length > 0){
-        resolve({organisationUnits : self.organisationUnits,lastSelectedOrgUnit :  self.lastSelectedOrgUnit})
+    return new Promise((resolve, reject)=> {
+      if(this.organisationUnits && this.organisationUnits.length > 0){
+        resolve({organisationUnits : this.organisationUnits,lastSelectedOrgUnit :  this.lastSelectedOrgUnit})
       }else{
         if( userOrgUnitIds && userOrgUnitIds.length > 0){
-          self.sqlLite.getDataFromTableByAttributes(self.resource,"id",userOrgUnitIds,currentUser.currentDatabase).then((organisationUnits : any)=>{
-            self.getSortedOrganisationUnits(organisationUnits).then((organisationUnits:any)=>{
+          this.sqlLite.getDataFromTableByAttributes(this.resource,"id",userOrgUnitIds,currentUser.currentDatabase).then((organisationUnits : any)=>{
+            this.getSortedOrganisationUnits(organisationUnits).then((organisationUnits:any)=>{
               if(organisationUnits.length > 0){
-                self.organisationUnits = organisationUnits;
-                self.setLastSelectedOrganisationUnitUnit(organisationUnits[0]);
+                this.organisationUnits = organisationUnits;
+                this.setLastSelectedOrganisationUnitUnit(organisationUnits[0]);
                 resolve({organisationUnits : organisationUnits,lastSelectedOrgUnit : organisationUnits[0]})
               }else{
                 resolve({organisationUnits : [],lastSelectedOrgUnit : {}})
@@ -158,11 +155,10 @@ export class OrganisationUnit {
    * @returns {Promise<T>}
      */
   getOrganisationUnitsByIds(organisationUnitIds,currentUser){
-    let self = this;
     return new Promise(function(resolve, reject) {
       if( organisationUnitIds && organisationUnitIds.length > 0){
-        self.sqlLite.getDataFromTableByAttributes(self.resource,"id",organisationUnitIds,currentUser.currentDatabase).then((organisationUnits : any)=>{
-          self.getSortedOrganisationUnits(organisationUnits).then((organisationUnits:any)=>{
+        this.sqlLite.getDataFromTableByAttributes(this.resource,"id",organisationUnitIds,currentUser.currentDatabase).then((organisationUnits : any)=>{
+          this.getSortedOrganisationUnits(organisationUnits).then((organisationUnits:any)=>{
             if(organisationUnits && organisationUnits.length > 0) {
               if (organisationUnits[0].children && organisationUnits[0].children.length > 0 && organisationUnits[0].children[0].children) {
                 resolve(organisationUnits);
@@ -176,7 +172,7 @@ export class OrganisationUnit {
                     }
                   }
                 }
-                self.getOrganisationUnitsByIds(orgUnitIds, currentUser).then((childrenOrganisationUnits:any)=> {
+                this.getOrganisationUnitsByIds(orgUnitIds, currentUser).then((childrenOrganisationUnits:any)=> {
                   let childrenOrganisationUnitsMapper = {};
                   for (let childrenOrganisationUnit of childrenOrganisationUnits) {
                     childrenOrganisationUnitsMapper[childrenOrganisationUnit.id] = childrenOrganisationUnit;
@@ -207,17 +203,16 @@ export class OrganisationUnit {
   }
 
   getOrganisationUnitsByLevels(parentIds,currentUser){
-    let self = this;
     let organisationUnitIdToOrganisationUnits = {};
-    return new Promise(function(resolve, reject) {
-      self.getOrganisationUnitsByIds(parentIds,currentUser).then((organisationUnits : any)=>{
+    return new Promise((resolve, reject)=>{
+      this.getOrganisationUnitsByIds(parentIds,currentUser).then((organisationUnits : any)=>{
         for(let organisationUnit of organisationUnits){
           organisationUnitIdToOrganisationUnits[organisationUnit.id] = organisationUnit;
         }
 
         let parentId = parentIds.splice(0,1)[0];
         let orgUnitTree = organisationUnitIdToOrganisationUnits[parentId];
-        self.recursiveFetch(parentIds,organisationUnitIdToOrganisationUnits,orgUnitTree);
+        this.recursiveFetch(parentIds,organisationUnitIdToOrganisationUnits,orgUnitTree);
         resolve(orgUnitTree);
 
       },error=>{
@@ -228,7 +223,6 @@ export class OrganisationUnit {
 
 
   recursiveFetch(parentIds,organisationUnitIdToOrganisationUnits,orgUnit){
-    var self = this;
     var parentId = parentIds.splice(0,1)[0];
     var newChildren = [];
     if(orgUnit && orgUnit.children){
@@ -242,7 +236,7 @@ export class OrganisationUnit {
       orgUnit.children = newChildren;
       orgUnit.children.forEach(function(child){
         if(child.id == parentId){
-          self.recursiveFetch(parentIds,organisationUnitIdToOrganisationUnits,child);
+          this.recursiveFetch(parentIds,organisationUnitIdToOrganisationUnits,child);
         }
       })
     }
@@ -256,8 +250,7 @@ export class OrganisationUnit {
    * @returns {Promise<T>}
    */
   getSortedOrganisationUnits(organisationUnits){
-    let self = this;
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject)=>{
       organisationUnits.sort((a, b) => {
         if (a.name > b.name) {
           return 1;
@@ -269,7 +262,7 @@ export class OrganisationUnit {
         return 0;
       });
       organisationUnits.forEach((organisationUnit:any)=>{
-        self.sortOrganisationUnits(organisationUnit);
+        this.sortOrganisationUnits(organisationUnit);
       });
       resolve(organisationUnits);
     });
@@ -280,7 +273,6 @@ export class OrganisationUnit {
    * @param organisationUnit
    */
   sortOrganisationUnits(organisationUnit) {
-    let self = this;
     if (organisationUnit.children) {
       organisationUnit.children.sort((a, b) => {
         if (a.name > b.name) {
@@ -293,7 +285,7 @@ export class OrganisationUnit {
         return 0;
       });
       organisationUnit.children.forEach((child) => {
-        self.sortOrganisationUnits(child);
+        this.sortOrganisationUnits(child);
       })
     }
   }

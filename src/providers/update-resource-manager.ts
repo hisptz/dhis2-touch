@@ -13,10 +13,8 @@ import {AppProvider} from "./app-provider";
 @Injectable()
 export class UpdateResourceManager {
 
-  public dataBaseStructure : any;
 
   constructor(public HttpClient : HttpClient,public sqlLite : SqlLite,public appProvider : AppProvider) {
-    this.dataBaseStructure = this.sqlLite.getDataBaseStructure();
   }
 
   /***
@@ -26,17 +24,17 @@ export class UpdateResourceManager {
    * @returns {Promise<T>}
      */
   downloadResources(resources,currentUser){
-    let self = this;
+
     let promises = [];
     let data  = {};
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject) =>  {
       resources.forEach((resource:any)=>{
         let resourceName = resource.name;
-        let fields = self.dataBaseStructure[resourceName].fields;
-        let filter = self.dataBaseStructure[resourceName].filter;
+        let fields = this.sqlLite.getDataBaseStructure()[resourceName].fields;
+        let filter = this.sqlLite.getDataBaseStructure()[resourceName].filter;
         if(resourceName != "organisationUnits"){
           promises.push(
-            self.appProvider.downloadMetadata(currentUser,resourceName,null,fields,filter).then((response : any) =>{
+            this.appProvider.downloadMetadata(currentUser,resourceName,null,fields,filter).then((response : any) =>{
               data[resource.name] = response[resource.name];
             },error=>{})
           );
@@ -46,7 +44,7 @@ export class UpdateResourceManager {
             orgUnitIds.push(orgUnit.id);
           });
           promises.push(
-            self.appProvider.downloadMetadataByResourceIds(currentUser,resourceName,orgUnitIds,fields,filter).then((response : any) =>{
+            this.appProvider.downloadMetadataByResourceIds(currentUser,resourceName,orgUnitIds,fields,filter).then((response : any) =>{
               data[resource.name] = response;
             },error=>{})
           );
@@ -63,12 +61,12 @@ export class UpdateResourceManager {
   }
 
   prepareDeviceToApplyChanges(resources,currentUser){
-    let self = this;
+
     let promises = [];
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject) =>  {
       resources.forEach((resource:any)=>{
         promises.push(
-          self.sqlLite.deleteAllOnTable(resource.name,currentUser.currentDatabase).then(()=>{
+          this.sqlLite.deleteAllOnTable(resource.name,currentUser.currentDatabase).then(()=>{
           },error=>{
 
           })
@@ -88,15 +86,15 @@ export class UpdateResourceManager {
 
 
   savingResources(resources,data,currentUser){
-    let self = this;
+
     let promises = [];
 
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject) =>  {
       resources.forEach((resource:any)=>{
         let resourceName = resource.name;
         if(data[resourceName]){
           promises.push(
-            self.appProvider.saveMetadata(resourceName,data[resourceName],currentUser.currentDatabase).then((
+            this.appProvider.saveMetadata(resourceName,data[resourceName],currentUser.currentDatabase).then((
             )=>{
             },error=>{})
           );

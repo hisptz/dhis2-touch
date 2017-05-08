@@ -19,12 +19,11 @@ export class ProgramStageSections {
   getProgramStageSections(programStageSectionsIdsArray,currentUser){
     let attribute = 'id';
     let attributeValue =[];
-    let self = this;
     programStageSectionsIdsArray.forEach((programStageSection:any)=>{
       attributeValue.push(programStageSection.id);
     });
-    return new Promise(function(resolve, reject) {
-      self.sqlLite.getDataFromTableByAttributes(self.resource,attribute,attributeValue,currentUser.currentDatabase).then(programStageSections=>{
+    return new Promise((resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeValue,currentUser.currentDatabase).then(programStageSections=>{
         resolve(programStageSections);
       },error=>{
         reject(error);

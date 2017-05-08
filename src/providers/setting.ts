@@ -16,10 +16,9 @@ export class Setting {
   }
 
   setSynchronization(time,timeType){
-    let self = this;
-    return  new Promise(function(resolve,reject){
+    return  new Promise((resolve,reject)=>{
       let synchronizationSetting = JSON.stringify({time:time,timeType:timeType});
-      self.storage.set('synchronizationSetting', synchronizationSetting).then(() => {
+      this.storage.set('synchronizationSetting', synchronizationSetting).then(() => {
         resolve();
       },error=>{
         reject();
@@ -28,10 +27,9 @@ export class Setting {
   }
 
    setDataEntrySetting(dataEntrySetting){
-    let self = this;
-    return  new Promise(function(resolve,reject){
+    return  new Promise((resolve,reject)=>{
       dataEntrySetting= JSON.stringify(dataEntrySetting);
-      self.storage.set('dataEntrySetting', dataEntrySetting).then(() => {
+      this.storage.set('dataEntrySetting', dataEntrySetting).then(() => {
         resolve();
       },error=>{
         reject();
@@ -40,9 +38,8 @@ export class Setting {
   }
 
   getSynchronization(){
-    let self = this;
-    return  new Promise(function(resolve,reject){
-      self.storage.get('synchronizationSetting').then(synchronizationSetting=>{
+    return  new Promise((resolve,reject)=>{
+      this.storage.get('synchronizationSetting').then(synchronizationSetting=>{
         synchronizationSetting = JSON.parse(synchronizationSetting);
         resolve(synchronizationSetting);
       },err=>{
@@ -52,9 +49,8 @@ export class Setting {
   }
 
   getDataEntrySetting(){
-    let self = this;
-    return  new Promise(function(resolve,reject){
-      self.storage.get('dataEntrySetting').then(dataEntrySetting=>{
+    return  new Promise((resolve,reject)=>{
+      this.storage.get('dataEntrySetting').then(dataEntrySetting=>{
         dataEntrySetting = JSON.parse(dataEntrySetting);
         resolve(dataEntrySetting);
       },err=>{

@@ -11,205 +11,6 @@ import {Observable} from 'rxjs/Rx';
 @Injectable()
 export class SqlLite {
 
-  private dataBaseStructure:any = {
-    organisationUnits: {
-      columns: [
-        {value: 'id', type: 'TEXT'},
-        {value: 'name', type: 'TEXT'},
-        {value: 'level', type: 'TEXT'},
-        {value: 'path', type: 'TEXT'},
-        {value: 'ancestors', type: 'LONGTEXT'},
-        {value: 'programs', type: 'LONGTEXT'},
-        {value: 'dataSets', type: 'LONGTEXT'},
-        {value: 'parent', type: 'LONGTEXT'},
-        {value: 'children', type: 'LONGTEXT'}
-      ],
-      fields: "",
-      canBeUpdated: true,
-      resourceType: "communication"
-    },
-    dataSets: {
-      columns: [
-        {value: 'id', type: 'TEXT'},
-        {value: 'name', type: 'TEXT'},
-        {value: 'timelyDays', type: 'TEXT'},
-        {value: 'formType', type: 'TEXT'},
-        {value: 'periodType', type: 'TEXT'},
-        {value: 'openFuturePeriods', type: 'TEXT'},
-        {value: 'expiryDays', type: 'TEXT'},
-        {value: 'dataElements', type: 'LONGTEXT'},
-        {value: 'dataSetElements', type: 'LONGTEXT'},
-        {value: 'organisationUnits', type: 'LONGTEXT'},
-        {value: 'sections', type: 'LONGTEXT'},
-        {value: 'indicators', type: 'LONGTEXT'},
-        {value: 'categoryCombo', type: 'LONGTEXT'}
-      ],
-      fields: "",
-      canBeUpdated: true,
-      resourceType: "entryForm"
-    },
-    sections: {
-      columns: [
-        {value: 'id', type: 'TEXT'},
-        {value: 'name', type: 'TEXT'},
-        {value: 'indicators', type: 'LONGTEXT'},
-        {value: 'dataElements', type: 'LONGTEXT'}
-      ],
-      fields: "id,name,indicators[id,name,indicatorType[factor],denominatorDescription,numeratorDescription,numerator,denominator],dataElements[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]",
-      canBeUpdated: true,
-      resourceType: "entryForm"
-    },
-    dataElements: {
-      columns: [
-        {value: 'id', type: 'TEXT'},
-        {value: 'name', type: 'TEXT'},
-        {value: 'displayName', type: 'TEXT'},
-        {value: 'formName', type: 'TEXT'},
-        {value: 'valueType', type: 'TEXT'},
-        {value: 'description', type: 'LONGTEXT'},
-        {value: 'attributeValues', type: 'LONGTEXT'},
-        {value: 'optionSet', type: 'LONGTEXT'},
-        {value: 'categoryCombo', type: 'LONGTEXT'}
-      ],
-      fields: "id,name,displayName,valueType,description,formName,attributeValues[value,attribute[name]],valueType,optionSet[name,options[name,id,code]],categoryCombo[id,name,categoryOptionCombos[id,name]]",
-      canBeUpdated: false,
-      resourceType: ""
-    },
-    smsCommand: {
-      columns: [
-        {value: 'id', type: 'TEXT'},
-        {value: 'commandName', type: 'TEXT'},
-        {value: 'parserType', type: 'TEXT'},
-        {value: 'separator', type: 'TEXT'},
-        {value: 'smsCode', type: 'LONGTEXT'},
-      ],
-      fields: "",
-      canBeUpdated: true,
-      resourceType: "entryForm"
-    },
-    indicators: {
-      columns: [
-        {value: 'id', type: 'TEXT'},
-        {value: 'name', type: 'TEXT'},
-        {value: 'denominatorDescription', type: 'TEXT'},
-        {value: 'numeratorDescription', type: 'TEXT'},
-        {value: 'numerator', type: 'TEXT'},
-        {value: 'denominator', type: 'TEXT'},
-        {value: 'indicatorType', type: 'LONGTEXT'}
-      ],
-      fields: "id,name,denominatorDescription,numeratorDescription,numerator,denominator,indicatorType[:all]",
-      canBeUpdated: true,
-      //resourceType: "report"
-    },
-    reports: {
-      columns: [
-        {value: 'id', type: 'TEXT'},
-        {value: 'name', type: 'TEXT'},
-        {value: 'created', type: 'TEXT'},
-        {value: 'type', type: 'TEXT'},
-        {value: 'relativePeriods', type: 'LONGTEXT'},
-        {value: 'reportParams', type: 'LONGTEXT'},
-        {value: 'designContent', type: 'LONGTEXT'}
-      ],
-      fields: "id,name,created,type,relativePeriods,reportParams,designContent",
-      filter: "type:eq:HTML&filter=name:ilike:mobile",
-      canBeUpdated: true,
-      resourceType: "report"
-    },
-    constants: {
-      columns: [
-        {value: 'id', type: 'TEXT'},
-        {value: 'value', type: 'TEXT'}
-      ],
-      fields: "id,value",
-      canBeUpdated: true,
-      //resourceType: "report"
-    },
-    dataValues: {
-      columns: [
-        {value: 'id', type: 'TEXT'},
-        {value: 'de', type: 'TEXT'},
-        {value: 'co', type: 'TEXT'},
-        {value: 'pe', type: 'TEXT'},
-        {value: 'ou', type: 'TEXT'},
-        {value: 'cc', type: 'TEXT'},
-        {value: 'cp', type: 'TEXT'},
-        {value: 'value', type: 'TEXT'},
-        {value: 'period', type: 'TEXT'},
-        {value: 'orgUnit', type: 'TEXT'},
-        {value: 'syncStatus', type: 'TEXT'},
-        {value: 'dataSetId', type: 'TEXT'}
-      ],
-      canBeUpdated: false
-    },
-    programs: {
-      columns: [
-        {value: 'id', type: 'TEXT'},
-        {value: 'name', type: 'TEXT'},
-        {value: 'withoutRegistration', type: 'TEXT'},
-        {value: 'programType', type: 'TEXT'},
-        {value: 'categoryCombo', type: 'LONGTEXT'},
-        {value: 'programStages', type: 'LONGTEXT'},
-        {value: 'programStageSections', type: 'LONGTEXT'},
-        {value: 'programIndicators', type: 'LONGTEXT'},
-        {value: 'translations', type: 'LONGTEXT'},
-        {value: 'attributeValues', type: 'LONGTEXT'},
-        {value: 'validationCriterias', type: 'LONGTEXT'},
-        {value: 'programRuleVariables', type: 'LONGTEXT'},
-        {value: 'programTrackedEntityAttributes', type: 'LONGTEXT'},
-        {value: 'programRules', type: 'LONGTEXT'},
-        {value: 'organisationUnits', type: 'LONGTEXT'}
-      ],
-      fields: "id,name,withoutRegistration,programType,categoryCombo[id,name,categories[id,name,categoryOptions[name,id]]],programStages[id,name,programStageDataElements[id],programStageSections[id]],organisationUnits[id],programIndicators,translations,attributeValues,validationCriterias,programRuleVariables,programTrackedEntityAttributes,programRules",
-      canBeUpdated: true,
-      resourceType: "event"
-    },
-    programStageDataElements: {
-      columns: [
-        {value: 'id', type: 'TEXT'},
-        {value: 'displayInReports', type: 'TEXT'},
-        {value: 'compulsory', type: 'TEXT'},
-        {value: 'allowProvidedElsewhere', type: 'TEXT'},
-        {value: 'allowFutureDate', type: 'TEXT'},
-        {value: 'dataElement', type: 'LONGTEXT'}
-      ],
-      fields: "id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]",
-      canBeUpdated: true,
-      resourceType: "event"
-    },
-    programStageSections: {
-      columns: [
-        {value: 'id', type: 'TEXT'},
-        {value: 'name', type: 'TEXT'},
-        {value: 'sortOrder', type: 'TEXT'},
-        {value: 'programIndicators', type: 'LONGTEXT'},
-        {value: 'programStageDataElements', type: 'LONGTEXT'}
-      ],
-      fields: "id,name,programIndicators,sortOrder,programStageDataElements[id]",
-      canBeUpdated: true,
-      resourceType: "event"
-    },
-    events: {
-      columns: [
-        {value: 'id', type: 'TEXT'},
-        {value: 'event', type: 'TEXT'},
-        {value: 'program', type: 'TEXT'},
-        {value: 'programName', type: 'TEXT'},
-        {value: 'programStage', type: 'TEXT'},
-        {value: 'orgUnit', type: 'TEXT'},
-        {value: 'orgUnitName', type: 'TEXT'},
-        {value: 'status', type: 'TEXT'},
-        {value: 'eventDate', type: 'TEXT'},
-        {value: 'completedDate', type: 'TEXT'},
-        {value: 'attributeCategoryOptions', type: 'TEXT'},
-        {value: 'dataValues', type: 'LONGTEXT'},
-        {value: 'notes', type: 'TEXT'},
-        {value: 'syncStatus', type: 'TEXT'}
-      ],
-      canBeUpdated: false
-    }
-  };
-
   constructor(public sqlite:SQLite) {
   }
 
@@ -218,7 +19,205 @@ export class SqlLite {
    * @returns {any}
    */
   getDataBaseStructure() {
-    return this.dataBaseStructure;
+    let  dataBaseStructure = {
+      organisationUnits: {
+        columns: [
+          {value: 'id', type: 'TEXT'},
+          {value: 'name', type: 'TEXT'},
+          {value: 'level', type: 'TEXT'},
+          {value: 'path', type: 'TEXT'},
+          {value: 'ancestors', type: 'LONGTEXT'},
+          {value: 'programs', type: 'LONGTEXT'},
+          {value: 'dataSets', type: 'LONGTEXT'},
+          {value: 'parent', type: 'LONGTEXT'},
+          {value: 'children', type: 'LONGTEXT'}
+        ],
+        fields: "",
+        canBeUpdated: true,
+        resourceType: "communication"
+      },
+      dataSets: {
+        columns: [
+          {value: 'id', type: 'TEXT'},
+          {value: 'name', type: 'TEXT'},
+          {value: 'timelyDays', type: 'TEXT'},
+          {value: 'formType', type: 'TEXT'},
+          {value: 'periodType', type: 'TEXT'},
+          {value: 'openFuturePeriods', type: 'TEXT'},
+          {value: 'expiryDays', type: 'TEXT'},
+          {value: 'dataElements', type: 'LONGTEXT'},
+          {value: 'dataSetElements', type: 'LONGTEXT'},
+          {value: 'organisationUnits', type: 'LONGTEXT'},
+          {value: 'sections', type: 'LONGTEXT'},
+          {value: 'indicators', type: 'LONGTEXT'},
+          {value: 'categoryCombo', type: 'LONGTEXT'}
+        ],
+        fields: "",
+        canBeUpdated: true,
+        resourceType: "entryForm"
+      },
+      sections: {
+        columns: [
+          {value: 'id', type: 'TEXT'},
+          {value: 'name', type: 'TEXT'},
+          {value: 'indicators', type: 'LONGTEXT'},
+          {value: 'dataElements', type: 'LONGTEXT'}
+        ],
+        fields: "id,name,indicators[id,name,indicatorType[factor],denominatorDescription,numeratorDescription,numerator,denominator],dataElements[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]",
+        canBeUpdated: true,
+        resourceType: "entryForm"
+      },
+      dataElements: {
+        columns: [
+          {value: 'id', type: 'TEXT'},
+          {value: 'name', type: 'TEXT'},
+          {value: 'displayName', type: 'TEXT'},
+          {value: 'formName', type: 'TEXT'},
+          {value: 'valueType', type: 'TEXT'},
+          {value: 'description', type: 'LONGTEXT'},
+          {value: 'attributeValues', type: 'LONGTEXT'},
+          {value: 'optionSet', type: 'LONGTEXT'},
+          {value: 'categoryCombo', type: 'LONGTEXT'}
+        ],
+        fields: "id,name,displayName,valueType,description,formName,attributeValues[value,attribute[name]],valueType,optionSet[name,options[name,id,code]],categoryCombo[id,name,categoryOptionCombos[id,name]]",
+        canBeUpdated: false,
+        resourceType: ""
+      },
+      smsCommand: {
+        columns: [
+          {value: 'id', type: 'TEXT'},
+          {value: 'commandName', type: 'TEXT'},
+          {value: 'parserType', type: 'TEXT'},
+          {value: 'separator', type: 'TEXT'},
+          {value: 'smsCode', type: 'LONGTEXT'},
+        ],
+        fields: "",
+        canBeUpdated: true,
+        resourceType: "entryForm"
+      },
+      indicators: {
+        columns: [
+          {value: 'id', type: 'TEXT'},
+          {value: 'name', type: 'TEXT'},
+          {value: 'denominatorDescription', type: 'TEXT'},
+          {value: 'numeratorDescription', type: 'TEXT'},
+          {value: 'numerator', type: 'TEXT'},
+          {value: 'denominator', type: 'TEXT'},
+          {value: 'indicatorType', type: 'LONGTEXT'}
+        ],
+        fields: "id,name,denominatorDescription,numeratorDescription,numerator,denominator,indicatorType[:all]",
+        canBeUpdated: true,
+        //resourceType: "report"
+      },
+      reports: {
+        columns: [
+          {value: 'id', type: 'TEXT'},
+          {value: 'name', type: 'TEXT'},
+          {value: 'created', type: 'TEXT'},
+          {value: 'type', type: 'TEXT'},
+          {value: 'relativePeriods', type: 'LONGTEXT'},
+          {value: 'reportParams', type: 'LONGTEXT'},
+          {value: 'designContent', type: 'LONGTEXT'}
+        ],
+        fields: "id,name,created,type,relativePeriods,reportParams,designContent",
+        filter: "type:eq:HTML&filter=name:ilike:mobile",
+        canBeUpdated: true,
+        resourceType: "report"
+      },
+      constants: {
+        columns: [
+          {value: 'id', type: 'TEXT'},
+          {value: 'value', type: 'TEXT'}
+        ],
+        fields: "id,value",
+        canBeUpdated: true,
+        //resourceType: "report"
+      },
+      dataValues: {
+        columns: [
+          {value: 'id', type: 'TEXT'},
+          {value: 'de', type: 'TEXT'},
+          {value: 'co', type: 'TEXT'},
+          {value: 'pe', type: 'TEXT'},
+          {value: 'ou', type: 'TEXT'},
+          {value: 'cc', type: 'TEXT'},
+          {value: 'cp', type: 'TEXT'},
+          {value: 'value', type: 'TEXT'},
+          {value: 'period', type: 'TEXT'},
+          {value: 'orgUnit', type: 'TEXT'},
+          {value: 'syncStatus', type: 'TEXT'},
+          {value: 'dataSetId', type: 'TEXT'}
+        ],
+        canBeUpdated: false
+      },
+      programs: {
+        columns: [
+          {value: 'id', type: 'TEXT'},
+          {value: 'name', type: 'TEXT'},
+          {value: 'withoutRegistration', type: 'TEXT'},
+          {value: 'programType', type: 'TEXT'},
+          {value: 'categoryCombo', type: 'LONGTEXT'},
+          {value: 'programStages', type: 'LONGTEXT'},
+          {value: 'programStageSections', type: 'LONGTEXT'},
+          {value: 'programIndicators', type: 'LONGTEXT'},
+          {value: 'translations', type: 'LONGTEXT'},
+          {value: 'attributeValues', type: 'LONGTEXT'},
+          {value: 'validationCriterias', type: 'LONGTEXT'},
+          {value: 'programRuleVariables', type: 'LONGTEXT'},
+          {value: 'programTrackedEntityAttributes', type: 'LONGTEXT'},
+          {value: 'programRules', type: 'LONGTEXT'},
+          {value: 'organisationUnits', type: 'LONGTEXT'}
+        ],
+        fields: "id,name,withoutRegistration,programType,categoryCombo[id,name,categories[id,name,categoryOptions[name,id]]],programStages[id,name,programStageDataElements[id],programStageSections[id]],organisationUnits[id],programIndicators,translations,attributeValues,validationCriterias,programRuleVariables,programTrackedEntityAttributes,programRules",
+        canBeUpdated: true,
+        resourceType: "event"
+      },
+      programStageDataElements: {
+        columns: [
+          {value: 'id', type: 'TEXT'},
+          {value: 'displayInReports', type: 'TEXT'},
+          {value: 'compulsory', type: 'TEXT'},
+          {value: 'allowProvidedElsewhere', type: 'TEXT'},
+          {value: 'allowFutureDate', type: 'TEXT'},
+          {value: 'dataElement', type: 'LONGTEXT'}
+        ],
+        fields: "id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]",
+        canBeUpdated: true,
+        resourceType: "event"
+      },
+      programStageSections: {
+        columns: [
+          {value: 'id', type: 'TEXT'},
+          {value: 'name', type: 'TEXT'},
+          {value: 'sortOrder', type: 'TEXT'},
+          {value: 'programIndicators', type: 'LONGTEXT'},
+          {value: 'programStageDataElements', type: 'LONGTEXT'}
+        ],
+        fields: "id,name,programIndicators,sortOrder,programStageDataElements[id]",
+        canBeUpdated: true,
+        resourceType: "event"
+      },
+      events: {
+        columns: [
+          {value: 'id', type: 'TEXT'},
+          {value: 'event', type: 'TEXT'},
+          {value: 'program', type: 'TEXT'},
+          {value: 'programName', type: 'TEXT'},
+          {value: 'programStage', type: 'TEXT'},
+          {value: 'orgUnit', type: 'TEXT'},
+          {value: 'orgUnitName', type: 'TEXT'},
+          {value: 'status', type: 'TEXT'},
+          {value: 'eventDate', type: 'TEXT'},
+          {value: 'completedDate', type: 'TEXT'},
+          {value: 'attributeCategoryOptions', type: 'TEXT'},
+          {value: 'dataValues', type: 'LONGTEXT'},
+          {value: 'notes', type: 'TEXT'},
+          {value: 'syncStatus', type: 'TEXT'}
+        ],
+        canBeUpdated: false
+      }
+    };
+    return dataBaseStructure;
   }
 
   /**
@@ -230,7 +229,7 @@ export class SqlLite {
 
     return new Promise( (resolve, reject)=> {
       let promises = [];
-      let tableNames = Object.keys(this.dataBaseStructure);
+      let tableNames = Object.keys(this.getDataBaseStructure());
       tableNames.forEach((tableName:any) => {
         promises.push(this.createTable(tableName, databaseName).then(()=> {
             console.log('Generate table for ' + tableName);
@@ -260,7 +259,7 @@ export class SqlLite {
 
     return new Promise( (resolve, reject)=> {
       let query = 'CREATE TABLE IF NOT EXISTS ' + tableName + ' (';
-      let columns = this.dataBaseStructure[tableName].columns;
+      let columns = this.getDataBaseStructure()[tableName].columns;
       columns.forEach((column:any, index:any) => {
         if (column.value == "id") {
           query += column.value + " " + column.type + ' primary key';
@@ -300,7 +299,7 @@ export class SqlLite {
   insertDataOnTable(tableName, fieldsValues, databaseName) {
 
     databaseName = databaseName + '.db';
-    let columns = this.dataBaseStructure[tableName].columns;
+    let columns = this.getDataBaseStructure()[tableName].columns;
     let columnNames = "";
     let questionMarks = "";
     let values = [];
@@ -430,7 +429,7 @@ export class SqlLite {
   getDataFromTableByAttributes(tableName, attribute, attributesValuesArray, databaseName) {
 
     databaseName = databaseName + '.db';
-    let columns = this.dataBaseStructure[tableName].columns;
+    let columns = this.getDataBaseStructure()[tableName].columns;
     let query = "SELECT * FROM " + tableName + " WHERE " + attribute + " IN (";
     let inClauseValues = "";
 
@@ -465,7 +464,7 @@ export class SqlLite {
   getAllDataFromTable(tableName, databaseName) {
 
     databaseName = databaseName + '.db';
-    let columns = this.dataBaseStructure[tableName].columns;
+    let columns = this.getDataBaseStructure()[tableName].columns;
     let query = "SELECT * FROM " + tableName + ";";
 
     return new Promise( (resolve, reject)=> {

@@ -20,26 +20,26 @@ export class Synchronization {
   }
 
   getCurrentUser(){
-    let self = this;
-    return new Promise(function(resolve, reject) {
-      self.user.getCurrentUser().then((user : any)=>{
+
+    return new Promise((resolve, reject)=> {
+      this.user.getCurrentUser().then((user : any)=>{
         resolve(user);
       })
     })
   }
 
   startSynchronization(){
-    let self = this;
+
     let timeInterval = 1000 * 60 * 2;
-    return  new Promise(function(resolve,reject){
-      self.Setting.getSynchronization().then((synchronization :any)=>{
+    return  new Promise((resolve,reject)=>{
+      this.Setting.getSynchronization().then((synchronization :any)=>{
         if(synchronization){
           timeInterval = synchronization.time?synchronization.time:timeInterval;
         }
-        self.getCurrentUser().then((user : any)=>{
-          self.synchronizationTimer = setInterval(() => {
-            self.dataValues.getDataValuesByStatus(user,"not synced").then((dataValues : any)=>{
-              self.dataValues.uploadDataValues(dataValues,user);
+        this.getCurrentUser().then((user : any)=>{
+          this.synchronizationTimer = setInterval(() => {
+            this.dataValues.getDataValuesByStatus(user,"not synced").then((dataValues : any)=>{
+              this.dataValues.uploadDataValues(dataValues,user);
             },error=>{});
           }, timeInterval);
         });
@@ -53,9 +53,9 @@ export class Synchronization {
   }
 
   stopSynchronization(){
-    let self = this;
+
     return  new Promise(function(resolve,reject){
-      clearInterval(self.synchronizationTimer);
+      clearInterval(this.synchronizationTimer);
       resolve()
     });
 

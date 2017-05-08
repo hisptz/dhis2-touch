@@ -34,14 +34,14 @@ export class DashboardService {
    */
   allDashboards(currentUser) {
     let url = '/api/25/dashboards.json?paging=false&fields=id,name,dashboardItems[:all,users[:all],resources[:all],reports[:all]]';
-    let self = this;
-    return new Promise(function (resolve, reject) {
-      if (self.dashboards && self.dashboards.length > 0) {
-        resolve(self.dashboards);
+
+    return new Promise( (resolve, reject)=> {
+      if (this.dashboards && this.dashboards.length > 0) {
+        resolve(this.dashboards);
       } else {
-        self.httpClient.get(url, currentUser).subscribe(response=> {
-          self.dashboards = self.getDashboardsArrayFromApi(response.json());
-          resolve(self.dashboards)
+        this.httpClient.get(url, currentUser).subscribe(response=> {
+          this.dashboards = this.getDashboardsArrayFromApi(response.json());
+          resolve(this.dashboards)
         }, error=> {
           reject(error.json());
         })
@@ -87,16 +87,16 @@ export class DashboardService {
    */
   getDashboardItemObjects(dashboardItems, currentUser) {
     let dashboardObjects = [];
-    let self = this;
+
     let promises = [];
     let rejectedDashboardItems = 0;
     let rejectedDashboardsType = "";
     let allowedDashboardItems = ["CHART", "EVENT_CHART", "TABLE", "REPORT_TABLE", "EVENT_REPORT"];
-    return new Promise(function (resolve, reject) {
+    return new Promise( (resolve, reject)=> {
       dashboardItems.forEach(dashboardItem=> {
         if (allowedDashboardItems.indexOf(dashboardItem.type) > -1) {
           promises.push(
-            self.getDashboardItemObject(dashboardItem, currentUser).then(dashboardObject=> {
+            this.getDashboardItemObject(dashboardItem, currentUser).then(dashboardObject=> {
               dashboardObjects.push(dashboardObject);
             }, error=> {
             })
@@ -132,10 +132,10 @@ export class DashboardService {
    */
   getDashboardItemObject(dashboardItem, currentUser) {
     let self = this;
-    let url = "/api/25/" + self.formatEnumString(dashboardItem.type) + "s/" + dashboardItem[self.formatEnumString(dashboardItem.type)].id + ".json?fields=:all,program[id,name],programStage[id,name],columns[dimension,filter,items[id,name],legendSet[id,name]],rows[dimension,filter,items[id,name],legendSet[id,name]],filters[dimension,filter,items[id,name],legendSet[id,name]],!lastUpdated,!href,!created,!publicAccess,!rewindRelativePeriods,!userOrganisationUnit,!userOrganisationUnitChildren,!userOrganisationUnitGrandChildren,!externalAccess,!access,!relativePeriods,!columnDimensions,!rowDimensions,!filterDimensions,!user,!organisationUnitGroups,!itemOrganisationUnitGroups,!userGroupAccesses,!indicators,!dataElements,!dataElementOperands,!dataElementGroups,!dataSets,!periods,!organisationUnitLevels,!organisationUnits,attributeDimensions[id,name,attribute[id,name,optionSet[id,name,options[id,name]]]],dataElementDimensions[id,name,dataElement[id,name,optionSet[id,name,options[id,name]]]],categoryDimensions[id,name,category[id,name,categoryOptions[id,name,options[id,name]]]]";
-    return new Promise(function (resolve, reject) {
-      self.httpClient.get(url, currentUser).subscribe(response=> {
-        let dashboardObject = self.getDashboardItemObjectWithAnalyticsUrl(response.json());
+    let url = "/api/25/" + this.formatEnumString(dashboardItem.type) + "s/" + dashboardItem[this.formatEnumString(dashboardItem.type)].id + ".json?fields=:all,program[id,name],programStage[id,name],columns[dimension,filter,items[id,name],legendSet[id,name]],rows[dimension,filter,items[id,name],legendSet[id,name]],filters[dimension,filter,items[id,name],legendSet[id,name]],!lastUpdated,!href,!created,!publicAccess,!rewindRelativePeriods,!userOrganisationUnit,!userOrganisationUnitChildren,!userOrganisationUnitGrandChildren,!externalAccess,!access,!relativePeriods,!columnDimensions,!rowDimensions,!filterDimensions,!user,!organisationUnitGroups,!itemOrganisationUnitGroups,!userGroupAccesses,!indicators,!dataElements,!dataElementOperands,!dataElementGroups,!dataSets,!periods,!organisationUnitLevels,!organisationUnits,attributeDimensions[id,name,attribute[id,name,optionSet[id,name,options[id,name]]]],dataElementDimensions[id,name,dataElement[id,name,optionSet[id,name,options[id,name]]]],categoryDimensions[id,name,category[id,name,categoryOptions[id,name,options[id,name]]]]";
+    return new Promise( (resolve, reject)=> {
+      this.httpClient.get(url, currentUser).subscribe(response=> {
+        let dashboardObject = this.getDashboardItemObjectWithAnalyticsUrl(response.json());
         dashboardObject.interpretationLikeCount = dashboardItem.interpretationLikeCount;
         dashboardObject.interpretationCount = dashboardItem.interpretationCount;
         dashboardObject.visualizationType = dashboardItem.type;
@@ -156,10 +156,10 @@ export class DashboardService {
     let data = {};
     let self = this;
     let promises = [];
-    return new Promise(function (resolve, reject) {
+    return new Promise( (resolve, reject)=> {
       dashboardObjects.forEach((dashboardObject:any)=> {
         promises.push(
-          self.getAnalyticDataForDashboardItem(dashboardObject.analyticsUrl, currentUser).then(analyticData=> {
+          this.getAnalyticDataForDashboardItem(dashboardObject.analyticsUrl, currentUser).then(analyticData=> {
             data[dashboardObject.id] = analyticData;
           }, error=> {
           })
@@ -181,9 +181,8 @@ export class DashboardService {
    * @returns {Promise<T>}
    */
   getAnalyticDataForDashboardItem(analyticsUrl, currentUser) {
-    let self = this;
-    return new Promise(function (resolve, reject) {
-      self.httpClient.get(analyticsUrl, currentUser).subscribe(response=> {
+    return new Promise( (resolve, reject)=> {
+      this.httpClient.get(analyticsUrl, currentUser).subscribe(response=> {
         resolve(response.json());
       }, error=> {
         reject(error.json());

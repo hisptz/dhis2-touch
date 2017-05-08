@@ -36,12 +36,11 @@ export class Report {
   }
 
   getReportId(reportId,currentUser){
-    let self = this;
     let attribute = "id";
     let attributeArray = [];
     attributeArray.push(reportId);
-    return new Promise(function(resolve, reject) {
-      this.sqlLite.getDataFromTableByAttributes(self.resourceName,attribute,attributeArray,currentUser.currentDatabase).then((reportList:any)=>{
+    return new Promise((resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(this.resourceName,attribute,attributeArray,currentUser.currentDatabase).then((reportList:any)=>{
         resolve(reportList[0]);
       },error=>{
         reject(error);

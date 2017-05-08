@@ -39,12 +39,11 @@ export class DataValues {
    * @returns {Promise<T>}
    */
   getDataValuesByStatus(currentUser, status) {
-    let self = this;
     let attribute = "syncStatus";
     let attributeArray = [];
     attributeArray.push(status);
-    return new Promise(function (resolve, reject) {
-      self.sqlLite.getDataFromTableByAttributes(self.resourceName, attribute, attributeArray, currentUser.currentDatabase).then((dataValues:any)=> {
+    return new Promise( (resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(this.resourceName, attribute, attributeArray, currentUser.currentDatabase).then((dataValues:any)=> {
         resolve(dataValues);
       }, error=> {
         reject(error);
@@ -60,12 +59,11 @@ export class DataValues {
    * @returns {Promise<T>}
    */
   deleteDataValueByIds(dataValueIds, currentUser) {
-    let self = this;
     let successCount = 0;
     let failCount = 0;
-    return new Promise(function (resolve, reject) {
+    return new Promise( (resolve, reject)=> {
       for(let dataValueId of dataValueIds){
-        self.sqlLite.deleteFromTableByAttribute(self.resourceName,"id",dataValueId, currentUser.currentDatabase).then(()=> {
+        this.sqlLite.deleteFromTableByAttribute(this.resourceName,"id",dataValueId, currentUser.currentDatabase).then(()=> {
           successCount = successCount + 1;
           if((successCount + failCount) == dataValueIds.length){
             resolve();
@@ -87,24 +85,23 @@ export class DataValues {
    */
   uploadDataValues(dataValues, currentUser) {
 
-    let self = this;
-    let formattedDataValues = self.getFormattedDataValueForUpload(dataValues);
+    let formattedDataValues = this.getFormattedDataValueForUpload(dataValues);
     let uploadedDataValues = 0;
     let failOnUploadedDataValues = 0;
     let statusMessage = "";
-    let network = self.NetworkAvailability.getNetWorkStatus();
+    let network = this.NetworkAvailability.getNetWorkStatus();
     if (formattedDataValues.length > 0 && network.isAvailable) {
-      self.setNotificationToasterMessage("Starting data synchronization process");
+      this.setNotificationToasterMessage("Starting data synchronization process");
       formattedDataValues.forEach((formattedDataValue:any, index:any)=> {
-        self.httpClient.post('/api/25/dataValues?' + formattedDataValue, {}, currentUser).subscribe(()=> {
+        this.httpClient.post('/api/25/dataValues?' + formattedDataValue, {}, currentUser).subscribe(()=> {
           let syncedDataValues = dataValues[index];
           syncedDataValues["syncStatus"] = "synced";
           uploadedDataValues = uploadedDataValues + 1;
           if ((uploadedDataValues + failOnUploadedDataValues) == formattedDataValues.length) {
             statusMessage = uploadedDataValues + " data has been synced successfully .  " + failOnUploadedDataValues + " has failed to sync";
-            self.setNotificationToasterMessage(statusMessage);
+            this.setNotificationToasterMessage(statusMessage);
           }
-          self.sqlLite.insertDataOnTable(self.resourceName, syncedDataValues, currentUser.currentDatabase).then(response=> {
+          this.sqlLite.insertDataOnTable(this.resourceName, syncedDataValues, currentUser.currentDatabase).then(response=> {
           }, error=> {
           })
         }, error=> {
@@ -112,7 +109,7 @@ export class DataValues {
           failOnUploadedDataValues = failOnUploadedDataValues + 1;
           if ((uploadedDataValues + failOnUploadedDataValues) == formattedDataValues.length) {
             statusMessage = uploadedDataValues + " data has been synced successfully .  " + failOnUploadedDataValues + " has failed to sync";
-            self.setNotificationToasterMessage(statusMessage);
+            this.setNotificationToasterMessage(statusMessage);
           }
         });
       });
@@ -126,20 +123,19 @@ export class DataValues {
    * @returns {Promise<T>}
    */
   uploadAllDataValuesOnCompleteForm(dataValues, currentUser) {
-    let self = this;
-    let formattedDataValues = self.getFormattedDataValueForUpload(dataValues);
+    let formattedDataValues = this.getFormattedDataValueForUpload(dataValues);
     let uploadedDataValues = 0;
     let failOnUploadedDataValues = 0;
-    return new Promise(function (resolve, reject) {
+    return new Promise( (resolve, reject) =>{
       formattedDataValues.forEach((formattedDataValue:any, index:any)=> {
-        self.httpClient.post('/api/25/dataValues?' + formattedDataValue, {}, currentUser).subscribe(()=> {
+        this.httpClient.post('/api/25/dataValues?' + formattedDataValue, {}, currentUser).subscribe(()=> {
           let syncedDataValues = dataValues[index];
           syncedDataValues["syncStatus"] = "synced";
           uploadedDataValues = uploadedDataValues + 1;
           if ((uploadedDataValues + failOnUploadedDataValues) == formattedDataValues.length) {
             resolve({uploadedDataValues: uploadedDataValues, failOnUploadedDataValues: failOnUploadedDataValues})
           }
-          self.sqlLite.insertDataOnTable(self.resourceName, syncedDataValues, currentUser.currentDatabase).then(response=> {
+          this.sqlLite.insertDataOnTable(this.resourceName, syncedDataValues, currentUser.currentDatabase).then(response=> {
           }, error=> {
           })
         }, error=> {
@@ -197,10 +193,9 @@ export class DataValues {
    * @returns {Promise<T>}
    */
   completeOnDataSetRegistrations(dataSetId, period, orgUnitId, dataDimension, currentUser) {
-    let self = this;
-    let parameter = self.getDataSetCompletenessParameter(dataSetId, period, orgUnitId, dataDimension);
-    return new Promise(function (resolve, reject) {
-      self.httpClient.post('/api/25/completeDataSetRegistrations?' + parameter, {}, currentUser).subscribe(response=> {
+    let parameter = this.getDataSetCompletenessParameter(dataSetId, period, orgUnitId, dataDimension);
+    return new Promise( (resolve, reject)=> {
+      this.httpClient.post('/api/25/completeDataSetRegistrations?' + parameter, {}, currentUser).subscribe(response=> {
         resolve();
       }, error=> {
         reject(error);
@@ -218,10 +213,9 @@ export class DataValues {
    * @returns {Promise<T>}
    */
   unDoCompleteOnDataSetRegistrations(dataSetId, period, orgUnitId, dataDimension, currentUser) {
-    let self = this;
-    let parameter = self.getDataSetCompletenessParameter(dataSetId, period, orgUnitId, dataDimension);
-    return new Promise(function (resolve, reject) {
-      self.httpClient.delete('/api/25/completeDataSetRegistrations?' + parameter, currentUser).subscribe(response=> {
+    let parameter = this.getDataSetCompletenessParameter(dataSetId, period, orgUnitId, dataDimension);
+    return new Promise( (resolve, reject) =>{
+      this.httpClient.delete('/api/25/completeDataSetRegistrations?' + parameter, currentUser).subscribe(response=> {
         resolve();
       }, error=> {
         reject(error);
@@ -239,13 +233,12 @@ export class DataValues {
    * @returns {Promise<T>}
    */
   getDataSetCompletenessInfo(dataSetId, period, orgUnitId, dataDimension, currentUser) {
-    let self = this;
     let parameter = "dataSetId=" + dataSetId + "&periodId=" + period + "&organisationUnitId=" + orgUnitId;
     if (dataDimension.cp != "") {
       parameter += "&cc=" + dataDimension.cc + "&cp=" + dataDimension.cp;
     }
-    return new Promise(function (resolve, reject) {
-      self.httpClient.get('/dhis-web-dataentry/getDataValues.action?' + parameter, currentUser).subscribe(response=> {
+    return new Promise( (resolve, reject)=> {
+      this.httpClient.get('/dhis-web-dataentry/getDataValues.action?' + parameter, currentUser).subscribe(response=> {
         resolve(response.json());
       }, error=> {
         reject();
@@ -266,10 +259,9 @@ export class DataValues {
    */
   getDataValueSetFromServer(dataSet, period, orgUnit, attributeOptionCombo, currentUser) {
     let parameter = 'dataSet=' + dataSet + '&period=' + period + '&orgUnit=' + orgUnit;
-    let self = this;
-    return new Promise(function (resolve, reject) {
-      self.httpClient.get('/api/25/dataValueSets.json?' + parameter, currentUser).subscribe(response=> {
-        resolve(self.getFilteredDataValuesByDataSetAttributeOptionCombo(response.json(), attributeOptionCombo))
+    return new Promise((resolve, reject)=> {
+      this.httpClient.get('/api/25/dataValueSets.json?' + parameter, currentUser).subscribe(response=> {
+        resolve(this.getFilteredDataValuesByDataSetAttributeOptionCombo(response.json(), attributeOptionCombo))
       }, error=> {
         reject(error.json());
       });
@@ -341,7 +333,6 @@ export class DataValues {
    */
   getAllEntryFormDataValuesFromStorage(dataSetId, period, orgUnitId, entryFormSections, dataDimension, currentUser) {
     let ids = [];
-    let self = this;
     let entryFormDataValuesFromStorage = [];
     entryFormSections.forEach((section:any)=> {
       section.dataElements.forEach((dataElement:any)=> {
@@ -350,8 +341,8 @@ export class DataValues {
         });
       });
     });
-    return new Promise(function (resolve, reject) {
-      self.sqlLite.getDataFromTableByAttributes(self.resourceName, "id", ids, currentUser.currentDatabase).then((dataValues:any)=> {
+    return new Promise( (resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(this.resourceName, "id", ids, currentUser.currentDatabase).then((dataValues:any)=> {
         dataValues.forEach((dataValue:any)=> {
           if ((dataDimension.cp == dataValue.cp || dataValue.cp == "" || dataValue.cp == "0") && dataDimension.cc == dataValue.cc) {
             entryFormDataValuesFromStorage.push({
@@ -376,11 +367,10 @@ export class DataValues {
    * @returns {Promise<T>}
    */
   getDataValuesById(id, currentUser) {
-    let self = this;
     let ids = [];
     ids.push(id);
-    return new Promise(function (resolve, reject) {
-      self.sqlLite.getDataFromTableByAttributes(self.resourceName, "id", ids, currentUser.currentDatabase).then((dataValues:any)=> {
+    return new Promise( (resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(this.resourceName, "id", ids, currentUser.currentDatabase).then((dataValues:any)=> {
         resolve(dataValues)
       }, error=> {
         reject();
@@ -400,8 +390,7 @@ export class DataValues {
    * @returns {Promise<T>}
    */
   saveDataValues(dataValues, dataSetId, period, orgUnitId, dataDimension, syncStatus, currentUser) {
-    let self = this;
-    return new Promise(function (resolve, reject) {
+    return new Promise( (resolve, reject)=> {
       let promises = [];
       dataValues.forEach((dataValue:any)=> {
         let data = {
@@ -419,7 +408,7 @@ export class DataValues {
           orgUnit: dataValue.orgUnit
         };
         promises.push(
-          self.sqlLite.insertDataOnTable(self.resourceName, data, currentUser.currentDatabase).then(response=> {
+          this.sqlLite.insertDataOnTable(this.resourceName, data, currentUser.currentDatabase).then(response=> {
           }, error=> {
           })
         );
