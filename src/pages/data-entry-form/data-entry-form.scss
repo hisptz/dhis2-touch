@@ -59,4 +59,13 @@ page-data-entry-form {
     box-shadow: inset 0px 0px 0px 0px rgba(0, 0, 0, 0), 0 0px 0px rgba(0, 0, 0, 0);
   }
 
+  .pagination-button{
+    width: 100%;
+    height: 40px;
+  }
+
+  .text-input .text-input-ios .ng-pristine .ng-valid .ng-touched{
+    border:0;
+  }
+
 }
