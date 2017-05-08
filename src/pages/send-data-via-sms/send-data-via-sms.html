@@ -2,7 +2,7 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <ion-item text-capitalize (tap)="openOrganisationUnitModal()">
+        <div class="entry-selection-container entry-selection"  text-capitalize (tap)="openOrganisationUnitModal()">
           <div style="text-align: center" >
             <div *ngIf="!currentSelectionStatus.isOrgUnitLoaded">
               <page-loading loadingSize="small"></page-loading>
@@ -11,12 +11,12 @@
           <div *ngIf="currentSelectionStatus.isOrgUnitLoaded" style="text-align: center">
             {{ selectedOrganisationUnitLabel }}
           </div>
-        </ion-item>
+        </div>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-item text-capitalize (tap)="openDataSetsModal()" >
+        <div class="entry-selection-container entry-selection" text-capitalize (tap)="openDataSetsModal()" >
           <div style="text-align: center" >
             <div *ngIf="!currentSelectionStatus.isDataSetLoaded">
               <page-loading loadingSize="small"></page-loading>
@@ -25,16 +25,16 @@
           <div *ngIf="currentSelectionStatus.isDataSetLoaded" style="text-align: center" >
             {{ selectedDataSetLabel }}
           </div>
-        </ion-item>
+        </div>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-item text-capitalize (tap)="openPeriodModal()" >
+        <div class="entry-selection-container entry-selection" text-capitalize (tap)="openPeriodModal()" >
           <div style="text-align: center">
             {{ selectedPeriodLabel }}
           </div>
-        </ion-item>
+        </div>
       </ion-col>
     </ion-row>
 
@@ -43,21 +43,17 @@
         <div *ngIf="selectedDataSet.categoryCombo">
           <div *ngIf="selectedDataSet.categoryCombo.name != 'default'">
             <ion-row >
-              <ion-col width="100">
-                <ion-list>
-                  <ion-col >
-                    <div *ngFor="let category of selectedDataSet.categoryCombo.categories;let categoryIndex = index ">
-                      <ion-item >
-                        <ion-label>{{ category.name }}</ion-label>
-                        <ion-select [(ngModel)]="selectedDataDimension[categoryIndex]">
-                          <ion-option *ngFor="let option of category.categoryOptions" value="{{option.id}}" >
-                            {{ option.name }}
-                          </ion-option>
-                        </ion-select>
-                      </ion-item><br>
-                    </div>
-                  </ion-col>
-                </ion-list>
+              <ion-col >
+                <div *ngFor="let category of selectedDataSet.categoryCombo.categories;let categoryIndex = index ">
+                  <ion-item >
+                    <ion-label>{{ category.name }}</ion-label>
+                    <ion-select [(ngModel)]="selectedDataDimension[categoryIndex]">
+                      <ion-option *ngFor="let option of category.categoryOptions" value="{{option.id}}" >
+                        {{ option.name }}
+                      </ion-option>
+                    </ion-select>
+                  </ion-item><br>
+                </div>
               </ion-col>
             </ion-row>
           </div>
