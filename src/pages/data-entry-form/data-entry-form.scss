@@ -28,4 +28,35 @@ page-data-entry-form {
     border-bottom: 0px solid #dedede;
   }
 
+  .fab[mini] {
+    margin: 4px 5px 4px 0px!important
+  }
+  .fab-md-whitecolor ,.fab-ios-whitecolor {
+    color: #7A7A7A;
+  }
+
+  .button-round-ios, .button-round-md{
+    border-radius: 1rem;
+    border: 1px solid #E6E6E7 !important;
+  }
+
+  .button-small-ios,.button-small-md {
+    padding: 0 0.9em;
+    margin-top:0.5em;
+    height: 2.8em;
+  }
+
+  .button-md, .button-ios{
+    text-transform: none;
+  }
+
+  .fab {
+    display: inline-block !important;
+    border: 1px solid #E6E6E7 !important;
+  }
+
+  .fab-md,.button-md {
+    box-shadow: inset 0px 0px 0px 0px rgba(0, 0, 0, 0), 0 0px 0px rgba(0, 0, 0, 0);
+  }
+
 }

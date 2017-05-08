@@ -62,14 +62,15 @@ export class ReportView implements OnInit{
         for(let dataSet of this.selectedOrganisationUnit.dataSets){
           ids.push(dataSet.id);
         }
-        this.DataSets.getDataSetsByIds(ids,user).then((DataSets:any)=>{
-          var dataSets = [];
-          for(let dataSet of DataSets){
-            dataSets.push({id : dataSet.id,name : dataSet.name});
-          }
-          dhis2.report.organisationUnit.dataSets = dataSets;
-          this.loadReportDesignContent(this.reportId);
-        },error=>{});
+        this.loadReportDesignContent(this.reportId);
+        //this.DataSets.getDataSetsByIds(ids,user).then((DataSets:any)=>{
+        //  var dataSets = [];
+        //  for(let dataSet of DataSets){
+        //    dataSets.push({id : dataSet.id,name : dataSet.name});
+        //  }
+        //  dhis2.report.organisationUnit.dataSets = dataSets;
+        //  this.loadReportDesignContent(this.reportId);
+        //},error=>{});
       }else{
         this.loadReportDesignContent(this.reportId);
       }
