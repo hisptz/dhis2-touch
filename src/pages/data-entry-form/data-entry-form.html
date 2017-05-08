@@ -206,6 +206,25 @@
       </ion-col>
     </ion-row>
 
+
+    <ion-row *ngIf="entryFormSections.length == 1">
+      <ion-col  col-6 col-sm-6>
+        <div style="text-align: center">
+          <button class="pagination-button" color="favorite" ion-button full round [disabled] ="isDataSetCompleted || isDataSetCompletenessProcessRunning" (tap)="updateDataSetCompleteness()">
+            Complete
+          </button>
+        </div>
+      </ion-col>
+      <ion-col  col-6 col-sm-6>
+        <div style="text-align: center">
+          <button class="pagination-button"  color="danger"  ion-button full round [disabled] = "!isDataSetCompleted || isDataSetCompletenessProcessRunning" (tap)="updateDataSetCompleteness()">
+            Undo Complete
+          </button>
+        </div>
+      </ion-col>
+    </ion-row>
+
+
     <div *ngIf="isDataSetCompletenessProcessRunning">
       <ion-item >
         <div style="text-align: center" item-left >

@@ -14,7 +14,7 @@ $font-path: "../assets/fonts";
 
 
 $text-color:        #7A7A7A;
-$background-color:  #fff;
+$background-color :#fff;
 $font-size-base : 1.8rem;
 $action-sheet-md-title-font-size : 1.8rem;
 $list-inset-ios-border-radius : 5px;
@@ -22,6 +22,18 @@ $list-inset-md-border-radius : 5px;
 $list-inset-wp-border-radius : 5px;
 $text-input-ios-show-focus-highlight : false;
 $text-input-md-show-focus-highlight : false;
+
+$searchbar-ios-background-color :#F4F4F4;
+$searchbar-ios-border-color :#E6E6E7;
+$searchbar-ios-input-height: 4.2rem;
+$searchbar-ios-input-text-color : $text-color;
+$searchbar-ios-input-background-color :#F4F4F4;
+
+$searchbar-md-background-color :#F4F4F4;
+$searchbar-md-border-color :#E6E6E7;
+$searchbar-md-input-height: 4.2rem;
+$searchbar-md-input-text-color : $text-color;
+$searchbar-md-input-background-color :#F4F4F4;
 
 // Named Color Variables
 // --------------------------------------------------
