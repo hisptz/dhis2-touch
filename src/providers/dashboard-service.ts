@@ -154,7 +154,6 @@ export class DashboardService {
    */
   getAnalyticDataForDashboardItems(dashboardObjects, currentUser) {
     let data = {};
-    let self = this;
     let promises = [];
     return new Promise( (resolve, reject)=> {
       dashboardObjects.forEach((dashboardObject:any)=> {

@@ -155,7 +155,7 @@ export class OrganisationUnit {
    * @returns {Promise<T>}
      */
   getOrganisationUnitsByIds(organisationUnitIds,currentUser){
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject)=> {
       if( organisationUnitIds && organisationUnitIds.length > 0){
         this.sqlLite.getDataFromTableByAttributes(this.resource,"id",organisationUnitIds,currentUser.currentDatabase).then((organisationUnits : any)=>{
           this.getSortedOrganisationUnits(organisationUnits).then((organisationUnits:any)=>{
