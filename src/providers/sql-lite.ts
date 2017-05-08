@@ -227,12 +227,12 @@ export class SqlLite {
    * @returns {Promise<T>}
    */
   generateTables(databaseName) {
-    let self = this;
-    return new Promise(function (resolve, reject) {
+
+    return new Promise( (resolve, reject)=> {
       let promises = [];
-      let tableNames = Object.keys(self.dataBaseStructure);
+      let tableNames = Object.keys(this.dataBaseStructure);
       tableNames.forEach((tableName:any) => {
-        promises.push(self.createTable(tableName, databaseName).then(()=> {
+        promises.push(this.createTable(tableName, databaseName).then(()=> {
             console.log('Generate table for ' + tableName);
           })
         );
@@ -255,12 +255,12 @@ export class SqlLite {
    * @returns {Promise<T>}
    */
   createTable(tableName, databaseName) {
-    let self = this;
+
     databaseName = databaseName + '.db';
 
-    return new Promise(function (resolve, reject) {
+    return new Promise( (resolve, reject)=> {
       let query = 'CREATE TABLE IF NOT EXISTS ' + tableName + ' (';
-      let columns = self.dataBaseStructure[tableName].columns;
+      let columns = this.dataBaseStructure[tableName].columns;
       columns.forEach((column:any, index:any) => {
         if (column.value == "id") {
           query += column.value + " " + column.type + ' primary key';
@@ -273,7 +273,7 @@ export class SqlLite {
       });
       query += ')';
 
-      self.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
+      this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
         db.executeSql(query, []).then(() => {
           console.log("Success create table " + tableName);
           resolve();
@@ -298,9 +298,9 @@ export class SqlLite {
    * @returns {Promise<T>}
    */
   insertDataOnTable(tableName, fieldsValues, databaseName) {
-    let self = this;
+
     databaseName = databaseName + '.db';
-    let columns = self.dataBaseStructure[tableName].columns;
+    let columns = this.dataBaseStructure[tableName].columns;
     let columnNames = "";
     let questionMarks = "";
     let values = [];
@@ -330,8 +330,8 @@ export class SqlLite {
 
     });
     let query = "INSERT OR REPLACE INTO " + tableName + " (" + columnNames + ") VALUES (" + questionMarks + ")";
-    return new Promise(function (resolve, reject) {
-      self.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
+    return new Promise( (resolve, reject)=> {
+      this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
         db.executeSql(query, values).then(() => {
           resolve();
         }, (error) => {
@@ -353,9 +353,9 @@ export class SqlLite {
   deleteAllOnTable(tableName, databaseName) {
     databaseName = databaseName + '.db';
     let query = "DELETE FROM " + tableName;
-    let self = this;
-    return new Promise(function (resolve, reject) {
-      self.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
+
+    return new Promise( (resolve, reject)=> {
+      this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
         db.executeSql(query, []).then((success) => {
           resolve();
         }, (error) => {
@@ -377,11 +377,11 @@ export class SqlLite {
    * @returns {Promise<T>}
      */
   deleteFromTableByAttribute(tableName,attribute, attributesValue, databaseName) {
-    let self = this;
+
     databaseName = databaseName + '.db';
     let query = "DELETE FROM " + tableName + " WHERE "+attribute+" = '"+attributesValue+"'";
-    return new Promise(function (resolve, reject) {
-      self.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
+    return new Promise( (resolve, reject)=> {
+      this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
         db.executeSql(query, []).then((success) => {
           resolve();
         }, (error) => {
@@ -404,9 +404,9 @@ export class SqlLite {
   dropTable(tableName, databaseName) {
     databaseName = databaseName + '.db';
     let query = "DROP TABLE " + tableName;
-    let self = this;
-    return new Promise(function (resolve, reject) {
-      self.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
+
+    return new Promise( (resolve, reject)=> {
+      this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
         db.executeSql(query, []).then((success) => {
           resolve();
         }, (error) => {
@@ -428,9 +428,9 @@ export class SqlLite {
    * @returns {Promise<T>}
    */
   getDataFromTableByAttributes(tableName, attribute, attributesValuesArray, databaseName) {
-    let self = this;
+
     databaseName = databaseName + '.db';
-    let columns = self.dataBaseStructure[tableName].columns;
+    let columns = this.dataBaseStructure[tableName].columns;
     let query = "SELECT * FROM " + tableName + " WHERE " + attribute + " IN (";
     let inClauseValues = "";
 
@@ -442,10 +442,10 @@ export class SqlLite {
     });
     query += inClauseValues;
     query += ")";
-    return new Promise(function (resolve, reject) {
-      self.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
+    return new Promise( (resolve, reject)=> {
+      this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
         db.executeSql(query, []).then((result) => {
-          resolve(self.formatQueryReturnResult(result, columns));
+          resolve(this.formatQueryReturnResult(result, columns));
         }, (error) => {
           reject(error);
         });
@@ -463,15 +463,15 @@ export class SqlLite {
    * @returns {Promise<T>}
    */
   getAllDataFromTable(tableName, databaseName) {
-    let self = this;
+
     databaseName = databaseName + '.db';
-    let columns = self.dataBaseStructure[tableName].columns;
+    let columns = this.dataBaseStructure[tableName].columns;
     let query = "SELECT * FROM " + tableName + ";";
 
-    return new Promise(function (resolve, reject) {
-      self.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
+    return new Promise( (resolve, reject)=> {
+      this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
         db.executeSql(query, []).then((result) => {
-          resolve(self.formatQueryReturnResult(result, columns));
+          resolve(this.formatQueryReturnResult(result, columns));
         }, (error) => {
           reject(error);
         });

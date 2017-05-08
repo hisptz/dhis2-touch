@@ -56,20 +56,18 @@ export class DataSets {
      */
   downloadDataSetsFromServer(currentUser){
     let dataSets = [];
-    let self = this;
     let counts = 0;
     let userOrgUnitIds = currentUser.userOrgUnitIds;
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject)=> {
       for(let userOrgUnitId of userOrgUnitIds){
         let fields="fields=id,name,timelyDays,formType,version,periodType,openFuturePeriods,expiryDays,dataSetElements[dataElement[id,name,displayName,description,formName,attributeValues[value,attribute[name]],valueType,optionSet[name,options[name,id,code]],categoryCombo[id,name,categoryOptionCombos[id,name]]]],dataElements[id,name,displayName,description,formName,attributeValues[value,attribute[name]],valueType,optionSet[name,options[name,id,code]],categoryCombo[id,name,categoryOptionCombos[id,name]]]organisationUnits[id,name],sections[id],indicators[id,name,indicatorType[factor],denominatorDescription,numeratorDescription,numerator,denominator],categoryCombo[id,name,categoryOptionCombos[id,name,categoryOptions[id]],categories[id,name,categoryOptions[id,name]]]";
         let filter="filter=organisationUnits.path:ilike:";
-        let url = "/api/25/"+self.resource+".json?paging=false&";
+        let url = "/api/25/"+this.resource+".json?paging=false&";
         url += fields + "&" + filter + userOrgUnitId;
-        console.log("url : " + url);
-        self.HttpClient.get(url,currentUser).subscribe(response=>{
+        this.HttpClient.get(url,currentUser).subscribe(response=>{
           response = response.json();
           counts = counts + 1;
-          dataSets = self.appendDataSetsFromServerToDataSetArray(dataSets,response);
+          dataSets = this.appendDataSetsFromServerToDataSetArray(dataSets,response);
           if(counts == userOrgUnitIds.length){
             resolve(dataSets);
           }
@@ -102,11 +100,11 @@ export class DataSets {
    * @returns {Promise<T>}
      */
   saveDataSetsFromServer(dataSets,currentUser){
-    let self = this;
-    return new Promise(function(resolve, reject) {
+
+    return new Promise((resolve, reject)=> {
       let counts = 0;
       for(let dataSet of dataSets){
-        self.sqlLite.insertDataOnTable(self.resource,dataSet,currentUser.currentDatabase).then(()=>{
+        this.sqlLite.insertDataOnTable(this.resource,dataSet,currentUser.currentDatabase).then(()=>{
           counts = counts + 1;
           if(counts == dataSets.length){
             resolve();
@@ -131,10 +129,10 @@ export class DataSets {
   getDataSetsByIds(dataSetsIds,currentUser){
     let attribute = 'id';
     let dataSetsResponse = [];
-    let self = this;
-    return new Promise(function(resolve, reject) {
-      self.sqlLite.getDataFromTableByAttributes(self.resource,attribute,dataSetsIds,currentUser.currentDatabase).then((dataSets : any)=>{
-        self.sortDataSetList(dataSets);
+
+    return new Promise((resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,dataSetsIds,currentUser.currentDatabase).then((dataSets : any)=>{
+        this.sortDataSetList(dataSets);
         dataSets.forEach((dataSet : any)=>{
           dataSetsResponse.push({
             id: dataSet.id,
@@ -161,15 +159,14 @@ export class DataSets {
     let attribute = 'id';
     let attributeValue =[];
     let assignedDataSetsByOrgUnit = [];
-    let self = this;
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject)=> {
       selectedOrgUnit.dataSets.forEach((dataSet:any)=>{
         if(dataSetIdsByUserRoles.indexOf(dataSet.id) != -1){
           attributeValue.push(dataSet.id);
         }
       });
-      self.sqlLite.getDataFromTableByAttributes(self.resource,attribute,attributeValue,currentUser.currentDatabase).then((dataSets : any)=>{
-        self.sortDataSetList(dataSets);
+      this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeValue,currentUser.currentDatabase).then((dataSets : any)=>{
+        this.sortDataSetList(dataSets);
         dataSets.forEach((dataSet : any)=>{
           assignedDataSetsByOrgUnit.push({
             id: dataSet.id,
@@ -217,9 +214,8 @@ export class DataSets {
     let attribute = "id";
     let attributeValue = [];
     attributeValue.push(dataSetId);
-    let self = this;
-    return new Promise(function(resolve, reject) {
-      self.sqlLite.getDataFromTableByAttributes(self.resource,attribute,attributeValue,currentUser.currentDatabase).then((dataSets : any)=>{
+    return new Promise((resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeValue,currentUser.currentDatabase).then((dataSets : any)=>{
         if(dataSets.length > 0){
           resolve(dataSets[0]);
         }else{
