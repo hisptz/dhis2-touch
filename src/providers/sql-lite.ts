@@ -120,7 +120,7 @@ export class SqlLite {
           {value: 'designContent', type: 'LONGTEXT'}
         ],
         fields: "id,name,created,type,relativePeriods,reportParams,designContent",
-        filter: "type:eq:HTML&filter=name:ilike:mobile",
+        filter: "type:eq:HTML&filter=designContent:ilike:cordova",
         canBeUpdated: true,
         resourceType: "report"
       },
