@@ -214,7 +214,7 @@ export class DataEntryForm implements OnInit{
     let title = this.getDisplayName(dataElement) + (categoryComboName != 'default' ? " " +categoryComboName:"");
     let subTitle = "";
     if(dataElement.description){
-      title = + dataElement.description ;
+      title = dataElement.description ;
     }else{
       if(dataElement.description){
         title += ". Description : " + dataElement.description ;
