@@ -214,11 +214,15 @@ export class DataEntryForm implements OnInit{
     let title = this.getDisplayName(dataElement) + (categoryComboName != 'default' ? " " +categoryComboName:"");
     let subTitle = "";
     if(dataElement.description){
-      title += ". Description : " + dataElement.description ;
-    }
-    subTitle += "Value Type : " +dataElement.valueType.toLocaleLowerCase().replace(/_/g," ");
-    if(dataElement.optionSet){
-      title += ". It has " +dataElement.optionSet.options.length + " options to select.";
+      title = + dataElement.description ;
+    }else{
+      if(dataElement.description){
+        title += ". Description : " + dataElement.description ;
+      }
+      subTitle += "Value Type : " +dataElement.valueType.toLocaleLowerCase().replace(/_/g," ");
+      if(dataElement.optionSet){
+        title += ". It has " +dataElement.optionSet.options.length + " options to select.";
+      }
     }
     let actionSheet = this.actionSheetCtrl.create({
       title: title,subTitle:subTitle

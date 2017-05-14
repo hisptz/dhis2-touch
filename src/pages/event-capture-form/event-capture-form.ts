@@ -242,11 +242,15 @@ export class EventCaptureForm implements OnInit{
       title += ". This field is optional";
     }
     if(dataElement.description){
-      title += ". Description : " + dataElement.description;
-    }
-    subTitle += "Value Type : " +dataElement.valueType.toLocaleLowerCase().replace(/_/g," ");
-    if(dataElement.optionSet){
-      title += ". It has " +dataElement.optionSet.options.length + " options to select.";
+      title = + dataElement.description ;
+    }else{
+      if(dataElement.description){
+        title += ". Description : " + dataElement.description ;
+      }
+      subTitle += "Value Type : " +dataElement.valueType.toLocaleLowerCase().replace(/_/g," ");
+      if(dataElement.optionSet){
+        title += ". It has " +dataElement.optionSet.options.length + " options to select.";
+      }
     }
     let actionSheet = this.actionSheetCtrl.create({
       title: title,subTitle:subTitle
