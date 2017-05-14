@@ -29,6 +29,25 @@ var dhis2 = {
       });
       return defer.promise();
     },
+    getDataFromTableByLikeId: function (tableName, id) {
+      var defer = $.Deferred();
+      var attribute = "id";
+      if(dhis2.database.indexOf(".db") == -1){
+        dhis2.database = dhis2.database + ".db";
+      }
+      var db = window.sqlitePlugin.openDatabase({name: dhis2.database,location: 'default'});
+      db.transaction(function (tx) {
+        var query = "SELECT * FROM " + tableName + " WHERE " + attribute + " LIKE ?";
+        tx.executeSql(query, [id], function (tx, results) {
+          var res = dhis2.formatQueryReturnResult(results,tableName);
+          var data = res.length > 0 ? res[0] : {};
+          defer.resolve(data);
+        }, function (error) {
+          defer.reject(error);
+        });
+      });
+      return defer.promise();
+    },
     getDataFromTableByIds: function (tableName, ids) {
       var defer = $.Deferred();
       var attribute = "id";
@@ -127,8 +146,8 @@ dhis2.de = {
   getDataElementTotalValue: function (de, dataSet, match) {
     var defer = $.Deferred();
 
-    var dataValuesId = dataSet + "-" + de + "-" + dhis2.report.period + "-" + dhis2.report.organisationUnit.id;
-    dhis2.sqlLiteServices.getDataFromTableById('dataValues', dataValuesId)
+    var dataValuesId = dataSet + "-" + de + "-%-" + dhis2.report.period + "-" + dhis2.report.organisationUnit.id;
+    dhis2.sqlLiteServices.getDataFromTableByLikeId('dataValues', dataValuesId)
       .done(function (item) {
         console.log("TOTALITEM:" +JSON.stringify(item));
         if (item) {
@@ -201,8 +220,6 @@ dhis2.de = {
       var operand = match.replace(/[#\{\}]/g, '');
       var isTotal = !!( operand.indexOf(dhis2.de.cst.separator) == -1 );
       if (isTotal) {
-        //alert('is total');
-        console.log("ISTOTAL:" + operand);
         deferreds.push(dhis2.de.getDataElementTotalValue(operand, dataSet, match).done(function (sum, matchRef) {
           expression = expression.replace(matchRef, sum);
 
