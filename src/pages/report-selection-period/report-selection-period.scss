@@ -1,10 +1,9 @@
 page-report-selection-period {
-
-  .item-md,.item-ios,.item .item-block .item-md .item-input,.item-inner,.input-wrapper .item-inner{
+  .periodSelection {
     background-color: #F4F4F4;
   }
-  .item-md,.item-ios{
-    background-color: #F4F4F4;
+  .dataEntryButton{
+    color: #7A7A7A;
   }
 
   .item-md.item-block .item-inner {
@@ -16,5 +15,4 @@ page-report-selection-period {
     padding-right: 5px;
     border-bottom: 1px solid #E6E6E7;
   }
-
 }
