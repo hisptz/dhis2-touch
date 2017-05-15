@@ -62,7 +62,6 @@ export class ReportView implements OnInit{
         for(let dataSet of this.selectedOrganisationUnit.dataSets){
           ids.push(dataSet.id);
         }
-        this.loadReportDesignContent(this.reportId);
         this.DataSets.getDataSetsByIds(ids,user).then((DataSets:any)=>{
           var dataSets = [];
           for(let dataSet of DataSets){

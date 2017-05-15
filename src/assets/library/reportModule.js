@@ -20,7 +20,27 @@ var dhis2 = {
       db.transaction(function (tx) {
         var query = "SELECT * FROM " + tableName + " WHERE " + attribute + " = ?";
         tx.executeSql(query, [id], function (tx, results) {
-          var data = dhis2.formatQueryReturnResult(results,tableName).length > 0 ? dhis2.formatQueryReturnResult(results,tableName)[0] : {};
+          var res = dhis2.formatQueryReturnResult(results,tableName);
+          var data = res.length > 0 ? res[0] : {};
+          defer.resolve(data);
+        }, function (error) {
+          defer.reject(error);
+        });
+      });
+      return defer.promise();
+    },
+    getDataFromTableByLikeId: function (tableName, id) {
+      var defer = $.Deferred();
+      var attribute = "id";
+      if(dhis2.database.indexOf(".db") == -1){
+        dhis2.database = dhis2.database + ".db";
+      }
+      var db = window.sqlitePlugin.openDatabase({name: dhis2.database,location: 'default'});
+      db.transaction(function (tx) {
+        var query = "SELECT * FROM " + tableName + " WHERE " + attribute + " LIKE ?";
+        tx.executeSql(query, [id], function (tx, results) {
+          var res = dhis2.formatQueryReturnResult(results,tableName);
+          var data = res.length > 0 ? res[0] : {};
           defer.resolve(data);
         }, function (error) {
           defer.reject(error);
@@ -125,23 +145,25 @@ var dhis2 = {
 dhis2.de = {
   getDataElementTotalValue: function (de, dataSet, match) {
     var defer = $.Deferred();
-    var sum = new Number();
-    var dataValuesStore = $.indexedDB("hisptz").objectStore("dataValues");
-    var promise = dataValuesStore.each(function (item) {
-      //Fetch datavalues
-      if (item.id.indexOf(de) != -1 && item.id.endsWith(dhis2.report.period + "-" + dhis2.report.organisationUnit.id)) {
-        var val = item.value.dataValue.value;
-        if (val && dhis2.validation.isNumber(val)) {
-          sum += new Number(item.value.dataValue.value);
+
+    var dataValuesId = dataSet + "-" + de + "-%-" + dhis2.report.period + "-" + dhis2.report.organisationUnit.id;
+    dhis2.sqlLiteServices.getDataFromTableByLikeId('dataValues', dataValuesId)
+      .done(function (item) {
+        console.log("TOTALITEM:" +JSON.stringify(item));
+        if (item) {
+          var val = item.value;
+          if(isNaN(new Number(item.value))){
+            console.log("NAN2:" +JSON.stringify(item));
+          }
+          if (val && dhis2.validation.isNumber(val)) {
+            defer.resolve(new Number(item.value), match);
+          } else {
+            defer.resolve(new Number(0), match);
+          }
+        } else {
+          defer.resolve(new Number(0), match);
         }
-      }
-    });
-    promise.done(function (result, event) {
-      defer.resolve(sum, match);
-    });
-    promise.fail(function (error, event) {
-      defer.reject(error);
-    });
+      });
     return defer.promise();
   },
   getDataElementValue: function (de, coc, dataSet, match) {
@@ -198,7 +220,6 @@ dhis2.de = {
       var operand = match.replace(/[#\{\}]/g, '');
       var isTotal = !!( operand.indexOf(dhis2.de.cst.separator) == -1 );
       if (isTotal) {
-        //alert('is total');
         deferreds.push(dhis2.de.getDataElementTotalValue(operand, dataSet, match).done(function (sum, matchRef) {
           expression = expression.replace(matchRef, sum);
 
