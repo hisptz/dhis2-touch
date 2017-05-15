@@ -242,7 +242,7 @@ export class EventCaptureForm implements OnInit{
       title += ". This field is optional";
     }
     if(dataElement.description){
-      title += ". Description : " + dataElement.description;
+      title += ". Description : " + dataElement.description ;
     }
     subTitle += "Value Type : " +dataElement.valueType.toLocaleLowerCase().replace(/_/g," ");
     if(dataElement.optionSet){

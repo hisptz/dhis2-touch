@@ -204,12 +204,11 @@ export class OrganisationUnit {
 
   getOrganisationUnitsByLevels(parentIds,currentUser){
     let organisationUnitIdToOrganisationUnits = {};
-    return new Promise((resolve, reject)=>{
+    return new Promise((resolve, reject) =>{
       this.getOrganisationUnitsByIds(parentIds,currentUser).then((organisationUnits : any)=>{
         for(let organisationUnit of organisationUnits){
           organisationUnitIdToOrganisationUnits[organisationUnit.id] = organisationUnit;
         }
-
         let parentId = parentIds.splice(0,1)[0];
         let orgUnitTree = organisationUnitIdToOrganisationUnits[parentId];
         this.recursiveFetch(parentIds,organisationUnitIdToOrganisationUnits,orgUnitTree);
@@ -223,6 +222,7 @@ export class OrganisationUnit {
 
 
   recursiveFetch(parentIds,organisationUnitIdToOrganisationUnits,orgUnit){
+    var self = this;
     var parentId = parentIds.splice(0,1)[0];
     var newChildren = [];
     if(orgUnit && orgUnit.children){
@@ -236,11 +236,10 @@ export class OrganisationUnit {
       orgUnit.children = newChildren;
       orgUnit.children.forEach(function(child){
         if(child.id == parentId){
-          this.recursiveFetch(parentIds,organisationUnitIdToOrganisationUnits,child);
+          self.recursiveFetch(parentIds,organisationUnitIdToOrganisationUnits,child);
         }
       })
     }
-
   }
 
 
