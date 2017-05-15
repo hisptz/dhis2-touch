@@ -51,31 +51,44 @@ var dhis2 = {
     getDataFromTableByIds: function (tableName, ids) {
       var defer = $.Deferred();
       var attribute = "id";
-      if(dhis2.database.indexOf(".db") == -1){
-        dhis2.database = dhis2.database + ".db";
-      }
-      var db = window.sqlitePlugin.openDatabase({name: dhis2.database,location: 'default'});
-      var questionMarks = "?";
-      for (var i = 1; i < ids.length; i++) {
-        questionMarks += ",?";
-      }
-      db.transaction(function (tx) {
+      var newIds = ids;
+      var promises = [];
+      var data = [];
+      while(newIds.length > 0){
+        var currentIds = newIds.splice(0,100);
+        var questionMarks = "?";
+        for (var i = 1; i < currentIds.length; i++) {
+          questionMarks += ",?";
+        }
         var query = "SELECT * FROM " + tableName + " WHERE " + attribute + " IN (" + questionMarks + ")";
-        tx.executeSql(query, ids, function (tx, results) {
+        promises.push(this.performQuery(query, currentIds).then(function (results) {
           var len = results.rows.length;
-          var data = [];
           var formattedResults = dhis2.formatQueryReturnResult(results,tableName);
-          console.log("found len : " + len);
           for (var i = 0; i < len; i++) {
             var json = formattedResults[i];
             var index = ids.indexOf(json.id);
             ids.splice(index, 1);
             data.push(json);
           }
-          defer.resolve(data, ids);
-        }, function (error) {
-          defer.reject(error);
-        });
+        }));
+      }
+      $.when.apply($,promises).then(function(){
+        defer.resolve(data, ids);
+      },function(){
+        defer.reject();
+      })
+      return defer.promise();
+    },
+    performQuery:function(query,currentIds){
+      var defer = $.Deferred();
+      if(dhis2.database.indexOf(".db") == -1){
+        dhis2.database = dhis2.database + ".db";
+      }
+      var db = window.sqlitePlugin.openDatabase({name: dhis2.database,location: 'default'});
+      db.transaction(function (tx) {
+        tx.executeSql(query, currentIds, function (tx, results) {
+          defer.resolve(results);
+        })
       });
       return defer.promise();
     },
@@ -149,12 +162,8 @@ dhis2.de = {
     var dataValuesId = dataSet + "-" + de + "-%-" + dhis2.report.period + "-" + dhis2.report.organisationUnit.id;
     dhis2.sqlLiteServices.getDataFromTableByLikeId('dataValues', dataValuesId)
       .done(function (item) {
-        console.log("TOTALITEM:" +JSON.stringify(item));
         if (item) {
           var val = item.value;
-          if(isNaN(new Number(item.value))){
-            console.log("NAN2:" +JSON.stringify(item));
-          }
           if (val && dhis2.validation.isNumber(val)) {
             defer.resolve(new Number(item.value), match);
           } else {
@@ -174,9 +183,6 @@ dhis2.de = {
       .done(function (item) {
         if (item) {
           var val = item.value;
-          if(isNaN(new Number(item.value))){
-            console.log("NAN2:" +JSON.stringify(item));
-          }
           if (val && dhis2.validation.isNumber(val)) {
             defer.resolve(new Number(item.value), match);
           } else {
