@@ -55,7 +55,6 @@ export class SettingHomePage implements OnInit{
       this.Setting.setSynchronization(time,timeType).then(()=>{
         this.Synchronization.stopSynchronization().then(()=>{
           this.Synchronization.startSynchronization().then(()=>{
-            console.log
             this.setToasterMessage(successSavingMessages);
             this.settingObject[settingKey].isSaved = true;
             this.settingObject[settingKey].isExpanded = false;

@@ -122,21 +122,26 @@ export class DashBoardHomePage implements OnInit{
   }
 
   getDashboardItemObjectsAndData(dashboardItems){
-    this.dashBoardProgressTracker.isDashboardItemObjectsAndDataLoaded = false;
-    if(this.dashBoardProgressTracker.dashBoardItemObjectsAndData[this.selectedDashboardId]){
-      this.initiateSelectedDashboardItem();
-    }else{
-      this.DashboardService.getDashboardItemObjects(dashboardItems,this.currentUser).then((dashBoardItemObjects:any)=>{
-        this.dashBoardProgressTracker.dashBoardItemObjectsAndData[this.selectedDashboardId] = dashBoardItemObjects;
+    if(dashboardItems.length > 0){
+      this.dashBoardProgressTracker.isDashboardItemObjectsAndDataLoaded = false;
+      if(this.dashBoardProgressTracker.dashBoardItemObjectsAndData[this.selectedDashboardId]){
         this.initiateSelectedDashboardItem();
-      },error=>{
-        this.dashBoardProgressTracker.isDashboardItemObjectsAndDataLoaded = true;
-        if(error.errorMessage){
-          this.setToasterMessage(error.errorMessage);
-        }else{
-          this.setToasterMessage("Fail to load dashboard items metadata from server " );
-        }
-      });
+      }else{
+        this.DashboardService.getDashboardItemObjects(dashboardItems,this.currentUser).then((dashBoardItemObjects:any)=>{
+          this.dashBoardProgressTracker.dashBoardItemObjectsAndData[this.selectedDashboardId] = dashBoardItemObjects;
+          this.initiateSelectedDashboardItem();
+        },error=>{
+          this.dashBoardProgressTracker.isDashboardItemObjectsAndDataLoaded = true;
+          if(error.errorMessage){
+            this.setToasterMessage(error.errorMessage);
+          }else{
+            this.setToasterMessage("Fail to load dashboard items metadata from server " );
+          }
+        });
+      }
+    }else{
+      this.dashBoardProgressTracker.isDashboardItemObjectsAndDataLoaded = true;
+      this.setToasterMessage("There are no supported dashboard item found");
     }
   }
 

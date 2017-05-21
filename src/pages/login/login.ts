@@ -317,6 +317,7 @@ export class LoginPage implements OnInit{
       });
       this.loginData["userOrgUnitIds"] = orgUnitIds;
       if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.progressTracker[this.currentResourceType].message = "Assigned organisation unit(s) have been loaded";
         this.updateProgressTracker(resource);
         this.downloadingDataSets();
       }else{
@@ -355,6 +356,7 @@ export class LoginPage implements OnInit{
       this.currentResourceType = "entryForm";
       this.progressTracker[this.currentResourceType].message = "Loading entry forms";
       if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.progressTracker[this.currentResourceType].message = "Entry forms have been loaded";
         this.updateProgressTracker(resource);
         this.downloadingSections();
       }else{
@@ -392,6 +394,7 @@ export class LoginPage implements OnInit{
       this.currentResourceType = "entryForm";
       this.progressTracker[this.currentResourceType].message = "Loading entry forms's sections";
       if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.progressTracker[this.currentResourceType].message = "Entry forms's sections have been loaded";
         this.updateProgressTracker(resource);
         this.downloadingSmsCommand();
       }else{
@@ -505,6 +508,7 @@ export class LoginPage implements OnInit{
       this.currentResourceType = "event";
       this.progressTracker[this.currentResourceType].message = "Loading program stage's sections";
       if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.progressTracker[this.currentResourceType].message = "Program stage's sections have been loaded";
         this.updateProgressTracker(resource);
         this.downloadingProgramStageDataElements();
       }else{
@@ -514,6 +518,7 @@ export class LoginPage implements OnInit{
           if(!this.isLoginProcessCancelled){
             this.progressTracker[this.currentResourceType].message = "Saving program stage's sections";
             this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+              this.progressTracker[this.currentResourceType].message = "Program stage's sections have been saved";
               this.updateProgressTracker(resource);
               this.downloadingProgramStageDataElements();
             },error=>{
@@ -541,6 +546,7 @@ export class LoginPage implements OnInit{
       this.currentResourceType = "event";
       this.progressTracker[this.currentResourceType].message = "Loading programstage data elements";
       if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.progressTracker[this.currentResourceType].message = "Programstage data elements have been loaded";
         this.updateProgressTracker(resource);
         this.downloadingReports();
       }else{
@@ -550,6 +556,7 @@ export class LoginPage implements OnInit{
           if(!this.isLoginProcessCancelled){
             this.progressTracker[this.currentResourceType].message = "Saving programstage data elements";
             this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+              this.progressTracker[this.currentResourceType].message = "Programstage data elements have been saved";
               this.updateProgressTracker(resource);
               this.downloadingReports();
             },error=>{
@@ -577,8 +584,8 @@ export class LoginPage implements OnInit{
       this.currentResourceType = "report";
       this.progressTracker[this.currentResourceType].message = "Loading reports";
       if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.progressTracker[this.currentResourceType].message = "Reports have been loaded";
         this.updateProgressTracker(resource);
-        //this.downloadingIndicators();
         this.setLandingPage();
       }else{
         let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
@@ -588,8 +595,8 @@ export class LoginPage implements OnInit{
           if(!this.isLoginProcessCancelled){
             this.progressTracker[this.currentResourceType].message = "Saving reports";
             this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+              this.progressTracker[this.currentResourceType].message = "Reports have been saved";
               this.updateProgressTracker(resource);
-              //this.downloadingIndicators();
               this.setLandingPage();
             },error=>{
               this.loadingData = false;
@@ -604,78 +611,6 @@ export class LoginPage implements OnInit{
           console.log(JSON.stringify(error));
           if(!this.isLoginProcessCancelled){
             this.setToasterMessage('Fail to load reports.');
-          }
-        });
-      }
-    }
-  }
-
-  downloadingIndicators(){
-    if(!this.isLoginProcessCancelled){
-      let resource = 'indicators';
-      this.currentResourceType = "report";
-      this.progressTracker[this.currentResourceType].message = "Loading indicators";
-      if(this.completedTrackedProcess.indexOf(resource) > -1){
-        this.updateProgressTracker(resource);
-        this.downloadingConstants();
-      }else{
-        let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-        let fields = tableMetadata.fields;
-        this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-          if(!this.isLoginProcessCancelled){
-            this.progressTracker[this.currentResourceType].message = "Saving indicators";
-            this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-              this.updateProgressTracker(resource);
-              this.downloadingConstants();
-            },error=>{
-              this.loadingData = false;
-              this.isLoginProcessActive = false;
-              this.setToasterMessage('Fail to save indicators.');
-            });
-          }
-        },error=>{
-          this.loadingData = false;
-          this.isLoginProcessActive = false;
-          console.log(resource);
-          console.log(JSON.stringify(error));
-          if(!this.isLoginProcessCancelled){
-            this.setToasterMessage('Fail to load indicators.');
-          }
-        });
-      }
-    }
-  }
-
-
-  downloadingConstants(){
-    if(!this.isLoginProcessCancelled){
-      let resource = 'constants';
-      this.currentResourceType = "report";
-      this.progressTracker[this.currentResourceType].message = "Loading constants";
-      if(this.completedTrackedProcess.indexOf(resource) > -1){
-        this.updateProgressTracker(resource);
-        this.setLandingPage();
-      }else{
-        let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-        let fields = tableMetadata.fields;
-        this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-          if(!this.isLoginProcessCancelled){
-            this.progressTracker[this.currentResourceType].message = "Saving constants";
-            this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-              this.updateProgressTracker(resource);
-              this.setLandingPage();
-            },error=>{
-              this.loadingData = false;
-              this.setToasterMessage('Fail to save constants.');
-            });
-          }
-        },error=>{
-          this.loadingData = false;
-          this.isLoginProcessActive = false;
-          console.log(resource);
-          console.log(JSON.stringify(error));
-          if(!this.isLoginProcessCancelled){
-            this.setToasterMessage('Fail to load constants.');
           }
         });
       }
