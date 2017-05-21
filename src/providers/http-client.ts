@@ -18,6 +18,13 @@ export class HttpClient {
     this.timeOutTime = 4*60*1000;
   }
 
+  getUrlBasedOnDhisVersion(url,user){
+    if(user.dhisVersion &&(parseInt(user.dhisVersion) < 25)){
+        url = url.replace("/api/25/","/api/");
+    }
+    return url;
+  }
+
   /**
    *
    * @param url
@@ -25,6 +32,7 @@ export class HttpClient {
    * @returns {any}
      */
   get(url,user):Observable<Response>{
+    url = this.getUrlBasedOnDhisVersion(url,user);
     let headers = new Headers();
     headers.append('Authorization', 'Basic ' +user.authorizationKey);
     return this.http.get(user.serverUrl + url, {headers: headers}).timeout(this.timeOutTime);
@@ -38,6 +46,7 @@ export class HttpClient {
    * @returns {any}
      */
   post(url, data, user):Observable<Response> {
+    url = this.getUrlBasedOnDhisVersion(url,user);
     let headers = new Headers();
     headers.append('Authorization', 'Basic ' +user.authorizationKey);
     return this.http.post(user.serverUrl + url, data, { headers: headers }).timeout(this.timeOutTime);
@@ -51,6 +60,7 @@ export class HttpClient {
    * @returns {any}
      */
   put(url, data, user):Observable<Response> {
+    url = this.getUrlBasedOnDhisVersion(url,user);
     let headers = new Headers();
     headers.append('Authorization', 'Basic ' +user.authorizationKey);
     return this.http.put(user.serverUrl + url, data, { headers: headers }).timeout(this.timeOutTime);
@@ -63,6 +73,7 @@ export class HttpClient {
    * @returns {any}
      */
   delete(url,user):Observable<Response> {
+    url = this.getUrlBasedOnDhisVersion(url,user);
     let headers = new Headers();
     headers.append('Authorization', 'Basic ' +user.authorizationKey);
     return this.http.delete(user.serverUrl + url,{headers: headers}).timeout(this.timeOutTime);

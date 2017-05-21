@@ -29,7 +29,6 @@ export class Synchronization {
   }
 
   startSynchronization(){
-
     let timeInterval = 1000 * 60 * 2;
     return  new Promise((resolve,reject)=>{
       this.Setting.getSynchronization().then((synchronization :any)=>{
@@ -37,7 +36,7 @@ export class Synchronization {
           timeInterval = synchronization.time?synchronization.time:timeInterval;
         }
         this.getCurrentUser().then((user : any)=>{
-          this.synchronizationTimer = setInterval(() => {
+          setInterval(() => {
             this.dataValues.getDataValuesByStatus(user,"not synced").then((dataValues : any)=>{
               this.dataValues.uploadDataValues(dataValues,user);
             },error=>{});
@@ -53,9 +52,7 @@ export class Synchronization {
   }
 
   stopSynchronization(){
-
     return  new Promise(function(resolve,reject){
-      clearInterval(this.synchronizationTimer);
       resolve()
     });
 

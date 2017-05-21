@@ -31,7 +31,7 @@ export class User {
     url = url.split("/dhis-web-dashboard-integration")[0];
     url = url.split("/api/apps")[0];
     user.serverUrl = url;
-    url += "/api/25/me.json?" + fields;
+    url += "/api/me.json?" + fields;
 
     return new Promise((resolve, reject)=> {
       this.http.get(url, {}, {})
@@ -129,11 +129,16 @@ export class User {
    * @returns {Promise<T>}
      */
   setCurrentUserSystemInformation(systemInformation : any){
+    let dhisVersion = "22";
+    if(systemInformation.version){
+      let versionArray = systemInformation.version.split(".");
+      dhisVersion = (versionArray.length > 0) ? versionArray[1] : dhisVersion;
+    }
 
     return  new Promise((resolve,reject) => {
       systemInformation = JSON.stringify(systemInformation);
       this.storage.set('systemInformation', systemInformation).then(() => {
-        resolve();
+        resolve(dhisVersion);
       },error=>{
         reject();
       });

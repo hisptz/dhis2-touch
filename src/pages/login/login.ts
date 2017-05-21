@@ -236,6 +236,7 @@ export class LoginPage implements OnInit{
                       this.updateProgressTracker(resource);
                       resource = 'Loading system information';
                       this.currentResourceType = "communication";
+                      this.progressTracker[this.currentResourceType].message = "Connection to server has been established";
                       this.progressTracker[this.currentResourceType].message = "Preparing local storage";
                       if(!this.isLoginProcessCancelled){
                         this.httpClient.get('/api/system/info',this.loginData).subscribe(
@@ -244,7 +245,8 @@ export class LoginPage implements OnInit{
                             this.updateProgressTracker(resource);
                             this.progressTracker[this.currentResourceType].message = "Loading system information";
                             if(!this.isLoginProcessCancelled){
-                              this.user.setCurrentUserSystemInformation(data).then(()=>{
+                              this.user.setCurrentUserSystemInformation(data).then((dhisVersion)=>{
+                                this.loginData.dhisVersion = dhisVersion;
                                 if(!this.isLoginProcessCancelled){
                                   this.downloadingOrganisationUnits(userData);
                                 }
@@ -322,6 +324,7 @@ export class LoginPage implements OnInit{
           if(!this.isLoginProcessCancelled){
             this.progressTracker[this.currentResourceType].message = "Saving assigned organisation unit(s)";
             this.OrganisationUnit.savingOrganisationUnitsFromServer(orgUnits,this.loginData).then(()=>{
+              this.progressTracker[this.currentResourceType].message = "Assigned organisation unit(s) have been saved";
               this.updateProgressTracker(resource);
               this.downloadingDataSets();
             },error=>{
@@ -359,6 +362,7 @@ export class LoginPage implements OnInit{
           if(!this.isLoginProcessCancelled){
             this.progressTracker[this.currentResourceType].message = "Saving  entry forms";
             this.DataSets.saveDataSetsFromServer(dataSets,this.loginData).then(()=>{
+              this.progressTracker[this.currentResourceType].message = "Entry forms have been saved";
               this.updateProgressTracker(resource);
               this.downloadingSections();
             },error=>{
@@ -397,6 +401,7 @@ export class LoginPage implements OnInit{
           if(!this.isLoginProcessCancelled){
             this.progressTracker[this.currentResourceType].message = "Saving entry forms's sections";
             this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+              this.progressTracker[this.currentResourceType].message = "Entry forms's sections have been saved";
               this.updateProgressTracker(resource);
               this.downloadingSmsCommand();
             },error=>{
@@ -424,15 +429,17 @@ export class LoginPage implements OnInit{
     if(!this.isLoginProcessCancelled){
       let resource = "smsCommand";
       this.currentResourceType = "entryForm";
-      this.progressTracker[this.currentResourceType].message = "Loading sms commands";
+      this.progressTracker[this.currentResourceType].message = "Loading SMS commands";
       if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.progressTracker[this.currentResourceType].message = "SMS commands have been loaded";
         this.updateProgressTracker(resource);
         this.downloadingPrograms();
       }else{
         this.SmsCommand.getSmsCommandFromServer(this.loginData).then((response:any)=>{
           if(!this.isLoginProcessCancelled){
-            this.progressTracker[this.currentResourceType].message = "Saving sms commands";
+            this.progressTracker[this.currentResourceType].message = "Saving SMS commands";
             this.SmsCommand.savingSmsCommand(response,this.loginData.currentDatabase).then(()=>{
+              this.progressTracker[this.currentResourceType].message = "SMS commands have been saved";
               this.updateProgressTracker(resource);
               this.downloadingPrograms();
             },error=>{
@@ -460,6 +467,7 @@ export class LoginPage implements OnInit{
       this.currentResourceType = "event";
       this.progressTracker[this.currentResourceType].message = "Loading programs";
       if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.progressTracker[this.currentResourceType].message = "Programs have been loaded";
         this.updateProgressTracker(resource);
         this.downloadingProgramStageSections();
       }else{
@@ -469,6 +477,7 @@ export class LoginPage implements OnInit{
           if(!this.isLoginProcessCancelled){
             this.progressTracker[this.currentResourceType].message = "Saving programs";
             this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
+              this.progressTracker[this.currentResourceType].message = "Programs have been saved";
               this.updateProgressTracker(resource);
               this.downloadingProgramStageSections();
             },error=>{
