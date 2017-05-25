@@ -34,10 +34,10 @@ export class AppPermission {
       if(!status.hasPermission){
         permissions.requestPermissions(appPermissions,(grant)=>{
           if(!grant.hasPermission){
-            this.setToasterMessage("Fail to grant permission one or more permission, try to allow all permission manually on setting");
+            this.setToasterMessage("Fail to grant one or more permission, try to allow all permission manually on setting");
           }
         },(error)=>{
-          this.setToasterMessage("Fail to grant permission one or more permission, try to allow all permission manually on setting " + JSON.stringify(error));
+          this.setToasterMessage("Fail to grant one or more permission, try to allow all permission manually on setting " + JSON.stringify(error));
         })
       }
     });

@@ -9,6 +9,7 @@ import {OrganisationUnit} from "../../providers/organisation-unit";
 import {DataSets} from "../../providers/data-sets";
 import {User} from "../../providers/user";
 import {PeriodService} from "../../providers/period-service";
+import {AppPermission} from "../../providers/app-permission";
 
 /*
   Generated class for the SendDataViaSms page.
@@ -16,6 +17,8 @@ import {PeriodService} from "../../providers/period-service";
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
 */
+declare var cordova;
+
 @Component({
   selector: 'page-send-data-via-sms',
   templateUrl: 'send-data-via-sms.html',
@@ -44,12 +47,18 @@ export class SendDataViaSms implements OnInit{
 
   constructor(public modalCtrl: ModalController,public SmsCommand : SmsCommand,
               public PeriodService : PeriodService,
+              public AppPermission : AppPermission,
               public OrganisationUnit : OrganisationUnit,public DataSets : DataSets,
               public toastCtrl: ToastController,public user : User) {
 
   }
 
   ngOnInit() {
+    //checking and request for sms permissions
+    let permissions = cordova.plugins.permissions;
+    let smsPermission = [permissions.SEND_SMS, permissions.RECEIVE_SMS, permissions.READ_SMS];
+    this.AppPermission.checkAndRequestAppPermission(smsPermission);
+
     this.selectedDataDimension = [];
     this.user.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;
@@ -375,7 +384,7 @@ export class SendDataViaSms implements OnInit{
   setToasterMessage(message){
     let toast = this.toastCtrl.create({
       message: message,
-      duration: 3000
+      duration: 5000
     });
     toast.present();
   }
