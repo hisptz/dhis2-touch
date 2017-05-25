@@ -161,7 +161,7 @@ export class DashBoardHomePage implements OnInit{
     let toast = this.toastCtrl.create({
       message: message,
       position : 'top',
-      duration: 1500
+      duration: 3500
     });
     toast.present();
   }
@@ -169,7 +169,7 @@ export class DashBoardHomePage implements OnInit{
   setToasterMessage(message){
     let toast = this.toastCtrl.create({
       message: message,
-      duration: 3000
+      duration: 4000
     });
     toast.present();
   }

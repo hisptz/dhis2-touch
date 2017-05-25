@@ -70,7 +70,7 @@ export class OrganisationUnitsTreePage implements OnInit {
   setToasterMessage(message) {
     let toast = this.toastCtrl.create({
       message: message,
-      duration: 3500
+      duration: 4000
     });
     toast.present();
   }

@@ -375,7 +375,7 @@ export class DataEntryForm implements OnInit{
     let toast = this.toastCtrl.create({
       message: message,
       position : 'top',
-      duration: 3000
+      duration: 4000
     });
     toast.present();
   }

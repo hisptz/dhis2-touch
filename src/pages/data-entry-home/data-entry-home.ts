@@ -336,7 +336,7 @@ export class DataEntryHomePage implements OnInit{
   setToasterMessage(message){
     let toast = this.toastCtrl.create({
       message: message,
-      duration: 3000
+      duration: 4000
     });
     toast.present();
   }
