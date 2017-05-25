@@ -71,6 +71,7 @@ import {DataElementSyncPage} from "../pages/data-element-sync/data-element-sync"
 import {OrganisationUnitsTreePage} from "../pages/organisation-units-tree/organisation-units-tree";
 import {DashboardSearchPage} from "../pages/dashboard-search/dashboard-search";
 import {PeriodService} from "../providers/period-service";
+import {AppPermission} from "../providers/app-permission";
 
 
 @NgModule({
@@ -121,7 +122,7 @@ import {PeriodService} from "../providers/period-service";
     DataSets, DataValues, EntryForm, EventCaptureFormProvider,DashboardService,
     MetadataDictionaryService, UpdateResourceManager, OrganisationUnit, Program,
     ProgramStageDataElements, ProgramStageSections, Report, Setting, Synchronization,
-    AppProvider, HttpClient, SqlLite, User, SmsCommand, VisualizerService,
+    AppProvider, HttpClient, SqlLite, User, SmsCommand, VisualizerService,AppPermission,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
