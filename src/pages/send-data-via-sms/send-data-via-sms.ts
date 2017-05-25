@@ -56,7 +56,7 @@ export class SendDataViaSms implements OnInit{
   ngOnInit() {
     //checking and request for sms permissions
     let permissions = cordova.plugins.permissions;
-    let smsPermission = [permissions.SEND_SMS, permissions.RECEIVE_SMS, permissions.READ_SMS];
+    let smsPermission = [permissions.SEND_SMS];
     this.AppPermission.checkAndRequestAppPermission(smsPermission);
 
     this.selectedDataDimension = [];

@@ -269,6 +269,8 @@ export class LoginPage implements OnInit{
                           });
                       }
                     },error=>{
+                      this.loadingData = false;
+                      this.isLoginProcessActive = false;
                       console.log(JSON.stringify(error));
                       this.setToasterMessage('Fail to prepare local storage.');
                     })
@@ -279,8 +281,10 @@ export class LoginPage implements OnInit{
               this.loadingData = false;
               this.isLoginProcessActive = false;
               let networkAvailability = this.NetworkAvailability.getNetWorkStatus();
-              if (error.status == 0 || !networkAvailability.isAvailable) {
+              if(!networkAvailability.isAvailable){
                 this.setToasterMessage(networkAvailability.message);
+              }else if (error.status == 0) {
+                this.setToasterMessage('Please check server address');
               } else if (error.status == 401) {
                 this.setToasterMessage('You have enter wrong username or password or server address');
               } else {
@@ -643,7 +647,7 @@ export class LoginPage implements OnInit{
   setToasterMessage(message){
     let toast = this.toastCtrl.create({
       message: message,
-      duration: 3500
+      duration: 4000
     });
     toast.present();
   }
