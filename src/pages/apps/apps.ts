@@ -21,7 +21,8 @@ export class AppsPage implements OnInit{
 
   public viewMapperObject : any;
 
-  constructor(public navCtrl: NavController,public SqlLite : SqlLite) {}
+  constructor(public navCtrl: NavController,public SqlLite : SqlLite) {
+  }
 
   ngOnInit() {
     dhis2.dataBaseStructure =  this.SqlLite.getDataBaseStructure();
