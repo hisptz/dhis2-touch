@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {Setting} from "./setting";
-import {HttpClient} from "./http-client";
 import {User} from "./user";
 import {DataValues} from "./data-values";
 
@@ -13,9 +12,7 @@ import {DataValues} from "./data-values";
 @Injectable()
 export class Synchronization {
 
-  public synchronizationTimer : any;
-
-  constructor(public Setting: Setting,public httpClient: HttpClient,public user : User,public dataValues : DataValues) {
+  constructor(public Setting: Setting,public user : User,public dataValues : DataValues) {
 
   }
 

@@ -105,28 +105,18 @@ export class AppProvider {
    * @returns {Promise<T>}
      */
   saveMetadata(resource,resourceValues,databaseName){
-    let promises = [];
-
 
     return new Promise((resolve, reject)=> {
       if(resourceValues.length == 0){
         resolve();
-      }
-      resourceValues.forEach(resourceValue=>{
-        promises.push(
-          this.sqlLite.insertDataOnTable(resource,resourceValue,databaseName).then(()=>{
-            //saving success
-          },(error) => {
-          })
-        );
-      });
-
-      Observable.forkJoin(promises).subscribe(() => {
+      }else{
+        this.sqlLite.insertBulkDataOnTable(resource,resourceValues,databaseName).then(()=>{
           resolve();
-        },
-        (error) => {
-          reject(error.failure);
-        })
+        },error=>{
+          console.log(JSON.stringify(error));
+          reject(error);
+        });
+      }
     });
   }
 

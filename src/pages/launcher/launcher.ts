@@ -2,10 +2,11 @@ import { Component,OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import {User} from "../../providers/user";
 import {TabsPage} from "../tabs/tabs";
-import {LoginPage} from "../login/login";
 import {Synchronization} from "../../providers/synchronization";
 import {AppPermission} from "../../providers/app-permission";
+import {LoginPage} from "../login/login";
 
+declare var  dhis2;
 /*
   Generated class for the Launcher page.
 
@@ -13,7 +14,6 @@ import {AppPermission} from "../../providers/app-permission";
   Ionic pages and navigation.
 */
 
-declare var cordova;
 
 @Component({
   selector: 'page-launcher',
@@ -41,6 +41,8 @@ export class LauncherPage implements OnInit{
       }
     });
   }
+
+
 
 
 

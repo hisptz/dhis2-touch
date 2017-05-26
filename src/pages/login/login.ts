@@ -52,6 +52,7 @@ export class LoginPage implements OnInit{
               public user : User,public sqlLite : SqlLite) {}
 
   ngOnInit() {
+    this.NetworkAvailability.setNetworkStatusDetection();
     this.logoUrl = 'assets/img/logo-2.png';
     this.completedTrackedProcess = [];
     this.user.getCurrentUser().then((user: any)=>{

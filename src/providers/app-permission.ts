@@ -17,7 +17,7 @@ export class AppPermission {
   constructor(public toastCtrl: ToastController) {
     let permissions = cordova.plugins.permissions;
     this.appBasicPermissions = [
-      permissions.READ_EXTERNAL_STORAGE,permissions.READ_PHONE_STATE,
+      permissions.READ_EXTERNAL_STORAGE,//permissions.READ_PHONE_STATE,
       permissions.WRITE_EXTERNAL_STORAGE
     ];
   }
@@ -30,7 +30,7 @@ export class AppPermission {
     }else{
       appPermissions = this.appBasicPermissions;
     }
-    permissions.hasPermission(appPermissions, ( status )=>{
+    permissions.checkPermission(appPermissions, ( status )=>{
       if(!status.hasPermission){
         permissions.requestPermissions(appPermissions,(grant)=>{
           if(!grant.hasPermission){
