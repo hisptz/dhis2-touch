@@ -238,7 +238,7 @@ export class EventCaptureHomePage implements OnInit{
         });
         modal.present();
       }else{
-        this.setToasterMessage("No program to select on " + this.selectedOrganisationUnitLabel);
+        this.setToasterMessage("No program to select on " + this.selectedOrganisationUnitLabel + " request program assignments from your system administrator");
       }
     }else{
       this.setToasterMessage("Please select organisation unit first");

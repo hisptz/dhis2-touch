@@ -237,7 +237,7 @@ export class DataEntryHomePage implements OnInit{
         });
         modal.present();
       }else{
-        this.setToasterMessage("No entry form to select on " + this.selectedOrganisationUnitLabel);
+        this.setToasterMessage("No entry form to select on " + this.selectedOrganisationUnitLabel + " request form assignments from your system administrator");
       }
     }else{
       this.setToasterMessage("Please select organisation first");

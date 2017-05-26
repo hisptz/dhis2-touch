@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs/Rx';
 import {SqlLite} from "./sql-lite";
 import {HttpClient} from "./http-client";
 
