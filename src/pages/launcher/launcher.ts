@@ -5,8 +5,8 @@ import {TabsPage} from "../tabs/tabs";
 import {Synchronization} from "../../providers/synchronization";
 import {AppPermission} from "../../providers/app-permission";
 import {LoginPage} from "../login/login";
+import {NetworkAvailability} from "../../providers/network-availability";
 
-declare var  dhis2;
 /*
   Generated class for the Launcher page.
 
@@ -26,11 +26,13 @@ export class LauncherPage implements OnInit{
   constructor(public navCtrl: NavController,
               public AppPermission : AppPermission,
               public synchronization:Synchronization,
+              public NetworkAvailability : NetworkAvailability,
               public user : User) {}
 
   ngOnInit() {
     this.logoUrl = 'assets/img/logo-2.png';
     this.AppPermission.checkAndRequestAppPermission();
+    this.NetworkAvailability.setNetworkStatusDetection();
     this.user.getCurrentUser().then((user : any)=>{
       if(user && user.isLogin){
         this.synchronization.startSynchronization().then(()=>{

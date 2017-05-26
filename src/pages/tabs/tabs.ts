@@ -2,7 +2,6 @@ import { Component,OnInit } from '@angular/core';
 import {AccountPage} from "../account/account";
 import {AppsPage} from "../apps/apps";
 import {User} from "../../providers/user";
-import {NetworkAvailability} from "../../providers/network-availability";
 
 @Component({
   templateUrl: 'tabs.html'
@@ -14,12 +13,11 @@ export class TabsPage implements OnInit{
   tab2Root: any = AccountPage;
   public accountName : string = 'Account';
 
-  constructor(public user : User,public NetworkAvailability : NetworkAvailability) {
+  constructor(public user : User) {
 
   }
 
   ngOnInit() {
-    this.NetworkAvailability.setNetworkStatusDetection();
     this.user.getUserData().then(userData=>{
       this.setUserAccountName(userData);
     });
