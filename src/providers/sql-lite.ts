@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import {Observable} from 'rxjs/Rx';
 
+declare var cordova;
+
 /*
  Generated class for the SqlLite provider.
 
@@ -11,7 +13,10 @@ import {Observable} from 'rxjs/Rx';
 @Injectable()
 export class SqlLite {
 
+  public insertBatchSize : number;
+
   constructor(public sqlite:SQLite) {
+    this.insertBatchSize = 100;
   }
 
   /**
@@ -34,7 +39,8 @@ export class SqlLite {
         ],
         fields: "",
         canBeUpdated: true,
-        resourceType: "communication"
+        resourceType: "communication",
+        batchSize : 500
       },
       dataSets: {
         columns: [
@@ -54,7 +60,8 @@ export class SqlLite {
         ],
         fields: "",
         canBeUpdated: true,
-        resourceType: "entryForm"
+        resourceType: "entryForm",
+        batchSize : 20
       },
       sections: {
         columns: [
@@ -65,7 +72,8 @@ export class SqlLite {
         ],
         fields: "id,name,indicators[id,name,indicatorType[factor],denominatorDescription,numeratorDescription,numerator,denominator],dataElements[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]",
         canBeUpdated: true,
-        resourceType: "entryForm"
+        resourceType: "entryForm",
+        batchSize : 20
       },
       dataElements: {
         columns: [
@@ -81,7 +89,8 @@ export class SqlLite {
         ],
         fields: "id,name,displayName,valueType,description,formName,attributeValues[value,attribute[name]],valueType,optionSet[name,options[name,id,code]],categoryCombo[id,name,categoryOptionCombos[id,name]]",
         canBeUpdated: false,
-        resourceType: ""
+        resourceType: "",
+        batchSize : 50
       },
       smsCommand: {
         columns: [
@@ -93,7 +102,8 @@ export class SqlLite {
         ],
         fields: "",
         canBeUpdated: true,
-        resourceType: "entryForm"
+        resourceType: "entryForm",
+        batchSize : 30
       },
       indicators: {
         columns: [
@@ -107,6 +117,7 @@ export class SqlLite {
         ],
         fields: "id,name,denominatorDescription,numeratorDescription,numerator,denominator,indicatorType[:all]",
         canBeUpdated: true,
+        batchSize : 500
         //resourceType: "report"
       },
       reports: {
@@ -122,7 +133,8 @@ export class SqlLite {
         fields: "id,name,created,type,relativePeriods,reportParams,designContent",
         filter: "type:eq:HTML&filter=designContent:ilike:cordova",
         canBeUpdated: true,
-        resourceType: "report"
+        resourceType: "report",
+        batchSize : 50
       },
       constants: {
         columns: [
@@ -131,6 +143,7 @@ export class SqlLite {
         ],
         fields: "id,value",
         canBeUpdated: true,
+        batchSize : 500
         //resourceType: "report"
       },
       dataValues: {
@@ -148,6 +161,7 @@ export class SqlLite {
           {value: 'syncStatus', type: 'TEXT'},
           {value: 'dataSetId', type: 'TEXT'}
         ],
+        batchSize : 100,
         canBeUpdated: false
       },
       programs: {
@@ -170,6 +184,7 @@ export class SqlLite {
         ],
         fields: "id,name,withoutRegistration,programType,categoryCombo[id,name,categories[id,name,categoryOptions[name,id]]],programStages[id,name,programStageDataElements[id],programStageSections[id]],organisationUnits[id],programIndicators,translations,attributeValues,validationCriterias,programRuleVariables,programTrackedEntityAttributes,programRules",
         canBeUpdated: true,
+        batchSize : 50,
         resourceType: "event"
       },
       programStageDataElements: {
@@ -183,7 +198,8 @@ export class SqlLite {
         ],
         fields: "id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]",
         canBeUpdated: true,
-        resourceType: "event"
+        resourceType: "event",
+        batchSize : 50,
       },
       programStageSections: {
         columns: [
@@ -195,6 +211,7 @@ export class SqlLite {
         ],
         fields: "id,name,programIndicators,sortOrder,programStageDataElements[id]",
         canBeUpdated: true,
+        batchSize : 100,
         resourceType: "event"
       },
       events: {
@@ -214,6 +231,7 @@ export class SqlLite {
           {value: 'notes', type: 'TEXT'},
           {value: 'syncStatus', type: 'TEXT'}
         ],
+        batchSize : 100,
         canBeUpdated: false
       }
     };
@@ -341,6 +359,117 @@ export class SqlLite {
         console.log(e);
       });
     });
+  }
+
+  /**
+   *
+   * @param tableName
+   * @param bulkData
+   * @param databaseName
+   * @param startPoint
+   * @param endPoint
+     * @returns {Promise<T>}
+     */
+  insertBulkDataOnTable(tableName, bulkData,databaseName,startPoint?,endPoint?){
+    let insertBatchSize = this.getDataBaseStructure()[tableName].batchSize;
+    let start = (startPoint)? parseInt(startPoint) : 0;
+    let end = (endPoint)? parseInt(endPoint) : insertBatchSize;
+    if(end <  insertBatchSize){
+      insertBatchSize = end;
+    }
+    let batchInsertQueryAndParameter = this.getBatchInsertQueryAndParameters(tableName, bulkData,start,end);
+    return new Promise( (resolve, reject)=> {
+      this.insertDataUsingQueryAndParameters(databaseName,batchInsertQueryAndParameter.queries).then(()=>{
+        start = batchInsertQueryAndParameter.startPoint - 1;
+        end = insertBatchSize + start;
+        if(bulkData[batchInsertQueryAndParameter.startPoint]){
+          this.insertBulkDataOnTable(tableName, bulkData,databaseName,start,end).then(()=>{
+            resolve();
+          },error=>{
+            reject(error);
+            //@todo resolving batch size issues
+            console.log("Error on insert on table " + tableName);
+            console.log(JSON.stringify(error));
+          });
+        }else{
+          resolve();
+        }
+      },error=>{
+        console.log("Error on insert on table " + tableName);
+        console.log(JSON.stringify(error));
+        reject(error);
+      })
+    });
+  }
+
+  /**
+   *
+   * @param databaseName
+   * @param queries
+   * @returns {Promise<T>}
+     */
+  insertDataUsingQueryAndParameters(databaseName,queries){
+    databaseName = databaseName + '.db';
+    return new Promise( (resolve, reject)=> {
+      this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
+        db.sqlBatch(queries).then(() => {
+          resolve();
+        }, (error) => {
+          reject(error);
+        });
+      }).catch(e => {
+        reject(e);
+        console.log(e);
+      });
+    });
+  }
+
+  /**
+   *
+   * @param tableName
+   * @param bulkData
+   * @param startPoint
+   * @param limit
+   * @returns {{query: string, parameters: Array, startPoint: number}}
+     */
+  getBatchInsertQueryAndParameters(tableName, bulkData,startPoint: number,limit: number ){
+    let columns = this.getDataBaseStructure()[tableName].columns;
+    //column names and  questionMarks holder
+    let columnNames = "";
+    let questionMarks = "(";
+    columns.forEach((column:any, index:any)=> {
+      columnNames += column.value;
+      questionMarks += "?";
+      if ((index + 1) < columns.length) {
+        columnNames += ',';
+        questionMarks += ',';
+      }
+    });
+    questionMarks += ')';
+    let queries = [];
+    for(startPoint;startPoint < limit ; startPoint++){
+      let query = "INSERT OR REPLACE INTO " + tableName + " (" + columnNames + ") VALUES ";
+      let questionMarkParameter = [];
+      if(bulkData[startPoint]){
+        let row = [];
+        for(let column of columns){
+          let attribute = column.value;
+          let attributeValue = bulkData[startPoint][attribute];
+          if (column.type != "LONGTEXT" && attributeValue == undefined) {
+            attributeValue = 0;
+          }else if (column.type == "LONGTEXT") {
+            attributeValue = JSON.stringify(attributeValue);
+          }
+          row.push(attributeValue);
+        }
+        questionMarkParameter.push(questionMarks);
+        query += questionMarkParameter.join(',') + ";";
+        queries.push([query,row]);
+      }
+    }
+    return {
+      queries : queries,startPoint:startPoint
+    }
   }
 
   /**
@@ -499,7 +628,7 @@ export class SqlLite {
         if (column.type != "LONGTEXT") {
           row[columnName] = currentRow[columnName]
         } else {
-          row[columnName] = eval("(" + currentRow[columnName] + ")");
+          row[columnName] = JSON.parse(currentRow[columnName])
         }
       });
       data.push(row);

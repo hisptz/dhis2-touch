@@ -100,16 +100,13 @@ export class DataSets {
    * @returns {Promise<T>}
      */
   saveDataSetsFromServer(dataSets,currentUser){
-
     return new Promise((resolve, reject)=> {
-      let counts = 0;
-      for(let dataSet of dataSets){
-        this.sqlLite.insertDataOnTable(this.resource,dataSet,currentUser.currentDatabase).then(()=>{
-          counts = counts + 1;
-          if(counts == dataSets.length){
-            resolve();
-          }
-        },error => {
+      if(dataSets.length == 0){
+        resolve();
+      }else{
+        this.sqlLite.insertBulkDataOnTable(this.resource,dataSets,currentUser.currentDatabase).then(()=>{
+          resolve();
+        },error=>{
           console.log(JSON.stringify(error));
           reject(error);
         });

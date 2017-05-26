@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs/Rx';
-
 import { SMS } from '@ionic-native/sms';
 import {HttpClient} from "./http-client";
 import {SqlLite} from "./sql-lite";
@@ -199,27 +197,21 @@ export class SmsCommand {
    * @returns {Promise<T>}
      */
   savingSmsCommand(smsCommands,databaseName){
-    let promises = [];
 
     return new Promise((resolve, reject)=> {
       if(smsCommands.length == 0){
         resolve();
-      }
-      smsCommands.forEach((smsCommand:any)=>{
-        smsCommand["id"] = smsCommand.dataSetId;
-        promises.push(
-          this.SqlLite.insertDataOnTable(this.resourceName,smsCommand,databaseName).then(()=>{
-            //saving success
-          },(error) => {
-          })
-        );
-      });
-      Observable.forkJoin(promises).subscribe(() => {
+      }else{
+        smsCommands.forEach((smsCommand:any)=>{
+          smsCommand["id"] = smsCommand.dataSetId;
+        });
+        this.SqlLite.insertBulkDataOnTable(this.resourceName,smsCommands,databaseName).then(()=>{
           resolve();
-        },
-        (error) => {
+        },error=>{
+          console.log(JSON.stringify(error));
           reject(error);
-        })
+        });
+      }
     });
   }
 

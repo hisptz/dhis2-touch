@@ -91,20 +91,14 @@ export class OrganisationUnit {
    * @returns {Promise<T>}
    */
   savingOrganisationUnitsFromServer(orgUnits,currentUser){
-    let counts = 0;
     return new Promise((resolve, reject)=> {
-      for(let orgUnit of orgUnits){
-        this.sqlLite.insertDataOnTable(this.resource,orgUnit,currentUser.currentDatabase).then(()=>{
-          counts = counts + 1;
-          if(counts == orgUnits.length){
-            resolve();
-          }
-        },error => {
-          console.log(JSON.stringify(error));
-          reject(error);
-        });
-      }
-    })
+      this.sqlLite.insertBulkDataOnTable(this.resource,orgUnits,currentUser.currentDatabase).then(()=>{
+        resolve();
+      },error=>{
+        console.log(JSON.stringify(error));
+        reject(error);
+      });
+    });
   }
 
   /**
