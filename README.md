@@ -12,26 +12,23 @@ Application has been built to support:</p>
 <a  target="_blank" href="https://play.google.com/store/apps/details?id=com.hipstz.dhis2.dhis2touch">Click to download</a>
 
 ##Dhis version support
-  Currently It has been tested and work perfectyly for dhis 2 version 2.25 and 2.26
+  Currently It has been tested and work perfectyly for dhis 2 version upto 2.26
   
 ##Prerequisites
   Make sure you have the following installed
   
   1. npm
-  2. ionic
-  3. cordova
-  4. Emulator (android studio etc.) or android phone for testing
+  2. Ionic CLI 3.2.0 or above
+  3. Cordova CLI 6.5.0 or above
+  4.Emulator (android studio etc.) or android phone for testing
   5. Clone the project
+
   
 ## Installation 
 
   1.  `npm install`
-  
-  2. Run this script to install cordova plugins to access phone resources
-    
-     `sh installPlugins.sh`
-     
-  3. Start the emulator or open an app from the phone when connected in debug mode by running
+       
+  2. Start the emulator or open an app from the phone when connected in debug mode by running
   
     `ionic run android`
     
