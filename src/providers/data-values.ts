@@ -391,34 +391,33 @@ export class DataValues {
    */
   saveDataValues(dataValues, dataSetId, period, orgUnitId, dataDimension, syncStatus, currentUser) {
     return new Promise( (resolve, reject)=> {
-      let promises = [];
-      dataValues.forEach((dataValue:any)=> {
-        let data = {
-          id: dataSetId + '-' + dataValue.dataElement + '-' + dataValue.categoryOptionCombo + '-' + period + '-' + orgUnitId,
-          de: dataValue.dataElement,
-          co: dataValue.categoryOptionCombo,
-          pe: period,
-          ou: orgUnitId,
-          cc: dataDimension.cc,
-          cp: dataDimension.cp,
-          value: dataValue.value,
-          syncStatus: syncStatus,
-          dataSetId: dataSetId,
-          period: dataValue.period,
-          orgUnit: dataValue.orgUnit
-        };
-        promises.push(
-          this.sqlLite.insertDataOnTable(this.resourceName, data, currentUser.currentDatabase).then(response=> {
-          }, error=> {
-          })
-        );
-
-      });
-      Observable.forkJoin(promises).subscribe(() => {
+      if(dataValues.length > 0){
         resolve();
-      }, (error) => {
-        reject();
-      })
+      }else{
+        let bulkData = [];
+        for(let dataValue of dataValues){
+          bulkData.push({
+            id: dataSetId + '-' + dataValue.dataElement + '-' + dataValue.categoryOptionCombo + '-' + period + '-' + orgUnitId,
+            de: dataValue.dataElement,
+            co: dataValue.categoryOptionCombo,
+            pe: period,
+            ou: orgUnitId,
+            cc: dataDimension.cc,
+            cp: dataDimension.cp,
+            value: dataValue.value,
+            syncStatus: syncStatus,
+            dataSetId: dataSetId,
+            period: dataValue.period,
+            orgUnit: dataValue.orgUnit
+          });
+        }
+        this.sqlLite.insertBulkDataOnTable(this.resourceName,bulkData,currentUser.currentDatabase).then(()=>{
+          resolve();
+        },error=>{
+          console.log(JSON.stringify(error));
+          reject(error);
+        });
+      }
     });
   }
 
