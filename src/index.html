@@ -13,7 +13,6 @@
 
   <script type="application/javascript" src="assets/library/jquery/jquery-2.1.1.min.js"></script>
 
-
   <!-- cordova.js required for cordova apps -->
   <script src="cordova.js"></script>
 
@@ -22,7 +21,7 @@
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
         .then(() => console.log('service worker installed'))
-        .catch(err => console.log('Error', err));
+        .catch(err => console.error('Error', err));
     }
   </script>-->
 
@@ -48,7 +47,7 @@
   <script>
     dhis2.period.calendar = $.calendars.instance('gregorian');
     dhis2.period.generator = new dhis2.period.PeriodGenerator(dhis2.period.calendar, dhis2.period.DEFAULT_DATE_FORMAT);
-    ///alert(JSON.stringify(dhis2));
+    dhis2.network = {};
   </script>
 
 </head>

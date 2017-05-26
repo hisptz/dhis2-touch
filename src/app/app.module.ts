@@ -1,4 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpModule } from '@angular/http';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -30,6 +32,9 @@ import {Setting} from "../providers/setting";
 import {Synchronization} from "../providers/synchronization";
 import { ChartModule } from 'angular2-highcharts';
 import {NetworkAvailability} from "../providers/network-availability";
+import {PeriodService} from "../providers/period-service";
+import {AppPermission} from "../providers/app-permission";
+import { Network } from '@ionic-native/network';
 
 import { MyApp } from './app.component';
 import { AboutPage } from '../pages/about/about';
@@ -70,9 +75,6 @@ import {DataElementSyncContainerPage} from "../pages/data-element-sync-container
 import {DataElementSyncPage} from "../pages/data-element-sync/data-element-sync";
 import {OrganisationUnitsTreePage} from "../pages/organisation-units-tree/organisation-units-tree";
 import {DashboardSearchPage} from "../pages/dashboard-search/dashboard-search";
-import {PeriodService} from "../providers/period-service";
-import {AppPermission} from "../providers/app-permission";
-
 
 @NgModule({
   declarations: [
@@ -89,18 +91,19 @@ import {AppPermission} from "../providers/app-permission";
     TabsPage
   ],
   imports: [
-    IonicModule.forRoot(MyApp, {
-        backButtonText: 'Back',
-        iconMode: 'md',
-        backButtonIcon: "ios-arrow-back-outline",
-        modalEnter: 'modal-slide-in',
-        modalLeave: 'modal-slide-out',
-        tabsPlacement: 'top',
-        pageTransition: 'ios'
-      }, {}
-    ),
+    BrowserModule,
+    HttpModule,
+    IonicStorageModule.forRoot(),
     ChartModule,
-    IonicStorageModule.forRoot()
+    IonicModule.forRoot(MyApp,{
+      backButtonText: 'Back',
+      iconMode: 'md',
+      backButtonIcon: "ios-arrow-back-outline",
+      modalEnter: 'modal-slide-in',
+      modalLeave: 'modal-slide-out',
+      tabsPlacement: 'top',
+      pageTransition: 'ios'
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -118,7 +121,7 @@ import {AppPermission} from "../providers/app-permission";
   ],
   providers: [
     StatusBar, NetworkAvailability,
-    SplashScreen, SQLite, HTTP, AppVersion, SMS,PeriodService,
+    SplashScreen, SQLite, HTTP, AppVersion,Network, SMS,PeriodService,
     DataSets, DataValues, EntryForm, EventCaptureFormProvider,DashboardService,
     MetadataDictionaryService, UpdateResourceManager, OrganisationUnit, Program,
     ProgramStageDataElements, ProgramStageSections, Report, Setting, Synchronization,
@@ -126,5 +129,4 @@ import {AppPermission} from "../providers/app-permission";
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
-export class AppModule {
-}
+export class AppModule {}
