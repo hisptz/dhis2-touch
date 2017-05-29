@@ -247,9 +247,21 @@ export class LoginPage implements OnInit{
                             if(!this.isLoginProcessCancelled){
                               this.user.setCurrentUserSystemInformation(data).then((dhisVersion)=>{
                                 this.loginData.dhisVersion = dhisVersion;
-                                if(!this.isLoginProcessCancelled){
-                                  this.downloadingOrganisationUnits(userData);
-                                }
+                                this.progressTracker[this.currentResourceType].message = "Loading user authorities";
+                                this.user.getUserAuthorities(this.loginData).then((response:any)=>{
+                                  this.loginData.authorities = response.authorities;
+                                  this.updateProgressTracker(resource);
+                                  if(!this.isLoginProcessCancelled){
+                                    this.downloadingOrganisationUnits(userData);
+                                  }
+                                },error=>{
+                                  this.loadingData = false;
+                                  this.isLoginProcessActive = false;
+                                  console.log(JSON.stringify(error));
+                                  if(!this.isLoginProcessCancelled){
+                                    this.setLoadingMessages('Fail to load user authorites');
+                                  }
+                                })
                               },error=>{
                                 this.loadingData = false;
                                 this.isLoginProcessActive = false;
