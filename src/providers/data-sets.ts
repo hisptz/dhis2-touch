@@ -157,11 +157,17 @@ export class DataSets {
     let attributeValue =[];
     let assignedDataSetsByOrgUnit = [];
     return new Promise((resolve, reject)=> {
-      selectedOrgUnit.dataSets.forEach((dataSet:any)=>{
-        if(dataSetIdsByUserRoles.indexOf(dataSet.id) != -1){
+      if(currentUser.authorities && (currentUser.authorities.indexOf("ALL") > -1)){
+        selectedOrgUnit.dataSets.forEach((dataSet:any)=>{
           attributeValue.push(dataSet.id);
-        }
-      });
+        });
+      }else{
+        selectedOrgUnit.dataSets.forEach((dataSet:any)=>{
+          if(dataSetIdsByUserRoles.indexOf(dataSet.id) != -1){
+            attributeValue.push(dataSet.id);
+          }
+        });
+      }
       this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeValue,currentUser.currentDatabase).then((dataSets : any)=>{
         this.sortDataSetList(dataSets);
         dataSets.forEach((dataSet : any)=>{
