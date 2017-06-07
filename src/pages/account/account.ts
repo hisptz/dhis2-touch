@@ -31,8 +31,8 @@ export class AccountPage implements OnInit{
       "profile" : ProfilePage,
       "about" : AboutPage,
       "help" : HelpPage,
-      "settings" : SettingHomePage,
-      "updateManager" : UpdateManagerHomePage
+      //"settings" : SettingHomePage,
+      //"updateManager" : UpdateManagerHomePage
     };
     this.user.getCurrentUser().then(user=>{
       this.currentUser = user;

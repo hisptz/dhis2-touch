@@ -17,7 +17,7 @@
 
   <ion-grid>
     <ion-row >
-      <ion-col (tap)="goToView('profile')" >
+      <ion-col col-4 (tap)="goToView('profile')" >
         <div class="apps-contents" padding>
           <ion-thumbnail >
             <img class="menu-app-icon-list" src="assets/img/profile.png">
@@ -25,7 +25,7 @@
           <p class="menu-app" >Profile</p>
         </div>
       </ion-col>
-      <ion-col (tap)="goToView('about')" >
+      <ion-col col-4 (tap)="goToView('about')" >
         <div class="apps-contents" padding>
           <ion-thumbnail >
             <img class="menu-app-icon-list" src="assets/img/about.png">
@@ -34,9 +34,7 @@
         </div>
       </ion-col>
 
-    </ion-row>
-    <ion-row>
-      <ion-col (tap)="goToView('help')" >
+      <ion-col col-4 (tap)="goToView('help')" >
         <div class="apps-contents" padding>
           <ion-thumbnail >
             <img class="menu-app-icon-list" src="assets/img/help.png">
@@ -44,26 +42,37 @@
           <p class="menu-app" >Help</p>
         </div>
       </ion-col>
-      <ion-col (tap)="goToView('settings')" >
-        <div class="apps-contents" padding>
-          <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/img/settings.png">
-          </ion-thumbnail>
-          <p class="menu-app" >Settings</p>
-        </div>
-      </ion-col>
 
     </ion-row>
     <ion-row>
-      <ion-col (tap)="goToView('updateManager')" >
-        <div class="apps-contents" padding>
-          <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/img/updateManager.png">
-          </ion-thumbnail>
-          <p class="menu-app" >Update Manager</p>
-        </div>
-      </ion-col>
-      <ion-col (tap)="logOut()" >
+      <!--<ion-col (tap)="goToView('help')" >-->
+        <!--<div class="apps-contents" padding>-->
+          <!--<ion-thumbnail >-->
+            <!--<img class="menu-app-icon-list" src="assets/img/help.png">-->
+          <!--</ion-thumbnail>-->
+          <!--<p class="menu-app" >Help</p>-->
+        <!--</div>-->
+      <!--</ion-col>-->
+      <!--<ion-col (tap)="goToView('settings')" >-->
+        <!--<div class="apps-contents" padding>-->
+          <!--<ion-thumbnail >-->
+            <!--<img class="menu-app-icon-list" src="assets/img/settings.png">-->
+          <!--</ion-thumbnail>-->
+          <!--<p class="menu-app" >Settings</p>-->
+        <!--</div>-->
+      <!--</ion-col>-->
+
+    </ion-row>
+    <ion-row>
+      <!--<ion-col (tap)="goToView('updateManager')" >-->
+        <!--<div class="apps-contents" padding>-->
+          <!--<ion-thumbnail >-->
+            <!--<img class="menu-app-icon-list" src="assets/img/updateManager.png">-->
+          <!--</ion-thumbnail>-->
+          <!--<p class="menu-app" >Update Manager</p>-->
+        <!--</div>-->
+      <!--</ion-col>-->
+      <ion-col col-4 (tap)="logOut()" >
         <div class="apps-contents" padding>
           <ion-thumbnail >
             <img class="menu-app-icon-list" src="assets/img/logout.png">
