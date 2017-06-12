@@ -17,17 +17,20 @@ export class ProgramStageDataElements {
   }
 
   getProgramStageDataElements(programStageDataElementsIdsArray,currentUser){
-    let attribute = 'id';
-    let attributeValue =[];
-    for(let programStageDataElement of programStageDataElementsIdsArray){
-      attributeValue.push(programStageDataElement.id);
-    }
+    //let attribute = 'id';
+    //let attributeValue =[];
+    //
+    //
+    //for(let programStageDataElement of programStageDataElementsIdsArray){
+    //  attributeValue.push(programStageDataElement.id);
+    //}
     return new Promise((resolve, reject) =>{
-      this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeValue,currentUser.currentDatabase).then(programStageDataElements=>{
-        resolve(programStageDataElements);
-      },error=>{
-        reject(error);
-      })
+      resolve(programStageDataElementsIdsArray);
+      //this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeValue,currentUser.currentDatabase).then(programStageDataElements=>{
+      //  resolve(programStageDataElements);
+      //},error=>{
+      //  reject(error);
+      //})
     });
   }
 
