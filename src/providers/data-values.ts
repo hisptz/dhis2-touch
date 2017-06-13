@@ -391,8 +391,6 @@ export class DataValues {
   saveDataValues(dataValues, dataSetId, period, orgUnitId, dataDimension, syncStatus, currentUser) {
     return new Promise( (resolve, reject)=> {
       if(dataValues.length > 0){
-        resolve();
-      }else{
         let bulkData = [];
         for(let dataValue of dataValues){
           bulkData.push({
@@ -412,10 +410,13 @@ export class DataValues {
         }
         this.sqlLite.insertBulkDataOnTable(this.resourceName,bulkData,currentUser.currentDatabase).then(()=>{
           resolve();
+
         },error=>{
           console.log(JSON.stringify(error));
           reject(error);
         });
+      }else{
+        resolve();
       }
     });
   }
