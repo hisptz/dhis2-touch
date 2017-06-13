@@ -1,8 +1,8 @@
 import { Component,OnInit} from '@angular/core';
 import { NavController,App } from 'ionic-angular';
 import {User} from "../../providers/user";
-import {UpdateManagerHomePage} from "../update-manager-home/update-manager-home";
-import {SettingHomePage} from "../setting-home/setting-home";
+//import {UpdateManagerHomePage} from "../update-manager-home/update-manager-home";
+//import {SettingHomePage} from "../setting-home/setting-home";
 import {AboutPage} from "../about/about";
 import {ProfilePage} from "../profile/profile";
 import {HelpPage} from "../help/help";
