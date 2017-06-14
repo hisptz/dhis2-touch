@@ -16,9 +16,9 @@
 // automatically applied to the <body> element in the app.
 
 .apps-contents{
-  border: 0.5px solid #E6E6E7;
-  border-radius: 1.1rem;
-  padding: 5px 16px 5px;
+  border: 1px solid #E6E6E7;
+  border-radius: 0.8rem;
+  padding: 5px 10px 5px;
 }
 .entry-selection-container{
   border: 1px solid #E6E6E7;
@@ -168,20 +168,12 @@ table {
   border-collapse: collapse;
 }
 /* Zebra striping */
-tr:nth-of-type(odd) {
-  background: #EAEFF5;
-}
-tr:nth-of-type(even) {
-  background: #FBFBFB;
-}
 th {
-  background: #FBFBFB;
-  color: #39547D;
   font-weight: bold;
 }
 td, th {
   padding: 6px;
-  border: 1px solid #ADB7C5;
+  border: 1px solid #E6E6E7;
   text-align: center;
   min-height: 2.1rem;
 }
@@ -240,8 +232,7 @@ h1{
 
 //app icons & titles
 .menu-app-icon-list{
-  width: 80px;
-  max-height: 80px;
+  width:55%;
   text-align: center;
   margin: auto;
 }
@@ -249,3 +240,14 @@ h1{
   text-align: center;
   font-size: 1.2rem;
 }
+
+ion-app.md [padding],
+ion-app.md [padding] .scroll-content {
+  padding: 5px;
+}
+
+ion-app.ios [padding],
+ion-app.ios [padding] .scroll-content {
+  padding: 5px;
+}
+
