@@ -1,6 +1,18 @@
 page-dash-board-home {
-  .dashboardHome {
+  .dashboard {
     background-color: #F4F4F4;
+  }
+
+  .list-separator{
+    height: 1.7rem;
+  }
+
+  .dashboard-card{
+    border: 1px solid #E6E6E7;
+    border-radius: 0.1rem;
+    padding: 5px 10px 5px;
+    margin-top:5px;
+    margin-bottom:5px;
   }
 
   .item-md.item-block .item-inner {
@@ -11,40 +23,6 @@ page-dash-board-home {
   .item-ios.item-block .item-inner {
     padding-right: 5px;
     border-bottom: 0px solid #dedede;
-  }
-
-  .list-separator{
-    height:1px;
-    border-bottom: 1px solid #dedede;
-    margin-top:3px;
-    margin-bottom:3px;
-  }
-
-  .dashboard-separator{
-    height:3px;
-    border-bottom: 1px solid #dedede;
-  }
-
-  .button-md, .button-ios {
-    margin: 0px !important;
-  }
-
-  .searchbar-md, .searchbar-ios {
-    padding: 5px !important;
-  }
-
-  ion-col {
-    padding-top: 0px!important;
-    padding-right: 5px!important;
-    padding-left: 5px !important;
-    padding-button: 0px !important;
-  }
-
-  .visualizationHeader {
-    background: #FFFFFF;
-  }
-  ion-label {
-    white-space: normal;
   }
 
   .refreshPanel{
