@@ -85,7 +85,7 @@ export class DashBoardHomePage implements OnInit{
       if (this.dashBoardItemObjectsAndData[selectedDashboardId]) {
         this.initiateSelectedDashboardItem(selectedDashboardId);
       } else {
-        this.DashboardService.getDashboardItemObjects(dashboardItems, selectedDashboardId, this.currentUser).then((dashBoardItemObjects:any)=> {
+        this.DashboardService.getDashboardItemObjects(dashboardItems, this.currentUser).then((dashBoardItemObjects:any)=> {
           this.dashBoardItemObjectsAndData[selectedDashboardId] = dashBoardItemObjects;
           this.initiateSelectedDashboardItem(selectedDashboardId);
         }, (error:any)=> {
@@ -132,7 +132,7 @@ export class DashBoardHomePage implements OnInit{
       this.isLoading = true;
       this.loadingMessage = "Please wait ...";
       let modal = this.modalCtrl.create(DashboardSearchPage, {
-        selectedDashboardName: this.currentDashboardName,
+        currentDashboardName: this.currentDashboardName,
         currentUser: this.currentUser
       });
       modal.onDidDismiss((dashboard:any)=> {
