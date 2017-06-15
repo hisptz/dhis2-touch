@@ -18,58 +18,53 @@
   <ion-grid>
     <ion-row *ngIf="reportParams.paramOrganisationUnit">
       <ion-col>
-        <ion-item text-capitalize (tap)="openOrganisationUnitModal()">
+
+        <div class="entry-selection-container entry-selection" text-capitalize (tap)="openOrganisationUnitModal()" >
           <div style="text-align: center" >
             <div *ngIf="!currentSelectionStatus.isOrgUnitLoaded">
               <page-loading loadingSize="small"></page-loading>
             </div>
           </div>
-          <div *ngIf="currentSelectionStatus.isOrgUnitLoaded" style="text-align: center">
+          <div *ngIf="currentSelectionStatus.isOrgUnitLoaded" style="text-align: center" >
             {{ selectedOrganisationUnitLabel }}
           </div>
-            <!--<span *ngIf="!currentSelectionStatus.isOrgUnitLoaded" >-->
-              <!--Loading organisation units-->
-            <!--</span>-->
-        </ion-item>
+        </div>
       </ion-col>
     </ion-row>
 
     <ion-row *ngIf="reportParams.paramReportingPeriod" >
       <ion-col>
-
-        <ion-item text-capitalize (tap)="openReportPeriodSelection()">
+        <div class="entry-selection-container entry-selection" text-capitalize (tap)="openReportPeriodSelection()" >
           <div style="text-align: center" >
             <div *ngIf="!currentSelectionStatus.isPeriodLoaded">
               <page-loading loadingSize="small"></page-loading>
             </div>
           </div>
-          <div *ngIf="currentSelectionStatus.isPeriodLoaded" style="text-align: center">
+          <div *ngIf="currentSelectionStatus.isPeriodLoaded" style="text-align: center" >
             {{ selectedPeriodLabel }}
           </div>
-            <!--<span *ngIf="!currentSelectionStatus.isPeriodLoaded" >-->
-              <!--Loading period-->
-            <!--</span>-->
-        </ion-item>
+        </div>
       </ion-col>
     </ion-row>
 
     <!-- todo cross-checking report parameter first from server against this-->
 
     <div *ngIf="(currentSelectionStatus.isPeriodSelected && currentSelectionStatus.isOrgUnitLoaded)">
+
       <ion-row class="slide-in-from-right">
-        <ion-col width="100">
-          <ion-item-group (tap)="goToView()">
-            <ion-item-divider>
-              <p ><b>Report name</b> : {{ reportName }}</p>
-              <p ><b>Organisation unit</b> : {{ selectedOrganisationUnitLabel }}</p>
-              <p ><b>Period</b> : {{ selectedPeriodLabel }}</p>
-            </ion-item-divider>
-            <button class="dataEntryButton" ion-button full large color="whitecolor">
-              Generate Report &nbsp;&nbsp;&nbsp;<ion-icon name="ios-arrow-forward-outline"></ion-icon>
-            </button>
-          </ion-item-group>
+        <ion-col >
+          <div class="entry-selection-container" (tap)="goToView()">
+            <div><b>Report name</b> : {{ reportName }}<br>
+              <b>Organisation unit</b> : {{ selectedOrganisationUnitLabel }}<br>
+              <b>Period</b> : {{ selectedPeriodLabel }}
+              </div>
+              <button class="dataEntryButton" ion-button full large color="whitecolor">
+                Generate Report &nbsp;&nbsp;&nbsp;<ion-icon name="ios-arrow-forward-outline"></ion-icon>
+              </button>
+          </div>
         </ion-col>
       </ion-row>
+
     </div>
 
   </ion-grid>
