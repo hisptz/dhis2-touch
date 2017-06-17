@@ -26,15 +26,14 @@
 
     <div *ngIf="!loadingData">
 
-      <ion-row >
+      <ion-row (tap)="backToPreviousView()">
         <ion-col>
-          <ion-item-group (tap)="backToPreviousView()">
-            <ion-item-divider>
-              <p><b>Report  : </b> : {{ reportName }}</p>
-              <p><b>Organisation Unit</b> : {{ organisationUnitName }} </p>
-              <p><b>Period</b> : {{ periodName }}</p>
-            </ion-item-divider>
-          </ion-item-group>
+          <div class="entry-selection-container" (tap)="goToView()">
+            <div><b>Report name</b> : {{ reportName }}<br>
+              <b>Organisation unit</b> : {{ organisationUnitName }}<br>
+              <b>Period</b> : {{ periodName }}
+            </div>
+          </div>
         </ion-col>
       </ion-row>
 
