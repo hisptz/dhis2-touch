@@ -25,7 +25,7 @@
   <ion-grid>
     <ion-searchbar animated="true"autocomplete="on" placeholder="Search dashboard by name"  (ionInput)="getFilteredList($event)"></ion-searchbar>
     <ion-row>
-      <ion-col width="100">
+      <ion-col >
         <ion-list>
           <ion-item *ngFor="let entryFormSection of entryFormSections" (tap)="setCurrentEntryFormSection(entryFormSection)" class="list-separator">
             <span ion-text [color]="(currentEntryFormId == entryFormSection.id) ?'current' : 'font-color'" >{{ entryFormSection.name }}</span>

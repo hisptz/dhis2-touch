@@ -19,7 +19,7 @@
   <ion-grid>
     <ion-searchbar animated="true"autocomplete="on" placeholder="Search dashboard by name"  (ionInput)="getFilteredList($event)"></ion-searchbar>
     <ion-row>
-      <ion-col width="100">
+      <ion-col >
         <ion-list>
           <ion-item *ngFor="let dashboard of dashboards" (tap)="setCurrentDashboard(dashboard)" class="list-separator">
             <span ion-text [color]="(currentDashboardName == dashboard.name) ?'current' : 'font-color'" >{{ dashboard.name }}</span>

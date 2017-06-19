@@ -25,9 +25,22 @@
   border-radius: 0.7rem;
   padding: 5px 10px 5px;
 }
+
 .entry-selection{
   padding-top : 1.3rem;
   padding-bottom : 1.3rem;
+}
+
+.list-separator{
+  height: 1.7rem;
+}
+
+.item-card{
+  border: 1px solid #E6E6E7;
+  border-radius: 0.1rem;
+  padding: 5px 10px 5px;
+  margin-top:5px;
+  margin-bottom:5px;
 }
 
 .pagination-button{

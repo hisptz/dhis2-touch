@@ -17,7 +17,7 @@
 
   <div *ngIf="loadingData">
     <ion-row >
-      <ion-col width="100">
+      <ion-col >
         <page-loading loadingSize="large" [loadingMessage]="loadingMessages[loadingMessages.length - 1]"></page-loading>
       </ion-col>
     </ion-row>
@@ -27,7 +27,7 @@
     <ion-searchbar animated="true" (ionInput)="getFilteredList($event)"></ion-searchbar>
     <ion-grid>
       <ion-row>
-        <ion-col width="100">
+        <ion-col >
           <ion-list>
             <ion-item *ngFor="let report of reportList" (tap)="selectReport(report)">
               <ion-icon name="ios-folder-outline" item-left></ion-icon>
