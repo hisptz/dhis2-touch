@@ -14,21 +14,11 @@
 
 <ion-content class="profile">
   <div *ngIf="loadingData">
-    <ion-grid>
-      <ion-row>
-        <ion-col >
-          <ion-list>
-            <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
-              {{ message }}
-              <ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right color="favorite"></ion-icon>
-              <div style="text-align: center" item-right *ngIf="(currentIndex + 1) >= loadingMessages.length">
-                <page-loading loadingSize="small"></page-loading>
-              </div>
-            </ion-item>
-          </ion-list>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+    <ion-row >
+      <ion-col >
+        <page-loading loadingSize="large" [loadingMessage]="loadingMessages[loadingMessages.length - 1]"></page-loading>
+      </ion-col>
+    </ion-row>
   </div>
 
   <div *ngIf="!loadingData">
@@ -43,23 +33,11 @@
               <b>User Information</b>
             </ion-item-divider>
             <div *ngFor="let entry of profileInformation;let currentProfileInformationIndex = index">
-              <ion-item *ngIf="currentProfileInformationIndex < hideAndShowObject.profileInformation.count">
+              <ion-item >
                 <h2>{{ entry.key }}</h2>
                 <p>{{ entry.value }}</p>
               </ion-item>
             </div>
-            <ion-item *ngIf="hideAndShowObject.profileInformation.count <= profileInformation.length " >
-              <div item-right>
-                <button class="normalButton" ion-button clear  text-capitalize (tap)="hideAndShowDetails('profileInformation',profileInformation.length)">
-                  <div *ngIf="hideAndShowObject.profileInformation.status">
-                    Show less
-                  </div>
-                  <div *ngIf="!hideAndShowObject.profileInformation.status">
-                    Show more
-                  </div>
-                </button>
-              </div>
-            </ion-item>
           </ion-item-group>
           <ion-list></ion-list>
           <ion-item-group>
@@ -67,22 +45,10 @@
               <b>Assigned Organisation Units</b>
             </ion-item-divider>
             <div *ngFor="let assignOrgUnit of  assignOrgUnits;let currentAssignedOrgUnitIndex = index">
-              <ion-item *ngIf="currentAssignedOrgUnitIndex < hideAndShowObject.assignOrgUnits.count">
+              <ion-item >
                 <p>{{ currentAssignedOrgUnitIndex + 1 }}&nbsp;.&nbsp;{{ assignOrgUnit }}</p>
               </ion-item>
             </div>
-            <ion-item *ngIf="hideAndShowObject.assignOrgUnits.count <= assignOrgUnits.length " >
-              <div item-right>
-                <button class="normalButton" ion-button clear  text-capitalize (tap)="hideAndShowDetails('assignOrgUnits',assignOrgUnits.length)">
-                  <div *ngIf="hideAndShowObject.assignOrgUnits.status">
-                    Show less
-                  </div>
-                  <div *ngIf="!hideAndShowObject.assignOrgUnits.status">
-                    Show more
-                  </div>
-                </button>
-              </div>
-            </ion-item>
           </ion-item-group>
           <ion-list></ion-list>
           <ion-item-group>
@@ -90,22 +56,10 @@
               <b>Assigned user roles</b>
             </ion-item-divider>
             <div *ngFor="let userRole of userRoles;let currentAssignedUserRolesIndex = index">
-              <ion-item *ngIf="currentAssignedUserRolesIndex < hideAndShowObject.userRoles.count">
+              <ion-item >
                 <p>{{ currentAssignedUserRolesIndex + 1 }}&nbsp;.&nbsp;{{ userRole }}</p>
               </ion-item>
             </div>
-            <ion-item *ngIf="hideAndShowObject.userRoles.count <= userRoles.length " >
-              <div item-right>
-                <button class="normalButton" ion-button clear  text-capitalize (tap)="hideAndShowDetails('userRoles',userRoles.length)">
-                  <div *ngIf="hideAndShowObject.userRoles.status">
-                    Show less
-                  </div>
-                  <div *ngIf="!hideAndShowObject.userRoles.status">
-                    Show more
-                  </div>
-                </button>
-              </div>
-            </ion-item>
           </ion-item-group>
           <ion-list></ion-list>
           <ion-item-group>
@@ -113,22 +67,10 @@
               <b>Assigned programs</b>
             </ion-item-divider>
             <div *ngFor="let assignedProgram of assignedPrograms ;let currentAssignedProgramIndex = index">
-              <ion-item *ngIf="currentAssignedProgramIndex < hideAndShowObject.assignedPrograms.count">
+              <ion-item >
                 <p>{{ currentAssignedProgramIndex + 1 }}&nbsp;.&nbsp;{{ assignedProgram }}</p>
               </ion-item>
             </div>
-            <ion-item *ngIf="hideAndShowObject.assignedPrograms.count <= assignedPrograms.length " >
-              <div item-right>
-                <button class="normalButton" ion-button clear  text-capitalize (tap)="hideAndShowDetails('assignedPrograms',assignedPrograms.length)">
-                  <div *ngIf="hideAndShowObject.assignedPrograms.status">
-                    Show less
-                  </div>
-                  <div *ngIf="!hideAndShowObject.assignedPrograms.status">
-                    Show more
-                  </div>
-                </button>
-              </div>
-            </ion-item>
           </ion-item-group>
           <ion-list></ion-list>
           <ion-item-group>
@@ -136,22 +78,10 @@
               <b>Assigned forms</b>
             </ion-item-divider>
             <div *ngFor="let assignedForm  of assignedForms ;let currentAssignedFormsIndex = index">
-              <ion-item *ngIf="currentAssignedFormsIndex < hideAndShowObject.assignedForms.count" >
+              <ion-item >
                 <p>{{ currentAssignedFormsIndex + 1 }}&nbsp;.&nbsp;{{ assignedForm }}</p>
               </ion-item>
             </div>
-            <ion-item *ngIf="hideAndShowObject.assignedForms.count <= assignedForms.length " >
-              <div item-right>
-                <button class="normalButton" ion-button clear  text-capitalize (tap)="hideAndShowDetails('assignedForms',assignedForms.length)">
-                  <div *ngIf="hideAndShowObject.assignedForms.status">
-                    Show less
-                  </div>
-                  <div *ngIf="!hideAndShowObject.assignedForms.status">
-                    Show more
-                  </div>
-                </button>
-              </div>
-            </ion-item>
           </ion-item-group>
         </ion-col>
       </ion-row>

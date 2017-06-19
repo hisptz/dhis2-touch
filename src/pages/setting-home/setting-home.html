@@ -16,139 +16,133 @@
 <ion-content class="setting-home">
 
   <ion-grid>
-    <ion-item-group>
 
-      <ion-row>
-        <ion-col>
-          <ion-item (tap)="hideAndShowContents('synchronizationSetting')">
-            <span ion-text [color]="(settingObject.synchronizationSetting.isExpanded) ?'current' : 'font-color'">
+    <div class="item-card">
+      <ion-row (tap)="hideAndShowContents('synchronizationSetting')">
+        <ion-col col-11>
+          <span ion-text [color]="(settingObject.synchronizationSetting.isExpanded) ?'current' : 'font-color'">
               Synchronization
             </span>
-
+        </ion-col>
+        <ion-col col-1 item >
+          <div style="text-align: center;">
             <ion-icon [color]="(settingObject.synchronizationSetting.isExpanded) ?'current' : 'font-color'" *ngIf="!settingObject.synchronizationSetting.isExpanded" name="ios-arrow-down" item-right></ion-icon>
             <ion-icon [color]="(settingObject.synchronizationSetting.isExpanded) ?'current' : 'font-color'" *ngIf="settingObject.synchronizationSetting.isExpanded" name="ios-arrow-up" item-right></ion-icon>
-          </ion-item>
-          <div class="settingContents" *ngIf="settingObject.synchronizationSetting.isExpanded" >
-            <ion-row>
-              <ion-col>
-                <ion-item>
-                  <ion-label floating>Synchronization time</ion-label>
-                  <ion-input type="number"  min="1" [(ngModel)]="synchronizationSetting.time"></ion-input>
-                </ion-item>
-                <ion-item>
-                  <ion-label>Type</ion-label>
-                  <ion-select [(ngModel)]="synchronizationSetting.timeType" interface="action-sheet">
-                    <ion-option value="minutes">Minute(s)</ion-option>
-                    <ion-option value="hours">Hour(s)</ion-option>
-                  </ion-select>
-                </ion-item>
-                <button [disabled]="!settingObject.synchronizationSetting.isSaved" [color]="settingObject.synchronizationSetting.isSaved?'primary':'whitecolor'" class="normalButton" ion-button full large text-capitalize (tap)="saveSetting('synchronizationSetting')">
+          </div>
+        </ion-col>
+      </ion-row>
+      <div class="settingContents" *ngIf="settingObject.synchronizationSetting.isExpanded" >
+        <hr>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label floating>Synchronization time</ion-label>
+              <ion-input type="number"  min="1" [(ngModel)]="synchronizationSetting.time"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>Type</ion-label>
+              <ion-select [(ngModel)]="synchronizationSetting.timeType" interface="action-sheet">
+                <ion-option value="minutes">Minute(s)</ion-option>
+                <ion-option value="hours">Hour(s)</ion-option>
+              </ion-select>
+            </ion-item>
+            <button [disabled]="!settingObject.synchronizationSetting.isSaved" [color]="settingObject.synchronizationSetting.isSaved?'primary':'whitecolor'" class="normalButton" ion-button full large text-capitalize (tap)="saveSetting('synchronizationSetting')">
                   <span *ngIf="!settingObject.synchronizationSetting.isSaved" >
                     <page-loading loadingSize="small"></page-loading>
                   </span>
                   <span *ngIf="settingObject.synchronizationSetting.isSaved" >
                     Save
                   </span>
-                </button>
-              </ion-col>
-            </ion-row>
+            </button>
+          </ion-col>
+        </ion-row>
+      </div>
+    </div>
+
+    <div class="item-card">
+      <ion-row (tap)="hideAndShowContents('dataEntrySetting')">
+        <ion-col col-11>
+          <span ion-text [color]="(settingObject.dataEntrySetting.isExpanded) ?'current' : 'font-color'">
+              Data Entry Form
+            </span>
+        </ion-col>
+        <ion-col col-1 item >
+          <div style="text-align: center;">
+            <ion-icon [color]="(settingObject.dataEntrySetting.isExpanded) ?'current' : 'font-color'" *ngIf="!settingObject.dataEntrySetting.isExpanded" name="ios-arrow-down" item-right></ion-icon>
+            <ion-icon [color]="(settingObject.dataEntrySetting.isExpanded) ?'current' : 'font-color'" *ngIf="settingObject.dataEntrySetting.isExpanded" name="ios-arrow-up" item-right></ion-icon>
           </div>
         </ion-col>
       </ion-row>
-
-      <ion-row>
-        <ion-col>
-          <ion-item (tap)="hideAndShowContents('dataEntrySetting')">
-            <span ion-text [color]="(settingObject.dataEntrySetting.isExpanded) ?'current' : 'font-color'">
-              Data Entry Form
-            </span>
-            <ion-icon [color]="(settingObject.dataEntrySetting.isExpanded) ?'current' : 'font-color'" *ngIf="!settingObject.dataEntrySetting.isExpanded" name="ios-arrow-down" item-right></ion-icon>
-            <ion-icon [color]="(settingObject.dataEntrySetting.isExpanded) ?'current' : 'font-color'" *ngIf="settingObject.dataEntrySetting.isExpanded" name="ios-arrow-up" item-right></ion-icon>
-          </ion-item>
-          <div class="settingContents" *ngIf="settingObject.dataEntrySetting.isExpanded" >
-            <ion-row>
-              <ion-col>
-                <ion-item>
-                  <ion-label>Form Label</ion-label>
-                  <ion-select [(ngModel)]="dataEntrySetting.label" interface="action-sheet">
-                    <ion-option value="displayName">DHIS2 Display Name</ion-option>
-                    <ion-option value="formName">DHIS2 Form Name</ion-option>
-                  </ion-select>
-                </ion-item>
-                <ion-item>
-                  <ion-label floating>Max Data Element per section </ion-label>
-                  <ion-input type="number"  min="1" [(ngModel)]="dataEntrySetting.maxDataElementOnDefaultForm"></ion-input>
-                </ion-item>
-                <button [disabled]="!settingObject.dataEntrySetting.isSaved" [color]="settingObject.dataEntrySetting.isSaved?'primary':'whitecolor'" class="normalButton" ion-button full large text-capitalize (tap)="saveSetting('dataEntrySetting')">
+      <div class="settingContents" *ngIf="settingObject.dataEntrySetting.isExpanded" >
+        <hr>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label>Form Label</ion-label>
+              <ion-select [(ngModel)]="dataEntrySetting.label" interface="action-sheet">
+                <ion-option value="displayName">DHIS2 Display Name</ion-option>
+                <ion-option value="formName">DHIS2 Form Name</ion-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label floating>Max Data Element per section </ion-label>
+              <ion-input type="number"  min="1" [(ngModel)]="dataEntrySetting.maxDataElementOnDefaultForm"></ion-input>
+            </ion-item>
+            <button [disabled]="!settingObject.dataEntrySetting.isSaved" [color]="settingObject.dataEntrySetting.isSaved?'primary':'whitecolor'" class="normalButton" ion-button full large text-capitalize (tap)="saveSetting('dataEntrySetting')">
                   <span *ngIf="!settingObject.dataEntrySetting.isSaved" >
                     <page-loading loadingSize="small"></page-loading>
                   </span>
                   <span *ngIf="settingObject.dataEntrySetting.isSaved" >
                     Save
                   </span>
-                </button>
-              </ion-col>
-            </ion-row>
+            </button>
+          </ion-col>
+        </ion-row>
+      </div>
+    </div>
+
+
+    <div class="item-card">
+      <ion-row (tap)="hideAndShowContents('dataDeletion')">
+        <ion-col col-11>
+          <span ion-text [color]="(settingObject.dataDeletion.isExpanded) ?'current' : 'font-color'">
+              Clear Offline Data
+            </span>
+        </ion-col>
+        <ion-col col-1 item >
+          <div style="text-align: center;">
+            <ion-icon [color]="(settingObject.dataDeletion.isExpanded) ?'current' : 'font-color'" *ngIf="!settingObject.dataDeletion.isExpanded" name="ios-arrow-down" item-right></ion-icon>
+            <ion-icon [color]="(settingObject.dataDeletion.isExpanded) ?'current' : 'font-color'" *ngIf="settingObject.dataDeletion.isExpanded" name="ios-arrow-up"  item-right></ion-icon>
           </div>
         </ion-col>
       </ion-row>
+      <div class="settingContents" *ngIf="settingObject.dataDeletion.isExpanded" >
+        <hr>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label>Data values</ion-label>
+              <ion-checkbox [(ngModel)]="settingObject.dataDeletion.selectedItems.dataValues" (ionChange)="resetDeletedItems()"></ion-checkbox>
+            </ion-item>
+            <ion-item>
+              <ion-label>Events </ion-label>
+              <ion-checkbox [(ngModel)]="settingObject.dataDeletion.selectedItems.events" (ionChange)="resetDeletedItems()" ></ion-checkbox>
+            </ion-item>
 
-      <ion-row>
-        <ion-col>
-          <ion-item (tap)="hideAndShowContents('dataDeletion')">
-            <span ion-text [color]="(settingObject.dataDeletion.isExpanded) ?'current' : 'font-color'">
-              Clear Offline Data
-            </span>
-            <ion-icon [color]="(settingObject.dataDeletion.isExpanded) ?'current' : 'font-color'" *ngIf="!settingObject.dataDeletion.isExpanded" name="ios-arrow-down" item-right></ion-icon>
-            <ion-icon [color]="(settingObject.dataDeletion.isExpanded) ?'current' : 'font-color'" *ngIf="settingObject.dataDeletion.isExpanded" name="ios-arrow-up"  item-right></ion-icon>
-          </ion-item>
-          <div class="settingContents" *ngIf="settingObject.dataDeletion.isExpanded" >
-            <ion-row>
-              <ion-col>
-                <ion-item>
-                  <ion-label>Data values</ion-label>
-                  <ion-checkbox [(ngModel)]="settingObject.dataDeletion.selectedItems.dataValues" (ionChange)="resetDeletedItems()"></ion-checkbox>
-                </ion-item>
-                <ion-item>
-                  <ion-label>Events </ion-label>
-                  <ion-checkbox [(ngModel)]="settingObject.dataDeletion.selectedItems.events" (ionChange)="resetDeletedItems()" ></ion-checkbox>
-                </ion-item>
-
-                <button [disabled]="settingObject.dataDeletion.itemsToBeDeleted.length < 1" [color]="settingObject.dataDeletion.isDataCleared?'primary':'whitecolor'" class="normalButton" ion-button full large text-capitalize (tap)="clearDataConfirmation()">
+            <button [disabled]="settingObject.dataDeletion.itemsToBeDeleted.length < 1" [color]="settingObject.dataDeletion.isDataCleared?'primary':'whitecolor'" class="normalButton" ion-button full large text-capitalize (tap)="clearDataConfirmation()">
                   <span *ngIf="!settingObject.dataDeletion.isDataCleared" >
                     <page-loading loadingSize="small"></page-loading>
                   </span>
                   <span *ngIf="settingObject.dataDeletion.isDataCleared" >
                     Clear data
                   </span>
-                </button>
+            </button>
 
-              </ion-col>
-            </ion-row>
-          </div>
-        </ion-col>
-      </ion-row>
+          </ion-col>
+        </ion-row>
+      </div>
+    </div>
 
-      <!--<ion-row>-->
-      <!--<ion-col>-->
-      <!--<ion-item (tap)="hideAndShowContents('security')">-->
-      <!--<span ion-text [color]="(settingObject.security.isExpanded) ?'current' : 'font-color'">-->
-      <!--Security-->
-      <!--</span>            -->
-      <!--<ion-icon *ngIf="!settingObject.security.isExpanded" name="ios-arrow-down" item-right></ion-icon>-->
-      <!--<ion-icon *ngIf="settingObject.security.isExpanded" name="ios-arrow-up"  item-right></ion-icon>-->
-      <!--</ion-item>-->
-      <!--<div class="settingContents" *ngIf="settingObject.security.isExpanded" >-->
-      <!--<ion-row>-->
-      <!--<ion-col>-->
-      <!--Security setting-->
-      <!--</ion-col>-->
-      <!--</ion-row>-->
-      <!--</div>-->
-      <!--</ion-col>-->
-      <!--</ion-row>-->
-
-    </ion-item-group>
   </ion-grid>
 
 </ion-content>

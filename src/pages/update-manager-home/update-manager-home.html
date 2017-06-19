@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar color="primary" mode="md">
-    <ion-title>Update Manager Home</ion-title>
+    <ion-title>Sync Home</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -15,74 +15,81 @@
 
 <ion-content class="updateManager">
   <ion-grid>
-    <ion-item-group>
-      <ion-row>
-        <ion-col>
-          <ion-item (tap)="hideAndShowContents('sendDataViaSms')">
-            <span ion-text [color]="(updateManagerObject.sendDataViaSms.isExpanded) ?'current' : 'font-color'">
+
+    <div class="item-card">
+      <ion-row (tap)="hideAndShowContents('sendDataViaSms')">
+        <ion-col col-11>
+          <span ion-text [color]="(updateManagerObject.sendDataViaSms.isExpanded) ?'current' : 'font-color'">
               Upload Data Via Sms
             </span>
+        </ion-col>
+        <ion-col col-1 item >
+          <div style="text-align: center;">
             <ion-icon [color]="(updateManagerObject.sendDataViaSms.isExpanded) ?'current' : 'font-color'" *ngIf="!updateManagerObject.sendDataViaSms.isExpanded" name="ios-arrow-down" item-right></ion-icon>
             <ion-icon [color]="(updateManagerObject.sendDataViaSms.isExpanded) ?'current' : 'font-color'" *ngIf="updateManagerObject.sendDataViaSms.isExpanded" name="ios-arrow-up" item-right></ion-icon>
-          </ion-item>
-          <div class="updateManagerContents" *ngIf="updateManagerObject.sendDataViaSms.isExpanded" >
-            <ion-row>
-              <ion-col>
-                <page-send-data-via-sms></page-send-data-via-sms>
-              </ion-col>
-            </ion-row>
           </div>
         </ion-col>
       </ion-row>
+      <div class="updateManagerContents" *ngIf="updateManagerObject.sendDataViaSms.isExpanded" >
+        <hr>
+        <ion-row>
+          <ion-col>
+            <page-send-data-via-sms></page-send-data-via-sms>
+          </ion-col>
+        </ion-row>
+      </div>
+    </div>
 
-      <ion-row>
-        <ion-col>
-          <ion-item (tap)="hideAndShowContents('updateMetadata')">
-            <span ion-text [color]="(updateManagerObject.updateMetadata.isExpanded) ?'current' : 'font-color'">
-              Metadata Update
+    <div class="item-card">
+      <ion-row (tap)="hideAndShowContents('updateMetadata')">
+        <ion-col col-11>
+          <span ion-text [color]="(updateManagerObject.updateMetadata.isExpanded) ?'current' : 'font-color'">
+              Download Metadata
             </span>
-
+        </ion-col>
+        <ion-col col-1 item >
+          <div style="text-align: center;">
             <ion-icon [color]="(updateManagerObject.updateMetadata.isExpanded) ?'current' : 'font-color'"  *ngIf="!updateManagerObject.updateMetadata.isExpanded" name="ios-arrow-down" item-right></ion-icon>
             <ion-icon [color]="(updateManagerObject.updateMetadata.isExpanded) ?'current' : 'font-color'" *ngIf="updateManagerObject.updateMetadata.isExpanded" name="ios-arrow-up" item-right></ion-icon>
-          </ion-item>
-          <div class="updateManagerContents" *ngIf="updateManagerObject.updateMetadata.isExpanded" >
-
-            <div *ngIf="updateManagerObject.updateMetadata.isProcessRunning">
-              <page-loading loadingSize="large" [loadingMessage] = "updateMetadataLoadingMessages"></page-loading>
-            </div>
-            <div *ngIf="!updateManagerObject.updateMetadata.isProcessRunning">
-              <ion-row>
-                <ion-col width="50">
-                  <button [disabled]="!updateManagerObject.updateMetadata.isSaved" ion-button large full text-capitalize class="normalButton" (tap)="checkingForResourceUpdate()">Update</button>
-                </ion-col>
-                <ion-col width="50">
-                  <button [disabled]="!updateManagerObject.updateMetadata.isSaved" ion-button large full text-capitalize class="normalButton" (tap)="autoSelect('selectAll')" *ngIf="!hasAllSelected"> Select All</button>
-                  <button [disabled]="!updateManagerObject.updateMetadata.isSaved" ion-button large full text-capitalize class="normalButton" (tap)="autoSelect('unSelectAll')" *ngIf="hasAllSelected">Un-select all</button>
-                </ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col >
-                  <ion-list>
-                    <div *ngFor="let resourceObject of resources">
-                      <ion-item>
-                        <ion-label>{{ resourceObject.displayName }}</ion-label>
-                        <ion-checkbox [(ngModel)]="resourceObject.status" color="favorite"></ion-checkbox>
-                      </ion-item>
-                    </div>
-                  </ion-list>
-                </ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col >
-                  <button ion-button large full text-capitalize class="normalButton" (tap)="checkingForResourceUpdate()">Update</button>
-                </ion-col>
-              </ion-row>
-            </div>
-
           </div>
         </ion-col>
       </ion-row>
+      <div class="updateManagerContents" *ngIf="updateManagerObject.updateMetadata.isExpanded" >
+        <hr>
+        <div *ngIf="updateManagerObject.updateMetadata.isProcessRunning">
+          <page-loading loadingSize="large" [loadingMessage] = "updateMetadataLoadingMessages"></page-loading>
+        </div>
+        <div *ngIf="!updateManagerObject.updateMetadata.isProcessRunning">
+          <ion-row>
+            <ion-col width="50">
+              <button [disabled]="!updateManagerObject.updateMetadata.isSaved" ion-button large full text-capitalize class="normalButton" (tap)="checkingForResourceUpdate()">Update</button>
+            </ion-col>
+            <ion-col width="50">
+              <button [disabled]="!updateManagerObject.updateMetadata.isSaved" ion-button large full text-capitalize class="normalButton" (tap)="autoSelect('selectAll')" *ngIf="!hasAllSelected"> Select All</button>
+              <button [disabled]="!updateManagerObject.updateMetadata.isSaved" ion-button large full text-capitalize class="normalButton" (tap)="autoSelect('unSelectAll')" *ngIf="hasAllSelected">Un-select all</button>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col >
+              <ion-list>
+                <div *ngFor="let resourceObject of resources">
+                  <ion-item>
+                    <ion-label>{{ resourceObject.displayName }}</ion-label>
+                    <ion-checkbox [(ngModel)]="resourceObject.status" color="favorite"></ion-checkbox>
+                  </ion-item>
+                </div>
+              </ion-list>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col >
+              <button ion-button large full text-capitalize class="normalButton" (tap)="checkingForResourceUpdate()">Update</button>
+            </ion-col>
+          </ion-row>
+        </div>
 
-    </ion-item-group>
+      </div>
+    </div>
+
   </ion-grid>
 </ion-content>
