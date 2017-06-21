@@ -16,7 +16,6 @@
 
 <ion-content class="dashboardHome">
 
-
   <ion-grid>
     <div *ngIf="isLoading">
       <ion-row>
@@ -42,40 +41,43 @@
       </div>
       <div *ngIf="!isDashboardItemsLoading">
         <div *ngFor="let dashBoard of dashboards">
-          <div *ngIf="currentDashboardId == dashBoard.id && dashBoardItemObjectsAndData[currentDashboardId]">
-            <div *ngFor="let dashboardItem of dashBoardItemObjectsAndData[currentDashboardId]">
-              <div class="dashboard-card ">
-                <ion-row (tap)="toggleDashboardItemCard(dashboardItem.id)">
-                  <ion-col col-11>
-                    <span *ngIf="dashboardItem.title" >{{ dashboardItem.title }}</span>
-                    <span *ngIf="!dashboardItem.title">{{ dashboardItem.name }}</span>
-                  </ion-col>
-                  <ion-col col-1 item >
-                    <div style="text-align: center;">
-                      <ion-icon *ngIf="!openedDashboardIds[dashboardItem.id]"  name="ios-arrow-down" item-right></ion-icon>
-                      <ion-icon *ngIf="openedDashboardIds[dashboardItem.id]" name="ios-arrow-up"  item-right></ion-icon>
-                    </div>
-                  </ion-col>
-                </ion-row>
+          <div *ngIf="currentDashboardId == dashBoard.id">
+            <div *ngIf="!dashBoardItemObjectsAndData[currentDashboardId]">
+              <empty-list-notification [emptyListMessage]="emptyListMessage"></empty-list-notification>
+            </div>
+            <div *ngIf="dashBoardItemObjectsAndData[currentDashboardId]">
+              <div *ngFor="let dashboardItem of dashBoardItemObjectsAndData[currentDashboardId]">
+                <div class="dashboard-card ">
+                  <ion-row (tap)="toggleDashboardItemCard(dashboardItem.id)">
+                    <ion-col col-11>
+                      <span *ngIf="dashboardItem.title" >{{ dashboardItem.title }}</span>
+                      <span *ngIf="!dashboardItem.title">{{ dashboardItem.name }}</span>
+                    </ion-col>
+                    <ion-col col-1 item >
+                      <div style="text-align: center;">
+                        <ion-icon *ngIf="!openedDashboardIds[dashboardItem.id]"  name="ios-arrow-down" item-right></ion-icon>
+                        <ion-icon *ngIf="openedDashboardIds[dashboardItem.id]" name="ios-arrow-up"  item-right></ion-icon>
+                      </div>
+                    </ion-col>
+                  </ion-row>
 
-                <div *ngIf="openedDashboardIds[dashboardItem.id]">
-                  <div class="list-separator"></div>
-                  <page-visualization-card [dashboardItem]="dashboardItem"
-                                           (dashboardItemAnalyticData)="updateDashboardVisualizationData($event,dashboardItem.id)"
-                                           [dashboardItemData]="dashBoardVisualizationData[dashboardItem.id]">
-                  </page-visualization-card>
+                  <div *ngIf="openedDashboardIds[dashboardItem.id]">
+                    <div class="list-separator"></div>
+                    <page-visualization-card [dashboardItem]="dashboardItem"
+                                             (dashboardItemAnalyticData)="updateDashboardVisualizationData($event,dashboardItem.id)"
+                                             [dashboardItemData]="dashBoardVisualizationData[dashboardItem.id]">
+                    </page-visualization-card>
+                  </div>
                 </div>
               </div>
-
-
             </div>
           </div>
         </div>
+
+
       </div>
     </div>
 
   </ion-grid>
-
-
 
 </ion-content>

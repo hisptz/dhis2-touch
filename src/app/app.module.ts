@@ -75,6 +75,7 @@ import {DataElementSyncContainerPage} from "../pages/data-element-sync-container
 import {DataElementSyncPage} from "../pages/data-element-sync/data-element-sync";
 import {OrganisationUnitsTreePage} from "../pages/organisation-units-tree/organisation-units-tree";
 import {DashboardSearchPage} from "../pages/dashboard-search/dashboard-search";
+import {EmptyListNotificationComponent} from "../pages/empty-list-notification/empty-list-notification";
 
 @NgModule({
   declarations: [
@@ -87,7 +88,7 @@ import {DashboardSearchPage} from "../pages/dashboard-search/dashboard-search";
     AccountPage, LauncherPage, LoadingPage, LoginPage, MetadataDictionary,
     ProgressBarPage, ReportParameterSelection, ReportView, EventView, EventCaptureForm, EventFieldSelectionMenu,
     DataEntryForm, ReportSelectionPeriod, EntryFormSectionListPage, DataElementSyncPage, DataElementSyncContainerPage,
-    DataSetSyncContainerPage, DataSetSyncPage,OrganisationUnitsTreePage,DashboardSearchPage,
+    DataSetSyncContainerPage, DataSetSyncPage,OrganisationUnitsTreePage,DashboardSearchPage,EmptyListNotificationComponent,
     TabsPage
   ],
   imports: [
@@ -116,7 +117,7 @@ import {DashboardSearchPage} from "../pages/dashboard-search/dashboard-search";
     AccountPage, LauncherPage, LoadingPage, LoginPage, MetadataDictionary,
     ProgressBarPage, ReportParameterSelection, ReportView, EventView, EventCaptureForm, EventFieldSelectionMenu,
     DataEntryForm, ReportSelectionPeriod, EntryFormSectionListPage, DataElementSyncPage, DataElementSyncContainerPage,
-    DataSetSyncContainerPage, DataSetSyncPage,OrganisationUnitsTreePage,DashboardSearchPage,
+    DataSetSyncContainerPage, DataSetSyncPage,OrganisationUnitsTreePage,DashboardSearchPage,EmptyListNotificationComponent,
     TabsPage
   ],
   providers: [
