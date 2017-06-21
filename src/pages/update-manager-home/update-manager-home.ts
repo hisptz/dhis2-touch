@@ -4,6 +4,8 @@ import {SqlLite} from "../../providers/sql-lite";
 import {User} from "../../providers/user";
 import {AppProvider} from "../../providers/app-provider";
 import {UpdateResourceManager} from "../../providers/update-resource-manager";
+import {OrganisationUnit} from "../../providers/organisation-unit";
+import {DataSets} from "../../providers/data-sets";
 
 /*
   Generated class for the UpdateManagerHome page.
@@ -35,6 +37,7 @@ export class UpdateManagerHomePage implements OnInit{
 
   constructor(public sqlLite : SqlLite,
               public user : User,public toastCtrl: ToastController,
+              public OrganisationUnit : OrganisationUnit,public DataSets : DataSets,
               public alertCtrl: AlertController,public SqlLite : SqlLite,
               public appProvider : AppProvider,public updateResourceManager : UpdateResourceManager) {}
 
@@ -105,25 +108,53 @@ export class UpdateManagerHomePage implements OnInit{
   updateResources(resources){
     this.updateMetadataLoadingMessages = "Downloading updates";
     this.updateManagerObject.updateMetadata.isProcessRunning = true;
-    this.updateResourceManager.downloadResources(resources,this.currentUser).then((resourcesData)=>{
+    this.updateResourceManager.downloadResources(resources,this.specialMetadataResources,this.currentUser).then((resourcesData)=>{
       this.updateMetadataLoadingMessages = "Preparing device to apply updates";
       this.updateResourceManager.prepareDeviceToApplyChanges(resources,this.currentUser).then(()=>{
         let updateCounts = 0;
         this.updateMetadataLoadingMessages = "Applying updates ";
         resources.forEach((resource:any)=>{
           let resourceName = resource.name;
-          this.appProvider.saveMetadata(resourceName,resourcesData[resourceName],this.currentUser.currentDatabase).then((
-          )=>{
-            updateCounts ++;
-            if(updateCounts == resources.length){
-              this.autoSelect("un-selectAll");
+          if(this.specialMetadataResources.indexOf(resourceName) == -1){
+            this.appProvider.saveMetadata(resourceName,resourcesData[resourceName],this.currentUser.currentDatabase).then((
+            )=>{
+              updateCounts ++;
+              if(updateCounts == resources.length){
+                this.autoSelect("un-selectAll");
+                this.updateManagerObject.updateMetadata.isProcessRunning = false;
+                this.setToasterMessage("All updates has been applied successfully");
+              }
+            },error=>{
               this.updateManagerObject.updateMetadata.isProcessRunning = false;
-              this.setToasterMessage("All updates has been applied successfully");
+              this.setToasterMessage("Fail to apply updates : " + JSON.stringify(error));
+            })
+          }else{
+            if(resourceName == "organisationUnits"){
+              this.OrganisationUnit.savingOrganisationUnitsFromServer(resourcesData[resourceName],this.currentUser).then(()=>{
+                updateCounts ++;
+                if(updateCounts == resources.length){
+                  this.autoSelect("un-selectAll");
+                  this.updateManagerObject.updateMetadata.isProcessRunning = false;
+                  this.setToasterMessage("All updates has been applied successfully");
+                }
+              },error=>{
+                this.updateManagerObject.updateMetadata.isProcessRunning = false;
+                this.setToasterMessage("Fail to apply updates : " + JSON.stringify(error));
+              })
+            }else if(resourceName == "dataSets"){
+              this.DataSets.saveDataSetsFromServer(resourcesData[resourceName],this.currentUser).then(()=>{
+                updateCounts ++;
+                if(updateCounts == resources.length){
+                  this.autoSelect("un-selectAll");
+                  this.updateManagerObject.updateMetadata.isProcessRunning = false;
+                  this.setToasterMessage("All updates has been applied successfully");
+                }
+              },error=>{
+                this.updateManagerObject.updateMetadata.isProcessRunning = false;
+                this.setToasterMessage("Fail to apply updates : " + JSON.stringify(error));
+              })
             }
-          },error=>{
-            this.updateManagerObject.updateMetadata.isProcessRunning = false;
-            this.setToasterMessage("Fail to apply updates : " + JSON.stringify(error));
-          })
+          }
         });
       },error=>{
         this.updateManagerObject.updateMetadata.isProcessRunning = false;
