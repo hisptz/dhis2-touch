@@ -21,7 +21,6 @@ export class EntryForm {
    * @returns {Promise<T>}
      */
   getEntryFormMetadata(dataSet,currentUser){
-
     return new Promise((resolve, reject)=> {
       if(dataSet.sections.length > 0){
         let entryFormSections = [];

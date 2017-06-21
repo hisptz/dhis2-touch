@@ -18,22 +18,20 @@ import {UpdateResourceManager} from "../../providers/update-resource-manager";
 
 export class UpdateManagerHomePage implements OnInit{
 
-  public dataBaseStructure :  any;
-  public resources : any;
-  public loadingData : boolean = false;
-  public loadingMessages : any = [];
-  public currentUser : any;
-  public hasAllSelected : boolean;
-  public hasSelectedResourceUpdated : boolean = false;
-
-
-  public updateManagerObject : any = {
+  dataBaseStructure :  any;
+  resources : any;
+  loadingData : boolean = false;
+  loadingMessages : any = [];
+  currentUser : any;
+  hasAllSelected : boolean;
+  hasSelectedResourceUpdated : boolean = false;
+  updateManagerObject : any = {
     updateMetadata : {isExpanded : false,isSaved : true,isProcessRunning : false},
     dataDeletion : {isExpanded : false,isProcessRunning : false,isDataCleared : true,selectedItems :{}, itemsToBeDeleted : []},
     sendDataViaSms : {isExpanded : true,isSaved : true}
   };
-
-  public updateMetadataLoadingMessages : string = "";
+  updateMetadataLoadingMessages : string = "";
+  specialMetadataResources : any;
 
   constructor(public sqlLite : SqlLite,
               public user : User,public toastCtrl: ToastController,
@@ -44,6 +42,7 @@ export class UpdateManagerHomePage implements OnInit{
     this.hasAllSelected = false;
     this.loadingData = true;
     this.loadingMessages = [];
+    this.specialMetadataResources = ["organisationUnits","dataSets"];
     this.setLoadingMessages("Loading current user information");
     this.user.getCurrentUser().then((user:any)=>{
       this.currentUser = user;
@@ -70,7 +69,7 @@ export class UpdateManagerHomePage implements OnInit{
     this.resources = [];
     this.dataBaseStructure = this.sqlLite.getDataBaseStructure();
     Object.keys(this.dataBaseStructure).forEach((resource:any)=>{
-      if(this.dataBaseStructure[resource].canBeUpdated && this.dataBaseStructure[resource].fields !=""){
+      if((this.specialMetadataResources.indexOf(resource) > -1) || (this.dataBaseStructure[resource].canBeUpdated && this.dataBaseStructure[resource].fields !="")){
         this.resources.push({
           name : resource,
           displayName : this.getResourceDisplayName(resource),
