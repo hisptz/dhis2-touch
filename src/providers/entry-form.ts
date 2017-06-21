@@ -24,16 +24,22 @@ export class EntryForm {
     return new Promise((resolve, reject)=> {
       if(dataSet.sections.length > 0){
         let entryFormSections = [];
-        this.getEntryFormSectionsObject(dataSet.sections,currentUser).then(entryFormSectionsObject=>{
-          dataSet.sections.forEach((section:any,index:any)=>{
-            let sectionObject = entryFormSectionsObject[section.id];
-            if(sectionObject.id){
-              entryFormSections.push({
-                name : sectionObject.name,id : index,dataElements : sectionObject.dataElements
-              })
-            }
-          });
-          resolve(entryFormSections);
+        this.getEntryFormSectionsObject(dataSet.sections,currentUser).then((entryFormSectionsObject : any)=>{
+          if(entryFormSectionsObject.length > 0){
+            dataSet.sections.forEach((section:any,index:any)=>{
+              let sectionObject = entryFormSectionsObject[section.id];
+              if(sectionObject.id){
+                entryFormSections.push({
+                  name : sectionObject.name,id : index,dataElements : sectionObject.dataElements
+                })
+              }
+            });
+            resolve(entryFormSections);
+          }else{
+            this.getDefaultEntryForm(dataSet).then(defaultEntryForm=>{
+              resolve(defaultEntryForm);
+            });
+          }
         },error=>{
           reject(error);
         });
