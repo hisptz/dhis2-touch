@@ -91,5 +91,46 @@
       </div>
     </div>
 
+    <div class="item-card">
+      <ion-row (tap)="hideAndShowContents('dataDeletion')">
+        <ion-col col-11>
+          <span ion-text [color]="(updateManagerObject.dataDeletion.isExpanded) ?'current' : 'font-color'">
+              Clear Offline Data
+            </span>
+        </ion-col>
+        <ion-col col-1 item >
+          <div style="text-align: center;">
+            <ion-icon [color]="(updateManagerObject.dataDeletion.isExpanded) ?'current' : 'font-color'" *ngIf="!updateManagerObject.dataDeletion.isExpanded" name="ios-arrow-down" item-right></ion-icon>
+            <ion-icon [color]="(updateManagerObject.dataDeletion.isExpanded) ?'current' : 'font-color'" *ngIf="updateManagerObject.dataDeletion.isExpanded" name="ios-arrow-up"  item-right></ion-icon>
+          </div>
+        </ion-col>
+      </ion-row>
+      <div class="settingContents" *ngIf="updateManagerObject.dataDeletion.isExpanded" >
+        <hr>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label>Data values</ion-label>
+              <ion-checkbox [(ngModel)]="updateManagerObject.dataDeletion.selectedItems.dataValues" (ionChange)="resetDeletedItems()"></ion-checkbox>
+            </ion-item>
+            <ion-item>
+              <ion-label>Events </ion-label>
+              <ion-checkbox [(ngModel)]="updateManagerObject.dataDeletion.selectedItems.events" (ionChange)="resetDeletedItems()" ></ion-checkbox>
+            </ion-item>
+
+            <button [disabled]="updateManagerObject.dataDeletion.itemsToBeDeleted.length < 1" [color]="updateManagerObject.dataDeletion.isDataCleared?'primary':'whitecolor'" class="normalButton" ion-button full large text-capitalize (tap)="clearDataConfirmation()">
+                  <span *ngIf="!updateManagerObject.dataDeletion.isDataCleared" >
+                    <page-loading loadingSize="small"></page-loading>
+                  </span>
+                  <span *ngIf="updateManagerObject.dataDeletion.isDataCleared" >
+                    Clear data
+                  </span>
+            </button>
+
+          </ion-col>
+        </ion-row>
+      </div>
+    </div>
+
   </ion-grid>
 </ion-content>

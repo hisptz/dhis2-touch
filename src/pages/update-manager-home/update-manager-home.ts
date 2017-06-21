@@ -1,5 +1,5 @@
 import { Component,OnInit } from '@angular/core';
-import { ToastController } from 'ionic-angular';
+import { ToastController,AlertController } from 'ionic-angular';
 import {SqlLite} from "../../providers/sql-lite";
 import {User} from "../../providers/user";
 import {AppProvider} from "../../providers/app-provider";
@@ -29,6 +29,7 @@ export class UpdateManagerHomePage implements OnInit{
 
   public updateManagerObject : any = {
     updateMetadata : {isExpanded : false,isSaved : true,isProcessRunning : false},
+    dataDeletion : {isExpanded : false,isProcessRunning : false,isDataCleared : true,selectedItems :{}, itemsToBeDeleted : []},
     sendDataViaSms : {isExpanded : true,isSaved : true}
   };
 
@@ -36,6 +37,7 @@ export class UpdateManagerHomePage implements OnInit{
 
   constructor(public sqlLite : SqlLite,
               public user : User,public toastCtrl: ToastController,
+              public alertCtrl: AlertController,public SqlLite : SqlLite,
               public appProvider : AppProvider,public updateResourceManager : UpdateResourceManager) {}
 
   ngOnInit() {
@@ -101,7 +103,6 @@ export class UpdateManagerHomePage implements OnInit{
     }
   }
 
-
   updateResources(resources){
     this.updateMetadataLoadingMessages = "Downloading updates";
     this.updateManagerObject.updateMetadata.isProcessRunning = true;
@@ -150,6 +151,63 @@ export class UpdateManagerHomePage implements OnInit{
     }
   }
 
+  resetDeletedItems(){
+    let deletedTable = [];
+    for(let key of Object.keys(this.updateManagerObject.dataDeletion.selectedItems)){
+      if(this.updateManagerObject.dataDeletion.selectedItems[key])
+        deletedTable.push(key);
+    }
+    this.updateManagerObject.dataDeletion.itemsToBeDeleted = deletedTable;
+  }
+
+  clearDataConfirmation(){
+    let alert = this.alertCtrl.create({
+      title: 'Clear Data Confirmation',
+      message: 'Are you want to clear data?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Clear',
+          handler: () => {
+            this.clearData();
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  clearData(){
+    let deletedItemCount = 0;
+    let failCount = 0;
+    this.updateManagerObject.dataDeletion.isDataCleared = false;
+    for(let tableName of this.updateManagerObject.dataDeletion.itemsToBeDeleted){
+      this.SqlLite.deleteAllOnTable(tableName,this.currentUser.currentDatabase).then(()=>{
+        deletedItemCount = deletedItemCount + 1;
+        if((deletedItemCount + failCount) == this.updateManagerObject.dataDeletion.itemsToBeDeleted.length){
+          this.setToasterMessage("You have successfully clear data");
+          this.updateManagerObject.dataDeletion.selectedItems = {};
+          this.updateManagerObject.dataDeletion.isDataCleared = true;
+          this.updateManagerObject.dataDeletion.isExpanded = false;
+        }
+      },error=>{
+        console.log("Error : " + JSON.stringify(error));
+        failCount = failCount + 1;
+        if((deletedItemCount + failCount) == this.updateManagerObject.dataDeletion.itemsToBeDeleted.length){
+          this.setToasterMessage("You have successfully clear data");
+          this.updateManagerObject.dataDeletion.selectedItems = {};
+          this.updateManagerObject.dataDeletion.isDataCleared = true;
+          this.updateManagerObject.dataDeletion.isExpanded = false;
+        }
+      })
+    }
+  }
 
   setLoadingMessages(message){
     this.loadingMessages.push(message);

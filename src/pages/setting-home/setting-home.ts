@@ -72,6 +72,7 @@ export class SettingHomePage implements OnInit{
     }
     this.settingObject.dataDeletion.itemsToBeDeleted = deletedTable;
   }
+
   clearDataConfirmation(){
     let alert = this.alertCtrl.create({
       title: 'Clear Data Confirmation',
