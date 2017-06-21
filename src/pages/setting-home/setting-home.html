@@ -80,12 +80,12 @@
             <ion-item>
               <ion-label>Form Label</ion-label>
               <ion-select [(ngModel)]="dataEntrySetting.label" interface="action-sheet">
-                <ion-option value="displayName">DHIS2 Display Name</ion-option>
-                <ion-option value="formName">DHIS2 Form Name</ion-option>
+                <ion-option value="displayName">Display Name</ion-option>
+                <ion-option value="formName">Form Name</ion-option>
               </ion-select>
             </ion-item>
             <ion-item>
-              <ion-label floating>Max Data Element per section </ion-label>
+              <ion-label floating>Data elements per page(max)</ion-label>
               <ion-input type="number"  min="1" [(ngModel)]="dataEntrySetting.maxDataElementOnDefaultForm"></ion-input>
             </ion-item>
             <button [disabled]="!settingObject.dataEntrySetting.isSaved" [color]="settingObject.dataEntrySetting.isSaved?'primary':'whitecolor'" class="normalButton" ion-button full large text-capitalize (tap)="saveSetting('dataEntrySetting')">

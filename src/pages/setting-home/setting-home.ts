@@ -150,7 +150,7 @@ export class SettingHomePage implements OnInit{
       if(dataEntrySetting && dataEntrySetting.label){
         this.dataEntrySetting = dataEntrySetting;
       }else{
-        this.dataEntrySetting = {label : "displayName",maxDataElementOnDefaultForm : 4}
+        this.dataEntrySetting = {label : "displayName",maxDataElementOnDefaultForm : 10}
       }
     })
   }

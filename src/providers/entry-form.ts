@@ -77,7 +77,7 @@ export class EntryForm {
   getDefaultEntryForm(dataSet){
     return new Promise((resolve, reject) =>{
       this.Setting.getDataEntrySetting().then((dataEntrySetting: any)=>{
-        let maxDataElements = 4;
+        let maxDataElements = 10;
         if(dataEntrySetting && dataEntrySetting.label && dataEntrySetting.maxDataElementOnDefaultForm){
           maxDataElements = dataEntrySetting.maxDataElementOnDefaultForm;
         }
