@@ -34,7 +34,7 @@
               <span >{{ report.name }}</span>
             </ion-item>
             <ion-item *ngIf = "reportList.length == 0">
-              There is no report to select
+              <empty-list-notification [emptyListMessage]="'There is no report to select'"></empty-list-notification>
             </ion-item>
           </ion-list>
         </ion-col>
