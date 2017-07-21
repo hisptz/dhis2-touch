@@ -7,12 +7,37 @@
 <ion-header>
 
   <ion-navbar color="primary" mode="md">
-    <ion-title>Help</ion-title>
+    <ion-title>Help Search</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content class="help">
+
+  <ion-grid>
+    <div *ngIf="isLoading">
+      <ion-row>
+        <ion-col >
+          <page-loading loadingSize="large" [loadingMessage]="loadingMessage"></page-loading>
+        </ion-col>
+      </ion-row>
+    </div>
+    <div *ngIf="!isLoading">
+      <div *ngIf="currentHelpContent && currentHelpContent.id" class="entry-selection-container " (tap)="openHelpContentsFilter()">
+        <ion-row>
+          <ion-col col-11>
+            {{ currentHelpContent.id }}&nbsp;{{ currentHelpContent.name }}
+          </ion-col>
+          <ion-col col-1>
+            <img src="assets/dashboard/menu.png" width="20" height="20">
+          </ion-col>
+        </ion-row>
+      </div>
+      {{ currentHelpContent | json }}
+    </div>
+  </ion-grid>
+
+
 
 </ion-content>

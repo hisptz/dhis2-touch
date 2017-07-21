@@ -76,6 +76,8 @@ import {DataElementSyncPage} from "../pages/data-element-sync/data-element-sync"
 import {OrganisationUnitsTreePage} from "../pages/organisation-units-tree/organisation-units-tree";
 import {DashboardSearchPage} from "../pages/dashboard-search/dashboard-search";
 import {EmptyListNotificationComponent} from "../pages/empty-list-notification/empty-list-notification";
+import {HelpProvider} from "../providers/help";
+import {HelpSearchPage} from "../pages/help-search/help-search";
 
 @NgModule({
   declarations: [
@@ -84,7 +86,7 @@ import {EmptyListNotificationComponent} from "../pages/empty-list-notification/e
     AppsPage,
     OrganisationUnits, ProgramSelection, SendDataViaSms, VisualizationCardPage, DataSetSelection, PeriodSelection,
     DataEntryHomePage, EventCaptureHomePage, ReportHomePage, DashBoardHomePage,
-    ProfilePage, AboutPage, HelpPage, SettingHomePage, UpdateManagerHomePage,
+    ProfilePage, AboutPage, HelpPage,HelpSearchPage, SettingHomePage, UpdateManagerHomePage,
     AccountPage, LauncherPage, LoadingPage, LoginPage, MetadataDictionary,
     ProgressBarPage, ReportParameterSelection, ReportView, EventView, EventCaptureForm, EventFieldSelectionMenu,
     DataEntryForm, ReportSelectionPeriod, EntryFormSectionListPage, DataElementSyncPage, DataElementSyncContainerPage,
@@ -113,7 +115,7 @@ import {EmptyListNotificationComponent} from "../pages/empty-list-notification/e
     AppsPage,
     OrganisationUnits, ProgramSelection, SendDataViaSms, VisualizationCardPage, DataSetSelection, PeriodSelection,
     DataEntryHomePage, EventCaptureHomePage, ReportHomePage, DashBoardHomePage,
-    ProfilePage, AboutPage, HelpPage, SettingHomePage, UpdateManagerHomePage,
+    ProfilePage, AboutPage, HelpPage,HelpSearchPage, SettingHomePage, UpdateManagerHomePage,
     AccountPage, LauncherPage, LoadingPage, LoginPage, MetadataDictionary,
     ProgressBarPage, ReportParameterSelection, ReportView, EventView, EventCaptureForm, EventFieldSelectionMenu,
     DataEntryForm, ReportSelectionPeriod, EntryFormSectionListPage, DataElementSyncPage, DataElementSyncContainerPage,
@@ -122,6 +124,7 @@ import {EmptyListNotificationComponent} from "../pages/empty-list-notification/e
   ],
   providers: [
     StatusBar, NetworkAvailability,
+    HelpProvider,
     SplashScreen, SQLite, HTTP, AppVersion,Network, SMS,PeriodService,
     DataSets, DataValues, EntryForm, EventCaptureFormProvider,DashboardService,
     MetadataDictionaryService, UpdateResourceManager, OrganisationUnit, Program,

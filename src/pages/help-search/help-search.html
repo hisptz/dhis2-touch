@@ -1,0 +1,36 @@
+<ion-header>
+
+  <ion-toolbar color="primary">
+    <ion-title>
+      Help
+    </ion-title>
+    <ion-buttons start>
+      <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
+        close
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content class="help-search">
+
+  <ion-grid>
+    <ion-searchbar animated="true"autocomplete="on" placeholder="Search help by title"  (ionInput)="getFilteredList($event)"></ion-searchbar>
+    <ion-row>
+      <ion-col width="100">
+        <ion-list>
+          <ion-item *ngFor="let helpContent of helpContents" (tap)="setCurrentDashboard(helpContent)" class="list-separator">
+            <span ion-text [color]="(currentHelpContentId == helpContent.id) ?'current' : 'font-color'" >{{ helpContent.id }}&nbsp;{{ helpContent.name }}</span>
+          </ion-item>
+          <ion-item *ngIf="helpContents.length == 0">
+            <empty-list-notification [emptyListMessage]="'There no content found'"></empty-list-notification>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+</ion-content>

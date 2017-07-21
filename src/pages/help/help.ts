@@ -1,5 +1,8 @@
 import { Component,OnInit } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, ModalController } from 'ionic-angular';
+import {HelpProvider} from "../../providers/help";
+import {HelpSearchPage} from "../help-search/help-search";
+
 
 /*
   Generated class for the Help page.
@@ -13,10 +16,42 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class HelpPage implements OnInit{
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {}
+  helpContentsObject : any;
+  currentHelpContent : any;
+  loadingMessage : string;
+  isLoading : boolean  = false;
+
+  constructor(private navCtrl: NavController, private modalCtrl: ModalController,private HelpProvider : HelpProvider) {}
 
   ngOnInit() {
-
+    this.isLoading = true;
+    this.loadingMessage = "Loading help contents";
+    this.helpContentsObject = this.HelpProvider.getHelpContents();
+    let keys = Object.keys(this.helpContentsObject);
+    if(keys.length > 0){
+      this.currentHelpContent = this.helpContentsObject[keys[0]]
+    }
+    this.isLoading = false;
   }
+
+  openHelpContentsFilter(){
+    if(this.currentHelpContent && this.currentHelpContent.id){
+      this.loadingMessage = "Please wait ...";
+      this.isLoading = true;
+      let modal = this.modalCtrl.create(HelpSearchPage, {
+        currentHelpContentId: this.currentHelpContent.id
+      });
+      modal.onDidDismiss((currentHelpContent:any)=> {
+        this.isLoading = false;
+        this.loadingMessage = "";
+        if(currentHelpContent && currentHelpContent.id){
+          this.currentHelpContent = currentHelpContent;
+        }
+      });
+      modal.present();
+    }
+  }
+
+
 
 }
