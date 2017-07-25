@@ -3,7 +3,7 @@
     <name>DHIS2 touch</name>
     <description>Hybrid mobile application for DHIS</description>
     <author email="profschigalo@gmail.com" href="">Joseph Chingalo</author>
-    <content original-src="index.html" src="http://192.168.43.70:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-navigation href="http://ionic.local/*" />
     <allow-navigation href="http://192.168.43.70:8100" />

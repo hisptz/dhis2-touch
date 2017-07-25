@@ -35,15 +35,15 @@
                 </ion-col>
                 <ion-col col-1  >
                   <div style="text-align: center;">
-                    <ion-icon *ngIf="!isHelpContentOpened[ helpContent.id]" name="ios-arrow-down" item-right></ion-icon>
-                    <ion-icon *ngIf="isHelpContentOpened[ helpContent.id]" name="ios-arrow-up"  item-right></ion-icon>
+                    <ion-icon *ngIf="!isHelpContentOpened[helpContent.id]" name="ios-arrow-down" item-right></ion-icon>
+                    <ion-icon *ngIf="isHelpContentOpened[helpContent.id]" name="ios-arrow-up"  item-right></ion-icon>
                   </div>
                 </ion-col>
               </ion-row>
-              <div *ngIf="isHelpContentOpened[ helpContent.id]">
+              <div *ngIf="isHelpContentOpened[helpContent.id]">
                 <hr>
               </div>
-              <div *ngIf="isHelpContentOpened[ helpContent.id]">
+              <div *ngIf="isHelpContentOpened[helpContent.id]">
                 <ion-row >
                   <ion-col col-12>
                     {{ helpContent.contents }}

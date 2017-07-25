@@ -14,6 +14,7 @@ export class HelpContentsPage implements OnInit{
 
   loadingMessage : string;
   isLoading : boolean  = false;
+  isHelpContentOpened : any = {};
 
   @Input() helpContents ;
 
@@ -22,6 +23,17 @@ export class HelpContentsPage implements OnInit{
   ngOnInit() {
     this.isLoading = true;
     this.isLoading = false;
+  }
+
+
+  toggleHelpContent(helpContent){
+    if(helpContent && helpContent.id){
+      if(this.isHelpContentOpened[helpContent.id]){
+        this.isHelpContentOpened[helpContent.id] = !this.isHelpContentOpened[helpContent.id];
+      }else{
+        this.isHelpContentOpened[helpContent.id] = true;
+      }
+    }
   }
 
 
