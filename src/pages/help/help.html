@@ -24,17 +24,43 @@
       </ion-row>
     </div>
     <div *ngIf="!isLoading">
-      <div *ngIf="currentHelpContent && currentHelpContent.id" class="entry-selection-container " (tap)="openHelpContentsFilter()">
-        <ion-row>
-          <ion-col col-11>
-            {{ currentHelpContent.id }}&nbsp;{{ currentHelpContent.name }}
-          </ion-col>
-          <ion-col col-1>
-            <img src="assets/dashboard/menu.png" width="20" height="20">
-          </ion-col>
-        </ion-row>
+      <div >
+        <ion-searchbar animated="true"autocomplete="on" placeholder="Search help by title"  (ionInput)="getFilteredList($event)"></ion-searchbar>
+        <div *ngIf="helpContents && helpContents.length > 0">
+          <div class="help-card"  *ngFor="let helpContent of helpContents">
+            <div *ngIf="helpContent && helpContent.id">
+              <ion-row (tap)="toggleHelpContent(helpContent)">
+                <ion-col col-11>
+                  {{ helpContent.id }}&nbsp;{{ helpContent.name }}
+                </ion-col>
+                <ion-col col-1  >
+                  <div style="text-align: center;">
+                    <ion-icon *ngIf="!isHelpContentOpened[ helpContent.id]" name="ios-arrow-down" item-right></ion-icon>
+                    <ion-icon *ngIf="isHelpContentOpened[ helpContent.id]" name="ios-arrow-up"  item-right></ion-icon>
+                  </div>
+                </ion-col>
+              </ion-row>
+              <div *ngIf="isHelpContentOpened[ helpContent.id]">
+                <hr>
+              </div>
+              <div *ngIf="isHelpContentOpened[ helpContent.id]">
+                <ion-row >
+                  <ion-col col-12>
+                    {{ helpContent.contents }}
+                  </ion-col>
+                </ion-row>
+                <div *ngIf="helpContent.subMenu && helpContent.subMenu.length > 0">
+                  <ion-row >
+                    <ion-col col-12>
+                      <page-help-contents [helpContents]="helpContent.subMenu"></page-help-contents>
+                    </ion-col>
+                  </ion-row>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      {{ currentHelpContent | json }}
     </div>
   </ion-grid>
 

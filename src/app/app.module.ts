@@ -77,7 +77,7 @@ import {OrganisationUnitsTreePage} from "../pages/organisation-units-tree/organi
 import {DashboardSearchPage} from "../pages/dashboard-search/dashboard-search";
 import {EmptyListNotificationComponent} from "../pages/empty-list-notification/empty-list-notification";
 import {HelpProvider} from "../providers/help";
-import {HelpSearchPage} from "../pages/help-search/help-search";
+import {HelpContentsPage} from "../pages/help-contents/help-contents";
 
 @NgModule({
   declarations: [
@@ -86,7 +86,7 @@ import {HelpSearchPage} from "../pages/help-search/help-search";
     AppsPage,
     OrganisationUnits, ProgramSelection, SendDataViaSms, VisualizationCardPage, DataSetSelection, PeriodSelection,
     DataEntryHomePage, EventCaptureHomePage, ReportHomePage, DashBoardHomePage,
-    ProfilePage, AboutPage, HelpPage,HelpSearchPage, SettingHomePage, UpdateManagerHomePage,
+    ProfilePage, AboutPage, HelpPage,HelpContentsPage, SettingHomePage, UpdateManagerHomePage,
     AccountPage, LauncherPage, LoadingPage, LoginPage, MetadataDictionary,
     ProgressBarPage, ReportParameterSelection, ReportView, EventView, EventCaptureForm, EventFieldSelectionMenu,
     DataEntryForm, ReportSelectionPeriod, EntryFormSectionListPage, DataElementSyncPage, DataElementSyncContainerPage,
@@ -115,7 +115,7 @@ import {HelpSearchPage} from "../pages/help-search/help-search";
     AppsPage,
     OrganisationUnits, ProgramSelection, SendDataViaSms, VisualizationCardPage, DataSetSelection, PeriodSelection,
     DataEntryHomePage, EventCaptureHomePage, ReportHomePage, DashBoardHomePage,
-    ProfilePage, AboutPage, HelpPage,HelpSearchPage, SettingHomePage, UpdateManagerHomePage,
+    ProfilePage, AboutPage, HelpPage,HelpContentsPage, SettingHomePage, UpdateManagerHomePage,
     AccountPage, LauncherPage, LoadingPage, LoginPage, MetadataDictionary,
     ProgressBarPage, ReportParameterSelection, ReportView, EventView, EventCaptureForm, EventFieldSelectionMenu,
     DataEntryForm, ReportSelectionPeriod, EntryFormSectionListPage, DataElementSyncPage, DataElementSyncContainerPage,

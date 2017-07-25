@@ -1,0 +1,12 @@
+
+ <div *ngFor="let helpContent of helpContents" >
+
+   <div>{{ helpContent.id }}&nbsp;{{ helpContent.name }}</div>
+
+   <div *ngIf="helpContent.sub_Menu && helpContent.sub_Menu.length > 0" style="padding-left: 10px">
+     <page-help-contents [helpContents]="helpContent.sub_Menu" ></page-help-contents>
+   </div>
+
+ </div>
+
+
