@@ -52,7 +52,7 @@ export class LoginPage implements OnInit{
               public user : User,public sqlLite : SqlLite) {}
 
   ngOnInit() {
-    this.logoUrl = 'assets/img/logo-2.png';
+    this.logoUrl = 'assets/img/logo.png';
     this.completedTrackedProcess = [];
     this.user.getCurrentUser().then((user: any)=>{
       if(user){
@@ -247,9 +247,20 @@ export class LoginPage implements OnInit{
                             if(!this.isLoginProcessCancelled){
                               this.user.setCurrentUserSystemInformation(data).then((dhisVersion)=>{
                                 this.loginData.dhisVersion = dhisVersion;
-                                if(!this.isLoginProcessCancelled){
-                                  this.downloadingOrganisationUnits(userData);
-                                }
+                                this.progressTracker[this.currentResourceType].message = "Loading user authorities";
+                                this.user.getUserAuthorities(this.loginData).then((response:any)=>{
+                                  this.loginData.authorities = response.authorities;
+                                  if(!this.isLoginProcessCancelled){
+                                    this.downloadingOrganisationUnits(userData);
+                                  }
+                                },error=>{
+                                  this.loadingData = false;
+                                  this.isLoginProcessActive = false;
+                                  console.log(JSON.stringify(error));
+                                  if(!this.isLoginProcessCancelled){
+                                    this.setLoadingMessages('Fail to load user authorites');
+                                  }
+                                })
                               },error=>{
                                 this.loadingData = false;
                                 this.isLoginProcessActive = false;
@@ -514,7 +525,8 @@ export class LoginPage implements OnInit{
       if(this.completedTrackedProcess.indexOf(resource) > -1){
         this.progressTracker[this.currentResourceType].message = "Program stage's sections have been loaded";
         this.updateProgressTracker(resource);
-        this.downloadingProgramStageDataElements();
+        this.downloadingReports();
+        //this.downloadingProgramStageDataElements();
       }else{
         let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
         let fields = tableMetadata.fields;
@@ -524,7 +536,8 @@ export class LoginPage implements OnInit{
             this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
               this.progressTracker[this.currentResourceType].message = "Program stage's sections have been saved";
               this.updateProgressTracker(resource);
-              this.downloadingProgramStageDataElements();
+              this.downloadingReports();
+              //this.downloadingProgramStageDataElements();
             },error=>{
               this.loadingData = false;
               this.isLoginProcessActive = false;

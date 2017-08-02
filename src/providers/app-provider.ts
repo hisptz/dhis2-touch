@@ -14,8 +14,7 @@ import {Observable} from 'rxjs/Rx';
 @Injectable()
 export class AppProvider {
 
-  private formattedBaseUrl :string;
-  private multipleIdsData : any = [];
+  multipleIdsData : any = [];
 
   constructor(private http: HttpClient,private sqlLite:SqlLite,public appVersion: AppVersion) {
   }
@@ -65,7 +64,7 @@ export class AppProvider {
    * @returns {Promise<string>}
      */
   getFormattedBaseUrl(url){
-    this.formattedBaseUrl = "";
+    let formattedBaseUrl = "";
     let urlToBeFormatted : string ="",urlArray : any =[],baseUrlString : any;
     if (!(url.split('/')[0] == "https:" || url.split('/')[0] == "http:")) {
       urlToBeFormatted = "http://" + url;
@@ -78,13 +77,24 @@ export class AppProvider {
         urlArray.push(baseUrlString[index]);
       }
     }
-    this.formattedBaseUrl = urlArray[0] + '/';
+    formattedBaseUrl = urlArray[0] + '/';
     for (let i =0; i < urlArray.length; i ++){
       if(i != 0){
-        this.formattedBaseUrl = this.formattedBaseUrl + '/' + urlArray[i];
+        formattedBaseUrl = formattedBaseUrl + '/' + urlArray[i];
       }
     }
-    return Promise.resolve(this.formattedBaseUrl);
+    return Promise.resolve(this.getUrlWithLowercaseDomain(formattedBaseUrl));
+  }
+
+  getUrlWithLowercaseDomain(formattedBaseUrl){
+    let baseUrlArray = formattedBaseUrl.split("://");
+
+    if(baseUrlArray.length > 0){
+      let domainName = baseUrlArray[1].split("/")[0];
+      let lowerCaseDomain = baseUrlArray[1].split("/")[0].toLowerCase();
+      formattedBaseUrl = formattedBaseUrl.replace(domainName,lowerCaseDomain)
+    }
+    return formattedBaseUrl
   }
 
   /**

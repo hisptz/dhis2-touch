@@ -6,7 +6,6 @@
     <ion-buttons start>
       <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
         close
-        <!--<ion-icon name="md-close"></ion-icon>-->
       </button>
     </ion-buttons>
   </ion-toolbar>
@@ -23,7 +22,7 @@
             <span  ion-text [color]="(currentSelectedDataSetName == dataSet.name) ?'current' : 'font-color'">{{ dataSet.name }}</span>
           </ion-item>
           <ion-item *ngIf = "dataSetsList.length == 0">
-            There is no Data entry form to select
+            <empty-list-notification [emptyListMessage]="'There is no Data entry form to select'"></empty-list-notification>
           </ion-item>
         </ion-list>
       </ion-col>

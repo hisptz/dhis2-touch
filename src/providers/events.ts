@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs/Rx';
 import {SqlLite} from "./sql-lite";
 import {HttpClient} from "./http-client";
 
@@ -309,25 +308,24 @@ export class Events {
    * @returns {Promise<T>}
      */
   savingEventsFromServer(eventsFromServer,currentUser){
-    let promises = [];
     return new Promise((resolve, reject)=>{
       if(eventsFromServer.events.length == 0){
         resolve();
       }else{
-        eventsFromServer.events.forEach((event)=>{
+        let bulkData = [];
+        for(let event of eventsFromServer.events){
           let eventData = event;
           eventData["eventDate"] = this.getFormattedDate(event.eventDate);
           eventData["syncStatus"] = "synced";
-          promises.push(
-            this.saveEvent(eventData,currentUser).then(()=>{},error=>{})
-          );
+          eventData["id"] = event.program + "-"+event.orgUnit+ "-" +event.event;
+          bulkData.push(eventData);
+        }
+        this.sqlLite.insertBulkDataOnTable(this.resource,bulkData,currentUser.currentDatabase).then(()=>{
+          resolve();
+        },error=>{
+          console.log(JSON.stringify(error));
+          reject(error);
         });
-        Observable.forkJoin(promises).subscribe(() => {
-            resolve();
-          },
-          (error) => {
-            reject(error);
-          })
       }
     })
   }

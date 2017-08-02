@@ -17,17 +17,30 @@
 
 .apps-contents{
   border: 1px solid #E6E6E7;
-  border-radius: 1.1rem;
-  padding: 5px 16px 5px;
+  border-radius: 0.8rem;
+  padding: 5px 10px 5px;
 }
 .entry-selection-container{
   border: 1px solid #E6E6E7;
   border-radius: 0.7rem;
   padding: 5px 10px 5px;
 }
+
 .entry-selection{
   padding-top : 1.3rem;
   padding-bottom : 1.3rem;
+}
+
+.list-separator{
+  height: 1.7rem;
+}
+
+.item-card{
+  border: 1px solid #E6E6E7;
+  border-radius: 0.1rem;
+  padding: 5px 10px 5px;
+  margin-top:5px;
+  margin-bottom:5px;
 }
 
 .pagination-button{
@@ -40,6 +53,22 @@
   text-align: center;
   color: #7A7A7A;
   padding-top: 1.5rem;
+}
+
+.logo {
+  max-width: 30%;
+  margin:auto;
+}
+.topSLogan{
+  margin-top:10%;
+  text-align: center;
+  margin-bottom:0%;
+}
+
+.topSLogan p{
+  color:#82B1FF;
+  text-align:center;
+  font-style: italic;
 }
 
 @-webkit-keyframes slideInFromLeft {
@@ -116,6 +145,11 @@
   color: #757575;
 }
 
+//input fields
+.text-input-wp {
+  border: 0px solid rgba(0, 0, 0, 0.5);
+}
+
 //items
 .item-md p {
   font-size: 1.7rem !important;
@@ -168,20 +202,12 @@ table {
   border-collapse: collapse;
 }
 /* Zebra striping */
-tr:nth-of-type(odd) {
-  background: #EAEFF5;
-}
-tr:nth-of-type(even) {
-  background: #FBFBFB;
-}
 th {
-  background: #FBFBFB;
-  color: #39547D;
   font-weight: bold;
 }
 td, th {
   padding: 6px;
-  border: 1px solid #ADB7C5;
+  border: 1px solid #E6E6E7;
   text-align: center;
   min-height: 2.1rem;
 }
@@ -240,11 +266,22 @@ h1{
 
 //app icons & titles
 .menu-app-icon-list{
-  width: 80px;
-  max-height: 80px;
+  width:55%;
   text-align: center;
   margin: auto;
 }
 .menu-app {
   text-align: center;
+  font-size: 1.2rem;
 }
+
+ion-app.md [padding],
+ion-app.md [padding] .scroll-content {
+  padding: 5px;
+}
+
+ion-app.ios [padding],
+ion-app.ios [padding] .scroll-content {
+  padding: 5px;
+}
+

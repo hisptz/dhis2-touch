@@ -1,12 +1,12 @@
 page-dashboard-search {
   .dashboardSearch{
-    background-color: #E4E4E4;
+    background-color: #FFFFFF;
   }
   .item-md,.item-ios,.item .item-block .item-md .item-input,.item-inner,.input-wrapper .item-inner{
-    background-color: #F4F4F4;
+    background-color: #FFFFFF;
   }
   .item-md,.item-ios{
-    background-color: #F4F4F4;
+    background-color: #FFFFFF;
   }
 
   .item-md.item-block .item-inner {
@@ -17,5 +17,9 @@ page-dashboard-search {
   .item-ios.item-block .item-inner {
     padding-right: 5px;
     border-bottom: 1px solid #E6E6E7;
+  }
+
+  .searchbar-md,.searchbar-md .searchbar-input,.searchbar-ios,.searchbar-ios .searchbar-input {
+    background: #FFFFFF;
   }
 }

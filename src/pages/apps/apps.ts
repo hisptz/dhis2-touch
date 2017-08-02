@@ -5,6 +5,8 @@ import {DataEntryHomePage} from "../data-entry-home/data-entry-home";
 import {EventCaptureHomePage} from "../event-capture-home/event-capture-home";
 import {DashBoardHomePage} from "../dash-board-home/dash-board-home";
 import {ReportHomePage} from "../report-home/report-home";
+import {UpdateManagerHomePage} from "../update-manager-home/update-manager-home";
+import {SettingHomePage} from "../setting-home/setting-home";
 
 declare var dhis2;
 /*
@@ -30,7 +32,9 @@ export class AppsPage implements OnInit{
       "dataEntry" : DataEntryHomePage,
       "eventCapture" : EventCaptureHomePage,
       "report" : ReportHomePage,
-      "dashboard" : DashBoardHomePage
+      "dashboard" : DashBoardHomePage,
+      "settings" : SettingHomePage,
+      "updateManager" : UpdateManagerHomePage
     }
   }
 

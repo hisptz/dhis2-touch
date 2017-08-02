@@ -181,15 +181,14 @@ export class DataEntryForm implements OnInit{
 
       let fieldIdArray = fieldId.split("-");
       let id = dataSetId + '-' + fieldIdArray[0] + '-' + fieldIdArray[1] + '-' + period + '-' + orgUnitId;
-      let newDataValue = [
-        {
-          orgUnit : this.dataEntryFormSelectionParameter.orgUnit.name,
-          dataElement : fieldIdArray[0],
-          categoryOptionCombo : fieldIdArray[1],
-          value :this.entryFormDataValues[fieldId],
-          period : this.dataEntryFormSelectionParameter.period.name
-        }
-      ];
+      let newDataValue = [];
+      newDataValue.push({
+        orgUnit : this.dataEntryFormSelectionParameter.orgUnit.name,
+        dataElement : fieldIdArray[0],
+        categoryOptionCombo : fieldIdArray[1],
+        value :this.entryFormDataValues[fieldId],
+        period : this.dataEntryFormSelectionParameter.period.name
+      });
       this.dataValues.getDataValuesById(id,this.currentUser).then((dataValues : any)=>{
         if(dataValues.length > 0){
           if(dataValues[0].value != this.entryFormDataValues[fieldId]){

@@ -16,19 +16,8 @@
   <div *ngIf="loadingData">
     <ion-grid>
       <ion-row>
-        <ion-col width="100">
+        <ion-col >
           <page-loading loadingSize="large" [loadingMessage]="loadingMessage"></page-loading>
-          <!--<ion-list>-->
-          <!--<page-loading loadingSize="large" [loadingMessage]="loadingMessage"></page-loading>-->
-          <!---->
-          <!--<ion-item *ngFor="let message of loadingMessages; let currentIndex = index">-->
-          <!--{{ message }}-->
-          <!--<ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right color="favorite"></ion-icon>-->
-          <!--<div style="text-align: center" item-right *ngIf="(currentIndex + 1) >= loadingMessages.length">-->
-          <!--<page-loading loadingSize="small"></page-loading>-->
-          <!--</div>-->
-          <!--</ion-item>-->
-          <!--</ion-list>-->
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -48,7 +37,7 @@
         Report date <span class="required">*</span>
       </div>
       <ion-item>
-        <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [(ngModel)]="event.eventDate"></ion-datetime>
+        <ion-datetime doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [(ngModel)]="event.eventDate"></ion-datetime>
       </ion-item>
       <button color="light" ion-button large full (tap)="cancel()" *ngIf="event.eventDate =='' ">
         cancel
@@ -96,7 +85,7 @@
 
                   <div *ngIf="programStageDataElement.dataElement.valueType == 'DATE'">
                     <ion-item>
-                      <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [(ngModel)]="dataValues[programStageDataElement.dataElement.id]"></ion-datetime>
+                      <ion-datetime doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [(ngModel)]="dataValues[programStageDataElement.dataElement.id]"></ion-datetime>
                     </ion-item>
                   </div>
 

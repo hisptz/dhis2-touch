@@ -106,6 +106,27 @@ export class User {
     });
   }
 
+  getUserAuthorities(user){
+    this.http.useBasicAuth(user.username, user.password);
+    let fields = "fields=authorities";
+    let url = user.serverUrl;
+    url += "/api/me.json?" + fields;
+    if(user.dhisVersion &&(parseInt(user.dhisVersion) > 25)){
+      url = url.replace("/api","/api/" + user.dhisVersion);
+    }
+    return new Promise((resolve, reject)=> {
+      this.http.get(url, {}, {})
+        .then((response:any)  => {
+          resolve(JSON.parse(response.data));
+        },error=>{
+          reject(error);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  }
+
   /**
    *
    * @param user
@@ -164,7 +185,6 @@ export class User {
       "userRoles": userDataResponse.userCredentials.userRoles,
       "organisationUnits": userDataResponse.organisationUnits,
       "settings" : userDataResponse.settings,
-      "authorities" : userDataResponse.authorities,
       "dataViewOrganisationUnits" : userDataResponse.dataViewOrganisationUnits
     };
     let userData = JSON.stringify(this.userData);

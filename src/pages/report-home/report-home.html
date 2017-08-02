@@ -16,35 +16,25 @@
 <ion-content class="report">
 
   <div *ngIf="loadingData">
-    <ion-grid>
-      <ion-row>
-        <ion-col width="100">
-          <ion-list>
-            <ion-item *ngFor="let message of loadingMessages; let currentIndex = index">
-              {{ message }}
-              <ion-icon *ngIf="(currentIndex + 1) < loadingMessages.length" name="done-all" item-right color="favorite"></ion-icon>
-              <div style="text-align: center" item-right *ngIf="(currentIndex + 1) >= loadingMessages.length">
-                <page-loading loadingSize="small"></page-loading>
-              </div>
-            </ion-item>
-          </ion-list>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+    <ion-row >
+      <ion-col >
+        <page-loading loadingSize="large" [loadingMessage]="loadingMessages[loadingMessages.length - 1]"></page-loading>
+      </ion-col>
+    </ion-row>
   </div>
 
   <div *ngIf="!loadingData">
     <ion-searchbar animated="true" (ionInput)="getFilteredList($event)"></ion-searchbar>
     <ion-grid>
       <ion-row>
-        <ion-col width="100">
+        <ion-col >
           <ion-list>
             <ion-item *ngFor="let report of reportList" (tap)="selectReport(report)">
               <ion-icon name="ios-folder-outline" item-left></ion-icon>
               <span >{{ report.name }}</span>
             </ion-item>
             <ion-item *ngIf = "reportList.length == 0">
-              There is no report to select
+              <empty-list-notification [emptyListMessage]="'There is no report to select'"></empty-list-notification>
             </ion-item>
           </ion-list>
         </ion-col>

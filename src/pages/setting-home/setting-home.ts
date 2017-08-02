@@ -72,6 +72,7 @@ export class SettingHomePage implements OnInit{
     }
     this.settingObject.dataDeletion.itemsToBeDeleted = deletedTable;
   }
+
   clearDataConfirmation(){
     let alert = this.alertCtrl.create({
       title: 'Clear Data Confirmation',
@@ -149,7 +150,7 @@ export class SettingHomePage implements OnInit{
       if(dataEntrySetting && dataEntrySetting.label){
         this.dataEntrySetting = dataEntrySetting;
       }else{
-        this.dataEntrySetting = {label : "displayName",maxDataElementOnDefaultForm : 4}
+        this.dataEntrySetting = {label : "displayName",maxDataElementOnDefaultForm : 10}
       }
     })
   }

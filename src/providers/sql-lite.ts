@@ -182,7 +182,7 @@ export class SqlLite {
           {value: 'programRules', type: 'LONGTEXT'},
           {value: 'organisationUnits', type: 'LONGTEXT'}
         ],
-        fields: "id,name,withoutRegistration,programType,categoryCombo[id,name,categories[id,name,categoryOptions[name,id]]],programStages[id,name,programStageDataElements[id],programStageSections[id]],organisationUnits[id],programIndicators,translations,attributeValues,validationCriterias,programRuleVariables,programTrackedEntityAttributes,programRules",
+        fields: "id,name,withoutRegistration,programType,categoryCombo[id,name,categories[id,name,categoryOptions[name,id]]],programStages[id,name,programStageDataElements[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]],programStageSections[id]],organisationUnits[id],programIndicators,translations,attributeValues,validationCriterias,programRuleVariables,programTrackedEntityAttributes,programRules",
         canBeUpdated: true,
         batchSize : 50,
         resourceType: "event"
@@ -197,8 +197,8 @@ export class SqlLite {
           {value: 'dataElement', type: 'LONGTEXT'}
         ],
         fields: "id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]",
-        canBeUpdated: true,
-        resourceType: "event",
+        canBeUpdated: false,
+        //resourceType: "event",
         batchSize : 50,
       },
       programStageSections: {
@@ -209,7 +209,7 @@ export class SqlLite {
           {value: 'programIndicators', type: 'LONGTEXT'},
           {value: 'programStageDataElements', type: 'LONGTEXT'}
         ],
-        fields: "id,name,programIndicators,sortOrder,programStageDataElements[id]",
+        fields: "id,name,programIndicators,sortOrder,programStageDataElements[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]]",
         canBeUpdated: true,
         batchSize : 100,
         resourceType: "event"

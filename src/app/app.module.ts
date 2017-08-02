@@ -75,6 +75,9 @@ import {DataElementSyncContainerPage} from "../pages/data-element-sync-container
 import {DataElementSyncPage} from "../pages/data-element-sync/data-element-sync";
 import {OrganisationUnitsTreePage} from "../pages/organisation-units-tree/organisation-units-tree";
 import {DashboardSearchPage} from "../pages/dashboard-search/dashboard-search";
+import {EmptyListNotificationComponent} from "../pages/empty-list-notification/empty-list-notification";
+import {HelpProvider} from "../providers/help";
+import {HelpContentsPage} from "../pages/help-contents/help-contents";
 
 @NgModule({
   declarations: [
@@ -83,11 +86,11 @@ import {DashboardSearchPage} from "../pages/dashboard-search/dashboard-search";
     AppsPage,
     OrganisationUnits, ProgramSelection, SendDataViaSms, VisualizationCardPage, DataSetSelection, PeriodSelection,
     DataEntryHomePage, EventCaptureHomePage, ReportHomePage, DashBoardHomePage,
-    ProfilePage, AboutPage, HelpPage, SettingHomePage, UpdateManagerHomePage,
+    ProfilePage, AboutPage, HelpPage,HelpContentsPage, SettingHomePage, UpdateManagerHomePage,
     AccountPage, LauncherPage, LoadingPage, LoginPage, MetadataDictionary,
     ProgressBarPage, ReportParameterSelection, ReportView, EventView, EventCaptureForm, EventFieldSelectionMenu,
     DataEntryForm, ReportSelectionPeriod, EntryFormSectionListPage, DataElementSyncPage, DataElementSyncContainerPage,
-    DataSetSyncContainerPage, DataSetSyncPage,OrganisationUnitsTreePage,DashboardSearchPage,
+    DataSetSyncContainerPage, DataSetSyncPage,OrganisationUnitsTreePage,DashboardSearchPage,EmptyListNotificationComponent,
     TabsPage
   ],
   imports: [
@@ -112,15 +115,16 @@ import {DashboardSearchPage} from "../pages/dashboard-search/dashboard-search";
     AppsPage,
     OrganisationUnits, ProgramSelection, SendDataViaSms, VisualizationCardPage, DataSetSelection, PeriodSelection,
     DataEntryHomePage, EventCaptureHomePage, ReportHomePage, DashBoardHomePage,
-    ProfilePage, AboutPage, HelpPage, SettingHomePage, UpdateManagerHomePage,
+    ProfilePage, AboutPage, HelpPage,HelpContentsPage, SettingHomePage, UpdateManagerHomePage,
     AccountPage, LauncherPage, LoadingPage, LoginPage, MetadataDictionary,
     ProgressBarPage, ReportParameterSelection, ReportView, EventView, EventCaptureForm, EventFieldSelectionMenu,
     DataEntryForm, ReportSelectionPeriod, EntryFormSectionListPage, DataElementSyncPage, DataElementSyncContainerPage,
-    DataSetSyncContainerPage, DataSetSyncPage,OrganisationUnitsTreePage,DashboardSearchPage,
+    DataSetSyncContainerPage, DataSetSyncPage,OrganisationUnitsTreePage,DashboardSearchPage,EmptyListNotificationComponent,
     TabsPage
   ],
   providers: [
     StatusBar, NetworkAvailability,
+    HelpProvider,
     SplashScreen, SQLite, HTTP, AppVersion,Network, SMS,PeriodService,
     DataSets, DataValues, EntryForm, EventCaptureFormProvider,DashboardService,
     MetadataDictionaryService, UpdateResourceManager, OrganisationUnit, Program,

@@ -17,7 +17,7 @@
 
   <ion-grid>
     <ion-row >
-      <ion-col (tap)="goToView('dataEntry')" >
+      <ion-col col-4 (tap)="goToView('dataEntry')" >
         <div class="apps-contents" padding>
           <ion-thumbnail >
             <img class="menu-app-icon-list" src="assets/img/dataEntry.png">
@@ -25,7 +25,7 @@
           <p class="menu-app" >Data Entry</p>
         </div>
       </ion-col>
-      <ion-col (tap)="goToView('eventCapture')" >
+      <ion-col col-4 (tap)="goToView('eventCapture')" >
         <div class="apps-contents" padding>
           <ion-thumbnail >
             <img class="menu-app-icon-list" src="assets/img/eventCapture.png">
@@ -33,9 +33,17 @@
           <p class="menu-app" >Event Capture</p>
         </div>
       </ion-col>
+      <ion-col col-4 (tap)="goToView('report')"  >
+        <div class="apps-contents" padding>
+          <ion-thumbnail >
+            <img class="menu-app-icon-list" src="assets/img/reports.png">
+          </ion-thumbnail>
+          <p class="menu-app">Reports</p>
+        </div>
+      </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col (tap)="goToView('dashboard')" >
+      <ion-col col-4 (tap)="goToView('dashboard')" >
         <div class="apps-contents" padding>
           <ion-thumbnail >
             <img class="menu-app-icon-list" src="assets/img/dashboard.png">
@@ -43,14 +51,24 @@
           <p class="menu-app">Dashboard</p>
         </div>
       </ion-col>
-      <ion-col (tap)="goToView('report')"  >
+
+      <ion-col col-4 (tap)="goToView('updateManager')" >
         <div class="apps-contents" padding>
           <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/img/reports.png">
+            <img class="menu-app-icon-list" src="assets/img/updateManager.png">
           </ion-thumbnail>
-          <p class="menu-app">Standard Reports</p>
+          <p class="menu-app" >Sync</p>
         </div>
       </ion-col>
+      <ion-col col-4 (tap)="goToView('settings')" >
+        <div class="apps-contents" padding>
+          <ion-thumbnail >
+            <img class="menu-app-icon-list" src="assets/img/settings.png">
+          </ion-thumbnail>
+          <p class="menu-app" >Settings</p>
+        </div>
+      </ion-col>
+
     </ion-row>
   </ion-grid>
 

@@ -14,7 +14,7 @@ import {DashboardService} from "../../providers/dashboard-service";
 })
 export class DashboardSearchPage implements OnInit{
 
-  public selectedDashboardName : string;
+  public currentDashboardName : string;
   public dashboards :any = [];
   public dashboardsCopy :any = [];
 
@@ -23,7 +23,7 @@ export class DashboardSearchPage implements OnInit{
               public viewCtrl: ViewController) {}
   ngOnInit() {
     let currentUser = this.navParams.get("currentUser");
-    this.selectedDashboardName = this.navParams.get("selectedDashboardName");
+    this.currentDashboardName = this.navParams.get("currentDashboardName");
     this.DashboardService.allDashboards(currentUser).then((dashboards: any)=>{
       this.dashboards = dashboards;
       this.dashboardsCopy = dashboards;
