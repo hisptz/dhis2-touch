@@ -1,7 +1,7 @@
 <!--
-  Generated template for the Launcher page.
+  Generated template for the LauncherPage page.
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
 
@@ -12,11 +12,9 @@
         <div class="logo">
           <img [src]="logoUrl" >
         </div>
-        <p >Innovation in every dimension</p>
+        <p >Analysis at your fingertips</p>
       </ion-col>
     </ion-row>
   </ion-grid>
-
-  <page-loading loadingSize="large"></page-loading>
-
+  <page-loading [loadingSize]="'large'" [loadingMessage]="'Loading ...'"></page-loading>
 </ion-content>

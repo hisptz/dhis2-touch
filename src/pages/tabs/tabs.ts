@@ -1,19 +1,16 @@
-import { Component,OnInit } from '@angular/core';
-import {AccountPage} from "../account/account";
-import {AppsPage} from "../apps/apps";
-import {User} from "../../providers/user";
+import { Component,OnInit} from '@angular/core';
+
+import {UserProvider} from "../../providers/user/user";
 
 @Component({
   templateUrl: 'tabs.html'
 })
 export class TabsPage implements OnInit{
-  // this tells the tabs component which Pages
-  // should be each tab's root Page
-  tab1Root: any = AppsPage;
-  tab2Root: any = AccountPage;
-  public accountName : string = 'Account';
+  tab1Root = 'AppsPage';
+  tab2Root = 'AccountsPage';
+  accountName : string = 'Account';
 
-  constructor(public user : User) {
+  constructor(public user : UserProvider) {
 
   }
 
@@ -33,5 +30,4 @@ export class TabsPage implements OnInit{
       this.accountName = newValue;
     }
   }
-
 }

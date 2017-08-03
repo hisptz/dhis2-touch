@@ -1,81 +1,28 @@
+<!--
+  Generated template for the AboutPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
 <ion-header>
-  <ion-navbar color="primary" mode="md">
-    <ion-title>
-      About
-    </ion-title>
+
+  <ion-navbar color="primary">
+    <ion-title>About</ion-title>
   </ion-navbar>
+
 </ion-header>
 
-<ion-content class="about">
-  <div *ngIf="loadingData">
-    <ion-row >
-      <ion-col >
-        <page-loading loadingSize="large" [loadingMessage]="loadingMessages[loadingMessages.length - 1]"></page-loading>
+
+<ion-content >
+
+  <ion-grid>
+    <ion-row>
+      <ion-col class="topSLogan">
+        <div class="logo-inside-app">
+          <img [src]="logoUrl" >
+        </div>
       </ion-col>
     </ion-row>
-  </div>
+  </ion-grid>
 
-  <div *ngIf="!loadingData" >
-
-    <ion-refresher (ionRefresh)="reLoadContents($event)">
-      <ion-refresher-content ></ion-refresher-content>
-    </ion-refresher>
-
-    <ion-grid>
-      <ion-row>
-        <ion-col >
-          <ion-item-group>
-            <ion-item-divider color="whitecolor">
-              <b>App Information</b>
-            </ion-item-divider>
-            <ion-item *ngFor="let entry of appInformation;let currentAppInfoIndex = index ">
-              <h2>{{ entry.key }}</h2>
-              <p>{{ entry.value }}</p>
-            </ion-item>
-          </ion-item-group>
-          <ion-list></ion-list>
-          <ion-item-group>
-            <ion-item-divider color="whitecolor">
-              <b>Data Values Status</b>
-            </ion-item-divider>
-            <ion-item (tap)="viewDataValuesSynchronisationStatusByDataSets('synced')">
-              <h2>Synced</h2>
-              <p>{{ dataValuesStorage.online }}</p>
-            </ion-item>
-            <ion-item (tap)="viewDataValuesSynchronisationStatusByDataSets('not_synced')">
-              <h2>Not Synced</h2>
-              <p>{{ dataValuesStorage.offline }}</p>
-            </ion-item>
-          </ion-item-group>
-          <ion-list></ion-list>
-          <ion-item-group>
-            <ion-item-divider color="whitecolor">
-              <b>Event Storage Status</b>
-            </ion-item-divider>
-            <ion-item (tap)="viewEventsSynchronisationStatusByProgram('synced')">
-              <h2>Synced</h2>
-              <p>{{ eventsStorage.online }}</p>
-            </ion-item>
-            <ion-item (tap)="viewEventsSynchronisationStatusByProgram('not_synced')">
-              <h2>Not Synced</h2>
-              <p>{{ eventsStorage.offline }}</p>
-            </ion-item>
-          </ion-item-group>
-          <ion-list></ion-list>
-          <ion-item-group>
-            <ion-item-divider color="whitecolor">
-              <b>System Information</b>
-            </ion-item-divider>
-            <div *ngFor="let entry of systemInformation;let currentSystemInfoIndex = index">
-              <ion-item >
-                <h2>{{ entry.key }}</h2>
-                <p>{{ entry.value }}</p>
-              </ion-item>
-            </div>
-          </ion-item-group>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-
-  </div>
 </ion-content>

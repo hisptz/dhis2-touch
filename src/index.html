@@ -16,8 +16,32 @@
   <!-- cordova.js required for cordova apps -->
   <script src="cordova.js"></script>
 
+  <!-- un-comment this code to enable service worker
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('service worker installed'))
+        .catch(err => console.error('Error', err));
+    }
+  </script>-->
+
   <link href="build/main.css" rel="stylesheet">
 
+</head>
+<body>
+
+  <!-- Ionic's root component and where the app will load -->
+  <ion-app></ion-app>
+
+  <!-- The polyfills js is generated during the build process -->
+  <script src="build/polyfills.js"></script>
+
+  <!-- The vendor js is generated during the build process
+       It contains all of the dependencies in node_modules -->
+  <script src="build/vendor.js"></script>
+
+  <!-- The main bundle js is generated during the build process -->
+  <script src="build/main.js"></script>
   <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.min.js"></script>
   <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.picker.min.js"></script>
   <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.plus.min.js"></script>
@@ -31,8 +55,6 @@
   <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.thai.min.js"></script>
 
   <script src="assets/library/reportModule.js"></script>
-  <!--<script src="assets/library/angularjs/angular.min.js"></script>-->
-  <!--<script src="assets/library/angularjs/angular-route.min.js"></script>-->
   <script src="assets/library/dhis2/dhis2.util.js"></script>
   <script src="assets/library/dhis2/dhis2.period.js"></script>
   <script>
@@ -40,18 +62,6 @@
     dhis2.period.generator = new dhis2.period.PeriodGenerator(dhis2.period.calendar, dhis2.period.DEFAULT_DATE_FORMAT);
     dhis2.network = {};
   </script>
-
-</head>
-<body>
-
-  <!-- Ionic's root component and where the app will load -->
-  <ion-app></ion-app>
-
-  <!-- The polyfills js is generated during the build process -->
-  <script src="build/polyfills.js"></script>
-
-  <!-- The bundle js is generated during the build process -->
-  <script src="build/main.js"></script>
 
 </body>
 </html>

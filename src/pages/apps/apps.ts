@@ -1,45 +1,24 @@
-import { Component,OnInit } from '@angular/core';
-import { NavController } from 'ionic-angular';
-import {SqlLite} from "../../providers/sql-lite";
-import {DataEntryHomePage} from "../data-entry-home/data-entry-home";
-import {EventCaptureHomePage} from "../event-capture-home/event-capture-home";
-import {DashBoardHomePage} from "../dash-board-home/dash-board-home";
-import {ReportHomePage} from "../report-home/report-home";
-import {UpdateManagerHomePage} from "../update-manager-home/update-manager-home";
-import {SettingHomePage} from "../setting-home/setting-home";
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-declare var dhis2;
-/*
-  Generated class for the Apps page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
+/**
+ * Generated class for the AppsPage page.
+ *
+ * See http://ionicframework.com/docs/components/#navigation for more info
+ * on Ionic pages and navigation.
+ */
+@IonicPage()
 @Component({
   selector: 'page-apps',
-  templateUrl: 'apps.html'
+  templateUrl: 'apps.html',
 })
-export class AppsPage implements OnInit{
+export class AppsPage {
 
-  public viewMapperObject : any;
-
-  constructor(public navCtrl: NavController,public SqlLite : SqlLite) {
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
-  ngOnInit() {
-    dhis2.dataBaseStructure =  this.SqlLite.getDataBaseStructure();
-    this.viewMapperObject = {
-      "dataEntry" : DataEntryHomePage,
-      "eventCapture" : EventCaptureHomePage,
-      "report" : ReportHomePage,
-      "dashboard" : DashBoardHomePage,
-      "settings" : SettingHomePage,
-      "updateManager" : UpdateManagerHomePage
-    }
-  }
-
-  goToView(viewName){
-    this.navCtrl.push(this.viewMapperObject[viewName]);
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad AppsPage');
   }
 
 }
