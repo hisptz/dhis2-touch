@@ -93,21 +93,15 @@ var dhis2 = {
       return defer.promise();
     },
     query: function (query, object) {
-      console.log("Report Module query Transact1");
       var defer = $.Deferred();
-      console.log("Report Module query Transact2");
       if (dhis2.database.indexOf(".db") == -1) {
         dhis2.database = dhis2.database + ".db";
       }
-      console.log("Report Module query Transact3");
       var db = window.sqlitePlugin.openDatabase({name: dhis2.database, location: 'default'});
-      console.log("Report Module query Transact4");
       db.transaction(function (tx) {
-        console.log("Report Module query Excecute");
         tx.executeSql(query, object).then(function (tx, results) {
           defer.resolve(results);
         }, function (error) {
-          console.log("Report Module query Error");
           defer.reject(error);
 
         })
@@ -300,6 +294,49 @@ dhis2.de = {
     });
     return defer.promise();
   },
+  analyticsQuery:function(query){
+    var defer = $.Deferred();
+    dhis2.sqlLiteServices.performQuery(query, {}).then(function (results) {
+      defer.resolve(dhis2.formatQueryReturnResult(results, "dataValues"));
+    }, function (error) {
+      defer.reject(error);
+    })
+    return defer.promise();
+  },
+  dataElementWithoutOptionsAnalytics: function (de, ou, pe) {
+    var defer = $.Deferred();
+    //sample testing on sqlLite services
+    if(de.length > 0){
+      var query = "SELECT de ,pe,ou,SUM(value) as value FROM 'dataValues' dv INNER JOIN organisationunits ou on(ou.id = dv.ou)" +
+        "WHERE (ou.path  like '%" +ou.join("%' OR ou.path  like '%")+ "%') AND pe IN ('" + pe.join("','") + "') AND de IN ('" + de.join("','") + "')" +
+        "GROUP BY de,pe,ou";
+      this.analyticsQuery(query).then(function (results) {
+        defer.resolve(results);
+      }, function (error) {
+        defer.reject(error);
+      })
+    }else{
+      defer.resolve([]);
+    }
+    return defer.promise();
+  },
+  dataElementWithOptionsAnalytics: function (de, ou, pe) {
+    var defer = $.Deferred();
+    //sample testing on sqlLite services
+    if(de.length > 0){
+      var query = "SELECT de || '.' || co  as de,pe,ou,SUM(value) as value FROM 'dataValues' dv INNER JOIN organisationunits ou on(ou.id = dv.ou)" +
+        "WHERE (ou.path  like '%" +ou.join("%' OR ou.path  like '%")+ "%') AND pe IN ('" + pe.join("','") + "') AND de || '.' || co IN ('" + de.join("','") + "')" +
+        "GROUP BY de,pe,ou";
+      this.analyticsQuery(query).then(function (results) {
+        defer.resolve(results);
+      }, function (error) {
+        defer.reject(error);
+      })
+    }else{
+      defer.resolve([]);
+    }
+    return defer.promise();
+  },
   dataElementAnalytics: function (dx, ou, pe) {
     var defer = $.Deferred();
     var analytics = {
@@ -337,17 +374,29 @@ dhis2.de = {
     }
     //sample testing on sqlLite services
     if(dx.length > 0){
-      var query = "SELECT de,pe,ou,SUM(value) as value FROM 'dataValues' dv INNER JOIN organisationunits ou on(ou.id = dv.ou)" +
-        "WHERE ou.path  like '%m0frOspS7JY%' AND pe IN ('" + pe.join("','") + "') AND de IN ('" + dx.join("','") + "')" +
-        "GROUP BY de,pe,ou";
-      console.log("Report Module query:" + query);
-      dhis2.sqlLiteServices.performQuery(query, {}).then(function (results) {
-        dhis2.formatQueryReturnResult(results, "dataValues").forEach(function (data) {
+      var deWithoutCategoryOptions = [];
+      var deWithCategoryOptions = [];
+      dx.forEach(function(id){
+        if(id.indexOf(".") > -1){
+          deWithCategoryOptions.push(id);
+        }else{
+          deWithoutCategoryOptions.push(id);
+        }
+      })
+      var that = this;
+      this.dataElementWithoutOptionsAnalytics(deWithoutCategoryOptions, ou, pe).then(function (results) {
+        results.forEach(function (data) {
           analytics.rows.push([data.de, data.pe, data.ou, data.value + ""])
         })
-        defer.resolve(analytics);
+        that.dataElementWithOptionsAnalytics(deWithCategoryOptions, ou, pe).then(function (results) {
+          results.forEach(function (data) {
+            analytics.rows.push([data.de, data.pe, data.ou, data.value + ""])
+          })
+          defer.resolve(analytics);
+        }, function (error) {
+          defer.reject(error);
+        })
       }, function (error) {
-        console.log("Report Module1error:" + JSON.stringify(error));
         defer.reject(error);
       })
     }else{
@@ -364,7 +413,6 @@ dhis2.de = {
         defer.resolve(dataElementAnalyticsResults);
       })
     }, function (error) {
-      console.log("Report Module1error:" + JSON.stringify(error));
       defer.reject(error);
     })
     return defer.promise();
@@ -379,38 +427,22 @@ dhis2.de = {
       },
       rows: []
     };
-    console.log("Report Indicators Starting:");
     dhis2.de.getIndicators(dx).done(function (indicators) {
-      if(indicators.length > 0){
-        console.log("Report Indicators:" + JSON.stringify(indicators));
-      }
       var dataElementIds = that.getObjectsFromIndicators(indicators,dhis2.de.cst.formulaPattern,/[#\{\}]/g);
-      if(indicators.length > 0){
-        console.log("Report Indicators1:" + dataElementIds.length);
-      }
       that.dataElementAnalytics(dataElementIds, ou, pe).then(function (analyticsResults) {
         var constantIds = that.getObjectsFromIndicators(indicators,dhis2.de.cst.constantPattern,/[C\{\}]/g);
-        if(indicators.length > 0){
-          console.log("Found ConstantIds:" + JSON.stringify(constantIds));
-        }
         dhis2.sqlLiteServices.getDataFromTableByIds('constants',constantIds ).done(function (constants) {
-          if(indicators.length > 0){
-            console.log("Found Constants:" + JSON.stringify(constants))
-          }
           ou.forEach(function (ouId) {
             pe.forEach(function (peId) {
               indicators.forEach(function (indicator) {
-                console.log("What");
                 var numerator = indicator.numerator;
                 var denominator = indicator.denominator;
-                console.log("What1");
                 analyticsResults.rows.forEach(function (row) {
                   if (row[1] == peId && ouId == row[2]) {
                     numerator = numerator.replace("#{" + row[0] + "}",row[3])
                     denominator = denominator.replace("#{" + row[0] + "}",row[3])
                   }
                 })
-                console.log("What2");
                 constants.forEach(function(constant){
                   numerator = numerator.replace("C{" + constant.id + "}",constant.value)
                   denominator = denominator.replace("C{" + constant.id + "}",constant.value)
@@ -424,7 +456,6 @@ dhis2.de = {
           defer.resolve(analytics);
         });
       }, function (error) {
-        console.log("Report Module1error:" + JSON.stringify(error));
         defer.reject(error);
       })
     });
