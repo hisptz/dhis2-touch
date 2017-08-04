@@ -55,7 +55,10 @@ export class DashboardPage implements OnInit{
   }
 
   loadingListOfAllDashboards(currentUser) {
+    this.isLoading = true;
     let network = this.NetworkAvailability.getNetWorkStatus();
+    this.currentDashboardName = '';
+    this.currentDashboardId = '';
     if (network.isAvailable) {
       this.loadingMessage = "Loading dashboards from server";
       this.dashboards = [];
@@ -163,6 +166,12 @@ export class DashboardPage implements OnInit{
       });
       modal.present();
     }
+  }
+
+  reLoadDashBoard(refresher){
+    this.DashboardService.resetDashboards();
+    this.loadingListOfAllDashboards(this.currentUser);
+    refresher.complete();
   }
 
 }

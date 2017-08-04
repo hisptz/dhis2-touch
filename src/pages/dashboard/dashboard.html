@@ -26,9 +26,13 @@
       </ion-row>
     </div>
 
-    <div *ngIf="!isLoading">
+      <div *ngIf="!isLoading">
 
-      <div class="entry-selection-container " (tap)="openDashboardListFilter()">
+        <ion-refresher (ionRefresh)="reLoadDashBoard($event)">
+          <ion-refresher-content></ion-refresher-content>
+        </ion-refresher>
+
+      <div class="entry-selection-container " *ngIf="currentDashboardName !='' " (tap)="openDashboardListFilter()">
         <ion-row>
           <ion-col col-11>
             {{ currentDashboardName }}
