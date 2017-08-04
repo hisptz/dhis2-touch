@@ -21,15 +21,17 @@ import {NetworkAvailabilityProvider} from "../providers/network-availability/net
 import {AppProvider} from "../providers/app/app";
 import {VisualizerService} from "../providers/visualizer-service";
 import {DashboardServiceProvider} from "../providers/dashboard-service/dashboard-service";
+import {DashboardModule} from "../components/dashboard.module";
+import {LoginPage} from "../pages/login/login";
 
 @NgModule({
   declarations: [
     MyApp,
-    TabsPage
+    TabsPage,LoginPage
   ],
   imports: [
     BrowserModule,
-    SharedModule,
+    SharedModule,DashboardModule,
     HttpModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot()
@@ -37,7 +39,7 @@ import {DashboardServiceProvider} from "../providers/dashboard-service/dashboard
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    TabsPage
+    TabsPage,LoginPage
   ],
   providers: [
     StatusBar,

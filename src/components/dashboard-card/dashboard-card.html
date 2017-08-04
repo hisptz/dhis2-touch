@@ -1,0 +1,18 @@
+<!-- Generated template for the DashboardCardComponent component -->
+<div>
+  <div *ngIf="!isVisualizationDataLoaded">
+    <div class="visualizationLoader">
+      <page-loading loadingSize="large" loadingMessage="Loading Visualization data"></page-loading>
+    </div>
+  </div>
+  <div *ngIf="isVisualizationDataLoaded" class="dashboard-card">
+    <div *ngIf="visualizationType && visualizationType =='chart'">
+      <chart-card [chartObject]="chartObject" [dashboardItemId]="dashboardItem.id"></chart-card>
+    </div>
+
+    <div *ngIf="visualizationType && visualizationType =='table'">
+      <table-card [tableObject]="tableObject"></table-card>
+    </div>
+
+  </div>
+</div>
