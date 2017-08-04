@@ -52,6 +52,114 @@
   }
 }
 
+//app icons & titles
+.menu-app-icon-list{
+  width:55%;
+  text-align: center;
+  margin: auto;
+}
+.menu-app {
+  text-align: center;
+  font-size: 1.2rem;
+  white-space: nowrap;
+  overflow:hidden !important;
+  text-overflow: ellipsis;
+}
+
+//cards
+.card-md h1 {
+  font-size: 1.8rem;
+  color : #7A7A7A;
+}
+.card-header-md {
+  padding: 16px;
+  font-size: 1.7rem;
+  color : #7A7A7A;
+}
+.card-md h2 {
+  font-size: 20px;
+  color : #7A7A7A;
+}
+.card-md h3,
+.card-md h4,
+.card-md h5,
+.card-md h6 {
+  font-size: 1.7rem;
+  color : #7A7A7A;
+}
+
+//font label
+.inputLabel{
+  padding-bottom: 4px;
+  padding-top: 4px;
+  margin-bottom: 4px;
+}
+
+//action sheet style for tool tips
+.action-sheet-md .action-sheet-title {
+  padding: 5px 16px 5px;
+  font-size: 1.8rem;
+  text-align: left;
+  color: #757575;
+}
+
+.action-sheet-sub-title{
+  padding: 0px 16px 17px;
+  font-size: 1.8rem;
+  text-align: left;
+  color: #757575;
+}
+
+//input fields
+.text-input-wp {
+  border: 0px solid rgba(0, 0, 0, 0.5);
+}
+
+//items
+.item-md p {
+  font-size: 1.7rem !important;
+}
+.item-md h2 {
+  font-size: 1.8rem !important;
+  font-weight: 300;
+}
+//tabs button
+.tabs-md .tab-button {
+  font-size: 1.7rem !important;
+}
+.tabs-md .tab-button[aria-selected=true] {
+  font-size: 1.7rem !important;
+}
+
+//buttons
+.button-md {
+  font-weight: normal;
+}
+
+.normalButton {
+  font-size: 1.7rem !important;
+}
+.dataEntryButton{
+  color: #7A7A7A;
+  font-size: 1.7rem !important;
+}
+
+.button-fab {
+  z-index: 100;
+}
+
+//selections
+.selectionLabel{
+  font-size: 1.7rem !important;
+}
+.selectionLabel{
+  font-size: 1.7rem !important;
+}
+
+.selectionHints{
+  word-wrap: break-word!important;
+}
+
 .list-ios > .item-block:first-child {
   border-top: 0px solid #c8c7cc;
 }

@@ -13,6 +13,63 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content >
+
+  <ion-grid>
+    <ion-row >
+      <ion-col col-4 (tap)="goToView('')" >
+        <div class="apps-contents" padding>
+          <ion-thumbnail >
+            <img class="menu-app-icon-list" src="assets/app-icons/data-entry.png">
+          </ion-thumbnail>
+          <p class="menu-app" >Data Entry</p>
+        </div>
+      </ion-col>
+      <ion-col col-4 (tap)="goToView('')" >
+        <div class="apps-contents" padding>
+          <ion-thumbnail >
+            <img class="menu-app-icon-list" src="assets/app-icons/event-capture.png">
+          </ion-thumbnail>
+          <p class="menu-app" >Event Capture</p>
+        </div>
+      </ion-col>
+      <ion-col col-4 (tap)="goToView('')"  >
+        <div class="apps-contents" padding>
+          <ion-thumbnail >
+            <img class="menu-app-icon-list" src="assets/app-icons/reports.png">
+          </ion-thumbnail>
+          <p class="menu-app">Reports</p>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-4 (tap)="goToView('DashboardPage')" >
+        <div class="apps-contents" padding>
+          <ion-thumbnail >
+            <img class="menu-app-icon-list" src="assets/app-icons/dashboard.png">
+          </ion-thumbnail>
+          <p class="menu-app">Dashboard</p>
+        </div>
+      </ion-col>
+
+      <ion-col col-4 (tap)="goToView('')" >
+        <div class="apps-contents" padding>
+          <ion-thumbnail >
+            <img class="menu-app-icon-list" src="assets/app-icons/sync.png">
+          </ion-thumbnail>
+          <p class="menu-app" >Sync</p>
+        </div>
+      </ion-col>
+      <ion-col col-4 (tap)="goToView('')" >
+        <div class="apps-contents" padding>
+          <ion-thumbnail >
+            <img class="menu-app-icon-list" src="assets/app-icons/settings.png">
+          </ion-thumbnail>
+          <p class="menu-app" >Settings</p>
+        </div>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
 
 </ion-content>

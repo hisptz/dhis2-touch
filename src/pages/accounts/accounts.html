@@ -13,6 +13,48 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content >
+
+  <ion-grid>
+    <ion-row >
+      <ion-col col-4 (tap)="goToView('')" >
+        <div class="apps-contents" padding>
+          <ion-thumbnail >
+            <img class="menu-app-icon-list" src="assets/app-icons/profile.png">
+          </ion-thumbnail>
+          <p class="menu-app" >Profile</p>
+        </div>
+      </ion-col>
+      <ion-col col-4 (tap)="goToView('')" >
+        <div class="apps-contents" padding>
+          <ion-thumbnail >
+            <img class="menu-app-icon-list" src="assets/app-icons/about.png">
+          </ion-thumbnail>
+          <p class="menu-app" >About</p>
+        </div>
+      </ion-col>
+
+      <ion-col col-4 (tap)="goToView('')" >
+        <div class="apps-contents" padding>
+          <ion-thumbnail >
+            <img class="menu-app-icon-list" src="assets/app-icons/help.png">
+          </ion-thumbnail>
+          <p class="menu-app" >Help</p>
+        </div>
+      </ion-col>
+
+    </ion-row>
+    <ion-row>
+      <ion-col col-4 (tap)="logOut()" >
+        <div class="apps-contents" padding>
+          <ion-thumbnail >
+            <img class="menu-app-icon-list" src="assets/app-icons/logout.png">
+          </ion-thumbnail>
+          <p class="menu-app" >Logout</p>
+        </div>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
 
 </ion-content>

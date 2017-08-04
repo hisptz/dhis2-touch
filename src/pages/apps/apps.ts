@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 
 /**
  * Generated class for the AppsPage page.
@@ -14,11 +14,15 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class AppsPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad AppsPage');
+
+  goToView(viewName){
+    console.log('view name is : ' + viewName);
+    if(viewName != ''){
+      this.navCtrl.push(viewName);
+    }
   }
 
 }

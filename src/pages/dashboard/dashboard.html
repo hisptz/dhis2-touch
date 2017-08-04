@@ -7,6 +7,9 @@
 <ion-header>
 
   <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>Dashboard</ion-title>
   </ion-navbar>
 
@@ -62,13 +65,10 @@
                   </ion-row>
 
                   <div *ngIf="openedDashboardIds[dashboardItem.id]">
-                    <div class="list-separator"></div>
-                    <div *ngIf="dashboardItem.name">{{dashboardItem.name}}</div>
-                    <div *ngIf="dashboardItem.title">{{dashboardItem.title}}</div>
-                    <!--<page-visualization-card [dashboardItem]="dashboardItem"-->
-                                             <!--(dashboardItemAnalyticData)="updateDashboardVisualizationData($event,dashboardItem.id)"-->
-                                             <!--[dashboardItemData]="dashBoardVisualizationData[dashboardItem.id]">-->
-                    <!--</page-visualization-card>-->
+                    <dashboard-card [dashboardItem]="dashboardItem"
+                                    (dashboardItemAnalyticData)="updateDashboardVisualizationData($event,dashboardItem.id)"
+                                    [dashboardItemData]="dashBoardVisualizationData[dashboardItem.id]">
+                    </dashboard-card>
                   </div>
                 </div>
               </div>
