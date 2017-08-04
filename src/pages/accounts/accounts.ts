@@ -1,7 +1,6 @@
 import { Component,OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams ,App} from 'ionic-angular';
 import {UserProvider} from "../../providers/user/user";
-import {LoginPage} from "../login/login";
 
 /**
  * Generated class for the AccountsPage page.
@@ -16,7 +15,9 @@ import {LoginPage} from "../login/login";
 })
 export class AccountsPage implements OnInit{
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private UserProvider : UserProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              private app : App,
+              private UserProvider : UserProvider) {
   }
 
 
@@ -33,7 +34,7 @@ export class AccountsPage implements OnInit{
       let user :any = await this.UserProvider.getCurrentUser();
       user.isLogin = false;
       this.UserProvider.setCurrentUser(user).then(()=>{
-        this.navCtrl.setRoot(LoginPage)
+        this.app.getRootNav().setRoot('LoginPage');
       })
     }catch (e){
       console.log(JSON.stringify(e));
