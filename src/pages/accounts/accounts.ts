@@ -1,5 +1,5 @@
 import { Component,OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams ,App} from 'ionic-angular';
+import { IonicPage, NavController ,App} from 'ionic-angular';
 import {UserProvider} from "../../providers/user/user";
 
 /**
@@ -15,7 +15,7 @@ import {UserProvider} from "../../providers/user/user";
 })
 export class AccountsPage implements OnInit{
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
+  constructor(public navCtrl: NavController,
               private app : App,
               private UserProvider : UserProvider) {
   }
@@ -26,7 +26,7 @@ export class AccountsPage implements OnInit{
   }
 
   goToView(viewName){
-    console.log('View name is : ' + viewName);
+    this.navCtrl.push(viewName);
   }
 
   async logOut(){
