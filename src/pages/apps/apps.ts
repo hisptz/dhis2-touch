@@ -19,10 +19,7 @@ export class AppsPage {
 
 
   goToView(viewName){
-    console.log('view name is : ' + viewName);
-    if(viewName != ''){
-      this.navCtrl.push(viewName);
-    }
+    this.navCtrl.push(viewName);
   }
 
 }
