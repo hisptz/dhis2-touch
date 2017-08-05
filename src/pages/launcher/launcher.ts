@@ -40,7 +40,7 @@ export class LauncherPage implements OnInit{
         this.navCtrl.setRoot(TabsPage);
       }else{
         this.navCtrl.setRoot("LoginPage");
-        //this.navCtrl.push('SyncPage')
+        //this.navCtrl.push('SettingsPage')
       }
     },error=>{
     });

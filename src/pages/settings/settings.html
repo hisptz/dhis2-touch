@@ -15,4 +15,31 @@
 
 <ion-content >
 
+  <ion-grid>
+    <div class="item-card" *ngFor="let settingContent of settingContents">
+      <ion-row (tap)="toggleSettingContents(settingContent)">
+        <ion-col col-11>
+          <img  class="side-menu-icon" [src]="settingContent.icon"/>&nbsp;&nbsp;
+          <span ion-text [color]="(isSettingContentOpen[settingContent.id]) ?'current' : 'font-color'">
+              {{ settingContent.name }}
+            </span>
+        </ion-col>
+        <ion-col col-1 item >
+          <div style="text-align: center;">
+            <ion-icon [color]="(isSettingContentOpen[settingContent.id]) ?'current' : 'font-color'" *ngIf="!(isSettingContentOpen[settingContent.id])" name="ios-arrow-down" item-right></ion-icon>
+            <ion-icon [color]="(isSettingContentOpen[settingContent.id]) ?'current' : 'font-color'" *ngIf="(isSettingContentOpen[settingContent.id])" name="ios-arrow-up" item-right></ion-icon>
+          </div>
+        </ion-col>
+      </ion-row>
+      <div class="updateManagerContents" *ngIf="(isSettingContentOpen[settingContent.id])" >
+        <hr>
+        <ion-row>
+          <ion-col>
+            {{ settingContent.name }}'s contents are here<br>Coming soon!!!
+          </ion-col>
+        </ion-row>
+      </div>
+    </div>
+  </ion-grid>
+
 </ion-content>
