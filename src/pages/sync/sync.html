@@ -15,4 +15,31 @@
 
 <ion-content >
 
+  <ion-grid>
+    <div class="item-card" *ngFor="let syncContent of syncContents">
+      <ion-row (tap)="toggleSyncContents(syncContent)">
+        <ion-col col-11>
+          <img  class="side-menu-icon" [src]="syncContent.icon"/>&nbsp;&nbsp;
+          <span ion-text [color]="(isSyncContentOpen[syncContent.id]) ?'current' : 'font-color'">
+              {{ syncContent.name }}
+            </span>
+        </ion-col>
+        <ion-col col-1 item >
+          <div style="text-align: center;">
+            <ion-icon [color]="(isSyncContentOpen[syncContent.id]) ?'current' : 'font-color'" *ngIf="!(isSyncContentOpen[syncContent.id])" name="ios-arrow-down" item-right></ion-icon>
+            <ion-icon [color]="(isSyncContentOpen[syncContent.id]) ?'current' : 'font-color'" *ngIf="(isSyncContentOpen[syncContent.id])" name="ios-arrow-up" item-right></ion-icon>
+          </div>
+        </ion-col>
+      </ion-row>
+      <div class="updateManagerContents" *ngIf="(isSyncContentOpen[syncContent.id])" >
+        <hr>
+        <ion-row>
+          <ion-col>
+            {{ syncContent.name }}'s contents are here<br>Coming soon!!!
+          </ion-col>
+        </ion-row>
+      </div>
+    </div>
+  </ion-grid>
+
 </ion-content>
