@@ -16,30 +16,92 @@
 <ion-content >
 
   <ion-grid>
-    <div class="item-card" *ngFor="let settingContent of settingContents">
-      <ion-row (tap)="toggleSettingContents(settingContent)">
-        <ion-col col-11>
-          <img  class="side-menu-icon" [src]="settingContent.icon"/>&nbsp;&nbsp;
-          <span ion-text [color]="(isSettingContentOpen[settingContent.id]) ?'current' : 'font-color'">
+
+    <div *ngIf="!isSettingLoaded">
+      <page-loading [loadingMessage]="settingLoadingMessage" [loadingSize]="'large'"></page-loading>
+    </div>
+
+    <div *ngIf="isSettingLoaded">
+      <div class="item-card" *ngFor="let settingContent of settingContents">
+        <ion-row (tap)="toggleSettingContents(settingContent)">
+          <ion-col col-11>
+            <img  class="side-menu-icon" [src]="settingContent.icon"/>&nbsp;&nbsp;
+            <span ion-text [color]="(isSettingContentOpen[settingContent.id]) ?'current' : 'font-color'">
               {{ settingContent.name }}
             </span>
-        </ion-col>
-        <ion-col col-1 item >
-          <div style="text-align: center;">
-            <ion-icon [color]="(isSettingContentOpen[settingContent.id]) ?'current' : 'font-color'" *ngIf="!(isSettingContentOpen[settingContent.id])" name="ios-arrow-down" item-right></ion-icon>
-            <ion-icon [color]="(isSettingContentOpen[settingContent.id]) ?'current' : 'font-color'" *ngIf="(isSettingContentOpen[settingContent.id])" name="ios-arrow-up" item-right></ion-icon>
-          </div>
-        </ion-col>
-      </ion-row>
-      <div class="updateManagerContents" *ngIf="(isSettingContentOpen[settingContent.id])" >
-        <hr>
-        <ion-row>
-          <ion-col>
-            {{ settingContent.name }}'s contents are here<br>Coming soon!!!
+          </ion-col>
+          <ion-col col-1 item >
+            <div style="text-align: center;">
+              <ion-icon [color]="(isSettingContentOpen[settingContent.id]) ?'current' : 'font-color'" *ngIf="!(isSettingContentOpen[settingContent.id])" name="ios-arrow-down" item-right></ion-icon>
+              <ion-icon [color]="(isSettingContentOpen[settingContent.id]) ?'current' : 'font-color'" *ngIf="(isSettingContentOpen[settingContent.id])" name="ios-arrow-up" item-right></ion-icon>
+            </div>
           </ion-col>
         </ion-row>
+        <div class="updateManagerContents" *ngIf="(isSettingContentOpen[settingContent.id])" >
+          <hr>
+          <div *ngIf="settingContent.id == 'synchronization'">
+            <div *ngIf="settingObject.synchronization">
+              <ion-row>
+                <ion-col col-6>
+                  <ion-item>
+                    <ion-input type="number"  min="1" [(ngModel)]="settingObject.synchronization.time"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col col-6>
+                  <ion-item>
+                    <ion-select [(ngModel)]="settingObject.synchronization.timeType" interface="action-sheet">
+                      <ion-option value="minutes">Minute(s)</ion-option>
+                      <ion-option value="hours">Hour(s)</ion-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <button [disabled]="settingContent.isLoading" [color]="(!settingContent.isLoading)?'primary':'whitecolor'" ion-button full large text-capitalize (tap)="applySettings(settingContent)">
+                  <span *ngIf="settingContent.isLoading" >
+                    <page-loading loadingSize="small"></page-loading>
+                    saving ...
+                  </span>
+                <span *ngIf="!settingContent.isLoading" >
+                    Save
+                  </span>
+              </button>
+            </div>
+
+          </div>
+          <div *ngIf="settingContent.id == 'entryForm'">
+
+            <ion-row *ngIf="settingObject.entryForm">
+              <ion-col>
+                <ion-item>
+                  <ion-label>Form Label</ion-label>
+                  <ion-select [(ngModel)]="settingObject.entryForm.label" interface="action-sheet">
+                    <ion-option value="displayName">Display Name</ion-option>
+                    <ion-option value="formName">Form Name</ion-option>
+                  </ion-select>
+                </ion-item>
+                <ion-item>
+                  <ion-label floating>Data elements per page(max)</ion-label>
+                  <ion-input type="number"  min="1" [(ngModel)]="settingObject.entryForm.maxDataElementOnDefaultForm"></ion-input>
+                </ion-item>
+                <button [disabled]="settingContent.isLoading" [color]="(!settingContent.isLoading)?'primary':'whitecolor'" ion-button full large text-capitalize (tap)="applySettings(settingContent)">
+                  <span *ngIf="settingContent.isLoading" >
+                    <page-loading loadingSize="small"></page-loading>
+                    saving ...
+                  </span>
+                  <span *ngIf="!settingContent.isLoading" >
+                    Save
+                  </span>
+                </button>
+              </ion-col>
+            </ion-row>
+
+          </div>
+
+
+        </div>
       </div>
     </div>
+
   </ion-grid>
 
 </ion-content>

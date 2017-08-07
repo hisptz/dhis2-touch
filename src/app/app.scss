@@ -259,6 +259,12 @@
   padding-top: 1.5rem;
 }
 
+ion-select {
+  overflow:hidden !important;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
 .slide-in-from-left{
   -webkit-animation: slideInFromLeft ease-in 1;
   animation: slideInFromLeft ease-in 1;

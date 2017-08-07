@@ -23,6 +23,7 @@ import {VisualizerService} from "../providers/visualizer-service";
 import {DashboardServiceProvider} from "../providers/dashboard-service/dashboard-service";
 import {DashboardModule} from "../components/dashboard.module";
 import { HelpContentsProvider } from '../providers/help-contents/help-contents';
+import { SettingsProvider } from '../providers/settings/settings';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { HelpContentsProvider } from '../providers/help-contents/help-contents';
     ResourceProvider,HttpClientProvider,UserProvider,NetworkAvailabilityProvider,AppProvider,
     VisualizerService,DashboardServiceProvider,
     HelpContentsProvider,
+    SettingsProvider,
   ]
 })
 export class AppModule {}

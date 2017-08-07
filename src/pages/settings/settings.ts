@@ -1,5 +1,8 @@
 import { Component,OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage } from 'ionic-angular';
+import {SettingsProvider} from "../../providers/settings/settings";
+import {UserProvider} from "../../providers/user/user";
+import {AppProvider} from "../../providers/app/app";
 
 /**
  * Generated class for the SettingsPage page.
@@ -18,35 +21,84 @@ export class SettingsPage implements OnInit{
   isSettingContentOpen : any;
   settingContents : Array<any>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  isSettingLoaded : boolean = false;
+  settingObject : any;
+  settingLoadingMessage : string;
+
+  currentUser : any;
+
+
+  constructor(private settingsProvider : SettingsProvider,
+              private appProvider : AppProvider,
+              private userProvider : UserProvider) {
   }
 
   ngOnInit(){
+    this.settingObject  = {};
+    this.settingLoadingMessage = 'Load current user information';
+    this.isSettingLoaded = false;
     this.isSettingContentOpen = {};
-    this.settingContents = this.getSyncContentDetails();
+    this.settingContents = this.settingsProvider.getSettingContentDetails();
     if(this.settingContents.length > 0){
       this.toggleSettingContents(this.settingContents[0]);
     }
+    let defaultSettings = this.settingsProvider.getDefualtSettings();
+    this.userProvider.getCurrentUser().then(currentUser=>{
+      this.currentUser = currentUser;
+      this.settingLoadingMessage = 'Loading settings';
+      this.settingsProvider.getSettingsForTheApp(this.currentUser).then((appSettings : any)=>{
+        this.initiateSettings(defaultSettings,appSettings);
+      }).catch(error=>{
+        console.log(error);
+        this.isSettingLoaded = true;
+        this.initiateSettings(defaultSettings,null);
+        this.appProvider.setNormalNotification('Fail to load settings');
+      });
+    }).catch(error=>{
+      console.log(error);
+      this.isSettingLoaded = true;
+      this.initiateSettings(defaultSettings,null);
+      this.appProvider.setNormalNotification('Fail to load current user information');
+    });
   }
 
+  initiateSettings(defaultSettings,appSettings){
+    if(appSettings){
+      if(appSettings.synchronization){
+        this.settingObject['synchronization'] = appSettings.synchronization;
+      }else{
+        this.settingObject['synchronization'] = defaultSettings.synchronization;
+      }
+      if(appSettings.entryForm){
+        this.settingObject['entryForm'] = appSettings.dataEntry;
+      }else{
+        this.settingObject['entryForm'] = defaultSettings.dataEntry;
+      }
+    }else{
+      this.settingObject = defaultSettings;
+    }
+    let timeValue = this.settingObject.synchronization.time;
+    let timeType = this.settingObject.synchronization.timeType;
+    this.settingObject.synchronization.time = this.settingsProvider.getDisplaySynchronizationTime(timeValue,timeType);
+    this.isSettingLoaded = true;
+  }
+
+  applySettings(settingContent){
+    console.log('About to save ' + settingContent.name);
+  }
 
   toggleSettingContents(content){
     if(content && content.id){
-      if(this.isSettingContentOpen[content.id]){
-        this.isSettingContentOpen[content.id] = false;
-      }else{
-        this.isSettingContentOpen[content.id] = true;
-      }
+      Object.keys(this.isSettingContentOpen).forEach(id=>{
+        this.isSettingContentOpen[id] = false;
+      });
+      this.isSettingContentOpen[content.id] = true;
+      // if(this.isSettingContentOpen[content.id]){
+      //   this.isSettingContentOpen[content.id] = false;
+      // }else{
+      //   this.isSettingContentOpen[content.id] = true;
+      // }
     }
-
-  }
-
-  getSyncContentDetails(){
-    let syncContents = [
-      {id : 'synchronization',name : 'Synchronization',icon: 'assets/settings-icons/synchronization.png'},
-      {id : 'entryForm',name : 'Entry form',icon: 'assets/settings-icons/entry-form.png'}
-    ];
-    return syncContents;
   }
 
 }
