@@ -26,6 +26,7 @@ export class AccountsPage implements OnInit{
   }
 
   goToView(viewName){
+    console.log(viewName);
     this.navCtrl.push(viewName);
   }
 

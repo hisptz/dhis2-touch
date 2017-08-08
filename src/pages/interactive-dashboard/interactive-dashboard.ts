@@ -1,67 +1,65 @@
-import { Component,Input,Output,EventEmitter,OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
+import { IonicPage,ViewController } from 'ionic-angular';
 import {DashboardServiceProvider} from "../../providers/dashboard-service/dashboard-service";
-import {UserProvider} from "../../providers/user/user";
-import {AppProvider} from "../../providers/app/app";
 import {VisualizerService} from "../../providers/visualizer-service";
+import {ResourceProvider} from "../../providers/resource/resource";
 
 /**
- * Generated class for the DashboardCardComponent component.
+ * Generated class for the InteractiveDashboardPage page.
  *
- * See https://angular.io/docs/ts/latest/api/core/index/ComponentMetadata-class.html
- * for more info on Angular Components.
+ * See http://ionicframework.com/docs/components/#navigation for more info
+ * on Ionic pages and navigation.
  */
+
+@IonicPage()
 @Component({
-  selector: 'dashboard-card',
-  templateUrl: 'dashboard-card.html'
+  selector: 'page-interactive-dashboard',
+  templateUrl: 'interactive-dashboard.html',
 })
-export class DashboardCardComponent implements OnInit{
+export class InteractiveDashboardPage implements OnInit{
 
-  @Input() dashboardItem;
-  @Input() dashboardItemData;
-  @Output() dashboardItemAnalyticData = new EventEmitter();
-  @Output() loadInFullScreen = new EventEmitter();
-
-  currentUser : any;
+  dashboardItem : any;
+  dashboardItemData : any;
   analyticData : any;
+
   chartObject : any;
   tableObject : any;
   isVisualizationDataLoaded : boolean = false;
   visualizationType : string;
 
-  constructor(private DashboardService : DashboardServiceProvider,private userProvider : UserProvider,
-              private appProvider : AppProvider,
+  visualizationTitle : string = 'Interactive Dashboard';
+
+  isChartLoading : boolean = false;
+
+  visualizationOptions : any = {
+    top : [],
+    bottom :  [],
+    right : [],
+    left : []
+  };
+
+  metadataIdentifiers : any;
+
+  constructor(private DashboardServiceProvider : DashboardServiceProvider,
+              private ResourceProvider : ResourceProvider,private viewCtrl : ViewController,
               private visualizationService : VisualizerService) {
   }
 
-
-  ngOnInit() {
+  ngOnInit(){
+    this.isVisualizationDataLoaded = false;
+    let data = this.DashboardServiceProvider.getCurrentFullScreenVisualizationData();
+    this.analyticData = data.analyticData;
+    this.dashboardItemData = data.dashboardItemData;
+    this.dashboardItem = data.dashboardItem;
+    if(this.dashboardItem.title){
+      this.visualizationTitle = this.dashboardItem.title;
+    }else if(this.dashboardItem.name){
+      this.visualizationTitle = this.dashboardItem.name;
+    }
     this.visualizationType = '';
-    this.userProvider.getCurrentUser().then((currentUser :any)=>{
-      if(currentUser && currentUser.username){
-        this.currentUser = currentUser;
-        if(this.dashboardItemData){
-          this.analyticData = this.dashboardItemData;
-          this.initiateVisualization();
-        }else{
-          if(this.dashboardItem && this.dashboardItem.analyticsUrl){
-            this.DashboardService.getAnalyticDataForDashboardItem(this.dashboardItem.analyticsUrl,currentUser).then((analyticData:any)=>{
-              this.analyticData = analyticData;
-              this.dashboardItemAnalyticData.emit(analyticData);
-              this.initiateVisualization();
-            },error=>{
-              this.isVisualizationDataLoaded = true;
-              this.appProvider.setNormalNotification("fail to load data for " + (this.dashboardItem.title) ? this.dashboardItem.title : this.dashboardItem.name);
-            });
-          }else{
-            this.isVisualizationDataLoaded = true;
-            this.appProvider.setNormalNotification("There is no dashboard item information");
-          }
-        }
-      }else{
-        this.isVisualizationDataLoaded = true;
-        this.appProvider.setNormalNotification("Fail to get user information");
-      }
-    })
+    this.visualizationOptions.right = this.ResourceProvider.getVisualizationIcons().charts;
+    this.visualizationOptions.bottom = this.ResourceProvider.getVisualizationIcons().visualizationType;
+    this.initiateVisualization();
   }
 
   initiateVisualization(){
@@ -76,13 +74,19 @@ export class DashboardCardComponent implements OnInit{
     }
   }
 
+  dismiss() {
+    this.viewCtrl.dismiss();
+  }
+
+
   drawChart(chartType?:string) {
     this.isVisualizationDataLoaded = false;
+    this.isChartLoading = true;
     let itemChartType = (this.dashboardItem.type) ? this.dashboardItem.type.toLowerCase() : 'bar';
     let layout: any = {};
     layout['series'] = this.dashboardItem.series ? this.dashboardItem.series : (this.dashboardItem.columns.length > 0) ?this.dashboardItem.columns[0].dimension :  'pe';
     layout['category'] = this.dashboardItem.category ? this.dashboardItem.category :(this.dashboardItem.rows.length > 0)? this.dashboardItem.rows[0].dimension : 'dx';
-    this.chartObject = {};
+    this.chartObject = null;
     let chartConfiguration = {
       'type': chartType ? chartType : itemChartType,
       'title': "",
@@ -92,8 +96,11 @@ export class DashboardCardComponent implements OnInit{
     };
     this.chartObject = this.visualizationService.drawChart(this.analyticData, chartConfiguration);
     this.chartObject.chart["zoomType"] ="xy";
-    this.chartObject.chart["backgroundColor"] = "#F4F4F4";
     this.chartObject["credits"] =  {enabled: false};
+    setTimeout(()=>{
+      this.isChartLoading = false;
+    },500);
+
     this.isVisualizationDataLoaded = true;
   }
 
@@ -127,14 +134,16 @@ export class DashboardCardComponent implements OnInit{
     this.isVisualizationDataLoaded = true;
   }
 
-  loadVisualization(event){
-    if(this.analyticData && event.type == 'tap'){
-      var data = {
-        dashboardItem : this.dashboardItem,
-        dashboardItemData : this.dashboardItemData,
-        analyticData : this.analyticData
-      }
-      this.loadInFullScreen.emit(data);
+  changeVisualization(visualizationType?){
+    if(visualizationType == "table"){
+      this.drawTable();
+    }else if(visualizationType == "chart"){
+      this.drawChart();
+    }else if(visualizationType == "dictionary"){
+      this.metadataIdentifiers = this.DashboardServiceProvider.getDashboardItemMetadataIdentifiers(this.dashboardItem)
     }
+    this.visualizationType= visualizationType;
   }
+
+
 }

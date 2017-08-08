@@ -54,6 +54,7 @@ export class DashboardPage implements OnInit{
     });
   }
 
+
   loadingListOfAllDashboards(currentUser) {
     this.isLoading = true;
     let network = this.NetworkAvailability.getNetWorkStatus();
@@ -163,6 +164,33 @@ export class DashboardPage implements OnInit{
             this.getDashboardItemObjectsAndData(selectedDashboards, dashboard.id);
           }
         }
+      });
+      modal.present();
+    }
+  }
+
+  //@todo handle on close reopen card
+  loadVisualization(event){
+    if(event){
+      let  data = {
+        dashboardItem : event.dashboardItem,
+        dashboardItemData : event.dashboardItemData,
+        analyticData : event.analyticData
+      };
+      let openedDashboardIds = [];
+      Object.keys(this.openedDashboardIds).forEach(key=>{
+        if(this.openedDashboardIds[key]){
+          openedDashboardIds.push(key);
+        }
+      });
+      this.DashboardService.setOpenedDashboardIds(openedDashboardIds);
+      this.DashboardService.setCurrentFullScreenVisualizationData(data);
+      this.isLoading = true;
+      this.loadingMessage = "Please wait, while preparing awesome data visualization";
+      let modal = this.modalCtrl.create('InteractiveDashboardPage', {});
+      modal.onDidDismiss((dashboard:any)=> {
+        this.isLoading = false;
+        this.loadingMessage = "";
       });
       modal.present();
     }

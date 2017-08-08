@@ -6,8 +6,10 @@
   </div>
 
   <div id="{{dashboardItemId}}" style="display: block;"	></div>
+
   <div  *ngIf="!(dashboardItemId && chartObject)">
     <empty-list-notification [emptyListMessage]="'Chart data has not been set'"></empty-list-notification>
   </div>
+
 
 </div>

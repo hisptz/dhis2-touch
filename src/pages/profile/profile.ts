@@ -1,5 +1,6 @@
 import { Component,OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
+import {ProfileProvider} from "../../providers/profile/profile";
 
 /**
  * Generated class for the ProfilePage page.
@@ -16,7 +17,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class ProfilePage implements OnInit{
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, private profileProvider : ProfileProvider) {
   }
 
   ngOnInit(){

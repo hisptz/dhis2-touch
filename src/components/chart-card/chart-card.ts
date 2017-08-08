@@ -19,6 +19,8 @@ export class ChartCardComponent implements OnInit{
 
   isLoading : boolean = true;
 
+  chart : any;
+
 
   constructor() {
   }
@@ -28,10 +30,9 @@ export class ChartCardComponent implements OnInit{
     if(this.dashboardItemId && this.chartObject){
       this.chartObject.chart.renderTo = this.dashboardItemId;
       setTimeout(()=>{
-        HighCharts.chart(this.chartObject);
+        this.chart = HighCharts.chart(this.chartObject);
         this.isLoading = false;
       },500);
-
     }
   }
 

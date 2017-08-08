@@ -67,10 +67,10 @@
                       </div>
                     </ion-col>
                   </ion-row>
-
                   <div *ngIf="openedDashboardIds[dashboardItem.id]">
                     <dashboard-card [dashboardItem]="dashboardItem"
                                     (dashboardItemAnalyticData)="updateDashboardVisualizationData($event,dashboardItem.id)"
+                                    (loadInFullScreen)="loadVisualization($event)"
                                     [dashboardItemData]="dashBoardVisualizationData[dashboardItem.id]">
                     </dashboard-card>
                   </div>

@@ -1,5 +1,5 @@
 <!-- Generated template for the DashboardCardComponent component -->
-<div>
+<div (tap)="loadVisualization($event)">
   <div *ngIf="!isVisualizationDataLoaded">
     <div class="visualizationLoader">
       <page-loading loadingSize="large" loadingMessage="Loading Visualization data"></page-loading>
