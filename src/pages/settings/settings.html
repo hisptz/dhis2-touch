@@ -42,12 +42,12 @@
           <div *ngIf="settingContent.id == 'synchronization'">
             <div *ngIf="settingObject.synchronization">
               <ion-row>
-                <ion-col col-6>
+                <ion-col col-5>
                   <ion-item>
                     <ion-input type="number"  min="1" [(ngModel)]="settingObject.synchronization.time"></ion-input>
                   </ion-item>
                 </ion-col>
-                <ion-col col-6>
+                <ion-col col-7>
                   <ion-item>
                     <ion-select [(ngModel)]="settingObject.synchronization.timeType" interface="action-sheet">
                       <ion-option value="minutes">Minute(s)</ion-option>
@@ -56,7 +56,7 @@
                   </ion-item>
                 </ion-col>
               </ion-row>
-              <button [disabled]="settingContent.isLoading" [color]="(!settingContent.isLoading)?'primary':'whitecolor'" ion-button full large text-capitalize (tap)="applySettings(settingContent)">
+              <button  small  [disabled]="settingContent.isLoading" [color]="(!settingContent.isLoading)?'primary':'whitecolor'" ion-button full large text-capitalize (tap)="applySettings(settingContent)">
                   <span *ngIf="settingContent.isLoading" >
                     <page-loading loadingSize="small"></page-loading>
                     saving ...
@@ -83,7 +83,7 @@
                   <ion-label floating>Data elements per page(max)</ion-label>
                   <ion-input type="number"  min="1" [(ngModel)]="settingObject.entryForm.maxDataElementOnDefaultForm"></ion-input>
                 </ion-item>
-                <button [disabled]="settingContent.isLoading" [color]="(!settingContent.isLoading)?'primary':'whitecolor'" ion-button full large text-capitalize (tap)="applySettings(settingContent)">
+                <button small [disabled]="settingContent.isLoading" [color]="(!settingContent.isLoading)?'primary':'whitecolor'" ion-button full large text-capitalize (tap)="applySettings(settingContent)">
                   <span *ngIf="settingContent.isLoading" >
                     <page-loading loadingSize="small"></page-loading>
                     saving ...

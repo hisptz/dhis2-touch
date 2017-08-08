@@ -42,7 +42,7 @@ export class SettingsPage implements OnInit{
     if(this.settingContents.length > 0){
       this.toggleSettingContents(this.settingContents[0]);
     }
-    let defaultSettings = this.settingsProvider.getDefualtSettings();
+    let defaultSettings = this.settingsProvider.getDefaultSettings();
     this.userProvider.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;
       this.settingLoadingMessage = 'Loading settings';
@@ -83,21 +83,27 @@ export class SettingsPage implements OnInit{
     this.isSettingLoaded = true;
   }
 
+  //@todo process during saving
   applySettings(settingContent){
+    settingContent = this.settingsProvider.getSanitizedSettings(settingContent);
+    this.settingsProvider.setSettingsForTheApp(this.currentUser,settingContent).then(()=>{
+
+    }).catch(error=>{
+
+    });
     console.log('About to save ' + settingContent.name);
   }
 
   toggleSettingContents(content){
     if(content && content.id){
-      Object.keys(this.isSettingContentOpen).forEach(id=>{
-        this.isSettingContentOpen[id] = false;
-      });
-      this.isSettingContentOpen[content.id] = true;
-      // if(this.isSettingContentOpen[content.id]){
-      //   this.isSettingContentOpen[content.id] = false;
-      // }else{
-      //   this.isSettingContentOpen[content.id] = true;
-      // }
+      if(this.isSettingContentOpen[content.id]){
+        this.isSettingContentOpen[content.id] = false;
+      }else{
+        Object.keys(this.isSettingContentOpen).forEach(id=>{
+          this.isSettingContentOpen[id] = false;
+        });
+        this.isSettingContentOpen[content.id] = true;
+      }
     }
   }
 

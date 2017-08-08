@@ -1,6 +1,11 @@
 page-about {
  .about-page{
-   background-image: url("../assets/about-icons/about-page.png");
+   //background-image: url("../assets/about-icons/about-page.png");
    background-repeat: no-repeat;
+   background-position: inherit;
  }
+  .about-details{
+    padding-top: 5%;
+    color: rgba(59, 57, 63, 0.76);
+  }
 }

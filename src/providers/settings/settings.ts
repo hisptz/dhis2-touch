@@ -32,6 +32,7 @@ export class SettingsProvider {
     });
   }
 
+
   /**
    *
    * @param currentUser
@@ -71,7 +72,7 @@ export class SettingsProvider {
     return value;
   }
 
-  getDefualtSettings(){
+  getDefaultSettings(){
     let defaultSettings = {
       entryForm: {
         label: "displayName", maxDataElementOnDefaultForm: 10
@@ -81,6 +82,21 @@ export class SettingsProvider {
       }
     };
     return defaultSettings;
+  }
+
+  getSanitizedSettings(appSettings) {
+    if (appSettings.entryForm) {
+      if(isNaN(appSettings.entryForm.maxDataElementOnDefaultForm) || appSettings.entryForm.maxDataElementOnDefaultForm <= 0){
+        appSettings.entryForm.maxDataElementOnDefaultForm = 1;
+      }
+    }
+    if(appSettings.synchronization){
+      if(isNaN(appSettings.synchronization.time) || appSettings.synchronization.time < 1){
+        appSettings.synchronization.time = 1
+      }
+      appSettings.synchronization.time = this.getSynchronizationTimeToSave(appSettings.synchronization.time,appSettings.synchronization.timeType);
+    }
+    return appSettings;
   }
 
   getSettingContentDetails(){
