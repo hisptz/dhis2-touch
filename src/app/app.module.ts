@@ -24,6 +24,8 @@ import {DashboardServiceProvider} from "../providers/dashboard-service/dashboard
 import {DashboardModule} from "../components/dashboard.module";
 import { HelpContentsProvider } from '../providers/help-contents/help-contents';
 import { SettingsProvider } from '../providers/settings/settings';
+import {ProfileProvider} from "../providers/profile/profile";
+import {AboutProvider} from "../providers/about/about";
 
 @NgModule({
   declarations: [
@@ -48,7 +50,7 @@ import { SettingsProvider } from '../providers/settings/settings';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ResourceProvider,HttpClientProvider,UserProvider,NetworkAvailabilityProvider,AppProvider,
     VisualizerService,DashboardServiceProvider,
-    HelpContentsProvider,
+    HelpContentsProvider,ProfileProvider,AboutProvider,
     SettingsProvider,
   ]
 })
