@@ -32,15 +32,14 @@ export class SyncPage implements OnInit{
 
   toggleSyncContents(content){
     if(content && content.id){
-      Object.keys(this.isSyncContentOpen).forEach(id=>{
-        this.isSyncContentOpen[id] = false;
-      });
-      this.isSyncContentOpen[content.id] = true;
-      // if(this.isSyncContentOpen[content.id]){
-      //   this.isSyncContentOpen[content.id] = false;
-      // }else{
-      //   this.isSyncContentOpen[content.id] = true;
-      // }
+      if(this.isSyncContentOpen[content.id]){
+        this.isSyncContentOpen[content.id] = false;
+      }else{
+        Object.keys(this.isSyncContentOpen).forEach(id=>{
+          this.isSyncContentOpen[id] = false;
+        });
+        this.isSyncContentOpen[content.id] = true;
+      }
     }
 
   }
