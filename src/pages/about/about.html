@@ -51,24 +51,29 @@
         </ion-row>
         <div *ngIf="(isAboutContentOpen[aboutContent.id])" >
           <hr>
+          <div *ngIf="aboutContent.id == 'appInformation'">
+            <ion-row>
+              <ion-col >
+                <div *ngFor="let info of appInformation; ">
+                  <p>{{ info.key }}</p>
+                  <p>{{ info.value }}</p>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
           <div *ngIf="aboutContent.id == 'systemInfo'">
             <ion-row>
               <ion-col >
                 <div *ngFor="let info of systemInfo">
-                  <p><b>{{ info.key }}</b><br>{{ info.value }}</p>
+                  <div class="content"><b>{{ info.key }}</b><br>{{ info.value }}</div>
                 </div>
               </ion-col>
             </ion-row>
           </div>
 
-          <div *ngIf="aboutContent.id != 'systemInfo'">
-            <ion-row>
-              <ion-col>
-                {{ aboutContent.name }}'s contents are here<br>Coming soon!!!
-              </ion-col>
-            </ion-row>
+          <div *ngIf="aboutContent.id != 'systemInfo' && aboutContent.id != 'appInformation'">
+            {{ aboutContent.name }}'s contents are here<br>Coming soon!!!
           </div>
-
 
         </div>
       </div>
