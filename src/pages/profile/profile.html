@@ -40,7 +40,18 @@
           <hr>
           <ion-row>
             <ion-col>
-              {{ profileContent.name }}'s contents are here<br>Coming soon!!!
+              <div *ngIf="userData && userData[profileContent.id]" >
+                <div *ngIf="profileContent.id == 'userInfo'">
+                  <div *ngFor="let userInfo of userData[profileContent.id]; ">
+                    <div class="content"><b>{{ userInfo.key }}</b><br>{{ userInfo.value }}</div>
+                  </div>
+                </div>
+                <div *ngIf="profileContent.id != 'userInfo'">
+                  <div *ngFor="let data of userData[profileContent.id];let currentIndex = index">
+                    <div class="content">{{ currentIndex + 1 }}&nbsp;.&nbsp;{{ data}}</div>
+                  </div>
+                </div>
+              </div>
             </ion-col>
           </ion-row>
         </div>

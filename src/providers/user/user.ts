@@ -26,7 +26,7 @@ export class UserProvider {
   getUserDataFromServer(user){
 
     this.http.useBasicAuth(user.username, user.password);
-    let fields = "fields=[:all],userCredentials[userRoles[name,dataSets[id,name],programs[id,name]]";
+    let fields = "fields=[:all],organisationUnits[id,name],dataViewOrganisationUnits[id,name],userCredentials[userRoles[name,dataSets[id,name],programs[id,name]]";
     let url = user.serverUrl.split("/dhis-web-commons")[0];
     url = url.split("/dhis-web-dashboard-integration")[0];
     url = url.split("/api/apps")[0];
@@ -206,7 +206,6 @@ export class UserProvider {
       "Interests": userDataResponse.interests,
       "userRoles": userDataResponse.userCredentials.userRoles,
       "organisationUnits": userDataResponse.organisationUnits,
-      "settings" : userDataResponse.settings,
       "dataViewOrganisationUnits" : userDataResponse.dataViewOrganisationUnits
     };
     let userData = JSON.stringify(this.userData);

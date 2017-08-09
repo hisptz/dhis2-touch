@@ -39,8 +39,7 @@ export class LauncherPage implements OnInit{
       if(user && user.isLogin){
         this.navCtrl.setRoot(TabsPage);
       }else{
-        //this.navCtrl.setRoot("LoginPage");
-        this.navCtrl.setRoot(TabsPage);
+        this.navCtrl.setRoot("LoginPage");
         //this.navCtrl.push('SettingsPage')
       }
     },error=>{

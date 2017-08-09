@@ -1,6 +1,7 @@
 import { Component,OnInit } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 import {ProfileProvider} from "../../providers/profile/profile";
+import {AppProvider} from "../../providers/app/app";
 
 /**
  * Generated class for the ProfilePage page.
@@ -19,21 +20,34 @@ export class ProfilePage implements OnInit{
   isProfileContentOpen : any;
   profileContents : Array<any>;
 
+  userData : any;
+
   loadingMessage : string;
   isLoading : boolean = true;
 
-  constructor(public navCtrl: NavController, private profileProvider : ProfileProvider) {
+  constructor(public navCtrl: NavController,
+              private appProvider : AppProvider,
+              private profileProvider : ProfileProvider) {
   }
 
   ngOnInit(){
-    this.loadingMessage = 'Loading app information';
+    this.loadingMessage = 'Loading profile information';
     this.isLoading = true;
     this.isProfileContentOpen = {};
     this.profileContents = this.profileProvider.getProfileContentDetails();
-    //@todo implement loading information
-    setTimeout(()=>{
+    if(this.profileContents.length > 0){
+     this.toggleProfileContents(this.profileContents[0]);
+    }
+    this.profileProvider.getSavedUserData().then((userData)=>{
+      this.userData = userData;
       this.isLoading = false;
-    },500)
+      this.loadingMessage = '';
+    }).catch(error=>{
+      this.isLoading = false;
+      this.loadingMessage = '';
+      console.log(JSON.stringify(error));
+      this.appProvider.setNormalNotification('Fail to load profile information');
+    });
   }
 
   toggleProfileContents(content){
