@@ -63,6 +63,7 @@ export class SettingsPage implements OnInit{
   }
 
   initiateSettings(defaultSettings,appSettings){
+    console.log(JSON.stringify(appSettings));
     if(appSettings){
       if(appSettings.synchronization){
         this.settingObject['synchronization'] = appSettings.synchronization;
@@ -70,9 +71,9 @@ export class SettingsPage implements OnInit{
         this.settingObject['synchronization'] = defaultSettings.synchronization;
       }
       if(appSettings.entryForm){
-        this.settingObject['entryForm'] = appSettings.dataEntry;
+        this.settingObject['entryForm'] = appSettings.entryForm;
       }else{
-        this.settingObject['entryForm'] = defaultSettings.dataEntry;
+        this.settingObject['entryForm'] = defaultSettings.entryForm;
       }
     }else{
       this.settingObject = defaultSettings;
@@ -83,15 +84,35 @@ export class SettingsPage implements OnInit{
     this.isSettingLoaded = true;
   }
 
-  //@todo process during saving
+
   applySettings(settingContent){
-    settingContent = this.settingsProvider.getSanitizedSettings(settingContent);
-    this.settingsProvider.setSettingsForTheApp(this.currentUser,settingContent).then(()=>{
-
+    this.updateLoadingStatusOfSavingSetting(settingContent,true);
+    this.settingsProvider.setSettingsForTheApp(this.currentUser,this.settingObject).then(()=>{
+      this.appProvider.setNormalNotification(settingContent.name + ' settings have been applied successfully');
+      this.toggleSettingContents(settingContent);
+      this.settingsProvider.getSettingsForTheApp(this.currentUser).then((appSettings : any)=>{
+        this.settingObject = appSettings;
+        let timeValue = this.settingObject.synchronization.time;
+        let timeType = this.settingObject.synchronization.timeType;
+        this.settingObject.synchronization.time = this.settingsProvider.getDisplaySynchronizationTime(timeValue,timeType);
+        this.updateLoadingStatusOfSavingSetting(settingContent,false);
+      }).catch(error=>{
+        console.log(error);
+        this.appProvider.setNormalNotification('Fail to load settings');
+        this.updateLoadingStatusOfSavingSetting(settingContent,false);
+      });
     }).catch(error=>{
-
+      this.updateLoadingStatusOfSavingSetting(settingContent,false);
+      this.appProvider.setNormalNotification('Fail to apply changes on ' + settingContent.name + ' settings');
     });
-    console.log('About to save ' + settingContent.name);
+  }
+
+  updateLoadingStatusOfSavingSetting(savingSettingContent,status){
+    this.settingContents.forEach((settingContent: any)=>{
+      if(settingContent.id == savingSettingContent.id){
+        settingContent.isLoading = status;
+      }
+    });
   }
 
   toggleSettingContents(content){

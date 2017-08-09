@@ -16,11 +16,24 @@ export class SettingsProvider {
 
   /**
    *
+   * @returns {{id: string; name: string; icon: string; isLoading: boolean; loadingMessage: string}[]}
+   */
+  getSettingContentDetails(){
+    let settingContents = [
+      {id : 'synchronization',name : 'Synchronization',icon: 'assets/settings-icons/synchronization.png',isLoading : false,loadingMessage: ''},
+      {id : 'entryForm',name : 'Entry form',icon: 'assets/settings-icons/entry-form.png',isLoading : false,loadingMessage: ''}
+    ];
+    return settingContents;
+  }
+
+  /**
+   *
    * @param currentUser
    * @param appSettings
    * @returns {Promise<any>}
    */
   setSettingsForTheApp(currentUser,appSettings){
+    appSettings = this.getSanitizedSettings(appSettings);
     appSettings = JSON.stringify(appSettings);
     return  new Promise((resolve,reject) => {
       let key = 'appSettings'+ (currentUser && currentUser.currentDatabase) ? currentUser.currentDatabase : "";
@@ -52,6 +65,12 @@ export class SettingsProvider {
     });
   }
 
+  /**
+   *
+   * @param time
+   * @param timeType
+   * @returns {any}
+   */
   getSynchronizationTimeToSave(time,timeType){
     let value = time;
     if(timeType == "minutes"){
@@ -62,6 +81,12 @@ export class SettingsProvider {
     return value;
   }
 
+  /**
+   *
+   * @param time
+   * @param timeType
+   * @returns {any}
+   */
   getDisplaySynchronizationTime(time,timeType){
     let value = time;
     if(timeType == "minutes"){
@@ -72,6 +97,10 @@ export class SettingsProvider {
     return value;
   }
 
+  /**
+   *
+   * @returns {{entryForm: {label: string; maxDataElementOnDefaultForm: number}; synchronization: {time: number; timeType: string}}}
+   */
   getDefaultSettings(){
     let defaultSettings = {
       entryForm: {
@@ -84,6 +113,11 @@ export class SettingsProvider {
     return defaultSettings;
   }
 
+  /**
+   *
+   * @param appSettings
+   * @returns {any}
+   */
   getSanitizedSettings(appSettings) {
     if (appSettings.entryForm) {
       if(isNaN(appSettings.entryForm.maxDataElementOnDefaultForm) || appSettings.entryForm.maxDataElementOnDefaultForm <= 0){
@@ -97,14 +131,6 @@ export class SettingsProvider {
       appSettings.synchronization.time = this.getSynchronizationTimeToSave(appSettings.synchronization.time,appSettings.synchronization.timeType);
     }
     return appSettings;
-  }
-
-  getSettingContentDetails(){
-    let settingContents = [
-      {id : 'synchronization',name : 'Synchronization',icon: 'assets/settings-icons/synchronization.png',isLoading : false,loadingMessage: ''},
-      {id : 'entryForm',name : 'Entry form',icon: 'assets/settings-icons/entry-form.png',isLoading : false,loadingMessage: ''}
-    ];
-    return settingContents;
   }
 
 }

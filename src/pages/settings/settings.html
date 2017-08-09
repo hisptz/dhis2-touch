@@ -22,6 +22,9 @@
     </div>
 
     <div *ngIf="isSettingLoaded">
+
+      {{ settingObject|json }}
+
       <div class="item-card" *ngFor="let settingContent of settingContents">
         <ion-row (tap)="toggleSettingContents(settingContent)">
           <ion-col col-11>
