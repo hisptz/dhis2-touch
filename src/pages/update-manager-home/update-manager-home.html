@@ -14,59 +14,38 @@
 
 
 <ion-content class="updateManager">
+
   <ion-grid>
-
-    <div class="item-card">
-      <ion-row (tap)="hideAndShowContents('sendDataViaSms')">
+    <div class="item-card" *ngFor="let syncContent of syncContents">
+      <ion-row (tap)="toggleSyncContents(syncContent)">
         <ion-col col-11>
-          <span ion-text [color]="(updateManagerObject.sendDataViaSms.isExpanded) ?'current' : 'font-color'">
-              Upload Data Via Sms
+          <img  class="side-menu-icon" [src]="syncContent.icon"/>&nbsp;&nbsp;
+          <span ion-text [color]="(isSyncContentOpen[syncContent.id]) ?'current' : 'font-color'">
+              {{ syncContent.name }}
             </span>
         </ion-col>
         <ion-col col-1 item >
           <div style="text-align: center;">
-            <ion-icon [color]="(updateManagerObject.sendDataViaSms.isExpanded) ?'current' : 'font-color'" *ngIf="!updateManagerObject.sendDataViaSms.isExpanded" name="ios-arrow-down" item-right></ion-icon>
-            <ion-icon [color]="(updateManagerObject.sendDataViaSms.isExpanded) ?'current' : 'font-color'" *ngIf="updateManagerObject.sendDataViaSms.isExpanded" name="ios-arrow-up" item-right></ion-icon>
+            <ion-icon [color]="(isSyncContentOpen[syncContent.id]) ?'current' : 'font-color'" *ngIf="!(isSyncContentOpen[syncContent.id])" name="ios-arrow-down" item-right></ion-icon>
+            <ion-icon [color]="(isSyncContentOpen[syncContent.id]) ?'current' : 'font-color'" *ngIf="(isSyncContentOpen[syncContent.id])" name="ios-arrow-up" item-right></ion-icon>
           </div>
         </ion-col>
       </ion-row>
-      <div class="updateManagerContents" *ngIf="updateManagerObject.sendDataViaSms.isExpanded" >
+      <div *ngIf="(isSyncContentOpen[syncContent.id])" >
         <hr>
-        <ion-row>
-          <ion-col>
-            <page-send-data-via-sms></page-send-data-via-sms>
-          </ion-col>
-        </ion-row>
-      </div>
-    </div>
 
-    <div class="item-card">
-      <ion-row (tap)="hideAndShowContents('updateMetadata')">
-        <ion-col col-11>
-          <span ion-text [color]="(updateManagerObject.updateMetadata.isExpanded) ?'current' : 'font-color'">
-              Download Metadata
-            </span>
-        </ion-col>
-        <ion-col col-1 item >
-          <div style="text-align: center;">
-            <ion-icon [color]="(updateManagerObject.updateMetadata.isExpanded) ?'current' : 'font-color'"  *ngIf="!updateManagerObject.updateMetadata.isExpanded" name="ios-arrow-down" item-right></ion-icon>
-            <ion-icon [color]="(updateManagerObject.updateMetadata.isExpanded) ?'current' : 'font-color'" *ngIf="updateManagerObject.updateMetadata.isExpanded" name="ios-arrow-up" item-right></ion-icon>
-          </div>
-        </ion-col>
-      </ion-row>
-      <div class="updateManagerContents" *ngIf="updateManagerObject.updateMetadata.isExpanded" >
-        <hr>
-        <div *ngIf="updateManagerObject.updateMetadata.isProcessRunning">
-          <page-loading loadingSize="large" [loadingMessage] = "updateMetadataLoadingMessages"></page-loading>
+        <div *ngIf="syncContent.id == 'dataViaSms'">
+          <page-send-data-via-sms></page-send-data-via-sms>
         </div>
-        <div *ngIf="!updateManagerObject.updateMetadata.isProcessRunning">
+
+        <div *ngIf="syncContent.id == 'downloadMetadata'">
           <ion-row>
-            <ion-col width="50">
-              <button [disabled]="!updateManagerObject.updateMetadata.isSaved" ion-button large full text-capitalize class="normalButton" (tap)="checkingForResourceUpdate()">Update</button>
+            <ion-col col-6>
+              <button [disabled]="!updateManagerObject.updateMetadata.isSaved" ion-button small full text-capitalize class="normalButton" (tap)="checkingForResourceUpdate()">Update</button>
             </ion-col>
-            <ion-col width="50">
-              <button [disabled]="!updateManagerObject.updateMetadata.isSaved" ion-button large full text-capitalize class="normalButton" (tap)="autoSelect('selectAll')" *ngIf="!hasAllSelected"> Select All</button>
-              <button [disabled]="!updateManagerObject.updateMetadata.isSaved" ion-button large full text-capitalize class="normalButton" (tap)="autoSelect('unSelectAll')" *ngIf="hasAllSelected">Un-select all</button>
+            <ion-col col-6>
+              <button [disabled]="!updateManagerObject.updateMetadata.isSaved" ion-button small full text-capitalize class="normalButton" (tap)="autoSelect('selectAll')" *ngIf="!hasAllSelected"> Select All</button>
+              <button [disabled]="!updateManagerObject.updateMetadata.isSaved" ion-button small full text-capitalize class="normalButton" (tap)="autoSelect('unSelectAll')" *ngIf="hasAllSelected">Un-select all</button>
             </ion-col>
           </ion-row>
           <ion-row>
@@ -83,54 +62,37 @@
           </ion-row>
           <ion-row>
             <ion-col >
-              <button ion-button large full text-capitalize class="normalButton" (tap)="checkingForResourceUpdate()">Update</button>
+              <button ion-button large small text-capitalize class="normalButton" (tap)="checkingForResourceUpdate()">Update</button>
+            </ion-col>
+          </ion-row>
+        </div>
+
+        <div *ngIf="syncContent.id == 'clearData'">
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label>Data values</ion-label>
+                <ion-checkbox [(ngModel)]="updateManagerObject.dataDeletion.selectedItems.dataValues" (ionChange)="resetDeletedItems()"></ion-checkbox>
+              </ion-item>
+              <ion-item>
+                <ion-label>Events </ion-label>
+                <ion-checkbox [(ngModel)]="updateManagerObject.dataDeletion.selectedItems.events" (ionChange)="resetDeletedItems()" ></ion-checkbox>
+              </ion-item>
+
+              <button [disabled]="updateManagerObject.dataDeletion.itemsToBeDeleted.length < 1" [color]="updateManagerObject.dataDeletion.isDataCleared?'primary':'whitecolor'" class="normalButton" ion-button small  full text-capitalize (tap)="clearDataConfirmation()">
+                  <span *ngIf="!updateManagerObject.dataDeletion.isDataCleared" >
+                    <page-loading loadingSize="small"></page-loading>
+                  </span>
+                <span *ngIf="updateManagerObject.dataDeletion.isDataCleared" >
+                    Clear data
+                  </span>
+              </button>
+
             </ion-col>
           </ion-row>
         </div>
 
       </div>
     </div>
-
-    <div class="item-card">
-      <ion-row (tap)="hideAndShowContents('dataDeletion')">
-        <ion-col col-11>
-          <span ion-text [color]="(updateManagerObject.dataDeletion.isExpanded) ?'current' : 'font-color'">
-              Clear Offline Data
-            </span>
-        </ion-col>
-        <ion-col col-1 item >
-          <div style="text-align: center;">
-            <ion-icon [color]="(updateManagerObject.dataDeletion.isExpanded) ?'current' : 'font-color'" *ngIf="!updateManagerObject.dataDeletion.isExpanded" name="ios-arrow-down" item-right></ion-icon>
-            <ion-icon [color]="(updateManagerObject.dataDeletion.isExpanded) ?'current' : 'font-color'" *ngIf="updateManagerObject.dataDeletion.isExpanded" name="ios-arrow-up"  item-right></ion-icon>
-          </div>
-        </ion-col>
-      </ion-row>
-      <div class="settingContents" *ngIf="updateManagerObject.dataDeletion.isExpanded" >
-        <hr>
-        <ion-row>
-          <ion-col>
-            <ion-item>
-              <ion-label>Data values</ion-label>
-              <ion-checkbox [(ngModel)]="updateManagerObject.dataDeletion.selectedItems.dataValues" (ionChange)="resetDeletedItems()"></ion-checkbox>
-            </ion-item>
-            <ion-item>
-              <ion-label>Events </ion-label>
-              <ion-checkbox [(ngModel)]="updateManagerObject.dataDeletion.selectedItems.events" (ionChange)="resetDeletedItems()" ></ion-checkbox>
-            </ion-item>
-
-            <button [disabled]="updateManagerObject.dataDeletion.itemsToBeDeleted.length < 1" [color]="updateManagerObject.dataDeletion.isDataCleared?'primary':'whitecolor'" class="normalButton" ion-button full large text-capitalize (tap)="clearDataConfirmation()">
-                  <span *ngIf="!updateManagerObject.dataDeletion.isDataCleared" >
-                    <page-loading loadingSize="small"></page-loading>
-                  </span>
-                  <span *ngIf="updateManagerObject.dataDeletion.isDataCleared" >
-                    Clear data
-                  </span>
-            </button>
-
-          </ion-col>
-        </ion-row>
-      </div>
-    </div>
-
   </ion-grid>
 </ion-content>

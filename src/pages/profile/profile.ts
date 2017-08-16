@@ -1,7 +1,6 @@
 import { Component,OnInit } from '@angular/core';
-import { ToastController } from 'ionic-angular';
-import {User} from "../../providers/user";
-import {SqlLite} from "../../providers/sql-lite";
+import {AppProvider} from "../../providers/app-provider";
+import {ProfileProvider} from "../../providers/profile";
 
 /*
   Generated class for the Profile page.
@@ -15,145 +14,50 @@ import {SqlLite} from "../../providers/sql-lite";
 })
 export class ProfilePage implements OnInit{
 
-  public loadingData : boolean = false;
-  public loadingMessages : any = [];
-  public currentUser : any;
-  public profileInformation : any = [];
-  public userRoles : any = [];
-  public assignedForms : any = [];
-  public assignedPrograms : any = [];
-  public assignOrgUnits : any = [];
-  public hideAndShowObject : any = {
-    profileInformation : { status : false,count : 4 },
-    assignOrgUnits : { status : false,count : 4 },
-    userRoles : { status : false,count : 4},
-    assignedPrograms : { status : false,count : 4 },
-    assignedForms :{ status : false,count : 4 }
-  };
+  isProfileContentOpen : any;
+  profileContents : Array<any>;
 
-  constructor(public toastCtrl: ToastController,public user : User,public sqlLite : SqlLite) {}
+  userData : any;
 
-  ngOnInit() {
-    this.user.getCurrentUser().then(currentUser=>{
-      this.currentUser = currentUser;
-      this.loadingProfileInformation();
-    });
+  loadingMessage : string;
+  isLoading : boolean = true;
+
+  constructor(
+              private appProvider : AppProvider,
+              private profileProvider : ProfileProvider) {
   }
 
-  reLoadContents(ionRefresher){
-    this.loadingProfileInformation(ionRefresher);
-  }
-
-  loadingProfileInformation(ionRefresher?){
-    this.loadingData = true;
-    this.loadingMessages = [];
-    this.setLoadingMessages('Loading profiles information');
-    this.user.getUserData().then((userData :any)=>{
-      let data = {};
-      for(let key in userData){
-        let value = userData[key];
-        if(!(value instanceof Object)){
-          data[key] = value
-        }
-      }
-      this.profileInformation = this.getArrayFromObject(data);
-      this.setUserRoles(userData,ionRefresher);
-    },error=>{
-      if(ionRefresher){
-        ionRefresher.complete();
-      }
-      this.loadingData = false;
-      this.setToasterMessage('Fail to load profile information');
-    });
-  }
-
-  setUserRoles(userData,ionRefresher?){
-    this.setLoadingMessages('Loading user roles');
-    this.userRoles = [];
-    this.assignedForms = [];
-    this.assignedPrograms = [];
-    userData.userRoles.forEach((userRole:any)=>{
-      this.userRoles.push(userRole.name);
-      this.setAssignedForms(userRole.dataSets);
-      this.setAssignedPrograms(userRole.programs);
-    });
-    this.loadingAssignedOrganisationUnits(userData.organisationUnits,ionRefresher);
-  }
-
-  setAssignedForms(dataSets){
-    dataSets.forEach((dataSet:any)=>{
-      if(this.assignedForms.indexOf(dataSet.name) == -1){
-        this.assignedForms.push(dataSet.name);
-      }
-    });
-  }
-
-  setAssignedPrograms(programs){
-    programs.forEach((program:any)=>{
-      if(this.assignedPrograms.indexOf(program.name) == -1){
-        this.assignedPrograms.push(program.name);
-      }
-    });
-  }
-
-  loadingAssignedOrganisationUnits(organisationUnits,ionRefresher?){
-    this.setLoadingMessages('Loading assigned organisation units');
-    this.assignOrgUnits = [];
-    let resource = 'organisationUnits';
-    let attribute = 'id';
-    let attributeValue =[];
-    organisationUnits.forEach((organisationUnit:any)=>{
-      attributeValue.push(organisationUnit.id);
-    });
-    this.sqlLite.getDataFromTableByAttributes(resource,attribute,attributeValue,this.currentUser.currentDatabase).then((assignedOrganisationUnits:any)=>{
-      assignedOrganisationUnits.forEach((assignedOrganisationUnit : any)=>{
-        this.assignOrgUnits.push(assignedOrganisationUnit.name);
-      });
-      this.loadingData = false;
-      if(ionRefresher){
-        ionRefresher.complete();
-      }
-    },error=>{
-      if(ionRefresher){
-        ionRefresher.complete();
-      }
-      this.loadingData = false;
-      this.setToasterMessage('Fail to load assigned organisation units');
-    });
-  }
-
-  getArrayFromObject(object){
-    let array = [];
-    for(let key in object){
-      let newValue = object[key];
-      if(newValue instanceof Object) {
-        newValue = JSON.stringify(newValue)
-      }
-      let newKey = (key.charAt(0).toUpperCase() + key.slice(1)).replace(/([A-Z])/g, ' $1').trim();
-      array.push({key : newKey,value : newValue})
+  ngOnInit(){
+    this.loadingMessage = 'Loading profile information';
+    this.isLoading = true;
+    this.isProfileContentOpen = {};
+    this.profileContents = this.profileProvider.getProfileContentDetails();
+    if(this.profileContents.length > 0){
+      this.toggleProfileContents(this.profileContents[0]);
     }
-    return array;
-  }
-
-  hideAndShowDetails(key,totalCount){
-    if(this.hideAndShowObject[key].status){
-      this.hideAndShowObject[key].count = 4;
-    }else{
-      this.hideAndShowObject[key].count = totalCount;
-    }
-    this.hideAndShowObject[key].status = !this.hideAndShowObject[key].status;
-  }
-
-  setLoadingMessages(message){
-    this.loadingMessages.push(message);
-  }
-
-  setToasterMessage(message){
-    let toast = this.toastCtrl.create({
-      message: message,
-      duration: 4000
+    this.profileProvider.getSavedUserData().then((userData)=>{
+      this.userData = userData;
+      this.isLoading = false;
+      this.loadingMessage = '';
+    }).catch(error=>{
+      this.isLoading = false;
+      this.loadingMessage = '';
+      console.log(JSON.stringify(error));
+      this.appProvider.setNormalNotification('Fail to load profile information');
     });
-    toast.present();
+  }
+
+  toggleProfileContents(content){
+    if(content && content.id){
+      if(this.isProfileContentOpen[content.id]){
+        this.isProfileContentOpen[content.id] = false;
+      }else{
+        Object.keys(this.isProfileContentOpen).forEach(id=>{
+          this.isProfileContentOpen[id] = false;
+        });
+        this.isProfileContentOpen[content.id] = true;
+      }
+    }
   }
 
 }

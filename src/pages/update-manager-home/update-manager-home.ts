@@ -35,6 +35,10 @@ export class UpdateManagerHomePage implements OnInit{
   updateMetadataLoadingMessages : string = "";
   specialMetadataResources : any;
 
+
+  isSyncContentOpen : any;
+  syncContents : Array<any>;
+
   constructor(public sqlLite : SqlLite,
               public user : User,public toastCtrl: ToastController,
               public OrganisationUnit : OrganisationUnit,public DataSets : DataSets,
@@ -51,21 +55,41 @@ export class UpdateManagerHomePage implements OnInit{
       this.currentUser = user;
       this.user.getUserData().then((userData : any)=>{
         this.currentUser["organisationUnits"] = userData.organisationUnits;
+        this.isSyncContentOpen = {};
+        this.syncContents = this.getSyncContentDetails();
+        if(this.syncContents.length > 0){
+          this.toggleSyncContents(this.syncContents[0]);
+        }
         this.setUpdateManagerList();
         this.loadingData = false;
       });
     });
   }
 
-  hideAndShowContents(updateManagerKey){
-    if(!this.updateManagerObject[updateManagerKey].isExpanded){
-      Object.keys(this.updateManagerObject).forEach(key=>{
-        if(key != updateManagerKey){
-          this.updateManagerObject[key].isExpanded = false;
-        }
-      });
+  toggleSyncContents(content){
+    if(content && content.id){
+      if(this.isSyncContentOpen[content.id]){
+        this.isSyncContentOpen[content.id] = false;
+      }else{
+        Object.keys(this.isSyncContentOpen).forEach(id=>{
+          this.isSyncContentOpen[id] = false;
+        });
+        this.isSyncContentOpen[content.id] = true;
+      }
     }
-    this.updateManagerObject[updateManagerKey].isExpanded = !this.updateManagerObject[updateManagerKey].isExpanded;
+
+  }
+
+  getSyncContentDetails(){
+    let syncContents = [
+      {id : 'dataViaSms',name : 'Upload data via sms',icon: 'assets/sync-icons/sms.png'},
+      //{id : 'dataViaInternet',name : 'Upload data via internet',icon: 'assets/sync-icons/internet.png'},
+      {id : 'downloadMetadata',name : 'Download metadata',icon: 'assets/sync-icons/download-metadata.png'},
+      //{id : 'downloadData',name : 'Download data',icon: 'assets/sync-icons/download-data.png'},
+      {id : 'clearData',name : 'Clear local data',icon: 'assets/sync-icons/clear-data.png'},
+      //{id : 'clearMetadata',name : 'Clear local metadata',icon: 'assets/sync-icons/clear-metadata.png'},
+    ];
+    return syncContents;
   }
 
   setUpdateManagerList(){
@@ -166,7 +190,6 @@ export class UpdateManagerHomePage implements OnInit{
     });
   }
 
-
   autoSelect(selectType){
     if(selectType == 'selectAll'){
       this.resources.forEach((resource:any)=>{
@@ -222,7 +245,10 @@ export class UpdateManagerHomePage implements OnInit{
         deletedItemCount = deletedItemCount + 1;
         if((deletedItemCount + failCount) == this.updateManagerObject.dataDeletion.itemsToBeDeleted.length){
           this.setToasterMessage("You have successfully clear data");
-          this.updateManagerObject.dataDeletion.selectedItems = {};
+          Object.keys(this.updateManagerObject.dataDeletion.selectedItems).forEach(key=>{
+            this.updateManagerObject.dataDeletion.selectedItems[key] = false;
+          });
+
           this.updateManagerObject.dataDeletion.isDataCleared = true;
           this.updateManagerObject.dataDeletion.isExpanded = false;
         }
@@ -231,7 +257,9 @@ export class UpdateManagerHomePage implements OnInit{
         failCount = failCount + 1;
         if((deletedItemCount + failCount) == this.updateManagerObject.dataDeletion.itemsToBeDeleted.length){
           this.setToasterMessage("You have successfully clear data");
-          this.updateManagerObject.dataDeletion.selectedItems = {};
+          Object.keys(this.updateManagerObject.dataDeletion.selectedItems).forEach(key=>{
+            this.updateManagerObject.dataDeletion.selectedItems[key] = false;
+          });
           this.updateManagerObject.dataDeletion.isDataCleared = true;
           this.updateManagerObject.dataDeletion.isExpanded = false;
         }

@@ -13,78 +13,49 @@
 </ion-header>
 
 <ion-content class="profile">
-  <div *ngIf="loadingData">
-    <ion-row >
-      <ion-col >
-        <page-loading loadingSize="large" [loadingMessage]="loadingMessages[loadingMessages.length - 1]"></page-loading>
-      </ion-col>
-    </ion-row>
-  </div>
 
-  <div *ngIf="!loadingData">
-    <ion-refresher (ionRefresh)="reLoadContents($event)">
-      <ion-refresher-content ></ion-refresher-content>
-    </ion-refresher>
-    <ion-grid>
-      <ion-row>
-        <ion-col >
-          <ion-item-group>
-            <ion-item-divider color="whitecolor">
-              <b>User Information</b>
-            </ion-item-divider>
-            <div *ngFor="let entry of profileInformation;let currentProfileInformationIndex = index">
-              <ion-item >
-                <h2>{{ entry.key }}</h2>
-                <p>{{ entry.value }}</p>
-              </ion-item>
+  <ion-grid>
+    <div *ngIf="isLoading">
+      <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage" ></page-loading>
+    </div>
+
+    <div *ngIf="!isLoading">
+      <div class="item-card" *ngFor="let profileContent of profileContents">
+        <ion-row (tap)="toggleProfileContents(profileContent)">
+          <ion-col col-11>
+            <img  class="side-menu-icon" [src]="profileContent.icon"/>&nbsp;&nbsp;
+            <span ion-text [color]="(isProfileContentOpen[profileContent.id]) ?'current' : 'font-color'">
+              {{ profileContent.name }}
+            </span>
+          </ion-col>
+          <ion-col col-1 item >
+            <div style="text-align: center;">
+              <ion-icon [color]="(isProfileContentOpen[profileContent.id]) ?'current' : 'font-color'" *ngIf="!(isProfileContentOpen[profileContent.id])" name="ios-arrow-down" item-right></ion-icon>
+              <ion-icon [color]="(isProfileContentOpen[profileContent.id]) ?'current' : 'font-color'" *ngIf="(isProfileContentOpen[profileContent.id])" name="ios-arrow-up" item-right></ion-icon>
             </div>
-          </ion-item-group>
-          <ion-list></ion-list>
-          <ion-item-group>
-            <ion-item-divider color="whitecolor">
-              <b>Assigned Organisation Units</b>
-            </ion-item-divider>
-            <div *ngFor="let assignOrgUnit of  assignOrgUnits;let currentAssignedOrgUnitIndex = index">
-              <ion-item >
-                <p>{{ currentAssignedOrgUnitIndex + 1 }}&nbsp;.&nbsp;{{ assignOrgUnit }}</p>
-              </ion-item>
-            </div>
-          </ion-item-group>
-          <ion-list></ion-list>
-          <ion-item-group>
-            <ion-item-divider color="whitecolor">
-              <b>Assigned user roles</b>
-            </ion-item-divider>
-            <div *ngFor="let userRole of userRoles;let currentAssignedUserRolesIndex = index">
-              <ion-item >
-                <p>{{ currentAssignedUserRolesIndex + 1 }}&nbsp;.&nbsp;{{ userRole }}</p>
-              </ion-item>
-            </div>
-          </ion-item-group>
-          <ion-list></ion-list>
-          <ion-item-group>
-            <ion-item-divider color="whitecolor">
-              <b>Assigned programs</b>
-            </ion-item-divider>
-            <div *ngFor="let assignedProgram of assignedPrograms ;let currentAssignedProgramIndex = index">
-              <ion-item >
-                <p>{{ currentAssignedProgramIndex + 1 }}&nbsp;.&nbsp;{{ assignedProgram }}</p>
-              </ion-item>
-            </div>
-          </ion-item-group>
-          <ion-list></ion-list>
-          <ion-item-group>
-            <ion-item-divider color="whitecolor">
-              <b>Assigned forms</b>
-            </ion-item-divider>
-            <div *ngFor="let assignedForm  of assignedForms ;let currentAssignedFormsIndex = index">
-              <ion-item >
-                <p>{{ currentAssignedFormsIndex + 1 }}&nbsp;.&nbsp;{{ assignedForm }}</p>
-              </ion-item>
-            </div>
-          </ion-item-group>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
+          </ion-col>
+        </ion-row>
+        <div *ngIf="(isProfileContentOpen[profileContent.id])" >
+          <hr>
+          <ion-row>
+            <ion-col>
+              <div *ngIf="userData && userData[profileContent.id]" >
+                <div *ngIf="profileContent.id == 'userInfo'">
+                  <div *ngFor="let userInfo of userData[profileContent.id]; ">
+                    <div class="content"><b>{{ userInfo.key }}</b><br>{{ userInfo.value }}</div>
+                  </div>
+                </div>
+                <div *ngIf="profileContent.id != 'userInfo'">
+                  <div *ngFor="let data of userData[profileContent.id];let currentIndex = index">
+                    <div class="content">{{ currentIndex + 1 }}&nbsp;.&nbsp;{{ data}}</div>
+                  </div>
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+    </div>
+  </ion-grid>
+
 </ion-content>
