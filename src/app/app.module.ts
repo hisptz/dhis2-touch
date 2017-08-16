@@ -78,6 +78,10 @@ import {DashboardSearchPage} from "../pages/dashboard-search/dashboard-search";
 import {EmptyListNotificationComponent} from "../pages/empty-list-notification/empty-list-notification";
 import {HelpProvider} from "../providers/help";
 import {HelpContentsPage} from "../pages/help-contents/help-contents";
+import {SettingsProvider} from "../providers/settings";
+import {ProfileProvider} from "../providers/profile";
+import {Events} from "../providers/events";
+import {AboutProvider} from "../providers/about";
 
 @NgModule({
   declarations: [
@@ -129,7 +133,9 @@ import {HelpContentsPage} from "../pages/help-contents/help-contents";
     DataSets, DataValues, EntryForm, EventCaptureFormProvider,DashboardService,
     MetadataDictionaryService, UpdateResourceManager, OrganisationUnit, Program,
     ProgramStageDataElements, ProgramStageSections, Report, Setting, Synchronization,
+    Events,AboutProvider,
     AppProvider, HttpClient, SqlLite, User, SmsCommand, VisualizerService,AppPermission,
+    SettingsProvider,ProfileProvider,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

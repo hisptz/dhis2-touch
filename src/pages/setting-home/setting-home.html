@@ -17,90 +17,90 @@
 
   <ion-grid>
 
-    <div class="item-card">
-      <ion-row (tap)="hideAndShowContents('synchronizationSetting')">
-        <ion-col col-11>
-          <span ion-text [color]="(settingObject.synchronizationSetting.isExpanded) ?'current' : 'font-color'">
-              Synchronization
-            </span>
-        </ion-col>
-        <ion-col col-1 item >
-          <div style="text-align: center;">
-            <ion-icon [color]="(settingObject.synchronizationSetting.isExpanded) ?'current' : 'font-color'" *ngIf="!settingObject.synchronizationSetting.isExpanded" name="ios-arrow-down" item-right></ion-icon>
-            <ion-icon [color]="(settingObject.synchronizationSetting.isExpanded) ?'current' : 'font-color'" *ngIf="settingObject.synchronizationSetting.isExpanded" name="ios-arrow-up" item-right></ion-icon>
-          </div>
-        </ion-col>
-      </ion-row>
-      <div class="settingContents" *ngIf="settingObject.synchronizationSetting.isExpanded" >
-        <hr>
-        <ion-row>
-          <ion-col>
-            <ion-item>
-              <ion-label floating>Synchronization time</ion-label>
-              <ion-input type="number"  min="1" [(ngModel)]="synchronizationSetting.time"></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-label>Type</ion-label>
-              <ion-select [(ngModel)]="synchronizationSetting.timeType" interface="action-sheet">
-                <ion-option value="minutes">Minute(s)</ion-option>
-                <ion-option value="hours">Hour(s)</ion-option>
-              </ion-select>
-            </ion-item>
-            <button [disabled]="!settingObject.synchronizationSetting.isSaved" [color]="settingObject.synchronizationSetting.isSaved?'primary':'whitecolor'" class="normalButton" ion-button full large text-capitalize (tap)="saveSetting('synchronizationSetting')">
-                  <span *ngIf="!settingObject.synchronizationSetting.isSaved" >
-                    <page-loading loadingSize="small"></page-loading>
-                  </span>
-                  <span *ngIf="settingObject.synchronizationSetting.isSaved" >
-                    Save
-                  </span>
-            </button>
-          </ion-col>
-        </ion-row>
-      </div>
+    <div *ngIf="!isSettingLoaded">
+      <page-loading [loadingMessage]="settingLoadingMessage" [loadingSize]="'large'"></page-loading>
     </div>
 
-    <div class="item-card">
-      <ion-row (tap)="hideAndShowContents('dataEntrySetting')">
-        <ion-col col-11>
-          <span ion-text [color]="(settingObject.dataEntrySetting.isExpanded) ?'current' : 'font-color'">
-              Data Entry Form
+    <div *ngIf="isSettingLoaded">
+
+      <div class="item-card" *ngFor="let settingContent of settingContents">
+        <ion-row (tap)="toggleSettingContents(settingContent)">
+          <ion-col col-11>
+            <img  class="side-menu-icon" [src]="settingContent.icon"/>&nbsp;&nbsp;
+            <span ion-text [color]="(isSettingContentOpen[settingContent.id]) ?'current' : 'font-color'">
+              {{ settingContent.name }}
             </span>
-        </ion-col>
-        <ion-col col-1 item >
-          <div style="text-align: center;">
-            <ion-icon [color]="(settingObject.dataEntrySetting.isExpanded) ?'current' : 'font-color'" *ngIf="!settingObject.dataEntrySetting.isExpanded" name="ios-arrow-down" item-right></ion-icon>
-            <ion-icon [color]="(settingObject.dataEntrySetting.isExpanded) ?'current' : 'font-color'" *ngIf="settingObject.dataEntrySetting.isExpanded" name="ios-arrow-up" item-right></ion-icon>
-          </div>
-        </ion-col>
-      </ion-row>
-      <div class="settingContents" *ngIf="settingObject.dataEntrySetting.isExpanded" >
-        <hr>
-        <ion-row>
-          <ion-col>
-            <ion-item>
-              <ion-label>Form Label</ion-label>
-              <ion-select [(ngModel)]="dataEntrySetting.label" interface="action-sheet">
-                <ion-option value="displayName">Display Name</ion-option>
-                <ion-option value="formName">Form Name</ion-option>
-              </ion-select>
-            </ion-item>
-            <ion-item>
-              <ion-label floating>Data elements per page(max)</ion-label>
-              <ion-input type="number"  min="1" [(ngModel)]="dataEntrySetting.maxDataElementOnDefaultForm"></ion-input>
-            </ion-item>
-            <button [disabled]="!settingObject.dataEntrySetting.isSaved" [color]="settingObject.dataEntrySetting.isSaved?'primary':'whitecolor'" class="normalButton" ion-button full large text-capitalize (tap)="saveSetting('dataEntrySetting')">
-                  <span *ngIf="!settingObject.dataEntrySetting.isSaved" >
-                    <page-loading loadingSize="small"></page-loading>
-                  </span>
-                  <span *ngIf="settingObject.dataEntrySetting.isSaved" >
-                    Save
-                  </span>
-            </button>
+          </ion-col>
+          <ion-col col-1 item >
+            <div style="text-align: center;">
+              <ion-icon [color]="(isSettingContentOpen[settingContent.id]) ?'current' : 'font-color'" *ngIf="!(isSettingContentOpen[settingContent.id])" name="ios-arrow-down" item-right></ion-icon>
+              <ion-icon [color]="(isSettingContentOpen[settingContent.id]) ?'current' : 'font-color'" *ngIf="(isSettingContentOpen[settingContent.id])" name="ios-arrow-up" item-right></ion-icon>
+            </div>
           </ion-col>
         </ion-row>
+        <div class="updateManagerContents" *ngIf="(isSettingContentOpen[settingContent.id])" >
+          <hr>
+
+          <div *ngIf="settingContent.id == 'synchronization'">
+            <div *ngIf="settingObject.synchronization">
+              <div *ngIf="settingContent.isLoading">
+                <page-loading [loadingMessage]="'Applying changes'" [loadingSize]="'large'"></page-loading>
+              </div>
+              <div *ngIf="!settingContent.isLoading">
+                <ion-row>
+                  <ion-col col-5>
+                    <ion-item>
+                      <ion-input type="number"  min="1" [(ngModel)]="settingObject.synchronization.time"></ion-input>
+                    </ion-item>
+                  </ion-col>
+                  <ion-col col-7>
+                    <ion-item>
+                      <ion-select [(ngModel)]="settingObject.synchronization.timeType" interface="action-sheet">
+                        <ion-option value="minutes">Minute(s)</ion-option>
+                        <ion-option value="hours">Hour(s)</ion-option>
+                      </ion-select>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+                <button  small  color="primary" ion-button full large text-capitalize (tap)="applySettings(settingContent)">
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="settingContent.id == 'entryForm'">
+            <div *ngIf="settingContent.isLoading">
+              <page-loading [loadingMessage]="'Applying changes'" [loadingSize]="'large'"></page-loading>
+            </div>
+            <div *ngIf="!settingContent.isLoading">
+              <div *ngIf="settingObject.entryForm">
+                <ion-row >
+                  <ion-col>
+                    <ion-item>
+                      <ion-label>Form Label</ion-label>
+                      <ion-select [(ngModel)]="settingObject.entryForm.label" interface="action-sheet">
+                        <ion-option value="displayName">Display Name</ion-option>
+                        <ion-option value="formName">Form Name</ion-option>
+                      </ion-select>
+                    </ion-item>
+                    <ion-item>
+                      <ion-label floating>Data elements per page(max)</ion-label>
+                      <ion-input type="number"  min="1" [(ngModel)]="settingObject.entryForm.maxDataElementOnDefaultForm"></ion-input>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+                <button small color="primary" ion-button full large text-capitalize (tap)="applySettings(settingContent)">
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
       </div>
     </div>
-
 
   </ion-grid>
 

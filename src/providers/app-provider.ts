@@ -4,6 +4,7 @@ import {HttpClient} from "./http-client";
 import {SqlLite} from "./sql-lite";
 import { AppVersion } from '@ionic-native/app-version';
 import {Observable} from 'rxjs/Rx';
+import { ToastController} from 'ionic-angular';
 
 /*
   Generated class for the AppProvider provider.
@@ -16,35 +17,60 @@ export class AppProvider {
 
   multipleIdsData : any = [];
 
-  constructor(private http: HttpClient,private sqlLite:SqlLite,public appVersion: AppVersion) {
+  constructor(private http: HttpClient,private sqlLite:SqlLite,public appVersion: AppVersion,private toastController : ToastController) {
   }
 
   /**
-   * get app infromations
+   *
+   * @param message
+   */
+  setTopNotification(message){
+    this.toastController.create({
+      message: message,
+      position : 'top',
+      duration: 4500
+    }).present();
+  }
+
+  /**
+   *
+   * @param message
+   */
+  setNormalNotification(message){
+    this.toastController.create({
+      message: message,
+      position : 'bottom',
+      duration: 5000
+    }).present();
+  }
+
+  /**
+   *
    * @returns {Promise<T>}
-     */
+   */
   getAppInformation(){
     let appInformation = {};
     let promises = [];
+    let self = this;
 
-    return new Promise((resolve, reject)=> {
+    return new Promise(function(resolve, reject) {
       promises.push(
-        this.appVersion.getAppName().then(appName=>{
+        self.appVersion.getAppName().then(appName=>{
           appInformation['appName'] = appName;
         })
       );
       promises.push(
-        this.appVersion.getPackageName().then(packageName=>{
+        self.appVersion.getPackageName().then(packageName=>{
           appInformation['packageName'] = packageName;
         })
       );
       promises.push(
-        this.appVersion.getVersionCode().then(versionCode=>{
+        self.appVersion.getVersionCode().then(versionCode=>{
           appInformation['versionCode'] = versionCode;
         })
       );
       promises.push(
-        this.appVersion.getVersionNumber().then(versionNumber=>{
+        self.appVersion.getVersionNumber().then(versionNumber=>{
           appInformation['versionNumber'] = versionNumber;
         })
       );

@@ -17,7 +17,7 @@ export class EmptyListNotificationComponent {
   imageUrl : string;
 
   constructor() {
-    this.imageUrl = 'assets/img/no-content.png';
+    this.imageUrl = 'assets/icon/notification.png';
   }
 
 }

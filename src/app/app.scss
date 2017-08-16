@@ -55,20 +55,51 @@
   padding-top: 1.5rem;
 }
 
-.logo {
-  max-width: 30%;
+.logo-inside-app{
+  max-width: 15%;
   margin:auto;
 }
+
+.side-menu-icon{
+  width : 1.5rem;
+  height : 1.5rem;
+}
+
+.side-menu-logo-container{
+  padding-top:10%;
+  padding-bottom:5%;
+}
+
+.logo {
+  padding-top:5%;
+  max-width: 25%;
+  margin:auto;
+}
+
 .topSLogan{
-  margin-top:10%;
+  margin-top:0%;
   text-align: center;
   margin-bottom:0%;
+}
+
+.login {
+  background-color:#1D5288;
 }
 
 .topSLogan p{
   color:#82B1FF;
   text-align:center;
   font-style: italic;
+}
+.chart-icon{
+  width: 30px;
+  height: 30px;
+  margin: 1px;
+}
+
+.chart-icon-container{
+  padding: 4px;
+  //border-radius: 20px;
 }
 
 @-webkit-keyframes slideInFromLeft {
