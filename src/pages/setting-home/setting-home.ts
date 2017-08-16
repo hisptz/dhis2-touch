@@ -2,6 +2,7 @@ import { Component,OnInit } from '@angular/core';
 import {SettingsProvider} from "../../providers/settings";
 import {AppProvider} from "../../providers/app-provider";
 import {User} from "../../providers/user";
+import {Synchronization} from "../../providers/synchronization";
 
 /*
   Generated class for the SettingHome page.
@@ -27,6 +28,7 @@ export class SettingHomePage implements OnInit{
 
   constructor(private settingsProvider : SettingsProvider,
               private appProvider : AppProvider,
+              private synchronization : Synchronization,
               private userProvider : User) {
   }
 
@@ -60,7 +62,6 @@ export class SettingHomePage implements OnInit{
   }
 
   initiateSettings(defaultSettings,appSettings){
-    console.log(JSON.stringify(appSettings));
     if(appSettings){
       if(appSettings.synchronization){
         this.settingObject['synchronization'] = appSettings.synchronization;
@@ -92,6 +93,10 @@ export class SettingHomePage implements OnInit{
         let timeValue = this.settingObject.synchronization.time;
         let timeType = this.settingObject.synchronization.timeType;
         this.settingObject.synchronization.time = this.settingsProvider.getDisplaySynchronizationTime(timeValue,timeType);
+        //reset synchronization process
+        this.synchronization.stopSynchronization().then(()=>{
+          this.synchronization.startSynchronization().then(()=>{});
+        });
         this.updateLoadingStatusOfSavingSetting(settingContent,false);
       }).catch(error=>{
         console.log(error);

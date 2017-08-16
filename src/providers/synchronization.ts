@@ -41,11 +41,7 @@ export class Synchronization {
         });
         resolve();
       });
-
-
     });
-
-
   }
 
   stopSynchronization(){

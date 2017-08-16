@@ -1,76 +1,74 @@
 import { Component,OnInit } from '@angular/core';
 
-import { ToastController,NavController } from 'ionic-angular';
+import {NavController } from 'ionic-angular';
 import {Events} from "../../providers/events";
-import {User} from "../../providers/user";
 import {AppProvider} from "../../providers/app-provider";
 import {DataValues} from "../../providers/data-values";
 import {DataSetSyncContainerPage} from "../data-set-sync-container/data-set-sync-container";
+import {AboutProvider} from "../../providers/about";
+import {User} from "../../providers/user";
 
 @Component({
   selector: 'page-about',
   templateUrl: 'about.html',
-  providers : [Events]
 })
 export class AboutPage implements OnInit{
 
-  public loadingData : boolean = false;
-  public loadingMessages : any = [];
-  public currentUser : any;
-  public systemInformation : any = [];
-  public appInformation : any;
-  public dataValuesStorage : any = { online : 0,offline : 0};
-  public eventsStorage : any = { online : 0,offline : 0};
-  public hideAndShowObject : any = {
-    systemInformation : {
-      status : false,count : 4
-    }
-  };
+  logoUrl : string;
+  appInformation : any;
+  systemInfo : any;
+  loadingMessage : string;
+  isLoading : boolean = true;
+  currentUser : any;
+  aboutContents : Array<any>;
+  isAboutContentOpen : any = {};
 
-  constructor(public user : User,public toastCtrl : ToastController,
-              public appProvider : AppProvider,public navCtrl: NavController,
-              public dataValues : DataValues,public eventProvider :Events) {
+  dataValuesStorage : any = { online : 0,offline : 0};
+  eventsStorage : any = { online : 0,offline : 0};
+
+  constructor(public navCtrl: NavController,
+              private userServices : User,
+              private appProvider : AppProvider,
+              public dataValues : DataValues,public eventProvider :Events,
+              private aboutProvider : AboutProvider) {
   }
 
-  ngOnInit() {
-    this.user.getCurrentUser().then(user=>{
-      this.currentUser = user;
-      this.loadingSystemInformation();
+  ngOnInit(){
+    this.loadingMessage = 'Loading app information';
+    this.isLoading = true;
+    this.logoUrl = 'assets/img/logo.png';
+    this.aboutContents = this.aboutProvider.getAboutContentDetails();
+    this.userServices.getCurrentUser().then(currentUser =>{
+      this.currentUser = currentUser;
+      this.aboutProvider.getAppInformation().then(appInformation=>{
+        this.appInformation = appInformation;
+        this.loadingMessage = 'Loading system information';
+        this.aboutProvider.getSystemInformation().then(systemInfo=>{
+          this.systemInfo = systemInfo;
+          this.loadingDataValueStatus();
+        }).catch(error=>{
+          this.isLoading = false;
+          this.loadingMessage = '';
+          console.log(JSON.stringify(error));
+          this.appProvider.setNormalNotification('Fail to load system information');
+        });
+      }).catch(error=>{
+        this.isLoading = false;
+        this.loadingMessage = '';
+        console.log(JSON.stringify(error));
+        this.appProvider.setNormalNotification('Fail to load app information');
+      })
     });
-  }
-
-  ionViewDidEnter() {
-    if(this.dataValuesStorage.offline > 0 || this.dataValuesStorage.online > 0){
-      this.loadingSystemInformation();
-    }
   }
 
   reLoadContents(ionRefresher){
-    this.loadingSystemInformation(ionRefresher);
-  }
-
-  loadingSystemInformation(ionRefresher?){
-    this.loadingData = true;
-    this.loadingMessages = [];
-
-    this.setLoadingMessages('Loading system information');
-    this.user.getCurrentUserSystemInformation().then(systemInformation=>{
-      this.systemInformation = this.getArrayFromObject(systemInformation);
-      this.loadAppInformation(ionRefresher);
-    });
-  }
-
-  loadAppInformation(ionRefresher?){
-    this.setLoadingMessages('Loading app information');
-    this.appProvider.getAppInformation().then(appInformation=>{
-      this.appInformation = this.getArrayFromObject(appInformation);
-      this.loadingDataValueStatus(ionRefresher);
-    })
+    this.loadingDataValueStatus(ionRefresher);
+    this.isAboutContentOpen = {};
   }
 
   loadingDataValueStatus(ionRefresher?){
-    //dataValues synced , not synced
-    this.setLoadingMessages('Loading data values storage status');
+    this.loadingMessage = 'Loading data values storage status';
+    this.isLoading = true;
     this.dataValues.getDataValuesByStatus(this.currentUser,"synced").then((syncedDataValues : any)=>{
       this.dataValues.getDataValuesByStatus(this.currentUser,"not synced").then((unSyncedDataValues : any)=>{
         this.dataValuesStorage.offline = unSyncedDataValues.length;
@@ -82,15 +80,15 @@ export class AboutPage implements OnInit{
         if(ionRefresher){
           ionRefresher.complete();
         }
-        this.setToasterMessage('Fail to loading data values storage status');
-        this.loadingData = false;
+        this.appProvider.setNormalNotification('Fail to loading data values storage status');
+        this.isLoading = false;
       });
     },error=>{
       if(ionRefresher){
         ionRefresher.complete();
       }
-      this.setToasterMessage('Fail to loading data values storage status');
-      this.loadingData = false;
+      this.appProvider.setNormalNotification('Fail to loading data values storage status');
+      this.isLoading = false;
     });
   }
 
@@ -98,21 +96,20 @@ export class AboutPage implements OnInit{
     if(this.dataValuesStorage[syncStatus].length > 0){
       this.navCtrl.push(DataSetSyncContainerPage,{dataValues : this.dataValuesStorage[syncStatus],syncStatus:syncStatus});
     }else{
-      this.setToasterMessage("There is nothing to view");
+      this.appProvider.setNormalNotification("There is nothing to view");
     }
   }
 
   viewEventsSynchronisationStatusByProgram(syncStatus){
     if(this.eventsStorage[syncStatus].length > 0){
-      this.setToasterMessage("Viewing " + this.eventsStorage[syncStatus].length + " events coming soon");
-      //this.navCtrl.push(DataSetSyncContainerPage,{dataValues : this.dataValuesStorage[syncStatus],syncStatus:syncStatus});
+      this.appProvider.setNormalNotification("Viewing " + this.eventsStorage[syncStatus].length + " events coming soon");
     }else{
-      this.setToasterMessage("There is nothing to view");
+      this.appProvider.setNormalNotification("There is nothing to view");
     }
   }
 
   loadingEvents(ionRefresher?){
-    this.setLoadingMessages("Loading event storage status");
+    this.loadingMessage = "Loading event storage status";
     this.eventsStorage["synced"] = [];
     this.eventsStorage["not_synced"] = [];
     this.eventsStorage.offline = 0;
@@ -131,18 +128,18 @@ export class AboutPage implements OnInit{
           ionRefresher.complete();
         }
       },error=>{
-        this.loadingData = false;
+        this.isLoading = false;
         if(ionRefresher){
           ionRefresher.complete();
         }
-        this.setToasterMessage('Fail to loading event storage status : ' + JSON.stringify(error));
+        this.appProvider.setNormalNotification('Fail to loading event storage status : ' + JSON.stringify(error));
       });
       this.eventProvider.getEventsFromStorageByStatus(this.currentUser,"synced").then((events :any)=>{
         for(let event of events ){
           this.eventsStorage["synced"].push(event);
         }
         this.eventsStorage.online += events.length;
-        this.loadingData = false;
+        this.isLoading = false;
         if(ionRefresher){
           ionRefresher.complete();
         }
@@ -150,49 +147,33 @@ export class AboutPage implements OnInit{
         if(ionRefresher){
           ionRefresher.complete();
         }
-        this.loadingData = false;
-        this.setToasterMessage('Fail to loading event storage status : ' + JSON.stringify(error));
+        this.isLoading = false;
+        this.loadingMessage = '';
+        this.appProvider.setNormalNotification('Fail to loading event storage status ');
+        console.log(JSON.stringify(error))
       });
     },error=>{
       if(ionRefresher){
         ionRefresher.complete();
       }
-      this.loadingData = false;
-      this.setToasterMessage('Fail to loading event storage status : ' + JSON.stringify(error));
+      this.isLoading = false;
+      this.appProvider.setNormalNotification('Fail to loading event storage status ');
+      console.log(JSON.stringify(error))
     });
   }
 
-  getArrayFromObject(object){
-    let array = [];
-    for(let key in object){
-      let newValue = object[key];
-      if(newValue instanceof Object) {
-        newValue = JSON.stringify(newValue)
+  toggleAboutContents(content){
+    if(content && content.id){
+      if(this.isAboutContentOpen[content.id]){
+        this.isAboutContentOpen[content.id] = false;
+      }else{
+        Object.keys(this.isAboutContentOpen).forEach(id=>{
+          this.isAboutContentOpen[id] = false;
+        });
+        this.isAboutContentOpen[content.id] = true;
       }
-      let newKey = (key.charAt(0).toUpperCase() + key.slice(1)).replace(/([A-Z])/g, ' $1').trim();
-      array.push({key : newKey,value : newValue})
     }
-    return array;
   }
 
-  hideAndShowDetails(key,totalCount){
-    if(this.hideAndShowObject[key].status){
-      this.hideAndShowObject[key].count = 4;
-    }else{
-      this.hideAndShowObject[key].count = totalCount;
-    }
-    this.hideAndShowObject[key].status = !this.hideAndShowObject[key].status;
-  }
 
-  setLoadingMessages(message){
-    this.loadingMessages.push(message);
-  }
-
-  setToasterMessage(message){
-    let toast = this.toastCtrl.create({
-      message: message,
-      duration: 4000
-    });
-    toast.present();
-  }
 }
