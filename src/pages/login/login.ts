@@ -56,7 +56,12 @@ export class LoginPage implements OnInit{
     this.completedTrackedProcess = [];
     this.user.getCurrentUser().then((user: any)=>{
       if(user){
+        delete user.password;
         this.loginData = user
+      }else{
+        this.loginData.username = 'admin';
+        this.loginData.password = 'district';
+        this.loginData.serverUrl = 'play.dhis2.org/demo'
       }
       this.reInitiateProgressTrackerObject(this.loginData);
     });
