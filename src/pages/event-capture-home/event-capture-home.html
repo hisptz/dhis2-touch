@@ -26,6 +26,7 @@
               </div>
             </div>
             <div *ngIf="currentSelectionStatus.isOrgUnitLoaded" style="text-align: center">
+              <img  class="side-menu-icon" [src]="iconsEvent.OrgUnit"/>&nbsp;
               {{ selectedOrganisationUnitLabel }}
             </div>
           </div>
@@ -40,6 +41,7 @@
               </div>
             </div>
             <div *ngIf="currentSelectionStatus.isProgramLoaded" style="text-align: center">
+              <img  class="side-menu-icon" [src]="iconsEvent.program"/>
               {{ selectedProgramLabel }}
             </div>
           </div>

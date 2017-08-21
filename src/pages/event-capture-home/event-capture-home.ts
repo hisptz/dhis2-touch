@@ -54,6 +54,7 @@ export class EventCaptureHomePage implements OnInit{
 
   //network
   public network : any;
+  iconsEvent: any={};
 
   constructor(public eventProvider :Events,public OrganisationUnit : OrganisationUnit,
               public ProgramStageDataElements : ProgramStageDataElements,
@@ -66,6 +67,9 @@ export class EventCaptureHomePage implements OnInit{
     this.currentEvents = [];
     this.eventListSections = [];
     this.isAllParameterSet = false;
+
+    this.iconsEvent.OrgUnit = 'assets/event-capture/orgUnit.png';
+    this.iconsEvent.program = 'assets/event-capture/form.png';
     this.user.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;
       this.getUserAssignedPrograms();

@@ -48,7 +48,8 @@ export class DataEntryHomePage implements OnInit{
   ngOnInit() {
     this.icons.dataEntry = 'assets/data-entry/form.png';
     this.icons.orgUnit = 'assets/data-entry/orgUnit.png';
-    this.icons.period = 'assets/data-entry/';
+    this.icons.periodImg = 'assets/data-entry/period.png';
+    this.icons.enterData = 'assets/data-entry/enterDataPen2.png';
     this.selectedDataDimension = [];
     this.user.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;

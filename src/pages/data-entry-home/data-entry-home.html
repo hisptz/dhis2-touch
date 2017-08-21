@@ -50,6 +50,7 @@
       <ion-col>
         <div class="entry-selection-container entry-selection" text-capitalize (tap)="openPeriodModal()" >
           <div style="text-align: center">
+            <img  class="side-menu-icon" [src]="icons.periodImg"/>&nbsp;
             {{ selectedPeriodLabel }}
           </div>
         </div>
@@ -89,7 +90,8 @@
                 <b>Form</b> : {{ selectedDataSetLabel }}<br>
                 <b>Period</b> : {{ selectedPeriodLabel }}</div>
               <button class="dataEntryButton" ion-button full large color="whitecolor">
-                ENTER DATA&nbsp;&nbsp;&nbsp;<ion-icon name="md-create"></ion-icon>
+                <img  class="side-menu-icon" [src]="icons.enterData"/>&nbsp;
+                ENTER DATA&nbsp;&nbsp;&nbsp;
               </button>
             </div>
           </ion-col>

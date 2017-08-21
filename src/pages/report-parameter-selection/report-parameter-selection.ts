@@ -30,6 +30,7 @@ export class ReportParameterSelection implements OnInit{
   public currentSelectionStatus :any = {};
   public selectedPeriodLabel : string;
   public selectedPeriod : any = {};
+  iconsReport: any ={};
 
   constructor(public navCtrl: NavController,private params:NavParams,
               public OrganisationUnit : OrganisationUnit,
@@ -41,6 +42,9 @@ export class ReportParameterSelection implements OnInit{
     this.reportName = this.params.get('name');
     this.reportId = this.params.get("id");
     this.reportParams = this.params.get("reportParams");
+
+    this.iconsReport.orgaUnit = 'assets/report-icons/orgUnit.png';
+    this.iconsReport.periodtime = 'assets/report-icons/period.png';
     this.user.getCurrentUser().then((user)=>{
       this.currentUser = user;
       this.loadOrganisationUnits();

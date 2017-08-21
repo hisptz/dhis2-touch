@@ -22,6 +22,7 @@ export class ReportHomePage implements OnInit{
   public currentUser : any;
   public reportList : any;
   public reportListCopy : any;
+  icon: any = {};
 
   constructor(public navCtrl: NavController,public toastCtrl:ToastController,
               public user:User,public Report : Report) {}
@@ -30,6 +31,7 @@ export class ReportHomePage implements OnInit{
     this.loadingMessages = [];
     this.loadingData = true;
     this.reportList = [];
+    this.icon.reports = 'assets/app-icons/reports.png';
     this.user.getCurrentUser().then((user:any)=>{
       this.currentUser = user;
       this.loadReportsList(user);
