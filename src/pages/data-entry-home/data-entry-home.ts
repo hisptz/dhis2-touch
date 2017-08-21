@@ -38,6 +38,7 @@ export class DataEntryHomePage implements OnInit{
   public selectedDataDimension : any ;
   public currentPeriodOffset : number;
   public currentSelectionStatus :any = {};
+  icons : any = {};
 
   constructor(public modalCtrl: ModalController,public navCtrl: NavController,
               public PeriodService : PeriodService,
@@ -45,6 +46,9 @@ export class DataEntryHomePage implements OnInit{
               public toastCtrl: ToastController,public user : User) {}
 
   ngOnInit() {
+    this.icons.dataEntry = 'assets/data-entry/form.png';
+    this.icons.orgUnit = 'assets/data-entry/orgUnit.png';
+    this.icons.period = 'assets/data-entry/';
     this.selectedDataDimension = [];
     this.user.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;

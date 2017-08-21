@@ -25,6 +25,7 @@
             </div>
           </div>
           <div *ngIf="currentSelectionStatus.isOrgUnitLoaded" style="text-align: center">
+            <img  class="side-menu-icon" [src]="icons.orgUnit"/>&nbsp;
             {{ selectedOrganisationUnitLabel }}
           </div>
         </div>
@@ -39,6 +40,7 @@
             </div>
           </div>
           <div *ngIf="currentSelectionStatus.isDataSetLoaded" style="text-align: center" >
+            <img  class="side-menu-icon" [src]="icons.dataEntry"/>&nbsp;
             {{ selectedDataSetLabel }}
           </div>
         </div>
