@@ -47,7 +47,7 @@ export class AnalyticsServiceProvider {
 
         // alert(analyticsResponse)
         visualizationDetails.analytics = _.filter(_.map(visualizationDetails.filters, (filter: any, filterIndex) => {
-          return {id: filter.id, content: newAnalyticsResponse[filterIndex]}
+          return {id: filter.id, content: this._sanitizeIncomingAnalytics(newAnalyticsResponse[filterIndex],filter)}
         }), (analytics) => {
           return analytics.content !== null;
         });

@@ -1,8 +1,15 @@
 import { Component,Input,Output,EventEmitter,OnInit } from '@angular/core';
-import {DashboardServiceProvider} from "../../providers/dashboard-service/dashboard-service";
 import {UserProvider} from "../../providers/user/user";
-import {AppProvider} from "../../providers/app/app";
-import {VisualizerService} from "../../providers/visualizer-service";
+import {VisualizationObjectServiceProvider} from '../../providers/visualization-object-service/visualization-object-service';
+import {FavoriteServiceProvider} from '../../providers/favorite-service/favorite-service';
+import {AnalyticsServiceProvider} from '../../providers/analytics-service/analytics-service';
+import {Observable} from 'rxjs/Observable';
+import {ChartServiceProvider} from '../../providers/chart-service/chart-service';
+import {TableServiceProvider} from '../../providers/table-service/table-service';
+import {MapServiceProvider} from '../../providers/map-service/map-service';
+import {GeoFeatureServiceProvider} from '../../providers/geo-feature-service/geo-feature-service';
+import {ResourceProvider} from "../../providers/resource/resource";
+import * as _ from 'lodash';
 
 /**
  * Generated class for the DashboardCardComponent component.
@@ -17,124 +24,398 @@ import {VisualizerService} from "../../providers/visualizer-service";
 export class DashboardCardComponent implements OnInit{
 
   @Input() dashboardItem;
-  @Input() dashboardItemData;
-  @Output() dashboardItemAnalyticData = new EventEmitter();
+  @Input() dashboardId;
+  @Input() dashBoardCardClass;
+  @Input() isInFullScreen;
   @Output() loadInFullScreen = new EventEmitter();
 
   currentUser : any;
-  analyticData : any;
-  chartObject : any;
-  tableObject : any;
-  isVisualizationDataLoaded : boolean = false;
-  visualizationType : string;
+  visualizationObject: any;
+  isVisualizationDataLoaded: boolean;
+  visualizationType: string;
 
-  constructor(private DashboardService : DashboardServiceProvider,private userProvider : UserProvider,
-              private appProvider : AppProvider,
-              private visualizationService : VisualizerService) {
+  visualizationOptions : any;
+  zoomIcon : string;
+  filterIcon : string;
+
+  constructor(private userProvider : UserProvider,
+              private visualizationObjectService: VisualizationObjectServiceProvider,
+              private favoriteService: FavoriteServiceProvider,
+              private analyticsService: AnalyticsServiceProvider,
+              private chartService: ChartServiceProvider,
+              private tableService: TableServiceProvider,
+              private mapService: MapServiceProvider,
+              private resourceProvider : ResourceProvider,
+              private geoFeatureService: GeoFeatureServiceProvider
+              ) {
+
   }
 
 
   ngOnInit() {
-    this.visualizationType = '';
+    this.zoomIcon = 'assets/dashboard/full-screen.png';
+    this.filterIcon = 'assets/dashboard/filter.png';
+    this.visualizationOptions = this.resourceProvider.getVisualizationIcons().visualizationType;
+
     this.userProvider.getCurrentUser().then((currentUser :any)=>{
-      if(currentUser && currentUser.username){
-        this.currentUser = currentUser;
-        if(this.dashboardItemData){
-          this.analyticData = this.dashboardItemData;
-          this.initiateVisualization();
-        }else{
-          if(this.dashboardItem && this.dashboardItem.analyticsUrl){
-            this.DashboardService.getAnalyticDataForDashboardItem(this.dashboardItem.analyticsUrl,currentUser).then((analyticData:any)=>{
-              this.analyticData = analyticData;
-              this.dashboardItemAnalyticData.emit(analyticData);
-              this.initiateVisualization();
-            },error=>{
-              this.isVisualizationDataLoaded = true;
-              this.appProvider.setNormalNotification("fail to load data for " + (this.dashboardItem.title) ? this.dashboardItem.title : this.dashboardItem.name);
-            });
-          }else{
-            this.isVisualizationDataLoaded = true;
-            this.appProvider.setNormalNotification("There is no dashboard item information");
-          }
+      this.currentUser = currentUser;
+      const initialVisualizationObject = this.visualizationObjectService.loadInitialVisualizationObject(
+        {
+          dashboardItem: this.dashboardItem,
+          dashboardId: this.dashboardId,
+          currentUser: currentUser
         }
+      );
+
+      this.visualizationObject = initialVisualizationObject;
+      this.isVisualizationDataLoaded = initialVisualizationObject.details.loaded;
+      this.visualizationType = initialVisualizationObject.details.currentVisualization;
+
+      //todo double check why layers are reset after call get favorites
+      if (initialVisualizationObject.type === 'USERS' || initialVisualizationObject.type === 'REPORTS' || initialVisualizationObject.type === 'RESOURCES' || initialVisualizationObject.type === 'APP') {
+        this.visualizationObject.details.loaded = true;
+        this.isVisualizationDataLoaded = this.visualizationObject.details.loaded;
       }else{
-        this.isVisualizationDataLoaded = true;
-        this.appProvider.setNormalNotification("Fail to get user information");
+        this.favoriteService.getFavorite({
+            visualizationObject: initialVisualizationObject,
+            apiRootUrl: '/api/25/'
+          },
+          currentUser
+        ).subscribe(favoriteResult => {
+          if (favoriteResult) {
+            /**
+             * Extend visualization object with favorite
+             * @type {any}
+             */
+            const visualizationObjectWithFavorite = this.extendVisualizationWithFavorite(
+              initialVisualizationObject,
+              favoriteResult.favorite,
+              favoriteResult.error);
+
+            const visualizationFilterResults = this.favoriteService.getVisualizationFiltersFromFavorite(favoriteResult);
+
+            /**
+             * Extend visualization object with filters
+             */
+            const visualizatiobObjectWithFilters = this.extendVisualizationObjectWithFilters(
+              visualizationObjectWithFavorite,
+              visualizationFilterResults.filters);
+
+            const visualizationDetailsWithFiltersAndLayout = this.favoriteService.getVisualizationLayoutFromFavorite(
+              visualizationFilterResults
+            );
+
+            /**
+             * Extend visualization object with layouts
+             */
+            const visualizationObjectWithLayout = this.extendVisualizationObjectWithLayout(
+              visualizatiobObjectWithFilters,
+              visualizationDetailsWithFiltersAndLayout.layouts
+            );
+
+            if (visualizationDetailsWithFiltersAndLayout) {
+              this.analyticsService.getAnalytics(
+                visualizationDetailsWithFiltersAndLayout,
+                currentUser
+              ).subscribe(visualizationWithAnalytics => {
+
+                /**
+                 * Extend visualization object with analytics
+                 */
+                const visualizationObjectWithAnalytics = this.extendVisualizationWithAnalytics(
+                  visualizationObjectWithLayout,
+                  visualizationWithAnalytics.analytics
+                )
+
+                this.extendVisualizationObjectWithDrawingObjects(
+                  visualizationObjectWithAnalytics, currentUser
+                ).subscribe((visualizatioObject: any) => {
+                  this.visualizationObject = visualizatioObject;
+                  this.isVisualizationDataLoaded = visualizatioObject.details.loaded;
+                })
+              })
+            }
+
+          }
+
+        })
+      }
+
+
+    })
+  }
+
+  updateVisualizationType(visualizationType){
+
+    //@todo logic to update visualization, instance chart, map and table
+
+    //deactivate selected type
+    this.visualizationOptions.forEach((visualization : any)=>{
+      if(visualization.type == visualizationType){
+        visualization.isDisabled = true;
+      }else{
+        visualization.isDisabled = false;
+      }
+    });
+
+    this.visualizationType = visualizationType;
+    this.visualizationObject.details.loaded = false;
+    this.isVisualizationDataLoaded = false;
+    this.visualizationObject.details.currentVisualization = visualizationType;
+
+    this.extendVisualizationObjectWithDrawingObjects(this.visualizationObject, this.currentUser)
+      .subscribe((newVisualizationObject: any) => {
+        this.visualizationObject = _.assign({}, newVisualizationObject);
+        this.isVisualizationDataLoaded = newVisualizationObject.details.loaded;
+      })
+  }
+
+  loadFullScreenDashboard(){
+    let data = {
+      dashboardItem : this.dashboardItem,
+      dashboardId : this.dashboardId
+    };
+    this.loadInFullScreen.emit(data);
+  }
+
+  updateVisualizationWithNewChartType(chartType) {
+    this.visualizationObject.details.loaded = false;
+    this.isVisualizationDataLoaded = false;
+    this.extendVisualizationObjectWithDrawingObjects(this.visualizationObject, this.currentUser, chartType)
+      .subscribe((newVisualizationObject: any) => {
+        setTimeout(()=>{
+          this.visualizationObject = _.assign({}, newVisualizationObject);
+          this.isVisualizationDataLoaded = newVisualizationObject.details.loaded;
+        },70);
+      })
+  }
+
+  extendVisualizationObjectWithLayout(visualizationObject: any, layouts: any) {
+    const newVisualizationObject = _.clone(visualizationObject);
+    const newVisualizationDetails = _.clone(newVisualizationObject.details);
+
+    newVisualizationDetails.layouts = layouts;
+
+    newVisualizationObject.details = _.assign({}, newVisualizationDetails);
+
+    return newVisualizationObject;
+  }
+
+  extendVisualizationObjectWithFilters(visualizationObject: any, filters: any) {
+    const newVisualizationObject = _.clone(visualizationObject);
+    const newVisualizationDetails = _.clone(newVisualizationObject.details);
+
+    newVisualizationDetails.filters = filters;
+
+    newVisualizationObject.details = _.assign({}, newVisualizationDetails);
+
+    return newVisualizationObject;
+  }
+
+  extendVisualizationWithFavorite(visualizationObject, favoriteObject, favoriteError) {
+    const currentVisualizationObject: any = _.clone(visualizationObject);
+    if (!favoriteError) {
+      /**
+       * Update visualization settings with favorite if no error
+       */
+      currentVisualizationObject.layers = this.mapFavoriteToLayerSettings(favoriteObject);
+
+      if (favoriteObject) {
+        /**
+         * Also get map configuration if current visualization is map
+         */
+        if (currentVisualizationObject.details.currentVisualization === 'MAP') {
+          currentVisualizationObject.details.basemap = favoriteObject.basemap;
+          currentVisualizationObject.details.zoom = favoriteObject.zoom;
+          currentVisualizationObject.details.latitude = favoriteObject.latitude;
+          currentVisualizationObject.details.longitude = favoriteObject.longitude;
+        }
+      }
+    } else {
+      /**
+       * Get error message
+       */
+      currentVisualizationObject.details.errorMessage = favoriteError;
+      currentVisualizationObject.details.hasError = true;
+      currentVisualizationObject.details.loaded = true;
+    }
+
+    return currentVisualizationObject;
+  }
+
+  mapFavoriteToLayerSettings(favoriteObject: any) {
+    if (favoriteObject.mapViews) {
+      return _.map(favoriteObject.mapViews, (view: any) => {
+        return {settings: view}
+      });
+    }
+    return [{settings: favoriteObject}];
+  }
+
+  extendVisualizationWithAnalytics(visualizationObject: any, loadedAnalytics: any[]) {
+    const newVisualizationObject: any = _.clone(visualizationObject);
+    /**
+     * Update visualization layer with analytics
+     */
+    newVisualizationObject.layers = _.map(newVisualizationObject.layers, (layer: any) => {
+      const newLayer = _.clone(layer);
+      const newSettings = newLayer ? newLayer.settings : null;
+      const analyticsObject = _.find(loadedAnalytics, ['id', newSettings !== null ? newSettings.id : '']);
+      if (analyticsObject) {
+        newLayer.analytics = Object.assign({}, analyticsObject.content);
+      }
+      return newLayer;
+    });
+
+    /**
+     * Make a copy of layers for later use
+     */
+    newVisualizationObject.operatingLayers = _.assign([], newVisualizationObject.layers);
+
+    return newVisualizationObject;
+  }
+
+  extendVisualizationObjectWithDrawingObjects(currentVisualizationObject: any, currentUser: any, chartType?: string) {
+    const currentVisualization: string = currentVisualizationObject.details.currentVisualization;
+    const newVisualizationObject = _.clone(currentVisualizationObject);
+
+    /**
+     * Take original copy of layers
+     */
+    newVisualizationObject.layers = _.assign([], newVisualizationObject.operatingLayers);
+
+    return Observable.create(observer => {
+      if (currentVisualization === 'CHART') {
+        const mergeVisualizationObject = this.visualizationObjectService.mergeVisualizationObject(newVisualizationObject);
+
+
+        /**
+         * Update visualization layers with chart configuration
+         */
+        const visualizationObjectLayersWithChartConfiguration = _.map(mergeVisualizationObject.layers, (layer, layerIndex) => {
+          const newLayer = _.clone(layer);
+          const newSettings = _.clone(layer.settings);
+
+          /**
+           * Updated settings with new chart type if any
+           */
+          if (chartType) {
+            newSettings.type = chartType;
+          }
+
+          newSettings.chartConfiguration = _.assign({}, this.chartService.getChartConfiguration1(
+            newSettings,
+            mergeVisualizationObject.id + '_' + layerIndex,
+            mergeVisualizationObject.details.layouts
+          ));
+          newLayer.settings = _.assign({}, newSettings);
+          return newLayer;
+        });
+
+        /**
+         * Update visualization layers with chart object
+         */
+        const visualizationObjectLayersWithChartObject = _.map(visualizationObjectLayersWithChartConfiguration, (layer) => {
+          const newLayer = _.clone(layer);
+          newLayer.chartObject = _.assign({}, this.chartService.getChartObject(newLayer.analytics, newLayer.settings.chartConfiguration));
+          return newLayer;
+        });
+
+        newVisualizationObject.layers = _.assign([], visualizationObjectLayersWithChartObject);
+
+        const settings =  _.map(newVisualizationObject.layers, (layer: any) => layer.settings);
+        newVisualizationObject.details.loaded = true;
+        newVisualizationObject.details.chartType = chartType ? chartType :
+          settings && settings.length > 0 ? _.lowerCase(settings[0].type) : '';
+
+        observer.next(newVisualizationObject);
+        observer.complete();
+
+      } else if (currentVisualization === 'TABLE') {
+        const mergeVisualizationObject = this.visualizationObjectService.mergeVisualizationObject(newVisualizationObject);
+
+        /**
+         * Update visualization layers with table configuration
+         */
+        const visualizationObjectLayersWithTableConfiguration = _.map(mergeVisualizationObject.layers, (layer, layerIndex) => {
+          const newLayer = _.clone(layer);
+          const newSettings = _.clone(layer.settings);
+          newSettings.tableConfiguration = _.assign({}, this.tableService.getTableConfiguration1(
+            newSettings,
+            mergeVisualizationObject.details.layouts,
+            mergeVisualizationObject.type
+          ));
+          newLayer.settings = _.assign({}, newSettings);
+          return newLayer;
+        });
+
+        /**
+         * Update visualization layers with table object
+         */
+        const visualizationObjectLayersWithChartObject = _.map(visualizationObjectLayersWithTableConfiguration, (layer) => {
+          const newLayer = _.clone(layer);
+          newLayer.tableObject = _.assign({}, this.tableService.getTableObject(newLayer.analytics,newLayer.settings, newLayer.settings.tableConfiguration));
+          return newLayer;
+        });
+
+        newVisualizationObject.layers = _.assign([], visualizationObjectLayersWithChartObject);
+        newVisualizationObject.details.loaded = true;
+        observer.next(newVisualizationObject);
+        observer.complete();
+      } else if (currentVisualization === 'MAP') {
+        const splitedVisualizationObject = newVisualizationObject.details.type !== 'MAP' ?
+          this.visualizationObjectService.splitVisualizationObject(newVisualizationObject) :
+          _.clone(newVisualizationObject);
+
+
+        const newVisualizationDetails = _.clone(splitedVisualizationObject.details);
+
+        /**
+         * Update with map configuration
+         */
+        newVisualizationDetails.mapConfiguration = _.assign({}, this.mapService.getMapConfiguration(splitedVisualizationObject));
+
+
+        /**
+         * Update with geo features
+         */
+        this.geoFeatureService.getGeoFeature({
+          apiRootUrl: '/api/25/',
+          visualizationObject: splitedVisualizationObject
+        }, currentUser).subscribe((geoFeatureResponse: any) => {
+
+          if (geoFeatureResponse.geoFeatures) {
+            splitedVisualizationObject.layers = _.map(splitedVisualizationObject.layers, (layer: any) => {
+              const newLayer = _.clone(layer);
+              const newSettings = _.clone(layer.settings);
+              const availableGeoFeatureObject: any = _.find(geoFeatureResponse.geoFeatures, ['id', newSettings.id]);
+
+              if (availableGeoFeatureObject) {
+                if (availableGeoFeatureObject.content.length === 0) {
+                  // newVisualizationDetails.hasError = true;
+                  // newVisualizationDetails.errorMessage = 'Coordinates for displaying a map are missing';
+                } else {
+                  newSettings.geoFeature = _.assign([], availableGeoFeatureObject.content);
+                }
+              }
+              newLayer.settings = _.assign({}, newSettings);
+
+              return newLayer;
+            });
+          }
+
+          newVisualizationDetails.loaded = true;
+          splitedVisualizationObject.details = _.assign({}, newVisualizationDetails);
+          observer.next(splitedVisualizationObject);
+          observer.complete();
+        })
+      } else {
+        newVisualizationObject.details.loaded = true;
+        observer.next(newVisualizationObject);
+        observer.complete();
       }
     })
   }
 
-  initiateVisualization(){
-    if((this.dashboardItem.visualizationType == 'CHART') || (this.dashboardItem.visualizationType == 'EVENT_CHART')) {
-      this.visualizationType = "chart";
-      this.drawChart();
-    } else if ((this.dashboardItem.visualizationType == 'TABLE') || (this.dashboardItem.visualizationType == 'EVENT_REPORT') || (this.dashboardItem.visualizationType == 'REPORT_TABLE')) {
-      this.visualizationType = "table";
-      this.drawTable();
-    }else{
-      this.visualizationType = 'not supported';
-    }
-  }
 
-  drawChart(chartType?:string) {
-    this.isVisualizationDataLoaded = false;
-    let itemChartType = (this.dashboardItem.type) ? this.dashboardItem.type.toLowerCase() : 'bar';
-    let layout: any = {};
-    layout['series'] = this.dashboardItem.series ? this.dashboardItem.series : (this.dashboardItem.columns.length > 0) ?this.dashboardItem.columns[0].dimension :  'pe';
-    layout['category'] = this.dashboardItem.category ? this.dashboardItem.category :(this.dashboardItem.rows.length > 0)? this.dashboardItem.rows[0].dimension : 'dx';
-    this.chartObject = {};
-    let chartConfiguration = {
-      'type': chartType ? chartType : itemChartType,
-      'title': "",
-      'show_labels': true,
-      'xAxisType': layout.category,
-      'yAxisType': layout.series
-    };
-    this.chartObject = this.visualizationService.drawChart(this.analyticData, chartConfiguration);
-    this.chartObject.chart["zoomType"] ="xy";
-    this.chartObject.chart["backgroundColor"] = "#F4F4F4";
-    this.chartObject["credits"] =  {enabled: false};
-    this.isVisualizationDataLoaded = true;
-  }
-
-  drawTable() {
-    this.isVisualizationDataLoaded = false;
-    let dashboardObject = this.dashboardItem;
-    let display_list: boolean = false;
-    if(this.dashboardItem.visualizationType == 'EVENT_REPORT'){
-      if (dashboardObject.dataType == 'EVENTS') {
-        display_list = true;
-      }
-    }
-    let tableConfiguration = {rows: [], columns: [],hide_zeros: true,display_list:display_list};
-    //get columns
-    if(dashboardObject.hasOwnProperty('columns')) {
-      dashboardObject.columns.forEach(colValue => {
-        tableConfiguration.columns.push(colValue.dimension);
-      });
-    } else {
-      tableConfiguration.columns = ['co'];
-    }
-    //get rows
-    if(dashboardObject.hasOwnProperty('rows')) {
-      dashboardObject.rows.forEach(rowValue => {
-        tableConfiguration.rows.push(rowValue.dimension)
-      })
-    } else {
-      tableConfiguration.rows = ['ou', 'dx', 'pe'];
-    }
-    this.tableObject = this.visualizationService.drawTable(this.analyticData, tableConfiguration);
-    this.isVisualizationDataLoaded = true;
-  }
-
-  loadVisualization(event){
-    if(this.analyticData && event.type == 'tap'){
-      var data = {
-        dashboardItem : this.dashboardItem,
-        dashboardItemData : this.dashboardItemData,
-        analyticData : this.analyticData
-      }
-      this.loadInFullScreen.emit(data);
-    }
-  }
 }

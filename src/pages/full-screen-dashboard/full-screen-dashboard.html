@@ -1,0 +1,11 @@
+
+<ion-content class="full-screen-dashboard">
+
+  <dashboard-card [dashboardItem]="dashboardItem"
+                  [dashBoardCardClass]="'dashboard-card-overflow-with-fixed-height'"
+                  [isInFullScreen] = "isInFullScreen"
+                  (loadInFullScreen)="loadFullScreenDashboard($event)"
+                  [dashboardId]="dashboardId">
+  </dashboard-card>
+
+</ion-content>

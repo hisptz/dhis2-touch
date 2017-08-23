@@ -1,0 +1,15 @@
+messages {
+  .message-conversations{
+    overflow:auto;
+    max-height: 410px;
+  }
+  .message-container{
+    padding-bottom: 1rem;
+  }
+  .sender{
+    font-weight: bold;
+  }
+  .message {
+    font-style: italic;
+  }
+}

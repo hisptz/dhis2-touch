@@ -1,0 +1,40 @@
+<div *ngIf="!loaded && !chartHasError">
+  <page-loading [loadingSize]="'large'" [loadingMessage]="'Preparing chart'" ></page-loading>
+</div>
+
+<div *ngIf="chartHasError">
+  <notification [message]="'errorMessage'" ></notification>
+</div>
+
+<div *ngIf="loaded && !chartHasError" id="chart_{{visualizationObject.id}}">
+
+  <div *ngIf="!isInFullScreen">
+    <div *ngFor="let chartObject of chartObjects; let i=index">
+      <chart-template [renderId]="visualizationObject.id + '_' + i"
+                      [chartHeight]="chartHeight"
+                      [chartObject]="chartObject"
+                      (onChartRenderFailure)="getChartError($event)"></chart-template>
+    </div>
+  </div>
+
+ <div *ngIf="isInFullScreen">
+   <ion-row>
+     <ion-col col-10 col-sm-11 col-md-11 col-lg-11 no-padding>
+       <div *ngFor="let chartObject of chartObjects; let i=index">
+         <chart-template [renderId]="visualizationObject.id + '_' + i"
+                         [chartHeight]="chartHeight"
+                         [chartObject]="chartObject"
+                         (onChartRenderFailure)="getChartError($event)"></chart-template>
+       </div>
+
+     </ion-col>
+     <ion-col col-2 col-sm-1 col-md-1 col-lg-1 text-right no-padding>
+       <button *ngFor="let visualization of visualizationOptions" [disabled]="visualizationObject.details.chartType == visualization.type" ion-button color="light" clear class="chart-icon-container"    (tap)="updateChart(visualization.type)" >
+         <img class="chart-icon" [src]="visualization.icon">
+       </button>
+     </ion-col>
+   </ion-row>
+ </div>
+
+
+</div>

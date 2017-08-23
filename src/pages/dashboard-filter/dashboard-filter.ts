@@ -1,6 +1,7 @@
 import { Component , OnInit} from '@angular/core';
 import { IonicPage, ViewController,NavParams } from 'ionic-angular';
-import {DashboardServiceProvider} from "../../providers/dashboard-service/dashboard-service";
+import {DashboardProvider} from "../../providers/dashboard/dashboard";
+
 
 /**
  * Generated class for the DashboardFilterPage page.
@@ -21,14 +22,14 @@ export class DashboardFilterPage implements OnInit{
 
 
   constructor(public navParams: NavParams,
-              public DashboardService : DashboardServiceProvider,
+              public DashboardService : DashboardProvider,
               public viewCtrl: ViewController) {
   }
 
   ngOnInit() {
     let currentUser = this.navParams.get("currentUser");
     this.currentDashboardName = this.navParams.get("currentDashboardName");
-    this.DashboardService.allDashboards(currentUser).then((dashboards: any)=>{
+    this.DashboardService.loadAll(currentUser).subscribe((dashboards: any)=>{
       this.dashboards = dashboards;
       this.dashboardsCopy = dashboards;
     });

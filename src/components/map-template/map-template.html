@@ -1,0 +1,24 @@
+<!-- Generated template for the MapTemplateComponent component -->
+
+<div>
+
+  <div *ngIf="visualizationObject.details.loading">
+    <page-loading [loadingSize]="'large'" [loadingMessage]="'Preparing map'"></page-loading>
+  </div>
+
+  <!-- layer legend button -->
+
+  <!--<div class="layers-button">-->
+    <!--<img [src]="layerIcon" style="width:24px;height:24px;">-->
+  <!--</div>-->
+
+  <!-- layer legend container -->
+  <div *ngIf="!loading&&legendIsOpen" class="legendContainer" (mouseleave)="closeMapLegend('leave')"
+  >
+  </div>
+
+  <!-- map view port -->
+  <div id="map-view-port-{{visualizationObject.id}}" [ngClass]="{hide: visualizationObject.details.loading||hasError}"
+       style="width:100%"></div>
+
+</div>

@@ -46,6 +46,7 @@ import {MapFilesConversionProvider} from "../providers/map-files-conversion/map-
 import {TileLayers} from '../constants/tile-layers';
 import {OrgUnitService} from "../providers/org-unit.service";
 import {MessageServiceProvider} from "../providers/message-service/message-service";
+import {DashboardServiceProvider} from "../providers/dashboard-service/dashboard-service";
 
 @NgModule({
   declarations: [
@@ -69,7 +70,7 @@ import {MessageServiceProvider} from "../providers/message-service/message-servi
     SplashScreen,HTTP,AppVersion,Network,BackgroundMode,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ResourceProvider,HttpClientProvider,UserProvider,NetworkAvailabilityProvider,AppProvider,
-    VisualizerService,
+    VisualizerService,DashboardServiceProvider,
     AboutProvider,
     ProfileProvider,
     SettingsProvider,
