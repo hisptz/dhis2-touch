@@ -11,6 +11,7 @@ import { ResourceProvider } from '../providers/resource/resource';
 import {SharedModule} from "../components/shared.module";
 import { HTTP } from '@ionic-native/http';
 import { Network } from '@ionic-native/network';
+import { SQLite } from '@ionic-native/sqlite';
 import { HttpModule } from '@angular/http';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { IonicStorageModule } from '@ionic/storage';
@@ -47,6 +48,7 @@ import {TileLayers} from '../constants/tile-layers';
 import {OrgUnitService} from "../providers/org-unit.service";
 import {MessageServiceProvider} from "../providers/message-service/message-service";
 import {DashboardServiceProvider} from "../providers/dashboard-service/dashboard-service";
+import { SqlLiteProvider } from '../providers/sql-lite/sql-lite';
 
 @NgModule({
   declarations: [
@@ -66,7 +68,7 @@ import {DashboardServiceProvider} from "../providers/dashboard-service/dashboard
     TabsPage
   ],
   providers: [
-    StatusBar,
+    StatusBar,SQLite,
     SplashScreen,HTTP,AppVersion,Network,BackgroundMode,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ResourceProvider,HttpClientProvider,UserProvider,NetworkAvailabilityProvider,AppProvider,
@@ -94,6 +96,7 @@ import {DashboardServiceProvider} from "../providers/dashboard-service/dashboard
     UtilitiesServiceProvider,
     MapFilesConversionProvider,TileLayers,OrgUnitService,
     MessageServiceProvider,
+    SqlLiteProvider,
   ]
 })
 export class AppModule {}

@@ -26,6 +26,7 @@
         "@ionic-native/http": "^4.1.0",
         "@ionic-native/network": "^4.1.0",
         "@ionic-native/splash-screen": "3.12.1",
+        "@ionic-native/sqlite": "^4.1.0",
         "@ionic-native/status-bar": "3.12.1",
         "@ionic/storage": "^2.0.1",
         "@types/geojson": "^1.0.2",
