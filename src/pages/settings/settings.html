@@ -62,6 +62,14 @@
                     </ion-item>
                   </ion-col>
                 </ion-row>
+                <ion-row>
+                  <ion-col>
+                    <ion-item no-lines>
+                      <ion-label> Auto sync</ion-label>
+                      <ion-toggle color="font-color" [(ngModel)] = "settingObject.synchronization.isAutoSync"></ion-toggle>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
                 <button  small  color="primary" ion-button full large text-capitalize (tap)="applySettings(settingContent)">
                   Save
                 </button>

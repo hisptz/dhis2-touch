@@ -107,7 +107,7 @@ export class SettingsProvider {
         label: "displayName", maxDataElementOnDefaultForm: 10
       },
       synchronization: {
-        time: 2 * 60 * 1000, timeType: "minutes"
+        time: 2 * 60 * 1000, timeType: "minutes",isAutoSync : true
       }
     };
     return defaultSettings;

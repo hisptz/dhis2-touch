@@ -43,6 +43,9 @@ export class AboutPage implements OnInit{
       this.loadingMessage = 'Loading system information';
       this.aboutProvider.getSystemInformation().then(systemInfo=>{
         this.systemInfo = systemInfo;
+        if(this.aboutContents.length > 0 ){
+          this.toggleAboutContents(this.aboutContents[0]);
+        }
         this.isLoading = false;
         this.loadingMessage = '';
       }).catch(error=>{
