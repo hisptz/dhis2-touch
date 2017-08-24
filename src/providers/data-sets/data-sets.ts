@@ -118,9 +118,14 @@ export class DataSetsProvider {
     });
   }
 
+  /**
+   *
+   * @param dataSets
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   saveDataSetIndicators(dataSets,currentUser){
     let dataSetIndicators = [];
-    console.log("dataSetIndicators");
     let resource = "dataSetIndicators";
     dataSets.forEach((dataSet : any)=>{
       if(dataSet.indicators && dataSet.indicators.length > 0){
@@ -150,9 +155,14 @@ export class DataSetsProvider {
     });
   }
 
+  /**
+   *
+   * @param dataSets
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   saveDataSetSource(dataSets,currentUser){
     let dataSetSource = [];
-    console.log("dataSetSource");
     let resource = "dataSetSource";
     dataSets.forEach((dataSet : any)=>{
       if(dataSet.organisationUnits && dataSet.organisationUnits.length > 0){
@@ -182,9 +192,14 @@ export class DataSetsProvider {
     });
   }
 
+  /**
+   *
+   * @param dataSets
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   saveDataSetSections(dataSets,currentUser){
     let dataSetSections = [];
-    console.log("dataSetSections");
     let resource = "dataSetSections";
     dataSets.forEach((dataSet : any)=>{
       if(dataSet.sections && dataSet.sections.length > 0){
@@ -215,9 +230,14 @@ export class DataSetsProvider {
     });
   }
 
+  /**
+   *
+   * @param dataSets
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   saveDataSetOperands(dataSets,currentUser){
     let dataSetOperands = [];
-    console.log("dataSetOperands");
     let resource = "dataSetOperands";
     dataSets.forEach((dataSet : any)=>{
       if(dataSet.compulsoryDataElementOperands && dataSet.compulsoryDataElementOperands.length > 0){
@@ -249,9 +269,14 @@ export class DataSetsProvider {
     });
   }
 
+  /**
+   *
+   * @param dataSets
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   saveDataSetElements(dataSets,currentUser){
     let dataSetElements = [];
-    console.log("dataSetElements");
     let resource = "dataSetElements";
     dataSets.forEach((dataSet : any)=>{
       if(dataSet.dataSetElements && dataSet.dataSetElements.length > 0){

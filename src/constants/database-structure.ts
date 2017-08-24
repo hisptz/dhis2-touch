@@ -87,6 +87,7 @@ export const DATABASE_STRUCTURE = {
   sections: {
     columns: [
       {value: 'id', type: 'TEXT'},
+      {value: 'sortOrder', type: 'TEXT'},
       {value: 'name', type: 'TEXT'}
     ],
     fields: "",
