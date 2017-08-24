@@ -49,6 +49,12 @@ import {OrgUnitService} from "../providers/org-unit.service";
 import {MessageServiceProvider} from "../providers/message-service/message-service";
 import {DashboardServiceProvider} from "../providers/dashboard-service/dashboard-service";
 import { SqlLiteProvider } from '../providers/sql-lite/sql-lite';
+import { OrganisationUnitsProvider } from '../providers/organisation-units/organisation-units';
+import { DataSetsProvider } from '../providers/data-sets/data-sets';
+import { SectionsProvider } from '../providers/sections/sections';
+import { DataElementsProvider } from '../providers/data-elements/data-elements';
+import { SmsCommandProvider } from '../providers/sms-command/sms-command';
+import { IndicatorsProvider } from '../providers/indicators/indicators';
 
 @NgModule({
   declarations: [
@@ -97,6 +103,12 @@ import { SqlLiteProvider } from '../providers/sql-lite/sql-lite';
     MapFilesConversionProvider,TileLayers,OrgUnitService,
     MessageServiceProvider,
     SqlLiteProvider,
+    OrganisationUnitsProvider,
+    DataSetsProvider,
+    SectionsProvider,
+    DataElementsProvider,
+    SmsCommandProvider,
+    IndicatorsProvider,
   ]
 })
 export class AppModule {}

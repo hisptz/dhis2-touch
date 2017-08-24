@@ -4,6 +4,8 @@ import {HttpClientProvider} from "../../providers/http-client/http-client";
 import {AppProvider} from "../../providers/app/app";
 import {UserProvider} from "../../providers/user/user";
 import {TabsPage} from "../tabs/tabs";
+import {SqlLiteProvider} from "../../providers/sql-lite/sql-lite";
+import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
 
 /**
  * Generated class for the LoginPage page.
@@ -32,6 +34,8 @@ export class LoginPage implements OnInit{
               private menu : MenuController,
               private UserProvider : UserProvider,
               private AppProvider : AppProvider,
+              private sqlLite : SqlLiteProvider,
+              private organisationUnitsProvider : OrganisationUnitsProvider,
               private HttpClientProvider : HttpClientProvider,
               ) {
 
@@ -53,6 +57,10 @@ export class LoginPage implements OnInit{
           delete currentUser.password;
         }
         this.currentUser = currentUser;
+      }else{
+        this.currentUser.serverUrl = 'play.dhis2.org/demo';
+        this.currentUser.username = 'admin';
+        this.currentUser.password = 'district';
       }
     });
   }
@@ -94,9 +102,16 @@ export class LoginPage implements OnInit{
                 if(this.isLoginProcessActive){
                   this.UserProvider.getUserAuthorities(this.currentUser).then((response:any)=>{
                     this.currentUser.authorities = response.authorities;
-                    this.updateProgressTracker(resource);
-                    this.progressTracker[this.currentResourceType].message= '';
-                    this.setLandingPage(this.currentUser);
+                    resource = "Preparing local storage";
+                    this.progressTracker[this.currentResourceType].message = resource;
+                    this.sqlLite.generateTables(this.currentUser.currentDatabase).then(()=>{
+                      this.updateProgressTracker(resource);
+                      this.downloadingOrganisationUnits(userData);
+                    },(error)=>{
+                      this.isLoginProcessActive = false;
+                      this.AppProvider.setNormalNotification('Fail to prepare local storage');
+                      console.error("error : " + JSON.stringify(error));
+                    });
                   },error=>{
                     this.isLoginProcessActive = false;
                     this.AppProvider.setNormalNotification('Fail to load user authorities');
@@ -145,6 +160,46 @@ export class LoginPage implements OnInit{
     }
   }
 
+  downloadingOrganisationUnits(userData){
+    if(this.isLoginProcessActive){
+      let resource = 'organisationUnits';
+      this.currentResourceType = "communication";
+      this.progressTracker[this.currentResourceType].message = "Loading assigned organisation unit";
+      let orgUnitIds = [];
+      userData.organisationUnits.forEach(organisationUnit=>{
+        if(organisationUnit.id){
+          orgUnitIds.push(organisationUnit.id);
+        }
+      });
+      this.currentUser["userOrgUnitIds"] = orgUnitIds;
+      if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.progressTracker[this.currentResourceType].message = "Assigned organisation unit(s) have been loaded";
+        this.updateProgressTracker(resource);
+        this.setLandingPage(this.currentUser);
+      }else{
+        this.organisationUnitsProvider.downloadingOrganisationUnitsFromServer(orgUnitIds,this.currentUser).then((orgUnits:any)=>{
+          if(this.isLoginProcessActive){
+            this.progressTracker[this.currentResourceType].message = "Saving assigned organisation unit(s)";
+            this.organisationUnitsProvider.savingOrganisationUnitsFromServer(orgUnits,this.currentUser).then(()=>{
+              this.progressTracker[this.currentResourceType].message = "Assigned organisation unit(s) have been saved";
+              this.updateProgressTracker(resource);
+              this.setLandingPage(this.currentUser);
+            },error=>{
+              this.isLoginProcessActive = false;
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification('Fail to save organisation data.');
+            });
+          }
+        },error=>{
+          this.isLoginProcessActive = false;
+          console.log(JSON.stringify(error));
+          this.AppProvider.setNormalNotification('Fail to load organisation data.');
+        });
+      }
+
+    }
+  }
+
   cancelLoginProcess(){
     this.isLoginProcessActive = false;
   }
@@ -171,9 +226,20 @@ export class LoginPage implements OnInit{
   }
 
   getEmptyProgressTracker(){
+    let dataBaseStructure =  this.sqlLite.getDataBaseStructure();
     let progressTracker = {};
     progressTracker["communication"] = {count : 3,passStep :[],passStepCount : 0, message : ""};
     progressTracker["finalization"] = {count :0.5,passStep :[],passStepCount : 0, message : ""};
+    Object.keys(dataBaseStructure).forEach(key=>{
+      let table = dataBaseStructure[key];
+      if(table.isMetadata && table.resourceType && table.resourceType !=""){
+        if(!progressTracker[table.resourceType]){
+          progressTracker[table.resourceType] = {count : 1,passStep :[],passStepCount : 0,message :""};
+        }else{
+          progressTracker[table.resourceType].count += 1;
+        }
+      }
+    });
     return progressTracker;
   }
 
@@ -228,6 +294,19 @@ export class LoginPage implements OnInit{
   resetPassSteps(){
     this.progressTracker.communication.passStep = [];
     this.progressTracker.communication.passStepCount = 0;
+    let dataBaseStructure =  this.sqlLite.getDataBaseStructure();
+    Object.keys(dataBaseStructure).forEach(key=>{
+      let table = dataBaseStructure[key];
+      if(table.isMetadata && table.resourceType && table.resourceType != ""){
+        if(this.progressTracker[table.resourceType]){
+          this.progressTracker[table.resourceType].passStepCount = 0;
+          this.progressTracker[table.resourceType].message = "";
+          this.progressTracker[table.resourceType].passStep.forEach((passStep : any)=>{
+            passStep.hasPassed = false;
+          })
+        }
+      }
+    });
   }
 
 }
