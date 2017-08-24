@@ -14,6 +14,7 @@
         <p >Innovation in every dimension</p>
       </ion-col>
     </ion-row>
+
     <div *ngIf="isLoginProcessActive">
       <ion-list *ngIf="loggedInInInstance != ''">
         <ion-item (tap)="cancelLoginProcess()">
@@ -29,7 +30,7 @@
       <page-progress-bar [progress] = "progress"></page-progress-bar>
       <br>
       <ion-list>
-        <ion-item >
+        <ion-item>
           <div style="text-align: center" item-left >
             <div *ngIf="progressTracker.communication.passStepCount == progressTracker.communication.count">
               <ion-icon name="done-all" color="favorite"></ion-icon>
@@ -50,6 +51,52 @@
           </span>
           <div style="text-align: center" item-right >
             {{ progressTracker.communication.passStepCount}}/{{ progressTracker.communication.count}}
+          </div>
+        </ion-item>
+        <ion-item>
+          <div style="text-align: center" item-left >
+            <div *ngIf="progressTracker.entryForm.passStepCount == progressTracker.entryForm.count">
+              <ion-icon name="done-all" color="favorite"></ion-icon>
+            </div>
+            <div *ngIf="currentResourceType == 'entryForm'">
+              <div *ngIf="progressTracker.entryForm.passStepCount != progressTracker.entryForm.count">
+                <page-loading loadingSize="small"></page-loading>
+              </div>
+            </div>
+          </div>
+          <span ion-text [color]="(currentResourceType == 'entryForm')?'current' : 'font-color'" >
+            <span *ngIf="progressTracker.entryForm.message != '' ">
+              {{ progressTracker.entryForm.message }}
+            </span>
+            <span *ngIf="progressTracker.entryForm.message == '' ">
+              Aggregate metadata
+            </span>
+          </span>
+          <div style="text-align: center" item-right >
+            {{ progressTracker.entryForm.passStepCount}}/{{ progressTracker.entryForm.count}}
+          </div>
+        </ion-item>
+        <ion-item>
+          <div style="text-align: center" item-left >
+            <div *ngIf="progressTracker.report.passStepCount == progressTracker.report.count">
+              <ion-icon name="done-all" color="favorite"></ion-icon>
+            </div>
+            <div *ngIf="currentResourceType == 'report'">
+              <div *ngIf="progressTracker.report.passStepCount != progressTracker.report.count">
+                <page-loading loadingSize="small"></page-loading>
+              </div>
+            </div>
+          </div>
+          <span ion-text [color]="(currentResourceType == 'report')?'current' : 'font-color'" >
+            <span *ngIf="progressTracker.report.message != '' ">
+              {{ progressTracker.report.message }}
+            </span>
+            <span *ngIf="progressTracker.report.message == '' ">
+               Report metadata
+            </span>
+          </span>
+          <div style="text-align: center" item-right >
+            {{ progressTracker.report.passStepCount}}/{{ progressTracker.report.count}}
           </div>
         </ion-item>
       </ion-list>

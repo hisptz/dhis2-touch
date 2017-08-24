@@ -6,6 +6,10 @@ import {UserProvider} from "../../providers/user/user";
 import {TabsPage} from "../tabs/tabs";
 import {SqlLiteProvider} from "../../providers/sql-lite/sql-lite";
 import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
+import {IndicatorsProvider} from "../../providers/indicators/indicators";
+import {SmsCommandProvider} from "../../providers/sms-command/sms-command";
+import {DataElementsProvider} from "../../providers/data-elements/data-elements";
+import {SectionsProvider} from "../../providers/sections/sections";
 
 /**
  * Generated class for the LoginPage page.
@@ -36,6 +40,9 @@ export class LoginPage implements OnInit{
               private AppProvider : AppProvider,
               private sqlLite : SqlLiteProvider,
               private organisationUnitsProvider : OrganisationUnitsProvider,
+              private indicatorsProvider : IndicatorsProvider, private smsCommandProvider : SmsCommandProvider,
+              private dataElementsProvider : DataElementsProvider,
+              private sectionsProvider : SectionsProvider,
               private HttpClientProvider : HttpClientProvider,
               ) {
 
@@ -196,6 +203,36 @@ export class LoginPage implements OnInit{
           this.AppProvider.setNormalNotification('Fail to load organisation data.');
         });
       }
+
+    }
+  }
+
+  downlaodingDataSets(){
+    if(this.isLoginProcessActive){
+
+    }
+  }
+
+  downlaodingSections(){
+    if(this.isLoginProcessActive){
+
+    }
+  }
+
+  downlaodingDataElements(){
+    if(this.isLoginProcessActive){
+
+    }
+  }
+
+  downlaodingSmsCommands(){
+    if(this.isLoginProcessActive){
+
+    }
+  }
+
+  downlaodingIndicators(){
+    if(this.isLoginProcessActive){
 
     }
   }
