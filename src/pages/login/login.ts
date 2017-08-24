@@ -178,11 +178,12 @@ export class LoginPage implements OnInit{
           orgUnitIds.push(organisationUnit.id);
         }
       });
+
       this.currentUser["userOrgUnitIds"] = orgUnitIds;
       if(this.completedTrackedProcess.indexOf(resource) > -1){
         this.progressTracker[this.currentResourceType].message = "Assigned organisation unit(s) have been loaded";
         this.updateProgressTracker(resource);
-        this.setLandingPage(this.currentUser);
+        //this.setLandingPage(this.currentUser);
       }else{
         this.organisationUnitsProvider.downloadingOrganisationUnitsFromServer(orgUnitIds,this.currentUser).then((orgUnits:any)=>{
           if(this.isLoginProcessActive){
@@ -190,7 +191,8 @@ export class LoginPage implements OnInit{
             this.organisationUnitsProvider.savingOrganisationUnitsFromServer(orgUnits,this.currentUser).then(()=>{
               this.progressTracker[this.currentResourceType].message = "Assigned organisation unit(s) have been saved";
               this.updateProgressTracker(resource);
-              this.setLandingPage(this.currentUser);
+              this.downlaodingIndicators();
+              //this.setLandingPage(this.currentUser);
             },error=>{
               this.isLoginProcessActive = false;
               console.log(JSON.stringify(error));
@@ -233,7 +235,40 @@ export class LoginPage implements OnInit{
 
   downlaodingIndicators(){
     if(this.isLoginProcessActive){
+      let resource = 'indicators';
+      this.currentResourceType = "report";
+      this.progressTracker[this.currentResourceType].message = "Loading available indicators ";
+      let indicatorIds = [];
 
+
+      this.currentUser["userIndicatorIds"] = indicatorIds;
+      if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.progressTracker[this.currentResourceType].message = "Assigned Indicator forms have been loaded";
+        this.updateProgressTracker(resource);
+        this.setLandingPage(this.currentUser);
+      }else{
+        this.indicatorsProvider.downloadingIndicatorsFromServer(this.currentUser).then((indicators:any)=>{
+          if(this.isLoginProcessActive){
+            this.progressTracker[this.currentResourceType].message = "Saving assigned indicator(s)";
+            this.indicatorsProvider.savingIndicatorsFromServer(indicators,this.currentUser).then(()=>{
+              this.progressTracker[this.currentResourceType].message = "Assigned indicators(s) have been saved";
+              this.updateProgressTracker(resource);
+              this.setLandingPage(this.currentUser);
+
+            },error=>{
+              this.isLoginProcessActive = false;
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification('Fail to save indicator data.');
+            });
+          }
+        },error=>{
+          this.isLoginProcessActive = false;
+          console.log(JSON.stringify(error));
+          this.AppProvider.setNormalNotification('Fail to load indicator data.');
+        });
+
+        this.updateProgressTracker(resource);
+      }
     }
   }
 
