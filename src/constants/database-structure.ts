@@ -32,7 +32,7 @@ export const DATABASE_STRUCTURE = {
     resourceType: "entryForm",
     batchSize : 20
   },
-  dataSetElement: {
+  dataSetElements: {
     columns: [
       {value: 'id', type: 'TEXT'},
       {value: 'dataSetId', type: 'TEXT'},
