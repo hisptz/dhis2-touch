@@ -57,6 +57,7 @@ import { SmsCommandProvider } from '../providers/sms-command/sms-command';
 import { IndicatorsProvider } from '../providers/indicators/indicators';
 import {SyncModule} from "../components/sync.module";
 import { SyncProvider } from '../providers/sync/sync';
+import { StandardReportProvider } from '../providers/standard-report/standard-report';
 
 @NgModule({
   declarations: [
@@ -112,6 +113,7 @@ import { SyncProvider } from '../providers/sync/sync';
     SmsCommandProvider,
     IndicatorsProvider,
     SyncProvider,
+    StandardReportProvider,
   ]
 })
 export class AppModule {}
