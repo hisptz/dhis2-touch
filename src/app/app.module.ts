@@ -55,6 +55,8 @@ import { SectionsProvider } from '../providers/sections/sections';
 import { DataElementsProvider } from '../providers/data-elements/data-elements';
 import { SmsCommandProvider } from '../providers/sms-command/sms-command';
 import { IndicatorsProvider } from '../providers/indicators/indicators';
+import {SyncModule} from "../components/sync.module";
+import { SyncProvider } from '../providers/sync/sync';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,7 @@ import { IndicatorsProvider } from '../providers/indicators/indicators';
   ],
   imports: [
     BrowserModule,
-    SharedModule,DashboardModule,
+    SharedModule,DashboardModule,SyncModule,
     HttpModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot()
@@ -109,6 +111,7 @@ import { IndicatorsProvider } from '../providers/indicators/indicators';
     DataElementsProvider,
     SmsCommandProvider,
     IndicatorsProvider,
+    SyncProvider,
   ]
 })
 export class AppModule {}

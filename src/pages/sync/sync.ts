@@ -1,5 +1,6 @@
 import { Component,OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {SyncProvider} from "../../providers/sync/sync";
 
 /**
  * Generated class for the SyncPage page.
@@ -18,12 +19,12 @@ export class SyncPage implements OnInit{
   isSyncContentOpen : any;
   syncContents : Array<any>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private syncProvider : SyncProvider) {
   }
 
   ngOnInit(){
     this.isSyncContentOpen = {};
-    this.syncContents = this.getSyncContentDetails();
+    this.syncContents = this.syncProvider.getSyncContentDetails();
     if(this.syncContents.length > 0){
       this.toggleSyncContents(this.syncContents[0]);
     }
@@ -44,16 +45,6 @@ export class SyncPage implements OnInit{
 
   }
 
-  getSyncContentDetails(){
-    let syncContents = [
-      {id : 'dataViaSms',name : 'Upload data via sms',icon: 'assets/sync-icons/sms.png'},
-      {id : 'dataViaInternet',name : 'Upload data via internet',icon: 'assets/sync-icons/internet.png'},
-      {id : 'downloadMetadata',name : 'Download metadata',icon: 'assets/sync-icons/download-metadata.png'},
-      {id : 'downloadData',name : 'Download data',icon: 'assets/sync-icons/download-data.png'},
-      {id : 'clearData',name : 'Clear local data',icon: 'assets/sync-icons/clear-data.png'},
-      {id : 'clearMetadata',name : 'Clear local metadata',icon: 'assets/sync-icons/clear-metadata.png'},
-    ];
-    return syncContents;
-  }
+
 
 }

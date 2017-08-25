@@ -33,11 +33,30 @@
       </ion-row>
       <div *ngIf="(isSyncContentOpen[syncContent.id])" >
         <hr>
-        <ion-row>
-          <ion-col>
-            {{ syncContent.name }}'s contents are here<br>Coming soon!!!
-          </ion-col>
-        </ion-row>
+        <div *ngIf="syncContent.id == 'dataViaSms'" >
+          dataViaSms
+        </div>
+
+        <div *ngIf="syncContent.id == 'dataViaInternet'" >
+          dataViaInternet
+        </div>
+
+        <div *ngIf="syncContent.id == 'downloadMetadata'" >
+
+        </div>
+
+        <div *ngIf="syncContent.id == 'downloadData'" >
+
+        </div>
+
+        <div *ngIf="syncContent.id == 'clearData'" >
+          <clear-local-data ></clear-local-data>
+        </div>
+
+        <div *ngIf="syncContent.id == 'clearMetadata'" >
+          clearMetadata
+        </div>
+
       </div>
     </div>
   </ion-grid>
