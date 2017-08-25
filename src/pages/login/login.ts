@@ -470,7 +470,17 @@ export class LoginPage implements OnInit{
   };
 
   resetPassSteps(){
+    let noEmptyStep;
+    this.progressTracker.communication.passStep.forEach((step : any)=>{
+      if(step.name == "organisationUnits"){
+        step.hasBeenPassed = false;
+        noEmptyStep = step;
+      }
+    });
     this.progressTracker.communication.passStep = [];
+    if(noEmptyStep){
+      this.progressTracker.communication.passStep.push(noEmptyStep);
+    }
     this.progressTracker.communication.passStepCount = 0;
     let dataBaseStructure =  this.sqlLite.getDataBaseStructure();
     Object.keys(dataBaseStructure).forEach(key=>{
@@ -480,7 +490,7 @@ export class LoginPage implements OnInit{
           this.progressTracker[table.resourceType].passStepCount = 0;
           this.progressTracker[table.resourceType].message = "";
           this.progressTracker[table.resourceType].passStep.forEach((passStep : any)=>{
-            passStep.hasPassed = false;
+            passStep.hasBeenPassed = false;
           })
         }
       }
