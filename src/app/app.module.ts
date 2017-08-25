@@ -58,6 +58,7 @@ import { IndicatorsProvider } from '../providers/indicators/indicators';
 import {SyncModule} from "../components/sync.module";
 import { SyncProvider } from '../providers/sync/sync';
 import { StandardReportProvider } from '../providers/standard-report/standard-report';
+import {DataEntryModule} from "../components/data.entry.module";
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { StandardReportProvider } from '../providers/standard-report/standard-re
   imports: [
     BrowserModule,
     SharedModule,DashboardModule,SyncModule,
+    DataEntryModule,
     HttpModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot()
