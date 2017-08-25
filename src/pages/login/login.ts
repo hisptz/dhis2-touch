@@ -10,6 +10,8 @@ import {IndicatorsProvider} from "../../providers/indicators/indicators";
 import {SmsCommandProvider} from "../../providers/sms-command/sms-command";
 import {DataElementsProvider} from "../../providers/data-elements/data-elements";
 import {SectionsProvider} from "../../providers/sections/sections";
+import {DataSetsProvider} from "../../providers/data-sets/data-sets";
+import {error} from "util";
 
 /**
  * Generated class for the LoginPage page.
@@ -43,6 +45,7 @@ export class LoginPage implements OnInit{
               private indicatorsProvider : IndicatorsProvider, private smsCommandProvider : SmsCommandProvider,
               private dataElementsProvider : DataElementsProvider,
               private sectionsProvider : SectionsProvider,
+              private dataSetsProvider : DataSetsProvider,
               private HttpClientProvider : HttpClientProvider,
               ) {
 
@@ -178,11 +181,12 @@ export class LoginPage implements OnInit{
           orgUnitIds.push(organisationUnit.id);
         }
       });
+
       this.currentUser["userOrgUnitIds"] = orgUnitIds;
       if(this.completedTrackedProcess.indexOf(resource) > -1){
         this.progressTracker[this.currentResourceType].message = "Assigned organisation unit(s) have been loaded";
         this.updateProgressTracker(resource);
-        this.setLandingPage(this.currentUser);
+        this.downloadingDataSets();
       }else{
         this.organisationUnitsProvider.downloadingOrganisationUnitsFromServer(orgUnitIds,this.currentUser).then((orgUnits:any)=>{
           if(this.isLoginProcessActive){
@@ -190,7 +194,7 @@ export class LoginPage implements OnInit{
             this.organisationUnitsProvider.savingOrganisationUnitsFromServer(orgUnits,this.currentUser).then(()=>{
               this.progressTracker[this.currentResourceType].message = "Assigned organisation unit(s) have been saved";
               this.updateProgressTracker(resource);
-              this.setLandingPage(this.currentUser);
+              this.downloadingDataSets();
             },error=>{
               this.isLoginProcessActive = false;
               console.log(JSON.stringify(error));
@@ -207,33 +211,162 @@ export class LoginPage implements OnInit{
     }
   }
 
-  downlaodingDataSets(){
+  downloadingDataSets(){
     if(this.isLoginProcessActive){
-
+      let resource = 'dataSets';
+      this.currentResourceType = "entryForm";
+      this.progressTracker[this.currentResourceType].message = "Loading entry forms";
+      if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.progressTracker[this.currentResourceType].message = "Entry forms have been loaded";
+        this.updateProgressTracker(resource);
+        this.downloadingSections();
+      }else{
+        this.dataSetsProvider.downloadDataSetsFromServer(this.currentUser).then((dataSets: any)=>{
+          if(this.isLoginProcessActive){
+            this.progressTracker[this.currentResourceType].message = "Saving entry forms";
+            this.dataSetsProvider.saveDataSetsFromServer(dataSets,this.currentUser).then(()=>{
+              this.progressTracker[this.currentResourceType].message = "Entry forms have been saved";
+              this.updateProgressTracker(resource);
+              this.downloadingSections();
+            },error=>{
+              this.isLoginProcessActive = false;
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification('Fail to s ave entry form.');
+            });
+          }
+        },error=>{
+          this.isLoginProcessActive = false;
+          console.log(JSON.stringify(error));
+          this.AppProvider.setNormalNotification('Fail to load entry form.');
+        });
+      }
     }
   }
 
-  downlaodingSections(){
+  downloadingSections(){
     if(this.isLoginProcessActive){
-
+      let resource = "sections";
+      this.currentResourceType = "entryForm";
+      this.progressTracker[this.currentResourceType].message = "Loading entry form's sections";
+      if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.progressTracker[this.currentResourceType].message = "Entry form's sections have been loaded";
+        this.updateProgressTracker(resource);
+        this.downloadingDataElements();
+      }else{
+        this.sectionsProvider.downloadSectionsFromServer(this.currentUser).then((response : any)=>{
+          if(this.isLoginProcessActive){
+            this.progressTracker[this.currentResourceType].message = "Saving entry form's sections";
+            this.sectionsProvider.saveSectionsFromServer(response[resource],this.currentUser).then(()=>{
+              this.progressTracker[this.currentResourceType].message = "Entry form's sections have been saved";
+              this.updateProgressTracker(resource);
+              this.downloadingDataElements();
+            },error=>{
+              this.isLoginProcessActive = false;
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification("Fail to save entry form's sections.");
+            });
+          }
+        },error=>{
+          this.isLoginProcessActive = false;
+          console.log(JSON.stringify(error));
+          this.AppProvider.setNormalNotification("Fail to load entry form's sections.");
+        });
+      }
     }
   }
 
-  downlaodingDataElements(){
+  downloadingDataElements(){
     if(this.isLoginProcessActive){
-
+      let resource = "sections";
+      this.currentResourceType = "entryForm";
+      this.progressTracker[this.currentResourceType].message = "Loading data elements";
+      if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.progressTracker[this.currentResourceType].message = "Data elements have been loaded";
+        this.updateProgressTracker(resource);
+        this.downloadingSmsCommands();
+      }else{
+        this.dataElementsProvider.downloadDataElementsFromServer(this.currentUser).then((response : any)=>{
+          if(this.isLoginProcessActive){
+            this.progressTracker[this.currentResourceType].message = "Saving data elements";
+            this.dataElementsProvider.saveDataElementsFromServer(response[resource],this.currentUser).then(()=>{
+              this.progressTracker[this.currentResourceType].message = "Data elements have been saved";
+              this.updateProgressTracker(resource);
+              this.downloadingSmsCommands();
+            },error=>{
+              this.isLoginProcessActive = false;
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification("Fail to save data elements.");
+            });
+          }
+        },error=>{
+          this.isLoginProcessActive = false;
+          console.log(JSON.stringify(error));
+          this.AppProvider.setNormalNotification("Fail to load data elements.");
+        });
+      }
     }
   }
 
-  downlaodingSmsCommands(){
+  downloadingSmsCommands(){
     if(this.isLoginProcessActive){
-
+      let resource = "sections";
+      this.currentResourceType = "entryForm";
+      this.progressTracker[this.currentResourceType].message = "Loading SMS configurations";
+      if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.progressTracker[this.currentResourceType].message = "SMS configurations have been loaded";
+        this.updateProgressTracker(resource);
+        this.downloadingIndicators();
+      }else{
+        this.smsCommandProvider.getSmsCommandFromServer(this.currentUser).then((smsCommands : any)=>{
+          if(this.isLoginProcessActive){
+            this.smsCommandProvider.savingSmsCommand(smsCommands,this.currentUser.currentDatabase).then(()=>{
+              this.progressTracker[this.currentResourceType].message = "SMS configurations have been saved";
+              this.updateProgressTracker(resource);
+              this.downloadingIndicators();
+            },error=>{
+              this.isLoginProcessActive = false;
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification("Fail to save SMS configurations.");
+            });
+          }
+        },error=>{
+          this.isLoginProcessActive = false;
+          console.log(JSON.stringify(error));
+          this.AppProvider.setNormalNotification("Fail to load SMS configurations.");
+        });
+      }
     }
   }
 
-  downlaodingIndicators(){
+  downloadingIndicators(){
     if(this.isLoginProcessActive){
-
+      let resource = 'indicators';
+      this.currentResourceType = "report";
+      this.progressTracker[this.currentResourceType].message = "Loading indicators";
+      if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.progressTracker[this.currentResourceType].message = "Indicators have been loaded";
+        this.updateProgressTracker(resource);
+        this.setLandingPage(this.currentUser);
+      }else{
+        this.indicatorsProvider.downloadingIndicatorsFromServer(this.currentUser).then((response:any)=>{
+          if(this.isLoginProcessActive){
+            this.progressTracker[this.currentResourceType].message = "Saving indicators";
+            this.indicatorsProvider.savingIndicatorsFromServer(response[resource],this.currentUser).then(()=>{
+              this.progressTracker[this.currentResourceType].message = "Indicators have been saved";
+              this.updateProgressTracker(resource);
+              this.setLandingPage(this.currentUser);
+            },error=>{
+              this.isLoginProcessActive = false;
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification('Fail to save indicators.');
+            });
+          }
+        },error=>{
+          this.isLoginProcessActive = false;
+          console.log(JSON.stringify(error));
+          this.AppProvider.setNormalNotification('Fail to load indicators.');
+        });
+      }
     }
   }
 
@@ -281,7 +414,15 @@ export class LoginPage implements OnInit{
   }
 
   updateProgressTracker(resourceName){
+    let dataBaseStructure =  this.sqlLite.getDataBaseStructure();
     let resourceType = "communication";
+    if(dataBaseStructure[resourceName]){
+      let table = dataBaseStructure[resourceName];
+      if(table.isMetadata && table.resourceType){
+        resourceType = table.resourceType
+      }
+    }
+
     if(this.progressTracker[resourceType].passStep.length == this.progressTracker[resourceType].count){
       this.progressTracker[resourceType].passStep.forEach((passStep:any)=>{
         if(passStep.name == resourceName && passStep.hasBeenDownloaded){

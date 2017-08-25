@@ -17,6 +17,32 @@ export class DataElementsProvider {
     this.resource = "dataElements";
   }
 
+  downloadDataElementsFromServer(currentUser){
+    let fields= "id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]";
+    let url = "/api/25/"+this.resource+".json?paging=false&fields=" + fields;
+    return new Promise((resolve, reject)=> {
+      this.HttpClient.get(url,currentUser).then((response : any)=>{
+        response = JSON.parse(response.data);
+        resolve(response);
+      },error=>{
+        reject(error);
+      });
+    });
+  }
 
+  saveDataElementsFromServer(dataElements,currentUser){
+    return new Promise((resolve, reject)=> {
+      if(dataElements.length == 0){
+        resolve();
+      }else{
+        this.SqlLite.insertBulkDataOnTable(this.resource,dataElements,currentUser.currentDatabase).then(()=>{
+          resolve();
+        },error=>{
+          console.log(JSON.stringify(error));
+          reject(error);
+        });
+      }
+    });
+  }
 
 }
