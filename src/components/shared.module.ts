@@ -4,12 +4,13 @@ import { ProgressBarPage } from './progress-bar/progress-bar';
 import { LoadingPage } from './loading/loading';
 import {EmptyListNotificationComponent} from "./empty-list-notification/empty-list-notification";
 import {NotificationComponent} from "./notification/notification";
+import {HelpContentsComponent} from "./help-contents/help-contents";
 
 @NgModule({
   declarations: [
     LoadingPage,
     ProgressBarPage,NotificationComponent,
-    EmptyListNotificationComponent
+    EmptyListNotificationComponent,HelpContentsComponent
   ],
   imports: [
     IonicModule
@@ -17,7 +18,7 @@ import {NotificationComponent} from "./notification/notification";
   exports: [
     LoadingPage,
     ProgressBarPage,NotificationComponent,
-    EmptyListNotificationComponent
+    EmptyListNotificationComponent,HelpContentsComponent,
   ]
 })
 
