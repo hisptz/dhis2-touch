@@ -1,5 +1,5 @@
 import { Component,OnInit } from '@angular/core';
-import { IonicPage, NavController,MenuController } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import {UserProvider} from "../../providers/user/user";
 import {NetworkAvailabilityProvider} from "../../providers/network-availability/network-availability";
@@ -22,7 +22,6 @@ export class LauncherPage implements OnInit{
   logoUrl : string;
 
   constructor(private navCtrl: NavController,
-              private menu : MenuController,
               private UserProvider : UserProvider,
               private DashboardServiceProvider : DashboardServiceProvider,
               private NetworkAvailabilityProvider : NetworkAvailabilityProvider,
@@ -32,7 +31,6 @@ export class LauncherPage implements OnInit{
   ngOnInit(){
     this.logoUrl = 'assets/img/logo.png';
     this.backgroundMode.enable();
-    this.menu.enable(false);
     this.NetworkAvailabilityProvider.setNetworkStatusDetection();
     this.DashboardServiceProvider.resetDashboards();
     this.UserProvider.getCurrentUser().then((user : any)=>{

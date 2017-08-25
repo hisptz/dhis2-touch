@@ -14,5 +14,30 @@
 
 
 <ion-content >
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openOrganisationUnitTree()" >
+          <img  class="side-menu-icon" [src]="icons.orgUnit"/>&nbsp;&nbsp;
+          {{ organisationUnitLabel }}
+        </div>
+
+        <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openEntryFormList()" >
+          <img  class="side-menu-icon" [src]="icons.dataSet"/>&nbsp;&nbsp;
+          {{ dataSetLabel }}
+        </div>
+
+        <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openPeriodList()" >
+          <img  class="side-menu-icon" [src]="icons.period"/>&nbsp;&nbsp;
+          {{ periodLabel }}
+        </div>
+
+      </ion-col>
+    </ion-row>
+
+
+  </ion-grid>
+
+
 
 </ion-content>
