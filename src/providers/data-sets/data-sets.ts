@@ -59,6 +59,13 @@ export class DataSetsProvider {
     return this.lastSelectedDataSetPeriod;
   }
 
+  /**
+   *
+   * @param orgUnitId
+   * @param dataSetIds
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   getAssignedDataSets(orgUnitId,dataSetIds,currentUser){
     let attributeKey = "id";
     let attributeArray = [];
@@ -96,6 +103,37 @@ export class DataSetsProvider {
         },error=>{reject(error)})
       },error=>{reject(error)});
     });
+  }
+
+  getDataSetCategoryComboCategories(selectedOrgUnitId,categories){
+    let categoryComboCategories = [];
+    categories.forEach((category : any)=>{
+      let categoryOptions = [];
+      category.categoryOptions.forEach((categoryOption : any)=>{
+        if(this.isOrganisationUnitAllowed(selectedOrgUnitId,categoryOption)){
+          categoryOptions.push({
+            id : categoryOption.id,name : categoryOption.name
+          })
+        }
+      });
+      categoryComboCategories.push({
+        id : category.id,name : category.name ,categoryOptions : categoryOptions
+      })
+    });
+    return categoryComboCategories;
+  }
+
+  isOrganisationUnitAllowed(selectedOrgUnitId,categoryOption){
+    let result = true;
+    if(categoryOption.organisationUnits && categoryOption.organisationUnits.length > 0){
+      result = false;
+      categoryOption.organisationUnits.forEach((organisationUnit : any)=>{
+        if(selectedOrgUnitId == organisationUnit.id){
+          result = true;
+        }
+      });
+    }
+    return result;
   }
 
 

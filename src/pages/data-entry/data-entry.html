@@ -32,8 +32,17 @@
           {{ periodLabel }}
         </div>
 
+        <div *ngIf="selectedPeriod && selectedPeriod.iso">
+          <div *ngIf="selectedDataSet.categoryCombo.name != 'default'">
+            {{ dataSetCategoryCombo |json }}
+          </div>
+
+        </div>
+
       </ion-col>
     </ion-row>
+
+
   </ion-grid>
 
 

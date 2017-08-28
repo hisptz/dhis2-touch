@@ -27,6 +27,7 @@ export class DataEntryPage implements OnInit{
 
   isLoading : boolean;
   loadingMessage : string;
+  isFormReady : boolean;
 
   organisationUnitLabel : string;
   dataSetLabel : string;
@@ -34,6 +35,8 @@ export class DataEntryPage implements OnInit{
 
   dataSetIdsByUserRoles : Array<any>;
   dataSets : Array<any>;
+
+  dataSetCategoryCombo : any;
 
   currentPeriodOffset : number;
 
@@ -98,7 +101,7 @@ export class DataEntryPage implements OnInit{
     }else{
       this.periodLabel = "Touch to select period"
     }
-
+    this.isFormReady = this.isAllFormParameterSelected();
     this.isLoading = false;
     this.loadingMessage = "";
   }
@@ -119,12 +122,16 @@ export class DataEntryPage implements OnInit{
     this.dataSetProvider.getAssignedDataSets(this.selectedOrgUnit.id,this.dataSetIdsByUserRoles,this.currentUser).then((dataSets: any)=>{
       this.dataSets = dataSets;
       this.selectedDataSet = this.dataSetProvider.lastSelectedDataSet;
+      this.currentPeriodOffset = 0;
       this.updateDataEntryFormSelections();
       this.loadPeriodSelection();
+      this.updateDataSetCategoryCombo(this.selectedDataSet.categoryCombo);
     },error=>{
       this.appProvider.setNormalNotification("Fail to reload entry form");
     });
   }
+
+
 
   openEntryFormList(){
     if(this.dataSets && this.dataSets.length > 0){
@@ -135,6 +142,7 @@ export class DataEntryPage implements OnInit{
           this.currentPeriodOffset = 0;
           this.updateDataEntryFormSelections();
           this.loadPeriodSelection();
+          this.updateDataSetCategoryCombo(this.selectedDataSet.categoryCombo);
         }
       });
       modal.present();
@@ -174,6 +182,27 @@ export class DataEntryPage implements OnInit{
     }else{
       this.appProvider.setNormalNotification("Please select entry form first");
     }
+  }
+
+  updateDataSetCategoryCombo(categoryCombo){
+    let dataSetCategoryCombo  = {};
+    if(categoryCombo.name != 'default'){
+      //categoryCombo.categories
+      dataSetCategoryCombo['id'] = categoryCombo.id;
+      dataSetCategoryCombo['name'] = categoryCombo.name;
+      dataSetCategoryCombo['categories'] = this.dataSetProvider.getDataSetCategoryComboCategories(this.selectedOrgUnit.id,this.selectedDataSet.categoryCombo.categories);
+    }
+    this.dataSetCategoryCombo = dataSetCategoryCombo;
+  }
+
+  isAllFormParameterSelected(){
+    let isFormReady = false;
+    if(this.selectedPeriod && this.selectedPeriod.name && this.selectedDataSet && this.selectedDataSet.categoryCombo.name != 'default'){
+      console.log("In on check for form ready based on category")
+    }else{
+      isFormReady = true;
+    }
+    return isFormReady;
   }
 
 }
