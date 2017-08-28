@@ -17,18 +17,26 @@ export class OrganisationUnitTreeComponent implements OnInit {
   @Input() currentUser;
   @Input() organisationUnit;
   @Input() hasOrgUnitChildrenOpened;
-  @Input() hasOrgUnitChildrenLoaded;
   @Input() currentSelectedOrgUnitName;
   @Output() selectedOrganisationUnit = new EventEmitter();
 
   isOrganisationUnitsFetched : boolean = true;
   hasErrorOccurred : boolean = false;
+  hasOrgUnitChildrenLoaded : boolean;
 
   constructor(private organisationUnitProvider : OrganisationUnitsProvider,private appProvider : AppProvider) {
   }
 
   ngOnInit(){
-
+    let lastSelectedOrgUnit = this.organisationUnitProvider.lastSelectedOrgUnit;
+    let parentCopy = lastSelectedOrgUnit.path.substring(1, lastSelectedOrgUnit.path.length).split("/");
+    if(parentCopy.indexOf(this.organisationUnit.id) > -1){
+      lastSelectedOrgUnit.ancestors.forEach((ancestor: any)=>{
+        if(ancestor.id == this.organisationUnit.id){
+          this.toggleOrganisationUnit(ancestor);
+        }
+      });
+    }
   }
 
   toggleOrganisationUnit(organisationUnit){

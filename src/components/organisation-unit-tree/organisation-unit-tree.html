@@ -8,6 +8,7 @@
 
 </ion-item>
 <div *ngIf="hasOrgUnitChildrenOpened[organisationUnit.id]" style="padding-left: 10px">
+
   <div *ngIf="!(isOrganisationUnitsFetched && hasOrgUnitChildrenLoaded)">
     <ion-item>
       <div style="text-align: center" item-left>
@@ -26,13 +27,21 @@
   </div>
 
   <div *ngIf="isOrganisationUnitsFetched && hasOrgUnitChildrenLoaded && !hasErrorOccurred">
-    <div *ngFor="let organisationUnit of organisationUnit.children">
-      <organisation-unit-tree [organisationUnit]="organisationUnit"
-                                    [currentSelectedOrgUnitName]="currentSelectedOrgUnitName"
-                                    [hasOrgUnitChildrenLoaded]="hasOrgUnitChildrenLoaded"
-                                    [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened"
-                                    (selectedOrganisationUnit)="setSelectedOrganisationUnit($event)"
-                                    [currentUser]="currentUser"></organisation-unit-tree>
+    <div *ngFor="let child of organisationUnit.children">
+      <organisation-unit-tree [organisationUnit]="child"
+                              [currentSelectedOrgUnitName]="currentSelectedOrgUnitName"
+                              [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened"
+                              (selectedOrganisationUnit)="setSelectedOrganisationUnit($event)"
+                              [currentUser]="currentUser"></organisation-unit-tree>
+
     </div>
   </div>
+
+
+
+
+
+
+
+
 </div>

@@ -55,7 +55,7 @@ export class OrganisationUnitsProvider {
     return new Promise((resolve, reject)=> {
       let counts = 0;
       for(let orgUnitId of orgUnitIds){
-        let fields ="fields=id,name,path,ancestors[id,name],dataSets,programs,openingDate,closedDate,level,children[id,name,children[id]],parent";
+        let fields ="fields=id,name,path,ancestors[id,name,children[id]],openingDate,closedDate,level,children[id,name,children[id],parent";
         let filter="filter=path:ilike:";
         let url = "/api/25/"+this.resource+".json?paging=false&";
         url += fields + "&" + filter + orgUnitId;
@@ -113,6 +113,26 @@ export class OrganisationUnitsProvider {
     this.lastSelectedOrgUnit = lastSelectedOrgUnit;
   }
 
+  /**
+   *
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getLastSelectedOrganisationUnitUnit(currentUser){
+    return new Promise((resolve, reject)=> {
+      if(this.lastSelectedOrgUnit){
+        resolve(this.lastSelectedOrgUnit);
+      }else{
+        this.getOrganisationUnits(currentUser).then((organisationUnits : any)=>{
+          if(organisationUnits && organisationUnits.length > 0){
+            this.lastSelectedOrgUnit = organisationUnits[0];
+            resolve(organisationUnits[0]);
+          }
+        },error=>{reject(error)})
+      }
+    });
+  }
+
 
   /**
    * get user assigned organisation unit
@@ -152,37 +172,7 @@ export class OrganisationUnitsProvider {
         this.sqlLite.getDataFromTableByAttributes(this.resource,"id",organisationUnitIds,currentUser.currentDatabase).then((organisationUnits : any)=>{
           this.getSortedOrganisationUnits(organisationUnits).then((organisationUnits:any)=>{
             if(organisationUnits && organisationUnits.length > 0) {
-              if (organisationUnits[0].children && organisationUnits[0].children.length > 0 && organisationUnits[0].children[0].children) {
-                resolve(organisationUnits);
-              } else {
-                //support for old tree
-                let orgUnitIds = [];
-                for (let organisationUnit of organisationUnits) {
-                  if (organisationUnit && organisationUnit.children) {
-                    for (let child of organisationUnit.children) {
-                      orgUnitIds.push(child.id);
-                    }
-                  }
-                }
-                this.getOrganisationUnitsByIds(orgUnitIds, currentUser).then((childrenOrganisationUnits:any)=> {
-                  let childrenOrganisationUnitsMapper = {};
-                  for (let childrenOrganisationUnit of childrenOrganisationUnits) {
-                    childrenOrganisationUnitsMapper[childrenOrganisationUnit.id] = childrenOrganisationUnit;
-                  }
-                  organisationUnits.forEach((organisationUnit:any)=> {
-                    if (organisationUnit && organisationUnit.children) {
-                      organisationUnit.children.forEach((child:any)=> {
-                        if (childrenOrganisationUnitsMapper[child.id]) {
-                          child = childrenOrganisationUnitsMapper[child.id];
-                        }
-                      })
-                    }
-                  });
-                  resolve(organisationUnits);
-                }, error=> {
-                  reject(error);
-                });
-              }
+              resolve(organisationUnits);
             }
           });
         },error=>{
@@ -194,9 +184,16 @@ export class OrganisationUnitsProvider {
     });
   }
 
+  /**
+   *
+   * @param parentIds
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   getOrganisationUnitsByLevels(parentIds,currentUser){
     let organisationUnitIdToOrganisationUnits = {};
     return new Promise((resolve, reject) =>{
+
       this.getOrganisationUnitsByIds(parentIds,currentUser).then((organisationUnits : any)=>{
         for(let organisationUnit of organisationUnits){
           organisationUnitIdToOrganisationUnits[organisationUnit.id] = organisationUnit;
@@ -205,7 +202,6 @@ export class OrganisationUnitsProvider {
         let orgUnitTree = organisationUnitIdToOrganisationUnits[parentId];
         this.recursiveFetch(parentIds,organisationUnitIdToOrganisationUnits,orgUnitTree);
         resolve(orgUnitTree);
-
       },error=>{
         reject();
       });

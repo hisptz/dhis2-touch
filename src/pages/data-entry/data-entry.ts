@@ -38,7 +38,6 @@ export class DataEntryPage implements OnInit{
   }
 
   ngOnInit(){
-
     this.icons.orgUnit = "assets/data-entry/orgUnit.png";
     this.icons.dataSet = "assets/data-entry/form.png";
     this.icons.period = "assets/data-entry/period.png";
@@ -47,6 +46,10 @@ export class DataEntryPage implements OnInit{
     this.isLoading = true;
     this.userProvider.getCurrentUser().then(currentUser=>{
       this.currentUser = currentUser;
+      this.organisationUnitsProvider.getLastSelectedOrganisationUnitUnit(currentUser).then((lastSelectedOrgunit)=>{
+        this.selectedOrgUnit = lastSelectedOrgunit;
+        this.updateDataEntryFormSelections();
+      });
       this.updateDataEntryFormSelections();
     },error=>{
       this.isLoading = false;
