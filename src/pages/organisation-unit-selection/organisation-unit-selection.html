@@ -22,5 +22,22 @@
 
 <ion-content padding>
 
+  <div *ngIf="isLoading">
+
+  </div>
+  <div *ngIf="!isLoading">
+    <div *ngFor="let organisationUnit of organisationUnits">
+      <organisation-unit-tree [organisationUnit]="organisationUnit"
+                                    [currentSelectedOrgUnitName]="lastSelectedOrgUnit.name"
+                                    [hasOrgUnitChildrenLoaded]="hasOrgUnitChildrenLoaded"
+                                    [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened"
+                                    (selectedOrganisationUnit)="setSelectedOrganisationUnit($event)"
+                                    [currentUser]="currentUser"></organisation-unit-tree>
+    </div>
+    <div *ngIf="organisationUnits.length > 0 && emptyMessage !=''">
+      <empty-list-notification [emptyListMessage]="emptyMessage" ></empty-list-notification>
+    </div>
+  </div>
+
 
 </ion-content>

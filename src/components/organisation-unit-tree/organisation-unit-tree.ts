@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component,Input,Output, EventEmitter,OnInit } from '@angular/core';
+import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
+import {AppProvider} from "../../providers/app/app";
 
 /**
  * Generated class for the OrganisationUnitTreeComponent component.
@@ -10,13 +12,62 @@ import { Component } from '@angular/core';
   selector: 'organisation-unit-tree',
   templateUrl: 'organisation-unit-tree.html'
 })
-export class OrganisationUnitTreeComponent {
+export class OrganisationUnitTreeComponent implements OnInit {
 
-  text: string;
+  @Input() currentUser;
+  @Input() organisationUnit;
+  @Input() hasOrgUnitChildrenOpened;
+  @Input() hasOrgUnitChildrenLoaded;
+  @Input() currentSelectedOrgUnitName;
+  @Output() selectedOrganisationUnit = new EventEmitter();
 
-  constructor() {
-    console.log('Hello OrganisationUnitTreeComponent Component');
-    this.text = 'Hello World';
+  isOrganisationUnitsFetched : boolean = true;
+  hasErrorOccurred : boolean = false;
+
+  constructor(private organisationUnitProvider : OrganisationUnitsProvider,private appProvider : AppProvider) {
+  }
+
+  ngOnInit(){}
+
+  toggleOrganisationUnit(organisationUnit){
+    if (this.hasOrgUnitChildrenOpened[organisationUnit.id]) {
+      this.hasOrgUnitChildrenOpened[organisationUnit.id] = !this.hasOrgUnitChildrenOpened[organisationUnit.id];
+    }else if(Object.keys(this.hasOrgUnitChildrenOpened).indexOf(organisationUnit.id) > -1){
+      this.hasOrgUnitChildrenOpened[organisationUnit.id] = !this.hasOrgUnitChildrenOpened[organisationUnit.id];
+      this.isOrganisationUnitsFetched = true;
+      this.hasOrgUnitChildrenLoaded = true;
+      this.hasErrorOccurred = false;
+    }else{
+      this.isOrganisationUnitsFetched = false;
+      this.hasOrgUnitChildrenLoaded = false;
+      this.hasOrgUnitChildrenOpened[organisationUnit.id] = true;
+      let childrenOrganisationUnitIds = this.getOrganisationUnitsChildrenIds(organisationUnit);
+      this.organisationUnitProvider.getOrganisationUnitsByIds(childrenOrganisationUnitIds,this.currentUser).then((childrenOrganisationUnits:any)=>{
+        this.organisationUnit.children = childrenOrganisationUnits;
+        this.isOrganisationUnitsFetched = true;
+        this.hasOrgUnitChildrenLoaded = true;
+        this.hasErrorOccurred = false;
+      },error=>{
+        console.log(JSON.stringify(error));
+        let message = "Fail to load organisation unit children for " + organisationUnit.name;
+        this.appProvider.setNormalNotification(message);
+        this.isOrganisationUnitsFetched = true;
+        this.hasOrgUnitChildrenLoaded = true;
+        this.hasErrorOccurred = true;
+      });
+    }
+  }
+
+  setSelectedOrganisationUnit(selectedOrganisationUnit){
+    this.selectedOrganisationUnit.emit(selectedOrganisationUnit)
+  }
+
+  getOrganisationUnitsChildrenIds(organisationUnit){
+    let childrenIds = [];
+    for(let children of organisationUnit.children){
+      childrenIds.push(children.id);
+    }
+    return childrenIds;
   }
 
 }

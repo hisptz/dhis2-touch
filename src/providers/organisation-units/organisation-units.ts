@@ -127,13 +127,7 @@ export class OrganisationUnitsProvider {
         if( userOrgUnitIds && userOrgUnitIds.length > 0){
           this.sqlLite.getDataFromTableByAttributes(this.resource,"id",userOrgUnitIds,currentUser.currentDatabase).then((organisationUnits : any)=>{
             this.getSortedOrganisationUnits(organisationUnits).then((organisationUnits:any)=>{
-              if(organisationUnits.length > 0){
-                this.organisationUnits = organisationUnits;
-                this.setLastSelectedOrganisationUnitUnit(organisationUnits[0]);
-                resolve({organisationUnits : organisationUnits,lastSelectedOrgUnit : organisationUnits[0]})
-              }else{
-                resolve({organisationUnits : [],lastSelectedOrgUnit : {}})
-              }
+              resolve(organisationUnits);
             });
           },error=>{
             console.log(error);

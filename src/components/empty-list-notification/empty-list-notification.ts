@@ -18,7 +18,7 @@ export class EmptyListNotificationComponent {
   imageUrl : string;
 
   constructor(ResourceProvider : ResourceProvider) {
-    this.imageUrl = ResourceProvider.getEmptyListNotificatioIcon();
+    this.imageUrl = ResourceProvider.getEmptyListNotificationIcon();
   }
 
 }
