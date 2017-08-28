@@ -19,8 +19,32 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col >
+        <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="changePeriodSelection(currentPeriodOffset - 1)" >
+          Previous
+        </div>
+      </ion-col>
+      <ion-col >
+        <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="changePeriodSelection(currentPeriodOffset + 1)" >
+          Previous
+        </div>
+      </ion-col>
+    </ion-row>
 
-  {{ periods |json }}
+    <ion-row>
+      <ion-col >
+        <ion-item *ngFor="let period of periods" (tap)="setSelectedPeriod(period)">
+          <img  class="side-menu-icon" [src]="icon"/>&nbsp;
+          <span >{{ period.name }}</span>
+        </ion-item>
+        <ion-item *ngIf = "periods.length == 0">
+          There is no period to select
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>

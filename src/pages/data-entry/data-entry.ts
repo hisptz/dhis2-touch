@@ -146,10 +146,11 @@ export class DataEntryPage implements OnInit{
   loadPeriodSelection(){
     let periodType = this.selectedDataSet.periodType;
     let openFuturePeriods = parseInt(this.selectedDataSet.openFuturePeriods);
-
     let periods = this.periodSelection.getPeriods(periodType,openFuturePeriods,this.currentPeriodOffset);
     if(periods && periods.length > 0){
       this.selectedPeriod = periods[0];
+    }else{
+      this.selectedPeriod = {};
     }
     this.updateDataEntryFormSelections();
   }
@@ -159,9 +160,16 @@ export class DataEntryPage implements OnInit{
       let modal = this.modalCtrl.create('PeriodSelectionPage', {
         periodType: this.selectedDataSet.periodType,
         currentPeriodOffset : this.currentPeriodOffset,
-        openFuturePeriods: this.selectedDataSet.openFuturePeriods
+        openFuturePeriods: this.selectedDataSet.openFuturePeriods,
+        currentPeriod : this.selectedPeriod
       });
-      modal.onDidDismiss((selectedOrgUnit : any)=>{});
+      modal.onDidDismiss((data : any)=>{
+        if(data && data.selectedPeriod ){
+          this.selectedPeriod = data.selectedPeriod;
+          this.currentPeriodOffset = data.currentPeriodOffset;
+          this.updateDataEntryFormSelections();
+        }
+      });
       modal.present();
     }else{
       this.appProvider.setNormalNotification("Please select entry form first");
