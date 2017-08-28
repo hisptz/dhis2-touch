@@ -1,8 +1,9 @@
 import { Component,OnInit } from '@angular/core';
-import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, ModalController, NavController} from 'ionic-angular';
 import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
 import {UserProvider} from "../../providers/user/user";
 import {AppProvider} from "../../providers/app/app";
+import {DataSetsProvider} from "../../providers/data-sets/data-sets";
 
 /**
  * Generated class for the DataEntryPage page.
@@ -30,10 +31,14 @@ export class DataEntryPage implements OnInit{
   dataSetLabel : string;
   periodLabel : string;
 
+  dataSetIdsByUserRoles : Array<any>;
+  dataSets : Array<any>;
+
   icons : any = {};
 
   constructor(private navCtrl: NavController,private modalCtrl : ModalController,
               private userProvider : UserProvider,private appProvider : AppProvider,
+              private dataSetProvider : DataSetsProvider,
               private organisationUnitsProvider : OrganisationUnitsProvider) {
   }
 
@@ -44,13 +49,24 @@ export class DataEntryPage implements OnInit{
 
     this.loadingMessage = "Loading user information";
     this.isLoading = true;
-    this.userProvider.getCurrentUser().then(currentUser=>{
+    this.userProvider.getCurrentUser().then((currentUser: any)=>{
       this.currentUser = currentUser;
-      this.organisationUnitsProvider.getLastSelectedOrganisationUnitUnit(currentUser).then((lastSelectedOrgunit)=>{
-        this.selectedOrgUnit = lastSelectedOrgunit;
+      this.userProvider.getUserData().then((userData : any)=>{
+        this.dataSetIdsByUserRoles = [];
+        userData.userRoles.forEach((userRole:any)=>{
+          if (userRole.dataSets) {
+            userRole.dataSets.forEach((dataSet:any)=>{
+              this.dataSetIdsByUserRoles.push(dataSet.id);
+            });
+          }
+        });
+        this.organisationUnitsProvider.getLastSelectedOrganisationUnitUnit(currentUser).then((lastSelectedOrgunit)=>{
+          this.selectedOrgUnit = lastSelectedOrgunit;
+          this.updateDataEntryFormSelections();
+          this.loadingEntryForm();
+        });
         this.updateDataEntryFormSelections();
       });
-      this.updateDataEntryFormSelections();
     },error=>{
       this.isLoading = false;
       this.loadingMessage = "";
@@ -66,7 +82,6 @@ export class DataEntryPage implements OnInit{
     }else{
       this.organisationUnitLabel = "Touch to select organisation Unit";
     }
-
     if(this.selectedDataSet && this.selectedDataSet.name){
       this.dataSetLabel = this.selectedDataSet.name;
     }else {
@@ -89,15 +104,40 @@ export class DataEntryPage implements OnInit{
       if(selectedOrgUnit && selectedOrgUnit.id){
         this.selectedOrgUnit = selectedOrgUnit;
         this.updateDataEntryFormSelections();
+        this.loadingEntryForm();
       }
     });
     modal.present();
   }
 
+  loadingEntryForm(){
+    this.dataSetProvider.getAssignedDataSets(this.selectedOrgUnit.id,this.dataSetIdsByUserRoles,this.currentUser).then((dataSets: any)=>{
+      this.dataSets = dataSets;
+      this.selectedDataSet = this.dataSetProvider.lastSelectedDataSet;
+      this.updateDataEntryFormSelections();
+    },error=>{
+      this.appProvider.setNormalNotification("Fail to reload entry form");
+    });
+  }
+
   openEntryFormList(){
-    let modal = this.modalCtrl.create('DataSetSelectionPage',{});
-    modal.onDidDismiss((selectedOrgUnit : any)=>{});
-    modal.present();
+    if(this.dataSets && this.dataSets.length > 0){
+      let modal = this.modalCtrl.create('DataSetSelectionPage',{dataSetsList : this.dataSets,currentDataSet :this.selectedDataSet.name  });
+      modal.onDidDismiss((selectedDataSet : any)=>{
+        if(selectedDataSet && selectedDataSet.id && selectedDataSet.id != this.selectedDataSet.id){
+          this.selectedDataSet = selectedDataSet;
+          this.updateDataEntryFormSelections();
+          this.loadPeriodSelection();
+        }
+      });
+      modal.present();
+    }else{
+      this.appProvider.setNormalNotification("There are no entry form to select on " + this.selectedOrgUnit.name );
+    }
+  }
+
+  loadPeriodSelection(){
+    console.log("Loading period selection");
   }
 
   openPeriodList(){
