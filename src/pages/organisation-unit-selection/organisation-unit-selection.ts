@@ -67,18 +67,19 @@ export class OrganisationUnitSelectionPage implements OnInit{
         if( level > 1 && parents.length > 0){
           this.organisationUnitProvider.getOrganisationUnitsByLevels(parents,this.currentUser).then((organisationUnitResponse :any)=>{
             if(organisationUnitResponse && organisationUnitResponse.id){
-              this.organisationUnits.forEach((organisationUnit:any)=>{
-                organisationUnit.children.forEach((childOrgUnit)=>{
-                  if(childOrgUnit.id == organisationUnitResponse.id){
-                    childOrgUnit = organisationUnitResponse;
-                    for(let ancestor of this.lastSelectedOrgUnit.ancestors){
-                      this.hasOrgUnitChildrenOpened[ancestor.id] = true;
-                    }
-                    this.hasOrgUnitChildrenLoaded = true;
-                    this.isLoading = false;
-                  }
-                });
-              });
+              console.log(organisationUnitResponse.name);
+              // this.organisationUnits.forEach((organisationUnit:any)=>{
+              //   organisationUnit.children.forEach((childOrgUnit)=>{
+              //     if(childOrgUnit.id == organisationUnitResponse.id){
+              //       childOrgUnit = organisationUnitResponse;
+              //       for(let ancestor of this.lastSelectedOrgUnit.ancestors){
+              //         this.hasOrgUnitChildrenOpened[ancestor.id] = true;
+              //       }
+              //       this.hasOrgUnitChildrenLoaded = true;
+              //       this.isLoading = false;
+              //     }
+              //   });
+              // });
             }
           },error=>{
             console.log(JSON.stringify(error));
@@ -104,7 +105,8 @@ export class OrganisationUnitSelectionPage implements OnInit{
   }
 
   setSelectedOrganisationUnit(selectedOrganisationUnit){
-    console.log(selectedOrganisationUnit.name);
+    this.organisationUnitProvider.setLastSelectedOrganisationUnitUnit(selectedOrganisationUnit);
+    this.viewCtrl.dismiss(selectedOrganisationUnit);
   }
 
   dismiss(){

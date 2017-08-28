@@ -27,7 +27,9 @@ export class OrganisationUnitTreeComponent implements OnInit {
   constructor(private organisationUnitProvider : OrganisationUnitsProvider,private appProvider : AppProvider) {
   }
 
-  ngOnInit(){}
+  ngOnInit(){
+
+  }
 
   toggleOrganisationUnit(organisationUnit){
     if (this.hasOrgUnitChildrenOpened[organisationUnit.id]) {

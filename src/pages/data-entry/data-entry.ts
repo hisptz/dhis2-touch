@@ -82,7 +82,12 @@ export class DataEntryPage implements OnInit{
 
   openOrganisationUnitTree(){
     let modal = this.modalCtrl.create('OrganisationUnitSelectionPage',{});
-    modal.onDidDismiss((selectedOrgUnit : any)=>{});
+    modal.onDidDismiss((selectedOrgUnit : any)=>{
+      if(selectedOrgUnit && selectedOrgUnit.id){
+        this.selectedOrgUnit = selectedOrgUnit;
+        this.updateDataEntryFormSelections();
+      }
+    });
     modal.present();
   }
 
