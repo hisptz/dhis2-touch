@@ -3,6 +3,9 @@ import { AppVersion } from '@ionic-native/app-version';
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import { ToastController} from 'ionic-angular';
+import {SqlLiteProvider} from "../sql-lite/sql-lite";
+import {HttpClientProvider} from "../http-client/http-client";
+import {Http} from "@angular/http";
 
 /*
   Generated class for the AppProvider provider.
@@ -15,7 +18,8 @@ export class AppProvider {
 
 
 
-  constructor(private  appVersion: AppVersion,private toastController : ToastController) {
+  constructor(private  appVersion: AppVersion,private toastController : ToastController, private httpClient: HttpClientProvider,
+              public sqLite: SqlLiteProvider, public http: Http) {
   }
 
   /**
@@ -128,4 +132,78 @@ export class AppProvider {
     }
     return formattedBaseUrl
   }
+
+
+  /**
+   *
+   * @param resource
+   * @param resourceValues
+   * @param databaseName
+   * @returns {Promise<T>}
+   */
+  saveMetadata(resource,resourceValues,databaseName){
+
+    return new Promise((resolve, reject)=> {
+      if(resourceValues.length == 0){
+        resolve();
+      }else{
+        this.sqLite.insertBulkDataOnTable(resource,resourceValues,databaseName).then(()=>{
+          resolve();
+        },error=>{
+          console.log(JSON.stringify(error));
+          reject(error);
+        });
+      }
+    });
+  }
+
+  /**
+   *
+   * @param user
+   * @param resource
+   * @param resourceId
+   * @param fields
+   * @param filter
+   * @returns {Promise<T>}
+   */
+  downloadMetadata(user,resource, resourceId, fields, filter){
+
+    let resourceUrl = this.getResourceUrl(resource, resourceId, fields, filter);
+    return new Promise((resolve, reject)=> {
+      this.http.get(resourceUrl,user).subscribe(response=>{
+        response = response.json();
+        resolve(response);
+      },error=>{
+        reject(error);
+      });
+    });
+  }
+
+
+
+  /**
+   *
+   * @param resource
+   * @param resourceId
+   * @param fields
+   * @param filter
+   * @returns {string}
+   */
+  getResourceUrl(resource, resourceId, fields, filter){
+    let url = '/api/25/' + resource;
+    if (resourceId || resourceId != null) {
+      url += "/" + resourceId + ".json?paging=false";
+    } else {
+      url += ".json?paging=false";
+    }
+    if (fields || fields != null) {
+      url += '&fields=' + fields;
+    }
+    if (filter || filter != null) {
+      url += '&filter=' + filter;
+    }
+    return url;
+  }
+
+
 }
