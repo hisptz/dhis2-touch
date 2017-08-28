@@ -4,6 +4,7 @@ import {OrganisationUnitsProvider} from "../../providers/organisation-units/orga
 import {UserProvider} from "../../providers/user/user";
 import {AppProvider} from "../../providers/app/app";
 import {DataSetsProvider} from "../../providers/data-sets/data-sets";
+import {PeriodSelectionProvider} from "../../providers/period-selection/period-selection";
 
 /**
  * Generated class for the DataEntryPage page.
@@ -34,11 +35,13 @@ export class DataEntryPage implements OnInit{
   dataSetIdsByUserRoles : Array<any>;
   dataSets : Array<any>;
 
+  currentPeriodOffset : number;
+
   icons : any = {};
 
   constructor(private navCtrl: NavController,private modalCtrl : ModalController,
               private userProvider : UserProvider,private appProvider : AppProvider,
-              private dataSetProvider : DataSetsProvider,
+              private dataSetProvider : DataSetsProvider,private periodSelection : PeriodSelectionProvider,
               private organisationUnitsProvider : OrganisationUnitsProvider) {
   }
 
@@ -49,6 +52,8 @@ export class DataEntryPage implements OnInit{
 
     this.loadingMessage = "Loading user information";
     this.isLoading = true;
+    this.currentPeriodOffset = 0;
+
     this.userProvider.getCurrentUser().then((currentUser: any)=>{
       this.currentUser = currentUser;
       this.userProvider.getUserData().then((userData : any)=>{
@@ -115,6 +120,7 @@ export class DataEntryPage implements OnInit{
       this.dataSets = dataSets;
       this.selectedDataSet = this.dataSetProvider.lastSelectedDataSet;
       this.updateDataEntryFormSelections();
+      this.loadPeriodSelection();
     },error=>{
       this.appProvider.setNormalNotification("Fail to reload entry form");
     });
@@ -126,6 +132,7 @@ export class DataEntryPage implements OnInit{
       modal.onDidDismiss((selectedDataSet : any)=>{
         if(selectedDataSet && selectedDataSet.id && selectedDataSet.id != this.selectedDataSet.id){
           this.selectedDataSet = selectedDataSet;
+          this.currentPeriodOffset = 0;
           this.updateDataEntryFormSelections();
           this.loadPeriodSelection();
         }
@@ -137,13 +144,28 @@ export class DataEntryPage implements OnInit{
   }
 
   loadPeriodSelection(){
-    console.log("Loading period selection");
+    let periodType = this.selectedDataSet.periodType;
+    let openFuturePeriods = parseInt(this.selectedDataSet.openFuturePeriods);
+
+    let periods = this.periodSelection.getPeriods(periodType,openFuturePeriods,this.currentPeriodOffset);
+    if(periods && periods.length > 0){
+      this.selectedPeriod = periods[0];
+    }
+    this.updateDataEntryFormSelections();
   }
 
   openPeriodList(){
-    let modal = this.modalCtrl.create('PeriodSelectionPage',{});
-    modal.onDidDismiss((selectedOrgUnit : any)=>{});
-    modal.present();
+    if(this.selectedDataSet && this.selectedDataSet.id){
+      let modal = this.modalCtrl.create('PeriodSelectionPage', {
+        periodType: this.selectedDataSet.periodType,
+        currentPeriodOffset : this.currentPeriodOffset,
+        openFuturePeriods: this.selectedDataSet.openFuturePeriods
+      });
+      modal.onDidDismiss((selectedOrgUnit : any)=>{});
+      modal.present();
+    }else{
+      this.appProvider.setNormalNotification("Please select entry form first");
+    }
   }
 
 }
