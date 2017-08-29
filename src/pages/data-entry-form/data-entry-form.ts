@@ -15,11 +15,13 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class DataEntryFormPage implements OnInit{
 
+  parameter : any
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ngOnInit(){
-    console.log(this.navParams.get("data"));
+    this.parameter = this.navParams.get("parameter");
   }
 
 }

@@ -215,7 +215,26 @@ export class DataEntryPage implements OnInit{
   }
 
   openDataEntryForm(){
-    this.navCtrl.push('DataEntryFormPage',{data : "chingalo"});
+    let parameter = {
+      orgUnit : {id : this.selectedOrgUnit.id,name : this.selectedOrgUnit.name},
+      dataSet : {id : this.selectedDataSet.id,name : this.selectedDataSet.name},
+      period : {iso : this.selectedPeriod.iso, name : this.selectedPeriod.name },
+      dataDimension : (this.selectedDataSet.categoryCombo.name != 'default')? this.getDataDimensions() : {}
+    };
+    this.navCtrl.push('DataEntryFormPage',{parameter : parameter});
+  }
+
+  getDataDimensions(){
+    let cc = this.selectedDataSet.categoryCombo.id;
+    let cp = "";
+    this.selectedDataDimension.forEach((dimension : any,index:any)=>{
+      if(index == 0){
+        cp +=dimension.id;
+      }else{
+        cp += ";" + dimension.id;
+      }
+    });
+    return {cc : cc,cp:cp};
   }
 
   isAllFormParameterSelected(){
