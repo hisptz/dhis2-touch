@@ -105,6 +105,12 @@ export class DataSetsProvider {
     });
   }
 
+  /**
+   *
+   * @param selectedOrgUnitId
+   * @param categories
+   * @returns {Array}
+   */
   getDataSetCategoryComboCategories(selectedOrgUnitId,categories){
     let categoryComboCategories = [];
     categories.forEach((category : any)=>{
@@ -123,6 +129,12 @@ export class DataSetsProvider {
     return categoryComboCategories;
   }
 
+  /**
+   *
+   * @param selectedOrgUnitId
+   * @param categoryOption
+   * @returns {boolean}
+   */
   isOrganisationUnitAllowed(selectedOrgUnitId,categoryOption){
     let result = true;
     if(categoryOption.organisationUnits && categoryOption.organisationUnits.length > 0){
@@ -136,6 +148,72 @@ export class DataSetsProvider {
     return result;
   }
 
+  /**
+   *
+   * @param dataSetId
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getDataSetById(dataSetId,currentUser){
+    let attributeKey = "id";
+    let attributeArray = [dataSetId];
+    return new Promise((resolve, reject)=> {
+      this.SqlLite.getDataFromTableByAttributes(this.resource,attributeKey,attributeArray,currentUser.currentDatabase).then((dataSets : any)=>{
+        if(dataSets && dataSets.length > 0){
+          resolve(dataSets[0])
+        }else{
+          reject();
+        }
+      },error=>{reject(error)})
+    });
+
+  }
+
+  /**
+   *
+   * @param dataSetId
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getDataSetSectionsIds(dataSetId,currentUser){
+    let resource = "dataSetSections";
+    let attributeKey = "dataSetId";
+    let attributeArray = [dataSetId];
+    let sectionIds = [];
+    return new Promise((resolve, reject)=> {
+      this.SqlLite.getDataFromTableByAttributes(resource,attributeKey,attributeArray,currentUser.currentDatabase).then((dataSetsSections : any)=>{
+        if(dataSetsSections && dataSetsSections.length > 0){
+          dataSetsSections.forEach((dataSetsSection : any)=>{
+            sectionIds.push(dataSetsSection.sectionId);
+          });
+        }
+        resolve(sectionIds);
+      },error=>{reject(error)})
+    });
+  }
+
+  /**
+   *
+   * @param dataSetId
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getDataSetIndicatorIds(dataSetId,currentUser){
+    let resource = "dataSetIndicators";
+    let attributeKey = "dataSetId";
+    let attributeArray = [dataSetId];
+    let indicatorIds = [];
+    return new Promise((resolve, reject)=> {
+      this.SqlLite.getDataFromTableByAttributes(resource,attributeKey,attributeArray,currentUser.currentDatabase).then((dataSetsIndicatorIds : any)=>{
+        if(dataSetsIndicatorIds && dataSetsIndicatorIds.length > 0){
+          dataSetsIndicatorIds.forEach((dataSetsSection : any)=>{
+            indicatorIds.push(dataSetsSection.indicatorId);
+          });
+        }
+        resolve(indicatorIds);
+      },error=>{reject(error)})
+    });
+  }
 
 
   /**

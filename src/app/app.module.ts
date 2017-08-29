@@ -60,6 +60,7 @@ import { SyncProvider } from '../providers/sync/sync';
 import { StandardReportProvider } from '../providers/standard-report/standard-report';
 import {DataEntryModule} from "../components/data.entry.module";
 import { PeriodSelectionProvider } from '../providers/period-selection/period-selection';
+import { DataEntryFormProvider } from '../providers/data-entry-form/data-entry-form';
 
 @NgModule({
   declarations: [
@@ -118,6 +119,7 @@ import { PeriodSelectionProvider } from '../providers/period-selection/period-se
     SyncProvider,
     StandardReportProvider,
     PeriodSelectionProvider,
+    DataEntryFormProvider,
   ]
 })
 export class AppModule {}

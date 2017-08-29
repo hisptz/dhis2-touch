@@ -13,8 +13,30 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content >
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div *ngIf="entryFormParameter" class="item-card" full (tap)="navCtrl.pop()">
+          <div><b>Organisation Unit</b> : {{ entryFormParameter.orgUnit.name }}<br>
+            <b>Form</b> : {{ entryFormParameter.dataSet.name }}<br>
+            <b>Period</b> : {{ entryFormParameter.period.name }}
+          </div>
+        </div>
+        <div *ngIf="isLoading">
+          <page-loading [loadingMessage]="loadingMessage" [loadingSize]="'large'" ></page-loading>
+        </div>
+        <div *ngIf="!isLoading">
+          indicatorIds :: {{ indicatorIds |json }}<br>
+          dataSet :: {{ dataSet |json }}<br>
+          sectionIds :: {{ sectionIds |json }}<br>
+        </div>
 
-  {{ parameter|json }}
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
 
 </ion-content>
