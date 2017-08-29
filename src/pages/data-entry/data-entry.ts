@@ -48,6 +48,7 @@ export class DataEntryPage implements OnInit{
     this.icons.orgUnit = "assets/data-entry/orgUnit.png";
     this.icons.dataSet = "assets/data-entry/form.png";
     this.icons.period = "assets/data-entry/period.png";
+    this.icons.goToDataEntryForm = "assets/data-entry/enterDataPen.png";
 
     this.loadingMessage = "Loading user information";
     this.isLoading = true;
@@ -181,19 +182,24 @@ export class DataEntryPage implements OnInit{
   }
 
   openDataDimensionSelection(category){
-    let currentIndex = this.dataSetCategoryCombo.categories.indexOf(category);
-    let modal = this.modalCtrl.create('DataDimensionSelectionPage', {
-      categoryOptions : category.categoryOptions,
-      title : category.name + "'s selection",
-      currentSelection : (this.selectedDataDimension[currentIndex]) ? this.selectedDataDimension[currentIndex]: {}
-    });
-    modal.onDidDismiss((selectedDataDimension : any)=>{
-      if(selectedDataDimension && selectedDataDimension.id ){
-        this.selectedDataDimension[currentIndex] = selectedDataDimension;
-        this.updateDataEntryFormSelections();
-      }
-    });
-    modal.present();
+    if(category.categoryOptions && category.categoryOptions && category.categoryOptions.length > 0){
+      let currentIndex = this.dataSetCategoryCombo.categories.indexOf(category);
+      let modal = this.modalCtrl.create('DataDimensionSelectionPage', {
+        categoryOptions : category.categoryOptions,
+        title : category.name + "'s selection",
+        currentSelection : (this.selectedDataDimension[currentIndex]) ? this.selectedDataDimension[currentIndex]: {}
+      });
+      modal.onDidDismiss((selectedDataDimension : any)=>{
+        if(selectedDataDimension && selectedDataDimension.id ){
+          this.selectedDataDimension[currentIndex] = selectedDataDimension;
+          this.updateDataEntryFormSelections();
+        }
+      });
+      modal.present();
+    }else{
+      let message = "There is no option for " + category.name + " that associated with " + this.selectedOrgUnit.name;
+      this.appProvider.setNormalNotification(message);
+    }
   }
 
   updateDataSetCategoryCombo(categoryCombo){
@@ -206,6 +212,10 @@ export class DataEntryPage implements OnInit{
     this.selectedDataDimension = [];
     this.dataSetCategoryCombo = dataSetCategoryCombo;
     this.updateDataEntryFormSelections();
+  }
+
+  openDataEntryForm(){
+    this.navCtrl.push('DataEntryFormPage',{data : "chingalo"});
   }
 
   isAllFormParameterSelected(){

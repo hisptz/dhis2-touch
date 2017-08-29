@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { DataEntryPage } from './data-entry';
+import { DataEntryFormPage } from './data-entry-form';
 import {SharedModule} from "../../components/shared.module";
 
 @NgModule({
   declarations: [
-    DataEntryPage,
+    DataEntryFormPage,
   ],
   imports: [
-    IonicPageModule.forChild(DataEntryPage),SharedModule
+    IonicPageModule.forChild(DataEntryFormPage),SharedModule
   ],
 })
-export class DataEntryPageModule {}
+export class DataEntryFormPageModule {}

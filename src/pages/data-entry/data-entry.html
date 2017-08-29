@@ -41,11 +41,16 @@
             </div>
           </div>
         </div>
-
-        <div *ngIf="isFormReady" class="item-card" full >
-          isFormReady :: {{ isFormReady }}
+        <div *ngIf="isFormReady" class="item-card" full (tap)="openDataEntryForm()">
+          <div><b>Organisation Unit</b> : {{ organisationUnitLabel }}<br>
+            <b>Form</b> : {{ dataSetLabel }}<br>
+            <b>Period</b> : {{ periodLabel }}
+          </div>
+          <div class="item-card" color="font-color"  ion-button clear full text-center text-capitalize >
+            <img  class="side-menu-icon" [src]="icons.goToDataEntryForm"/>&nbsp;&nbsp;
+            Enter data
+          </div>
         </div>
-
       </ion-col>
     </ion-row>
 
