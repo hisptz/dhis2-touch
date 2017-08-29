@@ -28,18 +28,14 @@ export class DataEntryPage implements OnInit{
   isLoading : boolean;
   loadingMessage : string;
   isFormReady : boolean;
-
   organisationUnitLabel : string;
   dataSetLabel : string;
   periodLabel : string;
-
   dataSetIdsByUserRoles : Array<any>;
   dataSets : Array<any>;
-
   dataSetCategoryCombo : any;
-
+  selectedDataDimension : Array<any>;
   currentPeriodOffset : number;
-
   icons : any = {};
 
   constructor(private navCtrl: NavController,private modalCtrl : ModalController,
@@ -184,23 +180,36 @@ export class DataEntryPage implements OnInit{
     }
   }
 
+  openDataDimensionSelection(category,currentIndex){
+    let modal = this.modalCtrl.create('DataDimensionSelectionPage', {
+      category : category,
+      currentSelection : (this.selectedDataDimension[currentIndex]) ? this.selectedDataDimension[currentIndex]: {}
+    });
+    modal.onDidDismiss((selectedDataDimension : any)=>{
+      if(selectedDataDimension && selectedDataDimension.id ){
+        this.selectedDataDimension[currentIndex] = selectedDataDimension;
+      }
+    });
+    modal.present();
+  }
+
   updateDataSetCategoryCombo(categoryCombo){
     let dataSetCategoryCombo  = {};
     if(categoryCombo.name != 'default'){
-      //categoryCombo.categories
       dataSetCategoryCombo['id'] = categoryCombo.id;
       dataSetCategoryCombo['name'] = categoryCombo.name;
       dataSetCategoryCombo['categories'] = this.dataSetProvider.getDataSetCategoryComboCategories(this.selectedOrgUnit.id,this.selectedDataSet.categoryCombo.categories);
     }
+    this.selectedDataDimension = [];
     this.dataSetCategoryCombo = dataSetCategoryCombo;
   }
 
   isAllFormParameterSelected(){
-    let isFormReady = false;
+    let isFormReady = true;
     if(this.selectedPeriod && this.selectedPeriod.name && this.selectedDataSet && this.selectedDataSet.categoryCombo.name != 'default'){
-      console.log("In on check for form ready based on category")
-    }else{
-      isFormReady = true;
+
+      console.log("In on check for form ready based on category");
+      isFormReady = false;
     }
     return isFormReady;
   }

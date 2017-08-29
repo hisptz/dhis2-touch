@@ -32,11 +32,31 @@
           {{ periodLabel }}
         </div>
 
-        <div *ngIf="selectedPeriod && selectedPeriod.iso">
-          <div *ngIf="selectedDataSet.categoryCombo.name != 'default'">
-            {{ dataSetCategoryCombo |json }}
+        selectedDataDimension : {{ selectedDataDimension |json }}
+
+        <div *ngIf="selectedPeriod && selectedPeriod.iso && !isFormReady">
+          <div *ngFor="let category of dataSetCategoryCombo.categories;let categoryIndex = index" (tap)="openDataDimensionSelection(category,currentIndex)" class="item-card" color="font-color" full text-center text-wrap text-capitalize  >
+            {{ category.name }} :: {{ categoryIndex }}
+            <div *ngIf="selectedDataDimension[categoryIndex]">
+              {{ selectedDataDimension[categoryIndex] }}
+            </div>
           </div>
 
+          <div *ngFor="let category of selectedDataSet.categoryCombo.categories;let categoryIndex = index ">
+            <ion-item >
+              <ion-label>{{ category.name }}</ion-label>
+              <ion-select [(ngModel)]="selectedDataDimension[categoryIndex]">
+                <ion-option *ngFor="let option of category.categoryOptions" value="{{option.id}}" >
+                  {{ option.name }}
+                </ion-option>
+              </ion-select>
+            </ion-item><br>
+          </div>
+
+        </div>
+
+        <div *ngIf="isFormReady" class="item-card" full >
+          isFormReady :: {{ isFormReady }}
         </div>
 
       </ion-col>
