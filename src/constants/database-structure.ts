@@ -156,6 +156,29 @@ export const DATABASE_STRUCTURE = {
     isMetadata: true,
     batchSize : 500,
     resourceType: "report"
+  },
+  reports: {
+    columns: [
+      {value: 'id', type: 'TEXT'},
+      {value: 'name', type: 'TEXT'},
+      {value: 'created', type: 'TEXT'},
+      {value: 'type', type: 'TEXT'},
+      {value: 'relativePeriods', type: 'LONGTEXT'},
+      {value: 'reportParams', type: 'LONGTEXT'},
+      {value: 'designContent', type: 'LONGTEXT'}
+    ],
+    isMetadata: true,
+    batchSize : 50,
+    resourceType: "report"
+  },
+  constants: {
+    columns: [
+      {value: 'id', type: 'TEXT'},
+      {value: 'name', type: 'TEXT'},
+      {value: 'value', type: 'TEXT'}
+    ],
+    isMetadata: true,
+    batchSize : 500,
+    resourceType: "report"
   }
-
 };

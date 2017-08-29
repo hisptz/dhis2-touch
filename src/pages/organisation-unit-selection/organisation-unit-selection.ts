@@ -1,0 +1,82 @@
+import { Component,OnInit } from '@angular/core';
+import {IonicPage, ViewController} from 'ionic-angular';
+import {OrganisationUnitModel, OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
+import {UserProvider} from "../../providers/user/user";
+import {AppProvider} from "../../providers/app/app";
+
+/**
+ * Generated class for the OrganisationUnitSelectionPage page.
+ *
+ * See http://ionicframework.com/docs/components/#navigation for more info
+ * on Ionic pages and navigation.
+ */
+
+@IonicPage()
+@Component({
+  selector: 'page-organisation-unit-selection',
+  templateUrl: 'organisation-unit-selection.html',
+})
+export class OrganisationUnitSelectionPage implements OnInit{
+
+  loadingMessage : string;
+  isLoading :boolean = false;
+  emptyMessage : string;
+
+  currentUser : any;
+  lastSelectedOrgUnit : OrganisationUnitModel;
+  organisationUnits : OrganisationUnitModel[];
+  hasOrgUnitChildrenLoaded : boolean;
+  hasOrgUnitChildrenOpened:any = {};
+
+  constructor(private viewCtrl : ViewController, private organisationUnitProvider : OrganisationUnitsProvider,
+              private userProvider : UserProvider,private appProvider : AppProvider) {
+  }
+
+  ngOnInit(){
+    this.loadingMessage = "Loading user information";
+    this.emptyMessage = "";
+    this.isLoading = true;
+    this.userProvider.getCurrentUser().then(user=>{
+      this.currentUser = user;
+      this.loadingOrganisationUnits();
+    },error=>{
+      console.log(JSON.stringify(error));
+    })
+  }
+
+  loadingOrganisationUnits(){
+    this.loadingMessage = "Loading organisation units";
+    this.hasOrgUnitChildrenOpened = {};
+    this.organisationUnitProvider.getOrganisationUnits(this.currentUser).then((organisationUnits : any)=>{
+      if(organisationUnits && organisationUnits.length > 0){
+        this.organisationUnits = organisationUnits;
+        if(this.organisationUnitProvider.lastSelectedOrgUnit){
+          this.lastSelectedOrgUnit = this.organisationUnitProvider.lastSelectedOrgUnit;
+        }else{
+          this.lastSelectedOrgUnit = organisationUnits[0];
+          this.organisationUnitProvider.setLastSelectedOrganisationUnitUnit(organisationUnits[0]);
+        }
+        this.isLoading = false;
+      }else{
+        this.isLoading = false;
+        this.emptyMessage = "Current you have yet assigned to any organisation unit";
+        this.appProvider.setNormalNotification(this.emptyMessage);
+      }
+    },error=>{
+      console.log(JSON.stringify(error));
+      this.isLoading = false;
+      this.emptyMessage= "Fail to load organisation unit";
+      this.appProvider.setNormalNotification(this.emptyMessage);
+    });
+  }
+
+  setSelectedOrganisationUnit(selectedOrganisationUnit){
+    this.organisationUnitProvider.setLastSelectedOrganisationUnitUnit(selectedOrganisationUnit);
+    this.viewCtrl.dismiss(selectedOrganisationUnit);
+  }
+
+  dismiss(){
+    this.viewCtrl.dismiss({});
+  }
+
+}

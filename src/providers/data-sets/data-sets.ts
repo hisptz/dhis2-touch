@@ -19,6 +19,9 @@ export class DataSetsProvider {
     this.resource = "dataSets";
   }
 
+  /**
+   *
+   */
   resetDataSets(){
     this.lastSelectedDataSet = null;
     this.lastSelectedDataSetPeriod = null;
@@ -40,13 +43,99 @@ export class DataSetsProvider {
     return this.lastSelectedDataSet;
   }
 
+  /**
+   *
+   * @param period
+   */
   setLastSelectedDataSetPeriod(period){
     this.lastSelectedDataSetPeriod = period;
   }
 
+  /**
+   *
+   * @returns {any}
+   */
   getLastSelectedDataSetPeriod(){
     return this.lastSelectedDataSetPeriod;
   }
+
+  /**
+   *
+   * @param orgUnitId
+   * @param dataSetIds
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getAssignedDataSets(orgUnitId,dataSetIds,currentUser){
+    let attributeKey = "id";
+    let attributeArray = [];
+    return new Promise((resolve, reject)=> {
+      this.getDataSetSource(orgUnitId,currentUser.currentDatabase).then((dataSources : any)=>{
+        if(currentUser.authorities && (currentUser.authorities.indexOf("ALL") > -1)){
+          dataSources.forEach((dataSource : any)=>{
+            attributeArray.push(dataSource.dataSetId);
+          });
+        }else{
+          dataSources.forEach((dataSource : any)=>{
+            if(dataSetIds.indexOf(dataSource.dataSetId) != -1){
+              attributeArray.push(dataSource.dataSetId);
+            }
+          });
+        }
+        this.SqlLite.getDataFromTableByAttributes(this.resource,attributeKey,attributeArray,currentUser.currentDatabase).then((dataSets : any)=>{
+          if(dataSets && dataSets.length > 0){
+            dataSets = this.sortDataSetList(dataSets);
+            let hasSelectedDataSet = false;
+            if(this.lastSelectedDataSet && this.lastSelectedDataSet.id){
+              dataSets.forEach((dataSet : any)=>{
+                if(dataSet.id == this.lastSelectedDataSet.id){
+                  hasSelectedDataSet = true;
+                }
+              });
+            }
+            if(!hasSelectedDataSet){
+              this.setLastSelectedDataSet(dataSets[0]);
+            }
+          }else{
+            this.resetDataSets();
+          }
+          resolve(dataSets);
+        },error=>{reject(error)})
+      },error=>{reject(error)});
+    });
+  }
+
+  getDataSetCategoryComboCategories(selectedOrgUnitId,categories){
+    let categoryComboCategories = [];
+    categories.forEach((category : any)=>{
+      let categoryOptions = [];
+      category.categoryOptions.forEach((categoryOption : any)=>{
+        if(this.isOrganisationUnitAllowed(selectedOrgUnitId,categoryOption)){
+          categoryOptions.push({
+            id : categoryOption.id,name : categoryOption.name
+          })
+        }
+      });
+      categoryComboCategories.push({
+        id : category.id,name : category.name ,categoryOptions : categoryOptions
+      })
+    });
+    return categoryComboCategories;
+  }
+
+  isOrganisationUnitAllowed(selectedOrgUnitId,categoryOption){
+    let result = true;
+    if(categoryOption.organisationUnits && categoryOption.organisationUnits.length > 0){
+      result = false;
+      categoryOption.organisationUnits.forEach((organisationUnit : any)=>{
+        if(selectedOrgUnitId == organisationUnit.id){
+          result = true;
+        }
+      });
+    }
+    return result;
+  }
+
 
 
   /**
@@ -60,7 +149,7 @@ export class DataSetsProvider {
     let userOrgUnitIds = currentUser.userOrgUnitIds;
     return new Promise((resolve, reject)=> {
       for(let userOrgUnitId of userOrgUnitIds){
-        let fields="fields=id,name,timelyDays,formType,compulsoryDataElementOperands[name,dimensionItemType,dimensionItem],version,periodType,openFuturePeriods,expiryDays,dataSetElements[dataElement[id]],dataElements[id],organisationUnits[id],sections[id],indicators[id],categorycombo[id,name,categoryOptionCombos[id,name,categoryOptions[id]],categories[id,name,categoryOptions[id,name]]]";
+        let fields="fields=id,name,timelyDays,formType,compulsoryDataElementOperands[name,dimensionItemType,dimensionItem],version,periodType,openFuturePeriods,expiryDays,dataSetElements[dataElement[id]],dataElements[id],organisationUnits[id],sections[id],indicators[id],categoryCombo[id,name,categories[id,name,categoryOptions[id,name,organisationUnits[id]]]]";
         let filter="filter=organisationUnits.path:ilike:";
         let url = "/api/25/"+this.resource+".json?paging=false&";
         url += fields + "&" + filter + userOrgUnitId;
@@ -194,6 +283,23 @@ export class DataSetsProvider {
 
   /**
    *
+   * @param orgUnitId
+   * @param dataBaseName
+   * @returns {Promise<any>}
+   */
+  getDataSetSource(orgUnitId,dataBaseName){
+    let resource = "dataSetSource";
+    let attributeValue  = [orgUnitId];
+    let attributeKey = "organisationUnitId";
+    return new Promise((resolve, reject)=> {
+      this.SqlLite.getDataFromTableByAttributes(resource,attributeKey,attributeValue,dataBaseName).then((dataSetSource: any)=>{
+        resolve(dataSetSource);
+      },error=>{reject(error)})
+    });
+  }
+
+  /**
+   *
    * @param dataSets
    * @param currentUser
    * @returns {Promise<any>}
@@ -315,5 +421,22 @@ export class DataSetsProvider {
 
   }
 
+  /**
+   * sortDataSetList
+   * @param dataSetList
+   * @returns {any}
+   */
+  sortDataSetList(dataSetList){
+    dataSetList.sort((a, b) => {
+      if (a.name > b.name) {
+        return 1;
+      }
+      if (a.name < b.name) {
+        return -1;
+      }
+      return 0;
+    });
+    return dataSetList;
+  }
 
 }

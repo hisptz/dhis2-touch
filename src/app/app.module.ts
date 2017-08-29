@@ -57,6 +57,9 @@ import { SmsCommandProvider } from '../providers/sms-command/sms-command';
 import { IndicatorsProvider } from '../providers/indicators/indicators';
 import {SyncModule} from "../components/sync.module";
 import { SyncProvider } from '../providers/sync/sync';
+import { StandardReportProvider } from '../providers/standard-report/standard-report';
+import {DataEntryModule} from "../components/data.entry.module";
+import { PeriodSelectionProvider } from '../providers/period-selection/period-selection';
 
 @NgModule({
   declarations: [
@@ -66,6 +69,7 @@ import { SyncProvider } from '../providers/sync/sync';
   imports: [
     BrowserModule,
     SharedModule,DashboardModule,SyncModule,
+    DataEntryModule,
     HttpModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot()
@@ -112,6 +116,8 @@ import { SyncProvider } from '../providers/sync/sync';
     SmsCommandProvider,
     IndicatorsProvider,
     SyncProvider,
+    StandardReportProvider,
+    PeriodSelectionProvider,
   ]
 })
 export class AppModule {}

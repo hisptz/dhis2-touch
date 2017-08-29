@@ -11,7 +11,7 @@ import {SmsCommandProvider} from "../../providers/sms-command/sms-command";
 import {DataElementsProvider} from "../../providers/data-elements/data-elements";
 import {SectionsProvider} from "../../providers/sections/sections";
 import {DataSetsProvider} from "../../providers/data-sets/data-sets";
-import {error} from "util";
+import {StandardReportProvider} from "../../providers/standard-report/standard-report";
 
 /**
  * Generated class for the LoginPage page.
@@ -46,6 +46,7 @@ export class LoginPage implements OnInit{
               private dataElementsProvider : DataElementsProvider,
               private sectionsProvider : SectionsProvider,
               private dataSetsProvider : DataSetsProvider,
+              private standardReports : StandardReportProvider,
               private HttpClientProvider : HttpClientProvider,
               ) {
 
@@ -168,6 +169,10 @@ export class LoginPage implements OnInit{
     }else{
       return response;
     }
+  }
+
+  cancelLoginProcess(){
+    this.isLoginProcessActive = false;
   }
 
   downloadingOrganisationUnits(userData){
@@ -319,6 +324,7 @@ export class LoginPage implements OnInit{
       }else{
         this.smsCommandProvider.getSmsCommandFromServer(this.currentUser).then((smsCommands : any)=>{
           if(this.isLoginProcessActive){
+            this.progressTracker[this.currentResourceType].message = "Saving SMS configurations";
             this.smsCommandProvider.savingSmsCommand(smsCommands,this.currentUser.currentDatabase).then(()=>{
               this.progressTracker[this.currentResourceType].message = "SMS configurations have been saved";
               this.updateProgressTracker(resource);
@@ -346,7 +352,7 @@ export class LoginPage implements OnInit{
       if(this.completedTrackedProcess.indexOf(resource) > -1){
         this.progressTracker[this.currentResourceType].message = "Indicators have been loaded";
         this.updateProgressTracker(resource);
-        this.setLandingPage(this.currentUser);
+        this.downloadingStandardReports();
       }else{
         this.indicatorsProvider.downloadingIndicatorsFromServer(this.currentUser).then((response:any)=>{
           if(this.isLoginProcessActive){
@@ -354,7 +360,7 @@ export class LoginPage implements OnInit{
             this.indicatorsProvider.savingIndicatorsFromServer(response[resource],this.currentUser).then(()=>{
               this.progressTracker[this.currentResourceType].message = "Indicators have been saved";
               this.updateProgressTracker(resource);
-              this.setLandingPage(this.currentUser);
+              this.downloadingStandardReports();
             },error=>{
               this.isLoginProcessActive = false;
               console.log(JSON.stringify(error));
@@ -370,9 +376,70 @@ export class LoginPage implements OnInit{
     }
   }
 
-  cancelLoginProcess(){
-    this.isLoginProcessActive = false;
+  downloadingStandardReports(){
+    if(this.isLoginProcessActive){
+      let resource = "reports";
+      this.currentResourceType = "report";
+      this.progressTracker[this.currentResourceType].message = "Loading reports";
+      if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.progressTracker[this.currentResourceType].message = "Reports have been loaded";
+        this.updateProgressTracker(resource);
+        this.downloadingConstants();
+      }else{
+        this.standardReports.downloadReportsFromServer(this.currentUser).then((reports : any)=>{
+          if(this.isLoginProcessActive){
+            this.progressTracker[this.currentResourceType].message = "Saving reports";
+            this.standardReports.saveReportsFromServer(reports[resource],this.currentUser).then(()=>{
+              this.progressTracker[this.currentResourceType].message = "Reports have been saved";
+              this.updateProgressTracker(resource);
+              this.downloadingConstants();
+            },error=>{
+              this.isLoginProcessActive = false;
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification("Fail to save reports.");
+            });
+          }
+        },error=>{
+          this.isLoginProcessActive = false;
+          console.log(JSON.stringify(error));
+          this.AppProvider.setNormalNotification("Fail to load reports.");
+        });
+      }
+    }
   }
+
+  downloadingConstants(){
+    if(this.isLoginProcessActive){
+      let resource = "reports";
+      this.currentResourceType = "report";
+      this.progressTracker[this.currentResourceType].message = "Loading constants";
+      if(this.completedTrackedProcess.indexOf(resource) > -1){
+        this.progressTracker[this.currentResourceType].message = "Constants have been loaded";
+        this.updateProgressTracker(resource);
+        this.setLandingPage(this.currentUser);
+      }else{
+        this.standardReports.downloadReportsFromServer(this.currentUser).then((reports : any)=>{
+          if(this.isLoginProcessActive){
+            this.progressTracker[this.currentResourceType].message = "Constants constants";
+            this.standardReports.saveReportsFromServer(reports[resource],this.currentUser).then(()=>{
+              this.progressTracker[this.currentResourceType].message = "Constants have been saved";
+              this.updateProgressTracker(resource);
+              this.setLandingPage(this.currentUser);
+            },error=>{
+              this.isLoginProcessActive = false;
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification("Fail to save constants.");
+            });
+          }
+        },error=>{
+          this.isLoginProcessActive = false;
+          console.log(JSON.stringify(error));
+          this.AppProvider.setNormalNotification("Fail to load constants.");
+        });
+      }
+    }
+  }
+
 
   setLandingPage(currentUser){
     currentUser.isLogin = true;
@@ -470,7 +537,17 @@ export class LoginPage implements OnInit{
   };
 
   resetPassSteps(){
+    let noEmptyStep;
+    this.progressTracker.communication.passStep.forEach((step : any)=>{
+      if(step.name == "organisationUnits"){
+        step.hasBeenPassed = false;
+        noEmptyStep = step;
+      }
+    });
     this.progressTracker.communication.passStep = [];
+    if(noEmptyStep){
+      this.progressTracker.communication.passStep.push(noEmptyStep);
+    }
     this.progressTracker.communication.passStepCount = 0;
     let dataBaseStructure =  this.sqlLite.getDataBaseStructure();
     Object.keys(dataBaseStructure).forEach(key=>{
@@ -480,7 +557,7 @@ export class LoginPage implements OnInit{
           this.progressTracker[table.resourceType].passStepCount = 0;
           this.progressTracker[table.resourceType].message = "";
           this.progressTracker[table.resourceType].passStep.forEach((passStep : any)=>{
-            passStep.hasPassed = false;
+            passStep.hasBeenPassed = false;
           })
         }
       }
