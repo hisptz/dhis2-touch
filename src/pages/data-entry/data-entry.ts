@@ -182,7 +182,8 @@ export class DataEntryPage implements OnInit{
 
   openDataDimensionSelection(category,currentIndex){
     let modal = this.modalCtrl.create('DataDimensionSelectionPage', {
-      category : category,
+      categoryOptions : category.categoryOptions,
+      title : category.name + "'s selection",
       currentSelection : (this.selectedDataDimension[currentIndex]) ? this.selectedDataDimension[currentIndex]: {}
     });
     modal.onDidDismiss((selectedDataDimension : any)=>{

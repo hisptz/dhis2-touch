@@ -15,10 +15,11 @@ import {IonicPage, NavParams, ViewController} from 'ionic-angular';
 })
 export class DataDimensionSelectionPage  implements OnInit{
 
-  category : any;
+  categoryOptions : any;
   currentSelection : any;
   icon : string;
   title : string = "Data Dimension selection";
+
 
   constructor(private navParams: NavParams,private  viewCtrl : ViewController) {
   }
@@ -26,17 +27,15 @@ export class DataDimensionSelectionPage  implements OnInit{
   ngOnInit(){
     this.icon = 'assets/data-entry/form.png';
     this.currentSelection = this.navParams.get("currentSelection");
-    this.category = this.navParams.get("category");
-    if(this.category.name){
-      this.title = this.category.name + "'s selection";
-    }
+    this.title = this.navParams.get("title");
+    this.categoryOptions = this.navParams.get("categoryOptions");
   }
 
   getFilteredList(ev: any) {
     let val = ev.target.value;
-    this.category = this.navParams.get('category');
+    this.categoryOptions = this.navParams.get('categoryOptions');
     if(val && val.trim() != ''){
-      this.category.categoryOptions = this.category.categoryOptions.filter((categoryOption:any) => {
+      this.categoryOptions = this.categoryOptions.filter((categoryOption:any) => {
         return (categoryOption.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
       })
     }
