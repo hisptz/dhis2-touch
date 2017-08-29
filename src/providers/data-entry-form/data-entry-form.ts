@@ -38,10 +38,26 @@ export class DataEntryFormProvider {
     });
   }
 
-  getEntryForm(dataSetId,sectionIds){
+  getEntryFormIndicators(indicatorIds,currentUser){
+    return this.indicatorProvider.getIndicatorsByIds(indicatorIds,currentUser);
+  }
+
+  getSectionEntryForm(sectionIds,currentUser){
     return new Promise((resolve, reject)=> {
+      console.log("section form");
       resolve();
     });
   }
+
+  getDefaultEntryForm(dataSetId,currentUser){
+    return new Promise((resolve, reject)=> {
+      console.log("Default form");
+      resolve();
+    });
+  }
+
+
+
+
 
 }

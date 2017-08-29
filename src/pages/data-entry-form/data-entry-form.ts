@@ -24,7 +24,7 @@ export class DataEntryFormPage implements OnInit{
   loadingMessage : string;
   currentUser : any;
 
-  indicatorIds : Array<string>;
+  indicators : Array<any>;
   sectionIds : Array<string>;
   dataSet : any;
 
@@ -53,10 +53,17 @@ export class DataEntryFormPage implements OnInit{
   loadingDataSetInformation(dataSetId){
     this.loadingMessage = "Loading entry form information";
     this.dataEntryFormProvider.loadingDataSetInformation(dataSetId,this.currentUser).then((dataSetInformation : any)=>{
-      this.indicatorIds = dataSetInformation.indicatorIds;
       this.dataSet = dataSetInformation.dataSet;
       this.sectionIds = dataSetInformation.sectionIds;
-      this.loadingEntryForm(this.dataSet,this.sectionIds);
+      this.loadingMessage = "Loading indicators";
+      this.dataEntryFormProvider.getEntryFormIndicators(dataSetInformation.indicatorIds,this.currentUser).then((indicators :any)=>{
+        this.indicators = indicators;
+        this.loadingEntryForm(this.dataSet,this.sectionIds);
+      },error=>{
+        this.isLoading = false;
+        this.loadingMessage = "";
+        this.appProvider.setNormalNotification("Fail to load indicators");
+      });
     },error=>{
       this.isLoading = false;
       this.loadingMessage = "";
@@ -66,14 +73,26 @@ export class DataEntryFormPage implements OnInit{
 
   loadingEntryForm(dataSet,sectionIds){
     this.loadingMessage = "Prepare entry form";
-    this.dataEntryFormProvider.getEntryForm(dataSet.id,sectionIds).then(( entryForm : any)=>{
-      this.isLoading = false;
-    },error=>{
-      console.log(JSON.stringify(error));
-      this.isLoading = false;
-      this.loadingMessage = "";
-      this.appProvider.setNormalNotification("Fail to prepare entry form");
-    });
+    if(sectionIds && sectionIds.length > 0){
+      this.dataEntryFormProvider.getSectionEntryForm(sectionIds,this.currentUser).then(( entryForm : any)=>{
+        this.isLoading = false;
+      },error=>{
+        console.log(JSON.stringify(error));
+        this.isLoading = false;
+        this.loadingMessage = "";
+        this.appProvider.setNormalNotification("Fail to prepare entry form");
+      });
+    }else{
+      this.dataEntryFormProvider.getDefaultEntryForm(dataSet.id,this.currentUser).then(( entryForm : any)=>{
+        this.isLoading = false;
+      },error=>{
+        console.log(JSON.stringify(error));
+        this.isLoading = false;
+        this.loadingMessage = "";
+        this.appProvider.setNormalNotification("Fail to prepare entry form");
+      });
+
+    }
   }
 
 }
