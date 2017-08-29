@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import {SqlLiteProvider} from "../sql-lite/sql-lite";
 import {HttpClientProvider} from "../http-client/http-client";
+import {AppProvider} from "../app/app";
 
 /*
   Generated class for the OrganisationUnitsProvider provider.
@@ -30,7 +31,7 @@ export class OrganisationUnitsProvider {
   lastSelectedOrgUnit : OrganisationUnitModel;
   resource : string;
 
-  constructor(private sqlLite : SqlLiteProvider,private HttpClient : HttpClientProvider) {
+  constructor(private sqlLite : SqlLiteProvider,private HttpClient : HttpClientProvider, private appProvider: AppProvider) {
     this.resource = "organisationUnits";
   }
 
@@ -63,6 +64,7 @@ export class OrganisationUnitsProvider {
           response = JSON.parse(response.data);
           counts = counts + 1;
           orgUnits = this.appendOrgUnitsFromServerToOrgUnitArray(orgUnits,response);
+          this.appProvider.setNormalNotification("Wozaaaaaaa");
           if(counts == orgUnitIds.length){
             resolve(orgUnits);
           }

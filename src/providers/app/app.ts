@@ -150,7 +150,7 @@ export class AppProvider {
         this.sqLite.insertBulkDataOnTable(resource,resourceValues,databaseName).then(()=>{
           resolve();
         },error=>{
-          console.log(JSON.stringify(error));
+          console.log("SAve metada Error Tracking....: "+JSON.stringify(error));
           reject(error);
         });
       }
@@ -166,9 +166,9 @@ export class AppProvider {
    * @param filter
    * @returns {Promise<T>}
    */
-  downloadMetadata(user,resource, resourceId, fields, filter){
-
-    let resourceUrl = this.getResourceUrl(resource, resourceId, fields, filter);
+  downloadMetadata(user,resource, resourceId){
+    this.setNormalNotification("Universal Downloading OrgUnit...");
+    let resourceUrl = this.getResourceUrl(resource, resourceId);
     return new Promise((resolve, reject)=> {
       this.http.get(resourceUrl,user).subscribe(response=>{
         response = response.json();
@@ -189,19 +189,14 @@ export class AppProvider {
    * @param filter
    * @returns {string}
    */
-  getResourceUrl(resource, resourceId, fields, filter){
+  getResourceUrl(resource, resourceId){
     let url = '/api/25/' + resource;
     if (resourceId || resourceId != null) {
       url += "/" + resourceId + ".json?paging=false";
     } else {
       url += ".json?paging=false";
     }
-    if (fields || fields != null) {
-      url += '&fields=' + fields;
-    }
-    if (filter || filter != null) {
-      url += '&filter=' + filter;
-    }
+
     return url;
   }
 
