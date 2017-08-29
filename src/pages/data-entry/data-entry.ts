@@ -180,7 +180,8 @@ export class DataEntryPage implements OnInit{
     }
   }
 
-  openDataDimensionSelection(category,currentIndex){
+  openDataDimensionSelection(category){
+    let currentIndex = this.dataSetCategoryCombo.categories.indexOf(category);
     let modal = this.modalCtrl.create('DataDimensionSelectionPage', {
       categoryOptions : category.categoryOptions,
       title : category.name + "'s selection",
@@ -189,6 +190,7 @@ export class DataEntryPage implements OnInit{
     modal.onDidDismiss((selectedDataDimension : any)=>{
       if(selectedDataDimension && selectedDataDimension.id ){
         this.selectedDataDimension[currentIndex] = selectedDataDimension;
+        this.updateDataEntryFormSelections();
       }
     });
     modal.present();
@@ -203,14 +205,23 @@ export class DataEntryPage implements OnInit{
     }
     this.selectedDataDimension = [];
     this.dataSetCategoryCombo = dataSetCategoryCombo;
+    this.updateDataEntryFormSelections();
   }
 
   isAllFormParameterSelected(){
     let isFormReady = true;
     if(this.selectedPeriod && this.selectedPeriod.name && this.selectedDataSet && this.selectedDataSet.categoryCombo.name != 'default'){
-
-      console.log("In on check for form ready based on category");
-      isFormReady = false;
+      if(this.selectedDataDimension && this.selectedDataDimension.length > 0 && this.selectedDataDimension.length == this.dataSetCategoryCombo.categories.length){
+        let count = 0;
+        this.selectedDataDimension.forEach((dimension : any)=>{
+          count ++;
+        });
+        if(count != this.selectedDataDimension.length){
+          isFormReady = false;
+        }
+      }else{
+        isFormReady = false;
+      }
     }
     return isFormReady;
   }
