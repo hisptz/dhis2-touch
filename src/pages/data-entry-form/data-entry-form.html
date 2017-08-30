@@ -17,7 +17,7 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <div *ngIf="entryFormParameter" class="item-card" full (tap)="navCtrl.pop()">
+        <div *ngIf="entryFormParameter" class="item-card" full (tap)="goBack()">
           <div><b>Organisation Unit</b> : {{ entryFormParameter.orgUnit.name }}<br>
             <b>Form</b> : {{ entryFormParameter.dataSet.name }}<br>
             <b>Period</b> : {{ entryFormParameter.period.name }}

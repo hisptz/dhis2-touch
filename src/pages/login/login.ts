@@ -455,6 +455,9 @@ export class LoginPage implements OnInit{
     let defaultSetting  = this.settingsProvider.getDefaultSettings();
     this.settingsProvider.getSettingsForTheApp(currentUser).then((appSettings : any)=>{
       if(!(appSettings && appSettings.entryForm)){
+        let time = appSettings.synchronization.time;
+        let timeType = appSettings.synchronization.timeType;
+        appSettings.synchronization.time = this.settingsProvider.getDisplaySynchronizationTime(time,timeType);
         this.settingsProvider.setSettingsForTheApp(currentUser,defaultSetting).then(()=>{},error=>{})
       }
     });

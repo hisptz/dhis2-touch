@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {UserProvider} from "../../providers/user/user";
 import {AppProvider} from "../../providers/app/app";
 import {DataEntryFormProvider} from "../../providers/data-entry-form/data-entry-form";
+import {SettingsProvider} from "../../providers/settings/settings";
 
 /**
  * Generated class for the DataEntryFormPage page.
@@ -23,6 +24,7 @@ export class DataEntryFormPage implements OnInit{
   isLoading : boolean;
   loadingMessage : string;
   currentUser : any;
+  appSettings : any;
 
   indicators : Array<any>;
   sectionIds : Array<string>;
@@ -34,6 +36,7 @@ export class DataEntryFormPage implements OnInit{
               private userProvider : UserProvider,
               private appProvider : AppProvider,
               private dataEntryFormProvider : DataEntryFormProvider,
+              private settingsProvider : SettingsProvider,
               private navParams: NavParams) {
   }
 
@@ -43,12 +46,19 @@ export class DataEntryFormPage implements OnInit{
     this.entryFormParameter = this.navParams.get("parameter");
     this.userProvider.getCurrentUser().then(user=>{
       this.currentUser = user;
-      this.loadingDataSetInformation(this.entryFormParameter.dataSet.id);
+      this.settingsProvider.getSettingsForTheApp(user).then((appSettings:any)=>{
+        this.appSettings = appSettings;
+        this.loadingDataSetInformation(this.entryFormParameter.dataSet.id);
+      });
     },error=>{
       console.log(JSON.stringify(error));
       this.isLoading = false;
       this.appProvider.setNormalNotification("Fail to load user information");
     })
+  }
+
+  goBack(){
+    this.navCtrl.pop();
   }
 
   loadingDataSetInformation(dataSetId){
@@ -74,7 +84,7 @@ export class DataEntryFormPage implements OnInit{
 
   loadingEntryForm(dataSet,sectionIds){
     this.loadingMessage = "Prepare entry form";
-    this.dataEntryFormProvider.getEntryForm(sectionIds,dataSet.id,this.currentUser).then((entryForm : any)=>{
+    this.dataEntryFormProvider.getEntryForm(sectionIds,dataSet.id,this.appSettings,this.currentUser).then((entryForm : any)=>{
       this.entryForm = entryForm;
       this.isLoading = false;
     },error=>{

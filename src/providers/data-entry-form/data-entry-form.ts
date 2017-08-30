@@ -3,8 +3,6 @@ import {DataSetsProvider} from "../data-sets/data-sets";
 import {DataElementsProvider} from "../data-elements/data-elements";
 import {IndicatorsProvider} from "../indicators/indicators";
 import {SectionsProvider} from "../sections/sections";
-import {count} from "rxjs/operator/count";
-import {reject} from "q";
 /*
   Generated class for the DataEntryFormProvider provider.
 
@@ -57,14 +55,14 @@ export class DataEntryFormProvider {
    * @param currentUser
    * @returns {Promise<any>}
    */
-  getEntryForm(sectionIds,dataSetId,currentUser){
+  getEntryForm(sectionIds,dataSetId,appSettings,currentUser){
     return new Promise((resolve, reject)=> {
       if(sectionIds && sectionIds.length > 0){
         this.getSectionEntryForm(sectionIds,currentUser).then(( entryForm : any)=>{
           resolve(entryForm);
         },error=>{reject(error)});
       }else{
-        this.getDefaultEntryForm(dataSetId,currentUser).then(( entryForm : any)=>{
+        this.getDefaultEntryForm(dataSetId,appSettings,currentUser).then(( entryForm : any)=>{
           resolve(entryForm);
         },error=>{reject(error)});
       }
@@ -108,18 +106,34 @@ export class DataEntryFormProvider {
    * @param currentUser
    * @returns {Promise<any>}
    */
-  getDefaultEntryForm(dataSetId,currentUser){
+  getDefaultEntryForm(dataSetId,appSettings,currentUser){
     return new Promise((resolve, reject)=> {
       this.dataSetProvider.getDataSetDataElementIds(dataSetId,currentUser).then((dataElementIds: any)=>{
         this.dataElementProvider.getDataElementsByIds(dataElementIds,currentUser).then((dataElements:any)=>{
-          resolve(dataElements);
+          let maxDataElements = (appSettings && appSettings.entryForm && appSettings.entryForm.maxDataElementOnDefaultForm) ? appSettings.entryForm.maxDataElementOnDefaultForm : 10;
+          resolve(this.getDataElementSections(dataElements,maxDataElements));
         },error=>{reject(error)});
       },error=>{reject(error)});
     });
   }
 
-
-
-
+  /**
+   * 
+   * @param dataElements
+   * @param maxDataElements
+   * @returns {Array}
+   */
+  getDataElementSections(dataElements,maxDataElements){
+    let sectionsCounter = Math.ceil(dataElements.length/maxDataElements);
+    let sections = [];
+    for(let index = 0; index < sectionsCounter; index ++){
+      sections.push({
+        name : "Page " + (index + 1) + " of " + sectionsCounter,
+        id : index,
+        dataElements :dataElements.splice(0,maxDataElements)
+      });
+    }
+    return sections;
+  }
 
 }
