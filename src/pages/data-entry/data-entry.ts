@@ -65,6 +65,7 @@ export class DataEntryPage implements OnInit{
             });
           }
         });
+
         this.organisationUnitsProvider.getLastSelectedOrganisationUnitUnit(currentUser).then((lastSelectedOrgunit)=>{
           this.selectedOrgUnit = lastSelectedOrgunit;
           this.updateDataEntryFormSelections();

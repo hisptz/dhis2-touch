@@ -118,7 +118,7 @@ export class DataEntryFormProvider {
   }
 
   /**
-   * 
+   *
    * @param dataElements
    * @param maxDataElements
    * @returns {Array}
