@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {UserProvider} from "../../providers/user/user";
 import {AppProvider} from "../../providers/app/app";
 import {DataEntryFormProvider} from "../../providers/data-entry-form/data-entry-form";
@@ -30,17 +30,22 @@ export class DataEntryFormPage implements OnInit{
   sectionIds : Array<string>;
   dataSet : any;
 
-  entryForm : any;
+  entryFormSections : any;
+  icons : any = {};
+  pager : any = {};
 
   constructor(private navCtrl: NavController,
               private userProvider : UserProvider,
               private appProvider : AppProvider,
+              private modalCtrl : ModalController,
               private dataEntryFormProvider : DataEntryFormProvider,
               private settingsProvider : SettingsProvider,
               private navParams: NavParams) {
   }
 
   ngOnInit(){
+    this.icons["menu"] = "assets/dashboard/menu.png";
+
     this.loadingMessage = "Loading user information";
     this.isLoading = true;
     this.entryFormParameter = this.navParams.get("parameter");
@@ -85,7 +90,9 @@ export class DataEntryFormPage implements OnInit{
   loadingEntryForm(dataSet,sectionIds){
     this.loadingMessage = "Prepare entry form";
     this.dataEntryFormProvider.getEntryForm(sectionIds,dataSet.id,this.appSettings,this.currentUser).then((entryForm : any)=>{
-      this.entryForm = entryForm;
+      this.entryFormSections = entryForm;
+      this.pager["page"] = 1;
+      this.pager["total"] = entryForm.length;
       this.isLoading = false;
     },error=>{
       console.log(JSON.stringify(error));
@@ -93,6 +100,29 @@ export class DataEntryFormPage implements OnInit{
       this.loadingMessage = "";
       this.appProvider.setNormalNotification("Fail to prepare entry form");
     });
+  }
+
+  openSectionList(){
+    let modal = this.modalCtrl.create('DataEntrySectionSelectionPage',{
+      pager : this.pager,
+      sections : this.getEntryFormSections(this.entryFormSections)
+    });
+    modal.onDidDismiss((pager : any)=>{
+      if(pager && pager.page){
+        this.pager = pager;
+      }
+    });
+    modal.present();
+  }
+
+  getEntryFormSections(entryFormSections){
+    let sections = [];
+    entryFormSections.forEach((entryFormSection : any)=>{
+      sections.push({
+        id : entryFormSection.id,name : entryFormSection.name
+      })
+    });
+    return sections;
   }
 
 }

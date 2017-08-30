@@ -17,7 +17,7 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <div *ngIf="entryFormParameter" class="item-card" full (tap)="goBack()">
+        <div *ngIf="entryFormParameter" class="item-card" full (tap)="goBack()" padding-bottom padding-top>
           <div><b>Organisation Unit</b> : {{ entryFormParameter.orgUnit.name }}<br>
             <b>Form</b> : {{ entryFormParameter.dataSet.name }}<br>
             <b>Period</b> : {{ entryFormParameter.period.name }}
@@ -27,10 +27,25 @@
           <page-loading [loadingMessage]="loadingMessage" [loadingSize]="'large'" ></page-loading>
         </div>
         <div *ngIf="!isLoading">
-          entryForm :: {{ entryForm |json }}<br><br><br>
-          sectionIds :: {{ sectionIds |json }}<br><br><br>
-          indicatorIds :: {{ indicators |json }}<br><br><br>
-          dataSet :: {{ dataSet |json }}<br><br><br>
+          <div *ngFor="let section of entryFormSections;let currentSectionIndex = index">
+            <div *ngIf="(currentSectionIndex + 1) == pager.page" class="item-card" no-padding (click)="openSectionList()">
+              <ion-item >
+                <p ion-text color="font-color" no-padding align="center">
+                  {{ section.name }}
+                </p>
+                <div style="text-align: center"item-right >
+                  <span  float-end class="side-menu-icon">
+                    <img [src]="icons.menu">
+                  </span>
+                </div>
+              </ion-item>
+            </div>
+          </div>
+          <div *ngFor="let section of entryFormSections;let currentSectionIndex = index">
+            <div *ngIf="(currentSectionIndex + 1) == pager.page">
+              {{ section.dataElements |json  }}
+            </div>
+          </div>
         </div>
 
 
