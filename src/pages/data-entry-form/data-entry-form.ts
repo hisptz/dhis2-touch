@@ -28,6 +28,7 @@ export class DataEntryFormPage implements OnInit{
   sectionIds : Array<string>;
   dataSet : any;
 
+  entryForm : any;
 
   constructor(private navCtrl: NavController,
               private userProvider : UserProvider,
@@ -73,26 +74,15 @@ export class DataEntryFormPage implements OnInit{
 
   loadingEntryForm(dataSet,sectionIds){
     this.loadingMessage = "Prepare entry form";
-    if(sectionIds && sectionIds.length > 0){
-      this.dataEntryFormProvider.getSectionEntryForm(sectionIds,this.currentUser).then(( entryForm : any)=>{
-        this.isLoading = false;
-      },error=>{
-        console.log(JSON.stringify(error));
-        this.isLoading = false;
-        this.loadingMessage = "";
-        this.appProvider.setNormalNotification("Fail to prepare entry form");
-      });
-    }else{
-      this.dataEntryFormProvider.getDefaultEntryForm(dataSet.id,this.currentUser).then(( entryForm : any)=>{
-        this.isLoading = false;
-      },error=>{
-        console.log(JSON.stringify(error));
-        this.isLoading = false;
-        this.loadingMessage = "";
-        this.appProvider.setNormalNotification("Fail to prepare entry form");
-      });
-
-    }
+    this.dataEntryFormProvider.getEntryForm(sectionIds,dataSet.id,this.currentUser).then((entryForm : any)=>{
+      this.entryForm = entryForm;
+      this.isLoading = false;
+    },error=>{
+      console.log(JSON.stringify(error));
+      this.isLoading = false;
+      this.loadingMessage = "";
+      this.appProvider.setNormalNotification("Fail to prepare entry form");
+    });
   }
 
 }

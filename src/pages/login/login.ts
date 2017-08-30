@@ -282,7 +282,7 @@ export class LoginPage implements OnInit{
 
   downloadingDataElements(){
     if(this.isLoginProcessActive){
-      let resource = "sections";
+      let resource = "dataElements";
       this.currentResourceType = "entryForm";
       this.progressTracker[this.currentResourceType].message = "Loading data elements";
       if(this.completedTrackedProcess.indexOf(resource) > -1){

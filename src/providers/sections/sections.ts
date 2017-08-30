@@ -31,6 +31,55 @@ export class SectionsProvider {
 
   /**
    *
+   * @param sectionIds
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getSectionByIds(sectionIds,currentUser){
+    let attributeKey = "id";
+    return new Promise((resolve, reject)=> {
+      this.SqlLite.getDataFromTableByAttributes(this.resource,attributeKey,sectionIds,currentUser.currentDatabase).then(( sections: any)=>{
+        let count = 0;
+        sections.forEach((section : any)=>{
+          this.getSectionDataElementIds(section.id,currentUser).then((dataElementIds : any)=>{
+            section["dataElementIds"] = dataElementIds;
+            count ++;
+            if(count == sections.length){
+              resolve(sections);
+            }
+          },error=>{
+            reject(error);
+          });
+        });
+      },error=>{reject(error)})
+    });
+  }
+
+  /**
+   *
+   * @param sectionId
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getSectionDataElementIds(sectionId,currentUser){
+    let attributeKey = "sectionId";
+    let attributeArray = [sectionId];
+    let sectionDataElements = [];
+    let resource = "sectionDataElements";
+    return new Promise((resolve, reject)=> {
+      this.SqlLite.getDataFromTableByAttributes(resource,attributeKey,attributeArray,currentUser.currentDatabase).then((sectionDataElementIds : any)=>{
+        if(sectionDataElementIds && sectionDataElementIds.length > 0){
+          sectionDataElementIds.forEach((sectionDataElementId : any)=>{
+            sectionDataElements.push(sectionDataElementId.dataElementId);
+          });
+        }
+        resolve(sectionDataElements);
+      },error=>{reject(error)})
+    });
+  }
+
+  /**
+   *
    * @param sections
    * @param currentUser
    * @returns {Promise<any>}

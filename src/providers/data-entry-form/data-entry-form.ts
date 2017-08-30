@@ -3,6 +3,8 @@ import {DataSetsProvider} from "../data-sets/data-sets";
 import {DataElementsProvider} from "../data-elements/data-elements";
 import {IndicatorsProvider} from "../indicators/indicators";
 import {SectionsProvider} from "../sections/sections";
+import {count} from "rxjs/operator/count";
+import {reject} from "q";
 /*
   Generated class for the DataEntryFormProvider provider.
 
@@ -38,21 +40,82 @@ export class DataEntryFormProvider {
     });
   }
 
+  /**
+   *
+   * @param indicatorIds
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   getEntryFormIndicators(indicatorIds,currentUser){
     return this.indicatorProvider.getIndicatorsByIds(indicatorIds,currentUser);
   }
 
-  getSectionEntryForm(sectionIds,currentUser){
+  /**
+   *
+   * @param sectionIds
+   * @param dataSetId
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getEntryForm(sectionIds,dataSetId,currentUser){
     return new Promise((resolve, reject)=> {
-      console.log("section form");
-      resolve();
+      if(sectionIds && sectionIds.length > 0){
+        console.log("has sections");
+        this.getSectionEntryForm(sectionIds,currentUser).then(( entryForm : any)=>{
+          resolve(entryForm);
+        },error=>{reject(error)});
+      }else{
+        this.getDefaultEntryForm(dataSetId,currentUser).then(( entryForm : any)=>{
+          resolve(entryForm);
+        },error=>{reject(error)});
+      }
     });
   }
 
+  /**
+   *
+   * @param sectionIds
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getSectionEntryForm(sectionIds,currentUser){
+    return new Promise((resolve, reject)=> {
+      this.sectionProvider.getSectionByIds(sectionIds,currentUser).then((sections : any)=>{
+        let count = 0;
+        sections.forEach((section : any)=>{
+          this.dataElementProvider.getDataElementsByIds(section.dataElementIds,currentUser).then((dataElements:any)=>{
+            section["dataElements"] = dataElements;
+            count ++;
+            if(count == sections.length){
+              sections = this.getSortedSections(sections);
+              resolve(sections);
+            }
+          },error=>{reject(error)});
+        });
+      },error=>{reject(error)});
+    });
+  }
+
+  getSortedSections(sections){
+    sections = sections.sort((a,b)=>{
+      return parseInt(a.sortOrder) - parseInt(b.sortOrder);
+    });
+    return sections;
+  }
+
+  /**
+   *
+   * @param dataSetId
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   getDefaultEntryForm(dataSetId,currentUser){
     return new Promise((resolve, reject)=> {
-      console.log("Default form");
-      resolve();
+      this.dataSetProvider.getDataSetDataElementIds(dataSetId,currentUser).then((dataElementIds: any)=>{
+        this.dataElementProvider.getDataElementsByIds(dataElementIds,currentUser).then((dataElements:any)=>{
+          resolve(dataElements);
+        },error=>{reject(error)});
+      },error=>{reject(error)});
     });
   }
 

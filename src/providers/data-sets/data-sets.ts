@@ -166,7 +166,6 @@ export class DataSetsProvider {
         }
       },error=>{reject(error)})
     });
-
   }
 
   /**
@@ -191,6 +190,30 @@ export class DataSetsProvider {
       },error=>{reject(error)})
     });
   }
+
+  /**
+   *
+   * @param dataSetId
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getDataSetDataElementIds(dataSetId,currentUser){
+    let attributeKey = "dataSetId";
+    let attributeArray = [dataSetId];
+    let dataSetElements = [];
+    let resource = "dataSetElements";
+    return new Promise((resolve, reject)=> {
+      this.SqlLite.getDataFromTableByAttributes(resource,attributeKey,attributeArray,currentUser.currentDatabase).then((dataSetIndicatorIds : any)=>{
+        if(dataSetIndicatorIds && dataSetIndicatorIds.length > 0){
+          dataSetIndicatorIds.forEach((dataSetIndicatorId : any)=>{
+            dataSetElements.push(dataSetIndicatorId.dataElementId);
+          });
+        }
+        resolve(dataSetElements);
+      },error=>{reject(error)})
+    });
+  }
+
 
   /**
    *
@@ -307,7 +330,11 @@ export class DataSetsProvider {
     });
     return new Promise((resolve, reject)=> {
       if(dataSetIndicators.length == 0){
-        resolve();
+        this.saveDataSetSource(dataSets,currentUser).then(()=>{
+          resolve();
+        },error=>{
+          reject(error);
+        });
       }else{
         this.SqlLite.insertBulkDataOnTable(resource,dataSetIndicators,currentUser.currentDatabase).then(()=>{
           this.saveDataSetSource(dataSets,currentUser).then(()=>{
@@ -344,7 +371,11 @@ export class DataSetsProvider {
     });
     return new Promise((resolve, reject)=> {
       if(dataSetSource.length == 0){
-        resolve();
+        this.saveDataSetSections(dataSets,currentUser).then(()=>{
+          resolve();
+        },error=>{
+          reject(error);
+        });
       }else{
         this.SqlLite.insertBulkDataOnTable(resource,dataSetSource,currentUser.currentDatabase).then(()=>{
           this.saveDataSetSections(dataSets,currentUser).then(()=>{
@@ -398,7 +429,11 @@ export class DataSetsProvider {
     });
     return new Promise((resolve, reject)=> {
       if(dataSetSections.length == 0){
-        resolve();
+        this.saveDataSetOperands(dataSets,currentUser).then(()=>{
+          resolve();
+        },error=>{
+          reject(error);
+        });
       }else{
         this.SqlLite.insertBulkDataOnTable(resource,dataSetSections,currentUser.currentDatabase).then(()=>{
           this.saveDataSetOperands(dataSets,currentUser).then(()=>{
@@ -438,7 +473,11 @@ export class DataSetsProvider {
     });
     return new Promise((resolve, reject)=> {
       if(dataSetOperands.length == 0){
-        resolve();
+        this.saveDataSetElements(dataSets,currentUser).then(()=>{
+          resolve();
+        },error=>{
+          reject(error);
+        });
       }else{
         this.SqlLite.insertBulkDataOnTable(resource,dataSetOperands,currentUser.currentDatabase).then(()=>{
           this.saveDataSetElements(dataSets,currentUser).then(()=>{
