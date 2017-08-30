@@ -93,7 +93,7 @@ export const DATABASE_STRUCTURE = {
     fields: "",
     isMetadata: true,
     resourceType: "entryForm",
-    batchSize : 50
+    batchSize : 500
   },
   sectionDataElements: {
     columns: [

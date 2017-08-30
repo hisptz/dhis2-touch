@@ -12,6 +12,7 @@ import {DataElementsProvider} from "../../providers/data-elements/data-elements"
 import {SectionsProvider} from "../../providers/sections/sections";
 import {DataSetsProvider} from "../../providers/data-sets/data-sets";
 import {StandardReportProvider} from "../../providers/standard-report/standard-report";
+import {SettingsProvider} from "../../providers/settings/settings";
 
 /**
  * Generated class for the LoginPage page.
@@ -47,6 +48,7 @@ export class LoginPage implements OnInit{
               private sectionsProvider : SectionsProvider,
               private dataSetsProvider : DataSetsProvider,
               private standardReports : StandardReportProvider,
+              private settingsProvider : SettingsProvider,
               private HttpClientProvider : HttpClientProvider,
               ) {
 
@@ -443,8 +445,18 @@ export class LoginPage implements OnInit{
 
   setLandingPage(currentUser){
     currentUser.isLogin = true;
+    this.reCheckingAppSetting(currentUser);
     this.UserProvider.setCurrentUser(currentUser).then(()=>{
       this.navCtrl.setRoot(TabsPage)
+    });
+  }
+
+  reCheckingAppSetting(currentUser){
+    let defaultSetting  = this.settingsProvider.getDefaultSettings();
+    this.settingsProvider.getSettingsForTheApp(currentUser).then((appSettings : any)=>{
+      if(!(appSettings && appSettings.entryForm)){
+        this.settingsProvider.setSettingsForTheApp(currentUser,defaultSetting).then(()=>{},error=>{})
+      }
     });
   }
 

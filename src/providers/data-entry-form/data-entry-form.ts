@@ -60,7 +60,6 @@ export class DataEntryFormProvider {
   getEntryForm(sectionIds,dataSetId,currentUser){
     return new Promise((resolve, reject)=> {
       if(sectionIds && sectionIds.length > 0){
-        console.log("has sections");
         this.getSectionEntryForm(sectionIds,currentUser).then(( entryForm : any)=>{
           resolve(entryForm);
         },error=>{reject(error)});
