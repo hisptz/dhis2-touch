@@ -48,6 +48,7 @@ export class UploadDataViaSmsComponent implements OnInit{
   dataSetCategoryCombo : any;
   isLoading : boolean;
   loadingMessage : string;
+  dataSets : Array<any>;
 
 
 
@@ -60,7 +61,7 @@ export class UploadDataViaSmsComponent implements OnInit{
   constructor(public modalCtrl: ModalController, public orgUnitProvider: OrganisationUnitsProvider,
               public dataSetProvider: DataSetsProvider, public appProvider: AppProvider,
               public periodService: PeriodSelectionProvider, public smsCommandProvider: SmsCommandProvider,
-              public appPermission: AppPermissionProvider, public user: UserProvider) {
+              public appPermission: AppPermissionProvider, public userProvider: UserProvider, private periodSelection : PeriodSelectionProvider) {
     console.log('Hello UploadDataViaSmsComponent Component');
     this.text = 'Hello World ts Greaeet learning Ionic';
   }
@@ -72,26 +73,40 @@ export class UploadDataViaSmsComponent implements OnInit{
     this.appPermission.checkAndRequestAppPermission(smsPermission);
 
     this.selectedDataDimension = [];
-    this.user.getCurrentUser().then(currentUser=>{
+
+    // from dataEntry Samples
+    this.isLoading = true;
+    this.currentPeriodOffset = 0;
+
+    this.userProvider.getCurrentUser().then((currentUser: any)=>{
       this.currentUser = currentUser;
       this.initiateDefaultValues();
-      this.setDataSetIdsByUserRoles();
-      this.setDataEntrySelectionLabel();
+      this.userProvider.getUserData().then((userData : any)=>{
+        this.dataSetIdsByUserRoles = [];
+        userData.userRoles.forEach((userRole:any)=>{
+          if (userRole.dataSets) {
+            userRole.dataSets.forEach((dataSet:any)=>{
+              this.dataSetIdsByUserRoles.push(dataSet.id);
+            });
+          }
+        });
 
-      this.orgUnitProvider.getLastSelectedOrganisationUnitUnit(currentUser).then((lastSelectedOrgunit)=>{
-        this.selectedOrgUnit = lastSelectedOrgunit;
+        this.orgUnitProvider.getLastSelectedOrganisationUnitUnit(currentUser).then((lastSelectedOrgunit)=>{
+          this.selectedOrgUnit = lastSelectedOrgunit;
+          this.updateDataEntryFormSelections();
+          //this.loadingEntryForm();
+        });
         this.updateDataEntryFormSelections();
-        //this.loadingEntryForm();
       });
-    });
-
+    },error=>{
+      this.isLoading = false;
+      this.loadingMessage = "";
+      this.appProvider.setNormalNotification("Fail to load user information");
+    })
 
   }
 
-  ionViewDidLoad() {
-  }
-
-
+  //----------------------------------------------------------------------------------------------------------------------------------------------------
 
   updateDataEntryFormSelections(){
     if(this.orgUnitProvider.lastSelectedOrgUnit){
@@ -118,6 +133,31 @@ export class UploadDataViaSmsComponent implements OnInit{
 
 
 
+  // updateSmsFormSelections(){
+  //   if(this.orgUnitProvider.lastSelectedOrgUnit){
+  //     this.selectedOrgUnit = this.orgUnitProvider.lastSelectedOrgUnit;
+  //     this.organisationUnitLabel = this.selectedOrgUnit.name;
+  //   }else{
+  //     this.organisationUnitLabel = "Touch to select organisation Unit";
+  //   }
+  //   if(this.selectedDataSet && this.selectedDataSet.name){
+  //     this.dataSetLabel = this.selectedDataSet.name;
+  //   }else {
+  //     this.dataSetLabel = "Touch to select entry form";
+  //   }
+  //
+  //   if(this.selectedPeriod && this.selectedPeriod.name){
+  //     this.periodLabel = this.selectedPeriod.name;
+  //   }else{
+  //     this.periodLabel = "Touch to select period"
+  //   }
+  //   this.isFormReady = this.isAllFormParameterSelected();
+  //   this.isLoading = false;
+  //   this.loadingMessage = "";
+  // }
+
+
+
   isAllFormParameterSelected(){
     let isFormReady = true;
     if(this.selectedPeriod && this.selectedPeriod.name && this.selectedDataSet && this.selectedDataSet.categoryCombo.name != 'default'){
@@ -136,39 +176,39 @@ export class UploadDataViaSmsComponent implements OnInit{
     return isFormReady;
   }
 
-  setDataSetIdsByUserRoles(){
-    this.dataSetIdsByUserRoles = [];
-    this.currentPeriodOffset = 0;
-    this.user.getUserData().then((userData : any)=>{
-      userData.userRoles.forEach((userRole:any)=>{
-        if (userRole.dataSets) {
-          userRole.dataSets.forEach((dataSet:any)=>{
-            this.dataSetIdsByUserRoles.push(dataSet.id);
-          });
-        }
-      });
-      this.loadOrganisationUnits();
-    });
-  }
+  // setDataSetIdsByUserRoles(){
+  //   this.dataSetIdsByUserRoles = [];
+  //   this.currentPeriodOffset = 0;
+  //   this.userProvider.getUserData().then((userData : any)=>{
+  //     userData.userRoles.forEach((userRole:any)=>{
+  //       if (userRole.dataSets) {
+  //         userRole.dataSets.forEach((dataSet:any)=>{
+  //           this.dataSetIdsByUserRoles.push(dataSet.id);
+  //         });
+  //       }
+  //     });
+  //     this.loadOrganisationUnits();
+  //   });
+  // }
 
-  loadOrganisationUnits(){
-    this.currentSelectionStatus.isDataSetLoaded = true;
-    this.currentSelectionStatus.isOrgUnitLoaded = false;
-    this.orgUnitProvider.getOrganisationUnits(this.currentUser).then((organisationUnitsResponse : any)=>{
-      this.organisationUnits = organisationUnitsResponse.organisationUnits;
-      this.currentSelectionStatus.isOrgUnitLoaded = true;
-      this.selectedOrganisationUnit = organisationUnitsResponse.lastSelectedOrgUnit;
-      this.setDataEntrySelectionLabel();
-      this.loadingDataSets();
-      this.setDataEntrySelectionLabel();
-    },error=>{
-      this.appProvider.setNormalNotification('Fail to load organisation units : ' + JSON.stringify(error));
-    });
-  }
+  // loadOrganisationUnits(){
+  //   this.currentSelectionStatus.isDataSetLoaded = true;
+  //   this.currentSelectionStatus.isOrgUnitLoaded = false;
+  //   this.orgUnitProvider.getOrganisationUnits(this.currentUser).then((organisationUnitsResponse : any)=>{
+  //     this.organisationUnits = organisationUnitsResponse.organisationUnits;
+  //     this.currentSelectionStatus.isOrgUnitLoaded = true;
+  //     this.selectedOrganisationUnit = organisationUnitsResponse.lastSelectedOrgUnit;
+  //     this.setDataEntrySelectionLabel();
+  //     this.loadingDataSets();
+  //     this.setDataEntrySelectionLabel();
+  //   },error=>{
+  //     this.appProvider.setNormalNotification('Fail to load organisation units : ' + JSON.stringify(error));
+  //   });
+  // }
 
 
   initiateDefaultValues(){
-    this.currentSelectionStatus.orgUnit = true;
+    this.currentSelectionStatus.orgUnit = false;
     this.currentSelectionStatus.isOrgUnitSelected = false;
     this.currentSelectionStatus.isOrgUnitLoaded = false;
     this.currentSelectionStatus.dataSet = false;
@@ -181,193 +221,243 @@ export class UploadDataViaSmsComponent implements OnInit{
   }
 
 
-  openOrganisationUnitModal(){
-    if(this.currentSelectionStatus && this.currentSelectionStatus.isDataSetLoaded){
-      this.loadingMessages = [];
-      this.loadingData = true;
-      let modal = this.modalCtrl.create(OrganisationUnitsProvider,{
-        organisationUnits : this.organisationUnits,
-        currentUser : this.currentUser,
-        lastSelectedOrgUnit:this.selectedOrganisationUnit
-      });
-      modal.onDidDismiss((selectedOrganisationUnit:any) => {
-        if(selectedOrganisationUnit && selectedOrganisationUnit.id){
-          if(selectedOrganisationUnit.id != this.selectedOrganisationUnit.id){
-            this.selectedOrganisationUnit = selectedOrganisationUnit;
-            this.loadingDataSets();
-            this.setDataEntrySelectionLabel();
-          }else{
-            this.loadingData = false;
-          }
-        }else{
-          this.loadingData = false;
-        }
-      });
-      modal.present();
-    }
-  }
+
+
 
   openOrganisationUnitTree(){
     let modal = this.modalCtrl.create('OrganisationUnitSelectionPage',{});
     modal.onDidDismiss((selectedOrgUnit : any)=>{
       if(selectedOrgUnit && selectedOrgUnit.id){
         this.selectedOrgUnit = selectedOrgUnit;
-        // this.updateDataEntryFormSelections();
-        // this.loadingEntryForm();
+         this.updateDataEntryFormSelections();
+         this.loadingEntryForm();
       }
     });
     modal.present();
   }
 
-
-  loadingDataSets(){
-    this.currentSelectionStatus.isDataSetLoaded = false;
-    this.assignedDataSets = [];
-    this.currentPeriodOffset = 0;
-    this.selectedPeriod = {};
-    this.dataSetProvider.getAssignedDataSets(this.selectedOrganisationUnit,this.dataSetIdsByUserRoles,this.currentUser).then((dataSets : any)=>{
-      this.assignedDataSets = dataSets;
-      let lastSelectedDataSet = this.dataSetProvider.getLastSelectedDataSet();
-      let lastSelectedPeriod = this.dataSetProvider.getLastSelectedDataSetPeriod();
-      if(lastSelectedDataSet && lastSelectedDataSet.id){
-        for(let dataSet of dataSets){
-          if(dataSet.id = lastSelectedDataSet.id){
-            this.selectedDataSet = lastSelectedDataSet;
-            if(lastSelectedPeriod && lastSelectedPeriod.name){
-              this.selectedPeriod = lastSelectedPeriod;
-              this.preSelectDataSetDataDimension(lastSelectedDataSet);
-            }else{
-              this.preSelectPeriod(lastSelectedDataSet);
-            }
-          }
+  openEntryFormList(){
+    if(this.dataSets && this.dataSets.length > 0){
+      let modal = this.modalCtrl.create('DataSetSelectionPage',{dataSetsList : this.dataSets,currentDataSet :this.selectedDataSet.name  });
+      modal.onDidDismiss((selectedDataSet : any)=>{
+        if(selectedDataSet && selectedDataSet.id && selectedDataSet.id != this.selectedDataSet.id){
+          this.selectedDataSet = selectedDataSet;
+          this.currentPeriodOffset = 0;
+          this.updateDataEntryFormSelections();
+          this.loadPeriodSelection();
+          this.updateDataSetCategoryCombo(this.selectedDataSet.categoryCombo);
         }
-      }else if(this.assignedDataSets.length > 0){
-        this.selectedDataSet =this.assignedDataSets[0];
-        this.dataSetProvider.setLastSelectedDataSet(this.assignedDataSets[0]);
-        this.preSelectPeriod(this.assignedDataSets[0]);
-      }
-      this.setDataEntrySelectionLabel();
-      this.currentSelectionStatus.isDataSetLoaded = true;
+      });
+      modal.present();
+    }else{
+      this.appProvider.setNormalNotification("There are no entry form to select on " + this.selectedOrgUnit.name );
+    }
+  }
+
+  updateDataSetCategoryCombo(categoryCombo){
+    let dataSetCategoryCombo  = {};
+    if(categoryCombo.name != 'default'){
+      dataSetCategoryCombo['id'] = categoryCombo.id;
+      dataSetCategoryCombo['name'] = categoryCombo.name;
+      dataSetCategoryCombo['categories'] = this.dataSetProvider.getDataSetCategoryComboCategories(this.selectedOrgUnit.id,this.selectedDataSet.categoryCombo.categories);
+    }
+    this.selectedDataDimension = [];
+    this.dataSetCategoryCombo = dataSetCategoryCombo;
+    this.updateDataEntryFormSelections();
+  }
+
+  loadingEntryForm(){
+    this.dataSetProvider.getAssignedDataSets(this.selectedOrgUnit.id,this.dataSetIdsByUserRoles,this.currentUser).then((dataSets: any)=>{
+      this.dataSets = dataSets;
+      this.selectedDataSet = this.dataSetProvider.lastSelectedDataSet;
+      this.currentPeriodOffset = 0;
+      this.updateDataEntryFormSelections();
+      this.loadPeriodSelection();
+      this.updateDataSetCategoryCombo(this.selectedDataSet.categoryCombo);
     },error=>{
-      this.appProvider.setNormalNotification('Fail to load assigned forms : ' + JSON.stringify(error));
+      this.appProvider.setNormalNotification("Fail to reload entry form");
     });
   }
 
-  preSelectPeriod(selectedDataSet){
-    this.preSelectDataSetDataDimension(selectedDataSet);
-    let periods = this.periodService.getPeriods(null,selectedDataSet,this.currentPeriodOffset);
-    if(periods.length == 0){
-      this.currentPeriodOffset = this.currentPeriodOffset + 1;
-      periods = this.periodService.getPeriods(null,selectedDataSet,this.currentPeriodOffset);
-    }
-    this.selectedPeriod = periods[0];
-  }
-
-
-  preSelectDataSetDataDimension(selectedDataSet){
-    if(selectedDataSet.categoryCombo.name != 'default'){
-      this.selectedDataDimension = [];
-      let categoryIndex = 0;
-      for(let category of selectedDataSet.categoryCombo.categories){
-        this.selectedDataDimension[categoryIndex] = category.categoryOptions[0].id;
-        categoryIndex = categoryIndex + 1;
-      }
-    }
-  }
-
-
-  setDataEntrySelectionLabel(){
-    this.setOrganisationSelectLabel();
-    this.setSelectedDataSetLabel();
-    this.setSelectedPeriodLabel();
-  }
-
-  setOrganisationSelectLabel(){
-    console.log("sms orgUnitId "+ this.selectedOrganisationUnit.id);
-    if(this.selectedOrganisationUnit.id){
-      this.selectedOrganisationUnitLabel = this.selectedOrganisationUnit.name;
-      this.currentSelectionStatus.isOrgUnitSelected = true;
-      this.currentSelectionStatus.dataSet = true;
+  openPeriodList(){
+    if(this.selectedDataSet && this.selectedDataSet.id){
+      let modal = this.modalCtrl.create('PeriodSelectionPage', {
+        periodType: this.selectedDataSet.periodType,
+        currentPeriodOffset : this.currentPeriodOffset,
+        openFuturePeriods: this.selectedDataSet.openFuturePeriods,
+        currentPeriod : this.selectedPeriod
+      });
+      modal.onDidDismiss((data : any)=>{
+        if(data && data.selectedPeriod ){
+          this.selectedPeriod = data.selectedPeriod;
+          this.currentPeriodOffset = data.currentPeriodOffset;
+          this.updateDataEntryFormSelections();
+        }
+      });
+      modal.present();
     }else{
-      this.selectedOrganisationUnitLabel = "Touch to select Organisation Unit";
-      this.currentSelectionStatus.dataSet = false;
-      this.currentSelectionStatus.isOrgUnitSelected = false;
-      this.currentSelectionStatus.allParameterSet = false;
-      if (this.currentSelectionStatus.orgUnit && !this.currentSelectionStatus.dataSet) {
-        this.currentSelectionStatus.message = "Please select organisation unit";
-      }
+      this.appProvider.setNormalNotification("Please select entry form first");
     }
   }
 
-  setSelectedDataSetLabel(){
-    if(this.selectedDataSet.id){
-      this.selectedDataSetLabel = this.selectedDataSet.name;
-      this.currentSelectionStatus.period = true;
-      this.currentSelectionStatus.isDataSetSelected = true;
+
+  loadPeriodSelection(){
+    let periodType = this.selectedDataSet.periodType;
+    let openFuturePeriods = parseInt(this.selectedDataSet.openFuturePeriods);
+    let periods = this.periodSelection.getPeriods(periodType,openFuturePeriods,this.currentPeriodOffset);
+    if(periods && periods.length > 0){
+      this.selectedPeriod = periods[0];
     }else{
-      this.selectedDataSetLabel = "Touch to select Entry Form";
-      this.currentSelectionStatus.period = false;
-      this.sendDataViaSmsObject.mobileNumber = "";
-      this.sendDataViaSmsObject.isLoading = false;
-      this.sendDataViaSmsObject.loadingMessage = "";
-      this.currentSelectionStatus.isDataSetSelected = false;
-      this.currentSelectionStatus.allParameterSet = false;
-      if (this.currentSelectionStatus.dataSet && !this.currentSelectionStatus.period) {
-        this.currentSelectionStatus.message = "Please select entry form";
-      }
+      this.selectedPeriod = {};
     }
-  }
-
-  setSelectedPeriodLabel(){
-    if(this.selectedPeriod.name){
-      this.selectedPeriodLabel = this.selectedPeriod.name;
-      this.currentSelectionStatus.isPeriodSelected = true;
-      this.currentSelectionStatus.message = "";
-      this.hasDataDimensionSet();
-    }else{
-      this.selectedPeriodLabel = "Touch to select Period";
-      this.currentSelectionStatus.isPeriodSelected = false;
-      if(this.currentSelectionStatus.period){
-        this.currentSelectionStatus.message = "Please select period for entry form";
-      }
-      this.currentSelectionStatus.allParameterSet = false;
-    }
-  }
-
-  hasDataDimensionSet(){
-    let result = true;
-    if(this.selectedDataSet.categoryCombo.name != 'default'){
-      if(this.selectedDataDimension.length > 0){
-        this.selectedDataDimension.forEach((dimension : any)=>{
-          if(dimension == null){
-            result = false;
-          }
-        });
-      }else{
-        result = false;
-      }
-    }
-    this.currentSelectionStatus.allParameterSet = (result && (this.selectedPeriodLabel.indexOf("Touch to select Period") < 0 ))?true:false;
-    return result;
-  }
-
-  getDataDimension(){
-    let cc = this.selectedDataSet.categoryCombo.id;
-    let cp = "";
-    this.selectedDataDimension.forEach((dimension : any,index:any)=>{
-      if(index == 0){
-        cp +=dimension;
-      }else{
-        cp += ";" + dimension;
-      }
-    });
-    return {cc : cc,cp:cp};
+    this.updateDataEntryFormSelections();
   }
 
 
-  openDataSetsModal(){
+  // loadingDataSets(){
+  //   this.currentSelectionStatus.isDataSetLoaded = false;
+  //   this.assignedDataSets = [];
+  //   this.currentPeriodOffset = 0;
+  //   this.selectedPeriod = {};
+  //   this.dataSetProvider.getAssignedDataSets(this.selectedOrganisationUnit,this.dataSetIdsByUserRoles,this.currentUser).then((dataSets : any)=>{
+  //     this.assignedDataSets = dataSets;
+  //     let lastSelectedDataSet = this.dataSetProvider.getLastSelectedDataSet();
+  //     let lastselectedPeriod = this.dataSetProvider.getLastSelectedDataSetPeriod();
+  //     if(lastSelectedDataSet && lastSelectedDataSet.id){
+  //       for(let dataSet of dataSets){
+  //         if(dataSet.id = lastSelectedDataSet.id){
+  //           this.selectedDataSet = lastSelectedDataSet;
+  //           if(lastselectedPeriod && lastselectedPeriod.name){
+  //             this.selectedPeriod = lastselectedPeriod;
+  //             this.preSelectDataSetDataDimension(lastSelectedDataSet);
+  //           }else{
+  //             this.preSelectPeriod(lastSelectedDataSet);
+  //           }
+  //         }
+  //       }
+  //     }else if(this.assignedDataSets.length > 0){
+  //       this.selectedDataSet =this.assignedDataSets[0];
+  //       this.dataSetProvider.setLastSelectedDataSet(this.assignedDataSets[0]);
+  //       this.preSelectPeriod(this.assignedDataSets[0]);
+  //     }
+  //     this.setDataEntrySelectionLabel();
+  //     this.currentSelectionStatus.isDataSetLoaded = true;
+  //   },error=>{
+  //     this.appProvider.setNormalNotification('Fail to load assigned forms : ' + JSON.stringify(error));
+  //   });
+  // }
 
-  }
+  // preSelectPeriod(selectedDataSet){
+  //   this.preSelectDataSetDataDimension(selectedDataSet);
+  //   let periods = this.periodService.getPeriods(null,selectedDataSet,this.currentPeriodOffset);
+  //   if(periods.length == 0){
+  //     this.currentPeriodOffset = this.currentPeriodOffset + 1;
+  //     periods = this.periodService.getPeriods(null,selectedDataSet,this.currentPeriodOffset);
+  //   }
+  //   this.selectedPeriod = periods[0];
+  // }
+
+
+  // preSelectDataSetDataDimension(selectedDataSet){
+  //   if(selectedDataSet.categoryCombo.name != 'default'){
+  //     this.selectedDataDimension = [];
+  //     let categoryIndex = 0;
+  //     for(let category of selectedDataSet.categoryCombo.categories){
+  //       this.selectedDataDimension[categoryIndex] = category.categoryOptions[0].id;
+  //       categoryIndex = categoryIndex + 1;
+  //     }
+  //   }
+  // }
+
+
+  // setDataEntrySelectionLabel(){
+  //   this.setOrganisationSelectLabel();
+  //   this.setSelectedDataSetLabel();
+  //   this.setselectedPeriodLabel();
+  // }
+
+  // setOrganisationSelectLabel(){
+  //   console.log("sms orgUnitId "+ this.selectedOrganisationUnit.id);
+  //   if(this.selectedOrganisationUnit.id){
+  //     this.selectedOrganisationUnitLabel = this.selectedOrganisationUnit.name;
+  //     this.currentSelectionStatus.isOrgUnitSelected = true;
+  //     this.currentSelectionStatus.dataSet = true;
+  //   }else{
+  //     this.selectedOrganisationUnitLabel = "Touch to select Organisation Unit";
+  //     this.currentSelectionStatus.dataSet = false;
+  //     this.currentSelectionStatus.isOrgUnitSelected = false;
+  //     this.currentSelectionStatus.allParameterSet = false;
+  //     if (this.currentSelectionStatus.orgUnit && !this.currentSelectionStatus.dataSet) {
+  //       this.currentSelectionStatus.message = "Please select organisation unit";
+  //     }
+  //   }
+  // }
+
+  // setSelectedDataSetLabel(){
+  //   if(this.selectedDataSet.id){
+  //     this.selectedDataSetLabel = this.selectedDataSet.name;
+  //     this.currentSelectionStatus.period = true;
+  //     this.currentSelectionStatus.isDataSetSelected = true;
+  //   }else{
+  //     this.selectedDataSetLabel = "Touch to select Entry Form";
+  //     this.currentSelectionStatus.period = false;
+  //     this.sendDataViaSmsObject.mobileNumber = "";
+  //     this.sendDataViaSmsObject.isLoading = false;
+  //     this.sendDataViaSmsObject.loadingMessage = "";
+  //     this.currentSelectionStatus.isDataSetSelected = false;
+  //     this.currentSelectionStatus.allParameterSet = false;
+  //     if (this.currentSelectionStatus.dataSet && !this.currentSelectionStatus.period) {
+  //       this.currentSelectionStatus.message = "Please select entry form";
+  //     }
+  //   }
+  // }
+  //
+  // setselectedPeriodLabel(){
+  //   if(this.selectedPeriod.name){
+  //     this.selectedPeriodLabel = this.selectedPeriod.name;
+  //     this.currentSelectionStatus.isPeriodSelected = true;
+  //     this.currentSelectionStatus.message = "";
+  //     this.hasDataDimensionSet();
+  //   }else{
+  //     this.selectedPeriodLabel = "Touch to select Period";
+  //     this.currentSelectionStatus.isPeriodSelected = false;
+  //     if(this.currentSelectionStatus.period){
+  //       this.currentSelectionStatus.message = "Please select period for entry form";
+  //     }
+  //     this.currentSelectionStatus.allParameterSet = false;
+  //   }
+  // }
+
+  // hasDataDimensionSet(){
+  //   let result = true;
+  //   if(this.selectedDataSet.categoryCombo.name != 'default'){
+  //     if(this.selectedDataDimension.length > 0){
+  //       this.selectedDataDimension.forEach((dimension : any)=>{
+  //         if(dimension == null){
+  //           result = false;
+  //         }
+  //       });
+  //     }else{
+  //       result = false;
+  //     }
+  //   }
+  //   this.currentSelectionStatus.allParameterSet = (result && (this.selectedPeriodLabel.indexOf("Touch to select Period") < 0 ))?true:false;
+  //   return result;
+  // }
+  //
+  // getDataDimension(){
+  //   let cc = this.selectedDataSet.categoryCombo.id;
+  //   let cp = "";
+  //   this.selectedDataDimension.forEach((dimension : any,index:any)=>{
+  //     if(index == 0){
+  //       cp +=dimension;
+  //     }else{
+  //       cp += ";" + dimension;
+  //     }
+  //   });
+  //   return {cc : cc,cp:cp};
+  // }
+
 
 
 

@@ -1,91 +1,135 @@
 <!--&lt;!&ndash; Generated template for the UploadDataViaSmsComponent component &ndash;&gt;-->
 
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <div class="entry-selection-container entry-selection"  text-capitalize (tap)="openOrganisationUnitTree()">
-          <div style="text-align: center" >
-            <div *ngIf="!currentSelectionStatus.isOrgUnitLoaded">
-              <page-loading loadingSize="small"></page-loading>
-            </div>
-          </div>
-          <div *ngIf="currentSelectionStatus.isOrgUnitLoaded" style="text-align: center">
-            {{ selectedOrganisationUnitLabel }}
+  <!--<ion-grid>-->
+    <!--<ion-row>-->
+      <!--<ion-col>-->
+        <!--<div class="entry-selection-container entry-selection"  text-capitalize (tap)="openOrganisationUnitTree()">-->
+          <!--<div style="text-align: center" >-->
+            <!--<div *ngIf="!currentSelectionStatus.isOrgUnitLoaded">-->
+              <!--<page-loading loadingSize="small"></page-loading>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div *ngIf="currentSelectionStatus.isOrgUnitLoaded" style="text-align: center">-->
+            <!--{{ selectedOrganisationUnitLabel }}-->
 
-          </div>
-        </div>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <div class="entry-selection-container entry-selection" text-capitalize (tap)="openDataSetsModal()" >
-          <div style="text-align: center" >
-            <div *ngIf="!currentSelectionStatus.isDataSetLoaded">
-              <page-loading loadingSize="small"></page-loading>
-            </div>
-          </div>
-          <div *ngIf="currentSelectionStatus.isDataSetLoaded" style="text-align: center" >
-            {{ selectedDataSetLabel }}
-          </div>
-        </div>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <div class="entry-selection-container entry-selection" text-capitalize (tap)="openPeriodModal()" >
-          <div style="text-align: center">
-            {{ selectedPeriodLabel }}
-          </div>
-        </div>
-      </ion-col>
-    </ion-row>
+          <!--</div>-->
+        <!--</div>-->
+      <!--</ion-col>-->
+    <!--</ion-row>-->
+    <!--<ion-row>-->
+      <!--<ion-col>-->
+        <!--<div class="entry-selection-container entry-selection" text-capitalize (tap)="openDataSetsModal()" >-->
+          <!--<div style="text-align: center" >-->
+            <!--<div *ngIf="!currentSelectionStatus.isDataSetLoaded">-->
+              <!--<page-loading loadingSize="small"></page-loading>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div *ngIf="currentSelectionStatus.isDataSetLoaded" style="text-align: center" >-->
+            <!--{{ selectedDataSetLabel }}-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</ion-col>-->
+    <!--</ion-row>-->
+    <!--<ion-row>-->
+      <!--<ion-col>-->
+        <!--<div class="entry-selection-container entry-selection" text-capitalize (tap)="openPeriodModal()" >-->
+          <!--<div style="text-align: center">-->
+            <!--{{ selectedPeriodInSmsLabel }}-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</ion-col>-->
+    <!--</ion-row>-->
 
-    <div *ngIf="selectedPeriod">
-      <div *ngIf="selectedPeriod.name">
-        <div *ngIf="selectedDataSet.categoryCombo">
-          <div *ngIf="selectedDataSet.categoryCombo.name != 'default'">
-            <ion-row >
-              <ion-col >
-                <div *ngFor="let category of selectedDataSet.categoryCombo.categories;let categoryIndex = index ">
-                  <ion-item >
-                    <ion-label>{{ category.name }}</ion-label>
-                    <ion-select [(ngModel)]="selectedDataDimension[categoryIndex]">
-                      <ion-option *ngFor="let option of category.categoryOptions" value="{{option.id}}" >
-                        {{ option.name }}
-                      </ion-option>
-                    </ion-select>
-                  </ion-item><br>
-                </div>
-              </ion-col>
-            </ion-row>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!--<div *ngIf="selectedPeriodInSms">-->
+      <!--<div *ngIf="selectedPeriodInSms.name">-->
+        <!--<div *ngIf="selectedDataSet.categoryCombo">-->
+          <!--<div *ngIf="selectedDataSet.categoryCombo.name != 'default'">-->
+            <!--<ion-row >-->
+              <!--<ion-col >-->
+                <!--<div *ngFor="let category of selectedDataSet.categoryCombo.categories;let categoryIndex = index ">-->
+                  <!--<ion-item >-->
+                    <!--<ion-label>{{ category.name }}</ion-label>-->
+                    <!--<ion-select [(ngModel)]="selectedDataDimension[categoryIndex]">-->
+                      <!--<ion-option *ngFor="let option of category.categoryOptions" value="{{option.id}}" >-->
+                        <!--{{ option.name }}-->
+                      <!--</ion-option>-->
+                    <!--</ion-select>-->
+                  <!--</ion-item><br>-->
+                <!--</div>-->
+              <!--</ion-col>-->
+            <!--</ion-row>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
 
-    <div *ngIf="selectedPeriod">
-      <div *ngIf="selectedPeriod.name && hasDataDimensionSet()">
-        <ion-row >
-          <ion-col>
-            <ion-item>
-              <ion-input type="text" placeholder="Mobile Number"  [(ngModel)]="sendDataViaSmsObject.mobileNumber"></ion-input>
-            </ion-item>
-          </ion-col>
-        </ion-row>
-        <ion-row >
-          <ion-col>
-            <button class="normalButton" [disabled]="sendDataViaSmsObject.mobileNumber ==''||sendDataViaSmsObject.isLoading" ion-button text-capitalize full large color="primary" (tap)="sendDataViaSms()">
-              <span *ngIf="sendDataViaSmsObject.isLoading" >
-                <ion-spinner  name="crescent" color="secondary"></ion-spinner>
-                <span margin-top="0px">&nbsp;&nbsp;{{ sendDataViaSmsObject.loadingMessage }}</span>
-              </span>
-              <span *ngIf="!sendDataViaSmsObject.isLoading" >
-                Upload Data &nbsp;&nbsp;&nbsp;<ion-icon name="ios-arrow-forward-outline"></ion-icon>
-              </span>
-            </button>
-          </ion-col>
-        </ion-row>
-      </div>
-    </div>
-  </ion-grid>
+    <!--<div *ngIf="selectedPeriodInSms">-->
+      <!--<div *ngIf="selectedPeriodInSms.name && hasDataDimensionSet()">-->
+        <!--<ion-row >-->
+          <!--<ion-col>-->
+            <!--<ion-item>-->
+              <!--<ion-input type="text" placeholder="Mobile Number"  [(ngModel)]="sendDataViaSmsObject.mobileNumber"></ion-input>-->
+            <!--</ion-item>-->
+          <!--</ion-col>-->
+        <!--</ion-row>-->
+        <!--<ion-row >-->
+          <!--<ion-col>-->
+            <!--<button class="normalButton" [disabled]="sendDataViaSmsObject.mobileNumber ==''||sendDataViaSmsObject.isLoading" ion-button text-capitalize full large color="primary" (tap)="sendDataViaSms()">-->
+              <!--<span *ngIf="sendDataViaSmsObject.isLoading" >-->
+                <!--<ion-spinner  name="crescent" color="secondary"></ion-spinner>-->
+                <!--<span margin-top="0px">&nbsp;&nbsp;{{ sendDataViaSmsObject.loadingMessage }}</span>-->
+              <!--</span>-->
+              <!--<span *ngIf="!sendDataViaSmsObject.isLoading" >-->
+                <!--Upload Data &nbsp;&nbsp;&nbsp;<ion-icon name="ios-arrow-forward-outline"></ion-icon>-->
+              <!--</span>-->
+            <!--</button>-->
+          <!--</ion-col>-->
+        <!--</ion-row>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</ion-grid>-->
 <!--<div>{{text}}</div>-->
+
+
+<ion-grid>
+  <ion-row>
+    <ion-col>
+      <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openOrganisationUnitTree()" >
+        <!--<img  class="side-menu-icon" [src]="icons.orgUnit"/>&nbsp;&nbsp;-->
+        {{ organisationUnitLabel }}
+      </div>
+
+      <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openEntryFormList()" >
+        <!--<img  class="side-menu-icon" [src]="icons.dataSet"/>&nbsp;&nbsp;-->
+        {{ dataSetLabel }}
+      </div>
+
+      <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openPeriodList()" >
+        <!--<img  class="side-menu-icon" [src]="icons.period"/>&nbsp;&nbsp;-->
+        {{ periodLabel }}
+      </div>
+
+      <div *ngIf="selectedPeriod && selectedPeriod.iso && dataSetCategoryCombo && dataSetCategoryCombo.id ">
+        <div *ngFor="let category of dataSetCategoryCombo.categories;let categoryIndex = index">
+          <div (tap)="openDataDimensionSelection(category)" class="item-card" color="font-color" full text-center text-wrap  >
+            <div style="padding-bottom: 5px;"><b>{{ category.name }}</b></div>
+            <div *ngIf="selectedDataDimension[categoryIndex]">{{ selectedDataDimension[categoryIndex].name }}</div>
+            <div *ngIf="!selectedDataDimension[categoryIndex]">Touch to select option</div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="isFormReady" class="item-card" full (tap)="openDataEntryForm()">
+        <div><b>Organisation Unit</b> : {{ organisationUnitLabel }}<br>
+          <b>Form</b> : {{ dataSetLabel }}<br>
+          <b>Period</b> : {{ periodLabel }}
+        </div>
+        <div class="item-card" color="font-color"  ion-button clear full text-center text-capitalize >
+          <!--<img  class="side-menu-icon" [src]="icons.goToDataEntryForm"/>&nbsp;&nbsp;-->
+          Enter data
+        </div>
+      </div>
+    </ion-col>
+  </ion-row>
+
+
+</ion-grid>
