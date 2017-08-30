@@ -64,7 +64,7 @@ export class OrganisationUnitsProvider {
           response = JSON.parse(response.data);
           counts = counts + 1;
           orgUnits = this.appendOrgUnitsFromServerToOrgUnitArray(orgUnits,response);
-          this.appProvider.setNormalNotification("Wozaaaaaaa");
+
           if(counts == orgUnitIds.length){
             resolve(orgUnits);
           }

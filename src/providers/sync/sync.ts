@@ -50,33 +50,58 @@ export class SyncProvider {
     let promises = [];
     let data  = {};
     return new Promise((resolve, reject) =>  {
+      alert("Download Resource "+JSON.stringify(resources));
       resources.forEach((resource:any)=>{
-        let resourceName = resource.name;
-        if(specialMetadataResources.indexOf(resourceName) == -1){
-
+        if(resource == "organisationUnits"){
+          alert('organisationUnits')
           promises.push(
-            this.appProvider.downloadMetadata(currentUser,resourceName,null).then((response : any) =>{
-              data[resource.name] = response[resource.name];
-            },error=>{})
+            this.orgUnitsProvider.downloadingOrganisationUnitsFromServer(currentUser.userOrgUnitIds, currentUser).then((response: any) => {
+              data[resource] = response;
+            }, error => {
+            })
           );
-
-          this.appProvider.setNormalNotification("downloadResource")
-        }else{
-          if(resourceName == "organisationUnits"){
-            promises.push(
-              this.orgUnitsProvider.downloadingOrganisationUnitsFromServer(currentUser.userOrgUnitIds,currentUser).then((orgUnits:any)=>{
-                data[resource.name] = orgUnits;
-              },error=>{})
-            );
-
-          }else if(resourceName == "dataSets"){
-            promises.push(
-              this.datasetsProvider.downloadDataSetsFromServer(currentUser).then((dataSets : any)=>{
-                data[resource.name] = dataSets;
-              },error=>{})
-            );
-          }
+        }else if(resource == "dataSets"){
+          promises.push(
+            this.datasetsProvider.downloadDataSetsFromServer(currentUser).then((response: any) => {
+              //data[resource] = response;
+              alert(JSON.stringify(response));
+            }, error => {
+            })
+          );
+        }else if(resource == "sections"){
+          promises.push(
+            this.sectionProvider.downloadSectionsFromServer(currentUser).then((response: any) => {
+             // data[resource] = response;
+              alert(JSON.stringify(response));
+            }, error => {
+            })
+          );
+        }else if(resource == "dataElements"){
+          promises.push(
+            this.dataElementProvider.downloadDataElementsFromServer(currentUser).then((response: any) => {
+              //data[resource] = response;
+              alert(JSON.stringify(response));
+            }, error => {
+            })
+          );
+        }else if(resource == "indicators"){
+          promises.push(
+            this.indicatorProvider.downloadingIndicatorsFromServer(currentUser).then((response: any) => {
+              //data[resource] = response;
+              alert(JSON.stringify(response));
+            }, error => {
+            })
+          );
+        }else if(resource == "smsCommand"){
+          promises.push(
+            this.smsCommandsProvider.getSmsCommandFromServer(currentUser).then((response: any) => {
+             // data[resource] = response;
+              alert(JSON.stringify(response));
+            }, error => {
+            })
+          );
         }
+
       });
 
       Observable.forkJoin(promises).subscribe(() => {
@@ -139,88 +164,6 @@ export class SyncProvider {
     });
   }
 
-
-  universalDownloadResources(resources,specialMetadataResources,currentUser){
-    let promises = [];
-    let data  = {};
-    let resourceName = resources.name;
-
-    return new Promise((resolve, reject) => {
-      resources.forEach((resource: any) => {
-
-        this.appProvider.setNormalNotification("Universal Download is On");
-        console.log("OrgUnitIds: "+JSON.stringify(currentUser));
-
-        if (resourceName == "organisationUnits") {
-          this.appProvider.setNormalNotification("Universal Downloading OrgUnit...");
-
-          promises.push(
-
-            this.orgUnitsProvider.getOrganisationUnitsByIds(currentUser.userOrgUnitIds, currentUser).then((response: any) => {
-            //this.appProvider.downloadMetadata( currentUser, resourceName, currentUser.userOrgUnitIds).then((response: any) => {
-              data[resource.name] = response[resource.name];
-              this.appProvider.saveMetadata(resourceName,data[resourceName],currentUser.currentDatabase);
-              this.appProvider.setNormalNotification("Universal Downloading OrgUnit...");
-
-              //this.appProvider.setNormalNotification("Universal Downloading OrgUnit...");
-              this.orgUnitsProvider.savingOrganisationUnitsFromServer(response, currentUser)
-              console.log("Orgunits Downloaded & saved");
-            }, error => {
-            })
-          );
-
-        } else if (resourceName == "dataSets") {
-          promises.push(
-            this.datasetsProvider.downloadDataSetsFromServer(currentUser).then((response: any) => {
-              data[resource.name] = response[resource.name];
-              this.datasetsProvider.saveDataSetsFromServer(response, currentUser)
-            }, error => {
-            })
-          );
-        } else if (resourceName == "sections") {
-          promises.push(
-            this.sectionProvider.downloadSectionsFromServer(currentUser).then((response: any) => {
-              data[resource.name] = response[resource.name];
-              this.sectionProvider.saveSectionsFromServer(response[resource], currentUser)
-            }, error => {
-            })
-          );
-        } else if (resourceName == "dataElements") {
-          promises.push(
-            this.dataElementProvider.downloadDataElementsFromServer(currentUser).then((response: any) => {
-              data[resource.name] = response[resource.name];
-              this.dataElementProvider.saveDataElementsFromServer(response[resource], currentUser)
-            }, error => {
-            })
-          );
-        } else if (resourceName == "smsCommand") {
-          promises.push(
-            this.smsCommandsProvider.getSmsCommandFromServer(currentUser).then((response: any) => {
-              data[resource.name] = response[resource.name];
-              this.smsCommandsProvider.savingSmsCommand(response, currentUser.currentDatabase)
-            }, error => {
-            })
-          );
-        } else if (resourceName == "indicators") {
-          promises.push(
-            this.indicatorProvider.downloadingIndicatorsFromServer(currentUser).then((response: any) => {
-              data[resource.name] = response[resource.name];
-              this.indicatorProvider.savingIndicatorsFromServer(response[resource], currentUser)
-            }, error => {
-            })
-          );
-        }
-      });
-
-      Observable.forkJoin(promises).subscribe(() => {
-          resolve(data);
-        },
-        (error) => {
-          reject(error);
-        })
-    });
-
-  }
 
 
 

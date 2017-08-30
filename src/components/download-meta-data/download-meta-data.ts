@@ -117,89 +117,78 @@ export class DownloadMetaDataComponent implements OnInit{
       if(resource.status){
         isMetadata= true;
         listOfResourcesToBeUpdated.push(resource.name);
-        this.updateResources(listOfResourcesToBeUpdated);
       }
     });
+    if(listOfResourcesToBeUpdated.length > 0){
+      this.updateResources(listOfResourcesToBeUpdated);
+    }
 
-    //alert(JSON.stringify(listOfResourcesToBeUpdated));
-    // if(isMetadata){
-    //   this.updateResources(listOfResourcesToBeUpdated);
-    //   //this.appProvider.setNormalNotification("Loading to UpdateMetadata..." +Object.keys(listOfResourcesToBeUpdated).toString())
-    //  // this.updateResources(listOfResourcesToBeUpdated);
-    //   //this.appProvider.setNormalNotification("Loading to UpdateMetadata")
-    // }else{
-    //   this.appProvider.setNormalNotification("Please select atleast one resource to update"+Object.keys(listOfResourcesToBeUpdated))
-    // }
   }
 
 
   updateResources(resources){
     this.updateMetaDataLoadingMessages= "Downloading MetaData";
-    //this.updateManagerObject.updateMetaData.isProcessRunning= true;
-    this.appProvider.setNormalNotification("received "+[resources].toString());
-
-
-     // this.syncProvider.universalDownloadResources(resources,this.specialMetadataResources,this.currentUser)
     this.syncProvider.downloadResources(resources, this.specialMetadataResources,this.currentUser).then((resourcesData)=>{
+      alert("Update Resource "+JSON.stringify(resourcesData))
 
-      this.updateMetaDataLoadingMessages = "Preparing device to apply updates";
-      this.syncProvider.prepareDeviceToApplyChanges(resources,this.currentUser).then(()=>{
-        let updateCounts = 0;
-        this.updateMetaDataLoadingMessages = "Applying updates ";
-        this.appProvider.setNormalNotification("Applying updates tracking.....");
-
-        resources.forEach((resource:any)=>{
-          let resourceName = resource.name;
-
-          if(this.specialMetadataResources.indexOf(resourceName) >= -1){
-
-            this.appProvider.saveMetadata(resourceName,resourcesData[resourceName],this.currentUser.currentDatabase).then((
-            )=>{
-              updateCounts ++;
-              //this.appProvider.setNormalNotification("updateCount: "+updateCounts+ "     resources length: "+resources.length);
-              if(updateCounts == resources.length){
-                this.autoSelect("un-selectAll");
-               // this.updateManagerObject.updateMetadata.isProcessRunning = false;
-                this.appProvider.setNormalNotification("All updates has been applied successfully");
-              }
-            },error=>{
-              //this.updateManagerObject.updateMetadata.isProcessRunning = false;
-              this.appProvider.setNormalNotification("Fail to apply updates 0 : " + JSON.stringify(error));
-            })
-          }else{
-
-              if(resourceName == "organisationUnits"){
-                this.orgUnitsProvider.savingOrganisationUnitsFromServer(resourcesData[resourceName],this.currentUser).then(()=>{
-                  updateCounts ++;
-                  if(updateCounts == resources.length){
-                    this.autoSelect("un-selectAll");
-                    this.updateManagerObject.updateMetadata.isProcessRunning = false;
-                    this.appProvider.setNormalNotification("All updates has been applied successfully");
-                  }
-                },error=>{
-                  this.updateManagerObject.updateMetadata.isProcessRunning = false;
-                  this.appProvider.setNormalNotification("Fail to apply updates 1: " + JSON.stringify(error));
-                })
-              }else if(resourceName == "dataSets"){
-                this.datasetsProvider.saveDataSetsFromServer(resourcesData[resourceName],this.currentUser).then(()=>{
-                  updateCounts ++;
-                  if(updateCounts == resources.length){
-                    this.autoSelect("un-selectAll");
-                    this.updateManagerObject.updateMetadata.isProcessRunning = false;
-                    this.appProvider.setNormalNotification("All updates has been applied successfully");
-                  }
-                },error=>{
-                  this.updateManagerObject.updateMetadata.isProcessRunning = false;
-                  this.appProvider.setNormalNotification("Fail to apply updates 2 : " + JSON.stringify(error));
-                })
-              }
-          }
-
-        });
-      },error=>{
-        this.updateManagerObject.updateMetadata.isProcessRunning = false;
-        this.appProvider.setNormalNotification("Fail to prepare device to apply updates " + JSON.stringify(error));
-      });
+      // this.updateMetaDataLoadingMessages = "Preparing device to apply updates";
+      // this.syncProvider.prepareDeviceToApplyChanges(resources,this.currentUser).then(()=>{
+      //   let updateCounts = 0;
+      //   this.updateMetaDataLoadingMessages = "Applying updates ";
+      //   this.appProvider.setNormalNotification("Applying updates tracking.....");
+      //
+      //   resources.forEach((resource:any)=>{
+      //     let resourceName = resource.name;
+      //
+      //     if(this.specialMetadataResources.indexOf(resourceName) >= -1){
+      //
+      //       this.appProvider.saveMetadata(resourceName,resourcesData[resourceName],this.currentUser.currentDatabase).then((
+      //       )=>{
+      //         updateCounts ++;
+      //         //this.appProvider.setNormalNotification("updateCount: "+updateCounts+ "     resources length: "+resources.length);
+      //         if(updateCounts == resources.length){
+      //           this.autoSelect("un-selectAll");
+      //          // this.updateManagerObject.updateMetadata.isProcessRunning = false;
+      //           this.appProvider.setNormalNotification("All updates has been applied successfully");
+      //         }
+      //       },error=>{
+      //         //this.updateManagerObject.updateMetadata.isProcessRunning = false;
+      //         this.appProvider.setNormalNotification("Fail to apply updates 0 : " + JSON.stringify(error));
+      //       })
+      //     }else{
+      //
+      //         if(resourceName == "organisationUnits"){
+      //           this.orgUnitsProvider.savingOrganisationUnitsFromServer(resourcesData[resourceName],this.currentUser).then(()=>{
+      //             updateCounts ++;
+      //             if(updateCounts == resources.length){
+      //               this.autoSelect("un-selectAll");
+      //               this.updateManagerObject.updateMetadata.isProcessRunning = false;
+      //               this.appProvider.setNormalNotification("All updates has been applied successfully");
+      //             }
+      //           },error=>{
+      //             this.updateManagerObject.updateMetadata.isProcessRunning = false;
+      //             this.appProvider.setNormalNotification("Fail to apply updates 1: " + JSON.stringify(error));
+      //           })
+      //         }else if(resourceName == "dataSets"){
+      //           this.datasetsProvider.saveDataSetsFromServer(resourcesData[resourceName],this.currentUser).then(()=>{
+      //             updateCounts ++;
+      //             if(updateCounts == resources.length){
+      //               this.autoSelect("un-selectAll");
+      //               this.updateManagerObject.updateMetadata.isProcessRunning = false;
+      //               this.appProvider.setNormalNotification("All updates has been applied successfully");
+      //             }
+      //           },error=>{
+      //             this.updateManagerObject.updateMetadata.isProcessRunning = false;
+      //             this.appProvider.setNormalNotification("Fail to apply updates 2 : " + JSON.stringify(error));
+      //           })
+      //         }
+      //     }
+      //
+      //   });
+      // },error=>{
+      //   this.updateManagerObject.updateMetadata.isProcessRunning = false;
+      //   this.appProvider.setNormalNotification("Fail to prepare device to apply updates " + JSON.stringify(error));
+      // });
     },error=>{
       this.updateManagerObject.updateMetadata.isProcessRunning = false;
       this.appProvider.setNormalNotification("Fail to download updates : " + JSON.stringify(error));
