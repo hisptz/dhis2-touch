@@ -78,6 +78,38 @@ export class StandardReportProvider {
     });
   }
 
+  getReportList(currentUser){
+
+    return new Promise((resolve, reject)=> {
+      this.SqlLite.getAllDataFromTable(this.resource,currentUser.currentDatabase).then((reportList)=>{
+        resolve(reportList);
+      },error=>{
+        reject(error);
+      });
+    })
+  }
+
+  hasReportRequireParameterSelection(reportParams){
+    let requireReportParameter = false;
+    if(reportParams.paramReportingPeriod || reportParams.paramOrganisationUnit){
+      requireReportParameter = true;
+    }
+    return requireReportParameter;
+  }
+
+  getReportId(reportId,currentUser){
+    let attribute = "id";
+    let attributeArray = [];
+    attributeArray.push(reportId);
+    return new Promise((resolve, reject)=> {
+      this.SqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeArray,currentUser.currentDatabase).then((reportList:any)=>{
+        resolve(reportList[0]);
+      },error=>{
+        reject(error);
+      })
+    })
+  }
+
 
 
 }

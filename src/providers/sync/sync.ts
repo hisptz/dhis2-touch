@@ -10,6 +10,7 @@ import {DataElementsProvider} from "../data-elements/data-elements";
 import {SmsCommandProvider} from "../sms-command/sms-command";
 import {IndicatorsProvider} from "../indicators/indicators";
 import {reject} from "q";
+import {StandardReportProvider} from "../standard-report/standard-report";
 
 /*
   Generated class for the SyncProvider provider.
@@ -23,7 +24,8 @@ export class SyncProvider {
   constructor(private HttpClient : HttpClientProvider,  private sqLite: SqlLiteProvider,  private appProvider: AppProvider,
               private orgUnitsProvider: OrganisationUnitsProvider, private datasetsProvider: DataSetsProvider,
               private sectionProvider: SectionsProvider, private dataElementProvider: DataElementsProvider,
-              private smsCommandsProvider: SmsCommandProvider, private indicatorProvider: IndicatorsProvider) {}
+              private smsCommandsProvider: SmsCommandProvider, private indicatorProvider: IndicatorsProvider,
+              private reportsProvider: StandardReportProvider) {}
 
   getSyncContentDetails(){
     let syncContents = [
@@ -103,17 +105,17 @@ export class SyncProvider {
           );
         }else if(resource == "reports"){
           promises.push(
-            this.smsCommandsProvider.getSmsCommandFromServer(currentUser).then((response: any) => {
+            this.reportsProvider.downloadReportsFromServer(currentUser).then((response: any) => {
               data[resource] = response;
-              alert("From SmsCommand Server: "+JSON.stringify(response));
+              alert("From Reports Server: "+JSON.stringify(response));
             }, error => {
             })
           );
         }else if(resource == "constants"){
           promises.push(
-            this.smsCommandsProvider.getSmsCommandFromServer(currentUser).then((response: any) => {
+            this.reportsProvider.downloadReportsFromServer(currentUser).then((response: any) => {
               data[resource] = response;
-              alert("From SmsCommand Server: "+JSON.stringify(response));
+              alert("From Constants Server: "+JSON.stringify(response));
             }, error => {
             })
           );

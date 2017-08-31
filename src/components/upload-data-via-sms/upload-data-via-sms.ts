@@ -7,6 +7,7 @@ import {PeriodSelectionProvider} from "../../providers/period-selection/period-s
 import {SmsCommandProvider} from "../../providers/sms-command/sms-command";
 import {AppPermissionProvider} from "../../providers/app-permission/app-permission";
 import {UserProvider} from "../../providers/user/user";
+import {NgForm} from "@angular/forms";
 
 
 declare var cordova;
@@ -154,7 +155,6 @@ export class UploadDataViaSmsComponent implements OnInit{
   }
 
 
-
   initiateDefaultValues(){
     this.currentSelectionStatus.orgUnit = true;
     this.currentSelectionStatus.isOrgUnitSelected = false;
@@ -167,9 +167,6 @@ export class UploadDataViaSmsComponent implements OnInit{
     this.currentSelectionStatus.allParameterSet = false;
     this.currentSelectionStatus.message = "";
   }
-
-
-
 
 
   openOrganisationUnitTree(){
@@ -259,6 +256,38 @@ export class UploadDataViaSmsComponent implements OnInit{
       this.selectedPeriod = {};
     }
     this.updateDataEntryFormSelections();
+  }
+
+
+  openDataDimensionSelection(category){
+    if(category.categoryOptions && category.categoryOptions && category.categoryOptions.length > 0){
+      let currentIndex = this.dataSetCategoryCombo.categories.indexOf(category);
+      let modal = this.modalCtrl.create('DataDimensionSelectionPage', {
+        categoryOptions : category.categoryOptions,
+        title : category.name + "'s selection",
+        currentSelection : (this.selectedDataDimension[currentIndex]) ? this.selectedDataDimension[currentIndex]: {}
+      });
+      modal.onDidDismiss((selectedDataDimension : any)=>{
+        if(selectedDataDimension && selectedDataDimension.id ){
+          this.selectedDataDimension[currentIndex] = selectedDataDimension;
+          this.updateDataEntryFormSelections();
+        }
+      });
+      modal.present();
+    }else{
+      let message = "There is no option for " + category.name + " that associated with " + this.selectedOrgUnit.name;
+      this.appProvider.setNormalNotification(message);
+    }
+  }
+
+  goSubmit(form: NgForm){
+    let phoneNo: number;
+    phoneNo = form.value.mobileNumber;
+
+    alert("send to: "+phoneNo+"\n" +
+      "orgUnit: "+this.organisationUnitLabel+"\n" +
+      "DataSet: "+this.dataSetLabel+"\n" +
+      "Period: "+this.periodLabel);
   }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -470,83 +499,83 @@ export class UploadDataViaSmsComponent implements OnInit{
   //   }
   // }
   //
-  hasDataDimensionSet(){
-    let result = true;
-    if(this.selectedDataSet.categoryCombo.name != 'default'){
-      if(this.selectedDataDimension.length > 0){
-        this.selectedDataDimension.forEach((dimension : any)=>{
-          if(dimension == null){
-            result = false;
-          }
-        });
-      }else{
-        result = false;
-      }
-    }
-    this.currentSelectionStatus.allParameterSet = (result && (this.selectedPeriodLabel.indexOf("Touch to select Period") < 0 ))?true:false;
-    return result;
-  }
-  // //
-  getDataDimension(){
-    let cc = this.selectedDataSet.categoryCombo.id;
-    let cp = "";
-    this.selectedDataDimension.forEach((dimension : any,index:any)=>{
-      if(index == 0){
-        cp +=dimension;
-      }else{
-        cp += ";" + dimension;
-      }
-    });
-    return {cc : cc,cp:cp};
-  }
-
-
-
-
-  sendDataViaSms(){
-    this.sendDataViaSmsObject.orgUnit = {id :this.selectedOrganisationUnit.id,name :this.selectedOrganisationUnitLabel};
-    this.sendDataViaSmsObject.dataSet = {id : this.selectedDataSet.id,name : this.selectedDataSet.name};
-    this.sendDataViaSmsObject.period = {iso : this.selectedPeriod.iso,name : this.selectedPeriod.name };
-    if(this.hasDataDimensionSet()){
-      this.sendDataViaSmsObject.dataDimension = this.getDataDimension();
-    }
-    this.sendDataViaSmsObject.isLoading = true;
-    this.sendDataViaSmsObject.loadingMessage = "Loading Sms Configuration";
-    this.smsCommandProvider.getSmsCommandForDataSet(this.selectedDataSet.id,this.currentUser).then((smsCommand:any)=>{
-      this.sendDataViaSmsObject.loadingMessage = "Preparing Data";
-      let dataElements = this.smsCommandProvider.getEntryFormDataElements(this.selectedDataSet);
-      this.smsCommandProvider.getEntryFormDataValuesObjectFromStorage(this.selectedDataSet.id,this.selectedPeriod.iso,this.selectedOrganisationUnit.id,dataElements,this.currentUser).then((entryFormDataValuesObject:any)=>{
-        let key = Object.keys(entryFormDataValuesObject);
-        if(key.length > 0){
-          this.sendDataViaSmsObject.loadingMessage = "Preparing sms";
-          this.smsCommandProvider.getSmsForReportingData(smsCommand,entryFormDataValuesObject,this.selectedPeriod).then((reportingSms:any)=>{
-            this.sendDataViaSmsObject.loadingMessage = "Sending "+reportingSms.length+ (reportingSms.length == 1)?" SMS " : " SMSes";
-            this.smsCommandProvider.sendSmsForReportingData(this.sendDataViaSmsObject.mobileNumber,reportingSms).then((response)=>{
-              this.sendDataViaSmsObject.isLoading = false;
-              this.sendDataViaSmsObject.loadingMessage = "";
-              this.appProvider.setNormalNotification("SMS has been sent");
-            },error=>{
-              this.sendDataViaSmsObject.isLoading = false;
-              this.sendDataViaSmsObject.loadingMessage = "";
-              this.appProvider.setNormalNotification("Fail to send some of SMS, Please go into your SMS inbox and resend them manually");
-            });
-          });
-        }else{
-          this.sendDataViaSmsObject.isLoading = false;
-          this.sendDataViaSmsObject.loadingMessage = "";
-          this.appProvider.setNormalNotification("There is no data to be sent via SMS for " + this.selectedDataSet.name);
-        }
-      },error=>{
-        this.sendDataViaSmsObject.isLoading = false;
-        this.sendDataViaSmsObject.loadingMessage = "";
-        this.appProvider.setNormalNotification("Fail to prepare data for " +this.selectedDataSet.name);
-      });
-    },error=>{
-      this.sendDataViaSmsObject.isLoading = false;
-      this.sendDataViaSmsObject.loadingMessage = "";
-      this.appProvider.setNormalNotification("Fail to load sms configuration for " +this.selectedDataSet.name);
-    });
-  }
+  // hasDataDimensionSet(){
+  //   let result = true;
+  //   if(this.selectedDataSet.categoryCombo.name != 'default'){
+  //     if(this.selectedDataDimension.length > 0){
+  //       this.selectedDataDimension.forEach((dimension : any)=>{
+  //         if(dimension == null){
+  //           result = false;
+  //         }
+  //       });
+  //     }else{
+  //       result = false;
+  //     }
+  //   }
+  //   this.currentSelectionStatus.allParameterSet = (result && (this.selectedPeriodLabel.indexOf("Touch to select Period") < 0 ))?true:false;
+  //   return result;
+  // }
+  // // //
+  // getDataDimension(){
+  //   let cc = this.selectedDataSet.categoryCombo.id;
+  //   let cp = "";
+  //   this.selectedDataDimension.forEach((dimension : any,index:any)=>{
+  //     if(index == 0){
+  //       cp +=dimension;
+  //     }else{
+  //       cp += ";" + dimension;
+  //     }
+  //   });
+  //   return {cc : cc,cp:cp};
+  // }
+  //
+  //
+  //
+  //
+  // sendDataViaSms(){
+  //   this.sendDataViaSmsObject.orgUnit = {id :this.selectedOrganisationUnit.id,name :this.selectedOrganisationUnitLabel};
+  //   this.sendDataViaSmsObject.dataSet = {id : this.selectedDataSet.id,name : this.selectedDataSet.name};
+  //   this.sendDataViaSmsObject.period = {iso : this.selectedPeriod.iso,name : this.selectedPeriod.name };
+  //   if(this.hasDataDimensionSet()){
+  //     this.sendDataViaSmsObject.dataDimension = this.getDataDimension();
+  //   }
+  //   this.sendDataViaSmsObject.isLoading = true;
+  //   this.sendDataViaSmsObject.loadingMessage = "Loading Sms Configuration";
+  //   this.smsCommandProvider.getSmsCommandForDataSet(this.selectedDataSet.id,this.currentUser).then((smsCommand:any)=>{
+  //     this.sendDataViaSmsObject.loadingMessage = "Preparing Data";
+  //     let dataElements = this.smsCommandProvider.getEntryFormDataElements(this.selectedDataSet);
+  //     this.smsCommandProvider.getEntryFormDataValuesObjectFromStorage(this.selectedDataSet.id,this.selectedPeriod.iso,this.selectedOrganisationUnit.id,dataElements,this.currentUser).then((entryFormDataValuesObject:any)=>{
+  //       let key = Object.keys(entryFormDataValuesObject);
+  //       if(key.length > 0){
+  //         this.sendDataViaSmsObject.loadingMessage = "Preparing sms";
+  //         this.smsCommandProvider.getSmsForReportingData(smsCommand,entryFormDataValuesObject,this.selectedPeriod).then((reportingSms:any)=>{
+  //           this.sendDataViaSmsObject.loadingMessage = "Sending "+reportingSms.length+ (reportingSms.length == 1)?" SMS " : " SMSes";
+  //           this.smsCommandProvider.sendSmsForReportingData(this.sendDataViaSmsObject.mobileNumber,reportingSms).then((response)=>{
+  //             this.sendDataViaSmsObject.isLoading = false;
+  //             this.sendDataViaSmsObject.loadingMessage = "";
+  //             this.appProvider.setNormalNotification("SMS has been sent");
+  //           },error=>{
+  //             this.sendDataViaSmsObject.isLoading = false;
+  //             this.sendDataViaSmsObject.loadingMessage = "";
+  //             this.appProvider.setNormalNotification("Fail to send some of SMS, Please go into your SMS inbox and resend them manually");
+  //           });
+  //         });
+  //       }else{
+  //         this.sendDataViaSmsObject.isLoading = false;
+  //         this.sendDataViaSmsObject.loadingMessage = "";
+  //         this.appProvider.setNormalNotification("There is no data to be sent via SMS for " + this.selectedDataSet.name);
+  //       }
+  //     },error=>{
+  //       this.sendDataViaSmsObject.isLoading = false;
+  //       this.sendDataViaSmsObject.loadingMessage = "";
+  //       this.appProvider.setNormalNotification("Fail to prepare data for " +this.selectedDataSet.name);
+  //     });
+  //   },error=>{
+  //     this.sendDataViaSmsObject.isLoading = false;
+  //     this.sendDataViaSmsObject.loadingMessage = "";
+  //     this.appProvider.setNormalNotification("Fail to load sms configuration for " +this.selectedDataSet.name);
+  //   });
+  // }
 
 
 }

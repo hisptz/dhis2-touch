@@ -18,7 +18,7 @@
         {{ periodLabel }}
       </div>
 
-      <div *ngIf="selectedPeriod && selectedPeriod.iso && dataSetCategoryCombo && dataSetCategoryCombo.id ">
+      <div *ngIf="selectedPeriod && selectedPeriod.iso && dataSetCategoryCombo && dataSetCategoryCombo.id " >
         <div *ngFor="let category of dataSetCategoryCombo.categories;let categoryIndex = index">
           <div (tap)="openDataDimensionSelection(category)" class="item-card" color="font-color" full text-center text-wrap  >
             <div style="padding-bottom: 5px;"><b>{{ category.name }}</b></div>
@@ -27,21 +27,24 @@
           </div>
         </div>
       </div>
+      <form #f="ngForm" (ngSubmit)="goSubmit(f)">
       <div *ngIf="isFormReady" class="item-card" full >
 
         <!--<div><b>Organisation Unit</b> : {{ organisationUnitLabel }}<br>-->
           <!--<b>Form</b> : {{ dataSetLabel }}<br>-->
           <!--<b>Period</b> : {{ periodLabel }}-->
-        <ion-input type="text" name="mobilieNumber" placeholder="Mobile Number" ngModel reqired></ion-input>
-
         </div>
 
       <div>
-
+        <div class="item-card">
+        <ion-input type="number" name="mobileNumber" placeholder="Mobile Number" ngModel reqired></ion-input>
+        </div>
       <button ion-button style="text-transform: none;" block type="submit"
-      [disabled]="canSend" (click)="sendDataViaSms()">Moblie Number</button>
+      [disabled]="canSend" >Moblie Number</button>
 
       </div>
+
+      </form>
     </ion-col>
   </ion-row>
 
