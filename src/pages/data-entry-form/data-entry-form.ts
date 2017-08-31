@@ -34,6 +34,9 @@ export class DataEntryFormPage implements OnInit{
   icons : any = {};
   pager : any = {};
 
+  isDataSetCompleted : boolean;
+  isDataSetCompletenessProcessRunning : boolean;
+
   constructor(private navCtrl: NavController,
               private userProvider : UserProvider,
               private appProvider : AppProvider,
@@ -113,6 +116,16 @@ export class DataEntryFormPage implements OnInit{
       }
     });
     modal.present();
+  }
+
+  changePagination(page){
+    page = parseInt(page);
+    if(page > 0 && page <=this.pager.total){
+      this.pager.page = page;
+    }
+  }
+  updateDataSetCompleteness(){
+
   }
 
   getEntryFormSections(entryFormSections){
