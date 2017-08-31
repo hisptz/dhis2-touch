@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AppProvider} from "../../providers/app/app";
 import {SqlLiteProvider} from "../../providers/sql-lite/sql-lite";
 import {AlertController} from "ionic-angular";
+import {UserProvider} from "../../providers/user/user";
 
 /**
  * Generated class for the ClearLocalDataComponent component.
@@ -13,7 +14,7 @@ import {AlertController} from "ionic-angular";
   selector: 'clear-local-data',
   templateUrl: 'clear-local-data.html'
 })
-export class ClearLocalDataComponent {
+export class ClearLocalDataComponent implements OnInit{
 
   text: string;
 
@@ -26,11 +27,26 @@ export class ClearLocalDataComponent {
 
 
   constructor(public alertCtrl: AlertController, private sqLite: SqlLiteProvider,
-              private appProvider: AppProvider) {
+              private appProvider: AppProvider, public user: UserProvider) {
     console.log('Hello ClearLocalDataComponent Component');
     this.text = 'Hello World';
   }
 
+  ngOnInit(){
+    this.user.getCurrentUser().then((user:any)=>{
+      this.currentUser = user;
+      this.user.getUserData().then((userData : any)=>{
+        this.currentUser["organisationUnits"] = userData.organisationUnits;
+        //this.isSyncContentOpen = {};
+        //this.syncContents = this.getSyncContentDetails();
+        // if(this.syncContents.length > 0){
+        //   this.toggleSyncContents(this.syncContents[0]);
+        // }
+        // this.setUpdateManagerList();
+        // this.loadingData = false;
+      });
+    });
+  }
 
 
   resetDeletedItems(){
@@ -39,6 +55,7 @@ export class ClearLocalDataComponent {
       if(this.updateManagerObject.dataDeletion.selectedItems[key])
         deletedTable.push(key);
     }
+
     this.updateManagerObject.dataDeletion.itemsToBeDeleted = deletedTable;
   }
 
@@ -85,7 +102,7 @@ export class ClearLocalDataComponent {
         console.log("Error : " + JSON.stringify(error));
         failCount = failCount + 1;
         if((deletedItemCount + failCount) == this.updateManagerObject.dataDeletion.itemsToBeDeleted.length){
-          this.appProvider.setNormalNotification("You have successfully clear data");
+          this.appProvider.setNormalNotification("You have successfully clear data.");
           Object.keys(this.updateManagerObject.dataDeletion.selectedItems).forEach(key=>{
             this.updateManagerObject.dataDeletion.selectedItems[key] = false;
           });

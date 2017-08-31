@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import {SqlLiteProvider} from "../sql-lite/sql-lite";
 import {HttpClientProvider} from "../http-client/http-client";
+import { SMS } from '@ionic-native/sms';
 
 /*
   Generated class for the SmsCommandProvider provider.
@@ -14,7 +15,7 @@ export class SmsCommandProvider {
 
   resourceName : string;
 
-  constructor(private SqlLite : SqlLiteProvider,private HttpClient : HttpClientProvider) {
+  constructor(private SqlLite : SqlLiteProvider,private HttpClient : HttpClientProvider ) {   //public sms: SMS
     this.resourceName = "smsCommand";
   }
 
@@ -180,20 +181,20 @@ export class SmsCommandProvider {
     };
 
     return new Promise((resolve, reject)=> {
-      this.sms.send(phoneNumber,messages[messageIndex], options).then((success)=>{
-        messageIndex = messageIndex + 1;
-        if(messageIndex < messages.length){
-          this.sendSms(phoneNumber,messages,messageIndex).then(()=>{
-            resolve();
-          },error=>{
-            reject(error);
-          });
-        }else{
-          resolve(success);
-        }
-      },(error)=>{
-        reject(error);
-      });
+      // this.sms.send(phoneNumber,messages[messageIndex], options).then((success)=>{
+      //   messageIndex = messageIndex + 1;
+      //   if(messageIndex < messages.length){
+      //     this.sendSms(phoneNumber,messages,messageIndex).then(()=>{
+      //       resolve();
+      //     },error=>{
+      //       reject(error);
+      //     });
+      //   }else{
+      //     resolve(success);
+      //   }
+      // },(error)=>{
+      //   reject(error);
+      // });
     });
   }
 

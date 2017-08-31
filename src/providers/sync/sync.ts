@@ -50,53 +50,70 @@ export class SyncProvider {
     let promises = [];
     let data  = {};
     return new Promise((resolve, reject) =>  {
-      alert("Download Resource "+JSON.stringify(resources));
+      alert("Download Resource:: "+JSON.stringify(resources));
       resources.forEach((resource:any)=>{
         if(resource == "organisationUnits"){
           alert('organisationUnits')
           promises.push(
             this.orgUnitsProvider.downloadingOrganisationUnitsFromServer(currentUser.userOrgUnitIds, currentUser).then((response: any) => {
               data[resource] = response;
+              alert("From OrgUnit Server: "+JSON.stringify(response));
             }, error => {
             })
           );
         }else if(resource == "dataSets"){
           promises.push(
             this.datasetsProvider.downloadDataSetsFromServer(currentUser).then((response: any) => {
-              //data[resource] = response;
-              alert(JSON.stringify(response));
+              data[resource] = response;
+              alert("From DataSet Server: "+JSON.stringify(response));
             }, error => {
             })
           );
         }else if(resource == "sections"){
           promises.push(
             this.sectionProvider.downloadSectionsFromServer(currentUser).then((response: any) => {
-             // data[resource] = response;
-              alert(JSON.stringify(response));
+              data[resource] = response;
+              alert("From Sections Server: "+JSON.stringify(response));
             }, error => {
             })
           );
         }else if(resource == "dataElements"){
           promises.push(
             this.dataElementProvider.downloadDataElementsFromServer(currentUser).then((response: any) => {
-              //data[resource] = response;
-              alert(JSON.stringify(response));
+              data[resource] = response;
+              alert("From DataElement Server: "+JSON.stringify(response));
             }, error => {
             })
           );
         }else if(resource == "indicators"){
           promises.push(
             this.indicatorProvider.downloadingIndicatorsFromServer(currentUser).then((response: any) => {
-              //data[resource] = response;
-              alert(JSON.stringify(response));
+              data[resource] = response;
+              alert("From Indicator Server: "+JSON.stringify(response));
             }, error => {
             })
           );
         }else if(resource == "smsCommand"){
           promises.push(
             this.smsCommandsProvider.getSmsCommandFromServer(currentUser).then((response: any) => {
-             // data[resource] = response;
-              alert(JSON.stringify(response));
+             data[resource] = response;
+              alert("From SmsCommand Server: "+JSON.stringify(response));
+            }, error => {
+            })
+          );
+        }else if(resource == "reports"){
+          promises.push(
+            this.smsCommandsProvider.getSmsCommandFromServer(currentUser).then((response: any) => {
+              data[resource] = response;
+              alert("From SmsCommand Server: "+JSON.stringify(response));
+            }, error => {
+            })
+          );
+        }else if(resource == "constants"){
+          promises.push(
+            this.smsCommandsProvider.getSmsCommandFromServer(currentUser).then((response: any) => {
+              data[resource] = response;
+              alert("From SmsCommand Server: "+JSON.stringify(response));
             }, error => {
             })
           );

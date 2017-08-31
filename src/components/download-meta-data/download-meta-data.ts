@@ -129,7 +129,7 @@ export class DownloadMetaDataComponent implements OnInit{
   updateResources(resources){
     this.updateMetaDataLoadingMessages= "Downloading MetaData";
     this.syncProvider.downloadResources(resources, this.specialMetadataResources,this.currentUser).then((resourcesData)=>{
-      alert("Update Resource "+JSON.stringify(resourcesData))
+      alert("Update Resource: "+JSON.stringify(resourcesData))
 
       // this.updateMetaDataLoadingMessages = "Preparing device to apply updates";
       // this.syncProvider.prepareDeviceToApplyChanges(resources,this.currentUser).then(()=>{
