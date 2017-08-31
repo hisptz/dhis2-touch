@@ -36,6 +36,7 @@ export class SettingsProvider {
     appSettings = this.getSanitizedSettings(appSettings);
     return  new Promise((resolve,reject) => {
       let key = 'appSettings'+ (currentUser && currentUser.currentDatabase) ? currentUser.currentDatabase : "";
+      appSettings = JSON.stringify(appSettings);
       this.storage.set(key, appSettings).then(() => {
         resolve();
       },error=>{

@@ -121,7 +121,9 @@ export class DataEntryFormPage implements OnInit{
   changePagination(page){
     page = parseInt(page);
     if(page > 0 && page <=this.pager.total){
+      this.isLoading = true;
       this.pager.page = page;
+      this.isLoading = false;
     }
   }
   updateDataSetCompleteness(){

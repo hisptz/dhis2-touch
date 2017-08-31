@@ -63,7 +63,6 @@ export class SettingsPage implements OnInit{
   }
 
   initiateSettings(defaultSettings,appSettings){
-    console.log(JSON.stringify(appSettings));
     if(appSettings){
       if(appSettings.synchronization){
         this.settingObject['synchronization'] = appSettings.synchronization;
