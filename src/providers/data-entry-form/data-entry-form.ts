@@ -108,8 +108,8 @@ export class DataEntryFormProvider {
    */
   getDefaultEntryForm(dataSetId,appSettings,currentUser){
     return new Promise((resolve, reject)=> {
-      this.dataSetProvider.getDataSetDataElementIds(dataSetId,currentUser).then((dataElementIds: any)=>{
-        this.dataElementProvider.getDataElementsByIds(dataElementIds,currentUser).then((dataElements:any)=>{
+      this.dataSetProvider.getDataSetDataElements(dataSetId,currentUser).then((dataSetDatElements: any)=>{
+        this.dataElementProvider.getDataElementsByIds(dataSetDatElements,currentUser).then((dataElements:any)=>{
           let maxDataElements = (appSettings && appSettings.entryForm && appSettings.entryForm.maxDataElementOnDefaultForm) ? appSettings.entryForm.maxDataElementOnDefaultForm : 10;
           resolve(this.getDataElementSections(dataElements,maxDataElements));
         },error=>{reject(error)});

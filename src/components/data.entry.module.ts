@@ -2,17 +2,17 @@ import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
 import {SharedModule} from "./shared.module";
 import {OrganisationUnitTreeComponent} from "./organisation-unit-tree/organisation-unit-tree";
-import {PeriodSelectionComponent} from "./period-selection/period-selection";
+import {InputFieldComponent} from "./input-field/input-field";
 
 @NgModule({
   declarations: [
-    OrganisationUnitTreeComponent,PeriodSelectionComponent
+    OrganisationUnitTreeComponent,InputFieldComponent
   ],
   imports: [
     IonicModule,SharedModule
   ],
   exports: [
-    OrganisationUnitTreeComponent,PeriodSelectionComponent
+    OrganisationUnitTreeComponent,InputFieldComponent
   ]
 })
 

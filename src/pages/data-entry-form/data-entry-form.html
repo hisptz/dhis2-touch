@@ -45,7 +45,11 @@
             <div *ngIf="(currentSectionIndex + 1) == pager.page">
               <div class="item-card" >
                 <div class="entry-form-container" padding-bottom padding-top>
-                  {{ section.dataElements |json  }}
+                  <div *ngFor="let dataElement of section.dataElements" >
+                    <input-field [dataElement]="dataElement"
+                                 [currentUser]="currentUser"
+                                 (onChange)="updateData($event)"></input-field>
+                  </div>
                 </div>
               </div>
 

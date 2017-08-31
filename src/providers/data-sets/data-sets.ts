@@ -197,16 +197,17 @@ export class DataSetsProvider {
    * @param currentUser
    * @returns {Promise<any>}
    */
-  getDataSetDataElementIds(dataSetId,currentUser){
+  getDataSetDataElements(dataSetId,currentUser){
     let attributeKey = "dataSetId";
     let attributeArray = [dataSetId];
     let dataSetElements = [];
     let resource = "dataSetElements";
     return new Promise((resolve, reject)=> {
-      this.SqlLite.getDataFromTableByAttributes(resource,attributeKey,attributeArray,currentUser.currentDatabase).then((dataSetIndicatorIds : any)=>{
-        if(dataSetIndicatorIds && dataSetIndicatorIds.length > 0){
-          dataSetIndicatorIds.forEach((dataSetIndicatorId : any)=>{
-            dataSetElements.push(dataSetIndicatorId.dataElementId);
+      this.SqlLite.getDataFromTableByAttributes(resource,attributeKey,attributeArray,currentUser.currentDatabase).then((dataSetElementsIds : any)=>{
+        if(dataSetElementsIds && dataSetElementsIds.length > 0){
+          dataSetElementsIds.forEach((dataSetIndicatorId : any)=>{
+            console.log(JSON.stringify(dataSetIndicatorId));
+            dataSetElements.push({id : dataSetIndicatorId.dataElementId,sortOrder : dataSetIndicatorId.sortOrder});
           });
         }
         resolve(dataSetElements);
@@ -503,22 +504,28 @@ export class DataSetsProvider {
     let resource = "dataSetElements";
     dataSets.forEach((dataSet : any)=>{
       if(dataSet.dataSetElements && dataSet.dataSetElements.length > 0){
+        let count = 0;
         dataSet.dataSetElements.forEach((dataSetElement : any)=>{
           if(dataSetElement.dataElement.id && dataSetElement.dataElement.id)
           dataSetElements.push({
             id : dataSet.id +"-"+dataSetElement.dataElement.id,
             dataSetId : dataSet.id,
+            sortOrder : count,
             dataElementId : dataSetElement.dataElement.id
           });
+          count ++;
         })
       }
       if(dataSet.dataElements && dataSet.dataElements.length > 0){
+        let count = 0;
         dataSet.dataElements.forEach((dataElement : any)=>{
           dataSetElements.push({
             id : dataSet.id +"-"+dataElement.id,
             dataSetId : dataSet.id,
+            sortOrder : count,
             dataElementId : dataElement.id
           });
+          count ++;
         })
       }
     });

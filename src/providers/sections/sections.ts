@@ -41,8 +41,8 @@ export class SectionsProvider {
       this.SqlLite.getDataFromTableByAttributes(this.resource,attributeKey,sectionIds,currentUser.currentDatabase).then(( sections: any)=>{
         let count = 0;
         sections.forEach((section : any)=>{
-          this.getSectionDataElementIds(section.id,currentUser).then((dataElementIds : any)=>{
-            section["dataElementIds"] = dataElementIds;
+          this.getSectionDataElements(section.id,currentUser).then((sectionDataElements : any)=>{
+            section["dataElementIds"] = sectionDataElements;
             count ++;
             if(count == sections.length){
               resolve(sections);
@@ -61,16 +61,16 @@ export class SectionsProvider {
    * @param currentUser
    * @returns {Promise<any>}
    */
-  getSectionDataElementIds(sectionId,currentUser){
+  getSectionDataElements(sectionId,currentUser){
     let attributeKey = "sectionId";
     let attributeArray = [sectionId];
     let sectionDataElements = [];
     let resource = "sectionDataElements";
     return new Promise((resolve, reject)=> {
-      this.SqlLite.getDataFromTableByAttributes(resource,attributeKey,attributeArray,currentUser.currentDatabase).then((sectionDataElementIds : any)=>{
-        if(sectionDataElementIds && sectionDataElementIds.length > 0){
-          sectionDataElementIds.forEach((sectionDataElementId : any)=>{
-            sectionDataElements.push(sectionDataElementId.dataElementId);
+      this.SqlLite.getDataFromTableByAttributes(resource,attributeKey,attributeArray,currentUser.currentDatabase).then((sectionDataElementsResponse : any)=>{
+        if(sectionDataElementsResponse && sectionDataElementsResponse.length > 0){
+          sectionDataElementsResponse.forEach((sectionDataElement : any)=>{
+            sectionDataElements.push({id : sectionDataElement.dataElementId,sortOrder : sectionDataElement.sortOrder});
           });
         }
         resolve(sectionDataElements);
@@ -114,12 +114,15 @@ export class SectionsProvider {
     let resource = "sectionDataElements";
     sections.forEach((section : any)=>{
       if(section.dataElements && section.dataElements.length > 0){
+        let count = 0;
         section.dataElements.forEach((dataElement : any)=>{
           sectionDataElements.push({
             id : section.id + "-" + dataElement.id,
             sectionId : section.id,
-            dataElementId : dataElement.id
+            dataElementId : dataElement.id,
+            sortOrder : count
           });
+          count ++;
         });
       }
     });

@@ -126,6 +126,11 @@ export class DataEntryFormPage implements OnInit{
       this.isLoading = false;
     }
   }
+
+  updateData(data){
+    console.log(JSON.stringify(data));
+  }
+
   updateDataSetCompleteness(){
 
   }

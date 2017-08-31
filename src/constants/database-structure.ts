@@ -36,6 +36,7 @@ export const DATABASE_STRUCTURE = {
     columns: [
       {value: 'id', type: 'TEXT'},
       {value: 'dataSetId', type: 'TEXT'},
+      {value: 'sortOrder', type: 'TEXT'},
       {value: 'dataElementId', type: 'TEXT'}
     ],
     isMetadata: false,
@@ -99,6 +100,7 @@ export const DATABASE_STRUCTURE = {
     columns: [
       {value: 'id', type: 'TEXT'},
       {value: 'sectionId', type: 'TEXT'},
+      {value: 'sortOrder', type: 'TEXT'},
       {value: 'dataElementId', type: 'TEXT'}
     ],
     isMetadata: false,
