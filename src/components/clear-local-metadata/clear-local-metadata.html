@@ -1,0 +1,36 @@
+<!-- Generated template for the ClearLocalMetadataComponent component -->
+
+<ion-grid style="background-color: white">
+
+  <ion-row >
+    <ion-col>
+      <button ion-button block style="text-transform: none;"
+              (tap)="autoSelect('selectAll')" > select all</button>
+    </ion-col>
+    <ion-col>
+      <button ion-button block style="text-transform: none;"
+              (tap)="autoSelect('unSelectAll')" >Deselect </button>
+    </ion-col>
+  </ion-row>
+  <!--{{ resources |json }}-->
+
+  <ion-row style="background-color: white">
+    <ion-col style="background-color: white">
+      <ion-list style="background-color: white">
+        <div *ngFor="let resourceObject of resources" style="background-color: white" >
+
+          <ion-item>
+
+            <ion-checkbox color="blue" [(ngModel)]="resourceObject.status"></ion-checkbox>
+            <ion-label> {{ resourceObject.displayName }} </ion-label>
+
+          </ion-item>
+        </div>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+
+  <button ion-button style="text-transform: none;" (tap)="checkingForResourcetoDelete()">Clear MetaData</button>
+
+</ion-grid>
+
