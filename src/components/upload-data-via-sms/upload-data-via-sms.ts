@@ -47,6 +47,7 @@ export class UploadDataViaSmsComponent implements OnInit{
   isFormReady : boolean;
   dataSetCategoryCombo : any;
   isLoading : boolean;
+  canSend : boolean;
   loadingMessage : string;
   dataSets : Array<any>;
 
@@ -55,7 +56,7 @@ export class UploadDataViaSmsComponent implements OnInit{
   selectedOrgUnit : any;
 
   public sendDataViaSmsObject : any = {
-    orgUnit : {},dataSet : {},period : {},dataDimension : {},mobileNumber : "",isLoading : false,loadingMessage : ""
+    orgUnit : {},dataSetonSms : {},period : {},dataDimension : {},mobileNumber : "",isLoading : false,loadingMessage : ""
   };
 
   constructor(public modalCtrl: ModalController, public orgUnitProvider: OrganisationUnitsProvider,
@@ -118,44 +119,20 @@ export class UploadDataViaSmsComponent implements OnInit{
     if(this.selectedDataSet && this.selectedDataSet.name){
       this.dataSetLabel = this.selectedDataSet.name;
     }else {
-      this.dataSetLabel = "Touch to select entry form";
+      this.dataSetLabel = "Touch to select Data Set";
     }
 
     if(this.selectedPeriod && this.selectedPeriod.name){
       this.periodLabel = this.selectedPeriod.name;
+      this.canSend = false;
     }else{
-      this.periodLabel = "Touch to select period"
+      this.periodLabel = "Touch to select period";
+      this.canSend = true;
     }
     this.isFormReady = this.isAllFormParameterSelected();
     this.isLoading = false;
     this.loadingMessage = "";
   }
-
-
-
-  // updateSmsFormSelections(){
-  //   if(this.orgUnitProvider.lastSelectedOrgUnit){
-  //     this.selectedOrgUnit = this.orgUnitProvider.lastSelectedOrgUnit;
-  //     this.organisationUnitLabel = this.selectedOrgUnit.name;
-  //   }else{
-  //     this.organisationUnitLabel = "Touch to select organisation Unit";
-  //   }
-  //   if(this.selectedDataSet && this.selectedDataSet.name){
-  //     this.dataSetLabel = this.selectedDataSet.name;
-  //   }else {
-  //     this.dataSetLabel = "Touch to select entry form";
-  //   }
-  //
-  //   if(this.selectedPeriod && this.selectedPeriod.name){
-  //     this.periodLabel = this.selectedPeriod.name;
-  //   }else{
-  //     this.periodLabel = "Touch to select period"
-  //   }
-  //   this.isFormReady = this.isAllFormParameterSelected();
-  //   this.isLoading = false;
-  //   this.loadingMessage = "";
-  // }
-
 
 
   isAllFormParameterSelected(){
@@ -176,42 +153,13 @@ export class UploadDataViaSmsComponent implements OnInit{
     return isFormReady;
   }
 
-  // setDataSetIdsByUserRoles(){
-  //   this.dataSetIdsByUserRoles = [];
-  //   this.currentPeriodOffset = 0;
-  //   this.userProvider.getUserData().then((userData : any)=>{
-  //     userData.userRoles.forEach((userRole:any)=>{
-  //       if (userRole.dataSets) {
-  //         userRole.dataSets.forEach((dataSet:any)=>{
-  //           this.dataSetIdsByUserRoles.push(dataSet.id);
-  //         });
-  //       }
-  //     });
-  //     this.loadOrganisationUnits();
-  //   });
-  // }
-
-  // loadOrganisationUnits(){
-  //   this.currentSelectionStatus.isDataSetLoaded = true;
-  //   this.currentSelectionStatus.isOrgUnitLoaded = false;
-  //   this.orgUnitProvider.getOrganisationUnits(this.currentUser).then((organisationUnitsResponse : any)=>{
-  //     this.organisationUnits = organisationUnitsResponse.organisationUnits;
-  //     this.currentSelectionStatus.isOrgUnitLoaded = true;
-  //     this.selectedOrganisationUnit = organisationUnitsResponse.lastSelectedOrgUnit;
-  //     this.setDataEntrySelectionLabel();
-  //     this.loadingDataSets();
-  //     this.setDataEntrySelectionLabel();
-  //   },error=>{
-  //     this.appProvider.setNormalNotification('Fail to load organisation units : ' + JSON.stringify(error));
-  //   });
-  // }
 
 
   initiateDefaultValues(){
-    this.currentSelectionStatus.orgUnit = false;
+    this.currentSelectionStatus.orgUnit = true;
     this.currentSelectionStatus.isOrgUnitSelected = false;
     this.currentSelectionStatus.isOrgUnitLoaded = false;
-    this.currentSelectionStatus.dataSet = false;
+    this.currentSelectionStatus.dataSetonSms = true;
     this.currentSelectionStatus.isDataSetSelected = false;
     this.currentSelectionStatus.isDataSetLoaded = false;
     this.currentSelectionStatus.period = false;
@@ -313,7 +261,101 @@ export class UploadDataViaSmsComponent implements OnInit{
     this.updateDataEntryFormSelections();
   }
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------
 
+  // openDataSetsModal(){
+  //   if(this.currentSelectionStatus && this.currentSelectionStatus.dataSetonSms){
+  //
+  //     if(this.assignedDataSets.length > 0){
+  //       let modal = this.modalCtrl.create(DataSetsProvider,{data : this.assignedDataSets,selectedDataSet : this.selectedDataSet});
+  //       modal.onDidDismiss((selectedDataSet:any) => {
+  //         if(selectedDataSet && selectedDataSet.id){
+  //           this.selectedDataDimension = [];
+  //           this.selectedPeriod = {};
+  //           this.selectedDataSet = selectedDataSet;
+  //           let lastSelectedDataSet = this.dataSetProvider.getLastSelectedDataSet();
+  //           let lastSelectedPeriod = this.dataSetProvider.getLastSelectedDataSetPeriod();
+  //           if(lastSelectedPeriod && lastSelectedPeriod.name){
+  //             let periodTypeCurrent = this.selectedDataSet.periodType;
+  //             let openFuturePeriodsCurrent  = parseInt(this.selectedDataSet.openFuturePeriods);
+  //             let periodTypePrevious = lastSelectedDataSet.periodType;
+  //             let openFuturePeriodsPrevious = parseInt(lastSelectedDataSet.openFuturePeriods);
+  //             if((periodTypeCurrent == periodTypePrevious) && (openFuturePeriodsCurrent ==openFuturePeriodsPrevious)){
+  //               this.selectedPeriod = lastSelectedPeriod;
+  //             }
+  //           }
+  //           //this.setDataEntrySelectionLabel();
+  //           this.dataSetProvider.setLastSelectedDataSet(selectedDataSet);
+  //         }
+  //       });
+  //       modal.present();
+  //     }else{
+  //       this.appProvider.setNormalNotification("No entry form to select on " + this.selectedOrganisationUnitLabel);
+  //     }
+  //   }else{
+  //     this.appProvider.setNormalNotification("Please select organisation first");
+  //   }
+  // }
+
+
+
+
+  // updateSmsFormSelections(){
+  //   if(this.orgUnitProvider.lastSelectedOrgUnit){
+  //     this.selectedOrgUnit = this.orgUnitProvider.lastSelectedOrgUnit;
+  //     this.organisationUnitLabel = this.selectedOrgUnit.name;
+  //   }else{
+  //     this.organisationUnitLabel = "Touch to select organisation Unit";
+  //   }
+  //   if(this.selectedDataSet && this.selectedDataSet.name){
+  //     this.dataSetLabel = this.selectedDataSet.name;
+  //   }else {
+  //     this.dataSetLabel = "Touch to select entry form";
+  //   }
+  //
+  //   if(this.selectedPeriod && this.selectedPeriod.name){
+  //     this.periodLabel = this.selectedPeriod.name;
+  //   }else{
+  //     this.periodLabel = "Touch to select period"
+  //   }
+  //   this.isFormReady = this.isAllFormParameterSelected();
+  //   this.isLoading = false;
+  //   this.loadingMessage = "";
+  // }
+  //
+  //
+  // setDataSetIdsByUserRoles(){
+  //   this.dataSetIdsByUserRoles = [];
+  //   this.currentPeriodOffset = 0;
+  //   this.userProvider.getUserData().then((userData : any)=>{
+  //     userData.userRoles.forEach((userRole:any)=>{
+  //       if (userRole.dataSets) {
+  //         userRole.dataSets.forEach((dataSet:any)=>{
+  //           this.dataSetIdsByUserRoles.push(dataSet.id);
+  //         });
+  //       }
+  //     });
+  //     this.loadOrganisationUnits();
+  //   });
+  // }
+  //
+  // loadOrganisationUnits(){
+  //   this.currentSelectionStatus.isDataSetLoaded = true;
+  //   this.currentSelectionStatus.isOrgUnitLoaded = false;
+  //   this.orgUnitProvider.getOrganisationUnits(this.currentUser).then((organisationUnitsResponse : any)=>{
+  //     this.organisationUnits = organisationUnitsResponse.organisationUnits;
+  //     this.currentSelectionStatus.isOrgUnitLoaded = true;
+  //     this.selectedOrganisationUnit = organisationUnitsResponse.lastSelectedOrgUnit;
+  //     this.setDataEntrySelectionLabel();
+  //     this.loadingDataSets();
+  //     this.setDataEntrySelectionLabel();
+  //   },error=>{
+  //     this.appProvider.setNormalNotification('Fail to load organisation units : ' + JSON.stringify(error));
+  //   });
+  // }
+  //
+  //
+  //
   // loadingDataSets(){
   //   this.currentSelectionStatus.isDataSetLoaded = false;
   //   this.assignedDataSets = [];
@@ -346,7 +388,7 @@ export class UploadDataViaSmsComponent implements OnInit{
   //     this.appProvider.setNormalNotification('Fail to load assigned forms : ' + JSON.stringify(error));
   //   });
   // }
-
+  //
   // preSelectPeriod(selectedDataSet){
   //   this.preSelectDataSetDataDimension(selectedDataSet);
   //   let periods = this.periodService.getPeriods(null,selectedDataSet,this.currentPeriodOffset);
@@ -356,8 +398,8 @@ export class UploadDataViaSmsComponent implements OnInit{
   //   }
   //   this.selectedPeriod = periods[0];
   // }
-
-
+  //
+  //
   // preSelectDataSetDataDimension(selectedDataSet){
   //   if(selectedDataSet.categoryCombo.name != 'default'){
   //     this.selectedDataDimension = [];
@@ -368,14 +410,14 @@ export class UploadDataViaSmsComponent implements OnInit{
   //     }
   //   }
   // }
-
-
+  //
+  //
   // setDataEntrySelectionLabel(){
   //   this.setOrganisationSelectLabel();
   //   this.setSelectedDataSetLabel();
   //   this.setselectedPeriodLabel();
   // }
-
+  //
   // setOrganisationSelectLabel(){
   //   console.log("sms orgUnitId "+ this.selectedOrganisationUnit.id);
   //   if(this.selectedOrganisationUnit.id){
@@ -392,7 +434,7 @@ export class UploadDataViaSmsComponent implements OnInit{
   //     }
   //   }
   // }
-
+  //
   // setSelectedDataSetLabel(){
   //   if(this.selectedDataSet.id){
   //     this.selectedDataSetLabel = this.selectedDataSet.name;
@@ -427,84 +469,84 @@ export class UploadDataViaSmsComponent implements OnInit{
   //     this.currentSelectionStatus.allParameterSet = false;
   //   }
   // }
-
-  // hasDataDimensionSet(){
-  //   let result = true;
-  //   if(this.selectedDataSet.categoryCombo.name != 'default'){
-  //     if(this.selectedDataDimension.length > 0){
-  //       this.selectedDataDimension.forEach((dimension : any)=>{
-  //         if(dimension == null){
-  //           result = false;
-  //         }
-  //       });
-  //     }else{
-  //       result = false;
-  //     }
-  //   }
-  //   this.currentSelectionStatus.allParameterSet = (result && (this.selectedPeriodLabel.indexOf("Touch to select Period") < 0 ))?true:false;
-  //   return result;
-  // }
   //
-  // getDataDimension(){
-  //   let cc = this.selectedDataSet.categoryCombo.id;
-  //   let cp = "";
-  //   this.selectedDataDimension.forEach((dimension : any,index:any)=>{
-  //     if(index == 0){
-  //       cp +=dimension;
-  //     }else{
-  //       cp += ";" + dimension;
-  //     }
-  //   });
-  //   return {cc : cc,cp:cp};
-  // }
+  hasDataDimensionSet(){
+    let result = true;
+    if(this.selectedDataSet.categoryCombo.name != 'default'){
+      if(this.selectedDataDimension.length > 0){
+        this.selectedDataDimension.forEach((dimension : any)=>{
+          if(dimension == null){
+            result = false;
+          }
+        });
+      }else{
+        result = false;
+      }
+    }
+    this.currentSelectionStatus.allParameterSet = (result && (this.selectedPeriodLabel.indexOf("Touch to select Period") < 0 ))?true:false;
+    return result;
+  }
+  // //
+  getDataDimension(){
+    let cc = this.selectedDataSet.categoryCombo.id;
+    let cp = "";
+    this.selectedDataDimension.forEach((dimension : any,index:any)=>{
+      if(index == 0){
+        cp +=dimension;
+      }else{
+        cp += ";" + dimension;
+      }
+    });
+    return {cc : cc,cp:cp};
+  }
 
 
 
 
-  // sendDataViaSms(){
-  //   this.sendDataViaSmsObject.orgUnit = {id :this.selectedOrganisationUnit.id,name :this.selectedOrganisationUnitLabel};
-  //   this.sendDataViaSmsObject.dataSet = {id : this.selectedDataSet.id,name : this.selectedDataSet.name};
-  //   this.sendDataViaSmsObject.period = {iso : this.selectedPeriod.iso,name : this.selectedPeriod.name };
-  //   if(this.hasDataDimensionSet()){
-  //     this.sendDataViaSmsObject.dataDimension = this.getDataDimension();
-  //   }
-  //   this.sendDataViaSmsObject.isLoading = true;
-  //   this.sendDataViaSmsObject.loadingMessage = "Loading Sms Configuration";
-  //   this.smsCommandProvider.getSmsCommandForDataSet(this.selectedDataSet.id,this.currentUser).then((smsCommand:any)=>{
-  //     this.sendDataViaSmsObject.loadingMessage = "Preparing Data";
-  //     let dataElements = this.smsCommandProvider.getEntryFormDataElements(this.selectedDataSet);
-  //     this.smsCommandProvider.getEntryFormDataValuesObjectFromStorage(this.selectedDataSet.id,this.selectedPeriod.iso,this.selectedOrganisationUnit.id,dataElements,this.currentUser).then((entryFormDataValuesObject:any)=>{
-  //       let key = Object.keys(entryFormDataValuesObject);
-  //       if(key.length > 0){
-  //         this.sendDataViaSmsObject.loadingMessage = "Preparing sms";
-  //         this.smsCommandProvider.getSmsForReportingData(smsCommand,entryFormDataValuesObject,this.selectedPeriod).then((reportingSms:any)=>{
-  //           this.sendDataViaSmsObject.loadingMessage = "Sending "+reportingSms.length+ (reportingSms.length == 1)?" SMS " : " SMSes";
-  //           this.smsCommandProvider.sendSmsForReportingData(this.sendDataViaSmsObject.mobileNumber,reportingSms).then((response)=>{
-  //             this.sendDataViaSmsObject.isLoading = false;
-  //             this.sendDataViaSmsObject.loadingMessage = "";
-  //             this.appProvider.setNormalNotification("SMS has been sent");
-  //           },error=>{
-  //             this.sendDataViaSmsObject.isLoading = false;
-  //             this.sendDataViaSmsObject.loadingMessage = "";
-  //             this.appProvider.setNormalNotification("Fail to send some of SMS, Please go into your SMS inbox and resend them manually");
-  //           });
-  //         });
-  //       }else{
-  //         this.sendDataViaSmsObject.isLoading = false;
-  //         this.sendDataViaSmsObject.loadingMessage = "";
-  //         this.appProvider.setNormalNotification("There is no data to be sent via SMS for " + this.selectedDataSet.name);
-  //       }
-  //     },error=>{
-  //       this.sendDataViaSmsObject.isLoading = false;
-  //       this.sendDataViaSmsObject.loadingMessage = "";
-  //       this.appProvider.setNormalNotification("Fail to prepare data for " +this.selectedDataSet.name);
-  //     });
-  //   },error=>{
-  //     this.sendDataViaSmsObject.isLoading = false;
-  //     this.sendDataViaSmsObject.loadingMessage = "";
-  //     this.appProvider.setNormalNotification("Fail to load sms configuration for " +this.selectedDataSet.name);
-  //   });
-  // }
+  sendDataViaSms(){
+    this.sendDataViaSmsObject.orgUnit = {id :this.selectedOrganisationUnit.id,name :this.selectedOrganisationUnitLabel};
+    this.sendDataViaSmsObject.dataSet = {id : this.selectedDataSet.id,name : this.selectedDataSet.name};
+    this.sendDataViaSmsObject.period = {iso : this.selectedPeriod.iso,name : this.selectedPeriod.name };
+    if(this.hasDataDimensionSet()){
+      this.sendDataViaSmsObject.dataDimension = this.getDataDimension();
+    }
+    this.sendDataViaSmsObject.isLoading = true;
+    this.sendDataViaSmsObject.loadingMessage = "Loading Sms Configuration";
+    this.smsCommandProvider.getSmsCommandForDataSet(this.selectedDataSet.id,this.currentUser).then((smsCommand:any)=>{
+      this.sendDataViaSmsObject.loadingMessage = "Preparing Data";
+      let dataElements = this.smsCommandProvider.getEntryFormDataElements(this.selectedDataSet);
+      this.smsCommandProvider.getEntryFormDataValuesObjectFromStorage(this.selectedDataSet.id,this.selectedPeriod.iso,this.selectedOrganisationUnit.id,dataElements,this.currentUser).then((entryFormDataValuesObject:any)=>{
+        let key = Object.keys(entryFormDataValuesObject);
+        if(key.length > 0){
+          this.sendDataViaSmsObject.loadingMessage = "Preparing sms";
+          this.smsCommandProvider.getSmsForReportingData(smsCommand,entryFormDataValuesObject,this.selectedPeriod).then((reportingSms:any)=>{
+            this.sendDataViaSmsObject.loadingMessage = "Sending "+reportingSms.length+ (reportingSms.length == 1)?" SMS " : " SMSes";
+            this.smsCommandProvider.sendSmsForReportingData(this.sendDataViaSmsObject.mobileNumber,reportingSms).then((response)=>{
+              this.sendDataViaSmsObject.isLoading = false;
+              this.sendDataViaSmsObject.loadingMessage = "";
+              this.appProvider.setNormalNotification("SMS has been sent");
+            },error=>{
+              this.sendDataViaSmsObject.isLoading = false;
+              this.sendDataViaSmsObject.loadingMessage = "";
+              this.appProvider.setNormalNotification("Fail to send some of SMS, Please go into your SMS inbox and resend them manually");
+            });
+          });
+        }else{
+          this.sendDataViaSmsObject.isLoading = false;
+          this.sendDataViaSmsObject.loadingMessage = "";
+          this.appProvider.setNormalNotification("There is no data to be sent via SMS for " + this.selectedDataSet.name);
+        }
+      },error=>{
+        this.sendDataViaSmsObject.isLoading = false;
+        this.sendDataViaSmsObject.loadingMessage = "";
+        this.appProvider.setNormalNotification("Fail to prepare data for " +this.selectedDataSet.name);
+      });
+    },error=>{
+      this.sendDataViaSmsObject.isLoading = false;
+      this.sendDataViaSmsObject.loadingMessage = "";
+      this.appProvider.setNormalNotification("Fail to load sms configuration for " +this.selectedDataSet.name);
+    });
+  }
 
 
 }

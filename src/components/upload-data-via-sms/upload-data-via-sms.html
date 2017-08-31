@@ -40,28 +40,7 @@
       <!--</ion-col>-->
     <!--</ion-row>-->
 
-    <!--<div *ngIf="selectedPeriodInSms">-->
-      <!--<div *ngIf="selectedPeriodInSms.name">-->
-        <!--<div *ngIf="selectedDataSet.categoryCombo">-->
-          <!--<div *ngIf="selectedDataSet.categoryCombo.name != 'default'">-->
-            <!--<ion-row >-->
-              <!--<ion-col >-->
-                <!--<div *ngFor="let category of selectedDataSet.categoryCombo.categories;let categoryIndex = index ">-->
-                  <!--<ion-item >-->
-                    <!--<ion-label>{{ category.name }}</ion-label>-->
-                    <!--<ion-select [(ngModel)]="selectedDataDimension[categoryIndex]">-->
-                      <!--<ion-option *ngFor="let option of category.categoryOptions" value="{{option.id}}" >-->
-                        <!--{{ option.name }}-->
-                      <!--</ion-option>-->
-                    <!--</ion-select>-->
-                  <!--</ion-item><br>-->
-                <!--</div>-->
-              <!--</ion-col>-->
-            <!--</ion-row>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
+
 
     <!--<div *ngIf="selectedPeriodInSms">-->
       <!--<div *ngIf="selectedPeriodInSms.name && hasDataDimensionSet()">-->
@@ -95,17 +74,18 @@
   <ion-row>
     <ion-col>
       <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openOrganisationUnitTree()" >
-        <!--<img  class="side-menu-icon" [src]="icons.orgUnit"/>&nbsp;&nbsp;-->
+        <img  class="side-menu-icon" src="../assets/data-entry/orgUnit.png"/>&nbsp;&nbsp;
         {{ organisationUnitLabel }}
       </div>
 
+
       <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openEntryFormList()" >
-        <!--<img  class="side-menu-icon" [src]="icons.dataSet"/>&nbsp;&nbsp;-->
+        <img  class="side-menu-icon" src="../assets/data-entry/form.png"/>&nbsp;&nbsp;
         {{ dataSetLabel }}
       </div>
 
       <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openPeriodList()" >
-        <!--<img  class="side-menu-icon" [src]="icons.period"/>&nbsp;&nbsp;-->
+        <img  class="side-menu-icon" src="../assets/data-entry/period.png"/>&nbsp;&nbsp;
         {{ periodLabel }}
       </div>
 
@@ -118,18 +98,38 @@
           </div>
         </div>
       </div>
-      <div *ngIf="isFormReady" class="item-card" full (tap)="openDataEntryForm()">
-        <div><b>Organisation Unit</b> : {{ organisationUnitLabel }}<br>
-          <b>Form</b> : {{ dataSetLabel }}<br>
-          <b>Period</b> : {{ periodLabel }}
+      <div *ngIf="isFormReady" class="item-card" full >
+
+        <!--<div><b>Organisation Unit</b> : {{ organisationUnitLabel }}<br>-->
+          <!--<b>Form</b> : {{ dataSetLabel }}<br>-->
+          <!--<b>Period</b> : {{ periodLabel }}-->
+        <ion-input type="text" name="mobilieNumber" placeholder="Mobile Number" ngModel reqired></ion-input>
+
         </div>
-        <div class="item-card" color="font-color"  ion-button clear full text-center text-capitalize >
-          <!--<img  class="side-menu-icon" [src]="icons.goToDataEntryForm"/>&nbsp;&nbsp;-->
-          Enter data
-        </div>
+
+      <div>
+
+      <button ion-button style="text-transform: none;" block type="submit"
+      [disabled]="canSend" (click)="sendDataViaSms()">Moblie Number</button>
+
       </div>
     </ion-col>
   </ion-row>
+
+  <!--<ion-row >-->
+    <!--<ion-col >-->
+      <!--<div *ngFor="let category of selectedDataSet.categoryCombo.categories;let categoryIndex = index ">-->
+        <!--<ion-item >-->
+          <!--<ion-label>{{ category.name }}</ion-label>-->
+          <!--<ion-select [(ngModel)]="selectedDataDimension[categoryIndex]">-->
+            <!--<ion-option *ngFor="let option of category.categoryOptions" value="{{option.id}}" >-->
+              <!--{{ option.name }}-->
+            <!--</ion-option>-->
+          <!--</ion-select>-->
+        <!--</ion-item><br>-->
+      <!--</div>-->
+    <!--</ion-col>-->
+  <!--</ion-row>-->
 
 
 </ion-grid>
