@@ -149,8 +149,9 @@ export class AppProvider {
       }else{
         this.sqLite.insertBulkDataOnTable(resource,resourceValues,databaseName).then(()=>{
           resolve();
+
         },error=>{
-          console.log("SAve metada Error Tracking....: "+JSON.stringify(error));
+          console.log(JSON.stringify(error));
           reject(error);
         });
       }
