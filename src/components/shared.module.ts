@@ -11,7 +11,7 @@ import {ReportCompComponent} from "./report-comp/report-comp";
   declarations: [
     LoadingPage,
     ProgressBarPage,NotificationComponent,
-    EmptyListNotificationComponent,HelpContentsComponent,ReportCompComponent
+    EmptyListNotificationComponent,HelpContentsComponent
   ],
   imports: [
     IonicModule
@@ -19,7 +19,7 @@ import {ReportCompComponent} from "./report-comp/report-comp";
   exports: [
     LoadingPage,
     ProgressBarPage,NotificationComponent,
-    EmptyListNotificationComponent,HelpContentsComponent,ReportCompComponent
+    EmptyListNotificationComponent,HelpContentsComponent
   ]
 })
 
