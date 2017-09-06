@@ -13,6 +13,37 @@
 </ion-header>
 
 
-<ion-content >
+<ion-content class="report" >
+
+
+  <!--<report-comp></report-comp>-->
+  <div *ngIf="loadingData">
+    <ion-row >
+      <ion-col >
+        <page-loading loadingSize="large" ></page-loading>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <div *ngIf="!loadingData">
+    <ion-searchbar animated="true" (ionInput)="getFilteredList($event)"></ion-searchbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col >
+          <ion-list>
+            <ion-item *ngFor="let report of reportList" (tap)="selectReport(report)">
+              <ion-icon name="ios-folder-outline" item-left></ion-icon>
+              <span >{{ report.name }}</span>
+            </ion-item>
+            <ion-item *ngIf = "reportList.length == 0">
+              <empty-list-notification [emptyListMessage]="'There is no report to select'"></empty-list-notification>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+
 
 </ion-content>

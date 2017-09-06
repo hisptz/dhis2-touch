@@ -439,4 +439,33 @@ export class DataSetsProvider {
     return dataSetList;
   }
 
+  /**
+   * getDataSetsByIds
+   * @param dataSetsIds
+   * @param currentUser
+   * @returns {Promise<T>}
+   */
+  getDataSetsByIds(dataSetsIds,currentUser){
+    let attribute = 'id';
+    let dataSetsResponse = [];
+
+    return new Promise((resolve, reject)=> {
+      this.SqlLite.getDataFromTableByAttributes(this.resource,attribute,dataSetsIds,currentUser.currentDatabase).then((dataSets : any)=>{
+        this.sortDataSetList(dataSets);
+        dataSets.forEach((dataSet : any)=>{
+          dataSetsResponse.push({
+            id: dataSet.id,
+            name: dataSet.name,
+            dataElements : dataSet.dataElements,
+            dataSetElements : dataSet.dataSetElements
+          });
+        });
+        resolve(dataSetsResponse);
+      },error=>{
+        reject(error);
+      })
+    });
+  }
+
+
 }

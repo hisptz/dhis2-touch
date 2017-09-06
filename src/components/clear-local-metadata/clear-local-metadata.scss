@@ -1,3 +1,25 @@
 clear-local-metadata {
 
+  .whiteBackground{
+    background-color: #F4F4F4;
+  }
+  .backgroundContents{
+    background-color: #F4F4F4;
+  }
+
+  .item-md,.item-ios,.item .item-block .item-md .item-input,.item-inner,.input-wrapper .item-inner{
+    background-color: #F4F4F4;
+  }
+  .item-md,.item-ios{
+    background-color: #F4F4F4;
+  }
+  .item-md.item-block .item-inner {
+    padding-right: 5px;
+    border-bottom: 1px solid #E6E6E7;
+  }
+  .item-ios.item-block .item-inner {
+    padding-right: 5px;
+    border-bottom: 1px solid #E6E6E7;
+  }
+
 }

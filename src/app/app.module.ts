@@ -61,6 +61,7 @@ import { StandardReportProvider } from '../providers/standard-report/standard-re
 import {DataEntryModule} from "../components/data.entry.module";
 import { PeriodSelectionProvider } from '../providers/period-selection/period-selection';
 import {AppPermissionProvider} from "../providers/app-permission/app-permission";
+import {ReportsProvider} from "../providers/reports/reports";
 
 
 @NgModule({
@@ -120,7 +121,8 @@ import {AppPermissionProvider} from "../providers/app-permission/app-permission"
     SyncProvider,
     StandardReportProvider,
     PeriodSelectionProvider,
-    AppPermissionProvider
+    AppPermissionProvider,
+    ReportsProvider
   ]
 })
 export class AppModule {}

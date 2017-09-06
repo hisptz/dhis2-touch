@@ -90,7 +90,7 @@ export class SyncProvider {
           promises.push(
             this.indicatorProvider.downloadingIndicatorsFromServer(currentUser).then((response: any) => {
               data[resource] = response;
-              alert("From Indicator Server: "+JSON.stringify(response));
+             // alert("From Indicator Server: "+JSON.stringify(response));
             }, error => {
             })
           );
