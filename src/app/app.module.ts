@@ -62,6 +62,12 @@ import {DataEntryModule} from "../components/data.entry.module";
 import { PeriodSelectionProvider } from '../providers/period-selection/period-selection';
 import {AppPermissionProvider} from "../providers/app-permission/app-permission";
 import {ReportsProvider} from "../providers/reports/reports";
+import { ProgramsProvider } from '../providers/programs/programs';
+import { ProgramStageDataElementsProvider } from '../providers/program-stage-data-elements/program-stage-data-elements';
+import { EventsProvider } from '../providers/events/events';
+import { ProgramStageSectionsProvider } from '../providers/program-stage-sections/program-stage-sections';
+import { EventCaptureFormProvider } from '../providers/event-capture-form/event-capture-form';
+import {LoadingPage} from "../components/loading/loading";
 
 
 @NgModule({
@@ -122,7 +128,12 @@ import {ReportsProvider} from "../providers/reports/reports";
     StandardReportProvider,
     PeriodSelectionProvider,
     AppPermissionProvider,
-    ReportsProvider
+    ReportsProvider,
+    ProgramsProvider,
+    ProgramStageDataElementsProvider,
+    EventsProvider,
+    ProgramStageSectionsProvider,
+    EventCaptureFormProvider,
   ]
 })
 export class AppModule {}

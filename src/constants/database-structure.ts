@@ -180,5 +180,73 @@ export const DATABASE_STRUCTURE = {
     isMetadata: true,
     batchSize : 500,
     resourceType: "report"
+  },
+
+  programs: {
+    columns: [
+      {value: 'id', type: 'TEXT'},
+      {value: 'name', type: 'TEXT'},
+      {value: 'withoutRegistration', type: 'TEXT'},
+      {value: 'programType', type: 'TEXT'},
+      {value: 'categoryCombo', type: 'LONGTEXT'},
+      {value: 'programStages', type: 'LONGTEXT'},
+      {value: 'programStageSections', type: 'LONGTEXT'},
+      {value: 'programIndicators', type: 'LONGTEXT'},
+      {value: 'translations', type: 'LONGTEXT'},
+      {value: 'attributeValues', type: 'LONGTEXT'},
+      {value: 'validationCriterias', type: 'LONGTEXT'},
+      {value: 'programRuleVariables', type: 'LONGTEXT'},
+      {value: 'programTrackedEntityAttributes', type: 'LONGTEXT'},
+      {value: 'programRules', type: 'LONGTEXT'},
+      {value: 'organisationUnits', type: 'LONGTEXT'}
+    ],
+    isMetadata: true,
+    batchSize : 50,
+    resourceType: "event"
+  },
+  programStageDataElements: {
+    columns: [
+      {value: 'id', type: 'TEXT'},
+      {value: 'displayInReports', type: 'TEXT'},
+      {value: 'compulsory', type: 'TEXT'},
+      {value: 'allowProvidedElsewhere', type: 'TEXT'},
+      {value: 'allowFutureDate', type: 'TEXT'},
+      {value: 'dataElement', type: 'LONGTEXT'}
+    ],
+    isMetadata: false,
+    //resourceType: "event",
+    batchSize : 50
+  },
+  programStageSections: {
+    columns: [
+      {value: 'id', type: 'TEXT'},
+      {value: 'name', type: 'TEXT'},
+      {value: 'sortOrder', type: 'TEXT'},
+      {value: 'programIndicators', type: 'LONGTEXT'},
+      {value: 'programStageDataElements', type: 'LONGTEXT'}
+    ],
+    isMetadata: true,
+    batchSize : 100
+    //resourceType: "event"
+  },
+  events: {
+    columns: [
+      {value: 'id', type: 'TEXT'},
+      {value: 'event', type: 'TEXT'},
+      {value: 'program', type: 'TEXT'},
+      {value: 'programName', type: 'TEXT'},
+      {value: 'programStage', type: 'TEXT'},
+      {value: 'orgUnit', type: 'TEXT'},
+      {value: 'orgUnitName', type: 'TEXT'},
+      {value: 'status', type: 'TEXT'},
+      {value: 'eventDate', type: 'TEXT'},
+      {value: 'completedDate', type: 'TEXT'},
+      {value: 'attributeCategoryOptions', type: 'TEXT'},
+      {value: 'dataValues', type: 'LONGTEXT'},
+      {value: 'notes', type: 'TEXT'},
+      {value: 'syncStatus', type: 'TEXT'}
+    ],
+    batchSize : 100,
+    isMetadata: false
   }
 };

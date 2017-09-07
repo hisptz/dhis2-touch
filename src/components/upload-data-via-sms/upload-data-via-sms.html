@@ -3,18 +3,18 @@
   <ion-row>
     <ion-col>
       <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openOrganisationUnitTree()" >
-        <img  class="side-menu-icon" src="../assets/data-entry/orgUnit.png"/>&nbsp;&nbsp;
+        <img  class="side-menu-icon" [src]="icons.orgUnit"/>&nbsp;&nbsp;
         {{ organisationUnitLabel }}
       </div>
 
 
       <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openEntryFormList()" >
-        <img  class="side-menu-icon" src="../assets/data-entry/form.png"/>&nbsp;&nbsp;
+        <img  class="side-menu-icon" [src]="icons.dataSet"/>&nbsp;&nbsp;
         {{ dataSetLabel }}
       </div>
 
       <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openPeriodList()" >
-        <img  class="side-menu-icon" src="../assets/data-entry/period.png"/>&nbsp;&nbsp;
+        <img  class="side-menu-icon" [src]="icons.period"/>&nbsp;&nbsp;
         {{ periodLabel }}
       </div>
 
