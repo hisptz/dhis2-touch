@@ -8,7 +8,6 @@ import {SmsCommandProvider} from "../../providers/sms-command/sms-command";
 import {AppPermissionProvider} from "../../providers/app-permission/app-permission";
 import {UserProvider} from "../../providers/user/user";
 import {NgForm} from "@angular/forms";
-import {OrganisationUnitSelectionPage} from "../../pages/organisation-unit-selection/organisation-unit-selection";
 
 
 declare var cordova;
@@ -53,7 +52,7 @@ export class UploadDataViaSmsComponent implements OnInit{
   loadingMessage : string;
   dataSets : Array<any>;
 
-  icons : any = {};
+
 
   selectedOrgUnit : any;
 
@@ -70,11 +69,6 @@ export class UploadDataViaSmsComponent implements OnInit{
   }
 
   ngOnInit() {
-
-    this.icons.orgUnit = "assets/data-entry/orgUnit.png";
-    this.icons.dataSet = "assets/data-entry/form.png";
-    this.icons.period = "assets/data-entry/period.png";
-    this.icons.goToDataEntryForm = "assets/data-entry/enterDataPen.png";
     //checking and request for sms permissions
     let permissions = cordova.plugins.permissions;
     let smsPermission = [permissions.SEND_SMS];
@@ -176,11 +170,7 @@ export class UploadDataViaSmsComponent implements OnInit{
 
 
   openOrganisationUnitTree(){
-    let modal = this.modalCtrl.create('OrganisationUnitSelectionPage',{
-      organisationUnits : this.organisationUnits,
-      currentUser : this.currentUser,
-      lastSelectedOrgUnit:this.selectedOrganisationUnit
-    });
+    let modal = this.modalCtrl.create('OrganisationUnitSelectionPage',{});
     modal.onDidDismiss((selectedOrgUnit : any)=>{
       if(selectedOrgUnit && selectedOrgUnit.id){
         this.selectedOrgUnit = selectedOrgUnit;

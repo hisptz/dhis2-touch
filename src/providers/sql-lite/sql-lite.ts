@@ -369,6 +369,62 @@ export class SqlLiteProvider {
     return data;
   }
 
+
+  /**
+   *
+   * @param tableName
+   * @param fieldsValues
+   * @param databaseName
+   * @returns {Promise<T>}
+   */
+  insertDataOnTable(tableName, fieldsValues, databaseName) {
+
+    databaseName = databaseName + '.db';
+    let columns = this.getDataBaseStructure()[tableName].columns;
+    let columnNames = "";
+    let questionMarks = "";
+    let values = [];
+
+    columns.forEach((column:any, index:any)=> {
+      let columnValue:any;
+      let columnName = column.value;
+      columnNames += columnName;
+
+      if (fieldsValues[columnName]) {
+        columnValue = fieldsValues[columnName];
+      }
+
+      questionMarks += "?";
+      if ((index + 1) < columns.length) {
+        columnNames += ',';
+        questionMarks += ',';
+      }
+      if (column.type != "LONGTEXT") {
+        if (columnValue == undefined) {
+          columnValue = 0;
+        }
+        values.push(columnValue);
+      } else {
+        values.push(JSON.stringify(columnValue));
+      }
+
+    });
+    let query = "INSERT OR REPLACE INTO " + tableName + " (" + columnNames + ") VALUES (" + questionMarks + ")";
+    return new Promise( (resolve, reject)=> {
+      this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
+        db.executeSql(query, values).then(() => {
+          resolve();
+        }, (error) => {
+          reject(error);
+        });
+      }).catch(e => {
+        reject();
+        console.log(e);
+      });
+    });
+  }
+
+
   oldStructure(){
     let  dataBaseStructure = {
       organisationUnits: {
@@ -585,61 +641,5 @@ export class SqlLiteProvider {
     };
     return dataBaseStructure;
   }
-
-
-  /**
-   *
-   * @param tableName
-   * @param fieldsValues
-   * @param databaseName
-   * @returns {Promise<T>}
-   */
-  insertDataOnTable(tableName, fieldsValues, databaseName) {
-
-    databaseName = databaseName + '.db';
-    let columns = this.getDataBaseStructure()[tableName].columns;
-    let columnNames = "";
-    let questionMarks = "";
-    let values = [];
-
-    columns.forEach((column:any, index:any)=> {
-      let columnValue:any;
-      let columnName = column.value;
-      columnNames += columnName;
-
-      if (fieldsValues[columnName]) {
-        columnValue = fieldsValues[columnName];
-      }
-
-      questionMarks += "?";
-      if ((index + 1) < columns.length) {
-        columnNames += ',';
-        questionMarks += ',';
-      }
-      if (column.type != "LONGTEXT") {
-        if (columnValue == undefined) {
-          columnValue = 0;
-        }
-        values.push(columnValue);
-      } else {
-        values.push(JSON.stringify(columnValue));
-      }
-
-    });
-    let query = "INSERT OR REPLACE INTO " + tableName + " (" + columnNames + ") VALUES (" + questionMarks + ")";
-    return new Promise( (resolve, reject)=> {
-      this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
-        db.executeSql(query, values).then(() => {
-          resolve();
-        }, (error) => {
-          reject(error);
-        });
-      }).catch(e => {
-        reject();
-        console.log(e);
-      });
-    });
-  }
-
 }
 

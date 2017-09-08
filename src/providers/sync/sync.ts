@@ -11,8 +11,6 @@ import {SmsCommandProvider} from "../sms-command/sms-command";
 import {IndicatorsProvider} from "../indicators/indicators";
 import {reject} from "q";
 import {StandardReportProvider} from "../standard-report/standard-report";
-import {ProgramsProvider} from "../programs/programs";
-import {ProgramStageSectionsProvider} from "../program-stage-sections/program-stage-sections";
 
 /*
   Generated class for the SyncProvider provider.
@@ -27,8 +25,7 @@ export class SyncProvider {
               private orgUnitsProvider: OrganisationUnitsProvider, private datasetsProvider: DataSetsProvider,
               private sectionProvider: SectionsProvider, private dataElementProvider: DataElementsProvider,
               private smsCommandsProvider: SmsCommandProvider, private indicatorProvider: IndicatorsProvider,
-              private reportsProvider: StandardReportProvider, private programsProvider: ProgramsProvider,
-              private programStageSectionsProvider: ProgramStageSectionsProvider) {}
+              private reportsProvider: StandardReportProvider) {}
 
   getSyncContentDetails(){
     let syncContents = [
@@ -116,22 +113,6 @@ export class SyncProvider {
         }else if(resource == "constants"){
           promises.push(
             this.reportsProvider.downloadReportsFromServer(currentUser).then((response: any) => {
-              data[resource] = response;
-              // alert("From Constants Server: "+JSON.stringify(response));
-            }, error => {
-            })
-          );
-        }else if(resource == "programs"){  //programStageSections
-          promises.push(
-            this.programsProvider.downloadProgramsFromServer(currentUser).then((response: any) => {
-              data[resource] = response;
-              // alert("From Constants Server: "+JSON.stringify(response));
-            }, error => {
-            })
-          );
-        }else if(resource == "programStageSections"){
-          promises.push(
-            this.programStageSectionsProvider.downloadProgramsStageSectionsFromServer(currentUser).then((response: any) => {
               data[resource] = response;
               // alert("From Constants Server: "+JSON.stringify(response));
             }, error => {
