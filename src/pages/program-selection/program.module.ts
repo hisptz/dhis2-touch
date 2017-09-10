@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { ReportViewPage } from './report-view';
 import {SharedModule} from "../../components/shared.module";
+import {ProgramSelectionPage} from "./program-selection";
 
 @NgModule({
   declarations: [
-    ReportViewPage,
+    ProgramSelectionPage,
   ],
   imports: [
-    IonicPageModule.forChild(ReportViewPage),SharedModule
+    IonicPageModule.forChild(ProgramSelectionPage),SharedModule
   ],
 })
-export class ReportViewPageModule {}
+export class ProgramPageModule {}

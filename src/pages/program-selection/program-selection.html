@@ -1,0 +1,31 @@
+<ion-header >
+  <ion-toolbar color="primary">
+    <ion-title>
+      Program selection selection
+    </ion-title>
+    <ion-buttons start>
+      <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
+        close
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+  <ion-content class = "programFormSelection">
+
+  <ion-searchbar animated="true"  (ionInput)="getFilteredList($event)"></ion-searchbar>
+  <ion-grid>
+    <ion-row>
+      <ion-col >
+        <ion-list>
+          <ion-item *ngFor="let program of programsList"   (tap)="setSelectedProgram(program)">
+            <ion-icon name="list" item-left></ion-icon>
+            <span (tap)="setSelectedProgram(program)" ion-text [color]="(currentSelectedProgram == program.name)? 'current': 'font-color'" >{{ program.name}}</span>
+          </ion-item>
+          <ion-item *ngIf = "programsList.length == 0">
+            <empty-list-notification [emptyListMessage]="'There is no Program to select'"></empty-list-notification>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

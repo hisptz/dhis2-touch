@@ -76,16 +76,15 @@ export class ProgramsProvider {
     alert("Progs: "+JSON.stringify(orgUnit));
 
     return new Promise((resolve, reject)=>{
+
       if(!orgUnit.programs){
         resolve(assignedPrograms);
 
-        //alert("ProgsAssgnMethoded: "+JSON.stringify(assignedPrograms));
       }else{
         orgUnit.programs.forEach((program:any)=>{
           if(programIdsByUserRoles.indexOf(program.id) != -1){
             attributeValue.push(program.id);
 
-            //alert("ProgsAssgnMethoded->attributeValue: "+JSON.stringify(attributeValue))
           }
         });
         this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeValue,currentUser.currentDatabase).then((programs : any)=>{
@@ -102,7 +101,7 @@ export class ProgramsProvider {
           });
           resolve(assignedPrograms);
 
-          alert("AssgnProgsDB: "+JSON.stringify(assignedPrograms))
+
 
         },error=>{
           reject(error);

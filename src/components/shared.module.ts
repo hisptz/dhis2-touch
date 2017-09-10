@@ -5,7 +5,7 @@ import { LoadingPage } from './loading/loading';
 import {EmptyListNotificationComponent} from "./empty-list-notification/empty-list-notification";
 import {NotificationComponent} from "./notification/notification";
 import {HelpContentsComponent} from "./help-contents/help-contents";
-import {ReportCompComponent} from "./report-comp/report-comp";
+
 
 @NgModule({
   declarations: [
