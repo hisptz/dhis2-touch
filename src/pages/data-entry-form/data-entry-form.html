@@ -46,9 +46,9 @@
               <div class="item-card" >
                 <div class="entry-form-container" padding-bottom padding-top>
                   <div *ngFor="let dataElement of section.dataElements" >
-                    <input-field [dataElement]="dataElement"
-                                 [currentUser]="currentUser"
-                                 (onChange)="updateData($event)"></input-field>
+                    <input-container [dataElement]="dataElement"
+                                     [currentUser]="currentUser"
+                                     (onChange)="updateData($event)"></input-container>
                   </div>
                 </div>
               </div>

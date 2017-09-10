@@ -9,7 +9,6 @@ import {SectionsProvider} from "../sections/sections";
 import {DataElementsProvider} from "../data-elements/data-elements";
 import {SmsCommandProvider} from "../sms-command/sms-command";
 import {IndicatorsProvider} from "../indicators/indicators";
-import {reject} from "q";
 
 /*
   Generated class for the SyncProvider provider.
