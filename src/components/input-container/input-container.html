@@ -1,2 +1,36 @@
-{{ fieldLabelKey }}
-{{ dataElement|json  }}
+
+
+
+<div *ngIf="dataElement && dataElement.categoryCombo && dataElement.categoryCombo.categoryOptionCombos">
+  <div *ngFor="let categoryOptionCombo of dataElement.categoryCombo.categoryOptionCombos">
+
+    <div (click)="showTooltips(dataElement,categoryOptionCombo.name)">
+      {{ getLabel(dataElement.categoryCombo.name,categoryOptionCombo.name)}}
+    </div>
+
+    <div *ngIf="dataElement.optionSet">
+      <option-set-input-field [dataElement]=""></option-set-input-field>
+    </div>
+    <div *ngIf="!dataElement.optionSet">
+      <div *ngIf="textInputField.indexOf(dataElement.valueType) > -1">
+        <text-input-field [dataElement]="dataElement"></text-input-field>
+      </div>
+      <div *ngIf="numericalInputField.indexOf(dataElement.valueType) > -1">
+        <numerical-input-field [dataElement]="dataElement"></numerical-input-field>
+      </div>
+
+      <div *ngIf="dataElement.valueType == 'DATE'">
+        <date-input-field [dataElement]="dataElement"></date-input-field>
+      </div>
+      <div *ngIf="dataElement.valueType == 'TRUE_ONLY'">
+        <true-only-input-field [dataElement]="dataElement"></true-only-input-field>
+      </div>
+      <div *ngIf="dataElement.valueType == 'BOOLEAN'">
+        <boolean-input-field [dataElement]=""></boolean-input-field>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+

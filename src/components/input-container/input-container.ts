@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {SettingsProvider} from "../../providers/settings/settings";
+import {ActionSheetController} from "ionic-angular";
 
 /**
  * Generated class for the InputContainerComponent component.
@@ -19,10 +20,14 @@ export class InputContainerComponent implements OnInit{
   @Output() onChange = new EventEmitter();
 
   fieldLabelKey : any;
+  textInputField : Array<string>;
+  numericalInputField : Array<string>;
 
-  constructor(private settingProvider : SettingsProvider) {}
+  constructor(private settingProvider : SettingsProvider,private actionSheetCtrl : ActionSheetController) {}
 
   ngOnInit(){
+    this.numericalInputField = ['INTEGER_NEGATIVE','INTEGER_POSITIVE','INTEGER','NUMBER','INTEGER_ZERO_OR_POSITIVE'];
+    this.textInputField = ['TEXT','LONG_TEXT'];
     this.settingProvider.getSettingsForTheApp(this.currentUser).then((appSettings : any)=>{
       let dataEntrySettings = appSettings.entryForm;
       this.fieldLabelKey = this.dataElement.displayName;
@@ -32,7 +37,31 @@ export class InputContainerComponent implements OnInit{
         }
       }
     })
+  }
 
+  getLabel(categoryComboName,categoryOptionComboName){
+    let label = this.fieldLabelKey;
+    if(categoryComboName != 'default'){
+      label += " " + categoryOptionComboName;
+    }
+    return label;
+  }
+
+  showTooltips(dataElement,categoryComboName){
+    let title = this.fieldLabelKey + (categoryComboName != 'default' ? " " +categoryComboName:"");
+    let subTitle = "";
+    if(dataElement.description){
+      title += ". Description : " + dataElement.description ;
+    }
+    subTitle += "Value Type : " +dataElement.valueType.toLocaleLowerCase().replace(/_/g," ");
+    if(dataElement.optionSet){
+      title += ". It has " +dataElement.optionSet.options.length + " options to select.";
+    }
+    console.log(title);
+    // let actionSheet = this.actionSheetCtrl.create({
+    //   title: title,subTitle:subTitle
+    // });
+    // actionSheet.present();
   }
 
 }
