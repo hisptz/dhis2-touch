@@ -1,24 +1,24 @@
-import { Component,OnInit } from '@angular/core';
-import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
-import {UserProvider} from "../../providers/user/user";
-import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
-import {ProgramsProvider} from "../../providers/programs/programs";
+import {Component, OnInit} from '@angular/core';
 import {AppProvider} from "../../providers/app/app";
-import {ProgramSelection} from "../program-selection/program-selection";
+import {ProgramsProvider} from "../../providers/programs/programs";
+import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
+import {ModalController, NavController, NavParams} from "ionic-angular";
+import {UserProvider} from "../../providers/user/user";
 
 /**
- * Generated class for the EventCapturePage page.
+ * Generated class for the DownloadEventsDataComponent component.
  *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
+ * See https://angular.io/docs/ts/latest/api/core/index/ComponentMetadata-class.html
+ * for more info on Angular Components.
  */
 
-@IonicPage()
 @Component({
-  selector: 'page-event-capture',
-  templateUrl: 'event-capture.html',
+  selector: 'download-events-data',
+  templateUrl: 'download-events.html'
 })
-export class EventCapturePage implements OnInit{
+export class DownloadEventsDataComponent implements OnInit{
+
+  text: string;
 
   currentUser: any;
   programIdsByUserRoles: any;
@@ -34,24 +34,28 @@ export class EventCapturePage implements OnInit{
   programs: any;
   assignedPrograms : any;
 
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public user: UserProvider, private modalCtrl : ModalController,
               public organisationUnitsProvider: OrganisationUnitsProvider, public programsProvider: ProgramsProvider, public appProvider: AppProvider) {
+    console.log('Hello DownloadEventsDataComponent Component');
+    this.text = 'Hello World';
   }
+
 
   ngOnInit(){
 
-      this.selectedDataDimension = [];
-      this.currentEvents = [];
-      this.eventListSections = [];
-      this.isAllParameterSet = false;
-      this.user.getCurrentUser().then(currentUser=>{
-        this.currentUser = currentUser;
-        this.getUserAssignedPrograms();
-       // this.setProgramSelectionLabel();
-      });
+    this.selectedDataDimension = [];
+    this.currentEvents = [];
+    this.eventListSections = [];
+    this.isAllParameterSet = false;
+    this.user.getCurrentUser().then(currentUser=>{
+      this.currentUser = currentUser;
+      this.getUserAssignedPrograms();
+      // this.setProgramSelectionLabel();
+    });
     this.updateDataEntryFormSelections();
 
-    }
+  }
 
   updateDataEntryFormSelections(){
     if(this.organisationUnitsProvider.lastSelectedOrgUnit){
@@ -83,7 +87,7 @@ export class EventCapturePage implements OnInit{
           //alert("Assigned Progs UserRoles: "+JSON.stringify(this.programNamesByUserRoles))
         }
       });
-     // this.loadOrganisationUnits();
+      // this.loadOrganisationUnits();
     });
   }
 
@@ -99,22 +103,24 @@ export class EventCapturePage implements OnInit{
     modal.present();
   }
 
-   loadingEntryForm() {
+  loadingEntryForm() {
     this.assignedPrograms = [];
     let lastSelectedProgram = this.programsProvider.getLastSelectedProgram();
     this.programsProvider.getProgramsAssignedOnOrgUnitAndUserRoles(this.selectedOrgUnit, this.programIdsByUserRoles, this.currentUser).then((programs: any) => {
 
+
+      alert("Assign Prog from OgUnit: "+JSON.stringify(programs));
       //this.programs = programs;
       this.selectedProgram = lastSelectedProgram;
 
       programs.forEach((program:any)=>{
 
-          this.assignedPrograms.push({
-            id: program.id,
-            name: program.name,
-            programStages : program.programStages,
-            categoryCombo : program.categoryCombo
-          });
+        this.assignedPrograms.push({
+          id: program.id,
+          name: program.name,
+          programStages : program.programStages,
+          categoryCombo : program.categoryCombo
+        });
 
       });
 
@@ -122,7 +128,7 @@ export class EventCapturePage implements OnInit{
       this.appProvider.setNormalNotification("Fail to reload Assigned Programs");
     });
 
-    }
+  }
 
 
 
@@ -130,8 +136,8 @@ export class EventCapturePage implements OnInit{
     alert("Assigned Progs UserRoles: "+JSON.stringify(this.programNamesByUserRoles));
 
     if(this.programNamesByUserRoles.length > 0){
-    // if(this.assignedPrograms.length > 0){
-    // if(this.programs && this.programs.length > 0){
+      // if(this.assignedPrograms.length > 0){
+      // if(this.programs && this.programs.length > 0){
       let modal = this.modalCtrl.create('ProgramSelection',{data : this.programNamesByUserRoles, currentProgram :this.selectedProgram  });
       modal.onDidDismiss((selectedProgram : any)=>{
         if(selectedProgram && selectedProgram.id && selectedProgram.id != this.selectedProgram.id){
@@ -145,7 +151,6 @@ export class EventCapturePage implements OnInit{
       this.appProvider.setNormalNotification("There.. are no entry form to select on " + this.selectedOrgUnit.name );
     }
   }
-
 
 
 }

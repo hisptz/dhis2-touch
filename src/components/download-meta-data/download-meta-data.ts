@@ -103,15 +103,15 @@ export class DownloadMetaDataComponent implements OnInit{
 
   checkingForResourceUpdate(){
     let isMetadata= false;
-    let listOfResourcesToBeUpdated = [];
+    let resourceUpdated = [];
     this.resources.forEach((resource:any) =>{
       if(resource.status){
         isMetadata= true;
-        listOfResourcesToBeUpdated.push(resource.name);
+        resourceUpdated.push(resource.name);
       }
     });
-    if(listOfResourcesToBeUpdated.length > 0){
-      this.updateResources(listOfResourcesToBeUpdated);
+    if(resourceUpdated.length > 0){
+      this.updateResources(resourceUpdated);
     }else{
       this.appProvider.setNormalNotification("Please select at least one resources to update");
     }
@@ -131,7 +131,6 @@ export class DownloadMetaDataComponent implements OnInit{
         let updateCounts = 0;
         this.updateMetaDataLoadingMessages = "Applying updates ";
         this.appProvider.setNormalNotification("Applying updates tracking.....");
-
 
         resources.forEach((resource:any)=>{
           let resourceName = resource;

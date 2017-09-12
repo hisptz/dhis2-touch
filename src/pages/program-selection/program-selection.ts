@@ -1,5 +1,5 @@
 import { Component,OnInit } from '@angular/core';
-import { ViewController,NavParams } from 'ionic-angular';
+import {ViewController, NavParams, IonicPage} from 'ionic-angular';
 
 /*
  Generated class for the ProgramSelection page.
@@ -7,11 +7,12 @@ import { ViewController,NavParams } from 'ionic-angular';
  See http://ionicframework.com/docs/v2/components/#navigation for more info on
  Ionic pages and navigation.
  */
+@IonicPage()
 @Component({
   selector: 'page-program-selection',
   templateUrl: 'program-selection.html'
 })
-export class ProgramSelectionPage implements OnInit{
+export class ProgramSelection implements OnInit{
 
   public programsList : any;
   public currentSelectedProgram : string;

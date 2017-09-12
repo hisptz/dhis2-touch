@@ -180,5 +180,48 @@ export const DATABASE_STRUCTURE = {
     isMetadata: true,
     batchSize : 500,
     resourceType: "report"
+  },
+
+  dataValues: {
+    columns: [
+      {value: 'id', type: 'TEXT'},
+      {value: 'de', type: 'TEXT'},
+      {value: 'co', type: 'TEXT'},
+      {value: 'pe', type: 'TEXT'},
+      {value: 'ou', type: 'TEXT'},
+      {value: 'cc', type: 'TEXT'},
+      {value: 'cp', type: 'TEXT'},
+      {value: 'value', type: 'TEXT'},
+      {value: 'period', type: 'TEXT'},
+      {value: 'orgUnit', type: 'TEXT'},
+      {value: 'syncStatus', type: 'TEXT'},
+      {value: 'dataSetId', type: 'TEXT'}
+    ],
+    isMetadata: false,
+    resourceType: "",
+    batchSize : 500
+  },
+
+  events: {
+    columns: [
+      {value: 'id', type: 'TEXT'},
+      {value: 'event', type: 'TEXT'},
+      {value: 'program', type: 'TEXT'},
+      {value: 'programName', type: 'TEXT'},
+      {value: 'programStage', type: 'TEXT'},
+      {value: 'orgUnit', type: 'TEXT'},
+      {value: 'orgUnitName', type: 'TEXT'},
+      {value: 'status', type: 'TEXT'},
+      {value: 'eventDate', type: 'TEXT'},
+      {value: 'completedDate', type: 'TEXT'},
+      {value: 'attributeCategoryOptions', type: 'TEXT'},
+      {value: 'dataValues', type: 'LONGTEXT'},
+      {value: 'notes', type: 'TEXT'},
+      {value: 'syncStatus', type: 'TEXT'}
+    ],
+    isMetadata: false,
+    resourceType: "",
+    batchSize : 500
   }
+
 };

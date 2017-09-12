@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import {SharedModule} from "../../components/shared.module";
-import {ProgramSelectionPage} from "./program-selection";
+import {ProgramSelection} from "./program-selection";
+import {DataEntryModule} from "../../components/data.entry.module";
 
 @NgModule({
   declarations: [
-    ProgramSelectionPage,
+    ProgramSelection,
   ],
   imports: [
-    IonicPageModule.forChild(ProgramSelectionPage),SharedModule
+    IonicPageModule.forChild(ProgramSelection),SharedModule
   ],
 })
 export class ProgramPageModule {}

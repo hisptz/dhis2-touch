@@ -108,6 +108,7 @@ export class SqlLiteProvider {
    * @returns {Promise<T>}
    */
   insertBulkDataOnTable(tableName, bulkData,databaseName,startPoint?,endPoint?){
+
     let insertBatchSize = this.getDataBaseStructure()[tableName].batchSize;
     let start = (startPoint)? parseInt(startPoint) : 0;
     let end = (endPoint)? parseInt(endPoint) : insertBatchSize;
@@ -119,17 +120,23 @@ export class SqlLiteProvider {
       this.insertDataUsingQueryAndParameters(databaseName,batchInsertQueryAndParameter.queries).then(()=>{
         start = batchInsertQueryAndParameter.startPoint - 1;
         end = insertBatchSize + start;
+
+
         if(bulkData[batchInsertQueryAndParameter.startPoint]){
+        // if(bulkData.length > 0){
           this.insertBulkDataOnTable(tableName, bulkData,databaseName,start,end).then(()=>{
             resolve();
+
           },error=>{
             reject(error);
+
             //@todo resolving batch size issues
             console.log("Error on insert on table " + tableName);
             console.log(JSON.stringify(error));
           });
         }else{
           resolve();
+
         }
       },error=>{
         console.log("Error on insert on table " + tableName);
@@ -332,6 +339,7 @@ export class SqlLiteProvider {
     return new Promise( (resolve, reject)=> {
       this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
         db.executeSql(query, []).then((success) => {
+
           resolve();
         }, (error) => {
           reject(error);

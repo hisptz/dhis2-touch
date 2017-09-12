@@ -224,59 +224,6 @@ export class EventsProvider {
     });
   }
 
-  // uploadEventsToServer(events,currentUser){
-  //   return new Promise((resolve, reject)=>{
-  //     events.forEach((event:any)=> {
-  //       if(event["syncStatus"] == "new event"){
-  //         //delete event id for new event
-  //         let eventTobUploaded = event;
-  //         let eventToUpload = this.formatEventForUpload(eventTobUploaded);
-  //         let url = "/api/25/events";
-  //         console.log(JSON.stringify(eventToUpload));
-  //         this.http.post(url,eventToUpload,currentUser).subscribe(response=>{
-  //           response = response.json();
-  //           console.log(JSON.stringify(response));
-  //           this.updateUploadedLocalStoredEvent(event,response,currentUser).then(()=>{
-  //           },error=>{
-  //           });
-  //         },error=>{
-  //           console.log("error on post : " + JSON.stringify(error.json()));
-  //         })
-  //       }else{
-  //         let eventTobUploaded = event;
-  //         let eventToUpload = this.formatEventForUpload(eventTobUploaded);
-  //         let url = "/api/25/events/"+eventToUpload.event;
-  //         this.http.put(url,eventToUpload,currentUser).subscribe(response=>{
-  //           response = response.json();
-  //           this.updateUploadedLocalStoredEvent(event,response,currentUser).then(()=>{
-  //           },error=>{
-  //
-  //           });
-  //         },error=>{
-  //           console.log("error on put : " + JSON.stringify(error.json()));
-  //         })
-  //       }
-  //     });
-  //     //
-  //     resolve();
-  //   });
-  // }
-
-
-  // updateUploadedLocalStoredEvent(event,response,currentUser){
-  //   response = response.response;
-  //   if(response.importSummaries[0].reference){
-  //     event.event = response.importSummaries[0].reference;
-  //   }
-  //   event["syncStatus"] = "synced";
-  //   return new Promise((resolve, reject)=>{
-  //     this.saveEvent(event,currentUser).then(response=>{
-  //       resolve();
-  //     },error=>{
-  //       reject();
-  //     })
-  //   })
-  // }
 
   /**
    * get formatted events

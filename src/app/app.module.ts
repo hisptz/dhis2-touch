@@ -67,7 +67,7 @@ import { ProgramStageDataElementsProvider } from '../providers/program-stage-dat
 import { EventsProvider } from '../providers/events/events';
 import { ProgramStageSectionsProvider } from '../providers/program-stage-sections/program-stage-sections';
 import { EventCaptureFormProvider } from '../providers/event-capture-form/event-capture-form';
-import {LoadingPage} from "../components/loading/loading";
+
 
 
 @NgModule({
@@ -134,6 +134,7 @@ import {LoadingPage} from "../components/loading/loading";
     EventsProvider,
     ProgramStageSectionsProvider,
     EventCaptureFormProvider,
+
   ]
 })
 export class AppModule {}

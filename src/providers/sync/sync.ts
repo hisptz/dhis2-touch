@@ -21,6 +21,8 @@ import {StandardReportProvider} from "../standard-report/standard-report";
 @Injectable()
 export class SyncProvider {
 
+  // currentUser: any;
+
   constructor(private HttpClient : HttpClientProvider,  private sqLite: SqlLiteProvider,  private appProvider: AppProvider,
               private orgUnitsProvider: OrganisationUnitsProvider, private datasetsProvider: DataSetsProvider,
               private sectionProvider: SectionsProvider, private dataElementProvider: DataElementsProvider,
@@ -37,6 +39,15 @@ export class SyncProvider {
       {id : 'clearMetadata',name : 'Clear local metadata',icon: 'assets/sync-icons/clear-metadata.png'},
     ];
     return syncContents;
+  }
+
+  getDownloadDataDetails(){
+    let downloadContents = [
+      {id : 'dataValues',name : 'Data values',icon: 'assets/download-data/download-data.png'},
+      {id : 'events',name : 'Events',icon: 'assets/download-data/download-events.png'},
+
+    ];
+    return downloadContents;
   }
 
 
@@ -111,11 +122,13 @@ export class SyncProvider {
             })
           );
         }else if(resource == "constants"){
+
           promises.push(
-            this.reportsProvider.downloadReportsFromServer(currentUser).then((response: any) => {
+            this.reportsProvider.downloadConstantsFromServer(currentUser).then((response: any) => {
               data[resource] = response;
-              // alert("From Constants Server: "+JSON.stringify(response));
+              //alert("Back from DownLoad Constants Server: "+JSON.stringify(response));
             }, error => {
+
             })
           );
         }
@@ -137,8 +150,10 @@ export class SyncProvider {
     let promises = [];
     return new Promise((resolve, reject) =>  {
       resources.forEach((resource:any)=>{
+
         promises.push(
-          this.sqLite.deleteAllOnTable(resource.name,currentUser.currentDatabase).then(()=>{
+          this.sqLite.deleteAllOnTable(resource,currentUser.currentDatabase).then(()=>{
+            resolve();
           },error=>{
 
           })

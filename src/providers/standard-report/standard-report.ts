@@ -36,11 +36,13 @@ export class StandardReportProvider {
   downloadConstantsFromServer(currentUser){
     let fields = "id,name,value";
     let resource = "constants";
-    let url = "/api/25/"+resource+".json?paging=false&fields=" + fields;
+    let url = "/api/25/"+resource+".json?paging=false";
     return new Promise((resolve, reject)=> {
       this.HttpClient.get(url,currentUser).then((response : any)=>{
+
         response = JSON.parse(response.data);
-        resolve(response);
+
+        resolve(response.constants);
       },error=>{
         reject(error);
       });

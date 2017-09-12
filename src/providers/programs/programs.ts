@@ -90,6 +90,8 @@ export class ProgramsProvider {
         this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeValue,currentUser.currentDatabase).then((programs : any)=>{
           this.sortProgramList(programs);
 
+          alert("Progs on OgUnit: "+JSON.stringify(programs));
+
           programs.forEach((program:any)=>{
             assignedPrograms.push({
               id: program.id,
