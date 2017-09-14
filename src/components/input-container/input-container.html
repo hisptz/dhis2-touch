@@ -3,7 +3,7 @@
 
 <div *ngIf="dataElement && dataElement.categoryCombo && dataElement.categoryCombo.categoryOptionCombos">
   <div *ngFor="let categoryOptionCombo of dataElement.categoryCombo.categoryOptionCombos">
-    <div (click)="showTooltips(dataElement,categoryOptionCombo.name)">
+    <div (click)="showTooltips(dataElement,categoryOptionCombo.name)" class="inputLabel">
       {{ getLabel(dataElement.categoryCombo.name,categoryOptionCombo.name)}}
     </div>
 
