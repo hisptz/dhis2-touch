@@ -57,11 +57,10 @@ export class InputContainerComponent implements OnInit{
     if(dataElement.optionSet){
       title += ". It has " +dataElement.optionSet.options.length + " options to select.";
     }
-    console.log(title);
-    // let actionSheet = this.actionSheetCtrl.create({
-    //   title: title,subTitle:subTitle
-    // });
-    // actionSheet.present();
+    let actionSheet = this.actionSheetCtrl.create({
+      title: title,subTitle:subTitle
+    });
+    actionSheet.present();
   }
 
 }

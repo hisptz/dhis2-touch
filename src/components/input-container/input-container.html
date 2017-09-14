@@ -3,20 +3,21 @@
 
 <div *ngIf="dataElement && dataElement.categoryCombo && dataElement.categoryCombo.categoryOptionCombos">
   <div *ngFor="let categoryOptionCombo of dataElement.categoryCombo.categoryOptionCombos">
-
     <div (click)="showTooltips(dataElement,categoryOptionCombo.name)">
       {{ getLabel(dataElement.categoryCombo.name,categoryOptionCombo.name)}}
     </div>
 
     <div *ngIf="dataElement.optionSet">
-      <option-set-input-field [dataElement]=""></option-set-input-field>
+      <option-set-input-field [dataElement]="dataElement"></option-set-input-field>
     </div>
+
     <div *ngIf="!dataElement.optionSet">
+
       <div *ngIf="textInputField.indexOf(dataElement.valueType) > -1">
-        <text-input-field [dataElement]="dataElement"></text-input-field>
+        <text-input-field [dataElement]="dataElement" [valueType]="dataElement.valueType"></text-input-field>
       </div>
       <div *ngIf="numericalInputField.indexOf(dataElement.valueType) > -1">
-        <numerical-input-field [dataElement]="dataElement"></numerical-input-field>
+        <numerical-input-field [dataElement]="dataElement" [valueType]="dataElement.valueType"></numerical-input-field>
       </div>
 
       <div *ngIf="dataElement.valueType == 'DATE'">

@@ -13,6 +13,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 export class TextInputFieldComponent implements OnInit{
 
   @Input() dataElement;
+  @Input() valueType;
   @Output() onChange = new EventEmitter();
 
   constructor() {}

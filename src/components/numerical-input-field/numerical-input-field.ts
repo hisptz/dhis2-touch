@@ -13,7 +13,10 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 export class NumericalInputFieldComponent implements OnInit{
 
   @Input() dataElement;
+  @Input() valueType;
   @Output() onChange = new EventEmitter();
+
+  //this.numericalInputField = ['INTEGER_NEGATIVE','INTEGER_POSITIVE','INTEGER','NUMBER','INTEGER_ZERO_OR_POSITIVE'];
 
   constructor() {}
 
