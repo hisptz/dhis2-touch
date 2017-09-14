@@ -11,6 +11,8 @@ import {SmsCommandProvider} from "../sms-command/sms-command";
 import {IndicatorsProvider} from "../indicators/indicators";
 import {reject} from "q";
 import {StandardReportProvider} from "../standard-report/standard-report";
+import {ProgramsProvider} from "../programs/programs";
+import {ProgramStageSectionsProvider} from "../program-stage-sections/program-stage-sections";
 
 /*
   Generated class for the SyncProvider provider.
@@ -27,7 +29,8 @@ export class SyncProvider {
               private orgUnitsProvider: OrganisationUnitsProvider, private datasetsProvider: DataSetsProvider,
               private sectionProvider: SectionsProvider, private dataElementProvider: DataElementsProvider,
               private smsCommandsProvider: SmsCommandProvider, private indicatorProvider: IndicatorsProvider,
-              private reportsProvider: StandardReportProvider) {}
+              private reportsProvider: StandardReportProvider, private programProvider: ProgramsProvider,
+              private programStageSectionsProvider: ProgramStageSectionsProvider) {}
 
   getSyncContentDetails(){
     let syncContents = [
@@ -64,8 +67,11 @@ export class SyncProvider {
     let data  = {};
     return new Promise((resolve, reject) =>  {
 
+
       resources.forEach((resource:any)=>{
+
         if(resource == "organisationUnits"){
+
           promises.push(
             this.orgUnitsProvider.downloadingOrganisationUnitsFromServer(currentUser.userOrgUnitIds, currentUser).then((response: any) => {
               data[resource] = response;
@@ -127,6 +133,26 @@ export class SyncProvider {
             this.reportsProvider.downloadConstantsFromServer(currentUser).then((response: any) => {
               data[resource] = response;
               //alert("Back from DownLoad Constants Server: "+JSON.stringify(response));
+            }, error => {
+
+            })
+          );
+        } else if(resource == "programs"){
+
+          promises.push(
+            this.programProvider.downloadProgramsFromServer(currentUser).then((response: any) => {
+              data[resource] = response;
+              //alert("Back from DownLoad programs Server: "+JSON.stringify(response));
+            }, error => {
+
+            })
+          );
+        } else if(resource == "programStageSections"){
+
+          promises.push(
+            this.programStageSectionsProvider.downloadProgramsStageSectionsFromServer(currentUser).then((response: any) => {
+              data[resource] = response;
+
             }, error => {
 
             })
@@ -195,6 +221,34 @@ export class SyncProvider {
           reject(error);
         })
     });
+  }
+
+
+  prepareTablesToApplyChanges(resources,currentUser){
+
+
+
+    let promises = [];
+    return new Promise((resolve, reject) =>  {
+      resources.forEach((resource:any)=>{
+
+        promises.push(
+          this.sqLite.dropTable(resource,currentUser.currentDatabase).then(()=>{
+            resolve();
+          },error=>{
+              this.appProvider.setTopNotification("Failed to dropTables")
+          })
+        )
+      });
+
+      Observable.forkJoin(promises).subscribe(() => {
+          resolve();
+        },
+        (error) => {
+          reject(error);
+        })
+    });
+
   }
 
 

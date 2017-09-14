@@ -5,6 +5,8 @@ import {OrganisationUnitsProvider} from "../../providers/organisation-units/orga
 import {ProgramsProvider} from "../../providers/programs/programs";
 import {AppProvider} from "../../providers/app/app";
 import {ProgramSelection} from "../program-selection/program-selection";
+import {PeriodSelectionProvider} from "../../providers/period-selection/period-selection";
+import {SqlLiteProvider} from "../../providers/sql-lite/sql-lite";
 
 /**
  * Generated class for the EventCapturePage page.
@@ -31,11 +33,17 @@ export class EventCapturePage implements OnInit{
   selectedProgram: any;
   organisationUnitLabel: string;
   programLabel: string;
+  periodLabel: string;
   programs: any;
   assignedPrograms : any;
 
+  currentPeriodOffset: any;
+  selectedDataSet: any;
+  selectedPeriod : any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public user: UserProvider, private modalCtrl : ModalController,
-              public organisationUnitsProvider: OrganisationUnitsProvider, public programsProvider: ProgramsProvider, public appProvider: AppProvider) {
+              public organisationUnitsProvider: OrganisationUnitsProvider, public programsProvider: ProgramsProvider, public appProvider: AppProvider,
+              public periodSelectionProvider: PeriodSelectionProvider, public sqlLiteProvider: SqlLiteProvider) {
   }
 
   ngOnInit(){
@@ -49,21 +57,26 @@ export class EventCapturePage implements OnInit{
         this.getUserAssignedPrograms();
        // this.setProgramSelectionLabel();
       });
-    this.updateDataEntryFormSelections();
+    this.updateEventSelections();
 
     }
 
-  updateDataEntryFormSelections(){
+  updateEventSelections(){
     if(this.organisationUnitsProvider.lastSelectedOrgUnit){
       this.selectedOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
       this.organisationUnitLabel = this.selectedOrgUnit.name;
     }else{
       this.organisationUnitLabel = "Touch to select organisation Unit";
     }
-    if(this.selectedProgram && this.selectedProgram.name){
-      this.programLabel = this.selectedProgram.name;
+    if(this.programsProvider.lastSelectedProgram){
+      this.programLabel = this.programsProvider.lastSelectedProgram;
     }else {
       this.programLabel = "Touch to select Programs";
+    }
+    if(this.periodSelectionProvider.lastSelectedPeriod){
+      this.periodLabel = this.periodSelectionProvider.lastSelectedPeriod;
+    }else {
+      this.periodLabel = "Touch to select Period";
     }
 
   }
@@ -80,10 +93,8 @@ export class EventCapturePage implements OnInit{
             this.programNamesByUserRoles.push(program.name);
 
           });
-          //alert("Assigned Progs UserRoles: "+JSON.stringify(this.programNamesByUserRoles))
         }
       });
-     // this.loadOrganisationUnits();
     });
   }
 
@@ -92,19 +103,24 @@ export class EventCapturePage implements OnInit{
     modal.onDidDismiss((selectedOrgUnit : any)=>{
       if(selectedOrgUnit && selectedOrgUnit.id){
         this.selectedOrgUnit = selectedOrgUnit;
-        this.updateDataEntryFormSelections();
-        this.loadingEntryForm();
+        this.updateEventSelections();
+        this.loadingPrograms();
       }
     });
     modal.present();
   }
 
-   loadingEntryForm() {
+   loadingPrograms() {
     this.assignedPrograms = [];
     let lastSelectedProgram = this.programsProvider.getLastSelectedProgram();
-    this.programsProvider.getProgramsAssignedOnOrgUnitAndUserRoles(this.selectedOrgUnit, this.programIdsByUserRoles, this.currentUser).then((programs: any) => {
 
-      //this.programs = programs;
+
+
+     this.programsProvider.getProgramsAssignedOnOrgUnitAndUserRoles(this.selectedOrgUnit, this.programIdsByUserRoles, this.currentUser).then((programs: any) => {
+
+       // its empty alert
+      //alert("Assign Progs--- for modal: "+JSON.stringify(programs))
+
       this.selectedProgram = lastSelectedProgram;
 
       programs.forEach((program:any)=>{
@@ -125,24 +141,57 @@ export class EventCapturePage implements OnInit{
     }
 
 
-
-  openEntryFormList(){
-    alert("Assigned Progs UserRoles: "+JSON.stringify(this.programNamesByUserRoles));
+  openProgramList(){
 
     if(this.programNamesByUserRoles.length > 0){
-    // if(this.assignedPrograms.length > 0){
-    // if(this.programs && this.programs.length > 0){
       let modal = this.modalCtrl.create('ProgramSelection',{data : this.programNamesByUserRoles, currentProgram :this.selectedProgram  });
       modal.onDidDismiss((selectedProgram : any)=>{
-        if(selectedProgram && selectedProgram.id && selectedProgram.id != this.selectedProgram.id){
+        if(selectedProgram.length > 0){
+
           this.selectedProgram = selectedProgram;
 
-          this.updateDataEntryFormSelections();
+          this.updateEventSelections();
+          this.loadPeriodSelection()
         }
       });
       modal.present();
     }else{
       this.appProvider.setNormalNotification("There.. are no entry form to select on " + this.selectedOrgUnit.name );
+    }
+  }
+
+  loadPeriodSelection(){
+    let periodType = this.selectedDataSet.periodType;
+    let openFuturePeriods = parseInt(this.selectedDataSet.openFuturePeriods);
+    let periods = this.periodSelectionProvider.getPeriods(periodType,openFuturePeriods,this.currentPeriodOffset);
+    if(periods && periods.length > 0){
+      this.selectedPeriod = periods[0];
+
+    }else{
+      this.selectedPeriod = {};
+    }
+    this.updateEventSelections();
+  }
+
+  openPeriodList(){
+
+    if(this.programNamesByUserRoles.length > 0){
+      let modal = this.modalCtrl.create('PeriodSelectionPage', {
+        periodType: this.selectedDataSet.periodType,
+        currentPeriodOffset : this.currentPeriodOffset,
+        openFuturePeriods: this.selectedDataSet.openFuturePeriods,
+        currentPeriod : this.selectedPeriod
+      });
+      modal.onDidDismiss((data : any)=>{
+        if(data && data.selectedPeriod ){
+          this.selectedPeriod = data.selectedPeriod;
+          this.currentPeriodOffset = data.currentPeriodOffset;
+          this.updateEventSelections();
+        }
+      });
+      modal.present();
+    }else{
+      this.appProvider.setNormalNotification("Please select Program first");
     }
   }
 

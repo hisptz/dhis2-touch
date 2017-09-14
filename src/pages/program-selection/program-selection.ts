@@ -1,5 +1,6 @@
 import { Component,OnInit } from '@angular/core';
 import {ViewController, NavParams, IonicPage} from 'ionic-angular';
+import {ProgramsProvider} from "../../providers/programs/programs";
 
 /*
  Generated class for the ProgramSelection page.
@@ -17,7 +18,7 @@ export class ProgramSelection implements OnInit{
   public programsList : any;
   public currentSelectedProgram : string;
 
-  constructor(public viewCtrl: ViewController,public params : NavParams) {}
+  constructor(public viewCtrl: ViewController,public params : NavParams, public programProvider: ProgramsProvider) {}
 
   ngOnInit() {
     this.setModalData();
@@ -43,6 +44,7 @@ export class ProgramSelection implements OnInit{
   }
 
   setSelectedProgram(selectedProgram){
+    this.programProvider.setLastSelectedProgram(selectedProgram);
     this.viewCtrl.dismiss(selectedProgram);
   }
 

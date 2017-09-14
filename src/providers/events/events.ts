@@ -14,10 +14,44 @@ import {HttpClientProvider} from "../http-client/http-client";
 export class EventsProvider {
 
   public resource : string;
+  lastChoosedOrgUnit: any;
 
   constructor(public http: Http, private sqlLite : SqlLiteProvider,public httpClient: HttpClientProvider) {
     this.resource = "events";
   }
+
+  setLastChoosedOrgUnit(orgUnitId){
+    this.lastChoosedOrgUnit = orgUnitId;
+  }
+
+  getLastChoosedOrgUnit(){
+    return this.lastChoosedOrgUnit;
+  }
+
+  downloadEventsFromServer(orgUnit,currentUser){
+    let url = "/api/25/events.json?orgUnit="+orgUnit ;
+
+    return new Promise((resolve, reject) =>{
+      this.httpClient.get(url,currentUser).then((eventsData: any)=>{
+        eventsData = JSON.parse(eventsData.data);
+
+        // alert("Events Downloaded: "+JSON.stringify(events.events))
+        // alert("Events Downloaded: "+JSON.stringify(eventsData.events[2].dataValues))
+         alert("Events Downloaded Length: "+JSON.stringify(eventsData.events.length))
+       // alert("Events Downloaded: "+JSON.stringify(eventsData.events[9].orgUnitName))
+
+
+         resolve(eventsData)
+
+
+      },error=>{
+        reject(error);
+        alert("Events Download failed")
+
+      });
+    });
+  }
+
 
   /**
    * get formatted datavalues for event

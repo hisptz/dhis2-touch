@@ -4,6 +4,8 @@ import {ProgramsProvider} from "../../providers/programs/programs";
 import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
 import {ModalController, NavController, NavParams} from "ionic-angular";
 import {UserProvider} from "../../providers/user/user";
+import {EventsProvider} from "../../providers/events/events";
+import indexOf = L.Util.indexOf;
 
 /**
  * Generated class for the DownloadEventsDataComponent component.
@@ -18,8 +20,8 @@ import {UserProvider} from "../../providers/user/user";
 })
 export class DownloadEventsDataComponent implements OnInit{
 
-  text: string;
 
+  icons: any= {};
   currentUser: any;
   programIdsByUserRoles: any;
   programNamesByUserRoles: any;
@@ -36,13 +38,16 @@ export class DownloadEventsDataComponent implements OnInit{
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public user: UserProvider, private modalCtrl : ModalController,
-              public organisationUnitsProvider: OrganisationUnitsProvider, public programsProvider: ProgramsProvider, public appProvider: AppProvider) {
-    console.log('Hello DownloadEventsDataComponent Component');
-    this.text = 'Hello World';
+              public organisationUnitsProvider: OrganisationUnitsProvider, public programsProvider: ProgramsProvider, public appProvider: AppProvider,
+              public eventsProvider: EventsProvider) {
+
   }
 
 
   ngOnInit(){
+
+    this.icons.orgUnit = "assets/download-data/orgUnit.png";
+    this.icons.program = "assets/download-data/programs.png";
 
     this.selectedDataDimension = [];
     this.currentEvents = [];
@@ -53,19 +58,19 @@ export class DownloadEventsDataComponent implements OnInit{
       this.getUserAssignedPrograms();
       // this.setProgramSelectionLabel();
     });
-    this.updateDataEntryFormSelections();
+    this.updateEventSelections();
 
   }
 
-  updateDataEntryFormSelections(){
+  updateEventSelections(){
     if(this.organisationUnitsProvider.lastSelectedOrgUnit){
       this.selectedOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
       this.organisationUnitLabel = this.selectedOrgUnit.name;
     }else{
       this.organisationUnitLabel = "Touch to select organisation Unit";
     }
-    if(this.selectedProgram && this.selectedProgram.name){
-      this.programLabel = this.selectedProgram.name;
+    if(this.programsProvider.lastSelectedProgram){
+      this.programLabel = this.programsProvider.lastSelectedProgram;
     }else {
       this.programLabel = "Touch to select Programs";
     }
@@ -83,6 +88,7 @@ export class DownloadEventsDataComponent implements OnInit{
             this.programIdsByUserRoles.push(program.id);
             this.programNamesByUserRoles.push(program.name);
 
+
           });
           //alert("Assigned Progs UserRoles: "+JSON.stringify(this.programNamesByUserRoles))
         }
@@ -96,14 +102,19 @@ export class DownloadEventsDataComponent implements OnInit{
     modal.onDidDismiss((selectedOrgUnit : any)=>{
       if(selectedOrgUnit && selectedOrgUnit.id){
         this.selectedOrgUnit = selectedOrgUnit;
-        this.updateDataEntryFormSelections();
-        this.loadingEntryForm();
+        this.updateEventSelections();
+        this.loadingPrograms();
+
+        this.eventsProvider.setLastChoosedOrgUnit(selectedOrgUnit.id);
+
       }
     });
     modal.present();
+
+
   }
 
-  loadingEntryForm() {
+  loadingPrograms() {
     this.assignedPrograms = [];
     let lastSelectedProgram = this.programsProvider.getLastSelectedProgram();
     this.programsProvider.getProgramsAssignedOnOrgUnitAndUserRoles(this.selectedOrgUnit, this.programIdsByUserRoles, this.currentUser).then((programs: any) => {
@@ -132,24 +143,51 @@ export class DownloadEventsDataComponent implements OnInit{
 
 
 
-  openEntryFormList(){
+  openProgramList(){
+    let selectedProID: any;
     alert("Assigned Progs UserRoles: "+JSON.stringify(this.programNamesByUserRoles));
 
     if(this.programNamesByUserRoles.length > 0){
       // if(this.assignedPrograms.length > 0){
       // if(this.programs && this.programs.length > 0){
-      let modal = this.modalCtrl.create('ProgramSelection',{data : this.programNamesByUserRoles, currentProgram :this.selectedProgram  });
+      let modal = this.modalCtrl.create('ProgramSelection',{data : this.assignedPrograms, currentProgram :this.selectedProgram  });
       modal.onDidDismiss((selectedProgram : any)=>{
-        if(selectedProgram && selectedProgram.id && selectedProgram.id != this.selectedProgram.id){
+        if(selectedProgram.length > 0){
           this.selectedProgram = selectedProgram;
 
-          this.updateDataEntryFormSelections();
+
+          this.updateEventSelections();
+
+          this.programsProvider.getProgramByName(selectedProgram, this.currentUser).then((programID: any)=> {
+            alert("Seleceted Prog ID : "+JSON.stringify(programID))
+          });
+
+
+
         }
       });
       modal.present();
     }else{
       this.appProvider.setNormalNotification("There.. are no entry form to select on " + this.selectedOrgUnit.name );
     }
+  }
+
+  donwloadEvents(){
+    let choosedOrgUnit = this.eventsProvider.getLastChoosedOrgUnit();
+
+    this.eventsProvider.downloadEventsFromServer(choosedOrgUnit, this.currentUser).then((events: any)=> {
+      let eventsData = events.events;
+      if(eventsData && eventsData.length > 0){
+        eventsData.forEach((event)=>{
+          event["orgUnitName"] = this.selectedOrgUnit.name;
+          event["programName"] = this.selectedProgram.name;
+        });
+        alert("Events Data: "+JSON.stringify(eventsData))
+      }
+
+      //this.eventsProvider.savingEventsFromServer(eventsData, this.currentUser)
+    })
+
   }
 
 

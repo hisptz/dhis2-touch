@@ -7,6 +7,7 @@ import {DATABASE_STRUCTURE} from "../../constants/database-structure";
 import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
 import {DataSetsProvider} from "../../providers/data-sets/data-sets";
 import {UserProvider} from "../../providers/user/user";
+import {AlertController} from "ionic-angular";
 
 
 /**
@@ -39,7 +40,8 @@ export class DownloadMetaDataComponent implements OnInit{
 
 
   constructor(private syncProvider: SyncProvider, private appProvider: AppProvider, private sqLite: SqlLiteProvider,
-              private orgUnitsProvider: OrganisationUnitsProvider, private datasetsProvider: DataSetsProvider, private user: UserProvider) {
+              private orgUnitsProvider: OrganisationUnitsProvider, private datasetsProvider: DataSetsProvider, private user: UserProvider,
+              public alertCtrl: AlertController) {
 
 
   }
@@ -101,6 +103,7 @@ export class DownloadMetaDataComponent implements OnInit{
 
   }
 
+
   checkingForResourceUpdate(){
     let isMetadata= false;
     let resourceUpdated = [];
@@ -119,48 +122,62 @@ export class DownloadMetaDataComponent implements OnInit{
   }
 
 
-  updateResources(resources){
-    this.updateMetaDataLoadingMessages= "Downloading MetaData";
+  updateResources(resources) {
+    this.updateMetaDataLoadingMessages = "Downloading MetaData";
     this.updateManagerObject.updateMetaData.isProcessRunning = true;
 
-    this.syncProvider.downloadResources(resources, this.specialMetadataResources,this.currentUser).then((resourcesData)=>{
+
+    this.syncProvider.downloadResources(resources, this.specialMetadataResources, this.currentUser).then((resourcesData) => {
 
       this.updateMetaDataLoadingMessages = "Preparing device to apply updates";
 
-      this.syncProvider.prepareDeviceToApplyChanges(resources,this.currentUser).then(()=>{
-        let updateCounts = 0;
-        this.updateMetaDataLoadingMessages = "Applying updates ";
-        this.appProvider.setNormalNotification("Applying updates tracking.....");
+      alert("ResourcesData Values: " + JSON.stringify(resourcesData))
+      this.syncProvider.prepareTablesToApplyChanges(resources, this.currentUser).then(() => {
 
-        resources.forEach((resource:any)=>{
-          let resourceName = resource;
+        this.sqLite.createTable(resources, this.currentUser.currentDatabase).then(() => {
 
-          if(this.specialMetadataResources.indexOf(resourceName) >= -1){
 
-            this.appProvider.saveMetadata(resourceName,resourcesData[resourceName],this.currentUser.currentDatabase).then((
-            )=>{
-              updateCounts ++;
+          let updateCounts = 0;
+          this.updateMetaDataLoadingMessages = "Applying updates ";
+          this.appProvider.setNormalNotification("Applying updates tracking.....");
 
-              if(updateCounts == resources.length){
+           resources.forEach((resource: any) => {
+            let resourceName = resource;
+
+          if (this.specialMetadataResources.indexOf(resourceName) >= -1) {
+
+            this.appProvider.saveMetadata(resourceName, resourcesData[resourceName], this.currentUser.currentDatabase).then(() => {
+              updateCounts++;
+
+              if (updateCounts == resources.length) {
                 this.autoSelect("un-selectAll");
                 this.updateManagerObject.updateMetaData.isProcessRunning = false;
                 this.appProvider.setNormalNotification("All updates has been applied successfully.");
               }
-            },error=>{
+            }, error => {
               this.updateManagerObject.updateMetaData.isProcessRunning = false;
               this.appProvider.setNormalNotification("Fail to apply updates 0 : " + JSON.stringify(error));
             })
           }
 
-        });
-      },error=>{
+            });
+
+          },
+          error => {
+            this.appProvider.setNormalNotification("Fail to prepare Database tables");
+          }
+        );
+
+
+      }, error => {
         this.updateManagerObject.updateMetaData.isProcessRunning = false;
         this.appProvider.setNormalNotification("Fail to prepare device to apply updates " + JSON.stringify(error));
       });
-    },error=>{
+    }, error => {
       this.updateManagerObject.updateMetaData.isProcessRunning = false;
       this.appProvider.setNormalNotification("Fail to download updates : " + JSON.stringify(error));
     });
+
 
 
   }

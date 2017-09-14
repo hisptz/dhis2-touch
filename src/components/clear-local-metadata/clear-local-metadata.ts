@@ -5,6 +5,7 @@ import {SqlLiteProvider} from "../../providers/sql-lite/sql-lite";
 import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
 import {DataSetsProvider} from "../../providers/data-sets/data-sets";
 import {UserProvider} from "../../providers/user/user";
+import {AlertController} from "ionic-angular";
 
 /**
  * Generated class for the ClearLocalMetadataComponent component.
@@ -35,7 +36,8 @@ export class ClearLocalMetadataComponent implements OnInit{
   text: string;
 
   constructor(private syncProvider: SyncProvider, private appProvider: AppProvider, private sqLite: SqlLiteProvider,
-  private orgUnitsProvider: OrganisationUnitsProvider, private datasetsProvider: DataSetsProvider, private user: UserProvider) {
+  private orgUnitsProvider: OrganisationUnitsProvider, private datasetsProvider: DataSetsProvider, private user: UserProvider,
+              public alertCtrl: AlertController,) {
 
     console.log('Hello ClearLocalMetadataComponent Component');
     this.text = 'Hello World';
@@ -99,6 +101,25 @@ export class ClearLocalMetadataComponent implements OnInit{
 
   }
 
+  verifyingDeleteOfResources(){
+    let confirmAlert = this.alertCtrl.create({
+      title: 'Delete of Metadata',
+      message: 'are you sure you want to delete metadata',
+      buttons:[
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },{
+          text: 'Delete',
+          handler:() =>{
+            this.checkingForResourcetoDelete();
+          }
+        }
+      ]
+    });
+    confirmAlert.present();
+  }
+
   checkingForResourcetoDelete(){
     let isMetadata= false;
     let listOfResourcesToBeUpdated = [];
@@ -124,18 +145,25 @@ export class ClearLocalMetadataComponent implements OnInit{
 
       this.updateMetaDataLoadingMessages = "Preparing device to apply updates";
 
-      this.syncProvider.prepareDeviceToApplyChanges(resources,this.currentUser).then(()=>{
-        let updateCounts = 0;
-        this.updateMetaDataLoadingMessages = "Applying updates ";
+      this.syncProvider.prepareTablesToApplyChanges(resources,this.currentUser).then(()=>{
 
+        this.sqLite.createTable(resources, this.currentUser.currentDatabase).then(()=>{
 
-        updateCounts ++;
+          let updateCounts = 0;
+          this.updateMetaDataLoadingMessages = "Applying updates ";
 
-        if(resources.length >= updateCounts){
-          this.autoSelect("un-selectAll");
-          this.deleteManagerObject.deleteMetaData.isProcessRunning = false;
-          this.appProvider.setNormalNotification("Local MetaData deleted successfully.");
-        }
+          updateCounts ++;
+
+          if(resources.length >= updateCounts){
+            this.autoSelect("un-selectAll");
+            this.deleteManagerObject.deleteMetaData.isProcessRunning = false;
+            this.appProvider.setNormalNotification("Local MetaData deleted successfully.");
+          }
+
+        },error=>{
+            this.appProvider.setTopNotification("Failed to Drop "+resources+" Database table");
+          });
+
       },error=>{
         this.deleteManagerObject.deleteMetaData.isProcessRunning = false;
         this.appProvider.setNormalNotification("Fail to apply updates 0 : " + JSON.stringify(error));

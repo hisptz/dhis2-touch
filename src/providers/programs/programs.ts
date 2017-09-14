@@ -73,24 +73,24 @@ export class ProgramsProvider {
     let attributeValue =[];
     let assignedPrograms = [];
 
-    alert("Progs: "+JSON.stringify(orgUnit));
-
     return new Promise((resolve, reject)=>{
 
-      if(!orgUnit.programs){
+      if(orgUnit.programs){
+
         resolve(assignedPrograms);
 
+
       }else{
-        orgUnit.programs.forEach((program:any)=>{
-          if(programIdsByUserRoles.indexOf(program.id) != -1){
-            attributeValue.push(program.id);
+
+        orgUnit.forEach((ogUnit:any)=>{
+          // if(programIdsByUserRoles.indexOf(ogUnit.id) != -1){
+          if(programIdsByUserRoles.length > 0){
+            attributeValue.push(ogUnit.name);
 
           }
         });
         this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeValue,currentUser.currentDatabase).then((programs : any)=>{
           this.sortProgramList(programs);
-
-          alert("Progs on OgUnit: "+JSON.stringify(programs));
 
           programs.forEach((program:any)=>{
             assignedPrograms.push({
@@ -106,8 +106,10 @@ export class ProgramsProvider {
 
 
         },error=>{
+
           reject(error);
         });
+
       }
     });
   }
@@ -138,18 +140,57 @@ export class ProgramsProvider {
    * @returns {Promise<T>}
    */
   getProgramById(programId,currentUser){
-    let attribute = 'id';
+     let attribute = 'id';
+
     let attributeValue =[];
 
     attributeValue.push(programId);
+
+
+
+    //attributeValue.push(programId);
     return new Promise((resolve, reject)=> {
       this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeValue,currentUser.currentDatabase).then((programs:any)=>{
         if(programs.length > 0){
+
           resolve(programs[0]);
         }else{
           resolve({});
         }
       },error=>{
+
+        reject();
+      });
+    });
+  }
+
+
+  /**
+   * get program by id
+   * @param programId
+   * @param currentUser
+   * @returns {Promise<T>}
+   */
+  getProgramByName(programName,currentUser){
+    let attribute = 'name';
+
+    let attributeValue =[];
+
+    attributeValue.push(programName);
+
+
+
+    //attributeValue.push(programId);
+    return new Promise((resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeValue,currentUser.currentDatabase).then((programs:any)=>{
+        if(programs.length > 0){
+
+          resolve(programs[0]);
+        }else{
+          resolve({});
+        }
+      },error=>{
+
         reject();
       });
     });

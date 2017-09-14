@@ -151,6 +151,7 @@ export class DataEntryPage implements OnInit{
 
   loadPeriodSelection(){
     let periodType = this.selectedDataSet.periodType;
+
     let openFuturePeriods = parseInt(this.selectedDataSet.openFuturePeriods);
     let periods = this.periodSelection.getPeriods(periodType,openFuturePeriods,this.currentPeriodOffset);
     if(periods && periods.length > 0){

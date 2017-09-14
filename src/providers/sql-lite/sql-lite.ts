@@ -249,13 +249,16 @@ export class SqlLiteProvider {
    * @returns {Promise<T>}
    */
   dropTable(tableName, databaseName) {
+
     databaseName = databaseName + '.db';
     let query = "DROP TABLE " + tableName;
     return new Promise( (resolve, reject)=> {
       this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
         db.executeSql(query, []).then((success) => {
-          resolve();
+
+          resolve(success);
         }, (error) => {
+
           reject(error);
         });
       }).catch(e => {
@@ -279,6 +282,8 @@ export class SqlLiteProvider {
     let query = "SELECT * FROM " + tableName + " WHERE " + attribute + " IN (";
     let inClauseValues = "";
 
+
+
     attributesValuesArray.forEach((attributesValue:any, index:any)=> {
       inClauseValues += "'" + attributesValue + "'";
       if ((index + 1) < attributesValuesArray.length) {
@@ -290,11 +295,16 @@ export class SqlLiteProvider {
     return new Promise( (resolve, reject)=> {
       this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
         db.executeSql(query, []).then((result) => {
+
+
+
           resolve(this.formatQueryReturnResult(result, columns));
         }, (error) => {
+
           reject(error);
         });
       }).catch(e => {
+
         reject();
         console.log(e);
       });
