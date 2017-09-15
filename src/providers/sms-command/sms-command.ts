@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import {SqlLiteProvider} from "../sql-lite/sql-lite";
 import {HttpClientProvider} from "../http-client/http-client";
-import { SMS } from '@ionic-native/sms';
+//import { SMS } from '@ionic-native/sms';
 
 /*
   Generated class for the SmsCommandProvider provider.
