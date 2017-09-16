@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import 'rxjs/add/operator/map';
 import {DATABASE_STRUCTURE} from "../../constants/database-structure";
+import {AppProvider} from "../app/app";
 
 /*
   Generated class for the SqlLiteProvider provider.
@@ -83,6 +84,8 @@ export class SqlLiteProvider {
       this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
         db.executeSql(query, []).then(() => {
           console.log("Success create table " + tableName);
+
+
           resolve();
         }, (error) => {
           console.log("Error on create table " + tableName);
@@ -127,8 +130,10 @@ export class SqlLiteProvider {
           this.insertBulkDataOnTable(tableName, bulkData,databaseName,start,end).then(()=>{
             resolve();
 
+
           },error=>{
             reject(error);
+
 
             //@todo resolving batch size issues
             console.log("Error on insert on table " + tableName);
@@ -139,6 +144,7 @@ export class SqlLiteProvider {
 
         }
       },error=>{
+
         console.log("Error on insert on table " + tableName);
         console.log(JSON.stringify(error));
         reject(error);
@@ -255,6 +261,7 @@ export class SqlLiteProvider {
     return new Promise( (resolve, reject)=> {
       this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
         db.executeSql(query, []).then((success) => {
+
 
           resolve(success);
         }, (error) => {

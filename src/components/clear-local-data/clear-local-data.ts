@@ -82,7 +82,9 @@ export class ClearLocalDataComponent implements OnInit{
       this.sqLite.deleteAllOnTable(tableName,this.currentUser.currentDatabase).then(()=>{
         deletedItemCount = deletedItemCount + 1;
         if((deletedItemCount + failCount) == this.updateManagerObject.dataDeletion.itemsToBeDeleted.length){
+
           this.appProvider.setNormalNotification("You have successfully clear data");
+
           Object.keys(this.updateManagerObject.dataDeletion.selectedItems).forEach(key=>{
             this.updateManagerObject.dataDeletion.selectedItems[key] = false;
           });
@@ -94,7 +96,9 @@ export class ClearLocalDataComponent implements OnInit{
         console.log("Error : " + JSON.stringify(error));
         failCount = failCount + 1;
         if((deletedItemCount + failCount) == this.updateManagerObject.dataDeletion.itemsToBeDeleted.length){
+
           this.appProvider.setNormalNotification("You.. have successfully clear data.");
+
           Object.keys(this.updateManagerObject.dataDeletion.selectedItems).forEach(key=>{
             this.updateManagerObject.dataDeletion.selectedItems[key] = false;
           });

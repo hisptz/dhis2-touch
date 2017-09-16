@@ -25,6 +25,7 @@ export class ClearLocalMetadataComponent implements OnInit{
   hasAllSelected: boolean;
   loadingData: boolean = false;
   loadingMessages: any= [];
+  showLoadingMessage: boolean = false;
 
   deleteManagerObject: any= {
     deleteMetaData: {isExpanded: false, isSaved: true, isProcessRunning: false}
@@ -122,16 +123,17 @@ export class ClearLocalMetadataComponent implements OnInit{
 
   checkingForResourcetoDelete(){
     let isMetadata= false;
-    let listOfResourcesToBeUpdated = [];
+    let resourcesToDelete = [];
     this.resources.forEach((resource:any) =>{
       if(resource.status){
         isMetadata= true;
-        listOfResourcesToBeUpdated.push(resource.name);
+        //resourcesToDelete.push(resource.name);
+        this.deleteResources(resource.name);
+        this.showLoadingMessage = true;
+
       }
     });
-    if(listOfResourcesToBeUpdated.length > 0){
-      this.deleteResources(listOfResourcesToBeUpdated);
-    }else{
+    if(resourcesToDelete.length == 0){
       this.appProvider.setNormalNotification("Please select at least one resources to update");
     }
 
@@ -139,37 +141,54 @@ export class ClearLocalMetadataComponent implements OnInit{
 
 
   deleteResources(resources){
-    this.updateMetaDataLoadingMessages= "Deleting MetaData";
-    this.deleteManagerObject.deleteMetaData.isProcessRunning = true;
 
+    this.updateMetaDataLoadingMessages= "Deleting selected MetaData";
+    this.deleteManagerObject.deleteMetaData.isProcessRunning = true;
 
       this.updateMetaDataLoadingMessages = "Preparing device to apply updates";
 
-      this.syncProvider.prepareTablesToApplyChanges(resources,this.currentUser).then(()=>{
+  // resources.forEach((resource:any)=>{
+  // })
 
-        this.sqLite.createTable(resources, this.currentUser.currentDatabase).then(()=>{
+    this.syncProvider.prepareTablesToApplyChanges(resources,this.currentUser).then(()=>{
 
-          let updateCounts = 0;
-          this.updateMetaDataLoadingMessages = "Applying updates ";
+      this.sqLite.createTable(resources, this.currentUser.currentDatabase).then(()=>{
 
-          updateCounts ++;
+        let updateCounts = 0;
+        this.updateMetaDataLoadingMessages = "Applying changes in application Database";
 
-          if(resources.length >= updateCounts){
-            this.autoSelect("un-selectAll");
-            this.deleteManagerObject.deleteMetaData.isProcessRunning = false;
-            this.appProvider.setNormalNotification("Local MetaData deleted successfully.");
-          }
+        updateCounts ++;
 
-        },error=>{
-            this.appProvider.setTopNotification("Failed to Drop "+resources+" Database table");
-          });
+        if(resources.length >= updateCounts){
+          this.autoSelect("un-selectAll");
+          this.deleteManagerObject.deleteMetaData.isProcessRunning = false;
+          this.appProvider.setNormalNotification("Local MetaData deleted successfully.");
+          this.showLoadingMessage = false;
+        }
 
       },error=>{
-        this.deleteManagerObject.deleteMetaData.isProcessRunning = false;
-        this.appProvider.setNormalNotification("Fail to apply updates 0 : " + JSON.stringify(error));
+        this.appProvider.setTopNotification("Failed to Drop "+resources+" Database table");
       });
 
+    },error=>{
+      this.deleteManagerObject.deleteMetaData.isProcessRunning = false;
+      this.appProvider.setNormalNotification("Fail to apply updates 0 : " + JSON.stringify(error));
+    });
 
+
+
+
+
+
+
+  }
+
+  displayOneAtTime(){
+    this.resources.forEach((resource:any)=>{
+      if(resource.status){
+        alert("Now its: "+resource.name)
+      }
+    })
   }
 
 

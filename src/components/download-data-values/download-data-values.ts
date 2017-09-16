@@ -15,8 +15,7 @@ export class DownloadDataValuesComponent {
   text: string;
 
   constructor() {
-    console.log('Hello DownloadDataValuesComponent Component');
-    this.text = 'Hello World';
+    this.text = 'Coming Soon';
   }
 
 }

@@ -12,11 +12,11 @@
 </ion-header>
   <ion-content class = "programFormSelection">
 
-  <ion-searchbar animated="true"  (ionInput)="getFilteredList($event)"></ion-searchbar>
+  <ion-searchbar animated="true"  (ionInput)="getFilteredList($event)" ></ion-searchbar>
   <ion-grid >
     <ion-row>
-      <ion-col >
-        <ion-list>
+      <ion-col class = "programFormSelection" >
+        <ion-list class = "programFormSelection">
           <ion-item *ngFor="let program of programsList"   (tap)="setSelectedProgram(program)">
             <ion-icon name="list" item-left></ion-icon>
             <span (tap)="setSelectedProgram(program)" ion-text [color]="(currentSelectedProgram == program)? 'current': 'font-color'" >{{ program}}</span>

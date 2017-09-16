@@ -40,6 +40,7 @@ export class EventCapturePage implements OnInit{
   currentPeriodOffset: any;
   selectedDataSet: any;
   selectedPeriod : any;
+  icons: any = {};
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public user: UserProvider, private modalCtrl : ModalController,
               public organisationUnitsProvider: OrganisationUnitsProvider, public programsProvider: ProgramsProvider, public appProvider: AppProvider,
@@ -48,7 +49,11 @@ export class EventCapturePage implements OnInit{
 
   ngOnInit(){
 
-      this.selectedDataDimension = [];
+    this.icons.orgUnit = "assets/event-capture/orgUnit.png";
+    this.icons.program = "assets/event-capture/programs.png";
+    this.icons.period = "assets/event-capture/period.png";
+
+    this.selectedDataDimension = [];
       this.currentEvents = [];
       this.eventListSections = [];
       this.isAllParameterSet = false;
@@ -135,7 +140,7 @@ export class EventCapturePage implements OnInit{
       });
 
     } ,error=>{
-      this.appProvider.setNormalNotification("Fail to reload Assigned Programs");
+      //this.appProvider.setNormalNotification("Fail to  Assigned Programs");
     });
 
     }

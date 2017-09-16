@@ -69,26 +69,17 @@ export class ProgramsProvider {
    * @returns {Promise<T>}
    */
   getProgramsAssignedOnOrgUnitAndUserRoles(orgUnit,programIdsByUserRoles,currentUser){
-    let attribute = 'id';
+    let attribute = 'organisationUnits';
     let attributeValue =[];
     let assignedPrograms = [];
 
     return new Promise((resolve, reject)=>{
 
-      if(orgUnit.programs){
-
-        resolve(assignedPrograms);
-
-
-      }else{
-
         orgUnit.forEach((ogUnit:any)=>{
-          // if(programIdsByUserRoles.indexOf(ogUnit.id) != -1){
-          if(programIdsByUserRoles.length > 0){
             attributeValue.push(ogUnit.name);
 
-          }
         });
+
         this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeValue,currentUser.currentDatabase).then((programs : any)=>{
           this.sortProgramList(programs);
 
@@ -103,14 +94,11 @@ export class ProgramsProvider {
           });
           resolve(assignedPrograms);
 
-
-
         },error=>{
-
           reject(error);
         });
 
-      }
+
     });
   }
 
@@ -193,6 +181,17 @@ export class ProgramsProvider {
 
         reject();
       });
+    });
+  }
+
+  getProgramsSource(orgUnit,dataBaseName){
+    let attributeValue  = [orgUnit];
+    let attributeKey = "organisationUnits";
+    return new Promise((resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(this.resource,attributeKey,attributeValue,dataBaseName).then((programSource: any)=>{
+
+        resolve(programSource);
+      },error=>{reject(error)})
     });
   }
 

@@ -61,14 +61,14 @@ export class SyncProvider {
    * @param currentUser
    * @returns {Promise<T>}
    */
-  downloadResources(resources,specialMetadataResources,currentUser){
+  downloadResources(resource,specialMetadataResources,currentUser){
 
     let promises = [];
     let data  = {};
     return new Promise((resolve, reject) =>  {
 
 
-      resources.forEach((resource:any)=>{
+      //resources.forEach((resource:any)=>{
 
         if(resource == "organisationUnits"){
 
@@ -159,7 +159,7 @@ export class SyncProvider {
           );
         }
 
-      });
+     // });
 
       Observable.forkJoin(promises).subscribe(() => {
           resolve(data);
@@ -226,20 +226,22 @@ export class SyncProvider {
 
   prepareTablesToApplyChanges(resources,currentUser){
 
-
-
     let promises = [];
     return new Promise((resolve, reject) =>  {
-      resources.forEach((resource:any)=>{
+
+
+      // resources.forEach((resource:any)=>{
 
         promises.push(
-          this.sqLite.dropTable(resource,currentUser.currentDatabase).then(()=>{
+          this.sqLite.dropTable(resources,currentUser.currentDatabase).then(()=>{
+
             resolve();
+
           },error=>{
-              this.appProvider.setTopNotification("Failed to dropTables")
+              this.appProvider.setTopNotification("Failed to dropTables: "+resources)
           })
         )
-      });
+      // });
 
       Observable.forkJoin(promises).subscribe(() => {
           resolve();

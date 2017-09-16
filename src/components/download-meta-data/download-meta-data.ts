@@ -29,6 +29,8 @@ export class DownloadMetaDataComponent implements OnInit{
   hasAllSelected: boolean;
   loadingData: boolean = false;
   loadingMessages: any= [];
+  resourceToUpdate = [];
+  showLoadingMessage: boolean = false;
 
   updateManagerObject: any= {
     updateMetaData: {isExpanded: false, isSaved: true, isProcessRunning: false}
@@ -104,6 +106,15 @@ export class DownloadMetaDataComponent implements OnInit{
   }
 
 
+  checkForSelectedItems(){
+    if(this.resourceToUpdate.length > 0){
+      this.checkingForResourceUpdate()
+    }else{
+      this.appProvider.setNormalNotification("Please select at least one resources to update");
+    }
+  }
+
+
   checkingForResourceUpdate(){
     let isMetadata= false;
     let resourceUpdated = [];
@@ -111,11 +122,13 @@ export class DownloadMetaDataComponent implements OnInit{
       if(resource.status){
         isMetadata= true;
         resourceUpdated.push(resource.name);
+       // this.resourceToUpdate.push(resource.name);
+        this.updateResources(resource.name);
+        this.showLoadingMessage = true;
       }
     });
-    if(resourceUpdated.length > 0){
-      this.updateResources(resourceUpdated);
-    }else{
+    if(resourceUpdated.length == 0){
+      //this.updateResources(resourceUpdated);
       this.appProvider.setNormalNotification("Please select at least one resources to update");
     }
 
@@ -123,7 +136,7 @@ export class DownloadMetaDataComponent implements OnInit{
 
 
   updateResources(resources) {
-    this.updateMetaDataLoadingMessages = "Downloading MetaData";
+    this.updateMetaDataLoadingMessages = "Downloading selected MetaData";
     this.updateManagerObject.updateMetaData.isProcessRunning = true;
 
 
@@ -131,36 +144,39 @@ export class DownloadMetaDataComponent implements OnInit{
 
       this.updateMetaDataLoadingMessages = "Preparing device to apply updates";
 
-      alert("ResourcesData Values: " + JSON.stringify(resourcesData))
+      //alert("ResourcesData Values: " + JSON.stringify(resourcesData))
+
       this.syncProvider.prepareTablesToApplyChanges(resources, this.currentUser).then(() => {
+
+        this.updateMetaDataLoadingMessages = "Re-organize application database";
 
         this.sqLite.createTable(resources, this.currentUser.currentDatabase).then(() => {
 
 
           let updateCounts = 0;
-          this.updateMetaDataLoadingMessages = "Applying updates ";
-          this.appProvider.setNormalNotification("Applying updates tracking.....");
+          this.updateMetaDataLoadingMessages = "Applying downloaded updates ";
 
-           resources.forEach((resource: any) => {
-            let resourceName = resource;
+          // resources.forEach((resource: any) => {
+            let resourceName = resources;
 
           if (this.specialMetadataResources.indexOf(resourceName) >= -1) {
 
             this.appProvider.saveMetadata(resourceName, resourcesData[resourceName], this.currentUser.currentDatabase).then(() => {
               updateCounts++;
 
-              if (updateCounts == resources.length) {
+             // if (updateCounts == resources.length) {
                 this.autoSelect("un-selectAll");
                 this.updateManagerObject.updateMetaData.isProcessRunning = false;
                 this.appProvider.setNormalNotification("All updates has been applied successfully.");
-              }
+                this.showLoadingMessage = false;
+              // }
             }, error => {
               this.updateManagerObject.updateMetaData.isProcessRunning = false;
               this.appProvider.setNormalNotification("Fail to apply updates 0 : " + JSON.stringify(error));
             })
           }
 
-            });
+          //  });
 
           },
           error => {

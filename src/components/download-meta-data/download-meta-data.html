@@ -14,7 +14,7 @@
   </ion-row>
   <!--{{ resources |json }}-->
 
-  <ion-row>
+  <ion-row *ngIf="!showLoadingMessage" >
     <ion-col >
   <ion-list >
     <div *ngFor="let resourceObject of resources" style="background-color: white" >
@@ -29,6 +29,8 @@
     </ion-list>
     </ion-col>
   </ion-row>
+
+  <span *ngIf="showLoadingMessage" > <page-loading loadingSize="large" [loadingMessage]="updateMetaDataLoadingMessages"></page-loading> </span>
 
   <button ion-button style="text-transform: none;" (tap)="checkingForResourceUpdate()">Download MetaData</button>
 

@@ -81,6 +81,7 @@ export class DownloadEventsDataComponent implements OnInit{
     this.programIdsByUserRoles = [];
     this.programNamesByUserRoles = [];
     this.user.getUserData().then((userData : any)=>{
+
       userData.userRoles.forEach((userRole:any)=>{
         if (userRole.programs) {
           userRole.programs.forEach((program:any)=>{
@@ -117,23 +118,8 @@ export class DownloadEventsDataComponent implements OnInit{
   loadingPrograms() {
     this.assignedPrograms = [];
     let lastSelectedProgram = this.programsProvider.getLastSelectedProgram();
-    this.programsProvider.getProgramsAssignedOnOrgUnitAndUserRoles(this.selectedOrgUnit, this.programIdsByUserRoles, this.currentUser).then((programs: any) => {
 
-
-      alert("Assign Prog from OgUnit: "+JSON.stringify(programs));
-      //this.programs = programs;
-      this.selectedProgram = lastSelectedProgram;
-
-      programs.forEach((program:any)=>{
-
-        this.assignedPrograms.push({
-          id: program.id,
-          name: program.name,
-          programStages : program.programStages,
-          categoryCombo : program.categoryCombo
-        });
-
-      });
+    this.programsProvider.getProgramsSource(this.selectedOrgUnit, this.currentUser.currentDatabase).then((programs: any) => {
 
     } ,error=>{
       this.appProvider.setNormalNotification("Fail to reload Assigned Programs");
@@ -144,25 +130,19 @@ export class DownloadEventsDataComponent implements OnInit{
 
 
   openProgramList(){
-    let selectedProID: any;
-    alert("Assigned Progs UserRoles: "+JSON.stringify(this.programNamesByUserRoles));
 
     if(this.programNamesByUserRoles.length > 0){
-      // if(this.assignedPrograms.length > 0){
-      // if(this.programs && this.programs.length > 0){
-      let modal = this.modalCtrl.create('ProgramSelection',{data : this.assignedPrograms, currentProgram :this.selectedProgram  });
+
+      let modal = this.modalCtrl.create('ProgramSelection',{data : this.programNamesByUserRoles, currentProgram :this.selectedProgram  });
       modal.onDidDismiss((selectedProgram : any)=>{
         if(selectedProgram.length > 0){
           this.selectedProgram = selectedProgram;
 
-
           this.updateEventSelections();
 
           this.programsProvider.getProgramByName(selectedProgram, this.currentUser).then((programID: any)=> {
-            alert("Seleceted Prog ID : "+JSON.stringify(programID))
+
           });
-
-
 
         }
       });
@@ -184,7 +164,6 @@ export class DownloadEventsDataComponent implements OnInit{
         });
         alert("Events Data: "+JSON.stringify(eventsData))
       }
-
       //this.eventsProvider.savingEventsFromServer(eventsData, this.currentUser)
     })
 
