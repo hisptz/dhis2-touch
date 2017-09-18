@@ -24,15 +24,8 @@ export class ClearLocalMetadataComponent implements OnInit{
   dataBaseStructure: any;
   currentUser: any;
   hasAllSelected: boolean;
-  loadingData: boolean = false;
-  loadingMessages: any= [];
   showLoadingMessage: boolean = false;
-  isProcessRunning: any = false;
-
-
   clearMetaDataLoadingMessages: string = "";
-  specialMetadataResources: any;
-
 
 
   constructor(private syncProvider: SyncProvider, private appProvider: AppProvider, private sqLite: SqlLiteProvider, private user: UserProvider,
@@ -43,18 +36,10 @@ export class ClearLocalMetadataComponent implements OnInit{
   ngOnInit(){
 
     this.hasAllSelected = false;
-    this.loadingData= true;
-    this.loadingMessages= [];
-
-    this.specialMetadataResources = ["organisationUnits","dataSets"];
     this.user.getCurrentUser().then((user:any)=>{
       this.currentUser = user;
-
-      this.loadingData = false;
     });
-
     this.resources = this.syncPage.getMetadataResoures();
-
   }
 
 
@@ -64,14 +49,12 @@ export class ClearLocalMetadataComponent implements OnInit{
         resource.status = true;
       });
       this.hasAllSelected = true;
-
     }else{
       this.resources.forEach((resource:any) =>{
         resource.status = false;
       });
       this.hasAllSelected = false;
     }
-
   }
 
   verifyingDeleteOfResources(){
@@ -100,7 +83,6 @@ export class ClearLocalMetadataComponent implements OnInit{
       if(resource.status){
         isMetadata= true;
         resourcesToDelete.push(resource.name);
-
       }
     });
     if(resourcesToDelete.length == 0){
@@ -110,51 +92,32 @@ export class ClearLocalMetadataComponent implements OnInit{
       this.deleteResources(resourcesToDelete);
       this.showLoadingMessage = true;
     }
-
   }
 
 
   deleteResources(resources){
-
     this.clearMetaDataLoadingMessages= "Deleting selected MetaData";
-    this.isProcessRunning = true;
 
-      this.clearMetaDataLoadingMessages = "Preparing device to apply updates";
+    this.clearMetaDataLoadingMessages = "Preparing device to apply updates";
 
     this.syncProvider.prepareTablesToApplyChanges(resources,this.currentUser).then(()=>{
-
       this.clearMetaDataLoadingMessages = "Re-organize application database";
 
-      this.sqLite.createTable(resources, this.currentUser.currentDatabase).then(()=>{
+      this.sqLite.generateTables(this.currentUser.currentDatabase).then(()=>{
 
-        let updateCounts = 0;
         this.clearMetaDataLoadingMessages = "Applying changes in application Database";
-
-        updateCounts ++;
-
-        if(resources.length >= updateCounts){
-          this.autoSelect("un-selectAll");
-          this.isProcessRunning = false;
-          this.appProvider.setNormalNotification("Local MetaData deleted successfully.");
-          this.showLoadingMessage = false;
-        }
+        this.autoSelect("un-selectAll");
+        this.appProvider.setNormalNotification("Local MetaData deleted successfully.");
+        this.showLoadingMessage = false;
 
       },error=>{
         this.appProvider.setTopNotification("Failed to Drop "+resources+" Database table");
       });
-
     },error=>{
-      this.isProcessRunning = false;
       this.appProvider.setNormalNotification("Fail to apply updates 0 : " + JSON.stringify(error));
     });
-
-
-
-
-
-
-
   }
+
 
   displayOneAtTime(){
     this.resources.forEach((resource:any)=>{
