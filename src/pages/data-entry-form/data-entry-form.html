@@ -41,6 +41,7 @@
               </ion-item>
             </div>
           </div>
+          {{ dataSetAttributeOptionCombo |json }}
           <div *ngFor="let section of entryFormSections;let currentSectionIndex = index">
             <div *ngIf="(currentSectionIndex + 1) == pager.page">
               <div class="item-card-entry-form" >

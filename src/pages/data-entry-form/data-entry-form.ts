@@ -4,6 +4,7 @@ import {UserProvider} from "../../providers/user/user";
 import {AppProvider} from "../../providers/app/app";
 import {DataEntryFormProvider} from "../../providers/data-entry-form/data-entry-form";
 import {SettingsProvider} from "../../providers/settings/settings";
+import {DataValuesProvider} from "../../providers/data-values/data-values";
 
 /**
  * Generated class for the DataEntryFormPage page.
@@ -29,6 +30,7 @@ export class DataEntryFormPage implements OnInit{
   indicators : Array<any>;
   sectionIds : Array<string>;
   dataSet : any;
+  dataSetAttributeOptionCombo : any;
 
   entryFormSections : any;
   icons : any = {};
@@ -43,6 +45,7 @@ export class DataEntryFormPage implements OnInit{
               private modalCtrl : ModalController,
               private dataEntryFormProvider : DataEntryFormProvider,
               private settingsProvider : SettingsProvider,
+              private dataValuesProvider : DataValuesProvider,
               private navParams: NavParams) {
   }
 
@@ -96,6 +99,11 @@ export class DataEntryFormPage implements OnInit{
       this.entryFormSections = entryForm;
       this.pager["page"] = 1;
       this.pager["total"] = entryForm.length;
+      alert(JSON.stringify(this.dataSet.categoryCombo));
+      this.dataSetAttributeOptionCombo = this.dataValuesProvider.getDataValuesSetAttributeOptionCombo(this.entryFormParameter.dataDimension,'');
+      //this.dataEntryFormSelectionParameter.dataDimension,
+      //dataDimension
+
       this.isLoading = false;
     },error=>{
       console.log(JSON.stringify(error));

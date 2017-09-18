@@ -67,6 +67,7 @@ import { EventsProvider } from '../providers/events/events';
 import { ProgramStageSectionsProvider } from '../providers/program-stage-sections/program-stage-sections';
 import { EventCaptureFormProvider } from '../providers/event-capture-form/event-capture-form';
 import { DataEntryFormProvider } from '../providers/data-entry-form/data-entry-form';
+import { DataValuesProvider } from '../providers/data-values/data-values';
 @NgModule({
   declarations: [
     MyApp,
@@ -131,6 +132,7 @@ import { DataEntryFormProvider } from '../providers/data-entry-form/data-entry-f
     ProgramStageSectionsProvider,
     EventCaptureFormProvider,
     DataEntryFormProvider,
+    DataValuesProvider,
   ]
 })
 export class AppModule {}
