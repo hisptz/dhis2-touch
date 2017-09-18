@@ -12,20 +12,23 @@ import {NetworkAvailabilityProvider} from "../network-availability/network-avail
 @Injectable()
 export class DataValuesProvider {
 
+  resourceName : string;
+
   constructor(private httpClient :HttpClientProvider,private sqlLite : SqlLiteProvider,private network : NetworkAvailabilityProvider) {
+    this.resourceName = 'dataValues';
   }
 
   /**
-   * get dataValues form server based on selected parameter
-   * @param dataSet
+   *
+   * @param dataSetId
    * @param period
-   * @param orgUnit
+   * @param orgUnitId
    * @param attributeOptionCombo
    * @param currentUser
-   * @returns {Promise<T>}
+   * @returns {Promise<any>}
    */
-  getDataValueSetFromServer(dataSet, period, orgUnit, attributeOptionCombo, currentUser) {
-    let parameter = 'dataSet=' + dataSet + '&period=' + period + '&orgUnit=' + orgUnit;
+  getDataValueSetFromServer(dataSetId, period, orgUnitId, attributeOptionCombo, currentUser) {
+    let parameter = 'dataSet=' + dataSetId + '&period=' + period + '&orgUnit=' + orgUnitId;
     let networkStatus = this.network.getNetWorkStatus();
     return new Promise((resolve, reject)=> {
       if(networkStatus.isAvailable){
@@ -50,30 +53,28 @@ export class DataValuesProvider {
   getDataValuesSetAttributeOptionCombo(dataDimension, categoryOptionCombos) {
     let attributeOptionCombo = "";
     if (dataDimension && dataDimension.cp) {
-      alert(JSON.stringify(dataDimension));
       let categoriesOptionsArray = dataDimension.cp.split(';');
-      // for (let i = 0; i < categoryOptionCombos.length; i++) {
-      //   let hasAttributeOptionCombo = true;
-      //   let categoryOptionCombo = categoryOptionCombos[i];
-      //   categoryOptionCombo.categoryOptions.forEach((categoryOption:any)=> {
-      //     if (categoriesOptionsArray.indexOf(categoryOption.id) == -1) {
-      //       hasAttributeOptionCombo = false;
-      //     }
-      //   });
-      //   if (hasAttributeOptionCombo) {
-      //     attributeOptionCombo = categoryOptionCombo.id;
-      //     break;
-      //   }
-      // }
+      for (let i = 0; i < categoryOptionCombos.length; i++) {
+        let hasAttributeOptionCombo = true;
+        let categoryOptionCombo = categoryOptionCombos[i];
+        categoryOptionCombo.categoryOptions.forEach((categoryOption:any)=> {
+          if (categoriesOptionsArray.indexOf(categoryOption.id) == -1) {
+            hasAttributeOptionCombo = false;
+          }
+        });
+        if (hasAttributeOptionCombo) {
+          attributeOptionCombo = categoryOptionCombo.id;
+          break;
+        }
+      }
     } else {
-      //attributeOptionCombo = categoryOptionCombos[0].id;
+      attributeOptionCombo = categoryOptionCombos[0].id;
     }
     return attributeOptionCombo;
   }
 
 
   /**
-   * get dataset attribute option combo based on data entry form selection
    * @param dataValuesResponse
    * @param attributeOptionCombo
    * @returns {Array}
@@ -94,6 +95,47 @@ export class DataValuesProvider {
     return FilteredDataValues;
   }
 
-
+  /**
+   * saving data davlues
+   * @param dataValues
+   * @param dataSetId
+   * @param period
+   * @param orgUnitId
+   * @param dataDimension
+   * @param syncStatus
+   * @param currentUser
+   * @returns {Promise<T>}
+   */
+  saveDataValues(dataValues, dataSetId, period, orgUnitId, dataDimension, syncStatus, currentUser) {
+    return new Promise( (resolve, reject)=> {
+      if(dataValues.length > 0){
+        let bulkData = [];
+        for(let dataValue of dataValues){
+          bulkData.push({
+            id: dataSetId + '-' + dataValue.dataElement + '-' + dataValue.categoryOptionCombo + '-' + period + '-' + orgUnitId,
+            de: dataValue.dataElement,
+            co: dataValue.categoryOptionCombo,
+            pe: period,
+            ou: orgUnitId,
+            cc: dataDimension.cc,
+            cp: dataDimension.cp,
+            value: dataValue.value,
+            syncStatus: syncStatus,
+            dataSetId: dataSetId,
+            period: dataValue.period,
+            orgUnit: dataValue.orgUnit
+          });
+        }
+        this.sqlLite.insertBulkDataOnTable(this.resourceName,bulkData,currentUser.currentDatabase).then(()=>{
+          resolve();
+        },error=>{
+          console.log(JSON.stringify(error));
+          reject(error);
+        });
+      }else{
+        resolve();
+      }
+    });
+  }
 
 }

@@ -99,11 +99,7 @@ export class DataEntryFormPage implements OnInit{
       this.entryFormSections = entryForm;
       this.pager["page"] = 1;
       this.pager["total"] = entryForm.length;
-      alert(JSON.stringify(this.dataSet.categoryCombo));
-      this.dataSetAttributeOptionCombo = this.dataValuesProvider.getDataValuesSetAttributeOptionCombo(this.entryFormParameter.dataDimension,'');
-      //this.dataEntryFormSelectionParameter.dataDimension,
-      //dataDimension
-
+      this.dataSetAttributeOptionCombo = this.dataValuesProvider.getDataValuesSetAttributeOptionCombo(this.entryFormParameter.dataDimension,this.dataSet.categoryCombo.categoryOptionCombos);
       this.isLoading = false;
     },error=>{
       console.log(JSON.stringify(error));
