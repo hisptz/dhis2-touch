@@ -60,21 +60,15 @@ export class SyncProvider {
    * @param currentUser
    * @returns {Promise<T>}
    */
-  downloadResources(resources,specialMetadataResources,currentUser){
-
+  downloadResources(resources,currentUser){
     let promises = [];
     let data  = {};
     return new Promise((resolve, reject) =>  {
-
-
       resources.forEach((resource:any)=>{
-
         if(resource == "organisationUnits"){
-
           promises.push(
             this.orgUnitsProvider.downloadingOrganisationUnitsFromServer(currentUser.userOrgUnitIds, currentUser).then((response: any) => {
               data[resource] = response;
-              // alert("From OrgUnit Server: "+JSON.stringify(response));
             }, error => {
             })
           );
@@ -82,22 +76,20 @@ export class SyncProvider {
           promises.push(
             this.datasetsProvider.downloadDataSetsFromServer(currentUser).then((response: any) => {
               data[resource] = response;
-              // alert("From DataSet Server: "+JSON.stringify(response));
             }, error => {
             })
           );
         }else if(resource == "sections"){
           promises.push(
             this.sectionProvider.downloadSectionsFromServer(currentUser).then((response: any) => {
-              data[resource] = response;
-              // alert("From Sections Server: "+JSON.stringify(response));
+              data[resource] = response[resource];
             }, error => {
             })
           );
         }else if(resource == "dataElements"){
           promises.push(
             this.dataElementProvider.downloadDataElementsFromServer(currentUser).then((response: any) => {
-              data[resource] = response;
+              data[resource] = response[resource];
 
             }, error => {
             })
@@ -170,48 +162,18 @@ export class SyncProvider {
   }
 
 
-  prepareDeviceToApplyChanges(resources,currentUser){
-
-    let promises = [];
-    return new Promise((resolve, reject) =>  {
-      resources.forEach((resource:any)=>{
-
-        promises.push(
-          this.sqLite.deleteAllOnTable(resource,currentUser.currentDatabase).then(()=>{
-            resolve();
-          },error=>{
-
-          })
-        )
-      });
-
-      Observable.forkJoin(promises).subscribe(() => {
-          resolve();
-        },
-        (error) => {
-          reject(error);
-        })
-    });
-
-  }
-
-
 
   savingResources(resources,data,currentUser){
-
     let promises = [];
-
     return new Promise((resolve, reject) =>  {
       resources.forEach((resource:any)=>{
-        let resourceName = resource.name;
-        if(data[resourceName]){
+        if(resource == "organisationUnits"){
           promises.push(
-            this.appProvider.saveMetadata(resourceName,data[resourceName],currentUser.currentDatabase).then((
-            )=>{
-            },error=>{})
+            this.orgUnitsProvider.savingOrganisationUnitsFromServer(data[resource],currentUser).then(()=>{},error=>{})
           );
         }
-      });
+
+      })
 
       Observable.forkJoin(promises).subscribe(() => {
           resolve();
@@ -230,11 +192,9 @@ export class SyncProvider {
         promises.push(
           this.sqLite.dropTable(resource,currentUser.currentDatabase).then(()=>{
           },error=>{
-
           })
         )
        });
-
       Observable.forkJoin(promises).subscribe(() => {
           resolve();
         },
@@ -242,10 +202,6 @@ export class SyncProvider {
           reject(error);
         })
     });
-
   }
-
-
-
 
 }

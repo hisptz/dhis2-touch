@@ -251,7 +251,7 @@ export class DataSetsProvider {
     let userOrgUnitIds = currentUser.userOrgUnitIds;
     return new Promise((resolve, reject)=> {
       for(let userOrgUnitId of userOrgUnitIds){
-        let fields="fields=id,name,timelyDays,formType,compulsoryDataElementOperands[name,dimensionItemType,dimensionItem],version,periodType,openFuturePeriods,expiryDays,dataSetElements[dataElement[id]],dataElements[id],organisationUnits[id],sections[id],indicators[id],categoryOptionCombos[id,name,categoryOptions[id]],6categoryCombo[id,name,categories[id,name,categoryOptions[id,name,organisationUnits[id]]]]";
+        let fields="fields=id,name,timelyDays,formType,compulsoryDataElementOperands[name,dimensionItemType,dimensionItem],version,periodType,openFuturePeriods,expiryDays,dataSetElements[dataElement[id]],dataElements[id],organisationUnits[id],sections[id],indicators[id],categoryOptionCombos[id,name,categoryOptions[id]],categoryCombo[id,name,categories[id,name,categoryOptions[id,name,organisationUnits[id]]]]";
         let filter="filter=organisationUnits.path:ilike:";
         let url = "/api/25/"+this.resource+".json?paging=false&";
         url += fields + "&" + filter + userOrgUnitId;

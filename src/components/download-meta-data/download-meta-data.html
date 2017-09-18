@@ -1,7 +1,6 @@
 <!-- Generated template for the DownloadMetaDataComponent component -->
 
-<ion-grid class="backgroundContents">
-
+<ion-grid>
   <ion-row *ngIf="!showLoadingMessage">
     <ion-col>
     <button ion-button block style="text-transform: none;"
@@ -12,21 +11,14 @@
             (tap)="autoSelect('unSelectAll')" >Deselect </button>
     </ion-col>
   </ion-row>
-  <!--{{ resources |json }}-->
-
   <ion-row *ngIf="!showLoadingMessage" >
     <ion-col >
-  <ion-list >
-    <div *ngFor="let resourceObject of resources" style="background-color: white" >
-
-      <ion-item>
-
-        <ion-checkbox color="blue" [(ngModel)]="resourceObject.status"></ion-checkbox>
-        <ion-label> {{ resourceObject.displayName }} </ion-label>
-
-      </ion-item>
-    </div>
-    </ion-list>
+      <div *ngFor="let resourceObject of resources"  >
+        <ion-item>
+          <ion-checkbox color="blue" [(ngModel)]="resourceObject.status"></ion-checkbox>
+          <ion-label> {{ resourceObject.displayName }} </ion-label>
+        </ion-item>
+      </div>
     </ion-col>
   </ion-row>
 
