@@ -15,60 +15,6 @@
 
 <ion-content padding>
 
-  <ion-grid>
-    <ion-row *ngIf="reportParams.paramOrganisationUnit">
-      <ion-col>
-
-        <div class="entry-selection-container entry-selection" text-capitalize (tap)="openOrganisationUnitModal()" >
-          <div style="text-align: center" >
-            <div *ngIf="!currentSelectionStatus.isOrgUnitLoaded">
-              <page-loading loadingSize="small"></page-loading>
-            </div>
-          </div>
-          <div *ngIf="currentSelectionStatus.isOrgUnitLoaded" style="text-align: center" >
-            {{ selectedOrganisationUnitLabel }}
-          </div>
-        </div>
-      </ion-col>
-    </ion-row>
-
-    <ion-row *ngIf="reportParams.paramReportingPeriod" >
-      <ion-col>
-        <div class="entry-selection-container entry-selection" text-capitalize (tap)="openReportPeriodSelection()" >
-          <div style="text-align: center" >
-            <div *ngIf="!currentSelectionStatus.isPeriodLoaded">
-              <page-loading loadingSize="small"></page-loading>
-            </div>
-          </div>
-          <div *ngIf="currentSelectionStatus.isPeriodLoaded" style="text-align: center" >
-            {{ selectedPeriodLabel }}
-          </div>
-        </div>
-      </ion-col>
-    </ion-row>
-
-    <!-- todo cross-checking report parameter first from server against this-->
-
-    <div *ngIf="(currentSelectionStatus.isPeriodSelected && currentSelectionStatus.isOrgUnitLoaded)">
-
-      <ion-row class="slide-in-from-right">
-        <ion-col >
-          <div class="entry-selection-container" (tap)="goToView()">
-            <div><b>Report name</b> : {{ reportName }}<br>
-              <b>Organisation unit</b> : {{ selectedOrganisationUnitLabel }}<br>
-              <b>Period</b> : {{ selectedPeriodLabel }}
-            </div>
-            <button class="dataEntryButton" ion-button full large color="whitecolor">
-              Generate Report &nbsp;&nbsp;&nbsp;<ion-icon name="ios-arrow-forward-outline"></ion-icon>
-            </button>
-          </div>
-        </ion-col>
-      </ion-row>
-
-    </div>
-
-  </ion-grid>
-
-
+  <empty-list-notification [emptyListMessage]="'Coming soon'" ]></empty-list-notification>
 
 </ion-content>

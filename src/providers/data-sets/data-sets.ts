@@ -105,6 +105,12 @@ export class DataSetsProvider {
     });
   }
 
+  /**
+   *
+   * @param selectedOrgUnitId
+   * @param categories
+   * @returns {Array}
+   */
   getDataSetCategoryComboCategories(selectedOrgUnitId,categories){
     let categoryComboCategories = [];
     categories.forEach((category : any)=>{
@@ -123,6 +129,12 @@ export class DataSetsProvider {
     return categoryComboCategories;
   }
 
+  /**
+   *
+   * @param selectedOrgUnitId
+   * @param categoryOption
+   * @returns {boolean}
+   */
   isOrganisationUnitAllowed(selectedOrgUnitId,categoryOption){
     let result = true;
     if(categoryOption.organisationUnits && categoryOption.organisationUnits.length > 0){
@@ -136,6 +148,96 @@ export class DataSetsProvider {
     return result;
   }
 
+  /**
+   *
+   * @param dataSetId
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getDataSetById(dataSetId,currentUser){
+    let attributeKey = "id";
+    let attributeArray = [dataSetId];
+    return new Promise((resolve, reject)=> {
+      this.SqlLite.getDataFromTableByAttributes(this.resource,attributeKey,attributeArray,currentUser.currentDatabase).then((dataSets : any)=>{
+        if(dataSets && dataSets.length > 0){
+          resolve(dataSets[0])
+        }else{
+          reject();
+        }
+      },error=>{reject(error)})
+    });
+  }
+
+  /**
+   *
+   * @param dataSetId
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getDataSetSectionsIds(dataSetId,currentUser){
+    let resource = "dataSetSections";
+    let attributeKey = "dataSetId";
+    let attributeArray = [dataSetId];
+    let sectionIds = [];
+    return new Promise((resolve, reject)=> {
+      this.SqlLite.getDataFromTableByAttributes(resource,attributeKey,attributeArray,currentUser.currentDatabase).then((dataSetsSections : any)=>{
+        if(dataSetsSections && dataSetsSections.length > 0){
+          dataSetsSections.forEach((dataSetsSection : any)=>{
+            sectionIds.push(dataSetsSection.sectionId);
+          });
+        }
+        resolve(sectionIds);
+      },error=>{reject(error)})
+    });
+  }
+
+  /**
+   *
+   * @param dataSetId
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getDataSetDataElements(dataSetId,currentUser){
+    let attributeKey = "dataSetId";
+    let attributeArray = [dataSetId];
+    let dataSetElements = [];
+    let resource = "dataSetElements";
+    return new Promise((resolve, reject)=> {
+      this.SqlLite.getDataFromTableByAttributes(resource,attributeKey,attributeArray,currentUser.currentDatabase).then((dataSetElementsIds : any)=>{
+        if(dataSetElementsIds && dataSetElementsIds.length > 0){
+          dataSetElementsIds.forEach((dataSetIndicatorId : any)=>{
+            console.log(JSON.stringify(dataSetIndicatorId));
+            dataSetElements.push({id : dataSetIndicatorId.dataElementId,sortOrder : dataSetIndicatorId.sortOrder});
+          });
+        }
+        resolve(dataSetElements);
+      },error=>{reject(error)})
+    });
+  }
+
+
+  /**
+   *
+   * @param dataSetId
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getDataSetIndicatorIds(dataSetId,currentUser){
+    let resource = "dataSetIndicators";
+    let attributeKey = "dataSetId";
+    let attributeArray = [dataSetId];
+    let indicatorIds = [];
+    return new Promise((resolve, reject)=> {
+      this.SqlLite.getDataFromTableByAttributes(resource,attributeKey,attributeArray,currentUser.currentDatabase).then((dataSetsIndicatorIds : any)=>{
+        if(dataSetsIndicatorIds && dataSetsIndicatorIds.length > 0){
+          dataSetsIndicatorIds.forEach((dataSetsSection : any)=>{
+            indicatorIds.push(dataSetsSection.indicatorId);
+          });
+        }
+        resolve(indicatorIds);
+      },error=>{reject(error)})
+    });
+  }
 
 
   /**
@@ -229,7 +331,11 @@ export class DataSetsProvider {
     });
     return new Promise((resolve, reject)=> {
       if(dataSetIndicators.length == 0){
-        resolve();
+        this.saveDataSetSource(dataSets,currentUser).then(()=>{
+          resolve();
+        },error=>{
+          reject(error);
+        });
       }else{
         this.SqlLite.insertBulkDataOnTable(resource,dataSetIndicators,currentUser.currentDatabase).then(()=>{
           this.saveDataSetSource(dataSets,currentUser).then(()=>{
@@ -266,7 +372,11 @@ export class DataSetsProvider {
     });
     return new Promise((resolve, reject)=> {
       if(dataSetSource.length == 0){
-        resolve();
+        this.saveDataSetSections(dataSets,currentUser).then(()=>{
+          resolve();
+        },error=>{
+          reject(error);
+        });
       }else{
         this.SqlLite.insertBulkDataOnTable(resource,dataSetSource,currentUser.currentDatabase).then(()=>{
           this.saveDataSetSections(dataSets,currentUser).then(()=>{
@@ -320,7 +430,11 @@ export class DataSetsProvider {
     });
     return new Promise((resolve, reject)=> {
       if(dataSetSections.length == 0){
-        resolve();
+        this.saveDataSetOperands(dataSets,currentUser).then(()=>{
+          resolve();
+        },error=>{
+          reject(error);
+        });
       }else{
         this.SqlLite.insertBulkDataOnTable(resource,dataSetSections,currentUser.currentDatabase).then(()=>{
           this.saveDataSetOperands(dataSets,currentUser).then(()=>{
@@ -360,7 +474,11 @@ export class DataSetsProvider {
     });
     return new Promise((resolve, reject)=> {
       if(dataSetOperands.length == 0){
-        resolve();
+        this.saveDataSetElements(dataSets,currentUser).then(()=>{
+          resolve();
+        },error=>{
+          reject(error);
+        });
       }else{
         this.SqlLite.insertBulkDataOnTable(resource,dataSetOperands,currentUser.currentDatabase).then(()=>{
           this.saveDataSetElements(dataSets,currentUser).then(()=>{
@@ -386,22 +504,28 @@ export class DataSetsProvider {
     let resource = "dataSetElements";
     dataSets.forEach((dataSet : any)=>{
       if(dataSet.dataSetElements && dataSet.dataSetElements.length > 0){
+        let count = 0;
         dataSet.dataSetElements.forEach((dataSetElement : any)=>{
           if(dataSetElement.dataElement.id && dataSetElement.dataElement.id)
           dataSetElements.push({
             id : dataSet.id +"-"+dataSetElement.dataElement.id,
             dataSetId : dataSet.id,
+            sortOrder : count,
             dataElementId : dataSetElement.dataElement.id
           });
+          count ++;
         })
       }
       if(dataSet.dataElements && dataSet.dataElements.length > 0){
+        let count = 0;
         dataSet.dataElements.forEach((dataElement : any)=>{
           dataSetElements.push({
             id : dataSet.id +"-"+dataElement.id,
             dataSetId : dataSet.id,
+            sortOrder : count,
             dataElementId : dataElement.id
           });
+          count ++;
         })
       }
     });

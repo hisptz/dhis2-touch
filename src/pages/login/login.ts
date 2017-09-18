@@ -15,6 +15,7 @@ import {StandardReportProvider} from "../../providers/standard-report/standard-r
 import {ProgramsProvider} from "../../providers/programs/programs";
 import {ProgramStageSectionsProvider} from "../../providers/program-stage-sections/program-stage-sections";
 import {ProgramStageDataElementsProvider} from "../../providers/program-stage-data-elements/program-stage-data-elements";
+import {SettingsProvider} from "../../providers/settings/settings";
 
 /**
  * Generated class for the LoginPage page.
@@ -50,6 +51,7 @@ export class LoginPage implements OnInit{
               private sectionsProvider : SectionsProvider,
               private dataSetsProvider : DataSetsProvider,
               private standardReports : StandardReportProvider,
+              private settingsProvider : SettingsProvider,
               private HttpClientProvider : HttpClientProvider,
               private programsProvider: ProgramsProvider,
               private programStageSectionProvider: ProgramStageSectionsProvider,
@@ -288,7 +290,7 @@ export class LoginPage implements OnInit{
 
   downloadingDataElements(){
     if(this.isLoginProcessActive){
-      let resource = "sections";
+      let resource = "dataElements";
       this.currentResourceType = "entryForm";
       this.progressTracker[this.currentResourceType].message = "Loading data elements";
       if(this.completedTrackedProcess.indexOf(resource) > -1){
@@ -559,8 +561,21 @@ export class LoginPage implements OnInit{
 
   setLandingPage(currentUser){
     currentUser.isLogin = true;
+    this.reCheckingAppSetting(currentUser);
     this.UserProvider.setCurrentUser(currentUser).then(()=>{
       this.navCtrl.setRoot(TabsPage)
+    });
+  }
+
+  reCheckingAppSetting(currentUser){
+    let defaultSetting  = this.settingsProvider.getDefaultSettings();
+    this.settingsProvider.getSettingsForTheApp(currentUser).then((appSettings : any)=>{
+      if(!appSettings){
+        let time = defaultSetting.synchronization.time;
+        let timeType = defaultSetting.synchronization.timeType;
+        defaultSetting.synchronization.time = this.settingsProvider.getDisplaySynchronizationTime(time,timeType);
+        this.settingsProvider.setSettingsForTheApp(currentUser,defaultSetting).then(()=>{},error=>{})
+      }
     });
   }
 

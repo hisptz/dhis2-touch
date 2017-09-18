@@ -11,7 +11,7 @@ import {HelpContentsComponent} from "./help-contents/help-contents";
   declarations: [
     LoadingPage,
     ProgressBarPage,NotificationComponent,
-    EmptyListNotificationComponent,HelpContentsComponent
+    EmptyListNotificationComponent,HelpContentsComponent,
   ],
   imports: [
     IonicModule

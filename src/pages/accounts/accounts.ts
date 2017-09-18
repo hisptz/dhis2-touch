@@ -1,6 +1,7 @@
 import { Component,OnInit } from '@angular/core';
 import { IonicPage, NavController ,App} from 'ionic-angular';
 import {UserProvider} from "../../providers/user/user";
+import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
 
 /**
  * Generated class for the AccountsPage page.
@@ -17,6 +18,7 @@ export class AccountsPage implements OnInit{
 
   constructor(public navCtrl: NavController,
               private app : App,
+              private organisationUnitProvider : OrganisationUnitsProvider,
               private UserProvider : UserProvider) {
   }
 
@@ -34,6 +36,7 @@ export class AccountsPage implements OnInit{
       let user :any = await this.UserProvider.getCurrentUser();
       user.isLogin = false;
       this.UserProvider.setCurrentUser(user).then(()=>{
+        this.organisationUnitProvider.resetOrganisationUnit();
         this.app.getRootNav().setRoot('LoginPage');
       })
     }catch (e){

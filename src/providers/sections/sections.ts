@@ -31,6 +31,55 @@ export class SectionsProvider {
 
   /**
    *
+   * @param sectionIds
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getSectionByIds(sectionIds,currentUser){
+    let attributeKey = "id";
+    return new Promise((resolve, reject)=> {
+      this.SqlLite.getDataFromTableByAttributes(this.resource,attributeKey,sectionIds,currentUser.currentDatabase).then(( sections: any)=>{
+        let count = 0;
+        sections.forEach((section : any)=>{
+          this.getSectionDataElements(section.id,currentUser).then((sectionDataElements : any)=>{
+            section["dataElementIds"] = sectionDataElements;
+            count ++;
+            if(count == sections.length){
+              resolve(sections);
+            }
+          },error=>{
+            reject(error);
+          });
+        });
+      },error=>{reject(error)})
+    });
+  }
+
+  /**
+   *
+   * @param sectionId
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getSectionDataElements(sectionId,currentUser){
+    let attributeKey = "sectionId";
+    let attributeArray = [sectionId];
+    let sectionDataElements = [];
+    let resource = "sectionDataElements";
+    return new Promise((resolve, reject)=> {
+      this.SqlLite.getDataFromTableByAttributes(resource,attributeKey,attributeArray,currentUser.currentDatabase).then((sectionDataElementsResponse : any)=>{
+        if(sectionDataElementsResponse && sectionDataElementsResponse.length > 0){
+          sectionDataElementsResponse.forEach((sectionDataElement : any)=>{
+            sectionDataElements.push({id : sectionDataElement.dataElementId,sortOrder : sectionDataElement.sortOrder});
+          });
+        }
+        resolve(sectionDataElements);
+      },error=>{reject(error)})
+    });
+  }
+
+  /**
+   *
    * @param sections
    * @param currentUser
    * @returns {Promise<any>}
@@ -65,12 +114,15 @@ export class SectionsProvider {
     let resource = "sectionDataElements";
     sections.forEach((section : any)=>{
       if(section.dataElements && section.dataElements.length > 0){
+        let count = 0;
         section.dataElements.forEach((dataElement : any)=>{
           sectionDataElements.push({
             id : section.id + "-" + dataElement.id,
             sectionId : section.id,
-            dataElementId : dataElement.id
+            dataElementId : dataElement.id,
+            sortOrder : count
           });
+          count ++;
         });
       }
     });

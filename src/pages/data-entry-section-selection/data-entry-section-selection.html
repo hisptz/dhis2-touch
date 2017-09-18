@@ -1,0 +1,40 @@
+<!--
+  Generated template for the DataEntrySectionSelectionPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      Data Entry Form  sections
+    </ion-title>
+    <ion-buttons start>
+      <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
+        close
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content >
+  <ion-searchbar animated="true"autocomplete="on"  (ionInput)="getFilteredList($event)"></ion-searchbar>
+  <ion-grid>
+    <ion-row>
+      <ion-col >
+        <ion-list>
+          <ion-item *ngFor="let section of sections;let currentIndex = index" (tap)="setSelectedSection(section)">
+            <img  class="side-menu-icon" [src]="icon"/>&nbsp;&nbsp;
+            <span  ion-text [color]="((currentIndex + 1) == pager.page) ?'current' : 'font-color'">{{ section.name }}</span>
+          </ion-item>
+          <ion-item *ngIf = "sections.length == 0">
+            <empty-list-notification [emptyListMessage]="'There is nothing to select'"></empty-list-notification>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

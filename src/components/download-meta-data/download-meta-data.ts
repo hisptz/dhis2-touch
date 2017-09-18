@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {SyncProvider} from "../../providers/sync/sync";
-import {FormControl} from "@angular/forms";
 import {AppProvider} from "../../providers/app/app";
 import {SqlLiteProvider} from "../../providers/sql-lite/sql-lite";
-import {DATABASE_STRUCTURE} from "../../constants/database-structure";
 import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
 import {DataSetsProvider} from "../../providers/data-sets/data-sets";
 import {UserProvider} from "../../providers/user/user";
