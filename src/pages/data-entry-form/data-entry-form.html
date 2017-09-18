@@ -17,10 +17,12 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <div *ngIf="entryFormParameter" class="item-card" full (tap)="goBack()" padding-bottom padding-top>
-          <div><b>Organisation Unit</b> : {{ entryFormParameter.orgUnit.name }}<br>
+        <div *ngIf="entryFormParameter" class="item-card" full padding-bottom padding-top>
+          <div (tap)="goBack()" padding-bottom >
+            <b>Organisation Unit</b> : {{ entryFormParameter.orgUnit.name }}<br>
             <b>Form</b> : {{ entryFormParameter.dataSet.name }}<br>
-            <b>Period</b> : {{ entryFormParameter.period.name }}
+            <b>Period</b> : {{ entryFormParameter.period.name }}<br>
+            {{ storageStatus |json }}
           </div>
         </div>
         <div *ngIf="isLoading">
@@ -52,6 +54,7 @@
                   <div *ngFor="let dataElement of section.dataElements" >
                     <input-container [dataElement]="dataElement"
                                      [currentUser]="currentUser"
+                                     [data]="dataValuesObject"
                                      (onChange)="updateData($event)"></input-container>
                   </div>
                 </div>

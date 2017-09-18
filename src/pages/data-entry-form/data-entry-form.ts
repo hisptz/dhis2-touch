@@ -35,6 +35,8 @@ export class DataEntryFormPage implements OnInit{
   entryFormSections : any;
   icons : any = {};
   pager : any = {};
+  storageStatus : any;
+  dataValuesObject : any;
 
   isDataSetCompleted : boolean;
   isDataSetCompletenessProcessRunning : boolean;
@@ -51,7 +53,10 @@ export class DataEntryFormPage implements OnInit{
 
   ngOnInit(){
     this.icons["menu"] = "assets/dashboard/menu.png";
-
+    this.storageStatus ={
+      online : 0, offline : 0
+    };
+    this.dataValuesObject = {};
     this.loadingMessage = "Loading user information";
     this.isLoading = true;
     this.entryFormParameter = this.navParams.get("parameter");
@@ -99,19 +104,34 @@ export class DataEntryFormPage implements OnInit{
       this.entryFormSections = entryForm;
       this.pager["page"] = 1;
       this.pager["total"] = entryForm.length;
-      this.dataSetAttributeOptionCombo = this.dataValuesProvider.getDataValuesSetAttributeOptionCombo(this.entryFormParameter.dataDimension,this.dataSet.categoryCombo.categoryOptionCombos);
+      let dataSetId = this.dataSet.id;
+      let period = this.entryFormParameter.period.iso;
+      let orgUnitId = this.entryFormParameter.orgUnit.id;
+      let dataDimension = this.entryFormParameter.dataDimension;
+      this.dataSetAttributeOptionCombo = this.dataValuesProvider.getDataValuesSetAttributeOptionCombo(dataDimension,this.dataSet.categoryCombo.categoryOptionCombos);
       this.loadingMessage = "Loading data from the server";
-      this.dataValuesProvider.getDataValueSetFromServer(this.dataSet.id,this.entryFormParameter.period.iso,this.entryFormParameter.orgUnit.id,this.dataSetAttributeOptionCombo,this.currentUser).then((dataValues : any)=>{
+      this.dataValuesProvider.getDataValueSetFromServer(dataSetId,period,orgUnitId,this.dataSetAttributeOptionCombo,this.currentUser).then((dataValues : any)=>{
         if(dataValues.length > 0){
-          // dataValues.forEach()
-          alert(JSON.stringify(dataValues));
+          dataValues.forEach((dataValue :any)=>{
+            dataValue["period"] = this.entryFormParameter.period.name;
+            dataValue["orgUnit"] = this.entryFormParameter.orgUnit.name;
+          });
+          this.loadingMessage = "Saving data form server";
+          let syncStatus = 'synced';
+          this.dataValuesProvider.saveDataValues(dataValues,dataSetId,period,orgUnitId,dataDimension,syncStatus,this.currentUser).then(()=>{
+            this.loadingLocalData(dataSetId, period, orgUnitId,dataDimension);
+          },error=>{
+            console.log(JSON.stringify(error));
+            this.appProvider.setNormalNotification("Fail to save data from the server");
+            this.loadingLocalData(dataSetId, period, orgUnitId,dataDimension);
+          });
         }else{
-          this.loadingLocalData();
+          this.loadingLocalData(dataSetId, period, orgUnitId,dataDimension);
         }
       },error=>{
         console.log(JSON.stringify(error));
-        //this.appProvider.setNormalNotification("Fail to load data from the server");
-        this.loadingLocalData();
+        this.appProvider.setNormalNotification("Fail to load data from the server");
+        this.loadingLocalData(dataSetId, period, orgUnitId,dataDimension);
       });
     },error=>{
       console.log(JSON.stringify(error));
@@ -121,8 +141,18 @@ export class DataEntryFormPage implements OnInit{
     });
   }
 
-  loadingLocalData(){
-    this.isLoading = false;
+  loadingLocalData(dataSetId, period, orgUnitId,dataDimension){
+    this.loadingMessage = "Loading available local data";
+    this.dataValuesProvider.getAllEntryFormDataValuesFromStorage(dataSetId, period, orgUnitId, this.entryFormSections, dataDimension, this.currentUser).then((entryFormDataValues : any)=>{
+      entryFormDataValues.forEach((dataValue : any)=>{
+        this.dataValuesObject[dataValue.id] = dataValue;
+        dataValue.status == "synced" ? this.storageStatus.online ++ :this.storageStatus.offlone ++;
+      });
+      this.isLoading = false;
+    },error=>{
+      this.isLoading = false;
+      this.appProvider.setNormalNotification("Fail to load available local data");
+    });
   }
 
   openSectionList(){

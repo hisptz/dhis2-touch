@@ -51,6 +51,44 @@ export class DataValuesProvider {
 
   /**
    *
+   * @param dataSetId
+   * @param period
+   * @param orgUnitId
+   * @param entryFormSections
+   * @param dataDimension
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getAllEntryFormDataValuesFromStorage(dataSetId, period, orgUnitId, entryFormSections, dataDimension, currentUser) {
+    let ids = [];
+    let entryFormDataValuesFromStorage = [];
+    entryFormSections.forEach((section:any)=> {
+      section.dataElements.forEach((dataElement:any)=> {
+        dataElement.categoryCombo.categoryOptionCombos.forEach((categoryOptionCombo:any)=> {
+          ids.push(dataSetId + '-' + dataElement.id + '-' + categoryOptionCombo.id + '-' + period + '-' + orgUnitId);
+        });
+      });
+    });
+    return new Promise( (resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(this.resourceName, "id", ids, currentUser.currentDatabase).then((dataValues:any)=> {
+        dataValues.forEach((dataValue:any)=> {
+          if ((dataDimension.cp == dataValue.cp || dataValue.cp == "" || dataValue.cp == "0") && dataDimension.cc == dataValue.cc) {
+            entryFormDataValuesFromStorage.push({
+              id: dataValue.de + "-" + dataValue.co,
+              value: dataValue.value,
+              status: dataValue.syncStatus
+            });
+          }
+        });
+        resolve(entryFormDataValuesFromStorage)
+      }, error=> {
+        reject();
+      });
+    });
+  }
+
+  /**
+   *
    * @param dataDimension
    * @param categoryOptionCombos
    * @returns {string}

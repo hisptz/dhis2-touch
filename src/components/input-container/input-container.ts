@@ -16,7 +16,7 @@ export class InputContainerComponent implements OnInit{
 
   @Input() dataElement;
   @Input() currentUser;
-  //@Input() data ;
+  @Input() data ;
   @Output() onChange = new EventEmitter();
 
   fieldLabelKey : any;
