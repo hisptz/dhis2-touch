@@ -57,19 +57,12 @@ export class SyncPage implements OnInit{
       if(this.dataBaseStructure[resource].isMetadata ){
         this.resources.push({
           name: resource,
-          displayName: this.getResourceDisplayName(resource),
-          status: false
+          displayName: (this.dataBaseStructure[resource].displayName) ? this.dataBaseStructure[resource].displayName : resource,
+          status: false,
+          dependentTable : this.dataBaseStructure[resource].dependentTable
         })
       }
     });
-
-  }
-
-  getResourceDisplayName(resourceName){
-    let displayName: string;
-    displayName = (resourceName.charAt(0).toUpperCase()+ resourceName.slice(1)).replace(/([A-Z])/g, '$1').trim();
-    return displayName;
-
   }
 
   getMetadataResoures(){

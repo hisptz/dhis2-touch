@@ -13,7 +13,8 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: true,
     resourceType: "communication",
-    batchSize : 500
+    batchSize : 500,
+    dependentTable : []
   },
 
   dataSets: {
@@ -30,7 +31,8 @@ export const DATABASE_STRUCTURE = {
     fields: "",
     isMetadata: true,
     resourceType: "entryForm",
-    batchSize : 20
+    batchSize : 20,
+    dependentTable : ['dataSetElements','dataSetIndicators','dataSetSource','dataSetSections','dataSetOperands']
   },
   dataSetElements: {
     columns: [
@@ -41,7 +43,8 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: false,
     resourceType: "",
-    batchSize : 500
+    batchSize : 500,
+    dependentTable : []
   },
   dataSetIndicators: {
     columns: [
@@ -51,7 +54,8 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: false,
     resourceType: "",
-    batchSize : 500
+    batchSize : 500,
+    dependentTable : []
   },
   dataSetSource: {
     columns: [
@@ -61,7 +65,8 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: false,
     resourceType: "",
-    batchSize : 500
+    batchSize : 500,
+    dependentTable : []
   },
   dataSetSections: {
     columns: [
@@ -71,7 +76,8 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: false,
     resourceType: "",
-    batchSize : 500
+    batchSize : 500,
+    dependentTable : []
   },
   dataSetOperands: {
     columns: [
@@ -83,7 +89,8 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: false,
     resourceType: "",
-    batchSize : 500
+    batchSize : 500,
+    dependentTable : []
   },
   sections: {
     columns: [
@@ -94,7 +101,8 @@ export const DATABASE_STRUCTURE = {
     fields: "",
     isMetadata: true,
     resourceType: "entryForm",
-    batchSize : 500
+    batchSize : 500,
+    dependentTable : ['sectionDataElements','sectionIndicators']
   },
   sectionDataElements: {
     columns: [
@@ -105,7 +113,8 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: false,
     resourceType: "",
-    batchSize : 500
+    batchSize : 500,
+    dependentTable : []
   },
   sectionIndicators: {
     columns: [
@@ -115,7 +124,8 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: false,
     resourceType: "",
-    batchSize : 500
+    batchSize : 500,
+    dependentTable : []
   },
   dataElements: {
     columns: [
@@ -131,7 +141,8 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: true,
     resourceType: "entryForm",
-    batchSize : 30
+    batchSize : 30,
+    dependentTable : []
   },
   smsCommand: {
     columns: [
@@ -143,7 +154,8 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: true,
     resourceType: "entryForm",
-    batchSize : 30
+    batchSize : 30,
+    dependentTable : []
   },
   indicators: {
     columns: [
@@ -156,8 +168,10 @@ export const DATABASE_STRUCTURE = {
       {value: 'indicatorType', type: 'LONGTEXT'}
     ],
     isMetadata: true,
+    displayName : "Indicator Custom",
     batchSize : 500,
-    resourceType: "report"
+    resourceType: "report",
+    dependentTable : []
   },
   reports: {
     columns: [
@@ -167,11 +181,21 @@ export const DATABASE_STRUCTURE = {
       {value: 'type', type: 'TEXT'},
       {value: 'relativePeriods', type: 'LONGTEXT'},
       {value: 'reportParams', type: 'LONGTEXT'},
-      {value: 'designContent', type: 'LONGTEXT'}
     ],
     isMetadata: true,
     batchSize : 50,
-    resourceType: "report"
+    resourceType: "report",
+    dependentTable : []
+  },
+  reportDesign: {
+    columns: [
+      {value: 'id', type: 'TEXT'},
+      {value: 'designContent', type: 'LONGTEXT'}
+    ],
+    isMetadata: false,
+    resourceType: "",
+    batchSize : 10,
+    dependentTable : []
   },
   constants: {
     columns: [
@@ -181,7 +205,8 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: true,
     batchSize : 500,
-    resourceType: "report"
+    resourceType: "report",
+    dependentTable : []
   },
 
   dataValues: {
@@ -201,7 +226,8 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: false,
     resourceType: "",
-    batchSize : 500
+    batchSize : 500,
+    dependentTable : []
   },
 
   events: {
@@ -223,7 +249,8 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: false,
     resourceType: "event",
-    batchSize : 50
+    batchSize : 50,
+    dependentTable : []
   },
 
   programs: {
@@ -246,7 +273,8 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: true,
     resourceType: "event",
-    batchSize : 50
+    batchSize : 50,
+    dependentTable : []
   },
 
   programStageDataElements: {
@@ -261,6 +289,7 @@ export const DATABASE_STRUCTURE = {
     isMetadata: false,
     resourceType: "",
     batchSize : 50,
+    dependentTable : []
   },
   programStageSections: {
     columns: [
@@ -272,7 +301,8 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: true,
     batchSize : 100,
-    resourceType: "event"
+    resourceType: "event",
+    dependentTable : []
   }
 
 };

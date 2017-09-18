@@ -41,6 +41,7 @@ export class DownloadMetaDataComponent implements OnInit {
       this.loadingData = false;
     });
     this.resources = this.syncPage.getMetadataResoures();
+    this.autoSelect("");
   }
 
   autoSelect(selectType) {

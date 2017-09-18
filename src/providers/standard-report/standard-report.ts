@@ -18,6 +18,11 @@ export class StandardReportProvider {
     this.resource = "reports";
   }
 
+  /**
+   *
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   downloadReportsFromServer(currentUser){
     let fields = "id,name,created,type,relativePeriods,reportParams,designContent";
     let filter = "type:eq:HTML&filter=designContent:ilike:cordova";
@@ -33,15 +38,18 @@ export class StandardReportProvider {
     });
   }
 
+  /**
+   *
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   downloadConstantsFromServer(currentUser){
     let fields = "id,name,value";
     let resource = "constants";
-    let url = "/api/25/"+resource+".json?paging=false";
+    let url = "/api/25/"+resource+".json?paging=false&fields=" + fields;
     return new Promise((resolve, reject)=> {
       this.HttpClient.get(url,currentUser).then((response : any)=>{
-
         response = JSON.parse(response.data);
-
         resolve(response.constants);
       },error=>{
         reject(error);
@@ -49,6 +57,12 @@ export class StandardReportProvider {
     });
   }
 
+  /**
+   *
+   * @param reports
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   saveConstantsFromServer(reports,currentUser){
     let resource = "constants";
     return new Promise((resolve, reject)=> {
@@ -65,23 +79,55 @@ export class StandardReportProvider {
     });
   }
 
+  /**
+   *
+   * @param reports
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   saveReportsFromServer(reports,currentUser){
     return new Promise((resolve, reject)=> {
       if(reports.length == 0){
         resolve();
       }else{
         this.SqlLite.insertBulkDataOnTable(this.resource,reports,currentUser.currentDatabase).then(()=>{
-          resolve();
+          this.savingReportDesign(reports,currentUser).then(()=>{
+            resolve();
+          },error=>{
+            reject(error);
+          });
         },error=>{
-          console.log(JSON.stringify(error));
           reject(error);
         });
       }
     });
   }
 
-  getReportList(currentUser){
+  /**
+   *
+   * @param reports
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  savingReportDesign(reports,currentUser){
+    let resource = 'reportDesign';
+    let reportDesigns = [];
+    reports.forEach((report : any)=>{
+      reportDesigns.push(
+        {id : report.id,designContent : report.designContent}
+      )
+    });
+    return new Promise((resolve, reject)=> {
+      this.SqlLite.insertBulkDataOnTable(resource,reports,currentUser.currentDatabase).then(()=>{
+        resolve();
+      },error=>{
+        console.log(JSON.stringify(error));
+        reject(error);
+      });
+    });
+  }
 
+  getReportList(currentUser){
     return new Promise((resolve, reject)=> {
       this.SqlLite.getAllDataFromTable(this.resource,currentUser.currentDatabase).then((reportList)=>{
         resolve(reportList);

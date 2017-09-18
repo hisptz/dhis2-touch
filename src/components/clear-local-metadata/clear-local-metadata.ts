@@ -40,6 +40,7 @@ export class ClearLocalMetadataComponent implements OnInit{
       this.currentUser = user;
     });
     this.resources = this.syncPage.getMetadataResoures();
+    this.autoSelect("");
   }
 
 
@@ -68,7 +69,7 @@ export class ClearLocalMetadataComponent implements OnInit{
         },{
           text: 'Delete',
           handler:() =>{
-            this.checkingForResourcetoDelete();
+            this.checkingForResourceToDelete();
           }
         }
       ]
@@ -76,7 +77,7 @@ export class ClearLocalMetadataComponent implements OnInit{
     confirmAlert.present();
   }
 
-  checkingForResourcetoDelete(){
+  checkingForResourceToDelete(){
     let isMetadata= false;
     let resourcesToDelete = [];
     this.resources.forEach((resource:any) =>{
