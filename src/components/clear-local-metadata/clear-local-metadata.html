@@ -2,7 +2,7 @@
 
 <ion-grid class="whiteBackground">
 
-  <ion-row >
+  <ion-row *ngIf="!showLoadingMessage">
     <ion-col>
       <button ion-button block style="text-transform: none;"
               (tap)="autoSelect('selectAll')" > select all</button>
@@ -30,10 +30,11 @@
     </ion-col>
   </ion-row>
 
-  <span *ngIf="showLoadingMessage" > <page-loading loadingSize="large" [loadingMessage]="updateMetaDataLoadingMessages"></page-loading> </span>
+  <span *ngIf="showLoadingMessage" > <page-loading loadingSize="large" [loadingMessage]="clearMetaDataLoadingMessages"></page-loading> </span>
 
+  <ion-row *ngIf="!showLoadingMessage">
   <button ion-button style="text-transform: none;" (tap)="verifyingDeleteOfResources()" block>Clear MetaData</button>
-
+  </ion-row>
 
 </ion-grid>
 

@@ -2,7 +2,7 @@
 
 <ion-grid class="backgroundContents">
 
-  <ion-row >
+  <ion-row *ngIf="!showLoadingMessage">
     <ion-col>
     <button ion-button block style="text-transform: none;"
             (tap)="autoSelect('selectAll')" > select all</button>
@@ -32,7 +32,9 @@
 
   <span *ngIf="showLoadingMessage" > <page-loading loadingSize="large" [loadingMessage]="updateMetaDataLoadingMessages"></page-loading> </span>
 
-  <button ion-button style="text-transform: none;" (tap)="checkingForResourceUpdate()">Download MetaData</button>
-
+  <ion-row *ngIf="!showLoadingMessage">
+  <button ion-button style="text-transform: none;"
+          (tap)="checkingForResourceUpdate()"  block >Download MetaData</button>
+  </ion-row>
 </ion-grid>
 

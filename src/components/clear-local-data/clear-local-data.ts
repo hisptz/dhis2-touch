@@ -19,11 +19,11 @@ export class ClearLocalDataComponent implements OnInit{
   text: string;
 
   currentUser: any;
-
-  updateManagerObject : any = {
-    dataDeletion : {isExpanded : false,isProcessRunning : false,isDataCleared : true,selectedItems :{}, itemsToBeDeleted : []},
-    sendDataViaSms : {isExpanded : true,isSaved : true}
-  };
+  itemsToBeDeleted : any = [];
+  selectedItems : any = {};
+  isDataCleared :  any = true;
+  showLoadingMessage: boolean = false;
+  LoadingMessages: string;
 
 
   constructor(public alertCtrl: AlertController, private sqLite: SqlLiteProvider,
@@ -34,20 +34,17 @@ export class ClearLocalDataComponent implements OnInit{
   ngOnInit(){
     this.user.getCurrentUser().then((user:any)=>{
       this.currentUser = user;
-      this.user.getUserData().then((userData : any)=>{
-        this.currentUser["organisationUnits"] = userData.organisationUnits;
-      });
     });
   }
 
 
   resetDeletedItems(){
     let deletedTable = [];
-    for(let key of Object.keys(this.updateManagerObject.dataDeletion.selectedItems)){
-      if(this.updateManagerObject.dataDeletion.selectedItems[key])
+    for(let key of Object.keys(this.selectedItems)){
+      if(this.selectedItems[key])
         deletedTable.push(key);
     }
-    this.updateManagerObject.dataDeletion.itemsToBeDeleted = deletedTable;
+    this.itemsToBeDeleted = deletedTable;
   }
 
   clearDataConfirmation(){
@@ -74,36 +71,40 @@ export class ClearLocalDataComponent implements OnInit{
   }
 
   clearData(){
+    this.showLoadingMessage = true;
     let deletedItemCount = 0;
     let failCount = 0;
-    this.updateManagerObject.dataDeletion.isDataCleared = false;
-    for(let tableName of this.updateManagerObject.dataDeletion.itemsToBeDeleted){
+    this.isDataCleared = false;
+    for(let tableName of this.itemsToBeDeleted){
 
       this.sqLite.deleteAllOnTable(tableName,this.currentUser.currentDatabase).then(()=>{
+        this.LoadingMessages = "Deleting selected local data";
         deletedItemCount = deletedItemCount + 1;
-        if((deletedItemCount + failCount) == this.updateManagerObject.dataDeletion.itemsToBeDeleted.length){
+        if((deletedItemCount + failCount) == this.itemsToBeDeleted.length){
+
+          this.LoadingMessages = "Applying changes to the application";
 
           this.appProvider.setNormalNotification("You have successfully clear data");
 
-          Object.keys(this.updateManagerObject.dataDeletion.selectedItems).forEach(key=>{
-            this.updateManagerObject.dataDeletion.selectedItems[key] = false;
+          Object.keys(this.selectedItems).forEach(key=>{
+            this.selectedItems[key] = false;
           });
+          this.isDataCleared = true;
+          this.showLoadingMessage = false;
 
-          this.updateManagerObject.dataDeletion.isDataCleared = true;
-          this.updateManagerObject.dataDeletion.isExpanded = false;
         }
       },error=>{
         console.log("Error : " + JSON.stringify(error));
         failCount = failCount + 1;
-        if((deletedItemCount + failCount) == this.updateManagerObject.dataDeletion.itemsToBeDeleted.length){
+        if((deletedItemCount + failCount) == this.itemsToBeDeleted.length){
 
           this.appProvider.setNormalNotification("You.. have successfully clear data.");
 
-          Object.keys(this.updateManagerObject.dataDeletion.selectedItems).forEach(key=>{
-            this.updateManagerObject.dataDeletion.selectedItems[key] = false;
+          Object.keys(this.selectedItems).forEach(key=>{
+            this.selectedItems[key] = false;
           });
-          this.updateManagerObject.dataDeletion.isDataCleared = true;
-          this.updateManagerObject.dataDeletion.isExpanded = false;
+          this.isDataCleared = true;
+
         }
       })
     }

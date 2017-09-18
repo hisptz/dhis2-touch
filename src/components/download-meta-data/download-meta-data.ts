@@ -6,6 +6,7 @@ import {OrganisationUnitsProvider} from "../../providers/organisation-units/orga
 import {DataSetsProvider} from "../../providers/data-sets/data-sets";
 import {UserProvider} from "../../providers/user/user";
 import {AlertController} from "ionic-angular";
+import {SyncPage} from "../../pages/sync/sync";
 
 
 /**
@@ -29,19 +30,15 @@ export class DownloadMetaDataComponent implements OnInit{
   loadingMessages: any= [];
   resourceToUpdate = [];
   showLoadingMessage: boolean = false;
-
-  updateManagerObject: any= {
-    updateMetaData: {isExpanded: false, isSaved: true, isProcessRunning: false}
-  };
+  isProcessRunning: boolean = false;
 
   updateMetaDataLoadingMessages: string = "";
   specialMetadataResources: any;
 
 
 
-  constructor(private syncProvider: SyncProvider, private appProvider: AppProvider, private sqLite: SqlLiteProvider,
-              private orgUnitsProvider: OrganisationUnitsProvider, private datasetsProvider: DataSetsProvider, private user: UserProvider,
-              public alertCtrl: AlertController) {
+  constructor(private syncProvider: SyncProvider, private appProvider: AppProvider, private sqLite: SqlLiteProvider, private user: UserProvider,
+              public syncPage: SyncPage) {
 
 
   }
@@ -49,19 +46,14 @@ export class DownloadMetaDataComponent implements OnInit{
     this.hasAllSelected = false;
     this.loadingData= true;
     this.loadingMessages= [];
-    //this.setUpdaateManagerList();
-
     this.specialMetadataResources = ["organisationUnits","dataSets"];
-    //this.setLoadingMessages("Loading current user information");
+
     this.user.getCurrentUser().then((user:any)=>{
       this.currentUser = user;
-      this.user.getUserData().then((userData : any)=>{
-        this.currentUser["organisationUnits"] = userData.organisationUnits;
-
-        this.setUpdaateManagerList();
-        this.loadingData = false;
-      });
+      this.loadingData = false;
     });
+
+    this.resources = this.syncPage.getMetadataResoures();
 
   }
 
@@ -78,28 +70,6 @@ export class DownloadMetaDataComponent implements OnInit{
       });
       this.hasAllSelected = false;
     }
-
-  }
-
-  setUpdaateManagerList(){
-    this.resources=[];
-    this.dataBaseStructure = this.sqLite.getDataBaseStructure();
-    Object.keys(this.dataBaseStructure).forEach((resource:any) =>{
-      if(this.dataBaseStructure[resource].isMetadata ){
-        this.resources.push({
-          name: resource,
-          displayName: this.getResourceDisplayName(resource),
-          status: false
-        })
-      }
-    });
-
-  }
-
-  getResourceDisplayName(resourceName){
-    let displayName: string;
-    displayName = (resourceName.charAt(0).toUpperCase()+ resourceName.slice(1)).replace(/([A-Z])/g, '$1').trim();
-    return displayName;
 
   }
 
@@ -120,14 +90,16 @@ export class DownloadMetaDataComponent implements OnInit{
       if(resource.status){
         isMetadata= true;
         resourceUpdated.push(resource.name);
-       // this.resourceToUpdate.push(resource.name);
-        this.updateResources(resource.name);
+        this.resourceToUpdate.push(resource.name);
+        //this.updateResources(resource.name);
         this.showLoadingMessage = true;
       }
     });
     if(resourceUpdated.length == 0){
-      //this.updateResources(resourceUpdated);
+
       this.appProvider.setNormalNotification("Please select at least one resources to update");
+    }else{
+    this.updateResources(resourceUpdated);
     }
 
   }
@@ -135,7 +107,7 @@ export class DownloadMetaDataComponent implements OnInit{
 
   updateResources(resources) {
     this.updateMetaDataLoadingMessages = "Downloading selected MetaData";
-    this.updateManagerObject.updateMetaData.isProcessRunning = true;
+    this.isProcessRunning = true;
 
 
     this.syncProvider.downloadResources(resources, this.specialMetadataResources, this.currentUser).then((resourcesData) => {
@@ -154,27 +126,27 @@ export class DownloadMetaDataComponent implements OnInit{
           let updateCounts = 0;
           this.updateMetaDataLoadingMessages = "Applying downloaded updates ";
 
-          // resources.forEach((resource: any) => {
-            let resourceName = resources;
+           resources.forEach((resource: any) => {
+            let resourceName = resource;
 
           if (this.specialMetadataResources.indexOf(resourceName) >= -1) {
 
             this.appProvider.saveMetadata(resourceName, resourcesData[resourceName], this.currentUser.currentDatabase).then(() => {
               updateCounts++;
 
-             // if (updateCounts == resources.length) {
+              if (updateCounts == resources.length) {
                 this.autoSelect("un-selectAll");
-                this.updateManagerObject.updateMetaData.isProcessRunning = false;
+                this.isProcessRunning = false;
                 this.appProvider.setNormalNotification("All updates has been applied successfully.");
                 this.showLoadingMessage = false;
-              // }
+               }
             }, error => {
-              this.updateManagerObject.updateMetaData.isProcessRunning = false;
+              this.isProcessRunning = false;
               this.appProvider.setNormalNotification("Fail to apply updates 0 : " + JSON.stringify(error));
             })
           }
 
-          //  });
+            });
 
           },
           error => {
@@ -184,11 +156,11 @@ export class DownloadMetaDataComponent implements OnInit{
 
 
       }, error => {
-        this.updateManagerObject.updateMetaData.isProcessRunning = false;
+        this.isProcessRunning = false;
         this.appProvider.setNormalNotification("Fail to prepare device to apply updates " + JSON.stringify(error));
       });
     }, error => {
-      this.updateManagerObject.updateMetaData.isProcessRunning = false;
+      this.isProcessRunning = false;
       this.appProvider.setNormalNotification("Fail to download updates : " + JSON.stringify(error));
     });
 
