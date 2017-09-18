@@ -1,6 +1,7 @@
 import { Component,OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {SyncProvider} from "../../providers/sync/sync";
+import {SqlLiteProvider} from "../../providers/sql-lite/sql-lite";
 
 /**
  * Generated class for the SyncPage page.
@@ -18,8 +19,10 @@ export class SyncPage implements OnInit{
 
   isSyncContentOpen : any;
   syncContents : Array<any>;
+  resources: any;
+  dataBaseStructure: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private syncProvider : SyncProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private syncProvider : SyncProvider, private sqLiteProvider: SqlLiteProvider) {
   }
 
   ngOnInit(){
@@ -28,6 +31,8 @@ export class SyncPage implements OnInit{
     if(this.syncContents.length > 0){
       this.toggleSyncContents(this.syncContents[0]);
     }
+
+    this.setUpdateManagerList();
   }
 
 
@@ -43,6 +48,32 @@ export class SyncPage implements OnInit{
       }
     }
 
+  }
+
+  setUpdateManagerList(){
+    this.resources=[];
+    this.dataBaseStructure = this.sqLiteProvider.getDataBaseStructure();
+    Object.keys(this.dataBaseStructure).forEach((resource:any) =>{
+      if(this.dataBaseStructure[resource].isMetadata ){
+        this.resources.push({
+          name: resource,
+          displayName: this.getResourceDisplayName(resource),
+          status: false
+        })
+      }
+    });
+
+  }
+
+  getResourceDisplayName(resourceName){
+    let displayName: string;
+    displayName = (resourceName.charAt(0).toUpperCase()+ resourceName.slice(1)).replace(/([A-Z])/g, '$1').trim();
+    return displayName;
+
+  }
+
+  getMetadataResoures(){
+    return this.resources;
   }
 
 

@@ -60,14 +60,14 @@ export class SyncProvider {
    * @param currentUser
    * @returns {Promise<T>}
    */
-  downloadResources(resource,specialMetadataResources,currentUser){
+  downloadResources(resources,specialMetadataResources,currentUser){
 
     let promises = [];
     let data  = {};
     return new Promise((resolve, reject) =>  {
 
 
-      //resources.forEach((resource:any)=>{
+      resources.forEach((resource:any)=>{
 
         if(resource == "organisationUnits"){
 
@@ -98,7 +98,7 @@ export class SyncProvider {
           promises.push(
             this.dataElementProvider.downloadDataElementsFromServer(currentUser).then((response: any) => {
               data[resource] = response;
-              // alert("From DataElement Server: "+JSON.stringify(response));
+
             }, error => {
             })
           );
@@ -106,7 +106,7 @@ export class SyncProvider {
           promises.push(
             this.indicatorProvider.downloadingIndicatorsFromServer(currentUser).then((response: any) => {
               data[resource] = response;
-             // alert("From Indicator Server: "+JSON.stringify(response));
+
             }, error => {
             })
           );
@@ -114,7 +114,7 @@ export class SyncProvider {
           promises.push(
             this.smsCommandsProvider.getSmsCommandFromServer(currentUser).then((response: any) => {
              data[resource] = response;
-              // alert("From SmsCommand Server: "+JSON.stringify(response));
+
             }, error => {
             })
           );
@@ -122,7 +122,7 @@ export class SyncProvider {
           promises.push(
             this.reportsProvider.downloadReportsFromServer(currentUser).then((response: any) => {
               data[resource] = response;
-              // alert("From Reports Server: "+JSON.stringify(response));
+
             }, error => {
             })
           );
@@ -131,7 +131,7 @@ export class SyncProvider {
           promises.push(
             this.reportsProvider.downloadConstantsFromServer(currentUser).then((response: any) => {
               data[resource] = response;
-              //alert("Back from DownLoad Constants Server: "+JSON.stringify(response));
+
             }, error => {
 
             })
@@ -141,7 +141,7 @@ export class SyncProvider {
           promises.push(
             this.programProvider.downloadProgramsFromServer(currentUser).then((response: any) => {
               data[resource] = response;
-              //alert("Back from DownLoad programs Server: "+JSON.stringify(response));
+
             }, error => {
 
             })
@@ -158,7 +158,7 @@ export class SyncProvider {
           );
         }
 
-     // });
+      });
 
       Observable.forkJoin(promises).subscribe(() => {
           resolve(data);
@@ -224,23 +224,16 @@ export class SyncProvider {
 
 
   prepareTablesToApplyChanges(resources,currentUser){
-
     let promises = [];
     return new Promise((resolve, reject) =>  {
-
-
-      // resources.forEach((resource:any)=>{
-
+       resources.forEach((resource:any)=>{
         promises.push(
-          this.sqLite.dropTable(resources,currentUser.currentDatabase).then(()=>{
-
-            resolve();
-
+          this.sqLite.dropTable(resource,currentUser.currentDatabase).then(()=>{
           },error=>{
-              this.appProvider.setTopNotification("Failed to dropTables: "+resources)
+
           })
         )
-      // });
+       });
 
       Observable.forkJoin(promises).subscribe(() => {
           resolve();

@@ -358,6 +358,7 @@ export class SqlLiteProvider {
         db.executeSql(query, []).then((success) => {
 
           resolve();
+          console.log("Success in delete table contents on "+tableName);
         }, (error) => {
           reject(error);
         });

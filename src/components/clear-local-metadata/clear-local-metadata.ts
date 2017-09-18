@@ -6,6 +6,7 @@ import {OrganisationUnitsProvider} from "../../providers/organisation-units/orga
 import {DataSetsProvider} from "../../providers/data-sets/data-sets";
 import {UserProvider} from "../../providers/user/user";
 import {AlertController} from "ionic-angular";
+import {SyncPage} from "../../pages/sync/sync";
 
 /**
  * Generated class for the ClearLocalMetadataComponent component.
@@ -26,22 +27,17 @@ export class ClearLocalMetadataComponent implements OnInit{
   loadingData: boolean = false;
   loadingMessages: any= [];
   showLoadingMessage: boolean = false;
+  isProcessRunning: any = false;
 
-  deleteManagerObject: any= {
-    deleteMetaData: {isExpanded: false, isSaved: true, isProcessRunning: false}
-  };
 
-  updateMetaDataLoadingMessages: string = "";
+  clearMetaDataLoadingMessages: string = "";
   specialMetadataResources: any;
 
-  text: string;
 
-  constructor(private syncProvider: SyncProvider, private appProvider: AppProvider, private sqLite: SqlLiteProvider,
-  private orgUnitsProvider: OrganisationUnitsProvider, private datasetsProvider: DataSetsProvider, private user: UserProvider,
-              public alertCtrl: AlertController,) {
 
-    console.log('Hello ClearLocalMetadataComponent Component');
-    this.text = 'Hello World';
+  constructor(private syncProvider: SyncProvider, private appProvider: AppProvider, private sqLite: SqlLiteProvider, private user: UserProvider,
+              public alertCtrl: AlertController, public syncPage: SyncPage) {
+
   }
 
   ngOnInit(){
@@ -51,40 +47,16 @@ export class ClearLocalMetadataComponent implements OnInit{
     this.loadingMessages= [];
 
     this.specialMetadataResources = ["organisationUnits","dataSets"];
-    //this.setLoadingMessages("Loading current user information");
     this.user.getCurrentUser().then((user:any)=>{
       this.currentUser = user;
-      this.user.getUserData().then((userData : any)=>{
-        this.currentUser["organisationUnits"] = userData.organisationUnits;
 
-        this.setUpdaateManagerList();
-        this.loadingData = false;
-      });
+      this.loadingData = false;
     });
 
-  }
-
-  setUpdaateManagerList(){
-    this.resources=[];
-    this.dataBaseStructure = this.sqLite.getDataBaseStructure();
-    Object.keys(this.dataBaseStructure).forEach((resource:any) =>{
-      if(this.dataBaseStructure[resource].isMetadata ){
-        this.resources.push({
-          name: resource,
-          displayName: this.getResourceDisplayName(resource),
-          status: false
-        })
-      }
-    });
+    this.resources = this.syncPage.getMetadataResoures();
 
   }
 
-  getResourceDisplayName(resourceName){
-    let displayName: string;
-    displayName = (resourceName.charAt(0).toUpperCase()+ resourceName.slice(1)).replace(/([A-Z])/g, '$1').trim();
-    return displayName;
-
-  }
 
   autoSelect(selectType){
     if(selectType== 'selectAll'){
@@ -127,14 +99,16 @@ export class ClearLocalMetadataComponent implements OnInit{
     this.resources.forEach((resource:any) =>{
       if(resource.status){
         isMetadata= true;
-        //resourcesToDelete.push(resource.name);
-        this.deleteResources(resource.name);
-        this.showLoadingMessage = true;
+        resourcesToDelete.push(resource.name);
 
       }
     });
     if(resourcesToDelete.length == 0){
       this.appProvider.setNormalNotification("Please select at least one resources to update");
+    }else{
+
+      this.deleteResources(resourcesToDelete);
+      this.showLoadingMessage = true;
     }
 
   }
@@ -142,26 +116,25 @@ export class ClearLocalMetadataComponent implements OnInit{
 
   deleteResources(resources){
 
-    this.updateMetaDataLoadingMessages= "Deleting selected MetaData";
-    this.deleteManagerObject.deleteMetaData.isProcessRunning = true;
+    this.clearMetaDataLoadingMessages= "Deleting selected MetaData";
+    this.isProcessRunning = true;
 
-      this.updateMetaDataLoadingMessages = "Preparing device to apply updates";
-
-  // resources.forEach((resource:any)=>{
-  // })
+      this.clearMetaDataLoadingMessages = "Preparing device to apply updates";
 
     this.syncProvider.prepareTablesToApplyChanges(resources,this.currentUser).then(()=>{
+
+      this.clearMetaDataLoadingMessages = "Re-organize application database";
 
       this.sqLite.createTable(resources, this.currentUser.currentDatabase).then(()=>{
 
         let updateCounts = 0;
-        this.updateMetaDataLoadingMessages = "Applying changes in application Database";
+        this.clearMetaDataLoadingMessages = "Applying changes in application Database";
 
         updateCounts ++;
 
         if(resources.length >= updateCounts){
           this.autoSelect("un-selectAll");
-          this.deleteManagerObject.deleteMetaData.isProcessRunning = false;
+          this.isProcessRunning = false;
           this.appProvider.setNormalNotification("Local MetaData deleted successfully.");
           this.showLoadingMessage = false;
         }
@@ -171,7 +144,7 @@ export class ClearLocalMetadataComponent implements OnInit{
       });
 
     },error=>{
-      this.deleteManagerObject.deleteMetaData.isProcessRunning = false;
+      this.isProcessRunning = false;
       this.appProvider.setNormalNotification("Fail to apply updates 0 : " + JSON.stringify(error));
     });
 
