@@ -93,6 +93,13 @@
                       </ion-select>
                     </ion-item>
                     <ion-item>
+                      <ion-label>Form Layout</ion-label>
+                      <ion-select [(ngModel)]="settingObject.entryForm.formLayout" interface="action-sheet">
+                        <ion-option value="listLayout">List</ion-option>
+                        <ion-option value="tableLayout">Table</ion-option>
+                      </ion-select>
+                    </ion-item>
+                    <ion-item>
                       <ion-label floating>Data elements per page(max)</ion-label>
                       <ion-input type="number"  min="1" [(ngModel)]="settingObject.entryForm.maxDataElementOnDefaultForm"></ion-input>
                     </ion-item>
