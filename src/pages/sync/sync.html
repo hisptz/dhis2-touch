@@ -38,7 +38,7 @@
         </div>
 
         <div *ngIf="syncContent.id == 'dataViaInternet'" >
-          dataViaInternet
+          <empty-list-notification [emptyListMessage]="'Coming soon'"></empty-list-notification>
         </div>
 
         <div *ngIf="syncContent.id == 'downloadMetadata'" >
