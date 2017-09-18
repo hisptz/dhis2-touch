@@ -206,7 +206,6 @@ export class DataSetsProvider {
       this.SqlLite.getDataFromTableByAttributes(resource,attributeKey,attributeArray,currentUser.currentDatabase).then((dataSetElementsIds : any)=>{
         if(dataSetElementsIds && dataSetElementsIds.length > 0){
           dataSetElementsIds.forEach((dataSetIndicatorId : any)=>{
-            console.log(JSON.stringify(dataSetIndicatorId));
             dataSetElements.push({id : dataSetIndicatorId.dataElementId,sortOrder : dataSetIndicatorId.sortOrder});
           });
         }

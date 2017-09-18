@@ -31,10 +31,15 @@ export class DataValuesProvider {
     let parameter = 'dataSet=' + dataSetId + '&period=' + period + '&orgUnit=' + orgUnitId;
     let networkStatus = this.network.getNetWorkStatus();
     return new Promise((resolve, reject)=> {
+      console.log(parameter);
       if(networkStatus.isAvailable){
         this.httpClient.get('/api/25/dataValueSets.json?' + parameter, currentUser).then((response : any)=> {
-          response = JSON.stringify(response.data);
-          resolve(this.getFilteredDataValuesByDataSetAttributeOptionCombo(response, attributeOptionCombo))
+          try{
+            response = JSON.parse(response.data);
+            resolve(this.getFilteredDataValuesByDataSetAttributeOptionCombo(response, attributeOptionCombo))
+          }catch (error){
+            reject(error);
+          }
         }, error=> {
           reject(error.json());
         });

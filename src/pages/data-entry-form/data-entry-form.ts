@@ -100,13 +100,29 @@ export class DataEntryFormPage implements OnInit{
       this.pager["page"] = 1;
       this.pager["total"] = entryForm.length;
       this.dataSetAttributeOptionCombo = this.dataValuesProvider.getDataValuesSetAttributeOptionCombo(this.entryFormParameter.dataDimension,this.dataSet.categoryCombo.categoryOptionCombos);
-      this.isLoading = false;
+      this.loadingMessage = "Loading data from the server";
+      this.dataValuesProvider.getDataValueSetFromServer(this.dataSet.id,this.entryFormParameter.period.iso,this.entryFormParameter.orgUnit.id,this.dataSetAttributeOptionCombo,this.currentUser).then((dataValues : any)=>{
+        if(dataValues.length > 0){
+          // dataValues.forEach()
+          alert(JSON.stringify(dataValues));
+        }else{
+          this.loadingLocalData();
+        }
+      },error=>{
+        console.log(JSON.stringify(error));
+        //this.appProvider.setNormalNotification("Fail to load data from the server");
+        this.loadingLocalData();
+      });
     },error=>{
       console.log(JSON.stringify(error));
       this.isLoading = false;
       this.loadingMessage = "";
       this.appProvider.setNormalNotification("Fail to prepare entry form");
     });
+  }
+
+  loadingLocalData(){
+    this.isLoading = false;
   }
 
   openSectionList(){

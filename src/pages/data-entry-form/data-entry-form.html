@@ -27,6 +27,10 @@
           <page-loading [loadingMessage]="loadingMessage" [loadingSize]="'large'" ></page-loading>
         </div>
         <div *ngIf="!isLoading">
+          <div *ngIf="entryFormSections && entryFormSections.length == 0">
+            <empty-list-notification [emptyListMessage]="'The is no field associated with ' + entryFormParameter.dataSet.name +', Please contact our system administrator' "></empty-list-notification>
+          </div>
+
           <div *ngFor="let section of entryFormSections;let currentSectionIndex = index">
             <div *ngIf="(currentSectionIndex + 1) == pager.page" class="item-card" no-padding (click)="openSectionList()">
               <ion-item >
@@ -41,7 +45,6 @@
               </ion-item>
             </div>
           </div>
-          {{ dataSetAttributeOptionCombo |json }}
           <div *ngFor="let section of entryFormSections;let currentSectionIndex = index">
             <div *ngIf="(currentSectionIndex + 1) == pager.page">
               <div class="item-card-entry-form" >
@@ -57,8 +60,8 @@
             </div>
           </div>
 
-          <div class="item-card">
-            <ion-row *ngIf="entryFormSections.length > 1" >
+          <div class="item-card" *ngIf="entryFormSections.length > 1" >
+            <ion-row >
               <ion-col col-2 col-sm-1 (click)="changePagination(pager.page - 1)" padding-left padding-bottom padding-top>
                 <ion-icon name="ios-arrow-back-outline" ></ion-icon>
               </ion-col>
