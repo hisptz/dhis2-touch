@@ -32,7 +32,7 @@ export class InputContainerComponent implements OnInit{
       let dataEntrySettings = appSettings.entryForm;
       this.fieldLabelKey = this.dataElement.displayName;
       if(dataEntrySettings.label){
-        if(this.dataElement[dataEntrySettings.label]){
+        if(this.dataElement[dataEntrySettings.label] && this.dataElement[dataEntrySettings.label] != '0'){
           this.fieldLabelKey = this.dataElement[dataEntrySettings.label];
         }
       }
