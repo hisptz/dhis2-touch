@@ -10,12 +10,13 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-  <ion-content class = "programFormSelection">
+
+  <ion-content >
 
   <ion-searchbar animated="true"  (ionInput)="getFilteredList($event)" ></ion-searchbar>
   <ion-grid >
     <ion-row>
-      <ion-col class = "programFormSelection" >
+      <ion-col  >
         <ion-list class = "programFormSelection">
           <ion-item *ngFor="let program of programsList"   (tap)="setSelectedProgram(program)">
             <ion-icon name="list" item-left></ion-icon>

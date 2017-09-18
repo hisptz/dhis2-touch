@@ -13,7 +13,7 @@
 </ion-header>
 
 
-<ion-content class="report" >
+<ion-content >
 
 
   <!--<report-comp></report-comp>-->
@@ -32,7 +32,8 @@
         <ion-col >
           <ion-list>
             <ion-item *ngFor="let report of reportList" (tap)="selectReport(report)">
-              <ion-icon name="ios-folder-outline" item-left></ion-icon>
+              <!--<ion-icon name="ios-folder-outline" item-left></ion-icon>-->
+              <img  class="side-menu-icon" [src]="icons.reports"/>&nbsp;&nbsp;
               <span >{{ report.name }}</span>
             </ion-item>
             <ion-item *ngIf = "reportList.length == 0">

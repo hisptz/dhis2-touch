@@ -113,8 +113,7 @@ export class SyncProvider {
         }else if(resource == "reports"){
           promises.push(
             this.reportsProvider.downloadReportsFromServer(currentUser).then((response: any) => {
-              data[resource] = response;
-
+              data[resource] = response[resource];
             }, error => {
             })
           );
@@ -122,7 +121,7 @@ export class SyncProvider {
 
           promises.push(
             this.reportsProvider.downloadConstantsFromServer(currentUser).then((response: any) => {
-              data[resource] = response;
+              data[resource] = response[resource];
 
             }, error => {
 
@@ -132,7 +131,7 @@ export class SyncProvider {
 
           promises.push(
             this.programProvider.downloadProgramsFromServer(currentUser).then((response: any) => {
-              data[resource] = response;
+              data[resource] = response[resource];
 
             }, error => {
 
@@ -171,9 +170,45 @@ export class SyncProvider {
           promises.push(
             this.orgUnitsProvider.savingOrganisationUnitsFromServer(data[resource],currentUser).then(()=>{},error=>{})
           );
+        }else if(resource == "dataSets"){
+          promises.push(
+            this.datasetsProvider.saveDataSetsFromServer(data[resource],currentUser).then(() => {}, error => {})
+          );
+        }else if(resource == "sections"){
+          promises.push(
+            this.sectionProvider.saveSectionsFromServer(data[resource],currentUser).then(() => {}, error => {})
+          );
+        }else if(resource == "dataElements"){
+          promises.push(
+            this.dataElementProvider.saveDataElementsFromServer(data[resource],currentUser).then(() => {}, error => {})
+          );
+        }else if(resource == "indicators"){
+          promises.push(
+            this.indicatorProvider.savingIndicatorsFromServer(data[resource],currentUser).then(() => {}, error => {})
+          );
+        }else if(resource == "smsCommand"){
+          promises.push(
+            this.smsCommandsProvider.savingSmsCommand(data[resource],currentUser).then(() => {}, error => {})
+          );
+        }else if(resource == "reports"){
+          promises.push(
+            this.reportsProvider.saveReportsFromServer(data[resource],currentUser).then(() => {}, error => {})
+          );
+        }else if(resource == "constants"){
+          promises.push(
+            this.reportsProvider.saveConstantsFromServer(data[resource],currentUser).then(() => {}, error => {})
+          );
+        }else if(resource == "programs"){
+          promises.push(
+            this.programProvider.saveProgramsFromServer(data[resource],currentUser).then(() => {}, error => {})
+          );
+        }else if(resource == "programStageSections"){
+          promises.push(
+            this.programStageSectionsProvider.saveProgramsStageSectionsFromServer(data[resource],currentUser).then(() => {}, error => {})
+          );
         }
 
-      })
+      });
 
       Observable.forkJoin(promises).subscribe(() => {
           resolve();

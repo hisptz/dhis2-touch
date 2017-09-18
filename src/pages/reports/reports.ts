@@ -25,6 +25,7 @@ export class ReportsPage implements OnInit{
   public currentUser : any;
   public reportList : any;
   public reportListCopy : any;
+  icons: any= {};
 
 
 
@@ -33,6 +34,7 @@ export class ReportsPage implements OnInit{
   }
 
   ngOnInit(){
+    this.icons.reports = "assets/app-icons/reports.png";
     this.loadingMessages = [];
     this.loadingData = true;
     this.reportList = [];

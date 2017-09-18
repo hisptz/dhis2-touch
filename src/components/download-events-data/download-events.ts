@@ -119,12 +119,11 @@ export class DownloadEventsDataComponent implements OnInit{
     this.assignedPrograms = [];
     let lastSelectedProgram = this.programsProvider.getLastSelectedProgram();
 
-    this.programsProvider.getProgramsSource(this.selectedOrgUnit, this.currentUser.currentDatabase).then((programs: any) => {
+     this.programsProvider.getProgramsSource(this.selectedOrgUnit, this.currentUser.currentDatabase).then((programs: any) => {
 
     } ,error=>{
       this.appProvider.setNormalNotification("Fail to reload Assigned Programs");
     });
-
   }
 
 
