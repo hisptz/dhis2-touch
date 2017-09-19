@@ -12,7 +12,10 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 })
 export class OptionSetInputFieldComponent implements OnInit{
 
-  @Input() dataElement;
+  @Input() dataElementId;
+  @Input() categoryOptionComboId;
+  @Input() data;
+  @Input() options;
   @Output() onChange = new EventEmitter();
 
   constructor() {}

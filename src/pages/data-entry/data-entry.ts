@@ -230,7 +230,7 @@ export class DataEntryPage implements OnInit{
       orgUnit : {id : this.selectedOrgUnit.id,name : this.selectedOrgUnit.name},
       dataSet : {id : this.selectedDataSet.id,name : this.selectedDataSet.name},
       period : {iso : this.selectedPeriod.iso, name : this.selectedPeriod.name },
-      dataDimension : (this.selectedDataSet.categoryCombo.name != 'default')? this.getDataDimensions() : {}
+      dataDimension : this.getDataDimensions()
     };
     this.navCtrl.push('DataEntryFormPage',{parameter : parameter});
   }
@@ -262,7 +262,7 @@ export class DataEntryPage implements OnInit{
       }else{
         isFormReady = false;
       }
-    }else{
+    }else if(this.periodLabel == "Touch to select period"){
       isFormReady = false;
     }
     return isFormReady;

@@ -12,7 +12,9 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 })
 export class DateInputFieldComponent implements OnInit{
 
-  @Input() dataElement;
+  @Input() dataElementId;
+  @Input() categoryOptionComboId;
+  @Input() data;
   @Output() onChange = new EventEmitter();
 
   constructor() {}

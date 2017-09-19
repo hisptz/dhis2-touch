@@ -31,7 +31,6 @@ export class DataValuesProvider {
     let parameter = 'dataSet=' + dataSetId + '&period=' + period + '&orgUnit=' + orgUnitId;
     let networkStatus = this.network.getNetWorkStatus();
     return new Promise((resolve, reject)=> {
-      console.log(parameter);
       if(networkStatus.isAvailable){
         this.httpClient.get('/api/25/dataValueSets.json?' + parameter, currentUser).then((response : any)=> {
           try{
@@ -95,7 +94,7 @@ export class DataValuesProvider {
    */
   getDataValuesSetAttributeOptionCombo(dataDimension, categoryOptionCombos) {
     let attributeOptionCombo = "";
-    if (dataDimension && dataDimension.cp) {
+    if (dataDimension && dataDimension.cp && dataDimension.cp!="") {
       let categoriesOptionsArray = dataDimension.cp.split(';');
       for (let i = 0; i < categoryOptionCombos.length; i++) {
         let hasAttributeOptionCombo = true;

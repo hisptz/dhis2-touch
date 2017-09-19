@@ -8,24 +8,24 @@
     </div>
 
     <div *ngIf="dataElement.optionSet" class="input-field-container">
-      <option-set-input-field [dataElement]="dataElement"></option-set-input-field>
+      <option-set-input-field [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data" [options]="dataElement.optionSet.options"></option-set-input-field>
     </div>
     <div *ngIf="!dataElement.optionSet" class="input-field-container">
         <div *ngIf="textInputField.indexOf(dataElement.valueType) > -1">
-          <text-input-field [dataElement]="dataElement" [valueType]="dataElement.valueType"></text-input-field>
+          <text-input-field [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data" [valueType]="dataElement.valueType"></text-input-field>
         </div>
         <div *ngIf="numericalInputField.indexOf(dataElement.valueType) > -1">
-          <numerical-input-field [dataElement]="dataElement" [valueType]="dataElement.valueType"></numerical-input-field>
+          <numerical-input-field [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data" [valueType]="dataElement.valueType"></numerical-input-field>
         </div>
 
         <div *ngIf="dataElement.valueType == 'DATE'">
-          <date-input-field [dataElement]="dataElement"></date-input-field>
+          <date-input-field [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data"></date-input-field>
         </div>
         <div *ngIf="dataElement.valueType == 'TRUE_ONLY'">
-          <true-only-input-field [dataElement]="dataElement"></true-only-input-field>
+          <true-only-input-field [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data"></true-only-input-field>
         </div>
         <div *ngIf="dataElement.valueType == 'BOOLEAN'">
-          <boolean-input-field [dataElement]=""></boolean-input-field>
+          <boolean-input-field [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data"></boolean-input-field>
         </div>
     </div>
 

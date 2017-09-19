@@ -1,10 +1,10 @@
-<div *ngIf="valueType == 'LONG_TEXT'">
+<div *ngIf="valueType == 'LONG_TEXT'" [(ngModel)]="inputFieldValue" >
   <ion-item>
     <ion-textarea ></ion-textarea>
   </ion-item>
 </div>
 <div *ngIf="valueType == 'TEXT'">
   <ion-item>
-    <ion-input type="text" ></ion-input>
+    <ion-input type="text" [(ngModel)]="inputFieldValue"></ion-input>
   </ion-item>
 </div>

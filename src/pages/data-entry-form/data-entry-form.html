@@ -22,7 +22,7 @@
             <b>Organisation Unit</b> : {{ entryFormParameter.orgUnit.name }}<br>
             <b>Form</b> : {{ entryFormParameter.dataSet.name }}<br>
             <b>Period</b> : {{ entryFormParameter.period.name }}<br>
-            {{ storageStatus |json }}
+            <span *ngIf="!isLoading" ><b>Synced</b> : {{ storageStatus.online }} <b>Not synced</b> : {{storageStatus.offline }}</span>
           </div>
         </div>
         <div *ngIf="isLoading">
@@ -32,7 +32,6 @@
           <div *ngIf="entryFormSections && entryFormSections.length == 0">
             <empty-list-notification [emptyListMessage]="'The is no field associated with ' + entryFormParameter.dataSet.name +', Please contact our system administrator' "></empty-list-notification>
           </div>
-
           <div *ngFor="let section of entryFormSections;let currentSectionIndex = index">
             <div *ngIf="(currentSectionIndex + 1) == pager.page" class="item-card" no-padding (click)="openSectionList()">
               <ion-item >

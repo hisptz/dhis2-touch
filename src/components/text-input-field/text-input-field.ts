@@ -12,15 +12,21 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 })
 export class TextInputFieldComponent implements OnInit{
 
-  @Input() dataElement;
+  @Input() dataElementId;
+  @Input() categoryOptionComboId;
+  @Input() data;
   @Input() valueType;
   @Output() onChange = new EventEmitter();
-
+  inputFieldValue : any;
+  //{"id":"s46m5MS0hxu-Prlt0C1RF0s","value":"1","status":"synced"}
+  //id = dataElementId + "-" + categoryOptionComboId
   constructor() {}
 
   ngOnInit(){
-
-
+    let fieldId = this.dataElementId + "-" + this.categoryOptionComboId;
+    if(this.data && this.data[fieldId]){
+      this.inputFieldValue  = this.data[fieldId].value;
+    }
   }
 
 }

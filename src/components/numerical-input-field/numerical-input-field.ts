@@ -12,17 +12,21 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 })
 export class NumericalInputFieldComponent implements OnInit{
 
-  @Input() dataElement;
+  @Input() dataElementId;
+  @Input() categoryOptionComboId;
+  @Input() data;
   @Input() valueType;
   @Output() onChange = new EventEmitter();
-
-  //this.numericalInputField = ['INTEGER_NEGATIVE','INTEGER_POSITIVE','INTEGER','NUMBER','INTEGER_ZERO_OR_POSITIVE'];
-
+  inputFieldValue : any;
+  //{"id":"s46m5MS0hxu-Prlt0C1RF0s","value":"1","status":"synced"}
+  //id = dataElementId + "-" + categoryOptionComboId
   constructor() {}
 
   ngOnInit(){
-
-
+    let fieldId = this.dataElementId + "-" + this.categoryOptionComboId;
+    if(this.data && this.data[fieldId]){
+      this.inputFieldValue  = this.data[fieldId].value;
+    }
   }
 
 }
