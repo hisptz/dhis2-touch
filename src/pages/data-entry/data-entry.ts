@@ -28,6 +28,7 @@ export class DataEntryPage implements OnInit{
   isLoading : boolean;
   loadingMessage : string;
   isFormReady : boolean;
+  isDataSetDimensionApplicable : boolean;
   organisationUnitLabel : string;
   dataSetLabel : string;
   periodLabel : string;
@@ -53,6 +54,7 @@ export class DataEntryPage implements OnInit{
     this.loadingMessage = "Loading user information";
     this.isLoading = true;
     this.currentPeriodOffset = 0;
+    this.isDataSetDimensionApplicable = false;
 
     this.userProvider.getCurrentUser().then((currentUser: any)=>{
       this.currentUser = currentUser;
@@ -209,7 +211,14 @@ export class DataEntryPage implements OnInit{
     if(categoryCombo.name != 'default'){
       dataSetCategoryCombo['id'] = categoryCombo.id;
       dataSetCategoryCombo['name'] = categoryCombo.name;
-      dataSetCategoryCombo['categories'] = this.dataSetProvider.getDataSetCategoryComboCategories(this.selectedOrgUnit.id,this.selectedDataSet.categoryCombo.categories);
+      let categories = this.dataSetProvider.getDataSetCategoryComboCategories(this.selectedOrgUnit.id,this.selectedDataSet.categoryCombo.categories);
+      dataSetCategoryCombo['categories'] = categories;
+      this.isDataSetDimensionApplicable = true;
+      categories.forEach((category: any)=>{
+        if(category.categoryOptions && category.categoryOptions.length == 0){
+          this.isDataSetDimensionApplicable = false;
+        }
+      })
     }
     this.selectedDataDimension = [];
     this.dataSetCategoryCombo = dataSetCategoryCombo;
@@ -253,6 +262,8 @@ export class DataEntryPage implements OnInit{
       }else{
         isFormReady = false;
       }
+    }else{
+      isFormReady = false;
     }
     return isFormReady;
   }

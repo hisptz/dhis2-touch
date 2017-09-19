@@ -27,7 +27,6 @@ export class ClearLocalMetadataComponent implements OnInit{
   showLoadingMessage: boolean = false;
   clearMetaDataLoadingMessages: string = "";
 
-
   constructor(private syncProvider: SyncProvider, private appProvider: AppProvider, private sqLite: SqlLiteProvider, private user: UserProvider,
               public alertCtrl: AlertController, public syncPage: SyncPage) {
 

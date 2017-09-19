@@ -59,7 +59,7 @@ export class OrganisationUnitSelectionPage implements OnInit{
         this.isLoading = false;
       }else{
         this.isLoading = false;
-        this.emptyMessage = "Currently there is on assigned organisation unit on local storage";
+        this.emptyMessage = "Currently there is on assigned organisation unit on local storage, Please metadata on sync app";
         this.appProvider.setNormalNotification(this.emptyMessage);
       }
     },error=>{
