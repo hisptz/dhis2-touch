@@ -76,16 +76,13 @@ export class ClearLocalMetadataComponent implements OnInit{
   checkingForResourceToDelete(){
     let isMetadata= false;
     let resourcesToDelete = [];
-    let  dependentTablesToDelete = [];
-    let totalTablesToDelete = [];
-
     this.resources.forEach((resource:any) =>{
       if(resource.status){
         isMetadata= true;
         resourcesToDelete.push(resource.name);
         if(resource.dependentTable.length > 0){
           resource.dependentTable.forEach((tableNames: any)=>{
-            dependentTablesToDelete.push(tableNames)
+            resourcesToDelete.push(tableNames)
           });
         }
       }
@@ -93,8 +90,7 @@ export class ClearLocalMetadataComponent implements OnInit{
     if(resourcesToDelete.length == 0){
       this.appProvider.setNormalNotification("Please select at least one resources to update");
     }else{
-      totalTablesToDelete = resourcesToDelete.concat(dependentTablesToDelete);
-      this.deleteResources(totalTablesToDelete);
+      this.deleteResources(resourcesToDelete);
       this.showLoadingMessage = true;
     }
   }

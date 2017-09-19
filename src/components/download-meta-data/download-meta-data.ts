@@ -23,7 +23,6 @@ export class DownloadMetaDataComponent implements OnInit {
   currentUser: any;
   hasAllSelected: boolean;
   loadingData: boolean = false;
-  resourceToUpdate = [];
   showLoadingMessage: boolean = false;
 
   updateMetaDataLoadingMessages: string = "";
@@ -61,16 +60,13 @@ export class DownloadMetaDataComponent implements OnInit {
   checkingForResourceUpdate() {
     let isMetadata = false;
     let resourceUpdated = [];
-    let  dependentTablesToDelete = [];
-
     this.resources.forEach((resource: any) => {
       if (resource.status) {
         isMetadata = true;
         resourceUpdated.push(resource.name);
-
         if(resource.dependentTable.length > 0){
-          resource.dependentTable.forEach((tableNames: any)=>{
-            dependentTablesToDelete.push(tableNames)
+          resource.dependentTable.forEach((tableName: any)=>{
+            resourceUpdated.push(tableName)
           });
         }
         this.showLoadingMessage = true;
@@ -79,31 +75,8 @@ export class DownloadMetaDataComponent implements OnInit {
     if (resourceUpdated.length == 0) {
       this.appProvider.setNormalNotification("Please select at least one resources to update");
     } else {
-      this.deleteDependentTables(dependentTablesToDelete,resourceUpdated)
-      //this.updateResources(resourceUpdated);
+      this.updateResources(resourceUpdated);
     }
-  }
-
-  deleteDependentTables(dependentTablesToDelete, resourceUpdated){
-
-    this.syncProvider.prepareTablesToApplyChanges(dependentTablesToDelete, this.currentUser).then(() => {
-      this.updateMetaDataLoadingMessages = "Deleting Dependent Tables ";
-      this.sqLite.generateTables(this.currentUser.currentDatabase).then(() => {
-          this.updateMetaDataLoadingMessages = "Applying updates... ";
-          this.updateResources(resourceUpdated);
-
-        },
-        error => {
-          this.showLoadingMessage = false;
-          this.appProvider.setNormalNotification("Fail to prepare Database tables");
-        }
-      );
-
-    }, error => {
-      this.showLoadingMessage = false;
-      this.appProvider.setNormalNotification("Fail to prepare device to apply updates " + JSON.stringify(error));
-    });
-
   }
 
   updateResources(resources) {

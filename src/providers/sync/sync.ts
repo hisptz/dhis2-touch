@@ -90,7 +90,6 @@ export class SyncProvider {
           promises.push(
             this.dataElementProvider.downloadDataElementsFromServer(currentUser).then((response: any) => {
               data[resource] = response[resource];
-
             }, error => {
             })
           );
@@ -98,7 +97,6 @@ export class SyncProvider {
           promises.push(
             this.indicatorProvider.downloadingIndicatorsFromServer(currentUser).then((response: any) => {
               data[resource] = response;
-
             }, error => {
             })
           );
@@ -106,7 +104,6 @@ export class SyncProvider {
           promises.push(
             this.smsCommandsProvider.getSmsCommandFromServer(currentUser).then((response: any) => {
              data[resource] = response;
-
             }, error => {
             })
           );
@@ -118,37 +115,26 @@ export class SyncProvider {
             })
           );
         }else if(resource == "constants"){
-
           promises.push(
             this.reportsProvider.downloadConstantsFromServer(currentUser).then((response: any) => {
               data[resource] = response[resource];
-
-            }, error => {
-
-            })
+            }, error => {})
           );
         } else if(resource == "programs"){
-
           promises.push(
             this.programProvider.downloadProgramsFromServer(currentUser).then((response: any) => {
               data[resource] = response[resource];
-
             }, error => {
-
             })
           );
         } else if(resource == "programStageSections"){
-
           promises.push(
             this.programStageSectionsProvider.downloadProgramsStageSectionsFromServer(currentUser).then((response: any) => {
               data[resource] = response;
-
             }, error => {
-
             })
           );
         }
-
       });
 
       Observable.forkJoin(promises).subscribe(() => {
