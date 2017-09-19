@@ -80,17 +80,32 @@ export class ClearLocalMetadataComponent implements OnInit{
   checkingForResourceToDelete(){
     let isMetadata= false;
     let resourcesToDelete = [];
+    let  dependentTablesToDelete = [];
+    let totalTablesToDelete = [];
+
     this.resources.forEach((resource:any) =>{
       if(resource.status){
         isMetadata= true;
         resourcesToDelete.push(resource.name);
+
+        if(resource.dependentTable.length > 0){
+          resource.dependentTable.forEach((tableNames: any)=>{
+            dependentTablesToDelete.push(tableNames)
+          });
+        }
       }
     });
     if(resourcesToDelete.length == 0){
       this.appProvider.setNormalNotification("Please select at least one resources to update");
     }else{
 
-      this.deleteResources(resourcesToDelete);
+      alert("Dependant tables are: " + JSON.stringify(dependentTablesToDelete))
+      alert("Total tables are: " + JSON.stringify(resourcesToDelete.concat(dependentTablesToDelete)))
+
+      totalTablesToDelete = resourcesToDelete.concat(dependentTablesToDelete);
+      this.deleteResources(totalTablesToDelete);
+      //this.deleteResources(resourcesToDelete);
+
       this.showLoadingMessage = true;
     }
   }
@@ -112,21 +127,13 @@ export class ClearLocalMetadataComponent implements OnInit{
         this.showLoadingMessage = false;
 
       },error=>{
-        this.appProvider.setTopNotification("Failed to Drop "+resources+" Database table");
+        this.appProvider.setTopNotification("Failed. to Drop "+resources+" Database table");
       });
     },error=>{
       this.appProvider.setNormalNotification("Fail to apply updates 0 : " + JSON.stringify(error));
     });
   }
 
-
-  displayOneAtTime(){
-    this.resources.forEach((resource:any)=>{
-      if(resource.status){
-        alert("Now its: "+resource.name)
-      }
-    })
-  }
 
 
 
