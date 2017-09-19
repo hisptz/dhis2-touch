@@ -1,26 +1,26 @@
 import {Component, OnInit} from '@angular/core';
+import {UserProvider} from "../../providers/user/user";
 import {AppProvider} from "../../providers/app/app";
 import {SqlLiteProvider} from "../../providers/sql-lite/sql-lite";
 import {AlertController} from "ionic-angular";
-import {UserProvider} from "../../providers/user/user";
 
 /**
- * Generated class for the ClearLocalDataComponent component.
+ * Generated class for the UploadViaInternetComponent component.
  *
  * See https://angular.io/docs/ts/latest/api/core/index/ComponentMetadata-class.html
  * for more info on Angular Components.
  */
 @Component({
-  selector: 'clear-local-data',
-  templateUrl: 'clear-local-data.html'
+  selector: 'upload-data-via-internet',
+  templateUrl: 'upload-via-internet.html'
 })
-export class ClearLocalDataComponent implements OnInit{
+export class UploadViaInternetComponent implements OnInit{
 
 
   currentUser: any;
-  itemsToBeDeleted : any = [];
+  itemsToBeUploaded : any = [];
   selectedItems : any = {};
-  isDataCleared :  any = true;
+  isDataUploaded :  any = true;
   showLoadingMessage: boolean = false;
   LoadingMessages: string;
 
@@ -37,19 +37,19 @@ export class ClearLocalDataComponent implements OnInit{
   }
 
 
-  resetDeletedItems(){
-    let deletedTable = [];
+  resetUploadItems(){
+    let updateTable = [];
     for(let key of Object.keys(this.selectedItems)){
       if(this.selectedItems[key])
-        deletedTable.push(key);
+        updateTable.push(key);
     }
-    this.itemsToBeDeleted = deletedTable;
+    this.itemsToBeUploaded = updateTable;
   }
 
-  clearDataConfirmation(){
+  uploadDataConfirmation(){
     let alert = this.alertCtrl.create({
-      title: 'Clear Data Confirmation',
-      message: 'Are you want to clear data?',
+      title: 'Upload Data Confirmation',
+      message: 'Are you want to upload selected data?',
       buttons: [
         {
           text: 'Cancel',
@@ -59,9 +59,9 @@ export class ClearLocalDataComponent implements OnInit{
           }
         },
         {
-          text: 'Clear',
+          text: 'Upload',
           handler: () => {
-            this.clearData();
+            this.uploadData();
           }
         }
       ]
@@ -69,40 +69,41 @@ export class ClearLocalDataComponent implements OnInit{
     alert.present();
   }
 
-  clearData(){
+  uploadData(){
     this.showLoadingMessage = true;
-    let deletedItemCount = 0;
+    let uploadedItemCount = 0;
     let failCount = 0;
-    this.isDataCleared = false;
-    for(let tableName of this.itemsToBeDeleted){
+    this.isDataUploaded = false;
+    for(let tableName of this.itemsToBeUploaded){
 
-      this.sqLite.deleteAllOnTable(tableName,this.currentUser.currentDatabase).then(()=>{
-        this.LoadingMessages = "Deleting selected local data";
-        deletedItemCount = deletedItemCount + 1;
-        if((deletedItemCount + failCount) == this.itemsToBeDeleted.length){
+      this.sqLite.getAllDataFromTable(tableName,this.currentUser.currentDatabase).then((response:any)=>{
+
+        this.LoadingMessages = "Fetching selected local data";
+        uploadedItemCount = uploadedItemCount + 1;
+        if((uploadedItemCount + failCount) == this.itemsToBeUploaded.length){
 
           this.LoadingMessages = "Applying changes to the application";
 
-          this.appProvider.setNormalNotification("You have successfully clear data");
+          this.appProvider.setNormalNotification("You have successfully uploaded data");
 
           Object.keys(this.selectedItems).forEach(key=>{
             this.selectedItems[key] = false;
           });
-          this.isDataCleared = true;
+          this.isDataUploaded = true;
           this.showLoadingMessage = false;
 
         }
       },error=>{
         console.log("Error : " + JSON.stringify(error));
         failCount = failCount + 1;
-        if((deletedItemCount + failCount) == this.itemsToBeDeleted.length){
+        if((uploadedItemCount + failCount) == this.itemsToBeUploaded.length){
 
           this.appProvider.setNormalNotification("You.. have successfully clear data.");
 
           Object.keys(this.selectedItems).forEach(key=>{
             this.selectedItems[key] = false;
           });
-          this.isDataCleared = true;
+          this.isDataUploaded = true;
 
         }
       })

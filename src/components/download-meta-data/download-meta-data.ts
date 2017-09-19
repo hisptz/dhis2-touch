@@ -82,11 +82,10 @@ export class DownloadMetaDataComponent implements OnInit {
   updateResources(resources) {
     this.updateMetaDataLoadingMessages = "Downloading updates";
     this.syncProvider.downloadResources(resources, this.currentUser).then((resourcesData) => {
-      this.updateMetaDataLoadingMessages = "Preparing device to apply updates";
       this.syncProvider.prepareTablesToApplyChanges(resources, this.currentUser).then(() => {
         this.updateMetaDataLoadingMessages = "Deleting Selected MetaData Tables ";
         this.sqLite.generateTables(this.currentUser.currentDatabase).then(() => {
-            this.updateMetaDataLoadingMessages = "Applying updates... ";
+            this.updateMetaDataLoadingMessages = "Applying updates ";
             this.syncProvider.savingResources(resources,resourcesData,this.currentUser).then(()=>{
               this.autoSelect("un-selectAll");
               this.appProvider.setNormalNotification("All updates has been applied successfully.");

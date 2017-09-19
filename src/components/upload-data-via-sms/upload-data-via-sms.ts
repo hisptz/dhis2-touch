@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {PeriodSelectionProvider} from "../../providers/period-selection/period-selection";
-import {ModalController} from "ionic-angular";
+import {ModalController, NavController} from "ionic-angular";
 import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
 import {UserProvider} from "../../providers/user/user";
 import {SmsCommandProvider} from "../../providers/sms-command/sms-command";
@@ -47,13 +47,14 @@ export class UploadDataViaSmsComponent implements OnInit{
   dataSets : Array<any>;
 
   icons : any = {};
+  isDataSetDimensionApplicable : boolean;
 
   selectedOrgUnit : any;
 
-  constructor(public modalCtrl: ModalController, public orgUnitProvider: OrganisationUnitsProvider,
-              public dataSetProvider: DataSetsProvider, public appProvider: AppProvider,
-              public periodService: PeriodSelectionProvider, public smsCommandProvider: SmsCommandProvider,
-              public userProvider: UserProvider, private periodSelection : PeriodSelectionProvider) {  //public appPermission: AppPermissionProvider,
+  constructor(private navCtrl: NavController,private modalCtrl : ModalController,
+              private userProvider : UserProvider,private appProvider : AppProvider,
+              private dataSetProvider : DataSetsProvider,private periodSelection : PeriodSelectionProvider,
+              private organisationUnitsProvider : OrganisationUnitsProvider) {  //public appPermission: AppPermissionProvider,
   }
 
   ngOnInit() {
@@ -67,15 +68,13 @@ export class UploadDataViaSmsComponent implements OnInit{
     // let smsPermission = [permissions.SEND_SMS];
     // this.appPermission.checkAndRequestAppPermission(smsPermission);
 
-    this.selectedDataDimension = [];
-
-    // from dataEntry Samples
+    this.loadingMessage = "Loading user information";
     this.isLoading = true;
     this.currentPeriodOffset = 0;
+    this.isDataSetDimensionApplicable = false;
 
     this.userProvider.getCurrentUser().then((currentUser: any)=>{
       this.currentUser = currentUser;
-      this.initiateDefaultValues();
       this.userProvider.getUserData().then((userData : any)=>{
         this.dataSetIdsByUserRoles = [];
         userData.userRoles.forEach((userRole:any)=>{
@@ -86,10 +85,10 @@ export class UploadDataViaSmsComponent implements OnInit{
           }
         });
 
-        this.orgUnitProvider.getLastSelectedOrganisationUnitUnit(currentUser).then((lastSelectedOrgunit)=>{
+        this.organisationUnitsProvider.getLastSelectedOrganisationUnitUnit(currentUser).then((lastSelectedOrgunit)=>{
           this.selectedOrgUnit = lastSelectedOrgunit;
           this.updateDataEntryFormSelections();
-          //this.loadingEntryForm();
+          this.loadingEntryForm();
         });
         this.updateDataEntryFormSelections();
       });
@@ -104,10 +103,9 @@ export class UploadDataViaSmsComponent implements OnInit{
 
 
 
-
   updateDataEntryFormSelections(){
-    if(this.orgUnitProvider.lastSelectedOrgUnit){
-      this.selectedOrgUnit = this.orgUnitProvider.lastSelectedOrgUnit;
+    if(this.organisationUnitsProvider.lastSelectedOrgUnit){
+      this.selectedOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
       this.organisationUnitLabel = this.selectedOrgUnit.name;
     }else{
       this.organisationUnitLabel = "Touch to select organisation Unit";
@@ -115,54 +113,18 @@ export class UploadDataViaSmsComponent implements OnInit{
     if(this.selectedDataSet && this.selectedDataSet.name){
       this.dataSetLabel = this.selectedDataSet.name;
     }else {
-      this.dataSetLabel = "Touch to select Data Set";
+      this.dataSetLabel = "Touch to select entry form";
     }
 
     if(this.selectedPeriod && this.selectedPeriod.name){
       this.periodLabel = this.selectedPeriod.name;
-      this.canSend = false;
     }else{
-      this.periodLabel = "Touch to select period";
-      this.canSend = true;
+      this.periodLabel = "Touch to select period"
     }
     this.isFormReady = this.isAllFormParameterSelected();
     this.isLoading = false;
     this.loadingMessage = "";
   }
-
-
-  isAllFormParameterSelected(){
-    let isFormReady = true;
-    if(this.selectedPeriod && this.selectedPeriod.name && this.selectedDataSet && this.selectedDataSet.categoryCombo.name != 'default'){
-      if(this.selectedDataDimension && this.selectedDataDimension.length > 0 && this.selectedDataDimension.length == this.dataSetCategoryCombo.categories.length){
-        let count = 0;
-        this.selectedDataDimension.forEach((dimension : any)=>{
-          count ++;
-        });
-        if(count != this.selectedDataDimension.length){
-          isFormReady = false;
-        }
-      }else{
-        isFormReady = false;
-      }
-    }
-    return isFormReady;
-  }
-
-
-  initiateDefaultValues(){
-    this.currentSelectionStatus.orgUnit = true;
-    this.currentSelectionStatus.isOrgUnitSelected = false;
-    this.currentSelectionStatus.isOrgUnitLoaded = false;
-    this.currentSelectionStatus.dataSetonSms = true;
-    this.currentSelectionStatus.isDataSetSelected = false;
-    this.currentSelectionStatus.isDataSetLoaded = false;
-    this.currentSelectionStatus.period = false;
-    this.currentSelectionStatus.isPeriodSelected = false;
-    this.currentSelectionStatus.allParameterSet = false;
-    this.currentSelectionStatus.message = "";
-  }
-
 
   openOrganisationUnitTree(){
     let modal = this.modalCtrl.create('OrganisationUnitSelectionPage',{});
@@ -175,6 +137,21 @@ export class UploadDataViaSmsComponent implements OnInit{
     });
     modal.present();
   }
+
+  loadingEntryForm(){
+    this.dataSetProvider.getAssignedDataSets(this.selectedOrgUnit.id,this.dataSetIdsByUserRoles,this.currentUser).then((dataSets: any)=>{
+      this.dataSets = dataSets;
+      this.selectedDataSet = this.dataSetProvider.lastSelectedDataSet;
+      this.currentPeriodOffset = 0;
+      this.updateDataEntryFormSelections();
+      this.loadPeriodSelection();
+      this.updateDataSetCategoryCombo(this.selectedDataSet.categoryCombo);
+    },error=>{
+      this.appProvider.setNormalNotification("Fail to reload entry form");
+    });
+  }
+
+
 
   openEntryFormList(){
     if(this.dataSets && this.dataSets.length > 0){
@@ -194,29 +171,17 @@ export class UploadDataViaSmsComponent implements OnInit{
     }
   }
 
-  updateDataSetCategoryCombo(categoryCombo){
-    let dataSetCategoryCombo  = {};
-    if(categoryCombo.name != 'default'){
-      dataSetCategoryCombo['id'] = categoryCombo.id;
-      dataSetCategoryCombo['name'] = categoryCombo.name;
-      dataSetCategoryCombo['categories'] = this.dataSetProvider.getDataSetCategoryComboCategories(this.selectedOrgUnit.id,this.selectedDataSet.categoryCombo.categories);
-    }
-    this.selectedDataDimension = [];
-    this.dataSetCategoryCombo = dataSetCategoryCombo;
-    this.updateDataEntryFormSelections();
-  }
+  loadPeriodSelection(){
+    let periodType = this.selectedDataSet.periodType;
 
-  loadingEntryForm(){
-    this.dataSetProvider.getAssignedDataSets(this.selectedOrgUnit.id,this.dataSetIdsByUserRoles,this.currentUser).then((dataSets: any)=>{
-      this.dataSets = dataSets;
-      this.selectedDataSet = this.dataSetProvider.lastSelectedDataSet;
-      this.currentPeriodOffset = 0;
-      this.updateDataEntryFormSelections();
-      this.loadPeriodSelection();
-      this.updateDataSetCategoryCombo(this.selectedDataSet.categoryCombo);
-    },error=>{
-      this.appProvider.setNormalNotification("Fail to reload entry form");
-    });
+    let openFuturePeriods = parseInt(this.selectedDataSet.openFuturePeriods);
+    let periods = this.periodSelection.getPeriods(periodType,openFuturePeriods,this.currentPeriodOffset);
+    if(periods && periods.length > 0){
+      this.selectedPeriod = periods[0];
+    }else{
+      this.selectedPeriod = {};
+    }
+    this.updateDataEntryFormSelections();
   }
 
   openPeriodList(){
@@ -240,20 +205,6 @@ export class UploadDataViaSmsComponent implements OnInit{
     }
   }
 
-
-  loadPeriodSelection(){
-    let periodType = this.selectedDataSet.periodType;
-    let openFuturePeriods = parseInt(this.selectedDataSet.openFuturePeriods);
-    let periods = this.periodSelection.getPeriods(periodType,openFuturePeriods,this.currentPeriodOffset);
-    if(periods && periods.length > 0){
-      this.selectedPeriod = periods[0];
-    }else{
-      this.selectedPeriod = {};
-    }
-    this.updateDataEntryFormSelections();
-  }
-
-
   openDataDimensionSelection(category){
     if(category.categoryOptions && category.categoryOptions && category.categoryOptions.length > 0){
       let currentIndex = this.dataSetCategoryCombo.categories.indexOf(category);
@@ -275,11 +226,53 @@ export class UploadDataViaSmsComponent implements OnInit{
     }
   }
 
+  updateDataSetCategoryCombo(categoryCombo){
+    let dataSetCategoryCombo  = {};
+    if(categoryCombo.name != 'default'){
+      dataSetCategoryCombo['id'] = categoryCombo.id;
+      dataSetCategoryCombo['name'] = categoryCombo.name;
+      let categories = this.dataSetProvider.getDataSetCategoryComboCategories(this.selectedOrgUnit.id,this.selectedDataSet.categoryCombo.categories);
+      dataSetCategoryCombo['categories'] = categories;
+      this.isDataSetDimensionApplicable = true;
+      categories.forEach((category: any)=>{
+        if(category.categoryOptions && category.categoryOptions.length == 0){
+          this.isDataSetDimensionApplicable = false;
+        }
+      })
+    }
+    this.selectedDataDimension = [];
+    this.dataSetCategoryCombo = dataSetCategoryCombo;
+    this.updateDataEntryFormSelections();
+  }
+
+
+
+  isAllFormParameterSelected(){
+    let isFormReady = true;
+    if(this.selectedPeriod && this.selectedPeriod.name && this.selectedDataSet && this.selectedDataSet.categoryCombo.name != 'default'){
+      if(this.selectedDataDimension && this.selectedDataDimension.length > 0 && this.selectedDataDimension.length == this.dataSetCategoryCombo.categories.length){
+        let count = 0;
+        this.selectedDataDimension.forEach((dimension : any)=>{
+          count ++;
+        });
+        if(count != this.selectedDataDimension.length){
+          isFormReady = false;
+        }
+      }else{
+        isFormReady = false;
+      }
+    }else if(this.periodLabel == "Touch to select period"){
+      isFormReady = false;
+    }
+    return isFormReady;
+  }
+
+
   goSubmit(form: NgForm){
     let phoneNo: number;
     phoneNo = form.value.mobileNumber;
 
-    alert("send to: "+phoneNo+"\n" +
+    console.log("send to: "+phoneNo+"\n" +
       "orgUnit: "+this.organisationUnitLabel+"\n" +
       "DataSet: "+this.dataSetLabel+"\n" +
       "Period: "+this.periodLabel);

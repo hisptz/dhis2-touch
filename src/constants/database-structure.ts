@@ -166,7 +166,7 @@ export const DATABASE_STRUCTURE = {
     isMetadata: true,
     resourceType: "entryForm",
     batchSize : 30,
-    displayName : "Sms Command",
+    displayName : "SMS Command",
     dependentTable : []
   },
   indicators: {
