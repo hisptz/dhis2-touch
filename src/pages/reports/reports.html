@@ -16,11 +16,20 @@
 <ion-content >
 
 
+  <ion-refresher  (ionRefresh)="doRefresh($event)" >
+    <ion-refresher-content pullingText="Pull to refresh"
+                           refreshingSpinner="circles"
+                           refreshingText="Refreshing..."
+                           *ngIf="hideRefresher">
+
+    </ion-refresher-content>
+  </ion-refresher>
+
   <!--<report-comp></report-comp>-->
   <div *ngIf="loadingData">
     <ion-row >
       <ion-col >
-        <page-loading loadingSize="large" ></page-loading>
+        <page-loading loadingSize="large" [loadingMessage]="displayMessage"  ></page-loading>
       </ion-col>
     </ion-row>
   </div>

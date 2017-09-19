@@ -5,6 +5,8 @@ import {AppProvider} from "../../providers/app/app";
 import {ReportsProvider} from "../../providers/reports/reports";
 import {ReportParameterSelectionPage} from "../report-parameter-selection/report-parameter-selection";
 import {ReportViewPage} from "../report-view/report-view";
+import {StandardReportProvider} from "../../providers/standard-report/standard-report";
+import {DownloadMetaDataComponent} from "../../components/download-meta-data/download-meta-data";
 
 /**
  * Generated class for the ReportsPage page.
@@ -26,11 +28,13 @@ export class ReportsPage implements OnInit{
   public reportList : any;
   public reportListCopy : any;
   icons: any= {};
+  hideRefresher: boolean = true;
+  displayMessage: string;
 
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public user: UserProvider, public appProvider: AppProvider,
-              public reportProvider: ReportsProvider) {
+              public reportProvider: ReportsProvider, public standardReportProvider: StandardReportProvider) {
   }
 
   ngOnInit(){
@@ -52,9 +56,14 @@ export class ReportsPage implements OnInit{
       this.reportList = reportList;
       this.reportListCopy = reportList;
       this.loadingData = false;
+      this.hideRefresher = true;
+
+
     }, error => {
       this.appProvider.setNormalNotification('Fail to load reports');
       this.loadingData = false;
+      this.hideRefresher = true;
+
     });
 
   }
@@ -84,6 +93,30 @@ export class ReportsPage implements OnInit{
     }
   }
 
+  doRefresh(refresher) {
+    this.displayMessage = "checking for available reports update";
+    this.loadingData = true;
+    this.hideRefresher = false;
+    let resource = 'reports'
+    let data: any = [];
 
+    this.displayMessage = "checking from server";
+      this.standardReportProvider.downloadReportsFromServer(this.currentUser).then((response:any)=> {
+        this.displayMessage = "downloading reports from server.";
+        data[resource] = response[resource];
+        this.standardReportProvider.saveReportsFromServer(data[resource], this.currentUser).then(() => {
+          this.displayMessage = "Saving reports to application";
+          this.loadReportsList(this.currentUser);
+        }, error => {})
+
+      }, error => {
+      })
+
+    setTimeout(() => {
+      refresher.complete();
+    }, 1000);
+  }
 
 }
+
+
