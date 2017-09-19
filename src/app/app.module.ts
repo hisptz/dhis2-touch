@@ -79,8 +79,8 @@ import { DataValuesProvider } from '../providers/data-values/data-values';
     DataEntryModule,
     HttpModule,
     IonicModule.forRoot(MyApp, {
-      scrollAssist: true,
-      autoFocusAssist: false,
+      scrollAssist: false,
+      autoFocusAssist: true,
       backButtonText: 'Back',
       iconMode: 'md',
       backButtonIcon: "ios-arrow-back-outline",
