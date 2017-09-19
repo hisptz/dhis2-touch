@@ -6,7 +6,7 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="primary">
     <ion-title>ReportParameterSelection</ion-title>
   </ion-navbar>
 
@@ -19,31 +19,18 @@
     <ion-row *ngIf="reportParams.paramOrganisationUnit">
       <ion-col>
 
-        <div class="entry-selection-container entry-selection" text-capitalize (tap)="openOrganisationUnitTree()" >
-          <div style="text-align: center" >
-            <div *ngIf="!currentSelectionStatus.isOrgUnitLoaded">
-              <page-loading loadingSize="small"></page-loading>
-            </div>
-          </div>
-          <div *ngIf="currentSelectionStatus.isOrgUnitLoaded" style="text-align: center" >
+        <!--<div class="entry-selection-container entry-selection" text-capitalize (tap)="openOrganisationUnitTree()" >-->
+        <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openOrganisationUnitTree()" >
+          <img  class="side-menu-icon" [src]="icons.orgUnit"/>&nbsp;&nbsp;
             {{ selectedOrganisationUnitLabel }}
-          </div>
         </div>
-      </ion-col>
-    </ion-row>
 
-    <ion-row *ngIf="reportParams.paramReportingPeriod" >
-      <ion-col>
-        <div class="entry-selection-container entry-selection" text-capitalize (tap)="openReportPeriodSelection()" >
-          <div style="text-align: center" >
-            <div *ngIf="!currentSelectionStatus.isPeriodLoaded">
-              <page-loading loadingSize="small"></page-loading>
-            </div>
-          </div>
-          <div *ngIf="currentSelectionStatus.isPeriodLoaded" style="text-align: center" >
+        <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openReportPeriodSelection()" >
+          <img  class="side-menu-icon" [src]="icons.period"/>&nbsp;&nbsp;
             {{ selectedPeriodLabel }}
           </div>
-        </div>
+
+
       </ion-col>
     </ion-row>
 

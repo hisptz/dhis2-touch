@@ -14,6 +14,7 @@ export const DATABASE_STRUCTURE = {
     isMetadata: true,
     resourceType: "communication",
     batchSize : 500,
+    displayName : "Organisation Units",
     dependentTable : []
   },
 
@@ -32,6 +33,7 @@ export const DATABASE_STRUCTURE = {
     isMetadata: true,
     resourceType: "entryForm",
     batchSize : 20,
+    displayName : "Data Sets",
     dependentTable : ['dataSetElements','dataSetIndicators','dataSetSource','dataSetSections','dataSetOperands']
   },
   dataSetElements: {
@@ -44,6 +46,7 @@ export const DATABASE_STRUCTURE = {
     isMetadata: false,
     resourceType: "",
     batchSize : 500,
+    displayName : "Data Set Elements",
     dependentTable : []
   },
   dataSetIndicators: {
@@ -55,6 +58,7 @@ export const DATABASE_STRUCTURE = {
     isMetadata: false,
     resourceType: "",
     batchSize : 500,
+    displayName : "Data Set Indicators",
     dependentTable : []
   },
   dataSetSource: {
@@ -66,6 +70,7 @@ export const DATABASE_STRUCTURE = {
     isMetadata: false,
     resourceType: "",
     batchSize : 500,
+    displayName : "Data Set Source",
     dependentTable : []
   },
   dataSetSections: {
@@ -77,6 +82,7 @@ export const DATABASE_STRUCTURE = {
     isMetadata: false,
     resourceType: "",
     batchSize : 500,
+    displayName : "Data Set Sections",
     dependentTable : []
   },
   dataSetOperands: {
@@ -90,6 +96,7 @@ export const DATABASE_STRUCTURE = {
     isMetadata: false,
     resourceType: "",
     batchSize : 500,
+    displayName : "Data Set Operands",
     dependentTable : []
   },
   sections: {
@@ -102,6 +109,7 @@ export const DATABASE_STRUCTURE = {
     isMetadata: true,
     resourceType: "entryForm",
     batchSize : 500,
+    displayName : "Sections",
     dependentTable : ['sectionDataElements','sectionIndicators']
   },
   sectionDataElements: {
@@ -114,6 +122,7 @@ export const DATABASE_STRUCTURE = {
     isMetadata: false,
     resourceType: "",
     batchSize : 500,
+    displayName : "Section data Elements",
     dependentTable : []
   },
   sectionIndicators: {
@@ -125,6 +134,7 @@ export const DATABASE_STRUCTURE = {
     isMetadata: false,
     resourceType: "",
     batchSize : 500,
+    displayName : "Section Indicators",
     dependentTable : []
   },
   dataElements: {
@@ -142,6 +152,7 @@ export const DATABASE_STRUCTURE = {
     isMetadata: true,
     resourceType: "entryForm",
     batchSize : 30,
+    displayName : "Data Elements",
     dependentTable : []
   },
   smsCommand: {
@@ -155,6 +166,7 @@ export const DATABASE_STRUCTURE = {
     isMetadata: true,
     resourceType: "entryForm",
     batchSize : 30,
+    displayName : "Sms Command",
     dependentTable : []
   },
   indicators: {
@@ -168,7 +180,7 @@ export const DATABASE_STRUCTURE = {
       {value: 'indicatorType', type: 'LONGTEXT'}
     ],
     isMetadata: true,
-    displayName : "Indicator Custom",
+    displayName : "Indicators",
     batchSize : 500,
     resourceType: "report",
     dependentTable : []
@@ -185,6 +197,7 @@ export const DATABASE_STRUCTURE = {
     isMetadata: true,
     batchSize : 50,
     resourceType: "report",
+    displayName : "Reports",
     dependentTable : []
   },
   reportDesign: {
@@ -195,6 +208,7 @@ export const DATABASE_STRUCTURE = {
     isMetadata: false,
     resourceType: "",
     batchSize : 10,
+    displayName : "Report Design",
     dependentTable : []
   },
   constants: {
@@ -206,6 +220,7 @@ export const DATABASE_STRUCTURE = {
     isMetadata: true,
     batchSize : 500,
     resourceType: "report",
+    displayName : "Constants",
     dependentTable : []
   },
 
@@ -227,6 +242,7 @@ export const DATABASE_STRUCTURE = {
     isMetadata: false,
     resourceType: "",
     batchSize : 500,
+    displayName : "Data Values",
     dependentTable : []
   },
 
@@ -250,6 +266,7 @@ export const DATABASE_STRUCTURE = {
     isMetadata: false,
     resourceType: "event",
     batchSize : 50,
+    displayName : "Events",
     dependentTable : []
   },
 
@@ -274,6 +291,7 @@ export const DATABASE_STRUCTURE = {
     isMetadata: true,
     resourceType: "event",
     batchSize : 50,
+    displayName : "Programs",
     dependentTable : []
   },
 
@@ -289,6 +307,7 @@ export const DATABASE_STRUCTURE = {
     isMetadata: false,
     resourceType: "",
     batchSize : 50,
+    displayName : "Program Stage Data Elements",
     dependentTable : []
   },
   programStageSections: {
@@ -302,6 +321,7 @@ export const DATABASE_STRUCTURE = {
     isMetadata: true,
     batchSize : 100,
     resourceType: "event",
+    displayName : "Program Stage Sections",
     dependentTable : []
   }
 

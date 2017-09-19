@@ -34,12 +34,15 @@ export class ReportParameterSelectionPage implements OnInit{
   selectedOrgUnit : any;
   organisationUnitLabel: string;
   periodLabel: string;
+  icons: any = {};
 
   constructor( public user: UserProvider, private modalCtrl : ModalController, public params: NavParams,public navCtrl: NavController,
                public organisationUnitsProvider: OrganisationUnitsProvider, public periodSelectionProvider: PeriodSelectionProvider) {
   }
 
   ngOnInit(){
+    this.icons.orgUnit = "assets/reports/orgUnit.png";
+    this.icons.period = "assets/reports/period.png";
 
     this.reportName = this.params.get('name');
     this.reportId = this.params.get("id");
@@ -78,7 +81,7 @@ export class ReportParameterSelectionPage implements OnInit{
 
   openReportPeriodSelection(){
     if(this.currentSelectionStatus && this.currentSelectionStatus.period){
-      let modal = this.modalCtrl.create(PeriodSelectionPage,{});
+      let modal = this.modalCtrl.create('PeriodSelectionPage',{});
       modal.onDidDismiss((selectedPeriod:any) => {
         if(selectedPeriod && selectedPeriod.iso){
           this.selectedPeriod = selectedPeriod;

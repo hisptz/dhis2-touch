@@ -34,7 +34,7 @@ export class ReportsPage implements OnInit{
   }
 
   ngOnInit(){
-    this.icons.reports = "assets/app-icons/reports.png";
+    this.icons.reports = "assets/reports/reports.png";
     this.loadingMessages = [];
     this.loadingData = true;
     this.reportList = [];
@@ -68,9 +68,9 @@ export class ReportsPage implements OnInit{
       id : report.id,name : report.name, reportParams:report.reportParams
     };
     if(this.reportProvider.hasReportRequireParameterSelection(report.reportParams)){
-      this.navCtrl.push(ReportParameterSelectionPage,parameter);
+      this.navCtrl.push('ReportParameterSelectionPage',parameter);
     }else{
-      this.navCtrl.push(ReportViewPage,parameter);
+      this.navCtrl.push('ReportViewPage',parameter);
     }
   }
 

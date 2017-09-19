@@ -2,8 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {SyncProvider} from "../../providers/sync/sync";
 import {AppProvider} from "../../providers/app/app";
 import {SqlLiteProvider} from "../../providers/sql-lite/sql-lite";
-import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
-import {DataSetsProvider} from "../../providers/data-sets/data-sets";
 import {UserProvider} from "../../providers/user/user";
 import {AlertController} from "ionic-angular";
 import {SyncPage} from "../../pages/sync/sync";
@@ -78,17 +76,25 @@ export class ClearLocalMetadataComponent implements OnInit{
   checkingForResourceToDelete(){
     let isMetadata= false;
     let resourcesToDelete = [];
+    let  dependentTablesToDelete = [];
+    let totalTablesToDelete = [];
+
     this.resources.forEach((resource:any) =>{
       if(resource.status){
         isMetadata= true;
         resourcesToDelete.push(resource.name);
+        if(resource.dependentTable.length > 0){
+          resource.dependentTable.forEach((tableNames: any)=>{
+            dependentTablesToDelete.push(tableNames)
+          });
+        }
       }
     });
     if(resourcesToDelete.length == 0){
       this.appProvider.setNormalNotification("Please select at least one resources to update");
     }else{
-
-      this.deleteResources(resourcesToDelete);
+      totalTablesToDelete = resourcesToDelete.concat(dependentTablesToDelete);
+      this.deleteResources(totalTablesToDelete);
       this.showLoadingMessage = true;
     }
   }
@@ -102,12 +108,10 @@ export class ClearLocalMetadataComponent implements OnInit{
         this.appProvider.setNormalNotification("Local MetaData deleted successfully.");
         this.showLoadingMessage = false;
       },error=>{
-        this.appProvider.setTopNotification("Failed to Drop "+resources+" Database table");
+        this.appProvider.setTopNotification("Failed. to Drop "+resources+" Database table");
       });
     },error=>{
       this.appProvider.setNormalNotification("Fail to apply updates 0 : " + JSON.stringify(error));
     });
   }
-
-
 }
