@@ -14,7 +14,7 @@ import {TrueOnlyInputFieldComponent} from "./true-only-input-field/true-only-inp
   declarations: [
     OrganisationUnitTreeComponent,InputContainerComponent,
     BooleanInputFieldComponent,DateInputFieldComponent,NumericalInputFieldComponent,
-    OptionSetInputFieldComponent,TextInputFieldComponent,TrueOnlyInputFieldComponent
+    OptionSetInputFieldComponent,TextInputFieldComponent,TrueOnlyInputFieldComponent,
   ],
   imports: [
     IonicModule,SharedModule
@@ -22,7 +22,7 @@ import {TrueOnlyInputFieldComponent} from "./true-only-input-field/true-only-inp
   exports: [
     OrganisationUnitTreeComponent,InputContainerComponent,
     BooleanInputFieldComponent,DateInputFieldComponent,NumericalInputFieldComponent,
-    OptionSetInputFieldComponent,TextInputFieldComponent,TrueOnlyInputFieldComponent
+    OptionSetInputFieldComponent,TextInputFieldComponent,TrueOnlyInputFieldComponent,
   ]
 })
 
