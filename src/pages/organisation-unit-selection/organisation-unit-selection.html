@@ -33,7 +33,7 @@
                                     (selectedOrganisationUnit)="setSelectedOrganisationUnit($event)"
                                     [currentUser]="currentUser"></organisation-unit-tree>
     </div>
-    <div *ngIf="organisationUnits.length > 0 && emptyMessage !=''">
+    <div *ngIf="organisationUnits.length == 0 && emptyMessage !=''">
       <empty-list-notification [emptyListMessage]="emptyMessage" ></empty-list-notification>
     </div>
   </div>

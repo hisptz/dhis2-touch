@@ -34,7 +34,6 @@ export class ClearLocalMetadataComponent implements OnInit{
   }
 
   ngOnInit(){
-
     this.hasAllSelected = false;
     this.user.getCurrentUser().then((user:any)=>{
       this.currentUser = user;
@@ -97,20 +96,12 @@ export class ClearLocalMetadataComponent implements OnInit{
 
 
   deleteResources(resources){
-    this.clearMetaDataLoadingMessages= "Deleting selected MetaData";
-
-    this.clearMetaDataLoadingMessages = "Preparing device to apply updates";
-
+    this.clearMetaDataLoadingMessages= "Deleting selected Metadata";
     this.syncProvider.prepareTablesToApplyChanges(resources,this.currentUser).then(()=>{
-      this.clearMetaDataLoadingMessages = "Re-organize application database";
-
       this.sqLite.generateTables(this.currentUser.currentDatabase).then(()=>{
-
-        this.clearMetaDataLoadingMessages = "Applying changes in application Database";
         this.autoSelect("un-selectAll");
         this.appProvider.setNormalNotification("Local MetaData deleted successfully.");
         this.showLoadingMessage = false;
-
       },error=>{
         this.appProvider.setTopNotification("Failed to Drop "+resources+" Database table");
       });
@@ -118,16 +109,6 @@ export class ClearLocalMetadataComponent implements OnInit{
       this.appProvider.setNormalNotification("Fail to apply updates 0 : " + JSON.stringify(error));
     });
   }
-
-
-  displayOneAtTime(){
-    this.resources.forEach((resource:any)=>{
-      if(resource.status){
-        alert("Now its: "+resource.name)
-      }
-    })
-  }
-
 
 
 }

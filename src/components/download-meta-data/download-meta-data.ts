@@ -58,16 +58,6 @@ export class DownloadMetaDataComponent implements OnInit {
     }
   }
 
-
-  checkForSelectedItems() {
-    if (this.resourceToUpdate.length > 0) {
-      this.checkingForResourceUpdate()
-    } else {
-      this.appProvider.setNormalNotification("Please select at least one resources to update");
-    }
-  }
-
-
   checkingForResourceUpdate() {
     let isMetadata = false;
     let resourceUpdated = [];
@@ -86,9 +76,8 @@ export class DownloadMetaDataComponent implements OnInit {
     }
   }
 
-
   updateResources(resources) {
-    this.updateMetaDataLoadingMessages = "Downloading selected MetaData";
+    this.updateMetaDataLoadingMessages = "Downloading updates";
     this.syncProvider.downloadResources(resources, this.currentUser).then((resourcesData) => {
       this.updateMetaDataLoadingMessages = "Preparing device to apply updates";
       this.syncProvider.prepareTablesToApplyChanges(resources, this.currentUser).then(() => {
