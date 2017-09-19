@@ -179,12 +179,28 @@ export class DataEntryFormPage implements OnInit{
 
   updateData(updateDataValue){
     let dataValueId = updateDataValue.id;
-    if(this.dataValuesObject[dataValueId] && this.dataValuesObject[dataValueId].status == "synced" ){
-      this.storageStatus.online --;
-    }
-    this.storageStatus.offline ++;
-    this.dataValuesObject[dataValueId] = updateDataValue;
-    //@todo save to local storage
+    let dataSetId = this.dataSet.id;
+    let period = this.entryFormParameter.period.iso;
+    let orgUnitId = this.entryFormParameter.orgUnit.id;
+    let dataDimension = this.entryFormParameter.dataDimension;
+    let newDataValue = [];
+    let fieldIdArray = dataValueId.split("-");
+    newDataValue.push({
+      orgUnit : orgUnitId,
+      dataElement : fieldIdArray[0],
+      categoryOptionCombo : fieldIdArray[1],
+      value :updateDataValue.value,
+      period : period
+    });
+    this.dataValuesProvider.saveDataValues(newDataValue,dataSetId,period,orgUnitId,dataDimension,updateDataValue.status,this.currentUser).then(()=>{
+      if(this.dataValuesObject[dataValueId] && this.dataValuesObject[dataValueId].status == "synced" ){
+        this.storageStatus.online --;
+        this.storageStatus.offline ++;
+      }else if(!this.dataValuesObject[dataValueId]){
+        this.storageStatus.offline ++;
+      }
+      this.dataValuesObject[dataValueId] = updateDataValue;
+    },error=>{});
   }
 
   updateDataSetCompleteness(){

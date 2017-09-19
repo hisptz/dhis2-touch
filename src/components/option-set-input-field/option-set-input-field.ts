@@ -33,8 +33,10 @@ export class OptionSetInputFieldComponent implements OnInit{
     let fieldId = this.dataElementId + "-" + this.categoryOptionComboId;
     if(this.data && this.data[fieldId] && this.inputFieldValue  != this.data[fieldId].value){
       this.onChange.emit({"id":fieldId,"value":this.inputFieldValue,"status":"not-synced"});
-    }else{
-      this.onChange.emit({"id":fieldId,"value":this.inputFieldValue,"status":"not-synced"});
+    }else if(this.data && !this.data[fieldId]){
+      if(this.inputFieldValue){
+        this.onChange.emit({"id":fieldId,"value":this.inputFieldValue,"status":"not-synced"});
+      }
     }
   }
 
