@@ -5,6 +5,7 @@
   <div *ngFor="let categoryOptionCombo of dataElement.categoryCombo.categoryOptionCombos">
     <div (click)="showTooltips(dataElement,categoryOptionCombo.name)" class="inputLabel">
       {{ getLabel(dataElement.categoryCombo.name,categoryOptionCombo.name)}}
+      <span *ngIf="dataElement.description">&nbsp;&nbsp;<ion-icon color="icon-color" name="help-circle"></ion-icon></span>
     </div>
 
     <div *ngIf="dataElement.optionSet" class="input-field-container">
