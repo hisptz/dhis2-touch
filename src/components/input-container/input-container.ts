@@ -23,6 +23,7 @@ export class InputContainerComponent implements OnInit{
   textInputField : Array<string>;
   numericalInputField : Array<string>;
   supportValueTypes : Array<string>;
+  formLayout : string;
 
   constructor(private settingProvider : SettingsProvider,private actionSheetCtrl : ActionSheetController) {}
 
@@ -30,9 +31,14 @@ export class InputContainerComponent implements OnInit{
     this.numericalInputField = ['INTEGER_NEGATIVE','INTEGER_POSITIVE','INTEGER','NUMBER','INTEGER_ZERO_OR_POSITIVE'];
     this.textInputField = ['TEXT','LONG_TEXT'];
     this.supportValueTypes = ['BOOLEAN','TRUE_ONLY','DATE','TEXT','LONG_TEXT','INTEGER_NEGATIVE','INTEGER_POSITIVE','INTEGER','NUMBER','INTEGER_ZERO_OR_POSITIVE'];
+
+    this.formLayout = "listLayout";
     this.settingProvider.getSettingsForTheApp(this.currentUser).then((appSettings : any)=>{
       let dataEntrySettings = appSettings.entryForm;
       this.fieldLabelKey = this.dataElement.displayName;
+      if(dataEntrySettings.formLayout){
+        this.formLayout = dataEntrySettings.formLayout;
+      }
       if(dataEntrySettings.label){
         if(this.dataElement[dataEntrySettings.label] && this.dataElement[dataEntrySettings.label] != '0'){
           this.fieldLabelKey = this.dataElement[dataEntrySettings.label];
@@ -41,7 +47,7 @@ export class InputContainerComponent implements OnInit{
     })
   }
 
-  getLabel(categoryComboName,categoryOptionComboName){
+  getListLayoutLabel(categoryComboName,categoryOptionComboName){
     let label = this.fieldLabelKey;
     if(categoryComboName != 'default'){
       label += " " + categoryOptionComboName;

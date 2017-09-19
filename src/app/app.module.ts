@@ -78,7 +78,17 @@ import { DataValuesProvider } from '../providers/data-values/data-values';
     SharedModule,DashboardModule,SyncModule,
     DataEntryModule,
     HttpModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {
+      scrollAssist: false,
+      autoFocusAssist: true,
+      backButtonText: 'Back',
+      iconMode: 'md',
+      backButtonIcon: "ios-arrow-back-outline",
+      modalEnter: 'modal-slide-in',
+      modalLeave: 'modal-slide-out',
+      tabsPlacement: 'top',
+      pageTransition: 'ios'
+    }),
     IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
