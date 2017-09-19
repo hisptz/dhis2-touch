@@ -22,12 +22,14 @@ export class InputContainerComponent implements OnInit{
   fieldLabelKey : any;
   textInputField : Array<string>;
   numericalInputField : Array<string>;
+  supportValueTypes : Array<string>;
 
   constructor(private settingProvider : SettingsProvider,private actionSheetCtrl : ActionSheetController) {}
 
   ngOnInit(){
     this.numericalInputField = ['INTEGER_NEGATIVE','INTEGER_POSITIVE','INTEGER','NUMBER','INTEGER_ZERO_OR_POSITIVE'];
     this.textInputField = ['TEXT','LONG_TEXT'];
+    this.supportValueTypes = ['BOOLEAN','TRUE_ONLY','DATE','TEXT','LONG_TEXT','INTEGER_NEGATIVE','INTEGER_POSITIVE','INTEGER','NUMBER','INTEGER_ZERO_OR_POSITIVE'];
     this.settingProvider.getSettingsForTheApp(this.currentUser).then((appSettings : any)=>{
       let dataEntrySettings = appSettings.entryForm;
       this.fieldLabelKey = this.dataElement.displayName;
@@ -62,5 +64,9 @@ export class InputContainerComponent implements OnInit{
     });
     actionSheet.present();
   }
+
+  updateValue(updatedValue){
+    this.onChange.emit(updatedValue);
+  };
 
 }

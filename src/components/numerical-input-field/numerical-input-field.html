@@ -1,21 +1,21 @@
 
 <div *ngIf="valueType == 'INTEGER' ||valueType == 'NUMBER'">
   <ion-item>
-    <ion-input type="number" [(ngModel)]="inputFieldValue" ></ion-input>
+    <ion-input type="number" (ionBlur)="updateValues()" [(ngModel)]="inputFieldValue" ></ion-input>
   </ion-item>
 </div>
 <div *ngIf="valueType == 'INTEGER_POSITIVE'">
   <ion-item>
-    <ion-input type="number" min="1" [(ngModel)]="inputFieldValue" ></ion-input>
+    <ion-input type="number" min="1" (ionBlur)="updateValues()" [(ngModel)]="inputFieldValue" ></ion-input>
   </ion-item>
 </div>
 <div *ngIf="valueType == 'INTEGER_NEGATIVE'">
   <ion-item>
-    <ion-input type="number" max="-1" [(ngModel)]="inputFieldValue" ></ion-input>
+    <ion-input type="number" max="-1" (ionBlur)="updateValues()" [(ngModel)]="inputFieldValue" ></ion-input>
   </ion-item>
 </div>
 <div *ngIf="valueType == 'INTEGER_ZERO_OR_POSITIVE'">
   <ion-item>
-    <ion-input type="number" min="0" [(ngModel)]="inputFieldValue" ></ion-input>
+    <ion-input type="number" min="0" (ionBlur)="updateValues()" [(ngModel)]="inputFieldValue" ></ion-input>
   </ion-item>
 </div>

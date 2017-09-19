@@ -1,6 +1,6 @@
 <ion-item>
   <ion-label>Touch to select/update</ion-label>
-  <ion-select [(ngModel)]="inputFieldValue"  interface="action-sheet" >
+  <ion-select (ionChange)="updateValues()" [(ngModel)]="inputFieldValue"  interface="action-sheet" >
     <ion-option *ngFor="let option of options" value="{{option.code}}">{{option.name}}</ion-option>
   </ion-select>
 </ion-item>

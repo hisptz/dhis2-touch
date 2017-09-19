@@ -146,7 +146,7 @@ export class DataEntryFormPage implements OnInit{
     this.dataValuesProvider.getAllEntryFormDataValuesFromStorage(dataSetId, period, orgUnitId, this.entryFormSections, dataDimension, this.currentUser).then((entryFormDataValues : any)=>{
       entryFormDataValues.forEach((dataValue : any)=>{
         this.dataValuesObject[dataValue.id] = dataValue;
-        dataValue.status == "synced" ? this.storageStatus.online ++ :this.storageStatus.offlone ++;
+        dataValue.status == "synced" ? this.storageStatus.online ++ :this.storageStatus.offline ++;
       });
       this.isLoading = false;
     },error=>{
@@ -177,8 +177,14 @@ export class DataEntryFormPage implements OnInit{
     }
   }
 
-  updateData(data){
-    console.log(JSON.stringify(data));
+  updateData(updateDataValue){
+    let dataValueId = updateDataValue.id;
+    if(this.dataValuesObject[dataValueId] && this.dataValuesObject[dataValueId].status == "synced" ){
+      this.storageStatus.online --;
+    }
+    this.storageStatus.offline ++;
+    this.dataValuesObject[dataValueId] = updateDataValue;
+    //@todo save to local storage
   }
 
   updateDataSetCompleteness(){
