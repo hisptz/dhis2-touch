@@ -42,6 +42,9 @@
               </div>
             </div>
           </div>
+          <div class="item-card" padding-top padding-bottom *ngIf="!isDataSetDimensionApplicable">
+            <warning [warningMessage]="isDataSetDimensionApplicableCategories" ></warning>
+          </div>
         </div>
         <div *ngIf="isFormReady" class="item-card" padding-top padding-bottom full (tap)="openDataEntryForm()">
           <div><b>Organisation Unit</b> : {{ organisationUnitLabel }}<br>

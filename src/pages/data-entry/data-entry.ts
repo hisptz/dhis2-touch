@@ -29,6 +29,7 @@ export class DataEntryPage implements OnInit{
   loadingMessage : string;
   isFormReady : boolean;
   isDataSetDimensionApplicable : boolean;
+  isDataSetDimensionApplicableCategories : string;
   organisationUnitLabel : string;
   dataSetLabel : string;
   periodLabel : string;
@@ -214,11 +215,14 @@ export class DataEntryPage implements OnInit{
       let categories = this.dataSetProvider.getDataSetCategoryComboCategories(this.selectedOrgUnit.id,this.selectedDataSet.categoryCombo.categories);
       dataSetCategoryCombo['categories'] = categories;
       this.isDataSetDimensionApplicable = true;
+      this.isDataSetDimensionApplicableCategories = "Options for";
       categories.forEach((category: any)=>{
         if(category.categoryOptions && category.categoryOptions.length == 0){
+          this.isDataSetDimensionApplicableCategories = this.isDataSetDimensionApplicableCategories + " " + category.name.toLowerCase();
           this.isDataSetDimensionApplicable = false;
         }
-      })
+      });
+      this.isDataSetDimensionApplicableCategories += " are not applicable on " + this.selectedOrgUnit.name;
     }
     this.selectedDataDimension = [];
     this.dataSetCategoryCombo = dataSetCategoryCombo;
