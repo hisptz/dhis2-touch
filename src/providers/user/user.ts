@@ -72,6 +72,7 @@ export class UserProvider {
     if (user.dhisVersion && (parseInt(user.dhisVersion) > 25)) {
       url = url.replace("/api", "/api/" + user.dhisVersion);
     }
+    console.log(url);
     return new Promise((resolve, reject) => {
       this.http.get(url, {}, {})
         .then((response: any) => {
@@ -177,9 +178,8 @@ export class UserProvider {
     let dhisVersion = "22";
     if (systemInformation.version) {
       let versionArray = systemInformation.version.split(".");
-      dhisVersion = (versionArray.length > 0) ? versionArray[1] : dhisVersion;
+      dhisVersion = (versionArray.length > 0) ? versionArray[1].split('-')[0] : dhisVersion;
     }
-
     return new Promise((resolve, reject) => {
       systemInformation = JSON.stringify(systemInformation);
       this.storage.set('systemInformation', systemInformation).then(() => {
