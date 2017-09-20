@@ -10,6 +10,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { ResourceProvider } from '../providers/resource/resource';
 import {SharedModule} from "../components/shared.module";
 import { HTTP } from '@ionic-native/http';
+import { SMS } from '@ionic-native/sms';
 import { Network } from '@ionic-native/network';
 import { SQLite } from '@ionic-native/sqlite';
 import { HttpModule } from '@angular/http';
@@ -98,7 +99,7 @@ import { DataValuesProvider } from '../providers/data-values/data-values';
   ],
   providers: [
     StatusBar,SQLite,
-    SplashScreen,HTTP,AppVersion,Network,BackgroundMode,
+    SplashScreen,HTTP,AppVersion,Network,BackgroundMode,SMS,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ResourceProvider,HttpClientProvider,UserProvider,NetworkAvailabilityProvider,AppProvider,
     VisualizerService,DashboardServiceProvider,
