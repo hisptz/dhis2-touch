@@ -7,6 +7,9 @@ import {ReportParameterSelectionPage} from "../report-parameter-selection/report
 import {ReportViewPage} from "../report-view/report-view";
 import {StandardReportProvider} from "../../providers/standard-report/standard-report";
 import {DownloadMetaDataComponent} from "../../components/download-meta-data/download-meta-data";
+import {SyncProvider} from "../../providers/sync/sync";
+import {error} from "util";
+import {SqlLiteProvider} from "../../providers/sql-lite/sql-lite";
 
 /**
  * Generated class for the ReportsPage page.
@@ -34,7 +37,8 @@ export class ReportsPage implements OnInit{
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public user: UserProvider, public appProvider: AppProvider,
-              public reportProvider: ReportsProvider, public standardReportProvider: StandardReportProvider) {
+              public reportProvider: ReportsProvider, public standardReportProvider: StandardReportProvider,
+              private sqLite: SqlLiteProvider) {
   }
 
   ngOnInit(){
@@ -46,8 +50,6 @@ export class ReportsPage implements OnInit{
       this.currentUser = user;
       this.loadReportsList(user);
     });
-
-
   }
 
   loadReportsList(user) {
@@ -57,13 +59,10 @@ export class ReportsPage implements OnInit{
       this.reportListCopy = reportList;
       this.loadingData = false;
       this.hideRefresher = true;
-
-
     }, error => {
       this.appProvider.setNormalNotification('Fail to load reports');
       this.loadingData = false;
       this.hideRefresher = true;
-
     });
 
   }
@@ -94,27 +93,29 @@ export class ReportsPage implements OnInit{
   }
 
   doRefresh(refresher) {
+    refresher.complete();
     this.displayMessage = "checking for available reports update";
     this.loadingData = true;
     this.hideRefresher = false;
-    let resource = 'reports'
+    let resource = 'reports';
     let data: any = [];
 
-    this.displayMessage = "checking from server";
-      this.standardReportProvider.downloadReportsFromServer(this.currentUser).then((response:any)=> {
-        this.displayMessage = "downloading reports from server.";
-        data[resource] = response[resource];
-        this.standardReportProvider.saveReportsFromServer(data[resource], this.currentUser).then(() => {
-          this.displayMessage = "Saving reports to application";
-          this.loadReportsList(this.currentUser);
-        }, error => {})
+    this.sqLite.dropTable(resource, this.currentUser.currentDatabase).then(()=>{
+      this.sqLite.createTable(resource,this.currentUser.currentDatabase).then(()=>{
+        this.displayMessage = "checking reports from server";
+        this.standardReportProvider.downloadReportsFromServer(this.currentUser).then((response:any)=> {
+          this.displayMessage = "downloading reports from server.";
+          data[resource] = response[resource];
+          this.standardReportProvider.saveReportsFromServer(data[resource], this.currentUser).then(() => {
+            this.displayMessage = "Saving reports to application";
+            this.loadReportsList(this.currentUser);
 
-      }, error => {
-      })
+      }, error=>{this.loadingData = true;});
+    },error=>{this.loadingData = true;});
+        }, error => {this.loadingData = true;});
+      }, error => {this.loadingData = true;});
 
-    setTimeout(() => {
-      refresher.complete();
-    }, 1000);
+
   }
 
 }

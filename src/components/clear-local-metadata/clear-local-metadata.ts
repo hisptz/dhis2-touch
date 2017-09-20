@@ -58,19 +58,19 @@ export class ClearLocalMetadataComponent implements OnInit{
     let displayList = [];
     this.resources.forEach((resource:any) =>{
       if(resource.status){
-        displayList.push(resource.name);
+        displayList.push(resource.displayName);
       }
     });
     let confirmAlert = this.alertCtrl.create({
       title: 'Delete of Metadata',
-      message: 'Are you sure about deleting the following resources\n' +
-                ' \n' + ' '+displayList,
+      message: 'You are about to delete: \n' +
+                ' \t' + ' '+displayList.join(', '),
       buttons:[
         {
           text: 'Cancel',
           role: 'cancel',
         },{
-          text: 'Delete',
+          text: 'Ok',
           handler:() =>{
             this.checkingForResourceToDelete();
           }

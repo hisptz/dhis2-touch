@@ -17,10 +17,7 @@
 
 
   <ion-refresher  (ionRefresh)="doRefresh($event)" >
-    <ion-refresher-content pullingText="Pull to refresh"
-                           refreshingSpinner="circles"
-                           refreshingText="Refreshing..."
-                           *ngIf="hideRefresher">
+    <ion-refresher-content pullingText="Pull to refresh" *ngIf="hideRefresher">
 
     </ion-refresher-content>
   </ion-refresher>
