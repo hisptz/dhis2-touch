@@ -95,6 +95,7 @@ export class DataEntryPage implements OnInit{
       this.dataSetLabel = this.selectedDataSet.name;
     }else {
       this.dataSetLabel = "Touch to select entry form";
+      this.selectedPeriod = null;
     }
 
     if(this.selectedPeriod && this.selectedPeriod.name){
@@ -131,8 +132,6 @@ export class DataEntryPage implements OnInit{
       this.appProvider.setNormalNotification("Fail to reload entry form");
     });
   }
-
-
 
   openEntryFormList(){
     if(this.dataSets && this.dataSets.length > 0){
@@ -267,7 +266,7 @@ export class DataEntryPage implements OnInit{
       }else{
         isFormReady = false;
       }
-    }else if(this.periodLabel == "Touch to select period"){
+    }else if(this.periodLabel == "Touch to select period" || this.dataSetLabel == "Touch to select entry form"){
       isFormReady = false;
     }
     return isFormReady;
