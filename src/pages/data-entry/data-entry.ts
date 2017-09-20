@@ -140,6 +140,7 @@ export class DataEntryPage implements OnInit{
       modal.onDidDismiss((selectedDataSet : any)=>{
         if(selectedDataSet && selectedDataSet.id && selectedDataSet.id != this.selectedDataSet.id){
           this.selectedDataSet = selectedDataSet;
+          this.dataSetProvider.setLastSelectedDataSet(selectedDataSet);
           this.currentPeriodOffset = 0;
           this.updateDataEntryFormSelections();
           this.loadPeriodSelection();
