@@ -41,6 +41,7 @@ export class UploadViaInternetComponent implements OnInit{
     });
   }
 
+
   updateItemsToUpload(){
     this.itemsToUpload = [];
     Object.keys(this.selectedItems).forEach((key: string)=>{
@@ -67,7 +68,7 @@ export class UploadViaInternetComponent implements OnInit{
           this.syncProvider.uploadingData(preparedData,data,this.currentUser).then((response)=>{
             this.isLoading = false;
             this.importSummaries = response;
-            this.appProvider.setNormalNotification("Data have been uploaded successfully, you can check summary");
+            this.viewUploadImportSummaries();
           },error=>{
             this.isLoading = false;
             this.appProvider.setNormalNotification("Fail to upload data");
@@ -90,7 +91,7 @@ export class UploadViaInternetComponent implements OnInit{
     if(this.importSummaries){
       let modal = this.modalCtrl.create('ImportSummariesPage',{importSummaries : this.importSummaries});
       modal.onDidDismiss(()=>{
-
+        
       });
       modal.present();
     }

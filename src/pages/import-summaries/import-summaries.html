@@ -12,7 +12,7 @@
     </ion-title>
     <ion-buttons start>
       <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
-        close
+        <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
   </ion-toolbar>
@@ -20,6 +20,39 @@
 </ion-header>
 
 
-<ion-content padding>
-  {{ importSummaries |json }}
+<ion-content >
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div *ngIf="importSummaries && importSummaries.dataValues">
+          <table class="table table-bordered" width="100%" >
+            <thead>
+            <tr>
+              <th [attr.colspan]="'2'">DataValues</th>
+            </tr>
+            </thead>
+            <tbody >
+            <tr>
+              <td>Success</td>
+              <td>Failed</td>
+            </tr>
+            <tr>
+              <td>{{importSummaries.dataValues.success }}</td>
+              <td>{{importSummaries.dataValues.fail }}</td>
+            </tr>
+            <tr *ngIf="importSummaries.dataValues.errorMessages && importSummaries.dataValues.errorMessages.length > 0">
+              <th [attr.colspan]="'2'">Import conflicts</th>
+            </tr>
+            <tr *ngFor="let errorMessage of importSummaries.dataValues.errorMessages">
+              <td [attr.colspan]="'2'">
+                {{ errorMessage }}
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 </ion-content>

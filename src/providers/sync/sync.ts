@@ -62,7 +62,8 @@ export class SyncProvider {
     let data = {};
     let status = "not-synced";
     return new Promise((resolve, reject) =>  {
-      if(!itemsToUpload){
+      //@todo implementing events downloading
+      if(!itemsToUpload || (itemsToUpload.length == 1 && itemsToUpload.indexOf("events") > -1)){
         resolve(data);
       }else{
         itemsToUpload.forEach((item : string)=>{

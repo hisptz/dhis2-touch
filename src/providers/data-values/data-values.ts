@@ -87,14 +87,14 @@ export class DataValuesProvider {
   uploadDataValues(formattedDataValues,dataValues,currentUser){
     let syncedDataValues = [];
     let importSummaries = {
-      success : 0,fail : 0 ,errorMessage : []
+      success : 0,fail : 0 ,errorMessages : []
     };
     return new Promise( (resolve, reject)=> {
       formattedDataValues.forEach((formattedDataValue:any, index:any)=> {
         this.httpClient.post('/api/25/dataValues?' + formattedDataValue, {}, currentUser).then(()=> {
           let syncedDataValue = dataValues[index];
           importSummaries.success ++;
-          //syncedDataValue["syncStatus"] = "synced";
+          syncedDataValue["syncStatus"] = "synced";
           syncedDataValues.push(syncedDataValue);
           if(formattedDataValues.length == (importSummaries.success + importSummaries.fail)){
             if(syncedDataValues.length > 0){
@@ -110,8 +110,8 @@ export class DataValuesProvider {
           }
         }, error=> {
           importSummaries.fail ++;
-          if(importSummaries.errorMessage.indexOf(error)  == -1){
-            importSummaries.errorMessage.push(error);
+          if(importSummaries.errorMessages.indexOf(error)  == -1){
+            importSummaries.errorMessages.push(error);
           }
           if(formattedDataValues.length == (importSummaries.success + importSummaries.fail)){
             if(syncedDataValues.length > 0){

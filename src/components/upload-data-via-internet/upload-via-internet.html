@@ -16,12 +16,6 @@
       <button [disabled]="itemsToUpload.length == 0" ion-button full text-capitalize (tap)="uploadData()">
         Upload Data
       </button>
-      <div *ngIf="importSummaries">
-        <button ion-button outline full text-capitalize (tap)="viewUploadImportSummaries()">
-          <ion-icon color="icon-color" name="information"></ion-icon>
-          &nbsp;&nbsp;import summaries
-        </button>
-      </div>
     </ion-col>
   </ion-row>
 </div>
