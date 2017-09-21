@@ -43,6 +43,7 @@ export class SyncProvider {
     return syncContents;
   }
 
+
   getDownloadDataDetails(){
     let downloadContents = [
       {id : 'dataValues',name : 'Data values',icon: 'assets/download-data/download-data.png'},
@@ -85,6 +86,11 @@ export class SyncProvider {
     });
   }
 
+  /**
+   *
+   * @param data
+   * @returns {Promise<any>}
+   */
   prepareDataForUploading(data : any){
     let preparedData = {};
     return new Promise((resolve, reject) =>  {
@@ -100,6 +106,31 @@ export class SyncProvider {
       }catch (error){
         reject(error);
       }
+    });
+  }
+
+  uploadingData(formattedDataObject,dataObject,currentUser){
+    let promises = [];
+    let response = {};
+    let status = "not-synced";
+    return new Promise((resolve, reject) =>  {
+      Object.keys(dataObject).forEach((item : string)=>{
+        if(item == "dataValues"){
+          promises.push(
+            this.dataValuesProvider.uploadDataValues(formattedDataObject[item],dataObject[item],currentUser).then((importSummaries)=>{
+              response[item] = importSummaries;
+            },error=>{})
+          )
+        }else if(item == "events"){
+
+        }
+      });
+      Observable.forkJoin(promises).subscribe(() => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        })
     });
   }
 

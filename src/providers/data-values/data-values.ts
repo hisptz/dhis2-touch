@@ -48,6 +48,12 @@ export class DataValuesProvider {
     });
   }
 
+  /**
+   *
+   * @param status
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   getDataValuesByStatus(status,currentUser){
     let attributeArray = [];
     attributeArray.push(status);
@@ -66,7 +72,7 @@ export class DataValuesProvider {
    * @returns {Array}
    */
   getFormattedDataValueForUpload(dataValues) {
-    var formattedDataValues = [];
+    let formattedDataValues = [];
     dataValues.forEach((dataValue:any)=> {
       let formParameter = "de=" + dataValue.de + "&pe=" + dataValue.pe + "&ou=";
       formParameter += dataValue.ou + "&co=" + dataValue.co + "&value=" + dataValue.value;
@@ -76,6 +82,52 @@ export class DataValuesProvider {
       formattedDataValues.push(formParameter);
     });
     return formattedDataValues;
+  }
+
+  uploadDataValues(formattedDataValues,dataValues,currentUser){
+    let syncedDataValues = [];
+    let importSummaries = {
+      success : 0,fail : 0 ,errorMessage : []
+    };
+    return new Promise( (resolve, reject)=> {
+      formattedDataValues.forEach((formattedDataValue:any, index:any)=> {
+        this.httpClient.post('/api/25/dataValues?' + formattedDataValue, {}, currentUser).then(()=> {
+          let syncedDataValue = dataValues[index];
+          importSummaries.success ++;
+          syncedDataValue["syncStatus"] = "synced";
+          syncedDataValues.push(syncedDataValue);
+          if(formattedDataValues.length == (importSummaries.success + importSummaries.fail)){
+            if(syncedDataValues.length > 0){
+              this.sqlLite.insertBulkDataOnTable(this.resourceName,syncedDataValues,currentUser.currentDatabase).then(()=>{
+                resolve(importSummaries);
+              },error=>{
+                console.log(JSON.stringify(error));
+                reject(error);
+              });
+            }else{
+              resolve(importSummaries);
+            }
+          }
+        }, error=> {
+          importSummaries.fail ++;
+          if(importSummaries.errorMessage.indexOf(error)  == -1){
+            importSummaries.errorMessage.push(error);
+          }
+          if(formattedDataValues.length == (importSummaries.success + importSummaries.fail)){
+            if(syncedDataValues.length > 0){
+              this.sqlLite.insertBulkDataOnTable(this.resourceName,syncedDataValues,currentUser.currentDatabase).then(()=>{
+                resolve(importSummaries);
+              },error=>{
+                console.log(JSON.stringify(error));
+                reject(error);
+              });
+            }else{
+              resolve();
+            }
+          }
+        });
+      });
+    });
   }
 
 
