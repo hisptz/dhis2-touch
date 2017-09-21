@@ -56,7 +56,7 @@ export class SyncProvider {
    *
    * @param {Array<string>} itemsToUpload
    */
-  getDataforUploading(itemsToUpload : Array<string>,currentUser : any){
+  getDataForUploading(itemsToUpload : Array<string>,currentUser : any){
     let promises = [];
     let data = {};
     let status = "not-synced";
@@ -81,6 +81,24 @@ export class SyncProvider {
           (error) => {
             reject(error);
           })
+      }
+    });
+  }
+
+  prepareDataForUploading(data : any){
+    let preparedData = {};
+    return new Promise((resolve, reject) =>  {
+      try{
+        Object.keys(data).forEach((item : string)=>{
+          if(item == "dataValues"){
+            preparedData[item] = this.dataValuesProvider.getFormattedDataValueForUpload(data[item]);
+          }else if(item == "events"){
+            preparedData[item] = [];
+          }
+        });
+        resolve(preparedData);
+      }catch (error){
+        reject(error);
       }
     });
   }

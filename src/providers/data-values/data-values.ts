@@ -58,8 +58,27 @@ export class DataValuesProvider {
         reject();
       });
     });
-
   }
+
+  /**
+   * convert data values to parameter for uploading
+   * @param dataValues
+   * @returns {Array}
+   */
+  getFormattedDataValueForUpload(dataValues) {
+    var formattedDataValues = [];
+    dataValues.forEach((dataValue:any)=> {
+      let formParameter = "de=" + dataValue.de + "&pe=" + dataValue.pe + "&ou=";
+      formParameter += dataValue.ou + "&co=" + dataValue.co + "&value=" + dataValue.value;
+      if (dataValue.cp != "0" && dataValue.cp != "") {
+        formParameter = formParameter + "&cc=" + dataValue.cc + "&cp=" + dataValue.cp;
+      }
+      formattedDataValues.push(formParameter);
+    });
+    return formattedDataValues;
+  }
+
+
 
   /**
    *

@@ -52,8 +52,22 @@ export class UploadViaInternetComponent implements OnInit{
   uploadData(){
     this.loadingMessage = "Loading data to be uploaded";
     this.isLoading = true;
-    this.syncProvider.getDataforUploading(this.itemsToUpload,this.currentUser).then((data : any)=>{
-      console.log(JSON.stringify(data));
+    this.syncProvider.getDataForUploading(this.itemsToUpload,this.currentUser).then((data : any)=>{
+      let shouldUpload = false;
+      this.itemsToUpload.forEach(item=>{
+        if(data[item] && data[item].length > 0 ){
+          shouldUpload =true;
+        }
+      });
+      if(shouldUpload){
+        this.loadingMessage = "Prepare data for uploading";
+        this.syncProvider.prepareDataForUploading(data).then((preparedData : any)=>{
+          console.log(JSON.stringify(preparedData));
+        },error=>{})
+      }else{
+        this.isLoading = true;
+        this.appProvider.setNormalNotification("There are nothing so upload to the server")
+      }
     },eeror=>{
       this.appProvider.setNormalNotification("Fail to load data")
     })
