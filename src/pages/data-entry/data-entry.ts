@@ -171,8 +171,10 @@ export class DataEntryPage implements OnInit{
         periodType: this.selectedDataSet.periodType,
         currentPeriodOffset : this.currentPeriodOffset,
         openFuturePeriods: this.selectedDataSet.openFuturePeriods,
-        currentPeriod : this.selectedPeriod
+        currentPeriod : this.selectedPeriod,
+
       });
+
       modal.onDidDismiss((data : any)=>{
         if(data && data.selectedPeriod ){
           this.selectedPeriod = data.selectedPeriod;

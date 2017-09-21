@@ -48,6 +48,7 @@ export class ReportViewPage implements OnInit{
       dhis2.database = user.currentDatabase;
       this.reportId = this.params.get("id");
       this.reportName = this.params.get("name");
+
       if( this.params.get("period")){
         this.selectedPeriod  =  this.params.get("period");
         this.selectedOrganisationUnit = this.params.get("organisationUnit");
@@ -79,6 +80,7 @@ export class ReportViewPage implements OnInit{
 
     });
   }
+
 
   backToPreviousView(){
     this.loadingData = true;
@@ -152,6 +154,5 @@ export class ReportViewPage implements OnInit{
     });
     return url;
   }
-
 
 }

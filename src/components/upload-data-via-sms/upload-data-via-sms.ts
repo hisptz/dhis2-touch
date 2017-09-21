@@ -7,6 +7,7 @@ import {SmsCommandProvider} from "../../providers/sms-command/sms-command";
 import {AppProvider} from "../../providers/app/app";
 import {DataSetsProvider} from "../../providers/data-sets/data-sets";
 import {NgForm} from "@angular/forms";
+import {SMS} from "@ionic-native/sms";
 
 /**
  * Generated class for the UploadDataViaSmsComponent component.
@@ -54,7 +55,7 @@ export class UploadDataViaSmsComponent implements OnInit{
   constructor(private navCtrl: NavController,private modalCtrl : ModalController,
               private userProvider : UserProvider,private appProvider : AppProvider,
               private dataSetProvider : DataSetsProvider,private periodSelection : PeriodSelectionProvider,
-              private organisationUnitsProvider : OrganisationUnitsProvider) {  //public appPermission: AppPermissionProvider,
+              private organisationUnitsProvider : OrganisationUnitsProvider, public smsSend: SMS) {  //public appPermission: AppPermissionProvider,
   }
 
   ngOnInit() {
@@ -97,10 +98,7 @@ export class UploadDataViaSmsComponent implements OnInit{
       this.loadingMessage = "";
       this.appProvider.setNormalNotification("Fail to load user information");
     })
-
-
   }
-
 
 
   updateDataEntryFormSelections(){
@@ -271,6 +269,8 @@ export class UploadDataViaSmsComponent implements OnInit{
   goSubmit(form: NgForm){
     let phoneNo: number;
     phoneNo = form.value.mobileNumber;
+
+    this.smsSend.send(phoneNo.toString(), this.organisationUnitLabel);
 
     console.log("send to: "+phoneNo+"\n" +
       "orgUnit: "+this.organisationUnitLabel+"\n" +

@@ -51,6 +51,7 @@ export class PeriodSelectionPage implements  OnInit{
   }
 
   setSelectedPeriod(selectedPeriod){
+    this.periodSelection.setLastSelectedPeriod(selectedPeriod.name)
     this.viewCtrl.dismiss({selectedPeriod: selectedPeriod,currentPeriodOffset : this.currentPeriodOffset});
   }
 

@@ -29,10 +29,10 @@
 
       <ion-row (tap)="backToPreviousView()">
         <ion-col>
-          <div class="entry-selection-container" (tap)="goToView()">
+          <div class="entry-selection-container">
             <div><b>Report name</b> : {{ reportName }}<br>
-              <b>Organisation unit</b> : {{ organisationUnitName }}<br>
-              <b>Period</b> : {{ periodName }}
+              <b>Organisation unit</b> : {{ selectedOrganisationUnit }}<br>
+              <b>Period</b> : {{ selectedPeriod }}
             </div>
           </div>
         </ion-col>

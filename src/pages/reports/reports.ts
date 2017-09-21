@@ -33,6 +33,8 @@ export class ReportsPage implements OnInit{
   icons: any= {};
   hideRefresher: boolean = true;
   displayMessage: string;
+  repParam: any;
+
 
 
 
@@ -72,9 +74,11 @@ export class ReportsPage implements OnInit{
   }
 
   selectReport(report){
+
     let parameter = {
-      id : report.id,name : report.name, reportParams:report.reportParams
+      id : report.id,name : report.name, reportParams:report.reportParams, periodType:report.relativePeriods
     };
+
     if(this.reportProvider.hasReportRequireParameterSelection(report.reportParams)){
       this.navCtrl.push('ReportParameterSelectionPage',parameter);
     }else{
@@ -94,19 +98,17 @@ export class ReportsPage implements OnInit{
 
   doRefresh(refresher) {
     refresher.complete();
-    this.displayMessage = "checking for available reports update";
+    this.displayMessage = "Checking for available reports update";
     this.loadingData = true;
     this.hideRefresher = false;
     let resource = 'reports';
-    let data: any = [];
 
+    this.standardReportProvider.downloadReportsFromServer(this.currentUser).then((response:any)=> {
+      this.displayMessage = "Downloading reports from server.";
     this.sqLite.dropTable(resource, this.currentUser.currentDatabase).then(()=>{
       this.sqLite.createTable(resource,this.currentUser.currentDatabase).then(()=>{
-        this.displayMessage = "checking reports from server";
-        this.standardReportProvider.downloadReportsFromServer(this.currentUser).then((response:any)=> {
-          this.displayMessage = "downloading reports from server.";
-          data[resource] = response[resource];
-          this.standardReportProvider.saveReportsFromServer(data[resource], this.currentUser).then(() => {
+        this.displayMessage = "Checking reports from server";
+          this.standardReportProvider.saveReportsFromServer( response[resource], this.currentUser).then(() => {
             this.displayMessage = "Saving reports to application";
             this.loadReportsList(this.currentUser);
 

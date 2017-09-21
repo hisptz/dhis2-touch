@@ -63,7 +63,7 @@ export class ClearLocalMetadataComponent implements OnInit{
     });
     let confirmAlert = this.alertCtrl.create({
       title: 'Delete of Metadata',
-      message: 'You are about to delete: \n' +
+      message: 'You are about to delete \n' +
                 ' \t' + ' '+displayList.join(', '),
       buttons:[
         {
@@ -106,9 +106,10 @@ export class ClearLocalMetadataComponent implements OnInit{
   deleteResources(resources){
     this.clearMetaDataLoadingMessages= "Deleting selected Metadata";
     this.syncProvider.prepareTablesToApplyChanges(resources,this.currentUser).then(()=>{
+      this.clearMetaDataLoadingMessages= "Applying updates";
       this.sqLite.generateTables(this.currentUser.currentDatabase).then(()=>{
         this.autoSelect("un-selectAll");
-        this.appProvider.setNormalNotification("Local MetaData deleted successfully.");
+        this.appProvider.setNormalNotification("All updates has been applied successfully");
         this.showLoadingMessage = false;
       },error=>{
         this.appProvider.setTopNotification("Failed. to Drop "+resources+" Database table");
