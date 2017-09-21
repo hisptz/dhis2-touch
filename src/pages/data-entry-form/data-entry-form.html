@@ -87,13 +87,16 @@
               </ion-col>
             </ion-row>
 
-
             <ion-row *ngIf="entryFormSections.length == 1">
               <ion-col  col-6 col-sm-6>
-
+                <button color="favorite" round ion-button full [disabled] ="isDataSetCompletenessProcessRunning" (tap)="updateDataSetCompleteness()">
+                  Complete
+                </button>
               </ion-col>
               <ion-col  col-6 col-sm-6>
-
+                <button  color="danger" round ion-button full [disabled] = "isDataSetCompletenessProcessRunning" (tap)="updateDataSetCompleteness()">
+                  Undo Complete
+                </button>
               </ion-col>
             </ion-row>
           </div>

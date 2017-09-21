@@ -18,11 +18,8 @@
 
   <ion-refresher  (ionRefresh)="doRefresh($event)" >
     <ion-refresher-content pullingText="Pull to refresh" *ngIf="hideRefresher">
-
     </ion-refresher-content>
   </ion-refresher>
-
-  <!--<report-comp></report-comp>-->
   <div *ngIf="loadingData">
     <ion-row >
       <ion-col >
@@ -38,12 +35,9 @@
         <ion-col >
           <ion-list>
             <ion-item *ngFor="let report of reportList" (tap)="selectReport(report)">
-              <!--<ion-icon name="ios-folder-outline" item-left></ion-icon>-->
               <img  class="side-menu-icon" [src]="icons.reports"/>&nbsp;&nbsp;
               <span >{{ report.name }}</span>
-
               <ion-icon name="ios-arrow-forward"  item-right ></ion-icon>
-
             </ion-item>
             <ion-item *ngIf = "reportList.length == 0">
               <empty-list-notification [emptyListMessage]="'There is no report to select'"></empty-list-notification>

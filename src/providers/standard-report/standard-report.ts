@@ -14,8 +14,6 @@ import {Observable} from "rxjs/Observable";
 export class StandardReportProvider {
 
   resource : string;
-  reportPeriods:any;
-  periodTypeSelected: any;
 
   constructor(private HttpClient : HttpClientProvider,private SqlLite : SqlLiteProvider) {
     this.resource = "reports";
@@ -161,170 +159,33 @@ export class StandardReportProvider {
     })
   }
 
-  fetchReportsRelativePeriodsfromServer(reportId, currentUser){
-    let fields = "relativePeriods";
-    let url = "/api/25/"+this.resource+"/"+reportId+".json?paging=false&fields=" + fields;
-
-    return new Promise((resolve, reject)=> {
-      this.HttpClient.get(url,currentUser).then((response : any)=>{
-        response = JSON.parse(response.data);
-        resolve(response);
-      },error=>{
-        reject(error);
-      });
-    });
-  }
-
-  fetchReportsRelativePeriods(reportPeriods){
-    let periodType  = [];
-    this.reportPeriods = reportPeriods;
-
-    if(this.reportPeriods.thisYear){
-      periodType.push('This yeear');
-
-    } if(this.reportPeriods.quartersLastYear){
-      periodType.push('quarters last year');
-
-    } if(this.reportPeriods.last52Weeks){
-      periodType.push('Last 52 Weeks');
-
-    } if(this.reportPeriods.thisWeek){
-      periodType.push('This Week');
-
-    } if(this.reportPeriods.lastMonth){
-      periodType.push('Last month');
-
-    } if(this.reportPeriods.last14Days){
-      periodType.push('Last 14 days');
-
-    } if(this.reportPeriods.biMonthsThisYear){
-      periodType.push('bi-monnths this year');
-
-    } if(this.reportPeriods.monthsThisYear){
-      periodType.push('months this year');
-
-    } if(this.reportPeriods.last2SixMonths){
-      periodType.push('Last 2 six months');
-
-    } if(this.reportPeriods.yesterday){
-      periodType.push('Yesterday');
-
-    } if(this.reportPeriods.thisQuarter){
-      periodType.push('This quarter');
-
-    } if(this.reportPeriods.last12Months){
-      periodType.push('Last 12 months');
-
-    } if(this.reportPeriods.last5FinancialYears){
-      periodType.push('Last 5 financial years');
-
-    } if(this.reportPeriods.thisSixMonth){
-      periodType.push('This six month');
-
-    } if(this.reportPeriods.lastQuarter){
-      periodType.push('Last quarter');
-
-    } if(this.reportPeriods.thisFinancialYear){
-      periodType.push('This financial year');
-
-    } if(this.reportPeriods.last4Weeks){
-      periodType.push('Last 4 Weeks');
-
-    } if(this.reportPeriods.last3Months){
-      periodType.push('Last 3 months');
-
-    } if(this.reportPeriods.thisDay){
-      periodType.push('This day');
-
-    } if(this.reportPeriods.thisMonth){
-      periodType.push('This month');
-
-    } if(this.reportPeriods.last6BiMonths){
-      periodType.push('Last 6 bi-monnths');
-
-    } if(this.reportPeriods.lastFinancialYear){
-      periodType.push('Last financial year');
-
-    } if(this.reportPeriods.last5Years){
-      periodType.push('Last 5 yeears');
-
-    } if(this.reportPeriods.weeksThisYear){
-      periodType.push('Weeks this year');
-
-    } if(this.reportPeriods.last6Months){
-      periodType.push('Last 6 months');
-
-    } if(this.reportPeriods.last3Days){
-      periodType.push('Last 3 days');
-
-    } if(this.reportPeriods.quartersThisYear){
-      periodType.push('quarters this year');
-
-    } if(this.reportPeriods.monthsLastYear){
-      periodType.push('months last year');
-
-    } if(this.reportPeriods.lastWeek){
-      periodType.push('Last Week');
-
-    } if(this.reportPeriods.last7Days){
-      periodType.push('Last 7 days');
-
-    } if(this.reportPeriods.thisBimonth){
-      periodType.push('This bi-monnth');
-
-    } if(this.reportPeriods.lastBimonth){
-      periodType.push('Last bi-monnth');
-
-    } if(this.reportPeriods.lastSixMonth){
-      periodType.push('Last six month');
-
-    } if(this.reportPeriods.lastYear){
-      periodType.push('Last yeear');
-
-    } if(this.reportPeriods.last12Weeks){
-      periodType.push('Last 12 Weeks');
-
-    } if(this.reportPeriods.last4Quarters){
-      periodType.push('Last 4 quarters');
-
+  getReportPeriodType(relativePeriods){
+    let reportPeriodType = "Yearly";
+    let reportPeriods = [];
+    if(relativePeriods.last52Weeks || relativePeriods.last12Weeks || relativePeriods.lastWeek || relativePeriods.thisWeek || relativePeriods.last4Weeks || relativePeriods.weeksThisYear){
+      reportPeriods.push("Weekly");
     }
-
-
-    if(periodType.length === 0){
-      this.periodTypeSelected = 'Yearly';
-    }else{
-      periodType.forEach((selectedPeriod)=>{
-        if(selectedPeriod.toString().includes('Week')){
-          this.periodTypeSelected = 'Weekly';
-
-        } if(selectedPeriod.toString().includes('day')){
-          this.periodTypeSelected = 'Daily';
-
-        } if(selectedPeriod.toString().includes('month')){
-          this.periodTypeSelected = 'Monthly';
-
-        } if(selectedPeriod.toString().includes('bi-')){
-          this.periodTypeSelected = 'BiMonthly';
-
-        } if(selectedPeriod.toString().includes('quarter')){
-          this.periodTypeSelected = 'Quarterly';
-
-        } if(selectedPeriod.toString().includes('yeear')){
-          this.periodTypeSelected = 'Yearly';
-
-        }
-        // else if(selectedPeriod.toString().includes('day')){
-        //   this.periodTypeSelected = 'Daily';
-        // }
-
-      });
+    if(relativePeriods.last14Days || relativePeriods.yesterday || relativePeriods.thisDay || relativePeriods.last3Days || relativePeriods.last7Days){
+      reportPeriods.push("Daily");
     }
-
-
-  }
-
-  getFetchedPeriodType(){
-    return this.periodTypeSelected
+    if(relativePeriods.lastSixMonth || relativePeriods.lastMonth || relativePeriods.monthsThisYear || relativePeriods.monthsLastYear || relativePeriods.last6Months || relativePeriods.thisMonth || relativePeriods.last2SixMonths || relativePeriods.last3Months || relativePeriods.last12Months ||  relativePeriods.thisSixMonth){
+      reportPeriods.push("Monthly");
+    }
+    if(relativePeriods.biMonthsThisYear || relativePeriods.lastBimonth || relativePeriods.last6BiMonths || relativePeriods.thisBimonth){
+      reportPeriods.push("BiMonthly")
+    }
+    if(relativePeriods.quartersLastYear || relativePeriods.last4Quarters || relativePeriods.quartersThisYear || relativePeriods.thisQuarter || relativePeriods.lastQuarter ){
+      reportPeriods.push("Quarterly")
+    }
+    if(relativePeriods.lastYear || relativePeriods.last5Years || relativePeriods.thisYear){
+      reportPeriods.push("Yearly")
+    }
+    console.log(JSON.stringify(reportPeriods));
+    //@todo checking preference on relative periods
+    if(reportPeriods.length > 0){
+      reportPeriodType = reportPeriods[0];
+    }
+    return reportPeriodType;
   }
 
 

@@ -3,8 +3,8 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 import {UserProvider} from "../../providers/user/user";
 import {DataSetsProvider} from "../../providers/data-sets/data-sets";
-import {ReportsProvider} from "../../providers/reports/reports";
 import {AppProvider} from "../../providers/app/app";
+import {StandardReportProvider} from "../../providers/standard-report/standard-report";
 
 /**
  * Generated class for the ReportViewPage page.
@@ -36,10 +36,8 @@ export class ReportViewPage implements OnInit{
   public currentUser : any;
 
   constructor(public navCtrl: NavController, public params: NavParams, public user: UserProvider, public dataSetProvider: DataSetsProvider,
-              public reportProvider: ReportsProvider,  public sanitizer: DomSanitizer, public appProvider: AppProvider, public elementRef : ElementRef) {
+              public reportProvider: StandardReportProvider,  public sanitizer: DomSanitizer, public appProvider: AppProvider, public elementRef : ElementRef) {
   }
-
-
 
   ngOnInit() {
     this.loadingData = true;

@@ -22,31 +22,23 @@ import {StandardReportProvider} from "../../providers/standard-report/standard-r
 })
 export class ReportParameterSelectionPage implements OnInit{
 
-  public reportId : string;
-  public reportName : string;
-  public reportParams : any;
-  public reportPeriods : any;
-  public currentUser : any;
-  public loadingData : boolean = false;
-  public organisationUnits : any;
-  public selectedOrganisationUnit :any = {};
-  public selectedOrganisationUnitLabel :string;
-  public currentSelectionStatus :any = {};
-  public selectedPeriodLabel : string;
-  public selectedPeriod : any = {};
+  reportId : string;
+  reportName : string;
+  reportParams : any;
+  currentUser : any;
+  loadingData : boolean = false;
+  selectedOrganisationUnitLabel :string;
+  selectedPeriodLabel : string;
+  selectedPeriod : any = {};
   selectedOrgUnit : any;
-  organisationUnitLabel: string;
-  periodLabel: string;
   icons: any = {};
   periodReady: boolean = false;
   orgUnitReady: boolean = false;
-  requireReportParameterorgUnit: boolean = true;
-  requireReportParameterperiod: boolean = true;
-  periodTypeSelected: any;
+  reportPeriodType : any;
 
-  constructor( public user: UserProvider, private modalCtrl : ModalController, public params: NavParams,public navCtrl: NavController,
-               public organisationUnitsProvider: OrganisationUnitsProvider, public periodSelectionProvider: PeriodSelectionProvider,
-                public standardReportProvider:StandardReportProvider) {
+  constructor( private user: UserProvider, private modalCtrl : ModalController, private params: NavParams,private navCtrl: NavController,
+               private organisationUnitsProvider: OrganisationUnitsProvider, private periodSelectionProvider: PeriodSelectionProvider,
+                private standardReportProvider:StandardReportProvider) {
   }
 
   ngOnInit(){
@@ -57,33 +49,14 @@ export class ReportParameterSelectionPage implements OnInit{
     this.reportName = this.params.get('name');
     this.reportId = this.params.get("id");
     this.reportParams = this.params.get("reportParams");
-    this.reportPeriods = this.params.get("periodType");
-    this.showRequiredFields();
-    this.standardReportProvider.fetchReportsRelativePeriods(this.reportPeriods);
-    this.periodTypeSelected = this.standardReportProvider.getFetchedPeriodType();
-
+    this.reportPeriodType  = this.standardReportProvider.getReportPeriodType(this.params.get("relativePeriods"));
     this.user.getCurrentUser().then((user)=>{
       this.currentUser = user;
+      this.updateReportParameterSelections();
     });
-    this.updateEventSelections();
   }
 
-  showRequiredFields(){
-    if(this.reportParams.paramOrganisationUnit){
-      this.requireReportParameterorgUnit = true;
-    }else{
-      this.requireReportParameterorgUnit = false;
-    }
-      if(this.reportParams.paramReportingPeriod){
-        this.requireReportParameterperiod = true;
-      }else{
-        this.requireReportParameterperiod = false;
-      }
-  }
-
-
-
-  updateEventSelections() {
+  updateReportParameterSelections() {
     if (this.organisationUnitsProvider.lastSelectedOrgUnit) {
       this.selectedOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
       this.selectedOrganisationUnitLabel = this.selectedOrgUnit.name;
@@ -92,7 +65,7 @@ export class ReportParameterSelectionPage implements OnInit{
       this.selectedOrganisationUnitLabel = "Touch to select organisation Unit";
     }
     if (this.periodSelectionProvider.lastSelectedPeriod) {
-      this.selectedPeriodLabel = this.periodSelectionProvider.lastSelectedPeriod
+      this.selectedPeriodLabel = this.periodSelectionProvider.lastSelectedPeriod;
       this.periodReady = true;
     } else {
       this.selectedPeriodLabel = "Touch to select Period";
@@ -105,7 +78,7 @@ export class ReportParameterSelectionPage implements OnInit{
       if(selectedOrgUnit && selectedOrgUnit.id){
         this.selectedOrgUnit = selectedOrgUnit;
         this.orgUnitReady = true;
-        this.updateEventSelections();
+        this.updateReportParameterSelections();
       }
     });
     modal.present();
@@ -115,16 +88,16 @@ export class ReportParameterSelectionPage implements OnInit{
   openReportPeriodSelection(){
     if(this.selectedOrganisationUnitLabel){
       let modal = this.modalCtrl.create('PeriodSelectionPage',{
-        periodType: this.periodTypeSelected,
+        periodType: this.reportPeriodType ,
         currentPeriodOffset : 0,
         openFuturePeriods: 1,
         currentPeriod : this.selectedPeriod,
       });
       modal.onDidDismiss((selectedPeriod:any) => {
         if(selectedPeriod){
-          this.selectedPeriod = selectedPeriod.name;
+          this.selectedPeriod = selectedPeriod;
           this.periodReady = true;
-          this.updateEventSelections();
+          this.updateReportParameterSelections();
         }
       });
       modal.present();
@@ -132,37 +105,14 @@ export class ReportParameterSelectionPage implements OnInit{
   }
 
   goToView(){
-    if(this.reportParams.paramOrganisationUnit && this.reportParams.paramReportingPeriod){
-      let parameter = {
-        id : this.reportId,
-        name : this.reportName,
-        period : this.selectedPeriod,
-        organisationUnit : this.selectedOrganisationUnit,
-        organisationUnitChildren :[]
-      };
-      this.navCtrl.push('ReportViewPage',parameter);
-
-    }else if(this.reportParams.paramOrganisationUnit && !this.reportParams.paramReportingPeriod){
-      let parameter = {
-        id : this.reportId,
-        name : this.reportName,
-        period : null,
-        organisationUnit : this.selectedOrganisationUnit,
-        organisationUnitChildren :[]
-      };
-      this.navCtrl.push('ReportViewPage',parameter);
-
-    }else if(!this.reportParams.paramOrganisationUnit && this.reportParams.paramReportingPeriod){
-      let parameter = {
-        id : this.reportId,
-        name : this.reportName,
-        period : this.selectedPeriod,
-        organisationUnit : null,
-        organisationUnitChildren :[]
-      };
-      this.navCtrl.push('ReportViewPage',parameter);
-
-    }
+    let parameter = {
+      id : this.reportId,
+      name : this.reportName,
+      period : (this.reportParams.paramReportingPeriod && this.selectedPeriod && this.selectedPeriod.name ) ? this.selectedPeriod : null,
+      organisationUnit : (this.reportParams.paramOrganisationUnit && this.selectedOrgUnit && this.selectedOrgUnit.id )? this.selectedOrgUnit : null,
+      organisationUnitChildren :[]
+    };
+    this.navCtrl.push('ReportViewPage',parameter);
   }
 
 

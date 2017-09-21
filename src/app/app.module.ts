@@ -61,7 +61,6 @@ import { SyncProvider } from '../providers/sync/sync';
 import { StandardReportProvider } from '../providers/standard-report/standard-report';
 import {DataEntryModule} from "../components/data.entry.module";
 import { PeriodSelectionProvider } from '../providers/period-selection/period-selection';
-import {ReportsProvider} from "../providers/reports/reports";
 import { ProgramsProvider } from '../providers/programs/programs';
 import { ProgramStageDataElementsProvider } from '../providers/program-stage-data-elements/program-stage-data-elements';
 import { EventsProvider } from '../providers/events/events';
@@ -136,7 +135,6 @@ import { DataValuesProvider } from '../providers/data-values/data-values';
     SyncProvider,
     StandardReportProvider,
     PeriodSelectionProvider,
-    ReportsProvider,
     ProgramsProvider,
     ProgramStageDataElementsProvider,
     EventsProvider,

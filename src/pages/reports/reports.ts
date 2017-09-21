@@ -2,13 +2,9 @@ import { Component,OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {UserProvider} from "../../providers/user/user";
 import {AppProvider} from "../../providers/app/app";
-import {ReportsProvider} from "../../providers/reports/reports";
 import {ReportParameterSelectionPage} from "../report-parameter-selection/report-parameter-selection";
 import {ReportViewPage} from "../report-view/report-view";
 import {StandardReportProvider} from "../../providers/standard-report/standard-report";
-import {DownloadMetaDataComponent} from "../../components/download-meta-data/download-meta-data";
-import {SyncProvider} from "../../providers/sync/sync";
-import {error} from "util";
 import {SqlLiteProvider} from "../../providers/sql-lite/sql-lite";
 
 /**
@@ -33,13 +29,9 @@ export class ReportsPage implements OnInit{
   icons: any= {};
   hideRefresher: boolean = true;
   displayMessage: string;
-  repParam: any;
-
-
-
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public user: UserProvider, public appProvider: AppProvider,
-              public reportProvider: ReportsProvider, public standardReportProvider: StandardReportProvider,
+              public standardReportProvider: StandardReportProvider,
               private sqLite: SqlLiteProvider) {
   }
 
@@ -56,7 +48,7 @@ export class ReportsPage implements OnInit{
 
   loadReportsList(user) {
     this.setLoadingMessages('Loading reports');
-    this.reportProvider.getReportList(user).then((reportList: any) => {
+    this.standardReportProvider.getReportList(user).then((reportList: any) => {
       this.reportList = reportList;
       this.reportListCopy = reportList;
       this.loadingData = false;
@@ -66,7 +58,6 @@ export class ReportsPage implements OnInit{
       this.loadingData = false;
       this.hideRefresher = true;
     });
-
   }
 
   setLoadingMessages(message){
@@ -74,12 +65,11 @@ export class ReportsPage implements OnInit{
   }
 
   selectReport(report){
-
     let parameter = {
-      id : report.id,name : report.name, reportParams:report.reportParams, periodType:report.relativePeriods
+      id : report.id,name : report.name, reportParams:report.reportParams, relativePeriods:report.relativePeriods
     };
 
-    if(this.reportProvider.hasReportRequireParameterSelection(report.reportParams)){
+    if(this.standardReportProvider.hasReportRequireParameterSelection(report.reportParams)){
       this.navCtrl.push('ReportParameterSelectionPage',parameter);
     }else{
       this.navCtrl.push('ReportViewPage',parameter);
@@ -102,7 +92,6 @@ export class ReportsPage implements OnInit{
     this.loadingData = true;
     this.hideRefresher = false;
     let resource = 'reports';
-
     this.standardReportProvider.downloadReportsFromServer(this.currentUser).then((response:any)=> {
       this.displayMessage = "Downloading reports from server.";
     this.sqLite.dropTable(resource, this.currentUser.currentDatabase).then(()=>{
@@ -111,7 +100,6 @@ export class ReportsPage implements OnInit{
           this.standardReportProvider.saveReportsFromServer( response[resource], this.currentUser).then(() => {
             this.displayMessage = "Saving reports to application";
             this.loadReportsList(this.currentUser);
-
       }, error=>{this.loadingData = true;});
     },error=>{this.loadingData = true;});
         }, error => {this.loadingData = true;});

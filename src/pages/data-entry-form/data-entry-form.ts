@@ -203,10 +203,6 @@ export class DataEntryFormPage implements OnInit{
     },error=>{});
   }
 
-  updateDataSetCompleteness(){
-
-  }
-
   getEntryFormSections(entryFormSections){
     let sections = [];
     entryFormSections.forEach((entryFormSection : any)=>{
@@ -216,5 +212,11 @@ export class DataEntryFormPage implements OnInit{
     });
     return sections;
   }
+
+  updateDataSetCompleteness(){
+
+  }
+
+
 
 }

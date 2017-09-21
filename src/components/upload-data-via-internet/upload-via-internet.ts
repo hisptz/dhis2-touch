@@ -91,7 +91,7 @@ export class UploadViaInternetComponent implements OnInit{
     if(this.importSummaries){
       let modal = this.modalCtrl.create('ImportSummariesPage',{importSummaries : this.importSummaries});
       modal.onDidDismiss(()=>{
-        
+
       });
       modal.present();
     }
