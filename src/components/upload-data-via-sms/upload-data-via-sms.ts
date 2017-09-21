@@ -1,13 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {PeriodSelectionProvider} from "../../providers/period-selection/period-selection";
-import {ModalController, NavController} from "ionic-angular";
+import {ModalController} from "ionic-angular";
 import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
 import {UserProvider} from "../../providers/user/user";
-import {SmsCommandProvider} from "../../providers/sms-command/sms-command";
 import {AppProvider} from "../../providers/app/app";
 import {DataSetsProvider} from "../../providers/data-sets/data-sets";
-import {NgForm} from "@angular/forms";
-import {SMS} from "@ionic-native/sms";
 
 /**
  * Generated class for the UploadDataViaSmsComponent component.
@@ -21,53 +18,37 @@ import {SMS} from "@ionic-native/sms";
 })
 export class UploadDataViaSmsComponent implements OnInit{
 
-  public loadingData : boolean = false;
-  public loadingMessages : any = [];
-  public currentUser : any;
-  public organisationUnits : any;
-  public selectedOrganisationUnit :any = {};
-  public selectedOrganisationUnitLabel :string;
-  public assignedDataSets : any;
-  public selectedDataSet : any = {};
-  public selectedDataSetLabel : string;
-  public dataSetIdsByUserRoles : any;
-  public selectedPeriod : any = {};
-  public selectedPeriodLabel : string;
-  public selectedDataDimension : any ;
-  public currentPeriodOffset : number;
-  public currentSelectionStatus :any = {};
+  selectedOrgUnit : any;
+  selectedDataSet : any;
+  selectedPeriod : any;
+  currentUser : any;
 
+  isLoading : boolean;
+  loadingMessage : string;
+  isFormReady : boolean;
+  isDataSetDimensionApplicable : boolean;
+  isDataSetDimensionApplicableCategories : string;
   organisationUnitLabel : string;
   dataSetLabel : string;
   periodLabel : string;
-  isFormReady : boolean;
-  dataSetCategoryCombo : any;
-  isLoading : boolean;
-  canSend : boolean;
-  loadingMessage : string;
+  dataSetIdsByUserRoles : Array<any>;
   dataSets : Array<any>;
-
+  dataSetCategoryCombo : any;
+  selectedDataDimension : Array<any>;
+  currentPeriodOffset : number;
   icons : any = {};
-  isDataSetDimensionApplicable : boolean;
 
-  selectedOrgUnit : any;
-
-  constructor(private navCtrl: NavController,private modalCtrl : ModalController,
+  constructor(private modalCtrl : ModalController,
               private userProvider : UserProvider,private appProvider : AppProvider,
               private dataSetProvider : DataSetsProvider,private periodSelection : PeriodSelectionProvider,
-              private organisationUnitsProvider : OrganisationUnitsProvider, public smsSend: SMS) {  //public appPermission: AppPermissionProvider,
+              private organisationUnitsProvider : OrganisationUnitsProvider) {
   }
 
-  ngOnInit() {
-
-    this.icons.orgUnit = "assets/upload-data-via-sms/orgUnit.png";
-    this.icons.dataSet = "assets/upload-data-via-sms/form.png";
-    this.icons.period = "assets/upload-data-via-sms/period.png";
-    //checking and request for sms permissions
-
-    // let permissions = cordova.plugins.permissions;
-    // let smsPermission = [permissions.SEND_SMS];
-    // this.appPermission.checkAndRequestAppPermission(smsPermission);
+  ngOnInit(){
+    this.icons.orgUnit = "assets/data-entry/orgUnit.png";
+    this.icons.dataSet = "assets/data-entry/form.png";
+    this.icons.period = "assets/data-entry/period.png";
+    this.icons.goToDataEntryForm = "assets/data-entry/enterDataPen.png";
 
     this.loadingMessage = "Loading user information";
     this.isLoading = true;
@@ -98,8 +79,8 @@ export class UploadDataViaSmsComponent implements OnInit{
       this.loadingMessage = "";
       this.appProvider.setNormalNotification("Fail to load user information");
     })
-  }
 
+  }
 
   updateDataEntryFormSelections(){
     if(this.organisationUnitsProvider.lastSelectedOrgUnit){
@@ -149,14 +130,13 @@ export class UploadDataViaSmsComponent implements OnInit{
     });
   }
 
-
-
   openEntryFormList(){
     if(this.dataSets && this.dataSets.length > 0){
       let modal = this.modalCtrl.create('DataSetSelectionPage',{dataSetsList : this.dataSets,currentDataSet :this.selectedDataSet.name  });
       modal.onDidDismiss((selectedDataSet : any)=>{
         if(selectedDataSet && selectedDataSet.id && selectedDataSet.id != this.selectedDataSet.id){
           this.selectedDataSet = selectedDataSet;
+          this.dataSetProvider.setLastSelectedDataSet(selectedDataSet);
           this.currentPeriodOffset = 0;
           this.updateDataEntryFormSelections();
           this.loadPeriodSelection();
@@ -232,18 +212,32 @@ export class UploadDataViaSmsComponent implements OnInit{
       let categories = this.dataSetProvider.getDataSetCategoryComboCategories(this.selectedOrgUnit.id,this.selectedDataSet.categoryCombo.categories);
       dataSetCategoryCombo['categories'] = categories;
       this.isDataSetDimensionApplicable = true;
+      this.isDataSetDimensionApplicableCategories = "Options for";
       categories.forEach((category: any)=>{
         if(category.categoryOptions && category.categoryOptions.length == 0){
+          this.isDataSetDimensionApplicableCategories = this.isDataSetDimensionApplicableCategories + " " + category.name.toLowerCase();
           this.isDataSetDimensionApplicable = false;
         }
-      })
+      });
+      this.isDataSetDimensionApplicableCategories += " are not applicable on " + this.selectedOrgUnit.name;
     }
     this.selectedDataDimension = [];
     this.dataSetCategoryCombo = dataSetCategoryCombo;
     this.updateDataEntryFormSelections();
   }
 
-
+  getDataDimensions(){
+    let cc = this.selectedDataSet.categoryCombo.id;
+    let cp = "";
+    this.selectedDataDimension.forEach((dimension : any,index:any)=>{
+      if(index == 0){
+        cp +=dimension.id;
+      }else{
+        cp += ";" + dimension.id;
+      }
+    });
+    return {cc : cc,cp:cp};
+  }
 
   isAllFormParameterSelected(){
     let isFormReady = true;
@@ -264,21 +258,5 @@ export class UploadDataViaSmsComponent implements OnInit{
     }
     return isFormReady;
   }
-
-
-  goSubmit(form: NgForm){
-    let phoneNo: number;
-    phoneNo = form.value.mobileNumber;
-
-    this.smsSend.send(phoneNo.toString(), this.organisationUnitLabel);
-
-    console.log("send to: "+phoneNo+"\n" +
-      "orgUnit: "+this.organisationUnitLabel+"\n" +
-      "DataSet: "+this.dataSetLabel+"\n" +
-      "Period: "+this.periodLabel);
-  }
-
-
-
 
 }

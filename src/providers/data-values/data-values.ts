@@ -50,6 +50,90 @@ export class DataValuesProvider {
 
   /**
    *
+   * @param status
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getDataValuesByStatus(status,currentUser){
+    let attributeArray = [];
+    attributeArray.push(status);
+    return new Promise( (resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(this.resourceName, "syncStatus", attributeArray, currentUser.currentDatabase).then((dataValues:any)=> {
+        resolve(dataValues);
+      }, error=> {
+        reject();
+      });
+    });
+  }
+
+  /**
+   * convert data values to parameter for uploading
+   * @param dataValues
+   * @returns {Array}
+   */
+  getFormattedDataValueForUpload(dataValues) {
+    let formattedDataValues = [];
+    dataValues.forEach((dataValue:any)=> {
+      let formParameter = "de=" + dataValue.de + "&pe=" + dataValue.pe + "&ou=";
+      formParameter += dataValue.ou + "&co=" + dataValue.co + "&value=" + dataValue.value;
+      if (dataValue.cp != "0" && dataValue.cp != "") {
+        formParameter = formParameter + "&cc=" + dataValue.cc + "&cp=" + dataValue.cp;
+      }
+      formattedDataValues.push(formParameter);
+    });
+    return formattedDataValues;
+  }
+
+  uploadDataValues(formattedDataValues,dataValues,currentUser){
+    let syncedDataValues = [];
+    let importSummaries = {
+      success : 0,fail : 0 ,errorMessages : []
+    };
+    return new Promise( (resolve, reject)=> {
+      formattedDataValues.forEach((formattedDataValue:any, index:any)=> {
+        this.httpClient.post('/api/25/dataValues?' + formattedDataValue, {}, currentUser).then(()=> {
+          let syncedDataValue = dataValues[index];
+          importSummaries.success ++;
+          syncedDataValue["syncStatus"] = "synced";
+          syncedDataValues.push(syncedDataValue);
+          if(formattedDataValues.length == (importSummaries.success + importSummaries.fail)){
+            if(syncedDataValues.length > 0){
+              this.sqlLite.insertBulkDataOnTable(this.resourceName,syncedDataValues,currentUser.currentDatabase).then(()=>{
+                resolve(importSummaries);
+              },error=>{
+                console.log(JSON.stringify(error));
+                reject(error);
+              });
+            }else{
+              resolve(importSummaries);
+            }
+          }
+        }, error=> {
+          importSummaries.fail ++;
+          if(importSummaries.errorMessages.indexOf(error)  == -1){
+            importSummaries.errorMessages.push(error);
+          }
+          if(formattedDataValues.length == (importSummaries.success + importSummaries.fail)){
+            if(syncedDataValues.length > 0){
+              this.sqlLite.insertBulkDataOnTable(this.resourceName,syncedDataValues,currentUser.currentDatabase).then(()=>{
+                resolve(importSummaries);
+              },error=>{
+                console.log(JSON.stringify(error));
+                reject(error);
+              });
+            }else{
+              resolve();
+            }
+          }
+        });
+      });
+    });
+  }
+
+
+
+  /**
+   *
    * @param dataSetId
    * @param period
    * @param orgUnitId

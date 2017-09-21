@@ -1,6 +1,3 @@
-<!--<empty-list-notification [emptyListMessage]="'Coming soon'"></empty-list-notification>-->
-
-
 <ion-grid>
   <ion-row>
     <ion-col>
@@ -8,19 +5,14 @@
         <img  class="side-menu-icon" [src]="icons.orgUnit"/>&nbsp;&nbsp;
         {{ organisationUnitLabel }}
       </div>
-
-
       <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openEntryFormList()" >
         <img  class="side-menu-icon" [src]="icons.dataSet"/>&nbsp;&nbsp;
-
         {{ dataSetLabel }}
       </div>
-
       <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openPeriodList()" >
         <img  class="side-menu-icon" [src]="icons.period"/>&nbsp;&nbsp;
         {{ periodLabel }}
       </div>
-
       <div *ngIf="selectedPeriod && selectedPeriod.iso && dataSetCategoryCombo && dataSetCategoryCombo.id ">
         <div *ngIf="isDataSetDimensionApplicable">
           <div *ngFor="let category of dataSetCategoryCombo.categories;let categoryIndex = index">
@@ -31,17 +23,17 @@
             </div>
           </div>
         </div>
+        <div class="item-card" padding-top padding-bottom *ngIf="!isDataSetDimensionApplicable">
+          <warning [warningMessage]="isDataSetDimensionApplicableCategories" ></warning>
+        </div>
       </div>
-
-      <div *ngIf="isFormReady" class="item-card" padding-top padding-bottom full>
-        <form #f="ngForm" (ngSubmit)="goSubmit(f)">
-          <div>
-            <div class="item-card">
-              <ion-input type="number" name="mobileNumber" placeholder="Mobile Number" ngModel reqired></ion-input>
-            </div>
-            <button ion-button style="text-transform: none;" block type="submit">Moblie Number</button>
+      <div *ngIf="isFormReady" full>
+        <div>
+          <div class="item-card">
+            <ion-input type="text" placeholder="Mobile Number" [(ngModel)]="mobileNumber" ></ion-input>
           </div>
-        </form>
+          <button [disabled]="!mobileNumber || mobileNumber ==''" ion-button style="text-transform: none;" block>Upload data</button>
+        </div>
       </div>
 
 

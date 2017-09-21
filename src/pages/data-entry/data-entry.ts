@@ -95,6 +95,7 @@ export class DataEntryPage implements OnInit{
       this.dataSetLabel = this.selectedDataSet.name;
     }else {
       this.dataSetLabel = "Touch to select entry form";
+      this.selectedPeriod = null;
     }
 
     if(this.selectedPeriod && this.selectedPeriod.name){
@@ -132,14 +133,13 @@ export class DataEntryPage implements OnInit{
     });
   }
 
-
-
   openEntryFormList(){
     if(this.dataSets && this.dataSets.length > 0){
       let modal = this.modalCtrl.create('DataSetSelectionPage',{dataSetsList : this.dataSets,currentDataSet :this.selectedDataSet.name  });
       modal.onDidDismiss((selectedDataSet : any)=>{
         if(selectedDataSet && selectedDataSet.id && selectedDataSet.id != this.selectedDataSet.id){
           this.selectedDataSet = selectedDataSet;
+          this.dataSetProvider.setLastSelectedDataSet(selectedDataSet);
           this.currentPeriodOffset = 0;
           this.updateDataEntryFormSelections();
           this.loadPeriodSelection();
@@ -268,7 +268,7 @@ export class DataEntryPage implements OnInit{
       }else{
         isFormReady = false;
       }
-    }else if(this.periodLabel == "Touch to select period"){
+    }else if(this.periodLabel == "Touch to select period" || this.dataSetLabel == "Touch to select entry form"){
       isFormReady = false;
     }
     return isFormReady;

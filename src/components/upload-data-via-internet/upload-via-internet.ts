@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {UserProvider} from "../../providers/user/user";
 import {AppProvider} from "../../providers/app/app";
-import {SqlLiteProvider} from "../../providers/sql-lite/sql-lite";
-import {AlertController} from "ionic-angular";
+import {SyncProvider} from "../../providers/sync/sync";
+import {ModalController} from "ionic-angular";
 
 /**
  * Generated class for the UploadViaInternetComponent component.
@@ -18,95 +18,82 @@ export class UploadViaInternetComponent implements OnInit{
 
 
   currentUser: any;
-  itemsToBeUploaded : any = [];
   selectedItems : any = {};
-  isDataUploaded :  any = true;
-  showLoadingMessage: boolean = false;
-  LoadingMessages: string;
+  isLoading : boolean;
+  loadingMessage: string;
+  itemsToUpload : Array<string>;
+  importSummaries : any;
 
 
-  constructor(public alertCtrl: AlertController, private sqLite: SqlLiteProvider,
+  constructor(private syncProvider : SyncProvider,private modalCtrl : ModalController,
               private appProvider: AppProvider, public user: UserProvider) {
-
   }
 
   ngOnInit(){
+    this.isLoading = true;
+    this.itemsToUpload = [];
+    this.loadingMessage = "Loading user information";
+    this.importSummaries = null;
     this.user.getCurrentUser().then((user:any)=>{
       this.currentUser = user;
+      this.isLoading = false;
+    },error=>{
     });
   }
 
 
-  resetUploadItems(){
-    let updateTable = [];
-    for(let key of Object.keys(this.selectedItems)){
-      if(this.selectedItems[key])
-        updateTable.push(key);
-    }
-    this.itemsToBeUploaded = updateTable;
-  }
-
-  uploadDataConfirmation(){
-    let alert = this.alertCtrl.create({
-      title: 'Upload Data Confirmation',
-      message: 'Are you want to upload selected data?',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Upload',
-          handler: () => {
-            this.uploadData();
-          }
-        }
-      ]
+  updateItemsToUpload(){
+    this.itemsToUpload = [];
+    Object.keys(this.selectedItems).forEach((key: string)=>{
+      if(this.selectedItems[key]){
+        this.itemsToUpload.push(key);
+      }
     });
-    alert.present();
   }
 
   uploadData(){
-    this.showLoadingMessage = true;
-    let uploadedItemCount = 0;
-    let failCount = 0;
-    this.isDataUploaded = false;
-    for(let tableName of this.itemsToBeUploaded){
-
-      this.sqLite.getAllDataFromTable(tableName,this.currentUser.currentDatabase).then((response:any)=>{
-
-        this.LoadingMessages = "Fetching selected local data";
-        uploadedItemCount = uploadedItemCount + 1;
-        if((uploadedItemCount + failCount) == this.itemsToBeUploaded.length){
-
-          this.LoadingMessages = "Applying changes to the application";
-
-          this.appProvider.setNormalNotification("You have successfully uploaded data");
-
-          Object.keys(this.selectedItems).forEach(key=>{
-            this.selectedItems[key] = false;
-          });
-          this.isDataUploaded = true;
-          this.showLoadingMessage = false;
-
+    this.loadingMessage = "Loading data to be uploaded";
+    this.isLoading = true;
+    this.syncProvider.getDataForUploading(this.itemsToUpload,this.currentUser).then((data : any)=>{
+      let shouldUpload = false;
+      this.itemsToUpload.forEach(item=>{
+        if(data[item] && data[item].length > 0 ){
+          shouldUpload =true;
         }
-      },error=>{
-        console.log("Error : " + JSON.stringify(error));
-        failCount = failCount + 1;
-        if((uploadedItemCount + failCount) == this.itemsToBeUploaded.length){
-
-          this.appProvider.setNormalNotification("You.. have successfully clear data.");
-
-          Object.keys(this.selectedItems).forEach(key=>{
-            this.selectedItems[key] = false;
+      });
+      if(shouldUpload){
+        this.loadingMessage = "Prepare data for uploading";
+        this.syncProvider.prepareDataForUploading(data).then((preparedData : any)=>{
+          this.loadingMessage = "Uploading data";
+          this.syncProvider.uploadingData(preparedData,data,this.currentUser).then((response)=>{
+            this.isLoading = false;
+            this.importSummaries = response;
+            this.viewUploadImportSummaries();
+          },error=>{
+            this.isLoading = false;
+            this.appProvider.setNormalNotification("Fail to upload data");
           });
-          this.isDataUploaded = true;
+        },error=>{
+          this.isLoading = false;
+          this.appProvider.setNormalNotification("Fail to prepare data");
+        })
+      }else{
+        this.isLoading = false;
+        this.appProvider.setNormalNotification("There are nothing so upload to the server");
+      }
+    },error=>{
+      this.isLoading = false;
+      this.appProvider.setNormalNotification("Fail to load data");
+    })
+  }
 
-        }
-      })
+  viewUploadImportSummaries(){
+    if(this.importSummaries){
+      let modal = this.modalCtrl.create('ImportSummariesPage',{importSummaries : this.importSummaries});
+      modal.onDidDismiss(()=>{
+        
+      });
+      modal.present();
     }
   }
 

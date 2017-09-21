@@ -25,7 +25,6 @@ export class OrganisationUnitSelectionPage implements OnInit{
   currentUser : any;
   lastSelectedOrgUnit : OrganisationUnitModel;
   organisationUnits : OrganisationUnitModel[];
-  hasOrgUnitChildrenLoaded : boolean;
   hasOrgUnitChildrenOpened:any = {};
 
   constructor(private viewCtrl : ViewController, private organisationUnitProvider : OrganisationUnitsProvider,
