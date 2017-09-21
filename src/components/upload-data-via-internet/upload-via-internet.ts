@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {UserProvider} from "../../providers/user/user";
 import {AppProvider} from "../../providers/app/app";
-import {SqlLiteProvider} from "../../providers/sql-lite/sql-lite";
-import {AlertController} from "ionic-angular";
+import {DataValuesProvider} from "../../providers/data-values/data-values";
+import {SyncProvider} from "../../providers/sync/sync";
 
 /**
  * Generated class for the UploadViaInternetComponent component.
@@ -18,96 +18,45 @@ export class UploadViaInternetComponent implements OnInit{
 
 
   currentUser: any;
-  itemsToBeUploaded : any = [];
   selectedItems : any = {};
-  isDataUploaded :  any = true;
-  showLoadingMessage: boolean = false;
-  LoadingMessages: string;
+  isLoading : boolean;
+  loadingMessage: string;
+  itemsToUpload : Array<string>;
 
 
-  constructor(public alertCtrl: AlertController, private sqLite: SqlLiteProvider,
+  constructor(private dataValuesProvider : DataValuesProvider,
+              private syncProvider : SyncProvider,
               private appProvider: AppProvider, public user: UserProvider) {
-
   }
 
   ngOnInit(){
+    this.isLoading = true;
+    this.itemsToUpload = [];
+    this.loadingMessage = "Loading user information";
     this.user.getCurrentUser().then((user:any)=>{
       this.currentUser = user;
+      this.isLoading = false;
+    },error=>{
     });
   }
 
-
-  resetUploadItems(){
-    let updateTable = [];
-    for(let key of Object.keys(this.selectedItems)){
-      if(this.selectedItems[key])
-        updateTable.push(key);
-    }
-    this.itemsToBeUploaded = updateTable;
-  }
-
-  uploadDataConfirmation(){
-    let alert = this.alertCtrl.create({
-      title: 'Upload Data Confirmation',
-      message: 'Are you want to upload selected data?',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Upload',
-          handler: () => {
-            this.uploadData();
-          }
-        }
-      ]
+  updateItemsToUpload(){
+    this.itemsToUpload = [];
+    Object.keys(this.selectedItems).forEach((key: string)=>{
+      if(this.selectedItems[key]){
+        this.itemsToUpload.push(key);
+      }
     });
-    alert.present();
   }
 
   uploadData(){
-    this.showLoadingMessage = true;
-    let uploadedItemCount = 0;
-    let failCount = 0;
-    this.isDataUploaded = false;
-    for(let tableName of this.itemsToBeUploaded){
-
-      this.sqLite.getAllDataFromTable(tableName,this.currentUser.currentDatabase).then((response:any)=>{
-
-        this.LoadingMessages = "Fetching selected local data";
-        uploadedItemCount = uploadedItemCount + 1;
-        if((uploadedItemCount + failCount) == this.itemsToBeUploaded.length){
-
-          this.LoadingMessages = "Applying changes to the application";
-
-          this.appProvider.setNormalNotification("You have successfully uploaded data");
-
-          Object.keys(this.selectedItems).forEach(key=>{
-            this.selectedItems[key] = false;
-          });
-          this.isDataUploaded = true;
-          this.showLoadingMessage = false;
-
-        }
-      },error=>{
-        console.log("Error : " + JSON.stringify(error));
-        failCount = failCount + 1;
-        if((uploadedItemCount + failCount) == this.itemsToBeUploaded.length){
-
-          this.appProvider.setNormalNotification("You.. have successfully clear data.");
-
-          Object.keys(this.selectedItems).forEach(key=>{
-            this.selectedItems[key] = false;
-          });
-          this.isDataUploaded = true;
-
-        }
-      })
-    }
+    this.loadingMessage = "Loading data to be uploaded";
+    this.isLoading = true;
+    this.syncProvider.getDataforUploading(this.itemsToUpload,this.currentUser).then((data : any)=>{
+      console.log(JSON.stringify(data));
+    },eeror=>{
+      this.appProvider.setNormalNotification("Fail to load data")
+    })
   }
 
 

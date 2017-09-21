@@ -1,28 +1,21 @@
 
-<ion-row>
-  <ion-col *ngIf="!showLoadingMessage">
-    <ion-item>
-      <ion-label>Data values</ion-label>
-      <ion-checkbox [(ngModel)]="selectedItems.dataValues" (ionChange)="resetUploadItems()"></ion-checkbox>
-    </ion-item>
-    <ion-item>
-      <ion-label>Events </ion-label>
-      <ion-checkbox [(ngModel)]="selectedItems.events" (ionChange)="resetUploadItems()" ></ion-checkbox>
-    </ion-item>
-
-    <button [disabled]="itemsToBeUploaded.length < 1"
-            [color]="isDataUploaded?'primary':'whitecolor'"
-            class="normalButton" ion-button small  full text-capitalize (tap)="uploadDataConfirmation()">
-
-      <span *ngIf="isDataUploaded" >
-                    Upload Data
-                  </span>
-    </button>
-
-  </ion-col>
-
-</ion-row>
-
-<span *ngIf="showLoadingMessage" >
-                    <page-loading loadingSize="large" [loadingMessage]="LoadingMessages"></page-loading>
-                  </span>
+<div *ngIf="isLoading">
+  <page-loading loadingSize="large" [loadingMessage]="loadingMessage"></page-loading>
+</div>
+<div *ngIf="!isLoading">
+  <ion-row>
+    <ion-col *ngIf="!showLoadingMessage">
+      <ion-item>
+        <ion-label>Data values</ion-label>
+        <ion-checkbox [(ngModel)]="selectedItems.dataValues" (ionChange)="updateItemsToUpload()"></ion-checkbox>
+      </ion-item>
+      <ion-item>
+        <ion-label>Events </ion-label>
+        <ion-checkbox [(ngModel)]="selectedItems.events" (ionChange)="updateItemsToUpload()" ></ion-checkbox>
+      </ion-item>
+      <button [disabled]="itemsToUpload.length == 0" ion-button full text-capitalize (tap)="uploadData()">
+        Upload Data
+      </button>
+    </ion-col>
+  </ion-row>
+</div>

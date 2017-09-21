@@ -12,6 +12,7 @@ import {IndicatorsProvider} from "../indicators/indicators";
 import {StandardReportProvider} from "../standard-report/standard-report";
 import {ProgramsProvider} from "../programs/programs";
 import {ProgramStageSectionsProvider} from "../program-stage-sections/program-stage-sections";
+import {DataValuesProvider} from "../data-values/data-values";
 
 /*
   Generated class for the SyncProvider provider.
@@ -22,9 +23,8 @@ import {ProgramStageSectionsProvider} from "../program-stage-sections/program-st
 @Injectable()
 export class SyncProvider {
 
-  // currentUser: any;
-
-  constructor(private HttpClient : HttpClientProvider,  private sqLite: SqlLiteProvider,  private appProvider: AppProvider,
+  constructor(private sqLite: SqlLiteProvider,
+              private dataValuesProvider : DataValuesProvider,
               private orgUnitsProvider: OrganisationUnitsProvider, private datasetsProvider: DataSetsProvider,
               private sectionProvider: SectionsProvider, private dataElementProvider: DataElementsProvider,
               private smsCommandsProvider: SmsCommandProvider, private indicatorProvider: IndicatorsProvider,
@@ -52,6 +52,38 @@ export class SyncProvider {
     return downloadContents;
   }
 
+  /**
+   *
+   * @param {Array<string>} itemsToUpload
+   */
+  getDataforUploading(itemsToUpload : Array<string>,currentUser : any){
+    let promises = [];
+    let data = {};
+    let status = "not-synced";
+    return new Promise((resolve, reject) =>  {
+      if(!itemsToUpload){
+        resolve(data);
+      }else{
+        itemsToUpload.forEach((item : string)=>{
+          if(item == "dataValues"){
+            promises.push(
+              this.dataValuesProvider.getDataValuesByStatus(status,currentUser).then((dataValues : Array<any>)=>{
+                data[item] = dataValues;
+              },error=>{})
+            )
+          }else if(item == "events"){
+            data[item] = [];
+          }
+        });
+        Observable.forkJoin(promises).subscribe(() => {
+            resolve(data);
+          },
+          (error) => {
+            reject(error);
+          })
+      }
+    });
+  }
 
 
   /***
@@ -146,8 +178,13 @@ export class SyncProvider {
     });
   }
 
-
-
+  /**
+   *
+   * @param resources
+   * @param data
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   savingResources(resources,data,currentUser){
     let promises = [];
     return new Promise((resolve, reject) =>  {
@@ -193,7 +230,6 @@ export class SyncProvider {
             this.programStageSectionsProvider.saveProgramsStageSectionsFromServer(data[resource],currentUser).then(() => {}, error => {})
           );
         }
-
       });
 
       Observable.forkJoin(promises).subscribe(() => {
@@ -205,7 +241,12 @@ export class SyncProvider {
     });
   }
 
-
+  /**
+   *
+   * @param resources
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   prepareTablesToApplyChanges(resources,currentUser){
     let promises = [];
     return new Promise((resolve, reject) =>  {

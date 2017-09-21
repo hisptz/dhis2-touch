@@ -48,6 +48,19 @@ export class DataValuesProvider {
     });
   }
 
+  getDataValuesByStatus(status,currentUser){
+    let attributeArray = [];
+    attributeArray.push(status);
+    return new Promise( (resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(this.resourceName, "syncStatus", attributeArray, currentUser.currentDatabase).then((dataValues:any)=> {
+        resolve(dataValues);
+      }, error=> {
+        reject();
+      });
+    });
+
+  }
+
   /**
    *
    * @param dataSetId

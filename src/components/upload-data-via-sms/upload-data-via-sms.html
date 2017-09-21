@@ -32,7 +32,7 @@
           <div class="item-card">
             <ion-input type="text" placeholder="Mobile Number" [(ngModel)]="mobileNumber" ></ion-input>
           </div>
-          <button [disabled]="mobileNumber ==''" ion-button style="text-transform: none;" block>Upload data</button>
+          <button [disabled]="!mobileNumber || mobileNumber ==''" ion-button style="text-transform: none;" block>Upload data</button>
         </div>
       </div>
 
