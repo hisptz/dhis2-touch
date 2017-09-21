@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {UserProvider} from "../../providers/user/user";
 import {AppProvider} from "../../providers/app/app";
-import {DataValuesProvider} from "../../providers/data-values/data-values";
 import {SyncProvider} from "../../providers/sync/sync";
+import {ModalController} from "ionic-angular";
 
 /**
  * Generated class for the UploadViaInternetComponent component.
@@ -22,10 +22,10 @@ export class UploadViaInternetComponent implements OnInit{
   isLoading : boolean;
   loadingMessage: string;
   itemsToUpload : Array<string>;
+  importSummaries : any;
 
 
-  constructor(private dataValuesProvider : DataValuesProvider,
-              private syncProvider : SyncProvider,
+  constructor(private syncProvider : SyncProvider,private modalCtrl : ModalController,
               private appProvider: AppProvider, public user: UserProvider) {
   }
 
@@ -33,6 +33,7 @@ export class UploadViaInternetComponent implements OnInit{
     this.isLoading = true;
     this.itemsToUpload = [];
     this.loadingMessage = "Loading user information";
+    this.importSummaries = null;
     this.user.getCurrentUser().then((user:any)=>{
       this.currentUser = user;
       this.isLoading = false;
@@ -65,7 +66,7 @@ export class UploadViaInternetComponent implements OnInit{
           this.loadingMessage = "Uploading data";
           this.syncProvider.uploadingData(preparedData,data,this.currentUser).then((response)=>{
             this.isLoading = false;
-            console.log(JSON.stringify(response));
+            this.importSummaries = response;
             this.appProvider.setNormalNotification("Data have been uploaded successfully, you can check summary");
           },error=>{
             this.isLoading = false;
@@ -83,6 +84,16 @@ export class UploadViaInternetComponent implements OnInit{
       this.isLoading = false;
       this.appProvider.setNormalNotification("Fail to load data");
     })
+  }
+
+  viewUploadImportSummaries(){
+    if(this.importSummaries){
+      let modal = this.modalCtrl.create('ImportSummariesPage',{importSummaries : this.importSummaries});
+      modal.onDidDismiss(()=>{
+
+      });
+      modal.present();
+    }
   }
 
 

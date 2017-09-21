@@ -1,12 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {PeriodSelectionProvider} from "../../providers/period-selection/period-selection";
-import {ModalController, NavController} from "ionic-angular";
+import {ModalController} from "ionic-angular";
 import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
 import {UserProvider} from "../../providers/user/user";
-import {SmsCommandProvider} from "../../providers/sms-command/sms-command";
 import {AppProvider} from "../../providers/app/app";
 import {DataSetsProvider} from "../../providers/data-sets/data-sets";
-import {NgForm} from "@angular/forms";
 
 /**
  * Generated class for the UploadDataViaSmsComponent component.

@@ -94,7 +94,7 @@ export class DataValuesProvider {
         this.httpClient.post('/api/25/dataValues?' + formattedDataValue, {}, currentUser).then(()=> {
           let syncedDataValue = dataValues[index];
           importSummaries.success ++;
-          syncedDataValue["syncStatus"] = "synced";
+          //syncedDataValue["syncStatus"] = "synced";
           syncedDataValues.push(syncedDataValue);
           if(formattedDataValues.length == (importSummaries.success + importSummaries.fail)){
             if(syncedDataValues.length > 0){
