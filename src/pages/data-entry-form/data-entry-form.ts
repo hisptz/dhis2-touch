@@ -6,6 +6,7 @@ import {DataEntryFormProvider} from "../../providers/data-entry-form/data-entry-
 import {SettingsProvider} from "../../providers/settings/settings";
 import {DataValuesProvider} from "../../providers/data-values/data-values";
 import {DataSetCompletenessProvider} from "../../providers/data-set-completeness/data-set-completeness";
+import {SyncProvider} from "../../providers/sync/sync";
 
 /**
  * Generated class for the DataEntryFormPage page.
@@ -45,7 +46,7 @@ export class DataEntryFormPage implements OnInit{
   constructor(private navCtrl: NavController,
               private userProvider : UserProvider,
               private appProvider : AppProvider,
-              private modalCtrl : ModalController,
+              private modalCtrl : ModalController,private syncProvider : SyncProvider,
               private dataSetCompletenessProvider : DataSetCompletenessProvider,
               private dataEntryFormProvider : DataEntryFormProvider,
               private settingsProvider : SettingsProvider,
@@ -268,6 +269,8 @@ export class DataEntryFormPage implements OnInit{
         this.appProvider.setNormalNotification("Fail to un complete entry form");
       });
     }else{
+
+
       this.dataSetCompletenessProvider.completeOnDataSetRegistrations(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then(()=>{
         this.dataSetCompletenessProvider.getDataSetCompletenessInfo(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then((dataSetCompletenessInfo : any)=>{
           this.dataSetsCompletenessInfo = dataSetCompletenessInfo;
@@ -275,6 +278,7 @@ export class DataEntryFormPage implements OnInit{
             this.isDataSetCompleted = true;
           }
           this.isDataSetCompletenessProcessRunning = false;
+          this.uploadDataValuesOnComplete(period,orgUnitId,dataDimension);
         },error=>{
           console.log(JSON.stringify(error));
           this.isDataSetCompletenessProcessRunning = false;
@@ -288,6 +292,40 @@ export class DataEntryFormPage implements OnInit{
     }
   }
 
+  uploadDataValuesOnComplete(period,orgUnitId,dataDimension){
+    let dataValues = [];
+    if(this.dataValuesObject){
+      Object.keys(this.dataValuesObject).forEach((fieldId:any)=>{
+        let fieldIdArray = fieldId.split("-");
+        if(this.dataValuesObject[fieldId]){
+          let dataValue = this.dataValuesObject[fieldId];
+          if(dataValue.status !="synced"){
+            dataValues.push({
+              de: fieldIdArray[0],
+              co: fieldIdArray[1],
+              pe: period,
+              ou: orgUnitId,
+              cc: dataDimension.cc,
+              cp: dataDimension.cp,
+              value: dataValue.value
+            });
+          }
+        }
+      });
+    }
+    if(dataValues.length > 0){
+      this.syncProvider.prepareDataForUploading({dataValues : dataValues}).then((preparedData : any)=>{
+        this.loadingMessage = "Uploading data";
+        this.syncProvider.uploadingData(preparedData,{dataValues : dataValues},this.currentUser).then((response)=>{
+          console.log("Success uploading data");
+        },error=>{
+          console.log("Fail to upload data");
+        });
+      },error=>{
+        console.log("Fail to prepare data");
+      })
+    }
+  }
 
 
 }
