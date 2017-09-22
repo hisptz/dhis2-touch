@@ -317,6 +317,8 @@ export class DataEntryFormPage implements OnInit{
       this.syncProvider.prepareDataForUploading({dataValues : dataValues}).then((preparedData : any)=>{
         this.loadingMessage = "Uploading data";
         this.syncProvider.uploadingData(preparedData,{dataValues : dataValues},this.currentUser).then((response)=>{
+          this.storageStatus.offline = 0;
+          this.storageStatus.online += dataValues.length;
           console.log("Success uploading data");
         },error=>{
           console.log("Fail to upload data");
