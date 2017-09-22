@@ -61,12 +61,15 @@ export class OrganisationUnitsProvider {
         let url = "/api/25/"+this.resource+".json?paging=false&";
         url += fields + "&" + filter + orgUnitId;
         this.HttpClient.get(url,currentUser).then((response:any)=>{
-          response = JSON.parse(response.data);
-          counts = counts + 1;
-          orgUnits = this.appendOrgUnitsFromServerToOrgUnitArray(orgUnits,response);
-
-          if(counts == orgUnitIds.length){
-            resolve(orgUnits);
+          try{
+            response = JSON.parse(response.data);
+            counts = counts + 1;
+            orgUnits = this.appendOrgUnitsFromServerToOrgUnitArray(orgUnits,response);
+            if(counts == orgUnitIds.length){
+              resolve(orgUnits);
+            }
+          }catch (e){
+            reject(e);
           }
         },error=>{
           reject(error);

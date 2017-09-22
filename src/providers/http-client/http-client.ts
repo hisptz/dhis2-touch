@@ -70,6 +70,19 @@ export class HttpClientProvider {
     });
   }
 
+  defaultPost(url, data, user){
+    url = this.getUrlBasedOnDhisVersion(url,user);
+    let headers = new Headers();
+    headers.append('Authorization', 'Basic ' +user.authorizationKey);
+    return new Promise((resolve, reject)=> {
+      this.defaultHttp.post(user.serverUrl + url, data, { headers: headers }).timeout(this.timeOutTime).subscribe((response)=>{
+        resolve();
+      },error=>{
+        reject(error);
+      });
+    });
+  }
+
   /**
    *
    * @param url

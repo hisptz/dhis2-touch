@@ -27,8 +27,12 @@ export class DataElementsProvider {
     let url = "/api/25/"+this.resource+".json?paging=false&fields=" + fields;
     return new Promise((resolve, reject)=> {
       this.HttpClient.get(url,currentUser).then((response : any)=>{
-        response = JSON.parse(response.data);
-        resolve(response);
+        try{
+          response = JSON.parse(response.data);
+          resolve(response);
+        }catch (e){
+          reject(e);
+        }
       },error=>{
         reject(error);
       });

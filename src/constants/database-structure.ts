@@ -245,7 +245,23 @@ export const DATABASE_STRUCTURE = {
     displayName : "Data Values",
     dependentTable : []
   },
-
+  dataSetCompleteness: {
+    columns: [
+      {value: 'id', type: 'TEXT'},
+      {value: 'dataSetId', type: 'TEXT'},
+      {value: 'period', type: 'TEXT'},
+      {value: 'orgUnitId', type: 'TEXT'},
+      {value: 'storedBy', type: 'TEXT'},
+      {value: 'date', type: 'TEXT'},
+      {value: 'isDeleted', type: 'TEXT'},
+      {value: 'dataDimension', type: 'LONGTEXT'}
+    ],
+    isMetadata: false,
+    resourceType: "",
+    batchSize : 500,
+    displayName : "Entry form completeness",
+    dependentTable : []
+  },
   events: {
     columns: [
       {value: 'id', type: 'TEXT'},
