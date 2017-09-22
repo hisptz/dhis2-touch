@@ -24,12 +24,17 @@ export class DataSetCompletenessProvider {
   completeOnDataSetRegistrations(dataSetId : string, period : string, orgUnitId :string, dataDimension, currentUser) {
     let parameter = this.getDataSetCompletenessParameter(dataSetId, period, orgUnitId, dataDimension);
     return new Promise( (resolve, reject)=> {
-      this.httpClient.post('/api/25/completeDataSetRegistrations?' + parameter, {}, currentUser).then(()=> {
+      this.httpClient.defaultPost('/api/25/completeDataSetRegistrations?' + parameter, {}, currentUser).then(()=> {
         resolve();
       }, error=> {
         reject(error);
       });
     });
+
+    // let headers = new Headers();
+    // headers.append('Authorization', 'Basic ' +currentUser.authorizationKey);
+    // return this.http.post(user.serverUrl + url, data, { headers: headers }).timeout(this.timeOutTime);
+
   }
 
   /**
