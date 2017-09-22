@@ -24,6 +24,11 @@
             <b>Period</b> : {{ entryFormParameter.period.name }}<br>
             <span *ngIf="!isLoading" ><b>Synced</b> : {{ storageStatus.online }} <b>Not synced</b> : {{storageStatus.offline }}</span>
           </div>
+          <div *ngIf="!isLoading && indicators"  >
+            <div (click)="viewEntryFormIndicators(indicators)">
+              <span style="color: #488aff;" ><b>Indicators </b>: {{ indicators.length }}</span>
+            </div>
+          </div>
         </div>
         <div *ngIf="isLoading">
           <page-loading [loadingMessage]="loadingMessage" [loadingSize]="'large'" ></page-loading>

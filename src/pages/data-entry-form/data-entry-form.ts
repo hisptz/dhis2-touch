@@ -168,6 +168,19 @@ export class DataEntryFormPage implements OnInit{
     modal.present();
   }
 
+  viewEntryFormIndicators(indicators){
+    if(indicators && indicators.length > 0){
+      let modal = this.modalCtrl.create('DataEntryIndicatorsPage',{
+        indicators : indicators,dataSet : {id : this.dataSet.id,name : this.dataSet.name }
+      });
+      modal.onDidDismiss(()=>{
+      });
+      modal.present();
+    }else{
+      this.appProvider.setNormalNotification("There are no indicators to view");
+    }
+  }
+
   changePagination(page){
     page = parseInt(page);
     if(page > 0 && page <=this.pager.total){

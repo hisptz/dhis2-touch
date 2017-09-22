@@ -1,0 +1,35 @@
+<!--
+  Generated template for the DataEntryIndicatorsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-toolbar color="primary">
+    <ion-title>
+      {{ title }}
+    </ion-title>
+    <ion-buttons start>
+      <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+<ion-content >
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div class="item-card" *ngFor="let indicator of indicators">
+          <b>Name </b> : {{ indicator.name }}<br>
+          <span *ngIf="indicator.numeratorDescription != ''"><b>Numerator Description </b> : {{ indicator.numeratorDescription }}<br></span>
+          <b>Numerator</b> : {{ indicator.numerator }}<br>
+          <span *ngIf="indicator.denominatorDescription != ''"><b>Denominator Description </b> : {{ indicator.denominatorDescription }}<br></span>
+          <b>Denominator </b> : {{ indicator.denominator }}<br>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -178,14 +178,14 @@ export class SyncProvider {
         }else if(resource == "indicators"){
           promises.push(
             this.indicatorProvider.downloadingIndicatorsFromServer(currentUser).then((response: any) => {
-              data[resource] = response;
+              data[resource] = response[resource];
             }, error => {
             })
           );
         }else if(resource == "smsCommand"){
           promises.push(
             this.smsCommandsProvider.getSmsCommandFromServer(currentUser).then((response: any) => {
-             data[resource] = response;
+             data[resource] = response[resource];
             }, error => {
             })
           );
@@ -212,7 +212,7 @@ export class SyncProvider {
         } else if(resource == "programStageSections"){
           promises.push(
             this.programStageSectionsProvider.downloadProgramsStageSectionsFromServer(currentUser).then((response: any) => {
-              data[resource] = response;
+              data[resource] = response[resource];;
             }, error => {
             })
           );
