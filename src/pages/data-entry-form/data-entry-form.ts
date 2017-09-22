@@ -5,6 +5,7 @@ import {AppProvider} from "../../providers/app/app";
 import {DataEntryFormProvider} from "../../providers/data-entry-form/data-entry-form";
 import {SettingsProvider} from "../../providers/settings/settings";
 import {DataValuesProvider} from "../../providers/data-values/data-values";
+import {DataSetCompletenessProvider} from "../../providers/data-set-completeness/data-set-completeness";
 
 /**
  * Generated class for the DataEntryFormPage page.
@@ -37,14 +38,14 @@ export class DataEntryFormPage implements OnInit{
   pager : any = {};
   storageStatus : any;
   dataValuesObject : any;
-
-  isDataSetCompleted : boolean;
+  dataSetsCompletenessInfo : any;
   isDataSetCompletenessProcessRunning : boolean;
 
   constructor(private navCtrl: NavController,
               private userProvider : UserProvider,
               private appProvider : AppProvider,
               private modalCtrl : ModalController,
+              private dataSetCompletenessProvider : DataSetCompletenessProvider,
               private dataEntryFormProvider : DataEntryFormProvider,
               private settingsProvider : SettingsProvider,
               private dataValuesProvider : DataValuesProvider,
@@ -56,6 +57,8 @@ export class DataEntryFormPage implements OnInit{
     this.storageStatus ={
       online : 0, offline : 0
     };
+    this.dataSetsCompletenessInfo = {};
+
     this.dataValuesObject = {};
     this.loadingMessage = "Loading user information";
     this.isLoading = true;
@@ -148,11 +151,27 @@ export class DataEntryFormPage implements OnInit{
         this.dataValuesObject[dataValue.id] = dataValue;
         dataValue.status == "synced" ? this.storageStatus.online ++ :this.storageStatus.offline ++;
       });
-      this.isLoading = false;
+      this.loadingDataSetCompleteness();
     },error=>{
       this.isLoading = false;
       this.appProvider.setNormalNotification("Fail to load available local data");
     });
+  }
+
+  loadingDataSetCompleteness(){
+    this.loadingMessage = "Loading entry form completeness information";
+    this.dataSetsCompletenessInfo = {};
+    let dataSetId = this.dataSet.id;
+    let period = this.entryFormParameter.period.iso;
+    let orgUnitId = this.entryFormParameter.orgUnit.id;
+    let dataDimension = this.entryFormParameter.dataDimension;
+    this.dataSetCompletenessProvider.getDataSetCompletenessInfo(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then((dataSetCompletenessInfo)=>{
+      this.dataSetsCompletenessInfo = dataSetCompletenessInfo;
+      this.isLoading = false;
+    },error=>{
+      this.isLoading = false;
+      this.appProvider.setNormalNotification("Fail to load entry form completeness information");
+    })
   }
 
   openSectionList(){
@@ -227,7 +246,10 @@ export class DataEntryFormPage implements OnInit{
   }
 
   updateDataSetCompleteness(){
-
+    this.isDataSetCompletenessProcessRunning = true;
+    setTimeout(()=>{
+      this.isDataSetCompletenessProcessRunning = false;
+    },2000);
   }
 
 

@@ -185,7 +185,7 @@ export class SyncProvider {
         }else if(resource == "smsCommand"){
           promises.push(
             this.smsCommandsProvider.getSmsCommandFromServer(currentUser).then((response: any) => {
-             data[resource] = response[resource];
+             data[resource] = response;
             }, error => {
             })
           );

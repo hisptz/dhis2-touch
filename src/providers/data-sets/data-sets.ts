@@ -255,11 +255,15 @@ export class DataSetsProvider {
         let url = "/api/25/"+this.resource+".json?paging=false&";
         url += fields + "&" + filter + userOrgUnitId;
         this.HttpClient.get(url,currentUser).then((response : any)=>{
-          response = JSON.parse(response.data);
-          counts = counts + 1;
-          dataSets = this.appendDataSetsFromServerToDataSetArray(dataSets,response);
-          if(counts == userOrgUnitIds.length){
-            resolve(dataSets);
+          try{
+            response = JSON.parse(response.data);
+            counts = counts + 1;
+            dataSets = this.appendDataSetsFromServerToDataSetArray(dataSets,response);
+            if(counts == userOrgUnitIds.length){
+              resolve(dataSets);
+            }
+          }catch (e){
+            reject(e);
           }
         },error=>{
           reject(error);
