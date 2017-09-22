@@ -100,10 +100,15 @@ export class ReportsPage implements OnInit{
           this.standardReportProvider.saveReportsFromServer( response[resource], this.currentUser).then(() => {
             this.displayMessage = "Saving reports to application";
             this.loadReportsList(this.currentUser);
-      }, error=>{this.loadingData = true;});
-    },error=>{this.loadingData = true;});
-        }, error => {this.loadingData = true;});
-      }, error => {this.loadingData = true;});
+
+      }, error=>{this.loadingData = true;
+          this.appProvider.setNormalNotification("Process failed to download Reports from server")});
+    },error=>{this.loadingData = true;
+          this.appProvider.setNormalNotification("Failed to update application database")});
+        }, error => {this.loadingData = true;
+          this.appProvider.setNormalNotification("Failed to update application database")});
+      }, error => {this.loadingData = true;
+          this.appProvider.setNormalNotification("Failed to Save updated reports to Database")});
 
 
   }

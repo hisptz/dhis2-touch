@@ -68,6 +68,7 @@ import { ProgramStageSectionsProvider } from '../providers/program-stage-section
 import { EventCaptureFormProvider } from '../providers/event-capture-form/event-capture-form';
 import { DataEntryFormProvider } from '../providers/data-entry-form/data-entry-form';
 import { DataValuesProvider } from '../providers/data-values/data-values';
+import {AboutModule} from "../components/about.module";
 @NgModule({
   declarations: [
     MyApp,
@@ -75,7 +76,7 @@ import { DataValuesProvider } from '../providers/data-values/data-values';
   ],
   imports: [
     BrowserModule,
-    SharedModule,DashboardModule,SyncModule,
+    SharedModule,DashboardModule,SyncModule,AboutModule,
     DataEntryModule,
     HttpModule,
     IonicModule.forRoot(MyApp, {

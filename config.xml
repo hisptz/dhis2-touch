@@ -3,7 +3,7 @@
     <name>DHIS 2 Touch</name>
     <description>An awesome dhis 2 mobile experience</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://192.168.43.105:8100" />
     <access origin="*" />
     <allow-navigation href="http://ionic.local/*" />
     <allow-intent href="http://*/*" />
@@ -82,6 +82,8 @@
     <allow-navigation href="http://192.168.1.2:8100" />
     <allow-navigation href="http://192.168.1.9:8100" />
     <allow-navigation href="http://192.168.43.105:8100" />
+    <allow-navigation href="http://192.168.14.100:8100" />
+    <allow-navigation href="http://192.168.1.5:8100" />
     <engine name="android" spec="^6.2.3" />
     <engine name="ios" spec="^4.4.0" />
     <plugin name="cordova-plugin-app-version" spec="^0.1.9" />

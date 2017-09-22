@@ -16,11 +16,9 @@
 <ion-content class="about-page">
 
   <ion-grid>
-
     <div *ngIf="isLoading">
       <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage" ></page-loading>
     </div>
-
     <div *ngIf="!isLoading" class="about-details">
       <ion-row>
         <ion-col class="topSLogan">
@@ -33,7 +31,6 @@
           </div>
         </ion-col>
       </ion-row>
-
       <div class="item-card" *ngFor="let aboutContent of aboutContents">
         <ion-row (tap)="toggleAboutContents(aboutContent)">
           <ion-col col-11>
@@ -50,7 +47,7 @@
           </ion-col>
         </ion-row>
         <div *ngIf="(isAboutContentOpen[aboutContent.id])" >
-          <hr>
+          <hr
           <div *ngIf="aboutContent.id == 'appInformation'">
             <ion-row>
               <ion-col >
@@ -70,16 +67,24 @@
               </ion-col>
             </ion-row>
           </div>
-
-          <div *ngIf="aboutContent.id != 'systemInfo' && aboutContent.id != 'appInformation'">
-            {{ aboutContent.name }}'s contents are here<br>Coming soon!!!
+          <div *ngIf="aboutContent.id == 'dataValues'">
+            <ion-item  (tap)="viewDataValuesSynchronisationStatusByDataSets('synced')">
+              <ion-label>Synced  {{ dataValuesStorage.online }}</ion-label>
+            </ion-item>
+            <ion-item (tap)="viewDataValuesSynchronisationStatusByDataSets('not-synced')">
+              <ion-label><b>Not Synced</b> {{ dataValuesStorage.offline }}</ion-label>
+            </ion-item>
           </div>
-
+          <div *ngIf="aboutContent.id == 'eventStatus'">
+            <ion-item>
+              <ion-label>Synced </ion-label>
+            </ion-item>
+            <ion-item >
+              <ion-label><b>Not Synced</b></ion-label>
+            </ion-item>
+          </div>
         </div>
       </div>
-
     </div>
-
   </ion-grid>
-
 </ion-content>
