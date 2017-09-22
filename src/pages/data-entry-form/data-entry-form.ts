@@ -39,6 +39,7 @@ export class DataEntryFormPage implements OnInit{
   storageStatus : any;
   dataValuesObject : any;
   dataSetsCompletenessInfo : any;
+  isDataSetCompleted : boolean;
   isDataSetCompletenessProcessRunning : boolean;
 
   constructor(private navCtrl: NavController,
@@ -58,7 +59,7 @@ export class DataEntryFormPage implements OnInit{
       online : 0, offline : 0
     };
     this.dataSetsCompletenessInfo = {};
-
+    this.isDataSetCompleted = false;
     this.dataValuesObject = {};
     this.loadingMessage = "Loading user information";
     this.isLoading = true;
@@ -160,13 +161,17 @@ export class DataEntryFormPage implements OnInit{
 
   loadingDataSetCompleteness(){
     this.loadingMessage = "Loading entry form completeness information";
+    this.isDataSetCompleted = false;
     this.dataSetsCompletenessInfo = {};
     let dataSetId = this.dataSet.id;
     let period = this.entryFormParameter.period.iso;
     let orgUnitId = this.entryFormParameter.orgUnit.id;
     let dataDimension = this.entryFormParameter.dataDimension;
-    this.dataSetCompletenessProvider.getDataSetCompletenessInfo(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then((dataSetCompletenessInfo)=>{
+    this.dataSetCompletenessProvider.getDataSetCompletenessInfo(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then((dataSetCompletenessInfo : any)=>{
       this.dataSetsCompletenessInfo = dataSetCompletenessInfo;
+      if(dataSetCompletenessInfo && dataSetCompletenessInfo.complete){
+        this.isDataSetCompleted = true;
+      }
       this.isLoading = false;
     },error=>{
       this.isLoading = false;
@@ -245,11 +250,42 @@ export class DataEntryFormPage implements OnInit{
     return sections;
   }
 
+  //@todo support offline completeness and un completeness of form
   updateDataSetCompleteness(){
     this.isDataSetCompletenessProcessRunning = true;
-    setTimeout(()=>{
-      this.isDataSetCompletenessProcessRunning = false;
-    },2000);
+    let dataSetId = this.dataSet.id;
+    let period = this.entryFormParameter.period.iso;
+    let orgUnitId = this.entryFormParameter.orgUnit.id;
+    let dataDimension = this.entryFormParameter.dataDimension;
+    if(this.isDataSetCompleted){
+      this.dataSetCompletenessProvider.unDoCompleteOnDataSetRegistrations(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then(()=>{
+        this.dataSetsCompletenessInfo = {};
+        this.isDataSetCompletenessProcessRunning = false;
+        this.isDataSetCompleted = false;
+      },error=>{
+        this.isDataSetCompletenessProcessRunning = false;
+        console.log(JSON.stringify(error));
+        this.appProvider.setNormalNotification("Fail to un complete entry form");
+      });
+    }else{
+      this.dataSetCompletenessProvider.completeOnDataSetRegistrations(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then(()=>{
+        this.dataSetCompletenessProvider.getDataSetCompletenessInfo(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then((dataSetCompletenessInfo : any)=>{
+          this.dataSetsCompletenessInfo = dataSetCompletenessInfo;
+          if(dataSetCompletenessInfo && dataSetCompletenessInfo.complete){
+            this.isDataSetCompleted = true;
+          }
+          this.isDataSetCompletenessProcessRunning = false;
+        },error=>{
+          console.log(JSON.stringify(error));
+          this.isDataSetCompletenessProcessRunning = false;
+          this.appProvider.setNormalNotification("Fail to load entry form completeness information");
+        });
+      },error=>{
+        this.isDataSetCompletenessProcessRunning = false;
+        console.log(JSON.stringify(error));
+        this.appProvider.setNormalNotification("Fail to complete entry form");
+      });
+    }
   }
 
 

@@ -253,6 +253,7 @@ export const DATABASE_STRUCTURE = {
       {value: 'orgUnitId', type: 'TEXT'},
       {value: 'storedBy', type: 'TEXT'},
       {value: 'date', type: 'TEXT'},
+      {value: 'isDeleted', type: 'TEXT'},
       {value: 'dataDimension', type: 'LONGTEXT'}
     ],
     isMetadata: false,

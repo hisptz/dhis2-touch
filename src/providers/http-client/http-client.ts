@@ -57,6 +57,7 @@ export class HttpClientProvider {
   post(url,data,user) {
     this.http.useBasicAuth(user.username,user.password);
     url = user.serverUrl + this.getUrlBasedOnDhisVersion(url,user);
+    console.log(url);
     return new Promise((resolve, reject)=> {
       this.http.post(url,data,{})
         .then((response:any)  => {

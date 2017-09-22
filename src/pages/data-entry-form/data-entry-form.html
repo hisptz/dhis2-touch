@@ -80,12 +80,12 @@
               <ion-col  col-2 col-sm-1 (click)="changePagination(pager.page  + 1)" padding-bottom padding-top>
                 <ion-icon name="ios-arrow-forward-outline" ></ion-icon>
               </ion-col>
-              <ion-col  col-5 col-sm-8 *ngIf="!(dataSetsCompletenessInfo && dataSetsCompletenessInfo.complete)">
+              <ion-col  col-5 col-sm-8 *ngIf="!isDataSetCompleted">
                 <button color="favorite" round ion-button full [disabled] ="isDataSetCompletenessProcessRunning" (tap)="updateDataSetCompleteness()">
                   Complete
                 </button>
               </ion-col>
-              <ion-col  col-5 col-sm-8 *ngIf="(dataSetsCompletenessInfo && dataSetsCompletenessInfo.complete)">
+              <ion-col  col-5 col-sm-8 *ngIf="isDataSetCompleted">
                 <button  color="danger" round ion-button full [disabled] = "isDataSetCompletenessProcessRunning" (tap)="updateDataSetCompleteness()">
                   Undo Complete
                 </button>
@@ -93,23 +93,32 @@
             </ion-row>
             <ion-row *ngIf="entryFormSections.length == 1">
               <ion-col  col-6 col-sm-6>
-                <button color="favorite" round ion-button full [disabled] ="(dataSetsCompletenessInfo && dataSetsCompletenessInfo.complete)" (tap)="updateDataSetCompleteness()">
+                <button color="favorite" round ion-button full [disabled] ="isDataSetCompletenessProcessRunning" (tap)="updateDataSetCompleteness()">
                   Complete
                 </button>
               </ion-col>
               <ion-col  col-6 col-sm-6>
-                <button  color="danger" round ion-button full [disabled] = "!(dataSetsCompletenessInfo && dataSetsCompletenessInfo.complete)" (tap)="updateDataSetCompleteness()">
+                <button  color="danger" round ion-button full [disabled] = "isDataSetCompletenessProcessRunning" (tap)="updateDataSetCompleteness()">
                   Undo Complete
                 </button>
               </ion-col>
             </ion-row>
-            <div *ngIf="dataSetsCompletenessInfo && dataSetsCompletenessInfo.complete">
-              <div class=item-card-entry-form">
-                Completed by <b>{{ dataSetsCompletenessInfo.storedBy }}</b> on <b>{{ dataSetsCompletenessInfo.date }}</b>
+
+            <div *ngIf="isDataSetCompletenessProcessRunning" class="item-card">
+              <ion-row>
+                <ion-col col-1 ><page-loading loadingSize="small"></page-loading></ion-col>
+                <ion-col col-11><p>&nbsp;Please wait ...</p></ion-col>
+              </ion-row>
+            </div>
+            <div *ngIf="!isDataSetCompletenessProcessRunning">
+              <div *ngIf="dataSetsCompletenessInfo && dataSetsCompletenessInfo.complete">
+                <div class="item-card" padding-bottom padding-top >
+                  Completed by <b>{{ dataSetsCompletenessInfo.storedBy }}</b> on <b>{{ dataSetsCompletenessInfo.date }}</b>
+                </div>
               </div>
             </div>
-          </div>
 
+          </div>
         </div>
 
 
