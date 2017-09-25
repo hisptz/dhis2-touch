@@ -50,12 +50,12 @@
                 <ion-row>
                   <ion-col col-5>
                     <ion-item>
-                      <ion-input type="number"  min="1" [(ngModel)]="settingObject.synchronization.time"></ion-input>
+                      <ion-input type="number" (ionBlur)="applySettings(settingContent)"  min="1" [(ngModel)]="settingObject.synchronization.time"></ion-input>
                     </ion-item>
                   </ion-col>
                   <ion-col col-7>
                     <ion-item>
-                      <ion-select [(ngModel)]="settingObject.synchronization.timeType" interface="action-sheet">
+                      <ion-select (ionChange)="applySettings(settingContent)" [(ngModel)]="settingObject.synchronization.timeType" interface="action-sheet">
                         <ion-option value="minutes">Minute(s)</ion-option>
                         <ion-option value="hours">Hour(s)</ion-option>
                       </ion-select>
@@ -66,13 +66,10 @@
                   <ion-col>
                     <ion-item no-lines>
                       <ion-label> Auto sync</ion-label>
-                      <ion-toggle color="primary" [(ngModel)] = "settingObject.synchronization.isAutoSync"></ion-toggle>
+                      <ion-toggle (ionChange)="applySettings(settingContent)" color="primary" [(ngModel)] = "settingObject.synchronization.isAutoSync"></ion-toggle>
                     </ion-item>
                   </ion-col>
                 </ion-row>
-                <button  color="primary" class="normalButton" ion-button full text-capitalize (tap)="applySettings(settingContent)">
-                  Save
-                </button>
               </div>
             </div>
           </div>
@@ -87,27 +84,24 @@
                   <ion-col>
                     <ion-item>
                       <ion-label>Form Label</ion-label>
-                      <ion-select [(ngModel)]="settingObject.entryForm.label" interface="action-sheet">
+                      <ion-select (ionChange)="applySettings(settingContent)" [(ngModel)]="settingObject.entryForm.label" interface="action-sheet">
                         <ion-option value="displayName">Display Name</ion-option>
                         <ion-option value="formName">Form Name</ion-option>
                       </ion-select>
                     </ion-item>
                     <ion-item>
                       <ion-label>Form Layout</ion-label>
-                      <ion-select [(ngModel)]="settingObject.entryForm.formLayout" interface="action-sheet">
+                      <ion-select (ionChange)="applySettings(settingContent)" [(ngModel)]="settingObject.entryForm.formLayout" interface="action-sheet">
                         <ion-option value="listLayout">List layout</ion-option>
                         <ion-option value="tableLayout">Table layout</ion-option>
                       </ion-select>
                     </ion-item>
                     <ion-item>
                       <ion-label floating>Data elements per page(max)</ion-label>
-                      <ion-input type="number"  min="1" [(ngModel)]="settingObject.entryForm.maxDataElementOnDefaultForm"></ion-input>
+                      <ion-input (ionBlur)="applySettings(settingContent)" type="number"  min="1" [(ngModel)]="settingObject.entryForm.maxDataElementOnDefaultForm"></ion-input>
                     </ion-item>
                   </ion-col>
                 </ion-row>
-                <button color="primary" class="normalButton" ion-button full text-capitalize (tap)="applySettings(settingContent)">
-                  Save
-                </button>
               </div>
             </div>
           </div>

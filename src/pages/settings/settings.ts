@@ -85,16 +85,15 @@ export class SettingsPage implements OnInit{
 
 
   applySettings(settingContent){
-    this.updateLoadingStatusOfSavingSetting(settingContent,true);
+    //this.updateLoadingStatusOfSavingSetting(settingContent,true);
     this.settingsProvider.setSettingsForTheApp(this.currentUser,this.settingObject).then(()=>{
-      this.appProvider.setNormalNotification(settingContent.name + ' settings have been applied successfully');
-      this.toggleSettingContents(settingContent);
+      this.appProvider.setNormalNotification(settingContent.name + ' settings have been applied successfully',2000);
       this.settingsProvider.getSettingsForTheApp(this.currentUser).then((appSettings : any)=>{
         this.settingObject = appSettings;
         let timeValue = this.settingObject.synchronization.time;
         let timeType = this.settingObject.synchronization.timeType;
         this.settingObject.synchronization.time = this.settingsProvider.getDisplaySynchronizationTime(timeValue,timeType);
-        this.updateLoadingStatusOfSavingSetting(settingContent,false);
+        //this.updateLoadingStatusOfSavingSetting(settingContent,false);
       }).catch(error=>{
         console.log(error);
         this.appProvider.setNormalNotification('Fail to load settings');
