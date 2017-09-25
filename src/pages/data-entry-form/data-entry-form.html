@@ -73,7 +73,7 @@
                 <ion-icon name="ios-arrow-back-outline" ></ion-icon>
               </ion-col>
               <ion-col  col-3 col-sm-2 padding-bottom padding-top>
-                <div >
+                <div (tap)="openSectionList()">
                   {{ pager.page + ' of ' + pager.total }}
                 </div>
               </ion-col>
