@@ -109,7 +109,7 @@ export class ClearLocalMetadataComponent implements OnInit{
       this.clearMetaDataLoadingMessages= "Applying updates";
       this.sqLite.generateTables(this.currentUser.currentDatabase).then(()=>{
         this.autoSelect("un-selectAll");
-        this.appProvider.setNormalNotification("All updates has been applied successfully");
+        this.appProvider.setNormalNotification("Data deletion has been performed successfully");
         this.showLoadingMessage = false;
       },error=>{
         this.appProvider.setTopNotification("Failed. to Drop "+resources+" Database table");

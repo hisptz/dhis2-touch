@@ -1,0 +1,31 @@
+
+      <div *ngFor="let dataSetId of dataSetIds" >
+        <ion-card padding>
+        <div *ngIf="dataSetsSyncObjects[dataSetId] && dataSetsSyncObjects[dataSetId].name != ''">
+          <div class="contents">
+            <ion-row>
+              <ion-col col-11 (tap)="viewMoreDetailsOnEntryForm(dataSetId)">
+                <div  >
+                  <p >
+                    <b>Form : </b>{{dataSetsSyncObjects[dataSetId].name}}<br>
+                    <b>Data : </b>{{dataSetsSyncObjects[dataSetId].dataValues.length}}
+                  </p>
+                </div>
+              </ion-col>
+              <ion-col col-1 (tap)="dataSetDataDeleteConfirmation(dataSetsSyncObjects[dataSetId].name,dataSetId)">
+                <!--<div *ngIf="!isDataSetDataDeletionOnProgress">-->
+                  <button color="danger" class="normalButton" ion-button full min clear text-capitalize >
+                    <ion-icon name="md-trash"></ion-icon>
+                  </button>
+                <!--</div>-->
+                <div *ngIf="isDataSetDataDeletionOnProgress[dataSetId]">
+                  <page-loading loadingSize="small"></page-loading>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+        </div>
+        </ion-card>
+      </div>
+
+

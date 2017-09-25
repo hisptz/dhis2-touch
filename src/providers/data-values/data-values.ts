@@ -60,7 +60,9 @@ export class DataValuesProvider {
     return new Promise( (resolve, reject)=> {
       this.sqlLite.getDataFromTableByAttributes(this.resourceName, "syncStatus", attributeArray, currentUser.currentDatabase).then((dataValues:any)=> {
         resolve(dataValues);
+
       }, error=> {
+
         reject();
       });
     });
@@ -260,6 +262,33 @@ export class DataValuesProvider {
         });
       }else{
         resolve();
+      }
+    });
+  }
+
+
+  /**
+   * deleteDataValuesByIds
+   * @param dataValueIds
+   * @param currentUser
+   * @returns {Promise<T>}
+   */
+  deleteDataValueByIds(dataValueIds, currentUser) {
+    let successCount = 0;
+    let failCount = 0;
+    return new Promise( (resolve, reject)=> {
+      for(let dataValueId of dataValueIds){
+        this.sqlLite.deleteFromTableByAttribute(this.resourceName,"id",dataValueId, currentUser.currentDatabase).then(()=> {
+          successCount = successCount + 1;
+          if((successCount + failCount) == dataValueIds.length){
+            resolve();
+          }
+        }, error=> {
+          failCount = failCount + 1;
+          if((successCount + failCount) == dataValueIds.length){
+            resolve();
+          }
+        });
       }
     });
   }

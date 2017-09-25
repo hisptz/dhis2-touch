@@ -91,10 +91,9 @@ export class DownloadEventsDataComponent implements OnInit{
 
 
           });
-          //alert("Assigned Progs UserRoles: "+JSON.stringify(this.programNamesByUserRoles))
+
         }
       });
-      // this.loadOrganisationUnits();
     });
   }
 
@@ -163,7 +162,6 @@ export class DownloadEventsDataComponent implements OnInit{
         });
         alert("Events Data: "+JSON.stringify(eventsData))
       }
-      //this.eventsProvider.savingEventsFromServer(eventsData, this.currentUser)
     })
 
   }

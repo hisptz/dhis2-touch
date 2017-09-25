@@ -162,11 +162,12 @@ export class StandardReportProvider {
   getReportPeriodType(relativePeriods){
     let reportPeriodType = "Yearly";
     let reportPeriods = [];
-    if(relativePeriods.last52Weeks || relativePeriods.last12Weeks || relativePeriods.lastWeek || relativePeriods.thisWeek || relativePeriods.last4Weeks || relativePeriods.weeksThisYear){
-      reportPeriods.push("Weekly");
-    }
+
     if(relativePeriods.last14Days || relativePeriods.yesterday || relativePeriods.thisDay || relativePeriods.last3Days || relativePeriods.last7Days){
       reportPeriods.push("Daily");
+    }
+    if(relativePeriods.last52Weeks || relativePeriods.last12Weeks || relativePeriods.lastWeek || relativePeriods.thisWeek || relativePeriods.last4Weeks || relativePeriods.weeksThisYear){
+      reportPeriods.push("Weekly");
     }
     if(relativePeriods.lastSixMonth || relativePeriods.lastMonth || relativePeriods.monthsThisYear || relativePeriods.monthsLastYear || relativePeriods.last6Months || relativePeriods.thisMonth || relativePeriods.last2SixMonths || relativePeriods.last3Months || relativePeriods.last12Months ||  relativePeriods.thisSixMonth){
       reportPeriods.push("Monthly");
