@@ -55,8 +55,12 @@ export class SettingsProvider {
     return  new Promise((resolve,reject) => {
       let key = 'appSettings'+ (currentUser && currentUser.currentDatabase) ? currentUser.currentDatabase : "";
       this.storage.get(key).then(appSettings=>{
-        appSettings = JSON.parse(appSettings);
-        resolve(appSettings);
+        try{
+          appSettings = JSON.parse(appSettings);
+          resolve(appSettings);
+        }catch (e){
+          reject(e);
+        }
       },err=>{
         reject();
       }).catch(err=>{
