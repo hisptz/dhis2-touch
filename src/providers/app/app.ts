@@ -37,12 +37,16 @@ export class AppProvider {
   /**
    *
    * @param message
-     */
-  setNormalNotification(message){
+   * @param time
+   */
+  setNormalNotification(message,time?){
+    if(!time){
+      time = 5000;
+    }
     this.toastController.create({
       message: message,
       position : 'bottom',
-      duration: 5000
+      duration: time
     }).present();
   }
 

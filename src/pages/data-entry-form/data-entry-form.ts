@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {IonicPage, ModalController, NavController, NavParams,Content} from 'ionic-angular';
 import {UserProvider} from "../../providers/user/user";
 import {AppProvider} from "../../providers/app/app";
 import {DataEntryFormProvider} from "../../providers/data-entry-form/data-entry-form";
@@ -42,6 +42,8 @@ export class DataEntryFormPage implements OnInit{
   dataSetsCompletenessInfo : any;
   isDataSetCompleted : boolean;
   isDataSetCompletenessProcessRunning : boolean;
+
+  @ViewChild(Content) content: Content;
 
   constructor(private navCtrl: NavController,
               private userProvider : UserProvider,
@@ -212,6 +214,10 @@ export class DataEntryFormPage implements OnInit{
       this.isLoading = true;
       this.pager.page = page;
       this.isLoading = false;
+      //scroll form to the top
+      setTimeout(() => {
+        this.content.scrollToTop(1300);
+      },200);
     }
   }
 
