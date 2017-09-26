@@ -1,8 +1,9 @@
-import { Component,OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {NavParams, NavController, IonicPage} from 'ionic-angular';
 import {UserProvider} from "../../providers/user/user";
 import {DataValuesProvider} from "../../providers/data-values/data-values";
 import {DataSetsProvider} from "../../providers/data-sets/data-sets";
+import {AboutPage} from "../about/about";
 
 /*
   Generated class for the DataSetSyncContainer page.
@@ -17,6 +18,8 @@ import {DataSetsProvider} from "../../providers/data-sets/data-sets";
 })
 export class DataValuesSyncContainerPage  implements OnInit{
 
+
+
   public loading : boolean = true;
   public loadingMessages : string = "";
   public hasDataPrepared : boolean = false;
@@ -28,6 +31,9 @@ export class DataValuesSyncContainerPage  implements OnInit{
   public currentUser : any;
   idArray: any = {};
   dataSetIdList: any = [];
+  valueHolder:any;
+  dataValuesStorage : any = { online : 0,offline : 0};
+
 
   constructor(public navParams: NavParams,
               public user : UserProvider,
@@ -47,6 +53,8 @@ export class DataValuesSyncContainerPage  implements OnInit{
     this.headerLabel += " entry forms";
     this.syncStatus = (this.navParams.get("syncStatus") == "synced")? "Synced" : "Not synced";
 
+
+    this.valueHolder = this.navParams.get("dataValues");
     this.navParams.get("dataValues").forEach((dataValue : any)=>{
       this.loadingMessages = "Grouping data by entry form";
       this.isDataSetDataDeletionOnProgress[dataValue.dataSetId] = false;
@@ -76,17 +84,21 @@ export class DataValuesSyncContainerPage  implements OnInit{
       this.dataValuesProvider.deleteDataValueByIds(dataValueIds,this.currentUser).then(()=>{
         setTimeout(()=>{
           delete this.dataSetsSyncObjects[event.dataSetId];
+
           if(this.dataSetsSyncObjects && Object.keys(this.dataSetsSyncObjects).length > 0){
             this.isDataSetDataDeletionOnProgress[event.dataSetId] = false;
 
           }else{
             this.navCtrl.pop();
 
+
           }
         },500);
       },error=>{});
     }
   }
+
+
 
 
 }

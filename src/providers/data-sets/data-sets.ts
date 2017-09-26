@@ -595,5 +595,25 @@ export class DataSetsProvider {
     });
   }
 
+  /**
+   *
+   * @param dataSetId
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getDataElementsIdsOnDataSetElements(dataSetId,currentUser){
+    let attributeKey = "id";
+    let attributeArray = [dataSetId];
+    return new Promise((resolve, reject)=> {
+      this.SqlLite.getDataFromTableByAttributes(this.resource,attributeKey,attributeArray,currentUser.currentDatabase).then((dataSets : any)=>{
+        if(dataSets && dataSets.length > 0){
+          resolve(dataSets[0])
+        }else{
+          reject();
+        }
+      },error=>{reject(error)})
+    });
+  }
+
 
 }

@@ -2,6 +2,10 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DataSetsProvider} from "../../providers/data-sets/data-sets";
 import {AlertController, NavController} from "ionic-angular";
 import {UserProvider} from "../../providers/user/user";
+import {DataValuesProvider} from "../../providers/data-values/data-values";
+import {SyncProvider} from "../../providers/sync/sync";
+import {error} from "util";
+import {AppProvider} from "../../providers/app/app";
 
 /**
  * Generated class for the DataSetSyncComponent component.
@@ -26,9 +30,11 @@ export class DataSetSyncComponent implements OnInit{
 
   displayName: any;
   currentUser: any;
+  syncProcess: boolean = false;
+
 
   constructor(public dataSetsProvider: DataSetsProvider, public alertCtrl: AlertController, public user: UserProvider,
-              public navCtrl: NavController) {
+              public navCtrl: NavController,public syncProvider: SyncProvider, public appProvider: AppProvider) {
 
   }
 
@@ -40,10 +46,8 @@ export class DataSetSyncComponent implements OnInit{
         if(this.dataSetIds && this.dataSetIds.length > 0){
           this.loadDataSetsByIds(this.dataSetIds,this.currentUser);
         }else{
-
         }
-      })
-
+      });
   }
 
   loadDataSetsByIds(dataSetIds,currentUser){
@@ -84,15 +88,32 @@ export class DataSetSyncComponent implements OnInit{
 
   deleteDataSetData(dataSetName,dataSetId){
     this.onDeleteDataSetData.emit({dataSetId : dataSetId,dataSetName:dataSetName});
+
   }
 
   viewMoreDetailsOnEntryForm(dataSetId){
-    this.navCtrl.push('DataElementSyncContainerPage',{
+    this.navCtrl.push('DataElementSyncPage',{
       syncStatus : this.syncStatus,
       dataSetId:dataSetId,
       entryFormName : this.dataSetsSyncObjects[dataSetId].name,
       dataValues : this.dataSetsSyncObjects[dataSetId].dataValues
     })
+  }
+
+
+  syncSelectedDataSetData(selectedDataset){
+    this.syncProcess = true;
+    this.syncProvider.prepareDataForUploading(selectedDataset).then((preparedData: any)=>{
+      this.syncProvider.uploadingData(preparedData,selectedDataset, this.currentUser).then((response:any)=>{
+        this.syncProcess = false;
+
+      },error=>{
+        this.appProvider.setNormalNotification("Data Values synchronization failed")
+      })
+    }, error=>{
+      this.appProvider.setNormalNotification("Data Values preparation failed")
+    });
+
   }
 
 }

@@ -1,0 +1,20 @@
+
+<ion-header>
+
+  <ion-navbar color="primary" mode="md">
+    <ion-title>{{ entryFormName }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="data-element-sync-container">
+  <div *ngIf="isLoading">
+    <page-loading loadingSize="large" [loadingMessage] = "loadingMessages"></page-loading>
+  </div>
+  <div *ngIf="!isLoading">
+    <data-element-sync-component [dataElements]="dataElements" ></data-element-sync-component>
+  </div>
+
+
+</ion-content>

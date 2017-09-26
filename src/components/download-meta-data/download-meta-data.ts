@@ -91,7 +91,7 @@ export class DownloadMetaDataComponent implements OnInit {
               this.appProvider.setNormalNotification("All updates has been applied successfully.");
               this.showLoadingMessage = false;
             },error=>{
-              this.appProvider.setNormalNotification("Fail to apply updates");
+              this.appProvider.setNormalNotification("Fail. to apply updates");
               this.showLoadingMessage = false;
             });
           },

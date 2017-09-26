@@ -133,4 +133,15 @@ export class SettingsProvider {
     return appSettings;
   }
 
+  getDataEntrySetting(){
+    return  new Promise((resolve,reject)=>{
+      this.storage.get('dataEntrySetting').then(dataEntrySetting=>{
+        dataEntrySetting = JSON.parse(dataEntrySetting);
+        resolve(dataEntrySetting);
+      },err=>{
+        reject();
+      })
+    });
+  }
+
 }

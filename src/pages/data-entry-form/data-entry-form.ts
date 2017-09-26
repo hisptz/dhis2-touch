@@ -220,11 +220,12 @@ export class DataEntryFormPage implements OnInit{
     let dataSetId = this.dataSet.id;
     let period = this.entryFormParameter.period.iso;
     let orgUnitId = this.entryFormParameter.orgUnit.id;
+    let orgUnitName = this.entryFormParameter.orgUnit.name;
     let dataDimension = this.entryFormParameter.dataDimension;
     let newDataValue = [];
     let fieldIdArray = dataValueId.split("-");
     newDataValue.push({
-      orgUnit : orgUnitId,
+      orgUnit : orgUnitName,
       dataElement : fieldIdArray[0],
       categoryOptionCombo : fieldIdArray[1],
       value :updateDataValue.value,

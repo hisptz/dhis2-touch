@@ -136,4 +136,21 @@ export class DataEntryFormProvider {
     return sections;
   }
 
+  /**
+   * get dataElements based on data set
+   * @param dataSet
+   * @returns {Array}
+   */
+  getDataElements(dataSet){
+    let dataElements = [];
+    if(dataSet.dataElements && dataSet.dataElements.length > 0){
+      dataElements = dataSet.dataElements;
+    }else if(dataSet.dataSetElements && dataSet.dataSetElements.length > 0){
+      dataSet.dataSetElements.forEach((dataSetElement :any)=>{
+        dataElements.push(dataSetElement.dataElement);
+      });
+    }
+    return dataElements;
+  }
+
 }

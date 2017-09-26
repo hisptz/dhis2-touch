@@ -52,7 +52,7 @@ export class DataEntryPage implements OnInit{
     this.icons.period = "assets/data-entry/period.png";
     this.icons.goToDataEntryForm = "assets/data-entry/enterDataPen.png";
 
-    this.loadingMessage = "Loading user information";
+    this.loadingMessage = "Loading. user information";
     this.isLoading = true;
     this.currentPeriodOffset = 0;
     this.isDataSetDimensionApplicable = false;

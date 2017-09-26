@@ -78,11 +78,7 @@ export class EventCapturePage implements OnInit{
     }else {
       this.programLabel = "Touch to select Programs";
     }
-    if(this.periodSelectionProvider.lastSelectedPeriod){
-      this.periodLabel = this.periodSelectionProvider.lastSelectedPeriod;
-    }else {
-      this.periodLabel = "Touch to select Period";
-    }
+
 
   }
 
@@ -156,7 +152,7 @@ export class EventCapturePage implements OnInit{
           this.selectedProgram = selectedProgram;
 
           this.updateEventSelections();
-          this.loadPeriodSelection()
+
         }
       });
       modal.present();
@@ -165,40 +161,6 @@ export class EventCapturePage implements OnInit{
     }
   }
 
-  loadPeriodSelection(){
-    let periodType = this.selectedDataSet.periodType;
-    let openFuturePeriods = parseInt(this.selectedDataSet.openFuturePeriods);
-    let periods = this.periodSelectionProvider.getPeriods(periodType,openFuturePeriods,this.currentPeriodOffset);
-    if(periods && periods.length > 0){
-      this.selectedPeriod = periods[0];
-
-    }else{
-      this.selectedPeriod = {};
-    }
-    this.updateEventSelections();
-  }
-
-  openPeriodList(){
-
-    if(this.programNamesByUserRoles.length > 0){
-      let modal = this.modalCtrl.create('PeriodSelectionPage', {
-        periodType: this.selectedDataSet.periodType,
-        currentPeriodOffset : this.currentPeriodOffset,
-        openFuturePeriods: this.selectedDataSet.openFuturePeriods,
-        currentPeriod : this.selectedPeriod
-      });
-      modal.onDidDismiss((data : any)=>{
-        if(data && data.selectedPeriod ){
-          this.selectedPeriod = data.selectedPeriod;
-          this.currentPeriodOffset = data.currentPeriodOffset;
-          this.updateEventSelections();
-        }
-      });
-      modal.present();
-    }else{
-      this.appProvider.setNormalNotification("Please select Program first");
-    }
-  }
 
 
 

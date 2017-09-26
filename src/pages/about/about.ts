@@ -33,6 +33,8 @@ export class AboutPage implements OnInit{
 
   dataValuesStorage : any = { online : 0,offline : 0};
 
+
+
   constructor(public navCtrl: NavController,
               private appProvider : AppProvider,
               private aboutProvider : AboutProvider, private dataValuesProvider: DataValuesProvider, private userProvider: UserProvider) {
@@ -76,6 +78,10 @@ export class AboutPage implements OnInit{
     })
   }
 
+  ionViewDidEnter(){
+    this.ngOnInit();
+  }
+
   toggleAboutContents(content){
     if(content && content.id){
       if(this.isAboutContentOpen[content.id]){
@@ -100,11 +106,12 @@ export class AboutPage implements OnInit{
         this.dataValuesStorage.online = syncedDataValues.length;
         this.dataValuesStorage["synced"] = syncedDataValues;
         this.dataValuesStorage["not-synced"] = unSyncedDataValues;
+
       },error=>{
         if(ionRefresher){
           ionRefresher.complete();
         }
-        this.appProvider.setNormalNotification('Fail.. to loading data values storage status');
+        this.appProvider.setNormalNotification('Fail to loading data values storage status');
         this.isLoading = false;
       });
     },error=>{

@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { AboutPage } from './about';
 import {SharedModule} from "../../components/shared.module";
+import {DataElementSyncPage} from "./data-element-sync";
 import {AboutModule} from "../../components/about.module";
 
 @NgModule({
   declarations: [
-    AboutPage,
+    DataElementSyncPage,
   ],
   imports: [
-    IonicPageModule.forChild(AboutPage),SharedModule, AboutModule
+    IonicPageModule.forChild(DataElementSyncPage),SharedModule, AboutModule
   ],
 })
-export class AboutPageModule {}
+export class DataElementSnycPageModule {}
