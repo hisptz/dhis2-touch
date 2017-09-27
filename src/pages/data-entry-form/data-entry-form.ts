@@ -190,6 +190,10 @@ export class DataEntryFormPage implements OnInit{
     modal.onDidDismiss((pager : any)=>{
       if(pager && pager.page){
         this.pager = pager;
+        //scroll form to the top
+        setTimeout(() => {
+          this.content.scrollToTop(1300);
+        },200);
       }
     });
     modal.present();
