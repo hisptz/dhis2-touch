@@ -29,7 +29,7 @@ export class DataEntryPage implements OnInit{
   loadingMessage : string;
   isFormReady : boolean;
   isDataSetDimensionApplicable : boolean;
-  isDataSetDimensionApplicableCategories : string;
+  isDataSetDimensionApplicableCategoriesMessage : string;
   organisationUnitLabel : string;
   dataSetLabel : string;
   periodLabel : string;
@@ -217,14 +217,15 @@ export class DataEntryPage implements OnInit{
       let categories = this.dataSetProvider.getDataSetCategoryComboCategories(this.selectedOrgUnit.id,this.selectedDataSet.categoryCombo.categories);
       dataSetCategoryCombo['categories'] = categories;
       this.isDataSetDimensionApplicable = true;
-      this.isDataSetDimensionApplicableCategories = "Options for";
+
+      this.isDataSetDimensionApplicableCategoriesMessage = "All";
       categories.forEach((category: any)=>{
         if(category.categoryOptions && category.categoryOptions.length == 0){
-          this.isDataSetDimensionApplicableCategories = this.isDataSetDimensionApplicableCategories + " " + category.name.toLowerCase();
+          this.isDataSetDimensionApplicableCategoriesMessage = this.isDataSetDimensionApplicableCategoriesMessage + " " + category.name.toLowerCase();
           this.isDataSetDimensionApplicable = false;
         }
       });
-      this.isDataSetDimensionApplicableCategories += " are not applicable on " + this.selectedOrgUnit.name;
+      this.isDataSetDimensionApplicableCategoriesMessage += " disaggregation are restricted from entry in " + this.selectedOrgUnit.name + ", choose a different form or contact your support desk";
     }
     this.selectedDataDimension = [];
     this.dataSetCategoryCombo = dataSetCategoryCombo;

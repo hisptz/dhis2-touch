@@ -43,7 +43,7 @@
             </div>
           </div>
           <div class="item-card" padding-top padding-bottom *ngIf="!isDataSetDimensionApplicable">
-            <warning [warningMessage]="isDataSetDimensionApplicableCategories" ></warning>
+            <warning [warningMessage]="isDataSetDimensionApplicableCategoriesMessage" ></warning>
           </div>
         </div>
         <div *ngIf="isFormReady" class="item-card" padding-top padding-bottom full (tap)="openDataEntryForm()">
