@@ -44,7 +44,7 @@ export class InputContainerComponent implements OnInit{
           this.fieldLabelKey = this.dataElement[dataEntrySettings.label];
         }
       }
-    })
+    });
   }
 
   getListLayoutLabel(categoryComboName,categoryOptionComboName){

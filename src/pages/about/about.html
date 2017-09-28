@@ -68,20 +68,32 @@
             </ion-row>
           </div>
           <div *ngIf="aboutContent.id == 'dataValues'">
-            <ion-item  (tap)="viewDataValuesSynchronisationStatusByDataSets('synced')">
-              <ion-label>Synced  {{ dataValuesStorage.online }}</ion-label>
-            </ion-item>
-            <ion-item (tap)="viewDataValuesSynchronisationStatusByDataSets('not-synced')">
-              <ion-label><b>Not Synced</b> {{ dataValuesStorage.offline }}</ion-label>
-            </ion-item>
+            <div class="item-card" color="font-color" (tap)="viewDataValuesSynchronisationStatusByDataSets('synced')" >
+              <ion-item >
+                Synced
+                <ion-badge color="icon-color" item-end>{{ dataValuesStorage.online }}</ion-badge>
+              </ion-item>
+            </div>
+            <div class="item-card" color="font-color" (tap)="viewDataValuesSynchronisationStatusByDataSets('not-synced')">
+              <ion-item >
+                Not Synced
+                <ion-badge color="icon-color" item-end>{{ dataValuesStorage.offline }}</ion-badge>
+              </ion-item>
+            </div>
           </div>
           <div *ngIf="aboutContent.id == 'eventStatus'">
-            <ion-item>
-              <ion-label>Synced </ion-label>
-            </ion-item>
-            <ion-item >
-              <ion-label><b>Not Synced</b></ion-label>
-            </ion-item>
+            <div class="item-card" color="font-color" >
+              <ion-item >
+                Synced
+                <ion-badge color="icon-color" item-end> 0</ion-badge>
+              </ion-item>
+            </div>
+            <div class="item-card" color="font-color" >
+              <ion-item >
+                Not Synced
+                <ion-badge color="icon-color" item-end> 0 </ion-badge>
+              </ion-item>
+            </div>
           </div>
         </div>
       </div>

@@ -21,16 +21,13 @@ export class AboutPage implements OnInit{
 
   logoUrl : string;
   currentUser: any;
-
   appInformation : any;
   systemInfo : any;
-
   loadingMessage : string;
   isLoading : boolean = true;
-
+  hasAllDataBeenLoaded :boolean = false;
   aboutContents : Array<any>;
   isAboutContentOpen : any = {};
-
   dataValuesStorage : any = { online : 0,offline : 0};
 
 
@@ -47,39 +44,48 @@ export class AboutPage implements OnInit{
     this.aboutContents = this.aboutProvider.getAboutContentDetails();
     this.userProvider.getCurrentUser().then((currentUser: any) => {
       this.currentUser = currentUser;
-      this.aboutProvider.getAppInformation().then(appInformation => {
-        this.appInformation = appInformation;
-        this.loadingMessage = 'Loading system information';
-        this.aboutProvider.getSystemInformation().then(systemInfo => {
-          this.systemInfo = systemInfo;
-          if (this.aboutContents.length > 0) {
-            this.toggleAboutContents(this.aboutContents[0]);
-          }
-          this.loadingDataValueStatus();
-
-          this.isLoading = false;
-          this.loadingMessage = '';
-        }).catch(error => {
-          this.isLoading = false;
-          this.loadingMessage = '';
-          console.log(JSON.stringify(error));
-          this.appProvider.setNormalNotification('Fail to load system information');
-        });
-      }).catch(error => {
-        this.isLoading = false;
-        this.loadingMessage = '';
-        console.log(JSON.stringify(error));
-        this.appProvider.setNormalNotification('Fail to load app information');
-      })
-
+      this.loadAllData();
     }, error => {
       this.isLoading = false;
       this.appProvider.setNormalNotification("Fail to load user information");
     })
   }
 
+
+  loadAllData(){
+    this.hasAllDataBeenLoaded = false;
+    this.aboutProvider.getAppInformation().then(appInformation => {
+      this.appInformation = appInformation;
+      this.loadingMessage = 'Loading system information';
+      this.aboutProvider.getSystemInformation().then(systemInfo => {
+        this.systemInfo = systemInfo;
+        if (this.aboutContents.length > 0) {
+          if(this.isAboutContentOpen && !this.isAboutContentOpen[this.aboutContents[0].id]){
+            this.toggleAboutContents(this.aboutContents[0]);
+          }
+        }
+        this.loadingDataValueStatus();
+
+        this.isLoading = false;
+        this.loadingMessage = '';
+      }).catch(error => {
+        this.isLoading = false;
+        this.loadingMessage = '';
+        console.log(JSON.stringify(error));
+        this.appProvider.setNormalNotification('Fail to load system information');
+      });
+    }).catch(error => {
+      this.isLoading = false;
+      this.loadingMessage = '';
+      console.log(JSON.stringify(error));
+      this.appProvider.setNormalNotification('Fail to load app information');
+    });
+  }
+
   ionViewDidEnter(){
-    this.ngOnInit();
+    if(this.hasAllDataBeenLoaded){
+      this.loadAllData();
+    }
   }
 
   toggleAboutContents(content){
@@ -100,13 +106,13 @@ export class AboutPage implements OnInit{
     this.loadingMessage = 'Loading data values storage status';
     this.isLoading = true;
     this.dataValuesProvider.getDataValuesByStatus("synced",this.currentUser).then((syncedDataValues : any)=>{
-
       this.dataValuesProvider.getDataValuesByStatus("not-synced",this.currentUser).then((unSyncedDataValues : any)=>{
         this.dataValuesStorage.offline = unSyncedDataValues.length;
         this.dataValuesStorage.online = syncedDataValues.length;
         this.dataValuesStorage["synced"] = syncedDataValues;
         this.dataValuesStorage["not-synced"] = unSyncedDataValues;
-
+        //@todo move this when loading all data even events
+        this.hasAllDataBeenLoaded = true;
       },error=>{
         if(ionRefresher){
           ionRefresher.complete();

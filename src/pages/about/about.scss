@@ -1,15 +1,21 @@
 page-about {
   .about-page {
-    //background-image: url("../assets/about-icons/about-page.png");
-    background-repeat: no-repeat;
-    background-position: inherit;
   }
   .about-details {
     padding-top: 5%;
     color: rgba(59, 57, 63, 0.76);
   }
-
   .content {
     padding-bottom: 5px;
+  }
+
+  .item-md.item-block .item-inner {
+    padding-right: 0px;
+    border-bottom: 0px solid #E6E6E7;
+  }
+
+  .item-ios.item-block .item-inner {
+    padding-right: 0px;
+    border-bottom: 0px solid #E6E6E7;
   }
 }
