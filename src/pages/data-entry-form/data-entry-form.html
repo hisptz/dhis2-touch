@@ -24,9 +24,12 @@
             <b>Period</b> : {{ entryFormParameter.period.name }}<br>
             <span *ngIf="!isLoading" ><b>Synced</b> : {{ storageStatus.online }} <b>Not synced</b> : {{storageStatus.offline }}</span>
           </div>
-          <div *ngIf="!isLoading && indicators"  >
-            <div (click)="viewEntryFormIndicators(indicators)">
-              <span style="color: #488aff;" ><b>Indicators </b>: {{ indicators.length }}</span>
+          <div *ngIf="!isLoading && indicators && indicators.length > 0"  >
+            <div (click)="viewEntryFormIndicators(indicators)" class="item-card" color="font-color" >
+              <ion-item >
+                Available Indicators
+                <ion-badge color="icon-color" item-end>{{ indicators.length }}</ion-badge>
+              </ion-item>
             </div>
           </div>
         </div>
