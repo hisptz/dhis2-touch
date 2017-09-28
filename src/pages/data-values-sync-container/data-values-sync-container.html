@@ -23,7 +23,9 @@
       [syncStatus]="syncStatus"
       [dataSetIds]="dataSetIds"
       [isDataSetDataDeletionOnProgress]="isDataSetDataDeletionOnProgress"
+      [syncProcess]="syncProcess"
       (onDeleteDataSetData)="onDeleteDataSetData($event)"
+      (onSyncDataSetData)="onSyncingDataSetData($event)"
       [hasDataPrepared]="hasDataPrepared"></data-set-sync>
 
 

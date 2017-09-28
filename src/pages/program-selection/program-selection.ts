@@ -17,6 +17,7 @@ export class ProgramSelection implements OnInit{
 
   public programsList : any;
   public currentSelectedProgram : string;
+  icons:any = {};
 
   constructor(public viewCtrl: ViewController,public params : NavParams, public programProvider: ProgramsProvider) {}
 
@@ -25,6 +26,7 @@ export class ProgramSelection implements OnInit{
   }
 
   setModalData(){
+    this.icons.program = "assets/event-capture/program.png";
     this.currentSelectedProgram = "";
     this.programsList = this.params.get('data');
     let selectedProgram = this.params.get('selectedProgram');
@@ -38,7 +40,7 @@ export class ProgramSelection implements OnInit{
     this.programsList = this.params.get('data');
     if(val && val.trim() != ''){
       this.programsList = this.programsList.filter((program:any) => {
-        return (program.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
+        return (program.toLowerCase().indexOf(val.toLowerCase()) > -1);
       })
     }
   }

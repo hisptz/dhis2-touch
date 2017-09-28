@@ -151,7 +151,7 @@ export class SyncProvider {
           promises.push(
             this.orgUnitsProvider.downloadingOrganisationUnitsFromServer(currentUser.userOrgUnitIds, currentUser).then((response: any) => {
               data[resource] = response;
-              alert("OrgUnits are: "+JSON.stringify(response.programs))
+
             }, error => {
             })
           );
@@ -205,8 +205,7 @@ export class SyncProvider {
           );
         } else if(resource == "programs"){
           promises.push(
-            this.programProvider.downloadProgramsFromServer(currentUser).then((response: any) => {
-              alert("Programs are: "+JSON.stringify(response))
+             this.programProvider.downloadProgramsFromServer(currentUser).then((response: any) => {
               data[resource] = response[resource];
             }, error => {
             })

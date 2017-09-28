@@ -35,11 +35,7 @@ export class EventsProvider {
       this.httpClient.get(url,currentUser).then((eventsData: any)=>{
         eventsData = JSON.parse(eventsData.data);
 
-        // alert("Events Downloaded: "+JSON.stringify(events.events))
-        // alert("Events Downloaded: "+JSON.stringify(eventsData.events[2].dataValues))
          alert("Events Downloaded Length: "+JSON.stringify(eventsData.events.length))
-       // alert("Events Downloaded: "+JSON.stringify(eventsData.events[9].orgUnitName))
-
 
          resolve(eventsData)
 
@@ -105,12 +101,12 @@ export class EventsProvider {
    * @param currentUser
    * @returns {Promise<T>}
    */
-  loadEventsFromServer(orgUnit,program,dataDimensions,currentUser){
-    let url = "/api/25/events.json?orgUnit="+orgUnit.id + "&programStage="+program.programStages[0].id;
+  loadEventsFromServer(orgUnit,programId,programComboId,dataDimensions,currentUser){
+    let url = "/api/25/events.json?orgUnit="+orgUnit.id + "&programStage="+programId;
     if(dataDimensions.length > 0){
       let attributeCos = dataDimensions.toString();
-      attributeCos = attributeCos.replace(/,/g, ';');
-      url += "&attributeCc="+program.categoryCombo.id+"&attributeCos="+attributeCos;
+      //attributeCos = attributeCos.replace(/,/g, ';');
+      url += "&attributeCc="+programComboId+"&attributeCos="+attributeCos;
     }
     url += "&pageSize=50&page=1&totalPages=true";
     return new Promise((resolve, reject) =>{

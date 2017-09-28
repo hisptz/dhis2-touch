@@ -307,11 +307,9 @@ export class SqlLiteProvider {
 
           resolve(this.formatQueryReturnResult(result, columns));
         }, (error) => {
-
           reject(error);
         });
       }).catch(e => {
-
         reject();
         console.log(e);
       });
