@@ -9,6 +9,8 @@ import {PeriodSelectionProvider} from "../../providers/period-selection/period-s
 import {SqlLiteProvider} from "../../providers/sql-lite/sql-lite";
 import {EventsProvider} from "../../providers/events/events";
 import {NetworkAvailabilityProvider} from "../../providers/network-availability/network-availability";
+import {ProgramStageDataElementsProvider} from "../../providers/program-stage-data-elements/program-stage-data-elements";
+import {DataElementsProvider} from "../../providers/data-elements/data-elements";
 
 /**
  * Generated class for the EventCapturePage page.
@@ -32,6 +34,7 @@ export class EventCapturePage implements OnInit{
   eventListSections: any;
   isAllParameterSet: boolean;
   selectedOrgUnit : any;
+  selectedOrgUnitId: any;
   selectedProgram: any;
   selectedProgramStages: any;
   organisationUnitLabel: string;
@@ -43,10 +46,13 @@ export class EventCapturePage implements OnInit{
   selectedProgramCatCombo:any;
   assignedProgramCategoryOptions : any;
   programInfo : any;
+  dataOnEvents:any;
   CategoryOptionLabel:any;
   programLoading: boolean = false;
   hasOptions: boolean = false;
   currentSelectionStatus :any = {};
+  eventsData: any;
+
 
   currentPeriodOffset: any;
   selectedOption: any;
@@ -58,7 +64,8 @@ export class EventCapturePage implements OnInit{
   constructor(public navCtrl: NavController, public navParams: NavParams, public user: UserProvider, private modalCtrl : ModalController,
               public organisationUnitsProvider: OrganisationUnitsProvider, public programsProvider: ProgramsProvider, public appProvider: AppProvider,
               public periodSelectionProvider: PeriodSelectionProvider, public sqlLiteProvider: SqlLiteProvider, public eventProvider: EventsProvider,
-              public NetworkAvailability : NetworkAvailabilityProvider) {
+              public NetworkAvailability : NetworkAvailabilityProvider, public programStageDataElement:ProgramStageDataElementsProvider,
+              public dataElementsProvider:DataElementsProvider) {
   }
 
   ngOnInit(){
@@ -84,6 +91,7 @@ export class EventCapturePage implements OnInit{
     if(this.organisationUnitsProvider.lastSelectedOrgUnit){
       this.selectedOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
       this.organisationUnitLabel = this.selectedOrgUnit.name;
+      this.selectedOrgUnitId = this.selectedOrgUnit.id;
     }else{
       this.organisationUnitLabel = "Touch to select organisation Unit";
     }
@@ -98,6 +106,9 @@ export class EventCapturePage implements OnInit{
       this.CategoryOptionLabel = "Touch to select options";
 
     }
+
+
+    //alert("UnitId : "+this.selectedOrgUnitId+ " progId :"+this.selectedProgramId)
 
 
   }
@@ -238,6 +249,7 @@ export class EventCapturePage implements OnInit{
       this.hasOptions = true;
     }else {
       this.hasOptions = false;
+      //this.loadEventsToDisplay();
     }
   }
 
@@ -254,6 +266,7 @@ export class EventCapturePage implements OnInit{
 
           this.selectedOption = selectedOption;
         this.updateEventSelections();
+        //this.loadEventsToDisplay();
 
 
       });
@@ -263,6 +276,9 @@ export class EventCapturePage implements OnInit{
       this.appProvider.setNormalNotification("There are no Implementing partner's to select on "+this.selectedProgram );
     }
   }
+
+
+
 
 
 
