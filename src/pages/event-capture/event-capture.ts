@@ -5,11 +5,8 @@ import {OrganisationUnitsProvider} from "../../providers/organisation-units/orga
 import {ProgramsProvider} from "../../providers/programs/programs";
 import {AppProvider} from "../../providers/app/app";
 import {ProgramSelection} from "../program-selection/program-selection";
-import {PeriodSelectionProvider} from "../../providers/period-selection/period-selection";
 import {SqlLiteProvider} from "../../providers/sql-lite/sql-lite";
 import {EventsProvider} from "../../providers/events/events";
-import {NetworkAvailabilityProvider} from "../../providers/network-availability/network-availability";
-import {ProgramStageDataElementsProvider} from "../../providers/program-stage-data-elements/program-stage-data-elements";
 import {DataElementsProvider} from "../../providers/data-elements/data-elements";
 
 /**
@@ -52,6 +49,11 @@ export class EventCapturePage implements OnInit{
   hasOptions: boolean = false;
   currentSelectionStatus :any = {};
   eventsData: any;
+  tableFormatHeader: any;
+  tableFormatRow:any;
+  usedDataElements:any;
+  usedValues:any;
+  tableFormat:any;
 
 
   currentPeriodOffset: any;
@@ -63,9 +65,7 @@ export class EventCapturePage implements OnInit{
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public user: UserProvider, private modalCtrl : ModalController,
               public organisationUnitsProvider: OrganisationUnitsProvider, public programsProvider: ProgramsProvider, public appProvider: AppProvider,
-              public periodSelectionProvider: PeriodSelectionProvider, public sqlLiteProvider: SqlLiteProvider, public eventProvider: EventsProvider,
-              public NetworkAvailability : NetworkAvailabilityProvider, public programStageDataElement:ProgramStageDataElementsProvider,
-              public dataElementsProvider:DataElementsProvider) {
+               public sqlLiteProvider: SqlLiteProvider, public eventProvider: EventsProvider, public dataElementsProvider:DataElementsProvider) {
   }
 
   ngOnInit(){
@@ -104,11 +104,7 @@ export class EventCapturePage implements OnInit{
       this.CategoryOptionLabel = this.programsProvider.lastSelectedProgramCategoryOption;
     }else {
       this.CategoryOptionLabel = "Touch to select options";
-
     }
-
-
-    //alert("UnitId : "+this.selectedOrgUnitId+ " progId :"+this.selectedProgramId)
 
 
   }
@@ -121,9 +117,7 @@ export class EventCapturePage implements OnInit{
        this.userRoleData = userData.userRoles;
       userData.userRoles.forEach((userRole:any)=>{
         if (userRole.programs) {
-
           userRole.programs.forEach((program:any)=>{
-
             this.programIdsByUserRoles.push(program.id);
             this.programNamesByUserRoles.push(program.name);
 
@@ -152,16 +146,12 @@ export class EventCapturePage implements OnInit{
 
      let programTable:any;
      this.sqlLiteProvider.getAllDataFromTable("programs", this.currentUser.currentDatabase).then((responseAllData)=>{
-
        programTable = responseAllData;
-
-     })
-
+     });
 
      let attributeVaue = [this.selectedOrgUnit.id];
      this.organisationUnitsProvider.getOrgUnitprogramsFromServer(attributeVaue, this.currentUser).then((response)=>{
        let orgUnitPrograms = response["programs"];
-
          programTable.forEach((programData:any)=>{
 
            orgUnitPrograms.forEach((program:any)=>{
@@ -177,10 +167,8 @@ export class EventCapturePage implements OnInit{
                categoryCombo: programData.categoryCombo,
                categoryOptions: temCatg[0].categoryOptions
            })
-
              }
          })
-
        });
        this.programLoading = false;
      }, error=>{});
@@ -190,28 +178,22 @@ export class EventCapturePage implements OnInit{
 
 
   openProgramList(){
-
-
     if(this.programNamesByUserRoles.length > 0){
       let modal = this.modalCtrl.create('ProgramSelection',{data : this.assignedPrograms, currentProgram :this.selectedProgram  });
       modal.onDidDismiss((selectedProgram : any)=>{
         if(selectedProgram.length > 0){
 
           this.selectedProgram = selectedProgram;
-
           this.programInfo.forEach((programs:any)=>{
             if(programs.name === this.selectedProgram){
               this.selectedProgramId = programs.id;
               this.selectedProgramStages = programs.programStages;
               this.selectedProgramCatCombo = programs.categoryCombo;
-
             }
           });
 
           this.updateEventSelections();
           this.loadProgramCategoryOptions();
-
-
         }
       });
       modal.present();
@@ -223,23 +205,17 @@ export class EventCapturePage implements OnInit{
 
   loadProgramCategoryOptions(){
     this.assignedProgramCategoryOptions = [];
-
     this.programInfo.forEach((programs:any)=>{
       if(programs.name === this.selectedProgram){
 
         programs.categoryOptions.forEach((option:any)=>{
           if(option.name === 'default'){
-
           }else {
             this.assignedProgramCategoryOptions.push(option.name);
           }
-
         })
-
       }
-
-    })
-
+    });
     this.hasOptionsCategory()
 
   }
@@ -249,7 +225,7 @@ export class EventCapturePage implements OnInit{
       this.hasOptions = true;
     }else {
       this.hasOptions = false;
-      //this.loadEventsToDisplay();
+      this.loadEventsToDisplay();
     }
   }
 
@@ -266,8 +242,7 @@ export class EventCapturePage implements OnInit{
 
           this.selectedOption = selectedOption;
         this.updateEventSelections();
-        //this.loadEventsToDisplay();
-
+        this.loadEventsToDisplay();
 
       });
       modal.present();
@@ -278,11 +253,57 @@ export class EventCapturePage implements OnInit{
   }
 
 
+  loadEventsToDisplay(){
+    this.dataOnEvents =[];
+    this.usedDataElements = [];
+
+    this.eventProvider.downloadEventsFromServer(this.selectedOrgUnitId,this.selectedProgramId, this.currentUser).then((eventsData:any)=>{
+      let eventDataValues:any;
+      this.eventsData = eventsData.events;
+
+      this.eventsData.forEach((eventInfo:any)=>{
+        eventDataValues = eventInfo.dataValues;
+
+        eventDataValues.forEach((dataRow:any)=>{
+
+          this.usedDataElements.push(dataRow.dataElement);
+
+          this.dataOnEvents.push({
+            eventId: eventInfo.event,
+            dataElementId: dataRow.dataElement ,
+             dataValue: dataRow.value
+          })
+        });
+      });
+      this.loadEvents();
+    })
+
+  }
 
 
+  loadEvents(){
+    this.tableFormatHeader = [];
+    this.tableFormatRow = [];
+    let SortedDataElementIds = Array.from( new Set(this.usedDataElements) );
 
+    SortedDataElementIds.forEach((list:any)=> {
+      this.dataElementsProvider.getDataElementsByName(list, this.currentUser).then((results: any) => {
 
+        this.tableFormatHeader.push({
+          header: results[0].displayName,
+          id: results[0].id
 
+        })
+      });
+    });
 
+    this.dataOnEvents.forEach((data:any)=>{
+      this.tableFormatRow.push({
+        event: data.eventId,
+        value: data.dataValue,
+        dataElmId: data.dataElementId
+      })
+    })
 
+  }
 }

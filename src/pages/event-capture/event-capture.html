@@ -39,4 +39,23 @@
 
   </ion-grid>
 
+
+  <!-- display events as table -->
+  <div style="overflow-x: auto">
+    <table>
+      <thead>
+      <tr>
+        <th *ngFor="let header of tableFormatHeader">{{header.header}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let row of tableFormatRow" (tap)="goToEventView(row)" >
+        <td >{{row.value}} </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+
 </ion-content>

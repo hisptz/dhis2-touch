@@ -1,7 +1,9 @@
 
-      <div *ngFor="let dataSetId of dataSetIds"  >
+      <div *ngFor="let dataSetId of dataSetIds" class="whiteBackground" >
         <div *ngIf="dataSetsSyncObjects[dataSetId] && dataSetsSyncObjects[dataSetId].name != ''" >
-          <ion-item class="content">
+          <!--<ion-card>-->
+          <ion-card class="content">
+            <ion-item class="content">
               <div (tap)="viewMoreDetailsOnEntryForm(dataSetId)">
                   <p >
                     <b>Form : </b>{{dataSetsSyncObjects[dataSetId].name}}<br>
@@ -22,7 +24,9 @@
             <ion-icon *ngIf="isDataSetDataDeletionOnProgress[dataSetId]"
                       margin-right="10px" item-right><page-loading loadingSize="small"></page-loading></ion-icon>
 
-          </ion-item>
+            </ion-item>
+          </ion-card>
+          <!--</ion-card>-->
         </div>
       </div>
 

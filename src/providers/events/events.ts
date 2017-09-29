@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import {SqlLiteProvider} from "../sql-lite/sql-lite";
 import {HttpClientProvider} from "../http-client/http-client";
+import {AppProvider} from "../app/app";
 
 /*
   Generated class for the EventsProvider provider.
@@ -16,7 +17,7 @@ export class EventsProvider {
   public resource : string;
   lastChoosedOrgUnit: any;
 
-  constructor(public http: Http, private sqlLite : SqlLiteProvider,public httpClient: HttpClientProvider) {
+  constructor(public http: Http, private sqlLite : SqlLiteProvider,public httpClient: HttpClientProvider, public appProvider:AppProvider) {
     this.resource = "events";
   }
 
@@ -35,15 +36,11 @@ export class EventsProvider {
       this.httpClient.get(url,currentUser).then((eventsData: any)=>{
         eventsData = JSON.parse(eventsData.data);
 
-         alert("Events Downloaded Length: "+JSON.stringify(eventsData.events.length))
-
          resolve(eventsData)
-
 
       },error=>{
         reject(error);
-        alert("Events Download failed")
-
+        this.appProvider.setTopNotification("Downloading events from server failed")
       });
     });
   }

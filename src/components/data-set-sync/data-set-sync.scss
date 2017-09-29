@@ -1,3 +1,20 @@
 data-set-sync {
+  .whiteBackground{
+    background-color: #ffffff;
+  }
+  .item-md,.item-ios,.item .item-block .item-md .item-input,.item-inner,.input-wrapper .item-inner{
+    background-color: #ffffff;
+  }
+  .item-md,.item-ios{
+    background-color: #ffffff;
+  }
+  .item-md.item-block .item-inner {
+    padding-right: 5px;
+    border-bottom: 1px solid #E6E6E7;
+  }
+  .item-ios.item-block .item-inner {
+    padding-right: 5px;
+    border-bottom: 1px solid #E6E6E7;
+  }
 
 }
