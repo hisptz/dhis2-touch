@@ -17,7 +17,7 @@
     <div *ngIf="isLoading">
       <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></page-loading>
     </div>
-    <div *ngIf="!isLoading">
+    <div *ngIf="!isLoading" class="item-card">
       <div *ngFor="let info of userInformation">
         <div class="content">
           <ion-row>
