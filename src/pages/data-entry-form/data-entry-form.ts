@@ -199,6 +199,14 @@ export class DataEntryFormPage implements OnInit{
     modal.present();
   }
 
+  viewUserCompletenessInformation(dataSetsCompletenessInfo){
+    let username = (dataSetsCompletenessInfo && dataSetsCompletenessInfo.storedBy) ? dataSetsCompletenessInfo.storedBy: "";
+    let modal = this.modalCtrl.create('EntryFormCompletenessPage',{
+      username : username,currentUser : this.currentUser
+    });
+    modal.present();
+  }
+
   viewEntryFormIndicators(indicators){
     if(indicators && indicators.length > 0){
       let modal = this.modalCtrl.create('DataEntryIndicatorsPage',{
@@ -264,6 +272,10 @@ export class DataEntryFormPage implements OnInit{
 
   //@todo support offline completeness and un completeness of form
   updateDataSetCompleteness(){
+
+    //@todo scroll to bottom
+    this.content.scrollToBottom(1000);
+
     this.isDataSetCompletenessProcessRunning = true;
     let dataSetId = this.dataSet.id;
     let period = this.entryFormParameter.period.iso;
