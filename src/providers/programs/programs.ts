@@ -28,24 +28,15 @@ export class ProgramsProvider {
     return this.lastSelectedProgram;
   }
 
-  resetPrograms(){
-    this.lastSelectedProgram = null;
-  }
-
   setLastSelectedProgramCategoryOption(programOption){
     this.lastSelectedProgramCategoryOption = programOption;
   }
 
-  getLastSelectedProgramCategoryOption(program){
-    return this.lastSelectedProgramCategoryOption ;
-  }
-
   downloadProgramsFromServer(currentUser){
-    let fields= "id,name,withoutRegistration,programType,categoryCombo[id,name,categories[id,name,categoryOptions[name,id]]],programStages[id,name,programStageprograms[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]],programStageSections[id]],organisationUnits[id],programIndicators,translations,attributeValues,validationCriterias,programRuleVariables,programTrackedEntityAttributes,programRules";
+    let fields= "id,name,programType,withoutRegistration,ignoreOverdueEvents,skipOffline,captureCoordinates,enrollmentDateLabel,onlyEnrollOnce,selectIncidentDatesInFuture,incidentDateLabel,useFirstStageDuringRegistration,completeEventsExpiryDays,displayFrontPageList,,categoryCombo[id,name,categories[id,name,categoryOptions[name,id]]],programStages[id,name,programStageDataElements[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id]],programStageSections[id]],organisationUnits[id],programIndicators[id,name,description,expression],translations,attributeValues[value,attribute[name]],validationCriterias,programRuleVariables,programTrackedEntityAttributes[id,mandatory,externalAccess,allowFutureDate,displayInList,sortOrder,trackedEntityAttribute[id,name,code,name,formName,description,confidential,searchScope,translations,inherit,legendSets,optionSet[name,options[name,id,code]]unique,orgunitScope,programScope,displayInListNoProgramaggregationType,displayInListNoProgram,pattern,sortOrderInListNoProgram,generated,displayOnVisitSchedule,valueType,sortOrderInVisitSchedule]],programRules";
       let url = "/api/25/"+this.resource+".json?paging=false&fields=" + fields;
     return new Promise((resolve, reject)=> {
       this.HttpClient.get(url,currentUser).then((response : any)=>{
-        //response = response.json();
         response = JSON.parse(response.data);
         resolve(response);
       },error=>{
@@ -55,6 +46,7 @@ export class ProgramsProvider {
   }
 
   saveProgramsFromServer(programs,currentUser){
+    //programProgramRuleVariables,programProgramRules,programProgramTrackedEntityAttributes,trackedEntityAttribute,programIndicators,programProgramStages,programOrganisationUnits
     return new Promise((resolve, reject)=> {
       if(programs.length == 0){
         resolve();
@@ -66,57 +58,6 @@ export class ProgramsProvider {
           reject(error);
         });
       }
-    });
-  }
-
-  /**
-   * get programs assigned to user based on user roles as well as orgunit
-   * @param orgUnit
-   * @param programIdsByUserRoles
-   * @param currentUser
-   * @returns {Promise<T>}
-   */
-  getProgramsAssignedOnOrgUnitAndUserRoles(orgUnit,programIdsByUserRoles,currentUser){
-    let attribute = 'id';
-    let attributeValue =[];
-    let assignedPrograms = [];
-
-    return new Promise((resolve, reject)=>{
-
-         orgUnit.forEach((ogUnit:any)=>{
-            attributeValue.push(ogUnit.id);
-          // alert("OrgUnit prgramId : "+JSON.stringify(ogUnit.id))
-
-
-
-
-
-         });
-
-      alert("OrgUnit is: "+JSON.stringify(orgUnit))
-
-
-      this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeValue,currentUser.currentDatabase).then((programs : any)=>{
-        this.sortProgramList(programs);
-
-        alert("inside GetPrograms: "+JSON.stringify(programs))
-
-        // programs.forEach((program:any)=>{
-        //   assignedPrograms.push({
-        //     id: program.id,
-        //     name: program.name,
-        //     programType : program.programType,
-        //     programStages : program.programStages,
-        //     categoryCombo : program.categoryCombo
-        //   });
-        // });
-        resolve(assignedPrograms);
-
-      },error=>{
-        reject(error);
-        alert("Error to Fetch: "+JSON.stringify(error.message))
-      });
-
     });
   }
 
@@ -133,7 +74,6 @@ export class ProgramsProvider {
       if (a.name < b.name) {
         return -1;
       }
-      // a must be equal to b
       return 0;
     });
     return dataSetList;
@@ -147,25 +87,17 @@ export class ProgramsProvider {
    */
   getProgramById(programId,currentUser){
      let attribute = 'id';
-
     let attributeValue =[];
-
     attributeValue.push(programId);
-
-
-
-    //attributeValue.push(programId);
     return new Promise((resolve, reject)=> {
       this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeValue,currentUser.currentDatabase).then((programs:any)=>{
         if(programs.length > 0){
-
           resolve(programs[0]);
         }else{
           resolve({});
         }
       },error=>{
-
-        reject();
+        reject(error);
       });
     });
   }
@@ -179,25 +111,17 @@ export class ProgramsProvider {
    */
   getProgramByName(programName,currentUser){
     let attribute = 'name';
-
     let attributeValue =[];
-
     attributeValue.push(programName);
-
-
-
-    //attributeValue.push(programId);
     return new Promise((resolve, reject)=> {
       this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeValue,currentUser.currentDatabase).then((programs:any)=>{
         if(programs.length > 0){
-
           resolve(programs[0]);
         }else{
           resolve({});
         }
       },error=>{
-
-        reject();
+        reject(error);
       });
     });
   }
@@ -207,33 +131,8 @@ export class ProgramsProvider {
     let attributeKey = "organisationUnits";
     return new Promise((resolve, reject)=> {
       this.sqlLite.getDataFromTableByAttributes(this.resource,attributeKey,attributeValue,dataBaseName).then((programSource: any)=>{
-
         resolve(programSource);
       },error=>{reject(error)})
-    });
-  }
-
-
-  /**
-   *
-   * @param resource
-   * @param resourceValues
-   * @param databaseName
-   * @returns {Promise<T>}
-   */
-  saveMetadata(resourceValues,databaseName){
-
-    return new Promise((resolve, reject)=> {
-      if(resourceValues.length == 0){
-        resolve();
-      }else{
-        this.sqlLite.insertBulkDataOnTable(this.resource,resourceValues,databaseName).then(()=>{
-          resolve();
-        },error=>{
-          console.log(JSON.stringify(error));
-          reject(error);
-        });
-      }
     });
   }
 

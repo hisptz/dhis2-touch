@@ -376,7 +376,7 @@ export class LoginPage implements OnInit{
         },error=>{
           this.isLoginProcessActive = false;
           console.log(JSON.stringify(error));
-          this.AppProvider.setNormalNotification('Fail to Load programs.');
+          this.AppProvider.setNormalNotification('Fail to load programs.');
         });
       }
     }
@@ -386,23 +386,23 @@ export class LoginPage implements OnInit{
     if(this.isLoginProcessActive){
       let resource = 'programStageSections';
       this.currentResourceType = "event";
-      this.progressTracker[this.currentResourceType].message = "Loading program stage's sections";
+      this.progressTracker[this.currentResourceType].message = "Loading program stage sections";
       if(this.completedTrackedProcess.indexOf(resource) > -1){
-        this.progressTracker[this.currentResourceType].message = "Program stage's sections have been loaded";
+        this.progressTracker[this.currentResourceType].message = "Program stage sections have been loaded";
         this.updateProgressTracker(resource);
         this.downloadingIndicators();
       }else{
         this.programStageSectionProvider.downloadProgramsStageSectionsFromServer(this.currentUser).then(response=>{
           if(this.isLoginProcessActive){
-            this.progressTracker[this.currentResourceType].message = "Saving program stage's sections";
+            this.progressTracker[this.currentResourceType].message = "Saving program stage sections";
             this.programStageSectionProvider.saveProgramsStageSectionsFromServer(response[resource],this.currentUser).then(()=>{
-              this.progressTracker[this.currentResourceType].message = "Program stage's sections have been saved";
+              this.progressTracker[this.currentResourceType].message = "Program stage sections have been saved";
               this.updateProgressTracker(resource);
               this.downloadingIndicators();
             },error=>{
               this.isLoginProcessActive = false;
               console.log(JSON.stringify(error));
-              this.AppProvider.setNormalNotification('Fail to save program-stage sections.');
+              this.AppProvider.setNormalNotification('Fail to save program stage sections.');
             });
           }
         },error=>{
