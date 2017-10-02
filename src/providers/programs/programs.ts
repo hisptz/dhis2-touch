@@ -16,7 +16,7 @@ export class ProgramsProvider {
   public lastSelectedProgram : any;
   public lastSelectedProgramCategoryOption : any;
 
-  constructor(private sqlLite : SqlLiteProvider,private HttpClient : HttpClientProvider, private http: Http) {
+  constructor(private sqlLite : SqlLiteProvider,private HttpClient : HttpClientProvider) {
     this.resource = "programs";
   }
 
@@ -39,9 +39,6 @@ export class ProgramsProvider {
   getLastSelectedProgramCategoryOption(program){
     return this.lastSelectedProgramCategoryOption ;
   }
-
-
-
 
   downloadProgramsFromServer(currentUser){
     let fields= "id,name,withoutRegistration,programType,categoryCombo[id,name,categories[id,name,categoryOptions[name,id]]],programStages[id,name,programStageprograms[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]],programStageSections[id]],organisationUnits[id],programIndicators,translations,attributeValues,validationCriterias,programRuleVariables,programTrackedEntityAttributes,programRules";

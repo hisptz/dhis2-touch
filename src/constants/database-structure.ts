@@ -173,10 +173,10 @@ export const DATABASE_STRUCTURE = {
     columns: [
       {value: 'id', type: 'TEXT'},
       {value: 'name', type: 'TEXT'},
-      {value: 'denominatorDescription', type: 'TEXT'},
-      {value: 'numeratorDescription', type: 'TEXT'},
-      {value: 'numerator', type: 'TEXT'},
-      {value: 'denominator', type: 'TEXT'},
+      {value: 'denominatorDescription', type: 'LONGTEXT'},
+      {value: 'numeratorDescription', type: 'LONGTEXT'},
+      {value: 'numerator', type: 'LONGTEXT'},
+      {value: 'denominator', type: 'LONGTEXT'},
       {value: 'indicatorType', type: 'LONGTEXT'}
     ],
     isMetadata: true,
@@ -223,7 +223,6 @@ export const DATABASE_STRUCTURE = {
     displayName : "Constants",
     dependentTable : []
   },
-
   dataValues: {
     columns: [
       {value: 'id', type: 'TEXT'},
@@ -285,45 +284,125 @@ export const DATABASE_STRUCTURE = {
     displayName : "Events",
     dependentTable : []
   },
-
   programs: {
     columns: [
       {value: 'id', type: 'TEXT'},
       {value: 'name', type: 'TEXT'},
-      {value: 'withoutRegistration', type: 'TEXT'},
       {value: 'programType', type: 'TEXT'},
+      {value: 'withoutRegistration', type: 'TEXT'},
+      {value: 'ignoreOverdueEvents', type: 'TEXT'},
+      {value: 'skipOffline', type: 'TEXT'},
+      {value: 'captureCoordinates', type: 'TEXT'},
+      {value: 'enrollmentDateLabel', type: 'TEXT'},
+      {value: 'onlyEnrollOnce', type: 'TEXT'},
+      {value: 'selectIncidentDatesInFuture', type: 'TEXT'},
+      {value: 'incidentDateLabel', type: 'TEXT'},
+      {value: 'useFirstStageDuringRegistration', type: 'TEXT'},
+      {value: 'completeEventsExpiryDays', type: 'TEXT'},
+      {value: 'displayFrontPageList', type: 'TEXT'},
       {value: 'categoryCombo', type: 'LONGTEXT'},
-      {value: 'programStages', type: 'LONGTEXT'},
-      {value: 'programStageSections', type: 'LONGTEXT'},
-      {value: 'programIndicators', type: 'LONGTEXT'},
-      {value: 'translations', type: 'LONGTEXT'},
       {value: 'attributeValues', type: 'LONGTEXT'},
       {value: 'validationCriterias', type: 'LONGTEXT'},
-      {value: 'programRuleVariables', type: 'LONGTEXT'},
-      {value: 'programTrackedEntityAttributes', type: 'LONGTEXT'},
-      {value: 'programRules', type: 'LONGTEXT'},
-      {value: 'organisationUnits', type: 'LONGTEXT'}
+      {value: 'translations', type: 'LONGTEXT'}
     ],
     isMetadata: true,
     resourceType: "event",
     batchSize : 50,
     displayName : "Programs",
-    dependentTable : []
+    dependentTable : ["programProgramRuleVariables","programProgramRules","programProgramTrackedEntityAttributes","trackedEntityAttribute","programIndicators","programProgramStages","programOrganisationUnits"]
   },
-
-  programStageDataElements: {
+  programProgramRuleVariables: {
     columns: [
       {value: 'id', type: 'TEXT'},
-      {value: 'displayInReports', type: 'TEXT'},
-      {value: 'compulsory', type: 'TEXT'},
-      {value: 'allowProvidedElsewhere', type: 'TEXT'},
-      {value: 'allowFutureDate', type: 'TEXT'},
-      {value: 'dataElement', type: 'LONGTEXT'}
+      {value: 'programId', type: 'TEXT'},
+      {value: 'programRuleVariableId', type: 'TEXT'},
     ],
     isMetadata: false,
     resourceType: "",
-    batchSize : 50,
-    displayName : "Program Stage Data Elements",
+    batchSize : 100,
+    displayName : "",
+    dependentTable : []
+  },
+  programProgramRules: {
+    columns: [
+      {value: 'id', type: 'TEXT'},
+      {value: 'programId', type: 'TEXT'},
+      {value: 'programRuleId', type: 'TEXT'},
+    ],
+    isMetadata: false,
+    resourceType: "",
+    batchSize : 100,
+    displayName : "",
+    dependentTable : []
+  },
+  programTrackedEntityAttributes: {
+    columns: [
+      {value: 'id', type: 'TEXT'},
+      {value: 'programId', type: 'TEXT'},
+      {value: 'sortOrder', type: 'TEXT'},
+      {value: 'mandatory', type: 'TEXT'},
+      {value: 'externalAccess', type: 'TEXT'},
+      {value: 'displayInList', type: 'TEXT'}
+    ],
+    isMetadata: false,
+    resourceType: "",
+    batchSize : 100,
+    displayName : "",
+    dependentTable : []
+  },
+  trackedEntityAttribute: {
+    columns: [
+      {value: 'id', type: 'TEXT'},
+      {value: 'programTrackedEntityAttributeId', type: 'TEXT'},
+      {value: 'name', type: 'TEXT'},
+      {value: 'code', type: 'TEXT'},
+      {value: 'formName', type: 'TEXT'},
+      {value: 'description', type: 'TEXT'},
+      {value: 'confidential', type: 'TEXT'},
+      {value: 'searchScope', type: 'TEXT'},
+      {value: 'inherit', type: 'TEXT'},
+      {value: 'unique', type: 'TEXT'},
+      {value: 'orgunitScope', type: 'TEXT'},
+      {value: 'programScope', type: 'TEXT'},
+      {value: 'displayInListNoProgramaggregationType', type: 'TEXT'},
+      {value: 'displayInListNoProgram', type: 'TEXT'},
+      {value: 'pattern', type: 'TEXT'},
+      {value: 'sortOrderInListNoProgram', type: 'TEXT'},
+      {value: 'generated', type: 'TEXT'},
+      {value: 'displayOnVisitSchedule', type: 'TEXT'},
+      {value: 'translations', type: 'LONGTEXT'},
+      {value: 'legendSets', type: 'LONGTEXT'},
+      {value: 'optionSet', type: 'LONGTEXT'}
+    ],
+    isMetadata: false,
+    resourceType: "",
+    batchSize : 100,
+    displayName : "",
+    dependentTable : []
+  },
+  programIndicators: {
+    columns: [
+      {value: 'id', type: 'TEXT'},
+      {value: 'programId', type: 'TEXT'},
+      {value: 'name', type: 'TEXT'},
+      {value: 'expression', type: 'LONGTEXT'}
+    ],
+    isMetadata: false,
+    resourceType: "",
+    batchSize : 100,
+    displayName : "",
+    dependentTable : []
+  },
+  programOrganisationUnits: {
+    columns: [
+      {value: 'id', type: 'TEXT'},
+      {value: 'programId', type: 'TEXT'},
+      {value: 'orgUnitId', type: 'TEXT'}
+    ],
+    isMetadata: false,
+    resourceType: "",
+    batchSize : 100,
+    displayName : "",
     dependentTable : []
   },
   programStageSections: {
@@ -331,8 +410,10 @@ export const DATABASE_STRUCTURE = {
       {value: 'id', type: 'TEXT'},
       {value: 'name', type: 'TEXT'},
       {value: 'sortOrder', type: 'TEXT'},
-      {value: 'programIndicators', type: 'LONGTEXT'},
-      {value: 'programStageDataElements', type: 'LONGTEXT'}
+      {value: 'programStageId', type: 'TEXT'},
+      {value: 'attributeValues', type: 'LONGTEXT'},
+      {value: 'translations', type: 'LONGTEXT'},
+      {value: 'dataElements', type: 'LONGTEXT'}
     ],
     isMetadata: true,
     batchSize : 100,
