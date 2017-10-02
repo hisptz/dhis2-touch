@@ -36,7 +36,9 @@ export class EventsProvider {
       this.httpClient.get(url,currentUser).then((eventsData: any)=>{
         eventsData = JSON.parse(eventsData.data);
 
-         resolve(eventsData)
+        // alert("Events Downloaded Length: "+JSON.stringify(eventsData.events.length))
+
+        resolve(eventsData)
 
       },error=>{
         reject(error);
@@ -217,7 +219,7 @@ export class EventsProvider {
       //set headers
       Object.keys(dataElementToDisplay).forEach((dataElementId:any)=>{
         tableFormat.header.push({
-          id : dataElementId,name : dataElementToDisplay[dataElementId].name
+          id : dataElementId, name : dataElementToDisplay[dataElementId].name
         })
       });
       //setting rows

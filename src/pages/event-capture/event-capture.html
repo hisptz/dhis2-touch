@@ -40,12 +40,17 @@
   </ion-grid>
 
 
+  <div *ngIf = "showEmptyList">
+    <empty-list-notification [emptyListMessage]="'There are no events to display'"></empty-list-notification>
+  </div>
+
+
   <!-- display events as table -->
   <div style="overflow-x: auto">
-    <table>
+    <table *ngIf ="!showEmptyList">
       <thead>
       <tr>
-        <th *ngFor="let header of tableFormatHeader">{{header.header}}</th>
+        <th *ngFor="let header of tableFormatHeader">{{header.name}}</th>
       </tr>
       </thead>
       <tbody>
@@ -55,6 +60,15 @@
       </tbody>
     </table>
   </div>
+
+
+
+
+  <ion-fab bottom left>
+    <button ion-fab (tap)="showFieldSelectionMenu()" color="light">
+      <ion-icon name="ios-eye" color="primary" ></ion-icon>
+    </button>
+  </ion-fab>
 
 
 

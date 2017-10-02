@@ -30,6 +30,7 @@ export class EventCapturePage implements OnInit{
   currentEvents: any;
   eventListSections: any;
   isAllParameterSet: boolean;
+  showEmptyList:boolean = false;
   selectedOrgUnit : any;
   selectedOrgUnitId: any;
   selectedProgram: any;
@@ -37,6 +38,7 @@ export class EventCapturePage implements OnInit{
   organisationUnitLabel: string;
   programLabel: string;
   periodLabel: string;
+  table:any;
   programs: any;
   assignedPrograms : any;
   selectedProgramId:any;
@@ -49,11 +51,17 @@ export class EventCapturePage implements OnInit{
   hasOptions: boolean = false;
   currentSelectionStatus :any = {};
   eventsData: any;
+  rowData: any;
   tableFormatHeader: any;
   tableFormatRow:any;
   usedDataElements:any;
   usedValues:any;
   tableFormat:any;
+  selectionList:any = {};
+  dataElementToDisplay:any;
+  programStageDataElements:any;
+  currentAvailableEvents:any;
+
 
 
   currentPeriodOffset: any;
@@ -147,28 +155,35 @@ export class EventCapturePage implements OnInit{
      let programTable:any;
      this.sqlLiteProvider.getAllDataFromTable("programs", this.currentUser.currentDatabase).then((responseAllData)=>{
        programTable = responseAllData;
+       // alert("program Data are: "+JSON.stringify(programTable));
      });
 
      let attributeVaue = [this.selectedOrgUnit.id];
      this.organisationUnitsProvider.getOrgUnitprogramsFromServer(attributeVaue, this.currentUser).then((response)=>{
        let orgUnitPrograms = response["programs"];
+
          programTable.forEach((programData:any)=>{
+           if(programData.programType === 'WITHOUT_REGISTRATION'){
 
-           orgUnitPrograms.forEach((program:any)=>{
+             orgUnitPrograms.forEach((program:any)=>{
 
-           if(programData.id === program.id){
-             let temCatg = programData.categoryCombo.categories;
+               if(programData.id === program.id){
+                 let temCatg = programData.categoryCombo.categories;
 
-              this.assignedPrograms.push(programData.name)
-             this.programInfo.push({
-               id: programData.id,
-               name: programData.name,
-               programStages: programData.programStages,
-               categoryCombo: programData.categoryCombo,
-               categoryOptions: temCatg[0].categoryOptions
-           })
-             }
-         })
+                 this.assignedPrograms.push(programData.name)
+                 this.programInfo.push({
+                   id: programData.id,
+                   name: programData.name,
+                   programStages: programData.programStages,
+                   categoryCombo: programData.categoryCombo,
+                   categoryOptions: temCatg[0].categoryOptions
+                 })
+               }
+             })
+
+           }
+
+
        });
        this.programLoading = false;
      }, error=>{});
@@ -178,7 +193,7 @@ export class EventCapturePage implements OnInit{
 
 
   openProgramList(){
-    if(this.programNamesByUserRoles.length > 0){
+    if(this.assignedPrograms.length > 0){
       let modal = this.modalCtrl.create('ProgramSelection',{data : this.assignedPrograms, currentProgram :this.selectedProgram  });
       modal.onDidDismiss((selectedProgram : any)=>{
         if(selectedProgram.length > 0){
@@ -256,54 +271,118 @@ export class EventCapturePage implements OnInit{
   loadEventsToDisplay(){
     this.dataOnEvents =[];
     this.usedDataElements = [];
+    let currentEvents = [];
 
     this.eventProvider.downloadEventsFromServer(this.selectedOrgUnitId,this.selectedProgramId, this.currentUser).then((eventsData:any)=>{
       let eventDataValues:any;
-      this.eventsData = eventsData.events;
 
-      this.eventsData.forEach((eventInfo:any)=>{
-        eventDataValues = eventInfo.dataValues;
 
-        eventDataValues.forEach((dataRow:any)=>{
+      eventsData.events.forEach((event:any)=>{
+        currentEvents.push(event)
+      })
 
-          this.usedDataElements.push(dataRow.dataElement);
+       if(eventsData.events.length !== 0){
+         this.showEmptyList = false;
+         this.eventsData = eventsData.events;
 
-          this.dataOnEvents.push({
-            eventId: eventInfo.event,
-            dataElementId: dataRow.dataElement ,
-             dataValue: dataRow.value
-          })
-        });
-      });
+         this.eventsData.forEach((eventInfo:any)=>{
+           eventDataValues = eventInfo.dataValues;
+
+           eventDataValues.forEach((dataRow:any)=>{
+
+             this.usedDataElements.push(dataRow.dataElement);
+
+             this.dataOnEvents.push({
+               eventId: eventInfo.event,
+               dataElementId: dataRow.dataElement ,
+               dataValue: dataRow.value
+             })
+           });
+         });
+
+       }else {
+         this.showEmptyList = true;
+         this.appProvider.setNormalNotification("There are no events to display on "+this.selectedProgram );
+       }
+
+
+       this.currentEvents =  eventsData.events;
       this.loadEvents();
+
     })
 
   }
 
 
   loadEvents(){
+    this.table = {
+      header: [], rows: []
+    };
     this.tableFormatHeader = [];
     this.tableFormatRow = [];
+    this.rowData = {};
+    this.currentAvailableEvents = [];
     let SortedDataElementIds = Array.from( new Set(this.usedDataElements) );
+
+    this.selectionList = SortedDataElementIds;
+
 
     SortedDataElementIds.forEach((list:any)=> {
       this.dataElementsProvider.getDataElementsByName(list, this.currentUser).then((results: any) => {
 
-        this.tableFormatHeader.push({
-          header: results[0].displayName,
-          id: results[0].id
+        this.currentAvailableEvents.push({
+          name:results[0].displayName,
+          id:results[0].id
+        })
 
+        this.table.header.push({
+          id: results[0].id,
+          name: results[0].displayName
+        })
+
+        this.tableFormatHeader.push({
+          name: results[0].displayName,
+          id: results[0].id,
+          // data: data.dataValue
+           //data: this.tableFormatRow
         })
       });
     });
+
 
     this.dataOnEvents.forEach((data:any)=>{
       this.tableFormatRow.push({
         event: data.eventId,
         value: data.dataValue,
         dataElmId: data.dataElementId
-      })
-    })
+      });
 
+
+    });
+
+    //this.loadEventListAsTable();
   }
+
+
+
+  showFieldSelectionMenu(){
+    if(this.selectionList){
+    let modal = this.modalCtrl.create('EventFieldSelectionMenu',{dataElementToDisplay: this.currentEvents, dataElementMapper:this.currentAvailableEvents});
+    modal.onDidDismiss((dataElementToDisplayResponse:any)=>{
+      // if(dataElementToDisplayResponse){
+      //
+      // }
+    });
+    modal.present();
+    }else{
+      this.appProvider.setNormalNotification("There are no selection options to display");
+    }
+  }
+
+
+
+
+
+
+
 }
