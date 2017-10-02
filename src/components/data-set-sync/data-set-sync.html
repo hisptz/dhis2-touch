@@ -1,42 +1,35 @@
 
-      <div *ngFor="let dataSetId of dataSetIds"  >
-        <!--<ion-card padding>-->
-        <hr>
+      <div *ngFor="let dataSetId of dataSetIds" class="whiteBackground" >
         <div *ngIf="dataSetsSyncObjects[dataSetId] && dataSetsSyncObjects[dataSetId].name != ''" >
-          <div class="contents" >
-            <ion-row >
-              <ion-col col-11 (tap)="viewMoreDetailsOnEntryForm(dataSetId)">
-                <div  >
+          <!--<ion-card>-->
+          <ion-card class="content">
+            <ion-item class="content">
+              <div (tap)="viewMoreDetailsOnEntryForm(dataSetId)">
                   <p >
                     <b>Form : </b>{{dataSetsSyncObjects[dataSetId].name}}<br>
                     <b>Data : </b>{{dataSetsSyncObjects[dataSetId].dataValues.length}}
                   </p>
-                </div>
-              </ion-col>
-              <ion-col col-1 (tap)="dataSetDataDeleteConfirmation(dataSetsSyncObjects[dataSetId].name,dataSetId)">
-                  <button color="danger" class="normalButton" ion-button full min clear text-capitalize >
-                    <ion-icon name="md-trash"></ion-icon>
-                  </button>
-                <div *ngIf="isDataSetDataDeletionOnProgress[dataSetId]">
-                  <page-loading loadingSize="small"></page-loading>
-                </div>
-              </ion-col>
-              <div>
-              <div *ngIf="!syncProcess && syncStatus === 'Not synced'" (tap)="syncSelectedDataSetData(dataSetsSyncObjects[dataSetId])">
-                <button color="primary"  ion-button  >
-                 Sync &nbsp;&nbsp;<ion-icon name="sync"></ion-icon>
-                </button>
-              </div>
-              <div *ngIf="syncProcess">
-                <page-loading loadingSize="small"></page-loading>
               </div>
 
-              </div>
-            </ion-row>
-          </div>
+            <ion-icon *ngIf="!syncProcess[dataSetId] && syncStatus === 'Not synced'"
+                      (tap)="syncSelectedDataSetData(dataSetsSyncObjects[dataSetId],dataSetsSyncObjects[dataSetId].name,dataSetId)"
+                      margin-right="10px" color="primary" clear  name="sync" item-right></ion-icon>
+            <ion-icon *ngIf="syncProcess[dataSetId]"
+                      margin-right="10px" item-right><page-loading loadingSize="small"></page-loading></ion-icon>
+
+            <ion-icon (tap)="dataSetDataDeleteConfirmation(dataSetsSyncObjects[dataSetId].name,dataSetId)"
+                      *ngIf="!isDataSetDataDeletionOnProgress[dataSetId]"
+                      color="danger" clear  name="md-trash" item-right></ion-icon>
+
+            <ion-icon *ngIf="isDataSetDataDeletionOnProgress[dataSetId]"
+                      margin-right="10px" item-right><page-loading loadingSize="small"></page-loading></ion-icon>
+
+            </ion-item>
+          </ion-card>
+          <!--</ion-card>-->
         </div>
-        <!--</ion-card>-->
       </div>
+
 
 
 

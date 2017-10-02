@@ -24,13 +24,14 @@ export class DataSetSyncComponent implements OnInit{
   @Input() dataSetIds;
   @Input() syncStatus;
   @Input() isDataSetDataDeletionOnProgress;
+  @Input() syncProcess;
 
   @Output() onDeleteDataSetData = new EventEmitter();
+  @Output() onSyncDataSetData = new EventEmitter();
 
 
   displayName: any;
   currentUser: any;
-  syncProcess: boolean = false;
 
 
   constructor(public dataSetsProvider: DataSetsProvider, public alertCtrl: AlertController, public user: UserProvider,
@@ -101,19 +102,10 @@ export class DataSetSyncComponent implements OnInit{
   }
 
 
-  syncSelectedDataSetData(selectedDataset){
-    this.syncProcess = true;
-    this.syncProvider.prepareDataForUploading(selectedDataset).then((preparedData: any)=>{
-      this.syncProvider.uploadingData(preparedData,selectedDataset, this.currentUser).then((response:any)=>{
-        this.syncProcess = false;
-
-      },error=>{
-        this.appProvider.setNormalNotification("Data Values synchronization failed")
-      })
-    }, error=>{
-      this.appProvider.setNormalNotification("Data Values preparation failed")
-    });
+  syncSelectedDataSetData(selectedDataSet,dataSetName,dataSetId){
+    this.onSyncDataSetData.emit({dataValues: selectedDataSet,dataSetId : dataSetId,dataSetName:dataSetName});
 
   }
+
 
 }

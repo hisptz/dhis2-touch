@@ -279,4 +279,36 @@ export class OrganisationUnitsProvider {
       })
     }
   }
+
+
+  getOrgUnitprogramsFromServer(orgUnitIds, currentUser){
+    let orgUnits= [];
+    return new Promise((resolve, reject)=> {
+      let counts = 0;
+      for(let orgUnitId of orgUnitIds){
+       // let fields ="fields=id,name,path,ancestors[id,name,children[id]],openingDate,closedDate,level,children[id,name,children[id],parent";
+        //let filter="filter=path:ilike:";
+        let url = "/api/25/"+this.resource+"/"+orgUnitId+".json?paging=false";
+       // url += fields + "&" + filter + orgUnitId;
+        this.HttpClient.get(url,currentUser).then((response:any)=>{
+          response = JSON.parse(response.data);
+          // orgUnits[]
+          resolve(response)
+
+          // try{
+          //   response = JSON.parse(response.data);
+          //   counts = counts + 1;
+          //   orgUnits = this.appendOrgUnitsFromServerToOrgUnitArray(orgUnits,response);
+          //   // if(counts == orgUnitIds.length){
+          //     resolve(orgUnits);
+          //   // }
+          // }catch (e){
+          //   reject(e);
+          // }
+        },error=>{
+          reject(error);
+        })
+      }
+    });
+  }
 }

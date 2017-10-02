@@ -2,9 +2,9 @@
 <div *ngIf="isLoading">
   <page-loading loadingSize="large" [loadingMessage] = "loadingMessage"></page-loading>
 </div>
-<div *ngIf="!isLoading">
-  <ion-grid>
-    <ion-row>
+<div *ngIf="!isLoading" class="whiteBackground">
+  <ion-grid class="whiteBackground">
+    <ion-row class="whiteBackground">
       <ion-col >
         <div *ngFor="let dataElement of dataElements" >
           <div class="contents">

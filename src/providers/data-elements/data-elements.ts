@@ -101,5 +101,19 @@ export class DataElementsProvider {
   }
 
 
+  getDataElementsByName(dataSetDatElements,currentUser){
+    let attributeKey = "id";
+    let dataElementIds = [];
+    // dataSetDatElements.forEach((dataSetDatElement : any)=>{
+      dataElementIds.push(dataSetDatElements);
+    // });
+    return new Promise((resolve, reject)=> {
+      this.SqlLite.getDataFromTableByAttributes(this.resource,attributeKey,dataElementIds,currentUser.currentDatabase).then(( dataElements: any)=>{
+        resolve(dataElements);
+      },error=>{reject(error)})
+    });
+  }
+
+
 
 }

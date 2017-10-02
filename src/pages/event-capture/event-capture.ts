@@ -5,8 +5,9 @@ import {OrganisationUnitsProvider} from "../../providers/organisation-units/orga
 import {ProgramsProvider} from "../../providers/programs/programs";
 import {AppProvider} from "../../providers/app/app";
 import {ProgramSelection} from "../program-selection/program-selection";
-import {PeriodSelectionProvider} from "../../providers/period-selection/period-selection";
 import {SqlLiteProvider} from "../../providers/sql-lite/sql-lite";
+import {EventsProvider} from "../../providers/events/events";
+import {DataElementsProvider} from "../../providers/data-elements/data-elements";
 
 /**
  * Generated class for the EventCapturePage page.
@@ -30,28 +31,49 @@ export class EventCapturePage implements OnInit{
   eventListSections: any;
   isAllParameterSet: boolean;
   selectedOrgUnit : any;
+  selectedOrgUnitId: any;
   selectedProgram: any;
+  selectedProgramStages: any;
   organisationUnitLabel: string;
   programLabel: string;
   periodLabel: string;
   programs: any;
   assignedPrograms : any;
+  selectedProgramId:any;
+  selectedProgramCatCombo:any;
+  assignedProgramCategoryOptions : any;
+  programInfo : any;
+  dataOnEvents:any;
+  CategoryOptionLabel:any;
+  programLoading: boolean = false;
+  hasOptions: boolean = false;
+  currentSelectionStatus :any = {};
+  eventsData: any;
+  tableFormatHeader: any;
+  tableFormatRow:any;
+  usedDataElements:any;
+  usedValues:any;
+  tableFormat:any;
+
 
   currentPeriodOffset: any;
-  selectedDataSet: any;
+  selectedOption: any;
   selectedPeriod : any;
   icons: any = {};
+  userRoleData: any;
+  network : any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public user: UserProvider, private modalCtrl : ModalController,
               public organisationUnitsProvider: OrganisationUnitsProvider, public programsProvider: ProgramsProvider, public appProvider: AppProvider,
-              public periodSelectionProvider: PeriodSelectionProvider, public sqlLiteProvider: SqlLiteProvider) {
+               public sqlLiteProvider: SqlLiteProvider, public eventProvider: EventsProvider, public dataElementsProvider:DataElementsProvider) {
   }
 
   ngOnInit(){
 
     this.icons.orgUnit = "assets/event-capture/orgUnit.png";
-    this.icons.program = "assets/event-capture/programs.png";
+    this.icons.program = "assets/event-capture/program.png";
     this.icons.period = "assets/event-capture/period.png";
+    this.icons.categoryOptions = 'assets/event-capture/programs.png';
 
     this.selectedDataDimension = [];
       this.currentEvents = [];
@@ -60,7 +82,6 @@ export class EventCapturePage implements OnInit{
       this.user.getCurrentUser().then(currentUser=>{
         this.currentUser = currentUser;
         this.getUserAssignedPrograms();
-       // this.setProgramSelectionLabel();
       });
     this.updateEventSelections();
 
@@ -70,6 +91,7 @@ export class EventCapturePage implements OnInit{
     if(this.organisationUnitsProvider.lastSelectedOrgUnit){
       this.selectedOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
       this.organisationUnitLabel = this.selectedOrgUnit.name;
+      this.selectedOrgUnitId = this.selectedOrgUnit.id;
     }else{
       this.organisationUnitLabel = "Touch to select organisation Unit";
     }
@@ -77,6 +99,11 @@ export class EventCapturePage implements OnInit{
       this.programLabel = this.programsProvider.lastSelectedProgram;
     }else {
       this.programLabel = "Touch to select Programs";
+    }
+    if(this.programsProvider.lastSelectedProgramCategoryOption){
+      this.CategoryOptionLabel = this.programsProvider.lastSelectedProgramCategoryOption;
+    }else {
+      this.CategoryOptionLabel = "Touch to select options";
     }
 
 
@@ -86,10 +113,11 @@ export class EventCapturePage implements OnInit{
     this.programIdsByUserRoles = [];
     this.programNamesByUserRoles = [];
     this.user.getUserData().then((userData : any)=>{
+
+       this.userRoleData = userData.userRoles;
       userData.userRoles.forEach((userRole:any)=>{
         if (userRole.programs) {
           userRole.programs.forEach((program:any)=>{
-
             this.programIdsByUserRoles.push(program.id);
             this.programNamesByUserRoles.push(program.name);
 
@@ -112,56 +140,170 @@ export class EventCapturePage implements OnInit{
   }
 
    loadingPrograms() {
+    this.programLoading = true;
     this.assignedPrograms = [];
-    let lastSelectedProgram = this.programsProvider.getLastSelectedProgram();
+    this.programInfo = [];
 
+     let programTable:any;
+     this.sqlLiteProvider.getAllDataFromTable("programs", this.currentUser.currentDatabase).then((responseAllData)=>{
+       programTable = responseAllData;
+     });
 
+     let attributeVaue = [this.selectedOrgUnit.id];
+     this.organisationUnitsProvider.getOrgUnitprogramsFromServer(attributeVaue, this.currentUser).then((response)=>{
+       let orgUnitPrograms = response["programs"];
+         programTable.forEach((programData:any)=>{
 
-     this.programsProvider.getProgramsAssignedOnOrgUnitAndUserRoles(this.selectedOrgUnit, this.programIdsByUserRoles, this.currentUser).then((programs: any) => {
+           orgUnitPrograms.forEach((program:any)=>{
 
-       // its empty alert
-      //alert("Assign Progs--- for modal: "+JSON.stringify(programs))
+           if(programData.id === program.id){
+             let temCatg = programData.categoryCombo.categories;
 
-      this.selectedProgram = lastSelectedProgram;
+              this.assignedPrograms.push(programData.name)
+             this.programInfo.push({
+               id: programData.id,
+               name: programData.name,
+               programStages: programData.programStages,
+               categoryCombo: programData.categoryCombo,
+               categoryOptions: temCatg[0].categoryOptions
+           })
+             }
+         })
+       });
+       this.programLoading = false;
+     }, error=>{});
 
-      programs.forEach((program:any)=>{
+   }
 
-          this.assignedPrograms.push({
-            id: program.id,
-            name: program.name,
-            programStages : program.programStages,
-            categoryCombo : program.categoryCombo
-          });
-
-      });
-
-    } ,error=>{
-      //this.appProvider.setNormalNotification("Fail to  Assigned Programs");
-    });
-
-    }
 
 
   openProgramList(){
-
     if(this.programNamesByUserRoles.length > 0){
-      let modal = this.modalCtrl.create('ProgramSelection',{data : this.programNamesByUserRoles, currentProgram :this.selectedProgram  });
+      let modal = this.modalCtrl.create('ProgramSelection',{data : this.assignedPrograms, currentProgram :this.selectedProgram  });
       modal.onDidDismiss((selectedProgram : any)=>{
         if(selectedProgram.length > 0){
 
           this.selectedProgram = selectedProgram;
+          this.programInfo.forEach((programs:any)=>{
+            if(programs.name === this.selectedProgram){
+              this.selectedProgramId = programs.id;
+              this.selectedProgramStages = programs.programStages;
+              this.selectedProgramCatCombo = programs.categoryCombo;
+            }
+          });
 
           this.updateEventSelections();
-
+          this.loadProgramCategoryOptions();
         }
       });
       modal.present();
     }else{
-      this.appProvider.setNormalNotification("There.. are no entry form to select on " + this.selectedOrgUnit.name );
+      this.appProvider.setNormalNotification("There are no entry form to select on " + this.selectedOrgUnit.name );
     }
   }
 
 
+  loadProgramCategoryOptions(){
+    this.assignedProgramCategoryOptions = [];
+    this.programInfo.forEach((programs:any)=>{
+      if(programs.name === this.selectedProgram){
+
+        programs.categoryOptions.forEach((option:any)=>{
+          if(option.name === 'default'){
+          }else {
+            this.assignedProgramCategoryOptions.push(option.name);
+          }
+        })
+      }
+    });
+    this.hasOptionsCategory()
+
+  }
+
+  hasOptionsCategory(){
+    if(this.assignedProgramCategoryOptions.length > 0){
+      this.hasOptions = true;
+    }else {
+      this.hasOptions = false;
+      this.loadEventsToDisplay();
+    }
+  }
 
 
+  openProgramCategoryOptions(){
+    if(this.assignedProgramCategoryOptions.length > 0){
+
+      let modal = this.modalCtrl.create('ProgramOptionsSelectionPage', {
+        categoryOptions : this.assignedProgramCategoryOptions,
+        title : "Implementing Partner's selection",
+        currentSelection : this.selectedOption
+      });
+      modal.onDidDismiss((selectedOption : any)=>{
+
+          this.selectedOption = selectedOption;
+        this.updateEventSelections();
+        this.loadEventsToDisplay();
+
+      });
+      modal.present();
+
+    }else{
+      this.appProvider.setNormalNotification("There are no Implementing partner's to select on "+this.selectedProgram );
+    }
+  }
+
+
+  loadEventsToDisplay(){
+    this.dataOnEvents =[];
+    this.usedDataElements = [];
+
+    this.eventProvider.downloadEventsFromServer(this.selectedOrgUnitId,this.selectedProgramId, this.currentUser).then((eventsData:any)=>{
+      let eventDataValues:any;
+      this.eventsData = eventsData.events;
+
+      this.eventsData.forEach((eventInfo:any)=>{
+        eventDataValues = eventInfo.dataValues;
+
+        eventDataValues.forEach((dataRow:any)=>{
+
+          this.usedDataElements.push(dataRow.dataElement);
+
+          this.dataOnEvents.push({
+            eventId: eventInfo.event,
+            dataElementId: dataRow.dataElement ,
+             dataValue: dataRow.value
+          })
+        });
+      });
+      this.loadEvents();
+    })
+
+  }
+
+
+  loadEvents(){
+    this.tableFormatHeader = [];
+    this.tableFormatRow = [];
+    let SortedDataElementIds = Array.from( new Set(this.usedDataElements) );
+
+    SortedDataElementIds.forEach((list:any)=> {
+      this.dataElementsProvider.getDataElementsByName(list, this.currentUser).then((results: any) => {
+
+        this.tableFormatHeader.push({
+          header: results[0].displayName,
+          id: results[0].id
+
+        })
+      });
+    });
+
+    this.dataOnEvents.forEach((data:any)=>{
+      this.tableFormatRow.push({
+        event: data.eventId,
+        value: data.dataValue,
+        dataElmId: data.dataElementId
+      })
+    })
+
+  }
 }

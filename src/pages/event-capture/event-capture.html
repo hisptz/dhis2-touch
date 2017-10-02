@@ -21,13 +21,41 @@
         {{ organisationUnitLabel }}
       </div>
 
-      <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openProgramList()" >
+      <div *ngIf="programLoading" class="item-card" color="font-color" ion-button clear full text-center text-capitalize >
+        <page-loading loadingSize="small"></page-loading>
+      </div>
+      <div *ngIf="!programLoading" class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openProgramList()" >
         <img  class="side-menu-icon" [src]="icons.program"/>&nbsp;&nbsp;
         {{ programLabel }}
       </div>
 
 
+      <div *ngIf="hasOptions" class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openProgramCategoryOptions()" >
+        <img  class="side-menu-icon" [src]="icons.categoryOptions"/>&nbsp;&nbsp;
+        {{CategoryOptionLabel}}
+      </div>
+
     </ion-row>
+
   </ion-grid>
+
+
+  <!-- display events as table -->
+  <div style="overflow-x: auto">
+    <table>
+      <thead>
+      <tr>
+        <th *ngFor="let header of tableFormatHeader">{{header.header}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let row of tableFormatRow" (tap)="goToEventView(row)" >
+        <td >{{row.value}} </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+
 
 </ion-content>

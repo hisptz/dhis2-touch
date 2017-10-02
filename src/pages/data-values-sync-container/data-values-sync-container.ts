@@ -4,6 +4,8 @@ import {UserProvider} from "../../providers/user/user";
 import {DataValuesProvider} from "../../providers/data-values/data-values";
 import {DataSetsProvider} from "../../providers/data-sets/data-sets";
 import {AboutPage} from "../about/about";
+import {SyncProvider} from "../../providers/sync/sync";
+import {AppProvider} from "../../providers/app/app";
 
 /*
   Generated class for the DataSetSyncContainer page.
@@ -25,6 +27,7 @@ export class DataValuesSyncContainerPage  implements OnInit{
   public hasDataPrepared : boolean = false;
   public dataSetsSyncObjects : any = {};
   public isDataSetDataDeletionOnProgress : any = {};
+  public syncProcess : any = {};
   public dataSetIds : any = [];
   public syncStatus : string = "";
   public headerLabel : string;
@@ -38,7 +41,8 @@ export class DataValuesSyncContainerPage  implements OnInit{
   constructor(public navParams: NavParams,
               public user : UserProvider,
               public navCtrl: NavController,
-              public dataValuesProvider : DataValuesProvider) {}
+              public dataValuesProvider : DataValuesProvider, public syncProvider: SyncProvider,
+              public appProvider: AppProvider) {}
 
   ngOnInit() {
     this.user.getCurrentUser().then(user=>{
@@ -58,6 +62,7 @@ export class DataValuesSyncContainerPage  implements OnInit{
     this.navParams.get("dataValues").forEach((dataValue : any)=>{
       this.loadingMessages = "Grouping data by entry form";
       this.isDataSetDataDeletionOnProgress[dataValue.dataSetId] = false;
+      this.syncProcess[dataValue.dataSetId] = false;
       if(!this.dataSetsSyncObjects[dataValue.dataSetId]){
         this.dataSetIds.push(dataValue.dataSetId);
 
@@ -98,6 +103,37 @@ export class DataValuesSyncContainerPage  implements OnInit{
     }
   }
 
+  onSyncingDataSetData(event){
+    this.syncProcess[event.dataSetId] = true;
+      this.syncProvider.prepareDataForUploading(event.dataValues).then((preparedData: any)=>{
+        this.syncProvider.uploadingData(preparedData,event.dataValues, this.currentUser).then((response:any)=>{
+          this.syncProcess[event.dataSetId] = true;
+          let dataValueIds = [];
+          for(let dataValue of this.dataSetsSyncObjects[event.dataSetId].dataValues){
+            if(dataValue && dataValue.id){
+              dataValueIds.push(dataValue.id);
+            }
+          }
+          if(dataValueIds.length > 0){
+              delete this.dataSetsSyncObjects[event.dataSetId];
+              if(this.dataSetsSyncObjects && Object.keys(this.dataSetsSyncObjects).length > 0){
+                this.syncProcess[event.dataSetId] = false;
+              }else{
+                this.navCtrl.pop();
+              }
+          }
+        },error=>{
+          this.appProvider.setNormalNotification("Data Values synchronization failed")
+          this.syncProcess[event.dataSetId] = false;
+        })
+      }, error=>{
+        this.appProvider.setNormalNotification("Data Values preparation failed")
+        this.syncProcess[event.dataSetId] = false;
+      });
+
+
+
+  }
 
 
 

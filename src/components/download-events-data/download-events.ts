@@ -5,7 +5,7 @@ import {OrganisationUnitsProvider} from "../../providers/organisation-units/orga
 import {ModalController, NavController, NavParams} from "ionic-angular";
 import {UserProvider} from "../../providers/user/user";
 import {EventsProvider} from "../../providers/events/events";
-import indexOf = L.Util.indexOf;
+// import indexOf = L.Util.indexOf;
 
 /**
  * Generated class for the DownloadEventsDataComponent component.
@@ -153,7 +153,7 @@ export class DownloadEventsDataComponent implements OnInit{
   donwloadEvents(){
     let choosedOrgUnit = this.eventsProvider.getLastChoosedOrgUnit();
 
-    this.eventsProvider.downloadEventsFromServer(choosedOrgUnit, this.currentUser).then((events: any)=> {
+    this.eventsProvider.downloadEventsFromServer(choosedOrgUnit,null, this.currentUser).then((events: any)=> {
       let eventsData = events.events;
       if(eventsData && eventsData.length > 0){
         eventsData.forEach((event)=>{

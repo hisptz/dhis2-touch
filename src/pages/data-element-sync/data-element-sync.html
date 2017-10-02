@@ -8,11 +8,11 @@
 </ion-header>
 
 
-<ion-content class="data-element-sync-container">
+<ion-content class="whiteBackground">
   <div *ngIf="isLoading">
     <page-loading loadingSize="large" [loadingMessage] = "loadingMessages"></page-loading>
   </div>
-  <div *ngIf="!isLoading">
+  <div *ngIf="!isLoading" class="whiteBackground">
     <data-element-sync-component [dataElements]="dataElements" ></data-element-sync-component>
   </div>
 

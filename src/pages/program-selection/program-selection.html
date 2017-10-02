@@ -19,7 +19,7 @@
       <ion-col  >
         <ion-list class = "programFormSelection">
           <ion-item *ngFor="let program of programsList"   (tap)="setSelectedProgram(program)">
-            <ion-icon name="list" item-left></ion-icon>
+            <img  class="side-menu-icon" [src]="icons.program"/>&nbsp;&nbsp;
             <span (tap)="setSelectedProgram(program)" ion-text [color]="(currentSelectedProgram == program)? 'current': 'font-color'" >{{ program}}</span>
           </ion-item>
           <ion-item *ngIf = "programsList.length == 0">

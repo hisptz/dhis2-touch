@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import {SqlLiteProvider} from "../sql-lite/sql-lite";
 import {HttpClientProvider} from "../http-client/http-client";
+import {AppProvider} from "../app/app";
 
 /*
   Generated class for the EventsProvider provider.
@@ -16,7 +17,7 @@ export class EventsProvider {
   public resource : string;
   lastChoosedOrgUnit: any;
 
-  constructor(public http: Http, private sqlLite : SqlLiteProvider,public httpClient: HttpClientProvider) {
+  constructor(public http: Http, private sqlLite : SqlLiteProvider,public httpClient: HttpClientProvider, public appProvider:AppProvider) {
     this.resource = "events";
   }
 
@@ -28,26 +29,18 @@ export class EventsProvider {
     return this.lastChoosedOrgUnit;
   }
 
-  downloadEventsFromServer(orgUnit,currentUser){
-    let url = "/api/25/events.json?orgUnit="+orgUnit ;
+  downloadEventsFromServer(orgUnitId,programId,currentUser){
+    let url = "/api/25/events.json?orgUnit="+orgUnitId+"&program="+programId ;
 
     return new Promise((resolve, reject) =>{
       this.httpClient.get(url,currentUser).then((eventsData: any)=>{
         eventsData = JSON.parse(eventsData.data);
 
-        // alert("Events Downloaded: "+JSON.stringify(events.events))
-        // alert("Events Downloaded: "+JSON.stringify(eventsData.events[2].dataValues))
-         alert("Events Downloaded Length: "+JSON.stringify(eventsData.events.length))
-       // alert("Events Downloaded: "+JSON.stringify(eventsData.events[9].orgUnitName))
-
-
          resolve(eventsData)
-
 
       },error=>{
         reject(error);
-        alert("Events Download failed")
-
+        this.appProvider.setTopNotification("Downloading events from server failed")
       });
     });
   }
@@ -105,12 +98,12 @@ export class EventsProvider {
    * @param currentUser
    * @returns {Promise<T>}
    */
-  loadEventsFromServer(orgUnit,program,dataDimensions,currentUser){
-    let url = "/api/25/events.json?orgUnit="+orgUnit.id + "&programStage="+program.programStages[0].id;
+  loadEventsFromServer(orgUnit,programId,programComboId,dataDimensions,currentUser){
+    let url = "/api/25/events.json?orgUnit="+orgUnit.id + "&programStage="+programId;
     if(dataDimensions.length > 0){
       let attributeCos = dataDimensions.toString();
-      attributeCos = attributeCos.replace(/,/g, ';');
-      url += "&attributeCc="+program.categoryCombo.id+"&attributeCos="+attributeCos;
+      //attributeCos = attributeCos.replace(/,/g, ';');
+      url += "&attributeCc="+programComboId+"&attributeCos="+attributeCos;
     }
     url += "&pageSize=50&page=1&totalPages=true";
     return new Promise((resolve, reject) =>{
