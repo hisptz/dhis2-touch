@@ -61,6 +61,7 @@ export class EventCapturePage implements OnInit{
   dataElementToDisplay:any;
   programStageDataElements:any;
   currentAvailableEvents:any;
+  hasEvents: boolean = false;
 
 
 
@@ -276,11 +277,32 @@ export class EventCapturePage implements OnInit{
     this.eventProvider.downloadEventsFromServer(this.selectedOrgUnitId,this.selectedProgramId, this.currentUser).then((eventsData:any)=>{
       let eventDataValues:any;
 
+      alert("EVent events: "+JSON.stringify(eventsData.events))
 
-      eventsData.events.forEach((event:any)=>{
-        currentEvents.push(event)
-      })
+      eventsData.events.forEach((event : any)=>{
+        //alert("catOption: "+JSON.stringify(event.attributeCategoryOptions))
 
+        // if(event.attributeCategoryOptions == attributeCategoryOptions){
+           currentEvents.push(event);
+        // }
+
+
+      });
+      if(currentEvents.length > 0){
+        this.hasEvents = true;
+      }else{
+        this.hasEvents = false;
+      }
+     // this.currentEvents = currentEvents;
+     //  this.loadEventListAsTable();
+
+
+
+
+     //  eventsData.events.forEach((event:any)=>{
+     //    currentEvents.push(event)
+     //  })
+     //
        if(eventsData.events.length !== 0){
          this.showEmptyList = false;
          this.eventsData = eventsData.events;
@@ -307,6 +329,7 @@ export class EventCapturePage implements OnInit{
 
 
        this.currentEvents =  eventsData.events;
+       // this.currentEvents =  eventsData;
       this.loadEvents();
 
     })
@@ -314,7 +337,22 @@ export class EventCapturePage implements OnInit{
   }
 
 
+
+  loadEventListAsTable(){
+
+    this.eventProvider.getEventListInTableFormat(this.currentEvents,this.dataElementToDisplay).then((table:any)=>{
+      this.tableFormat = table;
+      this.eventListSections = [];
+      this.isAllParameterSet = true;
+      //this.loadingData = false;
+    });
+
+
+  }
+
+
   loadEvents(){
+    this.dataElementToDisplay = {};
     this.table = {
       header: [], rows: []
     };
@@ -328,7 +366,11 @@ export class EventCapturePage implements OnInit{
 
 
     SortedDataElementIds.forEach((list:any)=> {
+
+      this.dataElementToDisplay[list] = list;
+
       this.dataElementsProvider.getDataElementsByName(list, this.currentUser).then((results: any) => {
+
 
         this.currentAvailableEvents.push({
           name:results[0].displayName,
@@ -360,7 +402,7 @@ export class EventCapturePage implements OnInit{
 
     });
 
-    //this.loadEventListAsTable();
+    this.loadEventListAsTable();
   }
 
 

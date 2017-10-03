@@ -47,19 +47,37 @@
 
   <!-- display events as table -->
   <div style="overflow-x: auto">
-    <table *ngIf ="!showEmptyList">
+    <table *ngIf="tableFormat">
       <thead>
       <tr>
-        <th *ngFor="let header of tableFormatHeader">{{header.name}}</th>
+        <th *ngFor="let header of tableFormat.header">{{header.name}}</th>
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let row of tableFormatRow" (tap)="goToEventView(row)" >
-        <td >{{row.value}} </td>
+      <tr *ngFor="let row of tableFormat.rows" (tap)="goToEventView(row)" >
+        <td *ngFor="let column of row.data">{{column}} </td>
       </tr>
       </tbody>
     </table>
   </div>
+
+
+
+  <!--&lt;!&ndash; display events as table &ndash;&gt;-->
+  <!--<div style="overflow-x: auto">-->
+    <!--<table *ngIf ="!showEmptyList">-->
+      <!--<thead>-->
+      <!--<tr>-->
+        <!--<th *ngFor="let header of tableFormatHeader">{{header.name}}</th>-->
+      <!--</tr>-->
+      <!--</thead>-->
+      <!--<tbody>-->
+      <!--<tr *ngFor="let row of tableFormatRow" (tap)="goToEventView(row)" >-->
+        <!--<td >{{row.value}} </td>-->
+      <!--</tr>-->
+      <!--</tbody>-->
+    <!--</table>-->
+  <!--</div>-->
 
 
 

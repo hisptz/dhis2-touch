@@ -217,6 +217,8 @@ export class EventsProvider {
         header : [],rows : []
       };
       //set headers
+      alert("toDisplaay: "+JSON.stringify(dataElementToDisplay))
+
       Object.keys(dataElementToDisplay).forEach((dataElementId:any)=>{
         tableFormat.header.push({
           id : dataElementId, name : dataElementToDisplay[dataElementId].name
@@ -249,6 +251,7 @@ export class EventsProvider {
         });
         eventDataValuesMapper[event.event] = dataValueMapper;
       });
+      alert("DataValue Mapper: "+JSON.stringify(eventDataValuesMapper))
       resolve(eventDataValuesMapper);
     });
   }
