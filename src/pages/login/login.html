@@ -78,6 +78,29 @@
         </ion-item>
         <ion-item>
           <div style="text-align: center" item-left >
+            <div *ngIf="progressTracker.event.passStepCount == progressTracker.event.count">
+              <ion-icon name="done-all" color="favorite"></ion-icon>
+            </div>
+            <div *ngIf="currentResourceType == 'event'">
+              <div *ngIf="progressTracker.event.passStepCount != progressTracker.event.count">
+                <page-loading loadingSize="small"></page-loading>
+              </div>
+            </div>
+          </div>
+          <span ion-text [color]="(currentResourceType == 'event')?'current' : 'font-color'" >
+            <span *ngIf="progressTracker.event.message != '' ">
+              {{ progressTracker.event.message }}
+            </span>
+            <span *ngIf="progressTracker.event.message == '' ">
+              Event & tracker metadata
+            </span>
+          </span>
+          <div style="text-align: center" item-right >
+            {{ progressTracker.event.passStepCount}}/{{ progressTracker.event.count}}
+          </div>
+        </ion-item>
+        <ion-item>
+          <div style="text-align: center" item-left >
             <div *ngIf="progressTracker.report.passStepCount == progressTracker.report.count">
               <ion-icon name="done-all" color="favorite"></ion-icon>
             </div>

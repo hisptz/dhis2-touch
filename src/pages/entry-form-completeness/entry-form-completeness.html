@@ -1,0 +1,37 @@
+<ion-header>
+
+  <ion-toolbar color="primary">
+    <ion-title>
+      Completeness information
+    </ion-title>
+    <ion-buttons start>
+      <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+<ion-content >
+  <ion-grid>
+    <div *ngIf="isLoading">
+      <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></page-loading>
+    </div>
+    <div *ngIf="!isLoading" class="item-card">
+      <div *ngFor="let info of userInformation">
+        <div class="content">
+          <ion-row>
+            <ion-col col-4>
+              <b>{{ info.key }}</b> :
+            </ion-col>
+            <ion-col col-8>
+              {{ info.value }}
+            </ion-col>
+          </ion-row>
+           </div>
+      </div>
+
+
+    </div>
+  </ion-grid>
+</ion-content>

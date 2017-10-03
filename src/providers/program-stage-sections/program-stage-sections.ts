@@ -19,9 +19,13 @@ export class ProgramStageSectionsProvider {
     this.resource = "programStageSections";
   }
 
-
+  /**
+   *
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   downloadProgramsStageSectionsFromServer(currentUser){
-    let fields= "id,name,programIndicators,sortOrder,programStageDataElements[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]]" ;
+    let fields= "id,name,sortOrder,programStage[id],attributeValues[value,attribute[name]],translations[*],programStageDataElements[dataElement[id]],dataElements[id]";
     let url = "/api/25/"+this.resource+".json?paging=false&fields=" + fields;
     return new Promise((resolve, reject)=> {
       this.HttpClient.get(url,currentUser).then((response : any)=>{
@@ -33,36 +37,49 @@ export class ProgramStageSectionsProvider {
     });
   }
 
-  saveProgramsStageSectionsFromServer(programsSec,currentUser){
+  /**
+   *
+   * @param programsStageSections
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  saveProgramsStageSectionsFromServer(programsStageSections,currentUser){
     return new Promise((resolve, reject)=> {
-      if(programsSec.length == 0){
+      if(programsStageSections.length == 0){
         resolve();
       }else{
-        this.sqlLite.insertBulkDataOnTable(this.resource,programsSec,currentUser.currentDatabase).then(()=>{
+        programsStageSections = this.getPreparedProgramStageSectionForSaving(programsStageSections);
+        this.sqlLite.insertBulkDataOnTable(this.resource,programsStageSections,currentUser.currentDatabase).then(()=>{
           resolve();
         },error=>{
-          console.log(JSON.stringify(error));
           reject(error);
         });
       }
     });
   }
 
-
-
-  getProgramStageSections(programStageSectionsIdsArray,currentUser){
-    let attribute = 'id';
-    let attributeValue =[];
-    programStageSectionsIdsArray.forEach((programStageSection:any)=>{
-      attributeValue.push(programStageSection.id);
+  /**
+   *
+   * @param programsStageSections
+   * @returns {any}
+   */
+  getPreparedProgramStageSectionForSaving(programsStageSections){
+    programsStageSections.forEach((programsStageSection : any)=>{
+      if(programsStageSection.programStage && programsStageSection.programStage.id){
+        programsStageSection["programStageId"] = programsStageSection.programStage.id;
+      }
+      if(!programsStageSection.dataElements){
+        programsStageSection["dataElements"] = [];
+        if(programsStageSection.programStageDataElements){
+          programsStageSection.programStageDataElements.forEach((programStageDataElement : any)=>{
+            if(programStageDataElement.dataElement && programStageDataElement.dataElement.id){
+              programsStageSection.dataElements.push({id : programStageDataElement.dataElement.id});
+            }
+          });
+        }
+      }
     });
-    return new Promise((resolve, reject)=> {
-      this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeValue,currentUser.currentDatabase).then(programStageSections=>{
-        resolve(programStageSections);
-      },error=>{
-        reject(error);
-      })
-    });
+    return programsStageSections;
   }
 
 

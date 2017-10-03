@@ -37,7 +37,6 @@ export class EventCapturePage implements OnInit{
   selectedProgramStages: any;
   organisationUnitLabel: string;
   programLabel: string;
-  periodLabel: string;
   table:any;
   programs: any;
   assignedPrograms : any;
@@ -49,21 +48,15 @@ export class EventCapturePage implements OnInit{
   CategoryOptionLabel:any;
   programLoading: boolean = false;
   hasOptions: boolean = false;
-  currentSelectionStatus :any = {};
   eventsData: any;
   rowData: any;
   tableFormatHeader: any;
   tableFormatRow:any;
   usedDataElements:any;
-  usedValues:any;
-  tableFormat:any;
   selectionList:any = {};
-  dataElementToDisplay:any;
   programStageDataElements:any;
   currentAvailableEvents:any;
   hasEvents: boolean = false;
-
-
 
   currentPeriodOffset: any;
   selectedOption: any;

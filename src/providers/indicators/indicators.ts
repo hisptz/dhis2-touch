@@ -64,7 +64,6 @@ export class IndicatorsProvider {
     let attributeKey = "id";
     return new Promise((resolve, reject)=> {
       this.sqlLite.getDataFromTableByAttributes(this.resource,attributeKey,indicatorIds,currentUser.currentDatabase).then(( indicators: any)=>{
-        console.log(JSON.stringify(indicators));
         resolve(indicators);
       },error=>{reject(error)})
     });

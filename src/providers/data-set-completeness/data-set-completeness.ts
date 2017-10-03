@@ -30,12 +30,8 @@ export class DataSetCompletenessProvider {
         reject(error);
       });
     });
-
-    // let headers = new Headers();
-    // headers.append('Authorization', 'Basic ' +currentUser.authorizationKey);
-    // return this.http.post(user.serverUrl + url, data, { headers: headers }).timeout(this.timeOutTime);
-
   }
+
 
   /**
    *
@@ -82,6 +78,24 @@ export class DataSetCompletenessProvider {
         reject();
       });
     });
+  }
+
+  /**
+   *
+   * @param username
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getUserCompletenessInformation(username,currentUser){
+    return new Promise( (resolve, reject)=> {
+      this.httpClient.get('/dhis-web-commons-ajax-json/getUser.action?username=' + username, currentUser).then((response : any )=> {
+        response = JSON.parse(response.data);
+        resolve(response);
+      }, error=> {
+        reject();
+      });
+    });
+
   }
 
   /**

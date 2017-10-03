@@ -116,7 +116,7 @@
             </div>
             <div *ngIf="!isDataSetCompletenessProcessRunning">
               <div *ngIf="dataSetsCompletenessInfo && dataSetsCompletenessInfo.complete">
-                <div class="item-card" padding-bottom padding-top >
+                <div class="item-card" padding-bottom padding-top (click)="viewUserCompletenessInformation(dataSetsCompletenessInfo)">
                   Completed by <b>{{ dataSetsCompletenessInfo.storedBy }}</b> on <b>{{ dataSetsCompletenessInfo.date }}</b>
                 </div>
               </div>

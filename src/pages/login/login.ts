@@ -14,7 +14,6 @@ import {DataSetsProvider} from "../../providers/data-sets/data-sets";
 import {StandardReportProvider} from "../../providers/standard-report/standard-report";
 import {ProgramsProvider} from "../../providers/programs/programs";
 import {ProgramStageSectionsProvider} from "../../providers/program-stage-sections/program-stage-sections";
-import {ProgramStageDataElementsProvider} from "../../providers/program-stage-data-elements/program-stage-data-elements";
 import {SettingsProvider} from "../../providers/settings/settings";
 
 /**
@@ -55,7 +54,6 @@ export class LoginPage implements OnInit{
               private HttpClientProvider : HttpClientProvider,
               private programsProvider: ProgramsProvider,
               private programStageSectionProvider: ProgramStageSectionsProvider,
-              private programStageDataElementsProvider: ProgramStageDataElementsProvider
               ) {
 
   }
@@ -328,7 +326,7 @@ export class LoginPage implements OnInit{
       if(this.completedTrackedProcess.indexOf(resource) > -1){
         this.progressTracker[this.currentResourceType].message = "SMS configurations have been loaded";
         this.updateProgressTracker(resource);
-        this.downloadingIndicators();
+        this.downloadingPrograms();
       }else{
         this.smsCommandProvider.getSmsCommandFromServer(this.currentUser).then((smsCommands : any)=>{
           if(this.isLoginProcessActive){
@@ -336,7 +334,7 @@ export class LoginPage implements OnInit{
             this.smsCommandProvider.savingSmsCommand(smsCommands,this.currentUser.currentDatabase).then(()=>{
               this.progressTracker[this.currentResourceType].message = "SMS configurations have been saved";
               this.updateProgressTracker(resource);
-              this.downloadingIndicators();
+              this.downloadingPrograms();
             },error=>{
               this.isLoginProcessActive = false;
               console.log(JSON.stringify(error));
@@ -351,43 +349,6 @@ export class LoginPage implements OnInit{
       }
     }
   }
-
-  downloadingIndicators(){
-    if(this.isLoginProcessActive){
-      let resource = 'indicators';
-      this.currentResourceType = "report";
-      this.progressTracker[this.currentResourceType].message = "Loading indicators";
-      if(this.completedTrackedProcess.indexOf(resource) > -1){
-        this.progressTracker[this.currentResourceType].message = "Indicators have been loaded";
-        this.updateProgressTracker(resource);
-        //this.downloadingStandardReports();
-        this.downloadingPrograms();
-      }else{
-        this.indicatorsProvider.downloadingIndicatorsFromServer(this.currentUser).then((response:any)=>{
-          if(this.isLoginProcessActive){
-            this.progressTracker[this.currentResourceType].message = "Saving indicators";
-            this.indicatorsProvider.savingIndicatorsFromServer(response[resource],this.currentUser).then(()=>{
-              this.progressTracker[this.currentResourceType].message = "Indicators have been saved";
-              this.updateProgressTracker(resource);
-              //this.downloadingStandardReports();
-              this.downloadingPrograms();
-            },error=>{
-              this.isLoginProcessActive = false;
-              console.log(JSON.stringify(error));
-              this.AppProvider.setNormalNotification('Fail to save indicators.');
-            });
-          }
-        },error=>{
-          this.isLoginProcessActive = false;
-          console.log(JSON.stringify(error));
-          this.AppProvider.setNormalNotification('Fail to load indicators.');
-        });
-      }
-    }
-  }
-
-
-
 
   downloadingPrograms(){
     if(this.isLoginProcessActive){
@@ -415,36 +376,33 @@ export class LoginPage implements OnInit{
         },error=>{
           this.isLoginProcessActive = false;
           console.log(JSON.stringify(error));
-          this.AppProvider.setNormalNotification('Fail to Load programs.');
+          this.AppProvider.setNormalNotification('Fail to load programs.');
         });
       }
     }
   }
 
-
   downloadingProgramStageSections(){
     if(this.isLoginProcessActive){
       let resource = 'programStageSections';
       this.currentResourceType = "event";
-      this.progressTracker[this.currentResourceType].message = "Loading program stage's sections";
+      this.progressTracker[this.currentResourceType].message = "Loading program stage sections";
       if(this.completedTrackedProcess.indexOf(resource) > -1){
-        this.progressTracker[this.currentResourceType].message = "Program stage's sections have been loaded";
+        this.progressTracker[this.currentResourceType].message = "Program stage sections have been loaded";
         this.updateProgressTracker(resource);
-        this.downloadingStandardReports();
-        //this.downloadingProgramStageDataElements();
+        this.downloadingIndicators();
       }else{
         this.programStageSectionProvider.downloadProgramsStageSectionsFromServer(this.currentUser).then(response=>{
           if(this.isLoginProcessActive){
-            this.progressTracker[this.currentResourceType].message = "Saving program stage's sections";
+            this.progressTracker[this.currentResourceType].message = "Saving program stage sections";
             this.programStageSectionProvider.saveProgramsStageSectionsFromServer(response[resource],this.currentUser).then(()=>{
-              this.progressTracker[this.currentResourceType].message = "Program stage's sections have been saved";
+              this.progressTracker[this.currentResourceType].message = "Program stage sections have been saved";
               this.updateProgressTracker(resource);
-              this.downloadingStandardReports();
-              //this.downloadingProgramStageDataElements();
+              this.downloadingIndicators();
             },error=>{
               this.isLoginProcessActive = false;
               console.log(JSON.stringify(error));
-              this.AppProvider.setNormalNotification('Fail to save program-stage sections.');
+              this.AppProvider.setNormalNotification('Fail to save program stage sections.');
             });
           }
         },error=>{
@@ -456,40 +414,37 @@ export class LoginPage implements OnInit{
     }
   }
 
-  downloadingProgramStageDataElements(){
+  downloadingIndicators(){
     if(this.isLoginProcessActive){
-      let resource = 'programStageDataElements';
-      this.currentResourceType = "event";
-      this.progressTracker[this.currentResourceType].message = "Loading programstage data elements";
+      let resource = 'indicators';
+      this.currentResourceType = "report";
+      this.progressTracker[this.currentResourceType].message = "Loading indicators";
       if(this.completedTrackedProcess.indexOf(resource) > -1){
-        this.progressTracker[this.currentResourceType].message = "Programstage data elements have been loaded";
+        this.progressTracker[this.currentResourceType].message = "Indicators have been loaded";
         this.updateProgressTracker(resource);
         this.downloadingStandardReports();
-       // this.setLandingPage(this.currentUser);
       }else{
-        this.programStageDataElementsProvider.downloadProgramsStageDataElementsFromServer(this.currentUser).then(response=>{
+        this.indicatorsProvider.downloadingIndicatorsFromServer(this.currentUser).then((response:any)=>{
           if(this.isLoginProcessActive){
-            this.progressTracker[this.currentResourceType].message = "Saving programstage data elements";
-            this.programStageDataElementsProvider.saveProgramsStageDataElementsFromServer(response[resource],this.currentUser).then(()=>{
-              this.progressTracker[this.currentResourceType].message = "Programstage data elements have been saved";
+            this.progressTracker[this.currentResourceType].message = "Saving indicators";
+            this.indicatorsProvider.savingIndicatorsFromServer(response[resource],this.currentUser).then(()=>{
+              this.progressTracker[this.currentResourceType].message = "Indicators have been saved";
               this.updateProgressTracker(resource);
               this.downloadingStandardReports();
-              //this.setLandingPage(this.currentUser);
             },error=>{
               this.isLoginProcessActive = false;
-              this.AppProvider.setNormalNotification('Fail to save program-stage data-elements.');
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification('Fail to save indicators.');
             });
           }
         },error=>{
           this.isLoginProcessActive = false;
           console.log(JSON.stringify(error));
-          this.AppProvider.setNormalNotification('Fail to load program-stage data-elements.');
+          this.AppProvider.setNormalNotification('Fail to load indicators.');
         });
       }
     }
   }
-
-
 
   downloadingStandardReports(){
     if(this.isLoginProcessActive){
@@ -557,8 +512,6 @@ export class LoginPage implements OnInit{
     }
   }
 
-
-
   setLandingPage(currentUser){
     currentUser.isLogin = true;
     this.reCheckingAppSetting(currentUser);
@@ -620,7 +573,6 @@ export class LoginPage implements OnInit{
         resourceType = table.resourceType
       }
     }
-
     if(this.progressTracker[resourceType].passStep.length == this.progressTracker[resourceType].count){
       this.progressTracker[resourceType].passStep.forEach((passStep:any)=>{
         if(passStep.name == resourceName && passStep.hasBeenDownloaded){

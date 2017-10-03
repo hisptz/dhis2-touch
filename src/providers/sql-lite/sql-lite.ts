@@ -89,6 +89,7 @@ export class SqlLiteProvider {
           resolve();
         }, (error) => {
           console.log("Error on create table " + tableName);
+          console.log(query);
           console.log("Error occurred " + JSON.stringify(error));
           reject(error);
         });

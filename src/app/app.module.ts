@@ -62,7 +62,6 @@ import { StandardReportProvider } from '../providers/standard-report/standard-re
 import {DataEntryModule} from "../components/data.entry.module";
 import { PeriodSelectionProvider } from '../providers/period-selection/period-selection';
 import { ProgramsProvider } from '../providers/programs/programs';
-import { ProgramStageDataElementsProvider } from '../providers/program-stage-data-elements/program-stage-data-elements';
 import { EventsProvider } from '../providers/events/events';
 import { ProgramStageSectionsProvider } from '../providers/program-stage-sections/program-stage-sections';
 import { EventCaptureFormProvider } from '../providers/event-capture-form/event-capture-form';
@@ -138,7 +137,6 @@ import {DataSetCompletenessProvider} from "../providers/data-set-completeness/da
     StandardReportProvider,
     PeriodSelectionProvider,
     ProgramsProvider,
-    ProgramStageDataElementsProvider,
     EventsProvider,
     ProgramStageSectionsProvider,
     EventCaptureFormProvider,
