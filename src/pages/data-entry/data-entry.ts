@@ -148,7 +148,7 @@ export class DataEntryPage implements OnInit{
       });
       modal.present();
     }else{
-      this.appProvider.setNormalNotification("There are no entry form to select on " + this.selectedOrgUnit.name );
+      this.appProvider.setNormalNotification("There are no entry form to select on " + this.selectedOrgUnit.name);
     }
   }
 

@@ -23,20 +23,33 @@ import {DataElementsProvider} from "../../providers/data-elements/data-elements"
 })
 export class EventCapturePage implements OnInit{
 
+  selectedOrgUnit : any;
+  selectedProgram : any;
   currentUser: any;
   programIdsByUserRoles: any;
+
+
+
+  isLoading : boolean;
+  loadingMessage : string;
+  organisationUnitLabel: string;
+  programLabel: string;
+  isFormReady : boolean;
+  isProgramDimensionApplicable : boolean;
+  programDimensionNotApplicablableMessage : string;
+  programCategoryCombo : any;
+  selectedDataDimension : Array<any>;
+  icons : any = {};
+
+
+
   programNamesByUserRoles: any;
-  selectedDataDimension = [];
   currentEvents: any;
   eventListSections: any;
   isAllParameterSet: boolean;
   showEmptyList:boolean = false;
-  selectedOrgUnit : any;
   selectedOrgUnitId: any;
-  selectedProgram: any;
   selectedProgramStages: any;
-  organisationUnitLabel: string;
-  programLabel: string;
   table:any;
   programs: any;
   assignedPrograms : any;
@@ -60,7 +73,6 @@ export class EventCapturePage implements OnInit{
   currentPeriodOffset: any;
   selectedOption: any;
   selectedPeriod : any;
-  icons: any = {};
   userRoleData: any;
   network : any;
 

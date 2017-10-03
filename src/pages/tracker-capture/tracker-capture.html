@@ -20,7 +20,15 @@
           <img  class="side-menu-icon" [src]="icons.orgUnit"/>&nbsp;&nbsp;
           {{ organisationUnitLabel }}
         </div>
+        <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openProgramList()" >
+          <img  class="side-menu-icon" [src]="icons.program"/>&nbsp;&nbsp;
+          {{ programLabel }}
+        </div>
       </ion-col>
     </ion-row>
+
+    <div *ngIf = "isFormReady">
+      isFormReady : {{ isFormReady }}
+    </div>
   </ion-grid>
 </ion-content>

@@ -5,7 +5,7 @@
     </ion-title>
     <ion-buttons start>
       <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
-        close
+        <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
   </ion-toolbar>
@@ -20,7 +20,7 @@
         <ion-list class = "programFormSelection">
           <ion-item *ngFor="let program of programsList"   (tap)="setSelectedProgram(program)">
             <img  class="side-menu-icon" [src]="icons.program"/>&nbsp;&nbsp;
-            <span (tap)="setSelectedProgram(program)" ion-text [color]="(currentSelectedProgram == program)? 'current': 'font-color'" >{{ program}}</span>
+            <span ion-text [color]="(currentProgram.id == program.id)? 'current': 'font-color'" >{{ program.name}}</span>
           </ion-item>
           <ion-item *ngIf = "programsList.length == 0">
             <empty-list-notification [emptyListMessage]="'There is no Program to select'"></empty-list-notification>

@@ -362,7 +362,88 @@ export class ProgramsProvider {
   }
 
 
+  getProgramsAssignedOnOrgUnitAndUserRoles(orgUnitId,programType,programIdsByUserRoles,currentUser){
+    let attributeKey = "id";
+    let attributeArray = [];
+    let programs = [];
+    return new Promise((resolve, reject)=> {
+      this.getProgramOrganisationUnits(orgUnitId,currentUser.currentDatabase).then((programOrganisationUnits: any)=>{
+        if(currentUser.authorities && (currentUser.authorities.indexOf("ALL") > -1)){
+          programOrganisationUnits.forEach((programOrganisationUnit : any)=>{
+            attributeArray.push(programOrganisationUnit.programId);
+          });
+        }else{
+          programOrganisationUnits.forEach((programOrganisationUnit : any)=>{
+            if(programIdsByUserRoles.indexOf(programOrganisationUnit.programId) != -1){
+              attributeArray.push(programOrganisationUnit.programId);
+            }
+          });
+        }
+        this.sqlLite.getDataFromTableByAttributes(this.resource,attributeKey,attributeArray,currentUser.currentDatabase).then((programsResponse: any)=>{
+          if(programsResponse && programsResponse.length > 0){
+            let hasProgramSelected = false;
+            programsResponse.forEach((program : any)=>{
+              if(program.programType && program.programType == programType){
+                programs.push(program);
+                if(this.lastSelectedProgram && this.lastSelectedProgram.id){
+                  if(this.lastSelectedProgram.id == program.id){
+                    hasProgramSelected = true;
+                  }
+                }
+              }
+            });
+            if(programs.length > 0){
+              if(!hasProgramSelected){
+                this.setLastSelectedProgram(programs[0])
+              }
+            }else{
+              this.lastSelectedProgram = null;
+            }
+          }else{
+            this.lastSelectedProgram = null;
+          }
+          resolve(this.getSortedPrograms(programs));
+        },error=>{reject(error)});
+      },error=>{
+        reject(error);
+      });
+    });
+  }
 
+  /**
+   *
+   * @param programs
+   * @returns {any}
+   */
+  getSortedPrograms(programs){
+    programs.sort((a, b) => {
+      if (a.name > b.name) {
+        return 1;
+      }
+      if (a.name < b.name) {
+        return -1;
+      }
+      return 0;
+    });
+    return programs;
+  }
+
+  /**
+   *
+   * @param orgUnitId
+   * @param dataBaseName
+   * @returns {Promise<any>}
+   */
+  getProgramOrganisationUnits(orgUnitId,dataBaseName){
+    let resource = "programOrganisationUnits";
+    let attributeValue  = [orgUnitId];
+    let attributeKey = "orgUnitId";
+    return new Promise((resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(resource,attributeKey,attributeValue,dataBaseName).then((programOrganisationUnits: any)=>{
+        resolve(programOrganisationUnits);
+      },error=>{reject(error)});
+    });
+  }
 
   /**
    * get program by id

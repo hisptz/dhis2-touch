@@ -16,7 +16,7 @@ import {ProgramsProvider} from "../../providers/programs/programs";
 export class ProgramSelection implements OnInit{
 
   public programsList : any;
-  public currentSelectedProgram : string;
+  public currentProgram : any;
   icons:any = {};
 
   constructor(public viewCtrl: ViewController,public params : NavParams, public programProvider: ProgramsProvider) {}
@@ -27,20 +27,16 @@ export class ProgramSelection implements OnInit{
 
   setModalData(){
     this.icons.program = "assets/event-capture/program.png";
-    this.currentSelectedProgram = "";
-    this.programsList = this.params.get('data');
-    let selectedProgram = this.params.get('selectedProgram');
-    if(selectedProgram && selectedProgram.name){
-      this.currentSelectedProgram = selectedProgram.name;
-    }
+    this.programsList = this.params.get('programsList');
+    this.currentProgram = this.params.get('currentProgram');
   }
 
   getFilteredList(ev: any) {
-    let val = ev.target.value;
-    this.programsList = this.params.get('data');
-    if(val && val.trim() != ''){
+    let searchValue = ev.target.value;
+    this.programsList = this.params.get('programsList');
+    if(searchValue && searchValue.trim() != ''){
       this.programsList = this.programsList.filter((program:any) => {
-        return (program.toLowerCase().indexOf(val.toLowerCase()) > -1);
+        return (program.name.toLowerCase().indexOf(searchValue.toLowerCase()) > -1);
       })
     }
   }
