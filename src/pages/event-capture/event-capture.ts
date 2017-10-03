@@ -34,7 +34,7 @@ export class EventCapturePage implements OnInit {
   programLabel: string;
   isFormReady: boolean;
   isProgramDimensionApplicable: boolean;
-  programDimensionNotApplicablableMessage: string;
+  programDimensionNotApplicableMessage: string;
   programCategoryCombo: any;
   selectedDataDimension: Array<any>;
   programs: Array<any>;
@@ -86,6 +86,9 @@ export class EventCapturePage implements OnInit {
     this.icons.orgUnit = "assets/data-entry/orgUnit.png";
     this.icons.program = "assets/event-capture/program.png";
 
+    this.selectedDataDimension = [];
+    this.programIdsByUserRoles = [];
+    this.programs = [];
     this.loadingMessage = "Loading. user information";
     this.isLoading = true;
     this.isFormReady = false;
@@ -124,6 +127,9 @@ export class EventCapturePage implements OnInit {
       this.programs = programs;
       this.selectedProgram = this.programsProvider.lastSelectedProgram;
       this.updateTrackerCaptureSelections();
+      if(this.selectedProgram && this.selectedProgram.categoryCombo){
+        this.updateDataSetCategoryCombo(this.selectedProgram.categoryCombo);
+      }
       this.isLoading = false;
       this.loadingMessage = "";
     }, error => {
@@ -182,10 +188,48 @@ export class EventCapturePage implements OnInit {
     }
   }
 
+  openDataDimensionSelection(category){
+    if(category.categoryOptions && category.categoryOptions && category.categoryOptions.length > 0){
+      let currentIndex = this.programCategoryCombo.categories.indexOf(category);
+      let modal = this.modalCtrl.create('DataDimensionSelectionPage', {
+        categoryOptions : category.categoryOptions,
+        title : category.name + "'s selection",
+        currentSelection : (this.selectedDataDimension[currentIndex]) ? this.selectedDataDimension[currentIndex]: {}
+      });
+      modal.onDidDismiss((selectedDataDimension : any)=>{
+        if(selectedDataDimension && selectedDataDimension.id ){
+          this.selectedDataDimension[currentIndex] = selectedDataDimension;
+          this.updateTrackerCaptureSelections();
+        }
+      });
+      modal.present();
+    }else{
+      let message = "There is no option for " + category.name + " that associated with " + this.selectedOrgUnit.name;
+      this.appProvider.setNormalNotification(message);
+    }
+  }
+
+  getDataDimensions(){
+    if(this.selectedProgram && this.selectedProgram.categoryCombo){
+      let attributeCc = this.selectedProgram.categoryCombo.id;
+      let attributeCos = "";
+      this.selectedDataDimension.forEach((dimension : any,index:any)=>{
+        if(index == 0){
+          attributeCos +=dimension.id;
+        }else{
+          attributeCos += ";" + dimension.id;
+        }
+      });
+      return {attributeCc : attributeCc,attributeCos:attributeCos};
+    }else{
+      return {};
+    }
+  }
+
   isAllParameterSelected() {
-    let isFormReady = false;
-    if (this.selectedProgram && this.selectedProgram.name) {
-      if(this.selectedDataDimension && this.selectedDataDimension.length > 0 && this.selectedDataDimension.length == this.selectedProgram.categories.length){
+    let isFormReady = true;
+    if (this.selectedProgram && this.selectedProgram.name && this.selectedProgram.categoryCombo.name && this.selectedProgram.categoryCombo.name != 'default') {
+      if(this.selectedDataDimension && this.selectedDataDimension.length > 0 && this.programCategoryCombo && this.programCategoryCombo.categories && this.selectedDataDimension.length == this.programCategoryCombo.categories.length){
         let count = 0;
         this.selectedDataDimension.forEach(()=>{
           count ++;
@@ -197,31 +241,33 @@ export class EventCapturePage implements OnInit {
         isFormReady = false;
       }
     }
-
     return isFormReady;
   }
 
   updateDataSetCategoryCombo(categoryCombo){
-    let programCategoryCombo  = {};
-    this.isProgramDimensionApplicable = false;
-    if(categoryCombo.name != 'default'){
-      programCategoryCombo['id'] = categoryCombo.id;
-      programCategoryCombo['name'] = categoryCombo.name;
-      let categories = this.programsProvider.getProgramCategoryComboCategories(this.selectedOrgUnit.id,categoryCombo.categories);
-      programCategoryCombo['categories'] = categories;
-      this.isProgramDimensionApplicable = true;
-      this.programDimensionNotApplicablableMessage = "All";
-      categories.forEach((category: any)=>{
-        if(category.categoryOptions && category.categoryOptions.length == 0){
-          this.programDimensionNotApplicablableMessage = this.programDimensionNotApplicablableMessage + " " + category.name.toLowerCase();
-          this.isProgramDimensionApplicable = false;
-        }
-      });
-      this.programDimensionNotApplicablableMessage += " disaggregation are restricted from entry in " + this.selectedOrgUnit.name + ", choose a different form or contact your support desk";
+    if(categoryCombo){
+      let programCategoryCombo  = {};
+      this.isProgramDimensionApplicable = false;
+      if(categoryCombo.name != 'default'){
+        programCategoryCombo['id'] = categoryCombo.id;
+        programCategoryCombo['name'] = categoryCombo.name;
+        let categories = this.programsProvider.getProgramCategoryComboCategories(this.selectedOrgUnit.id,categoryCombo.categories);
+        programCategoryCombo['categories'] = categories;
+        this.isProgramDimensionApplicable = true;
+        this.programDimensionNotApplicableMessage = "All";
+        categories.forEach((category: any)=>{
+          if(category.categoryOptions && category.categoryOptions.length == 0){
+            this.programDimensionNotApplicableMessage = this.programDimensionNotApplicableMessage + " " + category.name.toLowerCase();
+            this.isProgramDimensionApplicable = false;
+          }
+        });
+        this.programDimensionNotApplicableMessage += " disaggregation are restricted from entry in " + this.selectedOrgUnit.name + ", choose a different form or contact your support desk";
+      }
+      this.selectedDataDimension = [];
+      this.programCategoryCombo = programCategoryCombo;
+      this.updateTrackerCaptureSelections();
     }
-    this.selectedDataDimension = [];
-    this.programCategoryCombo = programCategoryCombo;
-    this.updateTrackerCaptureSelections();
+
   }
 
 
