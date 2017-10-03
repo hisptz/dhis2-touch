@@ -13,5 +13,14 @@
 </ion-header>
 
 <ion-content >
-
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openOrganisationUnitTree()" >
+          <img  class="side-menu-icon" [src]="icons.orgUnit"/>&nbsp;&nbsp;
+          {{ organisationUnitLabel }}
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
