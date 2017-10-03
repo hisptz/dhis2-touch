@@ -77,7 +77,7 @@ export class TrackerCapturePage implements OnInit{
       this.isLoading = false;
       this.loadingMessage = "";
       this.appProvider.setNormalNotification("Fail to load user information");
-    })
+    });
   }
 
   loadingPrograms(){
@@ -114,8 +114,6 @@ export class TrackerCapturePage implements OnInit{
     this.isLoading = false;
     this.loadingMessage = "";
   }
-
-
 
   openOrganisationUnitTree(){
     let modal = this.modalCtrl.create('OrganisationUnitSelectionPage',{});

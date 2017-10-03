@@ -151,7 +151,7 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: true,
     resourceType: "entryForm",
-    batchSize : 30,
+    batchSize : 100,
     displayName : "Data Elements",
     dependentTable : []
   },
