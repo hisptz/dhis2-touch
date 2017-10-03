@@ -32,8 +32,14 @@ export class ProgramsProvider {
     this.lastSelectedProgramCategoryOption = programOption;
   }
 
+  /**
+   *
+   *
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   downloadProgramsFromServer(currentUser){
-    let fields= "id,name,programType,withoutRegistration,ignoreOverdueEvents,skipOffline,captureCoordinates,enrollmentDateLabel,onlyEnrollOnce,selectIncidentDatesInFuture,incidentDateLabel,useFirstStageDuringRegistration,completeEventsExpiryDays,displayFrontPageList,,categoryCombo[id,name,categories[id,name,categoryOptions[name,id]]],programStages[id,name,programStageDataElements[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id]],programStageSections[id]],organisationUnits[id],programIndicators[id,name,description,expression],translations,attributeValues[value,attribute[name]],validationCriterias,programRuleVariables,programTrackedEntityAttributes[id,mandatory,externalAccess,allowFutureDate,displayInList,sortOrder,trackedEntityAttribute[id,name,code,name,formName,description,confidential,searchScope,translations,inherit,legendSets,optionSet[name,options[name,id,code]]unique,orgunitScope,programScope,displayInListNoProgramaggregationType,displayInListNoProgram,pattern,sortOrderInListNoProgram,generated,displayOnVisitSchedule,valueType,sortOrderInVisitSchedule]],programRules";
+    let fields= "id,name,programType,withoutRegistration,ignoreOverdueEvents,skipOffline,captureCoordinates,enrollmentDateLabel,onlyEnrollOnce,selectIncidentDatesInFuture,incidentDateLabel,useFirstStageDuringRegistration,completeEventsExpiryDays,displayFrontPageList,,categoryCombo[id,name,categories[id,name,categoryOptions[name,id]]],programStages[id,name,sortOrder,programStageDataElements[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id]],programStageSections[id]],organisationUnits[id],programIndicators[id,name,description,expression],translations,attributeValues[value,attribute[name]],validationCriterias,programRuleVariables,programTrackedEntityAttributes[id,mandatory,externalAccess,allowFutureDate,displayInList,sortOrder,trackedEntityAttribute[id,name,code,name,formName,description,confidential,searchScope,translations,inherit,legendSets,optionSet[name,options[name,id,code]]unique,orgunitScope,programScope,displayInListNoProgramaggregationType,displayInListNoProgram,pattern,sortOrderInListNoProgram,generated,displayOnVisitSchedule,valueType,sortOrderInVisitSchedule]],programRules";
       let url = "/api/25/"+this.resource+".json?paging=false&fields=" + fields;
     return new Promise((resolve, reject)=> {
       this.HttpClient.get(url,currentUser).then((response : any)=>{
@@ -45,16 +51,28 @@ export class ProgramsProvider {
     });
   }
 
+  /**
+   *
+   * @param programs
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   saveProgramsFromServer(programs,currentUser){
-    //programProgramRuleVariables,programProgramRules,programProgramTrackedEntityAttributes,trackedEntityAttribute,programIndicators,programProgramStages,programOrganisationUnits
     return new Promise((resolve, reject)=> {
       if(programs.length == 0){
-        resolve();
-      }else{
-        this.sqlLite.insertBulkDataOnTable(this.resource,programs,currentUser.currentDatabase).then(()=>{
+        this.savingProgramProgramRuleVariables(programs,currentUser).then(()=>{
           resolve();
         },error=>{
-          console.log(JSON.stringify(error));
+          reject(error);
+        });
+      }else{
+        this.sqlLite.insertBulkDataOnTable(this.resource,programs,currentUser.currentDatabase).then(()=>{
+          this.savingProgramProgramRuleVariables(programs,currentUser).then(()=>{
+            resolve();
+          },error=>{
+            reject(error);
+          });
+        },error=>{
           reject(error);
         });
       }
@@ -62,45 +80,288 @@ export class ProgramsProvider {
   }
 
   /**
-   * sortProgramList
-   * @param dataSetList
-   * @returns {any}
+   *
+   * @param programs
+   * @param currentUser
+   * @returns {Promise<any>}
    */
-  sortProgramList(dataSetList){
-    dataSetList.sort((a, b) => {
-      if (a.name > b.name) {
-        return 1;
+  savingProgramProgramRuleVariables(programs,currentUser){
+    let programProgramRuleVariables = [];
+    let resource = "programProgramRuleVariables";
+    programs.forEach((program : any)=>{
+      if(program.programRuleVariables && program.programRuleVariables.length > 0){
+        program.programRuleVariables.forEach((programRuleVariable : any)=>{
+          programProgramRuleVariables.push({
+            id : program.id + "-" + programRuleVariable.id,
+            programId : program.id,
+            programRuleVariableId : programRuleVariable.id
+          });
+        });
       }
-      if (a.name < b.name) {
-        return -1;
-      }
-      return 0;
     });
-    return dataSetList;
+    return new Promise((resolve, reject)=> {
+      if(programProgramRuleVariables.length == 0){
+        this.savingProgramProgramRules(programs,currentUser).then(()=>{
+          resolve();
+        },error=>{
+          reject(error);
+        });
+      }else{
+        this.sqlLite.insertBulkDataOnTable(resource,programProgramRuleVariables,currentUser.currentDatabase).then(()=>{
+          this.savingProgramProgramRules(programs,currentUser).then(()=>{
+            resolve();
+          },error=>{
+            reject(error);
+          });
+        },error=>{
+          reject(error);
+        });
+      }
+    });
   }
 
   /**
-   * get program by id
-   * @param programId
+   *
+   * @param programs
    * @param currentUser
-   * @returns {Promise<T>}
+   * @returns {Promise<any>}
    */
-  getProgramById(programId,currentUser){
-     let attribute = 'id';
-    let attributeValue =[];
-    attributeValue.push(programId);
+  savingProgramProgramRules(programs,currentUser){
+    let programProgramRules = [];
+    let resource = "programProgramRules";
+    programs.forEach((program : any)=>{
+      if(program.programRules && program.programRules.length > 0){
+        program.programRules.forEach((programRule : any)=>{
+          programProgramRules.push({
+            id : program.id + "-" + programRule.id,
+            programId : program.id,
+            programRuleId : programRule.id
+          });
+        });
+      }
+    });
     return new Promise((resolve, reject)=> {
-      this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeValue,currentUser.currentDatabase).then((programs:any)=>{
-        if(programs.length > 0){
-          resolve(programs[0]);
-        }else{
-          resolve({});
-        }
-      },error=>{
-        reject(error);
-      });
+      if(programProgramRules.length == 0){
+        this.savingProgramOrganisationUnits(programs,currentUser).then(()=>{
+          resolve();
+        },error=>{
+          reject(error);
+        });
+      }else{
+        this.sqlLite.insertBulkDataOnTable(resource,programProgramRules,currentUser.currentDatabase).then(()=>{
+          this.savingProgramOrganisationUnits(programs,currentUser).then(()=>{
+            resolve();
+          },error=>{
+            reject(error);
+          });
+        },error=>{
+          reject(error);
+        });
+      }
     });
   }
+
+  /**
+   *
+   * @param programs
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  savingProgramOrganisationUnits(programs,currentUser){
+    let programOrganisationUnits = [];
+    let resource = "programOrganisationUnits";
+    programs.forEach((program : any)=>{
+      if(program.organisationUnits && program.organisationUnits.length > 0){
+        program.organisationUnits.forEach((organisationUnit : any)=>{
+          programOrganisationUnits.push({
+            id : program.id + "-" + organisationUnit.id,
+            programId : program.id,
+            orgUnitId : organisationUnit.id
+          });
+        });
+      }
+    });
+    return new Promise((resolve, reject)=> {
+      if(programOrganisationUnits.length == 0){
+        this.savingProgramIndicators(programs,currentUser).then(()=>{
+          resolve();
+        },error=>{
+          reject(error);
+        });
+      }else{
+        this.sqlLite.insertBulkDataOnTable(resource,programOrganisationUnits,currentUser.currentDatabase).then(()=>{
+          this.savingProgramIndicators(programs,currentUser).then(()=>{
+            resolve();
+          },error=>{
+            reject(error);
+          });
+        },error=>{
+          reject(error);
+        });
+      }
+    });
+  }
+
+  /**
+   *
+   * @param programs
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  savingProgramIndicators(programs,currentUser){
+    let programIndicators = [];
+    let resource = "programIndicators";
+    programs.forEach((program : any)=>{
+      if(program.programIndicators && program.programIndicators.length > 0){
+        program.programIndicators.forEach((programIndicator : any)=>{
+          programIndicators.push({
+            id : program.id + "-" + programIndicator.id,
+            programId : program.id,
+            name : programIndicator.name,
+            expression : programIndicator.expression
+          });
+        });
+      }
+    });
+    return new Promise((resolve, reject)=> {
+      if(programIndicators.length == 0){
+        this.savingProgramProgramStages(programs,currentUser).then(()=>{
+          resolve();
+        },error=>{
+          reject(error);
+        });
+      }else{
+        this.sqlLite.insertBulkDataOnTable(resource,programIndicators,currentUser.currentDatabase).then(()=>{
+          this.savingProgramProgramStages(programs,currentUser).then(()=>{
+            resolve();
+          },error=>{
+            reject(error);
+          });
+        },error=>{
+          reject(error);
+        });
+      }
+    });
+  }
+
+  /**
+   *
+   * @param programs
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  savingProgramProgramStages(programs,currentUser){
+    let programProgramStages = [];
+    let resource = "programProgramStages";
+    programs.forEach((program : any)=>{
+      if(program.programStages && program.programStages.length > 0){
+        program.programStages.forEach((programStage : any)=>{
+          programProgramStages.push({
+            id : program.id + "-" + programStage.id,
+            programId : program.id,
+            name : programStage.name,
+            sortOrder : programStage.sortOrder,
+            programStageDataElements : programStage.programStageDataElements,
+            programStageSections : programStage.programStageSections
+          });
+        });
+      }
+    });
+    return new Promise((resolve, reject)=> {
+      if(programProgramStages.length == 0){
+        this.savingProgramProgramTrackedEntityAttributes(programs,currentUser).then(()=>{
+          resolve();
+        },error=>{
+          reject(error);
+        });
+      }else{
+        this.sqlLite.insertBulkDataOnTable(resource,programProgramStages,currentUser.currentDatabase).then(()=>{
+          this.savingProgramProgramTrackedEntityAttributes(programs,currentUser).then(()=>{
+            resolve();
+          },error=>{
+            reject(error);
+          });
+        },error=>{
+          reject(error);
+        });
+      }
+    });
+  }
+
+  /**
+   *
+   * @param programs
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  savingProgramProgramTrackedEntityAttributes(programs,currentUser){
+    let programTrackedEntityAttributes = [];
+    let trackedEntityAttributes = [];
+    let resource = "programTrackedEntityAttributes";
+    programs.forEach((program : any)=>{
+      if(program.programTrackedEntityAttributes && program.programTrackedEntityAttributes.length > 0){
+        program.programTrackedEntityAttributes.forEach((programTrackedEntityAttribute : any)=>{
+          programTrackedEntityAttributes.push({
+            id : program.id + "-" + programTrackedEntityAttribute.id,
+            programId : program.id,
+            sortOrder : programTrackedEntityAttribute.sortOrder,
+            mandatory : programTrackedEntityAttribute.mandatory,
+            displayInList : programTrackedEntityAttribute.displayInList,
+            externalAccess : programTrackedEntityAttribute.externalAccess
+          });
+          if(programTrackedEntityAttribute.trackedEntityAttribute && programTrackedEntityAttribute.trackedEntityAttribute.id){
+            trackedEntityAttributes.push({
+              id : programTrackedEntityAttribute.id + programTrackedEntityAttribute.trackedEntityAttribute.id,
+              programTrackedEntityAttributeId : programTrackedEntityAttribute.id,
+              trackedEntityAttribute : programTrackedEntityAttribute.trackedEntityAttribute
+            });
+          }
+        });
+      }
+    });
+    return new Promise((resolve, reject)=> {
+      if(programTrackedEntityAttributes.length == 0){
+        this.savingTrackedEntityAttributes(trackedEntityAttributes,currentUser).then(()=>{
+          resolve();
+        },error=>{
+          reject(error);
+        });
+      }else{
+        this.sqlLite.insertBulkDataOnTable(resource,programTrackedEntityAttributes,currentUser.currentDatabase).then(()=>{
+          this.savingTrackedEntityAttributes(trackedEntityAttributes,currentUser).then(()=>{
+            resolve();
+          },error=>{
+            reject(error);
+          });
+        },error=>{
+          reject(error);
+        });
+      }
+    });
+  }
+
+  /**
+   *
+   * @param trackedEntityAttributes
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  savingTrackedEntityAttributes(trackedEntityAttributes,currentUser){
+    let resource = "trackedEntityAttribute";
+    return new Promise((resolve, reject)=> {
+      if(trackedEntityAttributes.length == 0){
+        resolve();
+      }else{
+        this.sqlLite.insertBulkDataOnTable(resource,trackedEntityAttributes,currentUser.currentDatabase).then(()=>{
+          resolve();
+        },error=>{
+          reject(error);
+        });
+      }
+    });
+  }
+
+
 
 
   /**

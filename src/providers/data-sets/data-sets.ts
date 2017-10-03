@@ -14,7 +14,6 @@ export class DataSetsProvider {
 
   resource : string;
   lastSelectedDataSet : any;
-  lastSelectedDataSetPeriod : any;
 
   constructor(private SqlLite : SqlLiteProvider,private HttpClient : HttpClientProvider) {
     this.resource = "dataSets";
@@ -25,7 +24,6 @@ export class DataSetsProvider {
    */
   resetDataSets(){
     this.lastSelectedDataSet = null;
-    this.lastSelectedDataSetPeriod = null;
   }
 
   /**
@@ -44,21 +42,6 @@ export class DataSetsProvider {
     return this.lastSelectedDataSet;
   }
 
-  /**
-   *
-   * @param period
-   */
-  setLastSelectedDataSetPeriod(period){
-    this.lastSelectedDataSetPeriod = period;
-  }
-
-  /**
-   *
-   * @returns {any}
-   */
-  getLastSelectedDataSetPeriod(){
-    return this.lastSelectedDataSetPeriod;
-  }
 
   /**
    *

@@ -49,13 +49,9 @@ export class ProgramStageSectionsProvider {
         resolve();
       }else{
         programsStageSections = this.getPreparedProgramStageSectionForSaving(programsStageSections);
-        programsStageSections.forEach((programsStageSection)=>{
-          console.log(JSON.stringify(programsStageSection));
-        });
         this.sqlLite.insertBulkDataOnTable(this.resource,programsStageSections,currentUser.currentDatabase).then(()=>{
           resolve();
         },error=>{
-          console.log(JSON.stringify(error));
           reject(error);
         });
       }

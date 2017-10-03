@@ -319,7 +319,7 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: false,
     resourceType: "",
-    batchSize : 100,
+    batchSize : 500,
     displayName : "",
     dependentTable : []
   },
@@ -331,7 +331,7 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: false,
     resourceType: "",
-    batchSize : 100,
+    batchSize : 500,
     displayName : "",
     dependentTable : []
   },
@@ -346,7 +346,7 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: false,
     resourceType: "",
-    batchSize : 100,
+    batchSize : 200,
     displayName : "",
     dependentTable : []
   },
@@ -375,6 +375,21 @@ export const DATABASE_STRUCTURE = {
     displayName : "",
     dependentTable : []
   },
+  programProgramStages: {
+    columns: [
+      {value: 'id', type: 'TEXT'},
+      {value: 'programId', type: 'TEXT'},
+      {value: 'name', type: 'TEXT'},
+      {value: 'sortOrder', type: 'TEXT'},
+      {value: 'programStageDataElements', type: 'LONGTEXT'},
+      {value: 'programStageSections', type: 'LONGTEXT'}
+    ],
+    isMetadata: false,
+    resourceType: "",
+    batchSize : 100,
+    displayName : "",
+    dependentTable : []
+  },
   programOrganisationUnits: {
     columns: [
       {value: 'id', type: 'TEXT'},
@@ -383,7 +398,7 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: false,
     resourceType: "",
-    batchSize : 100,
+    batchSize : 500,
     displayName : "",
     dependentTable : []
   },
