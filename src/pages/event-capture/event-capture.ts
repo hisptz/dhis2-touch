@@ -42,6 +42,9 @@ export class EventCapturePage implements OnInit {
 
 
 
+
+
+
   programNamesByUserRoles: any;
   currentEvents: any;
   eventListSections: any;
@@ -170,6 +173,7 @@ export class EventCapturePage implements OnInit {
           this.selectedProgram = selectedProgram;
           this.programsProvider.setLastSelectedProgram(selectedProgram);
           this.updateTrackerCaptureSelections();
+          this.updateDataSetCategoryCombo(this.selectedProgram.categoryCombo);
         }
       });
       modal.present();
@@ -179,12 +183,45 @@ export class EventCapturePage implements OnInit {
   }
 
   isAllParameterSelected() {
-    let result = false;
+    let isFormReady = false;
     if (this.selectedProgram && this.selectedProgram.name) {
-      result = true;
+      if(this.selectedDataDimension && this.selectedDataDimension.length > 0 && this.selectedDataDimension.length == this.selectedProgram.categories.length){
+        let count = 0;
+        this.selectedDataDimension.forEach(()=>{
+          count ++;
+        });
+        if(count != this.selectedDataDimension.length){
+          isFormReady = false;
+        }
+      }else{
+        isFormReady = false;
+      }
     }
 
-    return result;
+    return isFormReady;
+  }
+
+  updateDataSetCategoryCombo(categoryCombo){
+    let programCategoryCombo  = {};
+    this.isProgramDimensionApplicable = false;
+    if(categoryCombo.name != 'default'){
+      programCategoryCombo['id'] = categoryCombo.id;
+      programCategoryCombo['name'] = categoryCombo.name;
+      let categories = this.programsProvider.getProgramCategoryComboCategories(this.selectedOrgUnit.id,categoryCombo.categories);
+      programCategoryCombo['categories'] = categories;
+      this.isProgramDimensionApplicable = true;
+      this.programDimensionNotApplicablableMessage = "All";
+      categories.forEach((category: any)=>{
+        if(category.categoryOptions && category.categoryOptions.length == 0){
+          this.programDimensionNotApplicablableMessage = this.programDimensionNotApplicablableMessage + " " + category.name.toLowerCase();
+          this.isProgramDimensionApplicable = false;
+        }
+      });
+      this.programDimensionNotApplicablableMessage += " disaggregation are restricted from entry in " + this.selectedOrgUnit.name + ", choose a different form or contact your support desk";
+    }
+    this.selectedDataDimension = [];
+    this.programCategoryCombo = programCategoryCombo;
+    this.updateTrackerCaptureSelections();
   }
 
 

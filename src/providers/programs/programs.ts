@@ -362,6 +362,14 @@ export class ProgramsProvider {
   }
 
 
+  /**
+   *
+   * @param orgUnitId
+   * @param programType
+   * @param programIdsByUserRoles
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   getProgramsAssignedOnOrgUnitAndUserRoles(orgUnitId,programType,programIdsByUserRoles,currentUser){
     let attributeKey = "id";
     let attributeArray = [];
@@ -409,6 +417,50 @@ export class ProgramsProvider {
         reject(error);
       });
     });
+  }
+
+  /**
+   * 
+   * @param selectedOrgUnitId
+   * @param categories
+   * @returns {Array}
+   */
+  getProgramCategoryComboCategories(selectedOrgUnitId,categories){
+    let categoryComboCategories = [];
+    categories.forEach((category : any)=>{
+      let categoryOptions = [];
+      category.categoryOptions.forEach((categoryOption : any)=>{
+        if(this.isOrganisationUnitAllowed(selectedOrgUnitId,categoryOption)){
+          categoryOptions.push({
+            id : categoryOption.id,name : categoryOption.name
+          })
+        }
+      });
+      categoryComboCategories.push({
+        id : category.id,name : category.name ,categoryOptions : categoryOptions
+      })
+    });
+    return categoryComboCategories;
+  }
+
+  /**
+   *
+   * @param selectedOrgUnitId
+   * @param categoryOption
+   * @returns {boolean}
+   */
+  isOrganisationUnitAllowed(selectedOrgUnitId,categoryOption){
+    let result = true;
+    //@todo support of filter options by ou
+    // if(categoryOption.organisationUnits && categoryOption.organisationUnits.length > 0){
+    //   result = false;
+    //   categoryOption.organisationUnits.forEach((organisationUnit : any)=>{
+    //     if(selectedOrgUnitId == organisationUnit.id){
+    //       result = true;
+    //     }
+    //   });
+    // }
+    return result;
   }
 
   /**

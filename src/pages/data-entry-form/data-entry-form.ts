@@ -247,7 +247,7 @@ export class DataEntryFormPage implements OnInit{
       dataElement : fieldIdArray[0],
       categoryOptionCombo : fieldIdArray[1],
       value :updateDataValue.value,
-      period : period
+      period : this.entryFormParameter.period.name
     });
     this.dataValuesProvider.saveDataValues(newDataValue,dataSetId,period,orgUnitId,dataDimension,updateDataValue.status,this.currentUser).then(()=>{
       if(this.dataValuesObject[dataValueId] && this.dataValuesObject[dataValueId].status == "synced" ){
