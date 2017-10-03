@@ -381,6 +381,7 @@ export class ProgramsProvider {
         }
         this.sqlLite.getDataFromTableByAttributes(this.resource,attributeKey,attributeArray,currentUser.currentDatabase).then((programsResponse: any)=>{
           if(programsResponse && programsResponse.length > 0){
+            programsResponse = this.getSortedPrograms(programsResponse);
             let hasProgramSelected = false;
             programsResponse.forEach((program : any)=>{
               if(program.programType && program.programType == programType){
@@ -402,7 +403,7 @@ export class ProgramsProvider {
           }else{
             this.lastSelectedProgram = null;
           }
-          resolve(this.getSortedPrograms(programs));
+          resolve(programs);
         },error=>{reject(error)});
       },error=>{
         reject(error);
