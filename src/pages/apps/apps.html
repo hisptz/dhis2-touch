@@ -58,7 +58,14 @@
           <p class="menu-app">Dashboard</p>
         </div>
       </ion-col>
-
+      <ion-col col-4 (tap)="goToView('TrackerCapturePage')" >
+        <div class="apps-contents" padding>
+          <ion-thumbnail >
+            <img class="menu-app-icon-list" src="assets/app-icons/tracker-capture.png">
+          </ion-thumbnail>
+          <p class="menu-app">Tracker Capture</p>
+        </div>
+      </ion-col>
       <ion-col col-4 (tap)="goToView('SyncPage')" >
         <div class="apps-contents" padding>
           <ion-thumbnail >
@@ -67,6 +74,8 @@
           <p class="menu-app" >Sync</p>
         </div>
       </ion-col>
+    </ion-row>
+    <ion-row>
       <ion-col col-4 (tap)="goToView('SettingsPage')" >
         <div class="apps-contents" padding>
           <ion-thumbnail >
@@ -75,7 +84,6 @@
           <p class="menu-app" >Settings</p>
         </div>
       </ion-col>
-
     </ion-row>
   </ion-grid>
 
