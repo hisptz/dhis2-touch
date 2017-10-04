@@ -35,8 +35,6 @@ export class TrackerCapturePage implements OnInit{
   programs : Array<any>;
   icons : any = {};
 
-  //  WITHOUT_REGISTRATION
-
   constructor(public navCtrl: NavController,private modalCtrl : ModalController,
               private userProvider : UserProvider,private appProvider : AppProvider,
               private programsProvider : ProgramsProvider,
@@ -159,7 +157,7 @@ export class TrackerCapturePage implements OnInit{
   }
 
   registerNewTrackedEntity(){
-    this.appProvider.setNormalNotification("Register new tracked entity coming soon!!");
+    this.navCtrl.push("TrackerEntityRegisterPage",{});
   }
 
 }
