@@ -29,6 +29,15 @@
 
     <div *ngIf = "isFormReady">
       isFormReady : {{ isFormReady }}
+
+
+      <ion-fab bottom right >
+        <button ion-fab ><ion-icon name="md-more"  ></ion-icon></button>
+        <ion-fab-list side="top">
+          <button ion-fab color="primary"><ion-icon name="ios-eye" (click)="hideAndShowColumns()" ></ion-icon></button>
+          <button ion-fab color="primary"><ion-icon name="add"  (click)="registerNewTrackedEntity()"></ion-icon></button>
+        </ion-fab-list>
+      </ion-fab>
     </div>
   </ion-grid>
 </ion-content>

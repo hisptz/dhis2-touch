@@ -154,5 +154,12 @@ export class TrackerCapturePage implements OnInit{
     return result;
   }
 
+  hideAndShowColumns(){
+    this.appProvider.setNormalNotification("hide and show column coming soon!!");
+  }
+
+  registerNewTrackedEntity(){
+    this.appProvider.setNormalNotification("Register new tracked entity coming soon!!");
+  }
 
 }
