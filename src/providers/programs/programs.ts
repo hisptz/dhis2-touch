@@ -361,6 +361,60 @@ export class ProgramsProvider {
     });
   }
 
+  /**
+   *
+   * @param programId
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getProgramProgramTrackedEntityAttributes(programId,currentUser){
+    let attributeKey = "programId";
+    let attributeArray = [programId];
+    let resource = "programTrackedEntityAttributes";
+    return new Promise((resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(resource, attributeKey, attributeArray, currentUser.currentDatabase).then((programTrackedEntityAttributes: any) => {
+        resolve(programTrackedEntityAttributes);
+      }).catch(error => {
+      });
+    });
+  }
+
+  /**
+   *
+   * @param programTrackedEntityAttributeIds
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getTrackedEntityAttributes(programTrackedEntityAttributeIds,currentUser){
+    let attributeKey = "programTrackedEntityAttributeId";
+    let resource = "trackedEntityAttribute";
+    return new Promise((resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(resource, attributeKey, programTrackedEntityAttributeIds, currentUser.currentDatabase).then((trackedEntityAttributes: any) => {
+        resolve(trackedEntityAttributes);
+      }).catch(error => {
+        reject(error);
+      });
+    });
+  }
+
+  /**
+   *
+   * @param programId
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getProgramIndicators(programId,currentUser){
+    let attributeKey = "programId";
+    let attributeArray = [programId];
+    let resource = "programIndicators";
+    return new Promise((resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(resource, attributeKey, attributeArray, currentUser.currentDatabase).then((programIndicators: any) => {
+        resolve(programIndicators);
+      }).catch(error => {
+        reject(error);
+      });
+    });
+  }
 
   /**
    *
@@ -420,7 +474,7 @@ export class ProgramsProvider {
   }
 
   /**
-   * 
+   *
    * @param selectedOrgUnitId
    * @param categories
    * @returns {Array}

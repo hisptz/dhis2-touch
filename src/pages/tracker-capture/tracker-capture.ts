@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {IonicPage, ModalController, NavController} from 'ionic-angular';
+import {FabContainer, IonicPage, ModalController, NavController} from 'ionic-angular';
 import {UserProvider} from "../../providers/user/user";
 import {AppProvider} from "../../providers/app/app";
 import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
@@ -29,8 +29,6 @@ export class TrackerCapturePage implements OnInit{
   programLabel: string;
   isFormReady : boolean;
   isProgramDimensionApplicable : boolean;
-  programDimensionNotApplicablableMessage : string;
-  programCategoryCombo : any;
   selectedDataDimension : Array<any>;
   programs : Array<any>;
   icons : any = {};
@@ -152,11 +150,13 @@ export class TrackerCapturePage implements OnInit{
     return result;
   }
 
-  hideAndShowColumns(){
+  hideAndShowColumns(fab : FabContainer){
+    fab.close();
     this.appProvider.setNormalNotification("hide and show column coming soon!!");
   }
 
-  registerNewTrackedEntity(){
+  registerNewTrackedEntity(fab : FabContainer){
+    fab.close();
     this.navCtrl.push("TrackerEntityRegisterPage",{});
   }
 

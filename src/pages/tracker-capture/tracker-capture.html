@@ -31,11 +31,11 @@
       isFormReady : {{ isFormReady }}
 
 
-      <ion-fab bottom right >
+      <ion-fab bottom right #fab>
         <button ion-fab ><ion-icon name="md-more"  ></ion-icon></button>
         <ion-fab-list side="top">
-          <button ion-fab color="primary"><ion-icon name="ios-eye" (click)="hideAndShowColumns()" ></ion-icon></button>
-          <button ion-fab color="primary"><ion-icon name="add"  (click)="registerNewTrackedEntity()"></ion-icon></button>
+          <button ion-fab color="primary"><ion-icon name="ios-eye" (click)="hideAndShowColumns(fab)" ></ion-icon></button>
+          <button ion-fab color="primary"><ion-icon name="add"  (click)="registerNewTrackedEntity(fab)"></ion-icon></button>
         </ion-fab-list>
       </ion-fab>
     </div>
