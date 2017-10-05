@@ -18,7 +18,6 @@
     </div>
     <div *ngIf="!isLoading">
       <div class="item-card" *ngFor="let content of registrationContents">
-
         <ion-row (tap)="toggleRegistrationContents(content)">
           <ion-col col-11>
             <!--<img  class="side-menu-icon" [src]="aboutContent.icon"/>&nbsp;&nbsp;-->
@@ -72,24 +71,20 @@
               </div>
             </div>
           </div>
-
-          <ion-row>
-            <ion-col>
-              <button  color="primary" (tap)="resgisterEntity()">
-                Register
-              </button>
-            </ion-col>
-            <ion-col>
-              <button  color="danger" round ion-button full (tap)="cancelRegistration()">
-                Cancel
-              </button>
-            </ion-col>
-          </ion-row>
         </div>
       </div>
-
-
-
+      <ion-row>
+        <ion-col>
+          <button  color="primary" (tap)="resgisterEntity()">
+            Register
+          </button>
+        </ion-col>
+        <ion-col>
+          <button  color="danger" round ion-button full (tap)="cancelRegistration()">
+            Cancel
+          </button>
+        </ion-col>
+      </ion-row>
     </div>
   </ion-grid>
 </ion-content>

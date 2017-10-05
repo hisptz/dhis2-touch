@@ -49,7 +49,9 @@ export class TrackerEntityRegisterPage implements OnInit{
     this.incidentDate = today;
     this.enrollmentDate = today;
     this.registrationContents = this.getRegistrationContents();
-    this.toggleRegistrationContents(this.registrationContents[0]);
+    this.registrationContents.forEach(registrationContent=>{
+      this.toggleRegistrationContents(registrationContent);
+    });
     this.currentOrganisationUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
     this.currentProgram = this.programsProvider.getLastSelectedProgram();
     this.userProvider.getCurrentUser().then((user)=>{
@@ -68,7 +70,9 @@ export class TrackerEntityRegisterPage implements OnInit{
     this.incidentDate = today;
     this.enrollmentDate = today;
     this.registrationContents = this.getRegistrationContents();
-    this.toggleRegistrationContents(this.registrationContents[0]);
+    this.registrationContents.forEach(registrationContent=>{
+      this.toggleRegistrationContents(registrationContent);
+    });
   }
 
   loadTrackedEntityRegistration(programId,currentUser){
