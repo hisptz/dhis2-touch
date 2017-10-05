@@ -75,7 +75,7 @@
       </div>
       <ion-row>
         <ion-col>
-          <button  color="primary" round ion-button full (tap)="resgisterEntity()">
+          <button  color="primary" [disabled] = "!isFormReady" round ion-button full (tap)="registerEntity()">
             Register
           </button>
         </ion-col>

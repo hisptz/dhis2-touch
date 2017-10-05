@@ -33,6 +33,9 @@ export class TrackerEntityRegisterPage implements OnInit{
   incidentDate : any;
   enrollmentDate : any;
   dataObject : any;
+  trackedEntityAttributeValuesObject : any;
+
+  isFormReady : boolean;
 
   constructor(private navCtrl: NavController, private navParams: NavParams,
               private userProvider : UserProvider,private appProvider : AppProvider,
@@ -46,6 +49,7 @@ export class TrackerEntityRegisterPage implements OnInit{
     this.isLoading = true;
     let today = ((new Date()).toISOString()).split('T')[0];
     this.dataObject = {};
+    this.trackedEntityAttributeValuesObject = {};
     this.incidentDate = today;
     this.enrollmentDate = today;
     this.registrationContents = this.getRegistrationContents();
@@ -64,15 +68,17 @@ export class TrackerEntityRegisterPage implements OnInit{
     });
   }
 
-  resetRegistation(){
+  resetRegistration(){
     let today = ((new Date()).toISOString()).split('T')[0];
     this.dataObject = {};
+    this.trackedEntityAttributeValuesObject = {};
     this.incidentDate = today;
     this.enrollmentDate = today;
     this.registrationContents = this.getRegistrationContents();
     this.registrationContents.forEach(registrationContent=>{
       this.toggleRegistrationContents(registrationContent);
     });
+    this.isFormReady = this.isALlRequiredFieldHasValue(this.programTrackedEntityAttributes,this.trackedEntityAttributeValuesObject);
   }
 
   loadTrackedEntityRegistration(programId,currentUser){
@@ -81,6 +87,7 @@ export class TrackerEntityRegisterPage implements OnInit{
     this.trackerCaptureProvider.getTrackedEntityRegistration(programId,currentUser).then((programTrackedEntityAttributes : any)=>{
       this.programTrackedEntityAttributes = programTrackedEntityAttributes;
       this.isLoading = false;
+      this.resetRegistration();
     }).catch(error=>{
       this.isLoading = false;
       console.log(JSON.stringify(error));
@@ -110,18 +117,32 @@ export class TrackerEntityRegisterPage implements OnInit{
   }
 
   updateData(updateDataValue){
+    let id = updateDataValue.id.split("-")[0];
+    this.trackedEntityAttributeValuesObject[id] = updateDataValue.value;
     this.dataObject[updateDataValue.id] = updateDataValue;
+    this.isFormReady = this.isALlRequiredFieldHasValue(this.programTrackedEntityAttributes,this.trackedEntityAttributeValuesObject);
   }
 
-  resgisterEntity(){
+  registerEntity(){
 
-
-
-    this.cancelRegistration();
+    //this.cancelRegistration();
   }
 
   cancelRegistration(){
     this.navCtrl.pop();
+  }
+
+  isALlRequiredFieldHasValue(programTrackedEntityAttributes,trackedEntityAttributeValuesObject){
+    let result = true;
+    programTrackedEntityAttributes.forEach((programTrackedEntityAttribute : any)=>{
+      if(programTrackedEntityAttribute && programTrackedEntityAttribute.mandatory && programTrackedEntityAttribute.trackedEntityAttribute && programTrackedEntityAttribute.trackedEntityAttribute.id){
+        if(!trackedEntityAttributeValuesObject[programTrackedEntityAttribute.trackedEntityAttribute.id]){
+          console.log("here we are")
+          result = false;
+        }
+      }
+    });
+    return result;
   }
 
 }

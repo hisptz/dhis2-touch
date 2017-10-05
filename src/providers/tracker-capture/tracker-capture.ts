@@ -57,6 +57,12 @@ export class TrackerCaptureProvider {
     });
   }
 
+  /**
+   *
+   * @param programTrackedEntityAttributes
+   * @param trackedEntityAttributes
+   * @returns {Array}
+   */
   getMergedProgramTrackedEntityAttributesWithTrackedEntityAttributes(programTrackedEntityAttributes,trackedEntityAttributes){
     let trackedEntityAttributesObject = {};
     let mergedResults = [];
