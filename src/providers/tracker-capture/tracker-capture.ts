@@ -59,6 +59,7 @@ export class TrackerCaptureProvider {
 
   getMergedProgramTrackedEntityAttributesWithTrackedEntityAttributes(programTrackedEntityAttributes,trackedEntityAttributes){
     let trackedEntityAttributesObject = {};
+    let mergedResults = [];
     if(trackedEntityAttributes && trackedEntityAttributes.length > 0){
       trackedEntityAttributes.forEach((object : any)=>{
         trackedEntityAttributesObject[object.programTrackedEntityAttributeId] = object.trackedEntityAttribute;
@@ -67,11 +68,10 @@ export class TrackerCaptureProvider {
     programTrackedEntityAttributes.forEach((programTrackedEntityAttribute : any)=>{
       if(trackedEntityAttributesObject[programTrackedEntityAttribute.id]){
         programTrackedEntityAttribute["trackedEntityAttribute"] = trackedEntityAttributesObject[programTrackedEntityAttribute.id];
-      }else{
-        programTrackedEntityAttribute["trackedEntityAttribute"] = {};
+        mergedResults.push(programTrackedEntityAttribute);
       }
     });
-    return programTrackedEntityAttributes;
+    return mergedResults;
   }
 
 

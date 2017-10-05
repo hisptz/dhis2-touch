@@ -61,7 +61,6 @@
             </div>
           </div>
           <div *ngIf="content.id == 'profile'">
-            <br><br>
             <div *ngIf="programTrackedEntityAttributes && programTrackedEntityAttributes.length > 0">
               <div *ngFor="let programTrackedEntityAttribute of programTrackedEntityAttributes">
                 <tracked-entity-inputs [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute"
