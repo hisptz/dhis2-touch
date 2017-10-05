@@ -29,10 +29,10 @@ export class TrackerEntityRegisterPage implements OnInit{
   isRegistrationContentOpen : any = {};
   isLoading : boolean;
   loadingMessage : string;
-  today : any;
 
   incidentDate : any;
   enrollmentDate : any;
+  dataObject : any;
 
   constructor(private navCtrl: NavController, private navParams: NavParams,
               private userProvider : UserProvider,private appProvider : AppProvider,
@@ -44,8 +44,10 @@ export class TrackerEntityRegisterPage implements OnInit{
   ngOnInit(){
     this.loadingMessage = "Loading user information";
     this.isLoading = true;
-    this.incidentDate = (new Date()).toISOString();
-    this.enrollmentDate = (new Date()).toISOString();
+    let today = ((new Date()).toISOString()).split('T')[0];
+    this.dataObject = {};
+    this.incidentDate = today;
+    this.enrollmentDate = today;
     this.registrationContents = this.getRegistrationContents();
     this.toggleRegistrationContents(this.registrationContents[0]);
     this.currentOrganisationUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
@@ -58,6 +60,15 @@ export class TrackerEntityRegisterPage implements OnInit{
       this.isLoading = false;
       this.appProvider.setNormalNotification("Fail to load user information");
     });
+  }
+
+  resetRegistation(){
+    let today = ((new Date()).toISOString()).split('T')[0];
+    this.dataObject = {};
+    this.incidentDate = today;
+    this.enrollmentDate = today;
+    this.registrationContents = this.getRegistrationContents();
+    this.toggleRegistrationContents(this.registrationContents[0]);
   }
 
   loadTrackedEntityRegistration(programId,currentUser){
@@ -92,6 +103,21 @@ export class TrackerEntityRegisterPage implements OnInit{
         this.isRegistrationContentOpen[content.id] = true;
       }
     }
+  }
+
+  updateData(updateDataValue){
+    this.dataObject[updateDataValue.id] = updateDataValue;
+  }
+
+  resgisterEntity(){
+
+
+
+    this.cancelRegistration();
+  }
+
+  cancelRegistration(){
+    this.navCtrl.pop();
   }
 
 }

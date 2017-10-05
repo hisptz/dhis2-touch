@@ -9,10 +9,11 @@ import {NumericalInputFieldComponent} from "./numerical-input-field/numerical-in
 import {OptionSetInputFieldComponent} from "./option-set-input-field/option-set-input-field";
 import {TextInputFieldComponent} from "./text-input-field/text-input-field";
 import {TrueOnlyInputFieldComponent} from "./true-only-input-field/true-only-input-field";
+import {TrackedEntityInputsComponent} from "./tracked-entity-inputs/tracked-entity-inputs";
 
 @NgModule({
   declarations: [
-    OrganisationUnitTreeComponent,InputContainerComponent,
+    OrganisationUnitTreeComponent,InputContainerComponent,TrackedEntityInputsComponent,
     BooleanInputFieldComponent,DateInputFieldComponent,NumericalInputFieldComponent,
     OptionSetInputFieldComponent,TextInputFieldComponent,TrueOnlyInputFieldComponent,
   ],
@@ -20,7 +21,7 @@ import {TrueOnlyInputFieldComponent} from "./true-only-input-field/true-only-inp
     IonicModule,SharedModule
   ],
   exports: [
-    OrganisationUnitTreeComponent,InputContainerComponent,
+    OrganisationUnitTreeComponent,InputContainerComponent,TrackedEntityInputsComponent,
     BooleanInputFieldComponent,DateInputFieldComponent,NumericalInputFieldComponent,
     OptionSetInputFieldComponent,TextInputFieldComponent,TrueOnlyInputFieldComponent,
   ]

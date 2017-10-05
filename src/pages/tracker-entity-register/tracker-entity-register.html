@@ -62,11 +62,29 @@
             </div>
           </div>
           <div *ngIf="content.id == 'profile'">
-            enrollmentDate : {{ enrollmentDate }}<br>
-            incidentDate : {{ incidentDate }}
             <br><br>
-            {{ programTrackedEntityAttributes|json }}
+            <div *ngIf="programTrackedEntityAttributes && programTrackedEntityAttributes.length > 0">
+              <div *ngFor="let programTrackedEntityAttribute of programTrackedEntityAttributes">
+                <tracked-entity-inputs [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute"
+                                       [currentUser]="currentUser"
+                                       [data]="dataObject"
+                                       (onChange)="updateData($event)"></tracked-entity-inputs>
+              </div>
+            </div>
           </div>
+
+          <ion-row>
+            <ion-col>
+              <button  color="primary" (tap)="resgisterEntity()">
+                Register
+              </button>
+            </ion-col>
+            <ion-col>
+              <button  color="danger" round ion-button full (tap)="cancelRegistration()">
+                Cancel
+              </button>
+            </ion-col>
+          </ion-row>
         </div>
       </div>
 
