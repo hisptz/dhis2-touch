@@ -69,6 +69,7 @@ import { DataEntryFormProvider } from '../providers/data-entry-form/data-entry-f
 import { DataValuesProvider } from '../providers/data-values/data-values';
 import {AboutModule} from "../components/about.module";
 import {DataSetCompletenessProvider} from "../providers/data-set-completeness/data-set-completeness";
+import { TrackerCaptureProvider } from '../providers/tracker-capture/tracker-capture';
 @NgModule({
   declarations: [
     MyApp,
@@ -141,7 +142,8 @@ import {DataSetCompletenessProvider} from "../providers/data-set-completeness/da
     ProgramStageSectionsProvider,
     EventCaptureFormProvider,
     DataEntryFormProvider,
-    DataValuesProvider, DataSetCompletenessProvider
+    DataValuesProvider, DataSetCompletenessProvider,
+    TrackerCaptureProvider
   ]
 })
 export class AppModule {}

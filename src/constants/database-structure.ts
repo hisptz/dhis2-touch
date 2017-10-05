@@ -151,7 +151,7 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: true,
     resourceType: "entryForm",
-    batchSize : 30,
+    batchSize : 100,
     displayName : "Data Elements",
     dependentTable : []
   },
@@ -301,6 +301,7 @@ export const DATABASE_STRUCTURE = {
       {value: 'completeEventsExpiryDays', type: 'TEXT'},
       {value: 'displayFrontPageList', type: 'TEXT'},
       {value: 'categoryCombo', type: 'LONGTEXT'},
+      {value: 'trackedEntity', type: 'LONGTEXT'},
       {value: 'attributeValues', type: 'LONGTEXT'},
       {value: 'validationCriterias', type: 'LONGTEXT'},
       {value: 'translations', type: 'LONGTEXT'}
@@ -380,7 +381,13 @@ export const DATABASE_STRUCTURE = {
       {value: 'id', type: 'TEXT'},
       {value: 'programId', type: 'TEXT'},
       {value: 'name', type: 'TEXT'},
+      {value: 'executionDateLabel', type: 'TEXT'},
+      {value: 'formType', type: 'TEXT'},
       {value: 'sortOrder', type: 'TEXT'},
+      {value: 'generatedByEnrollmentDate', type: 'TEXT'},
+      {value: 'autoGenerateEvent', type: 'TEXT'},
+      {value: 'captureCoordinates', type: 'TEXT'},
+      {value: 'dueDateLabel', type: 'TEXT'},
       {value: 'programStageDataElements', type: 'LONGTEXT'},
       {value: 'programStageSections', type: 'LONGTEXT'}
     ],

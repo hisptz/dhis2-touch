@@ -1,0 +1,66 @@
+
+
+
+<div >
+  <div (click)="showTooltips()" class="inputLabel">
+    {{ fieldLabelKey }}
+    <span *ngIf="mandatory" class="required">&nbsp;*</span>
+    <span *ngIf="trackedEntityAttribute.description">&nbsp;&nbsp;<ion-icon color="icon-color" name="help-circle"></ion-icon></span>
+  </div>
+  <div *ngIf="trackedEntityAttribute.optionSet" class="input-field-container">
+    <option-set-input-field (onChange)="updateValue($event)"
+                            [dataElementId]="trackedEntityAttribute.id"
+                            [categoryOptionComboId]="'trackedEntityAttribute'"
+                            [data]="data"
+                            [options]="trackedEntityAttribute.optionSet.options">
+    </option-set-input-field>
+  </div>
+  <div *ngIf="!trackedEntityAttribute.optionSet" class="input-field-container">
+    <div *ngIf="textInputField.indexOf(trackedEntityAttribute.valueType) > -1">
+      <text-input-field (onChange)="updateValue($event)"
+                        [dataElementId]="trackedEntityAttribute.id"
+                        [categoryOptionComboId]="'trackedEntityAttribute'"
+                        [data]="data"
+                        [valueType]="trackedEntityAttribute.valueType">
+      </text-input-field>
+    </div>
+    <div *ngIf="numericalInputField.indexOf(trackedEntityAttribute.valueType) > -1">
+      <numerical-input-field (onChange)="updateValue($event)"
+                             [dataElementId]="trackedEntityAttribute.id"
+                             [categoryOptionComboId]="'trackedEntityAttribute'"
+                             [data]="data"
+                             [valueType]="trackedEntityAttribute.valueType">
+      </numerical-input-field>
+    </div>
+
+    <div *ngIf="trackedEntityAttribute.valueType == 'DATE'">
+      <date-input-field (onChange)="updateValue($event)"
+                        [dataElementId]="trackedEntityAttribute.id"
+                        [categoryOptionComboId]="'trackedEntityAttribute'"
+                        [data]="data">
+      </date-input-field>
+    </div>
+    <div *ngIf="trackedEntityAttribute.valueType == 'TRUE_ONLY'">
+      <true-only-input-field (onChange)="updateValue($event)"
+                             [dataElementId]="trackedEntityAttribute.id"
+                             [categoryOptionComboId]="'trackedEntityAttribute'"
+                             [data]="data">
+      </true-only-input-field>
+    </div>
+    <div *ngIf="trackedEntityAttribute.valueType == 'BOOLEAN'">
+      <boolean-input-field (onChange)="updateValue($event)"
+                           [dataElementId]="trackedEntityAttribute.id"
+                           [categoryOptionComboId]="'trackedEntityAttribute'"
+                           [data]="data">
+      </boolean-input-field>
+    </div>
+
+    <div *ngIf="supportValueTypes.indexOf(trackedEntityAttribute.valueType) == -1">
+      <div padding>
+        Currently '{{ trackedEntityAttribute.valueType.toLocaleLowerCase().replace('/_/g',' ')}}' as value type is not supported
+      </div>
+    </div>
+  </div>
+</div>
+
+

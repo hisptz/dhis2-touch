@@ -16,27 +16,38 @@
 <ion-content >
   <ion-grid>
     <ion-row>
-      <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openOrganisationUnitTree()" >
-        <img  class="side-menu-icon" [src]="icons.orgUnit"/>&nbsp;&nbsp;
-        {{ organisationUnitLabel }}
-      </div>
+      <ion-col>
+        <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openOrganisationUnitTree()" >
+          <img  class="side-menu-icon" [src]="icons.orgUnit"/>&nbsp;&nbsp;
+          {{ organisationUnitLabel }}
+        </div>
+        <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openProgramList()" >
+          <img  class="side-menu-icon" [src]="icons.program"/>&nbsp;&nbsp;
+          {{ programLabel }}
+        </div>
+        <div *ngIf="programCategoryCombo && programCategoryCombo.id ">
+          <div *ngIf="isProgramDimensionApplicable">
+            <div *ngFor="let category of programCategoryCombo.categories;let categoryIndex = index">
+              <div (tap)="openDataDimensionSelection(category)" padding-top padding-bottom class="item-card" color="font-color" full text-center text-wrap  >
+                <div style="padding-bottom: 5px;"><b>{{ category.name }}</b></div>
+                <div *ngIf="selectedDataDimension[categoryIndex]">{{ selectedDataDimension[categoryIndex].name }}</div>
+                <div *ngIf="!selectedDataDimension[categoryIndex]">Touch to select option</div>
+              </div>
+            </div>
+          </div>
+          <div class="item-card" padding-top padding-bottom *ngIf="!isProgramDimensionApplicable">
+            <warning [warningMessage]="programDimensionNotApplicableMessage" ></warning>
+          </div>
+        </div>
 
-      <div *ngIf="programLoading" class="item-card" color="font-color" ion-button clear full text-center text-capitalize >
-        <page-loading loadingSize="small"></page-loading>
-      </div>
-      <div *ngIf="!programLoading" class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openProgramList()" >
-        <img  class="side-menu-icon" [src]="icons.program"/>&nbsp;&nbsp;
-        {{ programLabel }}
-      </div>
 
-
-      <div *ngIf="hasOptions" class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openProgramCategoryOptions()" >
-        <img  class="side-menu-icon" [src]="icons.categoryOptions"/>&nbsp;&nbsp;
-        {{CategoryOptionLabel}}
-      </div>
-
+      </ion-col>
     </ion-row>
 
+    <div *ngIf = "isFormReady">
+      isFormReady : {{ isFormReady }}<br>
+      getDataDimensions : {{ getDataDimensions()|json }}
+    </div>
   </ion-grid>
 
 

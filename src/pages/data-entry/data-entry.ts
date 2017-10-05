@@ -148,7 +148,7 @@ export class DataEntryPage implements OnInit{
       });
       modal.present();
     }else{
-      this.appProvider.setNormalNotification("There are no entry form to select on " + this.selectedOrgUnit.name );
+      this.appProvider.setNormalNotification("There are no entry form to select on " + this.selectedOrgUnit.name);
     }
   }
 
@@ -257,7 +257,7 @@ export class DataEntryPage implements OnInit{
 
   isAllFormParameterSelected(){
     let isFormReady = true;
-    if(this.selectedPeriod && this.selectedPeriod.name && this.selectedDataSet && this.selectedDataSet.categoryCombo.name != 'default'){
+    if(this.selectedPeriod && this.selectedPeriod.name && this.selectedDataSet && this.selectedDataSet.categoryCombo.name && this.selectedDataSet.categoryCombo.name != 'default'){
       if(this.selectedDataDimension && this.selectedDataDimension.length > 0 && this.selectedDataDimension.length == this.dataSetCategoryCombo.categories.length){
         let count = 0;
         this.selectedDataDimension.forEach((dimension : any)=>{

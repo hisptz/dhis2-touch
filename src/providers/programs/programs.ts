@@ -39,7 +39,7 @@ export class ProgramsProvider {
    * @returns {Promise<any>}
    */
   downloadProgramsFromServer(currentUser){
-    let fields= "id,name,programType,withoutRegistration,ignoreOverdueEvents,skipOffline,captureCoordinates,enrollmentDateLabel,onlyEnrollOnce,selectIncidentDatesInFuture,incidentDateLabel,useFirstStageDuringRegistration,completeEventsExpiryDays,displayFrontPageList,,categoryCombo[id,name,categories[id,name,categoryOptions[name,id]]],programStages[id,name,sortOrder,programStageDataElements[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id]],programStageSections[id]],organisationUnits[id],programIndicators[id,name,description,expression],translations,attributeValues[value,attribute[name]],validationCriterias,programRuleVariables,programTrackedEntityAttributes[id,mandatory,externalAccess,allowFutureDate,displayInList,sortOrder,trackedEntityAttribute[id,name,code,name,formName,description,confidential,searchScope,translations,inherit,legendSets,optionSet[name,options[name,id,code]]unique,orgunitScope,programScope,displayInListNoProgramaggregationType,displayInListNoProgram,pattern,sortOrderInListNoProgram,generated,displayOnVisitSchedule,valueType,sortOrderInVisitSchedule]],programRules";
+    let fields= "id,name,programType,withoutRegistration,trackedEntity[id],ignoreOverdueEvents,skipOffline,captureCoordinates,enrollmentDateLabel,onlyEnrollOnce,selectIncidentDatesInFuture,incidentDateLabel,useFirstStageDuringRegistration,completeEventsExpiryDays,displayFrontPageList,categoryCombo[id,name,categories[id,name,categoryOptions[name,id,organisationUnits[id]]]],programStages[id,name,formType,blockEntryForm,minDaysFromStart,dueDateLabel,autoGenerateEvent,hideDueDate,sortOrder,generatedByEnrollmentDate,displayGenerateEventBox,remindCompleted,executionDateLabel,allowGenerateNextVisit,validCompleteOnly,preGenerateUID,openAfterEnrollment,repeatable,captureCoordinates,programStageDataElements[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id]],programStageSections[id]],organisationUnits[id],programIndicators[id,name,description,expression],translations,attributeValues[value,attribute[name]],validationCriterias,programRuleVariables,programTrackedEntityAttributes[id,mandatory,externalAccess,allowFutureDate,displayInList,sortOrder,trackedEntityAttribute[id,name,code,name,formName,description,confidential,searchScope,translations,inherit,legendSets,optionSet[name,options[name,id,code]]unique,orgunitScope,programScope,displayInListNoProgramaggregationType,displayInListNoProgram,pattern,sortOrderInListNoProgram,generated,displayOnVisitSchedule,valueType,sortOrderInVisitSchedule]],programRules";
       let url = "/api/25/"+this.resource+".json?paging=false&fields=" + fields;
     return new Promise((resolve, reject)=> {
       this.HttpClient.get(url,currentUser).then((response : any)=>{
@@ -260,7 +260,13 @@ export class ProgramsProvider {
             id : program.id + "-" + programStage.id,
             programId : program.id,
             name : programStage.name,
+            executionDateLabel : programStage.sortOrder,
+            formType : programStage.sortOrder,
             sortOrder : programStage.sortOrder,
+            generatedByEnrollmentDate : programStage.sortOrder,
+            autoGenerateEvent : programStage.sortOrder,
+            captureCoordinates : programStage.sortOrder,
+            dueDateLabel : programStage.sortOrder,
             programStageDataElements : programStage.programStageDataElements,
             programStageSections : programStage.programStageSections
           });
@@ -361,8 +367,196 @@ export class ProgramsProvider {
     });
   }
 
+  /**
+   *
+   * @param programId
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getProgramProgramTrackedEntityAttributes(programId,currentUser){
+    let attributeKey = "programId";
+    let attributeArray = [programId];
+    let resource = "programTrackedEntityAttributes";
+    return new Promise((resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(resource, attributeKey, attributeArray, currentUser.currentDatabase).then((programTrackedEntityAttributes: any) => {
+        resolve(programTrackedEntityAttributes);
+      }).catch(error => {
+      });
+    });
+  }
 
+  /**
+   *
+   * @param programTrackedEntityAttributeIds
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getTrackedEntityAttributes(programTrackedEntityAttributeIds,currentUser){
+    let attributeKey = "programTrackedEntityAttributeId";
+    let resource = "trackedEntityAttribute";
+    return new Promise((resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(resource, attributeKey, programTrackedEntityAttributeIds, currentUser.currentDatabase).then((trackedEntityAttributes: any) => {
+        resolve(trackedEntityAttributes);
+      }).catch(error => {
+        reject(error);
+      });
+    });
+  }
 
+  /**
+   *
+   * @param programId
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getProgramIndicators(programId,currentUser){
+    let attributeKey = "programId";
+    let attributeArray = [programId];
+    let resource = "programIndicators";
+    return new Promise((resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(resource, attributeKey, attributeArray, currentUser.currentDatabase).then((programIndicators: any) => {
+        resolve(programIndicators);
+      }).catch(error => {
+        reject(error);
+      });
+    });
+  }
+
+  /**
+   *
+   * @param orgUnitId
+   * @param programType
+   * @param programIdsByUserRoles
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getProgramsAssignedOnOrgUnitAndUserRoles(orgUnitId,programType,programIdsByUserRoles,currentUser){
+    let attributeKey = "id";
+    let attributeArray = [];
+    let programs = [];
+    return new Promise((resolve, reject)=> {
+      this.getProgramOrganisationUnits(orgUnitId,currentUser.currentDatabase).then((programOrganisationUnits: any)=>{
+        if(currentUser.authorities && (currentUser.authorities.indexOf("ALL") > -1)){
+          programOrganisationUnits.forEach((programOrganisationUnit : any)=>{
+            attributeArray.push(programOrganisationUnit.programId);
+          });
+        }else{
+          programOrganisationUnits.forEach((programOrganisationUnit : any)=>{
+            if(programIdsByUserRoles.indexOf(programOrganisationUnit.programId) != -1){
+              attributeArray.push(programOrganisationUnit.programId);
+            }
+          });
+        }
+        this.sqlLite.getDataFromTableByAttributes(this.resource,attributeKey,attributeArray,currentUser.currentDatabase).then((programsResponse: any)=>{
+          if(programsResponse && programsResponse.length > 0){
+            programsResponse = this.getSortedPrograms(programsResponse);
+            let hasProgramSelected = false;
+            programsResponse.forEach((program : any)=>{
+              if(program.programType && program.programType == programType){
+                programs.push(program);
+                if(this.lastSelectedProgram && this.lastSelectedProgram.id){
+                  if(this.lastSelectedProgram.id == program.id){
+                    hasProgramSelected = true;
+                  }
+                }
+              }
+            });
+            if(programs.length > 0){
+              if(!hasProgramSelected){
+                this.setLastSelectedProgram(programs[0])
+              }
+            }else{
+              this.lastSelectedProgram = null;
+            }
+          }else{
+            this.lastSelectedProgram = null;
+          }
+          resolve(programs);
+        },error=>{reject(error)});
+      },error=>{
+        reject(error);
+      });
+    });
+  }
+
+  /**
+   *
+   * @param selectedOrgUnitId
+   * @param categories
+   * @returns {Array}
+   */
+  getProgramCategoryComboCategories(selectedOrgUnitId,categories){
+    let categoryComboCategories = [];
+    categories.forEach((category : any)=>{
+      let categoryOptions = [];
+      category.categoryOptions.forEach((categoryOption : any)=>{
+        if(this.isOrganisationUnitAllowed(selectedOrgUnitId,categoryOption)){
+          categoryOptions.push({
+            id : categoryOption.id,name : categoryOption.name
+          })
+        }
+      });
+      categoryComboCategories.push({
+        id : category.id,name : category.name ,categoryOptions : categoryOptions
+      })
+    });
+    return categoryComboCategories;
+  }
+
+  /**
+   *
+   * @param selectedOrgUnitId
+   * @param categoryOption
+   * @returns {boolean}
+   */
+  isOrganisationUnitAllowed(selectedOrgUnitId,categoryOption){
+    let result = true;
+    //@todo support of filter options by ou
+    // if(categoryOption.organisationUnits && categoryOption.organisationUnits.length > 0){
+    //   result = false;
+    //   categoryOption.organisationUnits.forEach((organisationUnit : any)=>{
+    //     if(selectedOrgUnitId == organisationUnit.id){
+    //       result = true;
+    //     }
+    //   });
+    // }
+    return result;
+  }
+
+  /**
+   *
+   * @param programs
+   * @returns {any}
+   */
+  getSortedPrograms(programs){
+    programs.sort((a, b) => {
+      if (a.name > b.name) {
+        return 1;
+      }
+      if (a.name < b.name) {
+        return -1;
+      }
+      return 0;
+    });
+    return programs;
+  }
+
+  /**
+   *
+   * @param orgUnitId
+   * @param dataBaseName
+   * @returns {Promise<any>}
+   */
+  getProgramOrganisationUnits(orgUnitId,dataBaseName){
+    let resource = "programOrganisationUnits";
+    let attributeValue  = [orgUnitId];
+    let attributeKey = "orgUnitId";
+    return new Promise((resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(resource,attributeKey,attributeValue,dataBaseName).then((programOrganisationUnits: any)=>{
+        resolve(programOrganisationUnits);
+      },error=>{reject(error)});
+    });
+  }
 
   /**
    * get program by id
