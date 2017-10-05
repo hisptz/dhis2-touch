@@ -4,6 +4,7 @@
 <div >
   <div (click)="showTooltips()" class="inputLabel">
     {{ fieldLabelKey }}
+    <span *ngIf="mandatory" class="required">&nbsp;*</span>
     <span *ngIf="trackedEntityAttribute.description">&nbsp;&nbsp;<ion-icon color="icon-color" name="help-circle"></ion-icon></span>
   </div>
   <div *ngIf="trackedEntityAttribute.optionSet" class="input-field-container">

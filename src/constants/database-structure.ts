@@ -301,6 +301,7 @@ export const DATABASE_STRUCTURE = {
       {value: 'completeEventsExpiryDays', type: 'TEXT'},
       {value: 'displayFrontPageList', type: 'TEXT'},
       {value: 'categoryCombo', type: 'LONGTEXT'},
+      {value: 'trackedEntity', type: 'LONGTEXT'},
       {value: 'attributeValues', type: 'LONGTEXT'},
       {value: 'validationCriterias', type: 'LONGTEXT'},
       {value: 'translations', type: 'LONGTEXT'}

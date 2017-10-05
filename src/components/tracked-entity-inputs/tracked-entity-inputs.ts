@@ -16,6 +16,7 @@ export class TrackedEntityInputsComponent implements OnInit{
 
   @Input() trackedEntityAttribute;
   @Input() currentUser;
+  @Input() mandatory;
   @Input() data ;
   @Output() onChange = new EventEmitter();
 

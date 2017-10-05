@@ -66,6 +66,7 @@
                 <tracked-entity-inputs [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute"
                                        [currentUser]="currentUser"
                                        [data]="dataObject"
+                                       [mandatory]="programTrackedEntityAttribute.mandatory"
                                        (onChange)="updateData($event)"></tracked-entity-inputs>
               </div>
             </div>
