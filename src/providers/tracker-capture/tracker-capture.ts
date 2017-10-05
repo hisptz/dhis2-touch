@@ -57,6 +57,13 @@ export class TrackerCaptureProvider {
     });
   }
 
+
+  saveRegistartionDetails(incidentDate,enrollmentDate,programTrackedEntityAttributes,trackedEntityAttributeValuesObject,currentUser){
+    return new Promise( (resolve, reject)=> {
+
+    });
+  }
+
   /**
    *
    * @param programTrackedEntityAttributes

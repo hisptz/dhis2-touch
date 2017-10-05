@@ -363,6 +363,57 @@ export const DATABASE_STRUCTURE = {
     displayName : "",
     dependentTable : []
   },
+  trackedEntityInstances: {
+    columns: [
+      {value: 'id', type: 'TEXT'},
+      {value: 'trackedEntity', type: 'TEXT'},
+      {value: 'orgUnit', type: 'TEXT'},
+      {value: 'orgUnitName', type: 'TEXT'},
+      {value: 'trackedEntityInstance', type: 'TEXT'},
+      {value: 'deleted', type: 'TEXT'},
+      {value: 'inactive', type: 'TEXT'},
+      {value: 'enrollments', type: 'LONGTEXT'},
+      {value: 'relationships', type: 'LONGTEXT'},
+    ],
+    isMetadata: false,
+    resourceType: "",
+    batchSize : 100,
+    displayName : "",
+    dependentTable : []
+  },
+  trackedEntityAttributeValues: {
+    columns: [
+      {value: 'id', type: 'TEXT'},
+      {value: 'trackedEntityInstance', type: 'TEXT'},
+      {value: 'attribute', type: 'TEXT'},
+      {value: 'value', type: 'TEXT'}
+    ],
+    isMetadata: false,
+    resourceType: "",
+    batchSize : 100,
+    displayName : "",
+    dependentTable : []
+  },
+  enrollments: {
+    columns: [
+      {value: 'id', type: 'TEXT'},
+      {value: 'trackedEntity', type: 'TEXT'},
+      {value: 'orgUnit', type: 'TEXT'},
+      {value: 'program', type: 'TEXT'},
+      {value: 'enrollment', type: 'TEXT'},
+      {value: 'trackedEntityInstance', type: 'TEXT'},
+      {value: 'enrollmentDate', type: 'TEXT'},
+      {value: 'incidentDate', type: 'TEXT'},
+      {value: 'status', type: 'TEXT'},
+      {value: 'attributes', type: 'LONGTEXT'},
+      {value: 'events', type: 'LONGTEXT'},
+    ],
+    isMetadata: false,
+    resourceType: "",
+    batchSize : 100,
+    displayName : "",
+    dependentTable : []
+  },
   programIndicators: {
     columns: [
       {value: 'id', type: 'TEXT'},

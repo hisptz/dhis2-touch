@@ -70,6 +70,10 @@ import { DataValuesProvider } from '../providers/data-values/data-values';
 import {AboutModule} from "../components/about.module";
 import {DataSetCompletenessProvider} from "../providers/data-set-completeness/data-set-completeness";
 import { TrackerCaptureProvider } from '../providers/tracker-capture/tracker-capture';
+import { CurlProvider } from '../providers/curl/curl';
+import { TrackedEntityInstancesProvider } from '../providers/tracked-entity-instances/tracked-entity-instances';
+import { TrackedEntityAttributeValuesProvider } from '../providers/tracked-entity-attribute-values/tracked-entity-attribute-values';
+import { EnrollmentsProvider } from '../providers/enrollments/enrollments';
 @NgModule({
   declarations: [
     MyApp,
@@ -143,7 +147,11 @@ import { TrackerCaptureProvider } from '../providers/tracker-capture/tracker-cap
     EventCaptureFormProvider,
     DataEntryFormProvider,
     DataValuesProvider, DataSetCompletenessProvider,
-    TrackerCaptureProvider
+    TrackerCaptureProvider,
+    CurlProvider,
+    TrackedEntityInstancesProvider,
+    TrackedEntityAttributeValuesProvider,
+    EnrollmentsProvider
   ]
 })
 export class AppModule {}

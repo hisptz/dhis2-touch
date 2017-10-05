@@ -137,7 +137,6 @@ export class TrackerEntityRegisterPage implements OnInit{
     programTrackedEntityAttributes.forEach((programTrackedEntityAttribute : any)=>{
       if(programTrackedEntityAttribute && programTrackedEntityAttribute.mandatory && programTrackedEntityAttribute.trackedEntityAttribute && programTrackedEntityAttribute.trackedEntityAttribute.id){
         if(!trackedEntityAttributeValuesObject[programTrackedEntityAttribute.trackedEntityAttribute.id]){
-          console.log("here we are")
           result = false;
         }
       }
