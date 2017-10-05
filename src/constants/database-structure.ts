@@ -381,7 +381,13 @@ export const DATABASE_STRUCTURE = {
       {value: 'id', type: 'TEXT'},
       {value: 'programId', type: 'TEXT'},
       {value: 'name', type: 'TEXT'},
+      {value: 'executionDateLabel', type: 'TEXT'},
+      {value: 'formType', type: 'TEXT'},
       {value: 'sortOrder', type: 'TEXT'},
+      {value: 'generatedByEnrollmentDate', type: 'TEXT'},
+      {value: 'autoGenerateEvent', type: 'TEXT'},
+      {value: 'captureCoordinates', type: 'TEXT'},
+      {value: 'dueDateLabel', type: 'TEXT'},
       {value: 'programStageDataElements', type: 'LONGTEXT'},
       {value: 'programStageSections', type: 'LONGTEXT'}
     ],

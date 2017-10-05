@@ -39,7 +39,7 @@ export class ProgramsProvider {
    * @returns {Promise<any>}
    */
   downloadProgramsFromServer(currentUser){
-    let fields= "id,name,programType,withoutRegistration,trackedEntity[id],ignoreOverdueEvents,skipOffline,captureCoordinates,enrollmentDateLabel,onlyEnrollOnce,selectIncidentDatesInFuture,incidentDateLabel,useFirstStageDuringRegistration,completeEventsExpiryDays,displayFrontPageList,categoryCombo[id,name,categories[id,name,categoryOptions[name,id,organisationUnits[id]]]],programStages[id,name,sortOrder,programStageDataElements[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id]],programStageSections[id]],organisationUnits[id],programIndicators[id,name,description,expression],translations,attributeValues[value,attribute[name]],validationCriterias,programRuleVariables,programTrackedEntityAttributes[id,mandatory,externalAccess,allowFutureDate,displayInList,sortOrder,trackedEntityAttribute[id,name,code,name,formName,description,confidential,searchScope,translations,inherit,legendSets,optionSet[name,options[name,id,code]]unique,orgunitScope,programScope,displayInListNoProgramaggregationType,displayInListNoProgram,pattern,sortOrderInListNoProgram,generated,displayOnVisitSchedule,valueType,sortOrderInVisitSchedule]],programRules";
+    let fields= "id,name,programType,withoutRegistration,trackedEntity[id],ignoreOverdueEvents,skipOffline,captureCoordinates,enrollmentDateLabel,onlyEnrollOnce,selectIncidentDatesInFuture,incidentDateLabel,useFirstStageDuringRegistration,completeEventsExpiryDays,displayFrontPageList,categoryCombo[id,name,categories[id,name,categoryOptions[name,id,organisationUnits[id]]]],programStages[id,name,formType,blockEntryForm,minDaysFromStart,dueDateLabel,autoGenerateEvent,hideDueDate,sortOrder,generatedByEnrollmentDate,displayGenerateEventBox,remindCompleted,executionDateLabel,allowGenerateNextVisit,validCompleteOnly,preGenerateUID,openAfterEnrollment,repeatable,captureCoordinates,programStageDataElements[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id]],programStageSections[id]],organisationUnits[id],programIndicators[id,name,description,expression],translations,attributeValues[value,attribute[name]],validationCriterias,programRuleVariables,programTrackedEntityAttributes[id,mandatory,externalAccess,allowFutureDate,displayInList,sortOrder,trackedEntityAttribute[id,name,code,name,formName,description,confidential,searchScope,translations,inherit,legendSets,optionSet[name,options[name,id,code]]unique,orgunitScope,programScope,displayInListNoProgramaggregationType,displayInListNoProgram,pattern,sortOrderInListNoProgram,generated,displayOnVisitSchedule,valueType,sortOrderInVisitSchedule]],programRules";
       let url = "/api/25/"+this.resource+".json?paging=false&fields=" + fields;
     return new Promise((resolve, reject)=> {
       this.HttpClient.get(url,currentUser).then((response : any)=>{
@@ -260,7 +260,13 @@ export class ProgramsProvider {
             id : program.id + "-" + programStage.id,
             programId : program.id,
             name : programStage.name,
+            executionDateLabel : programStage.sortOrder,
+            formType : programStage.sortOrder,
             sortOrder : programStage.sortOrder,
+            generatedByEnrollmentDate : programStage.sortOrder,
+            autoGenerateEvent : programStage.sortOrder,
+            captureCoordinates : programStage.sortOrder,
+            dueDateLabel : programStage.sortOrder,
             programStageDataElements : programStage.programStageDataElements,
             programStageSections : programStage.programStageSections
           });
