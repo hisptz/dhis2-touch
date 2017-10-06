@@ -53,9 +53,6 @@ export class TrackerEntityRegisterPage implements OnInit{
     this.incidentDate = today;
     this.enrollmentDate = today;
     this.registrationContents = this.getRegistrationContents();
-    this.registrationContents.forEach(registrationContent=>{
-      this.toggleRegistrationContents(registrationContent);
-    });
     this.currentOrganisationUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
     this.currentProgram = this.programsProvider.getLastSelectedProgram();
     this.userProvider.getCurrentUser().then((user)=>{
@@ -76,7 +73,7 @@ export class TrackerEntityRegisterPage implements OnInit{
     this.enrollmentDate = today;
     this.registrationContents = this.getRegistrationContents();
     this.registrationContents.forEach(registrationContent=>{
-      this.toggleRegistrationContents(registrationContent);
+      this.isRegistrationContentOpen[registrationContent.id] = true;
     });
     this.isFormReady = this.isALlRequiredFieldHasValue(this.programTrackedEntityAttributes,this.trackedEntityAttributeValuesObject);
   }
@@ -124,7 +121,18 @@ export class TrackerEntityRegisterPage implements OnInit{
   }
 
   registerEntity(){
+    let trackedEntityAttributeValues = [];
+    Object.keys(this.trackedEntityAttributeValuesObject).forEach(key=>{
+      trackedEntityAttributeValues.push({
+        value : this.trackedEntityAttributeValuesObject[key],attribute : key
+      })
+    });
 
+    this.trackerCaptureProvider.saveTrackedEntityRegistration(this.incidentDate,this.enrollmentDate,trackedEntityAttributeValues,this.currentUser).then((reseponse : any)=>{
+
+    }).catch(error=>{
+
+    });
     //this.cancelRegistration();
   }
 

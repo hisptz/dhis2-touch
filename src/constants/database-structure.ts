@@ -374,6 +374,7 @@ export const DATABASE_STRUCTURE = {
       {value: 'inactive', type: 'TEXT'},
       {value: 'enrollments', type: 'LONGTEXT'},
       {value: 'relationships', type: 'LONGTEXT'},
+      {value: 'syncStatus', type: 'TEXT'}
     ],
     isMetadata: false,
     resourceType: "",
@@ -407,6 +408,7 @@ export const DATABASE_STRUCTURE = {
       {value: 'status', type: 'TEXT'},
       {value: 'attributes', type: 'LONGTEXT'},
       {value: 'events', type: 'LONGTEXT'},
+      {value: 'syncStatus', type: 'TEXT'}
     ],
     isMetadata: false,
     resourceType: "",

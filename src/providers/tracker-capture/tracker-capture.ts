@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
 import {ProgramsProvider} from "../programs/programs";
+import {OrganisationUnitsProvider} from "../organisation-units/organisation-units";
+import {EnrollmentsProvider} from "../enrollments/enrollments";
+import {TrackedEntityAttributeValuesProvider} from "../tracked-entity-attribute-values/tracked-entity-attribute-values";
+import {TrackedEntityInstancesProvider} from "../tracked-entity-instances/tracked-entity-instances";
 
 /*
   Generated class for the TrackerCaptureProvider provider.
@@ -10,7 +14,11 @@ import {ProgramsProvider} from "../programs/programs";
 @Injectable()
 export class TrackerCaptureProvider {
 
-  constructor(private programsProvider : ProgramsProvider) {}
+  constructor(private programsProvider : ProgramsProvider,
+              private enrollmentsProvider : EnrollmentsProvider,
+              private trackedEntityInstancesProvider : TrackedEntityInstancesProvider,
+              private trackedEntityAttributeValuesProvider : TrackedEntityAttributeValuesProvider,
+              private organisationUnitsProvider : OrganisationUnitsProvider) {}
 
 
   /**
@@ -57,10 +65,39 @@ export class TrackerCaptureProvider {
     });
   }
 
-
-  saveRegistartionDetails(incidentDate,enrollmentDate,programTrackedEntityAttributes,trackedEntityAttributeValuesObject,currentUser){
+  /**
+   *
+   * @param incidentDate
+   * @param enrollmentDate
+   * @param trackedEntityAttributeValues
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  saveTrackedEntityRegistration(incidentDate,enrollmentDate,trackedEntityAttributeValues,currentUser,syncStatus?){
+    let currentProgram = this.programsProvider.lastSelectedProgram;
+    let currentOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
+    if(!syncStatus){
+      syncStatus = "not-synced"
+    }
     return new Promise( (resolve, reject)=> {
-
+      if(currentOrgUnit && currentOrgUnit.id && currentProgram && currentProgram.id){
+        let trackedEntityId = currentProgram.trackedEntity.id;
+        this.trackedEntityInstancesProvider.savingTrackedEntityInstances(trackedEntityId,currentOrgUnit.id,currentUser,syncStatus).then((trackedEntityInstanceObject : any)=>{
+          this.enrollmentsProvider .savingEnrollments(trackedEntityId,currentOrgUnit.id,currentOrgUnit.name,currentProgram.id,enrollmentDate,incidentDate,trackedEntityInstanceObject.trackedEntityInstance,currentUser,syncStatus).then((enrollmentObject : any)=>{
+            this.trackedEntityAttributeValuesProvider.savingTrackedEntityAttributeValues(trackedEntityInstanceObject.trackedEntityInstance,trackedEntityAttributeValues,currentUser).then(()=>{
+              resolve({trackedEntityInstance : trackedEntityInstanceObject,enrollment : enrollmentObject});
+            }).catch(error=>{
+              reject({message : error});
+            });
+          }).catch(error=>{
+            reject({message : error});
+          });
+        }).catch(error=>{
+          reject({message : error});
+        });
+      }else{
+        reject({message : "Fail to set last selected OU and program"});
+      }
     });
   }
 
