@@ -39,6 +39,22 @@ export class TrackerHideShowColumnPage implements OnInit{
     });
   }
 
+  autoSelectFields(status){
+    this.trackedEntityAttributes.forEach((trackedEntityAttribute : any)=>{
+      this.selectedItemsModel[trackedEntityAttribute.id] = status;
+    });
+  }
+
+  saveChanges(){
+    let attributeToDisplay = {};
+    this.trackedEntityAttributes.forEach((trackedEntityAttribute : any)=>{
+      if(this.selectedItemsModel[trackedEntityAttribute.id]){
+        attributeToDisplay[trackedEntityAttribute.id] = trackedEntityAttribute.name;
+      }
+    });
+    this.viewCtrl.dismiss(attributeToDisplay);
+  }
+
   dismiss(){
     this.viewCtrl.dismiss();
   }

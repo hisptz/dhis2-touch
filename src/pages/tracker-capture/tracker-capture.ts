@@ -193,8 +193,6 @@ export class TrackerCapturePage implements OnInit{
     });
   }
 
-
-
   isAllParameterSelected(){
     let result = false;
     if(this.selectedProgram && this.selectedProgram.name){
@@ -206,12 +204,12 @@ export class TrackerCapturePage implements OnInit{
 
   hideAndShowColumns(fab : FabContainer){
     let modal = this.modalCtrl.create('TrackerHideShowColumnPage',{attributeToDisplay :this.attributeToDisplay,programTrackedEntityAttributes : this.programTrackedEntityAttributes});
-    modal.onDidDismiss((attributeToDisplay:any)=>{
+    modal.onDidDismiss((attributeToDisplay : any)=>{
       if(attributeToDisplay){
+        this.attributeToDisplay = attributeToDisplay;
       }
     });
-    modal.present().then(()=>{
-      console.log("here we are");
+    modal.present().then((attributeToDisplay)=>{
       fab.close();
     }).catch(error=>{
       console.log(JSON.stringify(error));

@@ -32,8 +32,8 @@
         <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage" ></page-loading>
       </div>
       <div *ngIf="!isLoading">
-        {{ trackedEntityInstances |json }}<br><br>
-        {{ programTrackedEntityAttributes | json }}
+        attributeToDisplay : {{ attributeToDisplay | json }}<br><br>
+        trackedEntityInstances : {{ trackedEntityInstances |json }}
       </div>
 
 

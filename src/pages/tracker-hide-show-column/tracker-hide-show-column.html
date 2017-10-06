@@ -18,12 +18,36 @@
 </ion-header>
 
 
-<ion-content padding>
-  {{ selectedItemsModel|json }}<br><br>
-  {{ trackedEntityAttributes|json }}
-
-  <ion-item *ngFor="let trackedEntityAttribute of trackedEntityAttributes">
-    <ion-label>{{ trackedEntityAttribute.name }}</ion-label>
-    <ion-checkbox [(ngModel)]="selectedItemsModel[trackedEntityAttribute.id]"></ion-checkbox>
-  </ion-item>
+<ion-content >
+  <ion-grid>
+    <div *ngIf="trackedEntityAttributes && trackedEntityAttributes.length > 0">
+      <ion-row>
+        <ion-col>
+          <button  color="primary" (tap)="autoSelectFields(true)" round ion-button full >
+            Select all
+          </button>
+        </ion-col>
+        <ion-col>
+          <button  color="primary" (tap)="autoSelectFields(false)" round ion-button full>
+            Deselect all
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item *ngFor="let trackedEntityAttribute of trackedEntityAttributes">
+            <ion-label>{{ trackedEntityAttribute.name }}</ion-label>
+            <ion-checkbox [(ngModel)]="selectedItemsModel[trackedEntityAttribute.id]"></ion-checkbox>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <button  color="primary" round ion-button full (tap)="saveChanges()">
+            Save
+          </button>
+        </ion-col>
+      </ion-row>
+    </div>
+  </ion-grid>
 </ion-content>
