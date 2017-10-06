@@ -134,10 +134,37 @@ export class TrackerCaptureProvider {
   loadTrackedEntityInstancesList(programId,orgUnitId,currentUser){
     return new Promise( (resolve, reject)=> {
       this.enrollmentsProvider.getSavedEnrollments(orgUnitId,programId,currentUser).then((enrollments : any)=>{
-        resolve({enrollments : enrollments});
+        let trackedEntityInstanceIds = [];
+        enrollments.forEach((enrollment : any)=>{
+          trackedEntityInstanceIds.push(enrollment.trackedEntityInstance);
+        });
+        this.trackedEntityInstancesProvider.getTrackedEntityInstances(trackedEntityInstanceIds,currentUser).then((trackedEntityInstances : any )=>{
+          this.trackedEntityAttributeValuesProvider.getTrackedEntityAttributeValues(trackedEntityInstanceIds,currentUser).then((attributeValues : any)=>{
+            let attributeValuesObject = {};
+            if(attributeValues && attributeValues.length > 0){
+              attributeValues.forEach((attributeValue : any)=>{
+                delete attributeValue.id;
+                if(!attributeValuesObject[attributeValue.trackedEntityInstance]){
+                  attributeValuesObject[attributeValue.trackedEntityInstance] = [];
+                }
+                attributeValuesObject[attributeValue.trackedEntityInstance].push(attributeValue);
+              });
+              trackedEntityInstances.forEach((trackedEntityInstanceObject : any)=>{
+                if(attributeValuesObject[trackedEntityInstanceObject.trackedEntityInstance]){
+                  trackedEntityInstanceObject["attributes"] = attributeValuesObject[trackedEntityInstanceObject.trackedEntityInstance];
+                }else{
+                  trackedEntityInstanceObject["attributes"] = [];
+                }
+              });
+            }
+          }).catch(error=>{});
+          resolve({enrollments : enrollments, trackedEntityInstances : trackedEntityInstances});
+        }).catch(error=>{
+          reject({message : error});
+        });
       }).catch(error=>{
         reject({message : error});
-      })
+      });
     });
   }
 

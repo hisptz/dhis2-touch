@@ -40,7 +40,21 @@ export class TrackedEntityAttributeValuesProvider {
         reject(error);
       });
     });
+  }
 
+  /**
+   *
+   * @param trackedEntityInstanceIds
+   * @param currentUser
+   */
+  getTrackedEntityAttributeValues(trackedEntityInstanceIds,currentUser){
+    return new Promise( (resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(this.resource,'trackedEntityInstance',trackedEntityInstanceIds,currentUser.currentDatabase).then((trackedEntityAttributeValues : any)=>{
+        resolve(trackedEntityAttributeValues);
+      }).catch(error=>{
+        reject(error);
+      })
+    });
   }
 
 }

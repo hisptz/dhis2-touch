@@ -43,7 +43,10 @@ export class TrackerCapturePage implements OnInit{
   }
 
   ionViewDidEnter() {
-    console.log("isFormReady " + this.isFormReady);
+    if(this.isFormReady){
+      console.log("Refreshing list");
+      this.loadingSavedTrackedEntityInstances(this.selectedProgram.id,this.selectedOrgUnit.id);
+    }
   }
 
   ngOnInit(){
@@ -114,7 +117,7 @@ export class TrackerCapturePage implements OnInit{
     this.isLoading = false;
     this.loadingMessage = "";
     if(this.isFormReady){
-      this.loadingTrackedEntityInstances(this.selectedProgram.id,this.selectedOrgUnit.id);
+      this.loadingSavedTrackedEntityInstances(this.selectedProgram.id,this.selectedOrgUnit.id);
     }else{
       this.trackedEntityInstances = [];
     }
@@ -150,7 +153,7 @@ export class TrackerCapturePage implements OnInit{
     }
   }
 
-  loadingTrackedEntityInstances(programId,orgUnitId){
+  loadingSavedTrackedEntityInstances(programId,orgUnitId){
     this.isLoading = true;
     this.loadingMessage = "Loading tracked entity list";
     this.trackerCaptureProvider.loadTrackedEntityInstancesList(programId,orgUnitId,this.currentUser).then((trackedEntityInstances : any)=>{

@@ -56,4 +56,21 @@ export class TrackedEntityInstancesProvider {
     });
   }
 
+  /**
+   *
+   * @param trackedEntityInstanceIds
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getTrackedEntityInstances(trackedEntityInstanceIds,currentUser){
+    return new Promise( (resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(this.resource,'trackedEntityInstance',trackedEntityInstanceIds,currentUser.currentDatabase).then((trackedEntityInstances : any)=>{
+        resolve(trackedEntityInstances);
+      }).catch(error=>{
+        reject(error);
+      })
+    })
+  }
+
+
 }
