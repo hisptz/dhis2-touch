@@ -33,6 +33,7 @@ export class TrackerCapturePage implements OnInit{
   selectedDataDimension : Array<any>;
   programs : Array<any>;
   trackedEntityInstances : Array<any>;
+  programTrackedEntityAttributes : Array<any>;
   icons : any = {};
 
   constructor(public navCtrl: NavController,private modalCtrl : ModalController,
@@ -90,9 +91,18 @@ export class TrackerCapturePage implements OnInit{
     this.programsProvider.getProgramsAssignedOnOrgUnitAndUserRoles(this.selectedOrgUnit.id,programType,this.programIdsByUserRoles,this.currentUser).then((programs : any)=>{
       this.programs = programs;
       this.selectedProgram = this.programsProvider.lastSelectedProgram;
-      this.updateTrackerCaptureSelections();
-      this.isLoading = false;
-      this.loadingMessage = "";
+      if(this.selectedProgram && this.selectedProgram.id){
+        this.trackerCaptureProvider.getTrackedEntityRegistration(this.selectedProgram.id,this.currentUser).then((programTrackedEntityAttributes : any)=>{
+          this.programTrackedEntityAttributes = programTrackedEntityAttributes;
+          this.updateTrackerCaptureSelections();
+          this.isLoading = false;
+          this.loadingMessage = "";
+        }).catch(error=>{
+          this.isLoading = false;
+          console.log(JSON.stringify(error));
+          this.appProvider.setNormalNotification("Fail to load registration form for " + this.selectedProgram.name);
+        });
+      }
     },error=>{
       this.isLoading = false;
       this.loadingMessage = "";
@@ -144,7 +154,14 @@ export class TrackerCapturePage implements OnInit{
         if(selectedProgram && selectedProgram.id){
           this.selectedProgram = selectedProgram;
           this.programsProvider.setLastSelectedProgram(selectedProgram);
-          this.updateTrackerCaptureSelections();
+          this.trackerCaptureProvider.getTrackedEntityRegistration(selectedProgram.id,this.currentUser).then((programTrackedEntityAttributes : any)=>{
+            this.programTrackedEntityAttributes = programTrackedEntityAttributes;
+            this.updateTrackerCaptureSelections();
+          }).catch(error=>{
+            this.isLoading = false;
+            console.log(JSON.stringify(error));
+            this.appProvider.setNormalNotification("Fail to load registration form for " + this.selectedProgram.name);
+          });
         }
       });
       modal.present();
