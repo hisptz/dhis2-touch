@@ -4,6 +4,7 @@ import {UserProvider} from "../../providers/user/user";
 import {AppProvider} from "../../providers/app/app";
 import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
 import {ProgramsProvider} from "../../providers/programs/programs";
+import {TrackerCaptureProvider} from "../../providers/tracker-capture/tracker-capture";
 
 /**
  * Generated class for the TrackerCapturePage page.
@@ -31,21 +32,24 @@ export class TrackerCapturePage implements OnInit{
   isProgramDimensionApplicable : boolean;
   selectedDataDimension : Array<any>;
   programs : Array<any>;
+  trackedEntityInstances : Array<any>;
   icons : any = {};
 
   constructor(public navCtrl: NavController,private modalCtrl : ModalController,
               private userProvider : UserProvider,private appProvider : AppProvider,
               private programsProvider : ProgramsProvider,
+              private trackerCaptureProvider : TrackerCaptureProvider,
               private organisationUnitsProvider : OrganisationUnitsProvider) {
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
+    console.log("isFormReady " + this.isFormReady);
   }
 
   ngOnInit(){
     this.icons.orgUnit = "assets/data-entry/orgUnit.png";
     this.icons.program = "assets/event-capture/program.png";
-
+    this.trackedEntityInstances = [];
     this.loadingMessage = "Loading. user information";
     this.isLoading = true;
     this.isFormReady = false;
@@ -109,6 +113,11 @@ export class TrackerCapturePage implements OnInit{
     this.isFormReady = this.isAllParameterSelected();
     this.isLoading = false;
     this.loadingMessage = "";
+    if(this.isFormReady){
+      this.loadingTrackedEntityInstances(this.selectedProgram.id,this.selectedOrgUnit.id);
+    }else{
+      this.trackedEntityInstances = [];
+    }
   }
 
   openOrganisationUnitTree(){
@@ -139,6 +148,19 @@ export class TrackerCapturePage implements OnInit{
     }else{
       this.appProvider.setNormalNotification("There are no program to select on " + this.selectedOrgUnit.name);
     }
+  }
+
+  loadingTrackedEntityInstances(programId,orgUnitId){
+    this.isLoading = true;
+    this.loadingMessage = "Loading tracked entity list";
+    this.trackerCaptureProvider.loadTrackedEntityInstancesList(programId,orgUnitId,this.currentUser).then((trackedEntityInstances : any)=>{
+      this.trackedEntityInstances = trackedEntityInstances;
+      this.isLoading = false;
+    }).catch(error=>{
+      console.log(JSON.stringify(error));
+      this.isLoading = false;
+      this.appProvider.setNormalNotification("Fail to load tracked entity list");
+    });
   }
 
   isAllParameterSelected(){

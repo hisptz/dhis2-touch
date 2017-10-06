@@ -124,6 +124,23 @@ export class TrackerCaptureProvider {
     return mergedResults;
   }
 
+  /**
+   *
+   * @param programId
+   * @param orgUnitId
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  loadTrackedEntityInstancesList(programId,orgUnitId,currentUser){
+    return new Promise( (resolve, reject)=> {
+      this.enrollmentsProvider.getSavedEnrollments(orgUnitId,programId,currentUser).then((enrollments : any)=>{
+        resolve({enrollments : enrollments});
+      }).catch(error=>{
+        reject({message : error});
+      })
+    });
+  }
+
 
 
 }

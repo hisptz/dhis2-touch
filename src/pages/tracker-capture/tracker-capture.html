@@ -28,8 +28,11 @@
     </ion-row>
 
     <div *ngIf = "isFormReady">
-      isFormReady : {{ isFormReady }}
+      <div *ngIf="isLoading">
+        <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage" ></page-loading>
+      </div>
 
+      {{ trackedEntityInstances |json }}
 
       <ion-fab bottom right #fab>
         <button ion-fab ><ion-icon name="md-more"  ></ion-icon></button>

@@ -16,11 +16,18 @@ export class TrackedEntityAttributeValuesProvider {
     this.resource = "trackedEntityAttributeValues";
   }
 
+  /**
+   *
+   * @param trackedEntityInstance
+   * @param trackedEntityAttributeValues
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   savingTrackedEntityAttributeValues(trackedEntityInstance,trackedEntityAttributeValues,currentUser){
     let payLoad = [];
     trackedEntityAttributeValues.forEach((trackedEntityAttributeValue : any)=>{
       payLoad.push({
-        "id" : trackedEntityInstance,
+        "id" : trackedEntityInstance +"-"+trackedEntityAttributeValue.attribute,
         "trackedEntityInstance" : trackedEntityInstance,
         "attribute": trackedEntityAttributeValue.attribute,
         "value": trackedEntityAttributeValue.value

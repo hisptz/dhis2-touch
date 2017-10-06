@@ -18,6 +18,15 @@ export class TrackedEntityInstancesProvider {
     this.resource = "trackedEntityInstances";
   }
 
+  /**
+   *
+   * @param trackedEntityId
+   * @param orgUnitId
+   * @param currentUser
+   * @param syncStatus
+   * @param trackedEntityInstance
+   * @returns {Promise<any>}
+   */
   savingTrackedEntityInstances(trackedEntityId,orgUnitId,currentUser,syncStatus,trackedEntityInstance?){
     if(!trackedEntityInstance){
       trackedEntityInstance = dhis2.util.uid();
@@ -26,6 +35,7 @@ export class TrackedEntityInstancesProvider {
       syncStatus = "not-synced"
     }
     let payLoad = {
+      "id" : trackedEntityInstance,
       "trackedEntity": trackedEntityId,
       "orgUnit": orgUnitId,
       "trackedEntityInstance": trackedEntityInstance,
@@ -35,8 +45,10 @@ export class TrackedEntityInstancesProvider {
       "relationships": [],
       "syncStatus": syncStatus
     };
+    let payLoads = [];
+    payLoads.push(payLoad);
     return new Promise( (resolve, reject)=> {
-      this.sqlLite.insertBulkDataOnTable(this.resource,[payLoad],currentUser.currentDatabase).then(()=>{
+      this.sqlLite.insertBulkDataOnTable(this.resource,payLoads,currentUser.currentDatabase).then(()=>{
         resolve(payLoad);
       }).catch(error=>{
         reject(error);
