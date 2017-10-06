@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { EventCapturePage } from './event-capture';
 import {SharedModule} from "../../components/shared.module";
+import {EventView} from "./event-view";
 
 @NgModule({
   declarations: [
-    EventCapturePage,
+    EventView,
   ],
   imports: [
-    IonicPageModule.forChild(EventCapturePage),SharedModule
+    IonicPageModule.forChild(EventView),SharedModule
   ],
 })
-export class EventCapturePageModule {}
+export class EventViewModule {}

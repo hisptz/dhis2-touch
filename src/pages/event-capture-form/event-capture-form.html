@@ -26,199 +26,276 @@
   <div *ngIf="!loadingData" padding>
     <!-- selected orgUnit labels -->
     <div  class="entry-selection-container" padding (tap)="navCtrl.pop()" *ngIf="entryFormParameter">
-      <div ><b>Organisation Unit</b> : {{ entryFormParameter.orgUnitName }}<br>
-        <b>Form</b> : {{ entryFormParameter.programName }}</div>
+      <div ><b>Organisation Unit</b> : {{ currentOrgUnit.name }}<br>
+        <b>Form</b> : {{ currentProgram.name }}</div>
     </div>
     <ion-list></ion-list>
 
     <div *ngIf="event">
       <!-- event date field -->
       <div>
-        Report date <span class="required">*</span>
+        {{reportDateTag}} <span class="required">*</span>
       </div>
       <ion-item>
         <ion-datetime doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [(ngModel)]="event.eventDate"></ion-datetime>
       </ion-item>
-      <button color="light" ion-button large full (tap)="cancel()" *ngIf="event.eventDate =='' ">
+      <button color="primary" ion-button small full (tap)="cancel()" *ngIf="event.eventDate =='' ">
         cancel
       </button>
 
-      <div *ngIf="event.eventDate !='' ">
-        <ion-item-group>
-          <!-- section names if any -->
-          <div *ngFor="let section of entryFormSections">
-            <div *ngIf="section.id == currentPage">
-              <div *ngIf=" section.name != 'defaultSection'">
-                <ion-item-divider >
-                  <p color="primary" align="center">
-                    <b>{{ section.name }}</b>
-                  </p>
-                </ion-item-divider>
-              </div>
-            </div>
-          </div>
-          <hr>
 
-          <!--- entry form fields -->
-          <div *ngFor="let section of entryFormSections">
-            <div *ngIf="section.id == currentPage">
-              <div *ngFor="let programStageDataElement of section.programStageDataElements">
-                <br>
-                <div (tap)="showTooltips(programStageDataElement.dataElement,'',programStageDataElement.compulsory)" class="inputLabel">
-                  {{ getDisplayName(programStageDataElement.dataElement) }}&nbsp;&nbsp;
-                  <span *ngIf="programStageDataElement.compulsory == 'true'" class="required">*</span>
-                  <span *ngIf="programStageDataElement.dataElement.description">
-                  &nbsp;&nbsp;<ion-icon name="help-circle"></ion-icon>
-                  </span>
-                </div>
-                <!-- option set entry form fields -->
-                <div *ngIf="programStageDataElement.dataElement.optionSet">
-                  <ion-item>
-                    <ion-label>Touch to select/update</ion-label>
-                    <ion-select [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" interface="action-sheet" >
-                      <ion-option *ngFor="let option of programStageDataElement.dataElement.optionSet.options" value="{{option.code}}">{{option.name}}</ion-option>
-                    </ion-select>
-                  </ion-item>
-                </div>
-                <!-- non option set entry form fields -->
-                <div *ngIf="!programStageDataElement.dataElement.optionSet">
 
-                  <div *ngIf="programStageDataElement.dataElement.valueType == 'DATE'">
-                    <ion-item>
-                      <ion-datetime doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [(ngModel)]="dataValues[programStageDataElement.dataElement.id]"></ion-datetime>
-                    </ion-item>
-                  </div>
+      <!--<div *ngFor="let programStage of displayTag.dataElements" >-->
+        <!--{{programStage.name}}-->
 
-                  <div *ngIf="programStageDataElement.dataElement.valueType == 'LONG_TEXT'">
-                    <ion-item>
-                      <ion-textarea [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" placeholder="Add your comment here"></ion-textarea>
-                    </ion-item>
-                  </div>
+        <!--&lt;!&ndash;<div *ngFor="let element of programStage.dataElements" >&ndash;&gt;-->
+          <!--&lt;!&ndash;{{element[0]}}&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
 
-                  <div *ngIf="programStageDataElement.dataElement.valueType == 'TRUE_ONLY'">
-                    <ion-item>
-                      <ion-label>Touch to select/update</ion-label>
-                      <ion-select [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" interface="action-sheet" >
-                        <ion-option value="true">Yes</ion-option>
-                      </ion-select>
-                    </ion-item>
-                  </div>
-                  <div *ngIf="programStageDataElement.dataElement.valueType == 'BOOLEAN'">
-                    <ion-item>
-                      <ion-label>Touch to select/update</ion-label>
-                      <ion-select [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" interface="action-sheet" >
-                        <ion-option value="true">Yes</ion-option>
-                        <ion-option value="false">No</ion-option>
-                      </ion-select>
-                    </ion-item>
-                  </div>
-                  <div *ngIf="programStageDataElement.dataElement.valueType == 'INTEGER' ||programStageDataElement.dataElement.valueType == 'NUMBER'">
-                    <ion-item>
-                      <ion-input type="number"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" ></ion-input>
-                    </ion-item>
-                  </div>
-                  <div *ngIf="programStageDataElement.dataElement.valueType == 'INTEGER_POSITIVE'">
-                    <ion-item>
-                      <ion-input type="number"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" min="1" ></ion-input>
-                    </ion-item>
-                  </div>
-                  <div *ngIf="programStageDataElement.dataElement.valueType == 'INTEGER_NEGATIVE'">
-                    <ion-item>
-                      <ion-input type="number"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" max="-1" ></ion-input>
-                    </ion-item>
-                  </div>
-                  <div *ngIf="programStageDataElement.dataElement.valueType == 'INTEGER_ZERO_OR_POSITIVE'">
-                    <ion-item>
-                      <ion-input type="number"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" min="0" ></ion-input>
-                    </ion-item>
-                  </div>
-                  <div *ngIf="programStageDataElement.dataElement.valueType == 'UNIT_INTERVAL'">
-                    <ion-item>
-                      <ion-input type="text"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" ></ion-input>
-                    </ion-item>
-                  </div>
-                  <div *ngIf="programStageDataElement.dataElement.valueType == 'PERCENTAGE'">
-                    <ion-item>
-                      <ion-input type="text"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" ></ion-input>
-                    </ion-item>
-                  </div>
-                  <div *ngIf="programStageDataElement.dataElement.valueType == 'TEXT'">
-                    <ion-item>
-                      <ion-input type="text"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" ></ion-input>
-                    </ion-item>
-                  </div>
-                  <div *ngIf="programStageDataElement.dataElement.valueType == 'COORDINATE'">
-                    <ion-item>
-                      <ion-input type="text"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" ></ion-input>
-                    </ion-item>
-                  </div>
-                </div>
+      <!--</div>-->
 
-              </div>
-            </div>
-          </div>
 
-          <hr><hr>
-          <!-- event completion as well as event comments -->
-          <div>
-            Is Event Completed ?
-          </div>
-          <ion-item>
-            <ion-label>Touch to select/update</ion-label>
-            <ion-select [(ngModel)]="event.status" interface="action-sheet" >
-              <ion-option value="COMPLETED">Yes</ion-option>
-              <ion-option value="ACTIVE">No</ion-option>
-            </ion-select>
-          </ion-item>
-          <div>
-            <b>Comments</b>
-          </div>
-          <ion-item>
-            <ion-textarea [(ngModel)]="eventComment" placeholder="Add your comment here"></ion-textarea>
-          </ion-item>
-        </ion-item-group>
-        <ion-list></ion-list>
+      <!--<div>-->
+      <!--<div *ngFor="let programStage of programStages.programStageDataElements">-->
+      <!--{{programStage}}-->
+      <!--&lt;!&ndash;<div *ngFor="let dataElements of programStage.programStageDataElements">&ndash;&gt;-->
+      <!--&lt;!&ndash;{{programStage.id}}&ndash;&gt;-->
+      <!--&lt;!&ndash;{{stageProg.id}}&ndash;&gt;-->
+      <!--&lt;!&ndash;<div *ngFor="let dataElementInfo of stageProg.dataElement" >&ndash;&gt;-->
+      <!--&lt;!&ndash;{{dataElementInfo.name}}&ndash;&gt;-->
 
-        <!-- pagination, saving and cancel buttons-->
-        <ion-item-group>
-          <ion-item-divider>
-            <!-- pagination for entry form  -->
-            <ion-row *ngIf="(entryFormSections.length > 1)">
-              <ion-col>
-                <button color="dark" ion-button full clear small (tap)="changePagination(currentPage - 1)">
-                  <ion-icon name="ios-arrow-back-outline"></ion-icon>
-                  <ion-icon name="ios-arrow-back-outline"></ion-icon>
-                </button>
-              </ion-col>
-              <ion-col>
-                <button ion-button color="dark" full clear small >
-                  {{ paginationLabel }}
-                </button>
-              </ion-col>
-              <ion-col >
-                <button color="dark" ion-button full clear small (tap)="changePagination(currentPage + 1)">
-                  <ion-icon name="ios-arrow-forward-outline"></ion-icon>
-                  <ion-icon name="ios-arrow-forward-outline"></ion-icon>
-                </button>
-              </ion-col>
-            </ion-row>
-            <!-- saving and cancel button for event capture form -->
-            <ion-row>
-              <ion-col>
-                <button color="primary" large ion-button full (tap)="saveEvent()">
-                  Save
-                </button>
-              </ion-col>
-              <ion-col >
-                <button color="light" large ion-button full (tap)="cancel()">
-                  cancel
-                </button>
-              </ion-col>
-            </ion-row>
-          </ion-item-divider>
-        </ion-item-group>
+      <!--<div *ngIf="dataElements.valueType == 'BOOLEAN'">-->
+      <!--&lt;!&ndash;<event-boolean-input-field></event-boolean-input-field>&ndash;&gt;-->
+      <!--</div>-->
 
-      </div>
+      <!--<div *ngIf="dataElements.valueType == 'NUMBER'">-->
+      <!--&lt;!&ndash;<event-boolean-input-field></event-boolean-input-field>&ndash;&gt;-->
+      <!--</div>-->
+
+      <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+      <!--</div>-->
+      <!--</div>-->
+
+
+      <!--<div>-->
+      <!--<div *ngFor="let programStage of programStages">-->
+      <!--<div *ngFor="let dataElements of programStage.programStageDataElements[0]" >-->
+      <!--{{programStage.name}}-->
+      <!--&lt;!&ndash;{{dataElements.compulsory}}&ndash;&gt;-->
+        <!--<div *ngFor="let dataElementsData of dataElements.dataElement">-->
+          <!--{{dataElementsData.id}}-->
+        <!--</div>-->
+      <!--&lt;!&ndash;{{stageProg.id}}&ndash;&gt;-->
+      <!--&lt;!&ndash;<div *ngFor="let dataElementInfo of stageProg.dataElement" >&ndash;&gt;-->
+      <!--&lt;!&ndash;{{dataElementInfo.name}}&ndash;&gt;-->
+
+      <!--<div *ngIf="dataElements.valueType == 'BOOLEAN'">-->
+      <!--&lt;!&ndash;<event-boolean-input-field></event-boolean-input-field>&ndash;&gt;-->
+      <!--</div>-->
+
+      <!--<div *ngIf="dataElements.valueType == 'NUMBER'">-->
+      <!--&lt;!&ndash;<event-boolean-input-field></event-boolean-input-field>&ndash;&gt;-->
+      <!--</div>-->
+
+      <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--</div>-->
+
+      <!--</div>-->
+      <!--</div>-->
+
+
+
+
+
+
+
+
+
+
+
+      <!--<div *ngIf="event.eventDate !='' ">-->
+      <!--<ion-item-group>-->
+      <!--&lt;!&ndash; section names if any &ndash;&gt;-->
+      <!--<div *ngFor="let section of entryFormSections">-->
+      <!--<div *ngIf="section.id == currentPage">-->
+      <!--<div *ngIf=" section.name != 'defaultSection'">-->
+      <!--<ion-item-divider >-->
+      <!--<p color="primary" align="center">-->
+      <!--<b>{{ section.name }}</b>-->
+      <!--</p>-->
+      <!--</ion-item-divider>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--<hr>-->
+
+      <!--&lt;!&ndash;- entry form fields &ndash;&gt;-->
+      <!--<div *ngFor="let section of entryFormSections">-->
+      <!--&lt;!&ndash;<div *ngIf="section.id == currentPage">&ndash;&gt;-->
+      <!--<div >-->
+      <!--<div *ngFor="let programStageDataElement of section.programStageDataElements">-->
+      <!--<br>-->
+
+
+      <!--<div (tap)="showTooltips(programStageDataElement.dataElement[0],'',programStageDataElement.compulsory)" class="inputLabel">-->
+      <!--{{ getDisplayName(programStageDataElement.dataElement['id']) }}&nbsp;&nbsp;-->
+      <!--<span *ngIf="programStageDataElement.compulsory == 'true'" class="required">*</span>-->
+      <!--<span *ngIf="programStageDataElement.dataElement.description">-->
+      <!--&nbsp;&nbsp;<ion-icon name="help-circle"></ion-icon>-->
+      <!--</span>-->
+      <!--</div>-->
+
+
+      <!--&lt;!&ndash; option set entry form fields &ndash;&gt;-->
+      <!--<div *ngIf="programStageDataElement.dataElement.optionSet">-->
+      <!--<ion-item>-->
+      <!--<ion-label>Touch to select/update</ion-label>-->
+      <!--<ion-select [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" interface="action-sheet" >-->
+      <!--<ion-option *ngFor="let option of programStageDataElement.dataElement.optionSet.options" value="{{option.code}}">{{option.name}}</ion-option>-->
+      <!--</ion-select>-->
+      <!--</ion-item>-->
+      <!--</div>-->
+      <!--&lt;!&ndash; non option set entry form fields &ndash;&gt;-->
+      <!--<div *ngIf="!programStageDataElement.dataElement">-->
+
+      <!--<div *ngIf="programStageDataElement.dataElement.valueType == 'DATE'">-->
+      <!--<ion-item>-->
+      <!--<ion-datetime doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [(ngModel)]="dataValues[programStageDataElement.dataElement.id]"></ion-datetime>-->
+      <!--</ion-item>-->
+      <!--</div>-->
+
+      <!--<div *ngIf="programStageDataElement.dataElement.valueType == 'LONG_TEXT'">-->
+      <!--<ion-item>-->
+      <!--<ion-textarea [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" placeholder="Add your comment here"></ion-textarea>-->
+      <!--</ion-item>-->
+      <!--</div>-->
+
+      <!--<div *ngIf="programStageDataElement.dataElement.valueType == 'TRUE_ONLY'">-->
+      <!--<ion-item>-->
+      <!--<ion-label>Touch to select/update</ion-label>-->
+      <!--<ion-select [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" interface="action-sheet" >-->
+      <!--<ion-option value="true">Yes</ion-option>-->
+      <!--</ion-select>-->
+      <!--</ion-item>-->
+      <!--</div>-->
+      <!--<div *ngIf="programStageDataElement.dataElement.valueType == 'BOOLEAN'">-->
+      <!--<ion-item>-->
+      <!--<ion-label>Touch to select/update</ion-label>-->
+      <!--<ion-select [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" interface="action-sheet" >-->
+      <!--<ion-option value="true">Yes</ion-option>-->
+      <!--<ion-option value="false">No</ion-option>-->
+      <!--</ion-select>-->
+      <!--</ion-item>-->
+      <!--</div>-->
+      <!--<div *ngIf="programStageDataElement.dataElement.valueType == 'INTEGER' ||programStageDataElement.dataElement.valueType == 'NUMBER'">-->
+      <!--<ion-item>-->
+      <!--<ion-input type="number"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" ></ion-input>-->
+      <!--</ion-item>-->
+      <!--</div>-->
+      <!--<div *ngIf="programStageDataElement.dataElement.valueType == 'INTEGER_POSITIVE'">-->
+      <!--<ion-item>-->
+      <!--<ion-input type="number"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" min="1" ></ion-input>-->
+      <!--</ion-item>-->
+      <!--</div>-->
+      <!--<div *ngIf="programStageDataElement.dataElement.valueType == 'INTEGER_NEGATIVE'">-->
+      <!--<ion-item>-->
+      <!--<ion-input type="number"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" max="-1" ></ion-input>-->
+      <!--</ion-item>-->
+      <!--</div>-->
+      <!--<div *ngIf="programStageDataElement.dataElement.valueType == 'INTEGER_ZERO_OR_POSITIVE'">-->
+      <!--<ion-item>-->
+      <!--<ion-input type="number"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" min="0" ></ion-input>-->
+      <!--</ion-item>-->
+      <!--</div>-->
+      <!--<div *ngIf="programStageDataElement.dataElement.valueType == 'UNIT_INTERVAL'">-->
+      <!--<ion-item>-->
+      <!--<ion-input type="text"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" ></ion-input>-->
+      <!--</ion-item>-->
+      <!--</div>-->
+      <!--<div *ngIf="programStageDataElement.dataElement.valueType == 'PERCENTAGE'">-->
+      <!--<ion-item>-->
+      <!--<ion-input type="text"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" ></ion-input>-->
+      <!--</ion-item>-->
+      <!--</div>-->
+      <!--<div *ngIf="programStageDataElement.dataElement.valueType == 'TEXT'">-->
+      <!--<ion-item>-->
+      <!--<ion-input type="text"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" ></ion-input>-->
+      <!--</ion-item>-->
+      <!--</div>-->
+      <!--<div *ngIf="programStageDataElement.dataElement.valueType == 'COORDINATE'">-->
+      <!--<ion-item>-->
+      <!--<ion-input type="text"  [(ngModel)]="dataValues[programStageDataElement.dataElement.id]" ></ion-input>-->
+      <!--</ion-item>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<hr><hr>-->
+      <!--&lt;!&ndash; event completion as well as event comments &ndash;&gt;-->
+      <!--<div>-->
+      <!--Is Event Completed ?-->
+      <!--</div>-->
+      <!--<ion-item>-->
+      <!--<ion-label>Touch to select/update</ion-label>-->
+      <!--<ion-select [(ngModel)]="event.status" interface="action-sheet" >-->
+      <!--<ion-option value="COMPLETED">Yes</ion-option>-->
+      <!--<ion-option value="ACTIVE">No</ion-option>-->
+      <!--</ion-select>-->
+      <!--</ion-item>-->
+      <!--<div>-->
+      <!--<b>Comments</b>-->
+      <!--</div>-->
+      <!--<ion-item>-->
+      <!--<ion-textarea [(ngModel)]="eventComment" placeholder="Add your comment here"></ion-textarea>-->
+      <!--</ion-item>-->
+      <!--</ion-item-group>-->
+      <!--<ion-list></ion-list>-->
+
+      <!--&lt;!&ndash; pagination, saving and cancel buttons&ndash;&gt;-->
+      <!--<ion-item-group>-->
+      <!--<ion-item-divider>-->
+      <!--&lt;!&ndash; pagination for entry form  &ndash;&gt;-->
+      <!--<ion-row *ngIf="(entryFormSections.length > 1)">-->
+      <!--<ion-col>-->
+      <!--<button color="dark" ion-button full clear small (tap)="changePagination(currentPage - 1)">-->
+      <!--<ion-icon name="ios-arrow-back-outline"></ion-icon>-->
+      <!--<ion-icon name="ios-arrow-back-outline"></ion-icon>-->
+      <!--</button>-->
+      <!--</ion-col>-->
+      <!--<ion-col>-->
+      <!--<button ion-button color="dark" full clear small >-->
+      <!--{{ paginationLabel }}-->
+      <!--</button>-->
+      <!--</ion-col>-->
+      <!--<ion-col >-->
+      <!--<button color="dark" ion-button full clear small (tap)="changePagination(currentPage + 1)">-->
+      <!--<ion-icon name="ios-arrow-forward-outline"></ion-icon>-->
+      <!--<ion-icon name="ios-arrow-forward-outline"></ion-icon>-->
+      <!--</button>-->
+      <!--</ion-col>-->
+      <!--</ion-row>-->
+      <!--&lt;!&ndash; saving and cancel button for event capture form &ndash;&gt;-->
+      <!--<ion-row>-->
+      <!--<ion-col>-->
+      <!--<button color="primary" small ion-button full (tap)="saveEvent()">-->
+      <!--Save-->
+      <!--</button>-->
+      <!--</ion-col>-->
+      <!--<ion-col >-->
+      <!--<button color="light" small ion-button full (tap)="cancel()">-->
+      <!--cancel-->
+      <!--</button>-->
+      <!--</ion-col>-->
+      <!--</ion-row>-->
+      <!--</ion-item-divider>-->
+      <!--</ion-item-group>-->
+
+      <!--</div>-->
 
     </div>
 

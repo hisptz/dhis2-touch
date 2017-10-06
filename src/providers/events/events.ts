@@ -6,11 +6,11 @@ import {HttpClientProvider} from "../http-client/http-client";
 import {AppProvider} from "../app/app";
 
 /*
-  Generated class for the EventsProvider provider.
+ Generated class for the EventsProvider provider.
 
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular DI.
-*/
+ See https://angular.io/docs/ts/latest/guide/dependency-injection.html
+ for more info on providers and Angular DI.
+ */
 @Injectable()
 export class EventsProvider {
 
@@ -29,8 +29,8 @@ export class EventsProvider {
     return this.lastChoosedOrgUnit;
   }
 
-  downloadEventsFromServer(orgUnitId,programId,currentUser){
-    let url = "/api/25/events.json?orgUnit="+orgUnitId+"&program="+programId ;
+  downloadEventsFromServer(orgUnit,program,currentUser){
+    let url = "/api/25/events.json?orgUnit="+orgUnit.id+"&program="+program.id ;
 
     return new Promise((resolve, reject) =>{
       this.httpClient.get(url,currentUser).then((eventsData: any)=>{
@@ -100,22 +100,56 @@ export class EventsProvider {
    * @param currentUser
    * @returns {Promise<T>}
    */
-  loadEventsFromServer(orgUnit,programId,programComboId,dataDimensions,currentUser){
-    let url = "/api/25/events.json?orgUnit="+orgUnit.id + "&programStage="+programId;
-    if(dataDimensions.length > 0){
-      let attributeCos = dataDimensions.toString();
+  loadEventsFromServer(orgUnit,program,programComboId,attribcc, attribCos,currentUser){
+    // alert("dataDim :"+JSON.stringify(programComboId))
+    alert("dataDim :"+attribCos.toString())
+    let url = "/api/25/events.json?orgUnit="+orgUnit.id + "&programStage="+program.id;
+    if(attribCos.length > 0){
+      let attributeCos = attribCos.toString();
       //attributeCos = attributeCos.replace(/,/g, ';');
       url += "&attributeCc="+programComboId+"&attributeCos="+attributeCos;
     }
     url += "&pageSize=50&page=1&totalPages=true";
     return new Promise((resolve, reject) =>{
-      this.http.get(url,currentUser).subscribe(events=>{
-        resolve(events.json())
+      this.httpClient.get(url,currentUser).then((eventsData: any)=>{
+        eventsData = JSON.parse(eventsData.data);
+
+        // alert("Events Downloaded Length: "+JSON.stringify(eventsData.events.length))
+
+        resolve(eventsData)
+
       },error=>{
-        reject(error.json());
+        reject(error);
       });
     });
   }
+
+
+  //
+  // /**
+  //  * loading 50 most recent events from the server
+  //  * @param orgUnit
+  //  * @param program
+  //  * @param dataDimensions
+  //  * @param currentUser
+  //  * @returns {Promise<T>}
+  //  */
+  // loadEventsFromServer(orgUnit,programId,programComboId,dataDimensions,currentUser){
+  //   let url = "/api/25/events.json?orgUnit="+orgUnit.id + "&programStage="+programId;
+  //   if(dataDimensions.length > 0){
+  //     let attributeCos = dataDimensions.attributeCos.toString();
+  //     //attributeCos = attributeCos.replace(/,/g, ';');
+  //     url += "&attributeCc="+programComboId+"&attributeCos="+attributeCos;
+  //   }
+  //   url += "&pageSize=50&page=1&totalPages=true";
+  //   return new Promise((resolve, reject) =>{
+  //     this.http.get(url,currentUser).subscribe(events=>{
+  //       resolve(events.json())
+  //     },error=>{
+  //       reject(error.json());
+  //     });
+  //   });
+  // }
 
 
 
@@ -217,11 +251,11 @@ export class EventsProvider {
         header : [],rows : []
       };
       //set headers
-      alert("toDisplaay: "+JSON.stringify(dataElementToDisplay))
+      //alert("toDisplaay: "+JSON.stringify(dataElementToDisplay))
 
       Object.keys(dataElementToDisplay).forEach((dataElementId:any)=>{
         tableFormat.header.push({
-          id : dataElementId, name : dataElementToDisplay[dataElementId].name
+          id : dataElementToDisplay[dataElementId].id, name : dataElementToDisplay[dataElementId].name
         })
       });
       //setting rows
@@ -251,7 +285,7 @@ export class EventsProvider {
         });
         eventDataValuesMapper[event.event] = dataValueMapper;
       });
-      alert("DataValue Mapper: "+JSON.stringify(eventDataValuesMapper))
+      //alert("DataValue Mapper: "+JSON.stringify(eventDataValuesMapper))
       resolve(eventDataValuesMapper);
     });
   }
@@ -326,5 +360,62 @@ export class EventsProvider {
       });
     });
   }
+
+
+
+  uploadEventsToServer(events,currentUser){
+    return new Promise((resolve, reject)=>{
+      events.forEach((event:any)=> {
+        if(event["syncStatus"] == "new event"){
+          //delete event id for new event
+          let eventTobUploaded = event;
+          let eventToUpload = this.formatEventForUpload(eventTobUploaded);
+          let url = "/api/25/events";
+          console.log(JSON.stringify(eventToUpload));
+          this.httpClient.post(url,eventToUpload,currentUser).then(response=>{
+            //response = response.json();
+            console.log(JSON.stringify(response));
+            this.updateUploadedLocalStoredEvent(event,response,currentUser).then(()=>{
+            },error=>{
+            });
+          },error=>{
+            console.log("error on post : " + JSON.stringify(error.json()));
+          })
+        }else{
+          let eventTobUploaded = event;
+          let eventToUpload = this.formatEventForUpload(eventTobUploaded);
+          let url = "/api/25/events/"+eventToUpload.event;
+          this.httpClient.put(url,eventToUpload,currentUser).then(response=>{
+            // response = JSON.parse(response);
+            this.updateUploadedLocalStoredEvent(event,response,currentUser).then(()=>{
+            },error=>{
+
+            });
+          },error=>{
+            console.log("error on put : " + JSON.stringify(error.json()));
+          })
+        }
+      });
+      //
+      resolve();
+    });
+  }
+
+
+  updateUploadedLocalStoredEvent(event,response,currentUser){
+    response = response.response;
+    if(response.importSummaries[0].reference){
+      event.event = response.importSummaries[0].reference;
+    }
+    event["syncStatus"] = "synced";
+    return new Promise((resolve, reject)=>{
+      this.saveEvent(event,currentUser).then(response=>{
+        resolve();
+      },error=>{
+        reject();
+      })
+    })
+  }
+
 
 }

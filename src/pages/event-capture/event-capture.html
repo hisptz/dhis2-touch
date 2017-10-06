@@ -44,10 +44,32 @@
       </ion-col>
     </ion-row>
 
-    <div *ngIf = "isFormReady">
-      isFormReady : {{ isFormReady }}<br>
-      getDataDimensions : {{ getDataDimensions()|json }}
-    </div>
+    <ion-row>
+      <ion-col>
+
+        <!-- display events as table -->
+        <div style="overflow-x: auto">
+          <table *ngIf="tableFormat && !showEmptyList" width="100%">
+            <thead>
+            <tr>
+              <th *ngFor="let header of tableFormat.header">{{header.name}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let row of tableFormat.rows" (tap)="goToEventView(row)" >
+              <td *ngFor="let column of row.data">{{column}} </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </ion-col>
+
+    </ion-row>
+
+    <!--<div *ngIf = "isFormReady">-->
+    <!--isFormReady : {{ isFormReady }}<br>-->
+    <!--getDataDimensions : {{ getDataDimensions()|json }}-->
+    <!--</div>-->
   </ion-grid>
 
 
@@ -56,47 +78,13 @@
   </div>
 
 
-  <!-- display events as table -->
-  <div style="overflow-x: auto">
-    <table *ngIf="tableFormat">
-      <thead>
-      <tr>
-        <th *ngFor="let header of tableFormat.header">{{header.name}}</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let row of tableFormat.rows" (tap)="goToEventView(row)" >
-        <td *ngFor="let column of row.data">{{column}} </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
 
-
-
-  <!--&lt;!&ndash; display events as table &ndash;&gt;-->
-  <!--<div style="overflow-x: auto">-->
-    <!--<table *ngIf ="!showEmptyList">-->
-      <!--<thead>-->
-      <!--<tr>-->
-        <!--<th *ngFor="let header of tableFormatHeader">{{header.name}}</th>-->
-      <!--</tr>-->
-      <!--</thead>-->
-      <!--<tbody>-->
-      <!--<tr *ngFor="let row of tableFormatRow" (tap)="goToEventView(row)" >-->
-        <!--<td >{{row.value}} </td>-->
-      <!--</tr>-->
-      <!--</tbody>-->
-    <!--</table>-->
-  <!--</div>-->
-
-
-
-
-  <ion-fab bottom left>
-    <button ion-fab (tap)="showFieldSelectionMenu()" color="light">
-      <ion-icon name="ios-eye" color="primary" ></ion-icon>
-    </button>
+  <ion-fab bottom right #fab>
+    <button ion-fab><ion-icon name="md-more"  ></ion-icon></button>
+    <ion-fab-list side="top">
+      <button ion-fab color="primary" (tap)="showFieldSelectionMenu(fab)" ><ion-icon name="ios-eye"  ></ion-icon></button>
+      <button ion-fab color="primary" (tap)="goToEventRegister(fab)" ><ion-icon name="add"  ></ion-icon></button>
+    </ion-fab-list>
   </ion-fab>
 
 

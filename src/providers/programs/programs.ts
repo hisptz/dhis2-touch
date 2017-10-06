@@ -4,11 +4,11 @@ import {SqlLiteProvider} from "../sql-lite/sql-lite";
 import {HttpClientProvider} from "../http-client/http-client";
 
 /*
-  Generated class for the ProgramsProvider provider.
+ Generated class for the ProgramsProvider provider.
 
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular DI.
-*/
+ See https://angular.io/docs/ts/latest/guide/dependency-injection.html
+ for more info on providers and Angular DI.
+ */
 @Injectable()
 export class ProgramsProvider {
 
@@ -39,8 +39,8 @@ export class ProgramsProvider {
    * @returns {Promise<any>}
    */
   downloadProgramsFromServer(currentUser){
-    let fields= "id,name,programType,withoutRegistration,trackedEntity[id],ignoreOverdueEvents,skipOffline,captureCoordinates,enrollmentDateLabel,onlyEnrollOnce,selectIncidentDatesInFuture,incidentDateLabel,useFirstStageDuringRegistration,completeEventsExpiryDays,displayFrontPageList,categoryCombo[id,name,categories[id,name,categoryOptions[name,id,organisationUnits[id]]]],programStages[id,name,formType,blockEntryForm,minDaysFromStart,dueDateLabel,autoGenerateEvent,hideDueDate,sortOrder,generatedByEnrollmentDate,displayGenerateEventBox,remindCompleted,executionDateLabel,allowGenerateNextVisit,validCompleteOnly,preGenerateUID,openAfterEnrollment,repeatable,captureCoordinates,programStageDataElements[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id]],programStageSections[id]],organisationUnits[id],programIndicators[id,name,description,expression],translations,attributeValues[value,attribute[name]],validationCriterias,programRuleVariables,programTrackedEntityAttributes[id,mandatory,externalAccess,allowFutureDate,displayInList,sortOrder,trackedEntityAttribute[id,name,code,name,formName,description,confidential,searchScope,translations,inherit,legendSets,optionSet[name,options[name,id,code]]unique,orgunitScope,programScope,displayInListNoProgramaggregationType,displayInListNoProgram,pattern,sortOrderInListNoProgram,generated,displayOnVisitSchedule,valueType,sortOrderInVisitSchedule]],programRules";
-      let url = "/api/25/"+this.resource+".json?paging=false&fields=" + fields;
+    let fields= "id,name,programType,withoutRegistration,ignoreOverdueEvents,skipOffline,captureCoordinates,enrollmentDateLabel,onlyEnrollOnce,selectIncidentDatesInFuture,incidentDateLabel,useFirstStageDuringRegistration,completeEventsExpiryDays,displayFrontPageList,categoryCombo[id,name,categories[id,name,categoryOptions[name,id,organisationUnits[id]]]],programStages[id,name,sortOrder,programStageDataElements[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id]],programStageSections[id]],organisationUnits[id],programIndicators[id,name,description,expression],translations,attributeValues[value,attribute[name]],validationCriterias,programRuleVariables,programTrackedEntityAttributes[id,mandatory,externalAccess,allowFutureDate,displayInList,sortOrder,trackedEntityAttribute[id,name,code,name,formName,description,confidential,searchScope,translations,inherit,legendSets,optionSet[name,options[name,id,code]]unique,orgunitScope,programScope,displayInListNoProgramaggregationType,displayInListNoProgram,pattern,sortOrderInListNoProgram,generated,displayOnVisitSchedule,valueType,sortOrderInVisitSchedule]],programRules";
+    let url = "/api/25/"+this.resource+".json?paging=false&fields=" + fields;
     return new Promise((resolve, reject)=> {
       this.HttpClient.get(url,currentUser).then((response : any)=>{
         response = JSON.parse(response.data);
@@ -260,13 +260,7 @@ export class ProgramsProvider {
             id : program.id + "-" + programStage.id,
             programId : program.id,
             name : programStage.name,
-            executionDateLabel : programStage.sortOrder,
-            formType : programStage.sortOrder,
             sortOrder : programStage.sortOrder,
-            generatedByEnrollmentDate : programStage.sortOrder,
-            autoGenerateEvent : programStage.sortOrder,
-            captureCoordinates : programStage.sortOrder,
-            dueDateLabel : programStage.sortOrder,
             programStageDataElements : programStage.programStageDataElements,
             programStageSections : programStage.programStageSections
           });
@@ -367,60 +361,6 @@ export class ProgramsProvider {
     });
   }
 
-  /**
-   *
-   * @param programId
-   * @param currentUser
-   * @returns {Promise<any>}
-   */
-  getProgramProgramTrackedEntityAttributes(programId,currentUser){
-    let attributeKey = "programId";
-    let attributeArray = [programId];
-    let resource = "programTrackedEntityAttributes";
-    return new Promise((resolve, reject)=> {
-      this.sqlLite.getDataFromTableByAttributes(resource, attributeKey, attributeArray, currentUser.currentDatabase).then((programTrackedEntityAttributes: any) => {
-        resolve(programTrackedEntityAttributes);
-      }).catch(error => {
-      });
-    });
-  }
-
-  /**
-   *
-   * @param programTrackedEntityAttributeIds
-   * @param currentUser
-   * @returns {Promise<any>}
-   */
-  getTrackedEntityAttributes(programTrackedEntityAttributeIds,currentUser){
-    let attributeKey = "programTrackedEntityAttributeId";
-    let resource = "trackedEntityAttribute";
-    return new Promise((resolve, reject)=> {
-      this.sqlLite.getDataFromTableByAttributes(resource, attributeKey, programTrackedEntityAttributeIds, currentUser.currentDatabase).then((trackedEntityAttributes: any) => {
-        resolve(trackedEntityAttributes);
-      }).catch(error => {
-        reject(error);
-      });
-    });
-  }
-
-  /**
-   *
-   * @param programId
-   * @param currentUser
-   * @returns {Promise<any>}
-   */
-  getProgramIndicators(programId,currentUser){
-    let attributeKey = "programId";
-    let attributeArray = [programId];
-    let resource = "programIndicators";
-    return new Promise((resolve, reject)=> {
-      this.sqlLite.getDataFromTableByAttributes(resource, attributeKey, attributeArray, currentUser.currentDatabase).then((programIndicators: any) => {
-        resolve(programIndicators);
-      }).catch(error => {
-        reject(error);
-      });
-    });
-  }
 
   /**
    *
@@ -558,8 +498,35 @@ export class ProgramsProvider {
     });
   }
 
+
   /**
    * get program by id
+   * @param programId
+   * @param currentUser
+   * @returns {Promise<T>}
+   */
+  getProgramById(programId,currentUser){
+    let attribute = 'id';
+    let attributeValue =[];
+
+    attributeValue.push(programId);
+    return new Promise((resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeValue,currentUser.currentDatabase).then((programs:any)=>{
+        if(programs.length > 0){
+          //alert("programs are :"+JSON.stringify(programs[0] ))
+          resolve(programs[0]);
+        }else{
+          resolve({});
+        }
+      },error=>{
+        reject();
+      });
+    });
+  }
+
+
+  /**
+   * get program by name
    * @param programId
    * @param currentUser
    * @returns {Promise<T>}
@@ -590,6 +557,174 @@ export class ProgramsProvider {
       },error=>{reject(error)})
     });
   }
+
+
+  getProgramsStagesDataElements(programId, currentUser){
+    let resource = 'programProgramStages';
+
+    let attribute = 'programId';
+    // let attribute = 'programStageDataElements';
+    let attributeValue =[];
+
+    // programId.forEach((program:any)=>{
+    //     attributeValue.push(program);
+    //  })
+
+    attributeValue.push(programId);
+    return new Promise((resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(resource,attribute,attributeValue,currentUser.currentDatabase).then((programs:any)=>{
+        resolve(programs);
+      },error=>{
+        reject();
+      });
+    });
+
+
+  }
+
+  getProgramstrackedEntityAttribute(programId, currentUser){
+    let resource = 'programTrackedEntityAttributes';
+
+    let attribute = 'programId';
+    // let attribute = 'programStageDataElements';
+    let attributeValue =[];
+
+    // programId.forEach((program:any)=>{
+    //     attributeValue.push(program);
+    //  })
+
+    attributeValue.push(programId);
+    return new Promise((resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(resource,attribute,attributeValue,currentUser.currentDatabase).then((programs:any)=>{
+        alert("ProgEntity: "+JSON.stringify(programs));
+        if(programs.length > 0){
+          resolve(programs);
+        }else{
+          resolve({});
+        }
+      },error=>{
+        reject();
+      });
+    });
+
+  }
+
+
+  /**
+   *
+   * @param programId
+   * @param dataBaseName
+   * @returns {Promise<any>}
+   */
+  getOrganisationUnitsinPrograms(programId,dataBaseName){
+    let resource = "programOrganisationUnits";
+    let attributeValue  = [programId];
+    let attributeKey = "programId";
+    return new Promise((resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(resource,attributeKey,attributeValue,dataBaseName).then((orgUnitsInProgram: any)=>{
+        resolve(orgUnitsInProgram);
+      },error=>{reject(error)});
+    });
+  }
+
+
+  /**
+   *
+   * @param programId
+   * @param dataBaseName
+   * @returns {Promise<any>}
+   */
+  getProgramRules(programId,dataBaseName){
+    let resource = "programProgramRules";
+    let attributeValue  = [programId];
+    let attributeKey = "programId";
+    return new Promise((resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(resource,attributeKey,attributeValue,dataBaseName).then((orgUnitsInProgram: any)=>{
+        resolve(orgUnitsInProgram);
+      },error=>{reject(error)});
+    });
+  }
+
+
+  /**
+   *
+   * @param programId
+   * @param dataBaseName
+   * @returns {Promise<any>}
+   */
+  getProgramRulesVariables(programId,dataBaseName){
+    let resource = "programProgramRuleVariables";
+    let attributeValue  = [programId];
+    let attributeKey = "programId";
+    return new Promise((resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(resource,attributeKey,attributeValue,dataBaseName).then((orgUnitsInProgram: any)=>{
+        resolve(orgUnitsInProgram);
+      },error=>{reject(error)});
+    });
+  }
+
+
+
+  /**
+   *
+   * @param programId
+   * @param dataBaseName
+   * @returns {Promise<any>}
+   */
+  getProgramIndicators(programId,dataBaseName){
+    let resource = "programIndicators";
+    let attributeValue  = [programId];
+    let attributeKey = "programId";
+    return new Promise((resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(resource,attributeKey,attributeValue,dataBaseName).then((orgUnitsInProgram: any)=>{
+        resolve(orgUnitsInProgram);
+      },error=>{reject(error)});
+    });
+  }
+
+
+
+
+
+  /**
+   *
+   * @param programId
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getProgramProgramTrackedEntityAttributes(programId,currentUser){
+    let attributeKey = "programId";
+    let attributeArray = [programId];
+    let resource = "programTrackedEntityAttributes";
+    return new Promise((resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(resource, attributeKey, attributeArray, currentUser.currentDatabase).then((programTrackedEntityAttributes: any) => {
+        resolve(programTrackedEntityAttributes);
+      }).catch(error => {
+      });
+    });
+  }
+
+  /**
+   *
+   * @param programTrackedEntityAttributeIds
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getTrackedEntityAttributes(programTrackedEntityAttributeIds,currentUser){
+    let attributeKey = "programTrackedEntityAttributeId";
+    let resource = "trackedEntityAttribute";
+    return new Promise((resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(resource, attributeKey, programTrackedEntityAttributeIds, currentUser.currentDatabase).then((trackedEntityAttributes: any) => {
+        resolve(trackedEntityAttributes);
+      }).catch(error => {
+        reject(error);
+      });
+    });
+  }
+
+
+
+
 
 
 

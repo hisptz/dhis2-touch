@@ -33,17 +33,17 @@
   </div>
 
   <div *ngIf="!loadingData">
-    <ion-card *ngIf="params" >
+    <div *ngIf="params" class="item-card">
       <div (tap)="navCtrl.pop()">
-        <ion-card-content *ngIf="params.orgUnitId">
+        <div *ngIf="params.orgUnitId">
           <p><b>Organisation Unit</b> : {{ params.orgUnitName }}</p>
           <p><b>Program</b> : {{ params.programName }}</p>
-        </ion-card-content>
+        </div>
       </div>
-    </ion-card>
+    </div>
 
-    <ion-card  *ngIf="event">
-      <ion-card-content *ngIf="event.event" (tap)="gotToEditEvent(event)">
+    <div  *ngIf="event" class="item-card">
+      <div *ngIf="event.event" (tap)="gotToEditEvent(event)" >
         <p><b>Incident date</b>&nbsp;&nbsp;:&nbsp;&nbsp;{{ event.eventDate }}</p>
         <div *ngFor="let dataValue of event.dataValues">
           <div *ngIf="dataElementMapper[dataValue.dataElement]">
@@ -57,8 +57,8 @@
           <span *ngIf="event.syncStatus == 'new event' || event.syncStatus == 'not synced'">Offline</span>
           <span *ngIf="!(event.syncStatus == 'new event' || event.syncStatus == 'not synced')">Online</span>
         </p>
-      </ion-card-content>
-    </ion-card>
+      </div>
+    </div>
   </div>
 
 
