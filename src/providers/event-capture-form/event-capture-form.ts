@@ -3,8 +3,6 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import {ProgramsProvider} from "../programs/programs";
 import {DataElementsProvider} from "../data-elements/data-elements";
-import {OrganisationUnitsProvider} from "../organisation-units/organisation-units";
-import {Observable} from "rxjs/Observable";
 
 /*
   Generated class for the EventCaptureFormProvider provider.
@@ -35,8 +33,7 @@ export class EventCaptureFormProvider {
 
 
 
-  constructor(public http: Http, public programsProvider:ProgramsProvider, public dataElementProvider:DataElementsProvider, public orgUnitProvider:OrganisationUnitsProvider,
-              public programProvider:ProgramsProvider) {
+  constructor(public http: Http, public programsProvider:ProgramsProvider, public dataElementProvider:DataElementsProvider) {
     this.programStageDataElementsMapper = {};
 
   }
@@ -150,7 +147,7 @@ export class EventCaptureFormProvider {
       })
 
 
-      this.programsProvider.getProgramsStagesDataElements(programId,currentUser).then((programStageDataElements:any)=>{
+      this.getProgramStages(programId,currentUser).then((programStageDataElements:any)=>{
 
 
          //alert("ProgStageDataElemenyt  :"+JSON.stringify(programStageDataElements));
@@ -250,7 +247,7 @@ export class EventCaptureFormProvider {
 
     usedDataElements.forEach((dataId: any) => {
 
-      this.programsProvider.getProgramsStagesDataElements(programId, currentUser).then((programStageDataElements: any) => {
+      this.programsProvider.getProgramsStages(programId, currentUser).then((programStageDataElements: any) => {
         //alert("ProgramStageDataElements :" + JSON.stringify(programStageDataElements));
 
         this.dataElementProvider.getDataElementsByName(dataId, currentUser).then((dataElement: any) => {
@@ -327,116 +324,68 @@ export class EventCaptureFormProvider {
   //------------------------------------------------------------------------------------------------------------------------------------
 
 
-  getProgamStagesData(programId, currentUser){
-
-    let usedDataElements = [];
-    let programStageElementGroup = [];
-    let programStage = [];
-
+  getProgramStages(programId, currentUser){
+    let dataElementIds = [];
+    let dataElementMapper = {};
      return new Promise((resolve, reject) =>  {
-       //rename
-      this.programsProvider.getProgramsStagesDataElements(programId,currentUser).then((programsStageDataElements:any)=>{
-
-        //loop on all stages
-        //obtain dataelement ids
-        //get data elemets
-        //merge program stage and data elements
-
+      this.programsProvider.getProgramsStages(programId,currentUser).then((programsStages:any)=>{
         //obtain section ids
         //programstage sections
         //merge program stage with program stage sections
 
-
-        alert("ProgramStages :"+JSON.stringify(programsStageDataElements))
-
-        programsStageDataElements.forEach((programStageDataElements:any)=>{
-
-          programStageDataElements.programStageDataElements.forEach((programStageDataElement)=>{
-            usedDataElements.push(programStageDataElement.dataElement.id)
-
-
-
-             // if(programStageDataElements.programStageDataElements.length == usedDataElements.length){
-               //usedDataElements = Array.from(new Set(usedDataElements));
-
-              // usedDataElements.forEach((dataId: any) => {
-
-               //this.dataElementMapper(programStageDataElement,dataElement);
-
-                // this.dataElementProvider.getBulkDataElementsByName(usedDataElements, currentUser).then((dataElement: any) => {
-
-
-                  programStageElementGroup.push({
-                    id: programStageDataElement.id ,
-                    displayInReports: programStageDataElement.displayInReports,
-                    compulsory: programStageDataElement.compulsory,
-                    allowProvidedElsewhere: programStageDataElement.allowProvidedElsewhere,
-                    allowFutureDate: programStageDataElement.allowFutureDate,
-                    // dataElement: dataElement
-                     dataElement: this.dataElementMapper(programStageDataElement, usedDataElements, currentUser)
-                  });
-
-                  alert("onMerge :"+JSON.stringify(programStageElementGroup))
-
-                  if(programStageElementGroup.length == usedDataElements.length){
-
-                    programStage.push({
-                      name: programStageDataElements.name,
-                      id: programStageDataElements.id.split("-")[1],
-                      sortOrder: programStageDataElements.sortOrder,
-                      programStageDataElements: programStageElementGroup
-                    })
-                    resolve(programStage);
-                  }
-
-                // });
-
-
-              // });
-
-            // }
-
+        programsStages.forEach((programsStage:any)=>{
+          programsStage.programStageDataElements.forEach((programStageDataElement)=>{
+            dataElementIds.push(programStageDataElement.dataElement.id);
           });
-
-
-        })
-
-
-
-      });
+        });
+        this.dataElementProvider.getDataElementsByIdsForEvents(dataElementIds,currentUser).then((dataElements : any)=>{
+          dataElements.forEach((dataElement : any)=>{
+            dataElementMapper[dataElement.id] = dataElement;
+          });
+          programsStages.forEach((programsStage:any)=>{
+            programsStage.programStageDataElements.forEach((programStageDataElement)=>{
+              let dataElementId = programStageDataElement.dataElement.id;
+              if(dataElementId && dataElementMapper[dataElementId]){
+                programStageDataElement.dataElement = dataElementMapper[dataElementId]
+              }
+            });
+          });
+          resolve(programsStages);
+        }).catch(error=>{reject(error)});
+      }).catch(error=>{reject(error)});
      });
 
   }
 
 
   dataElementMapper(programStageDataElement, usedDataElements, currentUser){
-    let stageObject = {};
-    let dataElementMerged = [];
-    let programStageElementGroup = [];
-
-
-     this.dataElementProvider.getBulkDataElementsByName(usedDataElements, currentUser).then((dataElements: any) => {
-
-      //alert("data :"+JSON.stringify( this.dataElementMapper(programStageDataElement,dataElement) ));
-
-      dataElements.forEach((dataElement:any)=>{
-
-        //stageObject = dataElement;
-
-        if(programStageDataElement.dataElement.id == dataElement.id){
-
-          stageObject = dataElement;
-
-        }
-
-      })
-
-
-     });
-
-
-
-    return stageObject;
+    // let stageObject = {};
+    // let dataElementMerged = [];
+    // let programStageElementGroup = [];
+    //
+    //
+    //  this.dataElementProvider.getBulkDataElementsByName(usedDataElements, currentUser).then((dataElements: any) => {
+    //
+    //   //alert("data :"+JSON.stringify( this.dataElementMapper(programStageDataElement,dataElement) ));
+    //
+    //   dataElements.forEach((dataElement:any)=>{
+    //
+    //     //stageObject = dataElement;
+    //
+    //     if(programStageDataElement.dataElement.id == dataElement.id){
+    //
+    //       stageObject = dataElement;
+    //
+    //     }
+    //
+    //   })
+    //
+    //
+    //  });
+    //
+    //
+    //
+    // return stageObject;
   }
 
 

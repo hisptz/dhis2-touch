@@ -42,22 +42,9 @@ export class EventCaptureForm implements OnInit{
 
   loaded:boolean = false;
   reportDateTag:any;
-  displayTag:any;
-
-  usedDataElements: any;
-  dataElementsInUse:any;
-  programTracked: any;
-  programOrgUnits:any;
   programRules:any;
   programRulesVariables:any;
-  programRulesIndicators:any;
-  programStageArrays:any;
   programStage:any;
-  programObject: any = { name:"", id:"", enrollmentDateLabel:"", programType:"", onlyEnrollOnce:"", completeEventsExpiryDays:"", ignoreOverdueEvents:"",
-    skipOffline:"",     selectIncidentDatesInFuture:"", incidentDateLabel:"",  withoutRegistration:"", captureCoordinates:"", displayFrontPageList:"",
-    useFirstStageDuringRegistration:"", categoryCombo: "", programRuleVariables:[], programTrackedEntityAttributes:[], attributeValues:[],
-    programIndicators:[], validationCriterias:[], programStages:[ ], translations:[], organisationUnits:[], programRules:[]
-  };
 
   //pagination controller
   public currentPage : number ;
@@ -79,40 +66,12 @@ export class EventCaptureForm implements OnInit{
     this.currentPage = 0;
     this.user.getCurrentUser().then(user=>{
       this.currentUser = user;
-
       this.event = true;
-      // this.eventProvider.getEventsFromStorageByStatus(user,"new event").then((events :any)=>{
-      //   this.eventProvider.uploadEventsToServer(events,this.currentUser).then((response)=>{
-      //     console.log("Uploading event : " + JSON.stringify(response));
-      //   },error=>{
-      //     console.log("Error on uploading event : " + JSON.stringify(error));
-      //   });
-      //   this.eventProvider.getEventsFromStorageByStatus(user,"not synced").then((events :any)=>{
-      //     this.eventProvider.uploadEventsToServer(events,this.currentUser).then((response)=>{
-      //       console.log("Uploading event : " + JSON.stringify(response));
-      //     },error=>{
-      //       console.log("Error on uploading event : " + JSON.stringify(error));
-      //     });
-      //   });
-      // });
-
-
       this.entryFormParameter = this.params.get("params");
-      if(this.entryFormParameter.programId){
-         // this.eventCaptureFormProvider.loadingprogramInfo(this.entryFormParameter.programId,this.currentUser);
-        //alert("ProgramId: "+this.entryFormParameter.selectedDataDimension)
-        //this.loadProgramMetadata(this.entryFormParameter.programId);
-        //this.loadingprogramInfo(this.entryFormParameter.programId ,this.currentUser);
-      }
-
       this.currentProgram = this.programsProvider.lastSelectedProgram;
       this.currentOrgUnit = this.organisationUnitProvider.lastSelectedOrgUnit;
       this.loadProgramMetadata();
-      //this.loadingprogramInfo(this.currentProgram ,this.currentUser);
-
-
     });
-
   }
 
   ionViewDidLoad() {
@@ -123,17 +82,10 @@ export class EventCaptureForm implements OnInit{
     this.loadingMessages = [];
     let programStageSections:any;
     this.setLoadingMessages("Loading program metadata");
-
-     //this.programStages = this.eventCaptureFormProvider.getProgramObject()
     this.loaded = false;
-
     this.initiateNewEvent(this.entryFormParameter,this.currentProgram);
-
-
-    this.eventCaptureFormProvider.getProgamStagesData(this.currentProgram.id, this.currentUser).then((programStage:any)=>{
-
-      alert("From service: "+JSON.stringify(programStage))
-
+    this.eventCaptureFormProvider.getProgramStages(this.currentProgram.id, this.currentUser).then((programStages:any)=>{
+      this.programStage = programStages;
     })
 
     // this.programsProvider.getProgramById(programId,this.currentUser).then((program : any)=>{

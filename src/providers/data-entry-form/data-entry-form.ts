@@ -80,7 +80,7 @@ export class DataEntryFormProvider {
       this.sectionProvider.getSectionByIds(sectionIds,currentUser).then((sections : any)=>{
         let count = 0;
         sections.forEach((section : any)=>{
-          this.dataElementProvider.getDataElementsByIds(section.dataElementIds,currentUser).then((dataElements:any)=>{
+          this.dataElementProvider.getDataElementsByIdsForDataEntry(section.dataElementIds,currentUser).then((dataElements:any)=>{
             section["dataElements"] = dataElements;
             count ++;
             if(count == sections.length){
@@ -109,7 +109,7 @@ export class DataEntryFormProvider {
   getDefaultEntryForm(dataSetId,appSettings,currentUser){
     return new Promise((resolve, reject)=> {
       this.dataSetProvider.getDataSetDataElements(dataSetId,currentUser).then((dataSetDatElements: any)=>{
-        this.dataElementProvider.getDataElementsByIds(dataSetDatElements,currentUser).then((dataElements:any)=>{
+        this.dataElementProvider.getDataElementsByIdsForDataEntry(dataSetDatElements,currentUser).then((dataElements:any)=>{
           let maxDataElements = (appSettings && appSettings.entryForm && appSettings.entryForm.maxDataElementOnDefaultForm) ? appSettings.entryForm.maxDataElementOnDefaultForm : 10;
           resolve(this.getDataElementSections(dataElements,maxDataElements));
         },error=>{reject(error)});

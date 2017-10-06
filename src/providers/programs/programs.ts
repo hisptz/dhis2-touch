@@ -559,17 +559,10 @@ export class ProgramsProvider {
   }
 
 
-  getProgramsStagesDataElements(programId, currentUser){
+  getProgramsStages(programId, currentUser){
     let resource = 'programProgramStages';
-
     let attribute = 'programId';
-    // let attribute = 'programStageDataElements';
     let attributeValue =[];
-
-    // programId.forEach((program:any)=>{
-    //     attributeValue.push(program);
-    //  })
-
     attributeValue.push(programId);
     return new Promise((resolve, reject)=> {
       this.sqlLite.getDataFromTableByAttributes(resource,attribute,attributeValue,currentUser.currentDatabase).then((programs:any)=>{
@@ -578,8 +571,6 @@ export class ProgramsProvider {
         reject();
       });
     });
-
-
   }
 
   getProgramstrackedEntityAttribute(programId, currentUser){
