@@ -1,0 +1,38 @@
+page-event-capture-form {
+  .event-capture-form {
+    background-color: #FFFFFF;
+  }
+
+  .entryFormContainer{
+    box-shadow: 2px 2px 3px  #888888;
+    padding: 4px;
+  }
+  .sectionHeader{
+    padding-top : 0px;
+    padding-bottom: 0px;
+    color: #387ef5;
+    text-align: center;
+  }
+
+  .required{
+    color: #ff252f;
+  }
+
+  .item-md,.item-ios,.item .item-block .item-md .item-input,.item-inner,.input-wrapper .item-inner{
+    background-color: #FFFFFF;
+  }
+  .item-md,.item-ios{
+    border: 1px solid #E6E6E7;
+    border-radius: 0.5rem;
+  }
+
+  .item-md.item-block .item-inner {
+    padding-right: 5px;
+    border-bottom: 0px solid #dedede;
+  }
+
+  .item-ios.item-block .item-inner {
+    padding-right: 5px;
+    border-bottom: 0px solid #dedede;
+  }
+}
