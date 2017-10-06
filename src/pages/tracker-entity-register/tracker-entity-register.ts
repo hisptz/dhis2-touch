@@ -46,6 +46,7 @@ export class TrackerEntityRegisterPage implements OnInit{
   }
 
   ngOnInit(){
+    this.isFormReady = false;
     this.loadingMessage = "Loading user information";
     this.isLoading = true;
     this.isRegistrationProcessingRunning  = false;

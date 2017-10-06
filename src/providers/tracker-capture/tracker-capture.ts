@@ -157,11 +157,11 @@ export class TrackerCaptureProvider {
                 }
               });
             }
+            resolve(trackedEntityInstances.reverse());
           }).catch(error=>{
             reject({message : error});
           });
-          //@todo resolve to most recent top or other way round
-          resolve(trackedEntityInstances.reverse());
+
         }).catch(error=>{
           reject({message : error});
         });
