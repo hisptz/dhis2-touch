@@ -34,6 +34,7 @@ export class TrackerCapturePage implements OnInit{
   programs : Array<any>;
   trackedEntityInstances : Array<any>;
   programTrackedEntityAttributes : Array<any>;
+  attributeToDisplay : any;
   icons : any = {};
 
   constructor(public navCtrl: NavController,private modalCtrl : ModalController,
@@ -54,6 +55,7 @@ export class TrackerCapturePage implements OnInit{
     this.icons.orgUnit = "assets/data-entry/orgUnit.png";
     this.icons.program = "assets/event-capture/program.png";
     this.trackedEntityInstances = [];
+    this.attributeToDisplay = {};
     this.loadingMessage = "Loading. user information";
     this.isLoading = true;
     this.isFormReady = false;
@@ -127,6 +129,14 @@ export class TrackerCapturePage implements OnInit{
     this.isLoading = false;
     this.loadingMessage = "";
     if(this.isFormReady){
+      if(this.programTrackedEntityAttributes && this.programTrackedEntityAttributes.length > 0){
+        this.programTrackedEntityAttributes.forEach((programTrackedEntityAttribute : any)=>{
+          if(programTrackedEntityAttribute.displayInList){
+            let attribute = programTrackedEntityAttribute.trackedEntityAttribute;
+            this.attributeToDisplay[attribute.id] = attribute.name;
+          }
+        });
+      }
       this.loadingSavedTrackedEntityInstances(this.selectedProgram.id,this.selectedOrgUnit.id);
     }else{
       this.trackedEntityInstances = [];
@@ -183,6 +193,8 @@ export class TrackerCapturePage implements OnInit{
     });
   }
 
+
+
   isAllParameterSelected(){
     let result = false;
     if(this.selectedProgram && this.selectedProgram.name){
@@ -193,8 +205,17 @@ export class TrackerCapturePage implements OnInit{
   }
 
   hideAndShowColumns(fab : FabContainer){
-    fab.close();
-    this.appProvider.setNormalNotification("hide and show column coming soon!!");
+    let modal = this.modalCtrl.create('TrackerHideShowColumnPage',{attributeToDisplay :this.attributeToDisplay,programTrackedEntityAttributes : this.programTrackedEntityAttributes});
+    modal.onDidDismiss((attributeToDisplay:any)=>{
+      if(attributeToDisplay){
+      }
+    });
+    modal.present().then(()=>{
+      console.log("here we are");
+      fab.close();
+    }).catch(error=>{
+      console.log(JSON.stringify(error));
+    });
   }
 
   registerNewTrackedEntity(fab : FabContainer){

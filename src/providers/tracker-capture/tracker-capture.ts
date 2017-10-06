@@ -39,6 +39,7 @@ export class TrackerCaptureProvider {
               programTrackedEntityAttributeIds.push(programTrackedEntityAttribute.id);
               delete programTrackedEntityAttribute.programId;
               programTrackedEntityAttribute.mandatory = JSON.parse(programTrackedEntityAttribute.mandatory);
+              programTrackedEntityAttribute.displayInList = JSON.parse(programTrackedEntityAttribute.displayInList);
               programTrackedEntityAttribute.externalAccess = JSON.parse(programTrackedEntityAttribute.externalAccess);
               programTrackedEntityAttributes.push(programTrackedEntityAttribute);
             }
