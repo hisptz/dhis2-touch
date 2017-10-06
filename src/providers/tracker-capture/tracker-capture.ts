@@ -82,7 +82,7 @@ export class TrackerCaptureProvider {
     return new Promise( (resolve, reject)=> {
       if(currentOrgUnit && currentOrgUnit.id && currentProgram && currentProgram.id){
         let trackedEntityId = currentProgram.trackedEntity.id;
-        this.trackedEntityInstancesProvider.savingTrackedEntityInstances(trackedEntityId,currentOrgUnit.id,currentUser,syncStatus).then((trackedEntityInstanceObject : any)=>{
+        this.trackedEntityInstancesProvider.savingTrackedEntityInstances(trackedEntityId,currentOrgUnit.id,currentOrgUnit.name,currentUser,syncStatus).then((trackedEntityInstanceObject : any)=>{
           this.enrollmentsProvider .savingEnrollments(trackedEntityId,currentOrgUnit.id,currentOrgUnit.name,currentProgram.id,enrollmentDate,incidentDate,trackedEntityInstanceObject.trackedEntityInstance,currentUser,syncStatus).then((enrollmentObject : any)=>{
             this.trackedEntityAttributeValuesProvider.savingTrackedEntityAttributeValues(trackedEntityInstanceObject.trackedEntityInstance,trackedEntityAttributeValues,currentUser).then(()=>{
               resolve({trackedEntityInstance : trackedEntityInstanceObject,enrollment : enrollmentObject});
@@ -157,8 +157,11 @@ export class TrackerCaptureProvider {
                 }
               });
             }
-          }).catch(error=>{});
-          resolve({enrollments : enrollments, trackedEntityInstances : trackedEntityInstances});
+          }).catch(error=>{
+            reject({message : error});
+          });
+          //@todo resolve to most recent top or other way round
+          resolve(trackedEntityInstances.reverse());
         }).catch(error=>{
           reject({message : error});
         });

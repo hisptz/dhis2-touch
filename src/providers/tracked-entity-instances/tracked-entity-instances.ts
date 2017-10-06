@@ -27,7 +27,7 @@ export class TrackedEntityInstancesProvider {
    * @param trackedEntityInstance
    * @returns {Promise<any>}
    */
-  savingTrackedEntityInstances(trackedEntityId,orgUnitId,currentUser,syncStatus,trackedEntityInstance?){
+  savingTrackedEntityInstances(trackedEntityId,orgUnitId,orgUnitName,currentUser,syncStatus,trackedEntityInstance?){
     if(!trackedEntityInstance){
       trackedEntityInstance = dhis2.util.uid();
     }
@@ -38,6 +38,7 @@ export class TrackedEntityInstancesProvider {
       "id" : trackedEntityInstance,
       "trackedEntity": trackedEntityId,
       "orgUnit": orgUnitId,
+      "orgUnitName" : orgUnitName,
       "trackedEntityInstance": trackedEntityInstance,
       "deleted": false,
       "inactive": false,

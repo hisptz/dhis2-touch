@@ -133,7 +133,7 @@ export class TrackerEntityRegisterPage implements OnInit{
     this.trackerCaptureProvider.saveTrackedEntityRegistration(this.incidentDate,this.enrollmentDate,trackedEntityAttributeValues,this.currentUser).then((reseponse : any)=>{
       this.isRegistrationProcessingRunning = false;
       this.navCtrl.pop().then(()=>{
-        this.appProvider.setNormalNotification("You have successfully register a new case");
+        this.appProvider.setNormalNotification("Registration has been completed");
       }).catch(error=>{
         console.log(JSON.stringify(error))
       });
