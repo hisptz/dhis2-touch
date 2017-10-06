@@ -28,6 +28,7 @@ export class TrackerEntityRegisterPage implements OnInit{
   registrationContents : Array<any>;
   isRegistrationContentOpen : any = {};
   isLoading : boolean;
+  isRegistrationProcessingRunning : boolean;
   loadingMessage : string;
 
   incidentDate : any;
@@ -47,6 +48,7 @@ export class TrackerEntityRegisterPage implements OnInit{
   ngOnInit(){
     this.loadingMessage = "Loading user information";
     this.isLoading = true;
+    this.isRegistrationProcessingRunning  = false;
     let today = ((new Date()).toISOString()).split('T')[0];
     this.dataObject = {};
     this.trackedEntityAttributeValuesObject = {};
@@ -121,19 +123,25 @@ export class TrackerEntityRegisterPage implements OnInit{
   }
 
   registerEntity(){
+    this.isRegistrationProcessingRunning = true;
     let trackedEntityAttributeValues = [];
     Object.keys(this.trackedEntityAttributeValuesObject).forEach(key=>{
       trackedEntityAttributeValues.push({
         value : this.trackedEntityAttributeValuesObject[key],attribute : key
       })
     });
-
     this.trackerCaptureProvider.saveTrackedEntityRegistration(this.incidentDate,this.enrollmentDate,trackedEntityAttributeValues,this.currentUser).then((reseponse : any)=>{
-
+      this.isRegistrationProcessingRunning = false;
+      this.navCtrl.pop().then(()=>{
+        this.appProvider.setNormalNotification("You have successfully register a new case");
+      }).catch(error=>{
+        console.log(JSON.stringify(error))
+      });
     }).catch(error=>{
-
+      this.isRegistrationProcessingRunning = false;
+      this.appProvider.setNormalNotification("Fail to register a new case");
+      console.log(JSON.stringify(error));
     });
-    //this.cancelRegistration();
   }
 
   cancelRegistration(){

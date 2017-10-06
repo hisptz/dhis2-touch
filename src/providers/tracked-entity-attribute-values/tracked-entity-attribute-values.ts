@@ -27,13 +27,11 @@ export class TrackedEntityAttributeValuesProvider {
       });
     });
     return new Promise( (resolve, reject)=> {
-      console.log("savingTrackedEntityAttributeValues : " + JSON.stringify(payLoad));
-      resolve();
-      // this.sqlLite.insertBulkDataOnTable(this.resource,payLoad,currentUser.currentDatabase).then(()=>{
-      //   resolve();
-      // }).catch(error=>{
-      //   reject(error);
-      // });
+      this.sqlLite.insertBulkDataOnTable(this.resource,payLoad,currentUser.currentDatabase).then(()=>{
+        resolve();
+      }).catch(error=>{
+        reject(error);
+      });
     });
 
   }

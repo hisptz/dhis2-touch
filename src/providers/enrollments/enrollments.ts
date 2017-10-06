@@ -37,13 +37,11 @@ export class EnrollmentsProvider {
       "syncStatus": syncStatus
     };
     return new Promise( (resolve, reject)=> {
-      console.log("savingEnrollments : " + JSON.stringify(payLoad));
-      resolve();
-      // this.sqlLite.insertBulkDataOnTable(this.resource,[payLoad],currentUser.currentDatabase).then(()=>{
-      //   resolve(payLoad);
-      // }).catch(error=>{
-      //   reject(error);
-      // });
+      this.sqlLite.insertBulkDataOnTable(this.resource,[payLoad],currentUser.currentDatabase).then(()=>{
+        resolve(payLoad);
+      }).catch(error=>{
+        reject(error);
+      });
     });
   }
 

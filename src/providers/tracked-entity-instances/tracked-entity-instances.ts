@@ -36,13 +36,11 @@ export class TrackedEntityInstancesProvider {
       "syncStatus": syncStatus
     };
     return new Promise( (resolve, reject)=> {
-      console.log("savingTrackedEntityInstances : " + JSON.stringify(payLoad));
-      resolve(payLoad);
-      // this.sqlLite.insertBulkDataOnTable(this.resource,[payLoad],currentUser.currentDatabase).then(()=>{
-      //   resolve(payLoad);
-      // }).catch(error=>{
-      //   reject(error);
-      // });
+      this.sqlLite.insertBulkDataOnTable(this.resource,[payLoad],currentUser.currentDatabase).then(()=>{
+        resolve(payLoad);
+      }).catch(error=>{
+        reject(error);
+      });
     });
   }
 

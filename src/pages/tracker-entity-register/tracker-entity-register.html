@@ -75,16 +75,23 @@
       </div>
       <ion-row>
         <ion-col>
-          <button  color="primary" [disabled] = "!isFormReady" round ion-button full (tap)="registerEntity()">
+          <button  color="primary" [disabled] = "!isFormReady || isRegistrationProcessingRunning" round ion-button full (tap)="registerEntity()">
             Register
           </button>
         </ion-col>
         <ion-col>
-          <button  color="danger" round ion-button full (tap)="cancelRegistration()">
+          <button  color="danger" [disabled]="isRegistrationProcessingRunning" round ion-button full (tap)="cancelRegistration()">
             Cancel
           </button>
         </ion-col>
       </ion-row>
+      <div class="item-card" *ngIf="isRegistrationProcessingRunning">
+        <ion-row>
+          <ion-col col-1 ><page-loading loadingSize="small"></page-loading></ion-col>
+          <ion-col col-11><p>&nbsp;Please wait ...</p></ion-col>
+        </ion-row>
+      </div>
+
     </div>
   </ion-grid>
 </ion-content>
