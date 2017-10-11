@@ -202,7 +202,7 @@ export class TrackerCapturePage implements OnInit{
     return result;
   }
 
-  hideAndShowColumns(fab : FabContainer){
+  hideAndShowColumns(){
     let modal = this.modalCtrl.create('TrackerHideShowColumnPage',{attributeToDisplay :this.attributeToDisplay,programTrackedEntityAttributes : this.programTrackedEntityAttributes});
     modal.onDidDismiss((attributeToDisplay : any)=>{
       if(attributeToDisplay){
@@ -210,14 +210,12 @@ export class TrackerCapturePage implements OnInit{
       }
     });
     modal.present().then((attributeToDisplay)=>{
-      fab.close();
     }).catch(error=>{
       console.log(JSON.stringify(error));
     });
   }
 
-  registerNewTrackedEntity(fab : FabContainer){
-    fab.close();
+  registerNewTrackedEntity(){
     this.navCtrl.push("TrackerEntityRegisterPage",{});
   }
 
