@@ -47,7 +47,6 @@ export class TrackerCapturePage implements OnInit{
 
   ionViewDidEnter() {
     if(this.isFormReady){
-      console.log("Refreshing list");
       this.loadingSavedTrackedEntityInstances(this.selectedProgram.id,this.selectedOrgUnit.id);
     }
   }
@@ -130,6 +129,7 @@ export class TrackerCapturePage implements OnInit{
     this.isLoading = false;
     this.loadingMessage = "";
     if(this.isFormReady){
+      this.attributeToDisplay = {};
       if(this.programTrackedEntityAttributes && this.programTrackedEntityAttributes.length > 0){
         this.programTrackedEntityAttributes.forEach((programTrackedEntityAttribute : any)=>{
           if(programTrackedEntityAttribute.displayInList){
