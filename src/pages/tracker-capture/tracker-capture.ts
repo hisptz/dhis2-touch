@@ -34,6 +34,7 @@ export class TrackerCapturePage implements OnInit{
   programs : Array<any>;
   trackedEntityInstances : Array<any>;
   programTrackedEntityAttributes : Array<any>;
+  trackedEntityInstancesIds : Array<string>;
   attributeToDisplay : any;
   icons : any = {};
   tableLayout : any;
@@ -205,8 +206,9 @@ export class TrackerCapturePage implements OnInit{
 
   renderDataAsTable(){
     this.loadingMessage = "Prepare table";
-    this.trackerCaptureProvider.getTableFormatResult(this.attributeToDisplay,this.trackedEntityInstances).then((table : any)=>{
-      this.tableLayout = table;
+    this.trackerCaptureProvider.getTableFormatResult(this.attributeToDisplay,this.trackedEntityInstances).then((response : any)=>{
+      this.tableLayout = response.table;
+      this.trackedEntityInstancesIds = response.trackedEntityInstancesIds;
       this.isLoading = false;
     }).catch(error=>{
       this.isLoading = false;
@@ -230,6 +232,11 @@ export class TrackerCapturePage implements OnInit{
 
   registerNewTrackedEntity(){
     this.navCtrl.push("TrackerEntityRegisterPage",{});
+  }
+
+  openTrackedEntityDashboard(currentIndex){
+    let trackedEntityInstancesId = this.trackedEntityInstancesIds[currentIndex];
+    this.navCtrl.push("TrackedEntityDashboardPage",{trackedEntityInstancesId : trackedEntityInstancesId});
   }
 
 }

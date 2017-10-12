@@ -53,6 +53,7 @@ export class EnrollmentsProvider {
     };
     let payLoads = [];
     payLoads.push(payLoad);
+    console.log(JSON.stringify(payLoads));
     return new Promise( (resolve, reject)=> {
       this.sqlLite.insertBulkDataOnTable(this.resource,payLoads,currentUser.currentDatabase).then(()=>{
         resolve(payLoad);

@@ -113,7 +113,9 @@ export class TrackerCaptureProvider {
     Object.keys(attributeToDisplay).forEach(key=>{
       table.headers.push(attributeToDisplay[key]);
     });
-    this.getAttributesMapperForDisplay(trackedEntityInstances).forEach((attributeMapper: any)=>{
+    let mapperArray = this.getAttributesMapperForDisplay(trackedEntityInstances).mapper;
+    let trackedEntityInstancesIds = this.getAttributesMapperForDisplay(trackedEntityInstances).trackedEntityInstancesIds;
+    mapperArray.forEach((attributeMapper: any)=>{
       let row = [];
       Object.keys(attributeToDisplay).forEach(key=>{
         if(attributeMapper[key]){
@@ -125,12 +127,18 @@ export class TrackerCaptureProvider {
       table.rows.push(row);
     });
     return new Promise( (resolve, reject)=> {
-      resolve(table);
+      resolve({table : table,trackedEntityInstancesIds : trackedEntityInstancesIds});
     });
   }
 
+  /**
+   *
+   * @param trackedEntityInstances
+   * @returns {{mapper: Array; trackedEntityInstancesIds: Array}}
+   */
   getAttributesMapperForDisplay(trackedEntityInstances){
-    let result = [];
+    let mapper = [];
+    let trackedEntityInstancesIds = [];
     trackedEntityInstances.forEach((trackedEntityInstance : any)=>{
       if(trackedEntityInstance.attributes){
         let attributeMapper = {};
@@ -138,11 +146,12 @@ export class TrackerCaptureProvider {
           attributeMapper[attributeObject.attribute] = attributeObject.value;
         });
         if(trackedEntityInstance.attributes.length > 0){
-          result.push(attributeMapper);
+          mapper.push(attributeMapper);
+          trackedEntityInstancesIds.push(trackedEntityInstance.id);
         }
       }
     });
-    return result;
+    return {mapper : mapper,trackedEntityInstancesIds: trackedEntityInstancesIds};
   }
 
   /**
