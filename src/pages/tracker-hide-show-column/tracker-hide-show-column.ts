@@ -52,6 +52,9 @@ export class TrackerHideShowColumnPage implements OnInit{
         attributeToDisplay[trackedEntityAttribute.id] = trackedEntityAttribute.name;
       }
     });
+    if(Object.keys(attributeToDisplay).length == 0 && this.trackedEntityAttributes.length > 0){
+      attributeToDisplay[this.trackedEntityAttributes[0].id] = this.trackedEntityAttributes[0].name;
+    }
     this.viewCtrl.dismiss(attributeToDisplay);
   }
 

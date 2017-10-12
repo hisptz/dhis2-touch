@@ -109,15 +109,40 @@ export class TrackerCaptureProvider {
    * @returns {Promise<any>}
    */
   getTableFormatResult(attributeToDisplay,trackedEntityInstances){
-    console.log(JSON.stringify(attributeToDisplay));
-    console.log(JSON.stringify(trackedEntityInstances));
-    let table = {header : [],rows : []};
+    let table = {headers : [],rows : []};
     Object.keys(attributeToDisplay).forEach(key=>{
-      table.header.push(attributeToDisplay[key]);
+      table.headers.push(attributeToDisplay[key]);
+    });
+    this.getAttributesMapperForDisplay(trackedEntityInstances).forEach((attributeMapper: any)=>{
+      let row = [];
+      Object.keys(attributeToDisplay).forEach(key=>{
+        if(attributeMapper[key]){
+          row.push(attributeMapper[key]);
+        }else{
+          row.push("");
+        }
+      });
+      table.rows.push(row);
     });
     return new Promise( (resolve, reject)=> {
       resolve(table);
     });
+  }
+
+  getAttributesMapperForDisplay(trackedEntityInstances){
+    let result = [];
+    trackedEntityInstances.forEach((trackedEntityInstance : any)=>{
+      if(trackedEntityInstance.attributes){
+        let attributeMapper = {};
+        trackedEntityInstance.attributes.forEach((attributeObject : any)=>{
+          attributeMapper[attributeObject.attribute] = attributeObject.value;
+        });
+        if(trackedEntityInstance.attributes.length > 0){
+          result.push(attributeMapper);
+        }
+      }
+    });
+    return result;
   }
 
   /**
