@@ -104,6 +104,24 @@ export class TrackerCaptureProvider {
 
   /**
    *
+   * @param attributeToDisplay
+   * @param trackedEntityInstances
+   * @returns {Promise<any>}
+   */
+  getTableFormatResult(attributeToDisplay,trackedEntityInstances){
+    console.log(JSON.stringify(attributeToDisplay));
+    console.log(JSON.stringify(trackedEntityInstances));
+    let table = {header : [],rows : []};
+    Object.keys(attributeToDisplay).forEach(key=>{
+      table.header.push(attributeToDisplay[key]);
+    });
+    return new Promise( (resolve, reject)=> {
+      resolve(table);
+    });
+  }
+
+  /**
+   *
    * @param programTrackedEntityAttributes
    * @param trackedEntityAttributes
    * @returns {Array}

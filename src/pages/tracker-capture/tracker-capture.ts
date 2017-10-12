@@ -36,6 +36,7 @@ export class TrackerCapturePage implements OnInit{
   programTrackedEntityAttributes : Array<any>;
   attributeToDisplay : any;
   icons : any = {};
+  tableLayout : any;
 
   constructor(public navCtrl: NavController,private modalCtrl : ModalController,
               private userProvider : UserProvider,private appProvider : AppProvider,
@@ -185,7 +186,7 @@ export class TrackerCapturePage implements OnInit{
     this.loadingMessage = "Loading tracked entity list";
     this.trackerCaptureProvider.loadTrackedEntityInstancesList(programId,orgUnitId,this.currentUser).then((trackedEntityInstances : any)=>{
       this.trackedEntityInstances = trackedEntityInstances;
-      this.isLoading = false;
+      this.renderDataAsTable();
     }).catch(error=>{
       console.log(JSON.stringify(error));
       this.isLoading = false;
@@ -202,11 +203,23 @@ export class TrackerCapturePage implements OnInit{
     return result;
   }
 
+  renderDataAsTable(){
+    this.loadingMessage = "Prepare table";
+    this.trackerCaptureProvider.getTableFormatResult(this.attributeToDisplay,this.trackedEntityInstances).then((table : any)=>{
+      this.tableLayout = table;
+      this.isLoading = false;
+    }).catch(error=>{
+      this.isLoading = false;
+      this.appProvider.setNormalNotification("Fail to prepare table for display");
+    });
+  }
+
   hideAndShowColumns(){
     let modal = this.modalCtrl.create('TrackerHideShowColumnPage',{attributeToDisplay :this.attributeToDisplay,programTrackedEntityAttributes : this.programTrackedEntityAttributes});
     modal.onDidDismiss((attributeToDisplay : any)=>{
       if(attributeToDisplay){
         this.attributeToDisplay = attributeToDisplay;
+        this.renderDataAsTable();
       }
     });
     modal.present().then((attributeToDisplay)=>{

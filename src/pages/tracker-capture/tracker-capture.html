@@ -24,41 +24,29 @@
           <img  class="side-menu-icon" [src]="icons.program"/>&nbsp;&nbsp;
           {{ programLabel }}
         </div>
+        <div *ngIf = "isFormReady" >
+          <div class="item-card" (click)="hideAndShowColumns()" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
+            <ion-icon name="ios-eye" color="icon-color"></ion-icon>
+            Columns
+          </div>
+          <div class="item-card" (click)="registerNewTrackedEntity()" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
+            <ion-icon name="add" color="icon-color"></ion-icon>
+            Add
+          </div>
+        </div>
       </ion-col>
     </ion-row>
 
-    <div *ngIf = "isFormReady">
-      <div >
-        <div class="item-card" (click)="hideAndShowColumns()" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
-          <ion-icon name="ios-eye" color="icon-color"></ion-icon>
-          Columns
-        </div>
-        <div class="item-card" (click)="registerNewTrackedEntity()" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
-          <ion-icon name="add" color="icon-color"></ion-icon>
-          Add
-        </div>
-      </div>
-
+    <div *ngIf = "isFormReady" >
 
       <div *ngIf="isLoading">
         <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage" ></page-loading>
       </div>
       <div *ngIf="!isLoading">
-        attributeToDisplay : {{ attributeToDisplay | json }}<br><br>
-        trackedEntityInstances : {{ trackedEntityInstances |json }}
+        tableLayout :: {{ tableLayout|json }}
       </div>
 
 
     </div>
   </ion-grid>
 </ion-content>
-
-<!--<ion-footer>-->
-  <!--<ion-fab bottom right #fab>-->
-    <!--<button ion-fab ><ion-icon name="md-more"  ></ion-icon></button>-->
-    <!--<ion-fab-list side="top">-->
-      <!--<button ion-fab (click)="hideAndShowColumns(fab)" color="primary"><ion-icon name="ios-eye" ></ion-icon></button>-->
-      <!--<button ion-fab (click)="registerNewTrackedEntity(fab)" color="primary"><ion-icon name="add" ></ion-icon></button>-->
-    <!--</ion-fab-list>-->
-  <!--</ion-fab>-->
-<!--</ion-footer>-->
