@@ -35,12 +35,13 @@
         "@types/leaflet": "^1.0.67",
         "@types/leaflet.markercluster": "^1.0.0",
         "angular-file-saver": "^1.1.3",
-        "cordova-android": "^6.2.3",
+        "cordova-android": "^6.3.0",
         "cordova-ios": "^4.4.0",
+        "cordova-plugin-advanced-http": "^1.6.1",
         "cordova-plugin-app-version": "^0.1.9",
         "cordova-plugin-background-mode": "^0.7.2",
-        "cordova-plugin-compat": "^1.1.0",
-        "cordova-plugin-console": "^1.0.7",
+        "cordova-plugin-compat": "^1.2.0",
+        "cordova-plugin-console": "^1.1.0",
         "cordova-plugin-device": "^1.1.6",
         "cordova-plugin-file": "^4.3.3",
         "cordova-plugin-http": "^1.2.0",
@@ -48,6 +49,7 @@
         "cordova-plugin-splashscreen": "^4.0.3",
         "cordova-plugin-statusbar": "^2.2.3",
         "cordova-plugin-whitelist": "^1.3.2",
+        "cordova-sms-plugin": "^0.1.11",
         "cordova-sqlite-storage": "^2.0.4",
         "file-saver": "^1.3.3",
         "geojson-validation": "^0.1.6",
@@ -60,8 +62,7 @@
         "leaflet.markercluster": "^1.0.6",
         "rxjs": "5.4.0",
         "sw-toolbox": "3.6.0",
-        "zone.js": "0.8.12",
-        "cordova-sms-plugin": "~0.1.11"
+        "zone.js": "0.8.12"
     },
     "devDependencies": {
         "@ionic/app-scripts": "2.1.3",
@@ -82,7 +83,8 @@
             "cordova-plugin-whitelist": {},
             "cordova-sqlite-storage": {},
             "ionic-plugin-keyboard": {},
-            "cordova-sms-plugin": {}
+            "cordova-sms-plugin": {},
+            "cordova-plugin-advanced-http": {}
         },
         "platforms": [
             "android",
