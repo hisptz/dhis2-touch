@@ -12,7 +12,6 @@
 
 </ion-header>
 
-
 <ion-content >
   <ion-grid>
     <ion-row>
@@ -28,7 +27,7 @@
         <div *ngIf="programCategoryCombo && programCategoryCombo.id ">
           <div *ngIf="isProgramDimensionApplicable">
             <div *ngFor="let category of programCategoryCombo.categories;let categoryIndex = index">
-              <div (tap)="openDataDimensionSelection(category)" padding-top padding-bottom class="item-card" color="font-color" full text-center text-wrap  >
+              <div (tap)="openDataDimensionSelection(category)" class="item-card-category" color="font-color" full text-center text-wrap  >
                 <div style="padding-bottom: 5px;"><b>{{ category.name }}</b></div>
                 <div *ngIf="selectedDataDimension[categoryIndex]">{{ selectedDataDimension[categoryIndex].name }}</div>
                 <div *ngIf="!selectedDataDimension[categoryIndex]">Touch to select option</div>
@@ -39,45 +38,13 @@
             <warning [warningMessage]="programDimensionNotApplicableMessage" ></warning>
           </div>
         </div>
-
-
       </ion-col>
     </ion-row>
-
-    <ion-row>
-      <ion-col>
-
-        <!-- display events as table -->
-        <div style="overflow-x: auto">
-          <table *ngIf="tableFormat && !showEmptyList" width="100%">
-            <thead>
-            <tr>
-              <th *ngFor="let header of tableFormat.header">{{header.name}}</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let row of tableFormat.rows" (tap)="goToEventView(row)" >
-              <td *ngFor="let column of row.data">{{column}} </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </ion-col>
-
-    </ion-row>
-
-    <!--<div *ngIf = "isFormReady">-->
-    <!--isFormReady : {{ isFormReady }}<br>-->
-    <!--getDataDimensions : {{ getDataDimensions()|json }}-->
-    <!--</div>-->
   </ion-grid>
-
 
   <div *ngIf = "showEmptyList">
     <empty-list-notification [emptyListMessage]="'There are no events to display'"></empty-list-notification>
   </div>
-
-
 
   <ion-fab bottom right #fab>
     <button ion-fab><ion-icon name="md-more"  ></ion-icon></button>
@@ -86,7 +53,5 @@
       <button ion-fab color="primary" (tap)="goToEventRegister(fab)" ><ion-icon name="add"  ></ion-icon></button>
     </ion-fab-list>
   </ion-fab>
-
-
 
 </ion-content>

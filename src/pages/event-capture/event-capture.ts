@@ -24,7 +24,6 @@ import {EventCaptureFormProvider} from "../../providers/event-capture-form/event
 })
 export class EventCapturePage implements OnInit {
 
-
   selectedOrgUnit: any;
   selectedProgram: any;
   currentUser: any;
@@ -40,47 +39,7 @@ export class EventCapturePage implements OnInit {
   selectedDataDimension: Array<any>;
   programs: Array<any>;
   icons: any = {};
-  loadingData:boolean = false;
-  tableFormat: any;
-
-
-
-  attibCc:any;
-  attribCos:any;
-
-
-  programNamesByUserRoles: any;
-  currentEvents: any;
-  eventListSections: any;
-  isAllParameterSet: boolean;
   showEmptyList: boolean = false;
-  selectedOrgUnitId: any;
-  selectedProgramStages: any;
-  table: any;
-  assignedPrograms: any;
-  selectedProgramId: any;
-  selectedProgramCatCombo: any;
-  assignedProgramCategoryOptions: any;
-  programInfo: any;
-  //dataOnEvents: any;
-  CategoryOptionLabel: any;
-  programLoading: boolean = false;
-  hasOptions: boolean = false;
-  eventsData: any;
-  rowData: any;
-  tableFormatHeader: any;
-  tableFormatRow: any;
-  usedDataElements: any;
-  selectionList: any = {};
-  programStageDataElements: any;
-  currentAvailableEvents: any;
-  currentAvailableOnEvents: any;
-
-  currentPeriodOffset: any;
-  selectedOption: any;
-  selectedPeriod: any;
-  userRoleData: any;
-  network: any;
 
   constructor(private navCtrl: NavController, private userProvider: UserProvider, private modalCtrl: ModalController,
               private organisationUnitsProvider: OrganisationUnitsProvider, private programsProvider: ProgramsProvider, private appProvider: AppProvider,
@@ -95,8 +54,7 @@ export class EventCapturePage implements OnInit {
     this.selectedDataDimension = [];
     this.programIdsByUserRoles = [];
     this.programs = [];
-    this.currentEvents = [];
-    this.loadingMessage = "Loading. user information";
+    this.loadingMessage = "Loading user information";
     this.isLoading = true;
     this.isFormReady = false;
     this.isProgramDimensionApplicable = false;
@@ -230,8 +188,6 @@ export class EventCapturePage implements OnInit {
           attributeCos += ";" + dimension.id;
         }
       });
-      this.attibCc = attributeCc;
-      this.attribCos = attributeCos;
       return {attributeCc : attributeCc,attributeCos:attributeCos};
     }else{
       return {};
@@ -278,130 +234,12 @@ export class EventCapturePage implements OnInit {
       this.selectedDataDimension = [];
       this.programCategoryCombo = programCategoryCombo;
       this.updateEventCaptureSelections();
-      this.loadEventsToDisplay();
     }
-
   }
 
 
-  loadEventsToDisplay() {
-    this.loadingData = true;
-    //this.dataOnEvents = [];
-    this.usedDataElements = [];
-    let currentEventsProgramsStage = [];
+  hideAndShowColumns() {
 
-    //this.eventCaptureFormProvider.loadingprogramInfo(this.selectedProgram.id,this.currentUser);
-
-    this.eventProvider.downloadEventsFromServer(this.selectedOrgUnit, this.selectedProgram, this.currentUser).then((eventsData: any) => {
-      // this.eventProvider.loadEventsFromServer(this.selectedOrgUnit, this.selectedProgram, this.selectedProgram.categoryCombo.id, this.attibCc, this.attribCos,this.currentUser).then((eventsData: any) => {
-      let eventDataValues: any;
-
-      // alert("EventsData : "+JSON.stringify(eventsData))
-
-      eventsData.events.forEach((event: any) => {
-        currentEventsProgramsStage.push(event.programStage)
-
-      })
-
-      if (eventsData.events.length !== 0) {
-        this.showEmptyList = false;
-        this.eventsData = eventsData.events;
-
-        this.eventsData.forEach((eventInfo: any) => {
-          eventDataValues = eventInfo.dataValues;
-
-          eventDataValues.forEach((dataRow: any) => {
-
-            this.usedDataElements.push(dataRow.dataElement);
-
-            // this.dataOnEvents.push({
-            //   eventId: eventInfo.event,
-            //   dataElementId: dataRow.dataElement,
-            //   dataValue: dataRow.value
-            // })
-          });
-        });
-
-      } else {
-        this.showEmptyList = true;
-        this.tableFormat = false;
-        this.appProvider.setNormalNotification("There are no events to display on " + this.selectedProgram.name);
-      }
-
-      this.currentEvents = eventsData.events;
-      // alert("EventsData ProgStage: "+JSON.stringify(this.currentEvents[0].programStage))
-      // Array.from(new Set(currentEventsProgramsStage))
-      // alert("EventsData ProgStage: "+JSON.stringify(Array.from(new Set(currentEventsProgramsStage))))
-      this.loadEvents();
-
-    })
-
-  }
-
-
-  loadEvents() {
-    this.table = {
-      header: [], rows: []
-    };
-    this.tableFormatHeader = [];
-    this.tableFormatRow = [];
-    this.rowData = {};
-    this.currentAvailableEvents = [];
-    this.currentAvailableOnEvents = [];
-    let SortedDataElementIds = Array.from(new Set(this.usedDataElements));
-
-    this.selectionList = SortedDataElementIds;
-
-
-
-    SortedDataElementIds.forEach((list: any) => {
-      this.dataElementsProvider.getDataElementsByName(list, this.currentUser).then((results: any) => {
-
-        this.currentAvailableEvents.push({
-          name: results[0].displayName,
-          id: results[0].id
-        });
-        this.currentAvailableOnEvents.push({
-          name: results[0].displayName,
-          id: list
-        });
-
-
-        if(SortedDataElementIds.length == this.currentAvailableEvents.length){
-          this.loadEventListAsTable();
-        }
-
-      })
-    });
-  }
-
-
-  loadEventListAsTable(){
-    this.eventProvider.getEventListInTableFormat(this.currentEvents,this.currentAvailableEvents).then((table:any)=>{
-      this.tableFormat = table;
-      this.eventListSections = [];
-    });
-  }
-
-
-  showFieldSelectionMenu(fab: FabContainer) {
-    fab.close();
-    if (this.tableFormat) {
-      let modal = this.modalCtrl.create('EventFieldSelectionMenu', {
-        dataElementToDisplay: this.currentEvents,
-        dataElementMapper: this.currentAvailableOnEvents
-      });
-      modal.onDidDismiss((dataElementToDisplayResponse:any)=>{
-
-        if(dataElementToDisplayResponse){
-          this.currentAvailableEvents = dataElementToDisplayResponse;
-          this.loadEventListAsTable();
-        }
-      });
-      modal.present();
-    } else {
-      this.appProvider.setNormalNotification("There are no selection options to display");
-    }
   }
 
 
@@ -410,24 +248,16 @@ export class EventCapturePage implements OnInit {
    * @param event
    */
   goToEventView(event){
-    let params = {
-      orgUnitId : this.selectedOrgUnit.id,
-      orgUnitName : this.selectedOrgUnit.name,
-      programId : this.selectedProgram.id,
-      programName : this.selectedProgram.name,
-      event : event.event
-    };
-    this.navCtrl.push('EventView',{params:params});
+    let params = {};
+    console.log("View event");
+    //this.navCtrl.push('',{params:params});
   }
 
 
-  goToEventRegister(fab: FabContainer){
-    fab.close();
-    let params = {
-      selectedDataDimension : this.selectedDataDimension,
-      event : ""
-    };
-    this.navCtrl.push('EventCaptureForm',{params:params});
+  goToEventRegister(){
+    let params = {};
+    console.log("register event")
+    //this.navCtrl.push('EventCaptureForm',{});
   }
 
 

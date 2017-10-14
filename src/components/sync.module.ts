@@ -7,20 +7,19 @@ import {UploadDataViaSmsComponent} from "./upload-data-via-sms/upload-data-via-s
 import {ClearLocalMetadataComponent} from "./clear-local-metadata/clear-local-metadata";
 import {DownloadDataComponent} from "./download-data/download-data";
 import {DownloadDataValuesComponent} from "./download-data-values/download-data-values";
-import {DownloadEventsDataComponent} from "./download-events-data/download-events";
 import {UploadViaInternetComponent} from "./upload-data-via-internet/upload-via-internet";
 
 @NgModule({
   declarations: [
     ClearLocalDataComponent, DownloadMetaDataComponent, UploadDataViaSmsComponent,UploadViaInternetComponent,
-    ClearLocalMetadataComponent,DownloadDataComponent, DownloadDataValuesComponent, DownloadEventsDataComponent
+    ClearLocalMetadataComponent,DownloadDataComponent, DownloadDataValuesComponent,
   ],
   imports: [
     IonicModule,SharedModule
   ],
   exports: [
     ClearLocalDataComponent, DownloadMetaDataComponent, UploadDataViaSmsComponent,UploadViaInternetComponent,
-    ClearLocalMetadataComponent,DownloadDataComponent, DownloadDataValuesComponent, DownloadEventsDataComponent
+    ClearLocalMetadataComponent,DownloadDataComponent, DownloadDataValuesComponent,
   ]
 })
 

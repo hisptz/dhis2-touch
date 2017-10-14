@@ -28,6 +28,7 @@ export class TrackedEntityInstancesProvider {
    * @returns {Promise<any>}
    */
   savingTrackedEntityInstances(trackedEntityId,orgUnitId,orgUnitName,currentUser,syncStatus,trackedEntityInstance?){
+    console.log("Here we are");
     if(!trackedEntityInstance){
       trackedEntityInstance = dhis2.util.uid();
     }
