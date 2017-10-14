@@ -4,7 +4,6 @@ import {UserProvider} from "../../providers/user/user";
 import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
 import {ProgramsProvider} from "../../providers/programs/programs";
 import {AppProvider} from "../../providers/app/app";
-import {ProgramSelection} from "../program-selection/program-selection";
 import {EventCaptureFormProvider} from "../../providers/event-capture-form/event-capture-form";
 
 /**
@@ -232,27 +231,24 @@ export class EventCapturePage implements OnInit {
     }
   }
 
-
   hideAndShowColumns() {
-
+    let modal = this.modalCtrl.create('EventHideShowColumnPage',{});
+    modal.onDidDismiss((columnsToDisplay : any)=>{
+      if(columnsToDisplay){
+        console.log(columnsToDisplay);
+      }
+    });
+    modal.present().then(()=>{});
   }
 
-
-  /**
-   * navigate to event
-   * @param event
-   */
   goToEventView(event){
     let params = {};
-    console.log("View event");
-    //this.navCtrl.push('',{params:params});
+    this.navCtrl.push('EventCaptureRegisterPage',{params:params});
   }
-
 
   goToEventRegister(){
     let params = {};
-    console.log("register event")
-    //this.navCtrl.push('EventCaptureForm',{});
+    this.navCtrl.push('EventCaptureRegisterPage',{});
   }
 
 
