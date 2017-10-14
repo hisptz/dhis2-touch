@@ -38,20 +38,28 @@
             <warning [warningMessage]="programDimensionNotApplicableMessage" ></warning>
           </div>
         </div>
+        <div *ngIf = "isFormReady" >
+          <div class="item-card" (click)="hideAndShowColumns()" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
+            <ion-icon name="ios-eye" color="icon-color"></ion-icon>
+            Columns
+          </div>
+          <div class="item-card" (click)="goToEventRegister()" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
+            <ion-icon name="add" color="icon-color"></ion-icon>
+            Add
+          </div>
+        </div>
+
       </ion-col>
     </ion-row>
+    <div *ngIf = "isFormReady" >
+      <div *ngIf="isLoading">
+        <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage" ></page-loading>
+      </div>
+      <div *ngIf="!isLoading">
+
+        event list
+
+      </div>
+    </div>
   </ion-grid>
-
-  <div *ngIf = "showEmptyList">
-    <empty-list-notification [emptyListMessage]="'There are no events to display'"></empty-list-notification>
-  </div>
-
-  <ion-fab bottom right #fab>
-    <button ion-fab><ion-icon name="md-more"  ></ion-icon></button>
-    <ion-fab-list side="top">
-      <button ion-fab color="primary" (tap)="showFieldSelectionMenu(fab)" ><ion-icon name="ios-eye"  ></ion-icon></button>
-      <button ion-fab color="primary" (tap)="goToEventRegister(fab)" ><ion-icon name="add"  ></ion-icon></button>
-    </ion-fab-list>
-  </ion-fab>
-
 </ion-content>

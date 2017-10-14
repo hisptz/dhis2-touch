@@ -1,13 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {FabContainer, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
+import { IonicPage, ModalController, NavController} from 'ionic-angular';
 import {UserProvider} from "../../providers/user/user";
 import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
 import {ProgramsProvider} from "../../providers/programs/programs";
 import {AppProvider} from "../../providers/app/app";
 import {ProgramSelection} from "../program-selection/program-selection";
-import {SqlLiteProvider} from "../../providers/sql-lite/sql-lite";
-import {EventsProvider} from "../../providers/events/events";
-import {DataElementsProvider} from "../../providers/data-elements/data-elements";
 import {EventCaptureFormProvider} from "../../providers/event-capture-form/event-capture-form";
 
 /**
@@ -39,11 +36,9 @@ export class EventCapturePage implements OnInit {
   selectedDataDimension: Array<any>;
   programs: Array<any>;
   icons: any = {};
-  showEmptyList: boolean = false;
 
   constructor(private navCtrl: NavController, private userProvider: UserProvider, private modalCtrl: ModalController,
               private organisationUnitsProvider: OrganisationUnitsProvider, private programsProvider: ProgramsProvider, private appProvider: AppProvider,
-              private sqlLiteProvider: SqlLiteProvider, private eventProvider: EventsProvider, private dataElementsProvider: DataElementsProvider,
               private eventCaptureFormProvider:EventCaptureFormProvider) {
   }
 
