@@ -17,81 +17,67 @@
       <page-loading [loadingMessage]="loadingMessage" [loadingSize]="'large'"></page-loading>
     </div>
     <div *ngIf="!isLoading">
-      <div class="item-card" *ngFor="let content of registrationContents">
-        <ion-row (tap)="toggleRegistrationContents(content)">
-          <ion-col col-11>
-            <!--<img  class="side-menu-icon" [src]="aboutContent.icon"/>&nbsp;&nbsp;-->
-            <span ion-text [color]="(isRegistrationContentOpen[content.id]) ?'current' : 'font-color'">
-              {{ content.name }}
-            </span>
-          </ion-col>
-          <ion-col col-1 item >
-            <div style="text-align: center;">
-              <ion-icon [color]="(isRegistrationContentOpen[content.id]) ?'current' : 'font-color'" *ngIf="!(isRegistrationContentOpen[content.id])" name="ios-arrow-down" item-right></ion-icon>
-              <ion-icon [color]="(isRegistrationContentOpen[content.id]) ?'current' : 'font-color'" *ngIf="(isRegistrationContentOpen[content.id])" name="ios-arrow-up" item-right></ion-icon>
-            </div>
-          </ion-col>
-        </ion-row>
+      <div *ngFor="let content of registrationContents">
         <div *ngIf="(isRegistrationContentOpen[content.id])" >
-          <hr>
-          <div *ngIf="content.id == 'enrollment'">
-            <div class="inputLabel">
-              Enrolling organisation unit
+          <ion-row>
+            <ion-col>
+              <img  class="side-menu-icon" [src]="content.icon"/>&nbsp;&nbsp;
+              <span ion-text ><b>{{ content.name }}</b></span>
+            </ion-col>
+          </ion-row>
+          <div class="item-card">
+            <div *ngIf="content.id == 'enrollment'"  >
+              <div class="inputLabel">
+                Enrolling organisation unit
+              </div>
+              <div class="input-field-container">
+                <ion-item>
+                  <ion-input [(ngModel)]="currentOrganisationUnit.name" readonly="true"></ion-input>
+                </ion-item>
+              </div>
+              <div class="inputLabel">
+                {{ currentProgram.enrollmentDateLabel}}
+              </div>
+              <div class="input-field-container">
+                <ion-item>
+                  <ion-datetime [(ngModel)]="enrollmentDate" doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" ></ion-datetime>
+                </ion-item>
+              </div>
+              <div class="inputLabel">
+                {{ currentProgram.incidentDateLabel}}
+              </div>
+              <div class="input-field-container">
+                <ion-item>
+                  <ion-datetime [(ngModel)]="incidentDate" doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" ></ion-datetime>
+                </ion-item>
+              </div>
             </div>
-            <div class="input-field-container">
-              <ion-item>
-                <ion-input [(ngModel)]="currentOrganisationUnit.name" readonly="true"></ion-input>
-              </ion-item>
-            </div>
-            <div class="inputLabel">
-              {{ currentProgram.enrollmentDateLabel}}
-            </div>
-            <div class="input-field-container">
-              <ion-item>
-                <ion-datetime [(ngModel)]="enrollmentDate" doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" ></ion-datetime>
-              </ion-item>
-            </div>
-            <div class="inputLabel">
-              {{ currentProgram.incidentDateLabel}}
-            </div>
-            <div class="input-field-container">
-              <ion-item>
-                <ion-datetime [(ngModel)]="incidentDate" doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" ></ion-datetime>
-              </ion-item>
-            </div>
-          </div>
-          <div *ngIf="content.id == 'profile'">
-            <div *ngIf="programTrackedEntityAttributes && programTrackedEntityAttributes.length > 0">
-              <div *ngFor="let programTrackedEntityAttribute of programTrackedEntityAttributes">
-                <tracked-entity-inputs [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute"
-                                       [currentUser]="currentUser"
-                                       [data]="dataObject"
-                                       [mandatory]="programTrackedEntityAttribute.mandatory"
-                                       (onChange)="updateData($event)"></tracked-entity-inputs>
+            <div *ngIf="content.id == 'profile'">
+              <div *ngIf="programTrackedEntityAttributes && programTrackedEntityAttributes.length > 0">
+                <div *ngFor="let programTrackedEntityAttribute of programTrackedEntityAttributes">
+                  <tracked-entity-inputs [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute"
+                                         [currentUser]="currentUser"
+                                         [data]="dataObject"
+                                         [mandatory]="programTrackedEntityAttribute.mandatory"
+                                         (onChange)="updateData($event)"></tracked-entity-inputs>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <ion-row>
-        <ion-col>
-          <button  color="primary" [disabled] = "!isFormReady || isRegistrationProcessingRunning" round ion-button full (tap)="registerEntity()">
-            Register
-          </button>
-        </ion-col>
-        <ion-col>
-          <button  color="danger" [disabled]="isRegistrationProcessingRunning" round ion-button full (tap)="cancelRegistration()">
-            Cancel
-          </button>
-        </ion-col>
-      </ion-row>
-      <div class="item-card" *ngIf="isRegistrationProcessingRunning">
-        <ion-row>
-          <ion-col col-1 ><page-loading loadingSize="small"></page-loading></ion-col>
-          <ion-col col-11><p>&nbsp;Please wait ...</p></ion-col>
-        </ion-row>
-      </div>
-
     </div>
   </ion-grid>
 </ion-content>
+<ion-footer>
+  <div >
+    <div ion-button clear text-capitalize *ngFor="let content of registrationContents" (tap)="toggleRegistrationContents(content)">
+      <img  class="side-menu-icon" [src]="content.icon"/>&nbsp;&nbsp;
+      <span ion-text [color]="(isRegistrationContentOpen[content.id]) ?'current' : 'font-color'">
+        {{ content.name }}
+      </span>
+    </div>
+  </div>
+</ion-footer>
+
+

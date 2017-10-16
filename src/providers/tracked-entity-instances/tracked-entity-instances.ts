@@ -22,13 +22,13 @@ export class TrackedEntityInstancesProvider {
    *
    * @param trackedEntityId
    * @param orgUnitId
+   * @param orgUnitName
    * @param currentUser
    * @param syncStatus
    * @param trackedEntityInstance
-   * @returns {Promise<any>}
+   * @returns {Array}
    */
-  savingTrackedEntityInstances(trackedEntityId,orgUnitId,orgUnitName,currentUser,syncStatus,trackedEntityInstance?){
-    console.log("Here we are");
+  getTrackedEntityInstancesPayLoad(trackedEntityId,orgUnitId,orgUnitName,syncStatus,trackedEntityInstance?){
     if(!trackedEntityInstance){
       trackedEntityInstance = dhis2.util.uid();
     }
@@ -49,14 +49,7 @@ export class TrackedEntityInstancesProvider {
     };
     let payLoads = [];
     payLoads.push(payLoad);
-    console.log(JSON.stringify(payLoads));
-    return new Promise( (resolve, reject)=> {
-      this.sqlLite.insertBulkDataOnTable(this.resource,payLoads,currentUser.currentDatabase).then(()=>{
-        resolve(payLoad);
-      }).catch(error=>{
-        reject(error);
-      });
-    });
+    return payLoads;
   }
 
   /**

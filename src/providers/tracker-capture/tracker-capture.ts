@@ -4,6 +4,7 @@ import {OrganisationUnitsProvider} from "../organisation-units/organisation-unit
 import {EnrollmentsProvider} from "../enrollments/enrollments";
 import {TrackedEntityAttributeValuesProvider} from "../tracked-entity-attribute-values/tracked-entity-attribute-values";
 import {TrackedEntityInstancesProvider} from "../tracked-entity-instances/tracked-entity-instances";
+import {SqlLiteProvider} from "../sql-lite/sql-lite";
 
 /*
   Generated class for the TrackerCaptureProvider provider.
@@ -16,6 +17,7 @@ export class TrackerCaptureProvider {
 
   constructor(private programsProvider : ProgramsProvider,
               private enrollmentsProvider : EnrollmentsProvider,
+              private sqlLite : SqlLiteProvider,
               private trackedEntityInstancesProvider : TrackedEntityInstancesProvider,
               private trackedEntityAttributeValuesProvider : TrackedEntityAttributeValuesProvider,
               private organisationUnitsProvider : OrganisationUnitsProvider) {}
@@ -70,37 +72,42 @@ export class TrackerCaptureProvider {
    *
    * @param incidentDate
    * @param enrollmentDate
-   * @param trackedEntityAttributeValues
    * @param currentUser
+   * @param trackedEntityInstance
+   * @param syncStatus
    * @returns {Promise<any>}
    */
-  saveTrackedEntityRegistration(incidentDate,enrollmentDate,trackedEntityAttributeValues,currentUser,syncStatus?){
-    let currentProgram = this.programsProvider.lastSelectedProgram;
-    let currentOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
-    if(!syncStatus){
-      syncStatus = "not-synced"
-    }
+  saveTrackedEntityRegistration(incidentDate,enrollmentDate,currentUser,trackedEntityInstance,syncStatus?){
     return new Promise( (resolve, reject)=> {
-      if(currentOrgUnit && currentOrgUnit.id && currentProgram && currentProgram.id){
+      let currentProgram = this.programsProvider.lastSelectedProgram;
+      let currentOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
+      if(!syncStatus){
+        status = "new";
+      }
+      console.log(JSON.stringify(currentProgram.trackedEntity));
+      if(currentOrgUnit && currentOrgUnit.id && currentProgram && currentProgram.id && currentProgram.trackedEntity){
         let trackedEntityId = currentProgram.trackedEntity.id;
-        this.trackedEntityInstancesProvider.savingTrackedEntityInstances(trackedEntityId,currentOrgUnit.id,currentOrgUnit.name,currentUser,syncStatus).then((trackedEntityInstanceObject : any)=>{
-          this.enrollmentsProvider .savingEnrollments(trackedEntityId,currentOrgUnit.id,currentOrgUnit.name,currentProgram.id,enrollmentDate,incidentDate,trackedEntityInstanceObject.trackedEntityInstance,currentUser,syncStatus).then((enrollmentObject : any)=>{
-            this.trackedEntityAttributeValuesProvider.savingTrackedEntityAttributeValues(trackedEntityInstanceObject.trackedEntityInstance,trackedEntityAttributeValues,currentUser).then(()=>{
-              resolve({trackedEntityInstance : trackedEntityInstanceObject,enrollment : enrollmentObject});
-            }).catch(error=>{
-              reject({message : error});
-            });
+        let payLoads = [];
+        payLoads.push({
+          resource : "trackedEntityInstances", payLoad : this.trackedEntityInstancesProvider.getTrackedEntityInstancesPayLoad(trackedEntityId,currentOrgUnit.id,currentOrgUnit.name,syncStatus,trackedEntityInstance)
+        });
+        payLoads.push({
+          resource : "enrollments", payLoad : this.enrollmentsProvider.getEnrollmentsPayLoad(trackedEntityId,currentOrgUnit.id,currentOrgUnit.name,currentProgram.id,enrollmentDate,incidentDate,trackedEntityInstance,syncStatus)
+        });
+        let counter = 0;
+        payLoads.forEach((payLoadObject : any)=>{
+          this.sqlLite.insertBulkDataOnTable(payLoadObject.resource,payLoadObject.payLoad,currentUser.currentDatabase).then(()=>{
+            resolve();
           }).catch(error=>{
             reject({message : error});
           });
-        }).catch(error=>{
-          reject({message : error});
         });
-      }else{
-        reject({message : "Fail to set last selected OU and program"});
+      }else {
+        reject({message : "Fail to set OU and program"})
       }
     });
   }
+
 
   /**
    *

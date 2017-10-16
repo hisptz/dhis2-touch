@@ -27,12 +27,11 @@ export class EnrollmentsProvider {
    * @param enrollmentDate
    * @param incidentDate
    * @param trackedEntityInstance
-   * @param currentUser
    * @param syncStatus
    * @param enrollment
-   * @returns {Promise<any>}
+   * @returns {Array}
    */
-  savingEnrollments(trackedEntityId,orgUnitId,orgUnitName,programId,enrollmentDate,incidentDate,trackedEntityInstance,currentUser,syncStatus,enrollment?){
+  getEnrollmentsPayLoad(trackedEntityId,orgUnitId,orgUnitName,programId,enrollmentDate,incidentDate,trackedEntityInstance,syncStatus,enrollment?){
     if(!enrollment){
       enrollment = dhis2.util.uid();
     }
@@ -54,13 +53,7 @@ export class EnrollmentsProvider {
     let payLoads = [];
     payLoads.push(payLoad);
     console.log(JSON.stringify(payLoads));
-    return new Promise( (resolve, reject)=> {
-      this.sqlLite.insertBulkDataOnTable(this.resource,payLoads,currentUser.currentDatabase).then(()=>{
-        resolve(payLoad);
-      }).catch(error=>{
-        reject(error);
-      });
-    });
+    return payLoads;
   }
 
 

@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import {TrackerCaptureProvider} from "../../providers/tracker-capture/tracker-capture";
 import {UserProvider} from "../../providers/user/user";
 import {AppProvider} from "../../providers/app/app";
 import {ProgramsProvider} from "../../providers/programs/programs";
 import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
+import {TrackedEntityAttributeValuesProvider} from "../../providers/tracked-entity-attribute-values/tracked-entity-attribute-values";
 
 /**
  * Generated class for the TrackerEntityRegisterPage page.
@@ -35,18 +36,18 @@ export class TrackerEntityRegisterPage implements OnInit{
   enrollmentDate : any;
   dataObject : any;
   trackedEntityAttributeValuesObject : any;
+  isTrackedEntityRegistered : boolean;
+  trackedEntityInstance : string;
 
-  isFormReady : boolean;
-
-  constructor(private navCtrl: NavController, private navParams: NavParams,
+  constructor(private navCtrl: NavController,
               private userProvider : UserProvider,private appProvider : AppProvider,
               private programsProvider : ProgramsProvider,
+              private trackedEntityAttributeValuesProvider : TrackedEntityAttributeValuesProvider,
               private organisationUnitsProvider : OrganisationUnitsProvider,
               private trackerCaptureProvider : TrackerCaptureProvider) {
   }
 
   ngOnInit(){
-    this.isFormReady = false;
     this.loadingMessage = "Loading user information";
     this.isLoading = true;
     this.isRegistrationProcessingRunning  = false;
@@ -75,10 +76,12 @@ export class TrackerEntityRegisterPage implements OnInit{
     this.incidentDate = today;
     this.enrollmentDate = today;
     this.registrationContents = this.getRegistrationContents();
-    this.registrationContents.forEach(registrationContent=>{
-      this.isRegistrationContentOpen[registrationContent.id] = true;
-    });
-    this.isFormReady = this.isALlRequiredFieldHasValue(this.programTrackedEntityAttributes,this.trackedEntityAttributeValuesObject);
+    this.isTrackedEntityRegistered = false;
+    if(this.registrationContents.length > 0){
+      this.toggleRegistrationContents(this.registrationContents[0]);
+    }
+    this.trackedEntityInstance = "";
+    //this.isFormReady = this.isALlRequiredFieldHasValue(this.programTrackedEntityAttributes,this.trackedEntityAttributeValuesObject);
   }
 
   loadTrackedEntityRegistration(programId,currentUser){
@@ -98,21 +101,19 @@ export class TrackerEntityRegisterPage implements OnInit{
 
   getRegistrationContents(){
     return [
-      {id : 'enrollment',name : 'Enrollment',icon: 'assets/'},
-      {id : 'profile',name : 'profile',icon: 'assets/'},
+      {id : 'enrollment',name : 'Enrollment',icon: 'assets/tracker/enrollment.png'},
+      {id : 'profile',name : 'profile',icon: 'assets/tracker/profile.png'},
     ];
   }
 
   toggleRegistrationContents(content){
     if(content && content.id){
-      if(this.isRegistrationContentOpen[content.id]){
-        this.isRegistrationContentOpen[content.id] = false;
-      }else{
+      if(!this.isRegistrationContentOpen[content.id]){
         Object.keys(this.isRegistrationContentOpen).forEach(id=>{
           this.isRegistrationContentOpen[id] = false;
         });
-        this.isRegistrationContentOpen[content.id] = true;
       }
+      this.isRegistrationContentOpen[content.id] = true;
     }
   }
 
@@ -120,33 +121,39 @@ export class TrackerEntityRegisterPage implements OnInit{
     let id = updateDataValue.id.split("-")[0];
     this.trackedEntityAttributeValuesObject[id] = updateDataValue.value;
     this.dataObject[updateDataValue.id] = updateDataValue;
-    this.isFormReady = this.isALlRequiredFieldHasValue(this.programTrackedEntityAttributes,this.trackedEntityAttributeValuesObject);
+    //this.isFormReady = this.isALlRequiredFieldHasValue(this.programTrackedEntityAttributes,this.trackedEntityAttributeValuesObject);
+    let isFormReady = this.isALlRequiredFieldHasValue(this.programTrackedEntityAttributes,this.trackedEntityAttributeValuesObject);
+    if(isFormReady){
+      this.registerEntity();
+    }
+
   }
 
   registerEntity(){
-    this.isRegistrationProcessingRunning = true;
     let trackedEntityAttributeValues = [];
     Object.keys(this.trackedEntityAttributeValuesObject).forEach(key=>{
       trackedEntityAttributeValues.push({
         value : this.trackedEntityAttributeValuesObject[key],attribute : key
       })
     });
-    this.trackerCaptureProvider.saveTrackedEntityRegistration(this.incidentDate,this.enrollmentDate,trackedEntityAttributeValues,this.currentUser).then((reseponse : any)=>{
-      this.isRegistrationProcessingRunning = false;
-      this.navCtrl.pop().then(()=>{
-        this.appProvider.setNormalNotification("Registration has been completed");
+    if(this.isTrackedEntityRegistered){
+      this.trackedEntityAttributeValuesProvider.savingTrackedEntityAttributeValues(this.trackedEntityInstance,trackedEntityAttributeValues,this.currentUser).then(()=>{
+        //this.appProvider.setNormalNotification("Saved successfully");
       }).catch(error=>{
-        console.log(JSON.stringify(error))
+        //this.appProvider.setNormalNotification("Fail to save a value");
+        console.log(JSON.stringify(error));
       });
-    }).catch(error=>{
-      this.isRegistrationProcessingRunning = false;
-      this.appProvider.setNormalNotification("Fail to register a new case");
-      console.log(JSON.stringify(error));
-    });
-  }
+    }else{
+      this.trackerCaptureProvider.saveTrackedEntityRegistration(this.incidentDate,this.enrollmentDate,this.currentUser,this.trackedEntityInstance).then((reseponse : any)=>{
+        this.appProvider.setNormalNotification("A case has been saved successfully");
+        this.isTrackedEntityRegistered = true;
+        this.registerEntity();
+      }).catch(error=>{
+        this.appProvider.setNormalNotification("Fail to save a case");
+        console.log(JSON.stringify(error));
+      });
+    }
 
-  cancelRegistration(){
-    this.navCtrl.pop();
   }
 
   isALlRequiredFieldHasValue(programTrackedEntityAttributes,trackedEntityAttributeValuesObject){
