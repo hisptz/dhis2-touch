@@ -136,9 +136,6 @@ export class EventCapturePage implements OnInit {
       modal.onDidDismiss((selectedProgram: any) => {
         if (selectedProgram && selectedProgram.id) {
           this.selectedProgram = selectedProgram;
-
-          this.eventCaptureFormProvider.loadingprogramInfo(this.selectedProgram.id,this.currentUser);
-
           this.programsProvider.setLastSelectedProgram(selectedProgram);
           this.updateEventCaptureSelections();
           this.updateDataSetCategoryCombo(this.selectedProgram.categoryCombo);
@@ -229,6 +226,10 @@ export class EventCapturePage implements OnInit {
       this.programCategoryCombo = programCategoryCombo;
       this.updateEventCaptureSelections();
     }
+  }
+
+  loadProgramStages(){
+
   }
 
   hideAndShowColumns() {

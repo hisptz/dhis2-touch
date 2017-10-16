@@ -508,12 +508,10 @@ export class ProgramsProvider {
   getProgramById(programId,currentUser){
     let attribute = 'id';
     let attributeValue =[];
-
     attributeValue.push(programId);
     return new Promise((resolve, reject)=> {
       this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeValue,currentUser.currentDatabase).then((programs:any)=>{
         if(programs.length > 0){
-          //alert("programs are :"+JSON.stringify(programs[0] ))
           resolve(programs[0]);
         }else{
           resolve({});
@@ -521,40 +519,6 @@ export class ProgramsProvider {
       },error=>{
         reject();
       });
-    });
-  }
-
-
-  /**
-   * get program by name
-   * @param programId
-   * @param currentUser
-   * @returns {Promise<T>}
-   */
-  getProgramByName(programName,currentUser){
-    let attribute = 'name';
-    let attributeValue =[];
-    attributeValue.push(programName);
-    return new Promise((resolve, reject)=> {
-      this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeValue,currentUser.currentDatabase).then((programs:any)=>{
-        if(programs.length > 0){
-          resolve(programs[0]);
-        }else{
-          resolve({});
-        }
-      },error=>{
-        reject(error);
-      });
-    });
-  }
-
-  getProgramsSource(orgUnit,dataBaseName){
-    let attributeValue  = [orgUnit];
-    let attributeKey = "organisationUnits";
-    return new Promise((resolve, reject)=> {
-      this.sqlLite.getDataFromTableByAttributes(this.resource,attributeKey,attributeValue,dataBaseName).then((programSource: any)=>{
-        resolve(programSource);
-      },error=>{reject(error)})
     });
   }
 
@@ -571,33 +535,6 @@ export class ProgramsProvider {
         reject();
       });
     });
-  }
-
-  getProgramstrackedEntityAttribute(programId, currentUser){
-    let resource = 'programTrackedEntityAttributes';
-
-    let attribute = 'programId';
-    // let attribute = 'programStageDataElements';
-    let attributeValue =[];
-
-    // programId.forEach((program:any)=>{
-    //     attributeValue.push(program);
-    //  })
-
-    attributeValue.push(programId);
-    return new Promise((resolve, reject)=> {
-      this.sqlLite.getDataFromTableByAttributes(resource,attribute,attributeValue,currentUser.currentDatabase).then((programs:any)=>{
-        alert("ProgEntity: "+JSON.stringify(programs));
-        if(programs.length > 0){
-          resolve(programs);
-        }else{
-          resolve({});
-        }
-      },error=>{
-        reject();
-      });
-    });
-
   }
 
 

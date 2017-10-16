@@ -22,4 +22,8 @@ export class EventHideShowColumnPage implements OnInit{
 
   }
 
+  dismiss(){
+    this.viewCtrl.dismiss();
+  }
+
 }
