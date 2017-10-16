@@ -7,6 +7,8 @@ import {ProgramsProvider} from "../../providers/programs/programs";
 import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
 import {TrackedEntityAttributeValuesProvider} from "../../providers/tracked-entity-attribute-values/tracked-entity-attribute-values";
 
+
+declare var dhis2: any;
 /**
  * Generated class for the TrackerEntityRegisterPage page.
  *
@@ -80,7 +82,7 @@ export class TrackerEntityRegisterPage implements OnInit{
     if(this.registrationContents.length > 0){
       this.toggleRegistrationContents(this.registrationContents[0]);
     }
-    this.trackedEntityInstance = "";
+    this.trackedEntityInstance =  dhis2.util.uid();;
     //this.isFormReady = this.isALlRequiredFieldHasValue(this.programTrackedEntityAttributes,this.trackedEntityAttributeValuesObject);
   }
 
