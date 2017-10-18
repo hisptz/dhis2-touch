@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {TrackedEntityInstancesProvider} from "../../providers/tracked-entity-instances/tracked-entity-instances";
 import {TrackedEntityAttributeValuesProvider} from "../../providers/tracked-entity-attribute-values/tracked-entity-attribute-values";
 import {EventCaptureFormProvider} from "../../providers/event-capture-form/event-capture-form";
 import {AppProvider} from "../../providers/app/app";
@@ -43,7 +42,6 @@ export class TrackedEntityDashboardPage implements OnInit{
 
 
   constructor(private navCtrl: NavController,private eventCaptureFormProvider : EventCaptureFormProvider,
-              private trackedEntityInstancesProvider : TrackedEntityInstancesProvider,
               private userProvider : UserProvider,private appProvider : AppProvider,
               private programsProvider : ProgramsProvider,
               private trackerCaptureProvider : TrackerCaptureProvider,
@@ -75,11 +73,11 @@ export class TrackedEntityDashboardPage implements OnInit{
     this.trackerCaptureProvider.getTrackedEntityInstance(trackedEntityInstanceId,this.currentUser).then((response : any)=>{
       this.trackedEntityInstance = response;
       if(response && response.attributes){
-        response.attributes.forEach((attribute : any)=>{
-          //dataObject
-          //id-trackedEntityAttribute
-          console.log(JSON.stringify(attribute))
-        })
+        response.attributes.forEach((attributeObject : any)=>{
+          this.trackedEntityAttributeValuesObject[attributeObject.attribute] = attributeObject.value;
+          let id = attributeObject.attribute + "-trackedEntityAttribute";
+          this.dataObject[id] = {"id" : id,"value" : attributeObject.value};
+        });
       }
       this.loadingProgramStages(this.currentProgram.id,this.currentUser);
     }).catch(error=>{})
@@ -117,6 +115,25 @@ export class TrackedEntityDashboardPage implements OnInit{
       this.isLoading = false;
       console.log(JSON.stringify(error));
       this.appProvider.setNormalNotification("Fail to load registration fields for " + this.currentProgram.name);
+    });
+  }
+
+  //@todo change of color codes on updates
+  updateData(updateDataValue){
+    let id = updateDataValue.id.split("-")[0];
+    this.trackedEntityAttributeValuesObject[id] = updateDataValue.value;
+    this.dataObject[updateDataValue.id] = updateDataValue;
+    let trackedEntityAttributeValues = [];
+    Object.keys(this.trackedEntityAttributeValuesObject).forEach(key=>{
+      trackedEntityAttributeValues.push({
+        value : this.trackedEntityAttributeValuesObject[key],attribute : key
+      })
+    });
+    this.trackedEntityAttributeValuesProvider.savingTrackedEntityAttributeValues(this.trackedEntityInstance.id,trackedEntityAttributeValues,this.currentUser).then(()=>{
+      //this.appProvider.setNormalNotification("Saved successfully");
+    }).catch(error=>{
+      //this.appProvider.setNormalNotification("Fail to save a value");
+      console.log(JSON.stringify(error));
     });
   }
 

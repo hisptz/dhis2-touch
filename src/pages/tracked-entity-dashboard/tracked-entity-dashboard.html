@@ -19,20 +19,18 @@
       <page-loading [loadingMessage]="loadingMessage" [loadingSize]="'large'" ></page-loading>
     </div>
     <div *ngIf="!isLoading">
-      {{ trackedEntityInstance|json }}<br><br>
-
       <div *ngFor="let widget of dashboardWidgets">
         <div *ngIf="(isDashboardWidgetOpen[widget.id])" >
           <ion-row>
             <ion-col>
-              <span ion-text text-capitalize><b>{{ widget.name}}</b></span>
+              <span ion-text text-capitalize><b>{{ widget.name }}</b></span>
             </ion-col>
           </ion-row>
           <ion-row>
             <ion-col>
               <div *ngIf="widget.id == 'enrollment'"  >
                 <div class="inputLabel">
-                  organisation unit
+                  Organisation unit
                 </div>
                 <div class="input-field-container">
                   <ion-item>

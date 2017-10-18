@@ -40,7 +40,7 @@
               </div>
               <div class="input-field-container">
                 <ion-item>
-                  <ion-datetime [(ngModel)]="enrollmentDate" doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" ></ion-datetime>
+                  <ion-datetime [(ngModel)]="enrollmentDate" doneText="Update" [readonly]="isTrackedEntityRegistered" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" ></ion-datetime>
                 </ion-item>
               </div>
               <div class="inputLabel">
@@ -48,7 +48,7 @@
               </div>
               <div class="input-field-container">
                 <ion-item>
-                  <ion-datetime [(ngModel)]="incidentDate" doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" ></ion-datetime>
+                  <ion-datetime [(ngModel)]="incidentDate" [readonly]="isTrackedEntityRegistered" doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" ></ion-datetime>
                 </ion-item>
               </div>
             </div>
