@@ -70,41 +70,19 @@ export class TrackedEntityDashboardPage implements OnInit{
     })
   }
 
-  loadTrackedEntityInstanceData(trackedEntityInstancesId){
+  loadTrackedEntityInstanceData(trackedEntityInstanceId){
     this.loadingMessage = "Loading tracked entity";
-    this.trackedEntityInstancesProvider.getTrackedEntityInstances([trackedEntityInstancesId],this.currentUser).then((trackedEntityInstances : any )=>{
-      this.trackedEntityAttributeValuesProvider.getTrackedEntityAttributeValues([trackedEntityInstancesId],this.currentUser).then((attributeValues : any)=>{
-        let attributeValuesObject = {};
-        if(attributeValues && attributeValues.length > 0){
-          attributeValues.forEach((attributeValue : any)=>{
-            delete attributeValue.id;
-            if(!attributeValuesObject[attributeValue.trackedEntityInstance]){
-              attributeValuesObject[attributeValue.trackedEntityInstance] = [];
-            }
-            attributeValuesObject[attributeValue.trackedEntityInstance].push(attributeValue);
-          });
-          trackedEntityInstances.forEach((trackedEntityInstanceObject : any)=>{
-            if(attributeValuesObject[trackedEntityInstanceObject.trackedEntityInstance]){
-              trackedEntityInstanceObject["attributes"] = attributeValuesObject[trackedEntityInstanceObject.trackedEntityInstance];
-            }else{
-              trackedEntityInstanceObject["attributes"] = [];
-            }
-          });
-          if(trackedEntityInstances.length > 0){
-            this.trackedEntityInstance = trackedEntityInstances[0];
-          }
-          this.loadingProgramStages(this.currentProgram.id,this.currentUser);
-        }
-      }).catch(error=>{
-        console.log(JSON.stringify(error));
-        this.isLoading = false;
-        this.appProvider.setNormalNotification("Fail to load tracked tracked entity");
-      });
-    }).catch(error=>{
-      console.log(JSON.stringify(error));
-      this.isLoading = false;
-      this.appProvider.setNormalNotification("Fail to load tracked tracked entity");
-    });
+    this.trackerCaptureProvider.getTrackedEntityInstance(trackedEntityInstanceId,this.currentUser).then((response : any)=>{
+      this.trackedEntityInstance = response;
+      if(response && response.attributes){
+        response.attributes.forEach((attribute : any)=>{
+          //dataObject
+          //id-trackedEntityAttribute
+          console.log(JSON.stringify(attribute))
+        })
+      }
+      this.loadingProgramStages(this.currentProgram.id,this.currentUser);
+    }).catch(error=>{})
   }
 
   loadingProgramStages(programId,currentUser){
@@ -150,7 +128,6 @@ export class TrackedEntityDashboardPage implements OnInit{
           this.isDashboardWidgetOpen[id] = false;
         });
       }
-      console.log(JSON.stringify(widget));
       this.isDashboardWidgetOpen[widget.id] = true;
     }
   }

@@ -30,6 +30,7 @@ export class EventCaptureFormProvider {
         //obtain section ids
         //programstage sections
         //merge program stage with program stage sections
+        //sorting by sortOrder
         programsStages.forEach((programsStage:any)=>{
           programsStage.programStageDataElements.forEach((programStageDataElement)=>{
             if(programStageDataElement.dataElement && programStageDataElement.dataElement.id){
