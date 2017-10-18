@@ -38,7 +38,7 @@ export class TrackerEntityRegisterPage implements OnInit{
   enrollmentDate : any;
   dataObject : any;
   trackedEntityAttributeValuesObject : any;
-  isTrackedEntityRegistered : boolean;
+  isTrackedEntityRegistered : boolean = false;
   trackedEntityInstance : string;
 
   constructor(private navCtrl: NavController,
@@ -149,6 +149,7 @@ export class TrackerEntityRegisterPage implements OnInit{
       this.trackerCaptureProvider.saveTrackedEntityRegistration(this.incidentDate,this.enrollmentDate,this.currentUser,this.trackedEntityInstance).then((reseponse : any)=>{
         this.appProvider.setNormalNotification("A case has been saved successfully");
         this.isTrackedEntityRegistered = true;
+
         this.registerEntity();
       }).catch(error=>{
         this.appProvider.setNormalNotification("Fail to save a case");

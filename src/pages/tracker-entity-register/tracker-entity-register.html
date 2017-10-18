@@ -35,21 +35,41 @@
                   <ion-input [(ngModel)]="currentOrganisationUnit.name" readonly="true"></ion-input>
                 </ion-item>
               </div>
-              <div class="inputLabel">
-                {{ currentProgram.enrollmentDateLabel}}
+              <div *ngIf="isTrackedEntityRegistered">
+                <div class="inputLabel">
+                  {{ currentProgram.enrollmentDateLabel}}
+                </div>
+                <div class="input-field-container">
+                  <ion-item>
+                    <ion-input [(ngModel)]="enrollmentDate" readonly="true"></ion-input>
+                  </ion-item>
+                </div>
+                <div class="inputLabel">
+                  {{ currentProgram.incidentDateLabel}}
+                </div>
+                <div class="input-field-container">
+                  <ion-item>
+                    <ion-input [(ngModel)]="incidentDate" readonly="true"></ion-input>
+                  </ion-item>
+                </div>
               </div>
-              <div class="input-field-container">
-                <ion-item>
-                  <ion-datetime [(ngModel)]="enrollmentDate" doneText="Update" [readonly]="isTrackedEntityRegistered" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" ></ion-datetime>
-                </ion-item>
-              </div>
-              <div class="inputLabel">
-                {{ currentProgram.incidentDateLabel}}
-              </div>
-              <div class="input-field-container">
-                <ion-item>
-                  <ion-datetime [(ngModel)]="incidentDate" [readonly]="isTrackedEntityRegistered" doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" ></ion-datetime>
-                </ion-item>
+              <div *ngIf="!isTrackedEntityRegistered">
+                <div class="inputLabel">
+                  {{ currentProgram.enrollmentDateLabel}}
+                </div>
+                <div class="input-field-container">
+                  <ion-item>
+                    <ion-datetime [(ngModel)]="enrollmentDate" doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" ></ion-datetime>
+                  </ion-item>
+                </div>
+                <div class="inputLabel">
+                  {{ currentProgram.incidentDateLabel}}
+                </div>
+                <div class="input-field-container">
+                  <ion-item>
+                    <ion-datetime [(ngModel)]="incidentDate" doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" ></ion-datetime>
+                  </ion-item>
+                </div>
               </div>
             </div>
             <div *ngIf="content.id == 'profile'">
@@ -70,14 +90,12 @@
   </ion-grid>
 </ion-content>
 <ion-footer>
-  <div >
+  <ion-toolbar>
     <div ion-button clear text-capitalize *ngFor="let content of registrationContents" (tap)="toggleRegistrationContents(content)">
-      <img  class="side-menu-icon" [src]="content.icon"/>&nbsp;&nbsp;
-      <span ion-text [color]="(isRegistrationContentOpen[content.id]) ?'current' : 'font-color'">
-        {{ content.name }}
-      </span>
+      <img  class="footer-icon" [src]="content.icon"/>&nbsp;&nbsp;
+      <span>{{ content.name }}</span>
     </div>
-  </div>
+  </ion-toolbar>
 </ion-footer>
 
 
