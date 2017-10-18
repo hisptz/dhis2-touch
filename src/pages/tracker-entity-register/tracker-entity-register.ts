@@ -82,8 +82,7 @@ export class TrackerEntityRegisterPage implements OnInit{
     if(this.registrationContents.length > 0){
       this.toggleRegistrationContents(this.registrationContents[0]);
     }
-    this.trackedEntityInstance =  dhis2.util.uid();;
-    //this.isFormReady = this.isALlRequiredFieldHasValue(this.programTrackedEntityAttributes,this.trackedEntityAttributeValuesObject);
+    this.trackedEntityInstance =  dhis2.util.uid();
   }
 
   loadTrackedEntityRegistration(programId,currentUser){
@@ -108,6 +107,7 @@ export class TrackerEntityRegisterPage implements OnInit{
     ];
   }
 
+  //@todo hide key board
   toggleRegistrationContents(content){
     if(content && content.id){
       if(!this.isRegistrationContentOpen[content.id]){
@@ -119,16 +119,15 @@ export class TrackerEntityRegisterPage implements OnInit{
     }
   }
 
+  //@todo changes of enrollments as well
   updateData(updateDataValue){
     let id = updateDataValue.id.split("-")[0];
     this.trackedEntityAttributeValuesObject[id] = updateDataValue.value;
     this.dataObject[updateDataValue.id] = updateDataValue;
-    //this.isFormReady = this.isALlRequiredFieldHasValue(this.programTrackedEntityAttributes,this.trackedEntityAttributeValuesObject);
     let isFormReady = this.isALlRequiredFieldHasValue(this.programTrackedEntityAttributes,this.trackedEntityAttributeValuesObject);
     if(isFormReady){
       this.registerEntity();
     }
-
   }
 
   registerEntity(){
@@ -138,6 +137,7 @@ export class TrackerEntityRegisterPage implements OnInit{
         value : this.trackedEntityAttributeValuesObject[key],attribute : key
       })
     });
+    //@todo color codes changes on saving
     if(this.isTrackedEntityRegistered){
       this.trackedEntityAttributeValuesProvider.savingTrackedEntityAttributeValues(this.trackedEntityInstance,trackedEntityAttributeValues,this.currentUser).then(()=>{
         //this.appProvider.setNormalNotification("Saved successfully");

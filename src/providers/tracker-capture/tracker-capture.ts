@@ -95,8 +95,6 @@ export class TrackerCaptureProvider {
         });
         let counter = 0;
         payLoads.forEach((payLoadObject : any)=>{
-          console.log(payLoadObject.resource);
-          console.log(JSON.stringify(payLoadObject.payLoad));
           this.sqlLite.insertBulkDataOnTable(payLoadObject.resource,payLoadObject.payLoad,currentUser.currentDatabase).then(()=>{
             counter ++;
             if(counter == payLoads.length){
@@ -199,11 +197,9 @@ export class TrackerCaptureProvider {
     return new Promise( (resolve, reject)=> {
       this.enrollmentsProvider.getSavedEnrollments(orgUnitId,programId,currentUser).then((enrollments : any)=>{
         let trackedEntityInstanceIds = [];
-        console.log("enrollments : " + enrollments.length);
         enrollments.forEach((enrollment : any)=>{
           trackedEntityInstanceIds.push(enrollment.trackedEntityInstance);
         });
-        console.log("trackedEntityInstanceIds " + JSON.stringify(trackedEntityInstanceIds))
         this.trackedEntityInstancesProvider.getTrackedEntityInstances(trackedEntityInstanceIds,currentUser).then((trackedEntityInstances : any )=>{
           this.trackedEntityAttributeValuesProvider.getTrackedEntityAttributeValues(trackedEntityInstanceIds,currentUser).then((attributeValues : any)=>{
             let attributeValuesObject = {};

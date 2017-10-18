@@ -1,5 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {TrackedEntityInstancesProvider} from "../../providers/tracked-entity-instances/tracked-entity-instances";
+import {TrackedEntityAttributeValuesProvider} from "../../providers/tracked-entity-attribute-values/tracked-entity-attribute-values";
+import {EventCaptureFormProvider} from "../../providers/event-capture-form/event-capture-form";
+import {AppProvider} from "../../providers/app/app";
+import {ProgramsProvider} from "../../providers/programs/programs";
+import {UserProvider} from "../../providers/user/user";
+import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
+import {TrackerCaptureProvider} from "../../providers/tracker-capture/tracker-capture";
 
 /**
  * Generated class for the TrackedEntityDashboardPage page.
@@ -15,16 +23,145 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class TrackedEntityDashboardPage implements OnInit{
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  currentOrgUnit : any;
+  currentProgram : any;
+  currentUser : any;
+
+  trackedEntityInstance : any;
+  enrollment : any;
+
+  programStages : Array<any>;
+  programTrackedEntityAttributes : Array<any>;
+  dataObject : any = {};
+  trackedEntityAttributeValuesObject : any = {};
+
+  isLoading : boolean;
+  loadingMessage : string;
+
+  dashboardWidgets : Array<any>;
+  isDashboardWidgetOpen : any;
+
+
+  constructor(private navCtrl: NavController,private eventCaptureFormProvider : EventCaptureFormProvider,
+              private trackedEntityInstancesProvider : TrackedEntityInstancesProvider,
+              private userProvider : UserProvider,private appProvider : AppProvider,
+              private programsProvider : ProgramsProvider,
+              private trackerCaptureProvider : TrackerCaptureProvider,
+              private organisationUnitsProvider : OrganisationUnitsProvider,
+              private trackedEntityAttributeValuesProvider : TrackedEntityAttributeValuesProvider,
+              private navParams: NavParams) {
   }
 
   ngOnInit(){
+    this.isDashboardWidgetOpen = {};
+    this.loadingMessage = "Loading user information";
+    this.isLoading = true;
     let trackedEntityInstancesId = this.navParams.get("trackedEntityInstancesId");
-    console.log("trackedEntityInstancesId : " + trackedEntityInstancesId);
+    this.currentProgram = this.programsProvider.lastSelectedProgram;
+    this.currentOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
+    this.dashboardWidgets = this.getDashboardWidgets();
+    this.userProvider.getCurrentUser().then(user=>{
+      this.currentUser = user;
+      this.loadTrackedEntityInstanceData(trackedEntityInstancesId);
+    }).catch((error)=>{
+      console.log(JSON.stringify(error));
+      this.isLoading = false;
+      this.appProvider.setNormalNotification("Fail to load user information");
+    })
   }
 
-  goBack(){
-    this.navCtrl.pop().then(()=>{}).catch(error=>{});
+  loadTrackedEntityInstanceData(trackedEntityInstancesId){
+    this.loadingMessage = "Loading tracked entity";
+    this.trackedEntityInstancesProvider.getTrackedEntityInstances([trackedEntityInstancesId],this.currentUser).then((trackedEntityInstances : any )=>{
+      this.trackedEntityAttributeValuesProvider.getTrackedEntityAttributeValues([trackedEntityInstancesId],this.currentUser).then((attributeValues : any)=>{
+        let attributeValuesObject = {};
+        if(attributeValues && attributeValues.length > 0){
+          attributeValues.forEach((attributeValue : any)=>{
+            delete attributeValue.id;
+            if(!attributeValuesObject[attributeValue.trackedEntityInstance]){
+              attributeValuesObject[attributeValue.trackedEntityInstance] = [];
+            }
+            attributeValuesObject[attributeValue.trackedEntityInstance].push(attributeValue);
+          });
+          trackedEntityInstances.forEach((trackedEntityInstanceObject : any)=>{
+            if(attributeValuesObject[trackedEntityInstanceObject.trackedEntityInstance]){
+              trackedEntityInstanceObject["attributes"] = attributeValuesObject[trackedEntityInstanceObject.trackedEntityInstance];
+            }else{
+              trackedEntityInstanceObject["attributes"] = [];
+            }
+          });
+          if(trackedEntityInstances.length > 0){
+            this.trackedEntityInstance = trackedEntityInstances[0];
+          }
+          this.loadingProgramStages(this.currentProgram.id,this.currentUser);
+        }
+      }).catch(error=>{
+        console.log(JSON.stringify(error));
+        this.isLoading = false;
+        this.appProvider.setNormalNotification("Fail to load tracked tracked entity");
+      });
+    }).catch(error=>{
+      console.log(JSON.stringify(error));
+      this.isLoading = false;
+      this.appProvider.setNormalNotification("Fail to load tracked tracked entity");
+    });
   }
+
+  loadingProgramStages(programId,currentUser){
+    this.loadingMessage = "Loading program stages " + this.currentProgram.name;
+    this.eventCaptureFormProvider.getProgramStages(programId,currentUser).then((programStages : any)=>{
+      this.programStages = programStages;
+      if(programStages && programStages.length > 0){
+        let counter = 1;
+        programStages.forEach((programStage : any)=>{
+          this.dashboardWidgets.push({id : programStage.id,name : programStage.name,iconName: counter});
+          counter ++;
+        })
+      }
+      if(this.dashboardWidgets.length > 0){
+        this.changeDashboardWidget(this.dashboardWidgets[0]);
+      }
+      this.loadTrackedEntityRegistration(programId,currentUser);
+    }).catch(error=>{
+      console.log(JSON.stringify(error));
+      this.isLoading = false;
+      this.appProvider.setNormalNotification("Fail to load program stages " + this.currentProgram.name);
+    });
+  }
+
+  loadTrackedEntityRegistration(programId,currentUser){
+    this.loadingMessage = "Loading registration fields " + this.currentProgram.name;
+    this.isLoading = true;
+    this.trackerCaptureProvider.getTrackedEntityRegistration(programId,currentUser).then((programTrackedEntityAttributes : any)=>{
+      this.programTrackedEntityAttributes = programTrackedEntityAttributes;
+      this.isLoading = false;
+    }).catch(error=>{
+      this.isLoading = false;
+      console.log(JSON.stringify(error));
+      this.appProvider.setNormalNotification("Fail to load registration fields for " + this.currentProgram.name);
+    });
+  }
+
+  //@todo hide key board
+  changeDashboardWidget(widget){
+    if(widget && widget.id){
+      if(!this.isDashboardWidgetOpen[widget.id]){
+        Object.keys(this.isDashboardWidgetOpen).forEach(id=>{
+          this.isDashboardWidgetOpen[id] = false;
+        });
+      }
+      console.log(JSON.stringify(widget));
+      this.isDashboardWidgetOpen[widget.id] = true;
+    }
+  }
+
+  getDashboardWidgets(){
+    return [
+      {id : 'enrollment',name : 'Enrollment',icon: 'assets/tracker/enrollment.png'},
+      {id : 'profile',name : 'profile',icon: 'assets/tracker/profile.png'}
+    ];
+  }
+
+
 
 }

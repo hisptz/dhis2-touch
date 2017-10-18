@@ -13,6 +13,69 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content >
+  <ion-grid>
+    <div *ngIf="isLoading">
+      <page-loading [loadingMessage]="loadingMessage" [loadingSize]="'large'" ></page-loading>
+    </div>
+    <div *ngIf="!isLoading">
+      <div *ngFor="let widget of dashboardWidgets">
+        <div *ngIf="(isDashboardWidgetOpen[widget.id])" >
+          <ion-row>
+            <ion-col>
+              <span ion-text ><b>{{ widget.name}}</b></span>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <div *ngIf="widget.id == 'enrollment'"  >
+                <div class="inputLabel">
+                  Enrolling organisation unit
+                </div>
+                <div class="input-field-container">
+                  <ion-item>
+                    <ion-input [(ngModel)]="currentOrganisationUnit.name" readonly="true"></ion-input>
+                  </ion-item>
+                </div>
+              </div>
+              <div *ngIf="widget.id == 'profile'">
+                <div *ngIf="programTrackedEntityAttributes && programTrackedEntityAttributes.length > 0">
+                  <div *ngFor="let programTrackedEntityAttribute of programTrackedEntityAttributes">
+                    <tracked-entity-inputs [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute"
+                                           [currentUser]="currentUser"
+                                           [data]="dataObject"
+                                           [mandatory]="programTrackedEntityAttribute.mandatory"
+                                           (onChange)="updateData($event)"></tracked-entity-inputs>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngFor="let programStage of programStages">
+                <div *ngIf="widget.id == programStage.id">
+                  {{ programStage|json }}
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+
+
+    </div>
+  </ion-grid>
 
 </ion-content>
+<ion-footer>
+  <div >
+    <div *ngIf="!isLoading">
+      <div ion-button clear text-capitalize *ngFor="let widget of dashboardWidgets" (tap)="changeDashboardWidget(widget)">
+        <div *ngIf="widget.icon">
+          <img  class="side-menu-icon" [src]="widget.icon"/>&nbsp;&nbsp;
+        </div>
+        <div *ngIf="widget.iconName">
+          <b>{{ widget.iconName }}</b>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-footer>

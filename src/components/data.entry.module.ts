@@ -11,12 +11,14 @@ import {TextInputFieldComponent} from "./text-input-field/text-input-field";
 import {TrueOnlyInputFieldComponent} from "./true-only-input-field/true-only-input-field";
 import {TrackedEntityInputsComponent} from "./tracked-entity-inputs/tracked-entity-inputs";
 import {EventCaptureFormInputComponent} from "./event-capture-form-inputs/event-capture-form-inputs";
+import {ProgramStageComponent} from "./program-stage/program-stage";
 
 @NgModule({
   declarations: [
     OrganisationUnitTreeComponent,InputContainerComponent,TrackedEntityInputsComponent,
     BooleanInputFieldComponent,DateInputFieldComponent,NumericalInputFieldComponent,
-    OptionSetInputFieldComponent,TextInputFieldComponent,TrueOnlyInputFieldComponent,EventCaptureFormInputComponent
+    OptionSetInputFieldComponent,TextInputFieldComponent,TrueOnlyInputFieldComponent,EventCaptureFormInputComponent,
+    ProgramStageComponent,
   ],
   imports: [
     IonicModule,SharedModule
@@ -24,7 +26,8 @@ import {EventCaptureFormInputComponent} from "./event-capture-form-inputs/event-
   exports: [
     OrganisationUnitTreeComponent,InputContainerComponent,TrackedEntityInputsComponent,
     BooleanInputFieldComponent,DateInputFieldComponent,NumericalInputFieldComponent,
-    OptionSetInputFieldComponent,TextInputFieldComponent,TrueOnlyInputFieldComponent,EventCaptureFormInputComponent
+    OptionSetInputFieldComponent,TextInputFieldComponent,TrueOnlyInputFieldComponent,EventCaptureFormInputComponent,
+    ProgramStageComponent
   ]
 })
 
