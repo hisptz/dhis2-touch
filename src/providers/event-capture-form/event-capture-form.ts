@@ -25,7 +25,6 @@ export class EventCaptureFormProvider {
     let dataElementIds = [];
     let dataElementMapper = {};
     return new Promise((resolve, reject) =>  {
-      console.log(programId);
       this.programsProvider.getProgramsStages(programId,currentUser).then((programsStages:any)=>{
         //obtain section ids
         //programstage sections
@@ -59,6 +58,16 @@ export class EventCaptureFormProvider {
               }
             });
           });
+          programsStages.sort((a, b) => {
+            if (a.sortOrder > b.sortOrder) {
+              return 1;
+            }
+            if (a.sortOrder < b.sortOrder) {
+              return -1;
+            }
+            return 0;
+          });
+
           resolve(programsStages);
         }).catch(error=>{reject(error)});
       }).catch(error=>{reject(error)});
