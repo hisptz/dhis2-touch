@@ -21,52 +21,59 @@
     <div *ngIf="!isLoading">
       <div *ngFor="let widget of dashboardWidgets">
         <div *ngIf="(isDashboardWidgetOpen[widget.id])" >
-          <ion-row>
-            <ion-col>
-              <span ion-text text-capitalize><b>{{ widget.name }}</b></span>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>
-              <div *ngIf="widget.id == 'enrollment'"  >
-                <div class="inputLabel">
-                  Organisation unit
-                </div>
-                <div class="input-field-container">
-                  <ion-item>
-                    <ion-input [(ngModel)]="currentOrgUnit.name" readonly="true"></ion-input>
-                  </ion-item>
-                </div>
-                <div class="inputLabel">
-                  Program
-                </div>
-                <div class="input-field-container">
-                  <ion-item>
-                    <ion-input [(ngModel)]="currentProgram.name" readonly="true"></ion-input>
-                  </ion-item>
-                </div>
-              </div>
-              <div *ngIf="widget.id == 'profile'">
-                <div *ngIf="programTrackedEntityAttributes && programTrackedEntityAttributes.length > 0">
-                  <div *ngFor="let programTrackedEntityAttribute of programTrackedEntityAttributes">
-                    <tracked-entity-inputs [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute"
-                                           [currentUser]="currentUser"
-                                           [data]="dataObject"
-                                           [mandatory]="programTrackedEntityAttribute.mandatory"
-                                           (onChange)="updateData($event)"></tracked-entity-inputs>
+          <div class="item-card">
+            <ion-row>
+              <ion-col>
+                <span ion-text text-capitalize><b>{{ widget.name }}</b></span>
+                <hr>
+              </ion-col>
+            </ion-row>
+          </div>
+          <div class="item-card">
+            <ion-row>
+              <ion-col>
+                <div *ngIf="widget.id == 'enrollment'"  >
+                  <div class="inputLabel">
+                    Organisation unit
+                  </div>
+                  <div class="input-field-container">
+                    <ion-item>
+                      <ion-input [(ngModel)]="currentOrgUnit.name" readonly="true"></ion-input>
+                    </ion-item>
+                  </div>
+                  <div class="inputLabel">
+                    Program
+                  </div>
+                  <div class="input-field-container">
+                    <ion-item>
+                      <ion-input [(ngModel)]="currentProgram.name" readonly="true"></ion-input>
+                    </ion-item>
                   </div>
                 </div>
-              </div>
-
-              <div *ngIf="programStages && programStages.length > 0">
-                <div *ngFor="let programStage of programStages">
-                  <div *ngIf="widget.id == programStage.id">
-                    {{ programStage|json }}
+                <div *ngIf="widget.id == 'profile'">
+                  <div *ngIf="programTrackedEntityAttributes && programTrackedEntityAttributes.length > 0">
+                    <div *ngFor="let programTrackedEntityAttribute of programTrackedEntityAttributes">
+                      <tracked-entity-inputs [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute"
+                                             [currentUser]="currentUser"
+                                             [data]="dataObject"
+                                             [mandatory]="programTrackedEntityAttribute.mandatory"
+                                             (onChange)="updateData($event)"></tracked-entity-inputs>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </ion-col>
-          </ion-row>
+                <div *ngIf="programStages && programStages.length > 0">
+                  <div *ngFor="let programStage of programStages">
+                    <div *ngIf="widget.id == programStage.id">
+                      {{ programStage|json }}
+                    </div>
+                  </div>
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>&nbsp;&nbsp;</ion-col>
+            </ion-row>
+          </div>
         </div>
       </div>
     </div>

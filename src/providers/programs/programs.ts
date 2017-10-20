@@ -28,10 +28,6 @@ export class ProgramsProvider {
     return this.lastSelectedProgram;
   }
 
-  setLastSelectedProgramCategoryOption(programOption){
-    this.lastSelectedProgramCategoryOption = programOption;
-  }
-
   /**
    *
    *
