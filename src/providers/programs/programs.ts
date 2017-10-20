@@ -395,6 +395,7 @@ export class ProgramsProvider {
             let hasProgramSelected = false;
             programsResponse.forEach((program : any)=>{
               if(program.programType && program.programType == programType){
+                program.withoutRegistration = JSON.parse(program.withoutRegistration);
                 programs.push(program);
                 if(this.lastSelectedProgram && this.lastSelectedProgram.id){
                   if(this.lastSelectedProgram.id == program.id){

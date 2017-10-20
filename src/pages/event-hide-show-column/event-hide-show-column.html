@@ -19,5 +19,35 @@
 
 
 <ion-content >
-
+  <ion-grid>
+    <div *ngIf="dataElements && dataElements.length > 0">
+      <ion-row>
+        <ion-col>
+          <button  color="primary" (tap)="autoSelectFields(true)" round ion-button full >
+            Select all
+          </button>
+        </ion-col>
+        <ion-col>
+          <button  color="primary" (tap)="autoSelectFields(false)" round ion-button full>
+            Deselect all
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item *ngFor="let dataElement of dataElements">
+            <ion-label>{{ dataElement.name }}</ion-label>
+            <ion-checkbox [(ngModel)]="selectedItemsModel[dataElement.id]"></ion-checkbox>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <button  color="primary" round ion-button full (tap)="saveChanges()">
+            Save
+          </button>
+        </ion-col>
+      </ion-row>
+    </div>
+  </ion-grid>
 </ion-content>

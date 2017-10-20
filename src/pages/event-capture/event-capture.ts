@@ -34,6 +34,8 @@ export class EventCapturePage implements OnInit {
   programCategoryCombo: any;
   selectedDataDimension: Array<any>;
   programs: Array<any>;
+  programStage : any;
+  columnsToDisplay : any = {};
   icons: any = {};
 
   constructor(private navCtrl: NavController, private userProvider: UserProvider, private modalCtrl: ModalController,
@@ -88,6 +90,7 @@ export class EventCapturePage implements OnInit {
       this.updateEventCaptureSelections();
       if(this.selectedProgram && this.selectedProgram.categoryCombo){
         this.updateDataSetCategoryCombo(this.selectedProgram.categoryCombo);
+        this.loadProgramStages(this.selectedProgram.id);
       }
       this.isLoading = false;
       this.loadingMessage = "";
@@ -139,6 +142,7 @@ export class EventCapturePage implements OnInit {
           this.programsProvider.setLastSelectedProgram(selectedProgram);
           this.updateEventCaptureSelections();
           this.updateDataSetCategoryCombo(this.selectedProgram.categoryCombo);
+          this.loadProgramStages(selectedProgram.id);
         }
       });
       modal.present();
@@ -228,12 +232,31 @@ export class EventCapturePage implements OnInit {
     }
   }
 
-  loadProgramStages(){
-
+  loadProgramStages(programId){
+    this.loadingMessage = "Loading program stages " + this.selectedProgram.name;
+    this.columnsToDisplay = {};
+    this.eventCaptureFormProvider.getProgramStages(programId,this.currentUser).then((programStages : any)=>{
+      if(programStages && programStages.length > 0){
+        this.programStage = programStages[0];
+        if(this.programStage.programStageDataElements){
+          //@todo form label to be incorporate here
+          this.programStage.programStageDataElements.forEach((programStageDataElement : any)=>{
+            if(programStageDataElement.dataElement && programStageDataElement.dataElement.id){
+              //formName
+              this.columnsToDisplay[programStageDataElement.dataElement.id] =programStageDataElement.dataElement.displayName;
+            }
+          });
+        }
+      }
+    }).catch(error=>{
+      console.log(JSON.stringify(error));
+      this.isLoading = false;
+      this.appProvider.setNormalNotification("Fail to load program stages " + this.selectedProgram.name);
+    });
   }
 
   hideAndShowColumns() {
-    let modal = this.modalCtrl.create('EventHideShowColumnPage',{});
+    let modal = this.modalCtrl.create('EventHideShowColumnPage',{columnsToDisplay : this.columnsToDisplay,programStage : this.programStage});
     modal.onDidDismiss((columnsToDisplay : any)=>{
       if(columnsToDisplay){
         console.log(columnsToDisplay);
@@ -243,13 +266,13 @@ export class EventCapturePage implements OnInit {
   }
 
   goToEventView(event){
-    let params = {};
-    this.navCtrl.push('EventCaptureRegisterPage',{params:params});
+    let params = {dataDimension : this.getDataDimensions()};
+    this.navCtrl.push('EventCaptureRegisterPage',params);
   }
 
   goToEventRegister(){
-    let params = {};
-    this.navCtrl.push('EventCaptureRegisterPage',{});
+    let params = {dataDimension : this.getDataDimensions()};
+    this.navCtrl.push('EventCaptureRegisterPage',params);
   }
 
 
