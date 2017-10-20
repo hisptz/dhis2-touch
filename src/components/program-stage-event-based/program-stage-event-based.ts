@@ -18,12 +18,14 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy{
 
   @Input() programStage;
   @Input() dataDimension;
+  @Input() currentEvent;
 
   currentOrgUnit : any;
   currentProgram : any;
   currentUser : any;
   isLoading : boolean;
   loadingMessage : string;
+  dataObject : any;
 
   constructor(private programsProvider : ProgramsProvider,
               private userProvider : UserProvider,private appProvider : AppProvider,
@@ -31,6 +33,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit(){
+    this.dataObject = {};
     this.currentOrgUnit = this.organisationUnitProvider.lastSelectedOrgUnit;
     this.currentProgram = this.programsProvider.lastSelectedProgram;
     this.loadingMessage = "Loading user information";

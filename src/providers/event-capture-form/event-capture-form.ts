@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import 'rxjs/add/operator/map';
 import {ProgramsProvider} from "../programs/programs";
 import {DataElementsProvider} from "../data-elements/data-elements";
+import {SqlLiteProvider} from "../sql-lite/sql-lite";
+
+declare var dhis2: any;
 
 /*
   Generated class for the EventCaptureFormProvider provider.
@@ -13,7 +14,9 @@ import {DataElementsProvider} from "../data-elements/data-elements";
 @Injectable()
 export class EventCaptureFormProvider {
 
-  constructor(public http: Http, public programsProvider:ProgramsProvider, public dataElementProvider:DataElementsProvider) {}
+  constructor(private programsProvider:ProgramsProvider,
+              private sqliteProvider : SqlLiteProvider,
+              private dataElementProvider:DataElementsProvider) {}
 
   /**
    *
@@ -74,28 +77,72 @@ export class EventCaptureFormProvider {
     });
   }
 
-
+  /**
+   *
+   * @param columnsToDisplay
+   * @param events
+   * @returns {Promise<any>}
+   */
   getTableFormatResult(columnsToDisplay,events){
     let table = {headers: [], rows: []};
     let eventIds = [];
+    //@todo add all event available on rows
     Object.keys(columnsToDisplay).forEach(key => {
       table.headers.push(columnsToDisplay[key]);
     });
-    // let mapperArray = this.getAttributesMapperForDisplay(trackedEntityInstances).mapper;
-    // let trackedEntityInstancesIds = this.getAttributesMapperForDisplay(trackedEntityInstances).trackedEntityInstancesIds;
-    // mapperArray.forEach((attributeMapper: any) => {
-    //   let row = [];
-    //   Object.keys(attributeToDisplay).forEach(key => {
-    //     if (attributeMapper[key]) {
-    //       row.push(attributeMapper[key]);
-    //     } else {
-    //       row.push("");
-    //     }
-    //   });
-    //   table.rows.push(row);
-    // });
     return new Promise((resolve, reject) => {
       resolve({table: table, eventIds: eventIds});
+    });
+  }
+
+  /**
+   *
+   * @param currentProgram
+   * @param currentOrgUnit
+   * @param programStageId
+   * @param attributeCategoryOptions
+   * @param attributeCc
+   * @param eventType
+   * @returns {{id; program; programName; programStage: any; orgUnit; orgUnitName; status: string; deleted: boolean; attributeCategoryOptions: any; attributeCc: any; eventType: any; syncStatus: string; coordinate: {latitude: number; longitude: number}; dataValues: Array}}
+   */
+  getEmptyEvent(currentProgram,currentOrgUnit,programStageId,attributeCategoryOptions,attributeCc,eventType){
+    let event = {
+      id : dhis2.util.uid(),
+      program : currentProgram.id,
+      programName : currentProgram.name,
+      programStage : programStageId,
+      orgUnit : currentOrgUnit.id,
+      orgUnitName : currentOrgUnit.name,
+      status : "ACTIVE",
+      deleted : false,
+      attributeCategoryOptions : attributeCategoryOptions,
+      attributeCc : attributeCc,
+      eventType : eventType,
+      syncStatus : "not-synced",
+      coordinate : {
+        "latitude": 0,
+        "longitude": 0
+      },
+      dataValues : []
+    };
+    return event;
+  }
+
+  /**
+   *
+   * @param {string} attribute
+   * @param {Array<string>} attributeValues
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getEventsByAttribute(attribute : string,attributeValues : Array<string>,currentUser){
+    let tableName = "events";
+    return new Promise((resolve,reject)=>{
+      this.sqliteProvider.getDataFromTableByAttributes(tableName,attribute,attributeValues,currentUser.currentDatabase).then((events : any)=>{
+        resolve(events);
+      }).catch((error=>{
+        reject({message : error});
+      }));
     });
   }
 

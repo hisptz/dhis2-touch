@@ -264,7 +264,6 @@ export const DATABASE_STRUCTURE = {
   events: {
     columns: [
       {value: 'id', type: 'TEXT'},
-      {value: 'event', type: 'TEXT'},
       {value: 'program', type: 'TEXT'},
       {value: 'programName', type: 'TEXT'},
       {value: 'programStage', type: 'TEXT'},
@@ -272,13 +271,17 @@ export const DATABASE_STRUCTURE = {
       {value: 'orgUnitName', type: 'TEXT'},
       {value: 'status', type: 'TEXT'},
       {value: 'eventDate', type: 'TEXT'},
+      {value: 'dueDate', type: 'TEXT'},
+      {value: 'deleted', type: 'TEXT'},
       {value: 'completedDate', type: 'TEXT'},
       {value: 'attributeCategoryOptions', type: 'TEXT'},
       {value: 'attributeCc', type: "TEXT"},
-      {value: 'dataValues', type: 'LONGTEXT'},
       {value: "eventType", type: 'TEXT'},
+      {value: 'syncStatus', type: 'TEXT'},
       {value: 'notes', type: 'LONGTEXT'},
-      {value: 'syncStatus', type: 'TEXT'}
+      {value: 'coordinate', type: 'LONGTEXT'},
+      {value: 'dataValues', type: 'LONGTEXT'},
+
     ],
     isMetadata: false,
     resourceType: "event",

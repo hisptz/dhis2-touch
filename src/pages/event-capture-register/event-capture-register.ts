@@ -28,6 +28,8 @@ export class EventCaptureRegisterPage implements OnDestroy,OnInit{
   isLoading : boolean;
   loadingMessage : string;
 
+  currentEvent : any;
+
 
   constructor(private navCtr : NavController, private userProvider : UserProvider,
               private params : NavParams,private programsProvider : ProgramsProvider,
@@ -58,7 +60,23 @@ export class EventCaptureRegisterPage implements OnDestroy,OnInit{
       if(programStages && programStages.length > 0){
         this.programStage = programStages[0];
       }
-      this.isLoading = false;
+      let eventId = this.params.get('eventId');
+      if(eventId){
+        this.loadingMessage = "Loading data from local storage";
+        this.eventCaptureFormProvider.getEventsByAttribute("id",[eventId],this.currentUser).then((events : any)=>{
+          if(events && events.length > 0){
+            this.currentEvent = events[0];
+          }
+        }).catch(error=>{
+          this.isLoading = false;
+          console.log("On loading event with id" + eventId);
+          console.log(JSON.stringify(error));
+        });
+        this.isLoading = false;
+      }else{
+        this.currentEvent = this.eventCaptureFormProvider.getEmptyEvent(this.currentProgram,this.currentOrgUnit,this.programStage.id,this.dataDimension.attributeCos,this.dataDimension.attributeCc,'evemt-capture');
+        this.isLoading = false;
+      }
     }).catch(error=>{
       console.log(JSON.stringify(error));
       this.isLoading = false;
