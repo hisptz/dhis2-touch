@@ -1,3 +1,17 @@
-Event based, coming soon<br>
-{{ dataDimension|json }}<br>
-{{ programStage |json }}
+<div *ngIf="isLoading">
+  <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></page-loading>
+</div>
+<div *ngIf="!isLoading">
+  <div>
+    {{ programStage.executionDateLabel}}<span class="required">*</span>
+  </div>
+  <ion-item>
+    <ion-datetime doneText="Update" (ionChange)="updateEventDate()" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [(ngModel)]="eventDate"></ion-datetime>
+  </ion-item>
+  <div *ngIf="eventDate && eventDate != ''">
+    eventDate : {{ eventDate }}<br>
+    currentEvent : {{ currentEvent |json }}
+
+
+  </div>
+</div>
