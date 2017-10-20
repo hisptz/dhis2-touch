@@ -63,7 +63,7 @@
                 <div *ngIf="programStages && programStages.length > 0">
                   <div *ngFor="let programStage of programStages">
                     <div *ngIf="widget.id == programStage.id">
-                      <program-stage [programStage]="programStage"></program-stage>
+                      <program-stage-tracker-based [programStage]="programStage" ></program-stage>
                     </div>
                   </div>
                 </div>

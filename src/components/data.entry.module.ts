@@ -10,14 +10,15 @@ import {OptionSetInputFieldComponent} from "./option-set-input-field/option-set-
 import {TextInputFieldComponent} from "./text-input-field/text-input-field";
 import {TrueOnlyInputFieldComponent} from "./true-only-input-field/true-only-input-field";
 import {TrackedEntityInputsComponent} from "./tracked-entity-inputs/tracked-entity-inputs";
-import {ProgramStageComponent} from "./program-stage/program-stage";
+import {ProgramStageEventBasedComponent} from "./program-stage-event-based/program-stage-event-based";
+import {ProgramStageTrackerBasedComponent} from "./program-stage-tracker-based/program-stage-tracker-based";
 
 @NgModule({
   declarations: [
     OrganisationUnitTreeComponent,InputContainerComponent,TrackedEntityInputsComponent,
     BooleanInputFieldComponent,DateInputFieldComponent,NumericalInputFieldComponent,
     OptionSetInputFieldComponent,TextInputFieldComponent,TrueOnlyInputFieldComponent,
-    ProgramStageComponent,
+    ProgramStageEventBasedComponent,ProgramStageTrackerBasedComponent
   ],
   imports: [
     IonicModule,SharedModule
@@ -26,7 +27,7 @@ import {ProgramStageComponent} from "./program-stage/program-stage";
     OrganisationUnitTreeComponent,InputContainerComponent,TrackedEntityInputsComponent,
     BooleanInputFieldComponent,DateInputFieldComponent,NumericalInputFieldComponent,
     OptionSetInputFieldComponent,TextInputFieldComponent,TrueOnlyInputFieldComponent,
-    ProgramStageComponent
+    ProgramStageEventBasedComponent,ProgramStageTrackerBasedComponent
   ]
 })
 

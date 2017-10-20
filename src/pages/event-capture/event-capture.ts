@@ -83,6 +83,12 @@ export class EventCapturePage implements OnInit {
     });
   }
 
+  ionViewDidEnter() {
+    if(this.isFormReady){
+      this.loadingEvents();
+    }
+  }
+
   loadingPrograms() {
     this.isLoading = true;
     this.loadingMessage = "Loading assigned programs";
@@ -266,6 +272,7 @@ export class EventCapturePage implements OnInit {
     modal.onDidDismiss((columnsToDisplay : any)=>{
       if(columnsToDisplay){
         this.columnsToDisplay = columnsToDisplay;
+        this.renderDataAsTable();
       }
     });
     modal.present().then(()=>{});
@@ -278,6 +285,7 @@ export class EventCapturePage implements OnInit {
   }
 
   renderDataAsTable(){
+    this.isLoading = true;
     this.loadingMessage = "Prepare table";
     this.eventCaptureFormProvider.getTableFormatResult(this.columnsToDisplay,"").then((response : any)=>{
       this.tableLayout = response.table;

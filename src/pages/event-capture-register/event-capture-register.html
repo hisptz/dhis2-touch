@@ -13,5 +13,16 @@
 
 
 <ion-content >
-
+  <ion-grid>
+    <div *ngIf="isLoading">
+      <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></page-loading>
+    </div>
+    <div *ngIf="!isLoading">
+      <ion-row>
+        <ion-col>
+          <program-stage-event-based [programStage]="programStage" [dataDimension]="dataDimension"></program-stage-event-based>
+        </ion-col>
+      </ion-row>
+    </div>
+  </ion-grid>
 </ion-content>
