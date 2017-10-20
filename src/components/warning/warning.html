@@ -1,10 +1,9 @@
 
 <div *ngIf="warningMessage" text-center>
-  <div >
-    <img  [src]="icon"/>
-  </div>
-  <div>
-    {{ warningMessage}}
-  </div>
-
+  <ion-row>
+    <ion-col col-1>
+      <img  [src]="icon"/>
+    </ion-col>
+    <ion-col col-11>{{ warningMessage}}</ion-col>
+  </ion-row>
 </div>
