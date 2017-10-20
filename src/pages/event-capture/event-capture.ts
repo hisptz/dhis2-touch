@@ -38,6 +38,9 @@ export class EventCapturePage implements OnInit {
   columnsToDisplay : any = {};
   icons: any = {};
 
+  tableLayout : any;
+  eventIds : Array<string>
+
   constructor(private navCtrl: NavController, private userProvider: UserProvider, private modalCtrl: ModalController,
               private organisationUnitsProvider: OrganisationUnitsProvider, private programsProvider: ProgramsProvider, private appProvider: AppProvider,
               private eventCaptureFormProvider:EventCaptureFormProvider) {
@@ -117,6 +120,9 @@ export class EventCapturePage implements OnInit {
     this.isFormReady = this.isAllParameterSelected();
     this.isLoading = false;
     this.loadingMessage = "";
+    if(this.isFormReady){
+      this.loadingEvents();
+    }
   }
 
   openOrganisationUnitTree() {
@@ -259,13 +265,32 @@ export class EventCapturePage implements OnInit {
     let modal = this.modalCtrl.create('EventHideShowColumnPage',{columnsToDisplay : this.columnsToDisplay,programStage : this.programStage});
     modal.onDidDismiss((columnsToDisplay : any)=>{
       if(columnsToDisplay){
-        console.log(columnsToDisplay);
+        this.columnsToDisplay = columnsToDisplay;
       }
     });
     modal.present().then(()=>{});
   }
 
-  goToEventView(event){
+  loadingEvents(){
+    this.isLoading = true;
+    this.loadingMessage = "Loading data";
+    this.renderDataAsTable();
+  }
+
+  renderDataAsTable(){
+    this.loadingMessage = "Prepare table";
+    this.eventCaptureFormProvider.getTableFormatResult(this.columnsToDisplay,"").then((response : any)=>{
+      this.tableLayout = response.table;
+      this.eventIds = response.eventIds;
+      this.isLoading = false;
+    }).catch(error=>{
+      this.isLoading = false;
+      this.appProvider.setNormalNotification("Fail to prepare table for display");
+    });
+  }
+
+  goToEventView(currentIndex){
+    console.log(this.eventIds[currentIndex]);
     let params = {dataDimension : this.getDataDimensions()};
     this.navCtrl.push('EventCaptureRegisterPage',params);
   }

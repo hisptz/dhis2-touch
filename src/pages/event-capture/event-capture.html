@@ -56,8 +56,31 @@
         <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage" ></page-loading>
       </div>
       <div *ngIf="!isLoading">
-
-        columnsToDisplay
+        <ion-row>
+          <ion-col>
+            <div *ngIf="tableLayout">
+              <table class="table table-bordered" width="100%" >
+                <thead *ngIf="tableLayout && tableLayout.headers">
+                <tr >
+                  <th *ngFor="let header of tableLayout.headers" >{{ header}}</th>
+                </tr>
+                </thead>
+                <tbody *ngIf="tableLayout.rows">
+                <tr *ngFor="let row of tableLayout.rows;let currentIndex = index" (click)="goToEventView(currentIndex)">
+                  <td *ngFor="let data of row">
+                    {{ data }}
+                  </td>
+                </tr>
+                <tr *ngIf="tableLayout.rows.length == 0">
+                  <td colspan="100%">
+                    There no data at the moment
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </ion-col>
+        </ion-row>
 
       </div>
     </div>

@@ -65,4 +65,29 @@ export class EventCaptureFormProvider {
     });
   }
 
+
+  getTableFormatResult(columnsToDisplay,events){
+    let table = {headers: [], rows: []};
+    let eventIds = [];
+    Object.keys(columnsToDisplay).forEach(key => {
+      table.headers.push(columnsToDisplay[key]);
+    });
+    // let mapperArray = this.getAttributesMapperForDisplay(trackedEntityInstances).mapper;
+    // let trackedEntityInstancesIds = this.getAttributesMapperForDisplay(trackedEntityInstances).trackedEntityInstancesIds;
+    // mapperArray.forEach((attributeMapper: any) => {
+    //   let row = [];
+    //   Object.keys(attributeToDisplay).forEach(key => {
+    //     if (attributeMapper[key]) {
+    //       row.push(attributeMapper[key]);
+    //     } else {
+    //       row.push("");
+    //     }
+    //   });
+    //   table.rows.push(row);
+    // });
+    return new Promise((resolve, reject) => {
+      resolve({table: table, eventIds: eventIds});
+    });
+  }
+
 }

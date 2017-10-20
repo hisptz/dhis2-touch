@@ -27,6 +27,9 @@ export class EventHideShowColumnPage implements OnInit, OnDestroy{
     this.dataElements = [];
     this.programStage = this.params.get('programStage');
     let columnsToDisplay = this.params.get('columnsToDisplay');
+    Object.keys(columnsToDisplay).forEach(key=>{
+      this.selectedItemsModel[key] = true;
+    });
     this.programStage.programStageDataElements.forEach((programStageDataElement : any)=>{
       if(programStageDataElement.dataElement && programStageDataElement.dataElement.id){
         //formName displayName
