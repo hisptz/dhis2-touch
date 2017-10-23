@@ -77,8 +77,27 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy{
     this.eventCaptureFormProvider.saveEvents([this.currentEvent],this.currentUser).then(()=>{
       this.appProvider.setNormalNotification("Event has been registered successfully");
     }).catch((error)=>{
-      console.log("On register event");
-    })
+      console.log(JSON.stringify(error));
+    });
+  }
+
+  updateData(updatedData){
+    let dataElementId = updatedData.id.split('-');
+    this.dataObjectModel[dataElementId] = updatedData.value;
+    let dataValues = [];
+    Object.keys(this.dataObjectModel).forEach((dataElementId : any)=>{
+      dataValues.push({
+        dataElement : dataElementId,
+        value : updatedData.value
+      });
+    });
+    this.currentEvent.dataValues = dataValues;
+    this.currentEvent.syncStatus = "not-synced";
+    this.eventCaptureFormProvider.saveEvents([this.currentEvent],this.currentUser).then(()=>{
+      console.log("Success saving data values");
+    }).catch((error)=>{
+      console.log(JSON.stringify(error));
+    });
   }
 
   ngOnDestroy(){

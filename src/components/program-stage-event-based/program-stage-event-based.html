@@ -11,10 +11,20 @@
     </ion-item>
   </div>
   <div *ngIf="eventDate && eventDate != ''">
-    <event-input-container></event-input-container>
-    eventDate : {{ eventDate }}<br>
-    currentEvent : {{ currentEvent |json }}
-
+    <div *ngIf="programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0 ">
+      <div *ngFor="let programStageDataElement of programStage.programStageDataElements">
+        <div *ngIf="programStageDataElement.dataElement && programStageDataElement.dataElement.id">
+          <event-input-container [dataElement]="programStageDataElement.dataElement"
+                                 [currentUser]="currentUser"
+                                 [data]="dataObjectModel"
+                                 [mandatory]="programStageDataElement.compulsory"
+                                 (onChange)="updateData($event)"></event-input-container>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!(programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
+      <notification [message]="'Contact system to add data elements'"></notification>
+    </div>
 
   </div>
 </div>

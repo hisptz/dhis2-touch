@@ -12,9 +12,8 @@ import {HttpClientProvider} from "../http-client/http-client";
 @Injectable()
 export class ProgramsProvider {
 
-  public resource : string;
-  public lastSelectedProgram : any;
-  public lastSelectedProgramCategoryOption : any;
+  resource : string;
+  lastSelectedProgram : any;
 
   constructor(private sqlLite : SqlLiteProvider,private HttpClient : HttpClientProvider) {
     this.resource = "programs";
