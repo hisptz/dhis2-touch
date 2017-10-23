@@ -24,7 +24,7 @@
           <div class="item-card">
             <ion-row>
               <ion-col>
-                <span ion-text text-capitalize><b>{{ widget.name }}</b></span>
+                <span ion-text text-capitalize padding-top padding-bottom><b>{{ widget.name }}</b></span>
               </ion-col>
             </ion-row>
           </div>
@@ -83,7 +83,7 @@
   <ion-toolbar>
     <div ion-button clear text-capitalize *ngFor="let widget of dashboardWidgets" (tap)="changeDashboardWidget(widget)">
       <div *ngIf="widget.icon">
-        <img  class="footer-icon" [src]="widget.icon"/>&nbsp;&nbsp;
+        <img class="footer-icon" [src]="widget.icon"/>
       </div>
       <div *ngIf="widget.iconName">
         <b>{{ widget.iconName }}</b>

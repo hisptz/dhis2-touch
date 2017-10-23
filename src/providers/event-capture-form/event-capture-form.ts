@@ -49,7 +49,11 @@ export class EventCaptureFormProvider {
             if(ids.length > 1){
               programsStage.id = ids[1];
             }
+            programsStage.hideDueDate = JSON.parse(programsStage.hideDueDate);
+            programsStage.repeatable = JSON.parse(programsStage.repeatable);
+            programsStage.allowGenerateNextVisit = JSON.parse(programsStage.allowGenerateNextVisit);
             programsStage.autoGenerateEvent = JSON.parse(programsStage.autoGenerateEvent);
+            programsStage.blockEntryForm = JSON.parse(programsStage.blockEntryForm);
             programsStage.generatedByEnrollmentDate = JSON.parse(programsStage.generatedByEnrollmentDate);
             programsStage.captureCoordinates = JSON.parse(programsStage.captureCoordinates);
             programsStage.programStageDataElements.forEach((programStageDataElement)=>{
