@@ -28,7 +28,7 @@ export class EventCapturePage implements OnInit {
   loadingMessage: string;
   organisationUnitLabel: string;
   programLabel: string;
-  isFormReady: boolean;
+  isFormReady: boolean = false;
   isProgramDimensionApplicable: boolean;
   programDimensionNotApplicableMessage: string;
   programCategoryCombo: any;
@@ -39,7 +39,8 @@ export class EventCapturePage implements OnInit {
   icons: any = {};
 
   tableLayout : any;
-  eventIds : Array<string>
+  eventIds : Array<string>;
+  currentEvents : Array<any>;
 
   constructor(private navCtrl: NavController, private userProvider: UserProvider, private modalCtrl: ModalController,
               private organisationUnitsProvider: OrganisationUnitsProvider, private programsProvider: ProgramsProvider, private appProvider: AppProvider,
@@ -85,6 +86,7 @@ export class EventCapturePage implements OnInit {
 
   ionViewDidEnter() {
     if(this.isFormReady){
+      console.log(this.isFormReady);
       this.loadingEvents();
     }
   }
@@ -279,15 +281,21 @@ export class EventCapturePage implements OnInit {
   }
 
   loadingEvents(){
-    this.isLoading = true;
-    this.loadingMessage = "Loading data";
-    this.renderDataAsTable();
+    if(this.selectedOrgUnit && this.selectedOrgUnit.id && this.selectedProgram && this.selectedProgram.id){
+      this.isLoading = true;
+      this.loadingMessage = "Loading data";
+      let dataDimension = this.getDataDimensions();
+      this.eventCaptureFormProvider.getEventsBasedOnEventsSelection(this.currentUser,dataDimension,this.selectedProgram.id,this.selectedOrgUnit.id).then((events :any)=>{
+        this.currentEvents = events;
+        this.renderDataAsTable();
+      });
+    }
   }
 
   renderDataAsTable(){
     this.isLoading = true;
     this.loadingMessage = "Prepare table";
-    this.eventCaptureFormProvider.getTableFormatResult(this.columnsToDisplay,"").then((response : any)=>{
+    this.eventCaptureFormProvider.getTableFormatResult(this.columnsToDisplay,this.currentEvents).then((response : any)=>{
       this.tableLayout = response.table;
       this.eventIds = response.eventIds;
       this.isLoading = false;

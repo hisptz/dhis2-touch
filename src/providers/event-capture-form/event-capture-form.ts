@@ -146,6 +146,30 @@ export class EventCaptureFormProvider {
     });
   }
 
+  getEventsBasedOnEventsSelection(currentUser,dataDimension,programId,orgUnitId){
+    let attribute = "program";
+    let attributeValues = [programId];
+    let events = [];
+    return new Promise((resolve,reject)=>{
+      this.getEventsByAttribute(attribute,attributeValues,currentUser).then((eventResponse : any)=>{
+        eventResponse.forEach((event : any)=>{
+          if(event.orgUnit == orgUnitId && event.attributeCategoryOptions == dataDimension.attributeCos && event.attributeCc == dataDimension.attributeCc){
+            events.push(event);
+          }
+        });
+        resolve(events);
+      }).catch((error)=>{
+        resolve(events);
+      });
+    });
+  }
+
+  /**
+   *
+   * @param events
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   saveEvents(events,currentUser){
     let tableName  = "events";
     return new Promise((resolve,reject)=>{
