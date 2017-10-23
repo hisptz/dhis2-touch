@@ -19,7 +19,7 @@ export class SyncPage implements OnInit{
 
   isSyncContentOpen : any;
   syncContents : Array<any>;
-  resources: any;
+  public resources: any;
   dataBaseStructure: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,private syncProvider : SyncProvider, private sqLiteProvider: SqlLiteProvider) {
@@ -31,26 +31,6 @@ export class SyncPage implements OnInit{
     if(this.syncContents.length > 0){
       this.toggleSyncContents(this.syncContents[0]);
     }
-
-    this.setUpdateManagerList();
-  }
-
-
-  toggleSyncContents(content){
-    if(content && content.id){
-      if(this.isSyncContentOpen[content.id]){
-        this.isSyncContentOpen[content.id] = false;
-      }else{
-        Object.keys(this.isSyncContentOpen).forEach(id=>{
-          this.isSyncContentOpen[id] = false;
-        });
-        this.isSyncContentOpen[content.id] = true;
-      }
-    }
-
-  }
-
-  setUpdateManagerList(){
     this.resources=[];
     this.dataBaseStructure = this.sqLiteProvider.getDataBaseStructure();
     Object.keys(this.dataBaseStructure).forEach((resource:any) =>{
@@ -65,10 +45,17 @@ export class SyncPage implements OnInit{
     });
   }
 
-  getMetadataResoures(){
-    return this.resources;
+
+  toggleSyncContents(content){
+    if(content && content.id){
+      if(this.isSyncContentOpen[content.id]){
+        this.isSyncContentOpen[content.id] = false;
+      }else{
+        Object.keys(this.isSyncContentOpen).forEach(id=>{
+          this.isSyncContentOpen[id] = false;
+        });
+        this.isSyncContentOpen[content.id] = true;
+      }
+    }
   }
-
-
-
 }

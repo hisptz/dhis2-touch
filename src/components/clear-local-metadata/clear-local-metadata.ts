@@ -35,7 +35,7 @@ export class ClearLocalMetadataComponent implements OnInit{
     this.user.getCurrentUser().then((user:any)=>{
       this.currentUser = user;
     });
-    this.resources = this.syncPage.getMetadataResoures();
+    this.resources = this.syncPage.resources;
     this.autoSelect("");
   }
 

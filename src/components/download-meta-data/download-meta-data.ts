@@ -39,7 +39,7 @@ export class DownloadMetaDataComponent implements OnInit {
       this.currentUser = user;
       this.loadingData = false;
     });
-    this.resources = this.syncPage.getMetadataResoures();
+    this.resources = this.syncPage.resources;
     this.autoSelect("");
   }
 
