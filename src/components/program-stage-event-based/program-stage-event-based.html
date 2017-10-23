@@ -5,10 +5,13 @@
   <div>
     {{ programStage.executionDateLabel}}<span class="required">*</span>
   </div>
-  <ion-item>
-    <ion-datetime doneText="Update" (ionChange)="updateEventDate()" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [(ngModel)]="eventDate"></ion-datetime>
-  </ion-item>
+  <div class="input-field-container">
+    <ion-item>
+      <ion-datetime doneText="Update" (ionChange)="updateEventDate()" placeholder="Touch to pick date" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [(ngModel)]="eventDate"></ion-datetime>
+    </ion-item>
+  </div>
   <div *ngIf="eventDate && eventDate != ''">
+    <event-input-container></event-input-container>
     eventDate : {{ eventDate }}<br>
     currentEvent : {{ currentEvent |json }}
 

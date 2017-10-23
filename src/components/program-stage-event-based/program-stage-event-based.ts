@@ -3,6 +3,7 @@ import {ProgramsProvider} from "../../providers/programs/programs";
 import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
 import {UserProvider} from "../../providers/user/user";
 import {AppProvider} from "../../providers/app/app";
+import {EventCaptureFormProvider} from "../../providers/event-capture-form/event-capture-form";
 
 /**
  * Generated class for the ProgramStageEventBasedComponent component.
@@ -29,7 +30,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy{
   eventDate : any;
 
   constructor(private programsProvider : ProgramsProvider,
-
+              private eventCaptureFormProvider : EventCaptureFormProvider,
               private userProvider : UserProvider,private appProvider : AppProvider,
               private organisationUnitProvider : OrganisationUnitsProvider) {
   }
@@ -70,13 +71,19 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy{
   }
 
   updateEventDate(){
-    console.log(this.eventDate);
+    this.currentEvent["eventDate"] = this.eventDate;
+    this.currentEvent["dueDate"] = this.eventDate;
+    this.currentEvent.syncStatus = "not-synced";
+    this.eventCaptureFormProvider.saveEvents([this.currentEvent],this.currentUser).then(()=>{
+      this.appProvider.setNormalNotification("Event has been registered successfully");
+    }).catch((error)=>{
+      console.log("On register event");
+    })
   }
 
   ngOnDestroy(){
     this.currentProgram = null;
     this.currentOrgUnit = null;
   }
-
 
 }

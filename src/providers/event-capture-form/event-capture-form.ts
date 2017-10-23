@@ -146,4 +146,15 @@ export class EventCaptureFormProvider {
     });
   }
 
+  saveEvents(events,currentUser){
+    let tableName  = "events";
+    return new Promise((resolve,reject)=>{
+      this.sqliteProvider.insertBulkDataOnTable(tableName,events,currentUser.currentDatabase).then(()=>{
+        resolve();
+      }).catch(error=>{
+        reject({message : error});
+      });
+    });
+  }
+
 }
