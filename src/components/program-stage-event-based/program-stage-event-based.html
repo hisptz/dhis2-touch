@@ -2,30 +2,28 @@
   <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></page-loading>
 </div>
 <div *ngIf="!isLoading">
-  <div class="item-card">
-    <div>
-      {{ programStage.executionDateLabel}}<span class="required">*</span>
-    </div>
-    <div class="input-field-container">
-      <ion-item>
-        <ion-datetime doneText="Update" (ionChange)="updateEventDate()" placeholder="Touch to pick date" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [(ngModel)]="eventDate"></ion-datetime>
-      </ion-item>
-    </div>
-    <div *ngIf="eventDate && eventDate != ''">
-      <div *ngIf="programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0 ">
-        <div *ngFor="let programStageDataElement of programStage.programStageDataElements">
-          <div *ngIf="programStageDataElement.dataElement && programStageDataElement.dataElement.id">
-            <event-input-container [dataElement]="programStageDataElement.dataElement"
-                                   [currentUser]="currentUser"
-                                   [data]="dataObjectModel"
-                                   [mandatory]="programStageDataElement.compulsory"
-                                   (onChange)="updateData($event)"></event-input-container>
-          </div>
+  <div>
+    {{ programStage.executionDateLabel}}<span class="required">*</span>
+  </div>
+  <div class="input-field-container">
+    <ion-item>
+      <ion-datetime doneText="Update" (ionChange)="updateEventDate()" placeholder="Touch to pick date" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [(ngModel)]="eventDate"></ion-datetime>
+    </ion-item>
+  </div>
+  <div *ngIf="eventDate && eventDate != ''">
+    <div *ngIf="programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0 ">
+      <div *ngFor="let programStageDataElement of programStage.programStageDataElements">
+        <div *ngIf="programStageDataElement.dataElement && programStageDataElement.dataElement.id">
+          <event-input-container [dataElement]="programStageDataElement.dataElement"
+                                 [currentUser]="currentUser"
+                                 [data]="dataObjectModel"
+                                 [mandatory]="programStageDataElement.compulsory"
+                                 (onChange)="updateData($event)"></event-input-container>
         </div>
       </div>
-      <div *ngIf="!(programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
-        <notification [message]="'Contact system to add data elements'"></notification>
-      </div>
+    </div>
+    <div *ngIf="!(programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
+      <notification [message]="'Contact system to add data elements'"></notification>
     </div>
   </div>
 </div>

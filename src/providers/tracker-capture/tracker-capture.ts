@@ -191,16 +191,14 @@ export class TrackerCaptureProvider {
     let mapper = [];
     let trackedEntityInstancesIds = [];
     trackedEntityInstances.forEach((trackedEntityInstance: any) => {
+      let attributeMapper = {};
       if (trackedEntityInstance.attributes) {
-        let attributeMapper = {};
         trackedEntityInstance.attributes.forEach((attributeObject: any) => {
           attributeMapper[attributeObject.attribute] = attributeObject.value;
         });
-        if (trackedEntityInstance.attributes.length > 0) {
-          mapper.push(attributeMapper);
-          trackedEntityInstancesIds.push(trackedEntityInstance.id);
-        }
       }
+      mapper.push(attributeMapper);
+      trackedEntityInstancesIds.push(trackedEntityInstance.id);
     });
     return {mapper: mapper, trackedEntityInstancesIds: trackedEntityInstancesIds};
   }
