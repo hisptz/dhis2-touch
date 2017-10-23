@@ -5,6 +5,7 @@ import {OrganisationUnitsProvider} from "../../providers/organisation-units/orga
 import {ProgramsProvider} from "../../providers/programs/programs";
 import {AppProvider} from "../../providers/app/app";
 import {EventCaptureFormProvider} from "../../providers/event-capture-form/event-capture-form";
+import {SettingsProvider} from "../../providers/settings/settings";
 
 /**
  * Generated class for the EventCapturePage page.
@@ -42,7 +43,10 @@ export class EventCapturePage implements OnInit {
   eventIds : Array<string>;
   currentEvents : Array<any>;
 
+  dataEntrySettings : any;
+
   constructor(private navCtrl: NavController, private userProvider: UserProvider, private modalCtrl: ModalController,
+              private settingsProvider : SettingsProvider,
               private organisationUnitsProvider: OrganisationUnitsProvider, private programsProvider: ProgramsProvider, private appProvider: AppProvider,
               private eventCaptureFormProvider:EventCaptureFormProvider) {
   }
@@ -75,6 +79,7 @@ export class EventCapturePage implements OnInit {
             this.loadingPrograms();
           }
           this.updateEventCaptureSelections();
+          this.loadingAppSetting();
         });
       });
     }, error => {
@@ -86,9 +91,14 @@ export class EventCapturePage implements OnInit {
 
   ionViewDidEnter() {
     if(this.isFormReady){
-      console.log(this.isFormReady);
       this.loadingEvents();
     }
+  }
+
+  loadingAppSetting(){
+    this.settingsProvider.getSettingsForTheApp(this.currentUser).then((appSettings : any)=>{
+      this.dataEntrySettings =  appSettings.entryForm;
+    });
   }
 
   loadingPrograms() {
@@ -253,11 +263,15 @@ export class EventCapturePage implements OnInit {
       if(programStages && programStages.length > 0){
         this.programStage = programStages[0];
         if(this.programStage.programStageDataElements){
-          //@todo form label to be incorporate here
           this.programStage.programStageDataElements.forEach((programStageDataElement : any)=>{
             if(programStageDataElement.dataElement && programStageDataElement.dataElement.id){
-              //formName
-              this.columnsToDisplay[programStageDataElement.dataElement.id] =programStageDataElement.dataElement.displayName;
+              let fieldLabelKey = programStageDataElement.dataElement.displayName;
+              if(this.dataEntrySettings && this.dataEntrySettings.label && programStageDataElement.dataElement[this.dataEntrySettings.label]){
+                if(programStageDataElement.dataElement[this.dataEntrySettings.label] != "0"){
+                  fieldLabelKey = programStageDataElement.dataElement[this.dataEntrySettings.label];
+                }
+              }
+              this.columnsToDisplay[programStageDataElement.dataElement.id] = fieldLabelKey;
             }
           });
         }
@@ -270,7 +284,7 @@ export class EventCapturePage implements OnInit {
   }
 
   hideAndShowColumns() {
-    let modal = this.modalCtrl.create('EventHideShowColumnPage',{columnsToDisplay : this.columnsToDisplay,programStage : this.programStage});
+    let modal = this.modalCtrl.create('EventHideShowColumnPage',{columnsToDisplay : this.columnsToDisplay,programStage : this.programStage,dataEntrySettings : this.dataEntrySettings});
     modal.onDidDismiss((columnsToDisplay : any)=>{
       if(columnsToDisplay){
         this.columnsToDisplay = columnsToDisplay;

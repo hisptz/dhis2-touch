@@ -18,11 +18,13 @@
       <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></page-loading>
     </div>
     <div *ngIf="!isLoading">
-      <ion-row>
-        <ion-col>
-          <program-stage-event-based [programStage]="programStage" [dataDimension]="dataDimension" [currentEvent]="currentEvent" ></program-stage-event-based>
-        </ion-col>
-      </ion-row>
+      <div *ngIf="currentEvent">
+        <ion-row>
+          <ion-col>
+            <program-stage-event-based [programStage]="programStage" [dataDimension]="dataDimension" [currentEvent]="currentEvent" ></program-stage-event-based>
+          </ion-col>
+        </ion-row>
+      </div>
     </div>
   </ion-grid>
 </ion-content>

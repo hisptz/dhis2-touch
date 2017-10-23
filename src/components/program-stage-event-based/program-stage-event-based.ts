@@ -41,17 +41,18 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy{
     this.currentProgram = this.programsProvider.lastSelectedProgram;
     this.loadingMessage = "Loading user information";
     this.isLoading = true;
+    if(this.currentEvent && this.currentEvent.eventDate){
+      this.eventDate = this.currentEvent.eventDate;
+    }
     this.userProvider.getCurrentUser().then((user : any)=>{
       this.currentUser = user;
       if(this.currentEvent && this.currentEvent.dataValues && this.currentEvent.dataValues.length){
         this.updateDataObjectModel(this.currentEvent.dataValues,this.programStage.programStageDataElements);
       }
-      if(this.currentEvent.eventDate){
-        this.eventDate = this.currentEvent.eventDate;
-      }
       this.isLoading = false;
     }).catch(error=>{
       this.isLoading = false;
+      console.log("Here we are");
       this.appProvider.setNormalNotification("Fail to load user information");
     })
   }
@@ -59,12 +60,14 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy{
   updateDataObjectModel(dataValues,programStageDataElements){
     let dataValuesMapper = {};
     dataValues.forEach((dataValue : any)=>{
-      dataValuesMapper[dataValue.dataElement] = dataValue.value;
+      dataValuesMapper[dataValue.dataElement] = dataValue;
     });
     programStageDataElements.forEach((programStageDataElement : any)=>{
-      if(programStageDataElement.dataElement && programStageDataElements.dataElement.id){
-        if(dataValuesMapper[programStageDataElements.dataElement.id]){
-          this.dataObjectModel[programStageDataElements.dataElement.id] = dataValuesMapper[programStageDataElements.dataElement.id];
+      if(programStageDataElement.dataElement && programStageDataElement.dataElement.id){
+        let dataElementId = programStageDataElement.dataElement.id;
+        let fieldId = programStageDataElement.dataElement.id +"-dataElement";
+        if(dataValuesMapper[dataElementId]){
+          this.dataObjectModel[fieldId] = dataValuesMapper[dataElementId];
         }
       }
     });
@@ -82,13 +85,13 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy{
   }
 
   updateData(updatedData){
-    let dataElementId = updatedData.id.split('-');
-    this.dataObjectModel[dataElementId] = updatedData.value;
+    this.dataObjectModel[updatedData.id] = updatedData;
     let dataValues = [];
-    Object.keys(this.dataObjectModel).forEach((dataElementId : any)=>{
+    Object.keys(this.dataObjectModel).forEach((key : any)=>{
+      let dataElementId = key.split('-')[0];
       dataValues.push({
         dataElement : dataElementId,
-        value : updatedData.value
+        value : this.dataObjectModel[key].value
       });
     });
     this.currentEvent.dataValues = dataValues;

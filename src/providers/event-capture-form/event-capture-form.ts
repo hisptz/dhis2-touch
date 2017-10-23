@@ -85,14 +85,48 @@ export class EventCaptureFormProvider {
    */
   getTableFormatResult(columnsToDisplay,events){
     let table = {headers: [], rows: []};
-    let eventIds = [];
-    //@todo add all event available on rows
+    let eventIds = this.getMapperObjectForDisplay(events).eventIds;
+    let eventDataValuesArrays = this.getMapperObjectForDisplay(events).eventsMapper;
     Object.keys(columnsToDisplay).forEach(key => {
       table.headers.push(columnsToDisplay[key]);
+    });
+    eventDataValuesArrays.forEach((eventDataValues: any) => {
+      let row = [];
+      Object.keys(columnsToDisplay).forEach(key => {
+        if (eventDataValues[key]) {
+          row.push(eventDataValues[key]);
+        } else {
+          row.push("");
+        }
+      });
+      table.rows.push(row);
     });
     return new Promise((resolve, reject) => {
       resolve({table: table, eventIds: eventIds});
     });
+  }
+
+  /**
+   *
+   * @param events
+   * @returns {{eventsMapper: Array; eventIds: Array}}
+   */
+  getMapperObjectForDisplay(events){
+    let eventIds = [];
+    let eventsMapper = [];
+    events.forEach((event : any)=>{
+      if(event.dataValues){
+        let mapper = {};
+        event.dataValues.forEach((dataValue : any)=>{
+          mapper[dataValue.dataElement] = dataValue.value;
+        });
+        if(event.dataValues.length > 0){
+          eventsMapper.push(mapper);
+          eventIds.push(event.id);
+        }
+      }
+    });
+    return {eventsMapper : eventsMapper,eventIds : eventIds}
   }
 
   /**
@@ -146,6 +180,14 @@ export class EventCaptureFormProvider {
     });
   }
 
+  /**
+   *
+   * @param currentUser
+   * @param dataDimension
+   * @param programId
+   * @param orgUnitId
+   * @returns {Promise<any>}
+   */
   getEventsBasedOnEventsSelection(currentUser,dataDimension,programId,orgUnitId){
     let attribute = "program";
     let attributeValues = [programId];

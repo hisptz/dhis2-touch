@@ -27,13 +27,19 @@ export class EventHideShowColumnPage implements OnInit, OnDestroy{
     this.dataElements = [];
     this.programStage = this.params.get('programStage');
     let columnsToDisplay = this.params.get('columnsToDisplay');
+    let dataEntrySettings = this.params.get('dataEntrySettings');
     Object.keys(columnsToDisplay).forEach(key=>{
       this.selectedItemsModel[key] = true;
     });
     this.programStage.programStageDataElements.forEach((programStageDataElement : any)=>{
       if(programStageDataElement.dataElement && programStageDataElement.dataElement.id){
-        //formName displayName
-        this.dataElements.push({id : programStageDataElement.dataElement.id,name : programStageDataElement.dataElement.name})
+        let fieldLabelKey = programStageDataElement.dataElement.displayName;
+        if(dataEntrySettings && dataEntrySettings.label && programStageDataElement.dataElement[dataEntrySettings.label]){
+          if(programStageDataElement.dataElement[dataEntrySettings.label] != "0"){
+            fieldLabelKey = programStageDataElement.dataElement[dataEntrySettings.label];
+          }
+        }
+        this.dataElements.push({id : programStageDataElement.dataElement.id,name : fieldLabelKey})
       }
     });
   }
@@ -46,6 +52,7 @@ export class EventHideShowColumnPage implements OnInit, OnDestroy{
 
   saveChanges(){
     let columnsToDisplay = {};
+    let dataEntrySettings = this.params.get('dataEntrySettings');
     this.dataElements.forEach((dataElement : any)=>{
       if(this.selectedItemsModel[dataElement.id]){
         columnsToDisplay[dataElement.id] = dataElement.name;

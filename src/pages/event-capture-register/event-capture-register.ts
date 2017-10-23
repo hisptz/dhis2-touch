@@ -65,15 +65,15 @@ export class EventCaptureRegisterPage implements OnDestroy,OnInit{
         this.loadingMessage = "Loading data from local storage";
         console.log("Loading event with id " + eventId);
         this.eventCaptureFormProvider.getEventsByAttribute("id",[eventId],this.currentUser).then((events : any)=>{
-          if(events && events.length > 0){
+         if(events && events.length > 0){
             this.currentEvent = events[0];
           }
+          this.isLoading = false;
         }).catch(error=>{
           this.isLoading = false;
           console.log("On loading event with id" + eventId);
           console.log(JSON.stringify(error));
         });
-        this.isLoading = false;
       }else{
         this.currentEvent = this.eventCaptureFormProvider.getEmptyEvent(this.currentProgram,this.currentOrgUnit,this.programStage.id,this.dataDimension.attributeCos,this.dataDimension.attributeCc,'evemt-capture');
         this.isLoading = false;
