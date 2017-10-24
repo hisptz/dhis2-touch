@@ -98,8 +98,26 @@
                     </div>
                   </div>
                 </div>
+              </div>
 
-
+              <div *ngIf="content.id != 'enrollment'">
+                <div class="item-card">
+                  <div class="inputLabel">
+                    <b>
+                      <div class="inputLabel">
+                        {{ content.name }}
+                      </div>
+                    </b>
+                    <hr>
+                  </div>
+                  <div *ngIf="programStages && programStages.length > 0">
+                    <div *ngFor="let programStage of programStages">
+                      <div *ngIf="content.id == programStage.id">
+                        <program-stage-tracker-based [programStage]="programStage"></program-stage-tracker-based>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </ion-col>
           </ion-row>
@@ -114,9 +132,13 @@
 </ion-content>
 <ion-footer>
   <ion-toolbar>
-    <button ion-button clear text-capitalize *ngFor="let content of registrationContents"
-            (tap)="toggleRegistrationContents(content)">
-      <img class="footer-icon" [src]="content.icon"/>
+    <button ion-button clear text-capitalize *ngFor="let content of registrationContents" [disabled]="(!isTrackedEntityRegistered && content.iconName)" (tap)="toggleRegistrationContents(content)">
+      <div *ngIf="content.icon">
+        <img class="footer-icon" [src]="content.icon"/>
+      </div>
+      <div *ngIf="content.iconName">
+        <b>{{ content.iconName }}</b>
+      </div>
     </button>
     <button ion-button clear text-capitalize [disabled]="!isTrackedEntityRegistered" (click)="resetRegistration()">
       <img class="footer-icon" [src]="icons.addNewCase"/>
