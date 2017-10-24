@@ -29,6 +29,7 @@ export class EventCaptureFormProvider {
     let dataElementMapper = {};
     return new Promise((resolve, reject) =>  {
       this.programsProvider.getProgramsStages(programId,currentUser).then((programsStages:any)=>{
+        //@todo sections on program stages
         //obtain section ids
         //programstage sections
         //merge program stage with program stage sections

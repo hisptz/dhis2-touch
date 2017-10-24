@@ -24,21 +24,27 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
   isLoading : boolean;
   loadingMessage : string;
 
+  selectedDataDimension : any;
+  dataObjectModel : any;
+
   constructor(private programsProvider : ProgramsProvider,
               private userProvider : UserProvider,private appProvider : AppProvider,
               private organisationUnitProvider : OrganisationUnitsProvider) {
   }
 
   ngOnInit(){
+    //@todo loading events based to render forms
+    this.dataObjectModel = {};
+
+    this.selectedDataDimension = [];
     this.currentOrgUnit = this.organisationUnitProvider.lastSelectedOrgUnit;
     this.currentProgram = this.programsProvider.lastSelectedProgram;
     this.loadingMessage = "Loading user information";
     this.isLoading = true;
-    this.userProvider.getCurrentUser().then((user : any)=>{
+    this.userProvider.getCurrentUser().then((user)=>{
       this.currentUser = user;
       this.isLoading = false;
     }).catch(error=>{
-      this.isLoading = false;
       this.appProvider.setNormalNotification("Fail to load user information");
     })
   }
@@ -46,6 +52,27 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
   ngOnDestroy(){
     this.currentProgram = null;
     this.currentOrgUnit = null;
+  }
+
+  updateData(data){
+    console.log(JSON.stringify(data));
+  }
+
+  getDataDimensions(){
+    if(this.currentProgram && this.currentProgram.categoryCombo){
+      let attributeCc = this.currentProgram.categoryCombo.id;
+      let attributeCos = "";
+      this.selectedDataDimension.forEach((dimension : any,index:any)=>{
+        if(index == 0){
+          attributeCos +=dimension.id;
+        }else{
+          attributeCos += ";" + dimension.id;
+        }
+      });
+      return {attributeCc : attributeCc,attributeCos:attributeCos};
+    }else{
+      return {};
+    }
   }
 
 

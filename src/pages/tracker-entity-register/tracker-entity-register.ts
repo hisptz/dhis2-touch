@@ -40,6 +40,7 @@ export class TrackerEntityRegisterPage implements OnInit{
   trackedEntityAttributeValuesObject : any;
   isTrackedEntityRegistered : boolean = false;
   trackedEntityInstance : string;
+  icons : any = {};
 
   constructor(private navCtrl: NavController,
               private userProvider : UserProvider,private appProvider : AppProvider,
@@ -50,6 +51,7 @@ export class TrackerEntityRegisterPage implements OnInit{
   }
 
   ngOnInit(){
+    this.icons["addNewCase"] = "assets/tracker/add-new-case.png";
     this.loadingMessage = "Loading user information";
     this.isLoading = true;
     this.isRegistrationProcessingRunning  = false;
@@ -102,8 +104,7 @@ export class TrackerEntityRegisterPage implements OnInit{
 
   getRegistrationContents(){
     return [
-      {id : 'enrollment',name : 'Enrollment',icon: 'assets/tracker/enrollment.png'},
-      {id : 'profile',name : 'profile',icon: 'assets/tracker/profile.png'},
+      {id : 'enrollment',name : 'Enrollment',icon: 'assets/tracker/profile.png'},
     ];
   }
 
@@ -140,9 +141,7 @@ export class TrackerEntityRegisterPage implements OnInit{
     //@todo color codes changes on saving
     if(this.isTrackedEntityRegistered){
       this.trackedEntityAttributeValuesProvider.savingTrackedEntityAttributeValues(this.trackedEntityInstance,trackedEntityAttributeValues,this.currentUser).then(()=>{
-        //this.appProvider.setNormalNotification("Saved successfully");
       }).catch(error=>{
-        //this.appProvider.setNormalNotification("Fail to save a value");
         console.log(JSON.stringify(error));
       });
     }else{
@@ -156,7 +155,6 @@ export class TrackerEntityRegisterPage implements OnInit{
         console.log(JSON.stringify(error));
       });
     }
-
   }
 
   isALlRequiredFieldHasValue(programTrackedEntityAttributes,trackedEntityAttributeValuesObject){

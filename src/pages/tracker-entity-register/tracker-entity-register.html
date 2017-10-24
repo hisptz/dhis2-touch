@@ -19,20 +19,18 @@
     <div *ngIf="!isLoading">
       <div *ngFor="let content of registrationContents">
         <div *ngIf="(isRegistrationContentOpen[content.id])" >
-
-
           <ion-row>
             <ion-col>
-              <div class="item-card" padding-top padding-bottom >
-                <img  class="side-menu-icon" [src]="content.icon"/>&nbsp;&nbsp;
-                <span ion-text text-capitalize ><b>{{ content.name }}</b></span>
-              </div>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>
-              <div class="item-card">
-                <div *ngIf="content.id == 'enrollment'"  >
+              <div *ngIf="content.id == 'enrollment'">
+                <div class="item-card">
+                  <div class="inputLabel">
+                    <b>
+                      <div class="inputLabel">
+                        Enrollments
+                      </div>
+                    </b>
+                    <hr>
+                  </div>
                   <div class="inputLabel">
                     Enrolling organisation unit
                   </div>
@@ -78,7 +76,15 @@
                     </div>
                   </div>
                 </div>
-                <div *ngIf="content.id == 'profile'">
+                <div class="item-card">
+                  <div class="inputLabel">
+                    <b>
+                      <div class="inputLabel">
+                        Profile
+                      </div>
+                    </b>
+                    <hr>
+                  </div>
                   <div *ngIf="programTrackedEntityAttributes && programTrackedEntityAttributes.length > 0">
                     <div *ngFor="let programTrackedEntityAttribute of programTrackedEntityAttributes">
                       <tracked-entity-inputs [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute"
@@ -89,6 +95,8 @@
                     </div>
                   </div>
                 </div>
+
+
               </div>
             </ion-col>
           </ion-row>
@@ -103,10 +111,12 @@
 </ion-content>
 <ion-footer>
   <ion-toolbar>
-    <div ion-button clear text-capitalize *ngFor="let content of registrationContents" (tap)="toggleRegistrationContents(content)">
-      <img  class="footer-icon" [src]="content.icon"/>&nbsp;&nbsp;
-      <span ion-text [color]="(isRegistrationContentOpen[content.id]) ?'current' : 'font-color'">{{ content.name }}</span>
-    </div>
+    <button ion-button clear text-capitalize *ngFor="let content of registrationContents" (tap)="toggleRegistrationContents(content)">
+      <img  class="footer-icon" [src]="content.icon"/>
+    </button>
+    <button ion-button clear text-capitalize [disabled]="!isTrackedEntityRegistered" (click)="resetRegistration()" >
+      <img  class="footer-icon" [src]="icons.addNewCase"/>
+    </button>
   </ion-toolbar>
 </ion-footer>
 
