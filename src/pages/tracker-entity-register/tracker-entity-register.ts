@@ -6,6 +6,7 @@ import {AppProvider} from "../../providers/app/app";
 import {ProgramsProvider} from "../../providers/programs/programs";
 import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
 import {TrackedEntityAttributeValuesProvider} from "../../providers/tracked-entity-attribute-values/tracked-entity-attribute-values";
+import {EventCaptureFormProvider} from "../../providers/event-capture-form/event-capture-form";
 
 
 declare var dhis2: any;
@@ -29,6 +30,7 @@ export class TrackerEntityRegisterPage implements OnInit{
 
   programTrackedEntityAttributes : Array<any>;
   registrationContents : Array<any>;
+  programStages : Array<any>;
   isRegistrationContentOpen : any = {};
   isLoading : boolean;
   isRegistrationProcessingRunning : boolean;
@@ -43,6 +45,7 @@ export class TrackerEntityRegisterPage implements OnInit{
   icons : any = {};
 
   constructor(private navCtrl: NavController,
+              private eventCaptureFormProvider : EventCaptureFormProvider,
               private userProvider : UserProvider,private appProvider : AppProvider,
               private programsProvider : ProgramsProvider,
               private trackedEntityAttributeValuesProvider : TrackedEntityAttributeValuesProvider,
@@ -85,6 +88,24 @@ export class TrackerEntityRegisterPage implements OnInit{
       this.toggleRegistrationContents(this.registrationContents[0]);
     }
     this.trackedEntityInstance =  dhis2.util.uid();
+  }
+
+  loadingProgramStages(programId,currentUser){
+    this.loadingMessage = "Loading program stages " + this.currentProgram.name;
+    this.eventCaptureFormProvider.getProgramStages(programId,currentUser).then((programStages : any)=>{
+      this.programStages = programStages;
+      if(programStages && programStages.length > 0){
+        let counter = 1;
+        programStages.forEach((programStage : any)=>{
+          this.registrationContents.push({id : programStage.id,name : programStage.name,iconName: counter});
+          counter ++;
+        })
+      }
+    }).catch(error=>{
+      console.log(JSON.stringify(error));
+      this.isLoading = false;
+      this.appProvider.setNormalNotification("Fail to load program stages " + this.currentProgram.name);
+    });
   }
 
   loadTrackedEntityRegistration(programId,currentUser){
