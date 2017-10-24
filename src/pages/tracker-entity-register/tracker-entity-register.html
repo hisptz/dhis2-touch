@@ -11,14 +11,14 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content >
+<ion-content>
   <ion-grid>
     <div *ngIf="isLoading">
       <page-loading [loadingMessage]="loadingMessage" [loadingSize]="'large'"></page-loading>
     </div>
     <div *ngIf="!isLoading">
       <div *ngFor="let content of registrationContents">
-        <div *ngIf="(isRegistrationContentOpen[content.id])" >
+        <div *ngIf="(isRegistrationContentOpen[content.id])">
           <ion-row>
             <ion-col>
               <div *ngIf="content.id == 'enrollment'">
@@ -63,7 +63,8 @@
                     </div>
                     <div class="input-field-container">
                       <ion-item>
-                        <ion-datetime [(ngModel)]="enrollmentDate" doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" ></ion-datetime>
+                        <ion-datetime [(ngModel)]="enrollmentDate" doneText="Update" displayFormat="YYYY-MM-DD"
+                                      pickerFormat="YYYY MM DD"></ion-datetime>
                       </ion-item>
                     </div>
                     <div class="inputLabel">
@@ -71,7 +72,8 @@
                     </div>
                     <div class="input-field-container">
                       <ion-item>
-                        <ion-datetime [(ngModel)]="incidentDate" doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" ></ion-datetime>
+                        <ion-datetime [(ngModel)]="incidentDate" doneText="Update" displayFormat="YYYY-MM-DD"
+                                      pickerFormat="YYYY MM DD"></ion-datetime>
                       </ion-item>
                     </div>
                   </div>
@@ -87,11 +89,12 @@
                   </div>
                   <div *ngIf="programTrackedEntityAttributes && programTrackedEntityAttributes.length > 0">
                     <div *ngFor="let programTrackedEntityAttribute of programTrackedEntityAttributes">
-                      <tracked-entity-inputs [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute"
-                                             [currentUser]="currentUser"
-                                             [data]="dataObject"
-                                             [mandatory]="programTrackedEntityAttribute.mandatory"
-                                             (onChange)="updateData($event)"></tracked-entity-inputs>
+                      <tracked-entity-inputs
+                        [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute"
+                        [currentUser]="currentUser"
+                        [data]="dataObject"
+                        [mandatory]="programTrackedEntityAttribute.mandatory"
+                        (onChange)="updateData($event)"></tracked-entity-inputs>
                     </div>
                   </div>
                 </div>
@@ -111,11 +114,12 @@
 </ion-content>
 <ion-footer>
   <ion-toolbar>
-    <button ion-button clear text-capitalize *ngFor="let content of registrationContents" (tap)="toggleRegistrationContents(content)">
-      <img  class="footer-icon" [src]="content.icon"/>
+    <button ion-button clear text-capitalize *ngFor="let content of registrationContents"
+            (tap)="toggleRegistrationContents(content)">
+      <img class="footer-icon" [src]="content.icon"/>
     </button>
-    <button ion-button clear text-capitalize [disabled]="!isTrackedEntityRegistered" (click)="resetRegistration()" >
-      <img  class="footer-icon" [src]="icons.addNewCase"/>
+    <button ion-button clear text-capitalize [disabled]="!isTrackedEntityRegistered" (click)="resetRegistration()">
+      <img class="footer-icon" [src]="icons.addNewCase"/>
     </button>
   </ion-toolbar>
 </ion-footer>

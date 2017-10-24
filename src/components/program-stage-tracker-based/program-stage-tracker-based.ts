@@ -3,6 +3,7 @@ import {ProgramsProvider} from "../../providers/programs/programs";
 import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
 import {UserProvider} from "../../providers/user/user";
 import {AppProvider} from "../../providers/app/app";
+import {EventCaptureFormProvider} from "../../providers/event-capture-form/event-capture-form";
 
 /**
  * Generated class for the ProgramStageTrackerBasedComponent component.
@@ -23,19 +24,23 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
   currentUser : any;
   isLoading : boolean;
   loadingMessage : string;
-
   selectedDataDimension : any;
   dataObjectModel : any;
+  currentEvents : Array<any>;
+  shouldAddNewEvent : boolean = false;
+  currentOpenEvent : any;
 
   constructor(private programsProvider : ProgramsProvider,
               private userProvider : UserProvider,private appProvider : AppProvider,
+              private eventCaptureFormProvider : EventCaptureFormProvider,
               private organisationUnitProvider : OrganisationUnitsProvider) {
   }
 
   ngOnInit(){
     //@todo loading events based to render forms
     this.dataObjectModel = {};
-
+    this.currentEvents = [];
+    //@todo add support of data dimensions
     this.selectedDataDimension = [];
     this.currentOrgUnit = this.organisationUnitProvider.lastSelectedOrgUnit;
     this.currentProgram = this.programsProvider.lastSelectedProgram;
@@ -43,10 +48,32 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
     this.isLoading = true;
     this.userProvider.getCurrentUser().then((user)=>{
       this.currentUser = user;
-      this.isLoading = false;
+      if(this.programStage && this.programStage.id){
+        this.loadEventsBasedOnProgramStage(this.programStage.id);
+      }
     }).catch(error=>{
       this.appProvider.setNormalNotification("Fail to load user information");
     })
+  }
+
+  loadEventsBasedOnProgramStage(programStageId){
+    this.loadingMessage = "Loading events";
+    this.eventCaptureFormProvider.getEventsByAttribute('programStage',[programStageId],this.currentUser).then((events : any)=>{
+      this.currentEvents = events;
+      this.isLoading = false;
+    }).catch(error=>{
+      console.log(JSON.stringify(error));
+      this.isLoading = false;
+      this.appProvider.setNormalNotification("Fail to load events");
+    });
+  }
+
+  addNewEvent(){
+    //@todo creation of empty events based on
+    let dataDimension : any = this.getDataDimensions();
+    this.currentOpenEvent = this.eventCaptureFormProvider.getEmptyEvent(this.currentProgram,this.currentOrgUnit,this.programStage.id,dataDimension.attributeCos,dataDimension.attributeCc,'tracker');
+    this.dataObjectModel = {};
+    this.shouldAddNewEvent = true;
   }
 
   ngOnDestroy(){

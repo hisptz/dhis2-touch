@@ -151,8 +151,7 @@ export class TrackedEntityDashboardPage implements OnInit{
 
   getDashboardWidgets(){
     return [
-      {id : 'enrollment',name : 'Enrollment',icon: 'assets/tracker/enrollment.png'},
-      {id : 'profile',name : 'profile',icon: 'assets/tracker/profile.png'}
+      {id : 'enrollment',name : 'Enrollment',icon: 'assets/tracker/profile.png'}
     ];
   }
 

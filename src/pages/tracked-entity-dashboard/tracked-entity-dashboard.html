@@ -13,25 +13,26 @@
 </ion-header>
 
 
-<ion-content >
+<ion-content>
   <ion-grid>
     <div *ngIf="isLoading">
-      <page-loading [loadingMessage]="loadingMessage" [loadingSize]="'large'" ></page-loading>
+      <page-loading [loadingMessage]="loadingMessage" [loadingSize]="'large'"></page-loading>
     </div>
     <div *ngIf="!isLoading">
       <div *ngFor="let widget of dashboardWidgets">
-        <div *ngIf="(isDashboardWidgetOpen[widget.id])" >
-          <div class="item-card">
-            <ion-row>
-              <ion-col>
-                <span ion-text text-capitalize padding-top padding-bottom><b>{{ widget.name }}</b></span>
-              </ion-col>
-            </ion-row>
-          </div>
-          <div class="item-card">
-            <ion-row>
-              <ion-col>
-                <div *ngIf="widget.id == 'enrollment'"  >
+        <div *ngIf="(isDashboardWidgetOpen[widget.id])">
+          <ion-row>
+            <ion-col>
+              <div *ngIf="widget.id == 'enrollment'">
+                <div class="item-card">
+                  <div class="inputLabel">
+                    <b>
+                      <div class="inputLabel">
+                        Enrollments
+                      </div>
+                    </b>
+                    <hr>
+                  </div>
                   <div class="inputLabel">
                     Organisation unit
                   </div>
@@ -49,46 +50,63 @@
                     </ion-item>
                   </div>
                 </div>
-                <div *ngIf="widget.id == 'profile'">
+                <div class="item-card">
+                  <div class="inputLabel">
+                    <b>
+                      <div class="inputLabel">
+                        Profile
+                      </div>
+                    </b>
+                    <hr>
+                  </div>
                   <div *ngIf="programTrackedEntityAttributes && programTrackedEntityAttributes.length > 0">
                     <div *ngFor="let programTrackedEntityAttribute of programTrackedEntityAttributes">
-                      <tracked-entity-inputs [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute"
-                                             [currentUser]="currentUser"
-                                             [data]="dataObject"
-                                             [mandatory]="programTrackedEntityAttribute.mandatory"
-                                             (onChange)="updateData($event)"></tracked-entity-inputs>
+                      <tracked-entity-inputs
+                        [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute"
+                        [currentUser]="currentUser"
+                        [data]="dataObject"
+                        [mandatory]="programTrackedEntityAttribute.mandatory"
+                        (onChange)="updateData($event)"></tracked-entity-inputs>
                     </div>
                   </div>
                 </div>
-                <div *ngIf="programStages && programStages.length > 0">
-                  <div *ngFor="let programStage of programStages">
-                    <div *ngIf="widget.id == programStage.id">
-                      <program-stage-tracker-based [programStage]="programStage" ></program-stage-tracker-based>
+              </div>
+              <div *ngIf="widget.id != 'enrollment'">
+                <div class="item-card">
+                  <div class="inputLabel">
+                    <b>
+                      <div class="inputLabel">
+                        {{ widget.name }}
+                      </div>
+                    </b>
+                    <hr>
+                  </div>
+                  <div *ngIf="programStages && programStages.length > 0">
+                    <div *ngFor="let programStage of programStages">
+                      <div *ngIf="widget.id == programStage.id">
+                        <program-stage-tracker-based [programStage]="programStage"></program-stage-tracker-based>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col>&nbsp;&nbsp;</ion-col>
-            </ion-row>
-          </div>
+              </div>
+            </ion-col>
+          </ion-row>
         </div>
       </div>
     </div>
   </ion-grid>
-
 </ion-content>
 <ion-footer>
   <ion-toolbar>
-    <div ion-button clear text-capitalize *ngFor="let widget of dashboardWidgets" (tap)="changeDashboardWidget(widget)">
+    <button ion-button clear text-capitalize *ngFor="let widget of dashboardWidgets" [disabled]="(isDashboardWidgetOpen[widget.id])" (tap)="changeDashboardWidget(widget)">
       <div *ngIf="widget.icon">
         <img class="footer-icon" [src]="widget.icon"/>
       </div>
       <div *ngIf="widget.iconName">
         <b>{{ widget.iconName }}</b>
       </div>
-    </div>
+    </button>
   </ion-toolbar>
 
 </ion-footer>

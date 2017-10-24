@@ -2,38 +2,49 @@
   <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></page-loading>
 </div>
 <div *ngIf="!isLoading">
-  <div >
-    <div style="float:left;width: 50%">
-      {{ programStage.executionDateLabel}}<span class="required">*</span>
-      <div class="input-field-container">
-        <ion-item>
-          <ion-datetime doneText="Update" placeholder="Touch to pick date" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>
-        </ion-item>
-      </div>
+  <div *ngIf="!shouldAddNewEvent">
+    <div class="item-card" (click)="addNewEvent()" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
+      <ion-icon name="add" color="icon-color"></ion-icon>
+      Add
     </div>
-    <div style="float:right;width: 50%">
-      {{ programStage.dueDateLabel}}<span class="required">*</span>
-      <div class="input-field-container">
-        <ion-item>
-          <ion-datetime doneText="Update" placeholder="Touch to pick date" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>
-        </ion-item>
-      </div>
-    </div>
+    <br>
+    {{ currentEvents |json }}
   </div>
 
-
-  <div *ngIf="programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0 ">
-    <div *ngFor="let programStageDataElement of programStage.programStageDataElements">
-      <div *ngIf="programStageDataElement.dataElement && programStageDataElement.dataElement.id">
-        <event-input-container [dataElement]="programStageDataElement.dataElement"
-                               [currentUser]="currentUser"
-                               [data]="dataObjectModel"
-                               [mandatory]="programStageDataElement.compulsory"
-                               (onChange)="updateData($event)"></event-input-container>
+  <div *ngIf="shouldAddNewEvent">
+    <div >
+      <div style="display: inline-block;width: 49.3%">
+        {{ programStage.executionDateLabel}}<span class="required">*</span>
+        <div class="input-field-container">
+          <ion-item>
+            <ion-datetime doneText="Update" [(ngModel)]="currentOpenEvent['eventDate']" placeholder="Touch to pick date" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>
+          </ion-item>
+        </div>
+      </div>
+      <div style="display: inline-block;width: 49.3%">
+        {{ programStage.dueDateLabel}}<span class="required">*</span>
+        <div class="input-field-container">
+          <ion-item>
+            <ion-datetime doneText="Update" [(ngModel)]="currentOpenEvent['dueDate']" placeholder="Touch to pick date" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>
+          </ion-item>
+        </div>
       </div>
     </div>
-  </div>
-  <div *ngIf="!(programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
-    <notification [message]="'Contact system to add data elements'"></notification>
+    <div *ngIf="programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0 ">
+      <div *ngIf="currentOpenEvent['eventDate'] && currentOpenEvent['eventDate'] !=''">
+        <div *ngFor="let programStageDataElement of programStage.programStageDataElements">
+          <div *ngIf="programStageDataElement.dataElement && programStageDataElement.dataElement.id">
+            <event-input-container [dataElement]="programStageDataElement.dataElement"
+                                   [currentUser]="currentUser"
+                                   [data]="dataObjectModel"
+                                   [mandatory]="programStageDataElement.compulsory"
+                                   (onChange)="updateData($event)"></event-input-container>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!(programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
+      <notification [message]="'Contact system to add data elements'"></notification>
+    </div>
   </div>
 </div>

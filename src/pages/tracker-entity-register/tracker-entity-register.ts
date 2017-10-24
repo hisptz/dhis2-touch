@@ -104,7 +104,7 @@ export class TrackerEntityRegisterPage implements OnInit{
 
   getRegistrationContents(){
     return [
-      {id : 'enrollment',name : 'Enrollment',icon: 'assets/tracker/profile.png'},
+      {id : 'enrollment',name : 'Enrollment',icon: 'assets/tracker/profile.png'}
     ];
   }
 
