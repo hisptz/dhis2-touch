@@ -52,7 +52,6 @@ export class EnrollmentsProvider {
     };
     let payLoads = [];
     payLoads.push(payLoad);
-    console.log(JSON.stringify(payLoads));
     return payLoads;
   }
 

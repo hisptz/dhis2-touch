@@ -19,11 +19,26 @@
       <page-loading [loadingMessage]="loadingMessage" [loadingSize]="'large'"></page-loading>
     </div>
     <div *ngIf="!isLoading">
+      <ion-row>
+        <ion-col>
+          <div class="item-card" no-padding (click)="openWidgetList()">
+            <ion-item >
+              <p ion-text color="font-color" no-padding align="center">
+                {{ currentWidget.name }}
+              </p>
+              <div style="text-align: center" item-right >
+                <span  float-end class="side-menu-icon"><img [src]="icons.menu"></span>
+              </div>
+            </ion-item>
+          </div>
+        </ion-col>
+      </ion-row>
+
       <div *ngFor="let widget of dashboardWidgets">
         <div *ngIf="(isDashboardWidgetOpen[widget.id])">
           <ion-row>
             <ion-col>
-              <div *ngIf="widget.id == 'enrollment'">
+              <div *ngIf="currentWidget.id == 'enrollment'">
                 <div class="item-card">
                   <div class="inputLabel">
                     <b>
@@ -71,16 +86,8 @@
                   </div>
                 </div>
               </div>
-              <div *ngIf="widget.id != 'enrollment'">
+              <div *ngIf="currentWidget.id != 'enrollment'">
                 <div class="item-card">
-                  <div class="inputLabel">
-                    <b>
-                      <div class="inputLabel">
-                        {{ widget.name }}
-                      </div>
-                    </b>
-                    <hr>
-                  </div>
                   <div *ngIf="programStages && programStages.length > 0">
                     <div *ngFor="let programStage of programStages">
                       <div *ngIf="widget.id == programStage.id">
@@ -103,7 +110,7 @@
       <div *ngIf="widget.icon">
         <img class="footer-icon" [src]="widget.icon"/>
       </div>
-      <div *ngIf="widget.iconName">
+      <div *ngIf="widget.iconName" >
         <b>{{ widget.iconName }}</b>
       </div>
     </button>

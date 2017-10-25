@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {Content, IonicPage, ModalController, NavController} from 'ionic-angular';
 import {TrackerCaptureProvider} from "../../providers/tracker-capture/tracker-capture";
 import {UserProvider} from "../../providers/user/user";
 import {AppProvider} from "../../providers/app/app";
@@ -29,7 +29,7 @@ export class TrackerEntityRegisterPage implements OnInit{
   currentUser : any;
 
   programTrackedEntityAttributes : Array<any>;
-  registrationContents : Array<any>;
+  dashboardWidgets : Array<any>;
   programStages : Array<any>;
   isRegistrationContentOpen : any = {};
   isLoading : boolean;
@@ -44,7 +44,11 @@ export class TrackerEntityRegisterPage implements OnInit{
   trackedEntityInstance : string;
   icons : any = {};
 
+  currentWidget : any;
+  @ViewChild(Content) content: Content;
+
   constructor(private navCtrl: NavController,
+              private modalCtrl : ModalController,
               private eventCaptureFormProvider : EventCaptureFormProvider,
               private userProvider : UserProvider,private appProvider : AppProvider,
               private programsProvider : ProgramsProvider,
@@ -55,6 +59,7 @@ export class TrackerEntityRegisterPage implements OnInit{
 
   ngOnInit(){
     this.icons["addNewCase"] = "assets/tracker/add-new-case.png";
+    this.icons["menu"] = "assets/dashboard/menu.png";
     this.loadingMessage = "Loading user information";
     this.isLoading = true;
     this.isRegistrationProcessingRunning  = false;
@@ -63,7 +68,7 @@ export class TrackerEntityRegisterPage implements OnInit{
     this.trackedEntityAttributeValuesObject = {};
     this.incidentDate = today;
     this.enrollmentDate = today;
-    this.registrationContents = this.getRegistrationContents();
+    this.dashboardWidgets = this.getRegistrationContents();
     this.currentOrganisationUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
     this.currentProgram = this.programsProvider.getLastSelectedProgram();
     this.userProvider.getCurrentUser().then((user)=>{
@@ -82,10 +87,10 @@ export class TrackerEntityRegisterPage implements OnInit{
     this.trackedEntityAttributeValuesObject = {};
     this.incidentDate = today;
     this.enrollmentDate = today;
-    this.registrationContents = this.getRegistrationContents();
+    this.dashboardWidgets = this.getRegistrationContents();
     this.isTrackedEntityRegistered = false;
-    if(this.registrationContents.length > 0){
-      this.toggleRegistrationContents(this.registrationContents[0]);
+    if(this.dashboardWidgets.length > 0){
+      this.toggleRegistrationContents(this.dashboardWidgets[0]);
     }
     this.trackedEntityInstance =  dhis2.util.uid();
     this.loadingProgramStages(this.currentProgram.id,this.currentUser);
@@ -98,7 +103,7 @@ export class TrackerEntityRegisterPage implements OnInit{
       if(programStages && programStages.length > 0){
         let counter = 1;
         programStages.forEach((programStage : any)=>{
-          this.registrationContents.push({id : programStage.id,name : programStage.name,iconName: counter});
+          this.dashboardWidgets.push({id : programStage.id,name : programStage.name,iconName: counter});
           counter ++;
         })
       }
@@ -123,16 +128,30 @@ export class TrackerEntityRegisterPage implements OnInit{
     });
   }
 
-
   getRegistrationContents(){
     return [
-      {id : 'enrollment',name : 'Enrollment',icon: 'assets/tracker/profile.png'}
+      {id : 'enrollment',name : 'Enrollment & Profile',icon: 'assets/tracker/profile.png'}
     ];
+  }
+
+  openWidgetList(){
+    let modal = this.modalCtrl.create('TrackedEntityWidgetSelectionPage',{
+      dashboardWidgets : this.dashboardWidgets,
+      currentWidget : this.currentWidget
+    });
+    modal.onDidDismiss((currentWidget : any)=>{
+      this.toggleRegistrationContents(currentWidget);
+      setTimeout(() => {
+        this.content.scrollToTop(1300);
+      },200);
+    });
+    modal.present();
   }
 
   //@todo hide key board
   toggleRegistrationContents(content){
     if(content && content.id){
+      this.currentWidget = content;
       if(!this.isRegistrationContentOpen[content.id]){
         Object.keys(this.isRegistrationContentOpen).forEach(id=>{
           this.isRegistrationContentOpen[id] = false;

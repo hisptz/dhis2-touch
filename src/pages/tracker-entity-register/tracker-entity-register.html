@@ -17,11 +17,26 @@
       <page-loading [loadingMessage]="loadingMessage" [loadingSize]="'large'"></page-loading>
     </div>
     <div *ngIf="!isLoading">
-      <div *ngFor="let content of registrationContents">
-        <div *ngIf="(isRegistrationContentOpen[content.id])">
+      <ion-row>
+        <ion-col>
+          <div class="item-card" no-padding (click)="openWidgetList()">
+            <ion-item >
+              <p ion-text color="font-color" no-padding align="center">
+                {{ currentWidget.name }}
+              </p>
+              <div style="text-align: center" item-right >
+                <span  float-end class="side-menu-icon"><img [src]="icons.menu"></span>
+              </div>
+            </ion-item>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <div *ngFor="let widget of dashboardWidgets">
+        <div *ngIf="(isRegistrationContentOpen[widget.id])">
           <ion-row>
             <ion-col>
-              <div *ngIf="content.id == 'enrollment'">
+              <div *ngIf="currentWidget.id == 'enrollment'">
                 <div class="item-card">
                   <div class="inputLabel">
                     <b>
@@ -100,19 +115,11 @@
                 </div>
               </div>
 
-              <div *ngIf="content.id != 'enrollment'">
+              <div *ngIf="currentWidget.id != 'enrollment'">
                 <div class="item-card">
-                  <div class="inputLabel">
-                    <b>
-                      <div class="inputLabel">
-                        {{ content.name }}
-                      </div>
-                    </b>
-                    <hr>
-                  </div>
                   <div *ngIf="programStages && programStages.length > 0">
                     <div *ngFor="let programStage of programStages">
-                      <div *ngIf="content.id == programStage.id">
+                      <div *ngIf="widget.id == programStage.id">
                         <program-stage-tracker-based [programStage]="programStage" [trackedEntityInstance]="trackedEntityInstance"></program-stage-tracker-based>
                       </div>
                     </div>
@@ -124,23 +131,19 @@
         </div>
       </div>
     </div>
-    <ion-row>
-      <ion-col>&nbsp;&nbsp;</ion-col>
-    </ion-row>
   </ion-grid>
-
 </ion-content>
 <ion-footer>
   <ion-toolbar>
-    <button ion-button clear text-capitalize *ngFor="let content of registrationContents" [disabled]="(!isTrackedEntityRegistered && content.iconName)" (tap)="toggleRegistrationContents(content)">
-      <div *ngIf="content.icon">
-        <img class="footer-icon" [src]="content.icon"/>
+    <button ion-button clear text-capitalize *ngFor="let widget of dashboardWidgets" [disabled]="(!isTrackedEntityRegistered && widget.iconName)" (tap)="toggleRegistrationContents(widget)">
+      <div *ngIf="widget.icon">
+        <img class="footer-icon" [src]="widget.icon"/>
       </div>
-      <div *ngIf="content.iconName">
-        <b>{{ content.iconName }}</b>
+      <div *ngIf="widget.iconName">
+        <b>{{ widget.iconName }}</b>
       </div>
     </button>
-    <button ion-button clear text-capitalize [disabled]="!isTrackedEntityRegistered" (click)="resetRegistration()">
+    <button ion-button clear text-capitalize [disabled]="!isTrackedEntityRegistered" (click)="resetRegistration()" item-right>
       <img class="footer-icon" [src]="icons.addNewCase"/>
     </button>
   </ion-toolbar>

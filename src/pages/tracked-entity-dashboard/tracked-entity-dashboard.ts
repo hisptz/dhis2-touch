@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {Content, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {TrackedEntityAttributeValuesProvider} from "../../providers/tracked-entity-attribute-values/tracked-entity-attribute-values";
 import {EventCaptureFormProvider} from "../../providers/event-capture-form/event-capture-form";
 import {AppProvider} from "../../providers/app/app";
@@ -40,8 +40,13 @@ export class TrackedEntityDashboardPage implements OnInit{
   dashboardWidgets : Array<any>;
   isDashboardWidgetOpen : any;
 
+  currentWidget : any;
+  icons : any = {};
+  @ViewChild(Content) content: Content;
 
-  constructor(private navCtrl: NavController,private eventCaptureFormProvider : EventCaptureFormProvider,
+  constructor(private navCtrl: NavController,
+              private modalCtrl : ModalController,
+              private eventCaptureFormProvider : EventCaptureFormProvider,
               private userProvider : UserProvider,private appProvider : AppProvider,
               private programsProvider : ProgramsProvider,
               private trackerCaptureProvider : TrackerCaptureProvider,
@@ -52,6 +57,7 @@ export class TrackedEntityDashboardPage implements OnInit{
 
   ngOnInit(){
     this.isDashboardWidgetOpen = {};
+    this.icons["menu"] = "assets/dashboard/menu.png";
     this.loadingMessage = "Loading user information";
     this.isLoading = true;
     let trackedEntityInstancesId = this.navParams.get("trackedEntityInstancesId");
@@ -140,6 +146,7 @@ export class TrackedEntityDashboardPage implements OnInit{
   //@todo hide key board
   changeDashboardWidget(widget){
     if(widget && widget.id){
+      this.currentWidget = widget;
       if(!this.isDashboardWidgetOpen[widget.id]){
         Object.keys(this.isDashboardWidgetOpen).forEach(id=>{
           this.isDashboardWidgetOpen[id] = false;
@@ -149,9 +156,23 @@ export class TrackedEntityDashboardPage implements OnInit{
     }
   }
 
+  openWidgetList(){
+    let modal = this.modalCtrl.create('TrackedEntityWidgetSelectionPage',{
+      dashboardWidgets : this.dashboardWidgets,
+      currentWidget : this.currentWidget
+    });
+    modal.onDidDismiss((currentWidget : any)=>{
+      this.changeDashboardWidget(currentWidget);
+      setTimeout(() => {
+        this.content.scrollToTop(1300);
+      },200);
+    });
+    modal.present();
+  }
+
   getDashboardWidgets(){
     return [
-      {id : 'enrollment',name : 'Enrollment',icon: 'assets/tracker/profile.png'}
+      {id : 'enrollment',name : 'Enrollment & Profile',icon: 'assets/tracker/profile.png'}
     ];
   }
 

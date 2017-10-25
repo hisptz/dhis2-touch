@@ -1,0 +1,39 @@
+<!--
+  Generated template for the TrackedEntityWidgetSelectionPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      List of widgets
+    </ion-title>
+    <ion-buttons start>
+      <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content >
+  <ion-searchbar animated="true"autocomplete="on"  (ionInput)="getFilteredList($event)"></ion-searchbar>
+  <ion-grid>
+    <ion-row>
+      <ion-col >
+        <ion-list>
+          <ion-item *ngFor="let dashboardWidget of dashboardWidgets" (tap)="setSelectedWidget(dashboardWidget)">
+            <img  class="side-menu-icon" [src]="icon"/>&nbsp;&nbsp;
+            <span  ion-text [color]="(currentWidget.id == dashboardWidget.id) ?'current' : 'font-color'">{{ dashboardWidget.name }}</span>
+          </ion-item>
+          <ion-item *ngIf = "dashboardWidgets.length == 0">
+            <empty-list-notification [emptyListMessage]="'There is no widget to select'"></empty-list-notification>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
