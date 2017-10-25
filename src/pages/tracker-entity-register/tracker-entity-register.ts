@@ -135,17 +135,21 @@ export class TrackerEntityRegisterPage implements OnInit{
   }
 
   openWidgetList(){
-    let modal = this.modalCtrl.create('TrackedEntityWidgetSelectionPage',{
-      dashboardWidgets : this.dashboardWidgets,
-      currentWidget : this.currentWidget
-    });
-    modal.onDidDismiss((currentWidget : any)=>{
-      this.toggleRegistrationContents(currentWidget);
-      setTimeout(() => {
-        this.content.scrollToTop(1300);
-      },200);
-    });
-    modal.present();
+    if(this.isTrackedEntityRegistered){
+      let modal = this.modalCtrl.create('TrackedEntityWidgetSelectionPage',{
+        dashboardWidgets : this.dashboardWidgets,
+        currentWidget : this.currentWidget
+      });
+      modal.onDidDismiss((currentWidget : any)=>{
+        this.toggleRegistrationContents(currentWidget);
+        setTimeout(() => {
+          this.content.scrollToTop(1300);
+        },200);
+      });
+      modal.present();
+    }else{
+      this.appProvider.setNormalNotification("A case has not yet registered");
+    }
   }
 
   //@todo hide key board
