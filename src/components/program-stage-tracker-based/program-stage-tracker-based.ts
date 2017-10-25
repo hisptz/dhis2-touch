@@ -43,7 +43,6 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
     this.currentEvents = [];
     //@todo add support of data dimensions
     this.selectedDataDimension = [];
-    console.log("trackedEntityInstance : " + this.trackedEntityInstance);
     this.currentOrgUnit = this.organisationUnitProvider.lastSelectedOrgUnit;
     this.currentProgram = this.programsProvider.lastSelectedProgram;
     this.loadingMessage = "Loading user information";
@@ -71,7 +70,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
     });
   }
 
-  addNewEvent(){
+  createEmptyEvent(){
     //@todo creation of empty events based on
     let dataDimension : any = this.getDataDimensions();
     this.currentOpenEvent = this.eventCaptureFormProvider.getEmptyEvent(this.currentProgram,this.currentOrgUnit,this.programStage.id,dataDimension.attributeCos,dataDimension.attributeCc,'tracker');
@@ -79,6 +78,16 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
     this.dataObjectModel = {};
     this.shouldAddNewEvent = true;
   }
+
+  addAnotherEvent(currentOpenEvent){
+    this.shouldAddNewEvent = false;
+    this.currentOpenEvent = {};
+    this.currentEvents.push(currentOpenEvent);
+    setTimeout(()=>{
+      this.createEmptyEvent();
+    },100);
+  }
+
 
   ngOnDestroy(){
     this.currentProgram = null;

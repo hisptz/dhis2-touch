@@ -2,13 +2,13 @@
   <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></page-loading>
 </div>
 <div *ngIf="!isLoading">
+
+  {{ currentEvents |json }}
   <div *ngIf="!shouldAddNewEvent">
-    <div class="item-card" (click)="addNewEvent()" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
+    <div class="item-card" (click)="createEmptyEvent()" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
       <ion-icon name="add" color="icon-color"></ion-icon>
       Add
     </div>
-    <br>
-    {{ currentEvents |json }}
   </div>
 
   <div *ngIf="shouldAddNewEvent">
@@ -26,7 +26,6 @@
       <div style="display: inline-block;width: 49.3%">
         <span *ngIf="programStage.dueDateLabel == '0'">Due date</span>
         <span *ngIf="programStage.dueDateLabel !='0'">{{ programStage.executionDateLabel }}</span>
-        <span class="required">*</span>
         <div class="input-field-container">
           <ion-item>
             <ion-datetime doneText="Update" [(ngModel)]="currentOpenEvent['dueDate']" placeholder="Touch to pick date" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>
@@ -45,6 +44,13 @@
                                    (onChange)="updateData($event)"></event-input-container>
           </div>
         </div>
+
+        <!-- in case it is repeatable stage -->
+        <div *ngIf="currentOpenEvent && currentOpenEvent.dataValues && currentOpenEvent.dataValues.length > 0" class="item-card" (click)="addAnotherEvent(currentOpenEvent)" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
+          <ion-icon name="add" color="icon-color"></ion-icon>
+          Add Another
+        </div>
+
       </div>
     </div>
     <div *ngIf="!(programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
