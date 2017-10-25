@@ -31,7 +31,7 @@ export class TrackerEntityRegisterPage implements OnInit{
   programTrackedEntityAttributes : Array<any>;
   dashboardWidgets : Array<any>;
   programStages : Array<any>;
-  isRegistrationContentOpen : any = {};
+  isDashboardWidgetOpen : any = {};
   isLoading : boolean;
   isRegistrationProcessingRunning : boolean;
   loadingMessage : string;
@@ -68,7 +68,7 @@ export class TrackerEntityRegisterPage implements OnInit{
     this.trackedEntityAttributeValuesObject = {};
     this.incidentDate = today;
     this.enrollmentDate = today;
-    this.dashboardWidgets = this.getRegistrationContents();
+    this.dashboardWidgets = this.getDashboardWidgets();
     this.currentOrganisationUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
     this.currentProgram = this.programsProvider.getLastSelectedProgram();
     this.userProvider.getCurrentUser().then((user)=>{
@@ -87,7 +87,7 @@ export class TrackerEntityRegisterPage implements OnInit{
     this.trackedEntityAttributeValuesObject = {};
     this.incidentDate = today;
     this.enrollmentDate = today;
-    this.dashboardWidgets = this.getRegistrationContents();
+    this.dashboardWidgets = this.getDashboardWidgets();
     this.isTrackedEntityRegistered = false;
     if(this.dashboardWidgets.length > 0){
       this.toggleRegistrationContents(this.dashboardWidgets[0]);
@@ -128,7 +128,7 @@ export class TrackerEntityRegisterPage implements OnInit{
     });
   }
 
-  getRegistrationContents(){
+  getDashboardWidgets(){
     return [
       {id : 'enrollment',name : 'Enrollment & Profile',icon: 'assets/tracker/profile.png'}
     ];
@@ -156,12 +156,12 @@ export class TrackerEntityRegisterPage implements OnInit{
   toggleRegistrationContents(content){
     if(content && content.id){
       this.currentWidget = content;
-      if(!this.isRegistrationContentOpen[content.id]){
-        Object.keys(this.isRegistrationContentOpen).forEach(id=>{
-          this.isRegistrationContentOpen[id] = false;
+      if(!this.isDashboardWidgetOpen[content.id]){
+        Object.keys(this.isDashboardWidgetOpen).forEach(id=>{
+          this.isDashboardWidgetOpen[id] = false;
         });
       }
-      this.isRegistrationContentOpen[content.id] = true;
+      this.isDashboardWidgetOpen[content.id] = true;
     }
   }
 

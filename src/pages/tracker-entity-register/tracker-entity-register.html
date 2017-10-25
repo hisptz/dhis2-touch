@@ -33,7 +33,7 @@
       </ion-row>
 
       <div *ngFor="let widget of dashboardWidgets">
-        <div *ngIf="(isRegistrationContentOpen[widget.id])">
+        <div *ngIf="(isDashboardWidgetOpen[widget.id])">
           <ion-row>
             <ion-col>
               <div *ngIf="currentWidget.id == 'enrollment'">
@@ -135,7 +135,8 @@
 </ion-content>
 <ion-footer>
   <ion-toolbar>
-    <button ion-button clear text-capitalize *ngFor="let widget of dashboardWidgets" [disabled]="(!isTrackedEntityRegistered && widget.iconName)" (tap)="toggleRegistrationContents(widget)">
+
+    <button ion-button clear text-capitalize *ngFor="let widget of dashboardWidgets" [disabled]="(!isTrackedEntityRegistered && widget.iconName) || (isDashboardWidgetOpen[widget.id])" (tap)="toggleRegistrationContents(widget)">
       <div *ngIf="widget.icon">
         <img class="footer-icon" [src]="widget.icon"/>
       </div>
