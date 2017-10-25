@@ -186,6 +186,33 @@ export class EventCaptureFormProvider {
   /**
    *
    * @param currentUser
+   * @param programStageId
+   * @param trackedEntityInstance
+   * @param dataDimension
+   * @returns {Promise<any>}
+   */
+  getEventsForProgramStage(currentUser,programStageId,trackedEntityInstance,dataDimension?){
+    let attribute = "programStage";
+    let attributeValues = [programStageId];
+    let events = [];
+    //@todo based on data dimension
+    return new Promise((resolve,reject)=>{
+      this.getEventsByAttribute(attribute,attributeValues,currentUser).then((eventResponse : any)=>{
+        eventResponse.forEach((event : any)=>{
+          if(event.trackedEntityInstance == trackedEntityInstance){
+            events.push(event);
+          }
+        });
+        resolve(events);
+      }).catch((error)=>{
+        resolve(events);
+      });
+    });
+  }
+
+  /**
+   *
+   * @param currentUser
    * @param dataDimension
    * @param programId
    * @param orgUnitId
