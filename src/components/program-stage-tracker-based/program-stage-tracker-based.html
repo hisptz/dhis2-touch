@@ -2,9 +2,8 @@
   <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></page-loading>
 </div>
 <div *ngIf="!isLoading">
-
   {{ currentEvents |json }}
-  <div *ngIf="!shouldAddNewEvent">
+  <div *ngIf="!shouldAddNewEvent && (programStage.repeatable || currentEvents.length == 0)">
     <div class="item-card" (click)="createEmptyEvent()" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
       <ion-icon name="add" color="icon-color"></ion-icon>
       Add
@@ -46,7 +45,7 @@
         </div>
 
         <!-- in case it is repeatable stage -->
-        <div *ngIf="currentOpenEvent && currentOpenEvent.dataValues && currentOpenEvent.dataValues.length > 0" class="item-card" (click)="addAnotherEvent(currentOpenEvent)" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
+        <div *ngIf="currentOpenEvent && currentOpenEvent.dataValues && currentOpenEvent.dataValues.length > 0 && programStage.repeatable" class="item-card" (click)="addAnotherEvent(currentOpenEvent)" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
           <ion-icon name="add" color="icon-color"></ion-icon>
           Add Another
         </div>
