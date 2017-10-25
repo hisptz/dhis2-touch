@@ -3,7 +3,9 @@
 </div>
 <div *ngIf="!isLoading">
   <div>
-    {{ programStage.executionDateLabel}}<span class="required">*</span>
+    <span *ngIf="programStage.executionDateLabel == '0'">Report date</span>
+    <span *ngIf="programStage.executionDateLabel !='0'">{{ programStage.executionDateLabel }}</span>
+    <span class="required">*</span>
   </div>
   <div class="input-field-container">
     <ion-item>

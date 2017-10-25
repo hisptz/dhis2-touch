@@ -273,6 +273,7 @@ export const DATABASE_STRUCTURE = {
       {value: 'eventDate', type: 'TEXT'},
       {value: 'dueDate', type: 'TEXT'},
       {value: 'deleted', type: 'TEXT'},
+      {value: 'trackedEntityInstance', type: 'TEXT'},
       {value: 'completedDate', type: 'TEXT'},
       {value: 'attributeCategoryOptions', type: 'TEXT'},
       {value: 'attributeCc', type: "TEXT"},

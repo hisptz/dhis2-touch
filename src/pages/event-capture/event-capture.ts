@@ -320,7 +320,6 @@ export class EventCapturePage implements OnInit {
   }
 
   goToEventView(currentIndex){
-    console.log(this.eventIds[currentIndex]);
     let params = {dataDimension : this.getDataDimensions(),eventId : this.eventIds[currentIndex]};
     this.navCtrl.push('EventCaptureRegisterPage',params);
   }

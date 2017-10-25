@@ -63,7 +63,6 @@ export class EventCaptureRegisterPage implements OnDestroy,OnInit{
       let eventId = this.params.get('eventId');
       if(eventId){
         this.loadingMessage = "Loading data from local storage";
-        console.log("Loading event with id " + eventId);
         this.eventCaptureFormProvider.getEventsByAttribute("id",[eventId],this.currentUser).then((events : any)=>{
          if(events && events.length > 0){
             this.currentEvent = events[0];

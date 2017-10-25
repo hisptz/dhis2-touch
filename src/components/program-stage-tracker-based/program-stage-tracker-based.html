@@ -14,7 +14,9 @@
   <div *ngIf="shouldAddNewEvent">
     <div >
       <div style="display: inline-block;width: 49.3%">
-        {{ programStage.executionDateLabel}}<span class="required">*</span>
+        <span *ngIf="programStage.executionDateLabel == '0'">Report date</span>
+        <span *ngIf="programStage.executionDateLabel !='0'">{{ programStage.executionDateLabel }}</span>
+        <span class="required">*</span>
         <div class="input-field-container">
           <ion-item>
             <ion-datetime doneText="Update" [(ngModel)]="currentOpenEvent['eventDate']" placeholder="Touch to pick date" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>
@@ -22,7 +24,9 @@
         </div>
       </div>
       <div style="display: inline-block;width: 49.3%">
-        {{ programStage.dueDateLabel}}<span class="required">*</span>
+        <span *ngIf="programStage.dueDateLabel == '0'">Due date</span>
+        <span *ngIf="programStage.dueDateLabel !='0'">{{ programStage.executionDateLabel }}</span>
+        <span class="required">*</span>
         <div class="input-field-container">
           <ion-item>
             <ion-datetime doneText="Update" [(ngModel)]="currentOpenEvent['dueDate']" placeholder="Touch to pick date" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>

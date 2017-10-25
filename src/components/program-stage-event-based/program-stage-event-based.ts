@@ -52,7 +52,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy{
       this.isLoading = false;
     }).catch(error=>{
       this.isLoading = false;
-      console.log("Here we are");
+      console.log(JSON.stringify(error));
       this.appProvider.setNormalNotification("Fail to load user information");
     })
   }
