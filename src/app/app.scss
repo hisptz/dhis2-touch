@@ -266,12 +266,25 @@
   margin-bottom:5px;
 }
 
+.item-card-program-stage-section{
+  border: 1px solid #E6E6E7;
+  border-radius: 0.3rem;
+  padding: 5px 10px 5px;
+  background-color: #F4F4F4;
+  margin-top:5px;
+  margin-bottom:5px;
+}
+
 .item-card-category{
   border: 1px solid #E6E6E7;
   border-radius: 0.3rem;
   padding: 5px 1px 5px;
   margin-top:5px;
   margin-bottom:5px;
+}
+
+.over-flow-container{
+  overflow-x:auto;
 }
 
 .round-button{
@@ -334,7 +347,8 @@ ion-select {
 
 /* Zebra striping */
 .table .table-bordered > thead {
-  background: #FBFBFB
+  background: #FBFBFB;
+  overflow:auto;
 }
 th {
   font-weight: bold;

@@ -55,7 +55,7 @@
       <div *ngIf="isLoading">
         <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage" ></page-loading>
       </div>
-      <div *ngIf="!isLoading">
+      <div *ngIf="!isLoading" class="over-flow-container">
         <ion-row>
           <ion-col>
             <div *ngIf="tableLayout">
