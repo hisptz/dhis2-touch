@@ -2,6 +2,8 @@
   <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></page-loading>
 </div>
 <div *ngIf="!isLoading">
+  programStageSections : {{ programStage.programStageSections |json }}<br><br>
+  
   <div>
     <span *ngIf="programStage.executionDateLabel == '0'">Report date</span>
     <span *ngIf="programStage.executionDateLabel !='0'">{{ programStage.executionDateLabel }}</span>

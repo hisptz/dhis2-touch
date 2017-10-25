@@ -59,10 +59,27 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
 
   loadEventsBasedOnProgramStage(programStageId){
     this.loadingMessage = "Loading events";
+    this.shouldAddNewEvent = false;
     this.eventCaptureFormProvider.getEventsForProgramStage(this.currentUser,programStageId,this.trackedEntityInstance).then((events : any)=>{
-      this.currentEvents = events;
-      this.shouldAddNewEvent = false;
       this.isLoading = false;
+      if(events && events.length == 0){
+        this.createEmptyEvent();
+      }else if(events && events.length == 1){
+        this.currentOpenEvent = events[0];
+        this.updateDataObjectModel(this.currentOpenEvent.dataValues,this.programStage.programStageDataElements);
+        this.shouldAddNewEvent = true;
+      }else if(events && events.length > 1){
+        let counter = 0;
+        events.forEach((event : any)=>{
+          if(counter < events.length){
+            this.currentEvents.push(event);
+          }
+          counter ++;
+        });
+        this.currentOpenEvent = this.currentEvents[this.currentEvents.length - 1];
+        this.updateDataObjectModel(this.currentOpenEvent.dataValues,this.programStage.programStageDataElements);
+        this.shouldAddNewEvent = true;
+      }
     }).catch(error=>{
       console.log(JSON.stringify(error));
       this.isLoading = false;
