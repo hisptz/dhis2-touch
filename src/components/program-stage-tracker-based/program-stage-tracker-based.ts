@@ -100,21 +100,17 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
     this.shouldAddNewEvent = false;
     this.eventCaptureFormProvider.getEventsForProgramStage(this.currentUser,programStageId,this.trackedEntityInstance).then((events : any)=>{
       this.isLoading = false;
-      if(events && events.length == 0){
+      console.log(events.length);
+      if (events && events.length == 0) {
         this.createEmptyEvent();
-      }else if(events && events.length == 1){
+      } else if (events && events.length == 1) {
         this.currentOpenEvent = events[0];
-        this.updateDataObjectModel(this.currentOpenEvent.dataValues,this.programStage.programStageDataElements);
+        this.updateDataObjectModel(this.currentOpenEvent.dataValues, this.programStage.programStageDataElements);
         this.shouldAddNewEvent = true;
-      }else if(events && events.length > 1){
-        console.log(events.length);
-        this.currentOpenEvent = events[events.length - 1];
-        this.updateDataObjectModel(this.currentOpenEvent.dataValues,this.programStage.programStageDataElements);
-        //events.pop();
-        this.editableRow = events.length - 1;
+      } else if (events && events.length > 1){
         this.currentEvents = events;
+        this.openProgramStageEventEntryForm(events.length - 1);
         this.renderDataAsTable();
-        this.shouldAddNewEvent = true;
       }
     }).catch(error=>{
       console.log(JSON.stringify(error));
@@ -122,6 +118,14 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
       this.appProvider.setNormalNotification("Fail to load events");
     });
   }
+
+  openProgramStageEventEntryForm(currentIndex){
+    console.log(currentIndex);
+    this.editableRow = currentIndex;
+    this.currentOpenEvent = null;
+    this.shouldAddNewEvent = false;
+  }
+
 
   createEmptyEvent(){
     //@todo creation of empty events based on
@@ -135,18 +139,14 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
   addAnotherEvent(currentOpenEvent){
     this.shouldAddNewEvent = false;
     this.currentOpenEvent = {};
-    this.currentEvents.push(currentOpenEvent);
-    this.renderDataAsTable();
+    if(currentOpenEvent && currentOpenEvent.dataValues && currentOpenEvent.dataValues.length > 0){
+      this.currentEvents.push(currentOpenEvent);
+      this.renderDataAsTable();
+    }
     setTimeout(()=>{
       this.editableRow = this.currentEvents.length + 1;
       this.createEmptyEvent();
     },100);
-  }
-
-  openProgramStageEventEntryForm(currentIndex){
-    this.editableRow = currentIndex;
-    this.currentOpenEvent = null;
-    this.shouldAddNewEvent = false;
   }
 
   renderDataAsTable(){
