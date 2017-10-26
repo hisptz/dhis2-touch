@@ -137,12 +137,12 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
   }
 
   addAnotherEvent(currentOpenEvent){
-    this.shouldAddNewEvent = false;
-    this.currentOpenEvent = {};
-    if(currentOpenEvent && currentOpenEvent.dataValues && currentOpenEvent.dataValues.length > 0){
+    if(currentOpenEvent && currentOpenEvent.dataValues && currentOpenEvent.dataValues.length > 0 && this.shouldAddNewEvent){
       this.currentEvents.push(currentOpenEvent);
       this.renderDataAsTable();
     }
+    this.shouldAddNewEvent = false;
+    this.currentOpenEvent = {};
     setTimeout(()=>{
       this.editableRow = this.currentEvents.length + 1;
       this.createEmptyEvent();
@@ -151,6 +151,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
 
   renderDataAsTable(){
     this.eventCaptureFormProvider.getTableFormatResult(this.columnsToDisplay,this.currentEvents).then((response : any)=>{
+      console.log("Here we are");
       this.tableLayout = response.table;
       this.editableRow = this.tableLayout.rows.length;
     }).catch(error=>{
@@ -180,23 +181,15 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
     });
   }
 
-  updateData(updatedData){
-    this.dataObjectModel[updatedData.id] = updatedData;
-    let dataValues = [];
-    Object.keys(this.dataObjectModel).forEach((key : any)=>{
-      let dataElementId = key.split('-')[0];
-      dataValues.push({
-        dataElement : dataElementId,
-        value : this.dataObjectModel[key].value
+  updateData(shouldUpdateTable){
+    if(shouldUpdateTable){
+      console.log("Here we are");
+      this.eventCaptureFormProvider.getTableFormatResult(this.columnsToDisplay,this.currentEvents).then((response : any)=>{
+        this.tableLayout = response.table;
+      }).catch(error=>{
+        this.appProvider.setNormalNotification("Fail to prepare table for display");
       });
-    });
-    this.currentOpenEvent.dataValues = dataValues;
-    this.currentOpenEvent.syncStatus = "not-synced";
-    this.eventCaptureFormProvider.saveEvents([this.currentOpenEvent],this.currentUser).then(()=>{
-      console.log("Success saving data values");
-    }).catch((error)=>{
-      console.log(JSON.stringify(error));
-    });
+    }
   }
 
   getDataDimensions(){

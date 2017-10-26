@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {EventCaptureFormProvider} from "../../providers/event-capture-form/event-capture-form";
 
 /**
@@ -16,14 +16,19 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy{
   @Input() programStage;
   @Input() currentOpenEvent;
   @Input() currentUser;
+  @Input() isOpenRow;
+  @Output() onChange = new EventEmitter();
+
   dataObjectModel : any;
 
   constructor(private eventCaptureFormProvider : EventCaptureFormProvider) {
   }
 
   ngOnInit(){
-
-
+    if(this.isOpenRow){
+      this.isOpenRow = JSON.parse(this.isOpenRow);
+    }
+    this.dataObjectModel = {};
     if(this.currentOpenEvent && this.currentOpenEvent.dataValues && this.programStage && this.programStage.programStageDataElements ){
       this.updateDataObjectModel(this.currentOpenEvent.dataValues, this.programStage.programStageDataElements);
     }
@@ -62,6 +67,7 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy{
     });
     this.currentOpenEvent.dataValues = dataValues;
     this.currentOpenEvent.syncStatus = "not-synced";
+    this.onChange.emit(this.isOpenRow);
     this.eventCaptureFormProvider.saveEvents([this.currentOpenEvent],this.currentUser).then(()=>{
       console.log("Success saving data values");
     }).catch((error)=>{

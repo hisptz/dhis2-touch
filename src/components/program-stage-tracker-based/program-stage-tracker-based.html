@@ -18,63 +18,24 @@
         </tr>
         <tr *ngIf="editableRow == currentIndex">
           <td colspan="100%" >
-            <tracker-event-container [programStage]="programStage" [currentUser]="currentUser" [(currentOpenEvent)]="currentEvents[currentIndex]" ></tracker-event-container>
+            <tracker-event-container
+              [programStage]="programStage"
+              [currentUser]="currentUser"
+              [(currentOpenEvent)]="currentEvents[currentIndex]"
+              [isOpenRow]="'true'"
+              (onChange)="updateData($event)"></tracker-event-container>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
   <div *ngIf="shouldAddNewEvent" >
-    <tracker-event-container [programStage]="programStage" [currentUser]="currentUser" [(currentOpenEvent)]="currentOpenEvent" ></tracker-event-container>
-
-
-    <!--<div class="item-card-with-no-margin">-->
-      <!--<div >-->
-        <!--<div style="display: inline-block;width: 49.3%">-->
-          <!--<span *ngIf="programStage.executionDateLabel == '0'">Report date</span>-->
-          <!--<span *ngIf="programStage.executionDateLabel !='0'">{{ programStage.executionDateLabel }}</span>-->
-          <!--<span class="required">*</span>-->
-          <!--<div class="input-field-container">-->
-            <!--<ion-item>-->
-              <!--<ion-datetime doneText="Update" [(ngModel)]="currentOpenEvent['eventDate']" placeholder="Touch to pick date" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>-->
-            <!--</ion-item>-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--<div style="display: inline-block;width: 49.3%">-->
-          <!--<span *ngIf="programStage.dueDateLabel == '0'">Due date</span>-->
-          <!--<span *ngIf="programStage.dueDateLabel !='0'">{{ programStage.executionDateLabel }}</span>-->
-          <!--<div class="input-field-container">-->
-            <!--<ion-item>-->
-              <!--<ion-datetime doneText="Update" [(ngModel)]="currentOpenEvent['dueDate']" placeholder="Touch to pick date" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>-->
-            <!--</ion-item>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-      <!--<div *ngIf="programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0 ">-->
-        <!--<div *ngIf="currentOpenEvent['eventDate'] && currentOpenEvent['eventDate'] !=''">-->
-          <!--<div *ngFor="let programStageDataElement of programStage.programStageDataElements">-->
-            <!--<div *ngIf="programStageDataElement.dataElement && programStageDataElement.dataElement.id">-->
-              <!--<event-input-container [dataElement]="programStageDataElement.dataElement"-->
-                                     <!--[currentUser]="currentUser"-->
-                                     <!--[data]="dataObjectModel"-->
-                                     <!--[mandatory]="programStageDataElement.compulsory"-->
-                                     <!--(onChange)="updateData($event)"></event-input-container>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-
-    <!--<div *ngIf="!(programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">-->
-      <!--<div *ngIf="currentOpenEvent['eventDate'] && currentOpenEvent['eventDate'] !=''">-->
-        <!--<notification [message]="'Contact system to add data elements'"></notification>-->
-      <!--</div>-->
-    <!--</div>-->
-
-
-
-
-
+    <tracker-event-container
+      [programStage]="programStage"
+      [currentUser]="currentUser"
+      [(currentOpenEvent)]="currentOpenEvent"
+      [isOpenRow]="'false'"
+      (onChange)="updateData($event)"></tracker-event-container>
   </div>
 
   <div *ngIf="programStage.repeatable" class="item-card" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
