@@ -2,7 +2,7 @@
   <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></page-loading>
 </div>
 <div *ngIf="!isLoading">
-  programStageSections : {{ programStage.programStageSections |json }}<br><br>
+  <!--programStageSections : {{ programStage.programStageSections |json }}<br><br>-->
   <div *ngIf="tableLayout" class="over-flow-container">
     <table class="table table-bordered" width="100%" >
       <thead *ngIf="tableLayout && tableLayout.headers">

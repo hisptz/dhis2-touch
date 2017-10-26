@@ -120,8 +120,11 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
   }
 
   openProgramStageEventEntryForm(currentIndex){
-    console.log(currentIndex);
     this.editableRow = currentIndex;
+    if(this.shouldAddNewEvent){
+      this.currentEvents.push(this.currentOpenEvent);
+      this.renderDataAsTable();
+    }
     this.currentOpenEvent = null;
     this.shouldAddNewEvent = false;
   }
@@ -151,18 +154,11 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
 
   renderDataAsTable(){
     this.eventCaptureFormProvider.getTableFormatResult(this.columnsToDisplay,this.currentEvents).then((response : any)=>{
-      console.log("Here we are");
       this.tableLayout = response.table;
       this.editableRow = this.tableLayout.rows.length;
     }).catch(error=>{
       this.appProvider.setNormalNotification("Fail to prepare table for display");
     });
-  }
-
-
-  ngOnDestroy(){
-    this.currentProgram = null;
-    this.currentOrgUnit = null;
   }
 
   updateDataObjectModel(dataValues,programStageDataElements){
@@ -183,7 +179,6 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
 
   updateData(shouldUpdateTable){
     if(shouldUpdateTable){
-      console.log("Here we are");
       this.eventCaptureFormProvider.getTableFormatResult(this.columnsToDisplay,this.currentEvents).then((response : any)=>{
         this.tableLayout = response.table;
       }).catch(error=>{
@@ -209,5 +204,9 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
     }
   }
 
+  ngOnDestroy(){
+    this.currentProgram = null;
+    this.currentOrgUnit = null;
+  }
 
 }
