@@ -121,7 +121,7 @@ export class EventCaptureFormProvider {
     let eventsMapper = [];
     events.forEach((event : any)=>{
       let mapper = {};
-      if(event.dataValues){
+      if(event && event.dataValues){
         event.dataValues.forEach((dataValue : any)=>{
           mapper[dataValue.dataElement] = dataValue.value;
         });

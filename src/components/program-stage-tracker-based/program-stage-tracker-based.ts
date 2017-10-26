@@ -4,6 +4,7 @@ import {OrganisationUnitsProvider} from "../../providers/organisation-units/orga
 import {UserProvider} from "../../providers/user/user";
 import {AppProvider} from "../../providers/app/app";
 import {EventCaptureFormProvider} from "../../providers/event-capture-form/event-capture-form";
+import {SettingsProvider} from "../../providers/settings/settings";
 
 /**
  * Generated class for the ProgramStageTrackerBasedComponent component.
@@ -27,11 +28,18 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
   loadingMessage : string;
   selectedDataDimension : any;
   dataObjectModel : any;
-  currentEvents : Array<any>;
+  currentEvents : Array<any> = [];
   shouldAddNewEvent : boolean = false;
   currentOpenEvent : any;
 
+
+  dataEntrySettings : any;
+  columnsToDisplay : any;
+  tableLayout : any;
+  editableRow : any;
+
   constructor(private programsProvider : ProgramsProvider,
+              private settingsProvider : SettingsProvider,
               private userProvider : UserProvider,private appProvider : AppProvider,
               private eventCaptureFormProvider : EventCaptureFormProvider,
               private organisationUnitProvider : OrganisationUnitsProvider) {
@@ -50,7 +58,37 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
     this.userProvider.getCurrentUser().then((user)=>{
       this.currentUser = user;
       if(this.programStage && this.programStage.id){
-        this.loadEventsBasedOnProgramStage(this.programStage.id);
+        this.settingsProvider.getSettingsForTheApp(this.currentUser).then((appSettings : any)=>{
+          this.dataEntrySettings =  appSettings.entryForm;
+          this.columnsToDisplay = {};
+          if(this.programStage.programStageDataElements){
+            this.programStage.programStageDataElements.forEach((programStageDataElement : any)=>{
+              if(programStageDataElement.dataElement && programStageDataElement.dataElement.id){
+                let dataElement = programStageDataElement.dataElement;
+                let fieldLabelKey = dataElement.displayName;
+                if(this.dataEntrySettings && this.dataEntrySettings.label && dataElement[this.dataEntrySettings.label]){
+                  if(dataElement[this.dataEntrySettings.label] != "0"){
+                    fieldLabelKey = dataElement[this.dataEntrySettings.label];
+                  }
+                }
+                this.columnsToDisplay[programStageDataElement.dataElement.id] = fieldLabelKey;
+              }
+            });
+            if(Object.keys(this.columnsToDisplay).length == 0 && this.programStage.programStageDataElements.length > 0){
+              let dataElement = this.programStage.programStageDataElements[0].dataElement;
+              if(dataElement && dataElement.id){
+                let fieldLabelKey = dataElement.displayName;
+                if(this.dataEntrySettings && this.dataEntrySettings.label && dataElement[this.dataEntrySettings.label]){
+                  if(dataElement[this.dataEntrySettings.label] != "0"){
+                    fieldLabelKey = dataElement[this.dataEntrySettings.label];
+                  }
+                }
+                this.columnsToDisplay[this.programStage.programStageDataElements[0].dataElement.id] = fieldLabelKey;
+              }
+            }
+          }
+          this.loadEventsBasedOnProgramStage(this.programStage.id);
+        });
       }
     }).catch(error=>{
       this.appProvider.setNormalNotification("Fail to load user information");
@@ -69,15 +107,13 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
         this.updateDataObjectModel(this.currentOpenEvent.dataValues,this.programStage.programStageDataElements);
         this.shouldAddNewEvent = true;
       }else if(events && events.length > 1){
-        let counter = 0;
-        events.forEach((event : any)=>{
-          if(counter < events.length){
-            this.currentEvents.push(event);
-          }
-          counter ++;
-        });
-        this.currentOpenEvent = this.currentEvents[this.currentEvents.length - 1];
+        console.log(events.length);
+        this.currentOpenEvent = events[events.length - 1];
         this.updateDataObjectModel(this.currentOpenEvent.dataValues,this.programStage.programStageDataElements);
+        //events.pop();
+        this.editableRow = events.length - 1;
+        this.currentEvents = events;
+        this.renderDataAsTable();
         this.shouldAddNewEvent = true;
       }
     }).catch(error=>{
@@ -100,9 +136,26 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
     this.shouldAddNewEvent = false;
     this.currentOpenEvent = {};
     this.currentEvents.push(currentOpenEvent);
+    this.renderDataAsTable();
     setTimeout(()=>{
+      this.editableRow = this.currentEvents.length + 1;
       this.createEmptyEvent();
     },100);
+  }
+
+  openProgramStageEventEntryForm(currentIndex){
+    this.editableRow = currentIndex;
+    this.currentOpenEvent = null;
+    this.shouldAddNewEvent = false;
+  }
+
+  renderDataAsTable(){
+    this.eventCaptureFormProvider.getTableFormatResult(this.columnsToDisplay,this.currentEvents).then((response : any)=>{
+      this.tableLayout = response.table;
+      this.editableRow = this.tableLayout.rows.length;
+    }).catch(error=>{
+      this.appProvider.setNormalNotification("Fail to prepare table for display");
+    });
   }
 
 
