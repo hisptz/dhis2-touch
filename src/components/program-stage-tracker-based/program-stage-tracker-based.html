@@ -11,7 +11,7 @@
       </tr>
       </thead>
       <tbody *ngFor="let row of tableLayout.rows;let currentIndex = index">
-        <tr [ngStyle]="{'background-color': editableRow == currentIndex ? '#b9ffb9' : '' }" (click)="openProgramStageEventEntryForm(currentIndex)">
+        <tr [ngStyle]="{'background-color': editableRow == currentIndex ? '#B9FFB9' :'#F4F4F4' }" (click)="openProgramStageEventEntryForm(currentIndex)">
           <td *ngFor="let data of row">
             {{ data }}
           </td>
@@ -30,12 +30,14 @@
     </table>
   </div>
   <div *ngIf="shouldAddNewEvent" >
-    <tracker-event-container
-      [programStage]="programStage"
-      [currentUser]="currentUser"
-      [(currentOpenEvent)]="currentOpenEvent"
-      [isOpenRow]="'false'"
-      (onChange)="updateData($event)"></tracker-event-container>
+    <div class="item-card-with-no-margin">
+      <tracker-event-container
+        [programStage]="programStage"
+        [currentUser]="currentUser"
+        [(currentOpenEvent)]="currentOpenEvent"
+        [isOpenRow]="'false'"
+        (onChange)="updateData($event)"></tracker-event-container>
+    </div>
   </div>
 
   <div *ngIf="programStage.repeatable" class="item-card" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
