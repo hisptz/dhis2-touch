@@ -243,6 +243,11 @@ export class EventCaptureFormProvider {
    * @returns {Promise<any>}
    */
   saveEvents(events,currentUser){
+    events.forEach((event : any)=>{
+      if(!event.dueDate){
+        event.dueDate = event.eventDate
+      }
+    });
     let tableName  = "events";
     return new Promise((resolve,reject)=>{
       this.sqliteProvider.insertBulkDataOnTable(tableName,events,currentUser.currentDatabase).then(()=>{

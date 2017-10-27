@@ -1,9 +1,9 @@
 <div *ngIf="isLoading">
   <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></page-loading>
 </div>
-<div *ngIf="!isLoading">
+<div *ngIf="!isLoading" class="over-flow-container">
   <!--programStageSections : {{ programStage.programStageSections |json }}<br><br>-->
-  <div *ngIf="tableLayout" class="over-flow-container">
+  <div *ngIf="tableLayout">
     <table class="table table-bordered" width="100%" >
       <thead *ngIf="tableLayout && tableLayout.headers">
       <tr >
@@ -11,26 +11,28 @@
       </tr>
       </thead>
       <tbody *ngFor="let row of tableLayout.rows;let currentIndex = index">
-        <tr [ngStyle]="{'background-color': editableRow == currentIndex ? '#B9FFB9' :'#F4F4F4' }" (click)="openProgramStageEventEntryForm(currentIndex)">
+        <tr [ngStyle]="{'background-color': isTableRowOpened[currentIndex] ? '#B9FFB9' :'#F4F4F4' }" (click)="openProgramStageEventEntryForm(currentIndex)">
           <td *ngFor="let data of row">
             {{ data }}
           </td>
         </tr>
-        <tr *ngIf="editableRow == currentIndex">
-          <td colspan="100%" >
-            <tracker-event-container
-              [programStage]="programStage"
-              [currentUser]="currentUser"
-              [(currentOpenEvent)]="currentEvents[currentIndex]"
-              [isOpenRow]="'true'"
-              (onChange)="updateData($event)"></tracker-event-container>
+        <tr *ngIf="isTableRowOpened[currentIndex]">
+          <td colspan="100%">
+            <div text-left>
+              <tracker-event-container
+                [programStage]="programStage"
+                [currentUser]="currentUser"
+                [(currentOpenEvent)]="currentEvents[currentIndex]"
+                [isOpenRow]="'true'"
+                (onChange)="updateData($event)"></tracker-event-container>
+            </div>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
   <div *ngIf="shouldAddNewEvent" >
-    <div class="item-card-with-no-margin">
+    <div class="item-card-with-no-margin" [ngStyle]="{'border-top':currentEvents.length > 0? '0px':''}">
       <tracker-event-container
         [programStage]="programStage"
         [currentUser]="currentUser"
@@ -52,7 +54,4 @@
     <ion-icon name="add" color="icon-color"></ion-icon>
     Add
   </div>
-
-
-
 </div>
