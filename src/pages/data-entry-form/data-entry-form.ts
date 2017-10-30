@@ -8,6 +8,7 @@ import {NetworkAvailability} from "../../providers/network-availability";
 import {User} from "../../providers/user";
 import {Setting} from "../../providers/setting";
 import {EntryFormSectionListPage} from "../entry-form-section-list/entry-form-section-list";
+import {SettingsProvider} from "../../providers/settings";
 
 /*
   Generated class for the DataEntryForm page.
@@ -59,6 +60,7 @@ export class DataEntryForm implements OnInit{
               public user:User,public DataSets : DataSets,
               public actionSheetCtrl: ActionSheetController,public NetworkAvailability : NetworkAvailability,
               public entryForm:EntryForm,public Setting : Setting,
+              private settingsProvider : SettingsProvider,
               public dataValues:DataValues) {
 
   }
@@ -81,9 +83,10 @@ export class DataEntryForm implements OnInit{
   }
 
   loadEntryFormSetting(){
-    this.Setting.getDataEntrySetting().then((dataEntrySetting: any)=>{
-      if(dataEntrySetting && dataEntrySetting.label){
-        this.dataEntrySetting = dataEntrySetting;
+    this.settingsProvider.getSettingsForTheApp(this.currentUser).then((appSettings: any)=>{
+      let dataEntrySettings = appSettings.entryForm;
+      if(dataEntrySettings && dataEntrySettings.label){
+        this.dataEntrySetting = dataEntrySettings;
       }else{
         this.dataEntrySetting = {label : "displayName",maxDataElementOnDefaultForm : 4}
       }
