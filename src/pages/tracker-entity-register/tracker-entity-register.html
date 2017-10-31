@@ -147,11 +147,13 @@
       <ion-row>
         <ion-col>
           <button ion-button clear text-capitalize *ngFor="let widget of dashboardWidgets" [disabled]="(!isTrackedEntityRegistered && widget.iconName) || (isDashboardWidgetOpen[widget.id])" (tap)="toggleRegistrationContents(widget)">
-            <div *ngIf="widget.icon">
-              <img class="footer-icon" [src]="widget.icon"/>
-            </div>
-            <div *ngIf="widget.iconName">
-              <b>{{ widget.iconName }}</b>
+            <div [ngClass]=" (isDashboardWidgetOpen[widget.id])?'program-stage-button-label':''">
+              <div *ngIf="widget.icon" >
+                <img class="footer-icon" [src]="widget.icon"/>
+              </div>
+              <div *ngIf="widget.iconName" >
+                <b>{{ widget.iconName }}</b>
+              </div>
             </div>
           </button>
           <button ion-button clear text-capitalize [disabled]="!isTrackedEntityRegistered" (click)="resetRegistration()" item-right>
