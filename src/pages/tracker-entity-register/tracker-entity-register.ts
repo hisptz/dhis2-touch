@@ -92,7 +92,7 @@ export class TrackerEntityRegisterPage implements OnInit{
     this.dashboardWidgets = this.getDashboardWidgets();
     this.isTrackedEntityRegistered = false;
     if(this.dashboardWidgets.length > 0){
-      this.toggleRegistrationContents(this.dashboardWidgets[0]);
+      this.changeDashboardWidget(this.dashboardWidgets[0]);
     }
     this.trackedEntityInstance =  dhis2.util.uid();
     this.loadingProgramStages(this.currentProgram.id,this.currentUser);
@@ -143,7 +143,7 @@ export class TrackerEntityRegisterPage implements OnInit{
         currentWidget : this.currentWidget
       });
       modal.onDidDismiss((currentWidget : any)=>{
-        this.toggleRegistrationContents(currentWidget);
+        this.changeDashboardWidget(currentWidget);
         setTimeout(() => {
           this.content.scrollToTop(1300);
         },200);
@@ -154,8 +154,14 @@ export class TrackerEntityRegisterPage implements OnInit{
     }
   }
 
-  //@todo hide key board
-  toggleRegistrationContents(content){
+  updateWidgetPagination(widgetIndex){
+    let widget = this.dashboardWidgets[widgetIndex];
+    if(widget && widget.id){
+      this.changeDashboardWidget(widget);
+    }
+  }
+
+  changeDashboardWidget(content){
     if(content && content.id){
       this.currentWidgetIndex = this.dashboardWidgets.indexOf(content);
       this.currentWidget = content;

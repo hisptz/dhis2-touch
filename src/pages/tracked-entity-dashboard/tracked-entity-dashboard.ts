@@ -139,12 +139,17 @@ export class TrackedEntityDashboardPage implements OnInit{
     this.trackedEntityAttributeValuesProvider.savingTrackedEntityAttributeValues(this.trackedEntityInstance.id,trackedEntityAttributeValues,this.currentUser).then(()=>{
       //this.appProvider.setNormalNotification("Saved successfully");
     }).catch(error=>{
-      //this.appProvider.setNormalNotification("Fail to save a value");
       console.log(JSON.stringify(error));
     });
   }
 
-  //@todo hide key board
+  updateWidgetPagination(widgetIndex){
+    let widget = this.dashboardWidgets[widgetIndex];
+    if(widget && widget.id){
+      this.changeDashboardWidget(widget);
+    }
+  }
+
   changeDashboardWidget(widget){
     if(widget && widget.id){
       this.currentWidgetIndex = this.dashboardWidgets.indexOf(widget);
@@ -157,6 +162,7 @@ export class TrackedEntityDashboardPage implements OnInit{
       this.isDashboardWidgetOpen[widget.id] = true;
     }
   }
+
 
   openWidgetList(){
     let modal = this.modalCtrl.create('TrackedEntityWidgetSelectionPage',{

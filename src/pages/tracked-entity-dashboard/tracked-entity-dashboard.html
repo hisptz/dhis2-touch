@@ -99,7 +99,8 @@
                           [programStage]="programStage"
                           [trackedEntityInstance]="trackedEntityInstance.id"
                           [currentWidgetIndex]="currentWidgetIndex"
-                          [isLastStage]="(currentWidgetIndex == programStages.length)"></program-stage-tracker-based>
+                          [isLastStage]="(currentWidgetIndex == programStages.length)"
+                          (onChange)="updateWidgetPagination($event)"></program-stage-tracker-based>
                       </div>
                     </div>
                   </div>
@@ -115,11 +116,13 @@
 <ion-footer>
   <ion-toolbar>
     <button ion-button clear text-capitalize *ngFor="let widget of dashboardWidgets" [disabled]="(isDashboardWidgetOpen[widget.id])" (tap)="changeDashboardWidget(widget)">
-      <div *ngIf="widget.icon">
-        <img class="footer-icon" [src]="widget.icon"/>
-      </div>
-      <div *ngIf="widget.iconName" >
-        <b>{{ widget.iconName }}</b>
+      <div [ngClass]=" (isDashboardWidgetOpen[widget.id])?'program-stage-button-label':''">
+        <div *ngIf="widget.icon" >
+          <img class="footer-icon" [src]="widget.icon"/>
+        </div>
+        <div *ngIf="widget.iconName" >
+          <b>{{ widget.iconName }}</b>
+        </div>
       </div>
     </button>
   </ion-toolbar>

@@ -128,7 +128,8 @@
                           [programStage]="programStage"
                           [trackedEntityInstance]="trackedEntityInstance"
                           [currentWidgetIndex]="currentWidgetIndex"
-                          [isLastStage]="(currentWidgetIndex == programStages.length)" ></program-stage-tracker-based>
+                          [isLastStage]="(currentWidgetIndex == programStages.length)"
+                          (onChange)="updateWidgetPagination($event)"></program-stage-tracker-based>
                       </div>
                     </div>
                   </div>
