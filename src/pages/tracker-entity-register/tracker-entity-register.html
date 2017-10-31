@@ -114,7 +114,7 @@
                   </div>
                 </div>
 
-                <div *ngIf="isTrackedEntityRegistered" class="item-card" color="font-color" (click)="toggleRegistrationContents(dashboardWidgets[currentWidgetIndex +1])" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
+                <div *ngIf="isTrackedEntityRegistered" class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex + 1)" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
                   <ion-icon name="ios-arrow-forward-outline" ></ion-icon>
                 </div>
               </div>
@@ -143,20 +143,23 @@
   </ion-grid>
 </ion-content>
 <ion-footer>
-  <ion-toolbar>
-
-    <button ion-button clear text-capitalize *ngFor="let widget of dashboardWidgets" [disabled]="(!isTrackedEntityRegistered && widget.iconName) || (isDashboardWidgetOpen[widget.id])" (tap)="toggleRegistrationContents(widget)">
-      <div *ngIf="widget.icon">
-        <img class="footer-icon" [src]="widget.icon"/>
-      </div>
-      <div *ngIf="widget.iconName">
-        <b>{{ widget.iconName }}</b>
-      </div>
-    </button>
-    <button ion-button clear text-capitalize [disabled]="!isTrackedEntityRegistered" (click)="resetRegistration()" item-right>
-      <img class="footer-icon" [src]="icons.addNewCase"/>
-    </button>
-  </ion-toolbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <button ion-button clear text-capitalize *ngFor="let widget of dashboardWidgets" [disabled]="(!isTrackedEntityRegistered && widget.iconName) || (isDashboardWidgetOpen[widget.id])" (tap)="toggleRegistrationContents(widget)">
+            <div *ngIf="widget.icon">
+              <img class="footer-icon" [src]="widget.icon"/>
+            </div>
+            <div *ngIf="widget.iconName">
+              <b>{{ widget.iconName }}</b>
+            </div>
+          </button>
+          <button ion-button clear text-capitalize [disabled]="!isTrackedEntityRegistered" (click)="resetRegistration()" item-right>
+            <img class="footer-icon" [src]="icons.addNewCase"/>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 </ion-footer>
 
 

@@ -85,7 +85,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="item-card" color="font-color" (click)="changeDashboardWidget(dashboardWidgets[currentWidgetIndex +1])" padding ion-button clear text-center text-capitalize>
+                <div class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex +1)" padding ion-button clear text-center text-capitalize>
                   <ion-icon name="ios-arrow-forward-outline" ></ion-icon>
                 </div>
 
@@ -114,17 +114,22 @@
   </ion-grid>
 </ion-content>
 <ion-footer>
-  <ion-toolbar>
-    <button ion-button clear text-capitalize *ngFor="let widget of dashboardWidgets" [disabled]="(isDashboardWidgetOpen[widget.id])" (tap)="changeDashboardWidget(widget)">
-      <div [ngClass]=" (isDashboardWidgetOpen[widget.id])?'program-stage-button-label':''">
-        <div *ngIf="widget.icon" >
-          <img class="footer-icon" [src]="widget.icon"/>
-        </div>
-        <div *ngIf="widget.iconName" >
-          <b>{{ widget.iconName }}</b>
-        </div>
-      </div>
-    </button>
-  </ion-toolbar>
-
+  <div>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <button ion-button clear text-capitalize *ngFor="let widget of dashboardWidgets" [disabled]="(isDashboardWidgetOpen[widget.id])" (tap)="changeDashboardWidget(widget)">
+            <div [ngClass]=" (isDashboardWidgetOpen[widget.id])?'program-stage-button-label':''">
+              <div *ngIf="widget.icon" >
+                <img class="footer-icon" [src]="widget.icon"/>
+              </div>
+              <div *ngIf="widget.iconName" >
+                <b>{{ widget.iconName }}</b>
+              </div>
+            </div>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
 </ion-footer>
