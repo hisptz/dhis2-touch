@@ -1,4 +1,4 @@
-import {Component,Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {ProgramsProvider} from "../../providers/programs/programs";
 import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
 import {UserProvider} from "../../providers/user/user";
@@ -20,6 +20,9 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
 
   @Input() programStage;
   @Input() trackedEntityInstance;
+  @Input() currentWidgetIndex;
+  @Input() isLastStage;
+  @Output() onChange = new EventEmitter();
 
   currentOrgUnit : any;
   currentProgram : any;
@@ -131,8 +134,6 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
     this.shouldAddNewEvent = false;
   }
 
-
-
   createEmptyEvent(){
     //@todo creation of empty events based on
     let dataDimension : any = this.getDataDimensions();
@@ -205,6 +206,10 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
     }else{
       return {};
     }
+  }
+
+  updateWidgetPagination(pageIndex){
+    this.onChange.emit(pageIndex);
   }
 
   resetOpenRowOnRepeatableEvents(){

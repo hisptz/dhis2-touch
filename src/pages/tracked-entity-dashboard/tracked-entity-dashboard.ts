@@ -41,6 +41,7 @@ export class TrackedEntityDashboardPage implements OnInit{
   isDashboardWidgetOpen : any;
 
   currentWidget : any;
+  currentWidgetIndex : any;
   icons : any = {};
   @ViewChild(Content) content: Content;
 
@@ -146,6 +147,7 @@ export class TrackedEntityDashboardPage implements OnInit{
   //@todo hide key board
   changeDashboardWidget(widget){
     if(widget && widget.id){
+      this.currentWidgetIndex = this.dashboardWidgets.indexOf(widget);
       this.currentWidget = widget;
       if(!this.isDashboardWidgetOpen[widget.id]){
         Object.keys(this.isDashboardWidgetOpen).forEach(id=>{

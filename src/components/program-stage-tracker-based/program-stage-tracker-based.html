@@ -4,7 +4,7 @@
 <div *ngIf="!isLoading" class="over-flow-container">
   <!--programStageSections : {{ programStage.programStageSections |json }}<br><br>-->
   <div *ngIf="tableLayout">
-    <table class="table table-bordered" width="100%" >
+    <table class="table table-bordered" width="99%" >
       <thead *ngIf="tableLayout && tableLayout.headers">
       <tr >
         <th *ngFor="let header of tableLayout.headers" >{{ header}}</th>
@@ -42,11 +42,11 @@
     </div>
   </div>
 
-  <div *ngIf="programStage.repeatable" class="item-card" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
+  <div class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex -1 )" padding ion-button clear text-center text-capitalize >
     <ion-icon name="ios-arrow-back-outline" ></ion-icon>
   </div>
 
-  <div *ngIf="programStage.repeatable" class="item-card" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
+  <div class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex + 1)" *ngIf="!isLastStage" padding ion-button clear text-center text-capitalize >
     <ion-icon name="ios-arrow-forward-outline" ></ion-icon>
   </div>
 

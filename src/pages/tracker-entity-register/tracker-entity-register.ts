@@ -45,6 +45,8 @@ export class TrackerEntityRegisterPage implements OnInit{
   icons : any = {};
 
   currentWidget : any;
+  currentWidgetIndex : any;
+
   @ViewChild(Content) content: Content;
 
   constructor(private navCtrl: NavController,
@@ -155,6 +157,7 @@ export class TrackerEntityRegisterPage implements OnInit{
   //@todo hide key board
   toggleRegistrationContents(content){
     if(content && content.id){
+      this.currentWidgetIndex = this.dashboardWidgets.indexOf(content);
       this.currentWidget = content;
       if(!this.isDashboardWidgetOpen[content.id]){
         Object.keys(this.isDashboardWidgetOpen).forEach(id=>{

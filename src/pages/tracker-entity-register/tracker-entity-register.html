@@ -113,6 +113,10 @@
                     </div>
                   </div>
                 </div>
+
+                <div *ngIf="isTrackedEntityRegistered" class="item-card" color="font-color" (click)="toggleRegistrationContents(dashboardWidgets[currentWidgetIndex +1])" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
+                  <ion-icon name="ios-arrow-forward-outline" ></ion-icon>
+                </div>
               </div>
 
               <div *ngIf="currentWidget.id != 'enrollment'">
@@ -120,7 +124,11 @@
                   <div *ngIf="programStages && programStages.length > 0">
                     <div *ngFor="let programStage of programStages">
                       <div *ngIf="widget.id == programStage.id">
-                        <program-stage-tracker-based [programStage]="programStage" [trackedEntityInstance]="trackedEntityInstance"></program-stage-tracker-based>
+                        <program-stage-tracker-based
+                          [programStage]="programStage"
+                          [trackedEntityInstance]="trackedEntityInstance"
+                          [currentWidgetIndex]="currentWidgetIndex"
+                          [isLastStage]="(currentWidgetIndex == programStages.length)" ></program-stage-tracker-based>
                       </div>
                     </div>
                   </div>
