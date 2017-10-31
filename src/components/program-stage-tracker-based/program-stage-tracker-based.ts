@@ -143,7 +143,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
     this.shouldAddNewEvent = true;
   }
 
-  addAnotherEvent(currentOpenEvent){
+  addRepeatableEvent(currentOpenEvent){
     if(currentOpenEvent && currentOpenEvent.dataValues && currentOpenEvent.dataValues.length > 0 && this.shouldAddNewEvent){
       this.currentEvents.push(currentOpenEvent);
       this.renderDataAsTable();
@@ -155,6 +155,11 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
       this.createEmptyEvent();
     },100);
   }
+
+  shouldEnableAddRepeatableEvent(){
+    return (this.currentOpenEvent && this.currentOpenEvent.dataValues && this.currentOpenEvent.dataValues.length > 0)
+  }
+
 
   renderDataAsTable(){
     this.eventCaptureFormProvider.getTableFormatResult(this.columnsToDisplay,this.currentEvents).then((response : any)=>{

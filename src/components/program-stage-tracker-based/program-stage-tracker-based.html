@@ -50,8 +50,8 @@
     <ion-icon name="ios-arrow-forward-outline" ></ion-icon>
   </div>
 
-  <div *ngIf="programStage.repeatable" class="item-card" (click)="addAnotherEvent(currentOpenEvent)" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
+  <button *ngIf="programStage.repeatable" [disabled]="!shouldEnableAddRepeatableEvent()" class="item-card" (click)="addRepeatableEvent(currentOpenEvent)" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
     <ion-icon name="add" color="icon-color"></ion-icon>
     Add
-  </div>
+  </button>
 </div>
