@@ -56,7 +56,7 @@
       <ion-icon name="add" color="icon-color"></ion-icon>
       Add
     </button>
-    <div class="item-card" color="danger" float-right  *ngIf="couldEventBeDeleted()" padding ion-button clear text-center text-capitalize >
+    <div class="item-card" color="danger" float-right (click)="deleteEvent(currentEventId)"  *ngIf="couldEventBeDeleted()" padding ion-button clear text-center text-capitalize >
       <ion-icon name="trash" ></ion-icon>
     </div>
 

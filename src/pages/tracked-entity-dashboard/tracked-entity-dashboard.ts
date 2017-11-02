@@ -125,6 +125,11 @@ export class TrackedEntityDashboardPage implements OnInit{
     });
   }
 
+  deleteTrackedEntity(trackedEntityId){
+    console.log("Deleting tracked entity with " + trackedEntityId);
+    console.log(trackedEntityId);
+  }
+
   //@todo change of color codes on updates
   updateData(updateDataValue){
     let id = updateDataValue.id.split("-")[0];

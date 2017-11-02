@@ -5,6 +5,7 @@ import {UserProvider} from "../../providers/user/user";
 import {AppProvider} from "../../providers/app/app";
 import {EventCaptureFormProvider} from "../../providers/event-capture-form/event-capture-form";
 import {SettingsProvider} from "../../providers/settings/settings";
+import {ActionSheetController} from "ionic-angular";
 
 /**
  * Generated class for the ProgramStageTrackerBasedComponent component.
@@ -43,8 +44,11 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
   canEventBeDeleted : boolean = false;
   isAddButtonDisabled : boolean = true;
 
+  currentEventId : string;
+
   constructor(private programsProvider : ProgramsProvider,
               private settingsProvider : SettingsProvider,
+              private actionSheetCtrl: ActionSheetController,
               private userProvider : UserProvider,private appProvider : AppProvider,
               private eventCaptureFormProvider : EventCaptureFormProvider,
               private organisationUnitProvider : OrganisationUnitsProvider) {
@@ -109,6 +113,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
         this.createEmptyEvent();
       } else if (events && events.length == 1) {
         this.currentOpenEvent = events[0];
+        this.currentEventId = events[0].id;
         this.updateDataObjectModel(this.currentOpenEvent.dataValues, this.programStage.programStageDataElements);
         this.isNewEventFormOpened = true;
       } else if (events && events.length > 1){
@@ -130,6 +135,9 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
     }else{
       this.resetOpenRowOnRepeatableEvents();
       this.isTableRowOpened[currentIndex] = true;
+      if(this.currentEvents[currentIndex] && this.currentEvents[currentIndex].id){
+        this.currentEventId = this.currentEvents[currentIndex].id;
+      }
       this.canEventBeDeleted = true;
     }
     if(this.currentOpenEvent && this.currentOpenEvent.dataValues && this.currentOpenEvent.dataValues.length > 0 &&this.isNewEventFormOpened){
@@ -146,6 +154,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
     this.currentOpenEvent = this.eventCaptureFormProvider.getEmptyEvent(this.currentProgram,this.currentOrgUnit,this.programStage.id,dataDimension.attributeCos,dataDimension.attributeCc,'tracker');
     this.currentOpenEvent['trackedEntityInstance'] = this.trackedEntityInstance;
     this.dataObjectModel = {};
+    this.currentEventId = this.currentOpenEvent.id;
     this.isNewEventFormOpened = true;
     this.isAddButtonDisabled = true;
   }
@@ -165,6 +174,30 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
 
   couldEventBeDeleted(){
     return this.canEventBeDeleted || (this.currentOpenEvent && this.currentOpenEvent.dataValues && this.currentOpenEvent.dataValues.length > 0);
+  }
+
+  deleteEvent(currentEventId) {
+    const actionSheet = this.actionSheetCtrl.create({
+      title: 'You are about to delete this event, are you sure?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+            this.eventCaptureFormProvider.deleteEventByAttribute('id', currentEventId, this.currentUser).then(() => {
+              this.isLoading = true;
+              this.loadEventsBasedOnProgramStage(this.programStage.id);
+            }).catch(error => {
+              console.log(JSON.stringify(error));
+
+            });
+          }
+        },{
+          text: 'No',
+          handler: () => {}
+        }
+      ]
+    });
+    actionSheet.present();
   }
 
   renderDataAsTable(){

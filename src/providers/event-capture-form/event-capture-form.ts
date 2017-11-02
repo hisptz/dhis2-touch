@@ -82,6 +82,19 @@ export class EventCaptureFormProvider {
     });
   }
 
+
+
+  deleteEventByAttribute(attribute,attributeValue,currentUser){
+    let resource = "events";
+    return new Promise((resolve, reject) => {
+      this.sqliteProvider.deleteFromTableByAttribute(resource,attribute,attributeValue,currentUser.currentDatabase).then(()=>{
+        resolve();
+      }).catch(error=>{
+        reject(error);
+      });
+    });
+  }
+
   /**
    *
    * @param columnsToDisplay

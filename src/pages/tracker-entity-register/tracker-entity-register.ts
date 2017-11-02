@@ -185,6 +185,11 @@ export class TrackerEntityRegisterPage implements OnInit{
     }
   }
 
+  deleteTrackedEntity(trackedEntityId){
+    console.log("Deleting tracked entity with " + trackedEntityId);
+    console.log(trackedEntityId);
+  }
+
   registerEntity(){
     let trackedEntityAttributeValues = [];
     Object.keys(this.trackedEntityAttributeValuesObject).forEach(key=>{
