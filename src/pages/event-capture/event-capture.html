@@ -66,7 +66,7 @@
                 </tr>
                 </thead>
                 <tbody *ngIf="tableLayout.rows">
-                <tr *ngFor="let row of tableLayout.rows;let currentIndex = index" (click)="goToEventView(currentIndex)">
+                <tr [ngStyle]="{'background-color': '#F4F4F4' }" *ngFor="let row of tableLayout.rows;let currentIndex = index" (click)="goToEventView(currentIndex)">
                   <td *ngFor="let data of row">
                     {{ data }}
                   </td>

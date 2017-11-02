@@ -91,17 +91,15 @@
 
               </div>
               <div *ngIf="currentWidget.id != 'enrollment'">
-                <div>
-                  <div *ngIf="programStages && programStages.length > 0">
-                    <div *ngFor="let programStage of programStages">
-                      <div *ngIf="widget.id == programStage.id">
-                        <program-stage-tracker-based
-                          [programStage]="programStage"
-                          [trackedEntityInstance]="trackedEntityInstance.id"
-                          [currentWidgetIndex]="currentWidgetIndex"
-                          [isLastStage]="(currentWidgetIndex == programStages.length)"
-                          (onChange)="updateWidgetPagination($event)"></program-stage-tracker-based>
-                      </div>
+                <div *ngIf="programStages && programStages.length > 0">
+                  <div *ngFor="let programStage of programStages">
+                    <div *ngIf="widget.id == programStage.id">
+                      <program-stage-tracker-based
+                        [programStage]="programStage"
+                        [trackedEntityInstance]="trackedEntityInstance.id"
+                        [currentWidgetIndex]="currentWidgetIndex"
+                        [isLastStage]="(currentWidgetIndex == programStages.length)"
+                        (onChange)="updateWidgetPagination($event)"></program-stage-tracker-based>
                     </div>
                   </div>
                 </div>

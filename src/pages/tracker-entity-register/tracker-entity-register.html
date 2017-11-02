@@ -114,23 +114,23 @@
                   </div>
                 </div>
 
-                <div *ngIf="isTrackedEntityRegistered" class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex + 1)" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
-                  <ion-icon name="ios-arrow-forward-outline" ></ion-icon>
+                <div *ngIf="isTrackedEntityRegistered">
+                  <div  class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex + 1)" padding-top padding-bottom ion-button clear text-center text-capitalize>
+                    <ion-icon name="ios-arrow-forward-outline" ></ion-icon>
+                  </div>
                 </div>
               </div>
 
               <div *ngIf="currentWidget.id != 'enrollment'">
-                <div class="item-card">
-                  <div *ngIf="programStages && programStages.length > 0">
-                    <div *ngFor="let programStage of programStages">
-                      <div *ngIf="widget.id == programStage.id">
-                        <program-stage-tracker-based
-                          [programStage]="programStage"
-                          [trackedEntityInstance]="trackedEntityInstance"
-                          [currentWidgetIndex]="currentWidgetIndex"
-                          [isLastStage]="(currentWidgetIndex == programStages.length)"
-                          (onChange)="updateWidgetPagination($event)"></program-stage-tracker-based>
-                      </div>
+                <div *ngIf="programStages && programStages.length > 0">
+                  <div *ngFor="let programStage of programStages">
+                    <div *ngIf="widget.id == programStage.id">
+                      <program-stage-tracker-based
+                        [programStage]="programStage"
+                        [trackedEntityInstance]="trackedEntityInstance"
+                        [currentWidgetIndex]="currentWidgetIndex"
+                        [isLastStage]="(currentWidgetIndex == programStages.length)"
+                        (onChange)="updateWidgetPagination($event)"></program-stage-tracker-based>
                     </div>
                   </div>
                 </div>
@@ -146,7 +146,7 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          <button ion-button clear text-capitalize *ngFor="let widget of dashboardWidgets" [disabled]="(!isTrackedEntityRegistered && widget.iconName) || (isDashboardWidgetOpen[widget.id])" (tap)="toggleRegistrationContents(widget)">
+          <button ion-button clear text-capitalize *ngFor="let widget of dashboardWidgets" [disabled]="(!isTrackedEntityRegistered && widget.iconName) || (isDashboardWidgetOpen[widget.id])" (tap)="changeDashboardWidget(widget)">
             <div [ngClass]=" (isDashboardWidgetOpen[widget.id])?'program-stage-button-label':''">
               <div *ngIf="widget.icon" >
                 <img class="footer-icon" [src]="widget.icon"/>
