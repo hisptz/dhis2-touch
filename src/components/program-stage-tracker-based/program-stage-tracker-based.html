@@ -31,7 +31,7 @@
       </tbody>
     </table>
   </div>
-  <div *ngIf="shouldAddNewEvent" >
+  <div *ngIf="isNewEventFormOpened" >
     <div class="item-card-with-no-margin" [ngStyle]="{'border-top':currentEvents.length > 0? '0px':''}">
       <tracker-event-container
         [programStage]="programStage"
@@ -52,7 +52,7 @@
       <ion-icon name="ios-arrow-forward-outline" ></ion-icon>
     </div>
 
-    <button *ngIf="programStage.repeatable" [disabled]="shouldAddNewEvent" class="item-card" (click)="addRepeatableEvent(currentOpenEvent)" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
+    <button *ngIf="programStage.repeatable" [disabled]="isAddButtonDisabled" class="item-card" (click)="addRepeatableEvent(currentOpenEvent)" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
       <ion-icon name="add" color="icon-color"></ion-icon>
       Add
     </button>

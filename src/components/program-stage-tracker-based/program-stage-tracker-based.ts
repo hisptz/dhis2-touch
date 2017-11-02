@@ -32,7 +32,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
   selectedDataDimension : any;
   dataObjectModel : any;
   currentEvents : Array<any> = [];
-  shouldAddNewEvent : boolean = false;
+  isNewEventFormOpened : boolean = false;
   currentOpenEvent : any;
 
   dataEntrySettings : any;
@@ -41,6 +41,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
 
   isTableRowOpened : any = {};
   canEventBeDeleted : boolean = false;
+  isAddButtonDisabled : boolean = true;
 
   constructor(private programsProvider : ProgramsProvider,
               private settingsProvider : SettingsProvider,
@@ -100,7 +101,8 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
 
   loadEventsBasedOnProgramStage(programStageId){
     this.loadingMessage = "Loading events";
-    this.shouldAddNewEvent = false;
+    this.isNewEventFormOpened = false;
+    this.isAddButtonDisabled = false;
     this.eventCaptureFormProvider.getEventsForProgramStage(this.currentUser,programStageId,this.trackedEntityInstance).then((events : any)=>{
       this.isLoading = false;
       if (events && events.length == 0) {
@@ -108,7 +110,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
       } else if (events && events.length == 1) {
         this.currentOpenEvent = events[0];
         this.updateDataObjectModel(this.currentOpenEvent.dataValues, this.programStage.programStageDataElements);
-        this.shouldAddNewEvent = true;
+        this.isNewEventFormOpened = true;
       } else if (events && events.length > 1){
         this.currentEvents = events;
         this.renderDataAsTable();
@@ -122,6 +124,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
 
   openProgramStageEventEntryForm(currentIndex){
     this.canEventBeDeleted = false;
+    this.isAddButtonDisabled = false;
     if(this.isTableRowOpened[currentIndex]){
       this.isTableRowOpened[currentIndex] = false;
     }else{
@@ -129,12 +132,12 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
       this.isTableRowOpened[currentIndex] = true;
       this.canEventBeDeleted = true;
     }
-    if(this.currentOpenEvent && this.currentOpenEvent.dataValues && this.currentOpenEvent.dataValues.length > 0 &&this.shouldAddNewEvent){
+    if(this.currentOpenEvent && this.currentOpenEvent.dataValues && this.currentOpenEvent.dataValues.length > 0 &&this.isNewEventFormOpened){
       this.currentEvents.push(this.currentOpenEvent);
       this.renderDataAsTable();
     }
     this.currentOpenEvent = null;
-    this.shouldAddNewEvent = false;
+    this.isNewEventFormOpened = false;
   }
 
   createEmptyEvent(){
@@ -143,15 +146,16 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
     this.currentOpenEvent = this.eventCaptureFormProvider.getEmptyEvent(this.currentProgram,this.currentOrgUnit,this.programStage.id,dataDimension.attributeCos,dataDimension.attributeCc,'tracker');
     this.currentOpenEvent['trackedEntityInstance'] = this.trackedEntityInstance;
     this.dataObjectModel = {};
-    this.shouldAddNewEvent = true;
+    this.isNewEventFormOpened = true;
+    this.isAddButtonDisabled = true;
   }
 
   addRepeatableEvent(currentOpenEvent){
-    if(currentOpenEvent && currentOpenEvent.dataValues && currentOpenEvent.dataValues.length > 0 && this.shouldAddNewEvent){
+    if(currentOpenEvent && currentOpenEvent.dataValues && currentOpenEvent.dataValues.length > 0 && this.isNewEventFormOpened){
       this.currentEvents.push(currentOpenEvent);
       this.renderDataAsTable();
     }
-    this.shouldAddNewEvent = false;
+    this.isNewEventFormOpened = false;
     this.currentOpenEvent = {};
     setTimeout(()=>{
       this.resetOpenRowOnRepeatableEvents();
@@ -189,6 +193,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
   }
 
   updateData(shouldUpdateTable){
+    this.isAddButtonDisabled = false;
     if(shouldUpdateTable){
       this.eventCaptureFormProvider.getTableFormatResult(this.columnsToDisplay,this.currentEvents).then((response : any)=>{
         this.tableLayout = response.table;
