@@ -186,9 +186,11 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
             this.eventCaptureFormProvider.deleteEventByAttribute('id', currentEventId, this.currentUser).then(() => {
               this.isLoading = true;
               this.loadEventsBasedOnProgramStage(this.programStage.id);
+              this.appProvider.setNormalNotification("Event has been deleted successfully");
             }).catch(error => {
               console.log(JSON.stringify(error));
-
+              this.isLoading = false;
+              this.appProvider.setNormalNotification("Fail to delete event");
             });
           }
         },{

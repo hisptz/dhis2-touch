@@ -15,7 +15,7 @@ declare var dhis2: any;
 export class EventCaptureFormProvider {
 
   constructor(private programsProvider:ProgramsProvider,
-              private sqliteProvider : SqlLiteProvider,
+              private sqlLiteProvider : SqlLiteProvider,
               private dataElementProvider:DataElementsProvider) {}
 
   /**
@@ -82,12 +82,17 @@ export class EventCaptureFormProvider {
     });
   }
 
-
-
+  /**
+   *
+   * @param attribute
+   * @param attributeValue
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   deleteEventByAttribute(attribute,attributeValue,currentUser){
     let resource = "events";
     return new Promise((resolve, reject) => {
-      this.sqliteProvider.deleteFromTableByAttribute(resource,attribute,attributeValue,currentUser.currentDatabase).then(()=>{
+      this.sqlLiteProvider.deleteFromTableByAttribute(resource,attribute,attributeValue,currentUser.currentDatabase).then(()=>{
         resolve();
       }).catch(error=>{
         reject(error);
@@ -188,7 +193,7 @@ export class EventCaptureFormProvider {
   getEventsByAttribute(attribute : string,attributeValues : Array<string>,currentUser){
     let tableName = "events";
     return new Promise((resolve,reject)=>{
-      this.sqliteProvider.getDataFromTableByAttributes(tableName,attribute,attributeValues,currentUser.currentDatabase).then((events : any)=>{
+      this.sqlLiteProvider.getDataFromTableByAttributes(tableName,attribute,attributeValues,currentUser.currentDatabase).then((events : any)=>{
         resolve(events);
       }).catch((error=>{
         reject({message : error});
@@ -263,7 +268,7 @@ export class EventCaptureFormProvider {
     });
     let tableName  = "events";
     return new Promise((resolve,reject)=>{
-      this.sqliteProvider.insertBulkDataOnTable(tableName,events,currentUser.currentDatabase).then(()=>{
+      this.sqlLiteProvider.insertBulkDataOnTable(tableName,events,currentUser.currentDatabase).then(()=>{
         resolve();
       }).catch(error=>{
         reject({message : error});

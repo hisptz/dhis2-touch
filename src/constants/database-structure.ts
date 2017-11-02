@@ -486,7 +486,7 @@ export const DATABASE_STRUCTURE = {
     batchSize: 100,
     resourceType: "event",
     displayName: "Program Stage Sections",
-    dependentTable: ['events']
+    dependentTable: []
   }
 
 };

@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Content, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
+import {ActionSheetController, Content, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {TrackedEntityAttributeValuesProvider} from "../../providers/tracked-entity-attribute-values/tracked-entity-attribute-values";
 import {EventCaptureFormProvider} from "../../providers/event-capture-form/event-capture-form";
 import {AppProvider} from "../../providers/app/app";
@@ -47,6 +47,7 @@ export class TrackedEntityDashboardPage implements OnInit{
 
   constructor(private navCtrl: NavController,
               private modalCtrl : ModalController,
+              private actionSheetCtrl: ActionSheetController,
               private eventCaptureFormProvider : EventCaptureFormProvider,
               private userProvider : UserProvider,private appProvider : AppProvider,
               private programsProvider : ProgramsProvider,
@@ -125,9 +126,31 @@ export class TrackedEntityDashboardPage implements OnInit{
     });
   }
 
-  deleteTrackedEntity(trackedEntityId){
-    console.log("Deleting tracked entity with " + trackedEntityId);
-    console.log(trackedEntityId);
+  deleteTrackedEntity(trackedEntityInstanceId){
+    const actionSheet = this.actionSheetCtrl.create({
+      title: 'You are about to delete all information related to this tracked entity instance, are you sure?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+            this.isLoading = true;
+            this.loadingMessage = "Deleting all information related to this tracked entity instance";
+            this.trackerCaptureProvider.deleteTrackedEntityInstance(trackedEntityInstanceId,this.currentUser).then(()=>{
+              this.navCtrl.pop();
+              this.appProvider.setNormalNotification("Tracked entity instance has been delete successfully");
+            }).catch(error=>{
+              this.isLoading = false;
+              console.log(JSON.stringify(error));
+              this.appProvider.setNormalNotification("Fail to delete all information related to this tracked entity instance")
+            });
+          }
+        },{
+          text: 'No',
+          handler: () => {}
+        }
+      ]
+    });
+    actionSheet.present();
   }
 
   //@todo change of color codes on updates

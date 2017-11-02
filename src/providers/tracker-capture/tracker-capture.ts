@@ -273,5 +273,32 @@ export class TrackerCaptureProvider {
     });
   }
 
+  /**
+   * 
+   * @param trackedEntityInstanceId
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  deleteTrackedEntityInstance(trackedEntityInstanceId,currentUser){
+    return new Promise((resolve,reject)=>{
+      this.sqlLite.deleteFromTableByAttribute('trackedEntityInstances','trackedEntityInstance',trackedEntityInstanceId,currentUser.currentDatabase).then(()=>{
+        this.sqlLite.deleteFromTableByAttribute('trackedEntityAttributeValues','trackedEntityInstance',trackedEntityInstanceId,currentUser.currentDatabase).then(()=>{
+          this.sqlLite.deleteFromTableByAttribute('enrollments','trackedEntityInstance',trackedEntityInstanceId,currentUser.currentDatabase).then(()=>{
+            this.sqlLite.deleteFromTableByAttribute('events','trackedEntityInstance',trackedEntityInstanceId,currentUser.currentDatabase).then(()=>{
+              resolve();
+            }).catch(error=>{
+              reject(error);
+            });
+          }).catch(error=>{
+            reject(error);
+          });
+        }).catch(error=>{
+          reject(error);
+        });
+      }).catch(error=>{
+        reject(error);
+      });
+    });
+  }
 
 }
