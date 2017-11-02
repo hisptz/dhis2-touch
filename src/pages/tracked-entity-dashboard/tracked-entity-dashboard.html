@@ -85,8 +85,14 @@
                     </div>
                   </div>
                 </div>
-                <div class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex +1)" padding ion-button clear text-center text-capitalize>
-                  <ion-icon name="ios-arrow-forward-outline" ></ion-icon>
+
+                <div class="item-card-program-stage-section">
+                  <div class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex +1)" padding ion-button clear text-center text-capitalize>
+                    <ion-icon name="ios-arrow-forward-outline" ></ion-icon>
+                  </div>
+                  <div class="item-card" color="danger" float-right  *ngIf="trackedEntityInstance.id" padding ion-button clear text-center text-capitalize >
+                    <ion-icon name="trash" ></ion-icon>
+                  </div>
                 </div>
 
               </div>

@@ -114,9 +114,13 @@
                   </div>
                 </div>
 
-                <div *ngIf="isTrackedEntityRegistered">
+
+                <div *ngIf="isTrackedEntityRegistered" class="item-card-program-stage-section">
                   <div  class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex + 1)" padding-top padding-bottom ion-button clear text-center text-capitalize>
                     <ion-icon name="ios-arrow-forward-outline" ></ion-icon>
+                  </div>
+                  <div class="item-card" color="danger" float-right  *ngIf="isTrackedEntityRegistered" padding ion-button clear text-center text-capitalize >
+                    <ion-icon name="trash" ></ion-icon>
                   </div>
                 </div>
               </div>
@@ -156,7 +160,7 @@
               </div>
             </div>
           </button>
-          <button ion-button clear text-capitalize [disabled]="!isTrackedEntityRegistered" (click)="resetRegistration()" item-right>
+          <button ion-button clear text-capitalize [disabled]="!isTrackedEntityRegistered" (click)="resetRegistration()" float-right>
             <img class="footer-icon" [src]="icons.addNewCase"/>
           </button>
         </ion-col>

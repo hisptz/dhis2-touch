@@ -52,10 +52,14 @@
       <ion-icon name="ios-arrow-forward-outline" ></ion-icon>
     </div>
 
-    <button *ngIf="programStage.repeatable" [disabled]="!shouldEnableAddRepeatableEvent()" class="item-card" (click)="addRepeatableEvent(currentOpenEvent)" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
+    <button *ngIf="programStage.repeatable" [disabled]="shouldAddNewEvent" class="item-card" (click)="addRepeatableEvent(currentOpenEvent)" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
       <ion-icon name="add" color="icon-color"></ion-icon>
       Add
     </button>
+    <div class="item-card" color="danger" float-right  *ngIf="couldEventBeDeleted()" padding ion-button clear text-center text-capitalize >
+      <ion-icon name="trash" ></ion-icon>
+    </div>
+
   </div>
 
 </div>

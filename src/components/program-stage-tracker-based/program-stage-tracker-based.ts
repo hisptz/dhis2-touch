@@ -40,6 +40,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
   tableLayout : any;
 
   isTableRowOpened : any = {};
+  canEventBeDeleted : boolean = false;
 
   constructor(private programsProvider : ProgramsProvider,
               private settingsProvider : SettingsProvider,
@@ -120,11 +121,13 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
   }
 
   openProgramStageEventEntryForm(currentIndex){
+    this.canEventBeDeleted = false;
     if(this.isTableRowOpened[currentIndex]){
       this.isTableRowOpened[currentIndex] = false;
     }else{
       this.resetOpenRowOnRepeatableEvents();
       this.isTableRowOpened[currentIndex] = true;
+      this.canEventBeDeleted = true;
     }
     if(this.currentOpenEvent && this.currentOpenEvent.dataValues && this.currentOpenEvent.dataValues.length > 0 &&this.shouldAddNewEvent){
       this.currentEvents.push(this.currentOpenEvent);
@@ -156,10 +159,9 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
     },100);
   }
 
-  shouldEnableAddRepeatableEvent(){
-    return (this.currentOpenEvent && this.currentOpenEvent.dataValues && this.currentOpenEvent.dataValues.length > 0)
+  couldEventBeDeleted(){
+    return this.canEventBeDeleted || (this.currentOpenEvent && this.currentOpenEvent.dataValues && this.currentOpenEvent.dataValues.length > 0);
   }
-
 
   renderDataAsTable(){
     this.eventCaptureFormProvider.getTableFormatResult(this.columnsToDisplay,this.currentEvents).then((response : any)=>{
