@@ -274,7 +274,7 @@ export class TrackerCaptureProvider {
   }
 
   /**
-   * 
+   *
    * @param trackedEntityInstanceId
    * @param currentUser
    * @returns {Promise<any>}

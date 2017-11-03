@@ -84,6 +84,10 @@ export class EventCaptureRegisterPage implements OnDestroy,OnInit{
     });
   }
 
+  onEventDeleted(){
+    this.navCtr.pop();
+  }
+
   ngOnDestroy(){
     this.currentProgram = null;
     this.currentProgram = null;

@@ -8,6 +8,7 @@
   <!--</div>-->
 
 
+
   <div>
     <span *ngIf="programStage.executionDateLabel == '0'">Report date</span>
     <span *ngIf="programStage.executionDateLabel !='0'">{{ programStage.executionDateLabel }}</span>
@@ -29,9 +30,19 @@
                                  (onChange)="updateData($event)"></event-input-container>
         </div>
       </div>
+      <div  *ngIf="canEventBeDeleted()" float-right>
+        <div class="item-card" color="danger" ion-button clear text-justify (click)="deleteEvent(currentEvent.id)">
+          <ion-icon name="trash" ></ion-icon>&nbsp;
+          Delete
+        </div>
+      </div>
+      <div float-left></div>
+
     </div>
     <div *ngIf="!(programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
       <notification [message]="'Contact system to add data elements'"></notification>
     </div>
   </div>
+
+
 </div>
