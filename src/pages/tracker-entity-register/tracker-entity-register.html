@@ -117,13 +117,7 @@
 
                 <div *ngIf="isTrackedEntityRegistered" class="item-card-program-stage-section">
                   <div  class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex + 1)" padding-top padding-bottom ion-button clear text-center text-capitalize>
-                    Stage&nbsp;
-                    <div *ngIf="dashboardWidgets[currentWidgetIndex + 1].icon" >
-                      <img class="footer-icon" [src]="dashboardWidgets[currentWidgetIndex + 1].icon"/>
-                    </div>
-                    <div *ngIf="dashboardWidgets[currentWidgetIndex + 1].iconName" >
-                      <b>{{ dashboardWidgets[currentWidgetIndex + 1].iconName }}</b>
-                    </div>
+                    <ion-icon name="ios-arrow-forward-outline" ></ion-icon>
                   </div>
                   <div class="item-card" color="danger" float-right (click)="deleteTrackedEntity(trackedEntityInstance)"  *ngIf="isTrackedEntityRegistered" padding ion-button clear text-center text-capitalize >
                     <ion-icon name="trash" ></ion-icon>

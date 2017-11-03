@@ -157,6 +157,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
     this.currentEventId = this.currentOpenEvent.id;
     this.isNewEventFormOpened = true;
     this.isAddButtonDisabled = true;
+    this.canEventBeDeleted = false;
   }
 
   addRepeatableEvent(currentOpenEvent){
