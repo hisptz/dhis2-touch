@@ -108,6 +108,14 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
     this.isNewEventFormOpened = false;
     this.isAddButtonDisabled = false;
     this.eventCaptureFormProvider.getEventsForProgramStage(this.currentUser,programStageId,this.trackedEntityInstance).then((events : any)=>{
+      events.forEach((event : any)=>{
+        if(!event.dueDate){
+          event.dueDate = event.eventDate
+        }
+      });
+      if(events && events.length> 0){
+        this.eventCaptureFormProvider.saveEvents(events,this.currentUser).then(()=>{});
+      }
       this.isLoading = false;
       if (events && events.length == 0) {
         this.createEmptyEvent();
