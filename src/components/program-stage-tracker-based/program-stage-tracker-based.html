@@ -26,17 +26,26 @@
                 [isOpenRow]="'true'"
                 (onChange)="updateData($event)"></tracker-event-container>
               <div >
-                <button *ngIf="programStage.repeatable" [disabled]="isAddButtonDisabled" class="item-card" (click)="addRepeatableEvent(currentOpenEvent)" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
-                  <ion-icon name="add" color="icon-color"></ion-icon>
-                  New event
-                </button>
-                <div float-right>
-                  <div class="item-card" float-start color="danger" (click)="deleteEvent(currentEventId)"  *ngIf="couldEventBeDeleted()" padding ion-button clear text-center text-capitalize >
-                    <ion-icon name="trash" ></ion-icon>
-                    Delete
+                <div no-padding>
+                  <div style="display: inline-block;width: 49.3%">
+                    <div float-left>
+                      <button *ngIf="programStage.repeatable" [disabled]="isAddButtonDisabled" class="item-card" (click)="addRepeatableEvent(currentOpenEvent)" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
+                        <ion-icon name="add" color="icon-color"></ion-icon>
+                        New event
+                      </button>
+                    </div>
+                  </div>
+                  <div style="display: inline-block;width: 49.3%">
+                    <div float-right>
+                      <div class="item-card" float-left color="danger"(click)="deleteEvent(currentEventId)"  *ngIf="couldEventBeDeleted()" padding ion-button clear text-center text-capitalize >
+                        <ion-icon name="trash" ></ion-icon>
+                        Delete
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
+              <div style="float: none"></div>
             </div>
           </td>
         </tr>
@@ -52,15 +61,21 @@
         [isOpenRow]="'false'"
         (onChange)="updateData($event)"></tracker-event-container>
     </div>
-    <div >
-      <button *ngIf="programStage.repeatable" [disabled]="isAddButtonDisabled" class="item-card" (click)="addRepeatableEvent(currentOpenEvent)" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
-        <ion-icon name="add" color="icon-color"></ion-icon>
-        New event
-      </button>
-      <div float-right>
-        <div class="item-card" float-left color="danger"(click)="deleteEvent(currentEventId)"  *ngIf="couldEventBeDeleted()" padding ion-button clear text-center text-capitalize >
-          <ion-icon name="trash" ></ion-icon>
-          Delete
+    <div no-padding>
+      <div style="display: inline-block;width: 49.3%">
+        <div float-left>
+          <button *ngIf="programStage.repeatable" [disabled]="isAddButtonDisabled" class="item-card" (click)="addRepeatableEvent(currentOpenEvent)" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
+            <ion-icon name="add" color="icon-color"></ion-icon>
+            New event
+          </button>
+        </div>
+      </div>
+      <div style="display: inline-block;width: 49.3%">
+        <div float-right>
+          <div class="item-card" float-left color="danger"(click)="deleteEvent(currentEventId)"  *ngIf="couldEventBeDeleted()" padding ion-button clear text-center text-capitalize >
+            <ion-icon name="trash" ></ion-icon>
+            Delete
+          </div>
         </div>
       </div>
     </div>
