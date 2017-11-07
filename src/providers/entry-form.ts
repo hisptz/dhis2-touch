@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {SqlLite} from "./sql-lite";
-import {Setting} from "./setting";
+import {SettingsProvider} from "./settings";
+
 
 /*
  Generated class for the EntryForm provider.
@@ -11,7 +12,7 @@ import {Setting} from "./setting";
 @Injectable()
 export class EntryForm {
 
-  constructor(private sqlLite : SqlLite,public Setting : Setting) {}
+  constructor(private sqlLite : SqlLite,private settingsProvider : SettingsProvider,) {}
 
 
   /**
@@ -36,7 +37,7 @@ export class EntryForm {
           if(entryFormSections.length > 0){
             resolve(entryFormSections);
           }else{
-            this.getDefaultEntryForm(dataSet).then(defaultEntryForm=>{
+            this.getDefaultEntryForm(dataSet,currentUser).then(defaultEntryForm=>{
               resolve(defaultEntryForm);
             });
           }
@@ -44,7 +45,7 @@ export class EntryForm {
           reject(error);
         });
       }else{
-        this.getDefaultEntryForm(dataSet).then(defaultEntryForm=>{
+        this.getDefaultEntryForm(dataSet,currentUser).then(defaultEntryForm=>{
           resolve(defaultEntryForm);
         });
       }
@@ -79,20 +80,20 @@ export class EntryForm {
    * @param dataSet
    * @returns {Promise<T>}
    */
-  getDefaultEntryForm(dataSet){
+  getDefaultEntryForm(dataSet,currentUser){
     return new Promise((resolve, reject) =>{
-      this.Setting.getDataEntrySetting().then((dataEntrySetting: any)=>{
-        let maxDataElements = 10;
-        if(dataEntrySetting && dataEntrySetting.label && dataEntrySetting.maxDataElementOnDefaultForm){
-          maxDataElements = dataEntrySetting.maxDataElementOnDefaultForm;
+      this.settingsProvider.getSettingsForTheApp(currentUser).then((appSettings: any)=>{
+        let dataEntrySettings = this.settingsProvider.getDefaultSettings().entryForm;
+        if(appSettings && appSettings.entryForm){
+          dataEntrySettings = appSettings.entryForm;
+        }
+        if(!(dataEntrySettings && dataEntrySettings.label)){
+          dataEntrySettings = {label : "displayName",maxDataElementOnDefaultForm : 4}
         }
         let dataElements = this.getDataElements(dataSet);
-        let defaultEntryForm = this.getDataElementSections(dataElements,maxDataElements);
+        let defaultEntryForm = this.getDataElementSections(dataElements,dataEntrySettings.maxDataElementOnDefaultForm);
         resolve(defaultEntryForm);
-      },error=>{
-        reject();
-      })
-
+      });
     });
   }
 

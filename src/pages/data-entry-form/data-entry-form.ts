@@ -84,7 +84,10 @@ export class DataEntryForm implements OnInit{
 
   loadEntryFormSetting(){
     this.settingsProvider.getSettingsForTheApp(this.currentUser).then((appSettings: any)=>{
-      let dataEntrySettings = appSettings.entryForm;
+      let dataEntrySettings = this.settingsProvider.getDefaultSettings().entryForm;
+      if(appSettings && appSettings.entryForm){
+        dataEntrySettings = appSettings.entryForm;
+      }
       if(dataEntrySettings && dataEntrySettings.label){
         this.dataEntrySetting = dataEntrySettings;
       }else{
