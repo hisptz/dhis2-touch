@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.hipstz.dhis2.dhis2touch" version="2.0.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>DHIS2 touch</name>
+<widget id="com.hipstz.dhis2.dhis2touch" version="2.0.6" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>DHIS 2 touch</name>
     <description>Hybrid mobile application for DHIS</description>
     <author email="profschigalo@gmail.com" href="">Joseph Chingalo</author>
     <content src="index.html" />
@@ -97,4 +97,5 @@
     <plugin name="cordova-sqlite-storage" spec="^2.0.4" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
     <plugin name="uk.co.workingedge.cordova.plugin.sqliteporter" spec="^0.1.7" />
+    <preference name="SplashShowOnlyFirstTime" value="false" />
 </widget>

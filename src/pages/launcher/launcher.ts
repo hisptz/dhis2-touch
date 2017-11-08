@@ -30,7 +30,7 @@ export class LauncherPage implements OnInit{
               public user : User) {}
 
   ngOnInit() {
-    this.logoUrl = 'assets/img/logo.png';
+    this.logoUrl = 'assets/img/app-logo.png';
     this.AppPermission.checkAndRequestAppPermission();
     this.NetworkAvailability.setNetworkStatusDetection();
     this.user.getCurrentUser().then((user : any)=>{

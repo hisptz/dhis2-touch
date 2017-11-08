@@ -52,7 +52,7 @@ export class LoginPage implements OnInit{
               public user : User,public sqlLite : SqlLite) {}
 
   ngOnInit() {
-    this.logoUrl = 'assets/img/logo.png';
+    this.logoUrl = 'assets/img/app-logo.png';
     this.completedTrackedProcess = [];
     this.user.getCurrentUser().then((user: any)=>{
       if(user){
