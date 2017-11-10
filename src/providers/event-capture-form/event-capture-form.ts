@@ -110,20 +110,22 @@ export class EventCaptureFormProvider {
     let table = {headers: [], rows: []};
     let eventIds = this.getMapperObjectForDisplay(events).eventIds;
     let eventDataValuesArrays = this.getMapperObjectForDisplay(events).eventsMapper;
-    Object.keys(columnsToDisplay).forEach(key => {
-      table.headers.push(columnsToDisplay[key]);
-    });
-    eventDataValuesArrays.forEach((eventDataValues: any) => {
-      let row = [];
+    if(events && events.length > 0){
       Object.keys(columnsToDisplay).forEach(key => {
-        if (eventDataValues[key]) {
-          row.push(eventDataValues[key]);
-        } else {
-          row.push("");
-        }
+        table.headers.push(columnsToDisplay[key]);
       });
-      table.rows.push(row);
-    });
+      eventDataValuesArrays.forEach((eventDataValues: any) => {
+        let row = [];
+        Object.keys(columnsToDisplay).forEach(key => {
+          if (eventDataValues[key]) {
+            row.push(eventDataValues[key]);
+          } else {
+            row.push("");
+          }
+        });
+        table.rows.push(row);
+      });
+    }
     return new Promise((resolve, reject) => {
       resolve({table: table, eventIds: eventIds});
     });

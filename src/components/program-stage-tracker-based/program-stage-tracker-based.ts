@@ -107,6 +107,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
     this.loadingMessage = "Loading events";
     this.isNewEventFormOpened = false;
     this.isAddButtonDisabled = false;
+    this.currentEvents = [];
     this.eventCaptureFormProvider.getEventsForProgramStage(this.currentUser,programStageId,this.trackedEntityInstance).then((events : any)=>{
       events.forEach((event : any)=>{
         if(!event.dueDate){
@@ -126,8 +127,8 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
         this.isNewEventFormOpened = true;
       } else if (events && events.length > 1){
         this.currentEvents = events;
-        this.renderDataAsTable();
       }
+      this.renderDataAsTable();
     }).catch(error=>{
       console.log(JSON.stringify(error));
       this.isLoading = false;
