@@ -457,15 +457,14 @@ export class ProgramsProvider {
    */
   isOrganisationUnitAllowed(selectedOrgUnitId,categoryOption){
     let result = true;
-    //@todo support of filter options by ou
-    // if(categoryOption.organisationUnits && categoryOption.organisationUnits.length > 0){
-    //   result = false;
-    //   categoryOption.organisationUnits.forEach((organisationUnit : any)=>{
-    //     if(selectedOrgUnitId == organisationUnit.id){
-    //       result = true;
-    //     }
-    //   });
-    // }
+    if(categoryOption.organisationUnits && categoryOption.organisationUnits.length > 0){
+      result = false;
+      categoryOption.organisationUnits.forEach((organisationUnit : any)=>{
+        if(selectedOrgUnitId == organisationUnit.id){
+          result = true;
+        }
+      });
+    }
     return result;
   }
 
