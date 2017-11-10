@@ -5,6 +5,7 @@ import {AppProvider} from "../../providers/app/app";
 import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
 import {ProgramsProvider} from "../../providers/programs/programs";
 import {TrackerCaptureProvider} from "../../providers/tracker-capture/tracker-capture";
+import {EventCaptureFormProvider} from "../../providers/event-capture-form/event-capture-form";
 
 /**
  * Generated class for the TrackerCapturePage page.
@@ -29,7 +30,6 @@ export class TrackerCapturePage implements OnInit{
   organisationUnitLabel: string;
   programLabel: string;
   isFormReady : boolean;
-  isProgramDimensionApplicable : boolean;
   selectedDataDimension : Array<any>;
   programs : Array<any>;
   trackedEntityInstances : Array<any>;
@@ -43,6 +43,7 @@ export class TrackerCapturePage implements OnInit{
               private userProvider : UserProvider,private appProvider : AppProvider,
               private programsProvider : ProgramsProvider,
               private trackerCaptureProvider : TrackerCaptureProvider,
+              private eventCaptureFormProvider : EventCaptureFormProvider,
               private organisationUnitsProvider : OrganisationUnitsProvider) {
   }
 
@@ -50,6 +51,14 @@ export class TrackerCapturePage implements OnInit{
     if(this.isFormReady){
       this.loadingSavedTrackedEntityInstances(this.selectedProgram.id,this.selectedOrgUnit.id);
     }
+
+    this.eventCaptureFormProvider.getEventsByStatusAndType('not-synced','tracker-capture',this.currentUser).then((events : any)=>{
+      console.log("Not synced : " + events.length)
+    }).catch(()=>{});
+
+    this.eventCaptureFormProvider.getEventsByStatusAndType('synced','tracker-capture',this.currentUser).then((events : any)=>{
+      console.log("Synced : " + events.length)
+    }).catch(()=>{});
   }
 
   ngOnInit(){
@@ -60,7 +69,6 @@ export class TrackerCapturePage implements OnInit{
     this.loadingMessage = "Loading. user information";
     this.isLoading = true;
     this.isFormReady = false;
-    this.isProgramDimensionApplicable = false;
     this.userProvider.getCurrentUser().then((currentUser: any)=>{
       this.currentUser = currentUser;
       this.userProvider.getUserData().then((userData : any)=>{

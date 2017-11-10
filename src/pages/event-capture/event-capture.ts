@@ -93,6 +93,13 @@ export class EventCapturePage implements OnInit {
     if(this.isFormReady){
       this.loadingEvents();
     }
+    this.eventCaptureFormProvider.getEventsByStatusAndType('not-synced','event-capture',this.currentUser).then((events : any)=>{
+      console.log("Not synced : " + events.length)
+    }).catch(()=>{});
+
+    this.eventCaptureFormProvider.getEventsByStatusAndType('synced','event-capture',this.currentUser).then((events : any)=>{
+      console.log("Synced : " + events.length)
+    }).catch(()=>{});
   }
 
   loadingAppSetting(){

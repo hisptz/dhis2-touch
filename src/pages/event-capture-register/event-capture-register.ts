@@ -74,7 +74,7 @@ export class EventCaptureRegisterPage implements OnDestroy,OnInit{
           console.log(JSON.stringify(error));
         });
       }else{
-        this.currentEvent = this.eventCaptureFormProvider.getEmptyEvent(this.currentProgram,this.currentOrgUnit,this.programStage.id,this.dataDimension.attributeCos,this.dataDimension.attributeCc,'evemt-capture');
+        this.currentEvent = this.eventCaptureFormProvider.getEmptyEvent(this.currentProgram,this.currentOrgUnit,this.programStage.id,this.dataDimension.attributeCos,this.dataDimension.attributeCc,'event-capture');
         this.isLoading = false;
       }
     }).catch(error=>{

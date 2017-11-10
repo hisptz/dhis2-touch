@@ -31,7 +31,7 @@ export class EventCaptureFormProvider {
       this.programsProvider.getProgramsStages(programId,currentUser).then((programsStages:any)=>{
         //@todo sections on program stages
         //obtain section ids
-        //programstage sections
+        //program stage sections
         //merge program stage with program stage sections
         //sorting by sortOrder
         programsStages.forEach((programsStage:any)=>{
@@ -266,6 +266,32 @@ export class EventCaptureFormProvider {
       this.sqlLiteProvider.insertBulkDataOnTable(tableName,events,currentUser.currentDatabase).then(()=>{
         resolve();
       }).catch(error=>{
+        reject({message : error});
+      });
+    });
+  }
+
+  /**
+   *
+   * @param status
+   * @param eventType
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getEventsByStatusAndType(status,eventType,currentUser){
+    let tableName  = "events";
+    let attribute = "syncStatus";
+    let attributeArray = [status];
+    let eventResults = [];
+    return new Promise((resolve,reject)=>{
+      this.sqlLiteProvider.getDataFromTableByAttributes(tableName,attribute,attributeArray,currentUser.currentDatabase).then((events : any)=>{
+        events.forEach((event : any)=>{
+          if(event.eventType == eventType){
+            eventResults.push(event);
+          }
+        });
+        resolve(eventResults)
+      }).catch((error)=>{
         reject({message : error});
       });
     });

@@ -159,7 +159,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
   createEmptyEvent(){
     //@todo creation of empty events based on
     let dataDimension : any = this.getDataDimensions();
-    this.currentOpenEvent = this.eventCaptureFormProvider.getEmptyEvent(this.currentProgram,this.currentOrgUnit,this.programStage.id,dataDimension.attributeCos,dataDimension.attributeCc,'tracker');
+    this.currentOpenEvent = this.eventCaptureFormProvider.getEmptyEvent(this.currentProgram,this.currentOrgUnit,this.programStage.id,dataDimension.attributeCos,dataDimension.attributeCc,'tracker-capture');
     this.currentOpenEvent['trackedEntityInstance'] = this.trackedEntityInstance;
     this.dataObjectModel = {};
     this.currentEventId = this.currentOpenEvent.id;
