@@ -32,7 +32,7 @@ export class TrackerCaptureProvider {
    */
   getTrackedEntityInstance(trackedEntityInstancesId, currentUser) {
     return new Promise((resolve,reject)=>{
-      this.trackedEntityInstancesProvider.getTrackedEntityInstances([trackedEntityInstancesId],currentUser).then((trackedEntityInstances : any )=>{
+      this.trackedEntityInstancesProvider.getTrackedEntityInstancesAttribute('trackedEntityInstance',[trackedEntityInstancesId],currentUser).then((trackedEntityInstances : any )=>{
         this.trackedEntityAttributeValuesProvider.getTrackedEntityAttributeValues([trackedEntityInstancesId],currentUser).then((attributeValues : any)=>{
           let attributeValuesObject = {};
           if(attributeValues && attributeValues.length > 0){
@@ -58,6 +58,12 @@ export class TrackerCaptureProvider {
       }).catch(error=>{
         reject({message : error});
       });
+    });
+  }
+
+  getTrackedEntityInstanceByStatus(status,currentUser){
+    return new Promise((resolve,reject)=>{
+
     });
   }
 
@@ -122,7 +128,7 @@ export class TrackerCaptureProvider {
       let currentProgram = this.programsProvider.lastSelectedProgram;
       let currentOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
       if (!syncStatus) {
-        status = "new";
+        syncStatus = "not-synced";
       }
       if (currentOrgUnit && currentOrgUnit.id && currentProgram && currentProgram.id && currentProgram.trackedEntity) {
         let trackedEntityId = currentProgram.trackedEntity.id;
@@ -240,7 +246,7 @@ export class TrackerCaptureProvider {
         enrollments.forEach((enrollment: any) => {
           trackedEntityInstanceIds.push(enrollment.trackedEntityInstance);
         });
-        this.trackedEntityInstancesProvider.getTrackedEntityInstances(trackedEntityInstanceIds, currentUser).then((trackedEntityInstances: any) => {
+        this.trackedEntityInstancesProvider.getTrackedEntityInstancesAttribute('trackedEntityInstance',trackedEntityInstanceIds, currentUser).then((trackedEntityInstances: any) => {
           this.trackedEntityAttributeValuesProvider.getTrackedEntityAttributeValues(trackedEntityInstanceIds, currentUser).then((attributeValues: any) => {
             let attributeValuesObject = {};
             if (attributeValues && attributeValues.length > 0) {
