@@ -53,12 +53,24 @@ export class TrackerCapturePage implements OnInit{
     }
 
     this.eventCaptureFormProvider.getEventsByStatusAndType('not-synced','tracker-capture',this.currentUser).then((events : any)=>{
-      console.log("Not synced : " + events.length)
+      console.log("Not synced events : " + events.length)
     }).catch(()=>{});
 
     this.eventCaptureFormProvider.getEventsByStatusAndType('synced','tracker-capture',this.currentUser).then((events : any)=>{
-      console.log("Synced : " + events.length)
+      console.log("Synced events : " + events.length)
     }).catch(()=>{});
+
+    this.trackerCaptureProvider.getTrackedEntityInstanceByStatus('not-synced',this.currentUser).then((trackedEntityInstances: any)=>{
+      console.log("Not synced tracked entity : " + trackedEntityInstances.length);
+      trackedEntityInstances.forEach((trackedEntityInstance : any)=>{
+        console.log(JSON.stringify(trackedEntityInstance));
+      });
+    }).catch(()=>{});
+
+    this.trackerCaptureProvider.getTrackedEntityInstanceByStatus('synced',this.currentUser).then((trackedEntityInstances: any)=>{
+      console.log("Synced tracked entity : " + trackedEntityInstances.length);
+    }).catch(()=>{});
+
   }
 
   ngOnInit(){

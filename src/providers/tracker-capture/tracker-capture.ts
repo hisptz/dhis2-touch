@@ -61,9 +61,48 @@ export class TrackerCaptureProvider {
     });
   }
 
+  /**
+   *
+   * @param status
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   getTrackedEntityInstanceByStatus(status,currentUser){
     return new Promise((resolve,reject)=>{
-
+      this.trackedEntityInstancesProvider.getTrackedEntityInstancesAttribute('syncStatus',[status],currentUser).then((trackedEntityInstances : any )=>{
+        if(trackedEntityInstances && trackedEntityInstances.length > 0){
+          let trackedEntityInstancesIds = [];
+          trackedEntityInstances.forEach((trackedEntityInstance : any)=>{
+            trackedEntityInstancesIds.push(trackedEntityInstance.id);
+          });
+          this.trackedEntityAttributeValuesProvider.getTrackedEntityAttributeValues(trackedEntityInstancesIds,currentUser).then((attributeValues : any)=>{
+            let attributeValuesObject = {};
+            if(attributeValues && attributeValues.length > 0){
+              attributeValues.forEach((attributeValue : any)=>{
+                delete attributeValue.id;
+                if(!attributeValuesObject[attributeValue.trackedEntityInstance]){
+                  attributeValuesObject[attributeValue.trackedEntityInstance] = [];
+                }
+                attributeValuesObject[attributeValue.trackedEntityInstance].push(attributeValue);
+              });
+              trackedEntityInstances.forEach((trackedEntityInstanceObject : any)=>{
+                if(attributeValuesObject[trackedEntityInstanceObject.trackedEntityInstance]){
+                  trackedEntityInstanceObject["attributes"] = attributeValuesObject[trackedEntityInstanceObject.trackedEntityInstance];
+                }else{
+                  trackedEntityInstanceObject["attributes"] = [];
+                }
+              });
+            }
+            resolve(trackedEntityInstances)
+          }).catch(error=>{
+            reject({message : error});
+          });
+        }else{
+          resolve([]);
+        }
+      }).catch(error=>{
+        reject({message : error});
+      });
     });
   }
 
