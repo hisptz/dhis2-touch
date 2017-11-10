@@ -55,6 +55,23 @@ export class EnrollmentsProvider {
     return payLoads;
   }
 
+  /**
+   *
+   * @param attribute
+   * @param attributeArray
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getSavedEnrollmentsByAttribute(attribute,attributeArray,currentUser){
+    return new Promise( (resolve, reject)=> {
+      this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeArray,currentUser.currentDatabase).then((enrollments : any)=>{
+        resolve(enrollments);
+      }).catch(error=>{
+        reject(error);
+      })
+    })
+  }
+
 
   /**
    *
@@ -84,5 +101,7 @@ export class EnrollmentsProvider {
       });
     });
   }
+
+
 
 }

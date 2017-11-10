@@ -54,11 +54,12 @@ export class TrackedEntityInstancesProvider {
 
   /**
    *
-   * @param trackedEntityInstanceIds
+   * @param attribute
+   * @param attributeArray
    * @param currentUser
    * @returns {Promise<any>}
    */
-  getTrackedEntityInstancesAttribute(attribute,attributeArray,currentUser){
+  getTrackedEntityInstancesByAttribute(attribute,attributeArray,currentUser){
     return new Promise( (resolve, reject)=> {
       this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeArray,currentUser.currentDatabase).then((trackedEntityInstances : any)=>{
         resolve(trackedEntityInstances);

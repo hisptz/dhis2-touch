@@ -58,10 +58,8 @@ export class HttpClientProvider {
   post(url,data,user) {
     this.http.useBasicAuth(user.username,user.password);
     this.http.setRequestTimeout(this.timeOutTime);
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    url = user.serverUrl + this.getUrlBasedOnDhisVersion(url,user);
     return new Promise((resolve, reject)=> {
-      this.http.post(url,data,headers)
+      this.http.post(url,data,{})
         .then((response:any)  => {
           resolve(response);
         },error=>{
@@ -79,9 +77,9 @@ export class HttpClientProvider {
     headers.append('Authorization', 'Basic ' +user.authorizationKey);
     return new Promise((resolve, reject)=> {
       this.defaultHttp.post(user.serverUrl + url, data, { headers: headers }).timeout(this.timeOutTime).subscribe((response)=>{
-        resolve();
+        resolve(response);
       },error=>{
-        reject(error);
+        reject(error.json());
       });
     });
   }

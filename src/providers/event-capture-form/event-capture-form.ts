@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {ProgramsProvider} from "../programs/programs";
 import {DataElementsProvider} from "../data-elements/data-elements";
 import {SqlLiteProvider} from "../sql-lite/sql-lite";
+import {HttpClientProvider} from "../http-client/http-client";
 
 declare var dhis2: any;
 
@@ -16,6 +17,7 @@ export class EventCaptureFormProvider {
 
   constructor(private programsProvider:ProgramsProvider,
               private sqlLiteProvider : SqlLiteProvider,
+              private httpClientProvider : HttpClientProvider,
               private dataElementProvider:DataElementsProvider) {}
 
   /**
@@ -275,18 +277,103 @@ export class EventCaptureFormProvider {
 
   /**
    *
+   * @param events
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  uploadEventsToSever(events,currentUser){
+    return new Promise((resolve,reject)=>{
+      let url = "/api/25/events.json";
+      let success = 0, fail = 0;
+      let updatedEventIds = [];
+      events = this.getFormattedEventsForUpload(events);
+      events.forEach((event : any)=>{
+        this.httpClientProvider.defaultPost(url,event,currentUser).then(()=>{
+          updatedEventIds.push(event.event);
+          success ++;
+          if(success + fail == events.length){
+            resolve(updatedEventIds)
+          }
+        }).catch((error : any)=>{
+          fail ++;
+          if(success + fail == events.length){
+            resolve(updatedEventIds)
+          }
+        })
+      });
+    });
+  }
+
+  /**
+   *
+   * @param eventIds
+   * @param status
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  updateEventStatus(eventIds,status,currentUser){
+    return new Promise((resolve,reject)=>{
+      this.getEventsByAttribute('id',eventIds,currentUser).then((events : any)=>{
+        if(events && events.length > 0){
+          events.forEach((event : any)=>{
+            event.syncStatus = status;
+          });
+          this.saveEvents(events,currentUser).then(()=>{
+            resolve();
+          }).catch(error=>{
+            reject({message : error });
+          });
+        }else{
+          resolve();
+        }
+      }).catch(error=>{
+        reject({message : error});
+      })
+    })
+  }
+
+  /**
+   *
+   * @param events
+   * @returns {any}
+   */
+  getFormattedEventsForUpload(events){
+    events.forEach((event : any)=>{
+      event.event = event.id;
+      delete event.id;
+      delete event.programName;
+      delete event.orgUnitName;
+      delete event.attributeCc;
+      delete event.eventType;
+      delete event.notes;
+      delete event.syncStatus;
+      if(event.completedDate == "0"){
+        delete event.completedDate;
+      }
+      if(event.trackedEntityInstance == "0"){
+        delete event.trackedEntityInstance;
+      }
+      if(event.attributeCategoryOptions == "0"){
+        delete event.attributeCategoryOptions;
+      }
+    });
+    return events;
+  }
+
+
+  /**
+   *
    * @param status
    * @param eventType
    * @param currentUser
    * @returns {Promise<any>}
    */
   getEventsByStatusAndType(status,eventType,currentUser){
-    let tableName  = "events";
     let attribute = "syncStatus";
     let attributeArray = [status];
     let eventResults = [];
     return new Promise((resolve,reject)=>{
-      this.sqlLiteProvider.getDataFromTableByAttributes(tableName,attribute,attributeArray,currentUser.currentDatabase).then((events : any)=>{
+      this.getEventsByAttribute(attribute,attributeArray,currentUser).then((events : any)=>{
         events.forEach((event : any)=>{
           if(event.eventType == eventType){
             eventResults.push(event);

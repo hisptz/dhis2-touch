@@ -5,6 +5,7 @@ import {EnrollmentsProvider} from "../enrollments/enrollments";
 import {TrackedEntityAttributeValuesProvider} from "../tracked-entity-attribute-values/tracked-entity-attribute-values";
 import {TrackedEntityInstancesProvider} from "../tracked-entity-instances/tracked-entity-instances";
 import {SqlLiteProvider} from "../sql-lite/sql-lite";
+import {HttpClientProvider} from "../http-client/http-client";
 
 /*
   Generated class for the TrackerCaptureProvider provider.
@@ -20,6 +21,7 @@ export class TrackerCaptureProvider {
               private sqlLite: SqlLiteProvider,
               private trackedEntityInstancesProvider: TrackedEntityInstancesProvider,
               private trackedEntityAttributeValuesProvider: TrackedEntityAttributeValuesProvider,
+              private httpClientProvider : HttpClientProvider,
               private organisationUnitsProvider: OrganisationUnitsProvider) {
   }
 
@@ -32,7 +34,7 @@ export class TrackerCaptureProvider {
    */
   getTrackedEntityInstance(trackedEntityInstancesId, currentUser) {
     return new Promise((resolve,reject)=>{
-      this.trackedEntityInstancesProvider.getTrackedEntityInstancesAttribute('trackedEntityInstance',[trackedEntityInstancesId],currentUser).then((trackedEntityInstances : any )=>{
+      this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('trackedEntityInstance',[trackedEntityInstancesId],currentUser).then((trackedEntityInstances : any )=>{
         this.trackedEntityAttributeValuesProvider.getTrackedEntityAttributeValues([trackedEntityInstancesId],currentUser).then((attributeValues : any)=>{
           let attributeValuesObject = {};
           if(attributeValues && attributeValues.length > 0){
@@ -69,7 +71,7 @@ export class TrackerCaptureProvider {
    */
   getTrackedEntityInstanceByStatus(status,currentUser){
     return new Promise((resolve,reject)=>{
-      this.trackedEntityInstancesProvider.getTrackedEntityInstancesAttribute('syncStatus',[status],currentUser).then((trackedEntityInstances : any )=>{
+      this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('syncStatus',[status],currentUser).then((trackedEntityInstances : any )=>{
         if(trackedEntityInstances && trackedEntityInstances.length > 0){
           let trackedEntityInstancesIds = [];
           trackedEntityInstances.forEach((trackedEntityInstance : any)=>{
@@ -151,6 +153,10 @@ export class TrackerCaptureProvider {
         reject(error);
       });
     });
+  }
+
+  uploadTrackedEntityInstanceToServer(trackedEntityInstance,currentUser){
+    return new Promise((resolve,reject)=>{})
   }
 
   /**
@@ -285,7 +291,7 @@ export class TrackerCaptureProvider {
         enrollments.forEach((enrollment: any) => {
           trackedEntityInstanceIds.push(enrollment.trackedEntityInstance);
         });
-        this.trackedEntityInstancesProvider.getTrackedEntityInstancesAttribute('trackedEntityInstance',trackedEntityInstanceIds, currentUser).then((trackedEntityInstances: any) => {
+        this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('trackedEntityInstance',trackedEntityInstanceIds, currentUser).then((trackedEntityInstances: any) => {
           this.trackedEntityAttributeValuesProvider.getTrackedEntityAttributeValues(trackedEntityInstanceIds, currentUser).then((attributeValues: any) => {
             let attributeValuesObject = {};
             if (attributeValues && attributeValues.length > 0) {

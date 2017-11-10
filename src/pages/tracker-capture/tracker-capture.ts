@@ -6,6 +6,7 @@ import {OrganisationUnitsProvider} from "../../providers/organisation-units/orga
 import {ProgramsProvider} from "../../providers/programs/programs";
 import {TrackerCaptureProvider} from "../../providers/tracker-capture/tracker-capture";
 import {EventCaptureFormProvider} from "../../providers/event-capture-form/event-capture-form";
+import {EnrollmentsProvider} from "../../providers/enrollments/enrollments";
 
 /**
  * Generated class for the TrackerCapturePage page.
@@ -44,6 +45,7 @@ export class TrackerCapturePage implements OnInit{
               private programsProvider : ProgramsProvider,
               private trackerCaptureProvider : TrackerCaptureProvider,
               private eventCaptureFormProvider : EventCaptureFormProvider,
+              private enrollmentsProvider : EnrollmentsProvider,
               private organisationUnitsProvider : OrganisationUnitsProvider) {
   }
 
@@ -52,8 +54,15 @@ export class TrackerCapturePage implements OnInit{
       this.loadingSavedTrackedEntityInstances(this.selectedProgram.id,this.selectedOrgUnit.id);
     }
 
+    this.testTracker();
+  }
+
+  testTracker(){
     this.eventCaptureFormProvider.getEventsByStatusAndType('not-synced','tracker-capture',this.currentUser).then((events : any)=>{
-      console.log("Not synced events : " + events.length)
+      console.log("Not synced events : " + events.length);
+      if(events && events.length > 0){
+        this.eventCaptureFormProvider.uploadEventsToSever(events,this.currentUser).then(()=>{}).catch(()=>{});
+      }
     }).catch(()=>{});
 
     this.eventCaptureFormProvider.getEventsByStatusAndType('synced','tracker-capture',this.currentUser).then((events : any)=>{
@@ -62,15 +71,19 @@ export class TrackerCapturePage implements OnInit{
 
     this.trackerCaptureProvider.getTrackedEntityInstanceByStatus('not-synced',this.currentUser).then((trackedEntityInstances: any)=>{
       console.log("Not synced tracked entity : " + trackedEntityInstances.length);
-      trackedEntityInstances.forEach((trackedEntityInstance : any)=>{
-        console.log(JSON.stringify(trackedEntityInstance));
-      });
     }).catch(()=>{});
 
     this.trackerCaptureProvider.getTrackedEntityInstanceByStatus('synced',this.currentUser).then((trackedEntityInstances: any)=>{
       console.log("Synced tracked entity : " + trackedEntityInstances.length);
     }).catch(()=>{});
 
+    this.enrollmentsProvider.getSavedEnrollmentsByAttribute('syncStatus',['not-synced'],this.currentUser).then((enrollments: any)=>{
+      console.log("Not Synced enrollments : " + enrollments.length);
+    }).catch(()=>{});
+
+    this.enrollmentsProvider.getSavedEnrollmentsByAttribute('syncStatus',['synced'],this.currentUser).then((enrollments: any)=>{
+      console.log("Synced enrollments : " + enrollments.length);
+    }).catch(()=>{});
   }
 
   ngOnInit(){
