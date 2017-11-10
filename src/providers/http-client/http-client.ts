@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HTTP } from '@ionic-native/http';
-import { Http ,Headers } from '@angular/http';
+import { Http ,Headers, RequestOptions } from '@angular/http';
 import   'rxjs/add/operator/map';
 import 'rxjs/add/operator/timeout';
 
@@ -32,6 +32,7 @@ export class HttpClientProvider {
    * @returns {Promise<T>}
      */
   get(url,user) {
+    this.http.setRequestTimeout(this.timeOutTime);
     this.http.useBasicAuth(user.username,user.password);
     url = user.serverUrl + this.getUrlBasedOnDhisVersion(url,user);
     return new Promise((resolve, reject)=> {
@@ -56,9 +57,11 @@ export class HttpClientProvider {
      */
   post(url,data,user) {
     this.http.useBasicAuth(user.username,user.password);
+    this.http.setRequestTimeout(this.timeOutTime);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
     url = user.serverUrl + this.getUrlBasedOnDhisVersion(url,user);
     return new Promise((resolve, reject)=> {
-      this.http.post(url,data,{})
+      this.http.post(url,data,headers)
         .then((response:any)  => {
           resolve(response);
         },error=>{
