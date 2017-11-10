@@ -68,5 +68,27 @@ export class TrackedEntityInstancesProvider {
     })
   }
 
+  /**
+   *
+   * @param trackedEntityInstances
+   * @param status
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  updateSavedTrackedEntityInstancesByStatus(trackedEntityInstances,status,currentUser){
+    return new Promise((resolve,reject)=>{
+      const newTrackedEntityInstances = trackedEntityInstances.slice();
+      newTrackedEntityInstances.forEach((trackedEntityInstance : any)=>{
+        delete trackedEntityInstance.attributes;
+        trackedEntityInstance.syncStatus = status;
+      });
+      this.sqlLite.insertBulkDataOnTable(this.resource,newTrackedEntityInstances,currentUser.currentDatabase).then(()=>{
+        resolve();
+      }).catch((error)=>{
+        reject(error);
+      });
+    });
+  }
+
 
 }

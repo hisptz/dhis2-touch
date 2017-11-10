@@ -7,6 +7,7 @@ import {ProgramsProvider} from "../../providers/programs/programs";
 import {UserProvider} from "../../providers/user/user";
 import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
 import {TrackerCaptureProvider} from "../../providers/tracker-capture/tracker-capture";
+import {TrackedEntityInstancesProvider} from "../../providers/tracked-entity-instances/tracked-entity-instances";
 
 /**
  * Generated class for the TrackedEntityDashboardPage page.
@@ -54,6 +55,7 @@ export class TrackedEntityDashboardPage implements OnInit{
               private trackerCaptureProvider : TrackerCaptureProvider,
               private organisationUnitsProvider : OrganisationUnitsProvider,
               private trackedEntityAttributeValuesProvider : TrackedEntityAttributeValuesProvider,
+              private trackedEntityInstancesProvider : TrackedEntityInstancesProvider,
               private navParams: NavParams) {
   }
 
@@ -165,7 +167,11 @@ export class TrackedEntityDashboardPage implements OnInit{
       })
     });
     this.trackedEntityAttributeValuesProvider.savingTrackedEntityAttributeValues(this.trackedEntityInstance.id,trackedEntityAttributeValues,this.currentUser).then(()=>{
-      //this.appProvider.setNormalNotification("Saved successfully");
+      this.trackedEntityInstancesProvider.updateSavedTrackedEntityInstancesByStatus([this.trackedEntityInstance],'not-synced',this.currentUser).then(()=>{
+        console.log("Successfully update");
+      }).catch((error)=>{
+        console.log(JSON.stringify(error));
+      })
     }).catch(error=>{
       console.log(JSON.stringify(error));
     });
@@ -190,7 +196,6 @@ export class TrackedEntityDashboardPage implements OnInit{
       this.isDashboardWidgetOpen[widget.id] = true;
     }
   }
-
 
   openWidgetList(){
     let modal = this.modalCtrl.create('TrackedEntityWidgetSelectionPage',{

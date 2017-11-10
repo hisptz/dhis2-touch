@@ -38,6 +38,7 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy{
     this.programStage = null;
     this.currentOpenEvent = null;
   }
+
   updateDataObjectModel(dataValues,programStageDataElements){
     let dataValuesMapper = {};
     dataValues.forEach((dataValue : any)=>{
