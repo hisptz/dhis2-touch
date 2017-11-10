@@ -77,12 +77,14 @@ export class TrackedEntityInstancesProvider {
    * @param currentUser
    * @returns {Promise<any>}
    */
-  updateSavedTrackedEntityInstancesByStatus(trackedEntityInstances,status,currentUser){
+  updateSavedTrackedEntityInstancesByStatus(trackedEntityInstances,currentUser,status?){
     return new Promise((resolve,reject)=>{
       const newTrackedEntityInstances = trackedEntityInstances.slice();
       newTrackedEntityInstances.forEach((trackedEntityInstance : any)=>{
         delete trackedEntityInstance.attributes;
-        trackedEntityInstance.syncStatus = status;
+        if(status){
+          trackedEntityInstance.syncStatus = status;
+        }
       });
       this.sqlLite.insertBulkDataOnTable(this.resource,newTrackedEntityInstances,currentUser.currentDatabase).then(()=>{
         resolve();

@@ -155,8 +155,69 @@ export class TrackerCaptureProvider {
     });
   }
 
-  uploadTrackedEntityInstanceToServer(trackedEntityInstance,currentUser){
-    return new Promise((resolve,reject)=>{})
+  /**
+   *
+   * @param trackedEntityInstances
+   * @param copiedTrackedEntityInstances
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  uploadTrackedEntityInstancesToServer(trackedEntityInstances,copiedTrackedEntityInstances,currentUser){
+    return new Promise((resolve,reject)=>{
+      let url = "/api/25/trackedEntityInstances";
+      trackedEntityInstances = this.getFormattedTrackedEntityInstances(trackedEntityInstances);
+      let trackedEntityInstanceIds = [];
+      let success = 0, fail = 0;
+      trackedEntityInstances.forEach((trackedEntityInstance  : any,index)=>{
+        this.httpClientProvider.defaultPost(url,trackedEntityInstance,currentUser).then((response : any)=>{
+          trackedEntityInstanceIds.push(copiedTrackedEntityInstances[parseInt(index)].trackedEntityInstance);
+          success ++;
+          if(success + fail == copiedTrackedEntityInstances.length){
+            this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('trackedEntityInstance',trackedEntityInstanceIds,currentUser).then((trackedEntityInstances : any)=>{
+              this.trackedEntityInstancesProvider.updateSavedTrackedEntityInstancesByStatus(trackedEntityInstances,currentUser,'synced').then(()=>{
+                resolve();
+              }).catch(error=>{
+                reject({message : error});
+              });
+            }).catch(error=>{
+              reject({message : error});
+            })
+          }
+        }).catch((error=>{
+          fail ++;
+          if(success + fail == copiedTrackedEntityInstances.length){
+            this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('trackedEntityInstance',trackedEntityInstanceIds,currentUser).then((trackedEntityInstances : any)=>{
+              this.trackedEntityInstancesProvider.updateSavedTrackedEntityInstancesByStatus(trackedEntityInstances,currentUser,'synced').then(()=>{
+                resolve();
+              }).catch(error=>{
+                reject({message : error});
+              });
+            }).catch(error=>{
+              reject({message : error});
+            })
+          }
+        }));
+      });
+    })
+  }
+
+  /**
+   *
+   * @param trackedEntityInstances
+   * @returns {any}
+   */
+  getFormattedTrackedEntityInstances(trackedEntityInstances){
+    trackedEntityInstances.forEach((trackedEntityInstance : any)=>{
+      console.log(trackedEntityInstance.trackedEntityInstance);
+      delete trackedEntityInstance.id;
+      delete trackedEntityInstance.orgUnitName;
+      delete trackedEntityInstance.syncStatus;
+      trackedEntityInstance.attributes.forEach((attribute : any)=>{
+        delete attribute.trackedEntityInstance;
+        delete attribute.id;
+      });
+    });
+    return trackedEntityInstances;
   }
 
   /**

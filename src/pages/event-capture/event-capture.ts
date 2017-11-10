@@ -93,6 +93,7 @@ export class EventCapturePage implements OnInit {
     if(this.isFormReady){
       this.loadingEvents();
     }
+    this.testEvents();
   }
 
   testEvents(){

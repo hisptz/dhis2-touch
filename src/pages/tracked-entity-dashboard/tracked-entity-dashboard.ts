@@ -167,7 +167,7 @@ export class TrackedEntityDashboardPage implements OnInit{
       })
     });
     this.trackedEntityAttributeValuesProvider.savingTrackedEntityAttributeValues(this.trackedEntityInstance.id,trackedEntityAttributeValues,this.currentUser).then(()=>{
-      this.trackedEntityInstancesProvider.updateSavedTrackedEntityInstancesByStatus([this.trackedEntityInstance],'not-synced',this.currentUser).then(()=>{
+      this.trackedEntityInstancesProvider.updateSavedTrackedEntityInstancesByStatus([this.trackedEntityInstance],this.currentUser,'not-synced').then(()=>{
       }).catch((error)=>{
         console.log(JSON.stringify(error));
       })

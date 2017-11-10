@@ -283,7 +283,7 @@ export class EventCaptureFormProvider {
    */
   uploadEventsToSever(events,currentUser){
     return new Promise((resolve,reject)=>{
-      let url = "/api/25/events.json";
+      let url = "/api/25/events";
       let success = 0, fail = 0;
       let updatedEventIds = [];
       events = this.getFormattedEventsForUpload(events);

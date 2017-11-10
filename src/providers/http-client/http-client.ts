@@ -76,8 +76,8 @@ export class HttpClientProvider {
     let headers = new Headers();
     headers.append('Authorization', 'Basic ' +user.authorizationKey);
     return new Promise((resolve, reject)=> {
-      this.defaultHttp.post(user.serverUrl + url, data, { headers: headers }).timeout(this.timeOutTime).subscribe((response)=>{
-        resolve(response);
+      this.defaultHttp.post(user.serverUrl + url, data, { headers: headers }).timeout(this.timeOutTime).subscribe((response : any)=>{
+        resolve(response.json());
       },error=>{
         reject(error.json());
       });
