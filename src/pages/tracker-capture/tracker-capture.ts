@@ -82,7 +82,7 @@ export class TrackerCapturePage implements OnInit{
       }else{
         this.eventCaptureFormProvider.getEventsByStatusAndType('not-synced','tracker-capture',this.currentUser).then((events : any)=>{
           if(events && events.length > 0){
-            console.log(events.length)
+            console.log(events.length);
             this.eventCaptureFormProvider.uploadEventsToSever(events,this.currentUser).then(()=>{
             }).catch(()=>{});
           }
