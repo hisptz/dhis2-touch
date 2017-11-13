@@ -301,8 +301,12 @@ export class EventCaptureFormProvider {
           }
         }).catch((error : any)=>{
           fail ++;
-          if(error.message && errorMessages.indexOf(error.message) > -1){
-            errorMessages.push(error.message);
+          if(error && error.response && error.response.importSummaries && error.response.importSummaries.length > 0 && error.response.importSummaries[0].description){
+            let message = error.response.importSummaries[0].description;
+            if(errorMessages.indexOf(message) == -1){
+              errorMessages.push(message);
+            }
+
           }
           if(success + fail == events.length){
             this.updateEventStatus(updatedEventIds,'synced',currentUser).then(()=>{
@@ -359,6 +363,8 @@ export class EventCaptureFormProvider {
       delete event.eventType;
       delete event.notes;
       delete event.syncStatus;
+      //it depends on dhis versions
+      delete event.deleted;
       if(event.completedDate == "0"){
         delete event.completedDate;
       }

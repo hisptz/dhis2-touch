@@ -6,16 +6,32 @@
   <ion-row>
     <ion-col *ngIf="!showLoadingMessage">
       <ion-item>
-        <ion-label>Aggregate data</ion-label>
+        <ion-label>
+          Aggregate data&nbsp;
+          <ion-badge color="badge-color">{{ dataObject.dataValues.length }}</ion-badge>
+        </ion-label>
         <ion-checkbox [(ngModel)]="selectedItems.dataValues" disabled = "{{(dataObject.dataValues.length == 0)?'true':'false'}}" (ionChange)="updateItemsToUpload()"></ion-checkbox>
       </ion-item>
       <ion-item>
-        <ion-label>Events</ion-label>
+        <ion-label>
+          Events&nbsp;
+          <ion-badge color="badge-color">{{ dataObject.events.length }}</ion-badge>
+        </ion-label>
         <ion-checkbox [(ngModel)]="selectedItems.events" disabled = "{{(dataObject.events.length == 0)?'true':'false'}}" (ionChange)="updateItemsToUpload()" ></ion-checkbox>
       </ion-item>
       <ion-item>
-        <ion-label>Tracked Entity instances</ion-label>
-        <ion-checkbox [(ngModel)]="selectedItems.trackedEntityInstances" disabled = "{{(dataObject.trackedEntityInstances.length == 0)?'true':'false'}}" (ionChange)="updateItemsToUpload()" ></ion-checkbox>
+        <ion-label>
+          Events for tracker&nbsp;
+          <ion-badge color="badge-color">{{ dataObject.eventsForTracker.length }}</ion-badge>
+        </ion-label>
+        <ion-checkbox [(ngModel)]="selectedItems.eventsForTracker" disabled = "{{(dataObject.eventsForTracker.length == 0)?'true':'false'}}" (ionChange)="updateItemsToUpload()" ></ion-checkbox>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          Enrollments&nbsp;
+          <ion-badge color="badge-color">{{ dataObject.Enrollments.length }}</ion-badge>
+        </ion-label>
+        <ion-checkbox [(ngModel)]="selectedItems.Enrollments" disabled = "{{(dataObject.Enrollments.length == 0)?'true':'false'}}" (ionChange)="updateItemsToUpload()" ></ion-checkbox>
       </ion-item>
       <button [disabled]="itemsToUpload.length == 0" ion-button full text-capitalize (tap)="uploadData()">
         Upload Data

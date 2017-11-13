@@ -62,12 +62,20 @@ export class UploadViaInternetComponent implements OnInit{
     );
     promises.push(
       this.trackerCaptureProvider.getTrackedEntityInstanceByStatus(status,this.currentUser).then((trackedEntityInstances : any)=>{
-        this.dataObject["trackedEntityInstances"] = trackedEntityInstances;
+        this.dataObject["Enrollments"] = trackedEntityInstances;
       })
     );
     promises.push(
       this.eventCaptureFormProvider.getEventsByAttribute('syncStatus',[status],this.currentUser).then((events : any)=>{
-        this.dataObject['events'] = events;
+        this.dataObject['events'] = [];
+        this.dataObject['eventsForTracker'] = [];
+        events.forEach((event : any)=>{
+          if(event.eventType == 'event-capture'){
+            this.dataObject.events.push(event);
+          }else{
+            this.dataObject.eventsForTracker.push(event);
+          }
+        });
       })
     );
     Observable.forkJoin(promises).subscribe(() => {
@@ -93,6 +101,7 @@ export class UploadViaInternetComponent implements OnInit{
     let promises = [];
     this.importSummaries = {};
 
+    //aggregate data values
     if(this.itemsToUpload.indexOf('dataValues') > -1){
       let formattedDataValues = this.dataValuesProvider.getFormattedDataValueForUpload(this.dataObject['dataValues']);
       promises.push(
@@ -102,10 +111,21 @@ export class UploadViaInternetComponent implements OnInit{
       );
     }
 
-    if(this.itemsToUpload.indexOf('trackedEntityInstances') > -1){
-
+    //tracked entity instances and enrollments
+    if(this.itemsToUpload.indexOf('Enrollments') > -1){
+      console.log("Here we are");
     }
 
+    //events for tracker
+    if(this.itemsToUpload.indexOf('eventsForTracker') > -1 && this.itemsToUpload.indexOf('trackedEntityInstances') == -1){
+      promises.push(
+        this.eventCaptureFormProvider.uploadEventsToSever(this.dataObject['eventsForTracker'],this.currentUser).then((importSummaries)=>{
+          this.importSummaries['eventsForTracker'] = importSummaries;
+        }).catch(()=>{})
+      );
+    }
+
+    //events for event capture
     if(this.itemsToUpload.indexOf('events') > -1 && this.itemsToUpload.indexOf('trackedEntityInstances') == -1){
       promises.push(
         this.eventCaptureFormProvider.uploadEventsToSever(this.dataObject['events'],this.currentUser).then((importSummaries)=>{
@@ -120,38 +140,6 @@ export class UploadViaInternetComponent implements OnInit{
       this.isLoading = false;
       this.appProvider.setNormalNotification("Fail to upload data");
     });
-
-    // this.syncProvider.getDataForUploading(this.itemsToUpload,this.currentUser).then((data : any)=>{
-    //   let shouldUpload = false;
-    //   this.itemsToUpload.forEach(item=>{
-    //     if(data[item] && data[item].length > 0 ){
-    //       shouldUpload =true;
-    //     }
-    //   });
-    //   if(shouldUpload){
-    //     this.loadingMessage = "Prepare data for uploading";
-    //     this.syncProvider.prepareDataForUploading(data).then((preparedData : any)=>{
-    //       this.loadingMessage = "Uploading data";
-    //       this.syncProvider.uploadingData(preparedData,data,this.currentUser).then((response)=>{
-    //         this.isLoading = false;
-    //         this.importSummaries = response;
-    //         this.viewUploadImportSummaries();
-    //       },error=>{
-    //         this.isLoading = false;
-    //         this.appProvider.setNormalNotification("Fail to upload data");
-    //       });
-    //     },error=>{
-    //       this.isLoading = false;
-    //       this.appProvider.setNormalNotification("Fail to prepare data");
-    //     })
-    //   }else{
-    //     this.isLoading = false;
-    //     this.appProvider.setNormalNotification("There are nothing so upload to the server");
-    //   }
-    // },error=>{
-    //   this.isLoading = false;
-    //   this.appProvider.setNormalNotification("Fail to load data");
-    // })
   }
 
   viewUploadImportSummaries(){
