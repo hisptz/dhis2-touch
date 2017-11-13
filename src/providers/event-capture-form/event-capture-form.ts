@@ -286,6 +286,7 @@ export class EventCaptureFormProvider {
       let url = "/api/25/events";
       let success = 0, fail = 0;
       let updatedEventIds = [];
+      let errorMessages = [];
       events = this.getFormattedEventsForUpload(events);
       events.forEach((event : any)=>{
         this.httpClientProvider.defaultPost(url,event,currentUser).then(()=>{
@@ -293,16 +294,19 @@ export class EventCaptureFormProvider {
           success ++;
           if(success + fail == events.length){
             this.updateEventStatus(updatedEventIds,'synced',currentUser).then(()=>{
-              resolve();
+              resolve({success : success,fail : fail ,errorMessages : errorMessages});
             }).catch(error=>{
               reject();
             })
           }
         }).catch((error : any)=>{
           fail ++;
+          if(error.message && errorMessages.indexOf(error.message) > -1){
+            errorMessages.push(error.message);
+          }
           if(success + fail == events.length){
             this.updateEventStatus(updatedEventIds,'synced',currentUser).then(()=>{
-              resolve();
+              resolve({success : success,fail : fail ,errorMessages : errorMessages});
             }).catch(error=>{
               reject();
             })

@@ -96,4 +96,5 @@
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
     <plugin name="cordova-sms-plugin" spec="^0.1.11" />
     <plugin name="cordova-plugin-advanced-http" spec="^1.6.1" />
+    <allow-navigation href="http://192.168.1.4:8100" />
 </widget>

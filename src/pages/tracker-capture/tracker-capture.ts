@@ -53,7 +53,7 @@ export class TrackerCapturePage implements OnInit{
     if(this.isFormReady){
       this.loadingSavedTrackedEntityInstances(this.selectedProgram.id,this.selectedOrgUnit.id);
     }
-    this.testTracker();
+    //this.testTracker();
   }
 
   testTracker(){

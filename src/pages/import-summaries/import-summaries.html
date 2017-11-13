@@ -24,6 +24,11 @@
   <ion-grid>
     <ion-row>
       <ion-col>
+
+        {{ importSummaries|json }}
+        <br>
+        <br>
+
         <div *ngIf="importSummaries && importSummaries.dataValues">
           <table class="table table-bordered" width="100%" >
             <thead>
