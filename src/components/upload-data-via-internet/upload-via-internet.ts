@@ -113,7 +113,21 @@ export class UploadViaInternetComponent implements OnInit{
 
     //tracked entity instances and enrollments
     if(this.itemsToUpload.indexOf('Enrollments') > -1){
-      console.log("Here we are");
+      promises.push(
+        this.trackerCaptureProvider.uploadTrackedEntityInstancesToServer(this.dataObject['Enrollments'],this.dataObject['Enrollments'],this.currentUser).then((response : any)=>{
+          this.importSummaries["trackedEntityInstances"] = response.importSummaries;
+          this.enrollmentsProvider.getSavedEnrollmentsByAttribute('trackedEntityInstance',response.trackedEntityInstanceIds,this.currentUser).then((enrollments: any)=>{
+            if(enrollments.length > 0){
+              this.trackerCaptureProvider.uploadEnrollments(enrollments,this.currentUser).then((importSummaries)=>{
+                this.importSummaries["Enrollments"] = importSummaries;
+                this.eventCaptureFormProvider.uploadEventsToSever(this.dataObject['eventsForTracker'],this.currentUser).then((importSummaries)=>{
+                  this.importSummaries["eventsForTracker"] = importSummaries;
+                }).catch(()=>{});
+              }).catch(error=>{});
+            }
+          }).catch(()=>{})
+        }).catch(error=>{})
+      );
     }
 
     //events for tracker

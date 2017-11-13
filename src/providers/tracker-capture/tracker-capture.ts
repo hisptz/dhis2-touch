@@ -167,10 +167,12 @@ export class TrackerCaptureProvider {
       let url = "/api/25/trackedEntityInstances";
       let trackedEntityInstanceIds = [];
       let success = 0, fail = 0;
+      let errorMessages = [];
       trackedEntityInstances.forEach((trackedEntityInstance  : any,index)=>{
         delete trackedEntityInstance.id;
         delete trackedEntityInstance.orgUnitName;
         delete trackedEntityInstance.syncStatus;
+        delete trackedEntityInstance.deleted;
         trackedEntityInstance.attributes.forEach((attribute : any)=>{
           delete attribute.trackedEntityInstance;
           delete attribute.id;
@@ -181,7 +183,7 @@ export class TrackerCaptureProvider {
           if(success + fail == copiedTrackedEntityInstances.length){
             this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('trackedEntityInstance',trackedEntityInstanceIds,currentUser).then((trackedEntityInstances : any)=>{
               this.trackedEntityInstancesProvider.updateSavedTrackedEntityInstancesByStatus(trackedEntityInstances,currentUser,'synced').then(()=>{
-                resolve(trackedEntityInstanceIds);
+                resolve({trackedEntityInstanceIds : trackedEntityInstanceIds,importSummaries : {success : success,fail : fail,errorMessages: errorMessages}});
               }).catch(error=>{
                 reject({message : error});
               });
@@ -191,10 +193,21 @@ export class TrackerCaptureProvider {
           }
         }).catch((error=>{
           fail ++;
+          if(error && error.response && error.response.importSummaries && error.response.importSummaries.length > 0 && error.response.importSummaries[0].description){
+            let message = error.response.importSummaries[0].description;
+            if(errorMessages.indexOf(message) == -1){
+              errorMessages.push(message);
+            }
+          }else if(error && error.httpStatusCode == 500){
+            let message = error.message;
+            if(errorMessages.indexOf(message) == -1){
+              errorMessages.push(message);
+            }
+          }
           if(success + fail == copiedTrackedEntityInstances.length){
             this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('trackedEntityInstance',trackedEntityInstanceIds,currentUser).then((trackedEntityInstances : any)=>{
               this.trackedEntityInstancesProvider.updateSavedTrackedEntityInstancesByStatus(trackedEntityInstances,currentUser,'synced').then(()=>{
-                resolve();
+                resolve({trackedEntityInstanceIds : trackedEntityInstanceIds,importSummaries : {success : success,fail : fail,errorMessages: errorMessages}});
               }).catch(error=>{
                 reject({message : error});
               });
@@ -218,16 +231,18 @@ export class TrackerCaptureProvider {
       let success = 0, fail = 0;
       let url = "/api/25/enrollments";
       let enrollmentIds = [];
+      let errorMessages = [];
       enrollments.forEach((enrollment : any)=>{
         enrollmentIds.push(enrollment.id);
         delete enrollment.syncStatus;
         delete enrollment.id;
+        delete enrollment.events;
         this.httpClientProvider.defaultPost(url,enrollment,currentUser).then(()=>{
           success ++;
           if(success + fail == enrollments.length ){
             this.enrollmentsProvider.getSavedEnrollmentsByAttribute('id',enrollmentIds,currentUser).then((enrollments : any)=>{
               this.enrollmentsProvider.updateEnrollmentsByStatus(enrollments,currentUser,'synced').then(()=>{
-                resolve();
+                resolve({success : success,fail : fail ,errorMessages : errorMessages});
               }).catch(error=>{
                 reject(error);
               });
@@ -237,10 +252,21 @@ export class TrackerCaptureProvider {
           }
         }).catch(error=>{
           fail ++;
+          if(error && error.response && error.response.importSummaries && error.response.importSummaries.length > 0 && error.response.importSummaries[0].description){
+            let message = error.response.importSummaries[0].description;
+            if(errorMessages.indexOf(message) == -1){
+              errorMessages.push(message);
+            }
+          }else if(error && error.httpStatusCode == 500){
+            let message = error.message;
+            if(errorMessages.indexOf(message) == -1){
+              errorMessages.push(message);
+            }
+          }
           if(success + fail == enrollments.length ){
             this.enrollmentsProvider.getSavedEnrollmentsByAttribute('id',enrollmentIds,currentUser).then((enrollments : any)=>{
               this.enrollmentsProvider.updateEnrollmentsByStatus(enrollments,currentUser,'synced').then(()=>{
-                resolve();
+                resolve({success : success,fail : fail ,errorMessages : errorMessages});
               }).catch(error=>{
                 reject(error);
               });

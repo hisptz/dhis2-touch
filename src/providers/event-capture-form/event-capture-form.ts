@@ -288,35 +288,43 @@ export class EventCaptureFormProvider {
       let updatedEventIds = [];
       let errorMessages = [];
       events = this.getFormattedEventsForUpload(events);
-      events.forEach((event : any)=>{
-        this.httpClientProvider.defaultPost(url,event,currentUser).then(()=>{
-          updatedEventIds.push(event.event);
-          success ++;
-          if(success + fail == events.length){
-            this.updateEventStatus(updatedEventIds,'synced',currentUser).then(()=>{
-              resolve({success : success,fail : fail ,errorMessages : errorMessages});
-            }).catch(error=>{
-              reject();
-            })
-          }
-        }).catch((error : any)=>{
-          fail ++;
-          if(error && error.response && error.response.importSummaries && error.response.importSummaries.length > 0 && error.response.importSummaries[0].description){
-            let message = error.response.importSummaries[0].description;
-            if(errorMessages.indexOf(message) == -1){
-              errorMessages.push(message);
+      if(events.length == 0){
+        resolve({success : success,fail : fail ,errorMessages : errorMessages});
+      }else{
+        events.forEach((event : any)=>{
+          this.httpClientProvider.defaultPost(url,event,currentUser).then(()=>{
+            updatedEventIds.push(event.event);
+            success ++;
+            if(success + fail == events.length){
+              this.updateEventStatus(updatedEventIds,'synced',currentUser).then(()=>{
+                resolve({success : success,fail : fail ,errorMessages : errorMessages});
+              }).catch(error=>{
+                reject();
+              })
             }
-
-          }
-          if(success + fail == events.length){
-            this.updateEventStatus(updatedEventIds,'synced',currentUser).then(()=>{
-              resolve({success : success,fail : fail ,errorMessages : errorMessages});
-            }).catch(error=>{
-              reject();
-            })
-          }
-        })
-      });
+          }).catch((error : any)=>{
+            fail ++;
+            if(error && error.response && error.response.importSummaries && error.response.importSummaries.length > 0 && error.response.importSummaries[0].description){
+              let message = error.response.importSummaries[0].description;
+              if(errorMessages.indexOf(message) == -1){
+                errorMessages.push(message);
+              }
+            }else if(error && error.httpStatusCode == 500){
+              let message = error.message;
+              if(errorMessages.indexOf(message) == -1){
+                errorMessages.push(message);
+              }
+            }
+            if(success + fail == events.length){
+              this.updateEventStatus(updatedEventIds,'synced',currentUser).then(()=>{
+                resolve({success : success,fail : fail ,errorMessages : errorMessages});
+              }).catch(error=>{
+                reject();
+              })
+            }
+          })
+        });
+      }
     });
   }
 
