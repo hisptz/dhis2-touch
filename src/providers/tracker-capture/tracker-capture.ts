@@ -165,17 +165,23 @@ export class TrackerCaptureProvider {
   uploadTrackedEntityInstancesToServer(trackedEntityInstances,copiedTrackedEntityInstances,currentUser){
     return new Promise((resolve,reject)=>{
       let url = "/api/25/trackedEntityInstances";
-      trackedEntityInstances = this.getFormattedTrackedEntityInstances(trackedEntityInstances);
       let trackedEntityInstanceIds = [];
       let success = 0, fail = 0;
       trackedEntityInstances.forEach((trackedEntityInstance  : any,index)=>{
+        delete trackedEntityInstance.id;
+        delete trackedEntityInstance.orgUnitName;
+        delete trackedEntityInstance.syncStatus;
+        trackedEntityInstance.attributes.forEach((attribute : any)=>{
+          delete attribute.trackedEntityInstance;
+          delete attribute.id;
+        });
         this.httpClientProvider.defaultPost(url,trackedEntityInstance,currentUser).then((response : any)=>{
           trackedEntityInstanceIds.push(copiedTrackedEntityInstances[parseInt(index)].trackedEntityInstance);
           success ++;
           if(success + fail == copiedTrackedEntityInstances.length){
             this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('trackedEntityInstance',trackedEntityInstanceIds,currentUser).then((trackedEntityInstances : any)=>{
               this.trackedEntityInstancesProvider.updateSavedTrackedEntityInstancesByStatus(trackedEntityInstances,currentUser,'synced').then(()=>{
-                resolve();
+                resolve(trackedEntityInstanceIds);
               }).catch(error=>{
                 reject({message : error});
               });
@@ -203,21 +209,48 @@ export class TrackerCaptureProvider {
 
   /**
    *
-   * @param trackedEntityInstances
-   * @returns {any}
+   * @param enrollments
+   * @param currentUser
+   * @returns {Promise<any>}
    */
-  getFormattedTrackedEntityInstances(trackedEntityInstances){
-    trackedEntityInstances.forEach((trackedEntityInstance : any)=>{
-      console.log(trackedEntityInstance.trackedEntityInstance);
-      delete trackedEntityInstance.id;
-      delete trackedEntityInstance.orgUnitName;
-      delete trackedEntityInstance.syncStatus;
-      trackedEntityInstance.attributes.forEach((attribute : any)=>{
-        delete attribute.trackedEntityInstance;
-        delete attribute.id;
-      });
+  uploadEnrollments(enrollments,currentUser){
+    return new Promise((resolve,reject)=>{
+      let success = 0, fail = 0;
+      let url = "/api/25/enrollments";
+      let enrollmentIds = [];
+      enrollments.forEach((enrollment : any)=>{
+        enrollmentIds.push(enrollment.id);
+        delete enrollment.syncStatus;
+        delete enrollment.id;
+        this.httpClientProvider.defaultPost(url,enrollment,currentUser).then(()=>{
+          success ++;
+          if(success + fail == enrollments.length ){
+            this.enrollmentsProvider.getSavedEnrollmentsByAttribute('id',enrollmentIds,currentUser).then((enrollments : any)=>{
+              this.enrollmentsProvider.updateEnrollmentsByStatus(enrollments,currentUser,'synced').then(()=>{
+                resolve();
+              }).catch(error=>{
+                reject(error);
+              });
+            }).catch(error=>{
+              reject(error);
+            });
+          }
+        }).catch(error=>{
+          fail ++;
+          if(success + fail == enrollments.length ){
+            this.enrollmentsProvider.getSavedEnrollmentsByAttribute('id',enrollmentIds,currentUser).then((enrollments : any)=>{
+              this.enrollmentsProvider.updateEnrollmentsByStatus(enrollments,currentUser,'synced').then(()=>{
+                resolve();
+              }).catch(error=>{
+                reject(error);
+              });
+            }).catch(error=>{
+              reject(error);
+            });
+          }
+        });
+      })
     });
-    return trackedEntityInstances;
   }
 
   /**

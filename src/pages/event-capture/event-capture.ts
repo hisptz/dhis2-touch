@@ -93,19 +93,16 @@ export class EventCapturePage implements OnInit {
     if(this.isFormReady){
       this.loadingEvents();
     }
-    this.testEvents();
   }
 
   testEvents(){
     this.eventCaptureFormProvider.getEventsByStatusAndType('not-synced','event-capture',this.currentUser).then((events : any)=>{
       console.log("Not synced : " + events.length);
       if(events && events.length > 0){
-        this.eventCaptureFormProvider.uploadEventsToSever(events,this.currentUser).then((eventsIds)=>{
-          this.eventCaptureFormProvider.updateEventStatus(eventsIds,'synced',this.currentUser).then(()=>{}).catch(error=>{});
+        this.eventCaptureFormProvider.uploadEventsToSever(events,this.currentUser).then(()=>{
         }).catch(()=>{});
       }
     }).catch(()=>{});
-
     this.eventCaptureFormProvider.getEventsByStatusAndType('synced','event-capture',this.currentUser).then((events : any)=>{
       console.log("Synced : " + events.length)
     }).catch(()=>{});

@@ -223,11 +223,6 @@ export class TrackerEntityRegisterPage implements OnInit{
     //@todo color codes changes on saving
     if(this.isTrackedEntityRegistered){
       this.trackedEntityAttributeValuesProvider.savingTrackedEntityAttributeValues(this.trackedEntityInstance,trackedEntityAttributeValues,this.currentUser).then(()=>{
-        this.trackerCaptureProvider.saveTrackedEntityRegistration(this.incidentDate,this.enrollmentDate,this.currentUser,this.trackedEntityInstance).then(()=>{
-        }).catch(error=>{
-          console.log(JSON.stringify(error));
-        });
-
       }).catch(error=>{
         console.log(JSON.stringify(error));
       });

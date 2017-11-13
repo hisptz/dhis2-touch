@@ -102,6 +102,28 @@ export class EnrollmentsProvider {
     });
   }
 
+  /**
+   *
+   * @param enrollments
+   * @param currentUser
+   * @param status
+   * @returns {Promise<any>}
+   */
+  updateEnrollmentsByStatus(enrollments,currentUser,status?){
+    return new Promise((resolve,reject)=>{
+      enrollments.forEach((enrollment : any)=>{
+        if(status){
+          enrollment.syncStatus = status;
+        }
+      });
+      this.sqlLite.insertBulkDataOnTable(this.resource,enrollments,currentUser.currentDatabase).then(()=>{
+        resolve();
+      }).catch((error)=>{
+        reject(error);
+      });
+    });
+  }
+
 
 
 }

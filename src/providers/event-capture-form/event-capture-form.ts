@@ -292,12 +292,20 @@ export class EventCaptureFormProvider {
           updatedEventIds.push(event.event);
           success ++;
           if(success + fail == events.length){
-            resolve(updatedEventIds)
+            this.updateEventStatus(updatedEventIds,'synced',currentUser).then(()=>{
+              resolve();
+            }).catch(error=>{
+              reject();
+            })
           }
         }).catch((error : any)=>{
           fail ++;
           if(success + fail == events.length){
-            resolve(updatedEventIds)
+            this.updateEventStatus(updatedEventIds,'synced',currentUser).then(()=>{
+              resolve();
+            }).catch(error=>{
+              reject();
+            })
           }
         })
       });
