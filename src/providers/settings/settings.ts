@@ -108,7 +108,7 @@ export class SettingsProvider {
   getDefaultSettings(){
     let defaultSettings = {
       entryForm: {
-        label: "displayName", maxDataElementOnDefaultForm: 10, formLayout : "listLayout"
+        label: "formName", maxDataElementOnDefaultForm: 10, formLayout : "listLayout"
       },
       synchronization: {
         time: 2 * 60 * 1000, timeType: "minutes",isAutoSync : true

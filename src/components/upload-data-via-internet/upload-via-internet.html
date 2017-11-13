@@ -6,12 +6,16 @@
   <ion-row>
     <ion-col *ngIf="!showLoadingMessage">
       <ion-item>
-        <ion-label>Data values</ion-label>
+        <ion-label>Aggregate data</ion-label>
         <ion-checkbox [(ngModel)]="selectedItems.dataValues" (ionChange)="updateItemsToUpload()"></ion-checkbox>
       </ion-item>
       <ion-item>
-        <ion-label>Events </ion-label>
+        <ion-label>Events Capture data</ion-label>
         <ion-checkbox [(ngModel)]="selectedItems.events" (ionChange)="updateItemsToUpload()" ></ion-checkbox>
+      </ion-item>
+      <ion-item>
+        <ion-label>Tracker Capture data</ion-label>
+        <ion-checkbox [(ngModel)]="selectedItems.tracker" (ionChange)="updateItemsToUpload()" ></ion-checkbox>
       </ion-item>
       <button [disabled]="itemsToUpload.length == 0" ion-button full text-capitalize (tap)="uploadData()">
         Upload Data

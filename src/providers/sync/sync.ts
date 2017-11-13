@@ -25,7 +25,7 @@ export class SyncProvider {
 
   constructor(private sqLite: SqlLiteProvider,
               private dataValuesProvider : DataValuesProvider,
-              private orgUnitsProvider: OrganisationUnitsProvider, private datasetsProvider: DataSetsProvider,
+              private orgUnitsProvider: OrganisationUnitsProvider, private dataSetsProvider: DataSetsProvider,
               private sectionProvider: SectionsProvider, private dataElementProvider: DataElementsProvider,
               private smsCommandsProvider: SmsCommandProvider, private indicatorProvider: IndicatorsProvider,
               private reportsProvider: StandardReportProvider, private programProvider: ProgramsProvider,
@@ -75,6 +75,8 @@ export class SyncProvider {
             )
           }else if(item == "events"){
             data[item] = [];
+          }else if(item){
+
           }
         });
         Observable.forkJoin(promises).subscribe(() => {
@@ -157,7 +159,7 @@ export class SyncProvider {
           );
         }else if(resource == "dataSets"){
           promises.push(
-            this.datasetsProvider.downloadDataSetsFromServer(currentUser).then((response: any) => {
+            this.dataSetsProvider.downloadDataSetsFromServer(currentUser).then((response: any) => {
               data[resource] = response;
             }, error => {
             })
@@ -246,7 +248,7 @@ export class SyncProvider {
           );
         }else if(resource == "dataSets"){
           promises.push(
-            this.datasetsProvider.saveDataSetsFromServer(data[resource],currentUser).then(() => {}, error => {})
+            this.dataSetsProvider.saveDataSetsFromServer(data[resource],currentUser).then(() => {}, error => {})
           );
         }else if(resource == "sections"){
           promises.push(

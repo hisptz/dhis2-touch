@@ -52,25 +52,20 @@ export class TrackerCapturePage implements OnInit{
   ionViewDidEnter() {
     if(this.isFormReady){
       this.loadingSavedTrackedEntityInstances(this.selectedProgram.id,this.selectedOrgUnit.id);
-      this.testTracker();
     }
+    this.testTracker();
   }
 
   testTracker(){
-
     this.trackerCaptureProvider.getTrackedEntityInstanceByStatus('not-synced',this.currentUser).then((trackedEntityInstances: any)=>{
       if(trackedEntityInstances.length > 0){
         this.trackerCaptureProvider.uploadTrackedEntityInstancesToServer(trackedEntityInstances,trackedEntityInstances,this.currentUser).then((trackedEntityInstanceIds : any)=>{
           this.enrollmentsProvider.getSavedEnrollmentsByAttribute('trackedEntityInstance',trackedEntityInstanceIds,this.currentUser).then((enrollments: any)=>{
-            console.log("Not Synced enrollments : " + enrollments.length);
             if(enrollments.length > 0){
               this.trackerCaptureProvider.uploadEnrollments(enrollments,this.currentUser).then(()=>{
                 this.eventCaptureFormProvider.getEventsByAttribute('trackedEntityInstance',trackedEntityInstanceIds,this.currentUser).then((events : any)=>{
-                  console.log("Not synced events : " + events.length);
                   if(events && events.length > 0){
-                    this.eventCaptureFormProvider.uploadEventsToSever(events,this.currentUser).then(()=>{
-                      console.log("Here we are");
-                    }).catch(()=>{});
+                    this.eventCaptureFormProvider.uploadEventsToSever(events,this.currentUser).then(()=>{}).catch(()=>{});
                   }
                 }).catch(()=>{});
 
@@ -82,7 +77,6 @@ export class TrackerCapturePage implements OnInit{
       }else{
         this.eventCaptureFormProvider.getEventsByStatusAndType('not-synced','tracker-capture',this.currentUser).then((events : any)=>{
           if(events && events.length > 0){
-            console.log(events.length);
             this.eventCaptureFormProvider.uploadEventsToSever(events,this.currentUser).then(()=>{
             }).catch(()=>{});
           }

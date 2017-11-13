@@ -41,7 +41,6 @@ export class UploadViaInternetComponent implements OnInit{
     });
   }
 
-
   updateItemsToUpload(){
     this.itemsToUpload = [];
     Object.keys(this.selectedItems).forEach((key: string)=>{
