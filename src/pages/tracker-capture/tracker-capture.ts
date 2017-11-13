@@ -145,6 +145,8 @@ export class TrackerCapturePage implements OnInit{
           console.log(JSON.stringify(error));
           this.appProvider.setNormalNotification("Fail to load registration form for " + this.selectedProgram.name);
         });
+      }else{
+        this.updateTrackerCaptureSelections();
       }
     },error=>{
       this.isLoading = false;
@@ -240,7 +242,6 @@ export class TrackerCapturePage implements OnInit{
     if(this.selectedProgram && this.selectedProgram.name){
       result = true;
     }
-
     return result;
   }
 
