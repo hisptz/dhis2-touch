@@ -15,7 +15,7 @@ export class HttpClientProvider {
 
   public timeOutTime : number;
   constructor(private http: HTTP, public defaultHttp : Http) {
-    this.timeOutTime = 4*60*1000;
+    this.timeOutTime = 2*60*1000;
   }
 
   getUrlBasedOnDhisVersion(url,user){
@@ -60,7 +60,6 @@ export class HttpClientProvider {
     this.http.setRequestTimeout(this.timeOutTime);
     url = user.serverUrl + this.getUrlBasedOnDhisVersion(url,user);
     return new Promise((resolve, reject)=> {
-      console.log(url);
       this.http.post(url,data,{})
         .then((response:any)  => {
           resolve(response);

@@ -113,7 +113,7 @@ export class DataValuesProvider {
         }, error=> {
           importSummaries.fail ++;
           if(importSummaries.errorMessages.indexOf(error)  == -1){
-            importSummaries.errorMessages.push(error);
+            importSummaries.errorMessages.push(error.error);
           }
           if(formattedDataValues.length == (importSummaries.success + importSummaries.fail)){
             if(syncedDataValues.length > 0){

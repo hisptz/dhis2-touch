@@ -24,7 +24,7 @@
     <ion-row>
       <ion-col>
         <div *ngIf="keys && keys.length > 0">
-          <div *ngFor="let key of keys" padding-bottom>
+          <div *ngFor="let key of keys" padding-bottom  class="over-flow-container">
             <table class="table table-bordered" width="100%" *ngIf="importSummaries[key]">
               <thead>
               <tr>
@@ -44,14 +44,14 @@
               </tr>
               <tr>
                 <td>{{ importSummaries[key].success }}</td>
-                <td>{{ importSummaries[key].success }}</td>
+                <td>{{ importSummaries[key].fail }}</td>
               </tr>
               <tr *ngIf="importSummaries[key].errorMessages && importSummaries[key].errorMessages.length > 0">
                 <th [attr.colspan]="'2'">Import conflicts/errors</th>
               </tr>
               <tr *ngFor="let errorMessage of importSummaries[key].errorMessages">
                 <td [attr.colspan]="'2'">
-                  {{ errorMessage }}
+                  {{ errorMessage|json }}
                 </td>
               </tr>
               </tbody>
