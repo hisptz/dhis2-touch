@@ -16,11 +16,14 @@ import { IonicPage, ViewController, NavParams } from 'ionic-angular';
 export class ImportSummariesPage implements OnInit{
 
   importSummaries : any;
+  keys : any;
+
   constructor(public viewCtrl: ViewController, public navParams: NavParams) {
   }
 
   ngOnInit(){
     this.importSummaries = this.navParams.get("importSummaries");
+    this.keys = this.navParams.get('keys');
   }
 
   dismiss(){

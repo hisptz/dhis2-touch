@@ -16,7 +16,6 @@
       </button>
     </ion-buttons>
   </ion-toolbar>
-
 </ion-header>
 
 
@@ -24,37 +23,40 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-
-        {{ importSummaries|json }}
-        <br>
-        <br>
-
-        <div *ngIf="importSummaries && importSummaries.dataValues">
-          <table class="table table-bordered" width="100%" >
-            <thead>
-            <tr>
-              <th [attr.colspan]="'2'">DataValues</th>
-            </tr>
-            </thead>
-            <tbody >
-            <tr>
-              <td>Success</td>
-              <td>Failed</td>
-            </tr>
-            <tr>
-              <td>{{importSummaries.dataValues.success }}</td>
-              <td>{{importSummaries.dataValues.fail }}</td>
-            </tr>
-            <tr *ngIf="importSummaries.dataValues.errorMessages && importSummaries.dataValues.errorMessages.length > 0">
-              <th [attr.colspan]="'2'">Import conflicts</th>
-            </tr>
-            <tr *ngFor="let errorMessage of importSummaries.dataValues.errorMessages">
-              <td [attr.colspan]="'2'">
-                {{ errorMessage }}
-              </td>
-            </tr>
-            </tbody>
-          </table>
+        <div *ngIf="keys && keys.length > 0">
+          <div *ngFor="let key of keys" padding-bottom>
+            <table class="table table-bordered" width="100%" *ngIf="importSummaries[key]">
+              <thead>
+              <tr>
+                <th [attr.colspan]="'2'">
+                  <div *ngIf="key == 'dataValues'">Aggregate data</div>
+                  <div *ngIf="key == 'events'">Events</div>
+                  <div *ngIf="key == 'trackedEntityInstances'">Tracked entity instances</div>
+                  <div *ngIf="key == 'Enrollments'">Tracked entity enrollments</div>
+                  <div *ngIf="key == 'eventsForTracker'">Events for tracker</div>
+                </th>
+              </tr>
+              </thead>
+              <tbody >
+              <tr>
+                <td>Success</td>
+                <td>Failed</td>
+              </tr>
+              <tr>
+                <td>{{ importSummaries[key].success }}</td>
+                <td>{{ importSummaries[key].success }}</td>
+              </tr>
+              <tr *ngIf="importSummaries[key].errorMessages && importSummaries[key].errorMessages.length > 0">
+                <th [attr.colspan]="'2'">Import conflicts/errors</th>
+              </tr>
+              <tr *ngFor="let errorMessage of importSummaries[key].errorMessages">
+                <td [attr.colspan]="'2'">
+                  {{ errorMessage }}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </ion-col>
     </ion-row>

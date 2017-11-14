@@ -100,28 +100,33 @@ export class UploadViaInternetComponent implements OnInit{
     this.isLoading = true;
     let promises = [];
     this.importSummaries = {};
-
+    let keys = [];
     //aggregate data values
     if(this.itemsToUpload.indexOf('dataValues') > -1){
       let formattedDataValues = this.dataValuesProvider.getFormattedDataValueForUpload(this.dataObject['dataValues']);
       promises.push(
         this.dataValuesProvider.uploadDataValues(formattedDataValues,this.dataObject['dataValues'],this.currentUser).then(importSummaries=>{
+          keys.push("dataValues");
           this.importSummaries['dataValues'] = importSummaries
-        }).catch(error=>{})
+        }).catch(error=>{
+          console.log("Error " + JSON.stringify(error));
+        })
       );
     }
-
     //tracked entity instances and enrollments
     if(this.itemsToUpload.indexOf('Enrollments') > -1){
       promises.push(
         this.trackerCaptureProvider.uploadTrackedEntityInstancesToServer(this.dataObject['Enrollments'],this.dataObject['Enrollments'],this.currentUser).then((response : any)=>{
           this.importSummaries["trackedEntityInstances"] = response.importSummaries;
+          keys.push("trackedEntityInstances");
           this.enrollmentsProvider.getSavedEnrollmentsByAttribute('trackedEntityInstance',response.trackedEntityInstanceIds,this.currentUser).then((enrollments: any)=>{
             if(enrollments.length > 0){
               this.trackerCaptureProvider.uploadEnrollments(enrollments,this.currentUser).then((importSummaries)=>{
                 this.importSummaries["Enrollments"] = importSummaries;
+                keys.push("Enrollments");
                 this.eventCaptureFormProvider.uploadEventsToSever(this.dataObject['eventsForTracker'],this.currentUser).then((importSummaries)=>{
                   this.importSummaries["eventsForTracker"] = importSummaries;
+                  keys.push("eventsForTracker");
                 }).catch(()=>{});
               }).catch(error=>{});
             }
@@ -129,36 +134,37 @@ export class UploadViaInternetComponent implements OnInit{
         }).catch(error=>{})
       );
     }
-
     //events for tracker
-    if(this.itemsToUpload.indexOf('eventsForTracker') > -1 && this.itemsToUpload.indexOf('trackedEntityInstances') == -1){
+    if(this.itemsToUpload.indexOf('eventsForTracker') > -1 && this.itemsToUpload.indexOf('Enrollments') == -1){
       promises.push(
         this.eventCaptureFormProvider.uploadEventsToSever(this.dataObject['eventsForTracker'],this.currentUser).then((importSummaries)=>{
           this.importSummaries['eventsForTracker'] = importSummaries;
+          keys.push("eventsForTracker");
+        }).catch(()=>{})
+      );
+    }
+    //events for event capture
+    if(this.itemsToUpload.indexOf('events') > -1){
+      promises.push(
+        this.eventCaptureFormProvider.uploadEventsToSever(this.dataObject['events'],this.currentUser).then((importSummaries)=>{
+          this.importSummaries['events'] = importSummaries;
+          keys.push("events");
         }).catch(()=>{})
       );
     }
 
-    //events for event capture
-    if(this.itemsToUpload.indexOf('events') > -1 && this.itemsToUpload.indexOf('trackedEntityInstances') == -1){
-      promises.push(
-        this.eventCaptureFormProvider.uploadEventsToSever(this.dataObject['events'],this.currentUser).then((importSummaries)=>{
-          this.importSummaries['events'] = importSummaries;
-        }).catch(()=>{})
-      );
-    }
     Observable.forkJoin(promises).subscribe(() => {
       this.isLoading = false;
-      this.viewUploadImportSummaries();
+      this.viewUploadImportSummaries(keys);
     },(error) => {
       this.isLoading = false;
       this.appProvider.setNormalNotification("Fail to upload data");
     });
   }
 
-  viewUploadImportSummaries(){
+  viewUploadImportSummaries(keys){
     if(this.importSummaries){
-      let modal = this.modalCtrl.create('ImportSummariesPage',{importSummaries : this.importSummaries});
+      let modal = this.modalCtrl.create('ImportSummariesPage',{importSummaries : this.importSummaries,keys : keys});
       modal.onDidDismiss(()=>{
 
       });

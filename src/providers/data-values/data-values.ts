@@ -124,7 +124,7 @@ export class DataValuesProvider {
                 reject(error);
               });
             }else{
-              resolve();
+              resolve(importSummaries);
             }
           }
         });
