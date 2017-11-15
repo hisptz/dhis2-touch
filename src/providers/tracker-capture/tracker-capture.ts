@@ -242,9 +242,8 @@ export class TrackerCaptureProvider {
       let success = 0, fail = 0;
       let url = "/api/25/enrollments";
       let enrollmentIds = [];
-      let errorMessages = [];
       if (enrollments && enrollments.length == 0) {
-        resolve({success: success, fail: fail, errorMessages: errorMessages});
+        resolve();
       } else {
         enrollments.forEach((enrollment: any) => {
           enrollmentIds.push(enrollment.id);
@@ -256,7 +255,7 @@ export class TrackerCaptureProvider {
             if (success + fail == enrollments.length) {
               this.enrollmentsProvider.getSavedEnrollmentsByAttribute('id', enrollmentIds, currentUser).then((enrollments: any) => {
                 this.enrollmentsProvider.updateEnrollmentsByStatus(enrollments, currentUser, 'synced').then(() => {
-                  resolve({success: success, fail: fail, errorMessages: errorMessages});
+                  resolve();
                 }).catch(error => {
                   reject(error);
                 });
@@ -266,26 +265,10 @@ export class TrackerCaptureProvider {
             }
           }).catch(error => {
             fail++;
-            if (error && error.response && error.response.importSummaries && error.response.importSummaries.length > 0 && error.response.importSummaries[0].description) {
-              let message = error.response.importSummaries[0].description;
-              if (errorMessages.indexOf(message) == -1) {
-                errorMessages.push(message);
-              }
-            } else if (error && error.httpStatusCode == 500) {
-              let message = error.message;
-              if (errorMessages.indexOf(message) == -1) {
-                errorMessages.push(message);
-              }
-            } else {
-              let message = "There are and error with connection to server, please check the network";
-              if (errorMessages.indexOf(message) == -1) {
-                errorMessages.push(message);
-              }
-            }
             if (success + fail == enrollments.length) {
               this.enrollmentsProvider.getSavedEnrollmentsByAttribute('id', enrollmentIds, currentUser).then((enrollments: any) => {
                 this.enrollmentsProvider.updateEnrollmentsByStatus(enrollments, currentUser, 'synced').then(() => {
-                  resolve({success: success, fail: fail, errorMessages: errorMessages});
+                  resolve();
                 }).catch(error => {
                   reject(error);
                 });
