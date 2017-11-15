@@ -30,14 +30,20 @@
                                    (onChange)="updateData($event)"></event-input-container>
           </div>
         </div>
-        <div  *ngIf="canEventBeDeleted()" float-right>
-          <div class="item-card" color="danger" ion-button clear text-justify (click)="deleteEvent(currentEvent.id)">
-            <ion-icon name="trash" ></ion-icon>&nbsp;
-            Delete
+        <div no-padding>
+          <div style="display: inline-block;width: 49.3%">
+            <div float-left>
+            </div>
+          </div>
+          <div style="display: inline-block;width: 49.3%">
+            <div  *ngIf="canEventBeDeleted()" float-right>
+              <div class="item-card" color="danger" ion-button clear text-justify (click)="deleteEvent(currentEvent.id)">
+                <ion-icon name="trash" ></ion-icon>&nbsp;
+                Delete
+              </div>
+            </div>
           </div>
         </div>
-        <div float-left></div>
-
       </div>
       <div *ngIf="!(programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
         <notification [message]="'Contact system to add data elements'"></notification>
