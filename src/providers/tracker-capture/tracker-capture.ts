@@ -21,7 +21,7 @@ export class TrackerCaptureProvider {
               private sqlLite: SqlLiteProvider,
               private trackedEntityInstancesProvider: TrackedEntityInstancesProvider,
               private trackedEntityAttributeValuesProvider: TrackedEntityAttributeValuesProvider,
-              private httpClientProvider : HttpClientProvider,
+              private httpClientProvider: HttpClientProvider,
               private organisationUnitsProvider: OrganisationUnitsProvider) {
   }
 
@@ -33,32 +33,32 @@ export class TrackerCaptureProvider {
    * @returns {Promise<any>}
    */
   getTrackedEntityInstance(trackedEntityInstancesId, currentUser) {
-    return new Promise((resolve,reject)=>{
-      this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('trackedEntityInstance',[trackedEntityInstancesId],currentUser).then((trackedEntityInstances : any )=>{
-        this.trackedEntityAttributeValuesProvider.getTrackedEntityAttributeValues([trackedEntityInstancesId],currentUser).then((attributeValues : any)=>{
+    return new Promise((resolve, reject) => {
+      this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('trackedEntityInstance', [trackedEntityInstancesId], currentUser).then((trackedEntityInstances: any) => {
+        this.trackedEntityAttributeValuesProvider.getTrackedEntityAttributeValues([trackedEntityInstancesId], currentUser).then((attributeValues: any) => {
           let attributeValuesObject = {};
-          if(attributeValues && attributeValues.length > 0){
-            attributeValues.forEach((attributeValue : any)=>{
+          if (attributeValues && attributeValues.length > 0) {
+            attributeValues.forEach((attributeValue: any) => {
               delete attributeValue.id;
-              if(!attributeValuesObject[attributeValue.trackedEntityInstance]){
+              if (!attributeValuesObject[attributeValue.trackedEntityInstance]) {
                 attributeValuesObject[attributeValue.trackedEntityInstance] = [];
               }
               attributeValuesObject[attributeValue.trackedEntityInstance].push(attributeValue);
             });
-            trackedEntityInstances.forEach((trackedEntityInstanceObject : any)=>{
-              if(attributeValuesObject[trackedEntityInstanceObject.trackedEntityInstance]){
+            trackedEntityInstances.forEach((trackedEntityInstanceObject: any) => {
+              if (attributeValuesObject[trackedEntityInstanceObject.trackedEntityInstance]) {
                 trackedEntityInstanceObject["attributes"] = attributeValuesObject[trackedEntityInstanceObject.trackedEntityInstance];
-              }else{
+              } else {
                 trackedEntityInstanceObject["attributes"] = [];
               }
             });
             resolve(trackedEntityInstances[0])
           }
-        }).catch(error=>{
-          reject({message : error});
+        }).catch(error => {
+          reject({message: error});
         });
-      }).catch(error=>{
-        reject({message : error});
+      }).catch(error => {
+        reject({message: error});
       });
     });
   }
@@ -69,41 +69,41 @@ export class TrackerCaptureProvider {
    * @param currentUser
    * @returns {Promise<any>}
    */
-  getTrackedEntityInstanceByStatus(status,currentUser){
-    return new Promise((resolve,reject)=>{
-      this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('syncStatus',[status],currentUser).then((trackedEntityInstances : any )=>{
-        if(trackedEntityInstances && trackedEntityInstances.length > 0){
+  getTrackedEntityInstanceByStatus(status, currentUser) {
+    return new Promise((resolve, reject) => {
+      this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('syncStatus', [status], currentUser).then((trackedEntityInstances: any) => {
+        if (trackedEntityInstances && trackedEntityInstances.length > 0) {
           let trackedEntityInstancesIds = [];
-          trackedEntityInstances.forEach((trackedEntityInstance : any)=>{
+          trackedEntityInstances.forEach((trackedEntityInstance: any) => {
             trackedEntityInstancesIds.push(trackedEntityInstance.id);
           });
-          this.trackedEntityAttributeValuesProvider.getTrackedEntityAttributeValues(trackedEntityInstancesIds,currentUser).then((attributeValues : any)=>{
+          this.trackedEntityAttributeValuesProvider.getTrackedEntityAttributeValues(trackedEntityInstancesIds, currentUser).then((attributeValues: any) => {
             let attributeValuesObject = {};
-            if(attributeValues && attributeValues.length > 0){
-              attributeValues.forEach((attributeValue : any)=>{
+            if (attributeValues && attributeValues.length > 0) {
+              attributeValues.forEach((attributeValue: any) => {
                 delete attributeValue.id;
-                if(!attributeValuesObject[attributeValue.trackedEntityInstance]){
+                if (!attributeValuesObject[attributeValue.trackedEntityInstance]) {
                   attributeValuesObject[attributeValue.trackedEntityInstance] = [];
                 }
                 attributeValuesObject[attributeValue.trackedEntityInstance].push(attributeValue);
               });
-              trackedEntityInstances.forEach((trackedEntityInstanceObject : any)=>{
-                if(attributeValuesObject[trackedEntityInstanceObject.trackedEntityInstance]){
+              trackedEntityInstances.forEach((trackedEntityInstanceObject: any) => {
+                if (attributeValuesObject[trackedEntityInstanceObject.trackedEntityInstance]) {
                   trackedEntityInstanceObject["attributes"] = attributeValuesObject[trackedEntityInstanceObject.trackedEntityInstance];
-                }else{
+                } else {
                   trackedEntityInstanceObject["attributes"] = [];
                 }
               });
             }
             resolve(trackedEntityInstances)
-          }).catch(error=>{
-            reject({message : error});
+          }).catch(error => {
+            reject({message: error});
           });
-        }else{
+        } else {
           resolve([]);
         }
-      }).catch(error=>{
-        reject({message : error});
+      }).catch(error => {
+        reject({message: error});
       });
     });
   }
@@ -162,57 +162,68 @@ export class TrackerCaptureProvider {
    * @param currentUser
    * @returns {Promise<any>}
    */
-  uploadTrackedEntityInstancesToServer(trackedEntityInstances,copiedTrackedEntityInstances,currentUser){
-    return new Promise((resolve,reject)=>{
+  uploadTrackedEntityInstancesToServer(trackedEntityInstances, copiedTrackedEntityInstances, currentUser) {
+    return new Promise((resolve, reject) => {
       let url = "/api/25/trackedEntityInstances";
       let trackedEntityInstanceIds = [];
       let success = 0, fail = 0;
       let errorMessages = [];
-      trackedEntityInstances.forEach((trackedEntityInstance  : any,index)=>{
+      trackedEntityInstances.forEach((trackedEntityInstance: any, index) => {
         delete trackedEntityInstance.id;
         delete trackedEntityInstance.orgUnitName;
         delete trackedEntityInstance.syncStatus;
         delete trackedEntityInstance.deleted;
-        trackedEntityInstance.attributes.forEach((attribute : any)=>{
+        trackedEntityInstance.attributes.forEach((attribute: any) => {
           delete attribute.trackedEntityInstance;
           delete attribute.id;
         });
-        this.httpClientProvider.defaultPost(url,trackedEntityInstance,currentUser).then((response : any)=>{
+        this.httpClientProvider.defaultPost(url, trackedEntityInstance, currentUser).then((response: any) => {
           trackedEntityInstanceIds.push(copiedTrackedEntityInstances[parseInt(index)].trackedEntityInstance);
-          success ++;
-          if(success + fail == copiedTrackedEntityInstances.length){
-            this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('trackedEntityInstance',trackedEntityInstanceIds,currentUser).then((trackedEntityInstances : any)=>{
-              this.trackedEntityInstancesProvider.updateSavedTrackedEntityInstancesByStatus(trackedEntityInstances,currentUser,'synced').then(()=>{
-                resolve({trackedEntityInstanceIds : trackedEntityInstanceIds,importSummaries : {success : success,fail : fail,errorMessages: errorMessages}});
-              }).catch(error=>{
-                reject({message : error});
+          success++;
+          if (success + fail == copiedTrackedEntityInstances.length) {
+            this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('trackedEntityInstance', trackedEntityInstanceIds, currentUser).then((trackedEntityInstances: any) => {
+              this.trackedEntityInstancesProvider.updateSavedTrackedEntityInstancesByStatus(trackedEntityInstances, currentUser, 'synced').then(() => {
+                resolve({
+                  trackedEntityInstanceIds: trackedEntityInstanceIds,
+                  importSummaries: {success: success, fail: fail, errorMessages: errorMessages}
+                });
+              }).catch(error => {
+                reject({message: error});
               });
-            }).catch(error=>{
-              reject({message : error});
+            }).catch(error => {
+              reject({message: error});
             })
           }
-        }).catch((error=>{
-          fail ++;
-          if(error && error.response && error.response.importSummaries && error.response.importSummaries.length > 0 && error.response.importSummaries[0].description){
+        }).catch((error => {
+          fail++;
+          if (error && error.response && error.response.importSummaries && error.response.importSummaries.length > 0 && error.response.importSummaries[0].description) {
             let message = error.response.importSummaries[0].description;
-            if(errorMessages.indexOf(message) == -1){
+            if (errorMessages.indexOf(message) == -1) {
               errorMessages.push(message);
             }
-          }else if(error && error.httpStatusCode == 500){
+          } else if (error && error.httpStatusCode == 500) {
             let message = error.message;
-            if(errorMessages.indexOf(message) == -1){
+            if (errorMessages.indexOf(message) == -1) {
+              errorMessages.push(message);
+            }
+          } else {
+            let message = "There are and error with connection to server, please check the network";
+            if (errorMessages.indexOf(message) == -1) {
               errorMessages.push(message);
             }
           }
-          if(success + fail == copiedTrackedEntityInstances.length){
-            this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('trackedEntityInstance',trackedEntityInstanceIds,currentUser).then((trackedEntityInstances : any)=>{
-              this.trackedEntityInstancesProvider.updateSavedTrackedEntityInstancesByStatus(trackedEntityInstances,currentUser,'synced').then(()=>{
-                resolve({trackedEntityInstanceIds : trackedEntityInstanceIds,importSummaries : {success : success,fail : fail,errorMessages: errorMessages}});
-              }).catch(error=>{
-                reject({message : error});
+          if (success + fail == copiedTrackedEntityInstances.length) {
+            this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('trackedEntityInstance', trackedEntityInstanceIds, currentUser).then((trackedEntityInstances: any) => {
+              this.trackedEntityInstancesProvider.updateSavedTrackedEntityInstancesByStatus(trackedEntityInstances, currentUser, 'synced').then(() => {
+                resolve({
+                  trackedEntityInstanceIds: trackedEntityInstanceIds,
+                  importSummaries: {success: success, fail: fail, errorMessages: errorMessages}
+                });
+              }).catch(error => {
+                reject({message: error});
               });
-            }).catch(error=>{
-              reject({message : error});
+            }).catch(error => {
+              reject({message: error});
             })
           }
         }));
@@ -226,56 +237,65 @@ export class TrackerCaptureProvider {
    * @param currentUser
    * @returns {Promise<any>}
    */
-  uploadEnrollments(enrollments,currentUser){
-    return new Promise((resolve,reject)=>{
+  uploadEnrollments(enrollments, currentUser) {
+    return new Promise((resolve, reject) => {
       let success = 0, fail = 0;
       let url = "/api/25/enrollments";
       let enrollmentIds = [];
       let errorMessages = [];
-      enrollments.forEach((enrollment : any)=>{
-        enrollmentIds.push(enrollment.id);
-        delete enrollment.syncStatus;
-        delete enrollment.id;
-        delete enrollment.events;
-        this.httpClientProvider.defaultPost(url,enrollment,currentUser).then(()=>{
-          success ++;
-          if(success + fail == enrollments.length ){
-            this.enrollmentsProvider.getSavedEnrollmentsByAttribute('id',enrollmentIds,currentUser).then((enrollments : any)=>{
-              this.enrollmentsProvider.updateEnrollmentsByStatus(enrollments,currentUser,'synced').then(()=>{
-                resolve({success : success,fail : fail ,errorMessages : errorMessages});
-              }).catch(error=>{
+      if (enrollments && enrollments.length == 0) {
+        resolve({success: success, fail: fail, errorMessages: errorMessages});
+      } else {
+        enrollments.forEach((enrollment: any) => {
+          enrollmentIds.push(enrollment.id);
+          delete enrollment.syncStatus;
+          delete enrollment.id;
+          delete enrollment.events;
+          this.httpClientProvider.defaultPost(url, enrollment, currentUser).then(() => {
+            success++;
+            if (success + fail == enrollments.length) {
+              this.enrollmentsProvider.getSavedEnrollmentsByAttribute('id', enrollmentIds, currentUser).then((enrollments: any) => {
+                this.enrollmentsProvider.updateEnrollmentsByStatus(enrollments, currentUser, 'synced').then(() => {
+                  resolve({success: success, fail: fail, errorMessages: errorMessages});
+                }).catch(error => {
+                  reject(error);
+                });
+              }).catch(error => {
                 reject(error);
               });
-            }).catch(error=>{
-              reject(error);
-            });
-          }
-        }).catch(error=>{
-          fail ++;
-          if(error && error.response && error.response.importSummaries && error.response.importSummaries.length > 0 && error.response.importSummaries[0].description){
-            let message = error.response.importSummaries[0].description;
-            if(errorMessages.indexOf(message) == -1){
-              errorMessages.push(message);
             }
-          }else if(error && error.httpStatusCode == 500){
-            let message = error.message;
-            if(errorMessages.indexOf(message) == -1){
-              errorMessages.push(message);
+          }).catch(error => {
+            fail++;
+            if (error && error.response && error.response.importSummaries && error.response.importSummaries.length > 0 && error.response.importSummaries[0].description) {
+              let message = error.response.importSummaries[0].description;
+              if (errorMessages.indexOf(message) == -1) {
+                errorMessages.push(message);
+              }
+            } else if (error && error.httpStatusCode == 500) {
+              let message = error.message;
+              if (errorMessages.indexOf(message) == -1) {
+                errorMessages.push(message);
+              }
+            } else {
+              let message = "There are and error with connection to server, please check the network";
+              if (errorMessages.indexOf(message) == -1) {
+                errorMessages.push(message);
+              }
             }
-          }
-          if(success + fail == enrollments.length ){
-            this.enrollmentsProvider.getSavedEnrollmentsByAttribute('id',enrollmentIds,currentUser).then((enrollments : any)=>{
-              this.enrollmentsProvider.updateEnrollmentsByStatus(enrollments,currentUser,'synced').then(()=>{
-                resolve({success : success,fail : fail ,errorMessages : errorMessages});
-              }).catch(error=>{
+            if (success + fail == enrollments.length) {
+              this.enrollmentsProvider.getSavedEnrollmentsByAttribute('id', enrollmentIds, currentUser).then((enrollments: any) => {
+                this.enrollmentsProvider.updateEnrollmentsByStatus(enrollments, currentUser, 'synced').then(() => {
+                  resolve({success: success, fail: fail, errorMessages: errorMessages});
+                }).catch(error => {
+                  reject(error);
+                });
+              }).catch(error => {
                 reject(error);
               });
-            }).catch(error=>{
-              reject(error);
-            });
-          }
-        });
-      })
+            }
+          });
+        })
+      }
     });
   }
 
@@ -411,7 +431,7 @@ export class TrackerCaptureProvider {
         enrollments.forEach((enrollment: any) => {
           trackedEntityInstanceIds.push(enrollment.trackedEntityInstance);
         });
-        this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('trackedEntityInstance',trackedEntityInstanceIds, currentUser).then((trackedEntityInstances: any) => {
+        this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('trackedEntityInstance', trackedEntityInstanceIds, currentUser).then((trackedEntityInstances: any) => {
           this.trackedEntityAttributeValuesProvider.getTrackedEntityAttributeValues(trackedEntityInstanceIds, currentUser).then((attributeValues: any) => {
             let attributeValuesObject = {};
             if (attributeValues && attributeValues.length > 0) {
@@ -450,23 +470,23 @@ export class TrackerCaptureProvider {
    * @param currentUser
    * @returns {Promise<any>}
    */
-  deleteTrackedEntityInstance(trackedEntityInstanceId,currentUser){
-    return new Promise((resolve,reject)=>{
-      this.sqlLite.deleteFromTableByAttribute('trackedEntityInstances','trackedEntityInstance',trackedEntityInstanceId,currentUser.currentDatabase).then(()=>{
-        this.sqlLite.deleteFromTableByAttribute('trackedEntityAttributeValues','trackedEntityInstance',trackedEntityInstanceId,currentUser.currentDatabase).then(()=>{
-          this.sqlLite.deleteFromTableByAttribute('enrollments','trackedEntityInstance',trackedEntityInstanceId,currentUser.currentDatabase).then(()=>{
-            this.sqlLite.deleteFromTableByAttribute('events','trackedEntityInstance',trackedEntityInstanceId,currentUser.currentDatabase).then(()=>{
+  deleteTrackedEntityInstance(trackedEntityInstanceId, currentUser) {
+    return new Promise((resolve, reject) => {
+      this.sqlLite.deleteFromTableByAttribute('trackedEntityInstances', 'trackedEntityInstance', trackedEntityInstanceId, currentUser.currentDatabase).then(() => {
+        this.sqlLite.deleteFromTableByAttribute('trackedEntityAttributeValues', 'trackedEntityInstance', trackedEntityInstanceId, currentUser.currentDatabase).then(() => {
+          this.sqlLite.deleteFromTableByAttribute('enrollments', 'trackedEntityInstance', trackedEntityInstanceId, currentUser.currentDatabase).then(() => {
+            this.sqlLite.deleteFromTableByAttribute('events', 'trackedEntityInstance', trackedEntityInstanceId, currentUser.currentDatabase).then(() => {
               resolve();
-            }).catch(error=>{
+            }).catch(error => {
               reject(error);
             });
-          }).catch(error=>{
+          }).catch(error => {
             reject(error);
           });
-        }).catch(error=>{
+        }).catch(error => {
           reject(error);
         });
-      }).catch(error=>{
+      }).catch(error => {
         reject(error);
       });
     });

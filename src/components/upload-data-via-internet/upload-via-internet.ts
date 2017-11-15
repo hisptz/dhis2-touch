@@ -120,16 +120,12 @@ export class UploadViaInternetComponent implements OnInit{
           this.importSummaries["trackedEntityInstances"] = response.importSummaries;
           keys.push("trackedEntityInstances");
           this.enrollmentsProvider.getSavedEnrollmentsByAttribute('trackedEntityInstance',response.trackedEntityInstanceIds,this.currentUser).then((enrollments: any)=>{
-            if(enrollments.length > 0){
-              this.trackerCaptureProvider.uploadEnrollments(enrollments,this.currentUser).then((importSummaries)=>{
-                this.importSummaries["Enrollments"] = importSummaries;
-                keys.push("Enrollments");
-                this.eventCaptureFormProvider.uploadEventsToSever(this.dataObject['eventsForTracker'],this.currentUser).then((importSummaries)=>{
-                  this.importSummaries["eventsForTracker"] = importSummaries;
-                  keys.push("eventsForTracker");
-                }).catch(()=>{});
-              }).catch(error=>{});
-            }
+            this.trackerCaptureProvider.uploadEnrollments(enrollments,this.currentUser).then(()=>{
+              this.eventCaptureFormProvider.uploadEventsToSever(this.dataObject['eventsForTracker'],this.currentUser).then((importSummaries)=>{
+                this.importSummaries["eventsForTracker"] = importSummaries;
+                keys.push("eventsForTracker");
+              }).catch(()=>{});
+            }).catch(error=>{});
           }).catch(()=>{})
         }).catch(error=>{})
       );

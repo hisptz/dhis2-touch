@@ -240,7 +240,7 @@ export class EventCapturePage implements OnInit {
       }else{
         isFormReady = false;
       }
-    }else{
+    }else if(!this.selectedProgram){
       isFormReady = false;
     }
     return isFormReady;
