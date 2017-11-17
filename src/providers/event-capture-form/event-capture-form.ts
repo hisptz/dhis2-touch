@@ -96,12 +96,12 @@ export class EventCaptureFormProvider {
                 }
                 return 0;
               });
-              //merge back program setions
+              //merge back program sections
               programsStages.forEach((programsStage: any) => {
                 if(programsStage.programStageSections){
                   let programStageSections = [];
                   programsStage.programStageSections.forEach((programStageSection : any)=>{
-                    programStageSections.push(programStageSection.id);
+                    programStageSections.push(programStageSectionMapper[programStageSection.id]);
                   });
                   programStageSections.sort((a, b) => {
                     if (a.sortOrder > b.sortOrder) {

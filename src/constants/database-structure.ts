@@ -476,6 +476,7 @@ export const DATABASE_STRUCTURE = {
     columns: [
       {value: 'id', type: 'TEXT'},
       {value: 'name', type: 'TEXT'},
+      {value: 'displayName', type: 'TEXT'},
       {value: 'sortOrder', type: 'TEXT'},
       {value: 'programStageId', type: 'TEXT'},
       {value: 'attributeValues', type: 'LONGTEXT'},

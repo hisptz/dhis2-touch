@@ -25,7 +25,7 @@ export class ProgramStageSectionsProvider {
    * @returns {Promise<any>}
    */
   downloadProgramsStageSectionsFromServer(currentUser){
-    let fields= "id,name,sortOrder,programStage[id],attributeValues[value,attribute[name]],translations[*],programStageDataElements[dataElement[id]],dataElements[id]";
+    let fields= "id,name,displayName,sortOrder,programStage[id],attributeValues[value,attribute[name]],translations[*],programStageDataElements[dataElement[id]],dataElements[id]";
     let url = "/api/25/"+this.resource+".json?paging=false&fields=" + fields;
     return new Promise((resolve, reject)=> {
       this.HttpClient.get(url,currentUser).then((response : any)=>{

@@ -3,9 +3,7 @@
 </div>
 <div *ngIf="!isLoading">
 
-  <!--<div class="item-card-program-stage-section">-->
-    <!--programStageSections : {{ programStage.programStageSections |json }}-->
-  <!--</div>-->
+
 
 
   <div class="item-card">
@@ -20,14 +18,19 @@
       </ion-item>
     </div>
     <div *ngIf="eventDate && eventDate != ''">
-      <div *ngIf="programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0 ">
-        <div *ngFor="let programStageDataElement of programStage.programStageDataElements">
-          <div *ngIf="programStageDataElement.dataElement && programStageDataElement.dataElement.id">
-            <event-input-container [dataElement]="programStageDataElement.dataElement"
-                                   [currentUser]="currentUser"
-                                   [data]="dataObjectModel"
-                                   [mandatory]="programStageDataElement.compulsory"
-                                   (onChange)="updateData($event)"></event-input-container>
+      <div *ngIf="programStage.programStageSections && programStage.programStageSections  && programStage.programStageSections.length > 0">
+        <div *ngFor="let programStageSection of programStage.programStageSections">
+          <div class="item-card-program-stage-section" padding>
+            {{ programStageSection.displayName }}
+          </div>
+          <div *ngIf="programStageSection.dataElements">
+            <div *ngFor="let dataElement of programStageSection.dataElements">
+              <event-input-container [dataElement]="dataElement"
+                                     [currentUser]="currentUser"
+                                     [data]="dataObjectModel"
+                                     [mandatory]="'false'"
+                                     (onChange)="updateData($event)"></event-input-container>
+            </div>
           </div>
         </div>
         <div no-padding>
@@ -40,6 +43,34 @@
               <div class="item-card" color="danger" ion-button clear text-justify (click)="deleteEvent(currentEvent.id)">
                 <ion-icon name="trash" ></ion-icon>&nbsp;
                 Delete
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div *ngIf="programStage.programStageSections && programStage.programStageSections  && programStage.programStageSections.length == 0">
+        <div *ngIf="programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0 ">
+          <div *ngFor="let programStageDataElement of programStage.programStageDataElements">
+            <div *ngIf="programStageDataElement.dataElement && programStageDataElement.dataElement.id">
+              <event-input-container [dataElement]="programStageDataElement.dataElement"
+                                     [currentUser]="currentUser"
+                                     [data]="dataObjectModel"
+                                     [mandatory]="programStageDataElement.compulsory"
+                                     (onChange)="updateData($event)"></event-input-container>
+            </div>
+          </div>
+          <div no-padding>
+            <div style="display: inline-block;width: 49.3%">
+              <div float-left>
+              </div>
+            </div>
+            <div style="display: inline-block;width: 49.3%">
+              <div  *ngIf="canEventBeDeleted()" float-right>
+                <div class="item-card" color="danger" ion-button clear text-justify (click)="deleteEvent(currentEvent.id)">
+                  <ion-icon name="trash" ></ion-icon>&nbsp;
+                  Delete
+                </div>
               </div>
             </div>
           </div>
