@@ -117,10 +117,10 @@ export class EventCaptureFormProvider {
     let table = {headers: [], rows: []};
     let eventIds = this.getMapperObjectForDisplay(events).eventIds;
     let eventDataValuesArrays = this.getMapperObjectForDisplay(events).eventsMapper;
+    Object.keys(columnsToDisplay).forEach(key => {
+      table.headers.push(columnsToDisplay[key]);
+    });
     if (events && events.length > 0) {
-      Object.keys(columnsToDisplay).forEach(key => {
-        table.headers.push(columnsToDisplay[key]);
-      });
       eventDataValuesArrays.forEach((eventDataValues: any) => {
         let row = [];
         Object.keys(columnsToDisplay).forEach(key => {

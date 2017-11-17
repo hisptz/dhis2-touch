@@ -286,7 +286,9 @@ export class EventCapturePage implements OnInit {
                   fieldLabelKey = programStageDataElement.dataElement[this.dataEntrySettings.label];
                 }
               }
-              this.columnsToDisplay[programStageDataElement.dataElement.id] = fieldLabelKey;
+              if(programStageDataElement.displayInReports){
+                this.columnsToDisplay[programStageDataElement.dataElement.id] = fieldLabelKey;
+              }
             }
           });
         }
@@ -306,7 +308,8 @@ export class EventCapturePage implements OnInit {
         this.renderDataAsTable();
       }
     });
-    modal.present().then(()=>{});
+    modal.present().then(()=>{
+    });
   }
 
   loadingEvents(){
