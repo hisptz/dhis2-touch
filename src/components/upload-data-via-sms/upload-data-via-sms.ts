@@ -124,7 +124,9 @@ export class UploadDataViaSmsComponent implements OnInit{
       this.currentPeriodOffset = 0;
       this.updateDataEntryFormSelections();
       this.loadPeriodSelection();
-      this.updateDataSetCategoryCombo(this.selectedDataSet.categoryCombo);
+      if(this.selectedDataSet && this.selectedDataSet.categoryCombo){
+        this.updateDataSetCategoryCombo(this.selectedDataSet.categoryCombo);
+      }
     },error=>{
       this.appProvider.setNormalNotification("Fail to reload entry form");
     });
@@ -140,7 +142,9 @@ export class UploadDataViaSmsComponent implements OnInit{
           this.currentPeriodOffset = 0;
           this.updateDataEntryFormSelections();
           this.loadPeriodSelection();
-          this.updateDataSetCategoryCombo(this.selectedDataSet.categoryCombo);
+          if(this.selectedDataSet && this.selectedDataSet.categoryCombo){
+            this.updateDataSetCategoryCombo(this.selectedDataSet.categoryCombo);
+          }
         }
       });
       modal.present();
@@ -150,14 +154,15 @@ export class UploadDataViaSmsComponent implements OnInit{
   }
 
   loadPeriodSelection(){
-    let periodType = this.selectedDataSet.periodType;
-
-    let openFuturePeriods = parseInt(this.selectedDataSet.openFuturePeriods);
-    let periods = this.periodSelection.getPeriods(periodType,openFuturePeriods,this.currentPeriodOffset);
-    if(periods && periods.length > 0){
-      this.selectedPeriod = periods[0];
-    }else{
-      this.selectedPeriod = {};
+    if(this.selectedDataSet && this.selectedDataSet.id){
+      let periodType = this.selectedDataSet.periodType;
+      let openFuturePeriods = parseInt(this.selectedDataSet.openFuturePeriods);
+      let periods = this.periodSelection.getPeriods(periodType,openFuturePeriods,this.currentPeriodOffset);
+      if(periods && periods.length > 0){
+        this.selectedPeriod = periods[0];
+      }else{
+        this.selectedPeriod = {};
+      }
     }
     this.updateDataEntryFormSelections();
   }

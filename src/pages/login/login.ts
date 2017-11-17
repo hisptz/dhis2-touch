@@ -75,6 +75,8 @@ export class LoginPage implements OnInit{
         }
         this.currentUser = currentUser;
       }else{
+        let testingUrl = "192.168.43.70:8080/dhis";
+        this.currentUser.serverUrl = testingUrl;
         this.currentUser.serverUrl = 'play.dhis2.org/demo';
         this.currentUser.username = 'admin';
         this.currentUser.password = 'district';
