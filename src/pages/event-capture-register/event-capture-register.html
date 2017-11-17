@@ -21,6 +21,11 @@
       <div *ngIf="currentEvent">
         <ion-row>
           <ion-col>
+            <div (tap)="goBack()" padding-bottom class="item-card">
+              <b>Organisation Unit</b> : {{ currentOrgUnit.name }}<br>
+              <b>Program</b> : {{ currentProgram.name }}<br>
+            </div>
+
             <program-stage-event-based [programStage]="programStage"
                                        [dataDimension]="dataDimension"
                                        [currentEvent]="currentEvent" (onDeleteEvent)="onEventDeleted()"></program-stage-event-based>

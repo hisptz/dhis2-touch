@@ -54,6 +54,10 @@ export class EventCaptureRegisterPage implements OnDestroy,OnInit{
     })
   }
 
+  goBack(){
+    this.navCtr.pop();
+  }
+
   loadProgramStages(programId){
     this.loadingMessage = "Loading program stages " + this.currentProgram.name;
     this.eventCaptureFormProvider.getProgramStages(programId,this.currentUser).then((programStages : any)=>{
