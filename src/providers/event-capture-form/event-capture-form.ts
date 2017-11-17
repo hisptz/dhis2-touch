@@ -36,10 +36,6 @@ export class EventCaptureFormProvider {
     let programStageSectionMapper = {};
     return new Promise((resolve, reject) => {
       this.programsProvider.getProgramsStages(programId, currentUser).then((programsStages: any) => {
-        //@todo sections on program stages
-        //merge program stage with program stage sections
-        //sorting by sortOrder
-
         //prepare data elements ids as well as program stage sections ids if any
         programsStages.forEach((programsStage: any) => {
           if(programsStage.programStageSections){
@@ -78,31 +74,50 @@ export class EventCaptureFormProvider {
                 }
               }
             });
-
             //loading programStageSections
             this.programStageSectionsProvider.getProgramStageSectionsByIds(programStageSectionIds,currentUser).then((programStageSections : any)=>{
               programStageSections.forEach((programStageSection : any)=>{
+                let dataElements = [];
                 programStageSection.dataElements.forEach((dataElement : any)=>{
                   let dataElementId = dataElement.id;
                   if (dataElementId && dataElementMapper[dataElementId]) {
-                    dataElement = dataElementMapper[dataElementId]
+                    dataElements.push(dataElementMapper[dataElementId]);
                   }
                 });
+                programStageSection.dataElements = dataElements;
+                programStageSectionMapper[programStageSection.id] = programStageSection;
               });
-              console.log(JSON.stringify(programStageSections[0]));
+              programsStages.sort((a, b) => {
+                if (a.sortOrder > b.sortOrder) {
+                  return 1;
+                }
+                if (a.sortOrder < b.sortOrder) {
+                  return -1;
+                }
+                return 0;
+              });
+              //merge back program setions
+              programsStages.forEach((programsStage: any) => {
+                if(programsStage.programStageSections){
+                  let programStageSections = [];
+                  programsStage.programStageSections.forEach((programStageSection : any)=>{
+                    programStageSections.push(programStageSection.id);
+                  });
+                  programStageSections.sort((a, b) => {
+                    if (a.sortOrder > b.sortOrder) {
+                      return 1;
+                    }
+                    if (a.sortOrder < b.sortOrder) {
+                      return -1;
+                    }
+                    return 0;
+                  });
+                  programsStage.programStageSections = programStageSections;
+                }
+              });
+              resolve(programsStages);
             });
           });
-          programsStages.sort((a, b) => {
-            if (a.sortOrder > b.sortOrder) {
-              return 1;
-            }
-            if (a.sortOrder < b.sortOrder) {
-              return -1;
-            }
-            return 0;
-          });
-
-          resolve(programsStages);
         }).catch(error => {
           reject(error)
         });
