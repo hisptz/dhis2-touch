@@ -22,8 +22,8 @@ export class ClearLocalMetadataComponent implements OnInit{
   dataBaseStructure: any;
   currentUser: any;
   hasAllSelected: boolean;
-  showLoadingMessage: boolean = false;
-  clearMetaDataLoadingMessages: string = "";
+  isLoading: boolean = false;
+  loadingMessage: string = "";
 
   constructor(private syncProvider: SyncProvider, private appProvider: AppProvider, private sqLite: SqlLiteProvider, private user: UserProvider,
               public alertCtrl: AlertController, public syncPage: SyncPage) {
@@ -62,15 +62,15 @@ export class ClearLocalMetadataComponent implements OnInit{
       }
     });
     let confirmAlert = this.alertCtrl.create({
-      title: 'Delete of Metadata',
-      message: 'You are about to delete \n' +
-                ' \t' + ' '+displayList.join(', '),
+      title: 'Clear local metadata confirmation',
+      message: 'You are about to clear \n' +
+                ' \t' + ' '+displayList.join(', ') + ". Are you sure?",
       buttons:[
         {
-          text: 'Cancel',
+          text: 'No',
           role: 'cancel',
         },{
-          text: 'Ok',
+          text: 'Yes',
           handler:() =>{
             this.checkingForResourceToDelete();
           }
@@ -98,19 +98,19 @@ export class ClearLocalMetadataComponent implements OnInit{
       this.appProvider.setNormalNotification("Please select at least one resources to update");
     }else{
       this.deleteResources(resourcesToDelete);
-      this.showLoadingMessage = true;
+      this.isLoading = true;
     }
   }
 
 
   deleteResources(resources){
-    this.clearMetaDataLoadingMessages= "Deleting selected Metadata";
+    this.loadingMessage= "Clearing selected Metadata";
     this.syncProvider.prepareTablesToApplyChanges(resources,this.currentUser).then(()=>{
-      this.clearMetaDataLoadingMessages= "Applying updates";
+      this.loadingMessage= "Applying updates";
       this.sqLite.generateTables(this.currentUser.currentDatabase).then(()=>{
         this.autoSelect("un-selectAll");
-        this.appProvider.setNormalNotification("Data deletion has been performed successfully");
-        this.showLoadingMessage = false;
+        this.appProvider.setNormalNotification("All selected local metadata has been cleared successfully");
+        this.isLoading = false;
       },error=>{
         this.appProvider.setTopNotification("Failed. to Drop "+resources+" Database table");
       });
