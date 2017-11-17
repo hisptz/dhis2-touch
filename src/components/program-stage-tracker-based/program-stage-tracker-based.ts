@@ -213,7 +213,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
   }
 
   renderDataAsTable(){
-    this.eventCaptureFormProvider.getTableFormatResult(this.columnsToDisplay,this.currentEvents).then((response : any)=>{
+    this.eventCaptureFormProvider.getTableFormatResult(this.columnsToDisplay,this.currentEvents,'tracker-capture').then((response : any)=>{
       this.tableLayout = response.table;
       this.resetOpenRowOnRepeatableEvents();
     }).catch(error=>{

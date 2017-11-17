@@ -28,13 +28,13 @@
       </ion-item>
       <ion-item>
         <ion-label>
-          Enrollments&nbsp;
-          <ion-badge color="badge-color">{{ dataObject.Enrollments }}</ion-badge>
+          enrollments&nbsp;
+          <ion-badge color="badge-color">{{ dataObject.enrollments }}</ion-badge>
         </ion-label>
-        <ion-checkbox [(ngModel)]="selectedItems.Enrollments" disabled = "{{(dataObject.Enrollments == 0)?'true':'false'}}" (ionChange)="updateItemsToBeDeleted()" ></ion-checkbox>
+        <ion-checkbox [(ngModel)]="selectedItems.enrollments" disabled = "{{(dataObject.enrollments == 0)?'true':'false'}}" (ionChange)="updateItemsToBeDeleted()" ></ion-checkbox>
       </ion-item>
       <button [disabled]="itemsToBeDeleted == 0" ion-button full text-capitalize (tap)="deleteSelectedItems()">
-        Upload Data
+        Clear local data
       </button>
     </ion-col>
   </ion-row>

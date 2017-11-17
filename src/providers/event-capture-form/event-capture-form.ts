@@ -128,13 +128,15 @@ export class EventCaptureFormProvider {
    * @param events
    * @returns {Promise<any>}
    */
-  getTableFormatResult(columnsToDisplay, events) {
+  getTableFormatResult(columnsToDisplay, events, eventType?) {
     let table = {headers: [], rows: []};
     let eventIds = this.getMapperObjectForDisplay(events).eventIds;
     let eventDataValuesArrays = this.getMapperObjectForDisplay(events).eventsMapper;
-    Object.keys(columnsToDisplay).forEach(key => {
-      table.headers.push(columnsToDisplay[key]);
-    });
+    if(!eventType){
+      Object.keys(columnsToDisplay).forEach(key => {
+        table.headers.push(columnsToDisplay[key]);
+      });
+    }
     if (events && events.length > 0) {
       eventDataValuesArrays.forEach((eventDataValues: any) => {
         let row = [];

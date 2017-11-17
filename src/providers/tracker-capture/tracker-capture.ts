@@ -490,7 +490,11 @@ export class TrackerCaptureProvider {
             if(counter == trackedEntityInstances.length){
               this.sqlLite.dropTable('trackedEntityInstances',currentUser.currentDatabase).then(()=>{
                 this.sqlLite.dropTable('enrollments',currentUser.currentDatabase).then(()=>{
-                  resolve();
+                  this.sqlLite.dropTable('trackedEntityAttributeValues',currentUser.currentDatabase).then(()=>{
+                    resolve();
+                  }).catch(error => {
+                    reject(error);
+                  });
                 }).catch(error => {
                   reject(error);
                 });
