@@ -159,7 +159,10 @@ export class UploadViaInternetComponent implements OnInit{
     if(this.importSummaries){
       let modal = this.modalCtrl.create('ImportSummariesPage',{importSummaries : this.importSummaries,keys : keys});
       modal.onDidDismiss(()=>{
-
+        Object.keys(this.selectedItems).forEach((key: string)=>{
+          this.selectedItems[key] = false;
+        });
+        this.loadingDataToUpload();
       });
       modal.present();
     }
