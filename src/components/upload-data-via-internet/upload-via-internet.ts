@@ -93,7 +93,7 @@ export class UploadViaInternetComponent implements OnInit{
   }
 
   uploadData(){
-    this.loadingMessage = "Loading data to be uploaded";
+    this.loadingMessage = "Uploading selected local data, please wait";
     this.isLoading = true;
     let promises = [];
     this.importSummaries = {};
