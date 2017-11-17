@@ -102,7 +102,7 @@ export class HttpClientProvider {
         .subscribe((response)=>{
         resolve(response);
       },error=>{
-        reject(error);
+        reject(error.json());
       });
     });
   }

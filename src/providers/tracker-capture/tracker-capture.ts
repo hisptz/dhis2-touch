@@ -201,12 +201,19 @@ export class TrackerCaptureProvider {
             if (errorMessages.indexOf(message) == -1) {
               errorMessages.push(message);
             }
+          } else if(error && error.response && error.response.conflicts){
+            error.response.conflicts.forEach((conflict : any)=>{
+              let message = JSON.stringify(conflict);
+              if (errorMessages.indexOf(message) == -1) {
+                errorMessages.push(message);
+              }
+            })
           } else if (error && error.httpStatusCode == 500) {
             let message = error.message;
             if (errorMessages.indexOf(message) == -1) {
               errorMessages.push(message);
             }
-          } else {
+          }else {
             let message = "There are and error with connection to server, please check the network";
             if (errorMessages.indexOf(message) == -1) {
               errorMessages.push(message);
