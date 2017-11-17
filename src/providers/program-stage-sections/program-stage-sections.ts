@@ -82,5 +82,25 @@ export class ProgramStageSectionsProvider {
     return programsStageSections;
   }
 
+  /**
+   *
+   * @param programStageSectionIds
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getProgramStageSectionsByIds(programStageSectionIds,currentUser){
+    return new Promise((resolve,reject)=>{
+      if(programStageSectionIds.length == 0){
+        resolve([]);
+      }else{
+        this.sqlLite.getDataFromTableByAttributes(this.resource,'id',programStageSectionIds,currentUser.currentDatabase).then((programStageSections : any)=>{
+          resolve(programStageSections);
+        }).catch(error=>{
+          reject(error);
+        });
+      }
+    });
+  }
+
 
 }
