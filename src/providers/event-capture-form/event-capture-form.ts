@@ -109,6 +109,21 @@ export class EventCaptureFormProvider {
 
   /**
    *
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  deleteALLEvents(currentUser){
+    return new Promise((resolve,reject)=>{
+      this.sqlLiteProvider.dropTable('events',currentUser.currentDatabase).then(()=>{
+        resolve();
+      }).catch(error=>{
+        reject();
+      });
+    });
+  }
+
+  /**
+   *
    * @param columnsToDisplay
    * @param events
    * @returns {Promise<any>}
@@ -191,6 +206,22 @@ export class EventCaptureFormProvider {
     };
     return event;
   }
+
+  /**
+   *
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getAllEvents(currentUser){
+    return new Promise((resolve,reject)=>{
+      this.sqlLiteProvider.getAllDataFromTable('events', currentUser.currentDatabase).then((events : any)=>{
+        resolve(events);
+      }).catch(error=>{
+        reject(error);
+      });
+    })
+  }
+
 
   /**
    *

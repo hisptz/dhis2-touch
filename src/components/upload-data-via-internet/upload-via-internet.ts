@@ -30,10 +30,7 @@ export class UploadViaInternetComponent implements OnInit{
   importSummaries : any;
   dataObject : any;
 
-  //private dataValuesProvider : DataValuesProvider,private trackerCaptureProvider : TrackerCaptureProvider,
-  //private enrollmentsProvider : EnrollmentsProvider, eventCaptureFormProvider : EventCaptureFormProvider,
-
-  constructor(private syncProvider : SyncProvider,private modalCtrl : ModalController,
+  constructor(private modalCtrl : ModalController,
               private dataValuesProvider : DataValuesProvider,private trackerCaptureProvider : TrackerCaptureProvider,
               private enrollmentsProvider : EnrollmentsProvider, private eventCaptureFormProvider : EventCaptureFormProvider,
               private appProvider: AppProvider, public user: UserProvider) {

@@ -1,29 +1,41 @@
-<!-- Generated template for the ClearLocalDataComponent component -->
 
-<ion-row>
-  <ion-col *ngIf="!showLoadingMessage">
-    <ion-item>
-      <ion-label>Data values </ion-label>
-      <ion-checkbox [(ngModel)]="selectedItems.dataValues" (ionChange)="resetDeletedItems()"></ion-checkbox>
-    </ion-item>
-    <ion-item>
-      <ion-label>Events </ion-label>
-      <ion-checkbox [(ngModel)]="selectedItems.events" (ionChange)="resetDeletedItems()" ></ion-checkbox>
-    </ion-item>
-
-    <button [disabled]="itemsToBeDeleted.length < 1"
-            [color]="isDataCleared?'primary':'whitecolor'"
-            class="normalButton" ion-button small  full text-capitalize (tap)="clearDataConfirmation()">
-
-      <span *ngIf="isDataCleared" >
-                    Clear Data
-                  </span>
-    </button>
-
-  </ion-col>
-
-</ion-row>
-
-<span *ngIf="showLoadingMessage" >
-                    <page-loading loadingSize="large" [loadingMessage]="LoadingMessages"></page-loading>
-                  </span>
+<div *ngIf="isLoading">
+  <page-loading loadingSize="large" [loadingMessage]="loadingMessage"></page-loading>
+</div>
+<div *ngIf="!isLoading">
+  <ion-row>
+    <ion-col *ngIf="!showLoadingMessage">
+      <ion-item>
+        <ion-label>
+          Aggregate data&nbsp;
+          <ion-badge color="badge-color">{{ dataObject.dataValues }}</ion-badge>
+        </ion-label>
+        <ion-checkbox [(ngModel)]="selectedItems.dataValues" disabled = "{{(dataObject.dataValues == 0)?'true':'false'}}" (ionChange)="updateItemsToBeDeleted()"></ion-checkbox>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          Events&nbsp;
+          <ion-badge color="badge-color">{{ dataObject.events }}</ion-badge>
+        </ion-label>
+        <ion-checkbox [(ngModel)]="selectedItems.events" disabled = "{{(dataObject.events == 0)?'true':'false'}}" (ionChange)="updateItemsToBeDeleted()" ></ion-checkbox>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          Events for tracker&nbsp;
+          <ion-badge color="badge-color">{{ dataObject.eventsForTracker }}</ion-badge>
+        </ion-label>
+        <ion-checkbox [(ngModel)]="selectedItems.eventsForTracker" disabled = "{{(dataObject.eventsForTracker == 0)?'true':'false'}}" (ionChange)="updateItemsToBeDeleted()" ></ion-checkbox>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          Enrollments&nbsp;
+          <ion-badge color="badge-color">{{ dataObject.Enrollments }}</ion-badge>
+        </ion-label>
+        <ion-checkbox [(ngModel)]="selectedItems.Enrollments" disabled = "{{(dataObject.Enrollments == 0)?'true':'false'}}" (ionChange)="updateItemsToBeDeleted()" ></ion-checkbox>
+      </ion-item>
+      <button [disabled]="itemsToBeDeleted == 0" ion-button full text-capitalize (tap)="deleteSelectedItems()">
+        Upload Data
+      </button>
+    </ion-col>
+  </ion-row>
+</div>

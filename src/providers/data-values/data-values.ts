@@ -293,4 +293,34 @@ export class DataValuesProvider {
     });
   }
 
+  /**
+   *
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getAllDataValues(currentUser){
+    return new Promise((resolve,reject)=>{
+      this.sqlLite.getAllDataFromTable(this.resourceName,currentUser.currentDatabase).then((dataValues : any)=>{
+        resolve(dataValues);
+      }).catch(error=>{
+        reject(error);
+      });
+    });
+  }
+
+  /**
+   *
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  deleteAllDataValues(currentUser){
+    return new Promise((resolve,reject)=>{
+      this.sqlLite.dropTable(this.resourceName,currentUser.currentDatabase).then(()=>{
+        resolve();
+      }).catch(error=>{
+        reject(error);
+      });
+    });
+  }
+
 }
