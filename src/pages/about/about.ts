@@ -4,6 +4,8 @@ import {AboutProvider} from "../../providers/about/about";
 import {AppProvider} from "../../providers/app/app";
 import {DataValuesProvider} from "../../providers/data-values/data-values";
 import {UserProvider} from "../../providers/user/user";
+import {TrackerCaptureProvider} from "../../providers/tracker-capture/tracker-capture";
+import {EventCaptureFormProvider} from "../../providers/event-capture-form/event-capture-form";
 
 /**
  * Generated class for the AboutPage page.
@@ -29,11 +31,14 @@ export class AboutPage implements OnInit{
   aboutContents : Array<any>;
   isAboutContentOpen : any = {};
   dataValuesStorage : any = { online : 0,offline : 0};
-
+  eventsStorage : any = { online : 0,offline : 0};
+  eventsForTrackerStorage : any = { online : 0,offline : 0};
+  enrollmentStorage : any = { online : 0,offline : 0};
 
 
   constructor(public navCtrl: NavController,
-              private appProvider : AppProvider,
+              private appProvider : AppProvider,private trackerCaptureProvider : TrackerCaptureProvider,
+              private eventCaptureFormProvider : EventCaptureFormProvider,
               private aboutProvider : AboutProvider, private dataValuesProvider: DataValuesProvider, private userProvider: UserProvider) {
   }
 
@@ -51,7 +56,6 @@ export class AboutPage implements OnInit{
     })
   }
 
-
   loadAllData(){
     this.hasAllDataBeenLoaded = false;
     this.aboutProvider.getAppInformation().then(appInformation => {
@@ -65,18 +69,13 @@ export class AboutPage implements OnInit{
           }
         }
         this.loadingDataValueStatus();
-
-        this.isLoading = false;
-        this.loadingMessage = '';
       }).catch(error => {
         this.isLoading = false;
-        this.loadingMessage = '';
         console.log(JSON.stringify(error));
         this.appProvider.setNormalNotification('Fail to load system information');
       });
     }).catch(error => {
       this.isLoading = false;
-      this.loadingMessage = '';
       console.log(JSON.stringify(error));
       this.appProvider.setNormalNotification('Fail to load app information');
     });
@@ -101,42 +100,76 @@ export class AboutPage implements OnInit{
     }
   }
 
-
-  loadingDataValueStatus(ionRefresher?){
+  loadingDataValueStatus(){
     this.loadingMessage = 'Loading data values storage status';
     this.isLoading = true;
     this.dataValuesProvider.getDataValuesByStatus("synced",this.currentUser).then((syncedDataValues : any)=>{
       this.dataValuesProvider.getDataValuesByStatus("not-synced",this.currentUser).then((unSyncedDataValues : any)=>{
         this.dataValuesStorage.offline = unSyncedDataValues.length;
         this.dataValuesStorage.online = syncedDataValues.length;
-        this.dataValuesStorage["synced"] = syncedDataValues;
-        this.dataValuesStorage["not-synced"] = unSyncedDataValues;
-        //@todo move this when loading all data even events
-        this.hasAllDataBeenLoaded = true;
+        this.loadingEventStatus();
       },error=>{
-        if(ionRefresher){
-          ionRefresher.complete();
-        }
-        this.appProvider.setNormalNotification('Fail to loading data values storage status');
+        console.log(JSON.stringify(error));
+        this.appProvider.setNormalNotification('Fail to load data values storage status');
         this.isLoading = false;
       });
     },error=>{
-      if(ionRefresher){
-        ionRefresher.complete();
-      }
-      this.appProvider.setNormalNotification('Fail to loading data values storage status');
+      console.log(JSON.stringify(error));
+      this.appProvider.setNormalNotification('Fail to load data values storage status');
       this.isLoading = false;
     });
   }
 
-
-  viewDataValuesSynchronisationStatusByDataSets(syncStatus){
-    if(this.dataValuesStorage[syncStatus].length > 0){
-      this.navCtrl.push('DataValuesSyncContainerPage',{dataValues : this.dataValuesStorage[syncStatus],syncStatus:syncStatus});
-    }else{
-      this.appProvider.setNormalNotification("There is nothing to view");
-    }
+  loadingEventStatus(){
+    this.loadingMessage = "Loading events storage status";
+    this.eventCaptureFormProvider.getEventsByStatusAndType('synced','event-capture',this.currentUser).then((events : any)=>{
+      this.eventsStorage.online = events.length;
+      this.eventCaptureFormProvider.getEventsByStatusAndType('not-synced','event-capture',this.currentUser).then((events : any)=>{
+        this.eventsStorage.offline = events.length;
+        this.eventCaptureFormProvider.getEventsByStatusAndType('synced','tracker-capture',this.currentUser).then((events : any)=>{
+          this.eventsForTrackerStorage.online = events.length;
+          this.eventCaptureFormProvider.getEventsByStatusAndType('not-synced','tracker-capture',this.currentUser).then((events : any)=>{
+            this.eventsForTrackerStorage.offline = events.length;
+            this.loadingEnrollmentStatus();
+          }).catch(error=>{
+            console.log(JSON.stringify(error));
+            this.appProvider.setNormalNotification('Fail to load enrollments storage status');
+            this.isLoading = false;
+          });
+        }).catch(error=>{
+          console.log(JSON.stringify(error));
+          this.appProvider.setNormalNotification('Fail to load enrollments storage status');
+          this.isLoading = false;
+        });
+      }).catch(error=>{
+        console.log(JSON.stringify(error));
+        this.appProvider.setNormalNotification('Fail to load enrollments storage status');
+        this.isLoading = false;
+      });
+    }).catch(error=>{
+      console.log(JSON.stringify(error));
+      this.appProvider.setNormalNotification('Fail to load enrollments storage status');
+      this.isLoading = false;
+    });
   }
 
+  loadingEnrollmentStatus(){
+    this.loadingMessage = "Loading enrollments storage status";
+    this.trackerCaptureProvider.getTrackedEntityInstanceByStatus('synced',this.currentUser).then((trackedEntityInstances : any)=>{
+      this.enrollmentStorage.online = trackedEntityInstances.length;
+      this.trackerCaptureProvider.getTrackedEntityInstanceByStatus('not-synced',this.currentUser).then((trackedEntityInstances : any)=>{
+        this.enrollmentStorage.offline = trackedEntityInstances.length;
+        this.isLoading = false;
+        this.hasAllDataBeenLoaded = true;
+      }).catch(error=>{
+        console.log(JSON.stringify(error));
+        this.appProvider.setNormalNotification('Fail to load enrollments storage status');
+      }).catch(error=>{
+        console.log(JSON.stringify(error));
+        this.appProvider.setNormalNotification('Fail to load enrollments storage status');
+        this.isLoading = false;
+      });
+    });
+  }
 
 }

@@ -68,13 +68,13 @@
             </ion-row>
           </div>
           <div *ngIf="aboutContent.id == 'dataValues'">
-            <div class="item-card" color="font-color" (tap)="viewDataValuesSynchronisationStatusByDataSets('synced')" >
+            <div class="item-card" color="font-color" >
               <ion-item >
                 Synced
                 <ion-badge color="icon-color" item-end>{{ dataValuesStorage.online }}</ion-badge>
               </ion-item>
             </div>
-            <div class="item-card" color="font-color" (tap)="viewDataValuesSynchronisationStatusByDataSets('not-synced')">
+            <div class="item-card" color="font-color">
               <ion-item >
                 Not Synced
                 <ion-badge color="icon-color" item-end>{{ dataValuesStorage.offline }}</ion-badge>
@@ -85,16 +85,45 @@
             <div class="item-card" color="font-color" >
               <ion-item >
                 Synced
-                <ion-badge color="icon-color" item-end> 0</ion-badge>
+                <ion-badge color="icon-color" item-end>{{ eventsStorage.online }}</ion-badge>
               </ion-item>
             </div>
-            <div class="item-card" color="font-color" >
+            <div class="item-card" color="font-color">
               <ion-item >
                 Not Synced
-                <ion-badge color="icon-color" item-end> 0 </ion-badge>
+                <ion-badge color="icon-color" item-end>{{ eventsStorage.offline }}</ion-badge>
               </ion-item>
             </div>
           </div>
+          <div *ngIf="aboutContent.id == 'eventForTrackerStatus'">
+            <div class="item-card" color="font-color" >
+              <ion-item >
+                Synced
+                <ion-badge color="icon-color" item-end>{{ eventsForTrackerStorage.online }}</ion-badge>
+              </ion-item>
+            </div>
+            <div class="item-card" color="font-color">
+              <ion-item >
+                Not Synced
+                <ion-badge color="icon-color" item-end>{{ eventsForTrackerStorage.offline }}</ion-badge>
+              </ion-item>
+            </div>
+          </div>
+          <div *ngIf="aboutContent.id == 'enrollment'">
+            <div class="item-card" color="font-color" >
+              <ion-item >
+                Synced
+                <ion-badge color="icon-color" item-end>{{ enrollmentStorage.online }}</ion-badge>
+              </ion-item>
+            </div>
+            <div class="item-card" color="font-color">
+              <ion-item >
+                Not Synced
+                <ion-badge color="icon-color" item-end>{{ enrollmentStorage.offline }}</ion-badge>
+              </ion-item>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
