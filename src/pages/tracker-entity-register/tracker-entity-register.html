@@ -67,6 +67,14 @@
                       <ion-input [(ngModel)]="currentOrganisationUnit.name" readonly="true"></ion-input>
                     </ion-item>
                   </div>
+                  <div class="inputLabel">
+                    Enrolling Program
+                  </div>
+                  <div class="input-field-container">
+                    <ion-item>
+                      <ion-input [(ngModel)]="currentProgram.name" readonly="true"></ion-input>
+                    </ion-item>
+                  </div>
                   <div *ngIf="isTrackedEntityRegistered">
                     <div class="inputLabel">
                       {{ currentProgram.enrollmentDateLabel}}
