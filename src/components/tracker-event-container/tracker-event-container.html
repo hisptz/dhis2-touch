@@ -20,21 +20,50 @@
     </div>
   </div>
 </div>
-<div *ngIf="programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0 ">
-  <div *ngIf="currentOpenEvent['eventDate'] && currentOpenEvent['eventDate'] !=''">
-    <div *ngFor="let programStageDataElement of programStage.programStageDataElements">
-      <div *ngIf="programStageDataElement.dataElement && programStageDataElement.dataElement.id">
-        <event-input-container [dataElement]="programStageDataElement.dataElement"
-                               [currentUser]="currentUser"
-                               [data]="dataObjectModel"
-                               [mandatory]="programStageDataElement.compulsory"
-                               (onChange)="updateData($event)"></event-input-container>
+<div *ngIf="currentOpenEvent['eventDate'] && currentOpenEvent['eventDate'] !=''">
+  <div *ngIf="programStage.programStageSections && programStage.programStageSections  && programStage.programStageSections.length > 0">
+    <div *ngFor="let programStageSection of programStage.programStageSections" padding-bottom>
+      <table width="100%">
+        <tbody>
+        <tr>
+          <td [ngStyle]="{'background-color': '#F4F4F4'}">
+            {{ programStageSection.displayName }}
+          </td>
+        </tr>
+        <tr *ngIf="programStageSection.dataElements">
+          <td>
+            <div text-left>
+              <div *ngFor="let dataElement of programStageSection.dataElements">
+                <event-input-container [dataElement]="dataElement"
+                                       [currentUser]="currentUser"
+                                       [data]="dataObjectModel"
+                                       [mandatory]="'false'"
+                                       (onChange)="updateData($event)"></event-input-container>
+              </div>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div *ngIf="programStage.programStageSections && programStage.programStageSections  && programStage.programStageSections.length == 0">
+    <div *ngIf="programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0 ">
+      <div *ngFor="let programStageDataElement of programStage.programStageDataElements">
+        <div *ngIf="programStageDataElement.dataElement && programStageDataElement.dataElement.id">
+          <event-input-container [dataElement]="programStageDataElement.dataElement"
+                                 [currentUser]="currentUser"
+                                 [data]="dataObjectModel"
+                                 [mandatory]="programStageDataElement.compulsory"
+                                 (onChange)="updateData($event)"></event-input-container>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<div *ngIf="!(programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
-  <div *ngIf="currentOpenEvent['eventDate'] && currentOpenEvent['eventDate'] !=''">
-    <notification [message]="'Contact system to add data elements'"></notification>
+  <div *ngIf="!(programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
+    <div *ngIf="currentOpenEvent['eventDate'] && currentOpenEvent['eventDate'] !=''">
+      <notification [message]="'Contact system to add data elements'"></notification>
+    </div>
   </div>
 </div>
+
