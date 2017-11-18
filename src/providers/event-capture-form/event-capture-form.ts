@@ -36,91 +36,95 @@ export class EventCaptureFormProvider {
     let programStageSectionMapper = {};
     return new Promise((resolve, reject) => {
       this.programsProvider.getProgramsStages(programId, currentUser).then((programsStages: any) => {
-        //prepare data elements ids as well as program stage sections ids if any
-        programsStages.forEach((programsStage: any) => {
-          if(programsStage.programStageSections){
-            programsStage.programStageSections.forEach((programStageSection : any)=>{
-              programStageSectionIds.push(programStageSection.id);
-            });
-          }
-          programsStage.programStageDataElements.forEach((programStageDataElement) => {
-            if (programStageDataElement.dataElement && programStageDataElement.dataElement.id) {
-              dataElementIds.push(programStageDataElement.dataElement.id);
-            }
-          });
-        });
-        //loading data elements by ids
-        this.dataElementProvider.getDataElementsByIdsForEvents(dataElementIds, currentUser).then((dataElements: any) => {
-          dataElements.forEach((dataElement: any) => {
-            dataElementMapper[dataElement.id] = dataElement;
-          });
+        if(programsStages.length == 0){
+          resolve(programsStages);
+        }else{
+          //prepare data elements ids as well as program stage sections ids if any
           programsStages.forEach((programsStage: any) => {
-            let ids = programsStage.id.split("-");
-            if (ids.length > 1) {
-              programsStage.id = ids[1];
+            if(programsStage.programStageSections){
+              programsStage.programStageSections.forEach((programStageSection : any)=>{
+                programStageSectionIds.push(programStageSection.id);
+              });
             }
-            programsStage.hideDueDate = JSON.parse(programsStage.hideDueDate);
-            programsStage.repeatable = JSON.parse(programsStage.repeatable);
-            programsStage.allowGenerateNextVisit = JSON.parse(programsStage.allowGenerateNextVisit);
-            programsStage.autoGenerateEvent = JSON.parse(programsStage.autoGenerateEvent);
-            programsStage.blockEntryForm = JSON.parse(programsStage.blockEntryForm);
-            programsStage.generatedByEnrollmentDate = JSON.parse(programsStage.generatedByEnrollmentDate);
-            programsStage.captureCoordinates = JSON.parse(programsStage.captureCoordinates);
             programsStage.programStageDataElements.forEach((programStageDataElement) => {
               if (programStageDataElement.dataElement && programStageDataElement.dataElement.id) {
-                let dataElementId = programStageDataElement.dataElement.id;
-                if (dataElementId && dataElementMapper[dataElementId]) {
-                  programStageDataElement.dataElement = dataElementMapper[dataElementId]
-                }
+                dataElementIds.push(programStageDataElement.dataElement.id);
               }
             });
-            //loading programStageSections
-            this.programStageSectionsProvider.getProgramStageSectionsByIds(programStageSectionIds,currentUser).then((programStageSections : any)=>{
-              programStageSections.forEach((programStageSection : any)=>{
-                let dataElements = [];
-                programStageSection.dataElements.forEach((dataElement : any)=>{
-                  let dataElementId = dataElement.id;
+          });
+          //loading data elements by ids
+          this.dataElementProvider.getDataElementsByIdsForEvents(dataElementIds, currentUser).then((dataElements: any) => {
+            dataElements.forEach((dataElement: any) => {
+              dataElementMapper[dataElement.id] = dataElement;
+            });
+            programsStages.forEach((programsStage: any) => {
+              let ids = programsStage.id.split("-");
+              if (ids.length > 1) {
+                programsStage.id = ids[1];
+              }
+              programsStage.hideDueDate = JSON.parse(programsStage.hideDueDate);
+              programsStage.repeatable = JSON.parse(programsStage.repeatable);
+              programsStage.allowGenerateNextVisit = JSON.parse(programsStage.allowGenerateNextVisit);
+              programsStage.autoGenerateEvent = JSON.parse(programsStage.autoGenerateEvent);
+              programsStage.blockEntryForm = JSON.parse(programsStage.blockEntryForm);
+              programsStage.generatedByEnrollmentDate = JSON.parse(programsStage.generatedByEnrollmentDate);
+              programsStage.captureCoordinates = JSON.parse(programsStage.captureCoordinates);
+              programsStage.programStageDataElements.forEach((programStageDataElement) => {
+                if (programStageDataElement.dataElement && programStageDataElement.dataElement.id) {
+                  let dataElementId = programStageDataElement.dataElement.id;
                   if (dataElementId && dataElementMapper[dataElementId]) {
-                    dataElements.push(dataElementMapper[dataElementId]);
+                    programStageDataElement.dataElement = dataElementMapper[dataElementId]
+                  }
+                }
+              });
+              //loading programStageSections
+              this.programStageSectionsProvider.getProgramStageSectionsByIds(programStageSectionIds,currentUser).then((programStageSections : any)=>{
+                programStageSections.forEach((programStageSection : any)=>{
+                  let dataElements = [];
+                  programStageSection.dataElements.forEach((dataElement : any)=>{
+                    let dataElementId = dataElement.id;
+                    if (dataElementId && dataElementMapper[dataElementId]) {
+                      dataElements.push(dataElementMapper[dataElementId]);
+                    }
+                  });
+                  programStageSection.dataElements = dataElements;
+                  programStageSectionMapper[programStageSection.id] = programStageSection;
+                });
+                programsStages.sort((a, b) => {
+                  if (a.sortOrder > b.sortOrder) {
+                    return 1;
+                  }
+                  if (a.sortOrder < b.sortOrder) {
+                    return -1;
+                  }
+                  return 0;
+                });
+                //merge back program sections
+                programsStages.forEach((programsStage: any) => {
+                  if(programsStage.programStageSections){
+                    let programStageSections = [];
+                    programsStage.programStageSections.forEach((programStageSection : any)=>{
+                      programStageSections.push(programStageSectionMapper[programStageSection.id]);
+                    });
+                    programStageSections.sort((a, b) => {
+                      if (a.sortOrder > b.sortOrder) {
+                        return 1;
+                      }
+                      if (a.sortOrder < b.sortOrder) {
+                        return -1;
+                      }
+                      return 0;
+                    });
+                    programsStage.programStageSections = programStageSections;
                   }
                 });
-                programStageSection.dataElements = dataElements;
-                programStageSectionMapper[programStageSection.id] = programStageSection;
+                resolve(programsStages);
               });
-              programsStages.sort((a, b) => {
-                if (a.sortOrder > b.sortOrder) {
-                  return 1;
-                }
-                if (a.sortOrder < b.sortOrder) {
-                  return -1;
-                }
-                return 0;
-              });
-              //merge back program sections
-              programsStages.forEach((programsStage: any) => {
-                if(programsStage.programStageSections){
-                  let programStageSections = [];
-                  programsStage.programStageSections.forEach((programStageSection : any)=>{
-                    programStageSections.push(programStageSectionMapper[programStageSection.id]);
-                  });
-                  programStageSections.sort((a, b) => {
-                    if (a.sortOrder > b.sortOrder) {
-                      return 1;
-                    }
-                    if (a.sortOrder < b.sortOrder) {
-                      return -1;
-                    }
-                    return 0;
-                  });
-                  programsStage.programStageSections = programStageSections;
-                }
-              });
-              resolve(programsStages);
             });
+          }).catch(error => {
+            reject(error)
           });
-        }).catch(error => {
-          reject(error)
-        });
+        }
       }).catch(error => {
         reject(error)
       });
