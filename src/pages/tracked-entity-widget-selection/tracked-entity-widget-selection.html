@@ -24,9 +24,21 @@
     <ion-row>
       <ion-col >
         <ion-list>
-          <ion-item *ngFor="let dashboardWidget of dashboardWidgets" (tap)="setSelectedWidget(dashboardWidget)">
-            <img  class="side-menu-icon" [src]="icon"/>&nbsp;&nbsp;
-            <span  ion-text [color]="(currentWidget.id == dashboardWidget.id) ?'current' : 'font-color'">{{ dashboardWidget.name }}</span>
+          <ion-item *ngFor="let dashboardWidget of dashboardWidgets" (tap)="setSelectedWidget(dashboardWidget)" no-padding>
+            <div style="padding:6px 0px;">
+              <span >
+                <span class="program-stage-button-label">
+                  <span *ngIf="dashboardWidget.icon" >
+                    <img class="tracker-pagination-icon" [src]="dashboardWidget.icon"/>
+                  </span>
+                    <span *ngIf="dashboardWidget.iconName" class="tracker-pagination-icon icon-color" >
+                    <b>{{ dashboardWidget.iconName }}</b>
+                  </span>
+                </span>
+              </span>
+              &nbsp;
+              <span  ion-text [color]="(currentWidget.id == dashboardWidget.id) ?'current' : 'font-color'">{{ dashboardWidget.name }}</span>
+            </div>
           </ion-item>
           <ion-item *ngIf = "dashboardWidgets.length == 0">
             <empty-list-notification [emptyListMessage]="'There is no widget to select'"></empty-list-notification>

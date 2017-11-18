@@ -187,6 +187,11 @@
   height : 1.5rem;
 }
 
+.tracker-pagination-icon{
+  width : 1.2rem;
+  height : 1.2rem;
+}
+
 .footer-icon{
   width : 2rem;
   height : 2rem;
@@ -281,7 +286,15 @@
   border-radius: 50%;
   border : 1px solid #97CBFD;
   text-align: center;
-  padding : 7px 10px;
+  padding : 0.5rem 0.8rem;
+}
+
+.program-stage-button-label-active{
+  border-radius: 50%;
+  border : 1px solid #B9FFB9;
+  text-align: center;
+  padding : 0.5rem 0.8rem;
+  margin: auto;
 }
 
 .item-card-with-no-margin{

@@ -22,17 +22,23 @@
       <ion-row>
         <ion-col>
           <div class="item-card" no-padding (click)="openWidgetList()">
-            <ion-item >
-              <p ion-text color="font-color" no-padding align="center">
-                <span *ngIf="currentWidget.icon" >
-                <img class="side-menu-icon" [src]="currentWidget.icon"/>
-              </span>
-                <span *ngIf="currentWidget.iconName" class="icon-color" >
-                <b>{{ currentWidget.iconName }}</b>
-              </span>
-                &nbsp;
-                {{ currentWidget.name }}
-              </p>
+            <ion-item no-padding >
+              <div ion-text color="font-color" align="center">
+                <div style="padding:6px 0px;">
+                  <span >
+                    <span class="program-stage-button-label">
+                      <span *ngIf="currentWidget.icon" >
+                        <img class="tracker-pagination-icon" [src]="currentWidget.icon"/>
+                      </span>
+                        <span *ngIf="currentWidget.iconName" class="tracker-pagination-icon icon-color" >
+                        <b>{{ currentWidget.iconName }}</b>
+                      </span>
+                    </span>
+                  </span>
+                  &nbsp;
+                  {{ currentWidget.name }}
+                </div>
+              </div>
               <div style="text-align: center" item-right float-right>
                 <span  float-end class="side-menu-icon"><img [src]="icons.menu"></span>
               </div>
