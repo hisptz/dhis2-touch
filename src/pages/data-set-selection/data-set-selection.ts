@@ -16,7 +16,7 @@ import {IonicPage, NavParams, ViewController} from 'ionic-angular';
 export class DataSetSelectionPage implements OnInit{
 
   dataSetsList : any;
-  currentDataSet : string;
+  currentDataSet : any;
   icon : string;
 
   constructor(private viewCtrl : ViewController, private navParams: NavParams) {

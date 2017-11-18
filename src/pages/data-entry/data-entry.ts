@@ -137,7 +137,7 @@ export class DataEntryPage implements OnInit{
 
   openEntryFormList(){
     if(this.dataSets && this.dataSets.length > 0){
-      let modal = this.modalCtrl.create('DataSetSelectionPage',{dataSetsList : this.dataSets,currentDataSet :this.selectedDataSet.name  });
+      let modal = this.modalCtrl.create('DataSetSelectionPage',{dataSetsList : this.dataSets,currentDataSet :{id : this.selectedDataSet.id,name : this.selectedDataSet.name}});
       modal.onDidDismiss((selectedDataSet : any)=>{
         if(selectedDataSet && selectedDataSet.id && selectedDataSet.id != this.selectedDataSet.id){
           this.selectedDataSet = selectedDataSet;

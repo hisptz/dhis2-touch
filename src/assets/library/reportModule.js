@@ -273,10 +273,8 @@ dhis2.de = {
       }));
     }
     $.when.apply($, deferreds).then(function () {
-
-
       if (expression) {
-        defer.resolve(eval('(' + expression + ')'));
+        defer.resolve(eval('(' + expression.split("\n").join("").split("\"").join("") + ')'));
       } else {
         //defer.resolve(undefined);
         defer.resolve(0);
@@ -587,8 +585,7 @@ dhis2.de = {
       }
     }));
     $.when.apply($, promises).then(function () {
-      if (numerator != undefined && denominator != undefined) {
-        var returnValue = (parseFloat(numerator) / parseFloat(denominator)) * parseFloat(indicator.indicatorType.factor);
+      if (numerator != undefined && denominator != undefined) {var returnValue = (parseFloat(numerator) / parseFloat(denominator)) * parseFloat(indicator.indicatorType.factor);
         defer.resolve(returnValue.toFixed(1));
       } else {
         defer.resolve(undefined);

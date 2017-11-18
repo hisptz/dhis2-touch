@@ -27,7 +27,7 @@
         <ion-list>
           <ion-item *ngFor="let dataSet of dataSetsList" (tap)="setSelectedDataSet(dataSet)">
             <img  class="side-menu-icon" [src]="icon"/>&nbsp;&nbsp;
-            <span  ion-text [color]="(currentDataSet == dataSet.name) ?'current' : 'font-color'">{{ dataSet.name }}</span>
+            <span  ion-text [color]="(currentDataSet.id == dataSet.id) ?'current' : 'font-color'">{{ dataSet.name }}</span>
           </ion-item>
           <ion-item *ngIf = "dataSetsList.length == 0">
             <empty-list-notification [emptyListMessage]="'There is no Data entry form to select'"></empty-list-notification>
