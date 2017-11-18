@@ -292,6 +292,7 @@ export class EventCapturePage implements OnInit {
             }
           });
         }
+        this.updateEventCaptureSelections();
       }
     }).catch(error=>{
       console.log(JSON.stringify(error));
