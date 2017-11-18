@@ -227,12 +227,16 @@ export class TrackerEntityRegisterPage implements OnInit{
         console.log(JSON.stringify(error));
       });
     }else{
+      let caseName = "case";
+      if(this.currentProgram.trackedEntity.displayName && this.currentProgram.trackedEntity && this.currentProgram.trackedEntity.displayName){
+        caseName = this.currentProgram.trackedEntity.displayName;
+      }
       this.trackerCaptureProvider.saveTrackedEntityRegistration(this.incidentDate,this.enrollmentDate,this.currentUser,this.trackedEntityInstance).then((reseponse : any)=>{
-        this.appProvider.setNormalNotification("A case has been saved successfully");
+        this.appProvider.setNormalNotification("A " +caseName + " has been saved successfully");
         this.isTrackedEntityRegistered = true;
         this.registerEntity();
       }).catch(error=>{
-        this.appProvider.setNormalNotification("Fail to save a case");
+        this.appProvider.setNormalNotification("Fail to save a "+caseName);
         console.log(JSON.stringify(error));
       });
     }

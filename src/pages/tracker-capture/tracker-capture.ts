@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FabContainer, IonicPage, ModalController, NavController} from 'ionic-angular';
+import {IonicPage, ModalController, NavController} from 'ionic-angular';
 import {UserProvider} from "../../providers/user/user";
 import {AppProvider} from "../../providers/app/app";
 import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";

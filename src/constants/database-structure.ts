@@ -294,6 +294,7 @@ export const DATABASE_STRUCTURE = {
     columns: [
       {value: 'id', type: 'TEXT'},
       {value: 'name', type: 'TEXT'},
+      {value: 'displayName', type: 'TEXT'},
       {value: 'programType', type: 'TEXT'},
       {value: 'withoutRegistration', type: 'TEXT'},
       {value: 'ignoreOverdueEvents', type: 'TEXT'},
