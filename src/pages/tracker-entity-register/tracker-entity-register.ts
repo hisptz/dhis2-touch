@@ -48,6 +48,8 @@ export class TrackerEntityRegisterPage implements OnInit{
   currentWidget : any;
   currentWidgetIndex : any;
 
+  currentTrackedEntityId : string;
+
   @ViewChild(Content) content: Content;
 
   constructor(private navCtrl: NavController,
@@ -180,6 +182,7 @@ export class TrackerEntityRegisterPage implements OnInit{
   //@todo changes of enrollments as well
   updateData(updateDataValue){
     let id = updateDataValue.id.split("-")[0];
+    this.currentTrackedEntityId =  updateDataValue.id;
     this.trackedEntityAttributeValuesObject[id] = updateDataValue.value;
     this.dataObject[updateDataValue.id] = updateDataValue;
     let isFormReady = this.isALlRequiredFieldHasValue(this.programTrackedEntityAttributes,this.trackedEntityAttributeValuesObject);
@@ -225,7 +228,9 @@ export class TrackerEntityRegisterPage implements OnInit{
     //@todo color codes changes on saving
     if(this.isTrackedEntityRegistered){
       this.trackedEntityAttributeValuesProvider.savingTrackedEntityAttributeValues(this.trackedEntityInstance,trackedEntityAttributeValues,this.currentUser).then(()=>{
+        this.trackedEntityAttributesSavingStatusClass[this.currentTrackedEntityId] ="input-field-container-success";
       }).catch(error=>{
+        this.trackedEntityAttributesSavingStatusClass[this.currentTrackedEntityId] = "input-field-container-failed";
         console.log(JSON.stringify(error));
       });
     }else{
@@ -236,8 +241,14 @@ export class TrackerEntityRegisterPage implements OnInit{
       this.trackerCaptureProvider.saveTrackedEntityRegistration(this.incidentDate,this.enrollmentDate,this.currentUser,this.trackedEntityInstance).then((reseponse : any)=>{
         this.appProvider.setNormalNotification("A " +caseName + " has been saved successfully");
         this.isTrackedEntityRegistered = true;
+        Object.keys(this.trackedEntityAttributeValuesObject).forEach(key=>{
+          this.trackedEntityAttributesSavingStatusClass[key +"-trackedEntityAttribute"] ="input-field-container-success";
+        });
         this.registerEntity();
       }).catch(error=>{
+        Object.keys(this.trackedEntityAttributeValuesObject).forEach(key=>{
+          this.trackedEntityAttributesSavingStatusClass[key +"-trackedEntityAttribute"] ="input-field-container-failed";
+        });
         this.appProvider.setNormalNotification("Fail to save a "+caseName);
         console.log(JSON.stringify(error));
       });

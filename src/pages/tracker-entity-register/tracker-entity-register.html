@@ -75,29 +75,11 @@
                       <ion-input [(ngModel)]="currentProgram.name" readonly="true"></ion-input>
                     </ion-item>
                   </div>
-                  <div *ngIf="isTrackedEntityRegistered">
+                  <div >
                     <div class="inputLabel">
                       {{ currentProgram.enrollmentDateLabel}}
                     </div>
-                    <div class="input-field-container">
-                      <ion-item>
-                        <ion-input [(ngModel)]="enrollmentDate" readonly="true"></ion-input>
-                      </ion-item>
-                    </div>
-                    <div class="inputLabel">
-                      {{ currentProgram.incidentDateLabel}}
-                    </div>
-                    <div class="input-field-container">
-                      <ion-item>
-                        <ion-input [(ngModel)]="incidentDate" readonly="true"></ion-input>
-                      </ion-item>
-                    </div>
-                  </div>
-                  <div *ngIf="!isTrackedEntityRegistered">
-                    <div class="inputLabel">
-                      {{ currentProgram.enrollmentDateLabel}}
-                    </div>
-                    <div class="input-field-container">
+                    <div [ngClass] ="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container-'">
                       <ion-item>
                         <ion-datetime [(ngModel)]="enrollmentDate" doneText="Update" displayFormat="YYYY-MM-DD"
                                       pickerFormat="YYYY MM DD"></ion-datetime>
@@ -106,7 +88,7 @@
                     <div class="inputLabel">
                       {{ currentProgram.incidentDateLabel}}
                     </div>
-                    <div class="input-field-container">
+                    <div [ngClass] ="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container-'">
                       <ion-item>
                         <ion-datetime [(ngModel)]="incidentDate" doneText="Update" displayFormat="YYYY-MM-DD"
                                       pickerFormat="YYYY MM DD"></ion-datetime>
