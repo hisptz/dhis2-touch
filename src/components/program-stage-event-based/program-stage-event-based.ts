@@ -30,6 +30,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy{
   loadingMessage : string;
   dataObjectModel : any;
   eventDate : any;
+  dataValuesSavingStatusClass : any;
 
   constructor(private programsProvider : ProgramsProvider,
               private actionSheetCtrl: ActionSheetController,
@@ -40,6 +41,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy{
 
   ngOnInit(){
     this.dataObjectModel = {};
+    this.dataValuesSavingStatusClass = {};
     this.currentOrgUnit = this.organisationUnitProvider.lastSelectedOrgUnit;
     this.currentProgram = this.programsProvider.lastSelectedProgram;
     this.loadingMessage = "Loading user information";
@@ -122,7 +124,6 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy{
     this.currentEvent["eventDate"] = this.eventDate;
     this.currentEvent["dueDate"] = this.eventDate;
     this.currentEvent.syncStatus = "not-synced";
-    this.dataObjectModel[updatedData.id] = updatedData;
     let dataValues = [];
     Object.keys(this.dataObjectModel).forEach((key : any)=>{
       let dataElementId = key.split('-')[0];
@@ -134,8 +135,10 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy{
     this.currentEvent.dataValues = dataValues;
     this.currentEvent.syncStatus = "not-synced";
     this.eventCaptureFormProvider.saveEvents([this.currentEvent],this.currentUser).then(()=>{
-      console.log("Success saving data values");
+      this.dataObjectModel[updatedData.id] = updatedData;
+      this.dataValuesSavingStatusClass[updatedData.id] ="input-field-container-success";
     }).catch((error)=>{
+      this.dataValuesSavingStatusClass[updatedData.id] ="input-field-container-failed";
       console.log(JSON.stringify(error));
     });
   }

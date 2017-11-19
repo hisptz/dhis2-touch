@@ -18,6 +18,7 @@ export class EventInputContainerComponent implements OnInit, OnDestroy{
   @Input() currentUser;
   @Input() mandatory;
   @Input() data ;
+  @Input() dataValuesSavingStatusClass;
   @Output() onChange = new EventEmitter();
 
   fieldLabelKey : any;
@@ -59,6 +60,7 @@ export class EventInputContainerComponent implements OnInit, OnDestroy{
   }
 
   updateValue(updatedValue){
+    this.dataValuesSavingStatusClass[updatedValue.id] = "input-field-container-saving";
     this.onChange.emit(updatedValue);
   };
 

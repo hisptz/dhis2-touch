@@ -45,6 +45,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
   isAddButtonDisabled : boolean = true;
 
   currentEventId : string;
+  dataValuesSavingStatusClass : any;
 
   constructor(private programsProvider : ProgramsProvider,
               private settingsProvider : SettingsProvider,
@@ -56,6 +57,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
 
   ngOnInit(){
     this.dataObjectModel = {};
+    this.dataValuesSavingStatusClass = {};
     this.currentEvents = [];
     //@todo add support of data dimensions
     this.selectedDataDimension = [];

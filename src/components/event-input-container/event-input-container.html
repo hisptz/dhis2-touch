@@ -7,7 +7,7 @@
     <span *ngIf="mandatory" class="required">&nbsp;*</span>
     <span *ngIf="dataElement.description">&nbsp;&nbsp;<ion-icon color="icon-color" name="help-circle"></ion-icon></span>
   </div>
-  <div *ngIf="dataElement.optionSet" class="input-field-container">
+  <div *ngIf="dataElement.optionSet" [ngClass]="(dataValuesSavingStatusClass[dataElement.id +'-dataElement'])?dataValuesSavingStatusClass[dataElement.id +'-dataElement']:'input-field-container'">
     <option-set-input-field (onChange)="updateValue($event)"
                             [dataElementId]="dataElement.id"
                             [categoryOptionComboId]="'dataElement'"
@@ -15,7 +15,7 @@
                             [options]="dataElement.optionSet.options">
     </option-set-input-field>
   </div>
-  <div *ngIf="!dataElement.optionSet" class="input-field-container">
+  <div *ngIf="!dataElement.optionSet" [ngClass]="(dataValuesSavingStatusClass[dataElement.id +'-dataElement'])?dataValuesSavingStatusClass[dataElement.id +'-dataElement']:'input-field-container'">
     <div *ngIf="textInputField.indexOf(dataElement.valueType) > -1">
       <text-input-field (onChange)="updateValue($event)"
                         [dataElementId]="dataElement.id"

@@ -33,6 +33,7 @@ export class TrackedEntityDashboardPage implements OnInit{
   programStages : Array<any>;
   programTrackedEntityAttributes : Array<any>;
   dataObject : any = {};
+  trackedEntityAttributesSavingStatusClass : any;
   trackedEntityAttributeValuesObject : any = {};
 
   isLoading : boolean;
@@ -61,6 +62,7 @@ export class TrackedEntityDashboardPage implements OnInit{
 
   ngOnInit(){
     this.isDashboardWidgetOpen = {};
+    this.trackedEntityAttributesSavingStatusClass = {};
     this.icons["menu"] = "assets/dashboard/menu.png";
     this.loadingMessage = "Loading user information";
     this.isLoading = true;
@@ -155,11 +157,10 @@ export class TrackedEntityDashboardPage implements OnInit{
     actionSheet.present();
   }
 
-  //@todo change of color codes on updates
+
   updateData(updateDataValue){
     let id = updateDataValue.id.split("-")[0];
     this.trackedEntityAttributeValuesObject[id] = updateDataValue.value;
-    this.dataObject[updateDataValue.id] = updateDataValue;
     let trackedEntityAttributeValues = [];
     Object.keys(this.trackedEntityAttributeValuesObject).forEach(key=>{
       trackedEntityAttributeValues.push({
@@ -168,10 +169,14 @@ export class TrackedEntityDashboardPage implements OnInit{
     });
     this.trackedEntityAttributeValuesProvider.savingTrackedEntityAttributeValues(this.trackedEntityInstance.id,trackedEntityAttributeValues,this.currentUser).then(()=>{
       this.trackedEntityInstancesProvider.updateSavedTrackedEntityInstancesByStatus([this.trackedEntityInstance],this.currentUser,'not-synced').then(()=>{
+        this.dataObject[updateDataValue.id] = updateDataValue;
+        this.trackedEntityAttributesSavingStatusClass[updateDataValue.id] ="input-field-container-success";
       }).catch((error)=>{
+        this.trackedEntityAttributesSavingStatusClass[updateDataValue.id] ="input-field-container-failed";
         console.log(JSON.stringify(error));
       })
     }).catch(error=>{
+      this.trackedEntityAttributesSavingStatusClass[updateDataValue.id] ="input-field-container-failed";
       console.log(JSON.stringify(error));
     });
   }

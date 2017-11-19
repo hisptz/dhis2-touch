@@ -7,7 +7,7 @@
     <span *ngIf="mandatory" class="required">&nbsp;*</span>
     <span *ngIf="trackedEntityAttribute.description">&nbsp;&nbsp;<ion-icon color="icon-color" name="help-circle"></ion-icon></span>
   </div>
-  <div *ngIf="trackedEntityAttribute.optionSet" class="input-field-container">
+  <div *ngIf="trackedEntityAttribute.optionSet" [ngClass]="(trackedEntityAttributesSavingStatusClass[trackedEntityAttribute.id +'-trackedEntityAttribute'])?trackedEntityAttributesSavingStatusClass[trackedEntityAttribute.id +'-trackedEntityAttribute']:'input-field-container'">
     <option-set-input-field (onChange)="updateValue($event)"
                             [dataElementId]="trackedEntityAttribute.id"
                             [categoryOptionComboId]="'trackedEntityAttribute'"
@@ -15,7 +15,7 @@
                             [options]="trackedEntityAttribute.optionSet.options">
     </option-set-input-field>
   </div>
-  <div *ngIf="!trackedEntityAttribute.optionSet" class="input-field-container">
+  <div *ngIf="!trackedEntityAttribute.optionSet" [ngClass]="(trackedEntityAttributesSavingStatusClass[trackedEntityAttribute.id +'-trackedEntityAttribute'])?trackedEntityAttributesSavingStatusClass[trackedEntityAttribute.id +'-trackedEntityAttribute']:'input-field-container'">
     <div *ngIf="textInputField.indexOf(trackedEntityAttribute.valueType) > -1">
       <text-input-field (onChange)="updateValue($event)"
                         [dataElementId]="trackedEntityAttribute.id"

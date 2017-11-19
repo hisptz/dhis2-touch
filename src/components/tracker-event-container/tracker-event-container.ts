@@ -17,6 +17,7 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy{
   @Input() currentOpenEvent;
   @Input() currentUser;
   @Input() isOpenRow;
+  @Input() dataValuesSavingStatusClass;
   @Output() onChange = new EventEmitter();
 
   dataObjectModel : any;
@@ -56,7 +57,6 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy{
   }
 
   updateData(updatedData){
-    this.dataObjectModel[updatedData.id] = updatedData;
     let dataValues = [];
     Object.keys(this.dataObjectModel).forEach((key : any)=>{
       let dataElementId = key.split('-')[0];
@@ -69,8 +69,10 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy{
     this.currentOpenEvent.syncStatus = "not-synced";
     this.onChange.emit(this.isOpenRow);
     this.eventCaptureFormProvider.saveEvents([this.currentOpenEvent],this.currentUser).then(()=>{
-      console.log("Success saving data values");
+      this.dataValuesSavingStatusClass[updatedData.id] ="input-field-container-success";
+      this.dataObjectModel[updatedData.id] = updatedData;
     }).catch((error)=>{
+      this.dataValuesSavingStatusClass[updatedData.id] ="input-field-container-failed";
       console.log(JSON.stringify(error));
     });
   }

@@ -18,6 +18,7 @@ export class TrackedEntityInputsComponent implements OnInit{
   @Input() currentUser;
   @Input() mandatory;
   @Input() data ;
+  @Input() trackedEntityAttributesSavingStatusClass;
   @Output() onChange = new EventEmitter();
 
   fieldLabelKey : any;
@@ -67,6 +68,7 @@ export class TrackedEntityInputsComponent implements OnInit{
   }
 
   updateValue(updatedValue){
+    this.trackedEntityAttributesSavingStatusClass[updatedValue.id] = "input-field-container-saving";
     this.onChange.emit(updatedValue);
   };
 

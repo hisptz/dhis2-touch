@@ -35,6 +35,7 @@
                                              [currentUser]="currentUser"
                                              [data]="dataObjectModel"
                                              [mandatory]="'false'"
+                                             [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
                                              (onChange)="updateData($event)"></event-input-container>
                     </div>
                   </div>
@@ -65,6 +66,7 @@
               <event-input-container [dataElement]="programStageDataElement.dataElement"
                                      [currentUser]="currentUser"
                                      [data]="dataObjectModel"
+                                     [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
                                      [mandatory]="programStageDataElement.compulsory"
                                      (onChange)="updateData($event)"></event-input-container>
             </div>

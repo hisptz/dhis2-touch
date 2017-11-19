@@ -39,6 +39,7 @@ export class TrackerEntityRegisterPage implements OnInit{
   incidentDate : any;
   enrollmentDate : any;
   dataObject : any;
+  trackedEntityAttributesSavingStatusClass : any;
   trackedEntityAttributeValuesObject : any;
   isTrackedEntityRegistered : boolean = false;
   trackedEntityInstance : string;
@@ -68,6 +69,7 @@ export class TrackerEntityRegisterPage implements OnInit{
     this.isRegistrationProcessingRunning  = false;
     let today = ((new Date()).toISOString()).split('T')[0];
     this.dataObject = {};
+    this.trackedEntityAttributesSavingStatusClass = {};
     this.trackedEntityAttributeValuesObject = {};
     this.incidentDate = today;
     this.enrollmentDate = today;
