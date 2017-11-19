@@ -18,10 +18,10 @@
         <tr>
           <th *ngFor="let categoryOptionCombo of dataElement.categoryCombo.categoryOptionCombos" >
 
-            <div *ngIf="dataElement.optionSet" class="input-field-container">
+            <div *ngIf="dataElement.optionSet"  [ngClass]="(dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id])?dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id]:'input-field-container'" >
               <option-set-input-field (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data" [options]="dataElement.optionSet.options"></option-set-input-field>
             </div>
-            <div *ngIf="!dataElement.optionSet" class="input-field-container">
+            <div *ngIf="!dataElement.optionSet" [ngClass]="(dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id])?dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id]:'input-field-container'">
               <div *ngIf="textInputField.indexOf(dataElement.valueType) > -1">
                 <text-input-field (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data" [valueType]="dataElement.valueType"></text-input-field>
               </div>
@@ -59,10 +59,10 @@
         <span *ngIf="dataElement.description">&nbsp;&nbsp;<ion-icon color="icon-color" name="help-circle"></ion-icon></span>
       </div>
 
-      <div *ngIf="dataElement.optionSet" class="input-field-container">
+      <div *ngIf="dataElement.optionSet" [ngClass]="(dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id])?dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id]:'input-field-container'">
         <option-set-input-field (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data" [options]="dataElement.optionSet.options"></option-set-input-field>
       </div>
-      <div *ngIf="!dataElement.optionSet" class="input-field-container">
+      <div *ngIf="!dataElement.optionSet" [ngClass]="(dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id])?dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id]:'input-field-container'">
         <div *ngIf="textInputField.indexOf(dataElement.valueType) > -1">
           <text-input-field (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data" [valueType]="dataElement.valueType"></text-input-field>
         </div>

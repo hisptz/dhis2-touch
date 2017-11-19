@@ -38,6 +38,7 @@ export class DataEntryFormPage implements OnInit{
   pager : any = {};
   storageStatus : any;
   dataValuesObject : any;
+  dataValuesSavingStatusClass : any;
   dataSetsCompletenessInfo : any;
   isDataSetCompleted : boolean;
   isDataSetCompletenessProcessRunning : boolean;
@@ -63,6 +64,7 @@ export class DataEntryFormPage implements OnInit{
     this.dataSetsCompletenessInfo = {};
     this.isDataSetCompleted = false;
     this.dataValuesObject = {};
+    this.dataValuesSavingStatusClass = {};
     this.loadingMessage = "Loading user information";
     this.isLoading = true;
     this.entryFormParameter = this.navParams.get("parameter");
@@ -255,8 +257,11 @@ export class DataEntryFormPage implements OnInit{
       }else if(!this.dataValuesObject[dataValueId]){
         this.storageStatus.offline ++;
       }
+      this.dataValuesSavingStatusClass[dataValueId] ="input-field-container-success";
       this.dataValuesObject[dataValueId] = updateDataValue;
-    },error=>{});
+    },error=>{
+      this.dataValuesSavingStatusClass[dataValueId] ="input-field-container-failed";
+    });
   }
 
   getEntryFormSections(entryFormSections){

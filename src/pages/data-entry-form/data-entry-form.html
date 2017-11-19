@@ -61,7 +61,8 @@
                   <div *ngFor="let dataElement of section.dataElements" >
                     <input-container [dataElement]="dataElement"
                                      [currentUser]="currentUser"
-                                     [data]="dataValuesObject"
+                                     [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
+                                     [(data)]="dataValuesObject"
                                      (onChange)="updateData($event)"></input-container>
                   </div>
                 </div>

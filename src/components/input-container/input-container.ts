@@ -17,6 +17,7 @@ export class InputContainerComponent implements OnInit{
   @Input() dataElement;
   @Input() currentUser;
   @Input() data ;
+  @Input() dataValuesSavingStatusClass;
   @Output() onChange = new EventEmitter();
 
   fieldLabelKey : any;
@@ -72,6 +73,7 @@ export class InputContainerComponent implements OnInit{
   }
 
   updateValue(updatedValue){
+    this.dataValuesSavingStatusClass[updatedValue.id] = "input-field-container-saving";
     this.onChange.emit(updatedValue);
   };
 
