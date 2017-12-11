@@ -79,7 +79,7 @@
                     <div class="inputLabel">
                       {{ currentProgram.enrollmentDateLabel}}
                     </div>
-                    <div [ngClass] ="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container-'">
+                    <div [ngClass] ="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container'">
                       <ion-item>
                         <ion-datetime [(ngModel)]="enrollmentDate" doneText="Update" displayFormat="YYYY-MM-DD"
                                       pickerFormat="YYYY MM DD"></ion-datetime>
@@ -88,7 +88,7 @@
                     <div class="inputLabel">
                       {{ currentProgram.incidentDateLabel}}
                     </div>
-                    <div [ngClass] ="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container-'">
+                    <div [ngClass] ="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container'">
                       <ion-item>
                         <ion-datetime [(ngModel)]="incidentDate" doneText="Update" displayFormat="YYYY-MM-DD"
                                       pickerFormat="YYYY MM DD"></ion-datetime>

@@ -81,20 +81,21 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
                     fieldLabelKey = dataElement[this.dataEntrySettings.label];
                   }
                 }
-                this.columnsToDisplay[programStageDataElement.dataElement.id] = fieldLabelKey;
+                if(programStageDataElement.displayInReports){
+                  this.columnsToDisplay[programStageDataElement.dataElement.id] = fieldLabelKey;
+                }
               }
             });
             if(Object.keys(this.columnsToDisplay).length == 0 && this.programStage.programStageDataElements.length > 0){
-              let dataElement = this.programStage.programStageDataElements[0].dataElement;
-              if(dataElement && dataElement.id){
-                let fieldLabelKey = dataElement.displayName;
-                if(this.dataEntrySettings && this.dataEntrySettings.label && dataElement[this.dataEntrySettings.label]){
-                  if(dataElement[this.dataEntrySettings.label] != "0"){
-                    fieldLabelKey = dataElement[this.dataEntrySettings.label];
-                  }
+              let counter = 0;
+              this.programStage.programStageDataElements.forEach((programStageDataElement : any)=>{
+                if(programStageDataElement.dataElement && programStageDataElement.dataElement.id && counter < 3){
+                  let dataElement = programStageDataElement.dataElement;
+                  let fieldLabelKey = dataElement.displayName;
+                  this.columnsToDisplay[programStageDataElement.dataElement.id] = fieldLabelKey;
+                  counter ++;
                 }
-                this.columnsToDisplay[this.programStage.programStageDataElements[0].dataElement.id] = fieldLabelKey;
-              }
+              });
             }
           }
           this.loadEventsBasedOnProgramStage(this.programStage.id);

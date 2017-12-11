@@ -93,4 +93,5 @@
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
     <plugin name="cordova-sms-plugin" spec="^0.1.11" />
     <engine name="android" spec="~6.3.0" />
+    <allow-navigation href="http://192.168.43.29:8100" />
 </widget>
