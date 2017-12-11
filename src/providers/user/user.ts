@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {Storage} from '@ionic/storage';
+import { Injectable } from '@angular/core';
+import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/map';
-import {HTTP} from '@ionic-native/http';
+import { HTTP } from '@ionic-native/http';
 
 /*
  Generated class for the UserProvider provider.
@@ -12,9 +12,9 @@ import {HTTP} from '@ionic-native/http';
 @Injectable()
 export class UserProvider {
 
-  public userData: any;
+  public userData : any;
 
-  constructor(public storage: Storage, public http: HTTP) {
+  constructor(public storage : Storage,public http: HTTP) {
 
   }
 
@@ -23,7 +23,7 @@ export class UserProvider {
    * @param user
    * @returns {Promise<T>}
    */
-  getUserDataFromServer(user) {
+  getUserDataFromServer(user){
 
     this.http.useBasicAuth(user.username, user.password);
     let fields = "fields=[:all],organisationUnits[id,name],dataViewOrganisationUnits[id,name],userCredentials[userRoles[name,dataSets[id,name],programs[id,name]]";
@@ -33,24 +33,24 @@ export class UserProvider {
     user.serverUrl = url;
     url += "/api/me.json?" + fields;
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject)=> {
       this.http.get(url, {}, {})
-        .then((data: any) => {
-          if (data.data.indexOf('login.action') > -1) {
-            user.serverUrl = user.serverUrl.replace('http://', 'https://');
-            this.getUserDataFromServer(user).then((data: any) => {
+        .then((data:any)  => {
+          if(data.data.indexOf('login.action') > -1){
+            user.serverUrl = user.serverUrl.replace('http://','https://');
+            this.getUserDataFromServer(user).then((data:any) => {
               let url = user.serverUrl.split("/dhis-web-commons")[0];
               url = url.split("/dhis-web-dashboard-integration")[0];
               user.serverUrl = url;
-              resolve({data: data.data, user: user});
+              resolve({data : data.data,user : user});
             })
               .catch(error => {
                 reject(error);
               });
-          } else {
-            resolve({data: data.data, user: user});
+          }else{
+            resolve({data : data.data,user : user});
           }
-        }, error => {
+        },error=>{
           reject(error);
         })
         .catch(error => {
@@ -64,20 +64,19 @@ export class UserProvider {
    * @param user
    * @returns {Promise<T>}
    */
-  getUserAuthorities(user) {
+  getUserAuthorities(user){
     this.http.useBasicAuth(user.username, user.password);
     let fields = "fields=authorities";
     let url = user.serverUrl;
     url += "/api/me.json?" + fields;
-    if (user.dhisVersion && (parseInt(user.dhisVersion) > 25)) {
-      url = url.replace("/api", "/api/" + user.dhisVersion);
+    if(user.dhisVersion &&(parseInt(user.dhisVersion) > 25)){
+      url = url.replace("/api","/api/" + user.dhisVersion);
     }
-    console.log(url);
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject)=> {
       this.http.get(url, {}, {})
-        .then((response: any) => {
+        .then((response:any)  => {
           resolve(JSON.parse(response.data));
-        }, error => {
+        },error=>{
           reject(error);
         })
         .catch(error => {
@@ -91,62 +90,73 @@ export class UserProvider {
    * @param user
    * @returns {Promise<T>}
    */
-  authenticateUser(user) {
-
+  authenticateUser(user){
     this.http.useBasicAuth(user.username, user.password);
-
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject)=> {
       this.http.get(user.serverUrl + "", {}, {})
-        .then((data: any) => {
-          if (data.status == 200) {
-            if (data.headers && data.headers["Set-Cookie"]) {
+        .then((data:any)  => {
+          console.log("On success call");
+          if(data.status == 200){
+            if(data.headers && data.headers["Set-Cookie"]){
               let setCookieArray = data.headers["Set-Cookie"].split(";");
-              let path = "";
-              let url = "";
+              let path = "";let url = "";
               let serverUrlArray = user.serverUrl.split("/");
-              setCookieArray.forEach((value: any) => {
-                if (value.indexOf("Path=/") > -1) {
+              setCookieArray.forEach((value : any)=>{
+                if(value.indexOf("Path=/") > -1){
                   let pathValues = value.split("Path=/");
-                  path = pathValues[pathValues.length - 1].split("/")[0];
+                  path = pathValues[pathValues.length -1].split("/")[0];
                 }
               });
-              if (serverUrlArray[serverUrlArray.length - 1] != path) {
-                url = (serverUrlArray[serverUrlArray.length - 1] == "") ? user.serverUrl + path : user.serverUrl + "/" + path;
-              } else {
+              if(serverUrlArray[serverUrlArray.length -1] != path){
+                url = (serverUrlArray[serverUrlArray.length -1] == "")? user.serverUrl + path : user.serverUrl + "/"+ path;
+              }else{
                 url = user.serverUrl;
               }
               user.serverUrl = url;
             }
-            this.getUserDataFromServer(user).then((data: any) => {
+            this.getUserDataFromServer(user).then((data:any) => {
               let url = user.serverUrl.split("/dhis-web-commons")[0];
               url = url.split("/dhis-web-dashboard-integration")[0];
               user.serverUrl = url;
-              resolve({data: data.data, user: data.user});
+              resolve({data : data.data,user : data.user});
             })
               .catch(error => {
                 reject(error);
               });
-          } else {
+          }else{
+
             reject(data);
           }
         })
         .catch(error => {
-          if (error.status == 301 || error.status == 302) {
-            if (error.headers && error.headers.Location) {
+          if(error.status == 301 || error.status == 302){
+            if(error.headers && error.headers.Location){
+              console.log("Here we are");
               user.serverUrl = error.headers.Location;
-              this.authenticateUser(user).then((data: any) => {
+              this.authenticateUser(user).then((data:any) => {
                 let url = user.serverUrl.split("/dhis-web-commons")[0];
                 url = url.split("/dhis-web-dashboard-integration")[0];
                 user.serverUrl = url;
-                resolve({data: data, user: user});
+                resolve({data : data,user : user});
               })
                 .catch(error => {
                   reject(error);
                 });
-            } else {
+            }else if(error.headers && error.headers.location){
+              user.serverUrl = error.headers.location;
+              this.authenticateUser(user).then((data:any) => {
+                let url = user.serverUrl.split("/dhis-web-commons")[0];
+                url = url.split("/dhis-web-dashboard-integration")[0];
+                user.serverUrl = url;
+                resolve({data : data,user : user});
+              })
+                .catch(error => {
+                  reject(error);
+                });
+            }else{
               reject(error);
             }
-          } else {
+          }else{
             reject(error);
           }
         });
@@ -158,12 +168,12 @@ export class UserProvider {
    * @param user
    * @returns {Promise<T>}
    */
-  setCurrentUser(user: any) {
+  setCurrentUser(user : any){
     user = JSON.stringify(user);
-    return new Promise((resolve, reject) => {
+    return  new Promise((resolve,reject) => {
       this.storage.set('user', user).then(() => {
         resolve();
-      }, error => {
+      },error=>{
         reject();
       });
     });
@@ -174,17 +184,18 @@ export class UserProvider {
    * @param systemInformation
    * @returns {Promise<T>}
    */
-  setCurrentUserSystemInformation(systemInformation: any) {
+  setCurrentUserSystemInformation(systemInformation : any){
     let dhisVersion = "22";
-    if (systemInformation.version) {
+    if(systemInformation.version){
       let versionArray = systemInformation.version.split(".");
-      dhisVersion = (versionArray.length > 0) ? versionArray[1].split('-')[0] : dhisVersion;
+      dhisVersion = (versionArray.length > 0) ? versionArray[1] : dhisVersion;
     }
-    return new Promise((resolve, reject) => {
+
+    return  new Promise((resolve,reject) => {
       systemInformation = JSON.stringify(systemInformation);
       this.storage.set('systemInformation', systemInformation).then(() => {
         resolve(dhisVersion);
-      }, error => {
+      },error=>{
         reject();
       });
     });
@@ -195,8 +206,8 @@ export class UserProvider {
    * @param userDataResponse
    * @returns {Promise<T>}
    */
-  setUserData(userDataResponse) {
-    this.userData = {
+  setUserData(userDataResponse){
+    this.userData ={
       "Name": userDataResponse.name,
       "Employer": userDataResponse.employer,
       "Job Title": userDataResponse.jobTitle,
@@ -207,13 +218,13 @@ export class UserProvider {
       "Interests": userDataResponse.interests,
       "userRoles": userDataResponse.userCredentials.userRoles,
       "organisationUnits": userDataResponse.organisationUnits,
-      "dataViewOrganisationUnits": userDataResponse.dataViewOrganisationUnits
+      "dataViewOrganisationUnits" : userDataResponse.dataViewOrganisationUnits
     };
     let userData = JSON.stringify(this.userData);
-    return new Promise((resolve, reject) => {
+    return  new Promise((resolve,reject) => {
       this.storage.set('userData', userData).then(() => {
-        resolve(this.userData);
-      }, error => {
+        resolve(JSON.parse(userData));
+      },error=>{
         reject();
       });
     });
@@ -223,14 +234,14 @@ export class UserProvider {
    *
    * @returns {Promise<T>}
    */
-  getUserData() {
-    return new Promise((resolve, reject) => {
-      this.storage.get('userData').then(userData => {
+  getUserData(){
+    return  new Promise((resolve,reject) => {
+      this.storage.get('userData').then(userData=>{
         userData = JSON.parse(userData);
         resolve(userData);
-      }, err => {
+      },err=>{
         reject();
-      }).catch(err => {
+      }).catch(err=>{
         reject();
       })
     });
@@ -240,14 +251,14 @@ export class UserProvider {
    *
    * @returns {Promise<T>}
    */
-  getCurrentUserSystemInformation() {
-    return new Promise((resolve, reject) => {
-      this.storage.get('systemInformation').then(systemInformation => {
+  getCurrentUserSystemInformation(){
+    return  new Promise((resolve,reject) => {
+      this.storage.get('systemInformation').then(systemInformation=>{
         systemInformation = JSON.parse(systemInformation);
         resolve(systemInformation);
-      }, err => {
+      },err=>{
         reject();
-      }).catch(err => {
+      }).catch(err=>{
         reject();
       })
     });
@@ -257,12 +268,12 @@ export class UserProvider {
    *
    * @returns {Promise<T>}
    */
-  getCurrentUser() {
-    return new Promise((resolve, reject) => {
-      this.storage.get('user').then(user => {
+  getCurrentUser(){
+    return  new Promise((resolve,reject) => {
+      this.storage.get('user').then(user=>{
         user = JSON.parse(user);
         resolve(user);
-      }, err => {
+      },err=>{
         reject();
       })
     })

@@ -13,6 +13,7 @@ log.txt
 .vscode/
 npm-debug.log*
 
+.sourcemaps/
 .idea/
 .sass-cache/
 .tmp/
