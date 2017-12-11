@@ -13,7 +13,7 @@ import { HTTP } from '@ionic-native/http';
 import { SMS } from '@ionic-native/sms';
 import { Network } from '@ionic-native/network';
 import { SQLite } from '@ionic-native/sqlite';
-import { HttpModule } from '@angular/http';
+import {Http, HttpModule} from '@angular/http';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { IonicStorageModule } from '@ionic/storage';
 import { AppVersion } from '@ionic-native/app-version';
@@ -72,6 +72,16 @@ import { TrackerCaptureProvider } from '../providers/tracker-capture/tracker-cap
 import { TrackedEntityInstancesProvider } from '../providers/tracked-entity-instances/tracked-entity-instances';
 import { TrackedEntityAttributeValuesProvider } from '../providers/tracked-entity-attribute-values/tracked-entity-attribute-values';
 import { EnrollmentsProvider } from '../providers/enrollments/enrollments';
+
+// Multi-language
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+export function createTranslateLoader(http: Http) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
+
 @NgModule({
   declarations: [
     MyApp,
@@ -82,6 +92,14 @@ import { EnrollmentsProvider } from '../providers/enrollments/enrollments';
     SharedModule,DashboardModule,SyncModule,AboutModule,
     DataEntryModule,
     HttpModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [Http]
+      },
+      isolate: true
+    }),
     IonicModule.forRoot(MyApp, {
       scrollAssist: false,
       autoFocusAssist: true,

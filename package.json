@@ -30,6 +30,8 @@
     "@ionic-native/sqlite": "^4.1.0",
     "@ionic-native/status-bar": "4.3.2",
     "@ionic/storage": "2.0.1",
+    "@ngx-translate/core": "8.0.0",
+    "@ngx-translate/http-loader": "0.1.0",
     "@types/geojson": "^1.0.2",
     "@types/html2canvas": "^0.5.34",
     "@types/leaflet": "^1.0.67",
