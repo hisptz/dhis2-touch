@@ -6,6 +6,9 @@ import {EmptyListNotificationComponent} from "./empty-list-notification/empty-li
 import {NotificationComponent} from "./notification/notification";
 import {HelpContentsComponent} from "./help-contents/help-contents";
 import {WarningComponent} from "./warning/warning";
+import {Http} from "@angular/http";
+import {createTranslateLoader} from "../app/app.module";
+import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 
 
 @NgModule({
@@ -15,7 +18,15 @@ import {WarningComponent} from "./warning/warning";
     EmptyListNotificationComponent,HelpContentsComponent,WarningComponent,
   ],
   imports: [
-    IonicModule
+    IonicModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [Http]
+      },
+      isolate: true
+    }),
   ],
   exports: [
     LoadingPage,

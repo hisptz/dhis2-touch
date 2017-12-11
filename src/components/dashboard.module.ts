@@ -13,6 +13,9 @@ import { MessagesComponent } from './messages/messages';
 import { ReportsComponent } from './reports/reports';
 import { VisualizationLegendComponent } from './visualization-legend/visualization-legend';
 import {SafePipe} from "./safe.pipe";
+import {Http} from "@angular/http";
+import {createTranslateLoader} from "../app/app.module";
+import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 
 @NgModule({
   declarations: [DashboardCardComponent,
@@ -23,7 +26,15 @@ import {SafePipe} from "./safe.pipe";
     MessagesComponent,SafePipe,
     ReportsComponent ],
   imports: [
-    IonicModule,SharedModule
+    IonicModule,SharedModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [Http]
+      },
+      isolate: true
+    }),
   ],
   exports: [DashboardCardComponent,
     ChartComponent,ChartTemplateComponent,MapTemplateComponent,

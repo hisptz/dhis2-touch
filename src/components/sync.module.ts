@@ -8,6 +8,9 @@ import {ClearLocalMetadataComponent} from "./clear-local-metadata/clear-local-me
 import {DownloadDataComponent} from "./download-data/download-data";
 import {DownloadDataValuesComponent} from "./download-data-values/download-data-values";
 import {UploadViaInternetComponent} from "./upload-data-via-internet/upload-via-internet";
+import {Http} from "@angular/http";
+import {createTranslateLoader} from "../app/app.module";
+import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 
 @NgModule({
   declarations: [
@@ -15,7 +18,15 @@ import {UploadViaInternetComponent} from "./upload-data-via-internet/upload-via-
     ClearLocalMetadataComponent,DownloadDataComponent, DownloadDataValuesComponent,
   ],
   imports: [
-    IonicModule,SharedModule
+    IonicModule,SharedModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [Http]
+      },
+      isolate: true
+    }),
   ],
   exports: [
     ClearLocalDataComponent, DownloadMetaDataComponent, UploadDataViaSmsComponent,UploadViaInternetComponent,

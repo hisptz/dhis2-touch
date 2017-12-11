@@ -13,7 +13,7 @@ import { HTTP } from '@ionic-native/http';
 import { SMS } from '@ionic-native/sms';
 import { Network } from '@ionic-native/network';
 import { SQLite } from '@ionic-native/sqlite';
-import {Http, HttpModule} from '@angular/http';
+import { HttpModule,Http } from '@angular/http';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { IonicStorageModule } from '@ionic/storage';
 import { AppVersion } from '@ionic-native/app-version';
