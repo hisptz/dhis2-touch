@@ -110,14 +110,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy{
   }
 
   updateEventDate(){
-    //this.currentEvent["eventDate"] = this.eventDate;
-    //this.currentEvent["dueDate"] = this.eventDate;
     this.currentEvent.syncStatus = "not-synced";
-    // this.eventCaptureFormProvider.saveEvents([this.currentEvent],this.currentUser).then(()=>{
-    //   this.appProvider.setNormalNotification("Event has been registered successfully");
-    // }).catch((error)=>{
-    //   console.log(JSON.stringify(error));
-    // });
   }
 
   updateData(updatedData){

@@ -28,6 +28,8 @@
     </ion-row>
 
     <!-- todo cross-checking report parameter first from server against this-->
+    {{ isAllReportParameterSet |json }}
+
 
     <div *ngIf="(orgUnitReady || periodReady )" class="item-card" padding-top padding-bottom full (tap)="goToView()">
       <div><b>Report name</b> : {{ reportName }}<br>

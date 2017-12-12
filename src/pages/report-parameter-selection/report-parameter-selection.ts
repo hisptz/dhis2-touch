@@ -36,6 +36,8 @@ export class ReportParameterSelectionPage implements OnInit{
   orgUnitReady: boolean = false;
   reportPeriodType : any;
 
+  isAllReportParameterSet : boolean;
+
   constructor( private user: UserProvider, private modalCtrl : ModalController, private params: NavParams,private navCtrl: NavController,
                private organisationUnitsProvider: OrganisationUnitsProvider, private periodSelectionProvider: PeriodSelectionProvider,
                 private standardReportProvider:StandardReportProvider) {
@@ -45,6 +47,8 @@ export class ReportParameterSelectionPage implements OnInit{
     this.icons.orgUnit = "assets/reports/orgUnit.png";
     this.icons.period = "assets/reports/period.png";
     this.icons.report = "assets/reports/reports.png";
+
+    this.isAllReportParameterSet = false;
 
     this.reportName = this.params.get('name');
     this.reportId = this.params.get("id");
@@ -70,6 +74,7 @@ export class ReportParameterSelectionPage implements OnInit{
     } else {
       this.selectedPeriodLabel = "Touch to select Period";
     }
+    this.isAllReportParameterSet = this.isAllReportParameterSelected();
   }
 
   openOrganisationUnitTree(){
@@ -83,7 +88,6 @@ export class ReportParameterSelectionPage implements OnInit{
     });
     modal.present();
   }
-
 
   openReportPeriodSelection(){
     if(this.selectedOrganisationUnitLabel){
@@ -102,6 +106,17 @@ export class ReportParameterSelectionPage implements OnInit{
       });
       modal.present();
     }
+  }
+
+  isAllReportParameterSelected(){
+    let isAllReportParameterSet = true;
+    if(this.reportParams.paramOrganisationUnit){
+      isAllReportParameterSet = (this.selectedOrgUnit && this.selectedOrgUnit.id);
+    }
+    if(this.reportParams.paramReportingPeriod){
+      isAllReportParameterSet = (this.selectedPeriod && this.selectedPeriod.name );
+    }
+    return isAllReportParameterSet;
   }
 
   goToView(){

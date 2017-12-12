@@ -17,18 +17,18 @@
 
 
   <ion-refresher  (ionRefresh)="doRefresh($event)" >
-    <ion-refresher-content pullingText="Pull to refresh" *ngIf="hideRefresher">
+    <ion-refresher-content pullingText="Pull to refresh">
     </ion-refresher-content>
   </ion-refresher>
-  <div *ngIf="loadingData">
+  <div *ngIf="isLoading">
     <ion-row >
       <ion-col >
-        <page-loading loadingSize="large" [loadingMessage]="displayMessage"  ></page-loading>
+        <page-loading loadingSize="large" [loadingMessage]="loadingMessage"  ></page-loading>
       </ion-col>
     </ion-row>
   </div>
 
-  <div *ngIf="!loadingData">
+  <div *ngIf="!isLoading">
     <ion-searchbar animated="true" (ionInput)="getFilteredList($event)"></ion-searchbar>
     <ion-grid>
       <ion-row>
