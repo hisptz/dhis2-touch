@@ -125,6 +125,9 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy{
     this.currentEvent["dueDate"] = this.eventDate;
     this.currentEvent.syncStatus = "not-synced";
     let dataValues = [];
+    if(updatedData && updatedData.id){
+      this.dataObjectModel[updatedData.id] = updatedData;
+    }
     Object.keys(this.dataObjectModel).forEach((key : any)=>{
       let dataElementId = key.split('-')[0];
       dataValues.push({

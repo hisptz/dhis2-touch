@@ -124,14 +124,12 @@ export class UserProvider {
                 reject(error);
               });
           }else{
-
             reject(data);
           }
         })
         .catch(error => {
           if(error.status == 301 || error.status == 302){
             if(error.headers && error.headers.Location){
-              console.log("Here we are");
               user.serverUrl = error.headers.Location;
               this.authenticateUser(user).then((data:any) => {
                 let url = user.serverUrl.split("/dhis-web-commons")[0];

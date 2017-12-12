@@ -58,6 +58,9 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy{
 
   updateData(updatedData){
     let dataValues = [];
+    if(updatedData && updatedData.id){
+      this.dataObjectModel[updatedData.id] = updatedData;
+    }
     Object.keys(this.dataObjectModel).forEach((key : any)=>{
       let dataElementId = key.split('-')[0];
       dataValues.push({

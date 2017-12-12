@@ -24,7 +24,6 @@ export class BooleanInputFieldComponent implements OnInit{
   ngOnInit(){
     let fieldId = this.dataElementId + "-" + this.categoryOptionComboId;
     if(this.data && this.data[fieldId]){
-      console.log("here we are");
       this.inputFieldValue  = this.data[fieldId].value;
     }
   }
