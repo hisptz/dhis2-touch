@@ -33,12 +33,11 @@
         </div>
       </ion-col>
     </ion-row>
-
     <ion-row>
       <ion-col >
         <ion-item *ngFor="let period of periods" (tap)="setSelectedPeriod(period)">
           <img  class="side-menu-icon" [src]="icon"/>&nbsp;
-          <span >{{ period.name }}</span>
+          <span ion-text [color]="(currentPeriod.iso == period.iso) ?'current' : 'font-color'">{{ period.name }}</span>
         </ion-item>
         <ion-item *ngIf = "periods.length == 0">
           There is no period to select

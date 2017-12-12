@@ -128,6 +128,11 @@ export class StandardReportProvider {
     });
   }
 
+  /**
+   *
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   getReportList(currentUser){
     return new Promise((resolve, reject)=> {
       this.SqlLite.getAllDataFromTable(this.resource,currentUser.currentDatabase).then((reportList)=>{
@@ -138,6 +143,11 @@ export class StandardReportProvider {
     })
   }
 
+  /**
+   *
+   * @param reportParams
+   * @returns {boolean}
+   */
   hasReportRequireParameterSelection(reportParams){
     let requireReportParameter = false;
     if(reportParams.paramReportingPeriod || reportParams.paramOrganisationUnit){
@@ -146,6 +156,12 @@ export class StandardReportProvider {
     return requireReportParameter;
   }
 
+  /**
+   *
+   * @param reportId
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
   getReportId(reportId,currentUser){
     let attribute = "id";
     let attributeArray = [];
@@ -159,6 +175,26 @@ export class StandardReportProvider {
     })
   }
 
+
+  getReportDesign(reportId,currentUser){
+    let attribute = "id";
+    let resource = "reportDesign";
+    let attributeArray = [];
+    attributeArray.push(reportId);
+    return new Promise((resolve, reject)=> {
+      this.SqlLite.getDataFromTableByAttributes(resource,attribute,attributeArray,currentUser.currentDatabase).then((reportList:any)=>{
+        resolve(reportList[0]);
+      },error=>{
+        reject(error);
+      })
+    })
+  }
+
+  /**
+   *
+   * @param relativePeriods
+   * @returns {string}
+   */
   getReportPeriodType(relativePeriods){
     let reportPeriodType = "Yearly";
     let reportPeriods = [];
@@ -181,7 +217,6 @@ export class StandardReportProvider {
     if(relativePeriods.lastYear || relativePeriods.last5Years || relativePeriods.thisYear){
       reportPeriods.push("Yearly")
     }
-    console.log(JSON.stringify(reportPeriods));
     //@todo checking preference on relative periods
     if(reportPeriods.length > 0){
       reportPeriodType = reportPeriods[0];

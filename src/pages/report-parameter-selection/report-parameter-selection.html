@@ -14,33 +14,27 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <div *ngIf="reportParams.paramOrganisationUnit" class="item-card" color="font-color" padding-top padding-bottom
-             ion-button clear full text-center text-capitalize (tap)="openOrganisationUnitTree()">
+        <div *ngIf="reportParams.paramOrganisationUnit" class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openOrganisationUnitTree()">
           <img class="side-menu-icon" [src]="icons.orgUnit"/>&nbsp;&nbsp;
           {{ selectedOrganisationUnitLabel }}
         </div>
-        <div *ngIf="reportParams.paramReportingPeriod" class="item-card" color="font-color" padding-top padding-bottom
-             ion-button clear full text-center text-capitalize (tap)="openReportPeriodSelection()">
+        <div *ngIf="reportParams.paramReportingPeriod" class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openReportPeriodSelection()">
           <img class="side-menu-icon" [src]="icons.period"/>&nbsp;&nbsp;
           {{ selectedPeriodLabel }}
+        </div>
+        <div *ngIf="isAllReportParameterSet" class="item-card" padding-top padding-bottom full (tap)="goToView()">
+          <div><b>Report name</b> : {{ reportName }}<br>
+            <span *ngIf="reportParams.paramOrganisationUnit" ><b>Organisation unit</b> : {{ selectedOrganisationUnitLabel }}<br></span>
+            <span *ngIf="reportParams.paramReportingPeriod" ><b>Period</b> : {{ selectedPeriodLabel }}</span>
+          </div>
+          <div class="item-card" color="font-color"  ion-button clear full text-center text-capitalize >
+            <img  class="side-menu-icon" [src]="icons.report"/>&nbsp;&nbsp;
+            Generate Report
+          </div>
         </div>
       </ion-col>
     </ion-row>
 
-    <!-- todo cross-checking report parameter first from server against this-->
-    {{ isAllReportParameterSet |json }}
-
-
-    <div *ngIf="(orgUnitReady || periodReady )" class="item-card" padding-top padding-bottom full (tap)="goToView()">
-      <div><b>Report name</b> : {{ reportName }}<br>
-        <span *ngIf="reportParams.paramOrganisationUnit" ><b>Organisation unit</b> : {{ selectedOrganisationUnitLabel }}</span><br>
-        <span *ngIf="reportParams.paramReportingPeriod" ><b>Period</b> : {{ selectedPeriodLabel }}</span>
-      </div>
-      <div class="item-card" color="font-color"  ion-button clear full text-center text-capitalize >
-        <img  class="side-menu-icon" [src]="icons.report"/>&nbsp;&nbsp;
-        Generate Report
-      </div>
-    </div>
 
   </ion-grid>
 

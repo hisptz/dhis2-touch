@@ -177,7 +177,6 @@ export class DataEntryPage implements OnInit{
         currentPeriodOffset : this.currentPeriodOffset,
         openFuturePeriods: this.selectedDataSet.openFuturePeriods,
         currentPeriod : this.selectedPeriod,
-
       });
 
       modal.onDidDismiss((data : any)=>{
