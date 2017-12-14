@@ -4,7 +4,7 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header>
+<ion-header xmlns="http://www.w3.org/1999/html">
 
   <ion-navbar color="primary">
     <ion-title>Report View</ion-title>
@@ -17,7 +17,7 @@
 
   <ion-grid>
 
-    <div *ngIf="loadingData">
+    <div *ngIf="isLoading">
       <ion-row >
         <ion-col >
           <page-loading loadingSize="large" [loadingMessage]="loadingMessage"></page-loading>
@@ -25,14 +25,13 @@
       </ion-row>
     </div>
 
-    <div *ngIf="!loadingData">
-
+    <div *ngIf="!isLoading">
       <ion-row (tap)="backToPreviousView()">
         <ion-col>
           <div class="entry-selection-container">
             <div><b>Report name</b> : {{ reportName }}<br>
-              <b>Organisation unit</b> : {{ selectedOrganisationUnit }}<br>
-              <b>Period</b> : {{ selectedPeriod }}
+              <span *ngIf="selectedOrganisationUnit && selectedOrganisationUnit.id" ><b>Organisation unit</b> : {{ selectedOrganisationUnit.name }}<br></span>
+              <span *ngIf="selectedPeriod && selectedPeriod.name" ><b>Period</b> : {{ selectedPeriod.name }}</span>
             </div>
           </div>
         </ion-col>

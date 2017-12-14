@@ -25,13 +25,11 @@ export class ReportViewPage implements OnInit{
 
   public reportId : string;
   public reportName : string;
-  public periodName : string = "";
-  public organisationUnitName : string = "";
   public selectedPeriod : any;
   public selectedOrganisationUnit : any;
   public _htmlMarkup : SafeHtml;
   public hasScriptSet : boolean = false;
-  public loadingData : boolean = false;
+  public isLoading : boolean = false;
   public loadingMessage : string = "";
   public currentUser : any;
 
@@ -40,39 +38,68 @@ export class ReportViewPage implements OnInit{
   }
 
   ngOnInit() {
-    this.loadingData = true;
+    this.isLoading = true;
+    this.loadingMessage = "Loading user information";
     this.user.getCurrentUser().then((user : any)=>{
       this.currentUser = user;
       dhis2.database = user.currentDatabase;
       this.reportId = this.params.get("id");
       this.reportName = this.params.get("name");
-
+      this.isLoading = false;
       if( this.params.get("period")){
         this.selectedPeriod  =  this.params.get("period");
         this.selectedOrganisationUnit = this.params.get("organisationUnit");
-        this.organisationUnitName = (this.selectedOrganisationUnit.name)?this.selectedOrganisationUnit.name:"";
-        this.periodName = (this.selectedPeriod.name)?this.selectedPeriod.name : "";
         let ids = [];
-        dhis2.report = {
-          organisationUnit :this.selectedOrganisationUnit,
-          organisationUnitChildren : this.params.get("organisationUnitChildren"),
-          organisationUnitHierarchy : this.getOrganisationUnitHierarchy(this.params.get("organisationUnit")),
-          periods : [this.selectedPeriod.iso],
-          period : this.selectedPeriod.iso,
-          date : this.selectedPeriod.iso + "-01-01",
-          dataSets :[]
-        };
-        for(let dataSet of this.selectedOrganisationUnit.dataSets){
-          ids.push(dataSet.id);
+        let organisationUnitHierarchy = [];
+        let periods = [];
+        let date = "";
+        let period = "";
+        if(this.selectedPeriod && this.selectedPeriod.name){
+          periods.push(this.selectedPeriod.iso);
+          date = this.selectedPeriod.startDate;
+          period = this.selectedPeriod.iso;
         }
-        this.dataSetProvider.getDataSetsByIds(ids,user).then((DataSets:any)=>{
-          var dataSets = [];
-          for(let dataSet of DataSets){
-            dataSets.push({id : dataSet.id,name : dataSet.name});
-          }
-          dhis2.report.organisationUnit.dataSets = dataSets;
+        if(this.selectedOrganisationUnit && this.selectedOrganisationUnit.id){
+          let organisationUnitHierarchy = this.getOrganisationUnitHierarchy(this.params.get("organisationUnit"));
+          this.dataSetProvider.getDataSetSource(this.selectedOrganisationUnit.id,user.currentDatabase).then((dataSetSources: any)=>{
+            dataSetSources.forEach((dataSetSource : any)=>{
+              ids.push(dataSetSource.dataSetId);
+            });
+            this.dataSetProvider.getDataSetsByIds(ids,user).then((DataSets:any)=>{
+              let dataSets = [];
+              for(let dataSet of DataSets){
+                dataSets.push({id : dataSet.id,name : dataSet.name});
+              }
+              dhis2.report = {
+                organisationUnit :this.selectedOrganisationUnit,
+                organisationUnitChildren : this.params.get("organisationUnitChildren"),
+                organisationUnitHierarchy : organisationUnitHierarchy,
+                periods : periods,
+                period : period,
+                date : date,
+                dataSets :dataSets
+              };
+              this.loadReportDesignContent(this.reportId);
+            },error=>{
+              this.isLoading = false;
+              this.appProvider.setNormalNotification("Fail to load organisation units information");
+            });
+          },error=>{
+            this.isLoading = false;
+            this.appProvider.setNormalNotification("Fail to load organisation units information");
+          });
+        }else{
+          dhis2.report = {
+            organisationUnit :this.selectedOrganisationUnit,
+            organisationUnitChildren : this.params.get("organisationUnitChildren"),
+            organisationUnitHierarchy : organisationUnitHierarchy,
+            periods : periods,
+            period : period,
+            date : date,
+            dataSets :[]
+          };
           this.loadReportDesignContent(this.reportId);
-        },error=>{});
+        }
       }else{
         this.loadReportDesignContent(this.reportId);
       }
@@ -82,7 +109,7 @@ export class ReportViewPage implements OnInit{
 
 
   backToPreviousView(){
-    this.loadingData = true;
+    this.isLoading = true;
     this.loadingMessage = "Closing report";
     this.navCtrl.pop();
   }
@@ -100,28 +127,39 @@ export class ReportViewPage implements OnInit{
   }
 
   loadReportDesignContent(reportId){
-    this.loadingData = true;
+    this.isLoading = true;
+    console.log("reportId : " + reportId);
     this.loadingMessage = "Loading report metadata";
-    this.reportProvider.getReportId(reportId,this.currentUser).then((report : any)=>{
+    this.reportProvider.getReportDesign(reportId,this.currentUser).then((report : any)=>{
       if(report && report.designContent){
-        let scriptsContents = this.getScriptsContents(report.designContent);
-        this.setScriptsOnHtmlContent(scriptsContents);
-        this._htmlMarkup = this.sanitizer.bypassSecurityTrustHtml(report.designContent);
+        try{
+          let scriptsContents = this.getScriptsContents(report.designContent);
+          this.setScriptsOnHtmlContent(scriptsContents);
+          this._htmlMarkup = this.sanitizer.bypassSecurityTrustHtml(report.designContent);
+          this.isLoading = false;
+        }catch (e){
+          console.log(JSON.stringify(e));
+          this.isLoading = false;
+        }
       }
-      this.loadingData = false;
+
     },error=>{
-      this.loadingData = false;
+      this.isLoading = false;
       this.appProvider.setNormalNotification("Fail to load  report details");
     });
   }
 
   getScriptsContents(html){
-    var scriptsWithClosingScript = [];
-    html.match(/<script[^>]*>([\w|\W]*)<\/script>/im)[0].split("<script>").forEach((scriptFunctionWithCLosingScriptTag:any)=>{
-      if(scriptFunctionWithCLosingScriptTag !=""){
-        scriptsWithClosingScript.push(scriptFunctionWithCLosingScriptTag.split("</script>")[0]);
+    let scriptsWithClosingScript = [];
+    if(html.match(/<script[^>]*>([\w|\W]*)<\/script>/im)){
+      if(html.match(/<script[^>]*>([\w|\W]*)<\/script>/im)[0].split("<script>").length > 0){
+        html.match(/<script[^>]*>([\w|\W]*)<\/script>/im)[0].split("<script>").forEach((scriptFunctionWithCLosingScriptTag:any)=>{
+          if(scriptFunctionWithCLosingScriptTag !=""){
+            scriptsWithClosingScript.push(scriptFunctionWithCLosingScriptTag.split("</script>")[0]);
+          }
+        });
       }
-    });
+    }
     return scriptsWithClosingScript;
   }
 
@@ -129,10 +167,18 @@ export class ReportViewPage implements OnInit{
     if(!this.hasScriptSet){
       scriptsContentsArray.forEach(scriptsContents=>{
         if(scriptsContents.indexOf("<script") > -1){
-          let srcUrl = this.getScriptUrl(scriptsContents);
-          let script = document.createElement("script");
-          script.src = srcUrl;
-          this.elementRef.nativeElement.appendChild(script);
+          try{
+            let srcUrl = this.getScriptUrl(scriptsContents);
+            let script = document.createElement("script");
+            script.src = srcUrl;
+            this.elementRef.nativeElement.appendChild(script);
+          }catch (e){
+            console.log("error : " + JSON.stringify(e));
+            let script = document.createElement("script");
+            script.type = "text/javascript";
+            script.innerHTML = scriptsContents;
+            this.elementRef.nativeElement.appendChild(script);
+          }
         }else {
           let script = document.createElement("script");
           script.type = "text/javascript";
@@ -146,11 +192,13 @@ export class ReportViewPage implements OnInit{
 
   getScriptUrl(scriptsContents){
     let url = "";
-    scriptsContents.split("<script").forEach((scriptsContent:any)=>{
-      if(scriptsContent !=""){
-        url = scriptsContent.split("src=")[1].split(">")[0];
-      }
-    });
+    if(scriptsContents && scriptsContents.split("<script").length > 0){
+      scriptsContents.split("<script").forEach((scriptsContent:any)=>{
+        if(scriptsContent !=""){
+          url = scriptsContent.split("src=")[1].split(">")[0];
+        }
+      });
+    }
     return url;
   }
 
