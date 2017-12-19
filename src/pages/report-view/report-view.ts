@@ -60,6 +60,7 @@ export class ReportViewPage implements OnInit{
           period = this.selectedPeriod.iso;
         }
         if(this.selectedOrganisationUnit && this.selectedOrganisationUnit.id){
+          this.selectedOrganisationUnit["dataSets"] = [];
           let organisationUnitHierarchy = this.getOrganisationUnitHierarchy(this.params.get("organisationUnit"));
           this.dataSetProvider.getDataSetSource(this.selectedOrganisationUnit.id,user.currentDatabase).then((dataSetSources: any)=>{
             dataSetSources.forEach((dataSetSource : any)=>{
@@ -70,6 +71,7 @@ export class ReportViewPage implements OnInit{
               for(let dataSet of DataSets){
                 dataSets.push({id : dataSet.id,name : dataSet.name});
               }
+              this.selectedOrganisationUnit.dataSets = dataSets;
               dhis2.report = {
                 organisationUnit :this.selectedOrganisationUnit,
                 organisationUnitChildren : this.params.get("organisationUnitChildren"),
@@ -128,7 +130,6 @@ export class ReportViewPage implements OnInit{
 
   loadReportDesignContent(reportId){
     this.isLoading = true;
-    console.log("reportId : " + reportId);
     this.loadingMessage = "Loading report metadata";
     this.reportProvider.getReportDesign(reportId,this.currentUser).then((report : any)=>{
       if(report && report.designContent){
