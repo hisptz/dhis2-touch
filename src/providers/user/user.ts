@@ -95,7 +95,6 @@ export class UserProvider {
     return new Promise((resolve, reject)=> {
       this.http.get(user.serverUrl + "", {}, {})
         .then((data:any)  => {
-          console.log("On success call");
           if(data.status == 200){
             if(data.headers && data.headers["Set-Cookie"]){
               let setCookieArray = data.headers["Set-Cookie"].split(";");

@@ -39,11 +39,13 @@ export class NetworkAvailabilityProvider {
   }
 
   updateNetworkStatus(){
-    dhis2.network = {
-      isAvailable : (this.network.type == "unknown" || this.network.type == "none")?false:true,
-      message : (this.network.type == "unknown" || this.network.type == "none")?"You are offline" : "You are online",
-      networkType : this.network.type
-    };
+    if(dhis2 && dhis2.network){
+      dhis2.network = {
+        isAvailable : (this.network.type == "unknown" || this.network.type == "none")?false:true,
+        message : (this.network.type == "unknown" || this.network.type == "none")?"You are offline" : "You are online",
+        networkType : this.network.type
+      };
+    }
   }
 
 }
