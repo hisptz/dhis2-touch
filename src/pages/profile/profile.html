@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Profile</ion-title>
+    <ion-title>{{'profile'|translate }}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -36,9 +36,9 @@
             </div>
           </ion-col>
         </ion-row>
-        <div *ngIf="(isProfileContentOpen[profileContent.id])" >
+        <div *ngIf="(isProfileContentOpen[profileContent.id])" class="animated slideInDown" >
           <hr>
-          <ion-row>
+          <ion-row >
             <ion-col>
               <div *ngIf="userData && userData[profileContent.id]" >
                 <div *ngIf="profileContent.id == 'userInfo'">
