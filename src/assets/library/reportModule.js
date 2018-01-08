@@ -88,7 +88,11 @@ var dhis2 = {
       db.transaction(function (tx) {
         tx.executeSql(query, currentIds, function (tx, results) {
           defer.resolve(results);
-        })
+        }, function (error) {
+          console.log(JSON.stringify(error));
+          defer.reject(error);
+
+        });
       });
       return defer.promise();
     },
