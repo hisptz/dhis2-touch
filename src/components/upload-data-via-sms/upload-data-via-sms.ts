@@ -45,12 +45,12 @@ export class UploadDataViaSmsComponent implements OnInit{
   }
 
   ngOnInit(){
-    this.icons.orgUnit = "assets/data-entry/orgUnit.png";
-    this.icons.dataSet = "assets/data-entry/form.png";
-    this.icons.period = "assets/data-entry/period.png";
-    this.icons.goToDataEntryForm = "assets/data-entry/enterDataPen.png";
+    this.icons.orgUnit = "assets/icon/orgUnit.png";
+    this.icons.dataSet = "assets/icon/form.png";
+    this.icons.period = "assets/icon/period.png";
+    this.icons.goToDataEntryForm = "assets/icon/enterDataPen.png";
 
-    this.loadingMessage = "Loading user information";
+    this.loadingMessage = "loading_user_information";
     this.isLoading = true;
     this.currentPeriodOffset = 0;
     this.isDataSetDimensionApplicable = false;

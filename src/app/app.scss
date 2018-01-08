@@ -14,25 +14,8 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-@font-face {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Lato Regular'), local('Lato-Regular'), url('../assets/library/fonts/UyBMtLsHKBKXelqf4x7VRQ.woff2') format('woff2');
-  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
-}
-/* latin */
-@font-face {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Lato Regular'), local('Lato-Regular'), url('../assets/library/fonts/1YwB1sO8YE1Lyjf12WNiUA.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
-}
 
-*{
-  font-family: "Lato","Helvetica Neue", Helvetica, Arial, sans-serif;
-}
+
 
 @-webkit-keyframes slideInFromLeft {
   0% {
@@ -250,7 +233,7 @@
 
 .apps-contents{
   border: 0.5px solid #E6E6E7;
-  border-radius: 1.1rem;
+  border-radius: 1rem;
   padding: 5px 16px 5px;
 }
 .entry-selection-container{

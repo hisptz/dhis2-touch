@@ -1,5 +1,14 @@
-<div class="progress-outer">
-  <div class="progress-inner" [style.width]="progress + '%'">
-    {{progress}}%
-  </div>
+
+
+<div class="progress-outer" no-padding no-margin >
+  <ion-row no-padding no-margin (click)="cancelRunningProcess()">
+    <ion-col col-11 no-padding no-margin>
+      <div class="progress-inner" [style.width]="progressBar + '%'">
+        {{ progressBarTitle }}
+      </div>
+    </ion-col>
+    <ion-col col-1>
+      <ion-icon name="md-close" color="danger"></ion-icon>
+    </ion-col>
+  </ion-row>
 </div>
