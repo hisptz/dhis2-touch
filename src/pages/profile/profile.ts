@@ -1,5 +1,5 @@
-import { Component,OnInit } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import {Component, OnInit} from '@angular/core';
+import {IonicPage, NavController} from 'ionic-angular';
 import {ProfileProvider} from "../../providers/profile/profile";
 import {AppProvider} from "../../providers/app/app";
 
@@ -15,34 +15,34 @@ import {AppProvider} from "../../providers/app/app";
   selector: 'page-profile',
   templateUrl: 'profile.html',
 })
-export class ProfilePage implements OnInit{
+export class ProfilePage implements OnInit {
 
-  isProfileContentOpen : any;
-  profileContents : Array<any>;
+  isProfileContentOpen: any;
+  profileContents: Array<any>;
 
-  userData : any;
+  userData: any;
 
-  loadingMessage : string;
-  isLoading : boolean = true;
+  loadingMessage: string;
+  isLoading: boolean = true;
 
   constructor(public navCtrl: NavController,
-              private appProvider : AppProvider,
-              private profileProvider : ProfileProvider) {
+              private appProvider: AppProvider,
+              private profileProvider: ProfileProvider) {
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.loadingMessage = 'Loading profile information';
     this.isLoading = true;
     this.isProfileContentOpen = {};
     this.profileContents = this.profileProvider.getProfileContentDetails();
-    if(this.profileContents.length > 0){
-     this.toggleProfileContents(this.profileContents[0]);
+    if (this.profileContents.length > 0) {
+      this.toggleProfileContents(this.profileContents[0]);
     }
-    this.profileProvider.getSavedUserData().then((userData)=>{
+    this.profileProvider.getSavedUserData().then((userData) => {
       this.userData = userData;
       this.isLoading = false;
       this.loadingMessage = '';
-    }).catch(error=>{
+    }).catch(error => {
       this.isLoading = false;
       this.loadingMessage = '';
       console.log(JSON.stringify(error));
@@ -50,12 +50,12 @@ export class ProfilePage implements OnInit{
     });
   }
 
-  toggleProfileContents(content){
-    if(content && content.id){
-      if(this.isProfileContentOpen[content.id]){
+  toggleProfileContents(content) {
+    if (content && content.id) {
+      if (this.isProfileContentOpen[content.id]) {
         this.isProfileContentOpen[content.id] = false;
-      }else{
-        Object.keys(this.isProfileContentOpen).forEach(id=>{
+      } else {
+        Object.keys(this.isProfileContentOpen).forEach(id => {
           this.isProfileContentOpen[id] = false;
         });
         this.isProfileContentOpen[content.id] = true;

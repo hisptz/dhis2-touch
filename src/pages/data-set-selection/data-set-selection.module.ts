@@ -3,9 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { DataSetSelectionPage } from './data-set-selection';
 import {SharedModule} from "../../components/shared.module";
 import {DataEntryModule} from "../../components/data.entry.module";
-import {Http} from "@angular/http";
-import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
-import {createTranslateLoader} from "../../app/app.module";
+import { TranslateModule} from "@ngx-translate/core";
 
 @NgModule({
   declarations: [
@@ -13,13 +11,7 @@ import {createTranslateLoader} from "../../app/app.module";
   ],
   imports: [
     IonicPageModule.forChild(DataSetSelectionPage),DataEntryModule,SharedModule,
-    TranslateModule.forChild({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
-        deps: [Http]
-      }
-    })
+    TranslateModule.forChild({})
   ],
 })
 export class DataSetSelectionPageModule {}

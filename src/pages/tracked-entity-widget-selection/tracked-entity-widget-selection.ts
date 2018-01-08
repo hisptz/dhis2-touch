@@ -23,7 +23,7 @@ export class TrackedEntityWidgetSelectionPage implements OnInit,OnDestroy{
   }
 
   ngOnInit(){
-    this.icon = "assets/tracker/list-of-items.png";
+    this.icon = "assets/icon/list-of-items.png";
     this.dashboardWidgets = this.navParams.get('dashboardWidgets');
     this.currentWidget = this.navParams.get('currentWidget');
   }

@@ -26,7 +26,7 @@ export class ProgramSelection implements OnInit{
   }
 
   setModalData(){
-    this.icons.program = "assets/event-capture/program.png";
+    this.icons.program = "assets/icon/program.png";
     this.programsList = this.params.get('programsList');
     this.currentProgram = this.params.get('currentProgram');
   }

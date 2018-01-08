@@ -24,7 +24,7 @@ export class DataEntrySectionSelectionPage implements OnInit{
   }
 
   ngOnInit(){
-    this.icon = "assets/data-entry/list.png";
+    this.icon = "assets/icon/list.png";
     this.pager = this.navParams.get('pager');
     this.sections = this.navParams.get('sections');
   }

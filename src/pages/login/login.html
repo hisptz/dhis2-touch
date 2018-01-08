@@ -1,144 +1,102 @@
-<!--
-  Generated template for the LoginPage page.
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
-<ion-content class="login">
+<ion-content  class="login">
+
   <ion-grid>
     <ion-row>
-      <ion-col class="topSLogan">
+      <ion-col class="topSLogan animated bounceIn">
         <div class="logo">
           <img [src]="logoUrl" >
         </div>
         <p >{{'innovation_in_every_dimension'|translate }}</p>
       </ion-col>
     </ion-row>
-
-    <div *ngIf="isLoginProcessActive">
-      <ion-list *ngIf="loggedInInInstance != ''">
-        <ion-item (tap)="cancelLoginProcess()">
-          <div style="text-align: center" item-left >
-            <ion-icon name="md-unlock" color="primary"></ion-icon>
-          </div>
-          {{ loggedInInInstance }}
-          <div style="text-align: center" item-right >
-            <ion-icon name="md-close" color="danger"></ion-icon>
-          </div>
-        </ion-item>
-      </ion-list>
-      <page-progress-bar [progress] = "progress"></page-progress-bar>
-      <br>
-      <ion-list>
-        <ion-item>
-          <div style="text-align: center" item-left >
-            <div *ngIf="progressTracker.communication.passStepCount == progressTracker.communication.count">
-              <ion-icon name="done-all" color="favorite"></ion-icon>
-            </div>
-            <div *ngIf="currentResourceType == 'communication'">
+    <ion-row *ngIf="isLoginProcessActive">
+      <ion-col [ngClass]="animationEffect.progressBar">
+        <progress-bar
+          [progressBarTitle] = "loggedInInInstance"
+          [progressBar] = "progressBar"
+          (isProcessActive)="cancelLoginProcess($event)">
+        </progress-bar>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="isLoginProcessActive" [ngClass]="animationEffect.progressBar">
+      <ion-col>
+        <ion-list>
+          <ion-item>
+            <div style="text-align: center" item-left >
+              <div *ngIf="progressTracker.communication.passStepCount == progressTracker.communication.count">
+                <ion-icon name="done-all" color="favorite"></ion-icon>
+              </div>
               <div *ngIf="progressTracker.communication.passStepCount != progressTracker.communication.count">
                 <page-loading loadingSize="small"></page-loading>
               </div>
             </div>
-          </div>
-          <span ion-text [color]="(currentResourceType == 'communication')?'current' : 'font-color'" >
-            <span *ngIf="progressTracker.communication.message != '' ">
-              {{ progressTracker.communication.message }}
-            </span>
-            <span *ngIf="progressTracker.communication.message == '' ">
-              Establishing connection to server
-            </span>
-          </span>
-          <div style="text-align: center" item-right >
-            {{ progressTracker.communication.passStepCount}}/{{ progressTracker.communication.count}}
-          </div>
-        </ion-item>
-        <ion-item>
-          <div style="text-align: center" item-left >
-            <div *ngIf="progressTracker.entryForm.passStepCount == progressTracker.entryForm.count">
-              <ion-icon name="done-all" color="favorite"></ion-icon>
+            <span >Establishing connection to server</span>
+            <div style="text-align: center" item-right >
+              {{ progressTracker.communication.passStepCount}}/{{ progressTracker.communication.count}}
             </div>
-            <div *ngIf="currentResourceType == 'entryForm'">
+          </ion-item>
+          <ion-item>
+            <div style="text-align: center" item-left >
+              <div *ngIf="progressTracker.entryForm.passStepCount == progressTracker.entryForm.count">
+                <ion-icon name="done-all" color="favorite"></ion-icon>
+              </div>
               <div *ngIf="progressTracker.entryForm.passStepCount != progressTracker.entryForm.count">
                 <page-loading loadingSize="small"></page-loading>
               </div>
             </div>
-          </div>
-          <span ion-text [color]="(currentResourceType == 'entryForm')?'current' : 'font-color'" >
-            <span *ngIf="progressTracker.entryForm.message != '' ">
-              {{ progressTracker.entryForm.message }}
-            </span>
-            <span *ngIf="progressTracker.entryForm.message == '' ">
-              Aggregate metadata
-            </span>
-          </span>
-          <div style="text-align: center" item-right >
-            {{ progressTracker.entryForm.passStepCount}}/{{ progressTracker.entryForm.count}}
-          </div>
-        </ion-item>
-        <ion-item>
-          <div style="text-align: center" item-left >
-            <div *ngIf="progressTracker.event.passStepCount == progressTracker.event.count">
-              <ion-icon name="done-all" color="favorite"></ion-icon>
+            <span >Aggregate metadata</span>
+            <div style="text-align: center" item-right >
+              {{ progressTracker.entryForm.passStepCount}}/{{ progressTracker.entryForm.count}}
             </div>
-            <div *ngIf="currentResourceType == 'event'">
+          </ion-item>
+          <ion-item>
+            <div style="text-align: center" item-left >
+              <div *ngIf="progressTracker.event.passStepCount == progressTracker.event.count">
+                <ion-icon name="done-all" color="favorite"></ion-icon>
+              </div>
               <div *ngIf="progressTracker.event.passStepCount != progressTracker.event.count">
                 <page-loading loadingSize="small"></page-loading>
               </div>
             </div>
-          </div>
-          <span ion-text [color]="(currentResourceType == 'event')?'current' : 'font-color'" >
-            <span *ngIf="progressTracker.event.message != '' ">
-              {{ progressTracker.event.message }}
-            </span>
-            <span *ngIf="progressTracker.event.message == '' ">
-              Event & tracker metadata
-            </span>
-          </span>
-          <div style="text-align: center" item-right >
-            {{ progressTracker.event.passStepCount}}/{{ progressTracker.event.count}}
-          </div>
-        </ion-item>
-        <ion-item>
-          <div style="text-align: center" item-left >
-            <div *ngIf="progressTracker.report.passStepCount == progressTracker.report.count">
-              <ion-icon name="done-all" color="favorite"></ion-icon>
+            <span >Event & tracker metadata</span>
+            <div style="text-align: center" item-right >
+              {{ progressTracker.event.passStepCount}}/{{ progressTracker.event.count}}
             </div>
-            <div *ngIf="currentResourceType == 'report'">
+          </ion-item>
+          <ion-item>
+            <div style="text-align: center" item-left >
+              <div *ngIf="progressTracker.report.passStepCount == progressTracker.report.count">
+                <ion-icon name="done-all" color="favorite"></ion-icon>
+              </div>
               <div *ngIf="progressTracker.report.passStepCount != progressTracker.report.count">
                 <page-loading loadingSize="small"></page-loading>
               </div>
             </div>
-          </div>
-          <span ion-text [color]="(currentResourceType == 'report')?'current' : 'font-color'" >
-            <span *ngIf="progressTracker.report.message != '' ">
-              {{ progressTracker.report.message }}
-            </span>
-            <span *ngIf="progressTracker.report.message == '' ">
-               Report metadata
-            </span>
-          </span>
-          <div style="text-align: center" item-right >
-            {{ progressTracker.report.passStepCount}}/{{ progressTracker.report.count}}
-          </div>
-        </ion-item>
-      </ion-list>
-    </div>
+            <span >Report metadata</span>
+            <div style="text-align: center" item-right >
+              {{ progressTracker.report.passStepCount}}/{{ progressTracker.report.count}}
+            </div>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
 
     <div *ngIf="!isLoginProcessActive">
-      <form (ngSubmit)="startLoginProcess()">
-        <ion-row >
+      <form (ngSubmit)="startLoginProcess()" [ngClass]="animationEffect.loginForm" >
+        <ion-row>
           <ion-col >
             <ion-item>
-              <ion-input [(ngModel)]="currentUser.serverUrl" type="text" name ="serverUrl" placeholder="Enter server address"></ion-input>
+              <ion-input [(ngModel)]="currentUser.serverUrl" type="text" name ="serverUrl" placeholder="{{'enter_server_address'|translate}}"></ion-input>
             </ion-item>
 
             <ion-item>
-              <ion-input [(ngModel)]="currentUser.username" type="text" name ="username" placeholder="Enter username"></ion-input>
+              <ion-input [(ngModel)]="currentUser.username" type="text" name ="username" placeholder="{{'enter_username'|translate}}"></ion-input>
             </ion-item>
 
             <ion-item>
-              <ion-input [(ngModel)]="currentUser.password" name ="password" type="password" placeholder="Enter password"></ion-input>
+              <ion-input [(ngModel)]="currentUser.password" name ="password" type="password" placeholder="{{'enter_password'|translate}}"></ion-input>
             </ion-item>
           </ion-col>
         </ion-row>
@@ -146,7 +104,7 @@
         <ion-row >
           <ion-col>
             <button type="submit" class="normalButton" ion-button full text-capitalize>
-              Login
+              {{'login'|translate}}
             </button>
           </ion-col>
         </ion-row>
@@ -155,7 +113,7 @@
 
     <ion-row>
       <ion-col class="bottomSLogan">
-        <p>Powered by HISPTZ</p>
+        <p>{{'powered_by'|translate}} HISPTZ</p>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -163,4 +121,3 @@
 
 
 </ion-content>
-

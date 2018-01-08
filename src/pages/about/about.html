@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>About</ion-title>
+    <ion-title>{{'about'|translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -17,7 +17,7 @@
 
   <ion-grid>
     <div *ngIf="isLoading">
-      <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage" ></page-loading>
+      <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage|translate" ></page-loading>
     </div>
     <div *ngIf="!isLoading" class="about-details">
       <ion-row>
@@ -36,7 +36,7 @@
           <ion-col col-11>
             <img  class="side-menu-icon" [src]="aboutContent.icon"/>&nbsp;&nbsp;
             <span ion-text [color]="(isAboutContentOpen[aboutContent.id]) ?'current' : 'font-color'">
-              {{ aboutContent.name }}
+              {{ aboutContent.name|translate }}
             </span>
           </ion-col>
           <ion-col col-1 item >

@@ -64,9 +64,9 @@ export class TrackerEntityRegisterPage implements OnInit{
   }
 
   ngOnInit(){
-    this.icons["addNewCase"] = "assets/tracker/add-new-case.png";
-    this.icons["menu"] = "assets/dashboard/menu.png";
-    this.loadingMessage = "Loading user information";
+    this.icons["addNewCase"] = "assets/icon/add-new-case.png";
+    this.icons["menu"] = "assets/icon/menu.png";
+    this.loadingMessage = "loading_user_information";
     this.isLoading = true;
     this.isRegistrationProcessingRunning  = false;
     let today = ((new Date()).toISOString()).split('T')[0];
@@ -137,7 +137,7 @@ export class TrackerEntityRegisterPage implements OnInit{
 
   getDashboardWidgets(){
     return [
-      {id : 'enrollment',name : 'Enrollment & Profile',icon: 'assets/tracker/profile.png'}
+      {id : 'enrollment',name : 'Enrollment & Profile',icon: 'assets/icon/profile.png'}
     ];
   }
 

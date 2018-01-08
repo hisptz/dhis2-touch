@@ -7,7 +7,7 @@
 <ion-header xmlns="http://www.w3.org/1999/html">
 
   <ion-navbar color="primary">
-    <ion-title>Report View</ion-title>
+    <ion-title>{{'report_view'|translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -20,7 +20,7 @@
     <div *ngIf="isLoading">
       <ion-row >
         <ion-col >
-          <page-loading loadingSize="large" [loadingMessage]="loadingMessage"></page-loading>
+          <page-loading loadingSize="large" [loadingMessage]="loadingMessage|translate"></page-loading>
         </ion-col>
       </ion-row>
     </div>
@@ -29,9 +29,9 @@
       <ion-row (tap)="backToPreviousView()">
         <ion-col>
           <div class="entry-selection-container">
-            <div><b>Report name</b> : {{ reportName }}<br>
-              <span *ngIf="selectedOrganisationUnit && selectedOrganisationUnit.id" ><b>Organisation unit</b> : {{ selectedOrganisationUnit.name }}<br></span>
-              <span *ngIf="selectedPeriod && selectedPeriod.name" ><b>Period</b> : {{ selectedPeriod.name }}</span>
+            <div><b>{{'report_name'|translate}}</b> : {{ reportName }}<br>
+              <span *ngIf="selectedOrganisationUnit && selectedOrganisationUnit.id" ><b>{{'organisation_unit'|translate}}</b> : {{ selectedOrganisationUnit.name }}<br></span>
+              <span *ngIf="selectedPeriod && selectedPeriod.name" ><b>{{'period'|translate}}</b> : {{ selectedPeriod.name }}</span>
             </div>
           </div>
         </ion-col>

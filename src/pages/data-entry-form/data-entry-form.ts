@@ -34,6 +34,7 @@ export class DataEntryFormPage implements OnInit{
   dataSetAttributeOptionCombo : any;
 
   entryFormSections : any;
+  entryFormLayout : string;
   icons : any = {};
   pager : any = {};
   storageStatus : any;
@@ -57,7 +58,7 @@ export class DataEntryFormPage implements OnInit{
   }
 
   ngOnInit(){
-    this.icons["menu"] = "assets/dashboard/menu.png";
+    this.icons["menu"] = "assets/icon/menu.png";
     this.storageStatus ={
       online : 0, offline : 0
     };
@@ -65,13 +66,18 @@ export class DataEntryFormPage implements OnInit{
     this.isDataSetCompleted = false;
     this.dataValuesObject = {};
     this.dataValuesSavingStatusClass = {};
-    this.loadingMessage = "Loading user information";
+    this.loadingMessage = "loading_user_information";
     this.isLoading = true;
     this.entryFormParameter = this.navParams.get("parameter");
     this.userProvider.getCurrentUser().then(user=>{
       this.currentUser = user;
       this.settingsProvider.getSettingsForTheApp(user).then((appSettings:any)=>{
         this.appSettings = appSettings;
+        if(appSettings && appSettings.entryForm && appSettings.entryForm.formLayout){
+          this.entryFormLayout = appSettings.entryForm.formLayout;
+        }else{
+          this.entryFormLayout = "listLayout"
+        }
         this.loadingDataSetInformation(this.entryFormParameter.dataSet.id);
       });
     },error=>{
@@ -86,11 +92,11 @@ export class DataEntryFormPage implements OnInit{
   }
 
   loadingDataSetInformation(dataSetId){
-    this.loadingMessage = "Loading entry form information";
+    this.loadingMessage = "loading_entry_form_information";
     this.dataEntryFormProvider.loadingDataSetInformation(dataSetId,this.currentUser).then((dataSetInformation : any)=>{
       this.dataSet = dataSetInformation.dataSet;
       this.sectionIds = dataSetInformation.sectionIds;
-      this.loadingMessage = "Loading indicators";
+      this.loadingMessage = "loading_indicators";
       this.dataEntryFormProvider.getEntryFormIndicators(dataSetInformation.indicatorIds,this.currentUser).then((indicators :any)=>{
         this.indicators = indicators;
         this.loadingEntryForm(this.dataSet,this.sectionIds);
@@ -107,7 +113,7 @@ export class DataEntryFormPage implements OnInit{
   }
 
   loadingEntryForm(dataSet,sectionIds){
-    this.loadingMessage = "Prepare entry form";
+    this.loadingMessage = "prepare_entry_form";
     this.dataEntryFormProvider.getEntryForm(sectionIds,dataSet.id,this.appSettings,this.currentUser).then((entryForm : any)=>{
       this.entryFormSections = entryForm;
       this.pager["page"] = 1;
@@ -117,14 +123,14 @@ export class DataEntryFormPage implements OnInit{
       let orgUnitId = this.entryFormParameter.orgUnit.id;
       let dataDimension = this.entryFormParameter.dataDimension;
       this.dataSetAttributeOptionCombo = this.dataValuesProvider.getDataValuesSetAttributeOptionCombo(dataDimension,this.dataSet.categoryCombo.categoryOptionCombos);
-      this.loadingMessage = "Loading data from the server";
+      this.loadingMessage = "loading_data_from_the_server";
       this.dataValuesProvider.getDataValueSetFromServer(dataSetId,period,orgUnitId,this.dataSetAttributeOptionCombo,this.currentUser).then((dataValues : any)=>{
         if(dataValues.length > 0){
           dataValues.forEach((dataValue :any)=>{
             dataValue["period"] = this.entryFormParameter.period.name;
             dataValue["orgUnit"] = this.entryFormParameter.orgUnit.name;
           });
-          this.loadingMessage = "Saving data form server";
+          this.loadingMessage = "saving_data_from_server";
           let syncStatus = 'synced';
           this.dataValuesProvider.saveDataValues(dataValues,dataSetId,period,orgUnitId,dataDimension,syncStatus,this.currentUser).then(()=>{
             this.loadingLocalData(dataSetId, period, orgUnitId,dataDimension);
@@ -150,7 +156,7 @@ export class DataEntryFormPage implements OnInit{
   }
 
   loadingLocalData(dataSetId, period, orgUnitId,dataDimension){
-    this.loadingMessage = "Loading available local data";
+    this.loadingMessage = "loading_available_local_data";
     this.dataValuesProvider.getAllEntryFormDataValuesFromStorage(dataSetId, period, orgUnitId, this.entryFormSections, dataDimension, this.currentUser).then((entryFormDataValues : any)=>{
       entryFormDataValues.forEach((dataValue : any)=>{
         this.dataValuesObject[dataValue.id] = dataValue;
@@ -164,7 +170,7 @@ export class DataEntryFormPage implements OnInit{
   }
 
   loadingDataSetCompleteness(){
-    this.loadingMessage = "Loading entry form completeness information";
+    this.loadingMessage = "loading_entry_form_completeness_information";
     this.isDataSetCompleted = false;
     this.dataSetsCompletenessInfo = {};
     let dataSetId = this.dataSet.id;

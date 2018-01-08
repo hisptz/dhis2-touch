@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Sync</ion-title>
+    <ion-title>{{'sync'|translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -21,7 +21,7 @@
         <ion-col col-11>
           <img  class="side-menu-icon" [src]="syncContent.icon"/>&nbsp;&nbsp;
           <span ion-text [color]="(isSyncContentOpen[syncContent.id]) ?'current' : 'font-color'">
-              {{ syncContent.name }}
+              {{ syncContent.name| translate}}
             </span>
         </ion-col>
         <ion-col col-1 item >

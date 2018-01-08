@@ -7,7 +7,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>
-      List of widgets
+      {{'list_of_widgets'|translate}}
     </ion-title>
     <ion-buttons start>
       <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
@@ -41,7 +41,7 @@
             </div>
           </ion-item>
           <ion-item *ngIf = "dashboardWidgets.length == 0">
-            <empty-list-notification [emptyListMessage]="'There is no widget to select'"></empty-list-notification>
+            <empty-list-notification [emptyListMessage]="'there_is_no_widget_to_select'|translate"></empty-list-notification>
           </ion-item>
         </ion-list>
       </ion-col>

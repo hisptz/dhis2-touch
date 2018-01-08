@@ -3,22 +3,14 @@ import { IonicPageModule } from 'ionic-angular';
 import { SyncPage } from './sync';
 import {SyncModule} from "../../components/sync.module";
 import {SharedModule} from "../../components/shared.module";
-import {Http} from "@angular/http";
-import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
-import {createTranslateLoader} from "../../app/app.module";
+import { TranslateModule} from "@ngx-translate/core";
 @NgModule({
   declarations: [
     SyncPage,
   ],
   imports: [
     IonicPageModule.forChild(SyncPage),SyncModule,SharedModule,
-    TranslateModule.forChild({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
-        deps: [Http]
-      }
-    })
+    TranslateModule.forChild({})
   ],
 })
 export class SyncPageModule {}

@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Tracker Capture</ion-title>
+    <ion-title>{{'tracker_capture'|translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -18,20 +18,20 @@
       <ion-col>
         <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openOrganisationUnitTree()" >
           <img  class="side-menu-icon" [src]="icons.orgUnit"/>&nbsp;&nbsp;
-          {{ organisationUnitLabel }}
+          {{ organisationUnitLabel|translate }}
         </div>
         <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openProgramList()" >
           <img  class="side-menu-icon" [src]="icons.program"/>&nbsp;&nbsp;
-          {{ programLabel }}
+          {{ programLabel|translate }}
         </div>
         <div *ngIf = "isFormReady" >
           <div class="item-card" (click)="hideAndShowColumns()" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
             <ion-icon name="ios-eye" color="icon-color"></ion-icon>
-            Columns
+            {{'columns'|translate}}
           </div>
           <div class="item-card" (click)="registerNewTrackedEntity()" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
             <ion-icon name="add" color="icon-color"></ion-icon>
-            Add
+            {{'add'|translate}}
           </div>
         </div>
       </ion-col>
@@ -39,7 +39,7 @@
 
     <div *ngIf = "isFormReady" >
       <div *ngIf="isLoading">
-        <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage" ></page-loading>
+        <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage|translate" ></page-loading>
       </div>
       <div *ngIf="!isLoading" class="over-flow-container">
         <ion-row>
@@ -59,7 +59,7 @@
                 </tr>
                 <tr *ngIf="tableLayout.rows.length == 0">
                   <td colspan="100%">
-                    There no data at the moment
+                    {{'there_no_data_at_the_moment'|translate}}
                   </td>
                 </tr>
                 </tbody>

@@ -7,7 +7,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>
-      {{ title }}
+      {{ title|translate}}
     </ion-title>
     <ion-buttons start>
       <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
@@ -29,7 +29,7 @@
             <span  ion-text [color]="(currentSelection.id == categoryOption.id) ?'current' : 'font-color'">{{ categoryOption.name }}</span>
           </ion-item>
           <ion-item *ngIf = "categoryOptions.length == 0">
-            <empty-list-notification [emptyListMessage]="'There is no option to select'"></empty-list-notification>
+            <empty-list-notification [emptyListMessage]="'there_is_no_option_to_select'|translate"></empty-list-notification>
           </ion-item>
         </ion-list>
       </ion-col>

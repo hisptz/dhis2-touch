@@ -28,7 +28,7 @@ export class PeriodSelectionPage implements  OnInit{
   }
 
   ngOnInit(){
-    this.icon = "assets/data-entry/period.png";
+    this.icon = "assets/icon/period.png";
     this.periodType = this.navParams.get("periodType");
     this.openFuturePeriods = parseInt(this.navParams.get("openFuturePeriods"));
     this.currentPeriodOffset = parseInt(this.navParams.get("currentPeriodOffset"));
@@ -37,11 +37,13 @@ export class PeriodSelectionPage implements  OnInit{
   }
 
   loadPeriodSelection(){
+    this.periods = [];
     let periods = this.periodSelection.getPeriods(this.periodType,this.openFuturePeriods,this.currentPeriodOffset);
     if(periods.length > 0){
       this.periods = periods;
     }else{
       this.currentPeriodOffset = this.currentPeriodOffset -1;
+      this.loadPeriodSelection();
     }
   }
 

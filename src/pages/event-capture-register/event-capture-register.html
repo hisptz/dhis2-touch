@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Event Register</ion-title>
+    <ion-title>{{'event_register'|translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -15,15 +15,15 @@
 <ion-content >
   <ion-grid>
     <div *ngIf="isLoading">
-      <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></page-loading>
+      <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage|translate"></page-loading>
     </div>
     <div *ngIf="!isLoading">
       <div *ngIf="currentEvent">
         <ion-row>
           <ion-col>
             <div (tap)="goBack()" padding-bottom class="item-card">
-              <b>Organisation Unit</b> : {{ currentOrgUnit.name }}<br>
-              <b>Program</b> : {{ currentProgram.name }}<br>
+              <b>{{'organisation_unit'|translate}}</b> : {{ currentOrgUnit.name }}<br>
+              <b>{{'program'|translate}}</b> : {{ currentProgram.name }}<br>
             </div>
             <program-stage-event-based [programStage]="programStage"
                                        [dataDimension]="dataDimension"

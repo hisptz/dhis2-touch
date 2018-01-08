@@ -1,7 +1,7 @@
 <ion-header >
   <ion-toolbar color="primary">
     <ion-title>
-      Program selection selection
+      {{'program_selection'|translate}}
     </ion-title>
     <ion-buttons start>
       <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
@@ -23,7 +23,7 @@
             <span ion-text [color]="(currentProgram.id == program.id)? 'current': 'font-color'" >{{ program.name}}</span>
           </ion-item>
           <ion-item *ngIf = "programsList.length == 0">
-            <empty-list-notification [emptyListMessage]="'There is no Program to select'"></empty-list-notification>
+            <empty-list-notification [emptyListMessage]="'there_is_no_program_to_select'|translate"></empty-list-notification>
           </ion-item>
         </ion-list>
       </ion-col>

@@ -5,6 +5,7 @@ import {UserProvider} from "../../providers/user/user";
 import {DataSetsProvider} from "../../providers/data-sets/data-sets";
 import {AppProvider} from "../../providers/app/app";
 import {StandardReportProvider} from "../../providers/standard-report/standard-report";
+import {DATABASE_STRUCTURE} from "../../constants/database-structure";
 
 /**
  * Generated class for the ReportViewPage page.
@@ -39,7 +40,7 @@ export class ReportViewPage implements OnInit{
 
   ngOnInit() {
     this.isLoading = true;
-    this.loadingMessage = "Loading user information";
+    this.loadingMessage = "loading_user_information";
     this.user.getCurrentUser().then((user : any)=>{
       this.currentUser = user;
       dhis2.database = user.currentDatabase;
@@ -81,6 +82,7 @@ export class ReportViewPage implements OnInit{
                 date : date,
                 dataSets :dataSets
               };
+              dhis2.dataBaseStructure = DATABASE_STRUCTURE;
               this.loadReportDesignContent(this.reportId);
             },error=>{
               this.isLoading = false;
@@ -130,7 +132,7 @@ export class ReportViewPage implements OnInit{
 
   loadReportDesignContent(reportId){
     this.isLoading = true;
-    this.loadingMessage = "Loading report metadata";
+    this.loadingMessage = "loading_report_metadata";
     this.reportProvider.getReportDesign(reportId,this.currentUser).then((report : any)=>{
       if(report && report.designContent){
         try{

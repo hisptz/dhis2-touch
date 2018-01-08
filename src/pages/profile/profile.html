@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>{{'profile'|translate }}</ion-title>
+    <ion-title>{{'profile'|translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -22,11 +22,11 @@
 
     <div *ngIf="!isLoading">
       <div class="item-card" *ngFor="let profileContent of profileContents">
-        <ion-row (tap)="toggleProfileContents(profileContent)">
+        <ion-row (tap)="toggleProfileContents(profileContent)" >
           <ion-col col-11>
             <img  class="side-menu-icon" [src]="profileContent.icon"/>&nbsp;&nbsp;
             <span ion-text [color]="(isProfileContentOpen[profileContent.id]) ?'current' : 'font-color'">
-              {{ profileContent.name }}
+              {{ profileContent.name|translate }}
             </span>
           </ion-col>
           <ion-col col-1 item >
@@ -36,7 +36,7 @@
             </div>
           </ion-col>
         </ion-row>
-        <div *ngIf="(isProfileContentOpen[profileContent.id])" class="animated slideInDown" >
+        <div *ngIf="(isProfileContentOpen[profileContent.id])" >
           <hr>
           <ion-row >
             <ion-col>

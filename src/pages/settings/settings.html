@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Settings</ion-title>
+    <ion-title>{{'settings'|translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -28,7 +28,7 @@
           <ion-col col-11>
             <img  class="side-menu-icon" [src]="settingContent.icon"/>&nbsp;&nbsp;
             <span ion-text [color]="(isSettingContentOpen[settingContent.id]) ?'current' : 'font-color'">
-              {{ settingContent.name }}
+              {{ settingContent.name|translate }}
             </span>
           </ion-col>
           <ion-col col-1 item >
@@ -56,8 +56,8 @@
                   <ion-col col-7>
                     <ion-item>
                       <ion-select (ionChange)="applySettings(settingContent)" [(ngModel)]="settingObject.synchronization.timeType" interface="action-sheet">
-                        <ion-option value="minutes">Minute(s)</ion-option>
-                        <ion-option value="hours">Hour(s)</ion-option>
+                        <ion-option value="minutes">{{'minutes'|translate}}</ion-option>
+                        <ion-option value="hours">{{'hours'|translate}}</ion-option>
                       </ion-select>
                     </ion-item>
                   </ion-col>
@@ -65,7 +65,7 @@
                 <ion-row>
                   <ion-col>
                     <ion-item no-lines>
-                      <ion-label> Auto sync</ion-label>
+                      <ion-label>{{'auto_sync'|translate}}</ion-label>
                       <ion-toggle (ionChange)="applySettings(settingContent)" color="primary" [(ngModel)] = "settingObject.synchronization.isAutoSync"></ion-toggle>
                     </ion-item>
                   </ion-col>
@@ -83,21 +83,21 @@
                 <ion-row >
                   <ion-col>
                     <ion-item>
-                      <ion-label>Form Label</ion-label>
+                      <ion-label>{{'form_label'|translate}}</ion-label>
                       <ion-select (ionChange)="applySettings(settingContent)" [(ngModel)]="settingObject.entryForm.label" interface="action-sheet">
-                        <ion-option value="displayName">Display Name</ion-option>
-                        <ion-option value="formName">Form Name</ion-option>
+                        <ion-option value="displayName">{{'display_name'|translate}}</ion-option>
+                        <ion-option value="formName">{{'form_name'|translate}}</ion-option>
                       </ion-select>
                     </ion-item>
                     <ion-item>
-                      <ion-label>Form Layout</ion-label>
+                      <ion-label>{{'form_layout'|translate}}</ion-label>
                       <ion-select (ionChange)="applySettings(settingContent)" [(ngModel)]="settingObject.entryForm.formLayout" interface="action-sheet">
-                        <ion-option value="listLayout">List layout</ion-option>
-                        <ion-option value="tableLayout">Table layout</ion-option>
+                        <ion-option value="listLayout">{{'list_layout'|translate}}</ion-option>
+                        <ion-option value="tableLayout">{{'table_layout'|translate}}</ion-option>
                       </ion-select>
                     </ion-item>
                     <ion-item>
-                      <ion-label floating>Data elements per page(max)</ion-label>
+                      <ion-label floating>{{'data_element_per_page'|translate}}</ion-label>
                       <ion-input (ionBlur)="applySettings(settingContent)" type="number"  min="1" [(ngModel)]="settingObject.entryForm.maxDataElementOnDefaultForm"></ion-input>
                     </ion-item>
                   </ion-col>

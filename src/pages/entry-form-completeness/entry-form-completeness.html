@@ -2,7 +2,7 @@
 
   <ion-toolbar color="primary">
     <ion-title>
-      Completeness information
+      {{'completeness_information'|translate}}
     </ion-title>
     <ion-buttons start>
       <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
@@ -22,7 +22,7 @@
         <div class="content">
           <ion-row>
             <ion-col col-4>
-              <b>{{ info.key }}</b> :
+              <b>{{ info.key|translate }}</b> :
             </ion-col>
             <ion-col col-8>
               {{ info.value }}

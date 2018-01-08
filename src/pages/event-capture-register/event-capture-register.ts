@@ -41,7 +41,7 @@ export class EventCaptureRegisterPage implements OnDestroy,OnInit{
   ngOnInit(){
     this.currentProgram = this.programsProvider.lastSelectedProgram;
     this.currentOrgUnit = this.organisationUnitProvider.lastSelectedOrgUnit;
-    this.loadingMessage = "Loading user information";
+    this.loadingMessage = "loading_user_information";
     this.isLoading = true;
     this.dataDimension = this.params.get('dataDimension');
     this.userProvider.getCurrentUser().then((user: any)=>{

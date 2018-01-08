@@ -87,7 +87,7 @@ export class SettingsPage implements OnInit{
   applySettings(settingContent){
     //this.updateLoadingStatusOfSavingSetting(settingContent,true);
     this.settingsProvider.setSettingsForTheApp(this.currentUser,this.settingObject).then(()=>{
-      this.appProvider.setNormalNotification(settingContent.name + ' settings have been applied successfully',2000);
+      this.appProvider.setNormalNotification('Settings have been updated successfully',2000);
       this.settingsProvider.getSettingsForTheApp(this.currentUser).then((appSettings : any)=>{
         this.settingObject = appSettings;
         let timeValue = this.settingObject.synchronization.time;
@@ -101,7 +101,7 @@ export class SettingsPage implements OnInit{
       });
     }).catch(error=>{
       this.updateLoadingStatusOfSavingSetting(settingContent,false);
-      this.appProvider.setNormalNotification('Fail to apply changes on ' + settingContent.name + ' settings');
+      this.appProvider.setNormalNotification('Fail to apply changes on  settings');
     });
   }
 

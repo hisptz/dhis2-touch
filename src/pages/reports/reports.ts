@@ -35,7 +35,7 @@ export class ReportsPage implements OnInit{
   }
 
   ngOnInit(){
-    this.icons.reports = "assets/reports/reports.png";
+    this.icons.reports = "assets/icon/reports.png";
     this.loadingMessages = [];
     this.isLoading = true;
     this.reportList = [];
@@ -46,7 +46,7 @@ export class ReportsPage implements OnInit{
   }
 
   loadReportsList(user) {
-    this.setLoadingMessages('Loading reports');
+    this.loadingMessage = 'loading_reports';
     this.standardReportProvider.getReportList(user).then((reportList: any) => {
       this.reportList = reportList;
       this.reportListCopy = reportList;
@@ -57,9 +57,6 @@ export class ReportsPage implements OnInit{
     });
   }
 
-  setLoadingMessages(message){
-    this.loadingMessages.push(message);
-  }
 
   selectReport(report){
     let parameter = {
@@ -84,14 +81,14 @@ export class ReportsPage implements OnInit{
 
   doRefresh(refresher) {
     refresher.complete();
-    this.loadingMessage = "Downloading reports from the server";
+    this.loadingMessage = "downloading_reports_from_server";
     this.isLoading = true;
     let resource = 'reports';
     this.standardReportProvider.downloadReportsFromServer(this.currentUser).then((response:any)=> {
-      this.loadingMessage = "Prepare local storage for updates";
+      this.loadingMessage = "prepare_local_storage_for_updates";
       this.sqLite.dropTable(resource, this.currentUser.currentDatabase).then(()=>{
         this.sqLite.createTable(resource,this.currentUser.currentDatabase).then(()=>{
-          this.loadingMessage = "Saving reports from server";
+          this.loadingMessage = "saving_reports_from_server";
           this.standardReportProvider.saveReportsFromServer( response[resource], this.currentUser).then(() => {
             this.loadReportsList(this.currentUser);
           }, error=>{

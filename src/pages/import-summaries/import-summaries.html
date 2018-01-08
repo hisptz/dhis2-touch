@@ -8,7 +8,7 @@
 
   <ion-toolbar color="primary">
     <ion-title>
-      Import summaries
+      {{'import_summaries'|translate}}
     </ion-title>
     <ion-buttons start>
       <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
@@ -30,25 +30,25 @@
                 <thead>
                 <tr>
                   <th [attr.colspan]="'2'">
-                    <div *ngIf="key == 'dataValues'">Aggregate data</div>
-                    <div *ngIf="key == 'events'">Events</div>
-                    <div *ngIf="key == 'trackedEntityInstances'">Tracked entity instances</div>
-                    <div *ngIf="key == 'Enrollments'">Tracked entity enrollments</div>
-                    <div *ngIf="key == 'eventsForTracker'">Events for tracker</div>
+                    <div *ngIf="key == 'dataValues'">{{'aggregate_data'|translate}}</div>
+                    <div *ngIf="key == 'events'">{{'events'|translate}}</div>
+                    <div *ngIf="key == 'trackedEntityInstances'">{{'tracked_entity_instances'|translate}}</div>
+                    <div *ngIf="key == 'Enrollments'">{{'tracked_entity_enrollments'|translate}}</div>
+                    <div *ngIf="key == 'eventsForTracker'">{{'events_for_tracker'|translate}}</div>
                   </th>
                 </tr>
                 </thead>
                 <tbody >
                 <tr>
-                  <td>Success</td>
-                  <td>Failed</td>
+                  <td>{{'success'|translate}}</td>
+                  <td>{{'failed'|translate}}</td>
                 </tr>
                 <tr>
                   <td>{{ importSummaries[key].success }}</td>
                   <td>{{ importSummaries[key].fail }}</td>
                 </tr>
                 <tr *ngIf="importSummaries[key].errorMessages && importSummaries[key].errorMessages.length > 0">
-                  <th [attr.colspan]="'2'">Import conflicts/errors</th>
+                  <th [attr.colspan]="'2'">{{'import_conflicts_errors'|translate}}</th>
                 </tr>
                 <tr *ngFor="let errorMessage of importSummaries[key].errorMessages">
                   <td [attr.colspan]="'2'">

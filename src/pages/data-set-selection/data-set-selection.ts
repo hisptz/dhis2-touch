@@ -23,7 +23,7 @@ export class DataSetSelectionPage implements OnInit{
   }
 
   ngOnInit(){
-    this.icon = "assets/data-entry/form.png";
+    this.icon = "assets/icon/form.png";
     this.dataSetsList = this.navParams.get("dataSetsList");
     this.currentDataSet = this.navParams.get("currentDataSet");
   }

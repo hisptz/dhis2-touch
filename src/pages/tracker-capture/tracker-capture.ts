@@ -5,8 +5,6 @@ import {AppProvider} from "../../providers/app/app";
 import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
 import {ProgramsProvider} from "../../providers/programs/programs";
 import {TrackerCaptureProvider} from "../../providers/tracker-capture/tracker-capture";
-import {EventCaptureFormProvider} from "../../providers/event-capture-form/event-capture-form";
-import {EnrollmentsProvider} from "../../providers/enrollments/enrollments";
 
 /**
  * Generated class for the TrackerCapturePage page.
@@ -44,8 +42,6 @@ export class TrackerCapturePage implements OnInit{
               private userProvider : UserProvider,private appProvider : AppProvider,
               private programsProvider : ProgramsProvider,
               private trackerCaptureProvider : TrackerCaptureProvider,
-              private eventCaptureFormProvider : EventCaptureFormProvider,
-              private enrollmentsProvider : EnrollmentsProvider,
               private organisationUnitsProvider : OrganisationUnitsProvider) {
   }
 
@@ -53,52 +49,14 @@ export class TrackerCapturePage implements OnInit{
     if(this.isFormReady){
       this.loadingSavedTrackedEntityInstances(this.selectedProgram.id,this.selectedOrgUnit.id);
     }
-    //this.testTracker();
-  }
-
-  testTracker(){
-    this.trackerCaptureProvider.getTrackedEntityInstanceByStatus('not-synced',this.currentUser).then((trackedEntityInstances: any)=>{
-      if(trackedEntityInstances.length > 0){
-        this.trackerCaptureProvider.uploadTrackedEntityInstancesToServer(trackedEntityInstances,trackedEntityInstances,this.currentUser).then((trackedEntityInstanceIds : any)=>{
-          this.enrollmentsProvider.getSavedEnrollmentsByAttribute('trackedEntityInstance',trackedEntityInstanceIds,this.currentUser).then((enrollments: any)=>{
-            if(enrollments.length > 0){
-              this.trackerCaptureProvider.uploadEnrollments(enrollments,this.currentUser).then(()=>{
-                this.eventCaptureFormProvider.getEventsByAttribute('trackedEntityInstance',trackedEntityInstanceIds,this.currentUser).then((events : any)=>{
-                  if(events && events.length > 0){
-                    this.eventCaptureFormProvider.uploadEventsToSever(events,this.currentUser).then(()=>{}).catch(()=>{});
-                  }
-                }).catch(()=>{});
-
-              }).catch(error=>{});
-            }
-          }).catch(()=>{});
-
-        }).catch(error=>{});
-      }else{
-        this.eventCaptureFormProvider.getEventsByStatusAndType('not-synced','tracker-capture',this.currentUser).then((events : any)=>{
-          if(events && events.length > 0){
-            this.eventCaptureFormProvider.uploadEventsToSever(events,this.currentUser).then(()=>{
-            }).catch(()=>{});
-          }
-        }).catch(()=>{});
-      }
-    }).catch(()=>{});
-
-    this.trackerCaptureProvider.getTrackedEntityInstanceByStatus('synced',this.currentUser).then((trackedEntityInstances: any)=>{
-      console.log("Synced tracked entity : " + trackedEntityInstances.length);
-    }).catch(()=>{});
-
-    this.enrollmentsProvider.getSavedEnrollmentsByAttribute('syncStatus',['synced'],this.currentUser).then((enrollments: any)=>{
-      console.log("Synced enrollments : " + enrollments.length);
-    }).catch(()=>{});
   }
 
   ngOnInit(){
-    this.icons.orgUnit = "assets/data-entry/orgUnit.png";
-    this.icons.program = "assets/event-capture/program.png";
+    this.icons.orgUnit = "assets/icon/orgUnit.png";
+    this.icons.program = "assets/icon/program.png";
     this.trackedEntityInstances = [];
     this.attributeToDisplay = {};
-    this.loadingMessage = "Loading. user information";
+    this.loadingMessage = "loading_user_information";
     this.isLoading = true;
     this.isFormReady = false;
     this.userProvider.getCurrentUser().then((currentUser: any)=>{
@@ -129,7 +87,7 @@ export class TrackerCapturePage implements OnInit{
 
   loadingPrograms(){
     this.isLoading = true;
-    this.loadingMessage = "Loading assigned programs";
+    this.loadingMessage = "loading_assigned_programs";
     let programType = "WITH_REGISTRATION";
     this.programsProvider.getProgramsAssignedOnOrgUnitAndUserRoles(this.selectedOrgUnit.id,programType,this.programIdsByUserRoles,this.currentUser).then((programs : any)=>{
       this.programs = programs;
@@ -161,12 +119,12 @@ export class TrackerCapturePage implements OnInit{
       this.selectedOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
       this.organisationUnitLabel = this.selectedOrgUnit.name;
     }else{
-      this.organisationUnitLabel = "Touch to select organisation Unit";
+      this.organisationUnitLabel = "touch_to_select_organisation_unit";
     }
     if(this.selectedProgram && this.selectedProgram.name){
       this.programLabel = this.selectedProgram.name;
     }else {
-      this.programLabel = "Touch to select entry form";
+      this.programLabel = "touch_to_select_program";
     }
     this.isFormReady = this.isAllParameterSelected();
     this.isLoading = false;
@@ -246,7 +204,7 @@ export class TrackerCapturePage implements OnInit{
   }
 
   renderDataAsTable(){
-    this.loadingMessage = "Prepare table";
+    this.loadingMessage = "preparing_table";
     this.trackerCaptureProvider.getTableFormatResult(this.attributeToDisplay,this.trackedEntityInstances).then((response : any)=>{
       this.tableLayout = response.table;
       this.trackedEntityInstancesIds = response.trackedEntityInstancesIds;

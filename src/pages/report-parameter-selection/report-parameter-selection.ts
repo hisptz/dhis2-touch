@@ -42,9 +42,9 @@ export class ReportParameterSelectionPage implements OnInit{
   }
 
   ngOnInit(){
-    this.icons.orgUnit = "assets/reports/orgUnit.png";
-    this.icons.period = "assets/reports/period.png";
-    this.icons.report = "assets/reports/reports.png";
+    this.icons.orgUnit = "assets/icon/orgUnit.png";
+    this.icons.period = "assets/icon/period.png";
+    this.icons.report = "assets/icon/reports.png";
     this.isAllReportParameterSet = false;
     this.reportName = this.params.get('name');
     this.reportId = this.params.get("id");
@@ -68,13 +68,13 @@ export class ReportParameterSelectionPage implements OnInit{
       this.selectedOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
       this.selectedOrganisationUnitLabel = this.selectedOrgUnit.name;
     } else {
-      this.selectedOrganisationUnitLabel = "Touch to select organisation Unit";
+      this.selectedOrganisationUnitLabel = "touch_to_select_organisation_unit";
     }
     if (this.selectedPeriod && this.selectedPeriod.name) {
       this.selectedPeriodLabel = this.selectedPeriod.name;
 
     } else {
-      this.selectedPeriodLabel = "Touch to select Period";
+      this.selectedPeriodLabel = "touch_to_select_period";
     }
     this.isAllReportParameterSet = this.isAllReportParameterSelected();
   }

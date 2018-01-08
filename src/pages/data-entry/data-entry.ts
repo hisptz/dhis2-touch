@@ -47,12 +47,12 @@ export class DataEntryPage implements OnInit{
   }
 
   ngOnInit(){
-    this.icons.orgUnit = "assets/data-entry/orgUnit.png";
-    this.icons.dataSet = "assets/data-entry/form.png";
-    this.icons.period = "assets/data-entry/period.png";
-    this.icons.goToDataEntryForm = "assets/data-entry/enterDataPen.png";
+    this.icons.orgUnit = "assets/icon/orgUnit.png";
+    this.icons.dataSet = "assets/icon/form.png";
+    this.icons.period = "assets/icon/period.png";
+    this.icons.goToDataEntryForm = "assets/icon/enterDataPen.png";
 
-    this.loadingMessage = "Loading. user information";
+    this.loadingMessage = "loading_user_information";
     this.isLoading = true;
     this.currentPeriodOffset = 0;
     this.isDataSetDimensionApplicable = false;
@@ -89,19 +89,19 @@ export class DataEntryPage implements OnInit{
       this.selectedOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
       this.organisationUnitLabel = this.selectedOrgUnit.name;
     }else{
-      this.organisationUnitLabel = "Touch to select organisation Unit";
+      this.organisationUnitLabel = "touch_to_select_organisation_unit";
     }
     if(this.selectedDataSet && this.selectedDataSet.name){
       this.dataSetLabel = this.selectedDataSet.name;
     }else {
-      this.dataSetLabel = "Touch to select entry form";
+      this.dataSetLabel = "touch_to_select_entry_form";
       this.selectedPeriod = null;
     }
 
     if(this.selectedPeriod && this.selectedPeriod.name){
       this.periodLabel = this.selectedPeriod.name;
     }else{
-      this.periodLabel = "Touch to select period"
+      this.periodLabel = "touch_to_select_period"
     }
     this.isFormReady = this.isAllFormParameterSelected();
     this.isLoading = false;
@@ -273,7 +273,7 @@ export class DataEntryPage implements OnInit{
       }else{
         isFormReady = false;
       }
-    }else if(this.periodLabel == "Touch to select period" || this.dataSetLabel == "Touch to select entry form"){
+    }else if(this.periodLabel == "touch_to_select_period" || this.dataSetLabel == "touch_to_select_entry_form"){
       isFormReady = false;
     }
     return isFormReady;

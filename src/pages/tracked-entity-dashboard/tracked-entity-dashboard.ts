@@ -63,8 +63,8 @@ export class TrackedEntityDashboardPage implements OnInit{
   ngOnInit(){
     this.isDashboardWidgetOpen = {};
     this.trackedEntityAttributesSavingStatusClass = {};
-    this.icons["menu"] = "assets/dashboard/menu.png";
-    this.loadingMessage = "Loading user information";
+    this.icons["menu"] = "assets/icon/menu.png";
+    this.loadingMessage = "loading_user_information";
     this.isLoading = true;
     let trackedEntityInstancesId = this.navParams.get("trackedEntityInstancesId");
     this.currentProgram = this.programsProvider.lastSelectedProgram;
@@ -217,7 +217,7 @@ export class TrackedEntityDashboardPage implements OnInit{
 
   getDashboardWidgets(){
     return [
-      {id : 'enrollment',name : 'Enrollment & Profile',icon: 'assets/tracker/profile.png'}
+      {id : 'enrollment',name : 'Enrollment & Profile',icon: 'assets/icon/profile.png'}
     ];
   }
 

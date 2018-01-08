@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Tracked Entity Dashboard</ion-title>
+    <ion-title>{{'tracked_entity_dashboard'|translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -16,7 +16,7 @@
 <ion-content>
   <ion-grid>
     <div *ngIf="isLoading">
-      <page-loading [loadingMessage]="loadingMessage" [loadingSize]="'large'"></page-loading>
+      <page-loading [loadingMessage]="loadingMessage|translate" [loadingSize]="'large'"></page-loading>
     </div>
     <div *ngIf="!isLoading">
       <ion-row>
@@ -56,13 +56,13 @@
                   <div class="inputLabel">
                     <b>
                       <div class="inputLabel">
-                        Enrollments
+                        {{'enrollments'|translate}}
                       </div>
                     </b>
                     <hr>
                   </div>
                   <div class="inputLabel">
-                    Organisation unit
+                    {{'organisation_unit'|translate}}
                   </div>
                   <div class="input-field-container">
                     <ion-item>
@@ -70,7 +70,7 @@
                     </ion-item>
                   </div>
                   <div class="inputLabel">
-                    Program
+                    {{'program'|translate}}
                   </div>
                   <div class="input-field-container">
                     <ion-item>
@@ -82,7 +82,7 @@
                   <div class="inputLabel">
                     <b>
                       <div class="inputLabel">
-                        Profile
+                        {{'profile'|translate}}
                       </div>
                     </b>
                     <hr>

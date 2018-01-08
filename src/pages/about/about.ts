@@ -43,7 +43,7 @@ export class AboutPage implements OnInit{
   }
 
   ngOnInit() {
-    this.loadingMessage = 'Loading app information';
+    this.loadingMessage = 'loading_app_information';
     this.isLoading = true;
     this.logoUrl = 'assets/img/logo.png';
     this.aboutContents = this.aboutProvider.getAboutContentDetails();
@@ -60,7 +60,7 @@ export class AboutPage implements OnInit{
     this.hasAllDataBeenLoaded = false;
     this.aboutProvider.getAppInformation().then(appInformation => {
       this.appInformation = appInformation;
-      this.loadingMessage = 'Loading system information';
+      this.loadingMessage = 'loading_system_information';
       this.aboutProvider.getSystemInformation().then(systemInfo => {
         this.systemInfo = systemInfo;
         if (this.aboutContents.length > 0) {
@@ -101,7 +101,7 @@ export class AboutPage implements OnInit{
   }
 
   loadingDataValueStatus(){
-    this.loadingMessage = 'Loading data values storage status';
+    this.loadingMessage = 'loading_data_values_storage_status';
     this.isLoading = true;
     this.dataValuesProvider.getDataValuesByStatus("synced",this.currentUser).then((syncedDataValues : any)=>{
       this.dataValuesProvider.getDataValuesByStatus("not-synced",this.currentUser).then((unSyncedDataValues : any)=>{
@@ -121,7 +121,7 @@ export class AboutPage implements OnInit{
   }
 
   loadingEventStatus(){
-    this.loadingMessage = "Loading events storage status";
+    this.loadingMessage = "loading_events_storage_status";
     this.eventCaptureFormProvider.getEventsByStatusAndType('synced','event-capture',this.currentUser).then((events : any)=>{
       this.eventsStorage.online = events.length;
       this.eventCaptureFormProvider.getEventsByStatusAndType('not-synced','event-capture',this.currentUser).then((events : any)=>{
@@ -154,7 +154,7 @@ export class AboutPage implements OnInit{
   }
 
   loadingEnrollmentStatus(){
-    this.loadingMessage = "Loading enrollments storage status";
+    this.loadingMessage = "loading_enrollments_storage_status";
     this.trackerCaptureProvider.getTrackedEntityInstanceByStatus('synced',this.currentUser).then((trackedEntityInstances : any)=>{
       this.enrollmentStorage.online = trackedEntityInstances.length;
       this.trackerCaptureProvider.getTrackedEntityInstanceByStatus('not-synced',this.currentUser).then((trackedEntityInstances : any)=>{

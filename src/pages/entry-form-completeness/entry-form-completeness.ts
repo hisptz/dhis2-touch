@@ -48,27 +48,27 @@ export class EntryFormCompletenessPage implements OnInit{
 
   prepareUserInformation(user,username){
     //@todo checking keys on future
-    this.userInformation.push({key : "Full name",value : user.firstName + " " + user.surname});
-    this.userInformation.push({key : "Username",value : username});
+    this.userInformation.push({key : "full_name",value : user.firstName + " " + user.surname});
+    this.userInformation.push({key : "username",value : username});
     if(user && user.email){
-      this.userInformation.push({key : "E-mail",value : user.email});
+      this.userInformation.push({key : "e_mail",value : user.email});
     }
     if(user && user.phoneNumber){
-      this.userInformation.push({key : "Phone number",value : user.phoneNumber});
+      this.userInformation.push({key : "phone_number",value : user.phoneNumber});
     }
     if(user && user.organisationUnits){
       let organisationUnits = [];
       user.organisationUnits.forEach((organisationUnit : any)=>{
         organisationUnits.push(organisationUnit.name);
       });
-      this.userInformation.push({key : "Assigned Roles",value : organisationUnits.join(', ')});
+      this.userInformation.push({key : "assigned_organisation_units",value : organisationUnits.join(', ')});
     }
     if(user && user.roles){
       let roles = [];
       user.roles.forEach((role : any)=>{
         roles.push(role.name);
       });
-      this.userInformation.push({key : "Assigned Roles",value : roles.join(', ')});
+      this.userInformation.push({key : "assigned_roles",value : roles.join(', ')});
     }
     this.isLoading = false;
   }

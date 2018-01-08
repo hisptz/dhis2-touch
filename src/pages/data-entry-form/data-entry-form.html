@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Entry form</ion-title>
+    <ion-title>{{'entry_form'|translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -19,22 +19,22 @@
       <ion-col>
         <div *ngIf="entryFormParameter" class="item-card" full padding-bottom padding-top>
           <div (tap)="goBack()" padding-bottom >
-            <b>Organisation Unit</b> : {{ entryFormParameter.orgUnit.name }}<br>
-            <b>Form</b> : {{ entryFormParameter.dataSet.name }}<br>
-            <b>Period</b> : {{ entryFormParameter.period.name }}<br>
+            <b>{{'organisation_unit'|translate}}</b> : {{ entryFormParameter.orgUnit.name }}<br>
+            <b>{{'form'|translate}}</b> : {{ entryFormParameter.dataSet.name }}<br>
+            <b>{{'period'|translate}}</b> : {{ entryFormParameter.period.name }}<br>
             <span *ngIf="!isLoading" ><b>Synced</b> : {{ storageStatus.online }} <b>Not synced</b> : {{storageStatus.offline }}</span>
           </div>
           <div *ngIf="!isLoading && indicators && indicators.length > 0"  >
             <div (click)="viewEntryFormIndicators(indicators)" class="item-card" color="font-color" >
               <ion-item >
-                Available Indicators
+                {{ 'available_indicators'|translate}}
                 <ion-badge color="icon-color" item-end>{{ indicators.length }}</ion-badge>
               </ion-item>
             </div>
           </div>
         </div>
         <div *ngIf="isLoading">
-          <page-loading [loadingMessage]="loadingMessage" [loadingSize]="'large'" ></page-loading>
+          <page-loading [loadingMessage]="loadingMessage|translate" [loadingSize]="'large'" ></page-loading>
         </div>
         <div *ngIf="!isLoading">
           <div *ngIf="entryFormSections && entryFormSections.length == 0">
@@ -86,12 +86,12 @@
               </ion-col>
               <ion-col  col-5 col-sm-8 *ngIf="!isDataSetCompleted">
                 <button color="favorite" round ion-button full [disabled] ="isDataSetCompletenessProcessRunning" (tap)="updateDataSetCompleteness()">
-                  Complete
+                  {{'complete'|translate}}
                 </button>
               </ion-col>
               <ion-col  col-5 col-sm-8 *ngIf="isDataSetCompleted">
                 <button  color="danger" round ion-button full [disabled] = "isDataSetCompletenessProcessRunning" (tap)="updateDataSetCompleteness()">
-                  Undo Complete
+                  {{'undo_complete'|translate}}
                 </button>
               </ion-col>
             </ion-row>
@@ -99,26 +99,26 @@
             <ion-row *ngIf="entryFormSections.length == 1">
               <ion-col  col-6 col-sm-6>
                 <button color="favorite" round ion-button full [disabled] ="isDataSetCompletenessProcessRunning || isDataSetCompleted" (tap)="updateDataSetCompleteness()">
-                  Complete
+                  {{'complete'|translate}}
                 </button>
               </ion-col>
               <ion-col  col-6 col-sm-6>
                 <button  color="danger" round ion-button full [disabled] = "isDataSetCompletenessProcessRunning || !isDataSetCompleted" (tap)="updateDataSetCompleteness()">
-                  Undo Complete
+                  {{'undo_complete'|translate}}
                 </button>
               </ion-col>
             </ion-row>
 
-            <div *ngIf="isDataSetCompletenessProcessRunning" class="item-card">
+            <div *ngIf="isDataSetCompletenessProcessRunning" class="item-card animated fadeIn">
               <ion-row>
                 <ion-col col-1 ><page-loading loadingSize="small"></page-loading></ion-col>
-                <ion-col col-11><p>&nbsp;Please wait ...</p></ion-col>
+                <ion-col col-11><p>&nbsp;{{'please_wait'|translate}} ...</p></ion-col>
               </ion-row>
             </div>
             <div *ngIf="!isDataSetCompletenessProcessRunning">
               <div *ngIf="dataSetsCompletenessInfo && dataSetsCompletenessInfo.complete">
                 <div class="item-card" padding-bottom padding-top (click)="viewUserCompletenessInformation(dataSetsCompletenessInfo)">
-                  Completed by <b>{{ dataSetsCompletenessInfo.storedBy }}</b> on <b>{{ dataSetsCompletenessInfo.date }}</b>
+                  {{'completed_by'|translate}} <b>{{ dataSetsCompletenessInfo.storedBy }}</b> {{'on'|translate }} <b>{{ dataSetsCompletenessInfo.date }}</b>
                 </div>
               </div>
             </div>

@@ -1,14 +1,20 @@
-import { Component,OnInit} from '@angular/core';
+import { Component } from '@angular/core';
+import {BackgroundMode} from "@ionic-native/background-mode";
 import {UserProvider} from "../../providers/user/user";
-import { BackgroundMode } from '@ionic-native/background-mode';
+
+
+import {AppsPage} from "../apps/apps";
+import {AccountPage} from "../account/account";
+
 
 @Component({
   templateUrl: 'tabs.html'
 })
-export class TabsPage implements OnInit{
-  tab1Root = 'AppsPage';
-  tab2Root = 'AccountsPage';
-  accountName : string = 'Account';
+export class TabsPage {
+
+  tab1Root = AppsPage;
+  tab2Root = AccountPage;
+  accountName : string = 'account';
 
   constructor(public user : UserProvider,private backgroundMode: BackgroundMode) {
 
@@ -16,7 +22,6 @@ export class TabsPage implements OnInit{
 
   ngOnInit() {
     this.backgroundMode.disable().then(()=>{
-      console.log("success");
     },reason => (console.log('here : ' + JSON.stringify(reason))));
     this.user.getUserData().then(userData=>{
       this.setUserAccountName(userData);

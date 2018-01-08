@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Data Entry</ion-title>
+    <ion-title>{{'data_entry'|translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -16,44 +16,44 @@
 <ion-content >
   <ion-grid>
     <ion-row>
-      <ion-col>
+      <ion-col class="animated fadeIn">
         <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openOrganisationUnitTree()" >
           <img  class="side-menu-icon" [src]="icons.orgUnit"/>&nbsp;&nbsp;
-          {{ organisationUnitLabel }}
+          {{ organisationUnitLabel|translate }}
         </div>
 
         <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openEntryFormList()" >
           <img  class="side-menu-icon" [src]="icons.dataSet"/>&nbsp;&nbsp;
-          {{ dataSetLabel }}
+          {{ dataSetLabel|translate }}
         </div>
 
         <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openPeriodList()" >
           <img  class="side-menu-icon" [src]="icons.period"/>&nbsp;&nbsp;
-          {{ periodLabel }}
+          {{ periodLabel|translate}}
         </div>
 
         <div *ngIf="selectedPeriod && selectedPeriod.iso && dataSetCategoryCombo && dataSetCategoryCombo.id ">
           <div *ngIf="isDataSetDimensionApplicable">
             <div *ngFor="let category of dataSetCategoryCombo.categories;let categoryIndex = index">
-              <div (tap)="openDataDimensionSelection(category)" class="item-card-category" color="font-color" full text-center text-wrap  >
+              <div (tap)="openDataDimensionSelection(category)" class="item-card-category animated fadeIn" color="font-color" full text-center text-wrap  >
                 <div style="padding-bottom: 5px;"><b>{{ category.name }}</b></div>
                 <div *ngIf="selectedDataDimension[categoryIndex]">{{ selectedDataDimension[categoryIndex].name }}</div>
-                <div *ngIf="!selectedDataDimension[categoryIndex]">Touch to select option</div>
+                <div *ngIf="!selectedDataDimension[categoryIndex]">{{'touch_to_select_option'|translate}}</div>
               </div>
             </div>
           </div>
-          <div class="item-card" *ngIf="!isDataSetDimensionApplicable">
+          <div class="item-card animated fadeIn" *ngIf="!isDataSetDimensionApplicable">
             <warning [warningMessage]="isDataSetDimensionApplicableCategoriesMessage" ></warning>
           </div>
         </div>
-        <div *ngIf="isFormReady" class="item-card" padding-top padding-bottom full (tap)="openDataEntryForm()">
-          <div><b>Organisation Unit</b> : {{ organisationUnitLabel }}<br>
-            <b>Form</b> : {{ dataSetLabel }}<br>
-            <b>Period</b> : {{ periodLabel }}
+        <div *ngIf="isFormReady" class="item-card animated fadeIn" padding-top padding-bottom full (tap)="openDataEntryForm()">
+          <div><b>{{'organisation_unit' |translate}}</b> : {{ organisationUnitLabel|translate }}<br>
+            <b>{{'form'|translate }}</b> : {{ dataSetLabel|translate}}<br>
+            <b>{{'period'|translate}}</b> : {{ periodLabel|translate}}
           </div>
           <div class="item-card" color="font-color"  ion-button clear full text-center text-capitalize >
             <img  class="side-menu-icon" [src]="icons.goToDataEntryForm"/>&nbsp;&nbsp;
-            Enter data
+            {{'enter_data'|translate}}
           </div>
         </div>
       </ion-col>

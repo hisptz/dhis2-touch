@@ -7,7 +7,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>
-      Period selection
+      {{'period_selection'|translate}}
     </ion-title>
     <ion-buttons start>
       <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
@@ -24,12 +24,12 @@
     <ion-row>
       <ion-col >
         <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="changePeriodSelection(currentPeriodOffset - 1)" >
-          Previous
+          {{'previous'|translate}}
         </div>
       </ion-col>
       <ion-col >
         <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="changePeriodSelection(currentPeriodOffset + 1)" >
-          Previous
+          {{'next'|translate}}
         </div>
       </ion-col>
     </ion-row>
@@ -40,7 +40,7 @@
           <span ion-text [color]="(currentPeriod.iso == period.iso) ?'current' : 'font-color'">{{ period.name }}</span>
         </ion-item>
         <ion-item *ngIf = "periods.length == 0">
-          There is no period to select
+          {{'there_is_no_period_to_select'|translate}}
         </ion-item>
       </ion-col>
     </ion-row>

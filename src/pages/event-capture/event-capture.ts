@@ -52,13 +52,13 @@ export class EventCapturePage implements OnInit {
   }
 
   ngOnInit() {
-    this.icons.orgUnit = "assets/data-entry/orgUnit.png";
-    this.icons.program = "assets/event-capture/program.png";
+    this.icons.orgUnit = "assets/icon/orgUnit.png";
+    this.icons.program = "assets/icon/program.png";
 
     this.selectedDataDimension = [];
     this.programIdsByUserRoles = [];
     this.programs = [];
-    this.loadingMessage = "Loading user information";
+    this.loadingMessage = "loading_user_information";
     this.isLoading = true;
     this.isFormReady = false;
     this.isProgramDimensionApplicable = false;
@@ -95,19 +95,6 @@ export class EventCapturePage implements OnInit {
     }
   }
 
-  testEvents(){
-    this.eventCaptureFormProvider.getEventsByStatusAndType('not-synced','event-capture',this.currentUser).then((events : any)=>{
-      console.log("Not synced : " + events.length);
-      if(events && events.length > 0){
-        this.eventCaptureFormProvider.uploadEventsToSever(events,this.currentUser).then(()=>{
-        }).catch(()=>{});
-      }
-    }).catch(()=>{});
-    this.eventCaptureFormProvider.getEventsByStatusAndType('synced','event-capture',this.currentUser).then((events : any)=>{
-      console.log("Synced : " + events.length)
-    }).catch(()=>{});
-  }
-
   loadingAppSetting(){
     this.settingsProvider.getSettingsForTheApp(this.currentUser).then((appSettings : any)=>{
       this.dataEntrySettings =  appSettings.entryForm;
@@ -116,7 +103,7 @@ export class EventCapturePage implements OnInit {
 
   loadingPrograms() {
     this.isLoading = true;
-    this.loadingMessage = "Loading assigned programs";
+    this.loadingMessage = "loading_assigned_programs";
     let programType = "WITHOUT_REGISTRATION";
     this.programsProvider.getProgramsAssignedOnOrgUnitAndUserRoles(this.selectedOrgUnit.id, programType, this.programIdsByUserRoles, this.currentUser).then((programs: any) => {
       this.programs = programs;
@@ -141,12 +128,12 @@ export class EventCapturePage implements OnInit {
       this.selectedOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
       this.organisationUnitLabel = this.selectedOrgUnit.name;
     } else {
-      this.organisationUnitLabel = "Touch to select organisation Unit";
+      this.organisationUnitLabel = "touch_to_select_organisation_unit";
     }
     if (this.selectedProgram && this.selectedProgram.name) {
       this.programLabel = this.selectedProgram.name;
     } else {
-      this.programLabel = "Touch to select entry form";
+      this.programLabel = "touch_to_select_program";
     }
     this.isFormReady = this.isAllParameterSelected();
     this.isLoading = false;

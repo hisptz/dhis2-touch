@@ -7,84 +7,82 @@
 <ion-header>
 
   <ion-navbar color="primary">
-
-    <ion-title>Apps</ion-title>
-
+    <ion-title>{{'apps' |translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content>
-
+<ion-content >
   <ion-grid>
-    <ion-row >
+    <ion-row class="animated fadeIn">
 
-      <ion-col col-4 (tap)="goToView('DataEntryPage')">
+      <ion-col col-4 [ngClass]="animationEffect.data_entry" (tap)="goToView('data_entry')">
         <div class="apps-contents" padding>
           <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/app-icons/data-entry.png">
+            <img class="menu-app-icon-list" src="assets/icon/data-entry.png">
           </ion-thumbnail>
-          <p class="menu-app" >Data Entry</p>
+          <p class="menu-app" >{{'data_entry'|translate}}</p>
         </div>
 
       </ion-col>
 
-      <ion-col col-4 (tap)="goToView('EventCapturePage')" >
+      <ion-col col-4 [ngClass]="animationEffect.event_capture" (tap)="goToView('event_capture')" >
         <div class="apps-contents" padding>
           <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/app-icons/event-capture.png">
+            <img class="menu-app-icon-list" src="assets/icon/event-capture.png">
           </ion-thumbnail>
-          <p class="menu-app" >Event Capture</p>
+          <p class="menu-app" >{{'event_capture'|translate}}</p>
         </div>
       </ion-col>
 
-      <ion-col col-4 (tap)="goToView('ReportsPage')"  >
+      <ion-col col-4 [ngClass]="animationEffect.reports" (tap)="goToView('reports')"  >
         <div class="apps-contents" padding>
           <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/app-icons/reports.png">
+            <img class="menu-app-icon-list" src="assets/icon/reports.png">
           </ion-thumbnail>
-          <p class="menu-app">Reports</p>
+          <p class="menu-app">{{'reports'|translate}}</p>
         </div>
       </ion-col>
     </ion-row>
 
-    <ion-row>
-      <ion-col col-4 (tap)="goToView('DashboardPage')" >
+    <ion-row class="animated fadeIn">
+      <ion-col col-4 [ngClass]="animationEffect.dashboard" (tap)="goToView('dashboard')" >
         <div class="apps-contents" padding>
           <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/app-icons/dashboard.png">
+            <img class="menu-app-icon-list" src="assets/icon/dashboard.png">
           </ion-thumbnail>
-          <p class="menu-app">Dashboard</p>
+          <p class="menu-app">{{'dashboard'|translate}}</p>
         </div>
       </ion-col>
-      <ion-col col-4 (tap)="goToView('TrackerCapturePage')" >
+      <ion-col col-4 [ngClass]="animationEffect.tracker_capture" (tap)="goToView('tracker_capture')" >
         <div class="apps-contents" padding>
           <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/app-icons/tracker-capture.png">
+            <img class="menu-app-icon-list" src="assets/icon/tracker-capture.png">
           </ion-thumbnail>
-          <p class="menu-app">Tracker Capture</p>
+          <p class="menu-app">{{'tracker_capture'|translate}}</p>
         </div>
       </ion-col>
-      <ion-col col-4 (tap)="goToView('SyncPage')" >
+      <ion-col col-4 [ngClass]="animationEffect.sync" (tap)="goToView('sync')" >
         <div class="apps-contents" padding>
           <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/app-icons/sync.png">
+            <img class="menu-app-icon-list" src="assets/icon/sync.png">
           </ion-thumbnail>
-          <p class="menu-app" >Sync</p>
-        </div>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col col-4 (tap)="goToView('SettingsPage')" >
-        <div class="apps-contents" padding>
-          <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/app-icons/settings.png">
-          </ion-thumbnail>
-          <p class="menu-app" >Settings</p>
+          <p class="menu-app" >{{'sync'|translate}}</p>
         </div>
       </ion-col>
     </ion-row>
+
+    <ion-row class="animated fadeIn">
+      <ion-col col-4 [ngClass]="animationEffect.settings" (tap)="goToView('settings')" >
+        <div class="apps-contents" padding>
+          <ion-thumbnail >
+            <img class="menu-app-icon-list" src="assets/icon/settings.png">
+          </ion-thumbnail>
+          <p class="menu-app" >{{'settings'|translate}}</p>
+        </div>
+      </ion-col>
+    </ion-row>
+
   </ion-grid>
-
 </ion-content>
