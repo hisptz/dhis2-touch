@@ -58,11 +58,10 @@ export class OrganisationUnitsProvider {
       for(let orgUnitId of orgUnitIds){
         let fields ="fields=id,name,path,ancestors[id,name,children[id]],openingDate,closedDate,level,children[id,name,children[id],parent";
         let filter="filter=path:ilike:";
-        let url = "/api/25/"+this.resource+".json?paging=false&";
+        let url = "/api/25/"+this.resource+".json?";
         url += fields + "&" + filter + orgUnitId;
-        this.HttpClient.get(url,currentUser).then((response:any)=>{
+        this.HttpClient.get(url,currentUser,this.resource,800).then((response:any)=>{
           try{
-            response = JSON.parse(response.data);
             counts = counts + 1;
             orgUnits = this.appendOrgUnitsFromServerToOrgUnitArray(orgUnits,response);
             if(counts == orgUnitIds.length){

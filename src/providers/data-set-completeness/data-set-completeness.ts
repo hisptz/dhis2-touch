@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClientProvider} from "../http-client/http-client";
 
 /*
@@ -10,7 +10,8 @@ import {HttpClientProvider} from "../http-client/http-client";
 @Injectable()
 export class DataSetCompletenessProvider {
 
-  constructor(private httpClient : HttpClientProvider) {}
+  constructor(private httpClient: HttpClientProvider) {
+  }
 
   /**
    *
@@ -21,13 +22,15 @@ export class DataSetCompletenessProvider {
    * @param currentUser
    * @returns {Promise<any>}
    */
-  completeOnDataSetRegistrations(dataSetId : string, period : string, orgUnitId :string, dataDimension, currentUser) {
+  completeOnDataSetRegistrations(dataSetId: string, period: string, orgUnitId: string, dataDimension, currentUser) {
     let parameter = this.getDataSetCompletenessParameter(dataSetId, period, orgUnitId, dataDimension);
-    return new Promise( (resolve, reject)=> {
-      this.httpClient.defaultPost('/api/25/completeDataSetRegistrations?' + parameter, {}, currentUser).then(()=> {
+    return new Promise((resolve, reject) => {
+      this.httpClient.defaultPost('/api/25/completeDataSetRegistrations?' + parameter, {}, currentUser).then(() => {
         resolve();
-      }, error=> {
+      }, error => {
         reject(error);
+      }).catch((e) => {
+        console.log(JSON.stringify(e));
       });
     });
   }
@@ -42,12 +45,12 @@ export class DataSetCompletenessProvider {
    * @param currentUser
    * @returns {Promise<any>}
    */
-  unDoCompleteOnDataSetRegistrations(dataSetId : string, period : string, orgUnitId : string, dataDimension, currentUser) {
+  unDoCompleteOnDataSetRegistrations(dataSetId: string, period: string, orgUnitId: string, dataDimension, currentUser) {
     let parameter = this.getDataSetCompletenessParameter(dataSetId, period, orgUnitId, dataDimension);
-    return new Promise( (resolve, reject) =>{
-      this.httpClient.delete('/api/25/completeDataSetRegistrations?' + parameter, currentUser).then(()=> {
+    return new Promise((resolve, reject) => {
+      this.httpClient.delete('/api/25/completeDataSetRegistrations?' + parameter, currentUser).then(() => {
         resolve();
-      }, error=> {
+      }, error => {
         reject(error);
       });
     });
@@ -62,19 +65,19 @@ export class DataSetCompletenessProvider {
    * @param currentUser
    * @returns {Promise<any>}
    */
-  getDataSetCompletenessInfo(dataSetId : string, period : string, orgUnitId :string, dataDimension, currentUser) {
+  getDataSetCompletenessInfo(dataSetId: string, period: string, orgUnitId: string, dataDimension, currentUser) {
     let parameter = "dataSetId=" + dataSetId + "&periodId=" + period + "&organisationUnitId=" + orgUnitId;
     if (dataDimension.cp != "") {
       parameter += "&cc=" + dataDimension.cc + "&cp=" + dataDimension.cp;
     }
-    return new Promise( (resolve, reject)=> {
-      this.httpClient.get('/dhis-web-dataentry/getDataValues.action?' + parameter, currentUser).then((response : any )=> {
+    return new Promise((resolve, reject) => {
+      this.httpClient.get('/dhis-web-dataentry/getDataValues.action?' + parameter, currentUser).then((response: any) => {
         response = JSON.parse(response.data);
-        if(response && response.dataValues){
+        if (response && response.dataValues) {
           delete response.dataValues;
         }
         resolve(response);
-      }, error=> {
+      }, error => {
         reject();
       });
     });
@@ -86,12 +89,12 @@ export class DataSetCompletenessProvider {
    * @param currentUser
    * @returns {Promise<any>}
    */
-  getUserCompletenessInformation(username,currentUser){
-    return new Promise( (resolve, reject)=> {
-      this.httpClient.get('/dhis-web-commons-ajax-json/getUser.action?username=' + username, currentUser).then((response : any )=> {
+  getUserCompletenessInformation(username, currentUser) {
+    return new Promise((resolve, reject) => {
+      this.httpClient.get('/dhis-web-commons-ajax-json/getUser.action?username=' + username, currentUser).then((response: any) => {
         response = JSON.parse(response.data);
         resolve(response);
-      }, error=> {
+      }, error => {
         reject();
       });
     });
@@ -106,7 +109,7 @@ export class DataSetCompletenessProvider {
    * @param dataDimension
    * @returns {string}
    */
-  getDataSetCompletenessParameter(dataSetId : string, period :string, orgUnitId :string, dataDimension) {
+  getDataSetCompletenessParameter(dataSetId: string, period: string, orgUnitId: string, dataDimension) {
     let parameter = "ds=" + dataSetId + "&pe=" + period + "&ou=" + orgUnitId;
     if (dataDimension.cp != "") {
       parameter += "&cc=" + dataDimension.cc + "&cp=" + dataDimension.cp;

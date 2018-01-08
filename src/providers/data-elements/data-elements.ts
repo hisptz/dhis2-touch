@@ -23,7 +23,7 @@ export class DataElementsProvider {
    * @returns {Promise<any>}
    */
   downloadDataElementsFromServer(currentUser){
-    let fields= "id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]";
+    let fields= "id,name,formName,categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]";
     let url = "/api/25/"+this.resource+".json?paging=false&fields=" + fields;
     return new Promise((resolve, reject)=> {
       this.HttpClient.get(url,currentUser).then((response : any)=>{

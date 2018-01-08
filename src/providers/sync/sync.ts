@@ -33,12 +33,12 @@ export class SyncProvider {
 
   getSyncContentDetails(){
     let syncContents = [
-      {id : 'dataViaSms',name : 'Upload data via sms',icon: 'assets/sync-icons/sms.png'},
-      {id : 'dataViaInternet',name : 'Upload data via internet',icon: 'assets/sync-icons/internet.png'},
-      {id : 'downloadMetadata',name : 'Download metadata',icon: 'assets/sync-icons/download-metadata.png'},
-      //{id : 'downloadData',name : 'Download data',icon: 'assets/sync-icons/download-data.png'},
-      {id : 'clearData',name : 'Clear local data',icon: 'assets/sync-icons/clear-data.png'},
-      {id : 'clearMetadata',name : 'Clear local metadata',icon: 'assets/sync-icons/clear-metadata.png'},
+      {id : 'dataViaSms',name : 'upload_data_via_sms',icon: 'assets/icon/sms.png'},
+      {id : 'dataViaInternet',name : 'upload_data_via_internet',icon: 'assets/icon/internet.png'},
+      {id : 'downloadMetadata',name : 'download_metadata',icon: 'assets/icon/download-metadata.png'},
+      //{id : 'downloadData',name : 'download_data',icon: 'assets/icon/download-data.png'},
+      {id : 'clearData',name : 'clear_local_data',icon: 'assets/icon/clear-data.png'},
+      {id : 'clearMetadata',name : 'clear_local_metadata',icon: 'assets/icon/clear-metadata.png'},
     ];
     return syncContents;
   }
@@ -46,8 +46,8 @@ export class SyncProvider {
 
   getDownloadDataDetails(){
     let downloadContents = [
-      {id : 'dataValues',name : 'Data values',icon: 'assets/download-data/download-data.png'},
-      {id : 'events',name : 'Events',icon: 'assets/download-data/download-events.png'},
+      {id : 'dataValues',name : 'data_values',icon: 'assets/icon/download-data.png'},
+      {id : 'events',name : 'events',icon: 'assets/icon/download-events.png'},
 
     ];
     return downloadContents;

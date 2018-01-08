@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import 'rxjs/add/operator/map';
 import {DATABASE_STRUCTURE} from "../../constants/database-structure";
-import {AppProvider} from "../app/app";
 
 /*
   Generated class for the SqlLiteProvider provider.
@@ -112,7 +111,6 @@ export class SqlLiteProvider {
    * @returns {Promise<T>}
    */
   insertBulkDataOnTable(tableName, bulkData,databaseName,startPoint?,endPoint?){
-
     let insertBatchSize = this.getDataBaseStructure()[tableName].batchSize;
     let start = (startPoint)? parseInt(startPoint) : 0;
     let end = (endPoint)? parseInt(endPoint) : insertBatchSize;

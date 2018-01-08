@@ -48,6 +48,7 @@ export class PeriodSelectionProvider {
    */
   getPeriods(periodType,openFuturePeriods,currentPeriodOffset){
     let periodSelection = [];
+
     let periods = dhis2.period.generator.generateReversedPeriods(periodType, currentPeriodOffset);
     periods = dhis2.period.generator.filterOpenPeriods(periodType, periods, openFuturePeriods);
     periods.forEach((period : any)=>{

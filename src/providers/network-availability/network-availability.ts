@@ -16,11 +16,14 @@ export class NetworkAvailabilityProvider {
   constructor(public AppProvider: AppProvider,public network : Network) {}
 
   getNetWorkStatus(){
-    return dhis2.network;
+    return {
+      isAvailable : (this.network.type == "unknown" || this.network.type == "none")?false:true,
+      message : (this.network.type == "unknown" || this.network.type == "none")?"You are offline" : "You are online",
+      networkType : this.network.type
+    };
   }
 
   setNetworkStatusDetection(){
-    this.updateNetworkStatus();
     this.network.onConnect().subscribe(data => {
       this.displayNetworkUpdate(data.type);
     }, error => console.error(error));
@@ -31,21 +34,10 @@ export class NetworkAvailabilityProvider {
   }
 
   displayNetworkUpdate(connectionState: string){
-    this.updateNetworkStatus();
     let networkType = this.network.type;
     console.log('networkType : ' + networkType);
     let message = `You are now ${connectionState}`;
     this.AppProvider.setTopNotification(message);
-  }
-
-  updateNetworkStatus(){
-    if(dhis2 && dhis2.network){
-      dhis2.network = {
-        isAvailable : (this.network.type == "unknown" || this.network.type == "none")?false:true,
-        message : (this.network.type == "unknown" || this.network.type == "none")?"You are offline" : "You are online",
-        networkType : this.network.type
-      };
-    }
   }
 
 }

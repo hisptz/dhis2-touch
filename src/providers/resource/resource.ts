@@ -15,16 +15,16 @@ export class ResourceProvider {
 
   getDashBoardItemsIcons() {
     return {
-      USERS: "assets/dashboard/roles.png",
-      REPORTS: "assets/dashboard/table.png",
-      RESOURCES: "assets/dashboard/roles.png",
-      APP: "assets/dashboard/roles.png",
-      MESSAGES: "assets/dashboard/sms.png",
-      CHART: "assets/dashboard/charts.png",
-      EVENT_CHART: "assets/dashboard/charts.png",
-      EVENT_REPORT: "assets/dashboard/table.png",
-      MAP: "assets/dashboard/map.png",
-      REPORT_TABLE: "assets/dashboard/table.png",
+      USERS: "assets/icon/roles.png",
+      REPORTS: "assets/icon/table.png",
+      RESOURCES: "assets/icon/roles.png",
+      APP: "assets/icon/roles.png",
+      MESSAGES: "assets/icon/sms.png",
+      CHART: "assets/icon/charts.png",
+      EVENT_CHART: "assets/icon/charts.png",
+      EVENT_REPORT: "assets/icon/table.png",
+      MAP: "assets/icon/map.png",
+      REPORT_TABLE: "assets/icon/table.png",
     }
   }
 
@@ -33,64 +33,63 @@ export class ResourceProvider {
       charts: [
         {
           type: 'line',
-          icon: 'assets/dashboard/line.png',
+          icon: 'assets/icon/line.png',
           isDisabled: false
         },
         {
           type: 'bar',
-          icon: 'assets/dashboard/bar.png',
+          icon: 'assets/icon/bar.png',
           isDisabled: false
         },
         {
           type: "column",
-          icon: 'assets/dashboard/column.png',
+          icon: 'assets/icon/column.png',
           isDisabled: false
         },
         {
           type: "stacked_column",
-          icon: 'assets/dashboard/stacked-column.png',
+          icon: 'assets/icon/stacked-column.png',
           isDisabled: false
         },
         {
           type: "stacked_bar",
-          icon: 'assets/dashboard/stacked-bar.png',
+          icon: 'assets/icon/stacked-bar.png',
           isDisabled: false
         },
         {
           type: "area",
-          icon: 'assets/dashboard/area.png',
+          icon: 'assets/icon/area.png',
           isDisabled: false
         },
         {
           type: "pie",
-          icon: 'assets/dashboard/pie.png',
+          icon: 'assets/icon/pie.png',
           isDisabled: false
         },
       ],
       visualizationType: [
         {
           type: "TABLE",
-          icon: "assets/dashboard/table.png",
+          icon: "assets/icon/table.png",
           isDisabled: false
         },
         {
           type: "CHART",
-          icon: 'assets/dashboard/charts.png',
+          icon: 'assets/icon/charts.png',
           isDisabled: false
         },
         {
           type: "MAP",
-          icon: 'assets/dashboard/map.png',
+          icon: 'assets/icon/map.png',
           isDisabled: false
         },
-        //{type: "dictionary", icon: "assets/dashboard/dictionary.png"}
+        //{type: "dictionary", icon: "assets/icon/dictionary.png"}
       ]
     }
   }
 
   getEmptyListNotificationIcon() {
     let icon = 'assets/icon/empty-list-box.png';
-
     return icon;
   }
 

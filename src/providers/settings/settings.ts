@@ -20,8 +20,8 @@ export class SettingsProvider {
    */
   getSettingContentDetails(){
     let settingContents = [
-      {id : 'synchronization',name : 'Synchronization',icon: 'assets/settings-icons/synchronization.png',isLoading : false,loadingMessage: ''},
-      {id : 'entryForm',name : 'Entry form',icon: 'assets/settings-icons/entry-form.png',isLoading : false,loadingMessage: ''}
+      {id : 'synchronization',name : 'synchronization',icon: 'assets/icon/synchronization.png',isLoading : false,loadingMessage: ''},
+      {id : 'entryForm',name : 'entry_form',icon: 'assets/icon/form.png',isLoading : false,loadingMessage: ''}
     ];
     return settingContents;
   }

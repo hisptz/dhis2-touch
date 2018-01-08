@@ -28,6 +28,7 @@ export class MapServiceProvider {
   }
 
   getMapObject(visualizationDetails) {
-    return this.mapVisualizationService.drawMap(visualizationDetails.leafletObject, visualizationDetails.visualizationObject);
+    return null;
+    //return this.mapVisualizationService.drawMap(visualizationDetails.leafletObject, visualizationDetails.visualizationObject);
   }
 }

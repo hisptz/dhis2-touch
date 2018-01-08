@@ -15,11 +15,11 @@ export class ProfileProvider {
 
   getProfileContentDetails() {
     let profileContents = [
-      {id : 'userInfo',name : 'User information',icon: 'assets/profile-icons/user-info.png'},
-      {id : 'orgUnits',name : 'Assigned organisation units',icon: 'assets/profile-icons/orgUnit.png'},
-      {id : 'roles',name : 'Assigned roles',icon: 'assets/profile-icons/roles.png'},
-      {id : 'program',name : 'Assigned program',icon: 'assets/profile-icons/program.png'},
-      {id : 'form',name : 'Assigned form',icon: 'assets/profile-icons/form.png'},
+      {id : 'userInfo',name : 'user_information',icon: 'assets/icon/user-info.png'},
+      {id : 'orgUnits',name : 'assigned_organisation_units',icon: 'assets/icon/orgUnit.png'},
+      {id : 'roles',name : 'assigned_roles',icon: 'assets/icon/roles.png'},
+      {id : 'program',name : 'assigned_program',icon: 'assets/icon/program.png'},
+      {id : 'form',name : 'assigned_form',icon: 'assets/icon/form.png'},
     ];
     return profileContents;
   }
