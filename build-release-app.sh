@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-ionic cordova build --release --prod --aot --minifyjs --minifycss --optimizejs
+ionic cordova build --prod --aot ----minifyjs --minifycss --optimizejs --release

@@ -1,7 +1,6 @@
 # Specifies intentionally untracked files to ignore when using Git
 # http://git-scm.com/docs/gitignore
-package-lock.json
-*.md5
+
 *~
 *.sw[mnpcod]
 *.log
@@ -12,9 +11,9 @@ log.txt
 *.sublime-workspace
 .vscode/
 npm-debug.log*
-
-.sourcemaps/
+*.md5
 .idea/
+.sourcemaps/
 .sass-cache/
 .tmp/
 .versions/
