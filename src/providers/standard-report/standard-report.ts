@@ -135,12 +135,52 @@ export class StandardReportProvider {
    */
   getReportList(currentUser){
     return new Promise((resolve, reject)=> {
-      this.SqlLite.getAllDataFromTable(this.resource,currentUser.currentDatabase).then((reportList)=>{
-        resolve(reportList);
+      let dataSetsReportResourceName = "dataSets";
+      let reportParams =  {
+          paramGrandParentOrganisationUnit: false,
+          paramReportingPeriod: true,
+          paramOrganisationUnit: true,
+          paramParentOrganisationUnit: false
+      };
+      let reportList  = [];
+      this.SqlLite.getAllDataFromTable(this.resource,currentUser.currentDatabase).then((reports : any)=>{
+        reports.forEach((report : any)=>{
+          report.type = "standardReport";
+          report.openFuturePeriods = 1;
+          reportList.push(report);
+        });
+        this.SqlLite.getAllDataFromTable(dataSetsReportResourceName,currentUser.currentDatabase).then((dataSets : any)=>{
+          dataSets.forEach((dataSet : any)=>{
+            reportList.push({
+              id : dataSet.id,name : dataSet.name,reportParams : reportParams,
+              type : "dataSetReport",
+              openFuturePeriods : dataSet.openFuturePeriods,
+              relativePeriods : {dataSetPeriodType : dataSet.periodType}
+            });
+          });
+          reportList = this.getSortedReports(reportList);
+          resolve(reportList);
+        },error=>{
+          reportList = this.getSortedReports(reportList);
+          resolve(reportList);
+        });
       },error=>{
         reject(error);
       });
     })
+  }
+
+  getSortedReports(reports){
+    reports.sort((a, b) => {
+      if (a.name > b.name) {
+        return 1;
+      }
+      if (a.name < b.name) {
+        return -1;
+      }
+      return 0;
+    });
+    return reports;
   }
 
   /**
@@ -198,6 +238,10 @@ export class StandardReportProvider {
   getReportPeriodType(relativePeriods){
     let reportPeriodType = "Yearly";
     let reportPeriods = [];
+
+    if(relativePeriods.dataSetPeriodType){
+      reportPeriods.push(relativePeriods.dataSetPeriodType)
+    }
 
     if(relativePeriods.last14Days || relativePeriods.yesterday || relativePeriods.thisDay || relativePeriods.last3Days || relativePeriods.last7Days){
       reportPeriods.push("Daily");

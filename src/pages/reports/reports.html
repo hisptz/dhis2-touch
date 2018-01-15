@@ -35,7 +35,7 @@
         <ion-col >
           <ion-list>
             <ion-item *ngFor="let report of reportList" (tap)="selectReport(report)">
-              <img  class="side-menu-icon" [src]="icons.reports"/>&nbsp;&nbsp;
+              <img *ngIf="report && report.type"  class="side-menu-icon" [src]="icons[report.type]"/>&nbsp;&nbsp;
               <span >{{ report.name }}</span>
               <ion-icon name="ios-arrow-forward"  item-right ></ion-icon>
             </ion-item>
