@@ -24,18 +24,19 @@ declare var dhis2;
 })
 export class ReportViewPage implements OnInit{
 
-  public reportId : string;
-  public reportName : string;
-  public selectedPeriod : any;
-  public selectedOrganisationUnit : any;
-  public _htmlMarkup : SafeHtml;
-  public hasScriptSet : boolean = false;
-  public isLoading : boolean = false;
-  public loadingMessage : string = "";
-  public currentUser : any;
+  reportId : string;
+  reportName : string;
+  selectedPeriod : any;
+  selectedOrganisationUnit : any;
+  _htmlMarkup : SafeHtml;
+  hasScriptSet : boolean = false;
+  isLoading : boolean = false;
+  loadingMessage : string = "";
+  currentUser : any;
+  reportType : string ="";
 
-  constructor(public navCtrl: NavController, public params: NavParams, public user: UserProvider, public dataSetProvider: DataSetsProvider,
-              public reportProvider: StandardReportProvider,  public sanitizer: DomSanitizer, public appProvider: AppProvider, public elementRef : ElementRef) {
+  constructor(private navCtrl: NavController, private params: NavParams, private user: UserProvider, private dataSetProvider: DataSetsProvider,
+              private reportProvider: StandardReportProvider,  private sanitizer: DomSanitizer, private appProvider: AppProvider, private elementRef : ElementRef) {
   }
 
   ngOnInit() {
@@ -46,6 +47,7 @@ export class ReportViewPage implements OnInit{
       dhis2.database = user.currentDatabase;
       this.reportId = this.params.get("id");
       this.reportName = this.params.get("name");
+      this.reportType = this.params.get('reportType');
       this.isLoading = false;
       if( this.params.get("period")){
         this.selectedPeriod  =  this.params.get("period");
@@ -133,23 +135,36 @@ export class ReportViewPage implements OnInit{
   loadReportDesignContent(reportId){
     this.isLoading = true;
     this.loadingMessage = "loading_report_metadata";
-    this.reportProvider.getReportDesign(reportId,this.currentUser).then((report : any)=>{
-      if(report && report.designContent){
-        try{
-          let scriptsContents = this.getScriptsContents(report.designContent);
-          this.setScriptsOnHtmlContent(scriptsContents);
-          this._htmlMarkup = this.sanitizer.bypassSecurityTrustHtml(report.designContent);
-          this.isLoading = false;
-        }catch (e){
-          console.log(JSON.stringify(e));
-          this.isLoading = false;
+    //for standard reports
+    if(this.reportType && this.reportType == "standardReport"){
+      this.reportProvider.getReportDesign(reportId,this.currentUser).then((report : any)=>{
+        if(report && report.designContent){
+          try{
+            let scriptsContents = this.getScriptsContents(report.designContent);
+            this.setScriptsOnHtmlContent(scriptsContents);
+            this._htmlMarkup = this.sanitizer.bypassSecurityTrustHtml(report.designContent);
+            this.isLoading = false;
+          }catch (e){
+            console.log(JSON.stringify(e));
+            this.isLoading = false;
+          }
         }
-      }
 
-    },error=>{
+      },error=>{
+        this.isLoading = false;
+        this.appProvider.setNormalNotification("Fail to load  report details");
+      });
+    }else if(this.reportType && this.reportType == "dataSetReport"){
+      //for data set reports
       this.isLoading = false;
-      this.appProvider.setNormalNotification("Fail to load  report details");
-    });
+
+    }else{
+      this.appProvider.setNormalNotification("Report type has not set");
+      this.isLoading = false;
+    }
+
+
+
   }
 
   getScriptsContents(html){
