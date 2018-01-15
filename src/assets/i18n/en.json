@@ -124,6 +124,8 @@
   "loading_events_storage_status" : "Loading events storage status",
   "loading_enrollments_storage_status" : "Loading enrollments storage status",
   "loading_assigned_programs" : "Loading assigned programs",
+  "loading_data_set_report_information" : "Loading data set report information",
+  "prepare_data_set_report" : "Preparing data set report",
   "no_data_to_display" : "No data to display",
   "there_is_no_option_to_select" : "There is no option to select",
   "there_is_no_data_entry_form_to_select" : "There is no Data entry form to select",
