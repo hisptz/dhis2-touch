@@ -288,8 +288,6 @@ export class SqlLiteProvider {
     let query = "SELECT * FROM " + tableName + " WHERE " + attribute + " IN (";
     let inClauseValues = "";
 
-
-
     attributesValuesArray.forEach((attributesValue:any, index:any)=> {
       inClauseValues += "'" + attributesValue + "'";
       if ((index + 1) < attributesValuesArray.length) {
@@ -301,14 +299,37 @@ export class SqlLiteProvider {
     return new Promise( (resolve, reject)=> {
       this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
         db.executeSql(query, []).then((result) => {
-
-
-
           resolve(this.formatQueryReturnResult(result, columns));
         }, (error) => {
           reject(error);
         });
       }).catch(e => {
+        reject();
+        console.log(e);
+      });
+    });
+  }
+
+  /**
+   *
+   * @param query
+   * @param tableName
+   * @param databaseName
+   * @returns {Promise<any>}
+   */
+  getByUsingQuery(query,tableName,databaseName){
+    databaseName = databaseName + '.db';
+    let columns = this.getDataBaseStructure()[tableName].columns;
+    return new Promise( (resolve, reject)=> {
+      this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
+        db.executeSql(query, []).then((result) => {
+          resolve(this.formatQueryReturnResult(result, columns));
+        }, (error) => {
+          console.log("error : "+JSON.stringify(error));
+          reject(error);
+        });
+      }).catch(e => {
+
         reject();
         console.log(e);
       });
