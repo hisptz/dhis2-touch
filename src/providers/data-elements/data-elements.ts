@@ -23,7 +23,7 @@ export class DataElementsProvider {
    * @returns {Promise<any>}
    */
   downloadDataElementsFromServer(currentUser){
-    let fields= "id,name,formName,categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]";
+    let fields= "id,name,formName,aggregationType,categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]";
     let url = "/api/25/"+this.resource+".json?paging=false&fields=" + fields;
     return new Promise((resolve, reject)=> {
       this.HttpClient.get(url,currentUser).then((response : any)=>{
@@ -113,35 +113,6 @@ export class DataElementsProvider {
       sortedDataElements.push(dataElementObject[dataSetDatElement.id]);
     });
     return sortedDataElements;
-  }
-
-
-  getDataElementsByName(dataSetDatElements,currentUser){
-    let attributeKey = "id";
-    let dataElementIds = [];
-      // dataSetDatElements.forEach((dataSetDatElement : any)=>{
-      dataElementIds.push(dataSetDatElements);
-      // });
-    return new Promise((resolve, reject)=> {
-      this.SqlLite.getDataFromTableByAttributes(this.resource,attributeKey,dataElementIds,currentUser.currentDatabase).then(( dataElements: any)=>{
-        resolve(dataElements);
-      },error=>{reject(error)})
-    });
-  }
-
-
-  getBulkDataElementsByName(dataSetDatElements,currentUser){
-    let attributeKey = "id";
-    let dataElementIds = [];
-    // dataSetDatElements.forEach((dataSetDatElement : any)=>{
-    //dataElementIds.push(dataSetDatElements);
-    // });
-    return new Promise((resolve, reject)=> {
-      // this.SqlLite.getDataFromTableByAttributes(this.resource,attributeKey,dataElementIds,currentUser.currentDatabase).then(( dataElements: any)=>{
-      this.SqlLite.getDataFromTableByAttributes(this.resource,attributeKey,dataSetDatElements,currentUser.currentDatabase).then(( dataElements: any)=>{
-        resolve(dataElements);
-      },error=>{reject(error)})
-    });
   }
 
 

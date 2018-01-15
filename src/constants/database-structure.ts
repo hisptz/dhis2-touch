@@ -142,6 +142,7 @@ export const DATABASE_STRUCTURE = {
       {value: 'id', type: 'TEXT'},
       {value: 'name', type: 'TEXT'},
       {value: 'displayName', type: 'TEXT'},
+      {value: 'aggregationType', type: 'TEXT'},
       {value: 'formName', type: 'TEXT'},
       {value: 'valueType', type: 'TEXT'},
       {value: 'description', type: 'LONGTEXT'},
