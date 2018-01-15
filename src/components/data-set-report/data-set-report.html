@@ -1,0 +1,33 @@
+
+<ion-row>
+  <ion-col>
+    <div *ngIf="isLoading">
+      <page-loading [loadingMessage]="loadingMessage" [loadingSize]="'large'"></page-loading>
+    </div>
+    <div *ngIf="!isLoading">
+      <div *ngFor="let section of entryFormSections">
+        <table width="100%">
+          <tbody>
+          <tr *ngIf="section.name != ''">
+            <td [ngStyle]="{'background-color': '#F4F4F4'}">
+              {{ section.name }}
+            </td>
+          </tr>
+          <tr *ngIf="section.dataElements">
+            <td>
+              <div text-left>
+                <div *ngFor="let dataElement of section.dataElements">
+                  <data-set-report-row
+                    [dataElement]="dataElement"
+                    [dataValues]="dataElementDataValuesMapper[dataElement.id]"
+                    [appSettings]="appSettings" ></data-set-report-row>
+                </div>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </ion-col>
+</ion-row>
