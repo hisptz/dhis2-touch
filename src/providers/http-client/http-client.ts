@@ -43,22 +43,18 @@ export class HttpClientProvider {
         this.http.get(testUrl, {}, {})
           .then((initialResponse:any)  => {
             initialResponse = JSON.parse(initialResponse.data);
-            console.log(JSON.stringify(initialResponse.pager));
             if(initialResponse.pager.pageCount){
               initialResponse[resourceName] = [];
               for(let i = 1;i <= initialResponse.pager.pageCount; i++){
                 let paginatedUrl = url + "&pageSize="+pageSize+"&page=" + i;
-                console.log(JSON.stringify(paginatedUrl));
                 promises.push(
                   this.http.get(paginatedUrl,{}, {}).then((response : any)=>{
                     response = JSON.parse(response.data);
-                    console.log("data " + response[resourceName].length);
                     initialResponse[resourceName] = initialResponse[resourceName].concat(response[resourceName]);
                   }).catch((error=>{}))
                 )
               }
               Observable.forkJoin(promises).subscribe(() => {
-                console.log(initialResponse[resourceName].length);
                   resolve(initialResponse);
                 },
                 (error) => {

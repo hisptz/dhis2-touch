@@ -15,6 +15,7 @@ import {SettingsProvider} from "../../providers/settings/settings";
 import {HttpClientProvider} from "../../providers/http-client/http-client";
 import {ProgramsProvider} from "../../providers/programs/programs";
 import {ProgramStageSectionsProvider} from "../../providers/program-stage-sections/program-stage-sections";
+import {BackgroundMode} from "@ionic-native/background-mode";
 
 /**
  * Generated class for the LoginPage page.
@@ -44,7 +45,7 @@ export class LoginPage implements OnInit {
   cancelLoginProcessData : any = {isProcessActive : false};
   progressTracker : any;
   completedTrackedProcess : any;
-
+  hasUserAuthenticated : boolean;
   currentResourceType : string;
 
   constructor(public navCtrl: NavController,
@@ -61,11 +62,13 @@ export class LoginPage implements OnInit {
               private HttpClientProvider : HttpClientProvider,
               private programsProvider: ProgramsProvider,
               private programStageSectionProvider: ProgramStageSectionsProvider,
+              private backgroundMode: BackgroundMode
   ) {
 
   }
 
   ngOnInit() {
+    this.backgroundMode.disable();
     this.animationEffect = {
       loginForm: "animated slideInUp",
       progressBar: "animated fadeIn"
@@ -91,6 +94,8 @@ export class LoginPage implements OnInit {
   }
 
   startLoginProcess() {
+    this.hasUserAuthenticated = false;
+    this.backgroundMode.enable();
     this.progressBar = "0";
     this.processCount.downloaded = 0;
     this.processCount.saved = 0;
@@ -130,6 +135,7 @@ export class LoginPage implements OnInit {
                     resource = "Preparing local storage";
                     this.sqlLite.generateTables(this.currentUser.currentDatabase).then(()=>{
                       this.updateProgressTracker(resource);
+                      this.hasUserAuthenticated = true;
                       this.downloadingOrganisationUnits(userData);
                       this.downloadingDataSets();
                       this.downloadingSections();
@@ -470,6 +476,7 @@ export class LoginPage implements OnInit {
     setTimeout(() => {
       this.isLoginProcessActive = data.isProcessActive;
     }, 300);
+    this.backgroundMode.disable();
   }
 
   setLandingPage(currentUser){

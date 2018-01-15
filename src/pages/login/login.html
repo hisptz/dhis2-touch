@@ -41,7 +41,7 @@
               <div *ngIf="progressTracker.entryForm.passStepCount == progressTracker.entryForm.count">
                 <ion-icon name="done-all" color="favorite"></ion-icon>
               </div>
-              <div *ngIf="progressTracker.entryForm.passStepCount != progressTracker.entryForm.count">
+              <div *ngIf="hasUserAuthenticated && progressTracker.entryForm.passStepCount != progressTracker.entryForm.count ">
                 <page-loading loadingSize="small"></page-loading>
               </div>
             </div>
@@ -55,7 +55,7 @@
               <div *ngIf="progressTracker.event.passStepCount == progressTracker.event.count">
                 <ion-icon name="done-all" color="favorite"></ion-icon>
               </div>
-              <div *ngIf="progressTracker.event.passStepCount != progressTracker.event.count">
+              <div *ngIf="hasUserAuthenticated && progressTracker.event.passStepCount != progressTracker.event.count">
                 <page-loading loadingSize="small"></page-loading>
               </div>
             </div>
@@ -69,7 +69,7 @@
               <div *ngIf="progressTracker.report.passStepCount == progressTracker.report.count">
                 <ion-icon name="done-all" color="favorite"></ion-icon>
               </div>
-              <div *ngIf="progressTracker.report.passStepCount != progressTracker.report.count">
+              <div *ngIf="hasUserAuthenticated && progressTracker.report.passStepCount != progressTracker.report.count">
                 <page-loading loadingSize="small"></page-loading>
               </div>
             </div>
