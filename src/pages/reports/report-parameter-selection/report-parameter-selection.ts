@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
-import {UserProvider} from "../../providers/user/user";
-import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
-import {PeriodSelectionProvider} from "../../providers/period-selection/period-selection";
-import {PeriodSelectionPage} from "../period-selection/period-selection";
+import {UserProvider} from "../../../providers/user/user";
+import {OrganisationUnitsProvider} from "../../../providers/organisation-units/organisation-units";
+import {PeriodSelectionProvider} from "../../../providers/period-selection/period-selection";
+import {PeriodSelectionPage} from "../../period-selection/period-selection";
 import {ReportViewPage} from "../report-view/report-view";
-import {StandardReportProvider} from "../../providers/standard-report/standard-report";
+import {StandardReportProvider} from "../../../providers/standard-report/standard-report";
 
 /**
  * Generated class for the ReportParameterSelectionPage page.

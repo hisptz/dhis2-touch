@@ -1,13 +1,13 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActionSheetController, Content, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
-import {TrackedEntityAttributeValuesProvider} from "../../providers/tracked-entity-attribute-values/tracked-entity-attribute-values";
-import {EventCaptureFormProvider} from "../../providers/event-capture-form/event-capture-form";
-import {AppProvider} from "../../providers/app/app";
-import {ProgramsProvider} from "../../providers/programs/programs";
-import {UserProvider} from "../../providers/user/user";
-import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
-import {TrackerCaptureProvider} from "../../providers/tracker-capture/tracker-capture";
-import {TrackedEntityInstancesProvider} from "../../providers/tracked-entity-instances/tracked-entity-instances";
+import {TrackedEntityAttributeValuesProvider} from "../../../providers/tracked-entity-attribute-values/tracked-entity-attribute-values";
+import {EventCaptureFormProvider} from "../../../providers/event-capture-form/event-capture-form";
+import {AppProvider} from "../../../providers/app/app";
+import {ProgramsProvider} from "../../../providers/programs/programs";
+import {UserProvider} from "../../../providers/user/user";
+import {OrganisationUnitsProvider} from "../../../providers/organisation-units/organisation-units";
+import {TrackerCaptureProvider} from "../../../providers/tracker-capture/tracker-capture";
+import {TrackedEntityInstancesProvider} from "../../../providers/tracked-entity-instances/tracked-entity-instances";
 
 /**
  * Generated class for the TrackedEntityDashboardPage page.

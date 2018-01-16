@@ -1,12 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActionSheetController, Content, IonicPage, ModalController, NavController} from 'ionic-angular';
-import {TrackerCaptureProvider} from "../../providers/tracker-capture/tracker-capture";
-import {UserProvider} from "../../providers/user/user";
-import {AppProvider} from "../../providers/app/app";
-import {ProgramsProvider} from "../../providers/programs/programs";
-import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
-import {TrackedEntityAttributeValuesProvider} from "../../providers/tracked-entity-attribute-values/tracked-entity-attribute-values";
-import {EventCaptureFormProvider} from "../../providers/event-capture-form/event-capture-form";
+import {TrackerCaptureProvider} from "../../../providers/tracker-capture/tracker-capture";
+import {UserProvider} from "../../../providers/user/user";
+import {AppProvider} from "../../../providers/app/app";
+import {ProgramsProvider} from "../../../providers/programs/programs";
+import {OrganisationUnitsProvider} from "../../../providers/organisation-units/organisation-units";
+import {TrackedEntityAttributeValuesProvider} from "../../../providers/tracked-entity-attribute-values/tracked-entity-attribute-values";
+import {EventCaptureFormProvider} from "../../../providers/event-capture-form/event-capture-form";
 
 
 declare var dhis2: any;

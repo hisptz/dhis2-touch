@@ -1,11 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams,Content} from 'ionic-angular';
-import {UserProvider} from "../../providers/user/user";
-import {AppProvider} from "../../providers/app/app";
-import {DataEntryFormProvider} from "../../providers/data-entry-form/data-entry-form";
-import {SettingsProvider} from "../../providers/settings/settings";
-import {DataValuesProvider} from "../../providers/data-values/data-values";
-import {DataSetCompletenessProvider} from "../../providers/data-set-completeness/data-set-completeness";
+import {UserProvider} from "../../../providers/user/user";
+import {AppProvider} from "../../../providers/app/app";
+import {DataEntryFormProvider} from "../../../providers/data-entry-form/data-entry-form";
+import {SettingsProvider} from "../../../providers/settings/settings";
+import {DataValuesProvider} from "../../../providers/data-values/data-values";
+import {DataSetCompletenessProvider} from "../../../providers/data-set-completeness/data-set-completeness";
 
 /**
  * Generated class for the DataEntryFormPage page.

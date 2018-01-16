@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {IonicPage, NavController, NavParams,} from 'ionic-angular';
-import {UserProvider} from "../../providers/user/user";
-import {AppProvider} from "../../providers/app/app";
-import {ProgramsProvider} from "../../providers/programs/programs";
-import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
-import {EventCaptureFormProvider} from "../../providers/event-capture-form/event-capture-form";
+import {UserProvider} from "../../../providers/user/user";
+import {AppProvider} from "../../../providers/app/app";
+import {ProgramsProvider} from "../../../providers/programs/programs";
+import {OrganisationUnitsProvider} from "../../../providers/organisation-units/organisation-units";
+import {EventCaptureFormProvider} from "../../../providers/event-capture-form/event-capture-form";
 
 /**
  * Generated class for the EventCaptureRegisterPage page.

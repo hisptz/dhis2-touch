@@ -50,7 +50,7 @@ export class AppsPage implements OnInit{
       }else if(key == "settings"){
         this.setView('SettingsPage');
       }
-    },100);
+    },60);
   }
   setView(viewName){
     this.navCtrl.push(viewName).then(()=>{})
@@ -60,7 +60,7 @@ export class AppsPage implements OnInit{
     this.animationEffect[key] = "animated bounceIn";
     setTimeout(()=>{
       this.animationEffect[key] = "";
-    },200);
+    },100);
   }
 
 }

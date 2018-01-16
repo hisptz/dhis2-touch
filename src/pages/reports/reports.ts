@@ -2,8 +2,8 @@ import { Component,OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {UserProvider} from "../../providers/user/user";
 import {AppProvider} from "../../providers/app/app";
-import {ReportParameterSelectionPage} from "../report-parameter-selection/report-parameter-selection";
-import {ReportViewPage} from "../report-view/report-view";
+import {ReportParameterSelectionPage} from "./report-parameter-selection/report-parameter-selection";
+import {ReportViewPage} from "./report-view/report-view";
 import {StandardReportProvider} from "../../providers/standard-report/standard-report";
 import {SqlLiteProvider} from "../../providers/sql-lite/sql-lite";
 

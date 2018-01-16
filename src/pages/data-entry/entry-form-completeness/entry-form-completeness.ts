@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { IonicPage, ViewController, NavParams } from 'ionic-angular';
-import {DataSetCompletenessProvider} from "../../providers/data-set-completeness/data-set-completeness";
-import {AppProvider} from "../../providers/app/app";
+import {DataSetCompletenessProvider} from "../../../providers/data-set-completeness/data-set-completeness";
+import {AppProvider} from "../../../providers/app/app";
 
 /**
  * Generated class for the EntryFormCompletenessPage page.
