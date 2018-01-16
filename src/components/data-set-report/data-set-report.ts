@@ -61,8 +61,6 @@ export class DataSetReportComponent implements OnInit{
               dataValuesResponse.forEach((dataValue : any)=>{
                 this.dataElementDataValuesMapper[dataValue.de].push(dataValue);
               });
-
-
               this.isLoading = false;
             }).catch(error=>{
               this.isLoading = false;

@@ -51,6 +51,7 @@ export class DataSetReportRowComponent implements OnInit{
       if(!categoryComboValues[dataValue.co]){
         categoryComboValues[dataValue.co] = [];
       }
+      categoryComboValues[dataValue.co].push(dataValue.value);
     });
 
     if(dataElement.categoryCombo.categoryOptionCombos && dataElement.categoryCombo.categoryOptionCombos && dataElement.categoryCombo.categoryOptionCombos){

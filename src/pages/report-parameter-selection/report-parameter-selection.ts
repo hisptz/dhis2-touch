@@ -57,7 +57,7 @@ export class ReportParameterSelectionPage implements OnInit{
         this.selectedOrgUnit = lastSelectedOrgunit;
         let periods = this.periodSelectionProvider.getPeriods(this.reportPeriodType,this.openFuturePeriods,this.currentPeriodOffset);
         if(periods && periods.length > 0){
-          this.selectedPeriod = periods[0];
+          //this.selectedPeriod = periods[0];
         }
         this.updateReportParameterSelections();
       });

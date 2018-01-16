@@ -28,7 +28,6 @@ export class DataSetReportProvider {
             }
           });
           dataValues.forEach((dataValue:any)=> {
-            console.log(dataValue.ou + " : " +orgUnitIdsFilter.indexOf(dataValue.ou));
             if(dataValue && orgUnitIdsFilter.indexOf(dataValue.ou) > -1){
               entryFormDataValuesFromStorage.push({
                 id: dataValue.de + "-" + dataValue.co,
