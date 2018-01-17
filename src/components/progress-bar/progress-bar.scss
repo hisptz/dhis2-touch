@@ -9,12 +9,12 @@ progress-bar {
     border-radius: 2px;
   }
   .progress-inner {
-    min-width: 30px;
+    min-width: 10px;
     white-space: nowrap;
     text-align: left;
-    overflow: hidden;
+    overflow: visible;
     color : map_get($colors,dark);
-    font-size: 18px;
+    font-size: 20px;
     padding: 3px;
     border-radius: 3px;
     background-color: map-get($colors, primary);

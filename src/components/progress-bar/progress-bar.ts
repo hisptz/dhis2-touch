@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 /**
  * Generated class for the ProgressBarComponent component.
@@ -10,13 +10,19 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
   selector: 'progress-bar',
   templateUrl: 'progress-bar.html'
 })
-export class ProgressBarComponent {
+export class ProgressBarComponent implements OnInit{
 
   @Input() progressBar;
   @Input() progressBarTitle;
   @Output() isProcessActive = new EventEmitter();
 
+  cancelIcon : string;
+
   constructor() {
+  }
+
+  ngOnInit(){
+    this.cancelIcon = "assets/icon/cancel.png";
   }
 
   cancelRunningProcess(){
