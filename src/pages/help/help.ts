@@ -27,7 +27,7 @@ export class HelpPage implements OnInit{
 
   ngOnInit() {
     this.isLoading = true;
-    this.loadingMessage = "Loading help contents";
+    this.loadingMessage = "loading_help_contents";
     this.helpContentsObject = this.HelpContentsProvider.getHelpContents();
     this.helpContents = this.getHelpContents(this.helpContentsObject);
     if(this.helpContents.length > 0){

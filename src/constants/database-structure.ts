@@ -21,6 +21,7 @@ export const DATABASE_STRUCTURE = {
     columns: [
       {value: 'id', type: 'TEXT'},
       {value: 'name', type: 'TEXT'},
+      {value : 'currentLanguage',type : 'TEXT'},
       {value: 'currentUser', type: 'LONGTEXT'}
     ],
     isMetadata: false,

@@ -23,7 +23,7 @@
 <ion-content padding>
 
   <div *ngIf="isLoading">
-    <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage "></page-loading>
+    <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage|translate"></page-loading>
   </div>
   <div *ngIf="!isLoading">
     <div *ngFor="let organisationUnit of organisationUnits">

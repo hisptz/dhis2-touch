@@ -32,7 +32,7 @@ export class OrganisationUnitSelectionPage implements OnInit{
   }
 
   ngOnInit(){
-    this.loadingMessage = "Loading user information";
+    this.loadingMessage = "loading_current_user_information";
     this.emptyMessage = "";
     this.isLoading = true;
     this.userProvider.getCurrentUser().then(user=>{
@@ -44,7 +44,7 @@ export class OrganisationUnitSelectionPage implements OnInit{
   }
 
   loadingOrganisationUnits(){
-    this.loadingMessage = "Loading organisation units";
+    this.loadingMessage = "loading_assigned_organisation_units";
     this.hasOrgUnitChildrenOpened = {};
     this.organisationUnitProvider.getOrganisationUnits(this.currentUser).then((organisationUnits : any)=>{
       if(organisationUnits && organisationUnits.length > 0){

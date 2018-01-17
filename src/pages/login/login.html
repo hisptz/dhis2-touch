@@ -35,7 +35,7 @@
               {{ progressTracker.communication.message|translate}}
             </span>
             <span *ngIf="progressTracker.communication.message ==''">
-              Establishing connection to server
+              {{'establishing_connection_to_server'|translate}}
             </span>
             <div style="text-align: center" item-right >
               {{ progressTracker.communication.passStepCount}}/{{ progressTracker.communication.count}}
@@ -54,7 +54,7 @@
               {{ progressTracker.entryForm.message|translate}}
             </span>
             <span *ngIf="progressTracker.entryForm.message ==''">
-              Aggregate metadata
+              {{'aggregate_metadata'|translate}}
             </span>
             <div style="text-align: center" item-right >
               {{ progressTracker.entryForm.passStepCount}}/{{ progressTracker.entryForm.count}}
@@ -73,7 +73,7 @@
               {{ progressTracker.event.message|translate}}
             </span>
             <span *ngIf="progressTracker.event.message ==''">
-              Event & tracker metadata
+              {{'Event_and_tracker_metadata'|translate}}
             </span>
             <div style="text-align: center" item-right >
               {{ progressTracker.event.passStepCount}}/{{ progressTracker.event.count}}
@@ -92,7 +92,7 @@
               {{ progressTracker.report.message|translate}}
             </span>
             <span *ngIf="progressTracker.report.message ==''">
-              Report metadata
+              {{'report_metadata'|translate }}
             </span>
             <div style="text-align: center" item-right >
               {{ progressTracker.report.passStepCount}}/{{ progressTracker.report.count}}
@@ -150,7 +150,7 @@
         </form>
         <div *ngIf="localInstances && localInstances.length > 1">
           <div class="strike">
-            <span >OR</span>
+            <span >{{'or'|translate}}</span>
           </div>
           <button ion-button block clear color="light" text-capitalize (click)="toggleLoginFormAndLocalInstances()" >
             <img  class="side-menu-icon" [src]="offlineIcon"/>&nbsp;&nbsp;
@@ -160,11 +160,21 @@
       </div>
     </div>
 
-
-
     <ion-row>
       <ion-col class="bottomSLogan">
-        <p>{{'powered_by'|translate}} HISPTZ</p>
+
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="bottomSLogan">
+        <p>
+          <span class="translation-codes">
+          <span (click)="updateTranslationLanguage('en')" [ngClass]="(currentLanguage == 'en') ?'currentLang' : ''">en</span>&nbsp;|&nbsp;
+          <span (click)="updateTranslationLanguage('fr')" [ngClass]="(currentLanguage == 'fr') ?'currentLang' : ''">fr</span>&nbsp;|&nbsp;
+          <span (click)="updateTranslationLanguage('pt')"[ngClass]="(currentLanguage == 'pt') ?'currentLang' : ''">pt</span>
+        </span>
+        </p>
+        <p><span class="bottom-sLogan-title">{{'powered_by'|translate}} HISPTZ </span></p>
       </ion-col>
     </ion-row>
   </ion-grid>

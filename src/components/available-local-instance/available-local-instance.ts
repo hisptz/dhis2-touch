@@ -38,7 +38,8 @@ export class AvailableLocalInstanceComponent implements OnInit{
     });
   }
 
-  setCurrentUser(currentUser){
+  setCurrentUser(currentUser,currentLanguage){
+    currentUser.currentLanguage = currentLanguage;
     this.onSelectCurrentUser.emit({currentUser : currentUser});
   }
 

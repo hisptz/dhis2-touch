@@ -31,7 +31,7 @@ export class ProfilePage implements OnInit {
   }
 
   ngOnInit() {
-    this.loadingMessage = 'Loading profile information';
+    this.loadingMessage = 'loading_profile_information';
     this.isLoading = true;
     this.isProfileContentOpen = {};
     this.profileContents = this.profileProvider.getProfileContentDetails();

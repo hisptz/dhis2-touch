@@ -6,6 +6,7 @@ import {UserProvider} from "../../providers/user/user";
 import {DashboardServiceProvider} from "../../providers/dashboard-service/dashboard-service";
 import {NetworkAvailabilityProvider} from "../../providers/network-availability/network-availability";
 import {BackgroundMode} from "@ionic-native/background-mode";
+import {AppTranslationProvider} from "../../providers/app-translation/app-translation";
 
 /**
  * Generated class for the LauncherPage page.
@@ -25,6 +26,7 @@ export class LauncherPage implements OnInit{
               private UserProvider : UserProvider,
               private DashboardServiceProvider : DashboardServiceProvider,
               private NetworkAvailabilityProvider : NetworkAvailabilityProvider,
+              private appTranslationProvider : AppTranslationProvider,
               private backgroundMode: BackgroundMode) {
   }
 
@@ -34,6 +36,11 @@ export class LauncherPage implements OnInit{
     this.NetworkAvailabilityProvider.setNetworkStatusDetection();
     this.DashboardServiceProvider.resetDashboards();
     this.UserProvider.getCurrentUser().then((user : any)=>{
+      let currentLanguage = "en";
+      if(user && user.currentLanguage){
+        currentLanguage = user.currentLanguage;
+      }
+      this.appTranslationProvider.setAppTranslation(currentLanguage);
       if(user && user.isLogin){
         this.navCtrl.setRoot(TabsPage);
       }else{
