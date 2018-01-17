@@ -130,13 +130,13 @@ export class LoginPage implements OnInit {
     this.animationEffect.loginForm = "animated fadeOut";
     this.animationEffect.progressBar = "animated fadeIn";
     if(this.currentUser.serverUrl && this.currentUser.username && this.currentUser.password){
-      this.currentResourceType = "communication";
+      let currentResourceType = "communication";
       this.progressTracker = {};
       let resource = "Authenticating user";
       this.currentUser.serverUrl = this.AppProvider.getFormattedBaseUrl(this.currentUser.serverUrl);
       this.loggedInInInstance = this.currentUser.serverUrl;
       this.reInitiateProgressTrackerObject(this.currentUser);
-      this.progressTracker[this.currentResourceType].message = "Establishing network to the server";
+      this.progressTracker[currentResourceType].message = "Establishing network to the server";
       this.UserProvider.authenticateUser(this.currentUser).then((response : any)=>{
         response = this.getResponseData(response);
         this.currentUser = response.user;
@@ -151,17 +151,17 @@ export class LoginPage implements OnInit {
         this.UserProvider.setUserData(JSON.parse(response.data)).then(userData=>{
           resource = 'Loading system information';
           if(this.isLoginProcessActive){
-            this.progressTracker[this.currentResourceType].message = "Loading system information";
+            this.progressTracker[currentResourceType].message = "Loading system information";
             this.HttpClientProvider.get('/api/system/info',this.currentUser).then((response : any)=>{
               this.UserProvider.setCurrentUserSystemInformation(JSON.parse(response.data)).then((dhisVersion)=>{
                 this.currentUser.dhisVersion = dhisVersion;
                 this.updateProgressTracker(resource);
                 if(this.isLoginProcessActive){
-                  this.progressTracker[this.currentResourceType].message = "Loading current user authorities";
+                  this.progressTracker[currentResourceType].message = "Loading current user authorities";
                   this.UserProvider.getUserAuthorities(this.currentUser).then((response:any)=>{
                     this.currentUser.authorities = response.authorities;
                     resource = "Preparing local storage";
-                    this.progressTracker[this.currentResourceType].message = "Preparing local storage";
+                    this.progressTracker[currentResourceType].message = "Preparing local storage";
                     this.sqlLite.generateTables(this.currentUser.currentDatabase).then(()=>{
                       this.updateProgressTracker(resource);
                       this.hasUserAuthenticated = true;
@@ -226,9 +226,9 @@ export class LoginPage implements OnInit {
   downloadingOrganisationUnits(userData){
     if(this.isLoginProcessActive){
       let resource = 'organisationUnits';
-      this.currentResourceType = "communication";
+      let currentResourceType = "communication";
       let orgUnitIds = [];
-      this.progressTracker[this.currentResourceType].message = "Loading assigned organisation unit";
+      this.progressTracker[currentResourceType].message = "Loading assigned organisation unit";
       userData.organisationUnits.forEach(organisationUnit=>{
         if(organisationUnit.id){
           orgUnitIds.push(organisationUnit.id);
@@ -237,13 +237,13 @@ export class LoginPage implements OnInit {
       this.currentUser["userOrgUnitIds"] = orgUnitIds;
       if(this.completedTrackedProcess.indexOf(resource) > -1){
         this.updateProgressTracker(resource);
-        this.progressTracker[this.currentResourceType].message = "Assigned organisation unit(s) have been loaded";
+        this.progressTracker[currentResourceType].message = "Assigned organisation unit(s) have been loaded";
       }else{
         this.organisationUnitsProvider.downloadingOrganisationUnitsFromServer(orgUnitIds,this.currentUser).then((orgUnits:any)=>{
           if(this.isLoginProcessActive){
-            this.progressTracker[this.currentResourceType].message = "Saving assigned organisation unit(s)";
+            this.progressTracker[currentResourceType].message = "Saving assigned organisation unit(s)";
             this.organisationUnitsProvider.savingOrganisationUnitsFromServer(orgUnits,this.currentUser).then(()=>{
-              this.progressTracker[this.currentResourceType].message = "Assigned organisation unit(s) have been saved";
+              this.progressTracker[currentResourceType].message = "Assigned organisation unit(s) have been saved";
               this.updateProgressTracker(resource);
             },error=>{
               this.cancelLoginProcess(this.cancelLoginProcessData);
@@ -264,17 +264,17 @@ export class LoginPage implements OnInit {
   downloadingDataSets(){
     if(this.isLoginProcessActive){
       let resource = 'dataSets';
-      this.currentResourceType = "entryForm";
-      this.progressTracker[this.currentResourceType].message = "Loading entry forms";
+      let currentResourceType = "entryForm";
+      this.progressTracker[currentResourceType].message = "Loading entry forms";
       if(this.completedTrackedProcess.indexOf(resource) > -1){
-        this.progressTracker[this.currentResourceType].message = "Entry forms have been loaded";
+        this.progressTracker[currentResourceType].message = "Entry forms have been loaded";
         this.updateProgressTracker(resource);
       }else{
         this.dataSetsProvider.downloadDataSetsFromServer(this.currentUser).then((dataSets: any)=>{
           if(this.isLoginProcessActive){
-            this.progressTracker[this.currentResourceType].message = "Saving  entry forms";
+            this.progressTracker[currentResourceType].message = "Saving  entry forms";
             this.dataSetsProvider.saveDataSetsFromServer(dataSets,this.currentUser).then(()=>{
-              this.progressTracker[this.currentResourceType].message = "Entry forms have been saved";
+              this.progressTracker[currentResourceType].message = "Entry forms have been saved";
               this.updateProgressTracker(resource);
             },error=>{
               this.cancelLoginProcess(this.cancelLoginProcessData);
@@ -294,17 +294,17 @@ export class LoginPage implements OnInit {
   downloadingSections(){
     if(this.isLoginProcessActive){
       let resource = "sections";
-      this.currentResourceType = "entryForm";
-      this.progressTracker[this.currentResourceType].message = "Loading entry forms's sections";
+      let currentResourceType = "entryForm";
+      this.progressTracker[currentResourceType].message = "Loading entry forms's sections";
       if(this.completedTrackedProcess.indexOf(resource) > -1){
-        this.progressTracker[this.currentResourceType].message = "Entry forms's sections have been loaded";
+        this.progressTracker[currentResourceType].message = "Entry forms's sections have been loaded";
         this.updateProgressTracker(resource);
       }else{
         this.sectionsProvider.downloadSectionsFromServer(this.currentUser).then((response : any)=>{
           if(this.isLoginProcessActive){
-            this.progressTracker[this.currentResourceType].message = "Saving entry forms's sections";
+            this.progressTracker[currentResourceType].message = "Saving entry forms's sections";
             this.sectionsProvider.saveSectionsFromServer(response[resource],this.currentUser).then(()=>{
-              this.progressTracker[this.currentResourceType].message = "Entry forms's sections have been saved";
+              this.progressTracker[currentResourceType].message = "Entry forms's sections have been saved";
               this.updateProgressTracker(resource);
             },error=>{
               this.cancelLoginProcess(this.cancelLoginProcessData);
@@ -324,17 +324,17 @@ export class LoginPage implements OnInit {
   downloadingDataElements(){
     if(this.isLoginProcessActive){
       let resource = "dataElements";
-      this.currentResourceType = "entryForm";
-      this.progressTracker[this.currentResourceType].message = "Loading entry form's fields";
+      let currentResourceType = "entryForm";
+      this.progressTracker[currentResourceType].message = "Loading entry form's fields";
       if(this.completedTrackedProcess.indexOf(resource) > -1){
-        this.progressTracker[this.currentResourceType].message = "Entry form's fields have been loaded";
+        this.progressTracker[currentResourceType].message = "Entry form's fields have been loaded";
         this.updateProgressTracker(resource);
       }else{
         this.dataElementsProvider.downloadDataElementsFromServer(this.currentUser).then((response : any)=>{
           if(this.isLoginProcessActive){
-            this.progressTracker[this.currentResourceType].message = "Saving entry form's fields";
+            this.progressTracker[currentResourceType].message = "Saving entry form's fields";
             this.dataElementsProvider.saveDataElementsFromServer(response[resource],this.currentUser).then(()=>{
-              this.progressTracker[this.currentResourceType].message = "Entry form's fields have been saved";
+              this.progressTracker[currentResourceType].message = "Entry form's fields have been saved";
               this.updateProgressTracker(resource);
             },error=>{
               this.cancelLoginProcess(this.cancelLoginProcessData);
@@ -354,17 +354,17 @@ export class LoginPage implements OnInit {
   downloadingSmsCommands(){
     if(this.isLoginProcessActive){
       let resource = "smsCommand";
-      this.currentResourceType = "entryForm";
-      this.progressTracker[this.currentResourceType].message = "Loading SMS commands";
+      let currentResourceType = "entryForm";
+      this.progressTracker[currentResourceType].message = "Loading SMS commands";
       if(this.completedTrackedProcess.indexOf(resource) > -1){
-        this.progressTracker[this.currentResourceType].message = "SMS commands have been loaded";
+        this.progressTracker[currentResourceType].message = "SMS commands have been loaded";
         this.updateProgressTracker(resource);
       }else{
         this.smsCommandProvider.getSmsCommandFromServer(this.currentUser).then((smsCommands : any)=>{
           if(this.isLoginProcessActive){
-            this.progressTracker[this.currentResourceType].message = "Saving SMS commands";
+            this.progressTracker[currentResourceType].message = "Saving SMS commands";
             this.smsCommandProvider.savingSmsCommand(smsCommands,this.currentUser.currentDatabase).then(()=>{
-              this.progressTracker[this.currentResourceType].message = "SMS commands have been saved";
+              this.progressTracker[currentResourceType].message = "SMS commands have been saved";
               this.updateProgressTracker(resource);
             },error=>{
               this.cancelLoginProcess(this.cancelLoginProcessData);
@@ -384,17 +384,17 @@ export class LoginPage implements OnInit {
   downloadingPrograms(){
     if(this.isLoginProcessActive){
       let resource = 'programs';
-      this.currentResourceType = "event";
-      this.progressTracker[this.currentResourceType].message = "Loading programs";
+      let currentResourceType = "event";
+      this.progressTracker[currentResourceType].message = "Loading programs";
       if(this.completedTrackedProcess.indexOf(resource) > -1){
-        this.progressTracker[this.currentResourceType].message = "Programs have been loaded";
+        this.progressTracker[currentResourceType].message = "Programs have been loaded";
         this.updateProgressTracker(resource);
       }else{
         this.programsProvider.downloadProgramsFromServer(this.currentUser).then(response=>{
           if(this.isLoginProcessActive){
-            this.progressTracker[this.currentResourceType].message = "Saving programs";
+            this.progressTracker[currentResourceType].message = "Saving programs";
             this.programsProvider.saveProgramsFromServer(response[resource],this.currentUser).then(()=>{
-              this.progressTracker[this.currentResourceType].message = "Programs have been saved";
+              this.progressTracker[currentResourceType].message = "Programs have been saved";
               this.updateProgressTracker(resource);
             },error=>{
               this.cancelLoginProcess(this.cancelLoginProcessData);
@@ -414,17 +414,17 @@ export class LoginPage implements OnInit {
   downloadingProgramStageSections(){
     if(this.isLoginProcessActive){
       let resource = 'programStageSections';
-      this.currentResourceType = "event";
-      this.progressTracker[this.currentResourceType].message = "Loading program stage sections";
+      let currentResourceType = "event";
+      this.progressTracker[currentResourceType].message = "Loading program stage sections";
       if(this.completedTrackedProcess.indexOf(resource) > -1){
-        this.progressTracker[this.currentResourceType].message = "Program stage sections have been loaded";
+        this.progressTracker[currentResourceType].message = "Program stage sections have been loaded";
         this.updateProgressTracker(resource);
       }else{
         this.programStageSectionProvider.downloadProgramsStageSectionsFromServer(this.currentUser).then(response=>{
           if(this.isLoginProcessActive){
-            this.progressTracker[this.currentResourceType].message = "Saving program stage sections";
+            this.progressTracker[currentResourceType].message = "Saving program stage sections";
             this.programStageSectionProvider.saveProgramsStageSectionsFromServer(response[resource],this.currentUser).then(()=>{
-              this.progressTracker[this.currentResourceType].message = "Program stage sections have been saved"
+              this.progressTracker[currentResourceType].message = "Program stage sections have been saved"
               this.updateProgressTracker(resource);
             },error=>{
               this.cancelLoginProcess(this.cancelLoginProcessData);
@@ -444,17 +444,17 @@ export class LoginPage implements OnInit {
   downloadingIndicators(){
     if(this.isLoginProcessActive){
       let resource = 'indicators';
-      this.currentResourceType = "report";
-      this.progressTracker[this.currentResourceType].message = "Loading indicators";
+      let currentResourceType = "report";
+      this.progressTracker[currentResourceType].message = "Loading indicators";
       if(this.completedTrackedProcess.indexOf(resource) > -1){
-        this.progressTracker[this.currentResourceType].message = "Indicators have been loaded";
+        this.progressTracker[currentResourceType].message = "Indicators have been loaded";
         this.updateProgressTracker(resource);
       }else{
         this.indicatorsProvider.downloadingIndicatorsFromServer(this.currentUser).then((response:any)=>{
           if(this.isLoginProcessActive){
-            this.progressTracker[this.currentResourceType].message = "Saving indicators";
+            this.progressTracker[currentResourceType].message = "Saving indicators";
             this.indicatorsProvider.savingIndicatorsFromServer(response[resource],this.currentUser).then(()=>{
-              this.progressTracker[this.currentResourceType].message = "Indicators have been saved";
+              this.progressTracker[currentResourceType].message = "Indicators have been saved";
               this.updateProgressTracker(resource);
             },error=>{
               this.cancelLoginProcess(this.cancelLoginProcessData);
@@ -474,17 +474,17 @@ export class LoginPage implements OnInit {
   downloadingStandardReports(){
     if(this.isLoginProcessActive){
       let resource = "reports";
-      this.currentResourceType = "report";
-      this.progressTracker[this.currentResourceType].message = "Loading reports";
+      let currentResourceType = "report";
+      this.progressTracker[currentResourceType].message = "Loading reports";
       if(this.completedTrackedProcess.indexOf(resource) > -1){
-        this.progressTracker[this.currentResourceType].message = "Reports have been loaded";
+        this.progressTracker[currentResourceType].message = "Reports have been loaded";
         this.updateProgressTracker(resource);
       }else{
         this.standardReports.downloadReportsFromServer(this.currentUser).then((reports : any)=>{
           if(this.isLoginProcessActive){
-            this.progressTracker[this.currentResourceType].message = "Saving reports";
+            this.progressTracker[currentResourceType].message = "Saving reports";
             this.standardReports.saveReportsFromServer(reports[resource],this.currentUser).then(()=>{
-              this.progressTracker[this.currentResourceType].message = "Reports have been saved";
+              this.progressTracker[currentResourceType].message = "Reports have been saved";
               this.updateProgressTracker(resource);
             },error=>{
               this.cancelLoginProcess(this.cancelLoginProcessData);
@@ -504,17 +504,17 @@ export class LoginPage implements OnInit {
   downloadingConstants(){
     if(this.isLoginProcessActive){
       let resource = "constants";
-      this.currentResourceType = "report";
-      this.progressTracker[this.currentResourceType].message = "Loading constants";
+      let currentResourceType = "report";
+      this.progressTracker[currentResourceType].message = "Loading constants";
       if(this.completedTrackedProcess.indexOf(resource) > -1){
-        this.progressTracker[this.currentResourceType].message = "Constants have been loaded";
+        this.progressTracker[currentResourceType].message = "Constants have been loaded";
         this.updateProgressTracker(resource);
       }else{
         this.standardReports.downloadConstantsFromServer(this.currentUser).then((constants : any)=>{
           if(this.isLoginProcessActive){
-            this.progressTracker[this.currentResourceType].message = "Saving constants";
+            this.progressTracker[currentResourceType].message = "Saving constants";
             this.standardReports.saveConstantsFromServer(constants,this.currentUser).then(()=>{
-              this.progressTracker[this.currentResourceType].message = "Constants have been saved";
+              this.progressTracker[currentResourceType].message = "Constants have been saved";
               this.updateProgressTracker(resource);
             },error=>{
               this.cancelLoginProcess(this.cancelLoginProcessData);
