@@ -88,6 +88,7 @@ import {TrackerCaptureProvider} from "../providers/tracker-capture/tracker-captu
 import {TrackedEntityInstancesProvider} from "../providers/tracked-entity-instances/tracked-entity-instances";
 import { DataSetReportProvider } from '../providers/data-set-report/data-set-report';
 import { LocalInstanceProvider } from '../providers/local-instance/local-instance';
+import { AppTranslationProvider } from '../providers/app-translation/app-translation';
 
 
 @NgModule({
@@ -171,7 +172,8 @@ import { LocalInstanceProvider } from '../providers/local-instance/local-instanc
     TrackedEntityAttributeValuesProvider,
     EnrollmentsProvider,
     DataSetReportProvider,
-    LocalInstanceProvider
+    LocalInstanceProvider,
+    AppTranslationProvider
   ]
 })
 export class AppModule {}

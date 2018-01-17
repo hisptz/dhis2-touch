@@ -47,10 +47,15 @@ export class LocalInstanceProvider {
       newInstances.push({
         id : currentUser.currentDatabase,
         name : loggedInInInstance,
-        currentUser : currentUser
+        currentUser : currentUser,
+        currentLanguage : currentUser.currentLanguage
       });
       localInstances.forEach((localInstance : any)=>{
         if(newInstances.indexOf(localInstance) == -1){
+          if(!localInstance.currentUser.currentLanguage){
+            localInstance.currentLanguage = "en";
+            localInstance.currentUser.currentLanguage = "en";
+          }
           newInstances.push(localInstance);
         }
       });
