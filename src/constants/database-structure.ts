@@ -17,7 +17,18 @@ export const DATABASE_STRUCTURE = {
     displayName: "Organisation Units",
     dependentTable: []
   },
-
+  LOCAL_INSTANCE_KEY : {
+    columns: [
+      {value: 'id', type: 'TEXT'},
+      {value: 'name', type: 'TEXT'},
+      {value: 'currentUser', type: 'LONGTEXT'}
+    ],
+    isMetadata: false,
+    resourceType: "",
+    batchSize: 500,
+    displayName: "Local instance",
+    dependentTable: []
+  },
   dataSets: {
     columns: [
       {value: 'id', type: 'TEXT'},

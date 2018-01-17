@@ -31,7 +31,12 @@
                 <page-loading loadingSize="small"></page-loading>
               </div>
             </div>
-            <span >Establishing connection to server</span>
+            <span *ngIf="progressTracker.communication.message !=''">
+              {{ progressTracker.communication.message|translate}}
+            </span>
+            <span *ngIf="progressTracker.communication.message ==''">
+              Establishing connection to server
+            </span>
             <div style="text-align: center" item-right >
               {{ progressTracker.communication.passStepCount}}/{{ progressTracker.communication.count}}
             </div>
@@ -45,7 +50,12 @@
                 <page-loading loadingSize="small"></page-loading>
               </div>
             </div>
-            <span >Aggregate metadata</span>
+            <span *ngIf="progressTracker.entryForm.message !=''">
+              {{ progressTracker.entryForm.message|translate}}
+            </span>
+            <span *ngIf="progressTracker.entryForm.message ==''">
+              Aggregate metadata
+            </span>
             <div style="text-align: center" item-right >
               {{ progressTracker.entryForm.passStepCount}}/{{ progressTracker.entryForm.count}}
             </div>
@@ -59,7 +69,12 @@
                 <page-loading loadingSize="small"></page-loading>
               </div>
             </div>
-            <span >Event & tracker metadata</span>
+            <span *ngIf="progressTracker.event.message !=''">
+              {{ progressTracker.event.message|translate}}
+            </span>
+            <span *ngIf="progressTracker.event.message ==''">
+              Event & tracker metadata
+            </span>
             <div style="text-align: center" item-right >
               {{ progressTracker.event.passStepCount}}/{{ progressTracker.event.count}}
             </div>
@@ -73,7 +88,12 @@
                 <page-loading loadingSize="small"></page-loading>
               </div>
             </div>
-            <span >Report metadata</span>
+            <span *ngIf="progressTracker.report.message !=''">
+              {{ progressTracker.report.message|translate}}
+            </span>
+            <span *ngIf="progressTracker.report.message ==''">
+              Report metadata
+            </span>
             <div style="text-align: center" item-right >
               {{ progressTracker.report.passStepCount}}/{{ progressTracker.report.count}}
             </div>
@@ -84,32 +104,63 @@
 
 
     <div *ngIf="!isLoginProcessActive">
-      <form (ngSubmit)="startLoginProcess()" [ngClass]="animationEffect.loginForm" >
+
+      <div *ngIf="isLocalInstancesListOpen">
         <ion-row>
-          <ion-col >
-            <ion-item>
-              <ion-input [(ngModel)]="currentUser.serverUrl" type="text" name ="serverUrl" placeholder="{{'enter_server_address'|translate}}"></ion-input>
-            </ion-item>
-
-            <ion-item>
-              <ion-input [(ngModel)]="currentUser.username" type="text" name ="username" placeholder="{{'enter_username'|translate}}"></ion-input>
-            </ion-item>
-
-            <ion-item>
-              <ion-input [(ngModel)]="currentUser.password" name ="password" type="password" placeholder="{{'enter_password'|translate}}"></ion-input>
-            </ion-item>
-          </ion-col>
-        </ion-row>
-
-        <ion-row >
           <ion-col>
-            <button type="submit" class="normalButton" ion-button full text-capitalize>
-              {{'login'|translate}}
-            </button>
+            <div style="background: white;border-radius: 0.3rem;">
+              <ion-list>
+                <ion-row (click)="toggleLoginFormAndLocalInstances()">
+                  <ion-col col-11></ion-col>
+                  <ion-col col-1>
+                    <img  [src]="cancelIcon"/>
+                  </ion-col>
+                </ion-row>
+                <available-local-instance (onSelectCurrentUser)="changeCurrentUser($event)" ></available-local-instance>
+              </ion-list>
+            </div>
           </ion-col>
         </ion-row>
-      </form>
+      </div>
+      <div *ngIf="!isLocalInstancesListOpen">
+        <form (ngSubmit)="startLoginProcess()" [ngClass]="animationEffect.loginForm" >
+          <ion-row>
+            <ion-col >
+              <ion-item>
+                <ion-input [(ngModel)]="currentUser.serverUrl" type="text" name ="serverUrl" placeholder="{{'enter_server_address'|translate}}"></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-input [(ngModel)]="currentUser.username" type="text" name ="username" placeholder="{{'enter_username'|translate}}"></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-input [(ngModel)]="currentUser.password" name ="password" type="password" placeholder="{{'enter_password'|translate}}"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row >
+            <ion-col>
+              <button type="submit" class="normalButton" ion-button full text-capitalize>
+                {{'login'|translate}}
+              </button>
+            </ion-col>
+          </ion-row>
+        </form>
+        <div *ngIf="localInstances && localInstances.length > 1">
+          <div class="strike">
+            <span >OR</span>
+          </div>
+          <button ion-button block clear color="light" text-capitalize (click)="toggleLoginFormAndLocalInstances()" >
+            <img  class="side-menu-icon" [src]="offlineIcon"/>&nbsp;&nbsp;
+            {{'offline_instances'|translate}}
+          </button>
+        </div>
+      </div>
     </div>
+
+
 
     <ion-row>
       <ion-col class="bottomSLogan">

@@ -15,7 +15,10 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
-
+ion-modal.inset-modal {
+  transition: opacity .25s ease-in-out;
+  padding: 10vh 2vw;
+}
 
 @-webkit-keyframes slideInFromLeft {
   0% {
@@ -228,7 +231,7 @@
   font-style: italic;
   color: #ffffff;
   text-transform: lowercase;
-  font-size: 0.6rem;
+  font-size: 0.8rem;
 }
 
 .apps-contents{

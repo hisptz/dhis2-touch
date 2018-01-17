@@ -7,6 +7,7 @@ import {NotificationComponent} from "./notification/notification";
 import {EmptyListNotificationComponent} from "./empty-list-notification/empty-list-notification";
 import {HelpContentsComponent} from "./help-contents/help-contents";
 import {WarningComponent} from "./warning/warning";
+import {AvailableLocalInstanceComponent} from "./available-local-instance/available-local-instance";
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import {WarningComponent} from "./warning/warning";
     AppFeaturesSlideComponent,
     LoadingPage,NotificationComponent,
     EmptyListNotificationComponent,HelpContentsComponent,WarningComponent,
+    AvailableLocalInstanceComponent,
   ],
   imports: [
     IonicModule
@@ -23,6 +25,7 @@ import {WarningComponent} from "./warning/warning";
     AppFeaturesSlideComponent,
     LoadingPage,NotificationComponent,
     EmptyListNotificationComponent,HelpContentsComponent,WarningComponent,
+    AvailableLocalInstanceComponent,
   ]
 })
 
