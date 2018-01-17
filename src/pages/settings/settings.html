@@ -17,11 +17,10 @@
 
   <ion-grid>
 
-    <div *ngIf="!isSettingLoaded">
-      <page-loading [loadingMessage]="settingLoadingMessage" [loadingSize]="'large'"></page-loading>
+    <div *ngIf="isLoading">
+      <page-loading [loadingMessage]="loadingMessage|translate" [loadingSize]="'large'"></page-loading>
     </div>
-
-    <div *ngIf="isSettingLoaded">
+    <div *ngIf="!isLoading">
 
       <div class="item-card" *ngFor="let settingContent of settingContents">
         <ion-row (tap)="toggleSettingContents(settingContent)">
@@ -40,6 +39,26 @@
         </ion-row>
         <div class="updateManagerContents" *ngIf="(isSettingContentOpen[settingContent.id])" >
           <hr>
+
+          <div *ngIf=" settingContent.id == 'appSettings'">
+            <div *ngIf="settingContent.isLoading">
+              <page-loading [loadingMessage]="'Applying changes'" [loadingSize]="'large'"></page-loading>
+            </div>
+            <div *ngIf="!settingContent.isLoading">
+              <ion-row>
+                <ion-col>
+                  <ion-item>
+                    <ion-label>{{'current_language'|translate}} </ion-label>
+                    <ion-select (ionChange)="updateCurrentLanguage()" [(ngModel)]="currentLanguage" interface="action-sheet">
+                      <ion-option value="en">en</ion-option>
+                      <ion-option value="fr">fr</ion-option>
+                      <ion-option value="pt">pt</ion-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
 
           <div *ngIf="settingContent.id == 'synchronization'">
             <div *ngIf="settingObject.synchronization">
