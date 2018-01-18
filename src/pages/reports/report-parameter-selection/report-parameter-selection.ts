@@ -23,6 +23,7 @@ export class ReportParameterSelectionPage implements OnInit{
 
   reportId : string;
   reportName : string;
+  reportType : string;
   reportParams : any;
   currentUser : any;
   loadingData : boolean = false;
@@ -50,6 +51,7 @@ export class ReportParameterSelectionPage implements OnInit{
     this.reportName = this.params.get('name');
     this.reportId = this.params.get("id");
     this.reportParams = this.params.get("reportParams");
+    this.reportType = this.params.get('reportType');
     this.reportPeriodType  = this.standardReportProvider.getReportPeriodType(this.params.get("relativePeriods"));
     this.user.getCurrentUser().then((user)=>{
       this.currentUser = user;
@@ -129,7 +131,7 @@ export class ReportParameterSelectionPage implements OnInit{
     let parameter = {
       id : this.reportId,
       name : this.reportName,
-      reportType : this.params.get('reportType'),
+      reportType : this.reportType,
       period : (this.reportParams.paramReportingPeriod && this.selectedPeriod && this.selectedPeriod.name ) ? this.selectedPeriod : null,
       organisationUnit : (this.reportParams.paramOrganisationUnit && this.selectedOrgUnit && this.selectedOrgUnit.id )? this.selectedOrgUnit : null,
       organisationUnitChildren :[]

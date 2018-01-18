@@ -13,6 +13,22 @@
 <ion-content>
   <ion-grid>
     <ion-row>
+      <ion-col text-center>
+        <b>
+          <span *ngIf="reportType" class="circled-btn-border circled-btn">
+            <span *ngIf="reportType == 'dataSetReport'" >DS</span>
+            <span *ngIf="reportType == 'standardReport'" >SD</span>
+          </span>&nbsp;
+          <span *ngIf="reportType">
+            <span *ngIf="reportType == 'dataSetReport'" >{{'data_set_report'|translate}}</span>
+            <span *ngIf="reportType == 'standardReport'" >{{'standard_report'|translate}}</span>
+          </span>
+        </b>
+
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
       <ion-col>
         <div *ngIf="reportParams.paramOrganisationUnit" class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openOrganisationUnitTree()">
           <img class="side-menu-icon" [src]="icons.orgUnit"/>&nbsp;&nbsp;
