@@ -14,6 +14,8 @@
   "apps" : "Apps",
   "account" : "Account",
   "about" : "About",
+  "synced" : "Synced",
+  "not_synced" : "Not synced",
   "profile" : "Profile",
   "help" : "Help",
   "logout" : "Logout",

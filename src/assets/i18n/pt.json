@@ -14,6 +14,8 @@
   "apps" : "Aplicativos",
   "account" : "Conta",
   "about" : "Sobre",
+  "synced" : "Sincronizado",
+  "not_synced" : "Não sincronizado",
   "profile" : "Perfil",
   "help" : "Socorro",
   "logout" : "Sair",
