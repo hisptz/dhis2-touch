@@ -118,19 +118,21 @@
       </div>
       <div *ngIf="!isLocalInstancesListOpen">
         <form (ngSubmit)="startLoginProcess()" [ngClass]="animationEffect.loginForm" >
-          <ion-row class="round-form-container">
+          <ion-row >
             <ion-col >
-              <ion-item>
-                <ion-input [(ngModel)]="currentUser.serverUrl" type="text" name ="serverUrl" placeholder="{{'enter_server_address'|translate}}"></ion-input>
-              </ion-item>
+              <div class="round-form-container">
+                <ion-item>
+                  <ion-input [(ngModel)]="currentUser.serverUrl" type="text" name ="serverUrl" placeholder="{{'enter_server_address'|translate}}"></ion-input>
+                </ion-item>
 
-              <ion-item>
-                <ion-input [(ngModel)]="currentUser.username" type="text" name ="username" placeholder="{{'enter_username'|translate}}"></ion-input>
-              </ion-item>
+                <ion-item>
+                  <ion-input [(ngModel)]="currentUser.username" type="text" name ="username" placeholder="{{'enter_username'|translate}}"></ion-input>
+                </ion-item>
 
-              <ion-item>
-                <ion-input [(ngModel)]="currentUser.password" name ="password" type="password" placeholder="{{'enter_password'|translate}}"></ion-input>
-              </ion-item>
+                <ion-item>
+                  <ion-input [(ngModel)]="currentUser.password" name ="password" type="password" placeholder="{{'enter_password'|translate}}"></ion-input>
+                </ion-item>
+              </div>
             </ion-col>
           </ion-row>
 

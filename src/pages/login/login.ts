@@ -679,11 +679,7 @@ export class LoginPage implements OnInit {
     let total = 0; let completed = 0;
     Object.keys(this.progressTracker).forEach(key=>{
       let process = this.progressTracker[key];
-      process.passStep.forEach((passStep : any)=>{
-        if(passStep.name && passStep.hasBeenPassed){
-          completed = completed + 1;
-        }
-      });
+      completed += process.passStepCount;
       total += process.count;
     });
     let value = (completed/total) * 100;
