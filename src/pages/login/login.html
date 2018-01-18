@@ -31,10 +31,10 @@
                 <page-loading loadingSize="small"></page-loading>
               </div>
             </div>
-            <span *ngIf="progressTracker.communication.message !=''">
+            <span text-wrap *ngIf="progressTracker.communication.message !=''">
               {{ progressTracker.communication.message|translate}}
             </span>
-            <span *ngIf="progressTracker.communication.message ==''">
+            <span text-wrap *ngIf="progressTracker.communication.message ==''">
               {{'establishing_connection_to_server'|translate}}
             </span>
             <div style="text-align: center" item-right >
@@ -50,10 +50,10 @@
                 <page-loading loadingSize="small"></page-loading>
               </div>
             </div>
-            <span *ngIf="progressTracker.entryForm.message !=''">
+            <span text-wrap *ngIf="progressTracker.entryForm.message !=''">
               {{ progressTracker.entryForm.message|translate}}
             </span>
-            <span *ngIf="progressTracker.entryForm.message ==''">
+            <span text-wrap *ngIf="progressTracker.entryForm.message ==''">
               {{'aggregate_metadata'|translate}}
             </span>
             <div style="text-align: center" item-right >
@@ -61,7 +61,7 @@
             </div>
           </ion-item>
           <ion-item>
-            <div style="text-align: center" item-left >
+            <div style="text-align: center" item-left  >
               <div *ngIf="progressTracker.event.passStepCount == progressTracker.event.count">
                 <ion-icon name="done-all" color="favorite"></ion-icon>
               </div>
@@ -69,10 +69,10 @@
                 <page-loading loadingSize="small"></page-loading>
               </div>
             </div>
-            <span *ngIf="progressTracker.event.message !=''">
+            <span text-wrap *ngIf="progressTracker.event.message !=''">
               {{ progressTracker.event.message|translate}}
             </span>
-            <span *ngIf="progressTracker.event.message ==''">
+            <span text-wrap *ngIf="progressTracker.event.message ==''">
               {{'Event_and_tracker_metadata'|translate}}
             </span>
             <div style="text-align: center" item-right >
@@ -88,10 +88,10 @@
                 <page-loading loadingSize="small"></page-loading>
               </div>
             </div>
-            <span *ngIf="progressTracker.report.message !=''">
+            <span text-wrap *ngIf="progressTracker.report.message !=''">
               {{ progressTracker.report.message|translate}}
             </span>
-            <span *ngIf="progressTracker.report.message ==''">
+            <span text-wrap *ngIf="progressTracker.report.message ==''">
               {{'report_metadata'|translate }}
             </span>
             <div style="text-align: center" item-right >
@@ -108,23 +108,17 @@
       <div *ngIf="isLocalInstancesListOpen">
         <ion-row>
           <ion-col>
-            <div style="background: white;border-radius: 0.3rem;">
-              <ion-list>
-                <ion-row (click)="toggleLoginFormAndLocalInstances()">
-                  <ion-col col-11></ion-col>
-                  <ion-col col-1>
-                    <img  [src]="cancelIcon"/>
-                  </ion-col>
-                </ion-row>
-                <available-local-instance (onSelectCurrentUser)="changeCurrentUser($event)" ></available-local-instance>
-              </ion-list>
+            <div class="round-form-container">
+              <available-local-instance
+                (onClose)="toggleLoginFormAndLocalInstances()"
+                (onSelectCurrentUser)="changeCurrentUser($event)" ></available-local-instance>
             </div>
           </ion-col>
         </ion-row>
       </div>
       <div *ngIf="!isLocalInstancesListOpen">
         <form (ngSubmit)="startLoginProcess()" [ngClass]="animationEffect.loginForm" >
-          <ion-row>
+          <ion-row class="round-form-container">
             <ion-col >
               <ion-item>
                 <ion-input [(ngModel)]="currentUser.serverUrl" type="text" name ="serverUrl" placeholder="{{'enter_server_address'|translate}}"></ion-input>

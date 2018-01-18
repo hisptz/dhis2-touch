@@ -18,14 +18,17 @@ export class AvailableLocalInstanceComponent implements OnInit{
   localInstancesBackup : any;
   isLoading :boolean;
   loadingMessage : string;
+  cancelIcon : string;
 
   @Output() onSelectCurrentUser = new EventEmitter();
+  @Output() onClose = new EventEmitter();
 
   constructor(private localInstanceProvider : LocalInstanceProvider,
               private appProvider : AppProvider) {}
 
   ngOnInit(){
     this.localInstances = [];
+    this.cancelIcon = "assets/icon/cancel.png";
     this.isLoading = true;
     this.loadingMessage = "loading_available_local_instances";
     this.localInstanceProvider.getLocalInstances().then((instances : any)=>{
@@ -36,6 +39,10 @@ export class AvailableLocalInstanceComponent implements OnInit{
       this.isLoading = false;
       this.appProvider.setNormalNotification("Fail to load available local instances")
     });
+  }
+
+  closeContainer(){
+    this.onClose.emit({});
   }
 
   setCurrentUser(currentUser,currentLanguage){

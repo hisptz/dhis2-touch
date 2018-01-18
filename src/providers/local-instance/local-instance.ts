@@ -44,21 +44,29 @@ export class LocalInstanceProvider {
   setLocalInstanceInstances(localInstances,currentUser,loggedInInInstance){
     return new Promise((resolve,reject)=>{
       let newInstances  = [];
+      if(!loggedInInInstance && (currentUser && currentUser.serverUrl) ){
+        loggedInInInstance = currentUser.serverUrl;
+        if(currentUser.serverUrl.split("://").length > 1){
+          loggedInInInstance = currentUser.serverUrl.split("://")[1];
+        }
+      }
       newInstances.push({
         id : currentUser.currentDatabase,
         name : loggedInInInstance,
         currentUser : currentUser,
         currentLanguage : currentUser.currentLanguage
       });
-      localInstances.forEach((localInstance : any)=>{
-        if(newInstances.indexOf(localInstance) == -1){
-          if(!localInstance.currentUser.currentLanguage){
-            localInstance.currentLanguage = "en";
-            localInstance.currentUser.currentLanguage = "en";
+      if(localInstances && localInstances.length){
+        localInstances.forEach((localInstance : any)=>{
+          if(newInstances.indexOf(localInstance) == -1){
+            if(!localInstance.currentUser.currentLanguage){
+              localInstance.currentLanguage = "en";
+              localInstance.currentUser.currentLanguage = "en";
+            }
+            newInstances.push(localInstance);
           }
-          newInstances.push(localInstance);
-        }
-      });
+        });
+      }
       this.sqlLiteProvider.insertBulkDataOnTable(this.LOCAL_INSTANCE_KEY,newInstances,this.LOCAL_INSTANCE_KEY).then(()=>{
         resolve();
       }).catch((error=>{
