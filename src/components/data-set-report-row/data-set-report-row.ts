@@ -61,11 +61,7 @@ export class DataSetReportRowComponent implements OnInit{
         if(validAggregatedTypes.indexOf(dataElement.valueType) > -1){
           this.dataObject[id] = this.getAggregatedValue(values,dataElement.aggregationType);
         }else{
-          if(values && values.length > 0){
-            this.dataObject[id] = values[0];
-          }else{
-            this.dataObject[id] = "";
-          }
+          this.dataObject[id] = "";
         }
       });
     }
