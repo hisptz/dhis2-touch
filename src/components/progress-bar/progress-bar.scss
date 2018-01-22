@@ -14,10 +14,24 @@ progress-bar {
     text-align: left;
     overflow: visible;
     color : map_get($colors,dark);
-    font-size: 20px;
     padding: 3px;
     border-radius: 3px;
     background-color: map-get($colors, primary);
     transition: width .4s ease-in-out;
+  }
+
+  .cancel-progress-percentage{
+    display: inline-block;
+    width: 49.3%;
+    float: right
+  }
+
+  .percentage{
+    color: #7A7A7A;
+    font-size: 1.2rem;
+    padding-top:1.2rem;
+  }
+  .cancel-button{
+    margin-top:0.65rem;
   }
 }

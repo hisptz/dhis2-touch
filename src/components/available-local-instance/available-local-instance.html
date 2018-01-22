@@ -7,7 +7,7 @@
       <ion-col col-11>
         <ion-searchbar animated="true" autocomplete="on" (ionInput)="getFilteredList($event)"></ion-searchbar>
       </ion-col>
-      <ion-col col-1 (click)="closeContainer()" padding-top>
+      <ion-col col-1 (click)="closeContainer()" padding-top class="cancel-button">
         <img [src]="cancelIcon"/>
       </ion-col>
     </ion-row>

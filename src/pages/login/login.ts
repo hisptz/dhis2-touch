@@ -702,6 +702,6 @@ export class LoginPage implements OnInit {
       });
     });
     return completedTrackedProcess;
-  };
+  }
 
 }

@@ -21,6 +21,11 @@ export class ProgressBarComponent implements OnInit{
   constructor() {
   }
 
+
+  getPercentage(progressBar){
+    return parseInt(progressBar);
+  }
+
   ngOnInit(){
     this.cancelIcon = "assets/icon/cancel.png";
   }
