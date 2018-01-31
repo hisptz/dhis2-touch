@@ -19,57 +19,57 @@ import {Observable} from "rxjs/Observable";
   selector: 'upload-data-via-internet',
   templateUrl: 'upload-via-internet.html'
 })
-export class UploadViaInternetComponent implements OnInit{
+export class UploadViaInternetComponent implements OnInit {
 
 
   currentUser: any;
-  selectedItems : any = {};
-  isLoading : boolean;
+  selectedItems: any = {};
+  isLoading: boolean;
   loadingMessage: string;
-  itemsToUpload : Array<string>;
-  importSummaries : any;
-  dataObject : any;
+  itemsToUpload: Array<string>;
+  importSummaries: any;
+  dataObject: any;
 
-  constructor(private modalCtrl : ModalController,
-              private dataValuesProvider : DataValuesProvider,private trackerCaptureProvider : TrackerCaptureProvider,
-              private enrollmentsProvider : EnrollmentsProvider, private eventCaptureFormProvider : EventCaptureFormProvider,
+  constructor(private modalCtrl: ModalController,
+              private dataValuesProvider: DataValuesProvider, private trackerCaptureProvider: TrackerCaptureProvider,
+              private enrollmentsProvider: EnrollmentsProvider, private eventCaptureFormProvider: EventCaptureFormProvider,
               private appProvider: AppProvider, public user: UserProvider) {
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.isLoading = true;
     this.itemsToUpload = [];
     this.dataObject = {};
     this.loadingMessage = "Loading user information";
     this.importSummaries = null;
-    this.user.getCurrentUser().then((user:any)=>{
+    this.user.getCurrentUser().subscribe((user: any) => {
       this.currentUser = user;
       this.loadingDataToUpload();
-    },error=>{
+    }, error => {
     });
   }
 
-  loadingDataToUpload(){
+  loadingDataToUpload() {
     let status = "not-synced";
     let promises = [];
     promises.push(
-      this.dataValuesProvider.getDataValuesByStatus(status,this.currentUser).then((dataValues: any)=>{
+      this.dataValuesProvider.getDataValuesByStatus(status, this.currentUser).subscribe((dataValues: any) => {
         this.dataObject['dataValues'] = dataValues;
       })
     );
     promises.push(
-      this.trackerCaptureProvider.getTrackedEntityInstanceByStatus(status,this.currentUser).then((trackedEntityInstances : any)=>{
+      this.trackerCaptureProvider.getTrackedEntityInstanceByStatus(status, this.currentUser).subscribe((trackedEntityInstances: any) => {
         this.dataObject["Enrollments"] = trackedEntityInstances;
       })
     );
     promises.push(
-      this.eventCaptureFormProvider.getEventsByAttribute('syncStatus',[status],this.currentUser).then((events : any)=>{
+      this.eventCaptureFormProvider.getEventsByAttribute('syncStatus', [status], this.currentUser).subscribe((events: any) => {
         this.dataObject['events'] = [];
         this.dataObject['eventsForTracker'] = [];
-        events.forEach((event : any)=>{
-          if(event.eventType == 'event-capture'){
+        events.forEach((event: any) => {
+          if (event.eventType == 'event-capture') {
             this.dataObject.events.push(event);
-          }else{
+          } else {
             this.dataObject.eventsForTracker.push(event);
           }
         });
@@ -77,89 +77,95 @@ export class UploadViaInternetComponent implements OnInit{
     );
     Observable.forkJoin(promises).subscribe(() => {
       this.isLoading = false;
-    },(error) => {
+    }, (error) => {
       this.isLoading = false;
       this.appProvider.setNormalNotification("Fail to load data for uploading");
     });
   }
 
-  updateItemsToUpload(){
+  updateItemsToUpload() {
     this.itemsToUpload = [];
-    Object.keys(this.selectedItems).forEach((key: string)=>{
-      if(this.selectedItems[key]){
+    Object.keys(this.selectedItems).forEach((key: string) => {
+      if (this.selectedItems[key]) {
         this.itemsToUpload.push(key);
       }
     });
   }
 
-  uploadData(){
+  uploadData() {
     this.loadingMessage = "Uploading selected local data, please wait";
     this.isLoading = true;
     let promises = [];
     this.importSummaries = {};
     let keys = [];
     //aggregate data values
-    if(this.itemsToUpload.indexOf('dataValues') > -1){
+    if (this.itemsToUpload.indexOf('dataValues') > -1) {
       let formattedDataValues = this.dataValuesProvider.getFormattedDataValueForUpload(this.dataObject['dataValues']);
       promises.push(
-        this.dataValuesProvider.uploadDataValues(formattedDataValues,this.dataObject['dataValues'],this.currentUser).then(importSummaries=>{
+        this.dataValuesProvider.uploadDataValues(formattedDataValues, this.dataObject['dataValues'], this.currentUser).subscribe(importSummaries => {
           keys.push("dataValues");
           this.importSummaries['dataValues'] = importSummaries
-        }).catch(error=>{
+        }, error => {
           console.log("Error " + JSON.stringify(error));
         })
       );
     }
     //tracked entity instances and enrollments
-    if(this.itemsToUpload.indexOf('Enrollments') > -1){
+    if (this.itemsToUpload.indexOf('Enrollments') > -1) {
       promises.push(
-        this.trackerCaptureProvider.uploadTrackedEntityInstancesToServer(this.dataObject['Enrollments'],this.dataObject['Enrollments'],this.currentUser).then((response : any)=>{
+        this.trackerCaptureProvider.uploadTrackedEntityInstancesToServer(this.dataObject['Enrollments'], this.dataObject['Enrollments'], this.currentUser).subscribe((response: any) => {
           this.importSummaries["trackedEntityInstances"] = response.importSummaries;
           keys.push("trackedEntityInstances");
-          this.enrollmentsProvider.getSavedEnrollmentsByAttribute('trackedEntityInstance',response.trackedEntityInstanceIds,this.currentUser).then((enrollments: any)=>{
-            this.trackerCaptureProvider.uploadEnrollments(enrollments,this.currentUser).then(()=>{
-              this.eventCaptureFormProvider.uploadEventsToSever(this.dataObject['eventsForTracker'],this.currentUser).then((importSummaries)=>{
+          this.enrollmentsProvider.getSavedEnrollmentsByAttribute('trackedEntityInstance', response.trackedEntityInstanceIds, this.currentUser).subscribe((enrollments: any) => {
+            this.trackerCaptureProvider.uploadEnrollments(enrollments, this.currentUser).subscribe(() => {
+              this.eventCaptureFormProvider.uploadEventsToSever(this.dataObject['eventsForTracker'], this.currentUser).subscribe((importSummaries) => {
                 this.importSummaries["eventsForTracker"] = importSummaries;
                 keys.push("eventsForTracker");
-              }).catch(()=>{});
-            }).catch(error=>{});
-          }).catch(()=>{})
-        }).catch(error=>{})
+              }, () => {
+              });
+            }, error => {
+            });
+          }, () => {
+          })
+        }, error => {
+        })
       );
     }
     //events for tracker
-    if(this.itemsToUpload.indexOf('eventsForTracker') > -1 && this.itemsToUpload.indexOf('Enrollments') == -1){
+    if (this.itemsToUpload.indexOf('eventsForTracker') > -1 && this.itemsToUpload.indexOf('Enrollments') == -1) {
       promises.push(
-        this.eventCaptureFormProvider.uploadEventsToSever(this.dataObject['eventsForTracker'],this.currentUser).then((importSummaries)=>{
+        this.eventCaptureFormProvider.uploadEventsToSever(this.dataObject['eventsForTracker'], this.currentUser).subscribe((importSummaries) => {
           this.importSummaries['eventsForTracker'] = importSummaries;
           keys.push("eventsForTracker");
-        }).catch(()=>{})
+        }, () => {
+        })
       );
     }
     //events for event capture
-    if(this.itemsToUpload.indexOf('events') > -1){
+    if (this.itemsToUpload.indexOf('events') > -1) {
       promises.push(
-        this.eventCaptureFormProvider.uploadEventsToSever(this.dataObject['events'],this.currentUser).then((importSummaries)=>{
+        this.eventCaptureFormProvider.uploadEventsToSever(this.dataObject['events'], this.currentUser).subscribe((importSummaries) => {
           this.importSummaries['events'] = importSummaries;
           keys.push("events");
-        }).catch(()=>{})
+        }, () => {
+        })
       );
     }
 
     Observable.forkJoin(promises).subscribe(() => {
       this.isLoading = false;
       this.viewUploadImportSummaries(keys);
-    },(error) => {
+    }, (error) => {
       this.isLoading = false;
       this.appProvider.setNormalNotification("Fail to upload data");
     });
   }
 
-  viewUploadImportSummaries(keys){
-    if(this.importSummaries){
-      let modal = this.modalCtrl.create('ImportSummariesPage',{importSummaries : this.importSummaries,keys : keys});
-      modal.onDidDismiss(()=>{
-        Object.keys(this.selectedItems).forEach((key: string)=>{
+  viewUploadImportSummaries(keys) {
+    if (this.importSummaries) {
+      let modal = this.modalCtrl.create('ImportSummariesPage', {importSummaries: this.importSummaries, keys: keys});
+      modal.onDidDismiss(() => {
+        Object.keys(this.selectedItems).forEach((key: string) => {
           this.selectedItems[key] = false;
         });
         this.loadingDataToUpload();

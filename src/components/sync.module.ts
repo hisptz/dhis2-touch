@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { IonicModule } from 'ionic-angular';
+import {NgModule} from '@angular/core';
+import {IonicModule} from 'ionic-angular';
 import {SharedModule} from "./shared.module";
 import {ClearLocalDataComponent} from "./clear-local-data/clear-local-data";
 import {DownloadMetaDataComponent} from "./download-meta-data/download-meta-data";
@@ -11,16 +11,17 @@ import {UploadViaInternetComponent} from "./upload-data-via-internet/upload-via-
 
 @NgModule({
   declarations: [
-    ClearLocalDataComponent, DownloadMetaDataComponent, UploadDataViaSmsComponent,UploadViaInternetComponent,
-    ClearLocalMetadataComponent,DownloadDataComponent, DownloadDataValuesComponent,
+    ClearLocalDataComponent, DownloadMetaDataComponent, UploadDataViaSmsComponent, UploadViaInternetComponent,
+    ClearLocalMetadataComponent, DownloadDataComponent, DownloadDataValuesComponent,
   ],
   imports: [
-    IonicModule,SharedModule,
+    IonicModule, SharedModule,
   ],
   exports: [
-    ClearLocalDataComponent, DownloadMetaDataComponent, UploadDataViaSmsComponent,UploadViaInternetComponent,
-    ClearLocalMetadataComponent,DownloadDataComponent, DownloadDataValuesComponent,
+    ClearLocalDataComponent, DownloadMetaDataComponent, UploadDataViaSmsComponent, UploadViaInternetComponent,
+    ClearLocalMetadataComponent, DownloadDataComponent, DownloadDataValuesComponent,
   ]
 })
 
-export class SyncModule { }
+export class SyncModule {
+}

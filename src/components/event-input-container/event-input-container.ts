@@ -33,7 +33,7 @@ export class EventInputContainerComponent implements OnInit, OnDestroy{
     this.textInputField = ['TEXT','LONG_TEXT'];
     this.supportValueTypes = ['BOOLEAN','TRUE_ONLY','DATE','TEXT','LONG_TEXT','INTEGER_NEGATIVE','INTEGER_POSITIVE','INTEGER','NUMBER','INTEGER_ZERO_OR_POSITIVE'];
     this.fieldLabelKey = this.dataElement.name;
-    this.settingsProvider.getSettingsForTheApp(this.currentUser).then((appSettings : any)=>{
+    this.settingsProvider.getSettingsForTheApp(this.currentUser).subscribe((appSettings : any)=>{
       let dataEntrySettings = appSettings.entryForm;
       if(dataEntrySettings.label){
         if(this.dataElement[dataEntrySettings.label] && this.dataElement[dataEntrySettings.label]!="0"){

@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { IonicModule } from 'ionic-angular';
+import {NgModule} from '@angular/core';
+import {IonicModule} from 'ionic-angular';
 import {ProgressBarComponent} from './progress-bar/progress-bar';
 import {LoadingComponent} from "./loading/loading";
 import {AppFeaturesSlideComponent} from "./app-features-slide/app-features-slide";
@@ -13,8 +13,8 @@ import {AvailableLocalInstanceComponent} from "./available-local-instance/availa
   declarations: [
     ProgressBarComponent,
     AppFeaturesSlideComponent,
-    LoadingComponent,NotificationComponent,
-    EmptyListNotificationComponent,HelpContentsComponent,WarningComponent,
+    LoadingComponent, NotificationComponent,
+    EmptyListNotificationComponent, HelpContentsComponent, WarningComponent,
     AvailableLocalInstanceComponent,
   ],
   imports: [
@@ -23,10 +23,11 @@ import {AvailableLocalInstanceComponent} from "./available-local-instance/availa
   exports: [
     ProgressBarComponent,
     AppFeaturesSlideComponent,
-    LoadingComponent,NotificationComponent,
-    EmptyListNotificationComponent,HelpContentsComponent,WarningComponent,
+    LoadingComponent, NotificationComponent,
+    EmptyListNotificationComponent, HelpContentsComponent, WarningComponent,
     AvailableLocalInstanceComponent,
   ]
 })
 
-export class SharedModule { }
+export class SharedModule {
+}

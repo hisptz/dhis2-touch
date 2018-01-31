@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { IonicModule } from 'ionic-angular';
+import {NgModule} from '@angular/core';
+import {IonicModule} from 'ionic-angular';
 import {SharedModule} from "./shared.module";
 import {OrganisationUnitTreeComponent} from "./organisation-unit-tree/organisation-unit-tree";
 import {InputContainerComponent} from "./input-container/input-container";
@@ -18,20 +18,21 @@ import {TranslateModule} from "@ngx-translate/core";
 
 @NgModule({
   declarations: [
-    OrganisationUnitTreeComponent,InputContainerComponent,TrackedEntityInputsComponent,
-    BooleanInputFieldComponent,DateInputFieldComponent,NumericalInputFieldComponent,
-    OptionSetInputFieldComponent,TextInputFieldComponent,TrueOnlyInputFieldComponent,
-    ProgramStageEventBasedComponent,ProgramStageTrackerBasedComponent,EventInputContainerComponent,TrackerEventContainerComponent
+    OrganisationUnitTreeComponent, InputContainerComponent, TrackedEntityInputsComponent,
+    BooleanInputFieldComponent, DateInputFieldComponent, NumericalInputFieldComponent,
+    OptionSetInputFieldComponent, TextInputFieldComponent, TrueOnlyInputFieldComponent,
+    ProgramStageEventBasedComponent, ProgramStageTrackerBasedComponent, EventInputContainerComponent, TrackerEventContainerComponent
   ],
   imports: [
-    IonicModule,SharedModule,TranslateModule.forChild({})
+    IonicModule, SharedModule, TranslateModule.forChild({})
   ],
   exports: [
-    OrganisationUnitTreeComponent,InputContainerComponent,TrackedEntityInputsComponent,
-    BooleanInputFieldComponent,DateInputFieldComponent,NumericalInputFieldComponent,
-    OptionSetInputFieldComponent,TextInputFieldComponent,TrueOnlyInputFieldComponent,
-    ProgramStageEventBasedComponent,ProgramStageTrackerBasedComponent,EventInputContainerComponent,TrackerEventContainerComponent
+    OrganisationUnitTreeComponent, InputContainerComponent, TrackedEntityInputsComponent,
+    BooleanInputFieldComponent, DateInputFieldComponent, NumericalInputFieldComponent,
+    OptionSetInputFieldComponent, TextInputFieldComponent, TrueOnlyInputFieldComponent,
+    ProgramStageEventBasedComponent, ProgramStageTrackerBasedComponent, EventInputContainerComponent, TrackerEventContainerComponent
   ]
 })
 
-export class DataEntryModule { }
+export class DataEntryModule {
+}

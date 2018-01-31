@@ -52,7 +52,7 @@ export class OrganisationUnitTreeComponent implements OnInit {
       this.hasOrgUnitChildrenLoaded = false;
       this.hasOrgUnitChildrenOpened[organisationUnit.id] = true;
       let childrenOrganisationUnitIds = this.getOrganisationUnitsChildrenIds(organisationUnit);
-      this.organisationUnitProvider.getOrganisationUnitsByIds(childrenOrganisationUnitIds,this.currentUser).then((childrenOrganisationUnits:any)=>{
+      this.organisationUnitProvider.getOrganisationUnitsByIds(childrenOrganisationUnitIds,this.currentUser).subscribe((childrenOrganisationUnits:any)=>{
         this.organisationUnit.children = childrenOrganisationUnits;
         this.isOrganisationUnitsFetched = true;
         this.hasOrgUnitChildrenLoaded = true;

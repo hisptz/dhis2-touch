@@ -49,13 +49,13 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy{
     if(this.currentEvent && this.currentEvent.eventDate){
       this.eventDate = this.currentEvent.eventDate;
     }
-    this.userProvider.getCurrentUser().then((user : any)=>{
+    this.userProvider.getCurrentUser().subscribe((user : any)=>{
       this.currentUser = user;
       if(this.currentEvent && this.currentEvent.dataValues && this.currentEvent.dataValues.length > 0){
         this.updateDataObjectModel(this.currentEvent.dataValues,this.programStage.programStageDataElements);
       }
       this.isLoading = false;
-    }).catch(error=>{
+    },error=>{
       this.isLoading = false;
       console.log(JSON.stringify(error));
       this.appProvider.setNormalNotification("Fail to load user information");
@@ -75,10 +75,10 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy{
           handler: () => {
             this.isLoading = true;
             this.loadingMessage = "Deleting event";
-            this.eventCaptureFormProvider.deleteEventByAttribute('id', currentEventId, this.currentUser).then(() => {
+            this.eventCaptureFormProvider.deleteEventByAttribute('id', currentEventId, this.currentUser).subscribe(() => {
               this.appProvider.setNormalNotification("Event has been deleted successfully");
               this.onDeleteEvent.emit();
-            }).catch(error => {
+            },error => {
               console.log(JSON.stringify(error));
               this.isLoading = false;
               this.appProvider.setNormalNotification("Fail to delete event");
@@ -130,10 +130,10 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy{
     });
     this.currentEvent.dataValues = dataValues;
     this.currentEvent.syncStatus = "not-synced";
-    this.eventCaptureFormProvider.saveEvents([this.currentEvent],this.currentUser).then(()=>{
+    this.eventCaptureFormProvider.saveEvents([this.currentEvent],this.currentUser).subscribe(()=>{
       this.dataObjectModel[updatedData.id] = updatedData;
       this.dataValuesSavingStatusClass[updatedData.id] ="input-field-container-success";
-    }).catch((error)=>{
+    },(error)=>{
       this.dataValuesSavingStatusClass[updatedData.id] ="input-field-container-failed";
       console.log(JSON.stringify(error));
     });

@@ -65,10 +65,10 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
     this.currentProgram = this.programsProvider.lastSelectedProgram;
     this.loadingMessage = "Loading user information";
     this.isLoading = true;
-    this.userProvider.getCurrentUser().then((user)=>{
+    this.userProvider.getCurrentUser().subscribe((user)=>{
       this.currentUser = user;
       if(this.programStage && this.programStage.id){
-        this.settingsProvider.getSettingsForTheApp(this.currentUser).then((appSettings : any)=>{
+        this.settingsProvider.getSettingsForTheApp(this.currentUser).subscribe((appSettings : any)=>{
           this.dataEntrySettings =  appSettings.entryForm;
           this.columnsToDisplay = {};
           if(this.programStage.programStageDataElements){
@@ -101,7 +101,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
           this.loadEventsBasedOnProgramStage(this.programStage.id);
         });
       }
-    }).catch(error=>{
+    },error=>{
       this.appProvider.setNormalNotification("Fail to load user information");
     })
   }
@@ -111,14 +111,14 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
     this.isNewEventFormOpened = false;
     this.isAddButtonDisabled = false;
     this.currentEvents = [];
-    this.eventCaptureFormProvider.getEventsForProgramStage(this.currentUser,programStageId,this.trackedEntityInstance).then((events : any)=>{
+    this.eventCaptureFormProvider.getEventsForProgramStage(this.currentUser,programStageId,this.trackedEntityInstance).subscribe((events : any)=>{
       events.forEach((event : any)=>{
         if(!event.dueDate){
           event.dueDate = event.eventDate
         }
       });
       if(events && events.length> 0){
-        this.eventCaptureFormProvider.saveEvents(events,this.currentUser).then(()=>{});
+        this.eventCaptureFormProvider.saveEvents(events,this.currentUser).subscribe(()=>{});
       }
       this.isLoading = false;
       if (events && events.length == 0) {
@@ -132,7 +132,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
         this.currentEvents = events;
       }
       this.renderDataAsTable();
-    }).catch(error=>{
+    },error=>{
       console.log(JSON.stringify(error));
       this.isLoading = false;
       this.appProvider.setNormalNotification("Fail to load events");
@@ -196,11 +196,11 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
         {
           text: 'Yes',
           handler: () => {
-            this.eventCaptureFormProvider.deleteEventByAttribute('id', currentEventId, this.currentUser).then(() => {
+            this.eventCaptureFormProvider.deleteEventByAttribute('id', currentEventId, this.currentUser).subscribe(() => {
               this.isLoading = true;
               this.loadEventsBasedOnProgramStage(this.programStage.id);
               this.appProvider.setNormalNotification("Event has been deleted successfully");
-            }).catch(error => {
+            },error => {
               console.log(JSON.stringify(error));
               this.isLoading = false;
               this.appProvider.setNormalNotification("Fail to delete event");
@@ -216,10 +216,10 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
   }
 
   renderDataAsTable(){
-    this.eventCaptureFormProvider.getTableFormatResult(this.columnsToDisplay,this.currentEvents,'tracker-capture').then((response : any)=>{
+    this.eventCaptureFormProvider.getTableFormatResult(this.columnsToDisplay,this.currentEvents,'tracker-capture').subscribe((response : any)=>{
       this.tableLayout = response.table;
       this.resetOpenRowOnRepeatableEvents();
-    }).catch(error=>{
+    },error=>{
       this.appProvider.setNormalNotification("Fail to prepare table for display");
     });
   }
@@ -243,9 +243,9 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy{
   updateData(shouldUpdateTable){
     this.isAddButtonDisabled = false;
     if(shouldUpdateTable){
-      this.eventCaptureFormProvider.getTableFormatResult(this.columnsToDisplay,this.currentEvents).then((response : any)=>{
+      this.eventCaptureFormProvider.getTableFormatResult(this.columnsToDisplay,this.currentEvents).subscribe((response : any)=>{
         this.tableLayout = response.table;
-      }).catch(error=>{
+      },error=>{
         this.appProvider.setNormalNotification("Fail to prepare table for display");
       });
     }

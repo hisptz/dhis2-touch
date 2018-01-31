@@ -11,7 +11,7 @@ import {EventCaptureFormProvider} from "../../providers/event-capture-form/event
   selector: 'tracker-event-container',
   templateUrl: 'tracker-event-container.html'
 })
-export class TrackerEventContainerComponent implements OnInit, OnDestroy{
+export class TrackerEventContainerComponent implements OnInit, OnDestroy {
 
   @Input() programStage;
   @Input() currentOpenEvent;
@@ -20,62 +20,62 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy{
   @Input() dataValuesSavingStatusClass;
   @Output() onChange = new EventEmitter();
 
-  dataObjectModel : any;
+  dataObjectModel: any;
 
-  constructor(private eventCaptureFormProvider : EventCaptureFormProvider) {
+  constructor(private eventCaptureFormProvider: EventCaptureFormProvider) {
   }
 
-  ngOnInit(){
-    if(this.isOpenRow){
+  ngOnInit() {
+    if (this.isOpenRow) {
       this.isOpenRow = JSON.parse(this.isOpenRow);
     }
     this.dataObjectModel = {};
-    if(this.currentOpenEvent && this.currentOpenEvent.dataValues && this.programStage && this.programStage.programStageDataElements ){
+    if (this.currentOpenEvent && this.currentOpenEvent.dataValues && this.programStage && this.programStage.programStageDataElements) {
       this.updateDataObjectModel(this.currentOpenEvent.dataValues, this.programStage.programStageDataElements);
     }
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.programStage = null;
     this.currentOpenEvent = null;
   }
 
-  updateDataObjectModel(dataValues,programStageDataElements){
+  updateDataObjectModel(dataValues, programStageDataElements) {
     let dataValuesMapper = {};
-    dataValues.forEach((dataValue : any)=>{
+    dataValues.forEach((dataValue: any) => {
       dataValuesMapper[dataValue.dataElement] = dataValue;
     });
-    programStageDataElements.forEach((programStageDataElement : any)=>{
-      if(programStageDataElement.dataElement && programStageDataElement.dataElement.id){
+    programStageDataElements.forEach((programStageDataElement: any) => {
+      if (programStageDataElement.dataElement && programStageDataElement.dataElement.id) {
         let dataElementId = programStageDataElement.dataElement.id;
-        let fieldId = programStageDataElement.dataElement.id +"-dataElement";
-        if(dataValuesMapper[dataElementId]){
+        let fieldId = programStageDataElement.dataElement.id + "-dataElement";
+        if (dataValuesMapper[dataElementId]) {
           this.dataObjectModel[fieldId] = dataValuesMapper[dataElementId];
         }
       }
     });
   }
 
-  updateData(updatedData){
+  updateData(updatedData) {
     let dataValues = [];
-    if(updatedData && updatedData.id){
+    if (updatedData && updatedData.id) {
       this.dataObjectModel[updatedData.id] = updatedData;
     }
-    Object.keys(this.dataObjectModel).forEach((key : any)=>{
+    Object.keys(this.dataObjectModel).forEach((key: any) => {
       let dataElementId = key.split('-')[0];
       dataValues.push({
-        dataElement : dataElementId,
-        value : this.dataObjectModel[key].value
+        dataElement: dataElementId,
+        value: this.dataObjectModel[key].value
       });
     });
     this.currentOpenEvent.dataValues = dataValues;
     this.currentOpenEvent.syncStatus = "not-synced";
     this.onChange.emit(this.isOpenRow);
-    this.eventCaptureFormProvider.saveEvents([this.currentOpenEvent],this.currentUser).then(()=>{
-      this.dataValuesSavingStatusClass[updatedData.id] ="input-field-container-success";
+    this.eventCaptureFormProvider.saveEvents([this.currentOpenEvent], this.currentUser).subscribe(() => {
+      this.dataValuesSavingStatusClass[updatedData.id] = "input-field-container-success";
       this.dataObjectModel[updatedData.id] = updatedData;
-    }).catch((error)=>{
-      this.dataValuesSavingStatusClass[updatedData.id] ="input-field-container-failed";
+    }, (error) => {
+      this.dataValuesSavingStatusClass[updatedData.id] = "input-field-container-failed";
       console.log(JSON.stringify(error));
     });
   }

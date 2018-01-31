@@ -10,13 +10,15 @@ import {Component, Input, OnInit} from '@angular/core';
   selector: 'warning',
   templateUrl: 'warning.html'
 })
-export class WarningComponent implements OnInit{
+export class WarningComponent implements OnInit {
 
   @Input() warningMessage;
-  icon : string;
+  icon: string;
+
   constructor() {
   }
-  ngOnInit(){
+
+  ngOnInit() {
     this.icon = "assets/icon/warning.png";
   }
 

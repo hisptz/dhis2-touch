@@ -40,7 +40,7 @@ export class ClearLocalDataComponent implements OnInit{
     this.dataObject = {};
     this.itemsToBeDeleted = [];
     this.loadingMessage = "Loading user information";
-    this.user.getCurrentUser().then((user:any)=>{
+    this.user.getCurrentUser().subscribe((user:any)=>{
       this.currentUser = user;
       this.loadingDataToDeleted();
     });
@@ -49,17 +49,17 @@ export class ClearLocalDataComponent implements OnInit{
   loadingDataToDeleted(){
     let promises = [];
     promises.push(
-      this.dataValuesProvider.getAllDataValues(this.currentUser).then((dataValues: any)=>{
+      this.dataValuesProvider.getAllDataValues(this.currentUser).subscribe((dataValues: any)=>{
         this.dataObject['dataValues'] = dataValues.length;
       })
     );
     promises.push(
-      this.trackedEntityInstancesProvider.getAllTrackedEntityInstances(this.currentUser).then((trackedEntityInstances : any)=>{
+      this.trackedEntityInstancesProvider.getAllTrackedEntityInstances(this.currentUser).subscribe((trackedEntityInstances : any)=>{
         this.dataObject["enrollments"] = trackedEntityInstances.length;
       })
     );
     promises.push(
-      this.eventCaptureFormProvider.getAllEvents(this.currentUser).then((events : any)=>{
+      this.eventCaptureFormProvider.getAllEvents(this.currentUser).subscribe((events : any)=>{
         this.dataObject['events'] = 0;
         this.dataObject['eventsForTracker'] = 0;
         events.forEach((event : any)=>{
@@ -127,36 +127,36 @@ export class ClearLocalDataComponent implements OnInit{
     itemsToBeDeleted.forEach((item : any)=>{
       if(item == "eventsForTracker" && !shouldClearEventsTable){
         promises.push(
-          this.eventCaptureFormProvider.deleteEventByAttribute('eventType',['tracker-capture'],this.currentUser).then(()=>{}).catch(error=>{})
+          this.eventCaptureFormProvider.deleteEventByAttribute('eventType',['tracker-capture'],this.currentUser).subscribe(()=>{},error=>{})
         );
       }else if(item == "events" && !shouldClearEventsTable){
         promises.push(
-          this.eventCaptureFormProvider.deleteEventByAttribute('eventType',['event-capture'],this.currentUser).then(()=>{}).catch(error=>{})
+          this.eventCaptureFormProvider.deleteEventByAttribute('eventType',['event-capture'],this.currentUser).subscribe(()=>{},error=>{})
         );
       }else if(item == "enrollments"){
         promises.push(
-          this.trackerCaptureProvider.deleteAllTrackedEntityInstances(this.currentUser).then(()=>{}).catch(error=>{})
+          this.trackerCaptureProvider.deleteAllTrackedEntityInstances(this.currentUser).subscribe(()=>{},error=>{})
         );
       }else if(item == "dataValues"){
         promises.push(
-          this.dataValuesProvider.deleteAllDataValues(this.currentUser).then(()=>{}).catch(error=>{})
+          this.dataValuesProvider.deleteAllDataValues(this.currentUser).subscribe(()=>{},error=>{})
         );
       }
     });
     if(shouldClearEventsTable){
       promises.push(
-        this.eventCaptureFormProvider.deleteALLEvents(this.currentUser).then(()=>{}).catch(error=>{})
+        this.eventCaptureFormProvider.deleteALLEvents(this.currentUser).subscribe(()=>{},error=>{})
       );
     }
     Observable.forkJoin(promises).subscribe(() => {
       setTimeout(()=>{
-        this.sqlliteProvider.generateTables(this.currentUser.currentDatabase).then(()=>{
+        this.sqlliteProvider.generateTables(this.currentUser.currentDatabase).subscribe(()=>{
           Object.keys(this.selectedItems).forEach((key: string)=>{
             this.selectedItems[key] = false;
           });
           this.loadingDataToDeleted();
           this.appProvider.setNormalNotification('All selected local data has been cleared successfully');
-        }).catch(error=>{
+        },error=>{
           this.isLoading = false;
           this.appProvider.setNormalNotification("Fail to clear local data");
         });

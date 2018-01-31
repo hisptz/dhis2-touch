@@ -35,7 +35,7 @@ export class DownloadMetaDataComponent implements OnInit {
   ngOnInit() {
     this.hasAllSelected = false;
     this.loadingData = true;
-    this.user.getCurrentUser().then((user: any) => {
+    this.user.getCurrentUser().subscribe((user: any) => {
       this.currentUser = user;
       this.loadingData = false;
     });
@@ -81,12 +81,12 @@ export class DownloadMetaDataComponent implements OnInit {
 
   updateResources(resources) {
     this.updateMetaDataLoadingMessages = "Downloading updates";
-    this.syncProvider.downloadResources(resources, this.currentUser).then((resourcesData) => {
-      this.syncProvider.prepareTablesToApplyChanges(resources, this.currentUser).then(() => {
+    this.syncProvider.downloadResources(resources, this.currentUser).subscribe((resourcesData) => {
+      this.syncProvider.prepareTablesToApplyChanges(resources, this.currentUser).subscribe(() => {
         this.updateMetaDataLoadingMessages = "Deleting Selected MetaData Tables ";
-        this.sqLite.generateTables(this.currentUser.currentDatabase).then(() => {
+        this.sqLite.generateTables(this.currentUser.currentDatabase).subscribe(() => {
             this.updateMetaDataLoadingMessages = "Applying updates ";
-            this.syncProvider.savingResources(resources,resourcesData,this.currentUser).then(()=>{
+            this.syncProvider.savingResources(resources,resourcesData,this.currentUser).subscribe(()=>{
               this.autoSelect("un-selectAll");
               this.appProvider.setNormalNotification("All updates has been applied successfully.");
               this.showLoadingMessage = false;
@@ -108,8 +108,6 @@ export class DownloadMetaDataComponent implements OnInit {
       this.showLoadingMessage = false;
       this.appProvider.setNormalNotification("Fail to download updates : " + JSON.stringify(error));
     });
-
-
   }
 
 

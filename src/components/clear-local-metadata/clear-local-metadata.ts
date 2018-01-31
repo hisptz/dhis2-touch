@@ -32,7 +32,7 @@ export class ClearLocalMetadataComponent implements OnInit{
 
   ngOnInit(){
     this.hasAllSelected = false;
-    this.user.getCurrentUser().then((user:any)=>{
+    this.user.getCurrentUser().subscribe((user:any)=>{
       this.currentUser = user;
     });
     this.resources = this.syncPage.resources;
@@ -105,9 +105,9 @@ export class ClearLocalMetadataComponent implements OnInit{
 
   deleteResources(resources){
     this.loadingMessage= "Clearing selected Metadata";
-    this.syncProvider.prepareTablesToApplyChanges(resources,this.currentUser).then(()=>{
+    this.syncProvider.prepareTablesToApplyChanges(resources,this.currentUser).subscribe(()=>{
       this.loadingMessage= "Applying updates";
-      this.sqLite.generateTables(this.currentUser.currentDatabase).then(()=>{
+      this.sqLite.generateTables(this.currentUser.currentDatabase).subscribe(()=>{
         this.autoSelect("un-selectAll");
         this.appProvider.setNormalNotification("All selected local metadata has been cleared successfully");
         this.isLoading = false;

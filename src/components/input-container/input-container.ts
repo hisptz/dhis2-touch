@@ -34,7 +34,7 @@ export class InputContainerComponent implements OnInit{
     this.supportValueTypes = ['BOOLEAN','TRUE_ONLY','DATE','TEXT','LONG_TEXT','INTEGER_NEGATIVE','INTEGER_POSITIVE','INTEGER','NUMBER','INTEGER_ZERO_OR_POSITIVE'];
 
     this.formLayout = "listLayout";
-    this.settingProvider.getSettingsForTheApp(this.currentUser).then((appSettings : any)=>{
+    this.settingProvider.getSettingsForTheApp(this.currentUser).subscribe((appSettings : any)=>{
       let dataEntrySettings = appSettings.entryForm;
       this.fieldLabelKey = this.dataElement.displayName;
       if(dataEntrySettings.formLayout){
