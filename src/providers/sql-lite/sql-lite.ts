@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
+import {Injectable} from '@angular/core';
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 import 'rxjs/add/operator/map';
-import {DATABASE_STRUCTURE} from "../../constants/database-structure";
+import {DATABASE_STRUCTURE} from "../../models/database";
+import {Observable} from "rxjs/Observable";
 
 /*
   Generated class for the SqlLiteProvider provider.
@@ -12,12 +13,11 @@ import {DATABASE_STRUCTURE} from "../../constants/database-structure";
 @Injectable()
 export class SqlLiteProvider {
 
-  public insertBatchSize : number;
+  public insertBatchSize: number;
 
-  constructor(public sqlite:SQLite) {
+  constructor(private sqlite: SQLite) {
     this.insertBatchSize = 100;
   }
-
 
 
   /**
@@ -31,24 +31,24 @@ export class SqlLiteProvider {
   /**
    *
    * @param databaseName
-   * @returns {Promise<T>}
+   * @returns {Observable<any>}
    */
-  generateTables(databaseName) {
-    return new Promise( (resolve, reject)=> {
+  generateTables(databaseName): Observable<any> {
+    return new Observable(observer => {
       let tableNames = Object.keys(this.getDataBaseStructure());
       let success = 0;
       let fail = 0;
-
-      tableNames.forEach((tableName:any) => {
-        this.createTable(tableName, databaseName).then(()=> {
-          success ++;
-          if(success + fail == tableNames.length){
-            resolve({success : success,fail : fail})
+      tableNames.forEach((tableName: any) => {
+        this.createTable(tableName, databaseName).subscribe(() => {
+          success++;
+          if (success + fail == tableNames.length) {
+            observer.next({success: success, fail: fail});
+            observer.complete();
           }
-        },error=>{
-          success ++;
-          if(success + fail == tableNames.length){
-            reject({success : success,fail : fail})
+        }, error => {
+          success++;
+          if (success + fail == tableNames.length) {
+            observer.error({success: success, fail: fail});
           }
         })
       });
@@ -59,16 +59,14 @@ export class SqlLiteProvider {
    *
    * @param tableName
    * @param databaseName
-   * @returns {Promise<T>}
+   * @returns {Observable<any>}
    */
-  createTable(tableName, databaseName) {
-
+  createTable(tableName, databaseName): Observable<any> {
     databaseName = databaseName + '.db';
-
-    return new Promise( (resolve, reject)=> {
+    return new Observable(observer => {
       let query = 'CREATE TABLE IF NOT EXISTS ' + tableName + ' (';
       let columns = this.getDataBaseStructure()[tableName].columns;
-      columns.forEach((column:any, index:any) => {
+      columns.forEach((column: any, index: any) => {
         if (column.value == "id") {
           query += column.value + " " + column.type + ' primary key';
         } else {
@@ -79,21 +77,18 @@ export class SqlLiteProvider {
         }
       });
       query += ')';
-
-      this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
+      this.sqlite.create({name: databaseName, location: 'default'}).then((db: SQLiteObject) => {
         db.executeSql(query, []).then(() => {
           console.log("Success create table " + tableName);
-
-
-          resolve();
+          observer.next();
+          observer.complete();
         }, (error) => {
           console.log("Error on create table " + tableName);
-          console.log(query);
           console.log("Error occurred " + JSON.stringify(error));
-          reject(error);
+          observer.error(error);
         });
       }).catch(e => {
-        reject();
+        observer.error();
         console.log(e);
       });
 
@@ -108,45 +103,38 @@ export class SqlLiteProvider {
    * @param databaseName
    * @param startPoint
    * @param endPoint
-   * @returns {Promise<T>}
+   * @returns {Observable<any>}
    */
-  insertBulkDataOnTable(tableName, bulkData,databaseName,startPoint?,endPoint?){
+  insertBulkDataOnTable(tableName, bulkData, databaseName, startPoint?, endPoint?): Observable<any> {
     let insertBatchSize = this.getDataBaseStructure()[tableName].batchSize;
-    let start = (startPoint)? parseInt(startPoint) : 0;
-    let end = (endPoint)? parseInt(endPoint) : insertBatchSize;
-    if(end <  insertBatchSize){
+    let start = (startPoint) ? parseInt(startPoint) : 0;
+    let end = (endPoint) ? parseInt(endPoint) : insertBatchSize;
+    if (end < insertBatchSize) {
       insertBatchSize = end;
     }
-    let batchInsertQueryAndParameter = this.getBatchInsertQueryAndParameters(tableName, bulkData,start,end);
-    return new Promise( (resolve, reject)=> {
-      this.insertDataUsingQueryAndParameters(databaseName,batchInsertQueryAndParameter.queries).then(()=>{
+    let batchInsertQueryAndParameter = this.getBatchInsertQueryAndParameters(tableName, bulkData, start, end);
+    return new Observable(observer => {
+      this.insertDataUsingQueryAndParameters(databaseName, batchInsertQueryAndParameter.queries).subscribe(() => {
         start = batchInsertQueryAndParameter.startPoint - 1;
         end = insertBatchSize + start;
-
-
-        if(bulkData[batchInsertQueryAndParameter.startPoint]){
-        // if(bulkData.length > 0){
-          this.insertBulkDataOnTable(tableName, bulkData,databaseName,start,end).then(()=>{
-            resolve();
-
-
-          },error=>{
-            reject(error);
-
-
+        if (bulkData[batchInsertQueryAndParameter.startPoint]) {
+          this.insertBulkDataOnTable(tableName, bulkData, databaseName, start, end).subscribe(() => {
+            observer.next();
+            observer.complete();
+          }, error => {
+            observer.error(error);
             //@todo resolving batch size issues
             console.log("Error on insert on table " + tableName);
             console.log(JSON.stringify(error));
           });
-        }else{
-          resolve();
-
+        } else {
+          observer.next();
+          observer.complete();
         }
-      },error=>{
-
+      }, error => {
         console.log("Error on insert on table " + tableName);
         console.log(JSON.stringify(error));
-        reject(error);
+        observer.error(error);
       })
     });
   }
@@ -155,20 +143,20 @@ export class SqlLiteProvider {
    *
    * @param databaseName
    * @param queries
-   * @returns {Promise<T>}
+   * @returns {Observable<any>}
    */
-  insertDataUsingQueryAndParameters(databaseName,queries){
+  insertDataUsingQueryAndParameters(databaseName, queries): Observable<any> {
     databaseName = databaseName + '.db';
-    return new Promise( (resolve, reject)=> {
-      this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
+    return new Observable(observer => {
+      this.sqlite.create({name: databaseName, location: 'default'}).then((db: SQLiteObject) => {
         db.sqlBatch(queries).then(() => {
-          resolve();
+          observer.next();
+          observer.complete();
         }, (error) => {
-          reject(error);
+          observer.error(error);
         });
       }).catch(e => {
-        reject(e);
-        console.log(e);
+        observer.error(e);
       });
     });
   }
@@ -181,12 +169,11 @@ export class SqlLiteProvider {
    * @param limit
    * @returns {{query: string, parameters: Array, startPoint: number}}
    */
-  getBatchInsertQueryAndParameters(tableName, bulkData,startPoint: number,limit: number ){
+  getBatchInsertQueryAndParameters(tableName, bulkData, startPoint: number, limit: number) {
     let columns = this.getDataBaseStructure()[tableName].columns;
-    //column names and  questionMarks holder
     let columnNames = "";
     let questionMarks = "(";
-    columns.forEach((column:any, index:any)=> {
+    columns.forEach((column: any, index: any) => {
       columnNames += column.value;
       questionMarks += "?";
       if ((index + 1) < columns.length) {
@@ -196,53 +183,53 @@ export class SqlLiteProvider {
     });
     questionMarks += ')';
     let queries = [];
-    for(startPoint;startPoint < limit ; startPoint++){
+    for (startPoint; startPoint < limit; startPoint++) {
       let query = "INSERT OR REPLACE INTO " + tableName + " (" + columnNames + ") VALUES ";
       let questionMarkParameter = [];
-      if(bulkData[startPoint]){
+      if (bulkData[startPoint]) {
         let row = [];
-        for(let column of columns){
+        for (let column of columns) {
           let attribute = column.value;
           let attributeValue = bulkData[startPoint][attribute];
           if (column.type != "LONGTEXT" && attributeValue == undefined) {
             attributeValue = 0;
-          }else if (column.type == "LONGTEXT") {
+          } else if (column.type == "LONGTEXT") {
             attributeValue = JSON.stringify(attributeValue);
           }
           row.push(attributeValue);
         }
         questionMarkParameter.push(questionMarks);
         query += questionMarkParameter.join(',') + ";";
-        queries.push([query,row]);
+        queries.push([query, row]);
       }
     }
     return {
-      queries : queries,startPoint:startPoint
+      queries: queries, startPoint: startPoint
     }
   }
 
   /**
-   * deleteFromTableByAttribute
+   *
    * @param tableName
    * @param attribute
    * @param attributesValue
    * @param databaseName
-   * @returns {Promise<T>}
+   * @returns {Observable<any>}
    */
-  deleteFromTableByAttribute(tableName,attribute, attributesValue, databaseName) {
+  deleteFromTableByAttribute(tableName, attribute, attributesValue, databaseName): Observable<any> {
     databaseName = databaseName + '.db';
-    let query = "DELETE FROM " + tableName + " WHERE "+attribute+" = '"+attributesValue+"'";
-    return new Promise( (resolve, reject)=> {
-      this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
+    let query = "DELETE FROM " + tableName + " WHERE " + attribute + " = '" + attributesValue + "'";
+    return new Observable(observer => {
+      this.sqlite.create({name: databaseName, location: 'default'}).then((db: SQLiteObject) => {
         db.executeSql(query, []).then((success) => {
-          resolve();
+          observer.next();
+          observer.complete();
         }, (error) => {
           console.log(JSON.stringify(error));
-          reject(error);
+          observer.error(error);
         });
       }).catch(e => {
-        reject();
-        console.log(e);
+        observer.error(e);
       });
     });
   }
@@ -251,25 +238,21 @@ export class SqlLiteProvider {
    *
    * @param tableName
    * @param databaseName
-   * @returns {Promise<T>}
+   * @returns {Observable<any>}
    */
-  dropTable(tableName, databaseName) {
-
+  dropTable(tableName, databaseName): Observable<any> {
     databaseName = databaseName + '.db';
     let query = "DROP TABLE " + tableName;
-    return new Promise( (resolve, reject)=> {
-      this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
+    return new Observable(observer => {
+      this.sqlite.create({name: databaseName, location: 'default'}).then((db: SQLiteObject) => {
         db.executeSql(query, []).then((success) => {
-
-
-          resolve(success);
+          observer.next(success);
+          observer.complete();
         }, (error) => {
-
-          reject(error);
+          observer.error(error);
         });
       }).catch(e => {
-        reject();
-        console.log(e);
+        observer.error();
       });
     });
   }
@@ -280,15 +263,14 @@ export class SqlLiteProvider {
    * @param attribute
    * @param attributesValuesArray
    * @param databaseName
-   * @returns {Promise<T>}
+   * @returns {Observable<any>}
    */
-  getDataFromTableByAttributes(tableName, attribute, attributesValuesArray, databaseName) {
+  getDataFromTableByAttributes(tableName, attribute, attributesValuesArray, databaseName): Observable<any> {
     databaseName = databaseName + '.db';
     let columns = this.getDataBaseStructure()[tableName].columns;
     let query = "SELECT * FROM " + tableName + " WHERE " + attribute + " IN (";
     let inClauseValues = "";
-
-    attributesValuesArray.forEach((attributesValue:any, index:any)=> {
+    attributesValuesArray.forEach((attributesValue: any, index: any) => {
       inClauseValues += "'" + attributesValue + "'";
       if ((index + 1) < attributesValuesArray.length) {
         inClauseValues += ',';
@@ -296,16 +278,16 @@ export class SqlLiteProvider {
     });
     query += inClauseValues;
     query += ")";
-    return new Promise( (resolve, reject)=> {
-      this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
+    return new Observable(observer => {
+      this.sqlite.create({name: databaseName, location: 'default'}).then((db: SQLiteObject) => {
         db.executeSql(query, []).then((result) => {
-          resolve(this.formatQueryReturnResult(result, columns));
+          observer.next(this.formatQueryReturnResult(result, columns));
+          observer.complete();
         }, (error) => {
-          reject(error);
+          observer.error(error);
         });
       }).catch(e => {
-        reject();
-        console.log(e);
+        observer.error(e);
       });
     });
   }
@@ -315,23 +297,22 @@ export class SqlLiteProvider {
    * @param query
    * @param tableName
    * @param databaseName
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getByUsingQuery(query,tableName,databaseName){
+  getByUsingQuery(query, tableName, databaseName): Observable<any> {
     databaseName = databaseName + '.db';
     let columns = this.getDataBaseStructure()[tableName].columns;
-    return new Promise( (resolve, reject)=> {
-      this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
+    return new Observable(observer => {
+      this.sqlite.create({name: databaseName, location: 'default'}).then((db: SQLiteObject) => {
         db.executeSql(query, []).then((result) => {
-          resolve(this.formatQueryReturnResult(result, columns));
+          observer.next(this.formatQueryReturnResult(result, columns));
+          observer.complete();
         }, (error) => {
-          console.log("error : "+JSON.stringify(error));
-          reject(error);
+          console.log("error : " + JSON.stringify(error));
+          observer.error(error);
         });
       }).catch(e => {
-
-        reject();
-        console.log(e);
+        observer.error(e);
       });
     });
   }
@@ -340,49 +321,46 @@ export class SqlLiteProvider {
    *
    * @param tableName
    * @param databaseName
-   * @returns {Promise<T>}
+   * @returns {Observable<any>}
    */
-  getAllDataFromTable(tableName, databaseName) {
+  getAllDataFromTable(tableName, databaseName): Observable<any> {
     databaseName = databaseName + '.db';
     let columns = this.getDataBaseStructure()[tableName].columns;
     let query = "SELECT * FROM " + tableName + ";";
-    return new Promise( (resolve, reject)=> {
-      this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
+    return new Observable(observer => {
+      this.sqlite.create({name: databaseName, location: 'default'}).then((db: SQLiteObject) => {
         db.executeSql(query, []).then((result) => {
-          resolve(this.formatQueryReturnResult(result, columns));
+          observer.next(this.formatQueryReturnResult(result, columns));
+          observer.complete();
         }, (error) => {
-          reject(error);
+          observer.error(error);
         });
       }).catch(e => {
-        reject();
-        console.log(e);
+        observer.error(e);
       });
     });
   }
-
 
   /**
    *
    * @param tableName
    * @param databaseName
-   * @returns {Promise<T>}
+   * @returns {Observable<any>}
    */
-  deleteAllOnTable(tableName, databaseName) {
+  deleteAllOnTable(tableName, databaseName): Observable<any> {
     databaseName = databaseName + '.db';
     let query = "DELETE FROM " + tableName;
-
-    return new Promise( (resolve, reject)=> {
-      this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
+    return new Observable(observer => {
+      this.sqlite.create({name: databaseName, location: 'default'}).then((db: SQLiteObject) => {
         db.executeSql(query, []).then((success) => {
-
-          resolve();
-          console.log("Success in delete table contents on "+tableName);
+          observer.next();
+          observer.complete();
+          console.log("Success in delete table contents on " + tableName);
         }, (error) => {
-          reject(error);
+          observer.error(error);
         });
       }).catch(e => {
-        reject();
-        console.log(e);
+        observer.error(e);
       });
     });
   }
@@ -397,11 +375,11 @@ export class SqlLiteProvider {
   formatQueryReturnResult(result, columns) {
     let len = result.rows.length;
     let data = [];
-    for (var i = 0; i < len; i++) {
+    for (let i = 0; i < len; i++) {
       let row = {};
       let currentRow = result.rows.item(i);
       columns.forEach((column) => {
-        var columnName = column.value;
+        let columnName = column.value;
         if (column.type != "LONGTEXT") {
           row[columnName] = currentRow[columnName]
         } else {
@@ -411,279 +389,6 @@ export class SqlLiteProvider {
       data.push(row);
     }
     return data;
-  }
-
-
-  /**
-   *
-   * @param tableName
-   * @param fieldsValues
-   * @param databaseName
-   * @returns {Promise<T>}
-   */
-  insertDataOnTable(tableName, fieldsValues, databaseName) {
-
-    databaseName = databaseName + '.db';
-    let columns = this.getDataBaseStructure()[tableName].columns;
-    let columnNames = "";
-    let questionMarks = "";
-    let values = [];
-
-    columns.forEach((column:any, index:any)=> {
-      let columnValue:any;
-      let columnName = column.value;
-      columnNames += columnName;
-
-      if (fieldsValues[columnName]) {
-        columnValue = fieldsValues[columnName];
-      }
-
-      questionMarks += "?";
-      if ((index + 1) < columns.length) {
-        columnNames += ',';
-        questionMarks += ',';
-      }
-      if (column.type != "LONGTEXT") {
-        if (columnValue == undefined) {
-          columnValue = 0;
-        }
-        values.push(columnValue);
-      } else {
-        values.push(JSON.stringify(columnValue));
-      }
-
-    });
-    let query = "INSERT OR REPLACE INTO " + tableName + " (" + columnNames + ") VALUES (" + questionMarks + ")";
-    return new Promise( (resolve, reject)=> {
-      this.sqlite.create({name: databaseName, location: 'default'}).then((db:SQLiteObject)=> {
-        db.executeSql(query, values).then(() => {
-          resolve();
-        }, (error) => {
-          reject(error);
-        });
-      }).catch(e => {
-        reject();
-        console.log(e);
-      });
-    });
-  }
-
-
-  oldStructure(){
-    let  dataBaseStructure = {
-      organisationUnits: {
-        columns: [
-          {value: 'id', type: 'TEXT'},
-          {value: 'name', type: 'TEXT'},
-          {value: 'level', type: 'TEXT'},
-          {value: 'path', type: 'TEXT'},
-          {value: 'openingDate', type: 'TEXT'},
-          {value: 'closedDate', type: 'TEXT'},
-          {value: 'ancestors', type: 'LONGTEXT'},
-          {value: 'programs', type: 'LONGTEXT'},
-          {value: 'dataSets', type: 'LONGTEXT'},
-          {value: 'parent', type: 'LONGTEXT'},
-          {value: 'children', type: 'LONGTEXT'}
-        ],
-        fields: "",
-        isMetadata: true,
-        resourceType: "communication",
-        batchSize : 500
-      },
-      dataSets: {
-        columns: [
-          {value: 'id', type: 'TEXT'},
-          {value: 'name', type: 'TEXT'},
-          {value: 'timelyDays', type: 'TEXT'},
-          {value: 'formType', type: 'TEXT'},
-          {value: 'periodType', type: 'TEXT'},
-          {value: 'openFuturePeriods', type: 'TEXT'},
-          {value: 'expiryDays', type: 'TEXT'},
-          {value: 'dataElements', type: 'LONGTEXT'},
-          {value: 'dataSetElements', type: 'LONGTEXT'},
-          {value: 'organisationUnits', type: 'LONGTEXT'},
-          {value: 'sections', type: 'LONGTEXT'},
-          {value: 'indicators', type: 'LONGTEXT'},
-          {value: 'categoryCombo', type: 'LONGTEXT'}
-        ],
-        fields: "",
-        isMetadata: true,
-        //resourceType: "entryForm",
-        batchSize : 20
-      },
-      sections: {
-        columns: [
-          {value: 'id', type: 'TEXT'},
-          {value: 'name', type: 'TEXT'},
-          {value: 'indicators', type: 'LONGTEXT'},
-          {value: 'dataElements', type: 'LONGTEXT'}
-        ],
-        fields: "id,name,indicators[id,name,indicatorType[factor],denominatorDescription,numeratorDescription,numerator,denominator],dataElements[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]",
-        isMetadata: true,
-        //resourceType: "entryForm",
-        batchSize : 20
-      },
-      dataElements: {
-        columns: [
-          {value: 'id', type: 'TEXT'},
-          {value: 'name', type: 'TEXT'},
-          {value: 'displayName', type: 'TEXT'},
-          {value: 'formName', type: 'TEXT'},
-          {value: 'valueType', type: 'TEXT'},
-          {value: 'description', type: 'LONGTEXT'},
-          {value: 'attributeValues', type: 'LONGTEXT'},
-          {value: 'optionSet', type: 'LONGTEXT'},
-          {value: 'categoryCombo', type: 'LONGTEXT'}
-        ],
-        fields: "id,name,displayName,valueType,description,formName,attributeValues[value,attribute[name]],valueType,optionSet[name,options[name,id,code]],categoryCombo[id,name,categoryOptionCombos[id,name]]",
-        isMetadata: false,
-        //resourceType: "entryForm",
-        batchSize : 50
-      },
-      smsCommand: {
-        columns: [
-          {value: 'id', type: 'TEXT'},
-          {value: 'commandName', type: 'TEXT'},
-          {value: 'parserType', type: 'TEXT'},
-          {value: 'separator', type: 'TEXT'},
-          {value: 'smsCode', type: 'LONGTEXT'},
-        ],
-        fields: "",
-        isMetadata: true,
-        resourceType: "entryForm",
-        batchSize : 30
-      },
-      indicators: {
-        columns: [
-          {value: 'id', type: 'TEXT'},
-          {value: 'name', type: 'TEXT'},
-          {value: 'denominatorDescription', type: 'TEXT'},
-          {value: 'numeratorDescription', type: 'TEXT'},
-          {value: 'numerator', type: 'TEXT'},
-          {value: 'denominator', type: 'TEXT'},
-          {value: 'indicatorType', type: 'LONGTEXT'}
-        ],
-        fields: "id,name,denominatorDescription,numeratorDescription,numerator,denominator,indicatorType[:all]",
-        isMetadata: true,
-        batchSize : 500
-        ////resourceType: "report"
-      },
-      reports: {
-        columns: [
-          {value: 'id', type: 'TEXT'},
-          {value: 'name', type: 'TEXT'},
-          {value: 'created', type: 'TEXT'},
-          {value: 'type', type: 'TEXT'},
-          {value: 'relativePeriods', type: 'LONGTEXT'},
-          {value: 'reportParams', type: 'LONGTEXT'},
-          {value: 'designContent', type: 'LONGTEXT'}
-        ],
-        fields: "id,name,created,type,relativePeriods,reportParams,designContent",
-        filter: "type:eq:HTML&filter=designContent:ilike:cordova",
-        isMetadata: true,
-        //resourceType: "report",
-        batchSize : 50
-      },
-      constants: {
-        columns: [
-          {value: 'id', type: 'TEXT'},
-          {value: 'value', type: 'TEXT'}
-        ],
-        fields: "id,value",
-        isMetadata: true,
-        batchSize : 500
-        //resourceType: "report"
-      },
-      programs: {
-        columns: [
-          {value: 'id', type: 'TEXT'},
-          {value: 'name', type: 'TEXT'},
-          {value: 'withoutRegistration', type: 'TEXT'},
-          {value: 'programType', type: 'TEXT'},
-          {value: 'categoryCombo', type: 'LONGTEXT'},
-          {value: 'programStages', type: 'LONGTEXT'},
-          {value: 'programStageSections', type: 'LONGTEXT'},
-          {value: 'programIndicators', type: 'LONGTEXT'},
-          {value: 'translations', type: 'LONGTEXT'},
-          {value: 'attributeValues', type: 'LONGTEXT'},
-          {value: 'validationCriterias', type: 'LONGTEXT'},
-          {value: 'programRuleVariables', type: 'LONGTEXT'},
-          {value: 'programTrackedEntityAttributes', type: 'LONGTEXT'},
-          {value: 'programRules', type: 'LONGTEXT'},
-          {value: 'organisationUnits', type: 'LONGTEXT'}
-        ],
-        fields: "id,name,withoutRegistration,programType,categoryCombo[id,name,categories[id,name,categoryOptions[name,id]]],programStages[id,name,programStageDataElements[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]],programStageSections[id]],organisationUnits[id],programIndicators,translations,attributeValues,validationCriterias,programRuleVariables,programTrackedEntityAttributes,programRules",
-        isMetadata: true,
-        batchSize : 50,
-        //resourceType: "event"
-      },
-      programStageDataElements: {
-        columns: [
-          {value: 'id', type: 'TEXT'},
-          {value: 'displayInReports', type: 'TEXT'},
-          {value: 'compulsory', type: 'TEXT'},
-          {value: 'allowProvidedElsewhere', type: 'TEXT'},
-          {value: 'allowFutureDate', type: 'TEXT'},
-          {value: 'dataElement', type: 'LONGTEXT'}
-        ],
-        fields: "id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]",
-        isMetadata: false,
-        //resourceType: "event",
-        batchSize : 50,
-      },
-      programStageSections: {
-        columns: [
-          {value: 'id', type: 'TEXT'},
-          {value: 'name', type: 'TEXT'},
-          {value: 'sortOrder', type: 'TEXT'},
-          {value: 'programIndicators', type: 'LONGTEXT'},
-          {value: 'programStageDataElements', type: 'LONGTEXT'}
-        ],
-        fields: "id,name,programIndicators,sortOrder,programStageDataElements[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id,name,formName,attributeValues[value,attribute[name]],categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]]",
-        isMetadata: true,
-        batchSize : 100,
-        //resourceType: "event"
-      },
-      dataValues: {
-        columns: [
-          {value: 'id', type: 'TEXT'},
-          {value: 'de', type: 'TEXT'},
-          {value: 'co', type: 'TEXT'},
-          {value: 'pe', type: 'TEXT'},
-          {value: 'ou', type: 'TEXT'},
-          {value: 'cc', type: 'TEXT'},
-          {value: 'cp', type: 'TEXT'},
-          {value: 'value', type: 'TEXT'},
-          {value: 'period', type: 'TEXT'},
-          {value: 'orgUnit', type: 'TEXT'},
-          {value: 'syncStatus', type: 'TEXT'},
-          {value: 'dataSetId', type: 'TEXT'}
-        ],
-        batchSize : 100,
-        isMetadata: false
-      },
-      events: {
-        columns: [
-          {value: 'id', type: 'TEXT'},
-          {value: 'event', type: 'TEXT'},
-          {value: 'program', type: 'TEXT'},
-          {value: 'programName', type: 'TEXT'},
-          {value: 'programStage', type: 'TEXT'},
-          {value: 'orgUnit', type: 'TEXT'},
-          {value: 'orgUnitName', type: 'TEXT'},
-          {value: 'status', type: 'TEXT'},
-          {value: 'eventDate', type: 'TEXT'},
-          {value: 'completedDate', type: 'TEXT'},
-          {value: 'attributeCategoryOptions', type: 'TEXT'},
-          {value: 'dataValues', type: 'LONGTEXT'},
-          {value: 'notes', type: 'TEXT'},
-          {value: 'syncStatus', type: 'TEXT'}
-        ],
-        batchSize : 100,
-        isMetadata: false
-      }
-    };
-    return dataBaseStructure;
   }
 }
 

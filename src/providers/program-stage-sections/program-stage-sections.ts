@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import {Injectable} from '@angular/core';
+import {Http} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {SqlLiteProvider} from "../sql-lite/sql-lite";
 import {HttpClientProvider} from "../http-client/http-client";
+import {Observable} from "rxjs/Observable";
 
 /*
   Generated class for the ProgramStageSectionsProvider provider.
@@ -13,26 +14,25 @@ import {HttpClientProvider} from "../http-client/http-client";
 @Injectable()
 export class ProgramStageSectionsProvider {
 
-  public resource : string;
+  public resource: string;
 
-  constructor(public http: Http, private sqlLite : SqlLiteProvider, private HttpClient : HttpClientProvider) {
+  constructor(public http: Http, private sqlLite: SqlLiteProvider, private HttpClient: HttpClientProvider) {
     this.resource = "programStageSections";
   }
 
   /**
    *
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  downloadProgramsStageSectionsFromServer(currentUser){
-    let fields= "id,name,displayName,sortOrder,programStage[id],attributeValues[value,attribute[name]],translations[*],programStageDataElements[dataElement[id]],dataElements[id]";
-    let url = "/api/25/"+this.resource+".json?paging=false&fields=" + fields;
-    return new Promise((resolve, reject)=> {
-      this.HttpClient.get(url,currentUser).then((response : any)=>{
-        response = JSON.parse(response.data);
-        resolve(response);
-      },error=>{
-        reject(error);
+  downloadProgramsStageSectionsFromServer(currentUser): Observable<any> {
+    let fields = "id,name,displayName,sortOrder,programStage[id],attributeValues[value,attribute[name]],translations[*],programStageDataElements[dataElement[id]],dataElements[id]";
+    let url = "/api/25/" + this.resource + ".json?paging=false&fields=" + fields;
+    return new Observable(observer => {
+      this.HttpClient.get(url, true, currentUser).subscribe((response: any) => {
+        observer.next(response);
+      }, error => {
+        observer.error(error);
       });
     });
   }
@@ -41,18 +41,20 @@ export class ProgramStageSectionsProvider {
    *
    * @param programsStageSections
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  saveProgramsStageSectionsFromServer(programsStageSections,currentUser){
-    return new Promise((resolve, reject)=> {
-      if(programsStageSections.length == 0){
-        resolve();
-      }else{
+  saveProgramsStageSectionsFromServer(programsStageSections, currentUser): Observable<any> {
+    return new Observable(observer => {
+      if (programsStageSections.length == 0) {
+        observer.next();
+        observer.complete();
+      } else {
         programsStageSections = this.getPreparedProgramStageSectionForSaving(programsStageSections);
-        this.sqlLite.insertBulkDataOnTable(this.resource,programsStageSections,currentUser.currentDatabase).then(()=>{
-          resolve();
-        },error=>{
-          reject(error);
+        this.sqlLite.insertBulkDataOnTable(this.resource, programsStageSections, currentUser.currentDatabase).subscribe(() => {
+          observer.next();
+          observer.complete();
+        }, error => {
+          observer.error(error);
         });
       }
     });
@@ -63,17 +65,17 @@ export class ProgramStageSectionsProvider {
    * @param programsStageSections
    * @returns {any}
    */
-  getPreparedProgramStageSectionForSaving(programsStageSections){
-    programsStageSections.forEach((programsStageSection : any)=>{
-      if(programsStageSection.programStage && programsStageSection.programStage.id){
+  getPreparedProgramStageSectionForSaving(programsStageSections) {
+    programsStageSections.forEach((programsStageSection: any) => {
+      if (programsStageSection.programStage && programsStageSection.programStage.id) {
         programsStageSection["programStageId"] = programsStageSection.programStage.id;
       }
-      if(!programsStageSection.dataElements){
+      if (!programsStageSection.dataElements) {
         programsStageSection["dataElements"] = [];
-        if(programsStageSection.programStageDataElements){
-          programsStageSection.programStageDataElements.forEach((programStageDataElement : any)=>{
-            if(programStageDataElement.dataElement && programStageDataElement.dataElement.id){
-              programsStageSection.dataElements.push({id : programStageDataElement.dataElement.id});
+        if (programsStageSection.programStageDataElements) {
+          programsStageSection.programStageDataElements.forEach((programStageDataElement: any) => {
+            if (programStageDataElement.dataElement && programStageDataElement.dataElement.id) {
+              programsStageSection.dataElements.push({id: programStageDataElement.dataElement.id});
             }
           });
         }
@@ -86,17 +88,19 @@ export class ProgramStageSectionsProvider {
    *
    * @param programStageSectionIds
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getProgramStageSectionsByIds(programStageSectionIds,currentUser){
-    return new Promise((resolve,reject)=>{
-      if(programStageSectionIds.length == 0){
-        resolve([]);
-      }else{
-        this.sqlLite.getDataFromTableByAttributes(this.resource,'id',programStageSectionIds,currentUser.currentDatabase).then((programStageSections : any)=>{
-          resolve(programStageSections);
-        }).catch(error=>{
-          reject(error);
+  getProgramStageSectionsByIds(programStageSectionIds, currentUser): Observable<any> {
+    return new Observable(observer => {
+      if (programStageSectionIds.length == 0) {
+        observer.next([]);
+        observer.complete();
+      } else {
+        this.sqlLite.getDataFromTableByAttributes(this.resource, 'id', programStageSectionIds, currentUser.currentDatabase).subscribe((programStageSections: any) => {
+          observer.next(programStageSections);
+          observer.complete();
+        }, error => {
+          observer.error(error);
         });
       }
     });

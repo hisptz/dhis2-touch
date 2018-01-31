@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {SqlLiteProvider} from "../sql-lite/sql-lite";
+import {Observable} from "rxjs/Observable";
 
 /*
   Generated class for the TrackedEntityAttributeValuesProvider provider.
@@ -10,9 +11,9 @@ import {SqlLiteProvider} from "../sql-lite/sql-lite";
 @Injectable()
 export class TrackedEntityAttributeValuesProvider {
 
-  resource : string;
+  resource: string;
 
-  constructor(private sqlLite : SqlLiteProvider){
+  constructor(private sqlLite: SqlLiteProvider) {
     this.resource = "trackedEntityAttributeValues";
   }
 
@@ -21,24 +22,25 @@ export class TrackedEntityAttributeValuesProvider {
    * @param trackedEntityInstance
    * @param trackedEntityAttributeValues
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  savingTrackedEntityAttributeValues(trackedEntityInstance,trackedEntityAttributeValues,currentUser){
+  savingTrackedEntityAttributeValues(trackedEntityInstance, trackedEntityAttributeValues, currentUser): Observable<any> {
     let payLoad = [];
-    trackedEntityAttributeValues.forEach((trackedEntityAttributeValue : any)=>{
+    trackedEntityAttributeValues.forEach((trackedEntityAttributeValue: any) => {
       payLoad.push({
-        "id" : trackedEntityInstance +"-"+trackedEntityAttributeValue.attribute,
-        "trackedEntityInstance" : trackedEntityInstance,
+        "id": trackedEntityInstance + "-" + trackedEntityAttributeValue.attribute,
+        "trackedEntityInstance": trackedEntityInstance,
         "attribute": trackedEntityAttributeValue.attribute,
         "value": trackedEntityAttributeValue.value
       });
     });
-    return new Promise( (resolve, reject)=> {
-      this.sqlLite.insertBulkDataOnTable(this.resource,payLoad,currentUser.currentDatabase).then(()=>{
-        resolve();
-      }).catch(error=>{
-        reject(error);
-      });
+    return new Observable(observer => {
+      this.sqlLite.insertBulkDataOnTable(this.resource, payLoad, currentUser.currentDatabase).subscribe(() => {
+        observer.next();
+        observer.complete();
+      }, error => {
+        observer.error(error);
+      })
     });
   }
 
@@ -46,13 +48,15 @@ export class TrackedEntityAttributeValuesProvider {
    *
    * @param trackedEntityInstanceIds
    * @param currentUser
+   * @returns {Observable<any>}
    */
-  getTrackedEntityAttributeValues(trackedEntityInstanceIds,currentUser){
-    return new Promise( (resolve, reject)=> {
-      this.sqlLite.getDataFromTableByAttributes(this.resource,'trackedEntityInstance',trackedEntityInstanceIds,currentUser.currentDatabase).then((trackedEntityAttributeValues : any)=>{
-        resolve(trackedEntityAttributeValues);
-      }).catch(error=>{
-        reject(error);
+  getTrackedEntityAttributeValues(trackedEntityInstanceIds, currentUser): Observable<any> {
+    return new Observable(observer => {
+      this.sqlLite.getDataFromTableByAttributes(this.resource, 'trackedEntityInstance', trackedEntityInstanceIds, currentUser.currentDatabase).subscribe((trackedEntityAttributeValues: any) => {
+        observer.next(trackedEntityAttributeValues);
+        observer.complete();
+      }, error => {
+        observer.error(error);
       })
     });
   }

@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClientProvider} from "../http-client/http-client";
+import {Observable} from "rxjs/Observable";
 
 /*
   Generated class for the DataSetCompletenessProvider provider.
@@ -20,39 +21,17 @@ export class DataSetCompletenessProvider {
    * @param {string} orgUnitId
    * @param dataDimension
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  completeOnDataSetRegistrations(dataSetId: string, period: string, orgUnitId: string, dataDimension, currentUser) {
+  completeOnDataSetRegistrations(dataSetId: string, period: string, orgUnitId: string, dataDimension, currentUser): Observable<any> {
     let parameter = this.getDataSetCompletenessParameter(dataSetId, period, orgUnitId, dataDimension);
-    return new Promise((resolve, reject) => {
-      this.httpClient.defaultPost('/api/25/completeDataSetRegistrations?' + parameter, {}, currentUser).then(() => {
-        resolve();
+    return new Observable(observer => {
+      this.httpClient.defaultPost('/api/25/completeDataSetRegistrations?' + parameter, {}, currentUser).subscribe(() => {
+        observer.next();
+        observer.complete();
       }, error => {
-        reject(error);
-      }).catch((e) => {
-        console.log(JSON.stringify(e));
-      });
-    });
-  }
-
-
-  /**
-   *
-   * @param {string} dataSetId
-   * @param {string} period
-   * @param {string} orgUnitId
-   * @param dataDimension
-   * @param currentUser
-   * @returns {Promise<any>}
-   */
-  unDoCompleteOnDataSetRegistrations(dataSetId: string, period: string, orgUnitId: string, dataDimension, currentUser) {
-    let parameter = this.getDataSetCompletenessParameter(dataSetId, period, orgUnitId, dataDimension);
-    return new Promise((resolve, reject) => {
-      this.httpClient.delete('/api/25/completeDataSetRegistrations?' + parameter, currentUser).then(() => {
-        resolve();
-      }, error => {
-        reject(error);
-      });
+        observer.error(error);
+      })
     });
   }
 
@@ -63,22 +42,43 @@ export class DataSetCompletenessProvider {
    * @param {string} orgUnitId
    * @param dataDimension
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getDataSetCompletenessInfo(dataSetId: string, period: string, orgUnitId: string, dataDimension, currentUser) {
+  unDoCompleteOnDataSetRegistrations(dataSetId: string, period: string, orgUnitId: string, dataDimension, currentUser): Observable<any> {
+    let parameter = this.getDataSetCompletenessParameter(dataSetId, period, orgUnitId, dataDimension);
+    return new Observable(observer => {
+      this.httpClient.delete('/api/25/completeDataSetRegistrations?' + parameter, currentUser).subscribe(() => {
+        observer.next();
+        observer.complete();
+      }, error => {
+        observer.error(error);
+      });
+    });
+  }
+
+  /**
+   *
+   * @param {string} dataSetId
+   * @param {string} period
+   * @param {string} orgUnitId
+   * @param dataDimension
+   * @param currentUser
+   * @returns {Observable<any>}
+   */
+  getDataSetCompletenessInfo(dataSetId: string, period: string, orgUnitId: string, dataDimension, currentUser): Observable<any> {
     let parameter = "dataSetId=" + dataSetId + "&periodId=" + period + "&organisationUnitId=" + orgUnitId;
     if (dataDimension.cp != "") {
       parameter += "&cc=" + dataDimension.cc + "&cp=" + dataDimension.cp;
     }
-    return new Promise((resolve, reject) => {
-      this.httpClient.get('/dhis-web-dataentry/getDataValues.action?' + parameter, currentUser).then((response: any) => {
-        response = JSON.parse(response.data);
+    return new Observable(observer => {
+      this.httpClient.get('/dhis-web-dataentry/getDataValues.action?' + parameter, true, currentUser).subscribe((response: any) => {
         if (response && response.dataValues) {
           delete response.dataValues;
         }
-        resolve(response);
+        observer.next(response);
+        observer.complete();
       }, error => {
-        reject();
+        observer.error(error);
       });
     });
   }
@@ -89,13 +89,13 @@ export class DataSetCompletenessProvider {
    * @param currentUser
    * @returns {Promise<any>}
    */
-  getUserCompletenessInformation(username, currentUser) {
-    return new Promise((resolve, reject) => {
-      this.httpClient.get('/dhis-web-commons-ajax-json/getUser.action?username=' + username, currentUser).then((response: any) => {
-        response = JSON.parse(response.data);
-        resolve(response);
+  getUserCompletenessInformation(username, currentUser): Observable<any> {
+    return new Observable(observer => {
+      this.httpClient.get('/dhis-web-commons-ajax-json/getUser.action?username=' + username, true, currentUser).subscribe((response: any) => {
+        observer.next(response);
+        observer.complete();
       }, error => {
-        reject();
+        observer.error(error);
       });
     });
 

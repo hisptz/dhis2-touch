@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage';
+import {Injectable} from '@angular/core';
+import {Storage} from '@ionic/storage';
+import {Observable} from "rxjs/Observable";
 
 
 /*
@@ -11,18 +12,30 @@ import { Storage } from '@ionic/storage';
 @Injectable()
 export class SettingsProvider {
 
-  constructor(private storage : Storage) {
+  constructor(private storage: Storage) {
   }
 
   /**
    *
    * @returns {{id: string; name: string; icon: string; isLoading: boolean; loadingMessage: string}[]}
    */
-  getSettingContentDetails(){
+  getSettingContentDetails() {
     let settingContents = [
-      {id : 'appSettings',name : 'app_settings',icon: 'assets/icon/app-setting.png',isLoading : false,loadingMessage: ''},
-      {id : 'entryForm',name : 'entry_form',icon: 'assets/icon/form.png',isLoading : false,loadingMessage: ''},
-      {id : 'synchronization',name : 'synchronization',icon: 'assets/icon/synchronization.png',isLoading : false,loadingMessage: ''}
+      {
+        id: 'appSettings',
+        name: 'app_settings',
+        icon: 'assets/icon/app-setting.png',
+        isLoading: false,
+        loadingMessage: ''
+      },
+      {id: 'entryForm', name: 'entry_form', icon: 'assets/icon/form.png', isLoading: false, loadingMessage: ''},
+      {
+        id: 'synchronization',
+        name: 'synchronization',
+        icon: 'assets/icon/synchronization.png',
+        isLoading: false,
+        loadingMessage: ''
+      }
     ];
     return settingContents;
   }
@@ -31,17 +44,18 @@ export class SettingsProvider {
    *
    * @param currentUser
    * @param appSettings
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  setSettingsForTheApp(currentUser,appSettings){
+  setSettingsForTheApp(currentUser, appSettings): Observable<any> {
     appSettings = this.getSanitizedSettings(appSettings);
-    return  new Promise((resolve,reject) => {
-      let key = 'appSettings'+ (currentUser && currentUser.currentDatabase) ? currentUser.currentDatabase : "";
+    return new Observable(observer => {
+      let key = 'appSettings' + (currentUser && currentUser.currentDatabase) ? currentUser.currentDatabase : "";
       appSettings = JSON.stringify(appSettings);
       this.storage.set(key, appSettings).then(() => {
-        resolve();
-      },error=>{
-        reject();
+        observer.next();
+        observer.complete();
+      }, error => {
+        observer.error(error);
       });
     });
   }
@@ -50,23 +64,22 @@ export class SettingsProvider {
   /**
    *
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getSettingsForTheApp(currentUser){
-    return  new Promise((resolve,reject) => {
-      let key = 'appSettings'+ (currentUser && currentUser.currentDatabase) ? currentUser.currentDatabase : "";
-      this.storage.get(key).then(appSettings=>{
-        try{
+  getSettingsForTheApp(currentUser): Observable<any> {
+    return new Observable(observer => {
+      let key = 'appSettings' + (currentUser && currentUser.currentDatabase) ? currentUser.currentDatabase : "";
+      this.storage.get(key).then(appSettings => {
+        try {
           appSettings = JSON.parse(appSettings);
-          resolve(appSettings);
-        }catch (e){
-          reject(e);
+          observer.next(appSettings);
+          observer.complete();
+        } catch (e) {
+          observer.error(e);
         }
-      },err=>{
-        reject();
-      }).catch(err=>{
-        reject();
-      })
+      }, error => {
+        observer.error(error);
+      });
     });
   }
 
@@ -76,11 +89,11 @@ export class SettingsProvider {
    * @param timeType
    * @returns {any}
    */
-  getSynchronizationTimeToSave(time,timeType){
+  getSynchronizationTimeToSave(time, timeType) {
     let value = time;
-    if(timeType == "minutes"){
+    if (timeType == "minutes") {
       value = time * 60 * 1000;
-    }else if(timeType == "hours"){
+    } else if (timeType == "hours") {
       value = time * 60 * 60 * 1000;
     }
     return value;
@@ -92,12 +105,12 @@ export class SettingsProvider {
    * @param timeType
    * @returns {any}
    */
-  getDisplaySynchronizationTime(time,timeType){
+  getDisplaySynchronizationTime(time, timeType) {
     let value = time;
-    if(timeType == "minutes"){
-      value = time/(60 * 1000);
-    }else if(timeType == "hours"){
-      value = time/(60 * 60 * 1000);
+    if (timeType == "minutes") {
+      value = time / (60 * 1000);
+    } else if (timeType == "hours") {
+      value = time / (60 * 60 * 1000);
     }
     return value;
   }
@@ -106,13 +119,13 @@ export class SettingsProvider {
    *
    * @returns {{entryForm: {label: string; maxDataElementOnDefaultForm: number}; synchronization: {time: number; timeType: string}}}
    */
-  getDefaultSettings(){
+  getDefaultSettings() {
     let defaultSettings = {
       entryForm: {
-        label: "formName", maxDataElementOnDefaultForm: 10, formLayout : "listLayout"
+        label: "formName", maxDataElementOnDefaultForm: 10, formLayout: "listLayout"
       },
       synchronization: {
-        time: 2 * 60 * 1000, timeType: "minutes",isAutoSync : true
+        time: 2 * 60 * 1000, timeType: "minutes", isAutoSync: true
       }
     };
     return defaultSettings;
@@ -125,28 +138,17 @@ export class SettingsProvider {
    */
   getSanitizedSettings(appSettings) {
     if (appSettings.entryForm) {
-      if(isNaN(appSettings.entryForm.maxDataElementOnDefaultForm) || appSettings.entryForm.maxDataElementOnDefaultForm <= 0){
+      if (isNaN(appSettings.entryForm.maxDataElementOnDefaultForm) || appSettings.entryForm.maxDataElementOnDefaultForm <= 0) {
         appSettings.entryForm.maxDataElementOnDefaultForm = 1;
       }
     }
-    if(appSettings.synchronization){
-      if(isNaN(appSettings.synchronization.time) || appSettings.synchronization.time < 1){
+    if (appSettings.synchronization) {
+      if (isNaN(appSettings.synchronization.time) || appSettings.synchronization.time < 1) {
         appSettings.synchronization.time = 1
       }
-      appSettings.synchronization.time = this.getSynchronizationTimeToSave(appSettings.synchronization.time,appSettings.synchronization.timeType);
+      appSettings.synchronization.time = this.getSynchronizationTimeToSave(appSettings.synchronization.time, appSettings.synchronization.timeType);
     }
     return appSettings;
-  }
-
-  getDataEntrySetting(){
-    return  new Promise((resolve,reject)=>{
-      this.storage.get('dataEntrySetting').then(dataEntrySetting=>{
-        dataEntrySetting = JSON.parse(dataEntrySetting);
-        resolve(dataEntrySetting);
-      },err=>{
-        reject();
-      })
-    });
   }
 
 }

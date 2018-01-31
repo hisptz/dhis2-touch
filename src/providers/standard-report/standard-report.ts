@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClientProvider} from "../http-client/http-client";
 import {SqlLiteProvider} from "../sql-lite/sql-lite";
 import {Observable} from "rxjs/Observable";
@@ -13,28 +13,28 @@ import {Observable} from "rxjs/Observable";
 @Injectable()
 export class StandardReportProvider {
 
-  resource : string;
+  resource: string;
 
-  constructor(private HttpClient : HttpClientProvider,private SqlLite : SqlLiteProvider) {
+  constructor(private HttpClient: HttpClientProvider, private SqlLite: SqlLiteProvider) {
     this.resource = "reports";
   }
 
   /**
    *
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  downloadReportsFromServer(currentUser){
+  downloadReportsFromServer(currentUser): Observable<any> {
     let fields = "id,name,created,type,relativePeriods,reportParams,designContent";
     let filter = "type:eq:HTML&filter=designContent:ilike:cordova";
-    let url = "/api/25/"+this.resource+".json?paging=false&fields=" + fields;
+    let url = "/api/25/" + this.resource + ".json?paging=false&fields=" + fields;
     url += "&filter=" + filter;
-    return new Promise((resolve, reject)=> {
-      this.HttpClient.get(url,currentUser).then((response : any)=>{
-        response = JSON.parse(response.data);
-        resolve(response);
-      },error=>{
-        reject(error);
+    return new Observable(observer => {
+      this.HttpClient.get(url, true, currentUser).subscribe((response: any) => {
+        observer.next(response);
+        observer.complete();
+      }, error => {
+        observer.error(error);
       });
     });
   }
@@ -42,39 +42,40 @@ export class StandardReportProvider {
   /**
    *
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  downloadConstantsFromServer(currentUser){
+  downloadConstantsFromServer(currentUser): Observable<any> {
     let fields = "id,name,value";
     let resource = "constants";
-    let url = "/api/25/"+resource+".json?paging=false&fields=" + fields;
-    return new Promise((resolve, reject)=> {
-      this.HttpClient.get(url,currentUser).then((response : any)=>{
-        response = JSON.parse(response.data);
-        resolve(response.constants);
-      },error=>{
-        reject(error);
+    let url = "/api/25/" + resource + ".json?paging=false&fields=" + fields;
+    return new Observable(observer => {
+      this.HttpClient.get(url, true, currentUser).subscribe((response: any) => {
+        observer.next(response.constants);
+        observer.complete();
+      }, error => {
+        observer.error(error);
       });
     });
   }
 
   /**
    *
-   * @param reports
+   * @param constants
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  saveConstantsFromServer(reports,currentUser){
+  saveConstantsFromServer(constants, currentUser): Observable<any> {
     let resource = "constants";
-    return new Promise((resolve, reject)=> {
-      if(reports.length == 0){
-        resolve();
-      }else{
-        this.SqlLite.insertBulkDataOnTable(resource,reports,currentUser.currentDatabase).then(()=>{
-          resolve();
-        },error=>{
-          console.log(JSON.stringify(error));
-          reject(error);
+    return new Observable(observer => {
+      if (constants.length == 0) {
+        observer.next();
+        observer.complete();
+      } else {
+        this.SqlLite.insertBulkDataOnTable(resource, constants, currentUser.currentDatabase).subscribe(() => {
+          observer.next();
+          observer.complete();
+        }, error => {
+          observer.error(error);
         });
       }
     });
@@ -84,21 +85,23 @@ export class StandardReportProvider {
    *
    * @param reports
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  saveReportsFromServer(reports,currentUser){
-    return new Promise((resolve, reject)=> {
-      if(reports.length == 0){
-        resolve();
-      }else{
-        this.SqlLite.insertBulkDataOnTable(this.resource,reports,currentUser.currentDatabase).then(()=>{
-          this.savingReportDesign(reports,currentUser).then(()=>{
-            resolve();
-          },error=>{
-            reject(error);
+  saveReportsFromServer(reports, currentUser): Observable<any> {
+    return new Observable(observer => {
+      if (reports.length == 0) {
+        observer.next();
+        observer.complete();
+      } else {
+        this.SqlLite.insertBulkDataOnTable(this.resource, reports, currentUser.currentDatabase).subscribe(() => {
+          this.savingReportDesign(reports, currentUser).subscribe(() => {
+            observer.next();
+            observer.complete();
+          }, error => {
+            observer.error(error);
           });
-        },error=>{
-          reject(error);
+        }, error => {
+          observer.error(error);
         });
       }
     });
@@ -108,22 +111,22 @@ export class StandardReportProvider {
    *
    * @param reports
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  savingReportDesign(reports,currentUser){
+  savingReportDesign(reports, currentUser): Observable<any> {
     let resource = 'reportDesign';
     let reportDesigns = [];
-    reports.forEach((report : any)=>{
+    reports.forEach((report: any) => {
       reportDesigns.push(
-        {id : report.id,designContent : report.designContent}
+        {id: report.id, designContent: report.designContent}
       )
     });
-    return new Promise((resolve, reject)=> {
-      this.SqlLite.insertBulkDataOnTable(resource,reports,currentUser.currentDatabase).then(()=>{
-        resolve();
-      },error=>{
-        console.log(JSON.stringify(error));
-        reject(error);
+    return new Observable(observer => {
+      this.SqlLite.insertBulkDataOnTable(resource, reports, currentUser.currentDatabase).subscribe(() => {
+        observer.next();
+        observer.complete();
+      }, error => {
+        observer.error(error);
       });
     });
   }
@@ -133,44 +136,52 @@ export class StandardReportProvider {
    * @param currentUser
    * @returns {Promise<any>}
    */
-  getReportList(currentUser){
-    return new Promise((resolve, reject)=> {
+  getReportList(currentUser): Observable<any> {
+    return new Observable(observer => {
       let dataSetsReportResourceName = "dataSets";
-      let reportParams =  {
-          paramGrandParentOrganisationUnit: false,
-          paramReportingPeriod: true,
-          paramOrganisationUnit: true,
-          paramParentOrganisationUnit: false
+      let reportParams = {
+        paramGrandParentOrganisationUnit: false,
+        paramReportingPeriod: true,
+        paramOrganisationUnit: true,
+        paramParentOrganisationUnit: false
       };
-      let reportList  = [];
-      this.SqlLite.getAllDataFromTable(this.resource,currentUser.currentDatabase).then((reports : any)=>{
-        reports.forEach((report : any)=>{
+      let reportList = [];
+      this.SqlLite.getAllDataFromTable(this.resource, currentUser.currentDatabase).subscribe((reports: any) => {
+        reports.forEach((report: any) => {
           report.type = "standardReport";
           report.openFuturePeriods = 1;
           reportList.push(report);
         });
-        this.SqlLite.getAllDataFromTable(dataSetsReportResourceName,currentUser.currentDatabase).then((dataSets : any)=>{
-          dataSets.forEach((dataSet : any)=>{
+        this.SqlLite.getAllDataFromTable(dataSetsReportResourceName, currentUser.currentDatabase).subscribe((dataSets: any) => {
+          dataSets.forEach((dataSet: any) => {
             reportList.push({
-              id : dataSet.id,name : dataSet.name,reportParams : reportParams,
-              type : "dataSetReport",
-              openFuturePeriods : dataSet.openFuturePeriods,
-              relativePeriods : {dataSetPeriodType : dataSet.periodType}
+              id: dataSet.id, name: dataSet.name, reportParams: reportParams,
+              type: "dataSetReport",
+              openFuturePeriods: dataSet.openFuturePeriods,
+              relativePeriods: {dataSetPeriodType: dataSet.periodType}
             });
           });
           reportList = this.getSortedReports(reportList);
-          resolve(reportList);
-        },error=>{
+          observer.next(reportList);
+          observer.complete();
+        }, error => {
           reportList = this.getSortedReports(reportList);
-          resolve(reportList);
+          observer.next(reportList);
+          observer.complete();
         });
-      },error=>{
-        reject(error);
+      }, error => {
+        observer.next(error);
+        observer.complete();
       });
     })
   }
 
-  getSortedReports(reports){
+  /**
+   *
+   * @param reports
+   * @returns {any}
+   */
+  getSortedReports(reports) {
     reports.sort((a, b) => {
       if (a.name > b.name) {
         return 1;
@@ -188,9 +199,9 @@ export class StandardReportProvider {
    * @param reportParams
    * @returns {boolean}
    */
-  hasReportRequireParameterSelection(reportParams){
+  hasReportRequireParameterSelection(reportParams) {
     let requireReportParameter = false;
-    if(reportParams.paramReportingPeriod || reportParams.paramOrganisationUnit){
+    if (reportParams.paramReportingPeriod || reportParams.paramOrganisationUnit) {
       requireReportParameter = true;
     }
     return requireReportParameter;
@@ -200,32 +211,39 @@ export class StandardReportProvider {
    *
    * @param reportId
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getReportId(reportId,currentUser){
+  getReportId(reportId, currentUser): Observable<any> {
     let attribute = "id";
     let attributeArray = [];
     attributeArray.push(reportId);
-    return new Promise((resolve, reject)=> {
-      this.SqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeArray,currentUser.currentDatabase).then((reportList:any)=>{
-        resolve(reportList[0]);
-      },error=>{
-        reject(error);
+    return new Observable(observer => {
+      this.SqlLite.getDataFromTableByAttributes(this.resource, attribute, attributeArray, currentUser.currentDatabase).subscribe((reports: any) => {
+        observer.next(reports[0]);
+        observer.complete();
+      }, error => {
+        observer.error(error);
       })
     })
   }
 
-
-  getReportDesign(reportId,currentUser){
+  /**
+   *
+   * @param reportId
+   * @param currentUser
+   * @returns {Observable<any>}
+   */
+  getReportDesign(reportId, currentUser): Observable<any> {
     let attribute = "id";
     let resource = "reportDesign";
     let attributeArray = [];
     attributeArray.push(reportId);
-    return new Promise((resolve, reject)=> {
-      this.SqlLite.getDataFromTableByAttributes(resource,attribute,attributeArray,currentUser.currentDatabase).then((reportList:any)=>{
-        resolve(reportList[0]);
-      },error=>{
-        reject(error);
+    return new Observable(observer => {
+      this.SqlLite.getDataFromTableByAttributes(resource, attribute, attributeArray, currentUser.currentDatabase).subscribe((response: any) => {
+        observer.next(response[0]);
+        observer.complete();
+      }, error => {
+        observer.error(error);
       })
     })
   }
@@ -235,40 +253,38 @@ export class StandardReportProvider {
    * @param relativePeriods
    * @returns {string}
    */
-  getReportPeriodType(relativePeriods){
+  getReportPeriodType(relativePeriods) {
     let reportPeriodType = "Yearly";
     let reportPeriods = [];
 
-    if(relativePeriods.dataSetPeriodType){
+    if (relativePeriods.dataSetPeriodType) {
       reportPeriods.push(relativePeriods.dataSetPeriodType)
     }
 
-    if(relativePeriods.last14Days || relativePeriods.yesterday || relativePeriods.thisDay || relativePeriods.last3Days || relativePeriods.last7Days){
+    if (relativePeriods.last14Days || relativePeriods.yesterday || relativePeriods.thisDay || relativePeriods.last3Days || relativePeriods.last7Days) {
       reportPeriods.push("Daily");
     }
-    if(relativePeriods.last52Weeks || relativePeriods.last12Weeks || relativePeriods.lastWeek || relativePeriods.thisWeek || relativePeriods.last4Weeks || relativePeriods.weeksThisYear){
+    if (relativePeriods.last52Weeks || relativePeriods.last12Weeks || relativePeriods.lastWeek || relativePeriods.thisWeek || relativePeriods.last4Weeks || relativePeriods.weeksThisYear) {
       reportPeriods.push("Weekly");
     }
-    if(relativePeriods.lastSixMonth || relativePeriods.lastMonth || relativePeriods.monthsThisYear || relativePeriods.monthsLastYear || relativePeriods.last6Months || relativePeriods.thisMonth || relativePeriods.last2SixMonths || relativePeriods.last3Months || relativePeriods.last12Months ||  relativePeriods.thisSixMonth){
+    if (relativePeriods.lastSixMonth || relativePeriods.lastMonth || relativePeriods.monthsThisYear || relativePeriods.monthsLastYear || relativePeriods.last6Months || relativePeriods.thisMonth || relativePeriods.last2SixMonths || relativePeriods.last3Months || relativePeriods.last12Months || relativePeriods.thisSixMonth) {
       reportPeriods.push("Monthly");
     }
-    if(relativePeriods.biMonthsThisYear || relativePeriods.lastBimonth || relativePeriods.last6BiMonths || relativePeriods.thisBimonth){
+    if (relativePeriods.biMonthsThisYear || relativePeriods.lastBimonth || relativePeriods.last6BiMonths || relativePeriods.thisBimonth) {
       reportPeriods.push("BiMonthly")
     }
-    if(relativePeriods.quartersLastYear || relativePeriods.last4Quarters || relativePeriods.quartersThisYear || relativePeriods.thisQuarter || relativePeriods.lastQuarter ){
+    if (relativePeriods.quartersLastYear || relativePeriods.last4Quarters || relativePeriods.quartersThisYear || relativePeriods.thisQuarter || relativePeriods.lastQuarter) {
       reportPeriods.push("Quarterly")
     }
-    if(relativePeriods.lastYear || relativePeriods.last5Years || relativePeriods.thisYear){
+    if (relativePeriods.lastYear || relativePeriods.last5Years || relativePeriods.thisYear) {
       reportPeriods.push("Yearly")
     }
     //@todo checking preference on relative periods
-    if(reportPeriods.length > 0){
+    if (reportPeriods.length > 0) {
       reportPeriodType = reportPeriods[0];
     }
     return reportPeriodType;
   }
-
-
 
 
 }

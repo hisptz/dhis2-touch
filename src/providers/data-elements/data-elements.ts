@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {SqlLiteProvider} from "../sql-lite/sql-lite";
 import {HttpClientProvider} from "../http-client/http-client";
+import {Observable} from "rxjs/Observable";
 
 /*
   Generated class for the DataElementsProvider provider.
@@ -11,30 +12,25 @@ import {HttpClientProvider} from "../http-client/http-client";
 @Injectable()
 export class DataElementsProvider {
 
-  resource : string;
+  resource: string;
 
-  constructor(private SqlLite : SqlLiteProvider,private HttpClient : HttpClientProvider) {
+  constructor(private SqlLite: SqlLiteProvider, private HttpClient: HttpClientProvider) {
     this.resource = "dataElements";
   }
 
   /**
    *
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  downloadDataElementsFromServer(currentUser){
-    let fields= "id,name,formName,aggregationType,categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]";
-    let url = "/api/25/"+this.resource+".json?paging=false&fields=" + fields;
-    return new Promise((resolve, reject)=> {
-      this.HttpClient.get(url,currentUser).then((response : any)=>{
-        try{
-          response = JSON.parse(response.data);
-          resolve(response);
-        }catch (e){
-          reject(e);
-        }
-      },error=>{
-        reject(error);
+  downloadDataElementsFromServer(currentUser): Observable<any> {
+    let fields = "id,name,formName,aggregationType,categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]";
+    let url = "/api/25/" + this.resource + ".json?paging=false&fields=" + fields;
+    return new Observable(observer => {
+      this.HttpClient.get(url, true, currentUser).subscribe((response: any) => {
+        observer.next(response);
+      }, error => {
+        observer.error(error);
       });
     });
   }
@@ -43,18 +39,19 @@ export class DataElementsProvider {
    *
    * @param dataElements
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  saveDataElementsFromServer(dataElements,currentUser){
-    return new Promise((resolve, reject)=> {
-      if(dataElements.length == 0){
-        resolve();
-      }else{
-        this.SqlLite.insertBulkDataOnTable(this.resource,dataElements,currentUser.currentDatabase).then(()=>{
-          resolve();
-        },error=>{
-          console.log(JSON.stringify(error));
-          reject(error);
+  saveDataElementsFromServer(dataElements, currentUser): Observable<any> {
+    return new Observable(observer => {
+      if (dataElements.length == 0) {
+        observer.next();
+        observer.complete();
+      } else {
+        this.SqlLite.insertBulkDataOnTable(this.resource, dataElements, currentUser.currentDatabase).subscribe(() => {
+          observer.next();
+          observer.complete();
+        }, error => {
+          observer.error(error);
         });
       }
     });
@@ -64,18 +61,21 @@ export class DataElementsProvider {
    *
    * @param dataSetDatElements
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getDataElementsByIdsForDataEntry(dataSetDatElements,currentUser){
+  getDataElementsByIdsForDataEntry(dataSetDatElements, currentUser): Observable<any> {
     let attributeKey = "id";
     let dataElementIds = [];
-    dataSetDatElements.forEach((dataSetDatElement : any)=>{
+    dataSetDatElements.forEach((dataSetDatElement: any) => {
       dataElementIds.push(dataSetDatElement.id);
     });
-    return new Promise((resolve, reject)=> {
-      this.SqlLite.getDataFromTableByAttributes(this.resource,attributeKey,dataElementIds,currentUser.currentDatabase).then(( dataElements: any)=>{
-        resolve(this.getSortedListOfDataElements(dataSetDatElements,dataElements));
-      },error=>{reject(error)})
+    return new Observable(observer => {
+      this.SqlLite.getDataFromTableByAttributes(this.resource, attributeKey, dataElementIds, currentUser.currentDatabase).subscribe((dataElements: any) => {
+        observer.next(this.getSortedListOfDataElements(dataSetDatElements, dataElements));
+        observer.complete();
+      }, error => {
+        observer.error(error)
+      })
     });
   }
 
@@ -83,21 +83,30 @@ export class DataElementsProvider {
    *
    * @param dataElementIds
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getDataElementsByIdsForEvents(dataElementIds,currentUser){
+  getDataElementsByIdsForEvents(dataElementIds, currentUser): Observable<any> {
     let attributeKey = "id";
-    return new Promise((resolve, reject)=> {
-      this.SqlLite.getDataFromTableByAttributes(this.resource,attributeKey,dataElementIds,currentUser.currentDatabase).then(( dataElements: any)=>{
-        resolve(dataElements);
-      },error=>{reject(error)})
+    return new Observable(observer => {
+      this.SqlLite.getDataFromTableByAttributes(this.resource, attributeKey, dataElementIds, currentUser.currentDatabase).subscribe((dataElements: any) => {
+        observer.next(dataElements);
+        observer.complete();
+      }, error => {
+        observer.error(error)
+      })
     });
   }
 
-  getSortedListOfDataElements(dataSetDatElements,dataElements){
+  /**
+   *
+   * @param dataSetDatElements
+   * @param dataElements
+   * @returns {Array}
+   */
+  getSortedListOfDataElements(dataSetDatElements, dataElements) {
     let sortedDataElements = [];
     let dataElementObject = {};
-    dataElements.forEach((dataElement : any)=>{
+    dataElements.forEach((dataElement: any) => {
       dataElementObject[dataElement.id] = dataElement;
     });
     dataSetDatElements.sort((a, b) => {
@@ -109,12 +118,10 @@ export class DataElementsProvider {
       }
       return 0;
     });
-    dataSetDatElements.forEach((dataSetDatElement)=>{
+    dataSetDatElements.forEach((dataSetDatElement) => {
       sortedDataElements.push(dataElementObject[dataSetDatElement.id]);
     });
     return sortedDataElements;
   }
-
-
 
 }

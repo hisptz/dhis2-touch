@@ -1,8 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Network } from '@ionic-native/network';
+import {Injectable} from '@angular/core';
+import {Network} from '@ionic-native/network';
 import {AppProvider} from "../app/app";
 
-declare var  dhis2;
 
 /*
   Generated class for the NetworkAvailabilityProvider provider.
@@ -13,17 +12,18 @@ declare var  dhis2;
 @Injectable()
 export class NetworkAvailabilityProvider {
 
-  constructor(public AppProvider: AppProvider,public network : Network) {}
+  constructor(public AppProvider: AppProvider, public network: Network) {
+  }
 
-  getNetWorkStatus(){
+  getNetWorkStatus() {
     return {
-      isAvailable : (this.network.type == "unknown" || this.network.type == "none")?false:true,
-      message : (this.network.type == "unknown" || this.network.type == "none")?"You are offline" : "You are online",
-      networkType : this.network.type
+      isAvailable: (this.network.type == "unknown" || this.network.type == "none") ? false : true,
+      message: (this.network.type == "unknown" || this.network.type == "none") ? "You are offline" : "You are online",
+      networkType: this.network.type
     };
   }
 
-  setNetworkStatusDetection(){
+  setNetworkStatusDetection() {
     this.network.onConnect().subscribe(data => {
       this.displayNetworkUpdate(data.type);
     }, error => console.error(error));
@@ -33,7 +33,7 @@ export class NetworkAvailabilityProvider {
     }, error => console.error(error));
   }
 
-  displayNetworkUpdate(connectionState: string){
+  displayNetworkUpdate(connectionState: string) {
     let networkType = this.network.type;
     console.log('networkType : ' + networkType);
     let message = `You are now ${connectionState}`;

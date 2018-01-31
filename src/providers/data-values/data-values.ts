@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClientProvider} from "../http-client/http-client";
 import {SqlLiteProvider} from "../sql-lite/sql-lite";
 import {NetworkAvailabilityProvider} from "../network-availability/network-availability";
+import {Observable} from "rxjs/Observable";
 
 /*
   Generated class for the DataValuesProvider provider.
@@ -12,9 +13,9 @@ import {NetworkAvailabilityProvider} from "../network-availability/network-avail
 @Injectable()
 export class DataValuesProvider {
 
-  resourceName : string;
+  resourceName: string;
 
-  constructor(private httpClient :HttpClientProvider,private sqlLite : SqlLiteProvider,private network : NetworkAvailabilityProvider) {
+  constructor(private httpClient: HttpClientProvider, private sqlLite: SqlLiteProvider, private network: NetworkAvailabilityProvider) {
     this.resourceName = 'dataValues';
   }
 
@@ -25,25 +26,22 @@ export class DataValuesProvider {
    * @param orgUnitId
    * @param attributeOptionCombo
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getDataValueSetFromServer(dataSetId, period, orgUnitId, attributeOptionCombo, currentUser) {
+  getDataValueSetFromServer(dataSetId, period, orgUnitId, attributeOptionCombo, currentUser): Observable<any> {
     let parameter = 'dataSet=' + dataSetId + '&period=' + period + '&orgUnit=' + orgUnitId;
     let networkStatus = this.network.getNetWorkStatus();
-    return new Promise((resolve, reject)=> {
-      if(networkStatus.isAvailable){
-        this.httpClient.get('/api/25/dataValueSets.json?' + parameter, currentUser).then((response : any)=> {
-          try{
-            response = JSON.parse(response.data);
-            resolve(this.getFilteredDataValuesByDataSetAttributeOptionCombo(response, attributeOptionCombo))
-          }catch (error){
-            reject(error);
-          }
-        }, error=> {
-          reject(error.json());
+    return new Observable(observer => {
+      if (networkStatus.isAvailable) {
+        this.httpClient.get('/api/25/dataValueSets.json?' + parameter, true, currentUser).subscribe((response: any) => {
+          observer.next(this.getFilteredDataValuesByDataSetAttributeOptionCombo(response, attributeOptionCombo));
+          observer.complete();
+        }, error => {
+          observer.error(error);
         });
-      }else{
-        resolve([]);
+      } else {
+        observer.next([]);
+        observer.complete();
       }
     });
   }
@@ -52,18 +50,17 @@ export class DataValuesProvider {
    *
    * @param status
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getDataValuesByStatus(status,currentUser){
+  getDataValuesByStatus(status, currentUser): Observable<any> {
     let attributeArray = [];
     attributeArray.push(status);
-    return new Promise( (resolve, reject)=> {
-      this.sqlLite.getDataFromTableByAttributes(this.resourceName, "syncStatus", attributeArray, currentUser.currentDatabase).then((dataValues:any)=> {
-        resolve(dataValues);
-
-      }, error=> {
-
-        reject();
+    return new Observable(observer => {
+      this.sqlLite.getDataFromTableByAttributes(this.resourceName, "syncStatus", attributeArray, currentUser.currentDatabase).subscribe((dataValues: any) => {
+        observer.next(dataValues);
+        observer.complete();
+      }, error => {
+        observer.error(error);
       });
     });
   }
@@ -75,7 +72,7 @@ export class DataValuesProvider {
    */
   getFormattedDataValueForUpload(dataValues) {
     let formattedDataValues = [];
-    dataValues.forEach((dataValue:any)=> {
+    dataValues.forEach((dataValue: any) => {
       let formParameter = "de=" + dataValue.de + "&pe=" + dataValue.pe + "&ou=";
       formParameter += dataValue.ou + "&co=" + dataValue.co + "&value=" + dataValue.value;
       if (dataValue.cp != "0" && dataValue.cp != "") {
@@ -86,53 +83,60 @@ export class DataValuesProvider {
     return formattedDataValues;
   }
 
-  uploadDataValues(formattedDataValues,dataValues,currentUser){
+  /**
+   *
+   * @param formattedDataValues
+   * @param dataValues
+   * @param currentUser
+   * @returns {Observable<any>}
+   */
+  uploadDataValues(formattedDataValues, dataValues, currentUser): Observable<any> {
     let syncedDataValues = [];
     let importSummaries = {
-      success : 0,fail : 0 ,errorMessages : []
+      success: 0, fail: 0, errorMessages: []
     };
-    return new Promise( (resolve, reject)=> {
-      formattedDataValues.forEach((formattedDataValue:any, index:any)=> {
-        this.httpClient.post('/api/25/dataValues?' + formattedDataValue, {}, currentUser).then(()=> {
+    return new Observable(observer => {
+      formattedDataValues.forEach((formattedDataValue: any, index: any) => {
+        this.httpClient.post('/api/25/dataValues?' + formattedDataValue, {}, currentUser).subscribe(() => {
           let syncedDataValue = dataValues[index];
-          importSummaries.success ++;
+          importSummaries.success++;
           syncedDataValue["syncStatus"] = "synced";
           syncedDataValues.push(syncedDataValue);
-          if(formattedDataValues.length == (importSummaries.success + importSummaries.fail)){
-            if(syncedDataValues.length > 0){
-              this.sqlLite.insertBulkDataOnTable(this.resourceName,syncedDataValues,currentUser.currentDatabase).then(()=>{
-                resolve(importSummaries);
-              },error=>{
-                console.log(JSON.stringify(error));
-                reject(error);
+          if (formattedDataValues.length == (importSummaries.success + importSummaries.fail)) {
+            if (syncedDataValues.length > 0) {
+              this.sqlLite.insertBulkDataOnTable(this.resourceName, syncedDataValues, currentUser.currentDatabase).subscribe(() => {
+                observer.next(importSummaries);
+                observer.complete();
+              }, error => {
+                observer.error(error);
               });
-            }else{
-              resolve(importSummaries);
+            } else {
+              observer.next(importSummaries);
+              observer.complete();
             }
           }
-        }, error=> {
-          importSummaries.fail ++;
-          if(importSummaries.errorMessages.indexOf(error)  == -1){
+        }, error => {
+          importSummaries.fail++;
+          if (importSummaries.errorMessages.indexOf(error) == -1) {
             importSummaries.errorMessages.push(error.error);
           }
-          if(formattedDataValues.length == (importSummaries.success + importSummaries.fail)){
-            if(syncedDataValues.length > 0){
-              this.sqlLite.insertBulkDataOnTable(this.resourceName,syncedDataValues,currentUser.currentDatabase).then(()=>{
-                resolve(importSummaries);
-              },error=>{
-                console.log(JSON.stringify(error));
-                reject(error);
+          if (formattedDataValues.length == (importSummaries.success + importSummaries.fail)) {
+            if (syncedDataValues.length > 0) {
+              this.sqlLite.insertBulkDataOnTable(this.resourceName, syncedDataValues, currentUser.currentDatabase).subscribe(() => {
+                observer.next(importSummaries);
+                observer.complete();
+              }, error => {
+                observer.error(error);
               });
-            }else{
-              resolve(importSummaries);
+            } else {
+              observer.next(importSummaries);
+              observer.complete();
             }
           }
         });
       });
     });
   }
-
-
 
   /**
    *
@@ -142,21 +146,21 @@ export class DataValuesProvider {
    * @param entryFormSections
    * @param dataDimension
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getAllEntryFormDataValuesFromStorage(dataSetId, period, orgUnitId, entryFormSections, dataDimension, currentUser) {
+  getAllEntryFormDataValuesFromStorage(dataSetId, period, orgUnitId, entryFormSections, dataDimension, currentUser): Observable<any> {
     let ids = [];
     let entryFormDataValuesFromStorage = [];
-    entryFormSections.forEach((section:any)=> {
-      section.dataElements.forEach((dataElement:any)=> {
-        dataElement.categoryCombo.categoryOptionCombos.forEach((categoryOptionCombo:any)=> {
+    entryFormSections.forEach((section: any) => {
+      section.dataElements.forEach((dataElement: any) => {
+        dataElement.categoryCombo.categoryOptionCombos.forEach((categoryOptionCombo: any) => {
           ids.push(dataSetId + '-' + dataElement.id + '-' + categoryOptionCombo.id + '-' + period + '-' + orgUnitId);
         });
       });
     });
-    return new Promise( (resolve, reject)=> {
-      this.sqlLite.getDataFromTableByAttributes(this.resourceName, "id", ids, currentUser.currentDatabase).then((dataValues:any)=> {
-        dataValues.forEach((dataValue:any)=> {
+    return new Observable(observer => {
+      this.sqlLite.getDataFromTableByAttributes(this.resourceName, "id", ids, currentUser.currentDatabase).subscribe((dataValues: any) => {
+        dataValues.forEach((dataValue: any) => {
           if ((dataDimension.cp == dataValue.cp || dataValue.cp == "" || dataValue.cp == "0") && dataDimension.cc == dataValue.cc) {
             entryFormDataValuesFromStorage.push({
               id: dataValue.de + "-" + dataValue.co,
@@ -165,9 +169,10 @@ export class DataValuesProvider {
             });
           }
         });
-        resolve(entryFormDataValuesFromStorage)
-      }, error=> {
-        reject();
+        observer.next(entryFormDataValuesFromStorage);
+        observer.complete();
+      }, error => {
+        observer.error(error);
       });
     });
   }
@@ -180,12 +185,12 @@ export class DataValuesProvider {
    */
   getDataValuesSetAttributeOptionCombo(dataDimension, categoryOptionCombos) {
     let attributeOptionCombo = "";
-    if (dataDimension && dataDimension.cp && dataDimension.cp!="") {
+    if (dataDimension && dataDimension.cp && dataDimension.cp != "") {
       let categoriesOptionsArray = dataDimension.cp.split(';');
       for (let i = 0; i < categoryOptionCombos.length; i++) {
         let hasAttributeOptionCombo = true;
         let categoryOptionCombo = categoryOptionCombos[i];
-        categoryOptionCombo.categoryOptions.forEach((categoryOption:any)=> {
+        categoryOptionCombo.categoryOptions.forEach((categoryOption: any) => {
           if (categoriesOptionsArray.indexOf(categoryOption.id) == -1) {
             hasAttributeOptionCombo = false;
           }
@@ -210,7 +215,7 @@ export class DataValuesProvider {
   getFilteredDataValuesByDataSetAttributeOptionCombo(dataValuesResponse, attributeOptionCombo) {
     let FilteredDataValues = [];
     if (dataValuesResponse.dataValues) {
-      dataValuesResponse.dataValues.forEach((dataValue:any)=> {
+      dataValuesResponse.dataValues.forEach((dataValue: any) => {
         if (dataValue.attributeOptionCombo == attributeOptionCombo) {
           FilteredDataValues.push({
             categoryOptionCombo: dataValue.categoryOptionCombo,
@@ -224,7 +229,7 @@ export class DataValuesProvider {
   }
 
   /**
-   * saving data davlues
+   *
    * @param dataValues
    * @param dataSetId
    * @param period
@@ -232,13 +237,13 @@ export class DataValuesProvider {
    * @param dataDimension
    * @param syncStatus
    * @param currentUser
-   * @returns {Promise<T>}
+   * @returns {Observable<any>}
    */
-  saveDataValues(dataValues, dataSetId, period, orgUnitId, dataDimension, syncStatus, currentUser) {
-    return new Promise( (resolve, reject)=> {
-      if(dataValues.length > 0){
+  saveDataValues(dataValues, dataSetId, period, orgUnitId, dataDimension, syncStatus, currentUser): Observable<any> {
+    return new Observable(observer => {
+      if (dataValues.length > 0) {
         let bulkData = [];
-        for(let dataValue of dataValues){
+        for (let dataValue of dataValues) {
           bulkData.push({
             id: dataSetId + '-' + dataValue.dataElement + '-' + dataValue.categoryOptionCombo + '-' + period + '-' + orgUnitId,
             de: dataValue.dataElement,
@@ -254,14 +259,15 @@ export class DataValuesProvider {
             orgUnit: dataValue.orgUnit
           });
         }
-        this.sqlLite.insertBulkDataOnTable(this.resourceName,bulkData,currentUser.currentDatabase).then(()=>{
-          resolve();
-        },error=>{
-          console.log(JSON.stringify(error));
-          reject(error);
+        this.sqlLite.insertBulkDataOnTable(this.resourceName, bulkData, currentUser.currentDatabase).subscribe(() => {
+          observer.next();
+          observer.complete();
+        }, error => {
+          observer.error(error);
         });
-      }else{
-        resolve();
+      } else {
+        observer.next();
+        observer.complete();
       }
     });
   }
@@ -273,20 +279,22 @@ export class DataValuesProvider {
    * @param currentUser
    * @returns {Promise<T>}
    */
-  deleteDataValueByIds(dataValueIds, currentUser) {
+  deleteDataValueByIds(dataValueIds, currentUser): Observable<any> {
     let successCount = 0;
     let failCount = 0;
-    return new Promise( (resolve, reject)=> {
-      for(let dataValueId of dataValueIds){
-        this.sqlLite.deleteFromTableByAttribute(this.resourceName,"id",dataValueId, currentUser.currentDatabase).then(()=> {
+    return new Observable(observer => {
+      for (let dataValueId of dataValueIds) {
+        this.sqlLite.deleteFromTableByAttribute(this.resourceName, "id", dataValueId, currentUser.currentDatabase).subscribe(() => {
           successCount = successCount + 1;
-          if((successCount + failCount) == dataValueIds.length){
-            resolve();
+          if ((successCount + failCount) == dataValueIds.length) {
+            observer.next();
+            observer.complete();
           }
-        }, error=> {
+        }, error => {
           failCount = failCount + 1;
-          if((successCount + failCount) == dataValueIds.length){
-            resolve();
+          if ((successCount + failCount) == dataValueIds.length) {
+            observer.next();
+            observer.complete();
           }
         });
       }
@@ -296,14 +304,15 @@ export class DataValuesProvider {
   /**
    *
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getAllDataValues(currentUser){
-    return new Promise((resolve,reject)=>{
-      this.sqlLite.getAllDataFromTable(this.resourceName,currentUser.currentDatabase).then((dataValues : any)=>{
-        resolve(dataValues);
-      }).catch(error=>{
-        reject(error);
+  getAllDataValues(currentUser): Observable<any> {
+    return new Observable(observer => {
+      this.sqlLite.getAllDataFromTable(this.resourceName, currentUser.currentDatabase).subscribe((dataValues: any) => {
+        observer.next(dataValues);
+        observer.complete();
+      }, error => {
+        observer.error(error);
       });
     });
   }
@@ -311,14 +320,15 @@ export class DataValuesProvider {
   /**
    *
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  deleteAllDataValues(currentUser){
-    return new Promise((resolve,reject)=>{
-      this.sqlLite.dropTable(this.resourceName,currentUser.currentDatabase).then(()=>{
-        resolve();
-      }).catch(error=>{
-        reject(error);
+  deleteAllDataValues(currentUser): Observable<any> {
+    return new Observable(observer => {
+      this.sqlLite.dropTable(this.resourceName, currentUser.currentDatabase).subscribe(() => {
+        observer.next();
+        observer.complete();
+      }, error => {
+        observer.error(error);
       });
     });
   }

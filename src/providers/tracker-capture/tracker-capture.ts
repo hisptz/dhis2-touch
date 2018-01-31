@@ -6,6 +6,7 @@ import {TrackedEntityAttributeValuesProvider} from "../tracked-entity-attribute-
 import {TrackedEntityInstancesProvider} from "../tracked-entity-instances/tracked-entity-instances";
 import {SqlLiteProvider} from "../sql-lite/sql-lite";
 import {HttpClientProvider} from "../http-client/http-client";
+import {Observable} from "rxjs/Observable";
 
 /*
   Generated class for the TrackerCaptureProvider provider.
@@ -30,12 +31,12 @@ export class TrackerCaptureProvider {
    *
    * @param trackedEntityInstancesId
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getTrackedEntityInstance(trackedEntityInstancesId, currentUser) {
-    return new Promise((resolve, reject) => {
-      this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('trackedEntityInstance', [trackedEntityInstancesId], currentUser).then((trackedEntityInstances: any) => {
-        this.trackedEntityAttributeValuesProvider.getTrackedEntityAttributeValues([trackedEntityInstancesId], currentUser).then((attributeValues: any) => {
+  getTrackedEntityInstance(trackedEntityInstancesId, currentUser): Observable<any> {
+    return new Observable(observer => {
+      this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('trackedEntityInstance', [trackedEntityInstancesId], currentUser).subscribe((trackedEntityInstances: any) => {
+        this.trackedEntityAttributeValuesProvider.getTrackedEntityAttributeValues([trackedEntityInstancesId], currentUser).subscribe((attributeValues: any) => {
           let attributeValuesObject = {};
           if (attributeValues && attributeValues.length > 0) {
             attributeValues.forEach((attributeValue: any) => {
@@ -52,13 +53,14 @@ export class TrackerCaptureProvider {
                 trackedEntityInstanceObject["attributes"] = [];
               }
             });
-            resolve(trackedEntityInstances[0])
+            observer.next(trackedEntityInstances[0]);
+            observer.complete();
           }
-        }).catch(error => {
-          reject({message: error});
+        }, error => {
+          observer.error({message: error});
         });
-      }).catch(error => {
-        reject({message: error});
+      }, error => {
+        observer.error({message: error});
       });
     });
   }
@@ -67,17 +69,17 @@ export class TrackerCaptureProvider {
    *
    * @param status
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getTrackedEntityInstanceByStatus(status, currentUser) {
-    return new Promise((resolve, reject) => {
-      this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('syncStatus', [status], currentUser).then((trackedEntityInstances: any) => {
+  getTrackedEntityInstanceByStatus(status, currentUser): Observable<any> {
+    return new Observable(observer => {
+      this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('syncStatus', [status], currentUser).subscribe((trackedEntityInstances: any) => {
         if (trackedEntityInstances && trackedEntityInstances.length > 0) {
           let trackedEntityInstancesIds = [];
           trackedEntityInstances.forEach((trackedEntityInstance: any) => {
             trackedEntityInstancesIds.push(trackedEntityInstance.id);
           });
-          this.trackedEntityAttributeValuesProvider.getTrackedEntityAttributeValues(trackedEntityInstancesIds, currentUser).then((attributeValues: any) => {
+          this.trackedEntityAttributeValuesProvider.getTrackedEntityAttributeValues(trackedEntityInstancesIds, currentUser).subscribe((attributeValues: any) => {
             let attributeValuesObject = {};
             if (attributeValues && attributeValues.length > 0) {
               attributeValues.forEach((attributeValue: any) => {
@@ -95,15 +97,17 @@ export class TrackerCaptureProvider {
                 }
               });
             }
-            resolve(trackedEntityInstances)
-          }).catch(error => {
-            reject({message: error});
+            observer.next(trackedEntityInstances);
+            observer.complete();
+          }, error => {
+            observer.error({message: error});
           });
         } else {
-          resolve([]);
+          observer.next([]);
+          observer.complete();
         }
-      }).catch(error => {
-        reject({message: error});
+      }, error => {
+        observer.error({message: error});
       });
     });
   }
@@ -112,13 +116,13 @@ export class TrackerCaptureProvider {
    *
    * @param programId
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getTrackedEntityRegistration(programId, currentUser) {
+  getTrackedEntityRegistration(programId, currentUser): Observable<any> {
     let programTrackedEntityAttributes = [];
     let programTrackedEntityAttributeIds = [];
-    return new Promise((resolve, reject) => {
-      this.programsProvider.getProgramProgramTrackedEntityAttributes(programId, currentUser).then((programTrackedEntityAttributesResponse: any) => {
+    return new Observable(observer => {
+      this.programsProvider.getProgramProgramTrackedEntityAttributes(programId, currentUser).subscribe((programTrackedEntityAttributesResponse: any) => {
         if (programTrackedEntityAttributesResponse && programTrackedEntityAttributesResponse.length > 0) {
           programTrackedEntityAttributesResponse.forEach((programTrackedEntityAttribute: any) => {
             if (programTrackedEntityAttribute.id.split("-").length > 1) {
@@ -140,17 +144,19 @@ export class TrackerCaptureProvider {
             }
             return 0;
           });
-          this.programsProvider.getTrackedEntityAttributes(programTrackedEntityAttributeIds, currentUser).then((trackedEntityAttributes: any) => {
+          this.programsProvider.getTrackedEntityAttributes(programTrackedEntityAttributeIds, currentUser).subscribe((trackedEntityAttributes: any) => {
             programTrackedEntityAttributes = this.getMergedProgramTrackedEntityAttributesWithTrackedEntityAttributes(programTrackedEntityAttributes, trackedEntityAttributes);
-            resolve(programTrackedEntityAttributes);
-          }).catch(error => {
-            reject(error)
+            observer.next(programTrackedEntityAttributes);
+            observer.complete();
+          }, error => {
+            observer.error(error)
           });
         } else {
-          resolve(programTrackedEntityAttributes);
+          observer.next(programTrackedEntityAttributes);
+          observer.complete();
         }
-      }).catch(error => {
-        reject(error);
+      }, error => {
+        observer.error(error);
       });
     });
   }
@@ -160,10 +166,10 @@ export class TrackerCaptureProvider {
    * @param trackedEntityInstances
    * @param copiedTrackedEntityInstances
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  uploadTrackedEntityInstancesToServer(trackedEntityInstances, copiedTrackedEntityInstances, currentUser) {
-    return new Promise((resolve, reject) => {
+  uploadTrackedEntityInstancesToServer(trackedEntityInstances, copiedTrackedEntityInstances, currentUser): Observable<any> {
+    return new Observable(observer => {
       let url = "/api/25/trackedEntityInstances";
       let trackedEntityInstanceIds = [];
       let success = 0, fail = 0;
@@ -177,32 +183,33 @@ export class TrackerCaptureProvider {
           delete attribute.trackedEntityInstance;
           delete attribute.id;
         });
-        this.httpClientProvider.defaultPost(url, trackedEntityInstance, currentUser).then((response: any) => {
+        this.httpClientProvider.defaultPost(url, trackedEntityInstance, currentUser).subscribe((response: any) => {
           trackedEntityInstanceIds.push(copiedTrackedEntityInstances[parseInt(index)].trackedEntityInstance);
           success++;
           if (success + fail == copiedTrackedEntityInstances.length) {
-            this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('trackedEntityInstance', trackedEntityInstanceIds, currentUser).then((trackedEntityInstances: any) => {
-              this.trackedEntityInstancesProvider.updateSavedTrackedEntityInstancesByStatus(trackedEntityInstances, currentUser, 'synced').then(() => {
-                resolve({
+            this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('trackedEntityInstance', trackedEntityInstanceIds, currentUser).subscribe((trackedEntityInstances: any) => {
+              this.trackedEntityInstancesProvider.updateSavedTrackedEntityInstancesByStatus(trackedEntityInstances, currentUser, 'synced').subscribe(() => {
+                observer.next({
                   trackedEntityInstanceIds: trackedEntityInstanceIds,
                   importSummaries: {success: success, fail: fail, errorMessages: errorMessages}
                 });
-              }).catch(error => {
-                reject({message: error});
+                observer.complete();
+              }, error => {
+                observer.error({message: error});
               });
-            }).catch(error => {
-              reject({message: error});
+            }, error => {
+              observer.error({message: error});
             })
           }
-        }).catch((error => {
+        }, (error => {
           fail++;
           if (error && error.response && error.response.importSummaries && error.response.importSummaries.length > 0 && error.response.importSummaries[0].description) {
             let message = error.response.importSummaries[0].description;
             if (errorMessages.indexOf(message) == -1) {
               errorMessages.push(message);
             }
-          } else if(error && error.response && error.response.conflicts){
-            error.response.conflicts.forEach((conflict : any)=>{
+          } else if (error && error.response && error.response.conflicts) {
+            error.response.conflicts.forEach((conflict: any) => {
               let message = JSON.stringify(conflict);
               if (errorMessages.indexOf(message) == -1) {
                 errorMessages.push(message);
@@ -213,24 +220,25 @@ export class TrackerCaptureProvider {
             if (errorMessages.indexOf(message) == -1) {
               errorMessages.push(message);
             }
-          }else {
+          } else {
             let message = "There are and error with connection to server, please check the network";
             if (errorMessages.indexOf(message) == -1) {
               errorMessages.push(message);
             }
           }
           if (success + fail == copiedTrackedEntityInstances.length) {
-            this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('trackedEntityInstance', trackedEntityInstanceIds, currentUser).then((trackedEntityInstances: any) => {
-              this.trackedEntityInstancesProvider.updateSavedTrackedEntityInstancesByStatus(trackedEntityInstances, currentUser, 'synced').then(() => {
-                resolve({
+            this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('trackedEntityInstance', trackedEntityInstanceIds, currentUser).subscribe((trackedEntityInstances: any) => {
+              this.trackedEntityInstancesProvider.updateSavedTrackedEntityInstancesByStatus(trackedEntityInstances, currentUser, 'synced').subscribe(() => {
+                observer.next({
                   trackedEntityInstanceIds: trackedEntityInstanceIds,
                   importSummaries: {success: success, fail: fail, errorMessages: errorMessages}
                 });
-              }).catch(error => {
-                reject({message: error});
+                observer.complete();
+              }, error => {
+                observer.error({message: error});
               });
-            }).catch(error => {
-              reject({message: error});
+            }, error => {
+              observer.error({message: error});
             })
           }
         }));
@@ -242,45 +250,48 @@ export class TrackerCaptureProvider {
    *
    * @param enrollments
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  uploadEnrollments(enrollments, currentUser) {
-    return new Promise((resolve, reject) => {
+  uploadEnrollments(enrollments, currentUser): Observable<any> {
+    return new Observable(observer => {
       let success = 0, fail = 0;
       let url = "/api/25/enrollments";
       let enrollmentIds = [];
       if (enrollments && enrollments.length == 0) {
-        resolve();
+        observer.next();
+        observer.complete();
       } else {
         enrollments.forEach((enrollment: any) => {
           enrollmentIds.push(enrollment.id);
           delete enrollment.syncStatus;
           delete enrollment.id;
           delete enrollment.events;
-          this.httpClientProvider.defaultPost(url, enrollment, currentUser).then(() => {
+          this.httpClientProvider.defaultPost(url, enrollment, currentUser).subscribe(() => {
             success++;
             if (success + fail == enrollments.length) {
-              this.enrollmentsProvider.getSavedEnrollmentsByAttribute('id', enrollmentIds, currentUser).then((enrollments: any) => {
-                this.enrollmentsProvider.updateEnrollmentsByStatus(enrollments, currentUser, 'synced').then(() => {
-                  resolve();
-                }).catch(error => {
-                  reject(error);
+              this.enrollmentsProvider.getSavedEnrollmentsByAttribute('id', enrollmentIds, currentUser).subscribe((enrollments: any) => {
+                this.enrollmentsProvider.updateEnrollmentsByStatus(enrollments, currentUser, 'synced').subscribe(() => {
+                  observer.next();
+                  observer.complete();
+                }, error => {
+                  observer.error(error);
                 });
-              }).catch(error => {
-                reject(error);
+              }, error => {
+                observer.error(error);
               });
             }
-          }).catch(error => {
+          }, error => {
             fail++;
             if (success + fail == enrollments.length) {
-              this.enrollmentsProvider.getSavedEnrollmentsByAttribute('id', enrollmentIds, currentUser).then((enrollments: any) => {
-                this.enrollmentsProvider.updateEnrollmentsByStatus(enrollments, currentUser, 'synced').then(() => {
-                  resolve();
-                }).catch(error => {
-                  reject(error);
+              this.enrollmentsProvider.getSavedEnrollmentsByAttribute('id', enrollmentIds, currentUser).subscribe((enrollments: any) => {
+                this.enrollmentsProvider.updateEnrollmentsByStatus(enrollments, currentUser, 'synced').subscribe(() => {
+                  observer.next();
+                  observer.complete();
+                }, error => {
+                  observer.error(error);
                 });
-              }).catch(error => {
-                reject(error);
+              }, error => {
+                observer.error(error);
               });
             }
           });
@@ -296,10 +307,10 @@ export class TrackerCaptureProvider {
    * @param currentUser
    * @param trackedEntityInstance
    * @param syncStatus
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  saveTrackedEntityRegistration(incidentDate, enrollmentDate, currentUser, trackedEntityInstance, syncStatus?) {
-    return new Promise((resolve, reject) => {
+  saveTrackedEntityRegistration(incidentDate, enrollmentDate, currentUser, trackedEntityInstance, syncStatus?): Observable<any> {
+    return new Observable(observer => {
       let currentProgram = this.programsProvider.lastSelectedProgram;
       let currentOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
       if (!syncStatus) {
@@ -318,17 +329,18 @@ export class TrackerCaptureProvider {
         });
         let counter = 0;
         payLoads.forEach((payLoadObject: any) => {
-          this.sqlLite.insertBulkDataOnTable(payLoadObject.resource, payLoadObject.payLoad, currentUser.currentDatabase).then(() => {
+          this.sqlLite.insertBulkDataOnTable(payLoadObject.resource, payLoadObject.payLoad, currentUser.currentDatabase).subscribe(() => {
             counter++;
             if (counter == payLoads.length) {
-              resolve()
+              observer.next();
+              observer.complete();
             }
-          }).catch(error => {
-            reject({message: error});
+          }, error => {
+            observer.error({message: error});
           });
         });
       } else {
-        reject({message: "Fail to set OU and program"})
+        observer.error({message: "Fail to set OU and program"})
       }
     });
   }
@@ -338,9 +350,9 @@ export class TrackerCaptureProvider {
    *
    * @param attributeToDisplay
    * @param trackedEntityInstances
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getTableFormatResult(attributeToDisplay, trackedEntityInstances) {
+  getTableFormatResult(attributeToDisplay, trackedEntityInstances): Observable<any> {
     let table = {headers: [], rows: []};
     Object.keys(attributeToDisplay).forEach(key => {
       table.headers.push(attributeToDisplay[key]);
@@ -358,8 +370,9 @@ export class TrackerCaptureProvider {
       });
       table.rows.push(row);
     });
-    return new Promise((resolve, reject) => {
-      resolve({table: table, trackedEntityInstancesIds: trackedEntityInstancesIds});
+    return new Observable(observer => {
+      observer.next({table: table, trackedEntityInstancesIds: trackedEntityInstancesIds});
+      observer.complete();
     });
   }
 
@@ -412,17 +425,17 @@ export class TrackerCaptureProvider {
    * @param programId
    * @param orgUnitId
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  loadTrackedEntityInstancesList(programId, orgUnitId, currentUser) {
-    return new Promise((resolve, reject) => {
-      this.enrollmentsProvider.getSavedEnrollments(orgUnitId, programId, currentUser).then((enrollments: any) => {
+  loadTrackedEntityInstancesList(programId, orgUnitId, currentUser): Observable<any> {
+    return new Observable(observer => {
+      this.enrollmentsProvider.getSavedEnrollments(orgUnitId, programId, currentUser).subscribe((enrollments: any) => {
         let trackedEntityInstanceIds = [];
         enrollments.forEach((enrollment: any) => {
           trackedEntityInstanceIds.push(enrollment.trackedEntityInstance);
         });
-        this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('trackedEntityInstance', trackedEntityInstanceIds, currentUser).then((trackedEntityInstances: any) => {
-          this.trackedEntityAttributeValuesProvider.getTrackedEntityAttributeValues(trackedEntityInstanceIds, currentUser).then((attributeValues: any) => {
+        this.trackedEntityInstancesProvider.getTrackedEntityInstancesByAttribute('trackedEntityInstance', trackedEntityInstanceIds, currentUser).subscribe((trackedEntityInstances: any) => {
+          this.trackedEntityAttributeValuesProvider.getTrackedEntityAttributeValues(trackedEntityInstanceIds, currentUser).subscribe((attributeValues: any) => {
             let attributeValuesObject = {};
             if (attributeValues && attributeValues.length > 0) {
               attributeValues.forEach((attributeValue: any) => {
@@ -440,16 +453,17 @@ export class TrackerCaptureProvider {
                 }
               });
             }
-            resolve(trackedEntityInstances.reverse());
-          }).catch(error => {
-            reject({message: error});
+            observer.next(trackedEntityInstances.reverse());
+            observer.complete();
+          }, error => {
+            observer.error({message: error});
           });
 
-        }).catch(error => {
-          reject({message: error});
+        }, error => {
+          observer.error({message: error});
         });
-      }).catch(error => {
-        reject({message: error});
+      }, error => {
+        observer.error({message: error});
       });
     });
   }
@@ -458,26 +472,27 @@ export class TrackerCaptureProvider {
    *
    * @param trackedEntityInstanceId
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  deleteTrackedEntityInstance(trackedEntityInstanceId, currentUser) {
-    return new Promise((resolve, reject) => {
-      this.sqlLite.deleteFromTableByAttribute('trackedEntityInstances', 'trackedEntityInstance', trackedEntityInstanceId, currentUser.currentDatabase).then(() => {
-        this.sqlLite.deleteFromTableByAttribute('trackedEntityAttributeValues', 'trackedEntityInstance', trackedEntityInstanceId, currentUser.currentDatabase).then(() => {
-          this.sqlLite.deleteFromTableByAttribute('enrollments', 'trackedEntityInstance', trackedEntityInstanceId, currentUser.currentDatabase).then(() => {
-            this.sqlLite.deleteFromTableByAttribute('events', 'trackedEntityInstance', trackedEntityInstanceId, currentUser.currentDatabase).then(() => {
-              resolve();
-            }).catch(error => {
-              reject(error);
+  deleteTrackedEntityInstance(trackedEntityInstanceId, currentUser): Observable<any> {
+    return new Observable(observer => {
+      this.sqlLite.deleteFromTableByAttribute('trackedEntityInstances', 'trackedEntityInstance', trackedEntityInstanceId, currentUser.currentDatabase).subscribe(() => {
+        this.sqlLite.deleteFromTableByAttribute('trackedEntityAttributeValues', 'trackedEntityInstance', trackedEntityInstanceId, currentUser.currentDatabase).subscribe(() => {
+          this.sqlLite.deleteFromTableByAttribute('enrollments', 'trackedEntityInstance', trackedEntityInstanceId, currentUser.currentDatabase).subscribe(() => {
+            this.sqlLite.deleteFromTableByAttribute('events', 'trackedEntityInstance', trackedEntityInstanceId, currentUser.currentDatabase).subscribe(() => {
+              observer.next();
+              observer.complete();
+            }, error => {
+              observer.error(error);
             });
-          }).catch(error => {
-            reject(error);
+          }, error => {
+            observer.error(error);
           });
-        }).catch(error => {
-          reject(error);
+        }, error => {
+          observer.error(error);
         });
-      }).catch(error => {
-        reject(error);
+      }, error => {
+        observer.error(error);
       });
     });
   }
@@ -485,36 +500,37 @@ export class TrackerCaptureProvider {
   /**
    *
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  deleteAllTrackedEntityInstances(currentUser){
-    return new Promise((resolve,reject)=>{
-      this.trackedEntityInstancesProvider.getAllTrackedEntityInstances(currentUser).then((trackedEntityInstances : any)=>{
+  deleteAllTrackedEntityInstances(currentUser): Observable<any> {
+    return new Observable(observer => {
+      this.trackedEntityInstancesProvider.getAllTrackedEntityInstances(currentUser).subscribe((trackedEntityInstances: any) => {
         let counter = 0;
-        trackedEntityInstances.forEach((trackedEntityInstance : any)=>{
-          this.sqlLite.deleteFromTableByAttribute('events', 'trackedEntityInstance', trackedEntityInstance.id, currentUser.currentDatabase).then(() => {
-            counter ++;
-            if(counter == trackedEntityInstances.length){
-              this.sqlLite.dropTable('trackedEntityInstances',currentUser.currentDatabase).then(()=>{
-                this.sqlLite.dropTable('enrollments',currentUser.currentDatabase).then(()=>{
-                  this.sqlLite.dropTable('trackedEntityAttributeValues',currentUser.currentDatabase).then(()=>{
-                    resolve();
-                  }).catch(error => {
-                    reject(error);
+        trackedEntityInstances.forEach((trackedEntityInstance: any) => {
+          this.sqlLite.deleteFromTableByAttribute('events', 'trackedEntityInstance', trackedEntityInstance.id, currentUser.currentDatabase).subscribe(() => {
+            counter++;
+            if (counter == trackedEntityInstances.length) {
+              this.sqlLite.dropTable('trackedEntityInstances', currentUser.currentDatabase).subscribe(() => {
+                this.sqlLite.dropTable('enrollments', currentUser.currentDatabase).subscribe(() => {
+                  this.sqlLite.dropTable('trackedEntityAttributeValues', currentUser.currentDatabase).subscribe(() => {
+                    observer.next();
+                    observer.complete()
+                  }, error => {
+                    observer.error(error);
                   });
-                }).catch(error => {
-                  reject(error);
+                }, error => {
+                  observer.error(error);
                 });
-              }).catch(error => {
-                reject(error);
+              }, error => {
+                observer.error(error);
               });
             }
-          }).catch(error => {
-            reject(error);
+          }, error => {
+            observer.error(error);
           });
         });
-      }).catch(error=>{
-        reject(error);
+      }, error => {
+        observer.error(error);
       });
     })
   }

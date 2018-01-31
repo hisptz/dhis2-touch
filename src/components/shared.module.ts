@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
 import {ProgressBarComponent} from './progress-bar/progress-bar';
-import {LoadingPage} from "./loading/loading";
+import {LoadingComponent} from "./loading/loading";
 import {AppFeaturesSlideComponent} from "./app-features-slide/app-features-slide";
 import {NotificationComponent} from "./notification/notification";
 import {EmptyListNotificationComponent} from "./empty-list-notification/empty-list-notification";
@@ -13,7 +13,7 @@ import {AvailableLocalInstanceComponent} from "./available-local-instance/availa
   declarations: [
     ProgressBarComponent,
     AppFeaturesSlideComponent,
-    LoadingPage,NotificationComponent,
+    LoadingComponent,NotificationComponent,
     EmptyListNotificationComponent,HelpContentsComponent,WarningComponent,
     AvailableLocalInstanceComponent,
   ],
@@ -23,7 +23,7 @@ import {AvailableLocalInstanceComponent} from "./available-local-instance/availa
   exports: [
     ProgressBarComponent,
     AppFeaturesSlideComponent,
-    LoadingPage,NotificationComponent,
+    LoadingComponent,NotificationComponent,
     EmptyListNotificationComponent,HelpContentsComponent,WarningComponent,
     AvailableLocalInstanceComponent,
   ]

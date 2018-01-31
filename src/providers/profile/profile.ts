@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {UserProvider} from "../user/user";
+import {Observable} from "rxjs/Observable";
 
 /*
   Generated class for the ProfileProvider provider.
@@ -10,36 +11,37 @@ import {UserProvider} from "../user/user";
 @Injectable()
 export class ProfileProvider {
 
-  constructor(private userProvider : UserProvider) {
+  constructor(private userProvider: UserProvider) {
   }
 
   getProfileContentDetails() {
     let profileContents = [
-      {id : 'userInfo',name : 'user_information',icon: 'assets/icon/user-info.png'},
-      {id : 'orgUnits',name : 'assigned_organisation_units',icon: 'assets/icon/orgUnit.png'},
-      {id : 'roles',name : 'assigned_roles',icon: 'assets/icon/roles.png'},
-      {id : 'program',name : 'assigned_program',icon: 'assets/icon/program.png'},
-      {id : 'form',name : 'assigned_form',icon: 'assets/icon/form.png'},
+      {id: 'userInfo', name: 'user_information', icon: 'assets/icon/user-info.png'},
+      {id: 'orgUnits', name: 'assigned_organisation_units', icon: 'assets/icon/orgUnit.png'},
+      {id: 'roles', name: 'assigned_roles', icon: 'assets/icon/roles.png'},
+      {id: 'program', name: 'assigned_program', icon: 'assets/icon/program.png'},
+      {id: 'form', name: 'assigned_form', icon: 'assets/icon/form.png'},
     ];
     return profileContents;
   }
 
   /**
-   * get user data
-   * @returns {Promise<any>}
+   *
+   * @returns {Observable<any>}
    */
-  getSavedUserData(){
+  getSavedUserData(): Observable<any> {
     let userData = {};
-    return new Promise((resolve, reject) =>{
-      this.userProvider.getUserData().then((savedUserData : any)=>{
+    return new Observable(observer => {
+      this.userProvider.getUserData().subscribe((savedUserData: any) => {
         userData['userInfo'] = this.getUserInformation(savedUserData);
         userData['orgUnits'] = this.getAssignedOrgUnits(savedUserData);
         userData['roles'] = this.getUserRoles(savedUserData);
         userData['program'] = this.getAssignedProgram(savedUserData);
         userData['form'] = this.getAssignedForm(savedUserData);
-        resolve(userData);
-      }).catch(error=>{
-        reject(error);
+        observer.next(userData);
+        observer.complete();
+      }, error => {
+        observer.error(error);
       });
     });
   }
@@ -49,13 +51,13 @@ export class ProfileProvider {
    * @param userData
    * @returns {any}
    */
-  getUserInformation(userData){
+  getUserInformation(userData) {
     let userInfo = {};
-    let omittedKey = ['userRoles','organisationUnits','dataViewOrganisationUnits'];
-    Object.keys(userData).forEach(key=>{
-      if(omittedKey.indexOf(key)  == -1){
+    let omittedKey = ['userRoles', 'organisationUnits', 'dataViewOrganisationUnits'];
+    Object.keys(userData).forEach(key => {
+      if (omittedKey.indexOf(key) == -1) {
         let value = userData[key];
-        if(Date.parse(value)){
+        if (Date.parse(value)) {
           value = value.split('T')[0];
         }
         userInfo[key] = value;
@@ -69,11 +71,11 @@ export class ProfileProvider {
    * @param userData
    * @returns {Array}
    */
-  getUserRoles(userData){
+  getUserRoles(userData) {
     let userRoles = [];
-    if(userData && userData.userRoles){
-      userData.userRoles.forEach((userRole: any)=>{
-        if(userRoles.indexOf(userRole.name) == -1){
+    if (userData && userData.userRoles) {
+      userData.userRoles.forEach((userRole: any) => {
+        if (userRoles.indexOf(userRole.name) == -1) {
           userRoles.push(userRole.name);
         }
       });
@@ -86,11 +88,11 @@ export class ProfileProvider {
    * @param userData
    * @returns {Array}
    */
-  getAssignedOrgUnits(userData){
+  getAssignedOrgUnits(userData) {
     let organisationUnits = [];
-    if(userData && userData.organisationUnits){
-      userData.organisationUnits.forEach((organisationUnit: any)=>{
-        if(organisationUnits.indexOf(organisationUnit.name) == -1){
+    if (userData && userData.organisationUnits) {
+      userData.organisationUnits.forEach((organisationUnit: any) => {
+        if (organisationUnits.indexOf(organisationUnit.name) == -1) {
           organisationUnits.push(organisationUnit.name);
         }
       });
@@ -103,12 +105,12 @@ export class ProfileProvider {
    * @param userData
    * @returns {Array}
    */
-  getAssignedProgram(userData){
+  getAssignedProgram(userData) {
     let programs = [];
-    if(userData && userData.userRoles){
-      userData.userRoles.forEach((userRole: any)=>{
-        userRole.programs.forEach((program: any)=>{
-          if(programs.indexOf(program.name) == -1){
+    if (userData && userData.userRoles) {
+      userData.userRoles.forEach((userRole: any) => {
+        userRole.programs.forEach((program: any) => {
+          if (programs.indexOf(program.name) == -1) {
             programs.push(program.name);
           }
         });
@@ -122,12 +124,12 @@ export class ProfileProvider {
    * @param userData
    * @returns {Array}
    */
-  getAssignedForm(userData){
+  getAssignedForm(userData) {
     let dataSets = [];
-    if(userData && userData.userRoles){
-      userData.userRoles.forEach((userRole: any)=>{
-        userRole.dataSets.forEach((dataSet: any)=>{
-          if(dataSets.indexOf(dataSet.name) == -1){
+    if (userData && userData.userRoles) {
+      userData.userRoles.forEach((userRole: any) => {
+        userRole.dataSets.forEach((dataSet: any) => {
+          if (dataSets.indexOf(dataSet.name) == -1) {
             dataSets.push(dataSet.name);
           }
         });
@@ -141,15 +143,15 @@ export class ProfileProvider {
    * @param object
    * @returns {Array}
    */
-  getArrayFromObject(object){
+  getArrayFromObject(object) {
     let array = [];
-    for(let key in object){
+    for (let key in object) {
       let newValue = object[key];
-      if(newValue instanceof Object) {
+      if (newValue instanceof Object) {
         newValue = JSON.stringify(newValue)
       }
       let newKey = (key.charAt(0).toUpperCase() + key.slice(1)).replace(/([A-Z])/g, ' $1').trim();
-      array.push({key : newKey,value : newValue})
+      array.push({key: newKey, value: newValue})
     }
     return array;
   }

@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/map';
 import {SqlLiteProvider} from "../sql-lite/sql-lite";
 import {HttpClientProvider} from "../http-client/http-client";
 import {AppProvider} from "../app/app";
+import {Observable} from "rxjs/Observable";
 
 /*
   Generated class for the OrganisationUnitsProvider provider.
@@ -14,33 +15,32 @@ export interface OrganisationUnitModel {
   id: string;
   name: string;
   level: string;
-  path : string;
-  openingDate : string;
-  closedDate : string;
+  path: string;
+  openingDate: string;
+  closedDate: string;
   children: Array<any>;
   dataSets: Array<any>;
   programs: Array<any>;
   ancestors: Array<any>;
-  parent : Array<any>;
+  parent: Array<any>;
 }
 
 @Injectable()
 export class OrganisationUnitsProvider {
 
-  organisationUnits : OrganisationUnitModel[];
-  lastSelectedOrgUnit : OrganisationUnitModel;
-  resource : string;
+  organisationUnits: OrganisationUnitModel[];
+  lastSelectedOrgUnit: OrganisationUnitModel;
+  resource: string;
 
-  constructor(private sqlLite : SqlLiteProvider,private HttpClient : HttpClientProvider, private appProvider: AppProvider) {
+  constructor(private sqlLite: SqlLiteProvider, private HttpClient: HttpClientProvider, private appProvider: AppProvider) {
     this.resource = "organisationUnits";
   }
-
 
 
   /**
    * reset organisation unit
    */
-  resetOrganisationUnit(){
+  resetOrganisationUnit() {
     this.organisationUnits = [];
     this.lastSelectedOrgUnit = null;
   }
@@ -51,27 +51,28 @@ export class OrganisationUnitsProvider {
    * @param currentUser
    * @returns {Promise<T>}
    */
-  downloadingOrganisationUnitsFromServer(orgUnitIds,currentUser){
-    let orgUnits= [];
-    return new Promise((resolve, reject)=> {
+  downloadingOrganisationUnitsFromServer(orgUnitIds, currentUser): Observable<any> {
+    let orgUnits = [];
+    return new Observable(observer => {
       let counts = 0;
-      for(let orgUnitId of orgUnitIds){
-        let fields ="fields=id,name,path,ancestors[id,name,children[id]],openingDate,closedDate,level,children[id,name,children[id],parent";
-        let filter="filter=path:ilike:";
-        let url = "/api/25/"+this.resource+".json?";
+      for (let orgUnitId of orgUnitIds) {
+        let fields = "fields=id,name,path,ancestors[id,name,children[id]],openingDate,closedDate,level,children[id,name,children[id],parent";
+        let filter = "filter=path:ilike:";
+        let url = "/api/25/" + this.resource + ".json?";
         url += fields + "&" + filter + orgUnitId;
-        this.HttpClient.get(url,currentUser,this.resource,800).then((response:any)=>{
-          try{
+        this.HttpClient.get(url, false, currentUser, this.resource, 800).subscribe((response: any) => {
+          try {
             counts = counts + 1;
-            orgUnits = this.appendOrgUnitsFromServerToOrgUnitArray(orgUnits,response);
-            if(counts == orgUnitIds.length){
-              resolve(orgUnits);
+            orgUnits = this.appendOrgUnitsFromServerToOrgUnitArray(orgUnits, response);
+            if (counts == orgUnitIds.length) {
+              observer.next(orgUnits);
+              observer.complete();
             }
-          }catch (e){
-            reject(e);
+          } catch (e) {
+            observer.error(e);
           }
-        },error=>{
-          reject(error);
+        }, error => {
+          observer.error(error);
         })
       }
     });
@@ -83,9 +84,9 @@ export class OrganisationUnitsProvider {
    * @param orgUnitResponse
    * @returns {any}
    */
-  appendOrgUnitsFromServerToOrgUnitArray(orgUnitArray,orgUnitResponse){
-    if(orgUnitResponse[this.resource]){
-      for(let orgUnit of orgUnitResponse[this.resource]){
+  appendOrgUnitsFromServerToOrgUnitArray(orgUnitArray, orgUnitResponse) {
+    if (orgUnitResponse[this.resource]) {
+      for (let orgUnit of orgUnitResponse[this.resource]) {
         orgUnitArray.push(orgUnit);
       }
     }
@@ -93,18 +94,18 @@ export class OrganisationUnitsProvider {
   }
 
   /**
-   * savingOrganisationUnitsFromServer
+   *
    * @param orgUnits
    * @param currentUser
-   * @returns {Promise<T>}
+   * @returns {Observable<any>}
    */
-  savingOrganisationUnitsFromServer(orgUnits,currentUser){
-    return new Promise((resolve, reject)=> {
-      this.sqlLite.insertBulkDataOnTable(this.resource,orgUnits,currentUser.currentDatabase).then(()=>{
-        resolve();
-      },error=>{
-        console.log(JSON.stringify(error));
-        reject(error);
+  savingOrganisationUnitsFromServer(orgUnits, currentUser): Observable<any> {
+    return new Observable(observer => {
+      this.sqlLite.insertBulkDataOnTable(this.resource, orgUnits, currentUser.currentDatabase).subscribe(() => {
+        observer.next();
+        observer.complete();
+      }, error => {
+        observer.error(error);
       });
     });
   }
@@ -113,77 +114,90 @@ export class OrganisationUnitsProvider {
    *setLastSelectedOrganisationUnitUnit
    * @param lastSelectedOrgUnit
    */
-  setLastSelectedOrganisationUnitUnit(lastSelectedOrgUnit){
+  setLastSelectedOrganisationUnitUnit(lastSelectedOrgUnit) {
     this.lastSelectedOrgUnit = lastSelectedOrgUnit;
   }
 
   /**
    *
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getLastSelectedOrganisationUnitUnit(currentUser){
-    return new Promise((resolve, reject)=> {
-      if(this.lastSelectedOrgUnit){
-        resolve(this.lastSelectedOrgUnit);
-      }else{
-        this.getOrganisationUnits(currentUser).then((organisationUnits : any)=>{
-          if(organisationUnits && organisationUnits.length > 0){
+  getLastSelectedOrganisationUnitUnit(currentUser): Observable<any> {
+    return new Observable(observer => {
+      if (this.lastSelectedOrgUnit) {
+        observer.next(this.lastSelectedOrgUnit);
+        observer.complete();
+      } else {
+        this.getOrganisationUnits(currentUser).subscribe((organisationUnits: any) => {
+          if (organisationUnits && organisationUnits.length > 0) {
             this.lastSelectedOrgUnit = organisationUnits[0];
-            resolve(organisationUnits[0]);
+            observer.next(organisationUnits[0]);
+          } else {
+            observer.next({});
           }
-        },error=>{reject(error)})
+          observer.complete();
+        }, error => {
+          observer.error(error)
+        })
       }
     });
   }
 
 
   /**
-   * get user assigned organisation unit
+   *
    * @param currentUser
+   * @returns {Observable<any>}
    */
-  getOrganisationUnits(currentUser){
+  getOrganisationUnits(currentUser): Observable<any> {
     let userOrgUnitIds = currentUser.userOrgUnitIds;
-    return new Promise((resolve, reject)=> {
-      if(this.organisationUnits && this.organisationUnits.length > 0){
-        resolve({organisationUnits : this.organisationUnits,lastSelectedOrgUnit :  this.lastSelectedOrgUnit})
-      }else{
-        if( userOrgUnitIds && userOrgUnitIds.length > 0){
-          this.sqlLite.getDataFromTableByAttributes(this.resource,"id",userOrgUnitIds,currentUser.currentDatabase).then((organisationUnits : any)=>{
-            this.getSortedOrganisationUnits(organisationUnits).then((organisationUnits:any)=>{
-              resolve(organisationUnits);
+    return new Observable(observer => {
+      if (this.organisationUnits && this.organisationUnits.length > 0) {
+        observer.next({organisationUnits: this.organisationUnits, lastSelectedOrgUnit: this.lastSelectedOrgUnit})
+        observer.complete();
+      } else {
+        if (userOrgUnitIds && userOrgUnitIds.length > 0) {
+          this.sqlLite.getDataFromTableByAttributes(this.resource, "id", userOrgUnitIds, currentUser.currentDatabase).subscribe((organisationUnits: any) => {
+            this.getSortedOrganisationUnits(organisationUnits).subscribe((organisationUnits: any) => {
+              observer.next(organisationUnits);
+              observer.complete();
             });
-          },error=>{
-            console.log(error);
-            reject(error);
+          }, error => {
+            observer.error(error);
           });
-        }else{
-          resolve([]);
+        } else {
+          observer.next([]);
+          observer.complete();
         }
       }
     });
   }
 
   /**
-   * getOrganisationUnitsByIds
+   *
    * @param organisationUnitIds
    * @param currentUser
-   * @returns {Promise<T>}
+   * @returns {Observable<any>}
    */
-  getOrganisationUnitsByIds(organisationUnitIds,currentUser){
-    return new Promise((resolve, reject)=> {
-      if( organisationUnitIds && organisationUnitIds.length > 0){
-        this.sqlLite.getDataFromTableByAttributes(this.resource,"id",organisationUnitIds,currentUser.currentDatabase).then((organisationUnits : any)=>{
-          this.getSortedOrganisationUnits(organisationUnits).then((organisationUnits:any)=>{
-            if(organisationUnits && organisationUnits.length > 0) {
-              resolve(organisationUnits);
+  getOrganisationUnitsByIds(organisationUnitIds, currentUser): Observable<any> {
+    return new Observable(observer => {
+      if (organisationUnitIds && organisationUnitIds.length > 0) {
+        this.sqlLite.getDataFromTableByAttributes(this.resource, "id", organisationUnitIds, currentUser.currentDatabase).subscribe((organisationUnits: any) => {
+          this.getSortedOrganisationUnits(organisationUnits).subscribe((organisationUnits: any) => {
+            if (organisationUnits && organisationUnits.length > 0) {
+              observer.next(organisationUnits);
+            } else {
+              observer.next([]);
             }
+            observer.complete();
           });
-        },error=>{
-          reject(error);
+        }, error => {
+          observer.error(error);
         });
-      }else{
-        resolve([]);
+      } else {
+        observer.next([]);
+        observer.complete();
       }
     });
   }
@@ -192,43 +206,49 @@ export class OrganisationUnitsProvider {
    *
    * @param parentIds
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getOrganisationUnitsByLevels(parentIds,currentUser){
+  getOrganisationUnitsByLevels(parentIds, currentUser): Observable<any> {
     let organisationUnitIdToOrganisationUnits = {};
-    return new Promise((resolve, reject) =>{
-
-      this.getOrganisationUnitsByIds(parentIds,currentUser).then((organisationUnits : any)=>{
-        for(let organisationUnit of organisationUnits){
+    return new Observable(observer => {
+      this.getOrganisationUnitsByIds(parentIds, currentUser).subscribe((organisationUnits: any) => {
+        for (let organisationUnit of organisationUnits) {
           organisationUnitIdToOrganisationUnits[organisationUnit.id] = organisationUnit;
         }
-        let parentId = parentIds.splice(0,1)[0];
+        let parentId = parentIds.splice(0, 1)[0];
         let orgUnitTree = organisationUnitIdToOrganisationUnits[parentId];
-        this.recursiveFetch(parentIds,organisationUnitIdToOrganisationUnits,orgUnitTree);
-        resolve(orgUnitTree);
-      },error=>{
-        reject();
+        this.recursiveFetch(parentIds, organisationUnitIdToOrganisationUnits, orgUnitTree);
+        observer.next(orgUnitTree);
+        observer.complete();
+      }, error => {
+        observer.error(error);
       });
     });
   }
 
 
-  recursiveFetch(parentIds,organisationUnitIdToOrganisationUnits,orgUnit){
+  /**
+   *
+   * @param parentIds
+   * @param organisationUnitIdToOrganisationUnits
+   * @param orgUnit
+   */
+  recursiveFetch(parentIds, organisationUnitIdToOrganisationUnits, orgUnit) {
     let self = this;
-    let parentId = parentIds.splice(0,1)[0];
+    let parentId = parentIds.splice(0, 1)[0];
     let newChildren = [];
-    if(orgUnit && orgUnit.children){
-      orgUnit.children.forEach(function(child){
-        if(child.id == parentId){
+    if (orgUnit && orgUnit.children) {
+      orgUnit.children.forEach(function (child) {
+        if (child.id == parentId) {
           newChildren.push(organisationUnitIdToOrganisationUnits[parentId]);
-        }else{
+        } else {
           newChildren.push(child);
         }
       });
       orgUnit.children = newChildren;
-      orgUnit.children.forEach(function(child){
-        if(child.id == parentId){
-          self.recursiveFetch(parentIds,organisationUnitIdToOrganisationUnits,child);
+      orgUnit.children.forEach(function (child) {
+        if (child.id == parentId) {
+          self.recursiveFetch(parentIds, organisationUnitIdToOrganisationUnits, child);
         }
       })
     }
@@ -236,12 +256,12 @@ export class OrganisationUnitsProvider {
 
 
   /**
-   * getSortedOrganisationUnits
+   *
    * @param organisationUnits
-   * @returns {Promise<T>}
+   * @returns {Observable<any>}
    */
-  getSortedOrganisationUnits(organisationUnits){
-    return new Promise((resolve, reject)=>{
+  getSortedOrganisationUnits(organisationUnits): Observable<any> {
+    return new Observable(observer => {
       organisationUnits.sort((a, b) => {
         if (a.name > b.name) {
           return 1;
@@ -251,10 +271,11 @@ export class OrganisationUnitsProvider {
         }
         return 0;
       });
-      organisationUnits.forEach((organisationUnit:any)=>{
+      organisationUnits.forEach((organisationUnit: any) => {
         this.sortOrganisationUnits(organisationUnit);
       });
-      resolve(organisationUnits);
+      observer.next(organisationUnits);
+      observer.complete();
     });
   }
 
@@ -277,37 +298,5 @@ export class OrganisationUnitsProvider {
         this.sortOrganisationUnits(child);
       })
     }
-  }
-
-
-  getOrgUnitprogramsFromServer(orgUnitIds, currentUser){
-    let orgUnits= [];
-    return new Promise((resolve, reject)=> {
-      let counts = 0;
-      for(let orgUnitId of orgUnitIds){
-       // let fields ="fields=id,name,path,ancestors[id,name,children[id]],openingDate,closedDate,level,children[id,name,children[id],parent";
-        //let filter="filter=path:ilike:";
-        let url = "/api/25/"+this.resource+"/"+orgUnitId+".json?paging=false";
-       // url += fields + "&" + filter + orgUnitId;
-        this.HttpClient.get(url,currentUser).then((response:any)=>{
-          response = JSON.parse(response.data);
-          // orgUnits[]
-          resolve(response)
-
-          // try{
-          //   response = JSON.parse(response.data);
-          //   counts = counts + 1;
-          //   orgUnits = this.appendOrgUnitsFromServerToOrgUnitArray(orgUnits,response);
-          //   // if(counts == orgUnitIds.length){
-          //     resolve(orgUnits);
-          //   // }
-          // }catch (e){
-          //   reject(e);
-          // }
-        },error=>{
-          reject(error);
-        })
-      }
-    });
   }
 }

@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
-import { AppVersion } from '@ionic-native/app-version';
+import {Injectable} from '@angular/core';
+import {AppVersion} from '@ionic-native/app-version';
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
-import { ToastController} from 'ionic-angular';
+import {ToastController} from 'ionic-angular';
 import {SqlLiteProvider} from "../sql-lite/sql-lite";
-import {HttpClientProvider} from "../http-client/http-client";
 import {Http} from "@angular/http";
 
 /*
@@ -17,35 +16,31 @@ import {Http} from "@angular/http";
 export class AppProvider {
 
 
-
-  constructor(private  appVersion: AppVersion,private toastController : ToastController, private httpClient: HttpClientProvider,
+  constructor(private  appVersion: AppVersion, private toastController: ToastController,
               public sqLite: SqlLiteProvider, public http: Http) {
   }
 
   /**
    *
-   * @param message
-     */
-  setTopNotification(message){
+   * @param {string} message
+   */
+  setTopNotification(message: string) {
     this.toastController.create({
       message: message,
-      position : 'top',
+      position: 'top',
       duration: 4500
     }).present();
   }
 
   /**
    *
-   * @param message
-   * @param time
+   * @param {string} message
+   * @param {number} time
    */
-  setNormalNotification(message,time?){
-    if(!time){
-      time = 5000;
-    }
+  setNormalNotification(message: string, time: number = 5000) {
     this.toastController.create({
       message: message,
-      position : 'bottom',
+      position: 'bottom',
       duration: time
     }).present();
   }
@@ -53,71 +48,74 @@ export class AppProvider {
 
   /**
    *
-   * @returns {Promise<T>}
-     */
-  getAppInformation(){
+   * @returns {Observable<any>}
+   */
+  getAppInformation(): Observable<any> {
     let appInformation = {};
     let promises = [];
-    let self = this;
-
-    return new Promise(function(resolve, reject) {
+    return new Observable(observer => {
       promises.push(
-        self.appVersion.getAppName().then(appName=>{
+        this.appVersion.getAppName().then(appName => {
           appInformation['appName'] = appName;
         })
       );
       promises.push(
-        self.appVersion.getPackageName().then(packageName=>{
+        this.appVersion.getPackageName().then(packageName => {
           appInformation['packageName'] = packageName;
         })
       );
       promises.push(
-        self.appVersion.getVersionCode().then(versionCode=>{
+        this.appVersion.getVersionCode().then(versionCode => {
           appInformation['versionCode'] = versionCode;
         })
       );
       promises.push(
-        self.appVersion.getVersionNumber().then(versionNumber=>{
+        this.appVersion.getVersionNumber().then(versionNumber => {
           appInformation['versionNumber'] = versionNumber;
         })
       );
-
       Observable.forkJoin(promises).subscribe(() => {
-          resolve(appInformation);
+          observer.next(appInformation);
+          observer.complete();
         },
         (error) => {
-          reject();
+          observer.error(error);
         })
     });
   }
 
-  getDataBaseName(url){
-    let databaseName = url.replace('://', '_').replace(/[/\s]/g, '_').replace(/[.\s]/g, '_').replace(/[:\s]/g, '_');
+  /**
+   *
+   * @param {String} url
+   * @returns {string}
+   */
+  getDataBaseName(url: String) {
+    let databaseName: string = url.replace('://', '_').replace(/[/\s]/g, '_').replace(/[.\s]/g, '_').replace(/[:\s]/g, '_');
     return databaseName
   }
 
   /**
    *
-   * @param url
+   * @param {string} url
    * @returns {string}
-     */
-  getFormattedBaseUrl(url){
-    let formattedBaseUrl = "";
-    let urlToBeFormatted : string ="",urlArray : any =[],baseUrlString : any;
+   */
+  getFormattedBaseUrl(url: string) {
+    let formattedBaseUrl: string = "";
+    let urlToBeFormatted: string = "", urlArray: any = [], baseUrlString: any;
     if (!(url.split('/')[0] == "https:" || url.split('/')[0] == "http:")) {
       urlToBeFormatted = "http://" + url;
     } else {
       urlToBeFormatted = url;
     }
     baseUrlString = urlToBeFormatted.split('/');
-    for(let index in baseUrlString){
+    for (let index in baseUrlString) {
       if (baseUrlString[index]) {
         urlArray.push(baseUrlString[index]);
       }
     }
     formattedBaseUrl = urlArray[0] + '/';
-    for (let i =0; i < urlArray.length; i ++){
-      if(i != 0){
+    for (let i = 0; i < urlArray.length; i++) {
+      if (i != 0) {
         formattedBaseUrl = formattedBaseUrl + '/' + urlArray[i];
       }
     }
@@ -126,84 +124,19 @@ export class AppProvider {
     return formattedBaseUrl;
   }
 
-  getUrlWithLowercaseDomain(formattedBaseUrl){
+  /**
+   *
+   * @param {string} formattedBaseUrl
+   * @returns {string}
+   */
+  getUrlWithLowercaseDomain(formattedBaseUrl: string) {
     let baseUrlArray = formattedBaseUrl.split("://");
 
-    if(baseUrlArray.length > 0){
+    if (baseUrlArray.length > 0) {
       let domainName = baseUrlArray[1].split("/")[0];
       let lowerCaseDomain = baseUrlArray[1].split("/")[0].toLowerCase();
-      formattedBaseUrl = formattedBaseUrl.replace(domainName,lowerCaseDomain)
+      formattedBaseUrl = formattedBaseUrl.replace(domainName, lowerCaseDomain)
     }
     return formattedBaseUrl
   }
-
-
-  /**
-   *
-   * @param resource
-   * @param resourceValues
-   * @param databaseName
-   * @returns {Promise<T>}
-   */
-  saveMetadata(resource,resourceValues,databaseName){
-
-    return new Promise((resolve, reject)=> {
-      if(resourceValues.length == 0){
-        resolve();
-      }else{
-        this.sqLite.insertBulkDataOnTable(resource,resourceValues,databaseName).then(()=>{
-          resolve();
-
-        },error=>{
-          console.log(JSON.stringify(error));
-          reject(error);
-        });
-      }
-    });
-  }
-
-  /**
-   *
-   * @param user
-   * @param resource
-   * @param resourceId
-   * @param fields
-   * @param filter
-   * @returns {Promise<T>}
-   */
-  downloadMetadata(user,resource, resourceId){
-    this.setNormalNotification("Universal Downloading OrgUnit...");
-    let resourceUrl = this.getResourceUrl(resource, resourceId);
-    return new Promise((resolve, reject)=> {
-      this.http.get(resourceUrl,user).subscribe(response=>{
-        response = response.json();
-        resolve(response);
-      },error=>{
-        reject(error);
-      });
-    });
-  }
-
-
-
-  /**
-   *
-   * @param resource
-   * @param resourceId
-   * @param fields
-   * @param filter
-   * @returns {string}
-   */
-  getResourceUrl(resource, resourceId){
-    let url = '/api/25/' + resource;
-    if (resourceId || resourceId != null) {
-      url += "/" + resourceId + ".json?paging=false";
-    } else {
-      url += ".json?paging=false";
-    }
-
-    return url;
-  }
-
-
 }

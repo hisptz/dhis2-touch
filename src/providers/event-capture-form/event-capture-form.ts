@@ -4,6 +4,7 @@ import {DataElementsProvider} from "../data-elements/data-elements";
 import {SqlLiteProvider} from "../sql-lite/sql-lite";
 import {HttpClientProvider} from "../http-client/http-client";
 import {ProgramStageSectionsProvider} from "../program-stage-sections/program-stage-sections";
+import {Observable} from "rxjs/Observable";
 
 declare var dhis2: any;
 
@@ -19,7 +20,7 @@ export class EventCaptureFormProvider {
   constructor(private programsProvider: ProgramsProvider,
               private sqlLiteProvider: SqlLiteProvider,
               private httpClientProvider: HttpClientProvider,
-              private programStageSectionsProvider : ProgramStageSectionsProvider,
+              private programStageSectionsProvider: ProgramStageSectionsProvider,
               private dataElementProvider: DataElementsProvider) {
   }
 
@@ -27,22 +28,23 @@ export class EventCaptureFormProvider {
    *
    * @param programId
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getProgramStages(programId, currentUser) {
+  getProgramStages(programId, currentUser): Observable<any> {
     let dataElementIds = [];
     let dataElementMapper = {};
     let programStageSectionIds = [];
     let programStageSectionMapper = {};
-    return new Promise((resolve, reject) => {
-      this.programsProvider.getProgramsStages(programId, currentUser).then((programsStages: any) => {
-        if(programsStages.length == 0){
-          resolve(programsStages);
-        }else{
+    return new Observable(observer => {
+      this.programsProvider.getProgramsStages(programId, currentUser).subscribe((programsStages: any) => {
+        if (programsStages.length == 0) {
+          observer.next(programsStages);
+          observer.complete();
+        } else {
           //prepare data elements ids as well as program stage sections ids if any
           programsStages.forEach((programsStage: any) => {
-            if(programsStage.programStageSections){
-              programsStage.programStageSections.forEach((programStageSection : any)=>{
+            if (programsStage.programStageSections) {
+              programsStage.programStageSections.forEach((programStageSection: any) => {
                 programStageSectionIds.push(programStageSection.id);
               });
             }
@@ -53,7 +55,7 @@ export class EventCaptureFormProvider {
             });
           });
           //loading data elements by ids
-          this.dataElementProvider.getDataElementsByIdsForEvents(dataElementIds, currentUser).then((dataElements: any) => {
+          this.dataElementProvider.getDataElementsByIdsForEvents(dataElementIds, currentUser).subscribe((dataElements: any) => {
             dataElements.forEach((dataElement: any) => {
               dataElementMapper[dataElement.id] = dataElement;
             });
@@ -78,10 +80,10 @@ export class EventCaptureFormProvider {
                 }
               });
               //loading programStageSections
-              this.programStageSectionsProvider.getProgramStageSectionsByIds(programStageSectionIds,currentUser).then((programStageSections : any)=>{
-                programStageSections.forEach((programStageSection : any)=>{
+              this.programStageSectionsProvider.getProgramStageSectionsByIds(programStageSectionIds, currentUser).subscribe((programStageSections: any) => {
+                programStageSections.forEach((programStageSection: any) => {
                   let dataElements = [];
-                  programStageSection.dataElements.forEach((dataElement : any)=>{
+                  programStageSection.dataElements.forEach((dataElement: any) => {
                     let dataElementId = dataElement.id;
                     if (dataElementId && dataElementMapper[dataElementId]) {
                       dataElements.push(dataElementMapper[dataElementId]);
@@ -101,9 +103,9 @@ export class EventCaptureFormProvider {
                 });
                 //merge back program sections
                 programsStages.forEach((programsStage: any) => {
-                  if(programsStage.programStageSections){
+                  if (programsStage.programStageSections) {
                     let programStageSections = [];
-                    programsStage.programStageSections.forEach((programStageSection : any)=>{
+                    programsStage.programStageSections.forEach((programStageSection: any) => {
                       programStageSections.push(programStageSectionMapper[programStageSection.id]);
                     });
                     programStageSections.sort((a, b) => {
@@ -118,15 +120,16 @@ export class EventCaptureFormProvider {
                     programsStage.programStageSections = programStageSections;
                   }
                 });
-                resolve(programsStages);
+                observer.next(programsStages);
+                observer.complete();
               });
             });
-          }).catch(error => {
-            reject(error)
+          }, error => {
+            observer.error(error)
           });
         }
-      }).catch(error => {
-        reject(error)
+      }, error => {
+        observer.error(error);
       });
     });
   }
@@ -136,15 +139,16 @@ export class EventCaptureFormProvider {
    * @param attribute
    * @param attributeValue
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  deleteEventByAttribute(attribute, attributeValue, currentUser) {
+  deleteEventByAttribute(attribute, attributeValue, currentUser): Observable<any> {
     let resource = "events";
-    return new Promise((resolve, reject) => {
-      this.sqlLiteProvider.deleteFromTableByAttribute(resource, attribute, attributeValue, currentUser.currentDatabase).then(() => {
-        resolve();
-      }).catch(error => {
-        reject(error);
+    return new Observable(observer => {
+      this.sqlLiteProvider.deleteFromTableByAttribute(resource, attribute, attributeValue, currentUser.currentDatabase).subscribe(() => {
+        observer.next();
+        observer.complete();
+      }, error => {
+        observer.error(error);
       });
     });
   }
@@ -152,14 +156,15 @@ export class EventCaptureFormProvider {
   /**
    *
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  deleteALLEvents(currentUser){
-    return new Promise((resolve,reject)=>{
-      this.sqlLiteProvider.dropTable('events',currentUser.currentDatabase).then(()=>{
-        resolve();
-      }).catch(error=>{
-        reject();
+  deleteALLEvents(currentUser): Observable<any> {
+    return new Observable(observer => {
+      this.sqlLiteProvider.dropTable('events', currentUser.currentDatabase).subscribe(() => {
+        observer.next();
+        observer.complete();
+      }, error => {
+        observer.error(error);
       });
     });
   }
@@ -168,9 +173,10 @@ export class EventCaptureFormProvider {
    *
    * @param columnsToDisplay
    * @param events
-   * @returns {Promise<any>}
+   * @param eventType
+   * @returns {Observable<any>}
    */
-  getTableFormatResult(columnsToDisplay, events, eventType?) {
+  getTableFormatResult(columnsToDisplay, events, eventType?): Observable<any> {
     let table = {headers: [], rows: []};
     let eventIds = this.getMapperObjectForDisplay(events).eventIds;
     let eventDataValuesArrays = this.getMapperObjectForDisplay(events).eventsMapper;
@@ -189,13 +195,14 @@ export class EventCaptureFormProvider {
         });
         table.rows.push(row);
       });
-    }else if(!eventType){
+    } else if (!eventType) {
       Object.keys(columnsToDisplay).forEach(key => {
         table.headers.push(columnsToDisplay[key]);
       });
     }
-    return new Promise((resolve, reject) => {
-      resolve({table: table, eventIds: eventIds});
+    return new Observable(observer => {
+      observer.next({table: table, eventIds: eventIds});
+      observer.complete();
     });
   }
 
@@ -256,14 +263,15 @@ export class EventCaptureFormProvider {
   /**
    *
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getAllEvents(currentUser){
-    return new Promise((resolve,reject)=>{
-      this.sqlLiteProvider.getAllDataFromTable('events', currentUser.currentDatabase).then((events : any)=>{
-        resolve(events);
-      }).catch(error=>{
-        reject(error);
+  getAllEvents(currentUser): Observable<any> {
+    return new Observable(observer => {
+      this.sqlLiteProvider.getAllDataFromTable('events', currentUser.currentDatabase).subscribe((events: any) => {
+        observer.next(events);
+        observer.complete();
+      }, error => {
+        observer.error(error);
       });
     })
   }
@@ -274,15 +282,16 @@ export class EventCaptureFormProvider {
    * @param {string} attribute
    * @param {Array<string>} attributeValues
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getEventsByAttribute(attribute: string, attributeValues: Array<string>, currentUser) {
+  getEventsByAttribute(attribute: string, attributeValues: Array<string>, currentUser): Observable<any> {
     let tableName = "events";
-    return new Promise((resolve, reject) => {
-      this.sqlLiteProvider.getDataFromTableByAttributes(tableName, attribute, attributeValues, currentUser.currentDatabase).then((events: any) => {
-        resolve(events);
-      }).catch((error => {
-        reject({message: error});
+    return new Observable(observer => {
+      this.sqlLiteProvider.getDataFromTableByAttributes(tableName, attribute, attributeValues, currentUser.currentDatabase).subscribe((events: any) => {
+        observer.next(events);
+        observer.complete();
+      }, (error => {
+        observer.error({message: error});
       }));
     });
   }
@@ -293,23 +302,24 @@ export class EventCaptureFormProvider {
    * @param programStageId
    * @param trackedEntityInstance
    * @param dataDimension
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getEventsForProgramStage(currentUser, programStageId, trackedEntityInstance, dataDimension?) {
+  getEventsForProgramStage(currentUser, programStageId, trackedEntityInstance, dataDimension?): Observable<any> {
     let attribute = "programStage";
     let attributeValues = [programStageId];
     let events = [];
     //@todo based on data dimension
-    return new Promise((resolve, reject) => {
-      this.getEventsByAttribute(attribute, attributeValues, currentUser).then((eventResponse: any) => {
+    return new Observable(observer => {
+      this.getEventsByAttribute(attribute, attributeValues, currentUser).subscribe((eventResponse: any) => {
         eventResponse.forEach((event: any) => {
           if (event.trackedEntityInstance == trackedEntityInstance) {
             events.push(event);
           }
         });
-        resolve(events);
-      }).catch((error) => {
-        resolve(events);
+        observer.next(events);
+        observer.complete();
+      }, (error) => {
+        observer.error(events);
       });
     });
   }
@@ -320,22 +330,23 @@ export class EventCaptureFormProvider {
    * @param dataDimension
    * @param programId
    * @param orgUnitId
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getEventsBasedOnEventsSelection(currentUser, dataDimension, programId, orgUnitId) {
+  getEventsBasedOnEventsSelection(currentUser, dataDimension, programId, orgUnitId): Observable<any> {
     let attribute = "program";
     let attributeValues = [programId];
     let events = [];
-    return new Promise((resolve, reject) => {
-      this.getEventsByAttribute(attribute, attributeValues, currentUser).then((eventResponse: any) => {
+    return new Observable(observer => {
+      this.getEventsByAttribute(attribute, attributeValues, currentUser).subscribe((eventResponse: any) => {
         eventResponse.forEach((event: any) => {
           if (event.orgUnit == orgUnitId && event.attributeCategoryOptions == dataDimension.attributeCos && event.attributeCc == dataDimension.attributeCc) {
             events.push(event);
           }
         });
-        resolve(events);
-      }).catch((error) => {
-        resolve(events);
+        observer.next(events);
+        observer.complete();
+      }, (error) => {
+        observer.error(events);
       });
     });
   }
@@ -344,15 +355,16 @@ export class EventCaptureFormProvider {
    *
    * @param events
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  saveEvents(events, currentUser) {
+  saveEvents(events, currentUser): Observable<any> {
     let tableName = "events";
-    return new Promise((resolve, reject) => {
-      this.sqlLiteProvider.insertBulkDataOnTable(tableName, events, currentUser.currentDatabase).then(() => {
-        resolve();
-      }).catch(error => {
-        reject({message: error});
+    return new Observable(observer => {
+      this.sqlLiteProvider.insertBulkDataOnTable(tableName, events, currentUser.currentDatabase).subscribe(() => {
+        observer.next();
+        observer.complete();
+      }, error => {
+        observer.error({message: error});
       });
     });
   }
@@ -361,51 +373,54 @@ export class EventCaptureFormProvider {
    *
    * @param events
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  uploadEventsToSever(events, currentUser) {
-    return new Promise((resolve, reject) => {
+  uploadEventsToSever(events, currentUser): Observable<any> {
+    return new Observable(observer => {
       let url = "/api/25/events";
       let success = 0, fail = 0;
       let updatedEventIds = [];
       let errorMessages = [];
       events = this.getFormattedEventsForUpload(events);
       if (events.length == 0) {
-        resolve({success: success, fail: fail, errorMessages: errorMessages});
+        observer.next({success: success, fail: fail, errorMessages: errorMessages});
+        observer.complete();
       } else {
         events.forEach((event: any) => {
-          this.httpClientProvider.defaultPost(url, event, currentUser).then(() => {
+          this.httpClientProvider.defaultPost(url, event, currentUser).subscribe(() => {
             updatedEventIds.push(event.event);
             success++;
             if (success + fail == events.length) {
-              this.updateEventStatus(updatedEventIds, 'synced', currentUser).then(() => {
-                resolve({success: success, fail: fail, errorMessages: errorMessages});
-              }).catch(error => {
-                reject();
+              this.updateEventStatus(updatedEventIds, 'synced', currentUser).subscribe(() => {
+                observer.next({success: success, fail: fail, errorMessages: errorMessages});
+                observer.complete();
+              }, error => {
+                observer.error();
               })
             }
-          }).catch((error: any) => {
+          }, (error: any) => {
             //try to update event
             url = url + "/" + event.event;
-            this.httpClientProvider.put(url, event, currentUser).then(() => {
+            this.httpClientProvider.put(url, event, currentUser).subscribe(() => {
               updatedEventIds.push(event.event);
               success++;
               if (success + fail == events.length) {
-                this.updateEventStatus(updatedEventIds, 'synced', currentUser).then(() => {
-                  resolve({success: success, fail: fail, errorMessages: errorMessages});
-                }).catch(error => {
-                  reject();
+                this.updateEventStatus(updatedEventIds, 'synced', currentUser).subscribe(() => {
+                  observer.next({success: success, fail: fail, errorMessages: errorMessages});
+                  observer.complete();
+                }, error => {
+                  observer.error();
                 })
               }
-            }).catch((error: any) => {
+            }, (error: any) => {
               fail++;
               if (error && error.response && error.response.importSummaries && error.response.importSummaries.length > 0 && error.response.importSummaries[0].description) {
                 let message = error.response.importSummaries[0].description;
                 if (errorMessages.indexOf(message) == -1) {
                   errorMessages.push(message);
                 }
-              } else if(error && error.response && error.response.conflicts){
-                error.response.conflicts.forEach((conflict : any)=>{
+              } else if (error && error.response && error.response.conflicts) {
+                error.response.conflicts.forEach((conflict: any) => {
                   let message = JSON.stringify(conflict);
                   if (errorMessages.indexOf(message) == -1) {
                     errorMessages.push(message);
@@ -416,17 +431,18 @@ export class EventCaptureFormProvider {
                 if (errorMessages.indexOf(message) == -1) {
                   errorMessages.push(message);
                 }
-              }else {
+              } else {
                 let message = "There are and error with connection to server, please check the network";
                 if (errorMessages.indexOf(message) == -1) {
                   errorMessages.push(message);
                 }
               }
               if (success + fail == events.length) {
-                this.updateEventStatus(updatedEventIds, 'synced', currentUser).then(() => {
-                  resolve({success: success, fail: fail, errorMessages: errorMessages});
-                }).catch(error => {
-                  reject();
+                this.updateEventStatus(updatedEventIds, 'synced', currentUser).subscribe(() => {
+                  observer.next({success: success, fail: fail, errorMessages: errorMessages});
+                  observer.complete();
+                }, error => {
+                  observer.error(error);
                 })
               }
             });
@@ -441,25 +457,27 @@ export class EventCaptureFormProvider {
    * @param eventIds
    * @param status
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  updateEventStatus(eventIds, status, currentUser) {
-    return new Promise((resolve, reject) => {
-      this.getEventsByAttribute('id', eventIds, currentUser).then((events: any) => {
+  updateEventStatus(eventIds, status, currentUser): Observable<any> {
+    return new Observable(observer => {
+      this.getEventsByAttribute('id', eventIds, currentUser).subscribe((events: any) => {
         if (events && events.length > 0) {
           events.forEach((event: any) => {
             event.syncStatus = status;
           });
-          this.saveEvents(events, currentUser).then(() => {
-            resolve();
-          }).catch(error => {
-            reject({message: error});
+          this.saveEvents(events, currentUser).subscribe(() => {
+            observer.next();
+            observer.complete();
+          }, error => {
+            observer.error({message: error});
           });
         } else {
-          resolve();
+          observer.next();
+          observer.complete();
         }
-      }).catch(error => {
-        reject({message: error});
+      }, error => {
+        observer.error({message: error});
       })
     })
   }
@@ -500,22 +518,23 @@ export class EventCaptureFormProvider {
    * @param status
    * @param eventType
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getEventsByStatusAndType(status, eventType, currentUser) {
+  getEventsByStatusAndType(status, eventType, currentUser): Observable<any> {
     let attribute = "syncStatus";
     let attributeArray = [status];
     let eventResults = [];
-    return new Promise((resolve, reject) => {
-      this.getEventsByAttribute(attribute, attributeArray, currentUser).then((events: any) => {
+    return new Observable(observer => {
+      this.getEventsByAttribute(attribute, attributeArray, currentUser).subscribe((events: any) => {
         events.forEach((event: any) => {
           if (event.eventType == eventType) {
             eventResults.push(event);
           }
         });
-        resolve(eventResults)
-      }).catch((error) => {
-        reject({message: error});
+        observer.next(eventResults);
+        observer.complete();
+      }, (error) => {
+        observer.error({message: error});
       });
     });
   }

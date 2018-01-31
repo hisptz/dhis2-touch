@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
 
 /*
@@ -10,14 +10,15 @@ import {TranslateService} from "@ngx-translate/core";
 @Injectable()
 export class AppTranslationProvider {
 
-  constructor(private translateService : TranslateService) {}
+  constructor(private translateService: TranslateService) {
+  }
 
   /**
    *
    * @param {string} lang
    */
-  setAppTranslation(lang?: string){
-    if(!lang){
+  setAppTranslation(lang?: string) {
+    if (!lang) {
       lang = this.getCurrentLanguage();
     }
     this.translateService.setDefaultLang(lang);
@@ -28,9 +29,9 @@ export class AppTranslationProvider {
    *
    * @returns {string}
    */
-  getCurrentLanguage(){
+  getCurrentLanguage() {
     let lang = "en";
-    if(this.translateService.getDefaultLang()){
+    if (this.translateService.getDefaultLang()) {
       lang = this.translateService.getDefaultLang();
     }
     return lang;

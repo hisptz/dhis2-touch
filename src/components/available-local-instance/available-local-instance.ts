@@ -31,11 +31,11 @@ export class AvailableLocalInstanceComponent implements OnInit{
     this.cancelIcon = "assets/icon/cancel.png";
     this.isLoading = true;
     this.loadingMessage = "loading_available_local_instances";
-    this.localInstanceProvider.getLocalInstances().then((instances : any)=>{
+    this.localInstanceProvider.getLocalInstances().subscribe((instances : any)=>{
       this.localInstances = instances;
       this.localInstancesBackup = instances;
       this.isLoading = false;
-    }).catch((error)=>{
+    },(error)=>{
       this.isLoading = false;
       this.appProvider.setNormalNotification("Fail to load available local instances")
     });

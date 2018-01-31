@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {SqlLiteProvider} from "../sql-lite/sql-lite";
+import {Observable} from "rxjs/Observable";
 
 declare var dhis2: any;
 
@@ -12,9 +13,9 @@ declare var dhis2: any;
 @Injectable()
 export class TrackedEntityInstancesProvider {
 
-  resource : string;
+  resource: string;
 
-  constructor(private sqlLite : SqlLiteProvider){
+  constructor(private sqlLite: SqlLiteProvider) {
     this.resource = "trackedEntityInstances";
   }
 
@@ -23,23 +24,22 @@ export class TrackedEntityInstancesProvider {
    * @param trackedEntityId
    * @param orgUnitId
    * @param orgUnitName
-   * @param currentUser
    * @param syncStatus
    * @param trackedEntityInstance
    * @returns {Array}
    */
-  getTrackedEntityInstancesPayLoad(trackedEntityId,orgUnitId,orgUnitName,syncStatus,trackedEntityInstance?){
-    if(!trackedEntityInstance){
+  getTrackedEntityInstancesPayLoad(trackedEntityId, orgUnitId, orgUnitName, syncStatus, trackedEntityInstance?) {
+    if (!trackedEntityInstance) {
       trackedEntityInstance = dhis2.util.uid();
     }
-    if(!syncStatus){
+    if (!syncStatus) {
       syncStatus = "not-synced"
     }
     let payLoad = {
-      "id" : trackedEntityInstance,
+      "id": trackedEntityInstance,
       "trackedEntity": trackedEntityId,
       "orgUnit": orgUnitId,
-      "orgUnitName" : orgUnitName,
+      "orgUnitName": orgUnitName,
       "trackedEntityInstance": trackedEntityInstance,
       "deleted": false,
       "inactive": false,
@@ -57,14 +57,15 @@ export class TrackedEntityInstancesProvider {
    * @param attribute
    * @param attributeArray
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getTrackedEntityInstancesByAttribute(attribute,attributeArray,currentUser){
-    return new Promise( (resolve, reject)=> {
-      this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeArray,currentUser.currentDatabase).then((trackedEntityInstances : any)=>{
-        resolve(trackedEntityInstances);
-      }).catch(error=>{
-        reject(error);
+  getTrackedEntityInstancesByAttribute(attribute, attributeArray, currentUser): Observable<any> {
+    return new Observable(observer => {
+      this.sqlLite.getDataFromTableByAttributes(this.resource, attribute, attributeArray, currentUser.currentDatabase).subscribe((trackedEntityInstances: any) => {
+        observer.next(trackedEntityInstances);
+        observer.complete();
+      }, error => {
+        observer.error(error);
       })
     })
   }
@@ -72,14 +73,15 @@ export class TrackedEntityInstancesProvider {
   /**
    *
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getAllTrackedEntityInstances(currentUser){
-    return new Promise( (resolve, reject)=> {
-      this.sqlLite.getAllDataFromTable(this.resource,currentUser.currentDatabase).then((trackedEntityInstances : any)=>{
-        resolve(trackedEntityInstances);
-      }).catch(error=>{
-        reject(error);
+  getAllTrackedEntityInstances(currentUser): Observable<any> {
+    return new Observable(observer => {
+      this.sqlLite.getAllDataFromTable(this.resource, currentUser.currentDatabase).subscribe((trackedEntityInstances: any) => {
+        observer.next(trackedEntityInstances);
+        observer.complete();
+      }, error => {
+        observer.error(error);
       })
     })
   }
@@ -87,22 +89,23 @@ export class TrackedEntityInstancesProvider {
   /**
    *
    * @param trackedEntityInstances
-   * @param status
    * @param currentUser
-   * @returns {Promise<any>}
+   * @param status
+   * @returns {Observable<any>}
    */
-  updateSavedTrackedEntityInstancesByStatus(trackedEntityInstances,currentUser,status?){
-    return new Promise((resolve,reject)=>{
-      trackedEntityInstances.forEach((trackedEntityInstance : any)=>{
+  updateSavedTrackedEntityInstancesByStatus(trackedEntityInstances, currentUser, status?): Observable<any> {
+    return new Observable(observer => {
+      trackedEntityInstances.forEach((trackedEntityInstance: any) => {
         delete trackedEntityInstance.attributes;
-        if(status){
+        if (status) {
           trackedEntityInstance.syncStatus = status;
         }
       });
-      this.sqlLite.insertBulkDataOnTable(this.resource,trackedEntityInstances,currentUser.currentDatabase).then(()=>{
-        resolve();
-      }).catch((error)=>{
-        reject(error);
+      this.sqlLite.insertBulkDataOnTable(this.resource, trackedEntityInstances, currentUser.currentDatabase).subscribe(() => {
+        observer.next();
+        observer.complete();
+      }, (error) => {
+        observer.error(error);
       });
     });
   }

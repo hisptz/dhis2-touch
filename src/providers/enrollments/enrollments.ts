@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {SqlLiteProvider} from "../sql-lite/sql-lite";
+import {Observable} from "rxjs/Observable";
 
 declare var dhis2: any;
 
@@ -12,9 +13,9 @@ declare var dhis2: any;
 @Injectable()
 export class EnrollmentsProvider {
 
-  resource : string;
+  resource: string;
 
-  constructor(private sqlLite : SqlLiteProvider){
+  constructor(private sqlLite: SqlLiteProvider) {
     this.resource = "enrollments";
   }
 
@@ -31,12 +32,12 @@ export class EnrollmentsProvider {
    * @param enrollment
    * @returns {Array}
    */
-  getEnrollmentsPayLoad(trackedEntityId,orgUnitId,orgUnitName,programId,enrollmentDate,incidentDate,trackedEntityInstance,syncStatus,enrollment?){
-    if(!enrollment){
+  getEnrollmentsPayLoad(trackedEntityId, orgUnitId, orgUnitName, programId, enrollmentDate, incidentDate, trackedEntityInstance, syncStatus, enrollment?) {
+    if (!enrollment) {
       enrollment = dhis2.util.uid();
     }
     let payLoad = {
-      "id" : enrollment,
+      "id": enrollment,
       "trackedEntity": trackedEntityId,
       "orgUnit": orgUnitId,
       "program": programId,
@@ -60,14 +61,15 @@ export class EnrollmentsProvider {
    * @param attribute
    * @param attributeArray
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getSavedEnrollmentsByAttribute(attribute,attributeArray,currentUser){
-    return new Promise( (resolve, reject)=> {
-      this.sqlLite.getDataFromTableByAttributes(this.resource,attribute,attributeArray,currentUser.currentDatabase).then((enrollments : any)=>{
-        resolve(enrollments);
-      }).catch(error=>{
-        reject(error);
+  getSavedEnrollmentsByAttribute(attribute, attributeArray, currentUser): Observable<any> {
+    return new Observable(observer => {
+      this.sqlLite.getDataFromTableByAttributes(this.resource, attribute, attributeArray, currentUser.currentDatabase).subscribe((enrollments: any) => {
+        observer.next(enrollments);
+        observer.complete();
+      }, error => {
+        observer.error(error);
       })
     })
   }
@@ -78,26 +80,25 @@ export class EnrollmentsProvider {
    * @param orgUnitId
    * @param programId
    * @param currentUser
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  getSavedEnrollments(orgUnitId,programId,currentUser){
+  getSavedEnrollments(orgUnitId, programId, currentUser): Observable<any> {
     let enrollments = [];
     let orgUnitIds = [];
     orgUnitIds.push(orgUnitId);
-    return new Promise( (resolve, reject)=> {
-      this.sqlLite.getDataFromTableByAttributes(this.resource,'orgUnit',orgUnitIds,currentUser.currentDatabase).then((enrollmentResponse : any)=>{
-        if(enrollmentResponse && enrollmentResponse.length > 0){
-          enrollmentResponse.forEach((enrollment : any)=>{
-            if(enrollment.program == programId){
+    return new Observable(observer => {
+      this.sqlLite.getDataFromTableByAttributes(this.resource, 'orgUnit', orgUnitIds, currentUser.currentDatabase).subscribe((enrollmentResponse: any) => {
+        if (enrollmentResponse && enrollmentResponse.length > 0) {
+          enrollmentResponse.forEach((enrollment: any) => {
+            if (enrollment.program == programId) {
               enrollments.push(enrollment);
             }
           });
-          resolve(enrollments);
-        }else{
-          resolve(enrollments);
         }
-      }).catch(error=>{
-        reject({message : error});
+        observer.next(enrollments);
+        observer.complete();
+      }, error => {
+        observer.error({message: error});
       });
     });
   }
@@ -107,23 +108,23 @@ export class EnrollmentsProvider {
    * @param enrollments
    * @param currentUser
    * @param status
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  updateEnrollmentsByStatus(enrollments,currentUser,status?){
-    return new Promise((resolve,reject)=>{
-      enrollments.forEach((enrollment : any)=>{
-        if(status){
+  updateEnrollmentsByStatus(enrollments, currentUser, status?): Observable<any> {
+    return new Observable(observer => {
+      enrollments.forEach((enrollment: any) => {
+        if (status) {
           enrollment.syncStatus = status;
         }
       });
-      this.sqlLite.insertBulkDataOnTable(this.resource,enrollments,currentUser.currentDatabase).then(()=>{
-        resolve();
-      }).catch((error)=>{
-        reject(error);
+      this.sqlLite.insertBulkDataOnTable(this.resource, enrollments, currentUser.currentDatabase).subscribe(() => {
+        observer.next();
+        observer.complete();
+      }, (error) => {
+        observer.error(error);
       });
     });
   }
-
 
 
 }
