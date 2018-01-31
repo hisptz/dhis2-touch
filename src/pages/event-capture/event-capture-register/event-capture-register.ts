@@ -44,10 +44,10 @@ export class EventCaptureRegisterPage implements OnDestroy,OnInit{
     this.loadingMessage = "loading_user_information";
     this.isLoading = true;
     this.dataDimension = this.params.get('dataDimension');
-    this.userProvider.getCurrentUser().then((user: any)=>{
+    this.userProvider.getCurrentUser().subscribe((user: any)=>{
       this.currentUser = user;
       this.loadProgramStages(this.currentProgram.id);
-    }).catch(error=>{
+    },error=>{
       console.log(JSON.stringify(error));
       this.isLoading = false;
       this.appProvider.setNormalNotification("Fail to load user information");
@@ -60,19 +60,19 @@ export class EventCaptureRegisterPage implements OnDestroy,OnInit{
 
   loadProgramStages(programId){
     this.loadingMessage = "Loading program stages " + this.currentProgram.name;
-    this.eventCaptureFormProvider.getProgramStages(programId,this.currentUser).then((programStages : any)=>{
+    this.eventCaptureFormProvider.getProgramStages(programId,this.currentUser).subscribe((programStages : any)=>{
       if(programStages && programStages.length > 0){
         this.programStage = programStages[0];
       }
       let eventId = this.params.get('eventId');
       if(eventId){
         this.loadingMessage = "Loading data from local storage";
-        this.eventCaptureFormProvider.getEventsByAttribute("id",[eventId],this.currentUser).then((events : any)=>{
+        this.eventCaptureFormProvider.getEventsByAttribute("id",[eventId],this.currentUser).subscribe((events : any)=>{
          if(events && events.length > 0){
             this.currentEvent = events[0];
           }
           this.isLoading = false;
-        }).catch(error=>{
+        },error=>{
           this.isLoading = false;
           console.log("On loading event with id" + eventId);
           console.log(JSON.stringify(error));
@@ -81,7 +81,7 @@ export class EventCaptureRegisterPage implements OnDestroy,OnInit{
         this.currentEvent = this.eventCaptureFormProvider.getEmptyEvent(this.currentProgram,this.currentOrgUnit,this.programStage.id,this.dataDimension.attributeCos,this.dataDimension.attributeCc,'event-capture');
         this.isLoading = false;
       }
-    }).catch(error=>{
+    },error=>{
       console.log(JSON.stringify(error));
       this.isLoading = false;
       this.appProvider.setNormalNotification("Fail to load program stages " + this.currentProgram.name);

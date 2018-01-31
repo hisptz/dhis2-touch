@@ -18,6 +18,11 @@ import {ProgramStageSectionsProvider} from "../../providers/program-stage-sectio
 import {BackgroundMode} from "@ionic-native/background-mode";
 import {LocalInstanceProvider} from "../../providers/local-instance/local-instance";
 import {AppTranslationProvider} from "../../providers/app-translation/app-translation";
+import {CurrentUser} from "../../models/currentUser";
+import {Store} from "@ngrx/store";
+import {ApplicationState} from "../../store";
+import {LoadedCurrentUser} from "../../store/actions/currentUser.actons";
+import {EncryptionProvider} from "../../providers/encryption/encryption";
 
 /**
  * Generated class for the LoginPage page.
@@ -38,7 +43,7 @@ export class LoginPage implements OnInit {
   progressBar: string;
   loggedInInInstance: string;
   isLoginProcessActive: boolean;
-  currentUser: any = {};
+  currentUser: CurrentUser;
   animationEffect: any = {};
   cancelLoginProcessData : any = {isProcessActive : false};
   progressTracker : any;
@@ -50,6 +55,8 @@ export class LoginPage implements OnInit {
   isLocalInstancesListOpen : boolean;
 
   constructor(public navCtrl: NavController,
+              private store : Store<ApplicationState>,
+              private encryption : EncryptionProvider,
               private UserProvider : UserProvider,
               private AppProvider : AppProvider,
               private sqlLite : SqlLiteProvider,
@@ -84,8 +91,8 @@ export class LoginPage implements OnInit {
     this.cancelLoginProcess(this.cancelLoginProcessData);
     this.progressTracker = {};
     this.completedTrackedProcess = [];
-    this.UserProvider.getCurrentUser().then((currentUser: any)=>{
-      this.localInstanceProvider.getLocalInstances().then((localInstances : any)=>{
+    this.UserProvider.getCurrentUser().subscribe((currentUser: any)=>{
+      this.localInstanceProvider.getLocalInstances().subscribe((localInstances : any)=>{
         this.localInstances = localInstances;
         this.setUpCurrentUser(currentUser);
       });
@@ -130,8 +137,8 @@ export class LoginPage implements OnInit {
       this.appTranslationProvider.setAppTranslation(language);
       this.currentLanguage = language;
       this.currentUser.currentLanguage = language;
-      this.UserProvider.setCurrentUser(this.currentUser).then(()=>{});
-      this.localInstanceProvider.setLocalInstanceInstances(this.localInstances,this.currentUser,this.loggedInInInstance).then(()=>{});
+      this.UserProvider.setCurrentUser(this.currentUser).subscribe(()=>{});
+      this.localInstanceProvider.setLocalInstanceInstances(this.localInstances,this.currentUser,this.loggedInInInstance).subscribe(()=>{});
     }catch (e){
       this.AppProvider.setNormalNotification("Fail to set translation ");
       console.log(JSON.stringify(e));
@@ -154,7 +161,7 @@ export class LoginPage implements OnInit {
       this.loggedInInInstance = this.currentUser.serverUrl;
       this.reInitiateProgressTrackerObject(this.currentUser);
       this.progressTracker[currentResourceType].message = "establishing_connection_to_server";
-      this.UserProvider.authenticateUser(this.currentUser).then((response : any)=>{
+      this.UserProvider.authenticateUser(this.currentUser).subscribe((response : any)=>{
         response = this.getResponseData(response);
         this.currentUser = response.user;
         this.loggedInInInstance = this.currentUser.serverUrl;
@@ -165,21 +172,23 @@ export class LoginPage implements OnInit {
         this.currentUser.currentDatabase = this.AppProvider.getDataBaseName(this.currentUser.serverUrl) + "_"+this.currentUser.username;
         this.reInitiateProgressTrackerObject(this.currentUser);
         this.updateProgressTracker(resource);
-        this.UserProvider.setUserData(JSON.parse(response.data)).then(userData=>{
+        this.UserProvider.setUserData(JSON.parse(response.data)).subscribe(userData=>{
           resource = 'Loading system information';
           if(this.isLoginProcessActive){
             this.progressTracker[currentResourceType].message = "loading_system_information";
-            this.HttpClientProvider.get('/api/system/info',this.currentUser).then((response : any)=>{
-              this.UserProvider.setCurrentUserSystemInformation(JSON.parse(response.data)).then((dhisVersion)=>{
+            this.HttpClientProvider.get('/api/system/info',false,this.currentUser).subscribe((response : any)=>{
+              this.UserProvider.setCurrentUserSystemInformation(JSON.parse(response.data)).subscribe((dhisVersion : string)=>{
                 this.currentUser.dhisVersion = dhisVersion;
                 this.updateProgressTracker(resource);
                 if(this.isLoginProcessActive){
                   this.progressTracker[currentResourceType].message = "loading_current_user_authorities";
-                  this.UserProvider.getUserAuthorities(this.currentUser).then((response:any)=>{
+                  this.UserProvider.getUserAuthorities(this.currentUser).subscribe((response:any)=>{
+                    this.currentUser.id = response.id;
                     this.currentUser.authorities = response.authorities;
+                    this.currentUser.dataViewOrganisationUnits = response.dataViewOrganisationUnits;
                     resource = "Preparing local storage";
                     this.progressTracker[currentResourceType].message = "preparing_local_storage";
-                    this.sqlLite.generateTables(this.currentUser.currentDatabase).then(()=>{
+                    this.sqlLite.generateTables(this.currentUser.currentDatabase).subscribe(()=>{
                       this.updateProgressTracker(resource);
                       this.hasUserAuthenticated = true;
                       this.downloadingOrganisationUnits(userData);
@@ -192,34 +201,34 @@ export class LoginPage implements OnInit {
                       this.downloadingIndicators();
                       this.downloadingStandardReports();
                       this.downloadingConstants();
-                    }).catch(error=>{
+                    },error=>{
                       this.cancelLoginProcess(this.cancelLoginProcessData);
                       this.AppProvider.setNormalNotification('Fail to prepare local storage');
                       console.error("error : " + JSON.stringify(error));
                     });
-                  }).catch(error=>{
+                  },error=>{
                     this.cancelLoginProcess(this.cancelLoginProcessData);
                     this.AppProvider.setNormalNotification('Fail to load user authorities');
                     console.error("error : " + JSON.stringify(error));
                   });
                 }
-              }).catch(error=>{
+              },error=>{
                 this.cancelLoginProcess(this.cancelLoginProcessData);
                 this.AppProvider.setNormalNotification('Fail to load user authorities');
                 console.error("error : " + JSON.stringify(error));
               });
-            }).catch(error=>{
+            },error=>{
               this.cancelLoginProcess(this.cancelLoginProcessData);
               this.AppProvider.setNormalNotification('Fail to load system information');
               console.error("error : " + JSON.stringify(error));
             });
           }
-        }).catch((error)=>{
+        },(error)=>{
           this.cancelLoginProcess(this.cancelLoginProcessData);
           this.AppProvider.setNormalNotification('Fail to save current user information');
           console.error("error : " + JSON.stringify(error));
         });
-      }).catch((error: any)=>{
+      },(error: any)=>{
         if (error.status == 0) {
           this.AppProvider.setNormalNotification('Please check your network connectivity');
         } else if (error.status == 401) {
@@ -256,10 +265,10 @@ export class LoginPage implements OnInit {
         this.updateProgressTracker(resource);
         this.progressTracker[currentResourceType].message = "assigned_organisation_units_have_been_loaded";
       }else{
-        this.organisationUnitsProvider.downloadingOrganisationUnitsFromServer(orgUnitIds,this.currentUser).then((orgUnits:any)=>{
+        this.organisationUnitsProvider.downloadingOrganisationUnitsFromServer(orgUnitIds,this.currentUser).subscribe((orgUnits:any)=>{
           if(this.isLoginProcessActive){
             this.progressTracker[currentResourceType].message = "saving_assigned_organisation_units";
-            this.organisationUnitsProvider.savingOrganisationUnitsFromServer(orgUnits,this.currentUser).then(()=>{
+            this.organisationUnitsProvider.savingOrganisationUnitsFromServer(orgUnits,this.currentUser).subscribe(()=>{
               this.progressTracker[currentResourceType].message = "assigned_organisation_units_have_been_saved";
               this.updateProgressTracker(resource);
             },error=>{
@@ -287,10 +296,10 @@ export class LoginPage implements OnInit {
         this.progressTracker[currentResourceType].message = "entry_forms_have_been_loaded";
         this.updateProgressTracker(resource);
       }else{
-        this.dataSetsProvider.downloadDataSetsFromServer(this.currentUser).then((dataSets: any)=>{
+        this.dataSetsProvider.downloadDataSetsFromServer(this.currentUser).subscribe((dataSets: any)=>{
           if(this.isLoginProcessActive){
             this.progressTracker[currentResourceType].message = "saving_entry_forms";
-            this.dataSetsProvider.saveDataSetsFromServer(dataSets,this.currentUser).then(()=>{
+            this.dataSetsProvider.saveDataSetsFromServer(dataSets,this.currentUser).subscribe(()=>{
               this.progressTracker[currentResourceType].message = "entry_form_have_been_saved";
               this.updateProgressTracker(resource);
             },error=>{
@@ -317,10 +326,10 @@ export class LoginPage implements OnInit {
         this.progressTracker[currentResourceType].message = "entry_form_sections_have_been_loaded";
         this.updateProgressTracker(resource);
       }else{
-        this.sectionsProvider.downloadSectionsFromServer(this.currentUser).then((response : any)=>{
+        this.sectionsProvider.downloadSectionsFromServer(this.currentUser).subscribe((response : any)=>{
           if(this.isLoginProcessActive){
             this.progressTracker[currentResourceType].message = "saving_entry_form_sections";
-            this.sectionsProvider.saveSectionsFromServer(response[resource],this.currentUser).then(()=>{
+            this.sectionsProvider.saveSectionsFromServer(response[resource],this.currentUser).subscribe(()=>{
               this.progressTracker[currentResourceType].message = "entry_form_sections_have_been_saved";
               this.updateProgressTracker(resource);
             },error=>{
@@ -347,10 +356,10 @@ export class LoginPage implements OnInit {
         this.progressTracker[currentResourceType].message = "entry_form_fields_have_been_loaded";
         this.updateProgressTracker(resource);
       }else{
-        this.dataElementsProvider.downloadDataElementsFromServer(this.currentUser).then((response : any)=>{
+        this.dataElementsProvider.downloadDataElementsFromServer(this.currentUser).subscribe((response : any)=>{
           if(this.isLoginProcessActive){
             this.progressTracker[currentResourceType].message = "saving_entry_form_fields";
-            this.dataElementsProvider.saveDataElementsFromServer(response[resource],this.currentUser).then(()=>{
+            this.dataElementsProvider.saveDataElementsFromServer(response[resource],this.currentUser).subscribe(()=>{
               this.progressTracker[currentResourceType].message = "entry_form_fields_have_been_saved";
               this.updateProgressTracker(resource);
             },error=>{
@@ -377,10 +386,10 @@ export class LoginPage implements OnInit {
         this.progressTracker[currentResourceType].message = "sms_commands_have_been_loaded";
         this.updateProgressTracker(resource);
       }else{
-        this.smsCommandProvider.getSmsCommandFromServer(this.currentUser).then((smsCommands : any)=>{
+        this.smsCommandProvider.getSmsCommandFromServer(this.currentUser).subscribe((smsCommands : any)=>{
           if(this.isLoginProcessActive){
             this.progressTracker[currentResourceType].message = "saving_sms_commands";
-            this.smsCommandProvider.savingSmsCommand(smsCommands,this.currentUser.currentDatabase).then(()=>{
+            this.smsCommandProvider.savingSmsCommand(smsCommands,this.currentUser.currentDatabase).subscribe(()=>{
               this.progressTracker[currentResourceType].message = "sms_commands_have_been_saved";
               this.updateProgressTracker(resource);
             },error=>{
@@ -407,10 +416,10 @@ export class LoginPage implements OnInit {
         this.progressTracker[currentResourceType].message = "programs_have_been_loaded";
         this.updateProgressTracker(resource);
       }else{
-        this.programsProvider.downloadProgramsFromServer(this.currentUser).then(response=>{
+        this.programsProvider.downloadProgramsFromServer(this.currentUser).subscribe(response=>{
           if(this.isLoginProcessActive){
             this.progressTracker[currentResourceType].message = "saving_programs";
-            this.programsProvider.saveProgramsFromServer(response[resource],this.currentUser).then(()=>{
+            this.programsProvider.saveProgramsFromServer(response[resource],this.currentUser).subscribe(()=>{
               this.progressTracker[currentResourceType].message = "programs_have_been_saved";
               this.updateProgressTracker(resource);
             },error=>{
@@ -437,10 +446,10 @@ export class LoginPage implements OnInit {
         this.progressTracker[currentResourceType].message = "program_stage_section_have_been_loaded";
         this.updateProgressTracker(resource);
       }else{
-        this.programStageSectionProvider.downloadProgramsStageSectionsFromServer(this.currentUser).then(response=>{
+        this.programStageSectionProvider.downloadProgramsStageSectionsFromServer(this.currentUser).subscribe(response=>{
           if(this.isLoginProcessActive){
             this.progressTracker[currentResourceType].message = "saving_program_stage_section";
-            this.programStageSectionProvider.saveProgramsStageSectionsFromServer(response[resource],this.currentUser).then(()=>{
+            this.programStageSectionProvider.saveProgramsStageSectionsFromServer(response[resource],this.currentUser).subscribe(()=>{
               this.progressTracker[currentResourceType].message = "program_stage_section_have_been_saved";
               this.updateProgressTracker(resource);
             },error=>{
@@ -467,10 +476,10 @@ export class LoginPage implements OnInit {
         this.progressTracker[currentResourceType].message = "indicators_have_been_loaded";
         this.updateProgressTracker(resource);
       }else{
-        this.indicatorsProvider.downloadingIndicatorsFromServer(this.currentUser).then((response:any)=>{
+        this.indicatorsProvider.downloadingIndicatorsFromServer(this.currentUser).subscribe((response:any)=>{
           if(this.isLoginProcessActive){
             this.progressTracker[currentResourceType].message = "saving_sms_indicators";
-            this.indicatorsProvider.savingIndicatorsFromServer(response[resource],this.currentUser).then(()=>{
+            this.indicatorsProvider.savingIndicatorsFromServer(response[resource],this.currentUser).subscribe(()=>{
               this.progressTracker[currentResourceType].message = "indicators_have_been_saved";
               this.updateProgressTracker(resource);
             },error=>{
@@ -497,10 +506,10 @@ export class LoginPage implements OnInit {
         this.progressTracker[currentResourceType].message = "reports_have_been_loaded";
         this.updateProgressTracker(resource);
       }else{
-        this.standardReports.downloadReportsFromServer(this.currentUser).then((reports : any)=>{
+        this.standardReports.downloadReportsFromServer(this.currentUser).subscribe((reports : any)=>{
           if(this.isLoginProcessActive){
             this.progressTracker[currentResourceType].message = "saving_reports";
-            this.standardReports.saveReportsFromServer(reports[resource],this.currentUser).then(()=>{
+            this.standardReports.saveReportsFromServer(reports[resource],this.currentUser).subscribe(()=>{
               this.progressTracker[currentResourceType].message = "reports_have_been_saved";
               this.updateProgressTracker(resource);
             },error=>{
@@ -527,10 +536,10 @@ export class LoginPage implements OnInit {
         this.progressTracker[currentResourceType].message = "constants_have_been_loaded";
         this.updateProgressTracker(resource);
       }else{
-        this.standardReports.downloadConstantsFromServer(this.currentUser).then((constants : any)=>{
+        this.standardReports.downloadConstantsFromServer(this.currentUser).subscribe((constants : any)=>{
           if(this.isLoginProcessActive){
             this.progressTracker[currentResourceType].message = "saving_constants";
-            this.standardReports.saveConstantsFromServer(constants,this.currentUser).then(()=>{
+            this.standardReports.saveConstantsFromServer(constants,this.currentUser).subscribe(()=>{
               this.progressTracker[currentResourceType].message = "constants_have_been_saved";
               this.updateProgressTracker(resource);
             },error=>{
@@ -570,23 +579,29 @@ export class LoginPage implements OnInit {
     this.backgroundMode.disable();
   }
 
-  setLandingPage(currentUser){
+  setLandingPage(currentUser :CurrentUser){
     currentUser.isLogin = true;
     this.reCheckingAppSetting(currentUser);
-    this.localInstanceProvider.setLocalInstanceInstances(this.localInstances,currentUser,this.loggedInInInstance).then(()=>{});
-    this.UserProvider.setCurrentUser(currentUser).then(()=>{
+    currentUser.password = this.encryption.encode(currentUser.password);
+    this.store.dispatch(new LoadedCurrentUser(currentUser));
+    if(this.currentUser && this.currentUser.serverUrl && this.currentUser.username){
+      this.currentUser["currentDatabase"] = this.AppProvider.getDataBaseName(this.currentUser.serverUrl) + "_"+this.currentUser.username;
+      this.localInstanceProvider.setLocalInstanceInstances(this.localInstances,currentUser,this.loggedInInInstance).subscribe(()=>{});
+    }
+    this.UserProvider.setCurrentUser(currentUser).subscribe(()=>{
+      this.backgroundMode.disable();
       this.navCtrl.setRoot(TabsPage);
     });
   }
 
   reCheckingAppSetting(currentUser){
     let defaultSetting  = this.settingsProvider.getDefaultSettings();
-    this.settingsProvider.getSettingsForTheApp(currentUser).then((appSettings : any)=>{
+    this.settingsProvider.getSettingsForTheApp(currentUser).subscribe((appSettings : any)=>{
       if(!appSettings){
         let time = defaultSetting.synchronization.time;
         let timeType = defaultSetting.synchronization.timeType;
         defaultSetting.synchronization.time = this.settingsProvider.getDisplaySynchronizationTime(time,timeType);
-        this.settingsProvider.setSettingsForTheApp(currentUser,defaultSetting).then(()=>{},error=>{})
+        this.settingsProvider.setSettingsForTheApp(currentUser,defaultSetting).subscribe(()=>{},error=>{})
       }
     });
   }
@@ -670,7 +685,7 @@ export class LoginPage implements OnInit {
     }
     this.progressTracker[resourceType].passStepCount = this.progressTracker[resourceType].passStepCount + 1;
     this.currentUser["progressTracker"][this.currentUser.currentDatabase] = this.progressTracker;
-    this.UserProvider.setCurrentUser(this.currentUser).then(()=>{});
+    this.UserProvider.setCurrentUser(this.currentUser).subscribe(()=>{});
     this.completedTrackedProcess = this.getCompletedTrackedProcess();
     this.updateProgressBarPercentage();
   }

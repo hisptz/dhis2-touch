@@ -23,7 +23,7 @@ export class TabsPage {
   ngOnInit() {
     this.backgroundMode.disable().then(()=>{
     },reason => (console.log('here : ' + JSON.stringify(reason))));
-    this.user.getUserData().then(userData=>{
+    this.user.getUserData().subscribe(userData=>{
       this.setUserAccountName(userData);
     });
   }

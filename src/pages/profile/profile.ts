@@ -38,11 +38,11 @@ export class ProfilePage implements OnInit {
     if (this.profileContents.length > 0) {
       this.toggleProfileContents(this.profileContents[0]);
     }
-    this.profileProvider.getSavedUserData().then((userData) => {
+    this.profileProvider.getSavedUserData().subscribe((userData) => {
       this.userData = userData;
       this.isLoading = false;
       this.loadingMessage = '';
-    }).catch(error => {
+    },error => {
       this.isLoading = false;
       this.loadingMessage = '';
       console.log(JSON.stringify(error));

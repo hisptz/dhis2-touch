@@ -5,7 +5,7 @@ import {UserProvider} from "../../../providers/user/user";
 import {DataSetsProvider} from "../../../providers/data-sets/data-sets";
 import {AppProvider} from "../../../providers/app/app";
 import {StandardReportProvider} from "../../../providers/standard-report/standard-report";
-import {DATABASE_STRUCTURE} from "../../../constants/database-structure";
+import {DATABASE_STRUCTURE} from "../../../models/database";
 
 /**
  * Generated class for the ReportViewPage page.
@@ -42,7 +42,7 @@ export class ReportViewPage implements OnInit{
   ngOnInit() {
     this.isLoading = true;
     this.loadingMessage = "loading_user_information";
-    this.user.getCurrentUser().then((user : any)=>{
+    this.user.getCurrentUser().subscribe((user : any)=>{
       this.currentUser = user;
       dhis2.database = user.currentDatabase;
       this.reportId = this.params.get("id");
@@ -65,11 +65,11 @@ export class ReportViewPage implements OnInit{
         if(this.selectedOrganisationUnit && this.selectedOrganisationUnit.id){
           this.selectedOrganisationUnit["dataSets"] = [];
           let organisationUnitHierarchy = this.getOrganisationUnitHierarchy(this.params.get("organisationUnit"));
-          this.dataSetProvider.getDataSetSource(this.selectedOrganisationUnit.id,user.currentDatabase).then((dataSetSources: any)=>{
+          this.dataSetProvider.getDataSetSource(this.selectedOrganisationUnit.id,user.currentDatabase).subscribe((dataSetSources: any)=>{
             dataSetSources.forEach((dataSetSource : any)=>{
               ids.push(dataSetSource.dataSetId);
             });
-            this.dataSetProvider.getDataSetsByIds(ids,user).then((DataSets:any)=>{
+            this.dataSetProvider.getDataSetsByIds(ids,user).subscribe((DataSets:any)=>{
               let dataSets = [];
               for(let dataSet of DataSets){
                 dataSets.push({id : dataSet.id,name : dataSet.name});
@@ -137,7 +137,7 @@ export class ReportViewPage implements OnInit{
     this.loadingMessage = "loading_report_metadata";
     //for standard reports
     if(this.reportType && this.reportType == "standardReport"){
-      this.reportProvider.getReportDesign(reportId,this.currentUser).then((report : any)=>{
+      this.reportProvider.getReportDesign(reportId,this.currentUser).subscribe((report : any)=>{
         if(report && report.designContent){
           try{
             let scriptsContents = this.getScriptsContents(report.designContent);

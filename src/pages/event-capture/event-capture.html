@@ -53,7 +53,7 @@
     </ion-row>
     <div *ngIf = "isFormReady" >
       <div *ngIf="isLoading">
-        <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage|translate" ></page-loading>
+        <loading [loadingSize]="'large'" [loadingMessage]="loadingMessage|translate" ></loading>
       </div>
       <div *ngIf="!isLoading" class="over-flow-container">
         <ion-row>

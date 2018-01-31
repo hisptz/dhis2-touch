@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { NavController } from 'ionic-angular';
+import {NavController} from 'ionic-angular';
 import {AppProvider} from "../../providers/app/app";
 
 /**
@@ -13,54 +13,56 @@ import {AppProvider} from "../../providers/app/app";
   selector: 'page-apps',
   templateUrl: 'apps.html',
 })
-export class AppsPage implements OnInit{
+export class AppsPage implements OnInit {
 
-  animationEffect : any;
+  animationEffect: any;
 
-  constructor(private navCtrl: NavController, private appProvider : AppProvider) {
+  constructor(private navCtrl: NavController, private appProvider: AppProvider) {
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.animationEffect = {
-      data_entry : "",
-      event_capture : "",
-      reports : "",
-      dashboard : "",
-      tracker_capture : "",
-      sync : "",
-      settings : ""
+      data_entry: "",
+      event_capture: "",
+      reports: "",
+      dashboard: "",
+      tracker_capture: "",
+      sync: "",
+      settings: ""
     }
   }
 
-  goToView(key){
+  goToView(key) {
     this.applyAnimation(key);
-    setTimeout(()=>{
-      if(key == "data_entry"){
+    setTimeout(() => {
+      if (key == "data_entry") {
         this.setView('DataEntryPage');
-      }else if(key == "event_capture"){
+      } else if (key == "event_capture") {
         this.setView('EventCapturePage');
-      }else if(key == "reports"){
+      } else if (key == "reports") {
         this.setView('ReportsPage');
-      }else if(key == "dashboard"){
-        this.appProvider.setNormalNotification('This has been disabled')
-      }else if(key == "tracker_capture"){
+      } else if (key == "dashboard") {
+        this.setView('DashboardPage')
+      } else if (key == "tracker_capture") {
         this.setView('TrackerCapturePage');
-      }else if(key == "sync"){
+      } else if (key == "sync") {
         this.setView('SyncPage')
-      }else if(key == "settings"){
+      } else if (key == "settings") {
         this.setView('SettingsPage');
       }
-    },60);
-  }
-  setView(viewName){
-    this.navCtrl.push(viewName).then(()=>{})
+    }, 60);
   }
 
-  applyAnimation(key : any){
+  setView(viewName) {
+    this.navCtrl.push(viewName).then(() => {
+    })
+  }
+
+  applyAnimation(key: any) {
     this.animationEffect[key] = "animated bounceIn";
-    setTimeout(()=>{
+    setTimeout(() => {
       this.animationEffect[key] = "";
-    },100);
+    }, 100);
   }
 
 }

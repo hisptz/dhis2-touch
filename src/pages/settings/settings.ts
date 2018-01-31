@@ -49,25 +49,25 @@ export class SettingsPage implements OnInit{
       this.toggleSettingContents(this.settingContents[0]);
     }
     let defaultSettings = this.settingsProvider.getDefaultSettings();
-    this.userProvider.getCurrentUser().then((currentUser : any)=>{
+    this.userProvider.getCurrentUser().subscribe((currentUser : any)=>{
       this.currentUser = currentUser;
       this.currentLanguage = currentUser.currentLanguage;
       this.loadingMessage = 'loading_settings';
-      this.localInstanceProvider.getLocalInstances().then((instances : any)=>{
+      this.localInstanceProvider.getLocalInstances().subscribe((instances : any)=>{
         this.localInstances = instances;
-        this.settingsProvider.getSettingsForTheApp(this.currentUser).then((appSettings : any)=>{
+        this.settingsProvider.getSettingsForTheApp(this.currentUser).subscribe((appSettings : any)=>{
           this.initiateSettings(defaultSettings,appSettings);
-        }).catch(error=>{
+        },error=>{
           console.log(error);
           this.isLoading = false;
           this.initiateSettings(defaultSettings,null);
           this.appProvider.setNormalNotification('Fail to load settings');
         });
-      }).catch((error)=>{
+      },(error)=>{
         this.isLoading = false;
         this.appProvider.setNormalNotification("Fail to load available local instances")
       });
-    }).catch(error=>{
+    },error=>{
       console.log(error);
       this.isLoading = false;
       this.initiateSettings(defaultSettings,null);
@@ -104,8 +104,8 @@ export class SettingsPage implements OnInit{
       }
       this.appTranslationProvider.setAppTranslation(this.currentLanguage);
       this.currentUser.currentLanguage = this.currentLanguage;
-      this.userProvider.setCurrentUser(this.currentUser).then(()=>{});
-      this.localInstanceProvider.setLocalInstanceInstances(this.localInstances,this.currentUser,loggedInInInstance).then(()=>{});
+      this.userProvider.setCurrentUser(this.currentUser).subscribe(()=>{});
+      this.localInstanceProvider.setLocalInstanceInstances(this.localInstances,this.currentUser,loggedInInInstance).subscribe(()=>{});
     }catch (e){
       this.appProvider.setNormalNotification("Fail to set translation ");
       console.log(JSON.stringify(e));
@@ -113,19 +113,19 @@ export class SettingsPage implements OnInit{
   }
 
   applySettings(settingContent){
-    this.settingsProvider.setSettingsForTheApp(this.currentUser,this.settingObject).then(()=>{
+    this.settingsProvider.setSettingsForTheApp(this.currentUser,this.settingObject).subscribe(()=>{
       this.appProvider.setNormalNotification('Settings have been updated successfully',2000);
-      this.settingsProvider.getSettingsForTheApp(this.currentUser).then((appSettings : any)=>{
+      this.settingsProvider.getSettingsForTheApp(this.currentUser).subscribe((appSettings : any)=>{
         this.settingObject = appSettings;
         let timeValue = this.settingObject.synchronization.time;
         let timeType = this.settingObject.synchronization.timeType;
         this.settingObject.synchronization.time = this.settingsProvider.getDisplaySynchronizationTime(timeValue,timeType);
-      }).catch(error=>{
+      },error=>{
         console.log(error);
         this.appProvider.setNormalNotification('Fail to load settings');
         this.updateLoadingStatusOfSavingSetting(settingContent,false);
       });
-    }).catch(error=>{
+    },error=>{
       this.updateLoadingStatusOfSavingSetting(settingContent,false);
       this.appProvider.setNormalNotification('Fail to apply changes on  settings');
     });

@@ -69,9 +69,9 @@ export class DataEntryFormPage implements OnInit{
     this.loadingMessage = "loading_user_information";
     this.isLoading = true;
     this.entryFormParameter = this.navParams.get("parameter");
-    this.userProvider.getCurrentUser().then(user=>{
+    this.userProvider.getCurrentUser().subscribe(user=>{
       this.currentUser = user;
-      this.settingsProvider.getSettingsForTheApp(user).then((appSettings:any)=>{
+      this.settingsProvider.getSettingsForTheApp(user).subscribe((appSettings:any)=>{
         this.appSettings = appSettings;
         if(appSettings && appSettings.entryForm && appSettings.entryForm.formLayout){
           this.entryFormLayout = appSettings.entryForm.formLayout;
@@ -93,11 +93,11 @@ export class DataEntryFormPage implements OnInit{
 
   loadingDataSetInformation(dataSetId){
     this.loadingMessage = "loading_entry_form_information";
-    this.dataEntryFormProvider.loadingDataSetInformation(dataSetId,this.currentUser).then((dataSetInformation : any)=>{
+    this.dataEntryFormProvider.loadingDataSetInformation(dataSetId,this.currentUser).subscribe((dataSetInformation : any)=>{
       this.dataSet = dataSetInformation.dataSet;
       this.sectionIds = dataSetInformation.sectionIds;
       this.loadingMessage = "loading_indicators";
-      this.dataEntryFormProvider.getEntryFormIndicators(dataSetInformation.indicatorIds,this.currentUser).then((indicators :any)=>{
+      this.dataEntryFormProvider.getEntryFormIndicators(dataSetInformation.indicatorIds,this.currentUser).subscribe((indicators :any)=>{
         this.indicators = indicators;
         this.loadingEntryForm(this.dataSet,this.sectionIds);
       },error=>{
@@ -114,7 +114,7 @@ export class DataEntryFormPage implements OnInit{
 
   loadingEntryForm(dataSet,sectionIds){
     this.loadingMessage = "prepare_entry_form";
-    this.dataEntryFormProvider.getEntryForm(sectionIds,dataSet.id,this.appSettings,this.currentUser).then((entryForm : any)=>{
+    this.dataEntryFormProvider.getEntryForm(sectionIds,dataSet.id,this.appSettings,this.currentUser).subscribe((entryForm : any)=>{
       this.entryFormSections = entryForm;
       this.pager["page"] = 1;
       this.pager["total"] = entryForm.length;
@@ -124,7 +124,7 @@ export class DataEntryFormPage implements OnInit{
       let dataDimension = this.entryFormParameter.dataDimension;
       this.dataSetAttributeOptionCombo = this.dataValuesProvider.getDataValuesSetAttributeOptionCombo(dataDimension,this.dataSet.categoryCombo.categoryOptionCombos);
       this.loadingMessage = "loading_data_from_the_server";
-      this.dataValuesProvider.getDataValueSetFromServer(dataSetId,period,orgUnitId,this.dataSetAttributeOptionCombo,this.currentUser).then((dataValues : any)=>{
+      this.dataValuesProvider.getDataValueSetFromServer(dataSetId,period,orgUnitId,this.dataSetAttributeOptionCombo,this.currentUser).subscribe((dataValues : any)=>{
         if(dataValues.length > 0){
           dataValues.forEach((dataValue :any)=>{
             dataValue["period"] = this.entryFormParameter.period.name;
@@ -132,7 +132,7 @@ export class DataEntryFormPage implements OnInit{
           });
           this.loadingMessage = "saving_data_from_server";
           let syncStatus = 'synced';
-          this.dataValuesProvider.saveDataValues(dataValues,dataSetId,period,orgUnitId,dataDimension,syncStatus,this.currentUser).then(()=>{
+          this.dataValuesProvider.saveDataValues(dataValues,dataSetId,period,orgUnitId,dataDimension,syncStatus,this.currentUser).subscribe(()=>{
             this.loadingLocalData(dataSetId, period, orgUnitId,dataDimension);
           },error=>{
             console.log(JSON.stringify(error));
@@ -157,7 +157,7 @@ export class DataEntryFormPage implements OnInit{
 
   loadingLocalData(dataSetId, period, orgUnitId,dataDimension){
     this.loadingMessage = "loading_available_local_data";
-    this.dataValuesProvider.getAllEntryFormDataValuesFromStorage(dataSetId, period, orgUnitId, this.entryFormSections, dataDimension, this.currentUser).then((entryFormDataValues : any)=>{
+    this.dataValuesProvider.getAllEntryFormDataValuesFromStorage(dataSetId, period, orgUnitId, this.entryFormSections, dataDimension, this.currentUser).subscribe((entryFormDataValues : any)=>{
       entryFormDataValues.forEach((dataValue : any)=>{
         this.dataValuesObject[dataValue.id] = dataValue;
         dataValue.status == "synced" ? this.storageStatus.online ++ :this.storageStatus.offline ++;
@@ -177,7 +177,7 @@ export class DataEntryFormPage implements OnInit{
     let period = this.entryFormParameter.period.iso;
     let orgUnitId = this.entryFormParameter.orgUnit.id;
     let dataDimension = this.entryFormParameter.dataDimension;
-    this.dataSetCompletenessProvider.getDataSetCompletenessInfo(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then((dataSetCompletenessInfo : any)=>{
+    this.dataSetCompletenessProvider.getDataSetCompletenessInfo(dataSetId,period,orgUnitId,dataDimension,this.currentUser).subscribe((dataSetCompletenessInfo : any)=>{
       this.dataSetsCompletenessInfo = dataSetCompletenessInfo;
       if(dataSetCompletenessInfo && dataSetCompletenessInfo.complete){
         this.isDataSetCompleted = true;
@@ -256,7 +256,7 @@ export class DataEntryFormPage implements OnInit{
       value :updateDataValue.value,
       period : this.entryFormParameter.period.name
     });
-    this.dataValuesProvider.saveDataValues(newDataValue,dataSetId,period,orgUnitId,dataDimension,updateDataValue.status,this.currentUser).then(()=>{
+    this.dataValuesProvider.saveDataValues(newDataValue,dataSetId,period,orgUnitId,dataDimension,updateDataValue.status,this.currentUser).subscribe(()=>{
       if(this.dataValuesObject[dataValueId] && this.dataValuesObject[dataValueId].status == "synced" ){
         this.storageStatus.online --;
         this.storageStatus.offline ++;
@@ -289,7 +289,7 @@ export class DataEntryFormPage implements OnInit{
     let orgUnitId = this.entryFormParameter.orgUnit.id;
     let dataDimension = this.entryFormParameter.dataDimension;
     if(this.isDataSetCompleted){
-      this.dataSetCompletenessProvider.unDoCompleteOnDataSetRegistrations(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then(()=>{
+      this.dataSetCompletenessProvider.unDoCompleteOnDataSetRegistrations(dataSetId,period,orgUnitId,dataDimension,this.currentUser).subscribe(()=>{
         this.dataSetsCompletenessInfo = {};
         this.isDataSetCompletenessProcessRunning = false;
         this.isDataSetCompleted = false;
@@ -300,8 +300,8 @@ export class DataEntryFormPage implements OnInit{
         this.appProvider.setNormalNotification("Fail to un complete entry form");
       });
     }else{
-      this.dataSetCompletenessProvider.completeOnDataSetRegistrations(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then(()=>{
-        this.dataSetCompletenessProvider.getDataSetCompletenessInfo(dataSetId,period,orgUnitId,dataDimension,this.currentUser).then((dataSetCompletenessInfo : any)=>{
+      this.dataSetCompletenessProvider.completeOnDataSetRegistrations(dataSetId,period,orgUnitId,dataDimension,this.currentUser).subscribe(()=>{
+        this.dataSetCompletenessProvider.getDataSetCompletenessInfo(dataSetId,period,orgUnitId,dataDimension,this.currentUser).subscribe((dataSetCompletenessInfo : any)=>{
           this.dataSetsCompletenessInfo = dataSetCompletenessInfo;
           if(dataSetCompletenessInfo && dataSetCompletenessInfo.complete){
             this.isDataSetCompleted = true;
@@ -346,11 +346,11 @@ export class DataEntryFormPage implements OnInit{
     if(dataValues.length > 0){
       this.loadingMessage = "Uploading data";
       let formattedDataValues = this.dataValuesProvider.getFormattedDataValueForUpload(dataValues);
-      this.dataValuesProvider.uploadDataValues(formattedDataValues,formattedDataValues,this.currentUser).then(()=>{
+      this.dataValuesProvider.uploadDataValues(formattedDataValues,formattedDataValues,this.currentUser).subscribe(()=>{
         this.storageStatus.offline = 0;
         this.storageStatus.online += dataValues.length;
         console.log("Success uploading data");
-      }).catch(error=>{
+      },error=>{
         console.log("Fail to upload data");
       });
 

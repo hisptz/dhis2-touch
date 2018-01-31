@@ -17,7 +17,7 @@
 
   <ion-grid>
     <div *ngIf="isLoading">
-      <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage|translate" ></page-loading>
+      <loading [loadingSize]="'large'" [loadingMessage]="loadingMessage|translate" ></loading>
     </div>
 
     <div *ngIf="!isLoading">

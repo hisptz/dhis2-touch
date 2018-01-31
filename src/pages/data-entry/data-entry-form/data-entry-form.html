@@ -34,7 +34,7 @@
           </div>
         </div>
         <div *ngIf="isLoading">
-          <page-loading [loadingMessage]="loadingMessage|translate" [loadingSize]="'large'" ></page-loading>
+          <loading [loadingMessage]="loadingMessage|translate" [loadingSize]="'large'" ></loading>
         </div>
         <div *ngIf="!isLoading">
           <div *ngIf="entryFormSections && entryFormSections.length == 0">
@@ -111,7 +111,7 @@
 
             <div *ngIf="isDataSetCompletenessProcessRunning" class="item-card animated fadeIn">
               <ion-row>
-                <ion-col col-1 ><page-loading loadingSize="small"></page-loading></ion-col>
+                <ion-col col-1 ><loading loadingSize="small"></loading></ion-col>
                 <ion-col col-11><p>&nbsp;{{'please_wait'|translate}} ...</p></ion-col>
               </ion-row>
             </div>

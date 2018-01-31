@@ -40,7 +40,7 @@ export class ReportsPage implements OnInit{
     this.loadingMessages = [];
     this.isLoading = true;
     this.reportList = [];
-    this.user.getCurrentUser().then((user:any)=>{
+    this.user.getCurrentUser().subscribe((user:any)=>{
       this.currentUser = user;
       this.loadReportsList(user);
     });
@@ -48,7 +48,7 @@ export class ReportsPage implements OnInit{
 
   loadReportsList(user) {
     this.loadingMessage = 'loading_reports';
-    this.standardReportProvider.getReportList(user).then((reportList: any) => {
+    this.standardReportProvider.getReportList(user).subscribe((reportList: any) => {
       this.reportList = reportList;
       this.reportListCopy = reportList;
       this.isLoading = false;
@@ -90,12 +90,12 @@ export class ReportsPage implements OnInit{
     this.loadingMessage = "downloading_reports_from_server";
     this.isLoading = true;
     let resource = 'reports';
-    this.standardReportProvider.downloadReportsFromServer(this.currentUser).then((response:any)=> {
+    this.standardReportProvider.downloadReportsFromServer(this.currentUser).subscribe((response:any)=> {
       this.loadingMessage = "prepare_local_storage_for_updates";
-      this.sqLite.dropTable(resource, this.currentUser.currentDatabase).then(()=>{
-        this.sqLite.createTable(resource,this.currentUser.currentDatabase).then(()=>{
+      this.sqLite.dropTable(resource, this.currentUser.currentDatabase).subscribe(()=>{
+        this.sqLite.createTable(resource,this.currentUser.currentDatabase).subscribe(()=>{
           this.loadingMessage = "saving_reports_from_server";
-          this.standardReportProvider.saveReportsFromServer( response[resource], this.currentUser).then(() => {
+          this.standardReportProvider.saveReportsFromServer( response[resource], this.currentUser).subscribe(() => {
             this.loadReportsList(this.currentUser);
           }, error=>{
             this.isLoading = true;

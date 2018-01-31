@@ -15,7 +15,7 @@
 <ion-content >
   <ion-grid>
     <div *ngIf="isLoading">
-      <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></page-loading>
+      <loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></loading>
     </div>
     <div *ngIf="!isLoading" class="item-card">
       <div *ngFor="let info of userInformation">

@@ -57,9 +57,9 @@ export class DataEntryPage implements OnInit{
     this.currentPeriodOffset = 0;
     this.isDataSetDimensionApplicable = false;
 
-    this.userProvider.getCurrentUser().then((currentUser: any)=>{
+    this.userProvider.getCurrentUser().subscribe((currentUser: any)=>{
       this.currentUser = currentUser;
-      this.userProvider.getUserData().then((userData : any)=>{
+      this.userProvider.getUserData().subscribe((userData : any)=>{
         this.dataSetIdsByUserRoles = [];
         userData.userRoles.forEach((userRole:any)=>{
           if (userRole.dataSets) {
@@ -69,8 +69,8 @@ export class DataEntryPage implements OnInit{
           }
         });
 
-        this.organisationUnitsProvider.getLastSelectedOrganisationUnitUnit(currentUser).then((lastSelectedOrgunit)=>{
-          this.selectedOrgUnit = lastSelectedOrgunit;
+        this.organisationUnitsProvider.getLastSelectedOrganisationUnitUnit(currentUser).subscribe((lastSelectedOrgUnit)=>{
+          this.selectedOrgUnit = lastSelectedOrgUnit;
           this.updateDataEntryFormSelections();
           this.loadingEntryForm();
         });
@@ -121,7 +121,7 @@ export class DataEntryPage implements OnInit{
   }
 
   loadingEntryForm(){
-    this.dataSetProvider.getAssignedDataSets(this.selectedOrgUnit.id,this.dataSetIdsByUserRoles,this.currentUser).then((dataSets: any)=>{
+    this.dataSetProvider.getAssignedDataSets(this.selectedOrgUnit.id,this.dataSetIdsByUserRoles,this.currentUser).subscribe((dataSets: any)=>{
       this.dataSets = dataSets;
       this.selectedDataSet = this.dataSetProvider.lastSelectedDataSet;
       this.currentPeriodOffset = 0;

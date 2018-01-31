@@ -53,9 +53,9 @@ export class ReportParameterSelectionPage implements OnInit{
     this.reportParams = this.params.get("reportParams");
     this.reportType = this.params.get('reportType');
     this.reportPeriodType  = this.standardReportProvider.getReportPeriodType(this.params.get("relativePeriods"));
-    this.user.getCurrentUser().then((user)=>{
+    this.user.getCurrentUser().subscribe((user)=>{
       this.currentUser = user;
-      this.organisationUnitsProvider.getLastSelectedOrganisationUnitUnit(user).then((lastSelectedOrgunit)=>{
+      this.organisationUnitsProvider.getLastSelectedOrganisationUnitUnit(user).subscribe((lastSelectedOrgunit)=>{
         this.selectedOrgUnit = lastSelectedOrgunit;
         let periods = this.periodSelectionProvider.getPeriods(this.reportPeriodType,this.openFuturePeriods,this.currentPeriodOffset);
         if(periods && periods.length > 0){

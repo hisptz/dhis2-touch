@@ -59,9 +59,9 @@ export class TrackerCapturePage implements OnInit{
     this.loadingMessage = "loading_user_information";
     this.isLoading = true;
     this.isFormReady = false;
-    this.userProvider.getCurrentUser().then((currentUser: any)=>{
+    this.userProvider.getCurrentUser().subscribe((currentUser: any)=>{
       this.currentUser = currentUser;
-      this.userProvider.getUserData().then((userData : any)=>{
+      this.userProvider.getUserData().subscribe((userData : any)=>{
         this.programIdsByUserRoles = [];
         userData.userRoles.forEach((userRole:any)=>{
           if (userRole.programs) {
@@ -70,7 +70,7 @@ export class TrackerCapturePage implements OnInit{
             });
           }
         });
-        this.organisationUnitsProvider.getLastSelectedOrganisationUnitUnit(currentUser).then((lastSelectedOrgUnit : any)=>{
+        this.organisationUnitsProvider.getLastSelectedOrganisationUnitUnit(currentUser).subscribe((lastSelectedOrgUnit : any)=>{
           if(lastSelectedOrgUnit && lastSelectedOrgUnit.id){
             this.selectedOrgUnit = lastSelectedOrgUnit;
             this.loadingPrograms();
@@ -89,16 +89,16 @@ export class TrackerCapturePage implements OnInit{
     this.isLoading = true;
     this.loadingMessage = "loading_assigned_programs";
     let programType = "WITH_REGISTRATION";
-    this.programsProvider.getProgramsAssignedOnOrgUnitAndUserRoles(this.selectedOrgUnit.id,programType,this.programIdsByUserRoles,this.currentUser).then((programs : any)=>{
+    this.programsProvider.getProgramsAssignedOnOrgUnitAndUserRoles(this.selectedOrgUnit.id,programType,this.programIdsByUserRoles,this.currentUser).subscribe((programs : any)=>{
       this.programs = programs;
       this.selectedProgram = this.programsProvider.lastSelectedProgram;
       if(this.selectedProgram && this.selectedProgram.id){
-        this.trackerCaptureProvider.getTrackedEntityRegistration(this.selectedProgram.id,this.currentUser).then((programTrackedEntityAttributes : any)=>{
+        this.trackerCaptureProvider.getTrackedEntityRegistration(this.selectedProgram.id,this.currentUser).subscribe((programTrackedEntityAttributes : any)=>{
           this.programTrackedEntityAttributes = programTrackedEntityAttributes;
           this.updateTrackerCaptureSelections();
           this.isLoading = false;
           this.loadingMessage = "";
-        }).catch(error=>{
+        },error=>{
           this.isLoading = false;
           console.log(JSON.stringify(error));
           this.appProvider.setNormalNotification("Fail to load registration form for " + this.selectedProgram.name);
@@ -166,10 +166,10 @@ export class TrackerCapturePage implements OnInit{
         if(selectedProgram && selectedProgram.id){
           this.selectedProgram = selectedProgram;
           this.programsProvider.setLastSelectedProgram(selectedProgram);
-          this.trackerCaptureProvider.getTrackedEntityRegistration(selectedProgram.id,this.currentUser).then((programTrackedEntityAttributes : any)=>{
+          this.trackerCaptureProvider.getTrackedEntityRegistration(selectedProgram.id,this.currentUser).subscribe((programTrackedEntityAttributes : any)=>{
             this.programTrackedEntityAttributes = programTrackedEntityAttributes;
             this.updateTrackerCaptureSelections();
-          }).catch(error=>{
+          },error=>{
             this.isLoading = false;
             console.log(JSON.stringify(error));
             this.appProvider.setNormalNotification("Fail to load registration form for " + this.selectedProgram.name);
@@ -185,10 +185,10 @@ export class TrackerCapturePage implements OnInit{
   loadingSavedTrackedEntityInstances(programId,orgUnitId){
     this.isLoading = true;
     this.loadingMessage = "Loading tracked entity list";
-    this.trackerCaptureProvider.loadTrackedEntityInstancesList(programId,orgUnitId,this.currentUser).then((trackedEntityInstances : any)=>{
+    this.trackerCaptureProvider.loadTrackedEntityInstancesList(programId,orgUnitId,this.currentUser).subscribe((trackedEntityInstances : any)=>{
       this.trackedEntityInstances = trackedEntityInstances;
       this.renderDataAsTable();
-    }).catch(error=>{
+    },error=>{
       console.log(JSON.stringify(error));
       this.isLoading = false;
       this.appProvider.setNormalNotification("Fail to load tracked entity list");
@@ -205,11 +205,11 @@ export class TrackerCapturePage implements OnInit{
 
   renderDataAsTable(){
     this.loadingMessage = "preparing_table";
-    this.trackerCaptureProvider.getTableFormatResult(this.attributeToDisplay,this.trackedEntityInstances).then((response : any)=>{
+    this.trackerCaptureProvider.getTableFormatResult(this.attributeToDisplay,this.trackedEntityInstances).subscribe((response : any)=>{
       this.tableLayout = response.table;
       this.trackedEntityInstancesIds = response.trackedEntityInstancesIds;
       this.isLoading = false;
-    }).catch(error=>{
+    },error=>{
       this.isLoading = false;
       this.appProvider.setNormalNotification("Fail to prepare table for display");
     });
@@ -223,10 +223,7 @@ export class TrackerCapturePage implements OnInit{
         this.renderDataAsTable();
       }
     });
-    modal.present().then((attributeToDisplay)=>{
-    }).catch(error=>{
-      console.log(JSON.stringify(error));
-    });
+    modal.present();
   }
 
   registerNewTrackedEntity(){

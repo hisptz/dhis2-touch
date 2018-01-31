@@ -62,9 +62,9 @@ export class EventCapturePage implements OnInit {
     this.isLoading = true;
     this.isFormReady = false;
     this.isProgramDimensionApplicable = false;
-    this.userProvider.getCurrentUser().then((currentUser: any) => {
+    this.userProvider.getCurrentUser().subscribe((currentUser: any) => {
       this.currentUser = currentUser;
-      this.userProvider.getUserData().then((userData: any) => {
+      this.userProvider.getUserData().subscribe((userData: any) => {
         this.programIdsByUserRoles = [];
         userData.userRoles.forEach((userRole: any) => {
           if (userRole.programs) {
@@ -73,7 +73,7 @@ export class EventCapturePage implements OnInit {
             });
           }
         });
-        this.organisationUnitsProvider.getLastSelectedOrganisationUnitUnit(currentUser).then((lastSelectedOrgUnit: any) => {
+        this.organisationUnitsProvider.getLastSelectedOrganisationUnitUnit(currentUser).subscribe((lastSelectedOrgUnit: any) => {
           if (lastSelectedOrgUnit && lastSelectedOrgUnit.id) {
             this.selectedOrgUnit = lastSelectedOrgUnit;
             this.loadingPrograms();
@@ -96,7 +96,7 @@ export class EventCapturePage implements OnInit {
   }
 
   loadingAppSetting(){
-    this.settingsProvider.getSettingsForTheApp(this.currentUser).then((appSettings : any)=>{
+    this.settingsProvider.getSettingsForTheApp(this.currentUser).subscribe((appSettings : any)=>{
       this.dataEntrySettings =  appSettings.entryForm;
     });
   }
@@ -105,7 +105,7 @@ export class EventCapturePage implements OnInit {
     this.isLoading = true;
     this.loadingMessage = "loading_assigned_programs";
     let programType = "WITHOUT_REGISTRATION";
-    this.programsProvider.getProgramsAssignedOnOrgUnitAndUserRoles(this.selectedOrgUnit.id, programType, this.programIdsByUserRoles, this.currentUser).then((programs: any) => {
+    this.programsProvider.getProgramsAssignedOnOrgUnitAndUserRoles(this.selectedOrgUnit.id, programType, this.programIdsByUserRoles, this.currentUser).subscribe((programs: any) => {
       this.programs = programs;
       this.selectedProgram = this.programsProvider.lastSelectedProgram;
       this.updateEventCaptureSelections();
@@ -261,7 +261,7 @@ export class EventCapturePage implements OnInit {
   loadProgramStages(programId){
     this.loadingMessage = "Loading program stages " + this.selectedProgram.name;
     this.columnsToDisplay = {};
-    this.eventCaptureFormProvider.getProgramStages(programId,this.currentUser).then((programStages : any)=>{
+    this.eventCaptureFormProvider.getProgramStages(programId,this.currentUser).subscribe((programStages : any)=>{
       if(programStages && programStages.length > 0){
         this.programStage = programStages[0];
         if(this.programStage.programStageDataElements){
@@ -281,7 +281,7 @@ export class EventCapturePage implements OnInit {
         }
         this.updateEventCaptureSelections();
       }
-    }).catch(error=>{
+    },error=>{
       console.log(JSON.stringify(error));
       this.isLoading = false;
       this.appProvider.setNormalNotification("Fail to load program stages " + this.selectedProgram.name);
@@ -296,8 +296,7 @@ export class EventCapturePage implements OnInit {
         this.renderDataAsTable();
       }
     });
-    modal.present().then(()=>{
-    });
+    modal.present();
   }
 
   loadingEvents(){
@@ -305,7 +304,7 @@ export class EventCapturePage implements OnInit {
       this.isLoading = true;
       this.loadingMessage = "Loading data";
       let dataDimension = this.getDataDimensions();
-      this.eventCaptureFormProvider.getEventsBasedOnEventsSelection(this.currentUser,dataDimension,this.selectedProgram.id,this.selectedOrgUnit.id).then((events :any)=>{
+      this.eventCaptureFormProvider.getEventsBasedOnEventsSelection(this.currentUser,dataDimension,this.selectedProgram.id,this.selectedOrgUnit.id).subscribe((events :any)=>{
         this.currentEvents = events;
         this.renderDataAsTable();
       });
@@ -315,11 +314,11 @@ export class EventCapturePage implements OnInit {
   renderDataAsTable(){
     this.isLoading = true;
     this.loadingMessage = "Prepare table";
-    this.eventCaptureFormProvider.getTableFormatResult(this.columnsToDisplay,this.currentEvents).then((response : any)=>{
+    this.eventCaptureFormProvider.getTableFormatResult(this.columnsToDisplay,this.currentEvents).subscribe((response : any)=>{
       this.tableLayout = response.table;
       this.eventIds = response.eventIds;
       this.isLoading = false;
-    }).catch(error=>{
+    },error=>{
       this.isLoading = false;
       this.appProvider.setNormalNotification("Fail to prepare table for display");
     });

@@ -18,7 +18,7 @@
   <ion-grid>
 
     <div *ngIf="isLoading">
-      <page-loading [loadingMessage]="loadingMessage|translate" [loadingSize]="'large'"></page-loading>
+      <loading [loadingMessage]="loadingMessage|translate" [loadingSize]="'large'"></loading>
     </div>
     <div *ngIf="!isLoading">
 
@@ -42,7 +42,7 @@
 
           <div *ngIf=" settingContent.id == 'appSettings'">
             <div *ngIf="settingContent.isLoading">
-              <page-loading [loadingMessage]="'Applying changes'" [loadingSize]="'large'"></page-loading>
+              <loading [loadingMessage]="'Applying changes'" [loadingSize]="'large'"></loading>
             </div>
             <div *ngIf="!settingContent.isLoading">
               <ion-row>
@@ -63,7 +63,7 @@
           <div *ngIf="settingContent.id == 'synchronization'">
             <div *ngIf="settingObject.synchronization">
               <div *ngIf="settingContent.isLoading">
-                <page-loading [loadingMessage]="'Applying changes'" [loadingSize]="'large'"></page-loading>
+                <loading [loadingMessage]="'Applying changes'" [loadingSize]="'large'"></loading>
               </div>
               <div *ngIf="!settingContent.isLoading">
                 <ion-row>
@@ -95,7 +95,7 @@
 
           <div *ngIf="settingContent.id == 'entryForm'">
             <div *ngIf="settingContent.isLoading">
-              <page-loading [loadingMessage]="'Applying changes'" [loadingSize]="'large'"></page-loading>
+              <loading [loadingMessage]="'Applying changes'" [loadingSize]="'large'"></loading>
             </div>
             <div *ngIf="!settingContent.isLoading">
               <div *ngIf="settingObject.entryForm">

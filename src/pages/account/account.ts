@@ -15,55 +15,57 @@ import {OrganisationUnitsProvider} from "../../providers/organisation-units/orga
   selector: 'page-account',
   templateUrl: 'account.html',
 })
-export class AccountPage implements OnInit{
+export class AccountPage implements OnInit {
 
-  animationEffect : any;
+  animationEffect: any;
 
-  constructor(private navCtrl : NavController,private app : App,private organisationUnitProvider : OrganisationUnitsProvider, private userProvider : UserProvider) {
+  constructor(private navCtrl: NavController, private app: App, private organisationUnitProvider: OrganisationUnitsProvider, private userProvider: UserProvider) {
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.animationEffect = {
-      profile : "",
-      about : "",
-      help : "",
-      logout : ""
+      profile: "",
+      about: "",
+      help: "",
+      logout: ""
     }
   }
 
-  goToView(key){
+  goToView(key) {
     this.applyAnimation(key);
-    setTimeout(()=>{
-      if(key == "profile"){
+    setTimeout(() => {
+      if (key == "profile") {
         this.setView("ProfilePage");
-      }else if(key == "about"){
+      } else if (key == "about") {
         this.setView('AboutPage');
-      }else if(key == "help"){
+      } else if (key == "help") {
         this.setView('HelpPage');
       }
-    },60);
-  }
-  setView(viewName){
-    this.navCtrl.push(viewName).then(()=>{})
+    }, 60);
   }
 
-  applyAnimation(key : any){
+  setView(viewName) {
+    this.navCtrl.push(viewName).then(() => {
+    })
+  }
+
+  applyAnimation(key: any) {
     this.animationEffect[key] = "animated bounceIn";
-    setTimeout(()=>{
+    setTimeout(() => {
       this.animationEffect[key] = "";
-    },100);
+    }, 100);
   }
 
-  async logOut(){
-    try{
+  async logOut() {
+    try {
       this.applyAnimation('logout');
-      let user :any = await this.userProvider.getCurrentUser();
+      let user: any = await this.userProvider.getCurrentUser();
       user.isLogin = false;
-      this.userProvider.setCurrentUser(user).then(()=>{
+      this.userProvider.setCurrentUser(user).subscribe(() => {
         this.organisationUnitProvider.resetOrganisationUnit();
       });
       this.app.getRootNav().setRoot(LoginPage);
-    }catch (e){
+    } catch (e) {
       console.log(JSON.stringify(e));
     }
   }

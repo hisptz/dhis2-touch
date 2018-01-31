@@ -32,7 +32,7 @@ export class EntryFormCompletenessPage implements OnInit{
     this.loadingMessage = "Loading information for " + username;
     this.isLoading = true;
     this.userInformation = [];
-    this.dataSetCompletenessProvider.getUserCompletenessInformation(username,currentUser).then((userResponse : any )=>{
+    this.dataSetCompletenessProvider.getUserCompletenessInformation(username,currentUser).subscribe((userResponse : any )=>{
       this.prepareUserInformation(userResponse.user,username);
     },error=>{
       console.log(JSON.stringify(error));

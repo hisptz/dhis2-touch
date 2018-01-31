@@ -70,10 +70,10 @@ export class TrackedEntityDashboardPage implements OnInit{
     this.currentProgram = this.programsProvider.lastSelectedProgram;
     this.currentOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
     this.dashboardWidgets = this.getDashboardWidgets();
-    this.userProvider.getCurrentUser().then(user=>{
+    this.userProvider.getCurrentUser().subscribe(user=>{
       this.currentUser = user;
       this.loadTrackedEntityInstanceData(trackedEntityInstancesId);
-    }).catch((error)=>{
+    },(error)=>{
       console.log(JSON.stringify(error));
       this.isLoading = false;
       this.appProvider.setNormalNotification("Fail to load user information");
@@ -82,7 +82,7 @@ export class TrackedEntityDashboardPage implements OnInit{
 
   loadTrackedEntityInstanceData(trackedEntityInstanceId){
     this.loadingMessage = "Loading tracked entity";
-    this.trackerCaptureProvider.getTrackedEntityInstance(trackedEntityInstanceId,this.currentUser).then((response : any)=>{
+    this.trackerCaptureProvider.getTrackedEntityInstance(trackedEntityInstanceId,this.currentUser).subscribe((response : any)=>{
       this.trackedEntityInstance = response;
       if(response && response.attributes){
         response.attributes.forEach((attributeObject : any)=>{
@@ -92,12 +92,12 @@ export class TrackedEntityDashboardPage implements OnInit{
         });
       }
       this.loadingProgramStages(this.currentProgram.id,this.currentUser);
-    }).catch(error=>{})
+    },error=>{})
   }
 
   loadingProgramStages(programId,currentUser){
     this.loadingMessage = "Loading program stages " + this.currentProgram.name;
-    this.eventCaptureFormProvider.getProgramStages(programId,currentUser).then((programStages : any)=>{
+    this.eventCaptureFormProvider.getProgramStages(programId,currentUser).subscribe((programStages : any)=>{
       this.programStages = programStages;
       if(programStages && programStages.length > 0){
         let counter = 1;
@@ -110,7 +110,7 @@ export class TrackedEntityDashboardPage implements OnInit{
         this.changeDashboardWidget(this.dashboardWidgets[0]);
       }
       this.loadTrackedEntityRegistration(programId,currentUser);
-    }).catch(error=>{
+    },error=>{
       console.log(JSON.stringify(error));
       this.isLoading = false;
       this.appProvider.setNormalNotification("Fail to load program stages " + this.currentProgram.name);
@@ -120,10 +120,10 @@ export class TrackedEntityDashboardPage implements OnInit{
   loadTrackedEntityRegistration(programId,currentUser){
     this.loadingMessage = "Loading registration fields " + this.currentProgram.name;
     this.isLoading = true;
-    this.trackerCaptureProvider.getTrackedEntityRegistration(programId,currentUser).then((programTrackedEntityAttributes : any)=>{
+    this.trackerCaptureProvider.getTrackedEntityRegistration(programId,currentUser).subscribe((programTrackedEntityAttributes : any)=>{
       this.programTrackedEntityAttributes = programTrackedEntityAttributes;
       this.isLoading = false;
-    }).catch(error=>{
+    },error=>{
       this.isLoading = false;
       console.log(JSON.stringify(error));
       this.appProvider.setNormalNotification("Fail to load registration fields for " + this.currentProgram.name);
@@ -139,10 +139,10 @@ export class TrackedEntityDashboardPage implements OnInit{
           handler: () => {
             this.isLoading = true;
             this.loadingMessage = "Deleting all information related to this tracked entity instance";
-            this.trackerCaptureProvider.deleteTrackedEntityInstance(trackedEntityInstanceId,this.currentUser).then(()=>{
+            this.trackerCaptureProvider.deleteTrackedEntityInstance(trackedEntityInstanceId,this.currentUser).subscribe(()=>{
               this.navCtrl.pop();
               this.appProvider.setNormalNotification("Tracked entity instance has been delete successfully");
-            }).catch(error=>{
+            },error=>{
               this.isLoading = false;
               console.log(JSON.stringify(error));
               this.appProvider.setNormalNotification("Fail to delete all information related to this tracked entity instance")
@@ -167,15 +167,15 @@ export class TrackedEntityDashboardPage implements OnInit{
         value : this.trackedEntityAttributeValuesObject[key],attribute : key
       })
     });
-    this.trackedEntityAttributeValuesProvider.savingTrackedEntityAttributeValues(this.trackedEntityInstance.id,trackedEntityAttributeValues,this.currentUser).then(()=>{
-      this.trackedEntityInstancesProvider.updateSavedTrackedEntityInstancesByStatus([this.trackedEntityInstance],this.currentUser,'not-synced').then(()=>{
+    this.trackedEntityAttributeValuesProvider.savingTrackedEntityAttributeValues(this.trackedEntityInstance.id,trackedEntityAttributeValues,this.currentUser).subscribe(()=>{
+      this.trackedEntityInstancesProvider.updateSavedTrackedEntityInstancesByStatus([this.trackedEntityInstance],this.currentUser,'not-synced').subscribe(()=>{
         this.dataObject[updateDataValue.id] = updateDataValue;
         this.trackedEntityAttributesSavingStatusClass[updateDataValue.id] ="input-field-container-success";
-      }).catch((error)=>{
+      },(error)=>{
         this.trackedEntityAttributesSavingStatusClass[updateDataValue.id] ="input-field-container-failed";
         console.log(JSON.stringify(error));
       })
-    }).catch(error=>{
+    },error=>{
       this.trackedEntityAttributesSavingStatusClass[updateDataValue.id] ="input-field-container-failed";
       console.log(JSON.stringify(error));
     });

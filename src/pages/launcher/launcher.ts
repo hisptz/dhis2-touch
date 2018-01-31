@@ -3,10 +3,12 @@ import { NavController} from 'ionic-angular';
 import {LoginPage} from "../login/login";
 import {TabsPage} from "../tabs/tabs";
 import {UserProvider} from "../../providers/user/user";
-import {DashboardServiceProvider} from "../../providers/dashboard-service/dashboard-service";
 import {NetworkAvailabilityProvider} from "../../providers/network-availability/network-availability";
 import {BackgroundMode} from "@ionic-native/background-mode";
 import {AppTranslationProvider} from "../../providers/app-translation/app-translation";
+import {ApplicationState} from "../../store/reducers/index";
+import {Store} from "@ngrx/store";
+import { LoadedCurrentUser} from "../../store/actions/currentUser.actons";
 
 /**
  * Generated class for the LauncherPage page.
@@ -24,7 +26,7 @@ export class LauncherPage implements OnInit{
 
   constructor(private navCtrl: NavController,
               private UserProvider : UserProvider,
-              private DashboardServiceProvider : DashboardServiceProvider,
+              private store : Store<ApplicationState>,
               private NetworkAvailabilityProvider : NetworkAvailabilityProvider,
               private appTranslationProvider : AppTranslationProvider,
               private backgroundMode: BackgroundMode) {
@@ -34,14 +36,14 @@ export class LauncherPage implements OnInit{
     this.logoUrl = 'assets/img/logo.png';
     this.backgroundMode.enable();
     this.NetworkAvailabilityProvider.setNetworkStatusDetection();
-    this.DashboardServiceProvider.resetDashboards();
-    this.UserProvider.getCurrentUser().then((user : any)=>{
+    this.UserProvider.getCurrentUser().subscribe((user : any)=>{
       let currentLanguage = "en";
       if(user && user.currentLanguage){
         currentLanguage = user.currentLanguage;
       }
       this.appTranslationProvider.setAppTranslation(currentLanguage);
       if(user && user.isLogin){
+        this.store.dispatch(new LoadedCurrentUser(user));
         this.navCtrl.setRoot(TabsPage);
       }else{
         this.navCtrl.setRoot(LoginPage);
