@@ -2,7 +2,7 @@
 <ion-row>
   <ion-col>
     <div *ngIf="isLoading">
-      <page-loading [loadingMessage]="loadingMessage" [loadingSize]="'large'"></page-loading>
+      <loading [loadingMessage]="loadingMessage" [loadingSize]="'large'"></loading>
     </div>
     <div *ngIf="!isLoading">
       <div *ngFor="let section of entryFormSections">

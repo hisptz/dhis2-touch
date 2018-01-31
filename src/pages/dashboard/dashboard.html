@@ -1,0 +1,68 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{'dashboard'|translate}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content >
+  <ion-grid>
+    <div *ngIf="loading$ | async">
+      <loading [loadingMessage]="'loading_dashboard'|translate" [loadingSize]="'large'"></loading>
+    </div>
+    <div *ngIf="!(loading$ |async)">
+      <div class="entry-selection-container " (tap)="openDashboardListFilter()">
+        <ion-row>
+          <ion-col col-11>
+            {{ (currentDashboard$ | async)?.name }}
+          </ion-col>
+          <ion-col col-1>
+            <img [src]="icons['menu']" width="20" height="20">
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <!--cards for visualization -->
+      <div class="dashboard-card " *ngFor="let visualizationObject of visualizationObjects$ | async">
+
+        <ion-row >
+          <ion-col col-11>
+            <ion-icon color="primary"><img  class="dashboard-item-icon" [src]="icons[visualizationObject.details.currentVisualization]"/></ion-icon>
+            {{ visualizationObject.name }}
+          </ion-col>
+          <ion-col col-1 item>
+            <div style="text-align: center;">
+              <ion-icon  name="ios-arrow-down"
+                         item-right></ion-icon>
+              <!--<ion-icon *ngIf="openedDashboardItemIds[dashboardItem.id]" name="ios-arrow-up" item-right></ion-icon>-->
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <!--chart visualization-->
+            <app-chart-list
+              *ngIf="visualizationObject.details.currentVisualization === 'CHART'"
+              [visualizationLayers]="visualizationObject.layers"
+              [visualizationId]="visualizationObject.id"
+              [chartHeight]="visualizationObject.details.itemHeight"></app-chart-list>
+            <!--end of chart visualization-->
+
+            <!--table block-->
+            <app-table-list
+              *ngIf="visualizationObject.details.currentVisualization === 'TABLE'"
+              [visualizationType]="visualizationObject.type"
+              [visualizationLayers]="visualizationObject.layers"></app-table-list>
+            <!--end of table block-->
+          </ion-col>
+        </ion-row>
+      </div>
+    </div>
+
+  </ion-grid>
+</ion-content>

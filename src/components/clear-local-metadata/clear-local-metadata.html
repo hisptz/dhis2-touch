@@ -30,7 +30,7 @@
     </ion-col>
   </ion-row>
 
-  <span *ngIf="showLoadingMessage" > <page-loading loadingSize="large" [loadingMessage]="loadingMessage"></page-loading> </span>
+  <span *ngIf="showLoadingMessage" > <loading loadingSize="large" [loadingMessage]="loadingMessage"></loading> </span>
 
   <ion-row *ngIf="!showLoadingMessage">
   <button ion-button style="text-transform: none;" (tap)="verifyingDeleteOfResources()" block>Clear MetaData</button>
