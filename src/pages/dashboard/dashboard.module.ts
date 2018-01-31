@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { DashboardPage } from './dashboard';
 import {TranslateModule} from "@ngx-translate/core";
-import {SharedModule} from "../../components/share.module";
 import {ChartModule} from '../../modules/chart/chart.module';
 import {TableModule} from '../../modules/table/table.module';
+import {SharedModule} from "../../components/shared.module";
 
 @NgModule({
   declarations: [

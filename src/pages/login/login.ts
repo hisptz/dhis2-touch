@@ -91,6 +91,12 @@ export class LoginPage implements OnInit {
     this.cancelLoginProcess(this.cancelLoginProcessData);
     this.progressTracker = {};
     this.completedTrackedProcess = [];
+    this.currentUser = {
+      serverUrl: "",
+      username: "",
+      password: "",
+      currentLanguage : "en"
+    };
     this.UserProvider.getCurrentUser().subscribe((currentUser: any)=>{
       this.localInstanceProvider.getLocalInstances().subscribe((localInstances : any)=>{
         this.localInstances = localInstances;

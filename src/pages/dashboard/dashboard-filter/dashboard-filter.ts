@@ -18,7 +18,7 @@ import {Dashboard} from '../../../models/dashboard';
 @IonicPage()
 @Component({
   selector: 'page-dashboard-filter',
-  templateUrl: 'src/pages/dashboard/dashboard-filter/dashboard-filter.html',
+  templateUrl: 'dashboard-filter.html',
 })
 export class DashboardFilterPage implements OnInit{
 

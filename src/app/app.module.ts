@@ -71,6 +71,7 @@ import {LocalInstanceProvider} from '../providers/local-instance/local-instance'
 import {AppTranslationProvider} from '../providers/app-translation/app-translation';
 import {EnrollmentsProvider} from "../providers/enrollments/enrollments";
 import {TrackedEntityAttributeValuesProvider} from "../providers/tracked-entity-attribute-values/tracked-entity-attribute-values";
+import {EncryptionProvider} from "../providers/encryption/encryption";
 
 
 @NgModule({
@@ -137,7 +138,8 @@ import {TrackedEntityAttributeValuesProvider} from "../providers/tracked-entity-
     EnrollmentsProvider,
     DataSetReportProvider,
     LocalInstanceProvider,
-    AppTranslationProvider
+    AppTranslationProvider,
+    EncryptionProvider
   ]
 })
 export class AppModule {

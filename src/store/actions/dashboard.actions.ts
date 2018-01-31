@@ -7,7 +7,7 @@ import {DashboardSharing} from '../../models/dashboard-sharing';
 import {SharingEntity} from '../../models/sharing-entity';
 
 export enum DashboardActions {
-  LOAD = '[Dashboard] Load dashboards',
+  LOAD  = '[Dashboard] Load dashboards',
   LOAD_SUCCESS = '[Dashboard] Load dashboards success',
   LOAD_FAIL = '[Dashboard] Load dashboards fail',
   SET_CURRENT = '[Dashboard] Set current dashboard',

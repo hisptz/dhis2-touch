@@ -19,7 +19,7 @@ import * as fromDashboardActions from '../../store/actions/dashboard.actions';
 @IonicPage()
 @Component({
   selector: 'page-dashboard',
-  templateUrl: 'src/pages/dashboard/dashboard.html',
+  templateUrl: 'dashboard.html',
 })
 export class DashboardPage implements OnInit {
 
