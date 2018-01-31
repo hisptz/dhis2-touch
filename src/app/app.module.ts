@@ -1,7 +1,7 @@
-import { NgModule, ErrorHandler } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { MyApp } from './app.component';
+import {NgModule, ErrorHandler} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular';
+import {MyApp} from './app.component';
 
 //native plugins
 import {SQLite} from "@ionic-native/sqlite";
@@ -10,21 +10,21 @@ import {AppVersion} from "@ionic-native/app-version";
 import {Network} from "@ionic-native/network";
 import {BackgroundMode} from "@ionic-native/background-mode";
 import {SMS} from "@ionic-native/sms";
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
+import {StatusBar} from '@ionic-native/status-bar';
+import {SplashScreen} from '@ionic-native/splash-screen';
 import {IonicStorageModule} from "@ionic/storage";
 
 // Multi-language
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { Http, HttpModule } from '@angular/http';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {Http, HttpModule} from '@angular/http';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 //pages
-import { TabsPage } from '../pages/tabs/tabs';
+import {TabsPage} from '../pages/tabs/tabs';
 import {AppsPage} from "../pages/apps/apps";
 import {AccountPage} from "../pages/account/account";
 import {LoginPage} from "../pages/login/login";
@@ -32,9 +32,15 @@ import {LauncherPage} from "../pages/launcher/launcher";
 //modules
 
 import {SharedModule} from "../components/shared.module";
+import {PipesModule} from "../pipes/pipes.module";
+
+//store
+import {reducers, effects} from "../store";
+import {StoreModule} from "@ngrx/store";
+import {EffectsModule} from "@ngrx/effects";
 
 //providers
-import { HttpClientProvider } from '../providers/http-client/http-client';
+import {HttpClientProvider} from '../providers/http-client/http-client';
 import {UserProvider} from "../providers/user/user";
 import {NetworkAvailabilityProvider} from "../providers/network-availability/network-availability";
 import {AppProvider} from "../providers/app/app";
@@ -60,9 +66,9 @@ import {DataValuesProvider} from "../providers/data-values/data-values";
 import {DataSetCompletenessProvider} from "../providers/data-set-completeness/data-set-completeness";
 import {TrackerCaptureProvider} from "../providers/tracker-capture/tracker-capture";
 import {TrackedEntityInstancesProvider} from "../providers/tracked-entity-instances/tracked-entity-instances";
-import { DataSetReportProvider } from '../providers/data-set-report/data-set-report';
-import { LocalInstanceProvider } from '../providers/local-instance/local-instance';
-import { AppTranslationProvider } from '../providers/app-translation/app-translation';
+import {DataSetReportProvider} from '../providers/data-set-report/data-set-report';
+import {LocalInstanceProvider} from '../providers/local-instance/local-instance';
+import {AppTranslationProvider} from '../providers/app-translation/app-translation';
 import {EnrollmentsProvider} from "../providers/enrollments/enrollments";
 import {TrackedEntityAttributeValuesProvider} from "../providers/tracked-entity-attribute-values/tracked-entity-attribute-values";
 
@@ -78,17 +84,20 @@ import {TrackedEntityAttributeValuesProvider} from "../providers/tracked-entity-
   ],
   imports: [
     BrowserModule,
-    SharedModule,
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot(effects),
     IonicModule.forRoot(MyApp),
-    IonicStorageModule.forRoot(),
     HttpModule,
+    IonicStorageModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
         useFactory: (createTranslateLoader),
         deps: [Http]
       }
-    })
+    }),
+    PipesModule,
+    SharedModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -100,10 +109,10 @@ import {TrackedEntityAttributeValuesProvider} from "../providers/tracked-entity-
     TabsPage
   ],
   providers: [
-    StatusBar,SQLite,
-    SplashScreen,HTTP,AppVersion,Network,BackgroundMode,SMS,
+    StatusBar, SQLite,
+    SplashScreen, HTTP, AppVersion, Network, BackgroundMode, SMS,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    HttpClientProvider,UserProvider,NetworkAvailabilityProvider,AppProvider,AboutProvider,
+    HttpClientProvider, UserProvider, NetworkAvailabilityProvider, AppProvider, AboutProvider,
     ProfileProvider,
     SettingsProvider,
     HelpContentsProvider,
@@ -131,4 +140,5 @@ import {TrackedEntityAttributeValuesProvider} from "../providers/tracked-entity-
     AppTranslationProvider
   ]
 })
-export class AppModule {}
+export class AppModule {
+}

@@ -1,0 +1,9 @@
+<div class="row">
+  <div class="col-12" *ngFor="let tableLayer of tableLayers">
+    <app-table-item
+      [analyticsObject]="tableLayer.analyticsObject"
+      [tableConfiguration]="tableLayer.tableConfiguration"
+    >
+    </app-table-item>
+  </div>
+</div>

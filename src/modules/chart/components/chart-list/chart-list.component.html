@@ -1,0 +1,12 @@
+<div class="row">
+  <div
+    class="col-12 chart-list"
+    *ngFor="let chartLayer of chartLayers"
+  >
+    <app-chart-item
+      [chartConfiguration]="chartLayer.chartConfiguration"
+      [analyticsObject]="chartLayer.analyticsObject"
+      [chartHeight]="chartHeight"
+    ></app-chart-item>
+  </div>
+</div>
