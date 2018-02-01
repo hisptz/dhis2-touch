@@ -47,90 +47,122 @@ export class SyncProvider {
    * @returns {Observable<any>}
    */
   downloadResources(resources, currentUser): Observable<any> {
-    let promises = [];
     let data = {};
+    let completedProcess = 0;
     return new Observable(observer => {
-      resources.forEach((resource: any) => {
+      for(let resource of resources){
         if (resource == "organisationUnits") {
-          promises.push(
-            this.orgUnitsProvider.downloadingOrganisationUnitsFromServer(currentUser.userOrgUnitIds, currentUser).subscribe((response: any) => {
-              data[resource] = response;
-            }, error => {
-            })
-          );
+          this.orgUnitsProvider.downloadingOrganisationUnitsFromServer(currentUser.userOrgUnitIds, currentUser).subscribe((response: any) => {
+            data[resource] = response;
+            completedProcess ++;
+            if(completedProcess == resources.length){
+              observer.next(data);
+              observer.complete();
+            }
+          }, error => {
+            observer.error(error);
+          })
         } else if (resource == "dataSets") {
-          promises.push(
-            this.dataSetsProvider.downloadDataSetsFromServer(currentUser).subscribe((response: any) => {
-              data[resource] = response;
-            }, error => {
-            })
-          );
+          this.dataSetsProvider.downloadDataSetsFromServer(currentUser).subscribe((response: any) => {
+            data[resource] = response;
+            completedProcess ++;
+            if(completedProcess == resources.length){
+              observer.next(data);
+              observer.complete();
+            }
+          }, error => {
+            observer.error(error);
+          })
         } else if (resource == "sections") {
-          promises.push(
-            this.sectionProvider.downloadSectionsFromServer(currentUser).subscribe((response: any) => {
-              data[resource] = response[resource];
-            }, error => {
-            })
-          );
+          this.sectionProvider.downloadSectionsFromServer(currentUser).subscribe((response: any) => {
+            data[resource] = response[resource];
+            completedProcess ++;
+            if(completedProcess == resources.length){
+              observer.next(data);
+              observer.complete();
+            }
+          }, error => {
+            observer.error(error);
+          })
         } else if (resource == "dataElements") {
-          promises.push(
-            this.dataElementProvider.downloadDataElementsFromServer(currentUser).subscribe((response: any) => {
-              data[resource] = response[resource];
-            }, error => {
-            })
-          );
+          this.dataElementProvider.downloadDataElementsFromServer(currentUser).subscribe((response: any) => {
+            data[resource] = response[resource];
+            completedProcess ++;
+            if(completedProcess == resources.length){
+              observer.next(data);
+              observer.complete();
+            }
+          }, error => {
+            observer.error(error);
+          })
         } else if (resource == "indicators") {
-          promises.push(
-            this.indicatorProvider.downloadingIndicatorsFromServer(currentUser).subscribe((response: any) => {
-              data[resource] = response[resource];
-            }, error => {
-            })
-          );
+          this.indicatorProvider.downloadingIndicatorsFromServer(currentUser).subscribe((response: any) => {
+            data[resource] = response[resource];
+            completedProcess ++;
+            if(completedProcess == resources.length){
+              observer.next(data);
+              observer.complete();
+            }
+          }, error => {
+            observer.error(error);
+          })
         } else if (resource == "smsCommand") {
-          promises.push(
-            this.smsCommandsProvider.getSmsCommandFromServer(currentUser).subscribe((response: any) => {
-              data[resource] = response;
+          this.smsCommandsProvider.getSmsCommandFromServer(currentUser).subscribe((response: any) => {
+            data[resource] = response;
+            completedProcess ++;
+            if(completedProcess == resources.length){
+              observer.next(data);
+              observer.complete();
+            }
             }, error => {
-            })
-          );
+              observer.error(error);
+          });
         } else if (resource == "reports") {
-          promises.push(
-            this.reportsProvider.downloadReportsFromServer(currentUser).subscribe((response: any) => {
-              data[resource] = response[resource];
-            }, error => {
-            })
-          );
+          this.reportsProvider.downloadReportsFromServer(currentUser).subscribe((response: any) => {
+            data[resource] = response[resource];
+            completedProcess ++;
+            if(completedProcess == resources.length){
+              observer.next(data);
+              observer.complete();
+            }
+          }, error => {
+            observer.error(error);
+          })
         } else if (resource == "constants") {
-          promises.push(
-            this.reportsProvider.downloadConstantsFromServer(currentUser).subscribe((response: any) => {
-              data[resource] = response[resource];
-            }, error => {
-            })
-          );
+          this.reportsProvider.downloadConstantsFromServer(currentUser).subscribe((response: any) => {
+            data[resource] = response[resource];
+            completedProcess ++;
+            if(completedProcess == resources.length){
+              observer.next(data);
+              observer.complete();
+            }
+          }, error => {
+            observer.error(error);
+          })
         } else if (resource == "programs") {
-          promises.push(
-            this.programProvider.downloadProgramsFromServer(currentUser).subscribe((response: any) => {
-              data[resource] = response[resource];
-            }, error => {
-            })
-          );
+          this.programProvider.downloadProgramsFromServer(currentUser).subscribe((response: any) => {
+            data[resource] = response[resource];
+            completedProcess ++;
+            if(completedProcess == resources.length){
+              observer.next(data);
+              observer.complete();
+            }
+          }, error => {
+            observer.error(error);
+          })
         } else if (resource == "programStageSections") {
-          promises.push(
-            this.programStageSectionsProvider.downloadProgramsStageSectionsFromServer(currentUser).subscribe((response: any) => {
-              data[resource] = response[resource];
-            }, error => {
-            })
-          );
+          this.programStageSectionsProvider.downloadProgramsStageSectionsFromServer(currentUser).subscribe((response: any) => {
+            data[resource] = response[resource];
+            completedProcess ++;
+            if(completedProcess == resources.length){
+              observer.next(data);
+              observer.complete();
+            }
+          }, error => {
+            observer.error(error);
+          })
         }
-      });
-
-      Observable.forkJoin(promises).subscribe(() => {
-          observer.next(data);
-          observer.complete();
-        },
-        (error) => {
-          observer.error(error);
-        })
+      }
     });
   }
 
@@ -142,79 +174,110 @@ export class SyncProvider {
    * @returns {Observable<any>}
    */
   savingResources(resources, data, currentUser): Observable<any> {
-    let promises = [];
+    let completedProcess = 0;
     return new Observable(observer => {
-      resources.forEach((resource: any) => {
+      for(let resource of resources){
         if (resource == "organisationUnits") {
-          promises.push(
-            this.orgUnitsProvider.savingOrganisationUnitsFromServer(data[resource], currentUser).subscribe(() => {
-            }, error => {
-            })
-          );
+          this.orgUnitsProvider.savingOrganisationUnitsFromServer(data[resource], currentUser).subscribe(() => {
+            completedProcess ++;
+            if(completedProcess == resources.length){
+              observer.next(data);
+              observer.complete();
+            }
+          }, error => {
+          })
         } else if (resource == "dataSets") {
-          promises.push(
-            this.dataSetsProvider.saveDataSetsFromServer(data[resource], currentUser).subscribe(() => {
-            }, error => {
-            })
-          );
+          this.dataSetsProvider.saveDataSetsFromServer(data[resource], currentUser).subscribe(() => {
+            completedProcess ++;
+            if(completedProcess == resources.length){
+              observer.next(data);
+              observer.complete();
+            }
+          }, error => {
+            observer.error(error);
+          })
         } else if (resource == "sections") {
-          promises.push(
-            this.sectionProvider.saveSectionsFromServer(data[resource], currentUser).subscribe(() => {
-            }, error => {
-            })
-          );
+          this.sectionProvider.saveSectionsFromServer(data[resource], currentUser).subscribe(() => {
+            completedProcess ++;
+            if(completedProcess == resources.length){
+              observer.next(data);
+              observer.complete();
+            }
+          }, error => {
+            observer.error(error);
+          })
         } else if (resource == "dataElements") {
-          promises.push(
-            this.dataElementProvider.saveDataElementsFromServer(data[resource], currentUser).subscribe(() => {
-            }, error => {
-            })
-          );
+          this.dataElementProvider.saveDataElementsFromServer(data[resource], currentUser).subscribe(() => {
+            completedProcess ++;
+            if(completedProcess == resources.length){
+              observer.next(data);
+              observer.complete();
+            }
+          }, error => {
+            observer.error(error);
+          })
         } else if (resource == "indicators") {
-          promises.push(
-            this.indicatorProvider.savingIndicatorsFromServer(data[resource], currentUser).subscribe(() => {
-            }, error => {
-            })
-          );
+          this.indicatorProvider.savingIndicatorsFromServer(data[resource], currentUser).subscribe(() => {
+            completedProcess ++;
+            if(completedProcess == resources.length){
+              observer.next(data);
+              observer.complete();
+            }
+          }, error => {
+            observer.error(error);
+          })
         } else if (resource == "smsCommand") {
-          promises.push(
-            this.smsCommandsProvider.savingSmsCommand(data[resource], currentUser).subscribe(() => {
-            }, error => {
-            })
-          );
+          this.smsCommandsProvider.savingSmsCommand(data[resource], currentUser).subscribe(() => {
+            completedProcess ++;
+            if(completedProcess == resources.length){
+              observer.next(data);
+              observer.complete();
+            }
+          }, error => {
+            observer.error(error);
+          })
         } else if (resource == "reports") {
-          promises.push(
-            this.reportsProvider.saveReportsFromServer(data[resource], currentUser).subscribe(() => {
-            }, error => {
-            })
-          );
+          this.reportsProvider.saveReportsFromServer(data[resource], currentUser).subscribe(() => {
+            completedProcess ++;
+            if(completedProcess == resources.length){
+              observer.next(data);
+              observer.complete();
+            }
+          }, error => {
+            observer.error(error);
+          })
         } else if (resource == "constants") {
-          promises.push(
-            this.reportsProvider.saveConstantsFromServer(data[resource], currentUser).subscribe(() => {
-            }, error => {
-            })
-          );
+          this.reportsProvider.saveConstantsFromServer(data[resource], currentUser).subscribe(() => {
+            completedProcess ++;
+            if(completedProcess == resources.length){
+              observer.next(data);
+              observer.complete();
+            }
+          }, error => {
+            observer.error(error);
+          })
         } else if (resource == "programs") {
-          promises.push(
-            this.programProvider.saveProgramsFromServer(data[resource], currentUser).subscribe(() => {
-            }, error => {
-            })
-          );
+          this.programProvider.saveProgramsFromServer(data[resource], currentUser).subscribe(() => {
+            completedProcess ++;
+            if(completedProcess == resources.length){
+              observer.next(data);
+              observer.complete();
+            }
+          }, error => {
+            observer.error(error);
+          })
         } else if (resource == "programStageSections") {
-          promises.push(
-            this.programStageSectionsProvider.saveProgramsStageSectionsFromServer(data[resource], currentUser).subscribe(() => {
-            }, error => {
-            })
-          );
+          this.programStageSectionsProvider.saveProgramsStageSectionsFromServer(data[resource], currentUser).subscribe(() => {
+            completedProcess ++;
+            if(completedProcess == resources.length){
+              observer.next(data);
+              observer.complete();
+            }
+          }, error => {
+            observer.error(error);
+          })
         }
-      });
-
-      Observable.forkJoin(promises).subscribe(() => {
-          observer.next();
-          observer.complete();
-        },
-        (error) => {
-          observer.error(error);
-        })
+      }
     });
   }
 
@@ -225,22 +288,24 @@ export class SyncProvider {
    * @returns {Observable<any>}
    */
   prepareTablesToApplyChanges(resources, currentUser): Observable<any> {
-    let promises = [];
+    let completedProcess = 0;
     return new Observable(observer => {
-      resources.forEach((resource: any) => {
-        promises.push(
-          this.sqLite.dropTable(resource, currentUser.currentDatabase).subscribe(() => {
-          }, error => {
-          })
-        )
-      });
-      Observable.forkJoin(promises).subscribe(() => {
-          observer.next();
+      for(let resource of resources){
+        this.sqLite.dropTable(resource, currentUser.currentDatabase).subscribe(() => {
+          completedProcess ++;
+          if(completedProcess == resources.length){
+            observer.next();
           observer.complete();
-        },
-        (error) => {
-          observer.error(error);
-        })
+          }
+        }, error => {
+          console.log(JSON.stringify(error));
+          completedProcess ++;
+          if(completedProcess == resources.length){
+            observer.next();
+          observer.complete();
+          }
+        });
+      }      
     });
   }
 

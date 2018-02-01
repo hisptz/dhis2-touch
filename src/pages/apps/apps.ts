@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {NavController} from 'ionic-angular';
-import {AppProvider} from "../../providers/app/app";
 
 /**
  * Generated class for the AppsPage page.
@@ -17,7 +16,7 @@ export class AppsPage implements OnInit {
 
   animationEffect: any;
 
-  constructor(private navCtrl: NavController, private appProvider: AppProvider) {
+  constructor(private navCtrl: NavController) {
   }
 
   ngOnInit() {

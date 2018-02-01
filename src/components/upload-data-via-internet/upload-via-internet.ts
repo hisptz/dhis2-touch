@@ -53,7 +53,6 @@ export class UploadViaInternetComponent implements OnInit {
 
   loadingDataToUpload() {
     let status = "not-synced";
-    let promises = [];
     this.dataValuesProvider.getDataValuesByStatus(status, this.currentUser).subscribe((dataValues: any) => {
       this.dataObject.dataValues = dataValues;
       this.trackerCaptureProvider.getTrackedEntityInstanceByStatus(status, this.currentUser).subscribe((trackedEntityInstances: any) => {
@@ -68,12 +67,15 @@ export class UploadViaInternetComponent implements OnInit {
           });
           this.isLoading = false;
         },error=>{
+          this.isLoading = false;
           console.log("error : events")
         });
       },error=>{
+        this.isLoading = false;
         console.log("error : enrollment")
       })
     },error=>{
+      this.isLoading = false;
       console.log("error : data values")
     })    
   }
@@ -90,7 +92,6 @@ export class UploadViaInternetComponent implements OnInit {
   uploadData() {
     this.loadingMessage = "Uploading selected local data, please wait";
     this.isLoading = true;
-    let promises = [];
     this.importSummaries = {};
     let keys = [];
     let completedProcess = 0;
@@ -101,7 +102,6 @@ export class UploadViaInternetComponent implements OnInit {
           keys.push("dataValues");
           this.importSummaries['dataValues'] = importSummaries          
           completedProcess ++;
-          console.log("completedProcess : " + completedProcess);
           if(completedProcess == this.itemsToUpload.length){
             this.isLoading = false;
             this.viewUploadImportSummaries(keys);
@@ -119,7 +119,6 @@ export class UploadViaInternetComponent implements OnInit {
                 this.importSummaries["eventsForTracker"] = importSummaries;
                 keys.push("eventsForTracker");
                 completedProcess ++;
-                console.log("completedProcess : " + completedProcess);
                 if(completedProcess == this.itemsToUpload.length){
                   this.isLoading = false;
                   this.viewUploadImportSummaries(keys);
@@ -137,7 +136,6 @@ export class UploadViaInternetComponent implements OnInit {
           this.importSummaries['eventsForTracker'] = importSummaries;
           keys.push("eventsForTracker");
           completedProcess ++;
-          console.log("completedProcess : " + completedProcess);
           if(completedProcess == this.itemsToUpload.length){
             this.isLoading = false;
             this.viewUploadImportSummaries(keys);
@@ -149,7 +147,6 @@ export class UploadViaInternetComponent implements OnInit {
           this.importSummaries['events'] = importSummaries;
           keys.push("events");
           completedProcess ++;
-          console.log("completedProcess : " + completedProcess);
           if(completedProcess == this.itemsToUpload.length){
             this.isLoading = false;
             this.viewUploadImportSummaries(keys);

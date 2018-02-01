@@ -47,18 +47,8 @@ export class ClearLocalDataComponent implements OnInit{
   }
 
   loadingDataToDeleted(){
-    let promises = [];
-    promises.push(
-      this.dataValuesProvider.getAllDataValues(this.currentUser).subscribe((dataValues: any)=>{
-        this.dataObject['dataValues'] = dataValues.length;
-      })
-    );
-    promises.push(
-      this.trackedEntityInstancesProvider.getAllTrackedEntityInstances(this.currentUser).subscribe((trackedEntityInstances : any)=>{
-        this.dataObject["enrollments"] = trackedEntityInstances.length;
-      })
-    );
-    promises.push(
+    this.dataValuesProvider.getAllDataValues(this.currentUser).subscribe((dataValues: any)=>{
+      this.dataObject['dataValues'] = dataValues.length;
       this.eventCaptureFormProvider.getAllEvents(this.currentUser).subscribe((events : any)=>{
         this.dataObject['events'] = 0;
         this.dataObject['eventsForTracker'] = 0;
@@ -69,13 +59,17 @@ export class ClearLocalDataComponent implements OnInit{
             this.dataObject.eventsForTracker ++;
           }
         });
+        this.trackedEntityInstancesProvider.getAllTrackedEntityInstances(this.currentUser).subscribe((trackedEntityInstances : any)=>{
+          this.dataObject["enrollments"] = trackedEntityInstances.length;
+          this.isLoading = false;
+        });        
+      },error=>{
+        this.isLoading = false;
+        console.log("Fail to loading events");
       })
-    );
-    Observable.forkJoin(promises).subscribe(() => {
+    },error=>{
       this.isLoading = false;
-    },(error) => {
-      this.isLoading = false;
-      this.appProvider.setNormalNotification("Fail to load data");
+      console.log("Fail to load data values");
     });
   }
 
@@ -122,49 +116,62 @@ export class ClearLocalDataComponent implements OnInit{
   }
 
   clearingLocalData(itemsToBeDeleted){
-    let promises = [];
-    let shouldClearEventsTable = (itemsToBeDeleted.indexOf('eventsForTracker') > -1 && itemsToBeDeleted.indexOf('events'));
-    itemsToBeDeleted.forEach((item : any)=>{
-      if(item == "eventsForTracker" && !shouldClearEventsTable){
-        promises.push(
-          this.eventCaptureFormProvider.deleteEventByAttribute('eventType',['tracker-capture'],this.currentUser).subscribe(()=>{},error=>{})
-        );
-      }else if(item == "events" && !shouldClearEventsTable){
-        promises.push(
-          this.eventCaptureFormProvider.deleteEventByAttribute('eventType',['event-capture'],this.currentUser).subscribe(()=>{},error=>{})
-        );
-      }else if(item == "enrollments"){
-        promises.push(
-          this.trackerCaptureProvider.deleteAllTrackedEntityInstances(this.currentUser).subscribe(()=>{},error=>{})
-        );
-      }else if(item == "dataValues"){
-        promises.push(
-          this.dataValuesProvider.deleteAllDataValues(this.currentUser).subscribe(()=>{},error=>{})
-        );
-      }
-    });
+    let completedProcess = 0;
+    let shouldClearEventsTable = (itemsToBeDeleted.indexOf('eventsForTracker') > -1 && itemsToBeDeleted.indexOf('events') > -1);
     if(shouldClearEventsTable){
-      promises.push(
-        this.eventCaptureFormProvider.deleteALLEvents(this.currentUser).subscribe(()=>{},error=>{})
-      );
+      this.eventCaptureFormProvider.deleteALLEvents(this.currentUser).subscribe(()=>{
+        completedProcess += 2;
+        if(completedProcess == itemsToBeDeleted.length){
+          this.updateStorageAfterClearing();
+        }
+      },error=>{})
     }
-    Observable.forkJoin(promises).subscribe(() => {
-      setTimeout(()=>{
-        this.sqlliteProvider.generateTables(this.currentUser.currentDatabase).subscribe(()=>{
-          Object.keys(this.selectedItems).forEach((key: string)=>{
-            this.selectedItems[key] = false;
-          });
-          this.loadingDataToDeleted();
-          this.appProvider.setNormalNotification('All selected local data has been cleared successfully');
-        },error=>{
-          this.isLoading = false;
-          this.appProvider.setNormalNotification("Fail to clear local data");
+    for(let item of itemsToBeDeleted){
+      if(item == "eventsForTracker" && !shouldClearEventsTable){
+        this.eventCaptureFormProvider.deleteEventByAttribute('eventType',['tracker-capture'],this.currentUser).subscribe(()=>{
+          completedProcess += 1;
+          if(completedProcess == itemsToBeDeleted.length){
+            this.updateStorageAfterClearing();
+          }
+        },error=>{});
+      }else if(item == "events" && !shouldClearEventsTable){
+        this.eventCaptureFormProvider.deleteEventByAttribute('eventType',['event-capture'],this.currentUser).subscribe(()=>{
+          completedProcess += 1;
+          if(completedProcess == itemsToBeDeleted.length){
+            this.updateStorageAfterClearing();
+          }
+        },error=>{});
+      }else if(item == "enrollments"){
+        this.trackerCaptureProvider.deleteAllTrackedEntityInstances(this.currentUser).subscribe(()=>{
+          completedProcess += 1;
+          if(completedProcess == itemsToBeDeleted.length){
+            this.updateStorageAfterClearing();
+          }
+        },error=>{});
+      }else if(item == "dataValues"){
+        this.dataValuesProvider.deleteAllDataValues(this.currentUser).subscribe(()=>{
+          completedProcess += 1;
+          if(completedProcess == itemsToBeDeleted.length){
+            this.updateStorageAfterClearing();
+          }
+        },error=>{})
+      }
+    }
+  }
+
+  updateStorageAfterClearing(){
+    setTimeout(()=>{
+      this.sqlliteProvider.generateTables(this.currentUser.currentDatabase).subscribe(()=>{
+        Object.keys(this.selectedItems).forEach((key: string)=>{
+          this.selectedItems[key] = false;
         });
-      },500);
-    },(error) => {
-      this.isLoading = false;
-      this.appProvider.setNormalNotification("Fail to clear local data");
-    });
+        this.loadingDataToDeleted();
+        this.appProvider.setNormalNotification('All selected local data has been cleared successfully');
+      },error=>{
+        this.isLoading = false;
+        this.appProvider.setNormalNotification("Fail to clear local data");
+      });
+    },500);
   }
 
 
