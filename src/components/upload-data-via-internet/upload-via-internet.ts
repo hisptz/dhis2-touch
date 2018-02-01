@@ -39,7 +39,9 @@ export class UploadViaInternetComponent implements OnInit {
   ngOnInit() {
     this.isLoading = true;
     this.itemsToUpload = [];
-    this.dataObject = {};
+    this.dataObject = {
+      events : [],dataValues : [], eventsForTracker : [], Enrollments : []
+    };
     this.loadingMessage = "Loading user information";
     this.importSummaries = null;
     this.user.getCurrentUser().subscribe((user: any) => {
@@ -52,35 +54,29 @@ export class UploadViaInternetComponent implements OnInit {
   loadingDataToUpload() {
     let status = "not-synced";
     let promises = [];
-    promises.push(
-      this.dataValuesProvider.getDataValuesByStatus(status, this.currentUser).subscribe((dataValues: any) => {
-        this.dataObject['dataValues'] = dataValues;
-      })
-    );
-    promises.push(
+    this.dataValuesProvider.getDataValuesByStatus(status, this.currentUser).subscribe((dataValues: any) => {
+      this.dataObject.dataValues = dataValues;
       this.trackerCaptureProvider.getTrackedEntityInstanceByStatus(status, this.currentUser).subscribe((trackedEntityInstances: any) => {
-        this.dataObject["Enrollments"] = trackedEntityInstances;
-      })
-    );
-    promises.push(
-      this.eventCaptureFormProvider.getEventsByAttribute('syncStatus', [status], this.currentUser).subscribe((events: any) => {
-        this.dataObject['events'] = [];
-        this.dataObject['eventsForTracker'] = [];
-        events.forEach((event: any) => {
-          if (event.eventType == 'event-capture') {
-            this.dataObject.events.push(event);
-          } else {
-            this.dataObject.eventsForTracker.push(event);
-          }
+        this.dataObject.Enrollments= trackedEntityInstances;
+        this.eventCaptureFormProvider.getEventsByAttribute('syncStatus', [status], this.currentUser).subscribe((events: any) => {
+          console.log("eventts : " + events.length);
+          events.forEach((event: any) => {
+            if (event && event.eventType && event.eventType == 'event-capture') {
+              this.dataObject.events.push(event);
+            } else {
+              this.dataObject.eventsForTracker.push(event);
+            }
+          });
+          this.isLoading = false;
+        },error=>{
+          console.log("error : events")
         });
+      },error=>{
+        console.log("error : enrollment")
       })
-    );
-    Observable.forkJoin(promises).subscribe(() => {
-      this.isLoading = false;
-    }, (error) => {
-      this.isLoading = false;
-      this.appProvider.setNormalNotification("Fail to load data for uploading");
-    });
+    },error=>{
+      console.log("error : data values")
+    })    
   }
 
   updateItemsToUpload() {
