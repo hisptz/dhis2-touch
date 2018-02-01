@@ -59,7 +59,6 @@ export class UploadViaInternetComponent implements OnInit {
       this.trackerCaptureProvider.getTrackedEntityInstanceByStatus(status, this.currentUser).subscribe((trackedEntityInstances: any) => {
         this.dataObject.Enrollments= trackedEntityInstances;
         this.eventCaptureFormProvider.getEventsByAttribute('syncStatus', [status], this.currentUser).subscribe((events: any) => {
-          console.log("eventts : " + events.length);
           events.forEach((event: any) => {
             if (event && event.eventType && event.eventType == 'event-capture') {
               this.dataObject.events.push(event);
@@ -94,21 +93,23 @@ export class UploadViaInternetComponent implements OnInit {
     let promises = [];
     this.importSummaries = {};
     let keys = [];
-    //aggregate data values
-    if (this.itemsToUpload.indexOf('dataValues') > -1) {
-      let formattedDataValues = this.dataValuesProvider.getFormattedDataValueForUpload(this.dataObject['dataValues']);
-      promises.push(
+    let completedProcess = 0;
+    for(let item of this.itemsToUpload) {
+      if(item == 'dataValues'){
+        let formattedDataValues = this.dataValuesProvider.getFormattedDataValueForUpload(this.dataObject['dataValues']);
         this.dataValuesProvider.uploadDataValues(formattedDataValues, this.dataObject['dataValues'], this.currentUser).subscribe(importSummaries => {
           keys.push("dataValues");
-          this.importSummaries['dataValues'] = importSummaries
+          this.importSummaries['dataValues'] = importSummaries          
+          completedProcess ++;
+          console.log("completedProcess : " + completedProcess);
+          if(completedProcess == this.itemsToUpload.length){
+            this.isLoading = false;
+            this.viewUploadImportSummaries(keys);
+          }
         }, error => {
           console.log("Error " + JSON.stringify(error));
-        })
-      );
-    }
-    //tracked entity instances and enrollments
-    if (this.itemsToUpload.indexOf('Enrollments') > -1) {
-      promises.push(
+        });
+      }else if(item == 'Enrollments'){
         this.trackerCaptureProvider.uploadTrackedEntityInstancesToServer(this.dataObject['Enrollments'], this.dataObject['Enrollments'], this.currentUser).subscribe((response: any) => {
           this.importSummaries["trackedEntityInstances"] = response.importSummaries;
           keys.push("trackedEntityInstances");
@@ -117,6 +118,12 @@ export class UploadViaInternetComponent implements OnInit {
               this.eventCaptureFormProvider.uploadEventsToSever(this.dataObject['eventsForTracker'], this.currentUser).subscribe((importSummaries) => {
                 this.importSummaries["eventsForTracker"] = importSummaries;
                 keys.push("eventsForTracker");
+                completedProcess ++;
+                console.log("completedProcess : " + completedProcess);
+                if(completedProcess == this.itemsToUpload.length){
+                  this.isLoading = false;
+                  this.viewUploadImportSummaries(keys);
+                }                      
               }, () => {
               });
             }, error => {
@@ -125,36 +132,32 @@ export class UploadViaInternetComponent implements OnInit {
           })
         }, error => {
         })
-      );
-    }
-    //events for tracker
-    if (this.itemsToUpload.indexOf('eventsForTracker') > -1 && this.itemsToUpload.indexOf('Enrollments') == -1) {
-      promises.push(
+      }else if(item == 'eventsForTracker'){
         this.eventCaptureFormProvider.uploadEventsToSever(this.dataObject['eventsForTracker'], this.currentUser).subscribe((importSummaries) => {
           this.importSummaries['eventsForTracker'] = importSummaries;
           keys.push("eventsForTracker");
+          completedProcess ++;
+          console.log("completedProcess : " + completedProcess);
+          if(completedProcess == this.itemsToUpload.length){
+            this.isLoading = false;
+            this.viewUploadImportSummaries(keys);
+          }
         }, () => {
         })
-      );
-    }
-    //events for event capture
-    if (this.itemsToUpload.indexOf('events') > -1) {
-      promises.push(
+      }else if(item == 'events'){
         this.eventCaptureFormProvider.uploadEventsToSever(this.dataObject['events'], this.currentUser).subscribe((importSummaries) => {
           this.importSummaries['events'] = importSummaries;
           keys.push("events");
+          completedProcess ++;
+          console.log("completedProcess : " + completedProcess);
+          if(completedProcess == this.itemsToUpload.length){
+            this.isLoading = false;
+            this.viewUploadImportSummaries(keys);
+          }
         }, () => {
         })
-      );
+      }       
     }
-
-    Observable.forkJoin(promises).subscribe(() => {
-      this.isLoading = false;
-      this.viewUploadImportSummaries(keys);
-    }, (error) => {
-      this.isLoading = false;
-      this.appProvider.setNormalNotification("Fail to upload data");
-    });
   }
 
   viewUploadImportSummaries(keys) {
