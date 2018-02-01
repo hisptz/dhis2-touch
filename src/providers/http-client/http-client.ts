@@ -36,7 +36,7 @@ export class HttpClientProvider {
    * @returns {any}
    */
   getUrlBasedOnDhisVersion(url, user) {
-    if (url.indexOf("/api/") == -1) {
+    if (url.indexOf("/api/") == -1 && url.indexOf('.json') > -1) {
       url = "/api/" + url;
     }
     if (user.dhisVersion && (parseInt(user.dhisVersion) < 25)) {
