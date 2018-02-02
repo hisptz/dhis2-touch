@@ -588,6 +588,7 @@ export class LoginPage implements OnInit {
   setLandingPage(currentUser :CurrentUser){
     currentUser.isLogin = true;
     this.reCheckingAppSetting(currentUser);
+    this.smsCommandProvider.checkAndGenerateSmsCommands(currentUser).subscribe(()=>{},error=>{});
     currentUser.password = this.encryption.encode(currentUser.password);
     this.store.dispatch(new LoadedCurrentUser(currentUser));
     if(this.currentUser && this.currentUser.serverUrl && this.currentUser.username){

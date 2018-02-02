@@ -16,7 +16,8 @@ export class TabsPage {
   tab2Root = AccountPage;
   accountName : string = 'account';
 
-  constructor(public user : UserProvider,private backgroundMode: BackgroundMode) {
+  constructor(private user : UserProvider,
+    private backgroundMode: BackgroundMode) {
 
   }
 

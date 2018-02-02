@@ -158,12 +158,13 @@ export class HttpClientProvider {
    * @returns {Observable<any>}
    */
   post(url, data, user?): Observable<any> {
+    let apiUrl = "";
     return new Observable(observer => {
       this.getSanitizedUser(user).subscribe((sanitizedUser: CurrentUser) => {
+        apiUrl = sanitizedUser.serverUrl + this.getUrlBasedOnDhisVersion(url, sanitizedUser);
         this.http.useBasicAuth(sanitizedUser.username, sanitizedUser.password);
         this.http.setRequestTimeout(this.timeOutTime);
-        url = user.serverUrl + this.getUrlBasedOnDhisVersion(url, sanitizedUser);
-        this.http.post(url, data, {})
+        this.http.post(apiUrl, data, {})
           .then((response: any) => {
             observer.next(response);
             observer.complete();
@@ -187,12 +188,14 @@ export class HttpClientProvider {
    * @returns {Observable<any>}
    */
   defaultPost(url, data, user?): Observable<any> {
+    let apiUrl = "";
     return new Observable(observer => {
       this.getSanitizedUser(user).subscribe((sanitizedUser: CurrentUser) => {
-        url = this.getUrlBasedOnDhisVersion(url, sanitizedUser);
+        apiUrl = sanitizedUser.serverUrl + this.getUrlBasedOnDhisVersion(url, sanitizedUser);
         let headers = new Headers();
         headers.append('Authorization', 'Basic ' + sanitizedUser.authorizationKey);
-        this.defaultHttp.post(user.serverUrl + url, data, {headers: headers}).timeout(this.timeOutTime).subscribe((response: any) => {
+        this.defaultHttp.post(apiUrl, data, {headers: headers}).timeout(this.timeOutTime).subscribe((response: any) => {
+          console.log("Posting : " + apiUrl);
           observer.next();
           observer.complete();
         }, error => {
@@ -212,12 +215,13 @@ export class HttpClientProvider {
    * @returns {Observable<any>}
    */
   put(url, data, user?): Observable<any> {
+    let apiUrl = "";
     return new Observable(observer => {
       this.getSanitizedUser(user).subscribe((sanitizedUser: CurrentUser) => {
-        url = this.getUrlBasedOnDhisVersion(url, sanitizedUser);
+        apiUrl = sanitizedUser.serverUrl + this.getUrlBasedOnDhisVersion(url, sanitizedUser);
         let headers = new Headers();
         headers.append('Authorization', 'Basic ' + sanitizedUser.authorizationKey);
-        this.defaultHttp.put(user.serverUrl + url, data, {headers: headers})
+        this.defaultHttp.put(apiUrl, data, {headers: headers})
           .timeout(this.timeOutTime).map(res => res.json())
           .subscribe((response) => {
             observer.next(response);
@@ -238,6 +242,7 @@ export class HttpClientProvider {
    * @returns {Observable<any>}
    */
   delete(url, user?): Observable<any> {
+    let apiUrl = "";
     return new Observable(observer => {
       this.getSanitizedUser(user).subscribe((sanitizedUser: CurrentUser) => {
         url = this.getUrlBasedOnDhisVersion(url, sanitizedUser);

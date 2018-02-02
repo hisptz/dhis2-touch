@@ -58,11 +58,9 @@ export class DownloadMetaDataComponent implements OnInit {
   }
 
   checkingForResourceUpdate() {
-    let isMetadata = false;
     let resourceUpdated = [];
     this.resources.forEach((resource: any) => {
       if (resource.status) {
-        isMetadata = true;
         resourceUpdated.push(resource.name);
         if(resource.dependentTable.length > 0){
           resource.dependentTable.forEach((tableName: any)=>{

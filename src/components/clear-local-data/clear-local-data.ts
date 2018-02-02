@@ -5,7 +5,6 @@ import {UserProvider} from "../../providers/user/user";
 import {DataValuesProvider} from "../../providers/data-values/data-values";
 import {TrackerCaptureProvider} from "../../providers/tracker-capture/tracker-capture";
 import {EventCaptureFormProvider} from "../../providers/event-capture-form/event-capture-form";
-import {Observable} from "rxjs/Observable";
 import {TrackedEntityInstancesProvider} from "../../providers/tracked-entity-instances/tracked-entity-instances";
 import {SqlLiteProvider} from "../../providers/sql-lite/sql-lite";
 

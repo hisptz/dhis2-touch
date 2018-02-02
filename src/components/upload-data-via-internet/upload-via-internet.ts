@@ -1,13 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {UserProvider} from "../../providers/user/user";
-import {AppProvider} from "../../providers/app/app";
-import {SyncProvider} from "../../providers/sync/sync";
 import {ModalController} from "ionic-angular";
 import {DataValuesProvider} from "../../providers/data-values/data-values";
 import {TrackerCaptureProvider} from "../../providers/tracker-capture/tracker-capture";
 import {EnrollmentsProvider} from "../../providers/enrollments/enrollments";
 import {EventCaptureFormProvider} from "../../providers/event-capture-form/event-capture-form";
-import {Observable} from "rxjs/Observable";
 
 /**
  * Generated class for the UploadViaInternetComponent component.
@@ -33,7 +30,7 @@ export class UploadViaInternetComponent implements OnInit {
   constructor(private modalCtrl: ModalController,
               private dataValuesProvider: DataValuesProvider, private trackerCaptureProvider: TrackerCaptureProvider,
               private enrollmentsProvider: EnrollmentsProvider, private eventCaptureFormProvider: EventCaptureFormProvider,
-              private appProvider: AppProvider, public user: UserProvider) {
+              private user: UserProvider) {
   }
 
   ngOnInit() {

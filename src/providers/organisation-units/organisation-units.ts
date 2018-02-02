@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/map';
 import {SqlLiteProvider} from "../sql-lite/sql-lite";
 import {HttpClientProvider} from "../http-client/http-client";
-import {AppProvider} from "../app/app";
 import {Observable} from "rxjs/Observable";
 
 /*
@@ -32,7 +31,7 @@ export class OrganisationUnitsProvider {
   lastSelectedOrgUnit: OrganisationUnitModel;
   resource: string;
 
-  constructor(private sqlLite: SqlLiteProvider, private HttpClient: HttpClientProvider, private appProvider: AppProvider) {
+  constructor(private sqlLite: SqlLiteProvider, private HttpClient: HttpClientProvider) {
     this.resource = "organisationUnits";
   }
 

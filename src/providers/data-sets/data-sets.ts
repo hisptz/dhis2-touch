@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {SqlLiteProvider} from "../sql-lite/sql-lite";
 import {HttpClientProvider} from "../http-client/http-client";
 import {Observable} from "rxjs/Observable";
+import {DataSet} from "../../models/dataSet";
 
 /*
   Generated class for the DataSetsProvider provider.
@@ -33,6 +34,85 @@ export class DataSetsProvider {
    */
   setLastSelectedDataSet(dataSet) {
     this.lastSelectedDataSet = dataSet;
+  }
+
+  /**
+   * 
+   * @param currentUser 
+   */
+  getAllDataSets(currentUser) : Observable<any>{
+    return new Observable(observer=>{
+      this.SqlLite.getAllDataFromTable(this.resource, currentUser.currentDatabase).subscribe((dataSetsResponse: any) => {
+        this.getAllDataSetElementsMapper(currentUser).subscribe((dataSetElementMapper : any)=>{
+          let dataSets : Array<DataSet> = [];
+          dataSetsResponse.map((dataSet : any)=>{
+            let dataElemets = (dataSetElementMapper[dataSet.id])? dataSetElementMapper[dataSet.id] : [];
+            dataSets.push(
+              {id : dataSet.id,name : dataSet.name, dataElements :dataElemets}
+            );
+          })
+          observer.next(dataSets);        
+          observer.complete();
+        },error=>{
+          observer.error(error);
+        });        
+      }, error => {
+        observer.error(error)
+      })
+    });
+  }
+
+  /**
+   * 
+   * @param currentUser 
+   */
+  getAllDataSetElementsMapper(currentUser) : Observable<any>{
+    return new Observable(observer=>{
+      this.SqlLite.getAllDataFromTable("dataSetElements", currentUser.currentDatabase).subscribe((dataSetElements: any) => {
+        let dataElementids = [];
+        let dataSetElementMapper = {};
+        dataSetElements.map((dataSetElement : any)=>{
+          dataElementids.push(dataSetElement.dataElementId);
+        });
+        this.getAllDataElementsMapper(currentUser,dataElementids).subscribe((dataElementMapper : any)=>{
+          dataSetElements.map((dataSetElement : any)=>{
+            if(!dataSetElementMapper[dataSetElement.dataSetId]){
+              dataSetElementMapper[dataSetElement.dataSetId] = []
+            }
+            dataSetElementMapper[dataSetElement.dataSetId].push(dataElementMapper[dataSetElement.dataElementId]);       
+          });
+          observer.next(dataSetElementMapper);
+        observer.complete();
+        },error=>{
+          observer.error(error);
+        })
+        
+      }, error => {
+        observer.error(error)
+      })
+    });
+  }
+
+  /**
+   * 
+   * @param currentUser 
+   * @param dataElementIds 
+   */
+  getAllDataElementsMapper(currentUser,dataElementIds : Array<string>) : Observable<any>{
+    return new Observable(observer=>{
+      this.SqlLite.getDataFromTableByAttributes("dataElements","id",dataElementIds,currentUser.currentDatabase).subscribe((dataElements: any) => {
+        let dataElementsmapper = {};
+        dataElements.map((dataElement : any)=>{
+          dataElementsmapper[dataElement.id] = {
+            id : dataElement.id,categoryCombo : dataElement.categoryCombo
+          }
+        })
+        observer.next(dataElementsmapper);
+        observer.complete();
+      }, error => {
+        observer.error(error)
+      })
+    });
   }
 
   /**

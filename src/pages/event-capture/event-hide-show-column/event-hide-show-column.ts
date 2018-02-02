@@ -52,7 +52,6 @@ export class EventHideShowColumnPage implements OnInit, OnDestroy{
 
   saveChanges(){
     let columnsToDisplay = {};
-    let dataEntrySettings = this.params.get('dataEntrySettings');
     this.dataElements.forEach((dataElement : any)=>{
       if(this.selectedItemsModel[dataElement.id]){
         columnsToDisplay[dataElement.id] = dataElement.name;

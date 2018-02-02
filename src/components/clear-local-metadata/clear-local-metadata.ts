@@ -81,11 +81,9 @@ export class ClearLocalMetadataComponent implements OnInit{
   }
 
   checkingForResourceToDelete(){
-    let isMetadata= false;
     let resourcesToDelete = [];
     this.resources.forEach((resource:any) =>{
       if(resource.status){
-        isMetadata= true;
         resourcesToDelete.push(resource.name);
         if(resource.dependentTable.length > 0){
           resource.dependentTable.forEach((tableNames: any)=>{

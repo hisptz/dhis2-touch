@@ -1,7 +1,6 @@
 <!-- Generated template for the ClearLocalMetadataComponent component -->
 
 <ion-grid>
-
   <ion-row *ngIf="!showLoadingMessage">
     <ion-col>
       <button ion-button block style="text-transform: none;"
@@ -12,8 +11,6 @@
               (tap)="autoSelect('unSelectAll')" >Deselect All </button>
     </ion-col>
   </ion-row>
-  <!--{{ resources |json }}-->
-
   <ion-row *ngIf="!showLoadingMessage">
     <ion-col >
       <ion-list >
@@ -30,7 +27,7 @@
     </ion-col>
   </ion-row>
 
-  <span *ngIf="showLoadingMessage" > <loading loadingSize="large" [loadingMessage]="loadingMessage"></loading> </span>
+  <span *ngIf="!!showLoadingMessage" > <loading loadingSize="large" [loadingMessage]="loadingMessage"></loading> </span>
 
   <ion-row *ngIf="!showLoadingMessage">
   <button ion-button style="text-transform: none;" (tap)="verifyingDeleteOfResources()" block>Clear MetaData</button>
