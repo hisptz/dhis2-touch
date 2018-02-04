@@ -3,35 +3,31 @@
 <ion-grid>
   <ion-row *ngIf="!showLoadingMessage">
     <ion-col>
-      <button ion-button block style="text-transform: none;"
-              (tap)="autoSelect('selectAll')" >Select All</button>
+      <button ion-button block style="text-transform: none;" (tap)="autoSelect('selectAll')">Select All</button>
     </ion-col>
     <ion-col>
-      <button ion-button block style="text-transform: none;"
-              (tap)="autoSelect('unSelectAll')" >Deselect All </button>
+      <button ion-button block style="text-transform: none;" (tap)="autoSelect('unSelectAll')">Deselect All </button>
     </ion-col>
   </ion-row>
   <ion-row *ngIf="!showLoadingMessage">
-    <ion-col >
-      <ion-list >
-        <div *ngFor="let resourceObject of resources" style="background-color: white" >
-
+    <ion-col>
+      <ion-list>
+        <div *ngFor="let resourceObject of resources" style="background-color: white">
           <ion-item>
-
             <ion-checkbox color="blue" [(ngModel)]="resourceObject.status"></ion-checkbox>
             <ion-label> {{ resourceObject.displayName }} </ion-label>
-
           </ion-item>
         </div>
       </ion-list>
     </ion-col>
   </ion-row>
 
-  <span *ngIf="!!showLoadingMessage" > <loading loadingSize="large" [loadingMessage]="loadingMessage"></loading> </span>
+  <span *ngIf="!!showLoadingMessage">
+    <loading loadingSize="large" [loadingMessage]="loadingMessage"></loading>
+  </span>
 
   <ion-row *ngIf="!showLoadingMessage">
-  <button ion-button style="text-transform: none;" (tap)="verifyingDeleteOfResources()" block>Clear MetaData</button>
+    <button ion-button style="text-transform: none;" (tap)="verifyingDeleteOfResources()" block>Clear MetaData</button>
   </ion-row>
 
 </ion-grid>
-
