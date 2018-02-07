@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {IonicPage, NavController, ModalController} from 'ionic-angular';
+import {IonicPage, MenuController, NavController, ModalController } from 'ionic-angular';
 import {ApplicationState} from "../../store/reducers/index";
 import {Store} from "@ngrx/store";
 import {Observable} from "rxjs/Observable";
@@ -21,39 +21,43 @@ import * as fromDashboardActions from '../../store/actions/dashboard.actions';
   selector: 'page-dashboard',
   templateUrl: 'dashboard.html',
 })
-export class DashboardPage implements OnInit {
+export class DashboardPage implements OnInit{
 
   currentDashboard$: Observable<Dashboard>;
   visualizationObjects$: Observable<Visualization[]>;
   loading$: Observable<boolean>;
-  icons: any = {};
+  icons : any = {};
 
   constructor(public navCtrl: NavController,
-              public modalCtrl: ModalController,
-              private store: Store<ApplicationState>) {
+              public modalCtrl:ModalController,
+              private store : Store<ApplicationState>,
+              private menu : MenuController) {
     this.currentDashboard$ = store.select(fromDashboardSelectors.getCurrentDashboard);
     this.loading$ = store.select(fromDashboardSelectors.getDashboardLoadingStatus);
     this.visualizationObjects$ = store.select(fromVisualizationSelectors.getCurrentDashboardVisualizationObjects);
   }
 
-  ngOnInit() {
+  ngOnInit(){
+    this.menu.enable(true);
     this.icons = {
-      menu: "assets/icon/menu.png",
-      MAP: "assets/icon/map.png",
-      CHART: "assets/icon/column.png",
-      TABLE: "assets/icon/table.png",
-      APP: "assets/icon/app.png",
-      RESOURCES: "assets/icon/resource.png",
-      REPORTS: "assets/icon/report.png",
-      USERS: "assets/icon/users.png",
-      MESSAGES: "assets/icon/filled-chat.png",
+      menu :  "assets/icon/menu.png",
+      MAP : "assets/icon/map.png",
+      CHART : "assets/icon/column.png",
+      TABLE : "assets/icon/table.png",
+      APP : "assets/icon/app.png",
+      RESOURCES : "assets/icon/resource.png",
+      REPORTS : "assets/icon/report.png",
+      USERS : "assets/icon/users.png",
+      MESSAGES : "assets/icon/filled-chat.png",
     }
 
   }
 
   openDashboardListFilter() {
-    let modal = this.modalCtrl.create('DashboardFilterPage', {});
-    modal.onDidDismiss((dashboard: any) => {
+    let modal = this.modalCtrl.create('DashboardFilterPage', {
+
+    });
+    modal.onDidDismiss((dashboard:any)=> {
 
     });
     modal.present();

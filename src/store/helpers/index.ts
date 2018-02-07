@@ -1,3 +1,4 @@
+// Dashboard
 export * from './map-state-to-dashboard-object.helper';
 export * from './get-current-page';
 export * from './map-state-to-dashboard-search-items.helper';
@@ -21,3 +22,4 @@ export * from './get-sanitized-custom-filter-object.helper';
 export * from './get-visualization-shape.helper';
 export * from './get-visualization-width-from-shape.helper';
 export * from './get-sanitized-analytics.helper';
+export * from './standardize-incoming-analytics';

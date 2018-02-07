@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {TableConfiguration} from '../models/table-configuration';
+import { Injectable } from '@angular/core';
+import { TableConfiguration } from '../models/table-configuration';
 
 @Injectable()
 export class TableService {
@@ -94,7 +94,7 @@ export class TableService {
             styles = tableConfiguration.styles[columnItem]
           }
         }
-        table.headers.push({'items': headerItem, 'style': styles});
+        table.headers.push({ 'items': headerItem, 'style': styles });
       }
       for (let rowItem of tableConfiguration.rows) {
         table.columns.push(rowItem);
@@ -117,7 +117,7 @@ export class TableService {
           let temp_arr = table_columns_array.concat();
           table_columns_array = [];
           for (let item of temp_arr) {
-            for (let val of  column_items_array[i]) {
+            for (let val of column_items_array[i]) {
               if (item instanceof Array) {
                 let tempArr = Array.from(item);
                 table_columns_array.push(tempArr.concat([val]));
@@ -136,7 +136,7 @@ export class TableService {
       for (let i = 0; i < rows_length; i++) {
         let dimension = this.calculateColSpan(analyticsObject, tableConfiguration.rows, tableConfiguration.rows[i]);
         let currentRowItems = this.prepareSingleCategories(analyticsObject, tableConfiguration.rows[i]);
-        row_items_array.push({'items': currentRowItems, 'dimensions': dimension});
+        row_items_array.push({ 'items': currentRowItems, 'dimensions': dimension });
       }
       let table_rows_array = [];
       for (let i = 0; i < row_items_array.length; i++) {
@@ -149,7 +149,7 @@ export class TableService {
           let temp_arr = table_rows_array.concat();
           table_rows_array = [];
           for (let item of temp_arr) {
-            for (let val of  row_items_array[i].items) {
+            for (let val of row_items_array[i].items) {
               val.dimensions = row_items_array[i].dimensions;
               if (item instanceof Array) {
                 let tempArr = Array.from(item);
@@ -183,10 +183,10 @@ export class TableService {
           for (let colItem of table_columns_array) {
             let dataItem = [];
             for (let val of rowItem) {
-              dataItem.push({'type': val.type, 'value': val.uid});
+              dataItem.push({ 'type': val.type, 'value': val.uid });
             }
             for (let val of colItem) {
-              dataItem.push({'type': val.type, 'value': val.uid});
+              dataItem.push({ 'type': val.type, 'value': val.uid });
             }
             item.items.push({
               'name': '',
@@ -214,7 +214,7 @@ export class TableService {
         for (let colItem of table_columns_array) {
           let dataItem = [];
           for (let val of colItem) {
-            dataItem.push({'type': val.type, 'value': val.uid});
+            dataItem.push({ 'type': val.type, 'value': val.uid });
           }
           item.items.push({
             'name': '',
@@ -261,7 +261,7 @@ export class TableService {
     let indexOfItem = array.indexOf(item);
     let array_length = array.length;
     let last_index = array_length - 1;
-    let dimensions = {'col_span': 1, 'duplication': 1};
+    let dimensions = { 'col_span': 1, 'duplication': 1 };
     for (let i = last_index; i > indexOfItem; i--) {
       let arr = this.prepareSingleCategories(analyticsObject, array[i]);
       dimensions.col_span = dimensions.col_span * arr.length;
@@ -286,12 +286,12 @@ export class TableService {
     let structure = [];
     if (preDefinedItems.length === 0) {
       for (let val of this.getMetadataArray(analyticsObject, itemIdentifier)) {
-        structure.push({'name': analyticsObject.metaData.names[val], 'uid': val, 'type': itemIdentifier});
+        structure.push({ 'name': analyticsObject.metaData.names[val], 'uid': val, 'type': itemIdentifier });
       }
     }
     if (preDefinedItems.length !== 0) {
       for (let val of preDefinedItems) {
-        structure.push({'name': analyticsObject.metaData.names[val], 'uid': val, 'type': itemIdentifier});
+        structure.push({ 'name': analyticsObject.metaData.names[val], 'uid': val, 'type': itemIdentifier });
       }
     }
     return structure;

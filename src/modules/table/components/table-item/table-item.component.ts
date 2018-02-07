@@ -1,6 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {TableConfiguration} from '../../models/table-configuration';
-import {TableService} from '../../services/table.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { TableConfiguration } from '../../models/table-configuration';
+import { TableService } from '../../services/table.service';
+import { standardizeIncomingAnalytics } from '../../../../store/helpers';
 
 @Component({
   selector: 'app-table-item',
@@ -19,7 +20,7 @@ export class TableItemComponent implements OnInit {
 
   ngOnInit() {
     if (this.analyticsObject && this.tableConfiguration) {
-      this.tableObject = this.tableService.drawTable(this.analyticsObject, this.tableConfiguration);
+      this.tableObject = this.tableService.drawTable(standardizeIncomingAnalytics(this.analyticsObject, true), this.tableConfiguration);
     }
   }
 

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import * as HighchartsExporting from 'highcharts/modules/exporting';
 import * as OfflineHighchartExporting from 'highcharts/modules/offline-exporting.js';
@@ -15,8 +15,8 @@ HighchartGauge(Highcharts);
 HighchartDrilldown(Highcharts);
 HighchartGroupedCategories(Highcharts);
 HighchartNoDataToDisplay(Highcharts);
-import {ChartService} from '../../services/chart.service';
-import {ChartConfiguration} from '../../models/chart-configuration';
+import { ChartService } from '../../services/chart.service';
+import { ChartConfiguration } from '../../models/chart-configuration';
 import * as fromConstants from './constants';
 import * as fromModels from './models';
 
@@ -34,10 +34,12 @@ export class ChartItemComponent implements OnInit {
   chart: any;
   currentChartType: string;
   renderId: string;
+  tapped: boolean;
 
   constructor(private chartService: ChartService) {
     this.chartTypes = fromConstants.CHART_TYPES;
-    this.showOptions = false;
+    this.showOptions = true;
+    this.tapped = false;
   }
 
 
@@ -68,12 +70,13 @@ export class ChartItemComponent implements OnInit {
     });
   }
 
-  onFocus(parentEvent) {
-    if (parentEvent.focused) {
-      this.showOptions = true;
-    } else {
-      this.showOptions = false;
-    }
+  onFocus() {
+    // this.tapped = true;
+    // if (this.tapped) {
+    //   this.showOptions = true;
+    // } else {
+    //   this.showOptions = false;
+    // }
   }
 
 }

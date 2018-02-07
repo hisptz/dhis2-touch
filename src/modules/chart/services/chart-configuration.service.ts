@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
-import {ChartConfiguration} from '../models/chart-configuration';
+import { ChartConfiguration } from '../models/chart-configuration';
 
 @Injectable()
 export class ChartConfigurationService {
@@ -20,7 +20,7 @@ export class ChartConfigurationService {
       type: chartType,
       title: visualizationSettings.hasOwnProperty('displayName') ? visualizationSettings.displayName : '',
       subtitle: visualizationSettings.hasOwnProperty('subtitle') ? visualizationSettings.subtitle : '',
-      hideTitle: visualizationSettings.hasOwnProperty('hideTitle') ? visualizationSettings.hideTitle : true,
+      hideTitle: true,
       hideSubtitle: visualizationSettings.hasOwnProperty('hideSubtitle') ? visualizationSettings.hideSubtitle : true,
       showData: visualizationSettings.hasOwnProperty('showData') ? visualizationSettings.showData : true,
       hideEmptyRows: visualizationSettings.hasOwnProperty('hideEmptyRows') ? visualizationSettings.hideEmptyRows : true,

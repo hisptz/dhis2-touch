@@ -10,7 +10,8 @@
 </ion-header>
 
 
-<ion-content >
+<ion-content>
+
   <ion-grid>
     <div *ngIf="loading$ | async">
       <loading [loadingMessage]="'loading_dashboard'|translate" [loadingSize]="'large'"></loading>
@@ -27,42 +28,65 @@
         </ion-row>
       </div>
 
+      <div *ngIf="(visualizationObjects$ | async).length == 0">
+        <empty-list-notification [emptyListMessage]="'there_no_dashboard_item_found'|translate"></empty-list-notification>
+      </div>
       <!--cards for visualization -->
       <div class="dashboard-card " *ngFor="let visualizationObject of visualizationObjects$ | async">
 
-        <ion-row >
+        <ion-row>
           <ion-col col-11>
-            <ion-icon color="primary"><img  class="dashboard-item-icon" [src]="icons[visualizationObject.details.currentVisualization]"/></ion-icon>
+            <ion-icon color="primary">
+              <img class="dashboard-item-icon" [src]="icons[visualizationObject.details.currentVisualization]" />
+            </ion-icon>
             {{ visualizationObject.name }}
           </ion-col>
           <ion-col col-1 item>
             <div style="text-align: center;">
-              <ion-icon  name="ios-arrow-down"
-                         item-right></ion-icon>
+              <ion-icon name="ios-arrow-down" item-right></ion-icon>
               <!--<ion-icon *ngIf="openedDashboardItemIds[dashboardItem.id]" name="ios-arrow-up" item-right></ion-icon>-->
             </div>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>
-            <!--chart visualization-->
-            <app-chart-list
-              *ngIf="visualizationObject.details.currentVisualization === 'CHART'"
-              [visualizationLayers]="visualizationObject.layers"
-              [visualizationId]="visualizationObject.id"
-              [chartHeight]="visualizationObject.details.itemHeight"></app-chart-list>
-            <!--end of chart visualization-->
+            <div *ngIf="!visualizationObject.details.loaded">
+              <loading [loadingSize]="'large'" [loadingMessage]="'loading_visualization'|translate"></loading>
+            </div>
+            <div *ngIf="visualizationObject.details.loaded && !visualizationObject.details.hasError">
+              <div class="dashboard-card-body" [style.height]="visualizationObject.details.itemHeight">
+                <!--chart visualization-->
+                <div class="chart-visualization">
+                  <app-chart-list *ngIf="visualizationObject.details.currentVisualization === 'CHART'" [visualizationLayers]="visualizationObject.layers"
+                    [visualizationId]="visualizationObject.id" [chartHeight]="visualizationObject.details.itemHeight"></app-chart-list>
+                </div>
+                <!--end of chart visualization-->
 
-            <!--table block-->
-            <!--<app-table-list-->
-              <!--*ngIf="visualizationObject.details.currentVisualization === 'TABLE'"-->
-              <!--[visualizationType]="visualizationObject.type"-->
-              <!--[visualizationLayers]="visualizationObject.layers"></app-table-list>-->
-            <!--end of table block-->
+                <!--table block-->
+                <div class="table-visualization">
+                  <app-table-list *ngIf="visualizationObject.details.currentVisualization === 'TABLE'" [visualizationType]="visualizationObject.type"
+                    [visualizationLayers]="visualizationObject.layers">
+
+                  </app-table-list>
+                </div>
+                <!--end of table block-->
+
+                <!-- map block -->
+                <div class="map-container" *ngIf="visualizationObject.details.currentVisualization === 'MAP'">
+                  <app-map [vizObject]="visualizationObject"></app-map>
+                </div>
+                <!-- end of map block -->
+              </div>
+            </div>
+
+            <div *ngIf="visualizationObject.details.loaded && visualizationObject.details.hasError">
+              <warning [warningMessage]="visualizationObject.details.ErrorMessage"></warning>
+            </div>
           </ion-col>
         </ion-row>
       </div>
     </div>
 
   </ion-grid>
+
 </ion-content>
