@@ -374,11 +374,61 @@ export class UploadDataViaSmsComponent implements OnInit {
                     .subscribe(
                       (entryFormDataValuesObject: any) => {
                         if (Object.keys(entryFormDataValuesObject).length > 0) {
-                          console.log(
-                            JSON.stringify(entryFormDataValuesObject)
-                          );
+                          this.sendDataViaSmsObject.loadingMessage =
+                            "Preparing SMS";
+                          this.smsCommand
+                            .getSmsForReportingData(
+                              smsCommandConfiguration,
+                              entryFormDataValuesObject,
+                              this.selectedPeriod
+                            )
+                            .subscribe(
+                              (reportingSms: any) => {
+                                let message = "Sending " + reportingSms.length;
+                                if (reportingSms.length == 1) {
+                                  message += " SMS";
+                                } else {
+                                  message += " SMSes";
+                                }
+                                this.sendDataViaSmsObject.loadingMessage = message;
+                                this.smsCommand
+                                  .sendSmsForReportingData(
+                                    this.sendDataViaSmsObject.mobileNumber,
+                                    reportingSms
+                                  )
+                                  .subscribe(
+                                    () => {
+                                      this.sendDataViaSmsObject.isLoading = false;
+                                      this.sendDataViaSmsObject.loadingMessage =
+                                        "";
+                                      this.appProvider.setNormalNotification(
+                                        "SMS has been sent"
+                                      );
+                                    },
+                                    error => {
+                                      this.sendDataViaSmsObject.isLoading = false;
+                                      this.sendDataViaSmsObject.loadingMessage =
+                                        "";
+                                      this.appProvider.setNormalNotification(
+                                        "Fail to send some of SMS, Please go into your SMS inbox and resend them manually"
+                                      );
+                                      console.log(JSON.stringify(error));
+                                    }
+                                  );
+                              },
+                              error => {
+                                this.sendDataViaSmsObject.isLoading = false;
+                                this.sendDataViaSmsObject.loadingMessage = "";
+                                this.appProvider.setNormalNotification(
+                                  "Fail to preparing SMS for " +
+                                    this.selectedDataSet.name
+                                );
+                                console.log(JSON.stringify(error));
+                              }
+                            );
                         } else {
                           this.sendDataViaSmsObject.isLoading = false;
+                          this.sendDataViaSmsObject.loadingMessage = "";
                           this.appProvider.setNormalNotification(
                             "There is no data to be sent via SMS for " +
                               this.selectedDataSet.name
@@ -387,6 +437,7 @@ export class UploadDataViaSmsComponent implements OnInit {
                       },
                       error => {
                         this.sendDataViaSmsObject.isLoading = false;
+                        this.sendDataViaSmsObject.loadingMessage = "";
                         console.log(JSON.stringify(error));
                         this.appProvider.setNormalNotification(
                           "Fail to load data values"
@@ -395,20 +446,23 @@ export class UploadDataViaSmsComponent implements OnInit {
                     );
                 } else {
                   this.sendDataViaSmsObject.isLoading = false;
+                  this.sendDataViaSmsObject.loadingMessage = "";
                   this.appProvider.setNormalNotification(
                     this.selectedDataSet.name + " has no field set"
                   );
                 }
               },
               error => {
-                console.log(JSON.stringify(error));
                 this.sendDataViaSmsObject.isLoading = false;
+                this.sendDataViaSmsObject.loadingMessage = "";
+                console.log(JSON.stringify(error));
               }
             );
         },
         error => {
           console.log(JSON.stringify(error));
           this.sendDataViaSmsObject.isLoading = false;
+          this.sendDataViaSmsObject.loadingMessage = "";
           this.appProvider.setNormalNotification(
             "Fail to load sms configurations for " + this.selectedDataSet.name
           );
