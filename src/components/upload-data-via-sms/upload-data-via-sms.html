@@ -1,43 +1,47 @@
 <ion-grid>
-  <ion-row>
-    <ion-col>
-      <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openOrganisationUnitTree()" >
-        <img  class="side-menu-icon" [src]="icons.orgUnit"/>&nbsp;&nbsp;
-        {{ organisationUnitLabel }}
-      </div>
-      <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openEntryFormList()" >
-        <img  class="side-menu-icon" [src]="icons.dataSet"/>&nbsp;&nbsp;
-        {{ dataSetLabel }}
-      </div>
-      <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openPeriodList()" >
-        <img  class="side-menu-icon" [src]="icons.period"/>&nbsp;&nbsp;
-        {{ periodLabel }}
-      </div>
-      <div *ngIf="selectedPeriod && selectedPeriod.iso && dataSetCategoryCombo && dataSetCategoryCombo.id ">
-        <div *ngIf="isDataSetDimensionApplicable">
-          <div *ngFor="let category of dataSetCategoryCombo.categories;let categoryIndex = index">
-            <div (tap)="openDataDimensionSelection(category)" padding-top padding-bottom class="item-card" color="font-color" full text-center text-wrap  >
-              <div style="padding-bottom: 5px;"><b>{{ category.name }}</b></div>
-              <div *ngIf="selectedDataDimension[categoryIndex]">{{ selectedDataDimension[categoryIndex].name }}</div>
-              <div *ngIf="!selectedDataDimension[categoryIndex]">Touch to select option</div>
+
+  <div *ngIf="sendDataViaSmsObject && sendDataViaSmsObject.isLoading">
+    <loading [loadingMessage]="sendDataViaSmsObject.loadingMessage" [loadingSize]="'large'"></loading>
+  </div>
+  <div *ngIf="sendDataViaSmsObject && !sendDataViaSmsObject.isLoading">
+    <ion-row>
+      <ion-col>
+        <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openOrganisationUnitTree()">
+          <img class="side-menu-icon" [src]="icons.orgUnit" />&nbsp;&nbsp; {{ organisationUnitLabel }}
+        </div>
+        <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openEntryFormList()">
+          <img class="side-menu-icon" [src]="icons.dataSet" />&nbsp;&nbsp; {{ dataSetLabel }}
+        </div>
+        <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openPeriodList()">
+          <img class="side-menu-icon" [src]="icons.period" />&nbsp;&nbsp; {{ periodLabel }}
+        </div>
+        <div *ngIf="selectedPeriod && selectedPeriod.iso && dataSetCategoryCombo && dataSetCategoryCombo.id ">
+          <div *ngIf="isDataSetDimensionApplicable">
+            <div *ngFor="let category of dataSetCategoryCombo.categories;let categoryIndex = index">
+              <div (tap)="openDataDimensionSelection(category)" padding-top padding-bottom class="item-card" color="font-color" full text-center
+                text-wrap>
+                <div style="padding-bottom: 5px;">
+                  <b>{{ category.name }}</b>
+                </div>
+                <div *ngIf="selectedDataDimension[categoryIndex]">{{ selectedDataDimension[categoryIndex].name }}</div>
+                <div *ngIf="!selectedDataDimension[categoryIndex]">Touch to select option</div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="item-card" padding-top padding-bottom *ngIf="!isDataSetDimensionApplicable">
-          <warning [warningMessage]="isDataSetDimensionApplicableCategories" ></warning>
-        </div>
-      </div>
-      <div *ngIf="isFormReady" full>
-        <div>
-          <div class="item-card">
-            <ion-input type="text" placeholder="Mobile Number" [(ngModel)]="mobileNumber" ></ion-input>
+          <div class="item-card" padding-top padding-bottom *ngIf="!isDataSetDimensionApplicable">
+            <warning [warningMessage]="isDataSetDimensionApplicableCategories"></warning>
           </div>
-          <button [disabled]="!mobileNumber || mobileNumber ==''" ion-button style="text-transform: none;" block>Upload data</button>
         </div>
-      </div>
-
-
-    </ion-col>
-  </ion-row>
-
+        <div *ngIf="isFormReady" full>
+          <div>
+            <div class="item-card">
+              <ion-input type="text" placeholder="Mobile Number" [(ngModel)]="sendDataViaSmsObject.mobileNumber"></ion-input>
+            </div>
+            <button (click)="sendDataViaSms()" [disabled]="sendDataViaSmsObject.mobileNumber.length < 9" ion-button style="text-transform: none;"
+              block>Upload data</button>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </div>
 </ion-grid>

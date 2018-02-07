@@ -283,6 +283,7 @@ export class SmsCommandProvider {
    * @param orgUnitId
    * @param dataElements
    * @param currentUser
+   * @param dataDimension
    * @returns {Observable<any>}
    */
   getEntryFormDataValuesObjectFromStorage(
@@ -290,7 +291,8 @@ export class SmsCommandProvider {
     period,
     orgUnitId,
     dataElements,
-    currentUser
+    currentUser,
+    dataDimension
   ): Observable<any> {
     let ids = [];
     let entryFormDataValuesObjectFromStorage = {};
@@ -319,10 +321,22 @@ export class SmsCommandProvider {
         currentUser.currentDatabase
       ).subscribe(
         (dataValues: any) => {
-          dataValues.forEach((dataValue: any) => {
-            let id = dataValue.de + "-" + dataValue.co;
-            entryFormDataValuesObjectFromStorage[id] = dataValue.value;
-          });
+          if (dataDimension.cp == "") {
+            dataValues.map((dataValue: any) => {
+              let id = dataValue.de + "-" + dataValue.co;
+              entryFormDataValuesObjectFromStorage[id] = dataValue.value;
+            });
+          } else {
+            dataValues.map((dataValue: any) => {
+              if (
+                dataValue.cp == dataDimension.cp &&
+                dataValue.cc == dataDimension.cc
+              ) {
+                let id = dataValue.de + "-" + dataValue.co;
+                entryFormDataValuesObjectFromStorage[id] = dataValue.value;
+              }
+            });
+          }
           observer.next(entryFormDataValuesObjectFromStorage);
           observer.complete();
         },
