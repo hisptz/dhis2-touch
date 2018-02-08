@@ -18,16 +18,23 @@
   </ion-toolbar>
 
 </ion-header>
-<ion-content >
+<ion-content>
   <ion-grid>
     <ion-row>
       <ion-col>
         <div class="item-card" *ngFor="let indicator of indicators">
-          <b>Name </b> : {{ indicator.name }}<br>
-          <span *ngIf="indicator.numeratorDescription != ''"><b>Numerator Description </b> : {{ indicator.numeratorDescription }}<br></span>
-          <b>Numerator</b> : {{ indicator.numerator }}<br>
-          <span *ngIf="indicator.denominatorDescription != ''"><b>Denominator Description </b> : {{ indicator.denominatorDescription }}<br></span>
-          <b>Denominator </b> : {{ indicator.denominator }}<br>
+          <b>Name </b> : {{ indicator.name }}
+          <br>
+          <span *ngIf="indicator.numeratorDescription != ''">
+            <b>Numerator Description </b> : {{ indicator.numeratorDescription }}
+            <br>
+          </span>
+          <!-- <b>Numerator</b> : {{ indicator.numerator }}<br> -->
+          <span *ngIf="indicator.denominatorDescription != ''">
+            <b>Denominator Description </b> : {{ indicator.denominatorDescription }}
+            <br>
+          </span>
+          <!-- <b>Denominator </b> : {{ indicator.denominator }}<br> -->
         </div>
       </ion-col>
     </ion-row>
