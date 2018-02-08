@@ -5,18 +5,18 @@
         <div class="map-legend-item" *ngFor="let legend of visualizationLegends; let i = index;">
           <div class="map-legend-header" (click)="setActiveItem(i, $event)">
             <div class="map-legend-title-block">
-              <img src="assets/icons/map.png" alt="">
+              <img src="assets/icon/map.png" alt="">
               <span class="map-legend-title">{{legend.legend.title}}</span>
             </div>
             <div class="map-legend-title-options">
               <a (click)="toggleLayerView(legend,'normal',$event)">
-                <img *ngIf="!legend.hidden" src="assets/icons/eye.png" alt="">
-                <img *ngIf="legend.hidden" src="assets/icons/eye-cross.png" alt="">
+                <img *ngIf="!legend.hidden" src="assets/icon/eye.png" alt="">
+                <img *ngIf="legend.hidden" src="assets/icon/eye-cross.png" alt="">
               </a>
             </div>
             <div class="filter__button" *ngIf="activeLayer === i && !(isFilterSectionOpen$ | async)" [ngStyle]="{'top': 'calc(' + buttonTop+ 'px)'}">
               <button class="visualization-btn" title="Filter by different dimensions" (click)="openFilters($event)">
-                <img alt="" src="assets/icons/filter.png">
+                <img alt="" src="assets/icon/filter.png">
               </button>
             </div>
           </div>
@@ -48,7 +48,7 @@
         <div class="map-legend-item">
           <div class="map-legend-header" (click)="setActiveItem(-1, $event)">
             <div class="map-legend-title-block">
-              <img src="assets/icons/map.png" alt="">
+              <img src="assets/icon/map.png" alt="">
               <span class="map-legend-title">Base Maps</span>
             </div>
           </div>
@@ -68,19 +68,19 @@
     <div class="map-legend-footer">
       <div class="map-legend-left-footer">
         <a title="Show map data table">
-          <img src="assets/icons/table.png" alt="">
+          <img src="assets/icon/table.png" alt="">
         </a>
       </div>
       <div class="map-legend-right-footer">
         <a title="Upload GeoJson file">
-          <img src="assets/icons/upload.png" alt="">
+          <img src="assets/icon/upload.png" alt="">
         </a>
         <a title="Stick Legend" (click)="stickLegendContainer($event)">
-          <img *ngIf="!(sticky$ | async)" src="assets/icons/pin-empty.png" alt="">
-          <img *ngIf="sticky$ | async" src="assets/icons/pin-filled.png" alt="">
+          <img *ngIf="!(sticky$ | async)" src="assets/icon/pin-empty.png" alt="">
+          <img *ngIf="sticky$ | async" src="assets/icon/pin-filled.png" alt="">
         </a>
         <a title="Close Legend" (click)="closeLegendContainer($event)">
-          <img src="assets/icons/close.png" alt="">
+          <img src="assets/icon/close.png" alt="">
         </a>
       </div>
     </div>

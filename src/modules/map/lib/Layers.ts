@@ -6,6 +6,7 @@ import { event } from './EventLayer';
 import { thematic } from './ThematicLayer';
 import { facility } from './FacilityLayer';
 import { external } from './ExternalLayer';
+import { earthEngine } from './EarthEngineLayer';
 import { Layer } from '../models/layer.model';
 import { VisualizationObject } from '../models/visualization-object.model';
 
@@ -15,7 +16,8 @@ export const LayerType = {
   event,
   thematic,
   facility,
-  external
+  external,
+  earthEngine
 };
 
 export const Layers = (layers, geofeatures, analytics, organizationGroupSet, legendSets) => {
@@ -59,14 +61,7 @@ export const Layers = (layers, geofeatures, analytics, organizationGroupSet, leg
 };
 
 export const GetOverLayLayers = (visualizationObject: VisualizationObject) => {
-  const {
-    mapConfiguration,
-    layers,
-    geofeatures,
-    analytics,
-    orgUnitGroupSet,
-    legendSets
-  } = visualizationObject;
+  const { mapConfiguration, layers, geofeatures, analytics, orgUnitGroupSet, legendSets } = visualizationObject;
 
   // Work with Layers separately;
   return Layers(layers, geofeatures, analytics, orgUnitGroupSet, legendSets);

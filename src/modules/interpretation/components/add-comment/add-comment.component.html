@@ -1,0 +1,10 @@
+<div class="interpretation-comment-input-block">
+  <textarea type="text" cols="100" rows="1" Autosize autofocus required minlength="3" [(ngModel)]="commentFormData.comment"
+    name="comment" #comment="ngModel" placeholder="Write your comment" class="interpretation-comment-input"></textarea>
+  <div class="pull-right" [hidden]="comment.invalid || commentFormData.comment === ''">
+    <button class="dashboard-border dashboard-btn " (click)="cancel($event)">CANCEL</button>
+    <button class="dashboard-border dashboard-btn " [disabled]="creating" (click)="postComment($event)">
+      {{creating ? 'POSTING' : 'POST'}}
+    </button>
+  </div>
+</div>

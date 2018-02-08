@@ -20,7 +20,8 @@ export class VisualizationObjectEffects {
   constructor(
     private actions$: Actions,
     private store: Store<fromStore.MapState>,
-    private geofeatureService: fromServices.GeoFeatureService
+    private geofeatureService: fromServices.GeoFeatureService,
+    private systemService: fromServices.SystemService
   ) {}
   @Effect()
   createVisualizationObjet$ = this.actions$
@@ -34,20 +35,16 @@ export class VisualizationObjectEffects {
     );
 
   @Effect({ dispatch: false })
-  dispatchCreateAnalytics$ = this.actions$
-    .ofType(visualizationObjectActions.CREATE_VISUALIZATION_OBJECT_SUCCESS)
-    .pipe(
-      map((action: visualizationObjectActions.CreateVisualizationObjectSuccess) => {
-        const layers = action.payload.layers;
-        const needsAnalytics = layers.filter(
-          layer => layer && (layer.type === 'event' || layer.type === 'thematic')
-        );
+  dispatchCreateAnalytics$ = this.actions$.ofType(visualizationObjectActions.CREATE_VISUALIZATION_OBJECT_SUCCESS).pipe(
+    map((action: visualizationObjectActions.CreateVisualizationObjectSuccess) => {
+      const layers = action.payload.layers;
+      const needsAnalytics = layers.filter(layer => layer && (layer.type === 'event' || layer.type === 'thematic'));
 
-        if (needsAnalytics.length) {
-          this.store.dispatch(new visualizationObjectActions.LoadAnalyticsVizObj(action.payload));
-        }
-      })
-    );
+      if (needsAnalytics.length) {
+        this.store.dispatch(new visualizationObjectActions.LoadAnalyticsVizObj(action.payload));
+      }
+    })
+  );
 
   @Effect({ dispatch: false })
   dispatchAddOrgUnitGroupSet$ = this.actions$
@@ -55,29 +52,23 @@ export class VisualizationObjectEffects {
     .pipe(
       tap((action: visualizationObjectActions.CreateVisualizationObjectSuccess) => {
         const layers = action.payload.layers;
-        const needsOrgUnitGroupSet = layers.filter(
-          layer => layer && layer.dataSelections.organisationUnitGroupSet
-        );
+        const needsOrgUnitGroupSet = layers.filter(layer => layer && layer.dataSelections.organisationUnitGroupSet);
         if (needsOrgUnitGroupSet.length) {
-          this.store.dispatch(
-            new visualizationObjectActions.AddOrgUnitGroupSetVizObj(action.payload)
-          );
+          this.store.dispatch(new visualizationObjectActions.AddOrgUnitGroupSetVizObj(action.payload));
         }
       })
     );
 
   @Effect({ dispatch: false })
-  dispatchAddLegendSetSet$ = this.actions$
-    .ofType(visualizationObjectActions.CREATE_VISUALIZATION_OBJECT_SUCCESS)
-    .pipe(
-      tap((action: visualizationObjectActions.CreateVisualizationObjectSuccess) => {
-        const layers = action.payload.layers;
-        const needsLegendSets = layers.filter(layer => layer && layer.dataSelections.legendSet);
-        if (needsLegendSets.length) {
-          this.store.dispatch(new legendSetActions.LoadLegendSet(action.payload));
-        }
-      })
-    );
+  dispatchAddLegendSetSet$ = this.actions$.ofType(visualizationObjectActions.CREATE_VISUALIZATION_OBJECT_SUCCESS).pipe(
+    tap((action: visualizationObjectActions.CreateVisualizationObjectSuccess) => {
+      const layers = action.payload.layers;
+      const needsLegendSets = layers.filter(layer => layer && layer.dataSelections.legendSet);
+      if (needsLegendSets.length) {
+        this.store.dispatch(new legendSetActions.LoadLegendSet(action.payload));
+      }
+    })
+  );
 
   @Effect({ dispatch: false })
   dispatchCreateGeoFeatures$ = this.actions$
@@ -87,48 +78,51 @@ export class VisualizationObjectEffects {
         const { layers } = action.payload;
         const entities = this.getParameterEntities(layers);
         const values = Object.keys(entities).map(key => entities[key]);
-        this.geofeatureService
-          .getGeoFeaturesArray(values)
-          .pipe(map(geofeature => console.log(geofeature)));
+        this.geofeatureService.getGeoFeaturesArray(values).pipe(map(geofeature => console.log(geofeature)));
       })
     );
 
   @Effect()
-  dispatchAddGeoFeatures$ = this.actions$
-    .ofType(visualizationObjectActions.CREATE_VISUALIZATION_OBJECT)
-    .pipe(
-      map((action: visualizationObjectActions.CreateVisualizationObjectSuccess) => action.payload),
-      switchMap(vizObject => {
-        const { layers } = vizObject;
-        const entities = this.getParameterEntities(layers);
-        const values = Object.keys(entities).map(key => entities[key]);
-        return this.geofeatureService.getGeoFeaturesArray(values).pipe(
-          map(geofeature => {
-            const geofeatures = Object.keys(entities).reduce((arr = {}, key, index) => {
-              return { ...arr, [key]: geofeature[index] };
-            }, {});
-            return new visualizationObjectActions.AddGeoFeaturesVizObj({
-              ...vizObject,
-              geofeatures
-            });
-          }),
-          catchError(error =>
-            of(new visualizationObjectActions.AddVisualizationObjectCompleteFail(error))
-          )
-        );
-      })
-    );
+  dispatchAddGeoFeatures$ = this.actions$.ofType(visualizationObjectActions.CREATE_VISUALIZATION_OBJECT).pipe(
+    map((action: visualizationObjectActions.CreateVisualizationObjectSuccess) => action.payload),
+    switchMap(vizObject => {
+      const { layers } = vizObject;
+      const entities = this.getParameterEntities(layers);
+      const values = Object.keys(entities).map(key => entities[key]);
+      return this.geofeatureService.getGeoFeaturesArray(values).pipe(
+        map(geofeature => {
+          const geofeatures = Object.keys(entities).reduce((arr = {}, key, index) => {
+            return { ...arr, [key]: geofeature[index] };
+          }, {});
+          return new visualizationObjectActions.AddGeoFeaturesVizObj({
+            ...vizObject,
+            geofeatures
+          });
+        }),
+        catchError(error => of(new visualizationObjectActions.AddVisualizationObjectCompleteFail(error)))
+      );
+    })
+  );
 
-  // @Effect({ dispatch: false })
-  // dispatchCreateVizObjectComplete$ = this.actions$
-  //   .ofType(visualizationObjectActions.ADD_VISUALIZATION_OBJECT_COMPLETE)
-  //   .pipe(
-  //     tap((action: visualizationObjectActions.AddVisualizationObjectComplete) => {
-  //       const visualizationObject = action.payload;
-  //       // console.log('Is actually Listening:::', visualizationObject);
-  //       this.store.dispatch(new visualizationObjectActions.AddVisualizationObjectCompleteSuccess(visualizationObject));
-  //     })
-  //   );
+  @Effect({ dispatch: false })
+  dispatchAddGoogleToken$ = this.actions$.ofType(visualizationObjectActions.ADD_VISUALIZATION_OBJECT_COMPLETE).pipe(
+    tap((action: visualizationObjectActions.AddVisualizationObjectComplete) => {
+      const visualizationObject = action.payload;
+      const { layers } = visualizationObject;
+      const needsTokenGoogleEarth = layers.filter(layer => layer && layer.type === 'earthEngine');
+
+      if (needsTokenGoogleEarth.length) {
+        this.systemService.getGoogleEarthToken().subscribe(resp => {
+          Object.keys(resp).map(key => localStorage.setItem(key, resp[key]));
+          this.store.dispatch(
+            new visualizationObjectActions.AddVisualizationObjectCompleteSuccess({
+              ...visualizationObject
+            })
+          );
+        });
+      }
+    })
+  );
 
   @Effect({ dispatch: false })
   dispatchAddGeoFeaturescomplete$ = this.actions$
@@ -167,16 +161,14 @@ export class VisualizationObjectEffects {
     layers.reduce((entities = {}, layer, index) => {
       const { rows, columns, filters } = layer.dataSelections;
       const isFacility = layer.type === 'facility';
-      if (layer.type === 'external') {
+      if (layer.type === 'external' || layer.type == 'earthEngine') {
         return;
       }
       const requestParams = [...rows, ...columns, ...filters];
       const data = requestParams.filter(dimension => dimension.dimension === 'ou');
       const parameter = data
         .map((param, paramIndex) => {
-          return `ou=${param.dimension}:${param.items
-            .map(item => item.id || item.dimensionItem)
-            .join(';')}`;
+          return `ou=${param.dimension}:${param.items.map(item => item.id || item.dimensionItem).join(';')}`;
         })
         .join('&');
       const url = isFacility

@@ -1,0 +1,91 @@
+<div class="interpretation-container">
+    <div class="interpretation-block" [style.minheight]="itemHeight">
+        <h4>Interpretation</h4>
+        <!--<p>Description will be here</p>-->
+        <input [(ngModel)]="interpretationTerm" class="interpretation-input" placeholder="Search interpretation">
+        <div *ngIf="interpretationTerm && (interpretations | filterBy: interpretationTerm).length === 0" style="padding: 15px;">
+            Not found
+        </div>
+        <div *ngFor="let interpretation of interpretations  | filterBy: interpretationTerm ; let i = index" (mouseenter)="toggleInterpretationOptions(interpretation, $event, true)"
+            (mouseleave)="toggleInterpretationOptions(interpretation, $event)" [ngClass]="{
+      'interpretation-item': true,
+      'interpretation-item-border': i > 0
+      }">
+            <div class="interpretation-user-block">
+                <div class="interpretation-user">
+                    {{interpretation?.user.displayName | abbreviate}}
+                </div>
+            </div>
+            <div class="interpretation-body">
+                <div>
+                    <b>{{interpretation.user.displayName}}</b>
+                </div>
+                <div class="interpretation-text" *ngIf="!interpretation.showEditForm && !interpretation.showDeleteDialog && !interpretation.deleting">{{interpretation.text}}</div>
+
+                <div class="interpretation-delete-block" *ngIf="interpretation.showDeleteDialog">
+                    This interpretation will be deleted, are you sure?
+                    <a class="btn btn-xs btn-outline-danger" (click)="deleteInterpretation(interpretation, $event)">
+                        <img src="assets/icon/trash.png" alt="" style="height: 12px; display: block; margin: auto;">
+                    </a>
+                    <a class="btn btn-xs btn-outline-secondary" (click)="toggleDeleteConfirmationDialog(interpretation, $event)">
+                        <img src="assets/icon/close.png" alt="" style="height: 12px; display: block; margin: auto;">
+                    </a>
+                </div>
+                <div *ngIf="interpretation.deleting">Deleting interpretation</div>
+                <div class="interpretation-edit-input" *ngIf="interpretation.showEditForm">
+                    <app-edit-interpretation [interpretation]="interpretation" [rootUrl]="rootUrl" (onInterpretationEdit)="updateInterpretationText($event)"></app-edit-interpretation>
+                </div>
+                <div class="interpretation-options">
+                    <a class="interpretation-comment-btn" (click)="toggleCommentBlock(i, $event)">
+                        <span *ngIf="interpretation.comments.length === 0">Comment</span>
+                        <span *ngIf="interpretation.comments.length > 0">
+                            {{ interpretation.comments.length }} comment{{interpretation.comments.length > 1 ? 's' : ''}}
+                        </span>
+                    </a>
+                    <app-interpretation-like [interpretation]="interpretation" [rootUrl]="rootUrl" [currentUser]="currentUser" (onInterpretationUpdate)="updateInterpretationLikeStatus($event)"></app-interpretation-like>
+                </div>
+                <div *ngIf="interpretation.showCommentBlock" class="interpretation-comment-container">
+                    <div class="interpretation-comment-block">
+                        <app-interpretation-comment *ngFor="let comment of interpretation.comments" [comment]="comment" [currentUser]="currentUser"
+                            [interpretation]="interpretation" (onCommentDelete)="deleteInterpretationComment(interpretation, $event)"
+                            (onCommentUpdated)="updateInterpretationComment($event)" [rootUrl]="rootUrl"></app-interpretation-comment>
+                    </div>
+                    <div class="interpretation-comment-input-area">
+                        <app-interpretation-comment [showCommentInput]="true" [currentUser]="currentUser" [interpretation]="interpretation" [rootUrl]="rootUrl"
+                            (onCommentCreated)="updateInterpretationComment($event)"></app-interpretation-comment>
+                    </div>
+                </div>
+            </div>
+            <div class="interpretation-more-options">
+                <div class="interpretation-last-updated" *ngIf="interpretation.showDate && !interpretation.showDropdownOptions">
+                    {{interpretation.lastUpdated}}
+                </div>
+                <div>
+                    <a class="interpretation-more-btn" title="show more options" (click)="toggleInterpretationDropdownOptions(i, $event)" *ngIf="interpretation.showMoreButton">
+                        <img src="assets/icon/more.png" alt="" style="height: 20px;">
+                    </a>
+                    <ul class="interpretation-more-options-dropdown" *ngIf="interpretation.showDropdownOptions">
+                        <li>
+                            <a (click)="openInterpretationEditForm(interpretation, $event)">Edit</a>
+                        </li>
+                        <li>
+                            <a (click)="toggleDeleteConfirmationDialog(interpretation, $event)" class="text-danger" *ngIf="interpretation.showDeleteButton">Delete</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="position: relative;">
+        <div class="interpretation-write-form">
+            <div class="interpretation-user-block">
+                <div class="interpretation-user">
+                    {{ currentUser.name | abbreviate }}
+                </div>
+            </div>
+            <div class="interpretation-input-block">
+                <app-add-interpretation [visualizationTypeObject]="visualizationTypeObject" [rootUrl]="rootUrl" (onInterpretationCreate)="updateInterpretationList($event)"></app-add-interpretation>
+            </div>
+        </div>
+    </div>
+</div>

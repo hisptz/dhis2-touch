@@ -33,7 +33,7 @@ export function transformVisualizationObject(visualizationObject) {
       displayName: settings.displayName,
       opacity: settings.opacity,
       hidden: settings.hidden,
-      type: settings.layer.replace(/\d$/, '') // Replace number in thematic layers
+      type: settings.layer ? settings.layer.replace(/\d$/, '') : 'thematic' // Replace number in thematic layers
     };
 
     const layerOptions = _.pick(settings, [
@@ -44,7 +44,13 @@ export function transformVisualizationObject(visualizationObject) {
       'radiusLow'
     ]);
 
-    const legendProperties = _.pick(settings, ['colorLow', 'colorHigh', 'colorScale', 'classes', 'method']);
+    const legendProperties = {
+      colorLow: settings.colorLow ? settings.colorLow : '#e5f5e0',
+      colorHigh: settings.colorHigh ? settings.colorHigh : '#31a354',
+      colorScale: settings.colorScale ? settings.colorScale : '#e5f5e0,#a1d99b,#31a354',
+      classes: settings.classes ? settings.classes : 3,
+      method: settings.method ? settings.method : 2
+    };
 
     const displaySettings = _.pick(settings, [
       'labelFontColor',

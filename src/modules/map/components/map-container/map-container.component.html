@@ -3,23 +3,23 @@
     <ul class="map-controls__list">
       <li>
         <button class="map-controls__btn" title="Zoom in" (click)="zoomIn($event)">
-          <img src="assets/icons/plus.png">
+          <img src="assets/icon/plus.png">
         </button>
       </li>
       <li>
         <button class="map-controls__btn" title="Home" (click)="recenterMap($event)">
-          <img src="assets/icons/home.png">
+          <img src="assets/icon/home.png">
         </button>
       </li>
       <li>
         <button class="map-controls__btn" title="Zoom out" (click)="zoomOut($event)">
-          <img src="assets/icons/minus.png">
+          <img src="assets/icon/minus.png">
         </button>
       </li>
     </ul>
     <div class="map-layers__block">
       <button class="map-layers__btn" (mouseenter)="toggleLegendContainerView()">
-        <img src="assets/icons/layers.png">
+        <img src="assets/icon/layers.png">
       </button>
       <div class="visualization-legend__container" *ngIf="visualizationLegendIsOpen$ | async" [ngStyle]="{'max-height': 'calc(' + mapHeight + ' - 150px)'}"
         (mouseleave)="toggleLegendContainerView()">

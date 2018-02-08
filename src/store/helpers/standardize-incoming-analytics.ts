@@ -1,5 +1,8 @@
-import * as _ from 'lodash';
-export function standardizeIncomingAnalytics(analyticsObject: any, preferNormalStructure: boolean = false) {
+import * as _ from "lodash";
+export function standardizeIncomingAnalytics(
+  analyticsObject: any,
+  preferNormalStructure: boolean = false
+) {
   const sanitizedAnalyticsObject: any = {
     headers: [],
     metaData: {
@@ -19,7 +22,7 @@ export function standardizeIncomingAnalytics(analyticsObject: any, preferNormalS
           const newHeader: any = header;
           sanitizedAnalyticsObject.headers.push(newHeader);
         } catch (e) {
-          console.warn('Invalid header object');
+          console.warn("Invalid header object");
         }
       });
     }
@@ -30,11 +33,12 @@ export function standardizeIncomingAnalytics(analyticsObject: any, preferNormalS
     if (analyticsObject.metaData) {
       try {
         const sanitizedMetadata: any = getSanitizedAnalyticsMetadata(
-          analyticsObject.metaData, preferNormalStructure
+          analyticsObject.metaData,
+          preferNormalStructure
         );
         sanitizedAnalyticsObject.metaData = sanitizedMetadata;
       } catch (e) {
-        console.warn('Invalid metadata object');
+        console.warn("Invalid metadata object");
       }
     }
 
@@ -49,7 +53,10 @@ export function standardizeIncomingAnalytics(analyticsObject: any, preferNormalS
   return sanitizedAnalyticsObject;
 }
 
-function getSanitizedAnalyticsMetadata(analyticMetadata: any, preferNormalStructure: boolean) {
+function getSanitizedAnalyticsMetadata(
+  analyticMetadata: any,
+  preferNormalStructure: boolean
+) {
   let sanitizedMetadata: any = {};
 
   if (analyticMetadata) {
@@ -67,7 +74,7 @@ function getSanitizedAnalyticsMetadata(analyticMetadata: any, preferNormalStruct
             analyticMetadata.items[metadataItemKey].name;
         });
       }
-      sanitizedMetadata['names'] = metadataNames;
+      sanitizedMetadata["names"] = metadataNames;
     }
 
     /**
@@ -75,37 +82,33 @@ function getSanitizedAnalyticsMetadata(analyticMetadata: any, preferNormalStruct
      */
     if (analyticMetadata.dimensions) {
       if (!preferNormalStructure) {
-        sanitizedMetadata['dimensions'] = analyticMetadata.dimensions;
+        sanitizedMetadata["dimensions"] = analyticMetadata.dimensions;
       } else {
         sanitizedMetadata = {
           ...sanitizedMetadata,
           ...analyticMetadata.dimensions
-        }
+        };
       }
-
     } else {
       const metadataKeys = _.keys(analyticMetadata);
       const metadataDimensions: any = {};
       if (metadataKeys) {
         metadataKeys.forEach(metadataKey => {
-          if (metadataKey !== 'names') {
+          if (metadataKey !== "names") {
             metadataDimensions[metadataKey] = analyticMetadata[metadataKey];
           }
         });
       }
       if (!preferNormalStructure) {
-        sanitizedMetadata['dimensions'] = metadataDimensions;
+        sanitizedMetadata["dimensions"] = metadataDimensions;
       } else {
         sanitizedMetadata = {
           ...sanitizedMetadata,
           ...metadataDimensions
-        }
+        };
       }
-
     }
   }
-
-  console.log(_.keys(sanitizedMetadata))
 
   return sanitizedMetadata;
 }

@@ -1,10 +1,6 @@
 import * as L from 'leaflet';
 import * as _ from 'lodash';
-import {
-  getOrgUnitsFromRows,
-  getPeriodFromFilters,
-  getDataItemsFromColumns
-} from '../utils/analytics';
+import { getOrgUnitsFromRows, getPeriodFromFilters, getDataItemsFromColumns } from '../utils/analytics';
 import { getLegendItems, getColorsByRgbInterpolation } from '../utils/classify';
 import { toGeoJson } from './GeoJson';
 import { GeoJson } from 'leaflet';
@@ -28,6 +24,7 @@ export const thematic = options => {
   const otherOptions = thematicLayerOptions(options.id, opacity);
   let geoJsonLayer = L.geoJSON(features, otherOptions);
   let legend = null;
+
   if (analyticsData && analyticsData.rows.length) {
     const valueById = getValueById(analyticsData);
     const valueFeatures = features.filter(({ id }) => valueById[id] !== undefined);
@@ -42,21 +39,19 @@ export const thematic = options => {
       : createLegendFromConfig(orderedValues, legendProperties, options.displayName, options.type);
     const getLegendItem = _.curry(getLegendItemForValue)(legend.items);
     legend['period'] =
-      (analyticsData.metaData.dimensions && analyticsData.metaData.dimensions.pe[0]) ||
-      analyticsData.metaData.pe[0];
+      (analyticsData.metaData.dimensions && analyticsData.metaData.dimensions.pe[0]) || analyticsData.metaData.pe[0];
 
     valueFeatures.forEach(({ id, properties }) => {
       const value = valueById[id];
       const item = getLegendItem(value);
 
-      item.count === undefined ? (item.count = 1) : item.count++;
+      item && item.count === undefined ? (item.count = 1) : item.count++;
 
       properties.value = value;
       properties.label = name;
       properties.color = item && item.color;
       properties.percentage = (valueFrequencyPair[value] / orderedValues.length * 100).toFixed(1);
-      properties.radius =
-        (value - minValue) / (maxValue - minValue) * (radiusHigh - radiusLow) + radiusLow;
+      properties.radius = (value - minValue) / (maxValue - minValue) * (radiusHigh - radiusLow) + radiusLow;
     });
     geoJsonLayer = L.geoJSON(valueFeatures, otherOptions);
     const thematicEvents = thematicLayerEvents(columns, legend);
@@ -121,7 +116,6 @@ const createLegendFromConfig = (data, config, displayName, type) => {
   const { method, classes, colorScale, colorLow, colorHigh } = config;
   const items = getLegendItems(data, method, classes);
 
-  console.log('Items::', items);
   let colors;
 
   // TODO: Unify how we represent a colorScale
@@ -147,9 +141,7 @@ const createLegendFromConfig = (data, config, displayName, type) => {
 const getLegendItemForValue = (legendItems, value) => {
   const isLast = index => index === legendItems.length - 1;
   return legendItems.find(
-    (item, index) =>
-      value >= item.startValue &&
-      (value < item.endValue || (isLast(index) && value === item.endValue))
+    (item, index) => value >= item.startValue && (value < item.endValue || (isLast(index) && value === item.endValue))
   );
 };
 
@@ -195,7 +187,7 @@ export const thematicLayerEvents = (columns, legend) => {
   const onClick = evt => {
     const { name, value, percentage } = evt.layer.feature.properties;
     const indicator = columns[0].items[0].name;
-    const period = legend.period;
+    const period = legend ? legend.period : undefined;
     const content = `<div class="leaflet-popup-orgunit">${name}<br>
                     ${indicator}<br>
                     ${period}: ${value}</div>`;

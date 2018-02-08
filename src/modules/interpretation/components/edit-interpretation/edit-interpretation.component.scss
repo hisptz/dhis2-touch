@@ -1,0 +1,24 @@
+app-edit-interpretation {
+    .interpretation-edit-input {
+        border-style: none;
+        /*display: inline-block;*/
+        margin-top: 7px;
+        min-height: 35px;
+        width: 100%;
+        -webkit-transition: all .2s ease-in-out;
+        -moz-transition: all .2s ease-in-out;
+        -o-transition: all .2s ease-in-out;
+        -ms-transition: all .2s ease-in-out;
+        transition: all .2s ease-in-out;
+    }
+    .interpretation-edit-input:focus {
+        outline: none;
+        /*border-color: #0078A8;*/
+    }
+    .interpretation-edit-input {
+        background-color: transparent;
+    }
+    .edit-interpretation-btn {
+        border-style: none;
+    }
+}

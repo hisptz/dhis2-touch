@@ -190,6 +190,7 @@ export class LoginPage implements OnInit {
                   this.progressTracker[currentResourceType].message = "loading_current_user_authorities";
                   this.UserProvider.getUserAuthorities(this.currentUser).subscribe((response:any)=>{
                     this.currentUser.id = response.id;
+                    this.currentUser.name = response.name;
                     this.currentUser.authorities = response.authorities;
                     this.currentUser.dataViewOrganisationUnits = response.dataViewOrganisationUnits;
                     resource = "Preparing local storage";

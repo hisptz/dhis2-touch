@@ -38,6 +38,7 @@
   "search_dashboard_by_name" : "Search dashboard by name",
   "dashboard_list" : "Dashboard list",
   "loading_dashboard" : "Discovering dashboards",
+  "loading_visualization": "Discovering visualization data",
   "there_no_dashboard_item_found" : "There are no dashboard items found",
   "tracker_capture" : "Tracker Capture",
   "sync" : "Sync",

@@ -1,0 +1,25 @@
+<div class="interpretation-like-container">
+  <div
+    class="interpretation-like"
+    *ngIf="updatingLikeStatus"
+  >
+    <img src="assets/img/balls-3.svg" alt="" style="height: 20px;">
+    updating likes status
+  </div>
+  <div *ngIf="!updatingLikeStatus" style="display: flex">
+    <div
+      class="interpretation-like"
+      *ngIf="interpretation.likedBy.length > 0"
+    >{{ likeText }}</div>
+
+    <a
+      class="interpretation-like-btn"
+      title="{{ currentUserLiked ? 'Unlike' : 'Like'}} this interpretation"
+      (click)="toggleLikeStatus($event)"
+    >
+      <span>
+        {{ currentUserLiked ? 'Unlike' : 'Like'}}
+      </span>
+    </a>
+  </div>
+</div>

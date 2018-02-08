@@ -1,0 +1,21 @@
+app-interpretation-like {
+    .interpretation-like {
+        font-weight: lighter;
+        padding-left: 3px;
+        font-size: 12px;
+        margin-right: 5px;
+    }
+    .interpretation-like-btn {
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: lighter;
+        cursor: pointer;
+        color: #0078A8 !important;
+    }
+    .interpretation-like-btn i {
+        font-size: 12px;
+    }
+    .interpretation-liked {
+        color: #ffffff;
+    }
+}
