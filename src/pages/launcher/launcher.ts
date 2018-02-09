@@ -4,7 +4,6 @@ import {LoginPage} from "../login/login";
 import {TabsPage} from "../tabs/tabs";
 import {UserProvider} from "../../providers/user/user";
 import {NetworkAvailabilityProvider} from "../../providers/network-availability/network-availability";
-import {BackgroundMode} from "@ionic-native/background-mode";
 import {AppTranslationProvider} from "../../providers/app-translation/app-translation";
 import {ApplicationState} from "../../store/reducers/index";
 import {Store} from "@ngrx/store";
@@ -28,13 +27,11 @@ export class LauncherPage implements OnInit{
               private UserProvider : UserProvider,
               private store : Store<ApplicationState>,
               private NetworkAvailabilityProvider : NetworkAvailabilityProvider,
-              private appTranslationProvider : AppTranslationProvider,
-              private backgroundMode: BackgroundMode) {
+              private appTranslationProvider : AppTranslationProvider) {
   }
 
   ngOnInit(){
     this.logoUrl = 'assets/img/logo.png';
-    this.backgroundMode.enable();
     this.NetworkAvailabilityProvider.setNetworkStatusDetection();
     this.UserProvider.getCurrentUser().subscribe((user : any)=>{
       let currentLanguage = "en";

@@ -1,0 +1,81 @@
+.visualization-filter-section {
+  width: 100%;
+}
+
+.visualization-filter-buttons {
+  display: flex;
+}
+
+.visualization-filter-btn img {
+  display: block;
+  margin: auto;
+  height: 10px;
+}
+
+.no-borders {
+  box-shadow: none;
+}
+
+.no-borders img {
+  height: 15px;
+}
+
+.period-filter-btn img {
+  display: block;
+  margin: auto;
+  height: 15px;
+}
+
+.data-filter-btn,
+.period-filter-btn,
+.org-unit-filter-btn,
+.layout-filter-btn {
+  margin-right: 5px;
+  display: flex;
+  width: auto;
+  font-size: 12px;
+  border-radius: 15px;
+}
+
+.data-filter-btn img {
+  display: block;
+  margin: auto;
+  height: 15px;
+}
+
+.org-unit-filter-btn img {
+  display: block;
+  margin: auto;
+  height: 15px;
+}
+
+.layout-filter-btn img {
+  display: block;
+  margin: auto;
+  height: 15px;
+}
+
+.visualization-filter-list {
+  display: flex;
+  margin-left: 5px;
+}
+
+.visualization-filter-body {
+  background-color: rgba(255, 255, 255, 0.8);
+  position: absolute;
+  padding: 5px;
+  top: 40px;
+  width: 400px;
+  height: 350px;
+  z-index: 1200000;
+}
+
+.active-filter {
+  background-color: #f1f1f1;
+}
+
+@media (max-width: 500px) {
+  .visualization-filter-body {
+    width: 95%;
+  }
+}

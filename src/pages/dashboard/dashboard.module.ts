@@ -22,7 +22,7 @@ import {SharedModule} from "../../components/shared.module";
     SharedModule,
     DashboardModule,
     DictionaryModule,
-    TranslateModule.forChild()
+        TranslateModule.forChild()
   ]
 })
 export class DashboardPageModule {}

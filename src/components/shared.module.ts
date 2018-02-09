@@ -8,11 +8,13 @@ import {EmptyListNotificationComponent} from "./empty-list-notification/empty-li
 import {HelpContentsComponent} from "./help-contents/help-contents";
 import {WarningComponent} from "./warning/warning";
 import {AvailableLocalInstanceComponent} from "./available-local-instance/available-local-instance";
+import {ProgressLoaderComponent} from "./progress-loader/progress-loader.component";
 
 @NgModule({
   declarations: [
     ProgressBarComponent,
     AppFeaturesSlideComponent,
+    ProgressLoaderComponent,
     LoadingComponent, NotificationComponent,
     EmptyListNotificationComponent, HelpContentsComponent, WarningComponent,
     AvailableLocalInstanceComponent,
@@ -23,6 +25,7 @@ import {AvailableLocalInstanceComponent} from "./available-local-instance/availa
   exports: [
     ProgressBarComponent,
     AppFeaturesSlideComponent,
+    ProgressLoaderComponent,
     LoadingComponent, NotificationComponent,
     EmptyListNotificationComponent, HelpContentsComponent, WarningComponent,
     AvailableLocalInstanceComponent,

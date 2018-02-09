@@ -1,0 +1,83 @@
+<div class="layout-container">
+  <h5>Table / Chart Layout</h5>
+  <table class="table table-bordered">
+    <tr >
+      <!--<td rowspan="2" dnd-droppable (onDropSuccess)="onDrop($event,'excluded')">-->
+      <!--<div>-->
+      <!--<label>Excluded dimension</label>-->
+      <!--</div>-->
+      <!--<div class="draggable" dnd-draggable [dragEnabled]="true" *ngFor="let dimension of layout.excluded" [dragData]="{data: dimension, dimension: 'excluded'}"><span [ngClass]="icons[dimension]"></span> {{names[dimension]}}</div>-->
+      <!--</td>-->
+      <td
+        class="dimension-drops"
+      >
+        <div>
+          <label>Filters</label>
+        </div>
+        <div
+          class="drag-container"
+          [dragula]="'bag-one'"
+          [dragulaModel]="filters">
+          <div
+            class="draggable"
+            *ngFor="let filter of filters"
+          >
+            <img [src]="icons[filter.value]">
+            &nbsp;
+            <span>{{filter.name}}</span>
+          </div>
+        </div>
+      </td>
+      <td
+        class="dimension-drops"
+      >
+        <div>
+          <label>{{columnName}}</label>
+        </div>
+        <div
+          class="drag-container"
+          [dragula]="'bag-one'"
+          [dragulaModel]="columns">
+          <div
+            class="draggable"
+            *ngFor="let column of columns"
+          >
+            <img [src]="icons[column.value]">
+            &nbsp;
+            <span>{{column.name}}</span>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td
+        class="dimension-drops"
+      >
+        <div>
+          <label>{{rowName}}</label>
+        </div>
+        <div
+          class="drag-container"
+          [dragula]="'bag-one'"
+          [dragulaModel]="rows">
+          <div
+            class="draggable"
+            *ngFor="let row of rows"
+          >
+            <img [src]="icons[row.value]">
+            &nbsp;
+            <span>{{row.name}}</span>
+          </div>
+        </div>
+      </td>
+      <td class="dimension-drops"></td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="layout-footer">
+    <div>
+      <button class="btn btn-outline-secondary btn-sm" (click)="updateLayout()"><i class="fa fa-refresh"></i>Update</button>
+      <button class="btn btn-outline-secondary btn-sm" (click)="close()"><i class="fa fa-times"></i>Close</button>
+    </div>
+  </div>
+</div>

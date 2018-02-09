@@ -43,7 +43,7 @@
             <div class="dashboard-card" *ngFor="let visualizationObject of visualizationObjects$ | async">
 
                 <!-- visualization card title section -->
-                <ion-row (tap)="toggleVisualization(visualizationObject)">
+                <ion-row (tap)="toggleVisualization(visualizationObject)" style="padding : 2px;">
                     <ion-col col-11>
                         <ion-icon color="primary">
                             <img class="dashboard-item-icon" [src]="icons[visualizationObject.details.currentVisualization]" />
@@ -66,9 +66,22 @@
                 <!-- visualization card body section -->
                 <ion-row *ngIf="visualizationObject.details.expanded">
                     <ion-col>
+
+                        <div class="visualization-card-header" *ngIf="visualizationObject.details.loaded">
+                            <div class="visualization-card-header-left">
+                                <div class="visualization-filter-section-container" *ngIf="!visualizationObject.details.nonVisualizable">
+                                    <app-visualization-filter-section [selectedDimensions]="getSelectedDimensions(visualizationObject)" [visualizationType]="visualizationObject.details.currentVisualization"
+                                        [loaded]="visualizationObject.details.loaded" (onFilterUpdate)="onFilterUpdate($event,visualizationObject)"
+                                        (onLayoutUpdate)="onLayoutUpdate($event,visualizationObject)"></app-visualization-filter-section>
+                                </div>
+                            </div>
+                        </div>
+
+
                         <!-- visualization card loading section -->
                         <div *ngIf="!visualizationObject.details.loaded">
                             <loading [loadingSize]="'large'" [loadingMessage]="'loading_visualization'|translate"></loading>
+                            <!-- <app-visualization-card-loader [visualizationType]="visualizationObject.details.currentVisualization"></app-visualization-card-loader> -->
                         </div>
                         <!-- end of visualization card loading section -->
 
