@@ -69,4 +69,9 @@ app-map-container {
         z-index: 490 !important;
         left: 0;
     }
+  .warning-map {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }

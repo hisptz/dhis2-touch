@@ -6,4 +6,5 @@ export interface MapConfiguration {
   zoom: number;
   latitude: string;
   longitude: string;
+  fullScreen?: boolean;
 }

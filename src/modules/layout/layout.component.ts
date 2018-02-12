@@ -21,9 +21,9 @@ export class LayoutComponent implements OnInit {
 
   constructor() {
     this.icons = {
-      dx: 'assets/icons/data.png',
-      ou: 'assets/icons/tree.png',
-      pe: 'assets/icons/period.png'
+      dx: 'assets/icon/data.png',
+      ou: 'assets/icon/tree.png',
+      pe: 'assets/icon/period.png'
     };
 
     this.dimensions = {

@@ -38,7 +38,7 @@
                 <button type="button" class="btn btn-sm btn-outline-secondary" (click)="toggleOrgUnitSettings($event)">
         Options
           <img
-            src="assets/icons/arrow-down.png"
+            src="assets/icon/arrow-down.png"
             class="float-right group-image"
             style="padding-top: 5px; padding-left: 5px;"
             alt="">
@@ -47,19 +47,19 @@
                     <li>
                         <a (click)="setType('orgUnit', $event)">
                             <span *ngIf="orgUnitModel.selectionMode == 'orgUnit'" class="fa fa-check"></span>
-                            <img src="assets/icons/tree.png" class="group-image"> Select Administrative Unit
+                            <img src="assets/icon/tree.png" class="group-image"> Select Administrative Unit
                         </a>
                     </li>
                     <li>
                         <a (click)="setType('Level', $event)">
                             <span *ngIf="orgUnitModel.selectionMode == 'Level'" class="fa fa-check"></span>
-                            <img src="assets/icons/level.png" class="group-image"> Select Level
+                            <img src="assets/icon/level.png" class="group-image"> Select Level
                         </a>
                     </li>
                     <li>
                         <a (click)="setType('Group', $event)">
                             <span *ngIf="orgUnitModel.selectionMode == 'Group'" class="fa fa-check"></span>
-                            <img src="assets/icons/group.png" class="group-image"> Select Group
+                            <img src="assets/icon/group.png" class="group-image"> Select Group
                         </a>
                     </li>
                 </ul>
@@ -95,7 +95,7 @@
     </div>
 
     <div class="org-unit-actions float-right">
-        <button (click)="close($event)" class="btn btn-sm btn-outline-secondary">Cancel</button>
-        <button (click)="emit($event)" class="btn btn-sm btn-outline-secondary">Update</button>
+        <button (click)="close($event)" class="dashboard-border dashboard-btn">Cancel</button>
+        <button (click)="emit($event)" class="dashboard-border dashboard-btn">Update</button>
     </div>
 </div>

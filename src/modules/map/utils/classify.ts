@@ -77,10 +77,11 @@ export const getEqualIntervals = (minValue, maxValue, numClasses) => {
 
   for (let i = 0; i < numClasses; i++) {
     const startValue = minValue + i * binSize;
+    const endValue = i < numClasses - 1 ? startValue + binSize : maxValue;
 
     bins.push({
-      startValue: startValue,
-      endValue: i < numClasses - 1 ? startValue + binSize : maxValue
+      startValue: Number(startValue).toFixed(2),
+      endValue: Number(endValue).toFixed(2)
     });
   }
 
@@ -104,8 +105,8 @@ export const getQuantiles = (values, numClasses) => {
   }
 
   return bins.map((value, index) => ({
-    startValue: value,
-    endValue: bins[index + 1] || maxValue
+    startValue: Number(value).toFixed(2),
+    endValue: Number(bins[index + 1] || maxValue).toFixed(2)
   }));
 };
 
@@ -132,11 +133,7 @@ export function classify_old(features, values, options, legend) {
 
     if (!options.colors.length) {
       // Backward compability
-      options.colors = getColorsByRgbInterpolation(
-        options.colorLow,
-        options.colorHigh,
-        options.numClasses
-      );
+      options.colors = getColorsByRgbInterpolation(options.colorLow, options.colorHigh, options.numClasses);
     }
   } else if (method === 3) {
     // quantiles
@@ -164,11 +161,7 @@ export function classify_old(features, values, options, legend) {
 
     if (!options.colors.length) {
       // Backward compability
-      options.colors = getColorsByRgbInterpolation(
-        options.colorLow,
-        options.colorHigh,
-        options.numClasses
-      );
+      options.colors = getColorsByRgbInterpolation(options.colorLow, options.colorHigh, options.numClasses);
     }
   }
 
@@ -181,9 +174,7 @@ export function classify_old(features, values, options, legend) {
 
       prop.color = options.colors[classNumber - 1];
       prop.radius =
-        (value - options.minValue) /
-          (options.maxValue - options.minValue) *
-          (options.maxSize - options.minSize) +
+        (value - options.minValue) / (options.maxValue - options.minValue) * (options.maxSize - options.minSize) +
         options.minSize;
       prop.legend = legendItem.name;
       prop.range = legendItem.range.replace(/ *\([^)]*\) */g, ''); // Remove count in brackets

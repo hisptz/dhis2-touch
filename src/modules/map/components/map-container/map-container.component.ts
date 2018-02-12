@@ -1,31 +1,19 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  Input,
-  AfterViewInit
-} from "@angular/core";
-import { VisualizationObject } from "../../models/visualization-object.model";
-import { Store } from "@ngrx/store";
-import { Observable } from "rxjs/Observable";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import * as fromStore from "../../store";
-import { Layer } from "../../models/layer.model";
-import * as fromUtils from "../../utils";
-import { getTileLayer } from "../../constants/tile-layer.constant";
-import { MapConfiguration } from "../../models/map-configuration.model";
-import { GeoFeature } from "../../models/geo-feature.model";
-import * as fromLib from "../../lib";
-import * as L from "leaflet";
-
-import { of } from "rxjs/observable/of";
-import { interval } from "rxjs/observable/interval";
-import { map, filter, tap, flatMap } from "rxjs/operators";
+import { Component, OnInit, ChangeDetectionStrategy, Input, AfterViewInit } from '@angular/core';
+import { VisualizationObject } from '../../models/visualization-object.model';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import * as fromStore from '../../store';
+import * as fromUtils from '../../utils';
+import { getTileLayer } from '../../constants/tile-layer.constant';
+import { MapConfiguration } from '../../models/map-configuration.model';
+import * as fromLib from '../../lib';
+import * as L from 'leaflet';
+import { interval } from 'rxjs/observable/interval';
 
 @Component({
-  selector: "app-map-container",
+  selector: 'app-map-container',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: "./map-container.component.html",
+  templateUrl: './map-container.component.html',
   styles: [
     `:host {
       display: block;
@@ -40,6 +28,8 @@ export class MapContainerComponent implements OnInit, AfterViewInit {
   @Input() displayConfigurations: any;
 
   public visualizationLegendIsOpen$: Observable<boolean>;
+  public mapHasGeofeatures: boolean = true;
+  public mapHasDataAnalytics: boolean = true;
   public map: any;
 
   constructor(private store: Store<fromStore.MapState>) {}
@@ -48,6 +38,15 @@ export class MapContainerComponent implements OnInit, AfterViewInit {
     this.visualizationLegendIsOpen$ = this.store.select(
       fromStore.isVisualizationLegendOpen(this.visualizationObject.componentId)
     );
+    const { geofeatures, analytics } = this.visualizationObject;
+    const allGeofeatures = Object.keys(geofeatures).map(key => geofeatures[key]);
+    const allDataAnalytics = Object.keys(analytics).filter(key => analytics[key] && analytics[key].length > 0);
+    if (![].concat.apply([], allGeofeatures).length) {
+      this.mapHasGeofeatures = false;
+    }
+    if (![].concat.apply([], allDataAnalytics).length) {
+      this.mapHasDataAnalytics = false;
+    }
   }
 
   ngAfterViewInit() {
@@ -59,17 +58,15 @@ export class MapContainerComponent implements OnInit, AfterViewInit {
 
   initializeMapContainer() {
     const { itemHeight, mapWidth } = this.displayConfigurations;
-    const container = fromUtils.prepareMapContainer(
-      this.visualizationObject.componentId,
-      itemHeight,
-      mapWidth,
-      false
-    );
+    console.log(itemHeight);
+    const fullScreen = this.visualizationObject.mapConfiguration.fullScreen || itemHeight === '100vh';
+    const container = fromUtils.prepareMapContainer(this.visualizationObject.componentId, itemHeight, mapWidth, false);
     const otherOptions = {
       zoomControl: false,
-      scrollWheelZoom: false,
+      scrollWheelZoom: fullScreen ? true : false,
       worldCopyJump: true
     };
+    console.log(otherOptions);
     this.map = L.map(container, otherOptions);
   }
 
@@ -118,11 +115,7 @@ export class MapContainerComponent implements OnInit, AfterViewInit {
   }
 
   toggleLegendContainerView() {
-    this.store.dispatch(
-      new fromStore.ToggleOpenVisualizationLegend(
-        this.visualizationObject.componentId
-      )
-    );
+    this.store.dispatch(new fromStore.ToggleOpenVisualizationLegend(this.visualizationObject.componentId));
   }
   initializeMapBaseLayer(mapConfiguration: MapConfiguration) {
     let center: L.LatLngExpression = [
@@ -162,11 +155,7 @@ export class MapContainerComponent implements OnInit, AfterViewInit {
       this.layerFitBound(layersBounds);
     }
     if (legendSets.length) {
-      this.store.dispatch(
-        new fromStore.AddLegendSet({
-          [this.visualizationObject.componentId]: legendSets
-        })
-      );
+      this.store.dispatch(new fromStore.AddLegendSet({ [this.visualizationObject.componentId]: legendSets }));
     }
   }
 }

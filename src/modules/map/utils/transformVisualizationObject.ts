@@ -7,6 +7,7 @@ export function transformVisualizationObject(visualizationObject) {
   let visObject = {};
   let geofeatures = {};
   let analytics = {};
+  console.log('viz::', visualizationObject);
   const mapconfig = visualizationObject.details;
   const mapConfiguration: MapConfiguration = _.pick(mapconfig, [
     'id',
@@ -15,7 +16,8 @@ export function transformVisualizationObject(visualizationObject) {
     'latitude',
     'longitude',
     'basemap',
-    'zoom'
+    'zoom',
+    'fullScreen'
   ]);
 
   let layers: Layer[] = [];

@@ -1,8 +1,8 @@
 <div class="multiselect-container" appClickOutside (clickOutside)="hideOptions = true">
     <div class="show_items" (click)="displayPerTree()">
-        <img *ngIf="selectionMode == 'orgUnit'" src="assets/icons/tree.png" class="group-image">
-        <img *ngIf="selectionMode == 'Level'" src="assets/icons/level.png" class="group-image">
-        <img *ngIf="selectionMode == 'Group'" src="assets/icons/group.png" class="group-image">
+        <img *ngIf="selectionMode == 'orgUnit'" src="assets/icon/tree.png" class="group-image">
+        <img *ngIf="selectionMode == 'Level'" src="assets/icon/level.png" class="group-image">
+        <img *ngIf="selectionMode == 'Group'" src="assets/icon/group.png" class="group-image">
         <span *ngIf="selected_items.length == 1">{{ prefix }}</span>
         <span *ngIf="selected_items.length > 1">{{ prefix_multiple }}</span>
         <span *ngIf="selected_items.length > 3">
@@ -27,7 +27,7 @@
         <span *ngIf="selected_items.length == 0">
       {{ placeholder }}
     </span>
-        <img src="assets/icons/arrow-down.png" class="float-right" style="height: 15px; padding-top: 5px; padding-left: 5px;" alt="">
+        <img src="assets/icon/arrow-down.png" class="float-right" style="height: 15px; padding-top: 5px; padding-left: 5px;" alt="">
     </div>
     <ul class="item-list" *ngIf="!hideOptions">
         <li *ngFor="let item of items" class="period" (click)="selectItem(item, $event)" [ngClass]="{'selected': checkItemAvailabilty(item,selected_items)}" title="Click to select">
