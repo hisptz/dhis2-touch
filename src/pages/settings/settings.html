@@ -13,7 +13,7 @@
 </ion-header>
 
 
-<ion-content >
+<ion-content>
 
   <ion-grid>
 
@@ -25,19 +25,21 @@
       <div class="item-card" *ngFor="let settingContent of settingContents">
         <ion-row (tap)="toggleSettingContents(settingContent)">
           <ion-col col-11>
-            <img  class="side-menu-icon" [src]="settingContent.icon"/>&nbsp;&nbsp;
+            <img class="side-menu-icon" [src]="settingContent.icon" />&nbsp;&nbsp;
             <span ion-text [color]="(isSettingContentOpen[settingContent.id]) ?'current' : 'font-color'">
               {{ settingContent.name|translate }}
             </span>
           </ion-col>
-          <ion-col col-1 item >
+          <ion-col col-1 item>
             <div style="text-align: center;">
-              <ion-icon [color]="(isSettingContentOpen[settingContent.id]) ?'current' : 'font-color'" *ngIf="!(isSettingContentOpen[settingContent.id])" name="ios-arrow-down" item-right></ion-icon>
-              <ion-icon [color]="(isSettingContentOpen[settingContent.id]) ?'current' : 'font-color'" *ngIf="(isSettingContentOpen[settingContent.id])" name="ios-arrow-up" item-right></ion-icon>
+              <ion-icon [color]="(isSettingContentOpen[settingContent.id]) ?'current' : 'font-color'" *ngIf="!(isSettingContentOpen[settingContent.id])"
+                name="ios-arrow-down" item-right></ion-icon>
+              <ion-icon [color]="(isSettingContentOpen[settingContent.id]) ?'current' : 'font-color'" *ngIf="(isSettingContentOpen[settingContent.id])"
+                name="ios-arrow-up" item-right></ion-icon>
             </div>
           </ion-col>
         </ion-row>
-        <div class="updateManagerContents" *ngIf="(isSettingContentOpen[settingContent.id])" >
+        <div class="updateManagerContents" *ngIf="(isSettingContentOpen[settingContent.id])">
           <hr>
 
           <div *ngIf=" settingContent.id == 'appSettings'">
@@ -52,6 +54,7 @@
                     <ion-select (ionChange)="updateCurrentLanguage()" [(ngModel)]="currentLanguage" interface="action-sheet">
                       <ion-option value="en">en</ion-option>
                       <ion-option value="fr">fr</ion-option>
+                      <ion-option value="id">id</ion-option>
                       <ion-option value="pt">pt</ion-option>
                     </ion-select>
                   </ion-item>
@@ -69,7 +72,7 @@
                 <ion-row>
                   <ion-col col-5>
                     <ion-item>
-                      <ion-input type="number" (ionBlur)="applySettings(settingContent)"  min="1" [(ngModel)]="settingObject.synchronization.time"></ion-input>
+                      <ion-input type="number" (ionBlur)="applySettings(settingContent)" min="1" [(ngModel)]="settingObject.synchronization.time"></ion-input>
                     </ion-item>
                   </ion-col>
                   <ion-col col-7>
@@ -85,7 +88,7 @@
                   <ion-col>
                     <ion-item no-lines>
                       <ion-label>{{'auto_sync'|translate}}</ion-label>
-                      <ion-toggle (ionChange)="applySettings(settingContent)" color="primary" [(ngModel)] = "settingObject.synchronization.isAutoSync"></ion-toggle>
+                      <ion-toggle (ionChange)="applySettings(settingContent)" color="primary" [(ngModel)]="settingObject.synchronization.isAutoSync"></ion-toggle>
                     </ion-item>
                   </ion-col>
                 </ion-row>
@@ -99,7 +102,7 @@
             </div>
             <div *ngIf="!settingContent.isLoading">
               <div *ngIf="settingObject.entryForm">
-                <ion-row >
+                <ion-row>
                   <ion-col>
                     <ion-item>
                       <ion-label>{{'form_label'|translate}}</ion-label>
@@ -117,7 +120,7 @@
                     </ion-item>
                     <ion-item>
                       <ion-label floating>{{'data_element_per_page'|translate}}</ion-label>
-                      <ion-input (ionBlur)="applySettings(settingContent)" type="number"  min="1" [(ngModel)]="settingObject.entryForm.maxDataElementOnDefaultForm"></ion-input>
+                      <ion-input (ionBlur)="applySettings(settingContent)" type="number" min="1" [(ngModel)]="settingObject.entryForm.maxDataElementOnDefaultForm"></ion-input>
                     </ion-item>
                   </ion-col>
                 </ion-row>
