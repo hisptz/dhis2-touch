@@ -7,27 +7,33 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>{{'event_register'|translate}}</ion-title>
+    <ion-title>
+      <span [translate]="'event register'"></span>
+    </ion-title>
   </ion-navbar>
 </ion-header>
 
 
-<ion-content >
+<ion-content>
   <ion-grid>
     <div *ngIf="isLoading">
-      <loading [loadingSize]="'large'" [loadingMessage]="loadingMessage|translate"></loading>
+      <loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></loading>
     </div>
     <div *ngIf="!isLoading">
       <div *ngIf="currentEvent">
         <ion-row>
           <ion-col>
             <div (tap)="goBack()" padding-bottom class="item-card">
-              <b>{{'organisation_unit'|translate}}</b> : {{ currentOrgUnit.name }}<br>
-              <b>{{'program'|translate}}</b> : {{ currentProgram.name }}<br>
+              <b>
+                <span [translate]="'organisation unit'"></span>
+              </b> : {{ currentOrgUnit.name }}
+              <br>
+              <b>
+                <span [translate]="'program'"></span>
+              </b> : {{ currentProgram.name }}
+              <br>
             </div>
-            <program-stage-event-based [programStage]="programStage"
-                                       [dataDimension]="dataDimension"
-                                       [currentEvent]="currentEvent" (onDeleteEvent)="onEventDeleted()"></program-stage-event-based>
+            <program-stage-event-based [programStage]="programStage" [dataDimension]="dataDimension" [currentEvent]="currentEvent" (onDeleteEvent)="onEventDeleted()"></program-stage-event-based>
           </ion-col>
         </ion-row>
       </div>

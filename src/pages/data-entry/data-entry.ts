@@ -1,10 +1,10 @@
-import { Component,OnInit } from '@angular/core';
-import {IonicPage, ModalController, NavController} from 'ionic-angular';
-import {OrganisationUnitsProvider} from "../../providers/organisation-units/organisation-units";
-import {UserProvider} from "../../providers/user/user";
-import {AppProvider} from "../../providers/app/app";
-import {DataSetsProvider} from "../../providers/data-sets/data-sets";
-import {PeriodSelectionProvider} from "../../providers/period-selection/period-selection";
+import { Component, OnInit } from "@angular/core";
+import { IonicPage, ModalController, NavController } from "ionic-angular";
+import { OrganisationUnitsProvider } from "../../providers/organisation-units/organisation-units";
+import { UserProvider } from "../../providers/user/user";
+import { AppProvider } from "../../providers/app/app";
+import { DataSetsProvider } from "../../providers/data-sets/data-sets";
+import { PeriodSelectionProvider } from "../../providers/period-selection/period-selection";
 
 /**
  * Generated class for the DataEntryPage page.
@@ -15,103 +15,110 @@ import {PeriodSelectionProvider} from "../../providers/period-selection/period-s
 
 @IonicPage()
 @Component({
-  selector: 'page-data-entry',
-  templateUrl: 'data-entry.html',
+  selector: "page-data-entry",
+  templateUrl: "data-entry.html"
 })
-export class DataEntryPage implements OnInit{
+export class DataEntryPage implements OnInit {
+  selectedOrgUnit: any;
+  selectedDataSet: any;
+  selectedPeriod: any;
+  currentUser: any;
 
-  selectedOrgUnit : any;
-  selectedDataSet : any;
-  selectedPeriod : any;
-  currentUser : any;
+  isLoading: boolean;
+  loadingMessage: string;
+  isFormReady: boolean;
+  isDataSetDimensionApplicable: boolean;
+  isDataSetDimensionApplicableCategoriesMessage: string;
+  organisationUnitLabel: string;
+  dataSetLabel: string;
+  periodLabel: string;
+  dataSetIdsByUserRoles: Array<any>;
+  dataSets: Array<any>;
+  dataSetCategoryCombo: any;
+  selectedDataDimension: Array<any>;
+  currentPeriodOffset: number;
+  icons: any = {};
 
-  isLoading : boolean;
-  loadingMessage : string;
-  isFormReady : boolean;
-  isDataSetDimensionApplicable : boolean;
-  isDataSetDimensionApplicableCategoriesMessage : string;
-  organisationUnitLabel : string;
-  dataSetLabel : string;
-  periodLabel : string;
-  dataSetIdsByUserRoles : Array<any>;
-  dataSets : Array<any>;
-  dataSetCategoryCombo : any;
-  selectedDataDimension : Array<any>;
-  currentPeriodOffset : number;
-  icons : any = {};
+  constructor(
+    private navCtrl: NavController,
+    private modalCtrl: ModalController,
+    private userProvider: UserProvider,
+    private appProvider: AppProvider,
+    private dataSetProvider: DataSetsProvider,
+    private periodSelection: PeriodSelectionProvider,
+    private organisationUnitsProvider: OrganisationUnitsProvider
+  ) {}
 
-  constructor(private navCtrl: NavController,private modalCtrl : ModalController,
-              private userProvider : UserProvider,private appProvider : AppProvider,
-              private dataSetProvider : DataSetsProvider,private periodSelection : PeriodSelectionProvider,
-              private organisationUnitsProvider : OrganisationUnitsProvider) {
-  }
-
-  ngOnInit(){
+  ngOnInit() {
     this.icons.orgUnit = "assets/icon/orgUnit.png";
     this.icons.dataSet = "assets/icon/form.png";
     this.icons.period = "assets/icon/period.png";
     this.icons.goToDataEntryForm = "assets/icon/enterDataPen.png";
 
-    this.loadingMessage = "loading_user_information";
+    this.loadingMessage = "loading user information";
     this.isLoading = true;
     this.currentPeriodOffset = 0;
     this.isDataSetDimensionApplicable = false;
 
-    this.userProvider.getCurrentUser().subscribe((currentUser: any)=>{
-      this.currentUser = currentUser;
-      this.userProvider.getUserData().subscribe((userData : any)=>{
-        this.dataSetIdsByUserRoles = [];
-        userData.userRoles.forEach((userRole:any)=>{
-          if (userRole.dataSets) {
-            userRole.dataSets.forEach((dataSet:any)=>{
-              this.dataSetIdsByUserRoles.push(dataSet.id);
+    this.userProvider.getCurrentUser().subscribe(
+      (currentUser: any) => {
+        this.currentUser = currentUser;
+        this.userProvider.getUserData().subscribe((userData: any) => {
+          this.dataSetIdsByUserRoles = [];
+          userData.userRoles.forEach((userRole: any) => {
+            if (userRole.dataSets) {
+              userRole.dataSets.forEach((dataSet: any) => {
+                this.dataSetIdsByUserRoles.push(dataSet.id);
+              });
+            }
+          });
+
+          this.organisationUnitsProvider
+            .getLastSelectedOrganisationUnitUnit(currentUser)
+            .subscribe(lastSelectedOrgUnit => {
+              this.selectedOrgUnit = lastSelectedOrgUnit;
+              this.updateDataEntryFormSelections();
+              this.loadingEntryForm();
             });
-          }
-        });
-
-        this.organisationUnitsProvider.getLastSelectedOrganisationUnitUnit(currentUser).subscribe((lastSelectedOrgUnit)=>{
-          this.selectedOrgUnit = lastSelectedOrgUnit;
           this.updateDataEntryFormSelections();
-          this.loadingEntryForm();
         });
-        this.updateDataEntryFormSelections();
-      });
-    },error=>{
-      this.isLoading = false;
-      this.loadingMessage = "";
-      this.appProvider.setNormalNotification("Fail to load user information");
-    })
-
+      },
+      error => {
+        this.isLoading = false;
+        this.loadingMessage = "";
+        this.appProvider.setNormalNotification("Fail to load user information");
+      }
+    );
   }
 
-  updateDataEntryFormSelections(){
-    if(this.organisationUnitsProvider.lastSelectedOrgUnit){
+  updateDataEntryFormSelections() {
+    if (this.organisationUnitsProvider.lastSelectedOrgUnit) {
       this.selectedOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
       this.organisationUnitLabel = this.selectedOrgUnit.name;
-    }else{
-      this.organisationUnitLabel = "touch_to_select_organisation_unit";
+    } else {
+      this.organisationUnitLabel = "touch to select organisation unit";
     }
-    if(this.selectedDataSet && this.selectedDataSet.name){
+    if (this.selectedDataSet && this.selectedDataSet.name) {
       this.dataSetLabel = this.selectedDataSet.name;
-    }else {
-      this.dataSetLabel = "touch_to_select_entry_form";
+    } else {
+      this.dataSetLabel = "touch to select entry form";
       this.selectedPeriod = null;
     }
 
-    if(this.selectedPeriod && this.selectedPeriod.name){
+    if (this.selectedPeriod && this.selectedPeriod.name) {
       this.periodLabel = this.selectedPeriod.name;
-    }else{
-      this.periodLabel = "touch_to_select_period"
+    } else {
+      this.periodLabel = "touch to select period";
     }
     this.isFormReady = this.isAllFormParameterSelected();
     this.isLoading = false;
     this.loadingMessage = "";
   }
 
-  openOrganisationUnitTree(){
-    let modal = this.modalCtrl.create('OrganisationUnitSelectionPage',{});
-    modal.onDidDismiss((selectedOrgUnit : any)=>{
-      if(selectedOrgUnit && selectedOrgUnit.id){
+  openOrganisationUnitTree() {
+    let modal = this.modalCtrl.create("OrganisationUnitSelectionPage", {});
+    modal.onDidDismiss((selectedOrgUnit: any) => {
+      if (selectedOrgUnit && selectedOrgUnit.id) {
         this.selectedOrgUnit = selectedOrgUnit;
         this.updateDataEntryFormSelections();
         this.loadingEntryForm();
@@ -120,163 +127,220 @@ export class DataEntryPage implements OnInit{
     modal.present();
   }
 
-  loadingEntryForm(){
-    this.dataSetProvider.getAssignedDataSets(this.selectedOrgUnit.id,this.dataSetIdsByUserRoles,this.currentUser).subscribe((dataSets: any)=>{
-      this.dataSets = dataSets;
-      this.selectedDataSet = this.dataSetProvider.lastSelectedDataSet;
-      this.currentPeriodOffset = 0;
-      this.updateDataEntryFormSelections();
-      this.loadPeriodSelection();
-      if(this.selectedDataSet && this.selectedDataSet.categoryCombo){
-        this.updateDataSetCategoryCombo(this.selectedDataSet.categoryCombo);
-      }
-    },error=>{
-      this.appProvider.setNormalNotification("Fail to reload entry form");
-    });
+  loadingEntryForm() {
+    this.dataSetProvider
+      .getAssignedDataSets(
+        this.selectedOrgUnit.id,
+        this.dataSetIdsByUserRoles,
+        this.currentUser
+      )
+      .subscribe(
+        (dataSets: any) => {
+          this.dataSets = dataSets;
+          this.selectedDataSet = this.dataSetProvider.lastSelectedDataSet;
+          this.currentPeriodOffset = 0;
+          this.updateDataEntryFormSelections();
+          this.loadPeriodSelection();
+          if (this.selectedDataSet && this.selectedDataSet.categoryCombo) {
+            this.updateDataSetCategoryCombo(this.selectedDataSet.categoryCombo);
+          }
+        },
+        error => {
+          this.appProvider.setNormalNotification("Fail to reload entry form");
+        }
+      );
   }
 
-  openEntryFormList(){
-    if(this.dataSets && this.dataSets.length > 0){
-      let modal = this.modalCtrl.create('DataSetSelectionPage',{dataSetsList : this.dataSets,currentDataSet :{id : this.selectedDataSet.id,name : this.selectedDataSet.name}});
-      modal.onDidDismiss((selectedDataSet : any)=>{
-        if(selectedDataSet && selectedDataSet.id && selectedDataSet.id != this.selectedDataSet.id){
+  openEntryFormList() {
+    if (this.dataSets && this.dataSets.length > 0) {
+      let modal = this.modalCtrl.create("DataSetSelectionPage", {
+        dataSetsList: this.dataSets,
+        currentDataSet: {
+          id: this.selectedDataSet.id,
+          name: this.selectedDataSet.name
+        }
+      });
+      modal.onDidDismiss((selectedDataSet: any) => {
+        if (
+          selectedDataSet &&
+          selectedDataSet.id &&
+          selectedDataSet.id != this.selectedDataSet.id
+        ) {
           this.selectedDataSet = selectedDataSet;
           this.dataSetProvider.setLastSelectedDataSet(selectedDataSet);
           this.currentPeriodOffset = 0;
           this.updateDataEntryFormSelections();
           this.loadPeriodSelection();
-          if(this.selectedDataSet && this.selectedDataSet.categoryCombo){
+          if (this.selectedDataSet && this.selectedDataSet.categoryCombo) {
             this.updateDataSetCategoryCombo(this.selectedDataSet.categoryCombo);
           }
         }
       });
       modal.present();
-    }else{
-      this.appProvider.setNormalNotification("There are no entry form to select on " + this.selectedOrgUnit.name);
+    } else {
+      this.appProvider.setNormalNotification(
+        "There are no entry form to select on " + this.selectedOrgUnit.name
+      );
     }
   }
 
-  loadPeriodSelection(){
-    if(this.selectedDataSet && this.selectedDataSet.id){
+  loadPeriodSelection() {
+    if (this.selectedDataSet && this.selectedDataSet.id) {
       let periodType = this.selectedDataSet.periodType;
       let openFuturePeriods = parseInt(this.selectedDataSet.openFuturePeriods);
-      let periods = this.periodSelection.getPeriods(periodType,openFuturePeriods,this.currentPeriodOffset);
-      if(periods && periods.length > 0){
+      let periods = this.periodSelection.getPeriods(
+        periodType,
+        openFuturePeriods,
+        this.currentPeriodOffset
+      );
+      if (periods && periods.length > 0) {
         this.selectedPeriod = periods[0];
-      }else{
+      } else {
         this.selectedPeriod = {};
       }
     }
     this.updateDataEntryFormSelections();
   }
 
-  openPeriodList(){
-    if(this.selectedDataSet && this.selectedDataSet.id){
-      let modal = this.modalCtrl.create('PeriodSelectionPage', {
+  openPeriodList() {
+    if (this.selectedDataSet && this.selectedDataSet.id) {
+      let modal = this.modalCtrl.create("PeriodSelectionPage", {
         periodType: this.selectedDataSet.periodType,
-        currentPeriodOffset : this.currentPeriodOffset,
+        currentPeriodOffset: this.currentPeriodOffset,
         openFuturePeriods: this.selectedDataSet.openFuturePeriods,
-        currentPeriod : this.selectedPeriod,
+        currentPeriod: this.selectedPeriod
       });
 
-      modal.onDidDismiss((data : any)=>{
-        if(data && data.selectedPeriod ){
+      modal.onDidDismiss((data: any) => {
+        if (data && data.selectedPeriod) {
           this.selectedPeriod = data.selectedPeriod;
           this.currentPeriodOffset = data.currentPeriodOffset;
           this.updateDataEntryFormSelections();
         }
       });
       modal.present();
-    }else{
+    } else {
       this.appProvider.setNormalNotification("Please select entry form first");
     }
   }
 
-  openDataDimensionSelection(category){
-    if(category.categoryOptions && category.categoryOptions && category.categoryOptions.length > 0){
+  openDataDimensionSelection(category) {
+    if (
+      category.categoryOptions &&
+      category.categoryOptions &&
+      category.categoryOptions.length > 0
+    ) {
       let currentIndex = this.dataSetCategoryCombo.categories.indexOf(category);
-      let modal = this.modalCtrl.create('DataDimensionSelectionPage', {
-        categoryOptions : category.categoryOptions,
-        title : category.name + "'s selection",
-        currentSelection : (this.selectedDataDimension[currentIndex]) ? this.selectedDataDimension[currentIndex]: {}
+      let modal = this.modalCtrl.create("DataDimensionSelectionPage", {
+        categoryOptions: category.categoryOptions,
+        title: category.name + "'s selection",
+        currentSelection: this.selectedDataDimension[currentIndex]
+          ? this.selectedDataDimension[currentIndex]
+          : {}
       });
-      modal.onDidDismiss((selectedDataDimension : any)=>{
-        if(selectedDataDimension && selectedDataDimension.id ){
+      modal.onDidDismiss((selectedDataDimension: any) => {
+        if (selectedDataDimension && selectedDataDimension.id) {
           this.selectedDataDimension[currentIndex] = selectedDataDimension;
           this.updateDataEntryFormSelections();
         }
       });
       modal.present();
-    }else{
-      let message = "There is no option for " + category.name + " that associated with " + this.selectedOrgUnit.name;
+    } else {
+      let message =
+        "There is no option for " +
+        category.name +
+        " that associated with " +
+        this.selectedOrgUnit.name;
       this.appProvider.setNormalNotification(message);
     }
   }
 
-  updateDataSetCategoryCombo(categoryCombo){
-    let dataSetCategoryCombo  = {};
-    if(categoryCombo.name != 'default'){
-      dataSetCategoryCombo['id'] = categoryCombo.id;
-      dataSetCategoryCombo['name'] = categoryCombo.name;
-      let categories = this.dataSetProvider.getDataSetCategoryComboCategories(this.selectedOrgUnit.id,this.selectedDataSet.categoryCombo.categories);
-      dataSetCategoryCombo['categories'] = categories;
+  updateDataSetCategoryCombo(categoryCombo) {
+    let dataSetCategoryCombo = {};
+    if (categoryCombo.name != "default") {
+      dataSetCategoryCombo["id"] = categoryCombo.id;
+      dataSetCategoryCombo["name"] = categoryCombo.name;
+      let categories = this.dataSetProvider.getDataSetCategoryComboCategories(
+        this.selectedOrgUnit.id,
+        this.selectedDataSet.categoryCombo.categories
+      );
+      dataSetCategoryCombo["categories"] = categories;
       this.isDataSetDimensionApplicable = true;
 
       this.isDataSetDimensionApplicableCategoriesMessage = "All";
-      categories.forEach((category: any)=>{
-        if(category.categoryOptions && category.categoryOptions.length == 0){
-          this.isDataSetDimensionApplicableCategoriesMessage = this.isDataSetDimensionApplicableCategoriesMessage + " " + category.name.toLowerCase();
+      categories.forEach((category: any) => {
+        if (category.categoryOptions && category.categoryOptions.length == 0) {
+          this.isDataSetDimensionApplicableCategoriesMessage =
+            this.isDataSetDimensionApplicableCategoriesMessage +
+            " " +
+            category.name.toLowerCase();
           this.isDataSetDimensionApplicable = false;
         }
       });
-      this.isDataSetDimensionApplicableCategoriesMessage += " disaggregation are restricted from entry in " + this.selectedOrgUnit.name + ", choose a different form or contact your support desk";
+      this.isDataSetDimensionApplicableCategoriesMessage +=
+        " disaggregation are restricted from entry in " +
+        this.selectedOrgUnit.name +
+        ", choose a different form or contact your support desk";
     }
     this.selectedDataDimension = [];
     this.dataSetCategoryCombo = dataSetCategoryCombo;
     this.updateDataEntryFormSelections();
   }
 
-  openDataEntryForm(){
+  openDataEntryForm() {
     let parameter = {
-      orgUnit : {id : this.selectedOrgUnit.id,name : this.selectedOrgUnit.name},
-      dataSet : {id : this.selectedDataSet.id,name : this.selectedDataSet.name},
-      period : {iso : this.selectedPeriod.iso, name : this.selectedPeriod.name },
-      dataDimension : this.getDataDimensions()
+      orgUnit: { id: this.selectedOrgUnit.id, name: this.selectedOrgUnit.name },
+      dataSet: { id: this.selectedDataSet.id, name: this.selectedDataSet.name },
+      period: { iso: this.selectedPeriod.iso, name: this.selectedPeriod.name },
+      dataDimension: this.getDataDimensions()
     };
-    this.navCtrl.push('DataEntryFormPage',{parameter : parameter});
+    this.navCtrl.push("DataEntryFormPage", { parameter: parameter });
   }
 
-  getDataDimensions(){
+  getDataDimensions() {
     let cc = this.selectedDataSet.categoryCombo.id;
     let cp = "";
-    this.selectedDataDimension.forEach((dimension : any,index:any)=>{
-      if(index == 0){
-        cp +=dimension.id;
-      }else{
+    this.selectedDataDimension.forEach((dimension: any, index: any) => {
+      if (index == 0) {
+        cp += dimension.id;
+      } else {
         cp += ";" + dimension.id;
       }
     });
-    return {cc : cc,cp:cp};
+    return { cc: cc, cp: cp };
   }
 
-  isAllFormParameterSelected(){
+  isAllFormParameterSelected() {
     let isFormReady = true;
-    if(this.selectedPeriod && this.selectedPeriod.name && this.selectedDataSet && this.selectedDataSet.categoryCombo.name && this.selectedDataSet.categoryCombo.name != 'default'){
-      if(this.selectedDataDimension && this.selectedDataDimension.length > 0 && this.selectedDataDimension.length == this.dataSetCategoryCombo.categories.length){
+    if (
+      this.selectedPeriod &&
+      this.selectedPeriod.name &&
+      this.selectedDataSet &&
+      this.selectedDataSet.categoryCombo.name &&
+      this.selectedDataSet.categoryCombo.name != "default"
+    ) {
+      if (
+        this.selectedDataDimension &&
+        this.selectedDataDimension.length > 0 &&
+        this.selectedDataDimension.length ==
+          this.dataSetCategoryCombo.categories.length
+      ) {
         let count = 0;
-        this.selectedDataDimension.forEach((dimension : any)=>{
-          count ++;
+        this.selectedDataDimension.forEach((dimension: any) => {
+          count++;
         });
-        if(count != this.selectedDataDimension.length){
+        if (count != this.selectedDataDimension.length) {
           isFormReady = false;
         }
-      }else{
+      } else {
         isFormReady = false;
       }
-    }else if(this.periodLabel == "touch_to_select_period" || this.dataSetLabel == "touch_to_select_entry_form"){
+    } else if (
+      this.periodLabel == "touch to select period" ||
+      this.dataSetLabel == "touch to select entry form"
+    ) {
       isFormReady = false;
     }
     return isFormReady;
   }
-
 }

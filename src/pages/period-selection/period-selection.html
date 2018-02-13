@@ -7,7 +7,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>
-      {{'period_selection'|translate}}
+      {{'period selection'|translate}}
     </ion-title>
     <ion-buttons start>
       <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
@@ -15,32 +15,31 @@
       </button>
     </ion-buttons>
   </ion-toolbar>
-
 </ion-header>
 
 
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col >
-        <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="changePeriodSelection(currentPeriodOffset - 1)" >
-          {{'previous'|translate}}
+      <ion-col>
+        <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="changePeriodSelection(currentPeriodOffset - 1)">
+          <span [translate]="'previous'"></span>
         </div>
       </ion-col>
-      <ion-col >
-        <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="changePeriodSelection(currentPeriodOffset + 1)" >
-          {{'next'|translate}}
+      <ion-col>
+        <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="changePeriodSelection(currentPeriodOffset + 1)">
+          <span [translate]="'next'"></span>
         </div>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col >
+      <ion-col>
         <ion-item *ngFor="let period of periods" (tap)="setSelectedPeriod(period)">
-          <img  class="side-menu-icon" [src]="icon"/>&nbsp;
+          <img class="side-menu-icon" [src]="icon" />&nbsp;
           <span ion-text [color]="(currentPeriod.iso == period.iso) ?'current' : 'font-color'">{{ period.name }}</span>
         </ion-item>
-        <ion-item *ngIf = "periods.length == 0">
-          {{'there_is_no_period_to_select'|translate}}
+        <ion-item *ngIf="periods.length == 0">
+          <span [translate]="'there is no period to select'"></span>
         </ion-item>
       </ion-col>
     </ion-row>

@@ -6,7 +6,7 @@
 -->
 <ion-header>
   <ion-navbar color="primary">
-    <ion-title>{{reportName|translate}}</ion-title>
+    <ion-title>{{reportName}}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -16,36 +16,47 @@
       <ion-col text-center>
         <b>
           <span *ngIf="reportType" class="circled-btn-border circled-btn">
-            <span *ngIf="reportType == 'dataSetReport'" >DS</span>
-            <span *ngIf="reportType == 'standardReport'" >SD</span>
+            <span *ngIf="reportType == 'dataSetReport'">DS</span>
+            <span *ngIf="reportType == 'standardReport'">SD</span>
           </span>&nbsp;
           <span *ngIf="reportType">
-            <span *ngIf="reportType == 'dataSetReport'" >{{'data_set_report'|translate}}</span>
-            <span *ngIf="reportType == 'standardReport'" >{{'standard_report'|translate}}</span>
+            <span *ngIf="reportType == 'dataSetReport'" [translate]="'data set report'"></span>
+            <span *ngIf="reportType == 'standardReport'" [translate]="'standard report'"></span>
           </span>
         </b>
-
       </ion-col>
     </ion-row>
 
     <ion-row>
       <ion-col>
-        <div *ngIf="reportParams.paramOrganisationUnit" class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openOrganisationUnitTree()">
-          <img class="side-menu-icon" [src]="icons.orgUnit"/>&nbsp;&nbsp;
-          {{ selectedOrganisationUnitLabel|translate }}
+        <div *ngIf="reportParams.paramOrganisationUnit" class="item-card" color="font-color" padding-top padding-bottom ion-button
+          clear full text-center text-capitalize (tap)="openOrganisationUnitTree()">
+          <img class="side-menu-icon" [src]="icons.orgUnit" />&nbsp;&nbsp; {{ selectedOrganisationUnitLabel|translate }}
         </div>
-        <div *ngIf="reportParams.paramReportingPeriod" class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openReportPeriodSelection()">
-          <img class="side-menu-icon" [src]="icons.period"/>&nbsp;&nbsp;
-          {{ selectedPeriodLabel|translate }}
+        <div *ngIf="reportParams.paramReportingPeriod" class="item-card" color="font-color" padding-top padding-bottom ion-button
+          clear full text-center text-capitalize (tap)="openReportPeriodSelection()">
+          <img class="side-menu-icon" [src]="icons.period" />&nbsp;&nbsp; {{ selectedPeriodLabel|translate }}
         </div>
         <div *ngIf="isAllReportParameterSet" class="item-card" padding-top padding-bottom full (tap)="goToView()">
-          <div><b>{{'report_name'|translate}}</b> : {{ reportName }}<br>
-            <span *ngIf="reportParams.paramOrganisationUnit" ><b>{{'organisation_unit'|translate}}</b> : {{ selectedOrganisationUnitLabel }}<br></span>
-            <span *ngIf="reportParams.paramReportingPeriod" ><b>{{'period'|translate}}</b> : {{ selectedPeriodLabel }}</span>
+          <div>
+            <b>
+              <span [translate]="'report name'"></span>
+            </b> : {{ reportName }}
+            <br>
+            <span *ngIf="reportParams.paramOrganisationUnit">
+              <b>
+                <span [translate]="'organisation unit'"></span>
+              </b> : {{ selectedOrganisationUnitLabel }}
+              <br>
+            </span>
+            <span *ngIf="reportParams.paramReportingPeriod">
+              <b>
+                <span [translate]="'period'"></span>
+              </b> : {{ selectedPeriodLabel }}</span>
           </div>
-          <div class="item-card" color="font-color"  ion-button clear full text-center text-capitalize >
-            <img  class="side-menu-icon" [src]="icons.report"/>&nbsp;&nbsp;
-            {{'generate_report'|translate}}
+          <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize>
+            <img class="side-menu-icon" [src]="icons.report" />&nbsp;&nbsp;
+            <span [translate]="'generate report'"></span>
           </div>
         </div>
       </ion-col>

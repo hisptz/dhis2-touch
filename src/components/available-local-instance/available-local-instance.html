@@ -8,25 +8,21 @@
         <ion-searchbar animated="true" autocomplete="on" (ionInput)="getFilteredList($event)"></ion-searchbar>
       </ion-col>
       <ion-col col-1 (click)="closeContainer()" padding-top class="cancel-button">
-        <img [src]="cancelIcon"/>
+        <img [src]="cancelIcon" />
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
         <ion-list>
-          <ion-item *ngFor="let localInstance of localInstances"
-                    (click)="setCurrentUser(localInstance.currentUser,localInstance.currentLanguage)">
+          <ion-item *ngFor="let localInstance of localInstances" (click)="setCurrentUser(localInstance.currentUser,localInstance.currentLanguage)">
             <span ion-text>{{localInstance.currentUser.username}}&nbsp;{{ localInstance.name }}</span>
             <ion-icon name="ios-arrow-forward" item-right></ion-icon>
           </ion-item>
           <ion-item *ngIf="localInstances && localInstances.length == 0">
-            <empty-list-notification
-              [emptyListMessage]="'there_is_no_local_instance_to_select'"></empty-list-notification>
+            <empty-list-notification [emptyListMessage]="'there is no local instance to select'"></empty-list-notification>
           </ion-item>
         </ion-list>
       </ion-col>
     </ion-row>
   </ion-grid>
 </div>
-
-

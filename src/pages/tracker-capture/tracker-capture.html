@@ -7,61 +7,63 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>{{'tracker_capture'|translate}}</ion-title>
+    <ion-title>{{'tracker capture'|translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
-<ion-content >
+<ion-content>
   <ion-grid>
     <ion-row>
       <ion-col>
-        <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openOrganisationUnitTree()" >
-          <img  class="side-menu-icon" [src]="icons.orgUnit"/>&nbsp;&nbsp;
-          {{ organisationUnitLabel|translate }}
+        <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openOrganisationUnitTree()">
+          <img class="side-menu-icon" [src]="icons.orgUnit" />&nbsp;&nbsp;
+          <span [translate]="organisationUnitLabel"></span>
         </div>
-        <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openProgramList()" >
-          <img  class="side-menu-icon" [src]="icons.program"/>&nbsp;&nbsp;
-          {{ programLabel|translate }}
+        <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openProgramList()">
+          <img class="side-menu-icon" [src]="icons.program" />&nbsp;&nbsp;
+          <span [translate]="programLabel"></span>
         </div>
-        <div *ngIf = "isFormReady" >
-          <div class="item-card" (click)="hideAndShowColumns()" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
+        <div *ngIf="isFormReady">
+          <div class="item-card" (click)="hideAndShowColumns()" color="font-color" padding-top padding-bottom ion-button clear text-center
+            text-capitalize icon-start>
             <ion-icon name="ios-eye" color="icon-color"></ion-icon>
-            {{'columns'|translate}}
+            <span [translate]="'columns'"></span>
           </div>
-          <div class="item-card" (click)="registerNewTrackedEntity()" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
+          <div class="item-card" (click)="registerNewTrackedEntity()" color="font-color" padding-top padding-bottom ion-button clear
+            text-center text-capitalize icon-start>
             <ion-icon name="add" color="icon-color"></ion-icon>
-            {{'add'|translate}}
+            <span [translate]="'add'"></span>
           </div>
         </div>
       </ion-col>
     </ion-row>
 
-    <div *ngIf = "isFormReady" >
+    <div *ngIf="isFormReady">
       <div *ngIf="isLoading">
-        <loading [loadingSize]="'large'" [loadingMessage]="loadingMessage|translate" ></loading>
+        <loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></loading>
       </div>
       <div *ngIf="!isLoading" class="over-flow-container">
         <ion-row>
           <ion-col>
-            <div *ngIf="tableLayout" >
-              <table class="table table-bordered" width="100%" >
+            <div *ngIf="tableLayout">
+              <table class="table table-bordered" width="100%">
                 <thead *ngIf="tableLayout && tableLayout.headers">
-                <tr >
-                  <th *ngFor="let header of tableLayout.headers" >{{ header}}</th>
-                </tr>
+                  <tr>
+                    <th *ngFor="let header of tableLayout.headers">{{ header}}</th>
+                  </tr>
                 </thead>
                 <tbody *ngIf="tableLayout.rows">
-                <tr [ngStyle]="{'background-color': '#F4F4F4' }" *ngFor="let row of tableLayout.rows;let currentIndex = index" (click)="openTrackedEntityDashboard(currentIndex)">
-                  <td *ngFor="let data of row">
-                    {{ data }}
-                  </td>
-                </tr>
-                <tr *ngIf="tableLayout.rows.length == 0">
-                  <td colspan="100%">
-                    {{'there_no_data_at_the_moment'|translate}}
-                  </td>
-                </tr>
+                  <tr [ngStyle]="{'background-color': '#F4F4F4' }" *ngFor="let row of tableLayout.rows;let currentIndex = index" (click)="openTrackedEntityDashboard(currentIndex)">
+                    <td *ngFor="let data of row">
+                      {{ data }}
+                    </td>
+                  </tr>
+                  <tr *ngIf="tableLayout.rows.length == 0">
+                    <td colspan="100%">
+                      <span [translate]="'there no data at the moment'"></span>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>

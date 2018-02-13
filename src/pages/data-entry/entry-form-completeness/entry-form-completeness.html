@@ -2,7 +2,7 @@
 
   <ion-toolbar color="primary">
     <ion-title>
-      {{'completeness_information'|translate}}
+      <span [translate]="'completeness information'"></span>
     </ion-title>
     <ion-buttons start>
       <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
@@ -12,7 +12,7 @@
   </ion-toolbar>
 
 </ion-header>
-<ion-content >
+<ion-content>
   <ion-grid>
     <div *ngIf="isLoading">
       <loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></loading>
@@ -22,16 +22,16 @@
         <div class="content">
           <ion-row>
             <ion-col col-4>
-              <b>{{ info.key|translate }}</b> :
+              <b>
+                <span [translate]="info.key"></span>
+              </b> :
             </ion-col>
             <ion-col col-8>
               {{ info.value }}
             </ion-col>
           </ion-row>
-           </div>
+        </div>
       </div>
-
-
     </div>
   </ion-grid>
 </ion-content>

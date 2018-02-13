@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {AppProvider} from "../app/app";
-import {UserProvider} from "../user/user";
-import {Observable} from "rxjs/Observable";
+import { Injectable } from "@angular/core";
+import { AppProvider } from "../app/app";
+import { UserProvider } from "../user/user";
+import { Observable } from "rxjs/Observable";
 
 /*
   Generated class for the AboutProvider provider.
@@ -11,9 +11,10 @@ import {Observable} from "rxjs/Observable";
 */
 @Injectable()
 export class AboutProvider {
-
-  constructor(private appProvider: AppProvider, private userProvider: UserProvider) {
-  }
+  constructor(
+    private appProvider: AppProvider,
+    private userProvider: UserProvider
+  ) {}
 
   /**
    *
@@ -22,11 +23,31 @@ export class AboutProvider {
   getAboutContentDetails() {
     let syncContents = [
       //{id : 'appInformation',name : 'App information',icon: 'assets/icon/app-information.png'},
-      {id: 'dataValues', name: 'aggregate_status', icon: 'assets/icon/data-values.png'},
-      {id: 'eventStatus', name: 'event_status', icon: 'assets/icon/event-status.png'},
-      {id: 'eventForTrackerStatus', name: 'event_for_tracker_status', icon: 'assets/icon/event-status.png'},
-      {id: 'enrollment', name: 'enrollments', icon: 'assets/icon/profile-tracker.png'},
-      {id: 'systemInfo', name: 'system_info', icon: 'assets/icon/system-info.png'},
+      {
+        id: "dataValues",
+        name: "aggregate status",
+        icon: "assets/icon/data-values.png"
+      },
+      {
+        id: "eventStatus",
+        name: "event status",
+        icon: "assets/icon/event-status.png"
+      },
+      {
+        id: "eventForTrackerStatus",
+        name: "event for tracker status",
+        icon: "assets/icon/event-status.png"
+      },
+      {
+        id: "enrollment",
+        name: "enrollments",
+        icon: "assets/icon/profile-tracker.png"
+      },
+      {
+        id: "systemInfo",
+        name: "system info",
+        icon: "assets/icon/system-info.png"
+      }
     ];
     return syncContents;
   }
@@ -36,17 +57,20 @@ export class AboutProvider {
    * @returns {Observable<any>}
    */
   getAppInformation(): Observable<any> {
-    let appInformation = {name: '', version: '', package: ''};
+    let appInformation = { name: "", version: "", package: "" };
     return new Observable(observer => {
-      this.appProvider.getAppInformation().subscribe((response: any) => {
-        appInformation.name = response.appName;
-        appInformation.version = response.versionNumber;
-        appInformation.package = response.packageName;
-        observer.next(appInformation);
-        observer.complete();
-      }, error => {
-        observer.error(error);
-      });
+      this.appProvider.getAppInformation().subscribe(
+        (response: any) => {
+          appInformation.name = response.appName;
+          appInformation.version = response.versionNumber;
+          appInformation.package = response.packageName;
+          observer.next(appInformation);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
 
@@ -56,12 +80,15 @@ export class AboutProvider {
    */
   getSystemInformation(): Observable<any> {
     return new Observable(observer => {
-      this.userProvider.getCurrentUserSystemInformation().subscribe(systemInfo => {
-        observer.next(this.getArrayFromObject(systemInfo));
-        observer.complete();
-      }, error => {
-        observer.error(error);
-      });
+      this.userProvider.getCurrentUserSystemInformation().subscribe(
+        systemInfo => {
+          observer.next(this.getArrayFromObject(systemInfo));
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
 
@@ -75,13 +102,13 @@ export class AboutProvider {
     for (let key in object) {
       let newValue = object[key];
       if (newValue instanceof Object) {
-        newValue = JSON.stringify(newValue)
+        newValue = JSON.stringify(newValue);
       }
-      let newKey = (key.charAt(0).toUpperCase() + key.slice(1)).replace(/([A-Z])/g, ' $1').trim();
-      array.push({key: newKey, value: newValue})
+      let newKey = (key.charAt(0).toUpperCase() + key.slice(1))
+        .replace(/([A-Z])/g, " $1")
+        .trim();
+      array.push({ key: newKey, value: newValue });
     }
     return array;
   }
-
-
 }

@@ -7,20 +7,22 @@
 <ion-header xmlns="http://www.w3.org/1999/html">
 
   <ion-navbar color="primary">
-    <ion-title>{{'report_view'|translate}}</ion-title>
+    <ion-title>
+      <span [translate]="'report view'"></span>
+    </ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content >
+<ion-content>
 
   <ion-grid>
 
     <div *ngIf="isLoading">
-      <ion-row >
-        <ion-col >
-          <loading loadingSize="large" [loadingMessage]="loadingMessage|translate"></loading>
+      <ion-row>
+        <ion-col>
+          <loading loadingSize="large" [loadingMessage]="loadingMessage"></loading>
         </ion-col>
       </ion-row>
     </div>
@@ -29,9 +31,21 @@
       <ion-row (tap)="backToPreviousView()">
         <ion-col>
           <div class="entry-selection-container">
-            <div><b>{{'report_name'|translate}}</b> : {{ reportName }}<br>
-              <span *ngIf="selectedOrganisationUnit && selectedOrganisationUnit.id" ><b>{{'organisation_unit'|translate}}</b> : {{ selectedOrganisationUnit.name }}<br></span>
-              <span *ngIf="selectedPeriod && selectedPeriod.name" ><b>{{'period'|translate}}</b> : {{ selectedPeriod.name }}</span>
+            <div>
+              <b>
+                <span [translate]="'report name'"></span>
+              </b> : {{ reportName }}
+              <br>
+              <span *ngIf="selectedOrganisationUnit && selectedOrganisationUnit.id">
+                <b>
+                  <span [translate]="'organisation unit'"></span>
+                </b> : {{ selectedOrganisationUnit.name }}
+                <br>
+              </span>
+              <span *ngIf="selectedPeriod && selectedPeriod.name">
+                <b>
+                  <span [translate]="'period'"></span>
+                </b> : {{ selectedPeriod.name }}</span>
             </div>
           </div>
         </ion-col>
@@ -41,21 +55,15 @@
         <ion-col>
           <div *ngIf="reportType && reportType == 'dataSetReport'">
             <div class="reportView">
-              <data-set-report
-                [dataSetId]="reportId"
-                [currentUser]="currentUser"
-                [selectedOrganisationUnit]="selectedOrganisationUnit"
-                [selectedPeriod] = "selectedPeriod"></data-set-report>
+              <data-set-report [dataSetId]="reportId" [currentUser]="currentUser" [selectedOrganisationUnit]="selectedOrganisationUnit"
+                [selectedPeriod]="selectedPeriod"></data-set-report>
             </div>
           </div>
           <div *ngIf="reportType && reportType == 'standardReport'">
             <div class="reportView" [innerHTML]="_htmlMarkup"></div>
           </div>
-
-
         </ion-col>
       </ion-row>
-
     </div>
 
   </ion-grid>

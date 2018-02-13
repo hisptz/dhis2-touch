@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {IonicPage, NavController} from 'ionic-angular';
-import {ProfileProvider} from "../../providers/profile/profile";
-import {AppProvider} from "../../providers/app/app";
+import { Component, OnInit } from "@angular/core";
+import { IonicPage, NavController } from "ionic-angular";
+import { ProfileProvider } from "../../providers/profile/profile";
+import { AppProvider } from "../../providers/app/app";
 
 /**
  * Generated class for the ProfilePage page.
@@ -12,11 +12,10 @@ import {AppProvider} from "../../providers/app/app";
 
 @IonicPage()
 @Component({
-  selector: 'page-profile',
-  templateUrl: 'profile.html',
+  selector: "page-profile",
+  templateUrl: "profile.html"
 })
 export class ProfilePage implements OnInit {
-
   isProfileContentOpen: any;
   profileContents: Array<any>;
 
@@ -25,29 +24,35 @@ export class ProfilePage implements OnInit {
   loadingMessage: string;
   isLoading: boolean = true;
 
-  constructor(public navCtrl: NavController,
-              private appProvider: AppProvider,
-              private profileProvider: ProfileProvider) {
-  }
+  constructor(
+    public navCtrl: NavController,
+    private appProvider: AppProvider,
+    private profileProvider: ProfileProvider
+  ) {}
 
   ngOnInit() {
-    this.loadingMessage = 'loading_profile_information';
+    this.loadingMessage = "loading profile information";
     this.isLoading = true;
     this.isProfileContentOpen = {};
     this.profileContents = this.profileProvider.getProfileContentDetails();
     if (this.profileContents.length > 0) {
       this.toggleProfileContents(this.profileContents[0]);
     }
-    this.profileProvider.getSavedUserData().subscribe((userData) => {
-      this.userData = userData;
-      this.isLoading = false;
-      this.loadingMessage = '';
-    },error => {
-      this.isLoading = false;
-      this.loadingMessage = '';
-      console.log(JSON.stringify(error));
-      this.appProvider.setNormalNotification('Fail to load profile information');
-    });
+    this.profileProvider.getSavedUserData().subscribe(
+      userData => {
+        this.userData = userData;
+        this.isLoading = false;
+        this.loadingMessage = "";
+      },
+      error => {
+        this.isLoading = false;
+        this.loadingMessage = "";
+        console.log(JSON.stringify(error));
+        this.appProvider.setNormalNotification(
+          "Fail to load profile information"
+        );
+      }
+    );
   }
 
   toggleProfileContents(content) {
@@ -62,6 +67,4 @@ export class ProfilePage implements OnInit {
       }
     }
   }
-
-
 }

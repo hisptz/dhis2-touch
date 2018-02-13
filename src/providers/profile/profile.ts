@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {UserProvider} from "../user/user";
-import {Observable} from "rxjs/Observable";
+import { Injectable } from "@angular/core";
+import { UserProvider } from "../user/user";
+import { Observable } from "rxjs/Observable";
 
 /*
   Generated class for the ProfileProvider provider.
@@ -10,17 +10,27 @@ import {Observable} from "rxjs/Observable";
 */
 @Injectable()
 export class ProfileProvider {
-
-  constructor(private userProvider: UserProvider) {
-  }
+  constructor(private userProvider: UserProvider) {}
 
   getProfileContentDetails() {
     let profileContents = [
-      {id: 'userInfo', name: 'user_information', icon: 'assets/icon/user-info.png'},
-      {id: 'orgUnits', name: 'assigned_organisation_units', icon: 'assets/icon/orgUnit.png'},
-      {id: 'roles', name: 'assigned_roles', icon: 'assets/icon/roles.png'},
-      {id: 'program', name: 'assigned_program', icon: 'assets/icon/program.png'},
-      {id: 'form', name: 'assigned_form', icon: 'assets/icon/form.png'},
+      {
+        id: "userInfo",
+        name: "user information",
+        icon: "assets/icon/user-info.png"
+      },
+      {
+        id: "orgUnits",
+        name: "assigned organisation units",
+        icon: "assets/icon/orgUnit.png"
+      },
+      { id: "roles", name: "assigned roles", icon: "assets/icon/roles.png" },
+      {
+        id: "program",
+        name: "assigned program",
+        icon: "assets/icon/program.png"
+      },
+      { id: "form", name: "assigned form", icon: "assets/icon/form.png" }
     ];
     return profileContents;
   }
@@ -32,17 +42,20 @@ export class ProfileProvider {
   getSavedUserData(): Observable<any> {
     let userData = {};
     return new Observable(observer => {
-      this.userProvider.getUserData().subscribe((savedUserData: any) => {
-        userData['userInfo'] = this.getUserInformation(savedUserData);
-        userData['orgUnits'] = this.getAssignedOrgUnits(savedUserData);
-        userData['roles'] = this.getUserRoles(savedUserData);
-        userData['program'] = this.getAssignedProgram(savedUserData);
-        userData['form'] = this.getAssignedForm(savedUserData);
-        observer.next(userData);
-        observer.complete();
-      }, error => {
-        observer.error(error);
-      });
+      this.userProvider.getUserData().subscribe(
+        (savedUserData: any) => {
+          userData["userInfo"] = this.getUserInformation(savedUserData);
+          userData["orgUnits"] = this.getAssignedOrgUnits(savedUserData);
+          userData["roles"] = this.getUserRoles(savedUserData);
+          userData["program"] = this.getAssignedProgram(savedUserData);
+          userData["form"] = this.getAssignedForm(savedUserData);
+          observer.next(userData);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
 
@@ -53,12 +66,16 @@ export class ProfileProvider {
    */
   getUserInformation(userData) {
     let userInfo = {};
-    let omittedKey = ['userRoles', 'organisationUnits', 'dataViewOrganisationUnits'];
+    let omittedKey = [
+      "userRoles",
+      "organisationUnits",
+      "dataViewOrganisationUnits"
+    ];
     Object.keys(userData).forEach(key => {
       if (omittedKey.indexOf(key) == -1) {
         let value = userData[key];
         if (Date.parse(value)) {
-          value = value.split('T')[0];
+          value = value.split("T")[0];
         }
         userInfo[key] = value;
       }
@@ -148,12 +165,13 @@ export class ProfileProvider {
     for (let key in object) {
       let newValue = object[key];
       if (newValue instanceof Object) {
-        newValue = JSON.stringify(newValue)
+        newValue = JSON.stringify(newValue);
       }
-      let newKey = (key.charAt(0).toUpperCase() + key.slice(1)).replace(/([A-Z])/g, ' $1').trim();
-      array.push({key: newKey, value: newValue})
+      let newKey = (key.charAt(0).toUpperCase() + key.slice(1))
+        .replace(/([A-Z])/g, " $1")
+        .trim();
+      array.push({ key: newKey, value: newValue });
     }
     return array;
   }
-
 }

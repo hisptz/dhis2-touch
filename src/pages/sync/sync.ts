@@ -1,7 +1,7 @@
-import { Component,OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {SyncProvider} from "../../providers/sync/sync";
-import {SqlLiteProvider} from "../../providers/sql-lite/sql-lite";
+import { Component, OnInit } from "@angular/core";
+import { IonicPage, NavController, NavParams } from "ionic-angular";
+import { SyncProvider } from "../../providers/sync/sync";
+import { SqlLiteProvider } from "../../providers/sql-lite/sql-lite";
 
 /**
  * Generated class for the SyncPage page.
@@ -12,46 +12,50 @@ import {SqlLiteProvider} from "../../providers/sql-lite/sql-lite";
 
 @IonicPage()
 @Component({
-  selector: 'page-sync',
-  templateUrl: 'sync.html',
+  selector: "page-sync",
+  templateUrl: "sync.html"
 })
-export class SyncPage implements OnInit{
-
-  isSyncContentOpen : any;
-  syncContents : Array<any>;
+export class SyncPage implements OnInit {
+  isSyncContentOpen: any;
+  syncContents: Array<any>;
   public resources: any;
   dataBaseStructure: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private syncProvider : SyncProvider, private sqLiteProvider: SqlLiteProvider) {
-  }
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private syncProvider: SyncProvider,
+    private sqLiteProvider: SqlLiteProvider
+  ) {}
 
-  ngOnInit(){
+  ngOnInit() {
     this.isSyncContentOpen = {};
     this.syncContents = this.syncProvider.getSyncContentDetails();
-    if(this.syncContents.length > 0){
+    if (this.syncContents.length > 0) {
       this.toggleSyncContents(this.syncContents[0]);
     }
-    this.resources=[];
+    this.resources = [];
     this.dataBaseStructure = this.sqLiteProvider.getDataBaseStructure();
-    Object.keys(this.dataBaseStructure).forEach((resource:any) =>{
-      if(this.dataBaseStructure[resource].isMetadata ){
+    Object.keys(this.dataBaseStructure).forEach((resource: any) => {
+      if (this.dataBaseStructure[resource].isMetadata) {
         this.resources.push({
           name: resource,
-          displayName: (this.dataBaseStructure[resource].displayName) ? this.dataBaseStructure[resource].displayName : resource,
+          displayName: this.dataBaseStructure[resource].displayName
+            ? this.dataBaseStructure[resource].displayName
+            : resource,
           status: false,
-          dependentTable : this.dataBaseStructure[resource].dependentTable
-        })
+          dependentTable: this.dataBaseStructure[resource].dependentTable
+        });
       }
     });
   }
 
-
-  toggleSyncContents(content){
-    if(content && content.id){
-      if(this.isSyncContentOpen[content.id]){
+  toggleSyncContents(content) {
+    if (content && content.id) {
+      if (this.isSyncContentOpen[content.id]) {
         this.isSyncContentOpen[content.id] = false;
-      }else{
-        Object.keys(this.isSyncContentOpen).forEach(id=>{
+      } else {
+        Object.keys(this.isSyncContentOpen).forEach(id => {
           this.isSyncContentOpen[id] = false;
         });
         this.isSyncContentOpen[content.id] = true;

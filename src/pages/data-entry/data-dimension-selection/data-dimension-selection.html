@@ -7,7 +7,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>
-      {{ title|translate}}
+      <span [translate]="title"></span>
     </ion-title>
     <ion-buttons start>
       <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
@@ -18,18 +18,18 @@
 </ion-header>
 
 
-<ion-content >
-  <ion-searchbar animated="true"autocomplete="on"  (ionInput)="getFilteredList($event)"></ion-searchbar>
+<ion-content>
+  <ion-searchbar animated="true" autocomplete="on" (ionInput)="getFilteredList($event)"></ion-searchbar>
   <ion-grid>
     <ion-row>
-      <ion-col >
+      <ion-col>
         <ion-list>
           <ion-item *ngFor="let categoryOption of categoryOptions" (tap)="setSelectedCategoryOption(categoryOption)">
-            <img  class="side-menu-icon" [src]="icon"/>&nbsp;&nbsp;
-            <span  ion-text [color]="(currentSelection.id == categoryOption.id) ?'current' : 'font-color'">{{ categoryOption.name }}</span>
+            <img class="side-menu-icon" [src]="icon" />&nbsp;&nbsp;
+            <span ion-text [color]="(currentSelection.id == categoryOption.id) ?'current' : 'font-color'">{{ categoryOption.name }}</span>
           </ion-item>
-          <ion-item *ngIf = "categoryOptions.length == 0">
-            <empty-list-notification [emptyListMessage]="'there_is_no_option_to_select'|translate"></empty-list-notification>
+          <ion-item *ngIf="categoryOptions.length == 0">
+            <empty-list-notification [emptyListMessage]="'there is no option to select'"></empty-list-notification>
           </ion-item>
         </ion-list>
       </ion-col>

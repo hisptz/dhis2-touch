@@ -6,7 +6,7 @@
         <div class="logo">
           <img [src]="logoUrl">
         </div>
-        <p [translate]="'innovation in every dimension'"></p>
+        <p [translate]="'innovation in every dimension'">Innovation in every dimension</p>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="isLoginProcessActive">
@@ -101,15 +101,15 @@
             <ion-col>
               <div class="round-form-container">
                 <ion-item>
-                  <ion-input [(ngModel)]="currentUser.serverUrl" type="text" name="serverUrl" placeholder="{{'enter_server_address'|translate}}"></ion-input>
+                  <ion-input [(ngModel)]="currentUser.serverUrl" type="text" name="serverUrl" placeholder="{{'enter server address'|translate}}"></ion-input>
                 </ion-item>
 
                 <ion-item>
-                  <ion-input [(ngModel)]="currentUser.username" type="text" name="username" placeholder="{{'enter_username'|translate}}"></ion-input>
+                  <ion-input [(ngModel)]="currentUser.username" type="text" name="username" placeholder="{{'enter username'|translate}}"></ion-input>
                 </ion-item>
 
                 <ion-item>
-                  <ion-input [(ngModel)]="currentUser.password" name="password" type="password" placeholder="{{'enter_password'|translate}}"></ion-input>
+                  <ion-input [(ngModel)]="currentUser.password" name="password" type="password" placeholder="{{'enter password'|translate}}"></ion-input>
                 </ion-item>
               </div>
             </ion-col>
@@ -128,17 +128,12 @@
             <span [translate]="'or'"></span>
           </div>
           <button ion-button block clear color="light" text-capitalize (click)="toggleLoginFormAndLocalInstances()">
-            <img class="side-menu-icon" [src]="offlineIcon" [translate]="'offline instances'" />&nbsp;&nbsp;
+            <img class="side-menu-icon" [src]="offlineIcon" />&nbsp;&nbsp;
+            <span [translate]="'offline instances'"></span>
           </button>
         </div>
       </div>
     </div>
-
-    <ion-row>
-      <ion-col class="bottomSLogan">
-
-      </ion-col>
-    </ion-row>
     <ion-row>
       <ion-col class="bottomSLogan">
         <p>

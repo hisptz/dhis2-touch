@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {IonicPage, NavController} from 'ionic-angular';
-import {AboutProvider} from "../../providers/about/about";
-import {AppProvider} from "../../providers/app/app";
-import {DataValuesProvider} from "../../providers/data-values/data-values";
-import {UserProvider} from "../../providers/user/user";
-import {TrackerCaptureProvider} from "../../providers/tracker-capture/tracker-capture";
-import {EventCaptureFormProvider} from "../../providers/event-capture-form/event-capture-form";
+import { Component, OnInit } from "@angular/core";
+import { IonicPage, NavController } from "ionic-angular";
+import { AboutProvider } from "../../providers/about/about";
+import { AppProvider } from "../../providers/app/app";
+import { DataValuesProvider } from "../../providers/data-values/data-values";
+import { UserProvider } from "../../providers/user/user";
+import { TrackerCaptureProvider } from "../../providers/tracker-capture/tracker-capture";
+import { EventCaptureFormProvider } from "../../providers/event-capture-form/event-capture-form";
 
 /**
  * Generated class for the AboutPage page.
@@ -16,11 +16,10 @@ import {EventCaptureFormProvider} from "../../providers/event-capture-form/event
 
 @IonicPage()
 @Component({
-  selector: 'page-about',
-  templateUrl: 'about.html',
+  selector: "page-about",
+  templateUrl: "about.html"
 })
 export class AboutPage implements OnInit {
-
   logoUrl: string;
   currentUser: any;
   appInformation: any;
@@ -30,55 +29,72 @@ export class AboutPage implements OnInit {
   hasAllDataBeenLoaded: boolean = false;
   aboutContents: Array<any>;
   isAboutContentOpen: any = {};
-  dataValuesStorage: any = {online: 0, offline: 0};
-  eventsStorage: any = {online: 0, offline: 0};
-  eventsForTrackerStorage: any = {online: 0, offline: 0};
-  enrollmentStorage: any = {online: 0, offline: 0};
+  dataValuesStorage: any = { online: 0, offline: 0 };
+  eventsStorage: any = { online: 0, offline: 0 };
+  eventsForTrackerStorage: any = { online: 0, offline: 0 };
+  enrollmentStorage: any = { online: 0, offline: 0 };
 
-
-  constructor(public navCtrl: NavController,
-              private appProvider: AppProvider, private trackerCaptureProvider: TrackerCaptureProvider,
-              private eventCaptureFormProvider: EventCaptureFormProvider,
-              private aboutProvider: AboutProvider, private dataValuesProvider: DataValuesProvider, private userProvider: UserProvider) {
-  }
+  constructor(
+    public navCtrl: NavController,
+    private appProvider: AppProvider,
+    private trackerCaptureProvider: TrackerCaptureProvider,
+    private eventCaptureFormProvider: EventCaptureFormProvider,
+    private aboutProvider: AboutProvider,
+    private dataValuesProvider: DataValuesProvider,
+    private userProvider: UserProvider
+  ) {}
 
   ngOnInit() {
-    this.loadingMessage = 'loading_app_information';
+    this.loadingMessage = "loading app information";
     this.isLoading = true;
-    this.logoUrl = 'assets/img/logo.png';
+    this.logoUrl = "assets/img/logo.png";
     this.aboutContents = this.aboutProvider.getAboutContentDetails();
-    this.userProvider.getCurrentUser().subscribe((currentUser: any) => {
-      this.currentUser = currentUser;
-      this.loadAllData();
-    }, error => {
-      this.isLoading = false;
-      this.appProvider.setNormalNotification("Fail to load user information");
-    })
+    this.userProvider.getCurrentUser().subscribe(
+      (currentUser: any) => {
+        this.currentUser = currentUser;
+        this.loadAllData();
+      },
+      error => {
+        this.isLoading = false;
+        this.appProvider.setNormalNotification("Fail to load user information");
+      }
+    );
   }
 
   loadAllData() {
     this.hasAllDataBeenLoaded = false;
-    this.aboutProvider.getAppInformation().subscribe(appInformation => {
-      this.appInformation = appInformation;
-      this.loadingMessage = 'loading_system_information';
-      this.aboutProvider.getSystemInformation().subscribe(systemInfo => {
-        this.systemInfo = systemInfo;
-        if (this.aboutContents.length > 0) {
-          if (this.isAboutContentOpen && !this.isAboutContentOpen[this.aboutContents[0].id]) {
-            this.toggleAboutContents(this.aboutContents[0]);
+    this.aboutProvider.getAppInformation().subscribe(
+      appInformation => {
+        this.appInformation = appInformation;
+        this.loadingMessage = "loading system information";
+        this.aboutProvider.getSystemInformation().subscribe(
+          systemInfo => {
+            this.systemInfo = systemInfo;
+            if (this.aboutContents.length > 0) {
+              if (
+                this.isAboutContentOpen &&
+                !this.isAboutContentOpen[this.aboutContents[0].id]
+              ) {
+                this.toggleAboutContents(this.aboutContents[0]);
+              }
+            }
+            this.loadingDataValueStatus();
+          },
+          error => {
+            this.isLoading = false;
+            console.log(JSON.stringify(error));
+            this.appProvider.setNormalNotification(
+              "Fail to load system information"
+            );
           }
-        }
-        this.loadingDataValueStatus();
-      }, error => {
+        );
+      },
+      error => {
         this.isLoading = false;
         console.log(JSON.stringify(error));
-        this.appProvider.setNormalNotification('Fail to load system information');
-      });
-    }, error => {
-      this.isLoading = false;
-      console.log(JSON.stringify(error));
-      this.appProvider.setNormalNotification('Fail to load app information');
-    });
+        this.appProvider.setNormalNotification("Fail to load app information");
+      }
+    );
   }
 
   ionViewDidEnter() {
@@ -101,71 +117,134 @@ export class AboutPage implements OnInit {
   }
 
   loadingDataValueStatus() {
-    this.loadingMessage = 'loading_data_values_storage_status';
+    this.loadingMessage = "loading data values storage status";
     this.isLoading = true;
-    this.dataValuesProvider.getDataValuesByStatus("synced", this.currentUser).subscribe((syncedDataValues: any) => {
-      this.dataValuesProvider.getDataValuesByStatus("not-synced", this.currentUser).subscribe((unSyncedDataValues: any) => {
-        this.dataValuesStorage.offline = unSyncedDataValues.length;
-        this.dataValuesStorage.online = syncedDataValues.length;
-        this.loadingEventStatus();
-      }, error => {
-        console.log(JSON.stringify(error));
-        this.appProvider.setNormalNotification('Fail to load data values storage status');
-        this.isLoading = false;
-      });
-    }, error => {
-      console.log(JSON.stringify(error));
-      this.appProvider.setNormalNotification('Fail to load data values storage status');
-      this.isLoading = false;
-    });
+    this.dataValuesProvider
+      .getDataValuesByStatus("synced", this.currentUser)
+      .subscribe(
+        (syncedDataValues: any) => {
+          this.dataValuesProvider
+            .getDataValuesByStatus("not-synced", this.currentUser)
+            .subscribe(
+              (unSyncedDataValues: any) => {
+                this.dataValuesStorage.offline = unSyncedDataValues.length;
+                this.dataValuesStorage.online = syncedDataValues.length;
+                this.loadingEventStatus();
+              },
+              error => {
+                console.log(JSON.stringify(error));
+                this.appProvider.setNormalNotification(
+                  "Fail to load data values storage status"
+                );
+                this.isLoading = false;
+              }
+            );
+        },
+        error => {
+          console.log(JSON.stringify(error));
+          this.appProvider.setNormalNotification(
+            "Fail to load data values storage status"
+          );
+          this.isLoading = false;
+        }
+      );
   }
 
   loadingEventStatus() {
-    this.loadingMessage = "loading_events_storage_status";
-    this.eventCaptureFormProvider.getEventsByStatusAndType('synced', 'event-capture', this.currentUser).subscribe((events: any) => {
-      this.eventsStorage.online = events.length;
-      this.eventCaptureFormProvider.getEventsByStatusAndType('not-synced', 'event-capture', this.currentUser).subscribe((events: any) => {
-        this.eventsStorage.offline = events.length;
-        this.eventCaptureFormProvider.getEventsByStatusAndType('synced', 'tracker-capture', this.currentUser).subscribe((events: any) => {
-          this.eventsForTrackerStorage.online = events.length;
-          this.eventCaptureFormProvider.getEventsByStatusAndType('not-synced', 'tracker-capture', this.currentUser).subscribe((events: any) => {
-            this.eventsForTrackerStorage.offline = events.length;
-            this.loadingEnrollmentStatus();
-          }, error => {
-            console.log(JSON.stringify(error));
-            this.appProvider.setNormalNotification('Fail to load enrollments storage status');
-            this.isLoading = false;
-          });
-        }, error => {
+    this.loadingMessage = "loading events storage status";
+    this.eventCaptureFormProvider
+      .getEventsByStatusAndType("synced", "event-capture", this.currentUser)
+      .subscribe(
+        (events: any) => {
+          this.eventsStorage.online = events.length;
+          this.eventCaptureFormProvider
+            .getEventsByStatusAndType(
+              "not-synced",
+              "event-capture",
+              this.currentUser
+            )
+            .subscribe(
+              (events: any) => {
+                this.eventsStorage.offline = events.length;
+                this.eventCaptureFormProvider
+                  .getEventsByStatusAndType(
+                    "synced",
+                    "tracker-capture",
+                    this.currentUser
+                  )
+                  .subscribe(
+                    (events: any) => {
+                      this.eventsForTrackerStorage.online = events.length;
+                      this.eventCaptureFormProvider
+                        .getEventsByStatusAndType(
+                          "not-synced",
+                          "tracker-capture",
+                          this.currentUser
+                        )
+                        .subscribe(
+                          (events: any) => {
+                            this.eventsForTrackerStorage.offline =
+                              events.length;
+                            this.loadingEnrollmentStatus();
+                          },
+                          error => {
+                            console.log(JSON.stringify(error));
+                            this.appProvider.setNormalNotification(
+                              "Fail to load enrollments storage status"
+                            );
+                            this.isLoading = false;
+                          }
+                        );
+                    },
+                    error => {
+                      console.log(JSON.stringify(error));
+                      this.appProvider.setNormalNotification(
+                        "Fail to load enrollments storage status"
+                      );
+                      this.isLoading = false;
+                    }
+                  );
+              },
+              error => {
+                console.log(JSON.stringify(error));
+                this.appProvider.setNormalNotification(
+                  "Fail to load enrollments storage status"
+                );
+                this.isLoading = false;
+              }
+            );
+        },
+        error => {
           console.log(JSON.stringify(error));
-          this.appProvider.setNormalNotification('Fail to load enrollments storage status');
+          this.appProvider.setNormalNotification(
+            "Fail to load enrollments storage status"
+          );
           this.isLoading = false;
-        });
-      }, error => {
-        console.log(JSON.stringify(error));
-        this.appProvider.setNormalNotification('Fail to load enrollments storage status');
-        this.isLoading = false;
-      });
-    }, error => {
-      console.log(JSON.stringify(error));
-      this.appProvider.setNormalNotification('Fail to load enrollments storage status');
-      this.isLoading = false;
-    });
+        }
+      );
   }
 
   loadingEnrollmentStatus() {
-    this.loadingMessage = "loading_enrollments_storage_status";
-    this.trackerCaptureProvider.getTrackedEntityInstanceByStatus('synced', this.currentUser).subscribe((trackedEntityInstances: any) => {
-      this.enrollmentStorage.online = trackedEntityInstances.length;
-      this.trackerCaptureProvider.getTrackedEntityInstanceByStatus('not-synced', this.currentUser).subscribe((trackedEntityInstances: any) => {
-        this.enrollmentStorage.offline = trackedEntityInstances.length;
-        this.isLoading = false;
-        this.hasAllDataBeenLoaded = true;
-      }, error => {
-        console.log(JSON.stringify(error));
-        this.appProvider.setNormalNotification('Fail to load enrollments storage status');
-      })
-    });
+    this.loadingMessage = "loading enrollments storage status";
+    this.trackerCaptureProvider
+      .getTrackedEntityInstanceByStatus("synced", this.currentUser)
+      .subscribe((trackedEntityInstances: any) => {
+        this.enrollmentStorage.online = trackedEntityInstances.length;
+        this.trackerCaptureProvider
+          .getTrackedEntityInstanceByStatus("not-synced", this.currentUser)
+          .subscribe(
+            (trackedEntityInstances: any) => {
+              this.enrollmentStorage.offline = trackedEntityInstances.length;
+              this.isLoading = false;
+              this.hasAllDataBeenLoaded = true;
+            },
+            error => {
+              console.log(JSON.stringify(error));
+              this.appProvider.setNormalNotification(
+                "Fail to load enrollments storage status"
+              );
+            }
+          );
+      });
   }
-
 }

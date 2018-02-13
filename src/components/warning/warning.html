@@ -1,9 +1,10 @@
-
 <div *ngIf="warningMessage">
   <ion-row>
     <ion-col col-1>
-      <img  [src]="icon"/>
+      <img [src]="icon" />
     </ion-col>
-    <ion-col col-11>{{ warningMessage}}</ion-col>
+    <ion-col col-11>
+      <span [translate]="warningMessage"></span>
+    </ion-col>
   </ion-row>
 </div>

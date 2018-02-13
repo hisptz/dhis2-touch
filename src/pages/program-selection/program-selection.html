@@ -1,7 +1,7 @@
-<ion-header >
+<ion-header>
   <ion-toolbar color="primary">
     <ion-title>
-      {{'program_selection'|translate}}
+      <span [translate]="'program selection'"></span>
     </ion-title>
     <ion-buttons start>
       <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
@@ -11,19 +11,19 @@
   </ion-toolbar>
 </ion-header>
 
-  <ion-content >
+<ion-content>
 
-  <ion-searchbar animated="true"  (ionInput)="getFilteredList($event)" ></ion-searchbar>
-  <ion-grid >
+  <ion-searchbar animated="true" (ionInput)="getFilteredList($event)"></ion-searchbar>
+  <ion-grid>
     <ion-row>
-      <ion-col  >
-        <ion-list class = "programFormSelection">
-          <ion-item *ngFor="let program of programsList"   (tap)="setSelectedProgram(program)">
-            <img  class="side-menu-icon" [src]="icons.program"/>&nbsp;&nbsp;
-            <span ion-text [color]="(currentProgram.id == program.id)? 'current': 'font-color'" >{{ program.name}}</span>
+      <ion-col>
+        <ion-list class="programFormSelection">
+          <ion-item *ngFor="let program of programsList" (tap)="setSelectedProgram(program)">
+            <img class="side-menu-icon" [src]="icons.program" />&nbsp;&nbsp;
+            <span ion-text [color]="(currentProgram.id == program.id)? 'current': 'font-color'">{{ program.name}}</span>
           </ion-item>
-          <ion-item *ngIf = "programsList.length == 0">
-            <empty-list-notification [emptyListMessage]="'there_is_no_program_to_select'|translate"></empty-list-notification>
+          <ion-item *ngIf="programsList.length == 0">
+            <empty-list-notification [emptyListMessage]="'there is no program to select'"></empty-list-notification>
           </ion-item>
         </ion-list>
       </ion-col>

@@ -8,7 +8,7 @@
 
   <ion-toolbar color="primary">
     <ion-title>
-      {{'import_summaries'|translate}}
+      <span [translate]="'import summaries'"></span>
     </ion-title>
     <ion-buttons start>
       <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
@@ -17,44 +17,58 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
-
-<ion-content >
+<ion-content>
   <ion-grid>
     <ion-row>
       <ion-col>
         <div *ngIf="keys && keys.length > 0">
-          <div *ngFor="let key of keys" padding-bottom  class="over-flow-container">
+          <div *ngFor="let key of keys" padding-bottom class="over-flow-container">
             <div *ngIf="importSummaries[key]">
               <table class="table table-bordered" width="100%" *ngIf="(importSummaries[key].success + importSummaries[key].fail) > 0">
                 <thead>
-                <tr>
-                  <th [attr.colspan]="'2'">
-                    <div *ngIf="key == 'dataValues'">{{'aggregate_data'|translate}}</div>
-                    <div *ngIf="key == 'events'">{{'events'|translate}}</div>
-                    <div *ngIf="key == 'trackedEntityInstances'">{{'tracked_entity_instances'|translate}}</div>
-                    <div *ngIf="key == 'Enrollments'">{{'tracked_entity_enrollments'|translate}}</div>
-                    <div *ngIf="key == 'eventsForTracker'">{{'events_for_tracker'|translate}}</div>
-                  </th>
-                </tr>
+                  <tr>
+                    <th [attr.colspan]="'2'">
+                      <div *ngIf="key == 'dataValues'">
+                        <span [translate]="'aggregate data'"></span>
+                      </div>
+                      <div *ngIf="key == 'events'">
+                        <span [translate]="'events'"></span>
+                      </div>
+                      <div *ngIf="key == 'trackedEntityInstances'">
+                        <span [translate]="'tracked entity instances'"></span>
+                      </div>
+                      <div *ngIf="key == 'Enrollments'">
+                        <span [translate]="'tracked entity enrollments'"></span>
+                      </div>
+                      <div *ngIf="key == 'eventsForTracker'">
+                        <span [translate]="'events for tracker'"></span>
+                      </div>
+                    </th>
+                  </tr>
                 </thead>
-                <tbody >
-                <tr>
-                  <td>{{'success'|translate}}</td>
-                  <td>{{'failed'|translate}}</td>
-                </tr>
-                <tr>
-                  <td>{{ importSummaries[key].success }}</td>
-                  <td>{{ importSummaries[key].fail }}</td>
-                </tr>
-                <tr *ngIf="importSummaries[key].errorMessages && importSummaries[key].errorMessages.length > 0">
-                  <th [attr.colspan]="'2'">{{'import_conflicts_errors'|translate}}</th>
-                </tr>
-                <tr *ngFor="let errorMessage of importSummaries[key].errorMessages">
-                  <td [attr.colspan]="'2'">
-                    {{ errorMessage }}
-                  </td>
-                </tr>
+                <tbody>
+                  <tr>
+                    <td>
+                      <span [translate]="'success'"></span>
+                    </td>
+                    <td>
+                      <span [translate]="'failed'"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>{{ importSummaries[key].success }}</td>
+                    <td>{{ importSummaries[key].fail }}</td>
+                  </tr>
+                  <tr *ngIf="importSummaries[key].errorMessages && importSummaries[key].errorMessages.length > 0">
+                    <th [attr.colspan]="'2'">
+                      <span [translate]="'import conflicts errors'"></span>
+                    </th>
+                  </tr>
+                  <tr *ngFor="let errorMessage of importSummaries[key].errorMessages">
+                    <td [attr.colspan]="'2'">
+                      {{ errorMessage }}
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>

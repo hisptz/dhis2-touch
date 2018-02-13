@@ -145,13 +145,6 @@ export class LoginPage implements OnInit {
       this.currentLanguage = language;
       this.currentUser.currentLanguage = language;
       this.UserProvider.setCurrentUser(this.currentUser).subscribe(() => {});
-      this.localInstanceProvider
-        .setLocalInstanceInstances(
-          this.localInstances,
-          this.currentUser,
-          this.loggedInInInstance
-        )
-        .subscribe(() => {});
     } catch (e) {
       this.AppProvider.setNormalNotification("Fail to set translation ");
       console.log(JSON.stringify(e));

@@ -7,53 +7,53 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>{{'sync'|translate}}</ion-title>
+    <ion-title>
+      <span [translate]="'sync'"></span>
+    </ion-title>
   </ion-navbar>
-
 </ion-header>
-
-
-<ion-content >
-
+<ion-content>
   <ion-grid>
     <div class="item-card" *ngFor="let syncContent of syncContents">
       <ion-row (tap)="toggleSyncContents(syncContent)">
         <ion-col col-11>
-          <img  class="side-menu-icon" [src]="syncContent.icon"/>&nbsp;&nbsp;
+          <img class="side-menu-icon" [src]="syncContent.icon" />&nbsp;&nbsp;
           <span ion-text [color]="(isSyncContentOpen[syncContent.id]) ?'current' : 'font-color'">
-              {{ syncContent.name| translate}}
-            </span>
+            <span [translate]="syncContent.name"></span>
+          </span>
         </ion-col>
-        <ion-col col-1 item >
+        <ion-col col-1 item>
           <div style="text-align: center;">
-            <ion-icon [color]="(isSyncContentOpen[syncContent.id]) ?'current' : 'font-color'" *ngIf="!(isSyncContentOpen[syncContent.id])" name="ios-arrow-down" item-right></ion-icon>
-            <ion-icon [color]="(isSyncContentOpen[syncContent.id]) ?'current' : 'font-color'" *ngIf="(isSyncContentOpen[syncContent.id])" name="ios-arrow-up" item-right></ion-icon>
+            <ion-icon [color]="(isSyncContentOpen[syncContent.id]) ?'current' : 'font-color'" *ngIf="!(isSyncContentOpen[syncContent.id])"
+              name="ios-arrow-down" item-right></ion-icon>
+            <ion-icon [color]="(isSyncContentOpen[syncContent.id]) ?'current' : 'font-color'" *ngIf="(isSyncContentOpen[syncContent.id])"
+              name="ios-arrow-up" item-right></ion-icon>
           </div>
         </ion-col>
       </ion-row>
-      <div *ngIf="(isSyncContentOpen[syncContent.id])" >
+      <div *ngIf="(isSyncContentOpen[syncContent.id])">
         <hr>
-        <div *ngIf="syncContent.id == 'dataViaSms'" >
+        <div *ngIf="syncContent.id == 'dataViaSms'">
           <upload-data-via-sms></upload-data-via-sms>
         </div>
 
-        <div *ngIf="syncContent.id == 'dataViaInternet'" >
+        <div *ngIf="syncContent.id == 'dataViaInternet'">
           <upload-data-via-internet></upload-data-via-internet>
         </div>
 
-        <div *ngIf="syncContent.id == 'downloadMetadata'" >
+        <div *ngIf="syncContent.id == 'downloadMetadata'">
           <download-meta-data></download-meta-data>
         </div>
 
-        <div *ngIf="syncContent.id == 'downloadData'" >
+        <div *ngIf="syncContent.id == 'downloadData'">
           <download-data></download-data>
         </div>
 
-        <div *ngIf="syncContent.id == 'clearData'" >
-          <clear-local-data ></clear-local-data>
+        <div *ngIf="syncContent.id == 'clearData'">
+          <clear-local-data></clear-local-data>
         </div>
 
-        <div *ngIf="syncContent.id == 'clearMetadata'" >
+        <div *ngIf="syncContent.id == 'clearMetadata'">
           <clear-local-metadata></clear-local-metadata>
         </div>
 

@@ -1,5 +1,5 @@
-import { Component,OnInit } from '@angular/core';
-import {IonicPage, NavParams, ViewController} from 'ionic-angular';
+import { Component, OnInit } from "@angular/core";
+import { IonicPage, NavParams, ViewController } from "ionic-angular";
 
 /**
  * Generated class for the DataSetSelectionPage page.
@@ -10,38 +10,35 @@ import {IonicPage, NavParams, ViewController} from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-data-set-selection',
-  templateUrl: 'data-set-selection.html',
+  selector: "page-data-set-selection",
+  templateUrl: "data-set-selection.html"
 })
-export class DataSetSelectionPage implements OnInit{
+export class DataSetSelectionPage implements OnInit {
+  dataSetsList: any;
+  currentDataSet: any;
+  icon: string;
 
-  dataSetsList : any;
-  currentDataSet : any;
-  icon : string;
+  constructor(private viewCtrl: ViewController, private navParams: NavParams) {}
 
-  constructor(private viewCtrl : ViewController, private navParams: NavParams) {
-  }
-
-  ngOnInit(){
+  ngOnInit() {
     this.icon = "assets/icon/form.png";
     this.dataSetsList = this.navParams.get("dataSetsList");
     this.currentDataSet = this.navParams.get("currentDataSet");
   }
   getFilteredList(ev: any) {
     let val = ev.target.value;
-    this.dataSetsList = this.navParams.get('dataSetsList');
-    if(val && val.trim() != ''){
-      this.dataSetsList = this.dataSetsList.filter((dataSet:any) => {
-        return (dataSet.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
-      })
+    this.dataSetsList = this.navParams.get("dataSetsList");
+    if (val && val.trim() != "") {
+      this.dataSetsList = this.dataSetsList.filter((dataSet: any) => {
+        return dataSet.name.toLowerCase().indexOf(val.toLowerCase()) > -1;
+      });
     }
   }
 
-  setSelectedDataSet(selectedDataSet){
+  setSelectedDataSet(selectedDataSet) {
     this.viewCtrl.dismiss(selectedDataSet);
   }
-  dismiss(){
+  dismiss() {
     this.viewCtrl.dismiss({});
   }
-
 }

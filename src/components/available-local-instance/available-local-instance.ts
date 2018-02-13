@@ -1,6 +1,6 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {LocalInstanceProvider} from "../../providers/local-instance/local-instance";
-import {AppProvider} from "../../providers/app/app";
+import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import { LocalInstanceProvider } from "../../providers/local-instance/local-instance";
+import { AppProvider } from "../../providers/app/app";
 
 /**
  * Generated class for the AvailableLocalInstanceComponent component.
@@ -9,55 +9,65 @@ import {AppProvider} from "../../providers/app/app";
  * Components.
  */
 @Component({
-  selector: 'available-local-instance',
-  templateUrl: 'available-local-instance.html'
+  selector: "available-local-instance",
+  templateUrl: "available-local-instance.html"
 })
-export class AvailableLocalInstanceComponent implements OnInit{
-
-  localInstances : any;
-  localInstancesBackup : any;
-  isLoading :boolean;
-  loadingMessage : string;
-  cancelIcon : string;
+export class AvailableLocalInstanceComponent implements OnInit {
+  localInstances: any;
+  localInstancesBackup: any;
+  isLoading: boolean;
+  loadingMessage: string;
+  cancelIcon: string;
 
   @Output() onSelectCurrentUser = new EventEmitter();
   @Output() onClose = new EventEmitter();
 
-  constructor(private localInstanceProvider : LocalInstanceProvider,
-              private appProvider : AppProvider) {}
+  constructor(
+    private localInstanceProvider: LocalInstanceProvider,
+    private appProvider: AppProvider
+  ) {}
 
-  ngOnInit(){
+  ngOnInit() {
     this.localInstances = [];
     this.cancelIcon = "assets/icon/cancel.png";
     this.isLoading = true;
-    this.loadingMessage = "loading_available_local_instances";
-    this.localInstanceProvider.getLocalInstances().subscribe((instances : any)=>{
-      this.localInstances = instances;
-      this.localInstancesBackup = instances;
-      this.isLoading = false;
-    },(error)=>{
-      this.isLoading = false;
-      this.appProvider.setNormalNotification("Fail to load available local instances")
-    });
+    this.loadingMessage = "loading available local instances";
+    this.localInstanceProvider.getLocalInstances().subscribe(
+      (instances: any) => {
+        this.localInstances = instances;
+        this.localInstancesBackup = instances;
+        this.isLoading = false;
+      },
+      error => {
+        this.isLoading = false;
+        this.appProvider.setNormalNotification(
+          "Fail to load available local instances"
+        );
+      }
+    );
   }
 
-  closeContainer(){
+  closeContainer() {
     this.onClose.emit({});
   }
 
-  setCurrentUser(currentUser,currentLanguage){
+  setCurrentUser(currentUser, currentLanguage) {
     currentUser.currentLanguage = currentLanguage;
-    this.onSelectCurrentUser.emit({currentUser : currentUser});
+    this.onSelectCurrentUser.emit({ currentUser: currentUser });
   }
 
   getFilteredList(ev: any) {
     let val = ev.target.value;
     this.localInstances = this.localInstancesBackup;
-    if(val && val.trim() != ''){
-      this.localInstances = this.localInstances.filter((localInstance:any) => {
-        return (localInstance.name.toLowerCase().indexOf(val.toLowerCase()) > -1 || localInstance.currentUser.username.toLowerCase().indexOf(val.toLowerCase()) > -1 );
-      })
+    if (val && val.trim() != "") {
+      this.localInstances = this.localInstances.filter((localInstance: any) => {
+        return (
+          localInstance.name.toLowerCase().indexOf(val.toLowerCase()) > -1 ||
+          localInstance.currentUser.username
+            .toLowerCase()
+            .indexOf(val.toLowerCase()) > -1
+        );
+      });
     }
   }
-
 }

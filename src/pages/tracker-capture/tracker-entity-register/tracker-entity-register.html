@@ -7,38 +7,41 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>{{'registration'|translate}}</ion-title>
+    <ion-title>
+      <span [translate]="'registration'"></span>
+    </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
   <ion-grid>
     <div *ngIf="isLoading">
-      <loading [loadingMessage]="loadingMessage|translate" [loadingSize]="'large'"></loading>
+      <loading [loadingMessage]="loadingMessage" [loadingSize]="'large'"></loading>
     </div>
     <div *ngIf="!isLoading">
       <ion-row>
         <ion-col>
           <div class="item-card" no-padding (click)="openWidgetList()">
-            <ion-item no-padding >
+            <ion-item no-padding>
               <div ion-text color="font-color" align="center">
                 <div style="padding:6px 0px;">
-                  <span >
+                  <span>
                     <span class="program-stage-button-label">
-                      <span *ngIf="currentWidget.icon" >
-                        <img class="tracker-pagination-icon" [src]="currentWidget.icon"/>
+                      <span *ngIf="currentWidget.icon">
+                        <img class="tracker-pagination-icon" [src]="currentWidget.icon" />
                       </span>
-                        <span *ngIf="currentWidget.iconName" class="tracker-pagination-icon icon-color" >
+                      <span *ngIf="currentWidget.iconName" class="tracker-pagination-icon icon-color">
                         <b>{{ currentWidget.iconName }}</b>
                       </span>
                     </span>
                   </span>
-                  &nbsp;
-                  {{ currentWidget.name }}
+                  &nbsp; {{ currentWidget.name }}
                 </div>
               </div>
               <div style="text-align: center" item-right float-right>
-                <span  float-end class="side-menu-icon"><img [src]="icons.menu"></span>
+                <span float-end class="side-menu-icon">
+                  <img [src]="icons.menu">
+                </span>
               </div>
             </ion-item>
           </div>
@@ -54,13 +57,13 @@
                   <div class="inputLabel">
                     <b>
                       <div class="inputLabel">
-                        {{'enrollments'|translate}}
+                        <span [translate]="'enrollments'"></span>
                       </div>
                     </b>
                     <hr>
                   </div>
                   <div class="inputLabel">
-                    {{'enrolling_organisation_unit'|translate}}
+                    <span [translate]="'enrolling organisation unit'"></span>
                   </div>
                   <div class="input-field-container">
                     <ion-item>
@@ -68,30 +71,28 @@
                     </ion-item>
                   </div>
                   <div class="inputLabel">
-                    {{'enrolling_program'|translate}}
+                    <span [translate]="'enrolling program'"></span>
                   </div>
                   <div class="input-field-container">
                     <ion-item>
                       <ion-input [(ngModel)]="currentProgram.name" readonly="true"></ion-input>
                     </ion-item>
                   </div>
-                  <div >
+                  <div>
                     <div class="inputLabel">
                       {{ currentProgram.enrollmentDateLabel}}
                     </div>
-                    <div [ngClass] ="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container'">
+                    <div [ngClass]="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container'">
                       <ion-item>
-                        <ion-datetime [(ngModel)]="enrollmentDate" doneText="Update" displayFormat="YYYY-MM-DD"
-                                      pickerFormat="YYYY MM DD"></ion-datetime>
+                        <ion-datetime [(ngModel)]="enrollmentDate" doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>
                       </ion-item>
                     </div>
                     <div class="inputLabel">
                       {{ currentProgram.incidentDateLabel}}
                     </div>
-                    <div [ngClass] ="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container'">
+                    <div [ngClass]="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container'">
                       <ion-item>
-                        <ion-datetime [(ngModel)]="incidentDate" doneText="Update" displayFormat="YYYY-MM-DD"
-                                      pickerFormat="YYYY MM DD"></ion-datetime>
+                        <ion-datetime [(ngModel)]="incidentDate" doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>
                       </ion-item>
                     </div>
                   </div>
@@ -100,20 +101,16 @@
                   <div class="inputLabel">
                     <b>
                       <div class="inputLabel">
-                        {{'profile'|translate}}
+                        <span [translate]="'profile'"></span>
                       </div>
                     </b>
                     <hr>
                   </div>
                   <div *ngIf="programTrackedEntityAttributes && programTrackedEntityAttributes.length > 0">
                     <div *ngFor="let programTrackedEntityAttribute of programTrackedEntityAttributes">
-                      <tracked-entity-inputs
-                        [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute"
-                        [currentUser]="currentUser"
-                        [data]="dataObject"
-                        [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
-                        [mandatory]="programTrackedEntityAttribute.mandatory"
-                        (onChange)="updateData($event)"></tracked-entity-inputs>
+                      <tracked-entity-inputs [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute" [currentUser]="currentUser"
+                        [data]="dataObject" [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
+                        [mandatory]="programTrackedEntityAttribute.mandatory" (onChange)="updateData($event)"></tracked-entity-inputs>
                     </div>
                   </div>
                 </div>
@@ -124,9 +121,10 @@
                     </div>
                   </div>
                   <div style="display: inline-block;width: 49.3%">
-                    <div  float-right>
-                      <div class="item-card" color="danger" float-right (click)="deleteTrackedEntity(trackedEntityInstance)"  *ngIf="isTrackedEntityRegistered" padding ion-button clear text-center text-capitalize >
-                        <ion-icon name="trash" ></ion-icon>
+                    <div float-right>
+                      <div class="item-card" color="danger" float-right (click)="deleteTrackedEntity(trackedEntityInstance)" *ngIf="isTrackedEntityRegistered"
+                        padding ion-button clear text-center text-capitalize>
+                        <ion-icon name="trash"></ion-icon>
                       </div>
                     </div>
                   </div>
@@ -134,8 +132,9 @@
 
 
                 <div *ngIf="isTrackedEntityRegistered" class="item-card-program-stage-section">
-                  <div  class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex + 1)" padding-top padding-bottom ion-button clear text-center text-capitalize>
-                    <ion-icon name="ios-arrow-forward-outline" ></ion-icon>
+                  <div class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex + 1)" padding-top padding-bottom
+                    ion-button clear text-center text-capitalize>
+                    <ion-icon name="ios-arrow-forward-outline"></ion-icon>
                   </div>
                 </div>
               </div>
@@ -144,12 +143,8 @@
                 <div *ngIf="programStages && programStages.length > 0">
                   <div *ngFor="let programStage of programStages">
                     <div *ngIf="widget.id == programStage.id">
-                      <program-stage-tracker-based
-                        [programStage]="programStage"
-                        [trackedEntityInstance]="trackedEntityInstance"
-                        [currentWidgetIndex]="currentWidgetIndex"
-                        [isLastStage]="(currentWidgetIndex == programStages.length)"
-                        (onChange)="updateWidgetPagination($event)"></program-stage-tracker-based>
+                      <program-stage-tracker-based [programStage]="programStage" [trackedEntityInstance]="trackedEntityInstance" [currentWidgetIndex]="currentWidgetIndex"
+                        [isLastStage]="(currentWidgetIndex == programStages.length)" (onChange)="updateWidgetPagination($event)"></program-stage-tracker-based>
                     </div>
                   </div>
                 </div>
@@ -162,25 +157,24 @@
   </ion-grid>
 </ion-content>
 <ion-footer>
-    <ion-grid>
-      <ion-row>
-        <ion-col>
-          <button ion-button clear text-capitalize *ngFor="let widget of dashboardWidgets" [disabled]="(!isTrackedEntityRegistered && widget.iconName) || (isDashboardWidgetOpen[widget.id])" (tap)="changeDashboardWidget(widget)">
-            <div [ngClass]=" (isDashboardWidgetOpen[widget.id])?'program-stage-button-label':''">
-              <div *ngIf="widget.icon" >
-                <img class="footer-icon" [src]="widget.icon"/>
-              </div>
-              <div *ngIf="widget.iconName" >
-                <b>{{ widget.iconName }}</b>
-              </div>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <button ion-button clear text-capitalize *ngFor="let widget of dashboardWidgets" [disabled]="(!isTrackedEntityRegistered && widget.iconName) || (isDashboardWidgetOpen[widget.id])"
+          (tap)="changeDashboardWidget(widget)">
+          <div [ngClass]=" (isDashboardWidgetOpen[widget.id])?'program-stage-button-label':''">
+            <div *ngIf="widget.icon">
+              <img class="footer-icon" [src]="widget.icon" />
             </div>
-          </button>
-          <button ion-button clear  text-capitalize [disabled]="!isTrackedEntityRegistered" (click)="resetRegistration()" float-right>
-            <img class="footer-icon" [src]="icons.addNewCase"/>
-          </button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+            <div *ngIf="widget.iconName">
+              <b>{{ widget.iconName }}</b>
+            </div>
+          </div>
+        </button>
+        <button ion-button clear text-capitalize [disabled]="!isTrackedEntityRegistered" (click)="resetRegistration()" float-right>
+          <img class="footer-icon" [src]="icons.addNewCase" />
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-footer>
-
-

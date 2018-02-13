@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import { IonicPage, ViewController, NavParams } from 'ionic-angular';
+import { Component, OnInit } from "@angular/core";
+import { IonicPage, ViewController, NavParams } from "ionic-angular";
 
 /**
  * Generated class for the ImportSummariesPage page.
@@ -10,24 +10,21 @@ import { IonicPage, ViewController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-import-summaries',
-  templateUrl: 'import-summaries.html',
+  selector: "page-import-summaries",
+  templateUrl: "import-summaries.html"
 })
-export class ImportSummariesPage implements OnInit{
+export class ImportSummariesPage implements OnInit {
+  importSummaries: any;
+  keys: any;
 
-  importSummaries : any;
-  keys : any;
+  constructor(public viewCtrl: ViewController, public navParams: NavParams) {}
 
-  constructor(public viewCtrl: ViewController, public navParams: NavParams) {
-  }
-
-  ngOnInit(){
+  ngOnInit() {
     this.importSummaries = this.navParams.get("importSummaries");
-    this.keys = this.navParams.get('keys');
+    this.keys = this.navParams.get("keys");
   }
 
-  dismiss(){
+  dismiss() {
     this.viewCtrl.dismiss({});
   }
-
 }

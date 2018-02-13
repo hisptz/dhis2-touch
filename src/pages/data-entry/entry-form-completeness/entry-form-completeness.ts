@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import { IonicPage, ViewController, NavParams } from 'ionic-angular';
-import {DataSetCompletenessProvider} from "../../../providers/data-set-completeness/data-set-completeness";
-import {AppProvider} from "../../../providers/app/app";
+import { Component, OnInit } from "@angular/core";
+import { IonicPage, ViewController, NavParams } from "ionic-angular";
+import { DataSetCompletenessProvider } from "../../../providers/data-set-completeness/data-set-completeness";
+import { AppProvider } from "../../../providers/app/app";
 
 /**
  * Generated class for the EntryFormCompletenessPage page.
@@ -12,65 +12,84 @@ import {AppProvider} from "../../../providers/app/app";
 
 @IonicPage()
 @Component({
-  selector: 'page-entry-form-completeness',
-  templateUrl: 'entry-form-completeness.html',
+  selector: "page-entry-form-completeness",
+  templateUrl: "entry-form-completeness.html"
 })
-export class EntryFormCompletenessPage implements OnInit{
+export class EntryFormCompletenessPage implements OnInit {
+  isLoading: boolean;
+  loadingMessage: string;
+  userInformation: Array<any>;
 
-  isLoading : boolean;
-  loadingMessage : string;
-  userInformation : Array<any>;
+  constructor(
+    public viewCtrl: ViewController,
+    public navParams: NavParams,
+    private appProvider: AppProvider,
+    private dataSetCompletenessProvider: DataSetCompletenessProvider
+  ) {}
 
-  constructor(public viewCtrl: ViewController, public navParams: NavParams,
-              private appProvider : AppProvider,
-              private dataSetCompletenessProvider : DataSetCompletenessProvider) {
-  }
-
-  ngOnInit(){
-    let currentUser = this.navParams.get('currentUser');
-    let username = this.navParams.get('username');
+  ngOnInit() {
+    let currentUser = this.navParams.get("currentUser");
+    let username = this.navParams.get("username");
     this.loadingMessage = "Loading information for " + username;
     this.isLoading = true;
     this.userInformation = [];
-    this.dataSetCompletenessProvider.getUserCompletenessInformation(username,currentUser).subscribe((userResponse : any )=>{
-      this.prepareUserInformation(userResponse.user,username);
-    },error=>{
-      console.log(JSON.stringify(error));
-      this.userInformation.push({key : "Username",value : username});
-      this.isLoading = false;
-      this.appProvider.setNormalNotification("Fail to load user information");
-    });
+    this.dataSetCompletenessProvider
+      .getUserCompletenessInformation(username, currentUser)
+      .subscribe(
+        (userResponse: any) => {
+          this.prepareUserInformation(userResponse.user, username);
+        },
+        error => {
+          console.log(JSON.stringify(error));
+          this.userInformation.push({ key: "Username", value: username });
+          this.isLoading = false;
+          this.appProvider.setNormalNotification(
+            "Fail to load user information"
+          );
+        }
+      );
   }
 
-  dismiss(){
+  dismiss() {
     this.viewCtrl.dismiss({});
   }
 
-  prepareUserInformation(user,username){
+  prepareUserInformation(user, username) {
     //@todo checking keys on future
-    this.userInformation.push({key : "full_name",value : user.firstName + " " + user.surname});
-    this.userInformation.push({key : "username",value : username});
-    if(user && user.email){
-      this.userInformation.push({key : "e_mail",value : user.email});
+    this.userInformation.push({
+      key: "full name",
+      value: user.firstName + " " + user.surname
+    });
+    this.userInformation.push({ key: "username", value: username });
+    if (user && user.email) {
+      this.userInformation.push({ key: "e mail", value: user.email });
     }
-    if(user && user.phoneNumber){
-      this.userInformation.push({key : "phone_number",value : user.phoneNumber});
+    if (user && user.phoneNumber) {
+      this.userInformation.push({
+        key: "phone number",
+        value: user.phoneNumber
+      });
     }
-    if(user && user.organisationUnits){
+    if (user && user.organisationUnits) {
       let organisationUnits = [];
-      user.organisationUnits.forEach((organisationUnit : any)=>{
+      user.organisationUnits.forEach((organisationUnit: any) => {
         organisationUnits.push(organisationUnit.name);
       });
-      this.userInformation.push({key : "assigned_organisation_units",value : organisationUnits.join(', ')});
+      this.userInformation.push({
+        key: "assigned organisation units",
+        value: organisationUnits.join(", ")
+      });
     }
-    if(user && user.roles){
+    if (user && user.roles) {
       let roles = [];
-      user.roles.forEach((role : any)=>{
+      user.roles.forEach((role: any) => {
         roles.push(role.name);
       });
-      this.userInformation.push({key : "assigned_roles",value : roles.join(', ')});
+      this.userInformation.push({
+        key: "assigned roles",
+        value: roles.join(", ")
+      });
     }
     this.isLoading = false;
   }
-
 }

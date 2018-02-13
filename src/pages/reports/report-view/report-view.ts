@@ -46,7 +46,7 @@ export class ReportViewPage implements OnInit {
 
   ngOnInit() {
     this.isLoading = true;
-    this.loadingMessage = "loading_user_information";
+    this.loadingMessage = "loading user information";
     this.user.getCurrentUser().subscribe((user: any) => {
       this.currentUser = user;
       dhis2.database = user.currentDatabase;
@@ -161,7 +161,7 @@ export class ReportViewPage implements OnInit {
 
   loadReportDesignContent(reportId) {
     this.isLoading = true;
-    this.loadingMessage = "loading_report_metadata";
+    this.loadingMessage = "loading report metadata";
     //for standard reports
     if (this.reportType && this.reportType == "standardReport") {
       this.reportProvider.getReportDesign(reportId, this.currentUser).subscribe(

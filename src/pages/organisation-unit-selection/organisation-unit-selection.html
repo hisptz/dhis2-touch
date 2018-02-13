@@ -8,7 +8,7 @@
 
   <ion-toolbar color="primary">
     <ion-title>
-      {{'organisation_unit_selection'|translate}}
+      <span [translate]="'organisation unit selection'"></span>
     </ion-title>
     <ion-buttons start>
       <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
@@ -23,18 +23,15 @@
 <ion-content padding>
 
   <div *ngIf="isLoading">
-    <loading [loadingSize]="'large'" [loadingMessage]="loadingMessage|translate"></loading>
+    <loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></loading>
   </div>
   <div *ngIf="!isLoading">
     <div *ngFor="let organisationUnit of organisationUnits">
-      <organisation-unit-tree [organisationUnit]="organisationUnit"
-                                    [currentSelectedOrgUnitName]="lastSelectedOrgUnit.name"
-                                    [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened"
-                                    (selectedOrganisationUnit)="setSelectedOrganisationUnit($event)"
-                                    [currentUser]="currentUser"></organisation-unit-tree>
+      <organisation-unit-tree [organisationUnit]="organisationUnit" [currentSelectedOrgUnitName]="lastSelectedOrgUnit.name" [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened"
+        (selectedOrganisationUnit)="setSelectedOrganisationUnit($event)" [currentUser]="currentUser"></organisation-unit-tree>
     </div>
     <div *ngIf="organisationUnits.length == 0 && emptyMessage !=''">
-      <empty-list-notification [emptyListMessage]="emptyMessage" ></empty-list-notification>
+      <empty-list-notification [emptyListMessage]="emptyMessage"></empty-list-notification>
     </div>
   </div>
 

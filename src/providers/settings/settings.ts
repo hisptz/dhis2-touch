@@ -1,7 +1,6 @@
-import {Injectable} from '@angular/core';
-import {Storage} from '@ionic/storage';
-import {Observable} from "rxjs/Observable";
-
+import { Injectable } from "@angular/core";
+import { Storage } from "@ionic/storage";
+import { Observable } from "rxjs/Observable";
 
 /*
   Generated class for the SettingsProvider provider.
@@ -11,9 +10,7 @@ import {Observable} from "rxjs/Observable";
 */
 @Injectable()
 export class SettingsProvider {
-
-  constructor(private storage: Storage) {
-  }
+  constructor(private storage: Storage) {}
 
   /**
    *
@@ -22,19 +19,25 @@ export class SettingsProvider {
   getSettingContentDetails() {
     let settingContents = [
       {
-        id: 'appSettings',
-        name: 'app_settings',
-        icon: 'assets/icon/app-setting.png',
+        id: "appSettings",
+        name: "app settings",
+        icon: "assets/icon/app-setting.png",
         isLoading: false,
-        loadingMessage: ''
+        loadingMessage: ""
       },
-      {id: 'entryForm', name: 'entry_form', icon: 'assets/icon/form.png', isLoading: false, loadingMessage: ''},
       {
-        id: 'synchronization',
-        name: 'synchronization',
-        icon: 'assets/icon/synchronization.png',
+        id: "entryForm",
+        name: "entry form",
+        icon: "assets/icon/form.png",
         isLoading: false,
-        loadingMessage: ''
+        loadingMessage: ""
+      },
+      {
+        id: "synchronization",
+        name: "synchronization",
+        icon: "assets/icon/synchronization.png",
+        isLoading: false,
+        loadingMessage: ""
       }
     ];
     return settingContents;
@@ -49,17 +52,22 @@ export class SettingsProvider {
   setSettingsForTheApp(currentUser, appSettings): Observable<any> {
     appSettings = this.getSanitizedSettings(appSettings);
     return new Observable(observer => {
-      let key = 'appSettings' + (currentUser && currentUser.currentDatabase) ? currentUser.currentDatabase : "";
+      let key =
+        "appSettings" + (currentUser && currentUser.currentDatabase)
+          ? currentUser.currentDatabase
+          : "";
       appSettings = JSON.stringify(appSettings);
-      this.storage.set(key, appSettings).then(() => {
-        observer.next();
-        observer.complete();
-      }, error => {
-        observer.error(error);
-      });
+      this.storage.set(key, appSettings).then(
+        () => {
+          observer.next();
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
-
 
   /**
    *
@@ -68,18 +76,24 @@ export class SettingsProvider {
    */
   getSettingsForTheApp(currentUser): Observable<any> {
     return new Observable(observer => {
-      let key = 'appSettings' + (currentUser && currentUser.currentDatabase) ? currentUser.currentDatabase : "";
-      this.storage.get(key).then(appSettings => {
-        try {
-          appSettings = JSON.parse(appSettings);
-          observer.next(appSettings);
-          observer.complete();
-        } catch (e) {
-          observer.error(e);
+      let key =
+        "appSettings" + (currentUser && currentUser.currentDatabase)
+          ? currentUser.currentDatabase
+          : "";
+      this.storage.get(key).then(
+        appSettings => {
+          try {
+            appSettings = JSON.parse(appSettings);
+            observer.next(appSettings);
+            observer.complete();
+          } catch (e) {
+            observer.error(e);
+          }
+        },
+        error => {
+          observer.error(error);
         }
-      }, error => {
-        observer.error(error);
-      });
+      );
     });
   }
 
@@ -122,10 +136,14 @@ export class SettingsProvider {
   getDefaultSettings() {
     let defaultSettings = {
       entryForm: {
-        label: "formName", maxDataElementOnDefaultForm: 10, formLayout: "listLayout"
+        label: "formName",
+        maxDataElementOnDefaultForm: 10,
+        formLayout: "listLayout"
       },
       synchronization: {
-        time: 2 * 60 * 1000, timeType: "minutes", isAutoSync: true
+        time: 2 * 60 * 1000,
+        timeType: "minutes",
+        isAutoSync: true
       }
     };
     return defaultSettings;
@@ -138,17 +156,25 @@ export class SettingsProvider {
    */
   getSanitizedSettings(appSettings) {
     if (appSettings.entryForm) {
-      if (isNaN(appSettings.entryForm.maxDataElementOnDefaultForm) || appSettings.entryForm.maxDataElementOnDefaultForm <= 0) {
+      if (
+        isNaN(appSettings.entryForm.maxDataElementOnDefaultForm) ||
+        appSettings.entryForm.maxDataElementOnDefaultForm <= 0
+      ) {
         appSettings.entryForm.maxDataElementOnDefaultForm = 1;
       }
     }
     if (appSettings.synchronization) {
-      if (isNaN(appSettings.synchronization.time) || appSettings.synchronization.time < 1) {
-        appSettings.synchronization.time = 1
+      if (
+        isNaN(appSettings.synchronization.time) ||
+        appSettings.synchronization.time < 1
+      ) {
+        appSettings.synchronization.time = 1;
       }
-      appSettings.synchronization.time = this.getSynchronizationTimeToSave(appSettings.synchronization.time, appSettings.synchronization.timeType);
+      appSettings.synchronization.time = this.getSynchronizationTimeToSave(
+        appSettings.synchronization.time,
+        appSettings.synchronization.timeType
+      );
     }
     return appSettings;
   }
-
 }

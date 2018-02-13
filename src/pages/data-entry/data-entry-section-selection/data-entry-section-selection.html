@@ -7,7 +7,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>
-      {{'data_entry_form_sections'|translate }}
+      <span [translate]="'data entry form sections'"></span>
     </ion-title>
     <ion-buttons start>
       <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
@@ -15,22 +15,21 @@
       </button>
     </ion-buttons>
   </ion-toolbar>
-
 </ion-header>
 
 
-<ion-content >
-  <ion-searchbar animated="true"autocomplete="on"  (ionInput)="getFilteredList($event)"></ion-searchbar>
+<ion-content>
+  <ion-searchbar animated="true" autocomplete="on" (ionInput)="getFilteredList($event)"></ion-searchbar>
   <ion-grid>
     <ion-row>
-      <ion-col >
+      <ion-col>
         <ion-list>
           <ion-item *ngFor="let section of sections;let currentIndex = index" (tap)="setSelectedSection(section)">
-            <img  class="side-menu-icon" [src]="icon"/>&nbsp;&nbsp;
-            <span  ion-text [color]="((currentIndex + 1) == pager.page) ?'current' : 'font-color'">{{ section.name }}</span>
+            <img class="side-menu-icon" [src]="icon" />&nbsp;&nbsp;
+            <span ion-text [color]="((currentIndex + 1) == pager.page) ?'current' : 'font-color'">{{ section.name }}</span>
           </ion-item>
-          <ion-item *ngIf = "sections.length == 0">
-            <empty-list-notification [emptyListMessage]="'there_is_nothing_to_select'|translate"></empty-list-notification>
+          <ion-item *ngIf="sections.length == 0">
+            <empty-list-notification [emptyListMessage]="'there is nothing to select'"></empty-list-notification>
           </ion-item>
         </ion-list>
       </ion-col>

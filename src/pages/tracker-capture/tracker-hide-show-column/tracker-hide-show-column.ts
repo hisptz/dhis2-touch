@@ -1,5 +1,5 @@
-import { Component,OnInit } from '@angular/core';
-import {ViewController, NavParams, IonicPage} from 'ionic-angular';
+import { Component, OnInit } from "@angular/core";
+import { ViewController, NavParams, IonicPage } from "ionic-angular";
 
 /**
  * Generated class for the TrackerHideShowColumnPage page.
@@ -10,56 +10,64 @@ import {ViewController, NavParams, IonicPage} from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-tracker-hide-show-column',
-  templateUrl: 'tracker-hide-show-column.html',
+  selector: "page-tracker-hide-show-column",
+  templateUrl: "tracker-hide-show-column.html"
 })
-export class TrackerHideShowColumnPage implements OnInit{
+export class TrackerHideShowColumnPage implements OnInit {
+  selectedItemsModel: any;
+  trackedEntityAttributes: Array<any>;
 
-  selectedItemsModel : any;
-  trackedEntityAttributes : Array<any>;
+  constructor(public viewCtrl: ViewController, public params: NavParams) {}
 
-  constructor(public viewCtrl: ViewController,public params : NavParams) {
-  }
-
-  ngOnInit(){
+  ngOnInit() {
     this.selectedItemsModel = {};
-    let attributeToDisplay = this.params.get('attributeToDisplay');
+    let attributeToDisplay = this.params.get("attributeToDisplay");
     this.trackedEntityAttributes = [];
-    let programTrackedEntityAttributes = this.params.get('programTrackedEntityAttributes');
-    Object.keys(attributeToDisplay).forEach(key=>{
+    let programTrackedEntityAttributes = this.params.get(
+      "programTrackedEntityAttributes"
+    );
+    Object.keys(attributeToDisplay).forEach(key => {
       this.selectedItemsModel[key] = true;
     });
-    programTrackedEntityAttributes.forEach((programTrackedEntityAttribute : any)=>{
-      if(programTrackedEntityAttribute.trackedEntityAttribute){
-        let attribute = programTrackedEntityAttribute.trackedEntityAttribute;
-        this.trackedEntityAttributes.push({
-          id : attribute.id,name : attribute.name
-        })
+    programTrackedEntityAttributes.forEach(
+      (programTrackedEntityAttribute: any) => {
+        if (programTrackedEntityAttribute.trackedEntityAttribute) {
+          let attribute = programTrackedEntityAttribute.trackedEntityAttribute;
+          this.trackedEntityAttributes.push({
+            id: attribute.id,
+            name: attribute.name
+          });
+        }
       }
-    });
+    );
   }
 
-  autoSelectFields(status){
-    this.trackedEntityAttributes.forEach((trackedEntityAttribute : any)=>{
+  autoSelectFields(status) {
+    this.trackedEntityAttributes.forEach((trackedEntityAttribute: any) => {
       this.selectedItemsModel[trackedEntityAttribute.id] = status;
     });
   }
 
-  saveChanges(){
+  saveChanges() {
     let attributeToDisplay = {};
-    this.trackedEntityAttributes.forEach((trackedEntityAttribute : any)=>{
-      if(this.selectedItemsModel[trackedEntityAttribute.id]){
-        attributeToDisplay[trackedEntityAttribute.id] = trackedEntityAttribute.name;
+    this.trackedEntityAttributes.forEach((trackedEntityAttribute: any) => {
+      if (this.selectedItemsModel[trackedEntityAttribute.id]) {
+        attributeToDisplay[trackedEntityAttribute.id] =
+          trackedEntityAttribute.name;
       }
     });
-    if(Object.keys(attributeToDisplay).length == 0 && this.trackedEntityAttributes.length > 0){
-      attributeToDisplay[this.trackedEntityAttributes[0].id] = this.trackedEntityAttributes[0].name;
+    if (
+      Object.keys(attributeToDisplay).length == 0 &&
+      this.trackedEntityAttributes.length > 0
+    ) {
+      attributeToDisplay[
+        this.trackedEntityAttributes[0].id
+      ] = this.trackedEntityAttributes[0].name;
     }
     this.viewCtrl.dismiss(attributeToDisplay);
   }
 
-  dismiss(){
+  dismiss() {
     this.viewCtrl.dismiss();
   }
-
 }
