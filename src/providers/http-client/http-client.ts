@@ -10,6 +10,7 @@ import { getCurrentUser } from "../../store/selectors/currentUser.selectors";
 import { CurrentUser } from "../../models/currentUser";
 import { EncryptionProvider } from "../encryption/encryption";
 import * as _ from "lodash";
+import { NetworkAvailabilityProvider } from "../network-availability/network-availability";
 
 /*
   Generated class for the HttpClientProvider provider.
@@ -24,7 +25,8 @@ export class HttpClientProvider {
     private http: HTTP,
     private store: Store<ApplicationState>,
     private encryption: EncryptionProvider,
-    private defaultHttp: Http
+    private defaultHttp: Http,
+    private networkProvider: NetworkAvailabilityProvider
   ) {
     this.timeOutTime = 2 * 60 * 1000;
   }
@@ -53,21 +55,26 @@ export class HttpClientProvider {
    */
   getSanitizedUser(user): Observable<any> {
     return new Observable(observer => {
-      if (!user) {
-        this.store.select(getCurrentUser).subscribe(
-          (currentUser: CurrentUser) => {
-            user = _.assign({}, currentUser);
-            user.password = this.encryption.decode(user.password);
-            observer.next(user);
-            observer.complete();
-          },
-          error => {
-            observer.error(error);
-          }
-        );
+      const { isAvailable } = this.networkProvider.getNetWorkStatus();
+      if (isAvailable) {
+        if (!user) {
+          this.store.select(getCurrentUser).subscribe(
+            (currentUser: CurrentUser) => {
+              user = _.assign({}, currentUser);
+              user.password = this.encryption.decode(user.password);
+              observer.next(user);
+              observer.complete();
+            },
+            error => {
+              observer.error(error);
+            }
+          );
+        } else {
+          observer.next(user);
+          observer.complete();
+        }
       } else {
-        observer.next(user);
-        observer.complete();
+        observer.error({ error: "network is not available" });
       }
     });
   }
