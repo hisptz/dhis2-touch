@@ -21,17 +21,20 @@
       <ion-col class="animated fadeIn">
         <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openOrganisationUnitTree()">
           <img class="side-menu-icon" [src]="icons.orgUnit" />&nbsp;&nbsp;
-          <span [translate]="organisationUnitLabel"></span>
+          <span *ngIf="!selectedOrgUnit || !selectedOrgUnit.name" [translate]="organisationUnitLabel"></span>
+          <span *ngIf="selectedOrgUnit && selectedOrgUnit.name" [translate]="organisationUnitLabel"></span>
         </div>
 
         <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openEntryFormList()">
           <img class="side-menu-icon" [src]="icons.dataSet" />&nbsp;&nbsp;
-          <span [translate]="dataSetLabel"></span>
+          <span *ngIf="!selectedDataSet || !selectedDataSet.name" [translate]="dataSetLabel"></span>
+          <span *ngIf="selectedDataSet && selectedDataSet.name">{{ selectedDataSet.name }}</span>
         </div>
 
         <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openPeriodList()">
           <img class="side-menu-icon" [src]="icons.period" />&nbsp;&nbsp;
-          <span [translate]="periodLabel"></span>
+          <span *ngIf="!selectedPeriod || !selectedPeriod.name" [translate]="periodLabel"></span>
+          <span *ngIf="selectedPeriod && selectedPeriod.name "> {{ selectedPeriod.name }}</span>
         </div>
 
         <div *ngIf="selectedPeriod && selectedPeriod.iso && dataSetCategoryCombo && dataSetCategoryCombo.id ">
@@ -57,18 +60,15 @@
           <div>
             <b>
               <span [translate]="'organisation unit'"></span>
-            </b> :
-            <span [translate]="organisationUnitLabel"></span>
+            </b> : {{ organisationUnitLabel }}
             <br>
             <b>
               <span [translate]="'form'"></span>
-            </b> :
-            <span [translate]="dataSetLabel"></span>
+            </b> : {{ dataSetLabel }}
             <br>
             <b>
               <span [translate]="'period'"></span>
-            </b> :
-            <span [translate]="periodLabel"></span>
+            </b> : {{ periodLabel}}
           </div>
           <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize>
             <img class="side-menu-icon" [src]="icons.goToDataEntryForm" />&nbsp;&nbsp;

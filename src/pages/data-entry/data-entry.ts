@@ -138,12 +138,19 @@ export class DataEntryPage implements OnInit {
         (dataSets: any) => {
           this.dataSets = dataSets;
           this.selectedDataSet = this.dataSetProvider.lastSelectedDataSet;
-          this.currentPeriodOffset = 0;
-          this.updateDataEntryFormSelections();
-          this.loadPeriodSelection();
-          if (this.selectedDataSet && this.selectedDataSet.categoryCombo) {
-            this.updateDataSetCategoryCombo(this.selectedDataSet.categoryCombo);
+          if (dataSets.length == 0) {
+            this.selectedPeriod = {};
+            this.selectedDataSet = {};
+          } else {
+            this.currentPeriodOffset = 0;
+            if (this.selectedDataSet && this.selectedDataSet.categoryCombo) {
+              this.updateDataSetCategoryCombo(
+                this.selectedDataSet.categoryCombo
+              );
+            }
+            this.loadPeriodSelection();
           }
+          this.updateDataEntryFormSelections();
         },
         error => {
           this.appProvider.setNormalNotification("Fail to reload entry form");

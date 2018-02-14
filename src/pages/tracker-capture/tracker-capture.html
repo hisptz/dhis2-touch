@@ -18,11 +18,13 @@
       <ion-col>
         <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openOrganisationUnitTree()">
           <img class="side-menu-icon" [src]="icons.orgUnit" />&nbsp;&nbsp;
-          <span [translate]="organisationUnitLabel"></span>
+          <span *ngIf="!selectedOrgUnit || !selectedOrgUnit.name" [translate]="organisationUnitLabel"></span>
+          <span *ngIf="selectedOrgUnit && selectedOrgUnit.name"> {{ selectedOrgUnit.name }}</span>
         </div>
         <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openProgramList()">
           <img class="side-menu-icon" [src]="icons.program" />&nbsp;&nbsp;
-          <span [translate]="programLabel"></span>
+          <span *ngIf="!selectedProgram || !selectedProgram.name " [translate]="programLabel"></span>
+          <span *ngIf="selectedProgram && selectedProgram.name">{{ selectedProgram.name }}</span>
         </div>
         <div *ngIf="isFormReady">
           <div class="item-card" (click)="hideAndShowColumns()" color="font-color" padding-top padding-bottom ion-button clear text-center
