@@ -44,7 +44,7 @@ export class EntryFormCompletenessPage implements OnInit {
           this.userInformation.push({ key: "Username", value: username });
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            "Fail to load user information"
+            "fail to load user information"
           );
         }
       );

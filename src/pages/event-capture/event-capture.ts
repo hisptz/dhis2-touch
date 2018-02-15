@@ -93,7 +93,7 @@ export class EventCapturePage implements OnInit {
       error => {
         this.isLoading = false;
         this.loadingMessage = "";
-        this.appProvider.setNormalNotification("Fail to load user information");
+        this.appProvider.setNormalNotification("fail to load user information");
       }
     );
   }
@@ -140,7 +140,7 @@ export class EventCapturePage implements OnInit {
           this.loadingMessage = "";
           console.log(JSON.stringify(error));
           this.appProvider.setNormalNotification(
-            "Fail to load assigned programs"
+            "fail to load assigned programs"
           );
         }
       );
@@ -195,9 +195,7 @@ export class EventCapturePage implements OnInit {
       });
       modal.present();
     } else {
-      this.appProvider.setNormalNotification(
-        "There are no program to select on " + this.selectedOrgUnit.name
-      );
+      this.appProvider.setNormalNotification("There are no program to select");
     }
   }
 
@@ -319,7 +317,7 @@ export class EventCapturePage implements OnInit {
   }
 
   loadProgramStages(programId) {
-    this.loadingMessage = "Loading program stages " + this.selectedProgram.name;
+    this.loadingMessage = "Loading program stages";
     this.columnsToDisplay = {};
     this.eventCaptureFormProvider
       .getProgramStages(programId, this.currentUser)
@@ -369,9 +367,7 @@ export class EventCapturePage implements OnInit {
         error => {
           console.log(JSON.stringify(error));
           this.isLoading = false;
-          this.appProvider.setNormalNotification(
-            "Fail to load program stages " + this.selectedProgram.name
-          );
+          this.appProvider.setNormalNotification("fail to load program stages");
         }
       );
   }
@@ -417,7 +413,7 @@ export class EventCapturePage implements OnInit {
 
   renderDataAsTable() {
     this.isLoading = true;
-    this.loadingMessage = "Prepare table";
+    this.loadingMessage = "Preparing table";
     this.eventCaptureFormProvider
       .getTableFormatResult(this.columnsToDisplay, this.currentEvents)
       .subscribe(
@@ -429,7 +425,7 @@ export class EventCapturePage implements OnInit {
         error => {
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            "Fail to prepare table for display"
+            "fail to prepare table for display"
           );
         }
       );

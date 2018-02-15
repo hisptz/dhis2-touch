@@ -86,7 +86,7 @@ export class DataEntryPage implements OnInit {
       error => {
         this.isLoading = false;
         this.loadingMessage = "";
-        this.appProvider.setNormalNotification("Fail to load user information");
+        this.appProvider.setNormalNotification("fail to load user information");
       }
     );
   }
@@ -153,7 +153,7 @@ export class DataEntryPage implements OnInit {
           this.updateDataEntryFormSelections();
         },
         error => {
-          this.appProvider.setNormalNotification("Fail to reload entry form");
+          this.appProvider.setNormalNotification("fail to load entry form");
         }
       );
   }
@@ -186,7 +186,7 @@ export class DataEntryPage implements OnInit {
       modal.present();
     } else {
       this.appProvider.setNormalNotification(
-        "There are no entry form to select on " + this.selectedOrgUnit.name
+        "there are no entry form to select"
       );
     }
   }
@@ -227,7 +227,7 @@ export class DataEntryPage implements OnInit {
       });
       modal.present();
     } else {
-      this.appProvider.setNormalNotification("Please select entry form first");
+      this.appProvider.setNormalNotification("please select entry form first");
     }
   }
 

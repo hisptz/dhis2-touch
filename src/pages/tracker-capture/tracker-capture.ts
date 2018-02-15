@@ -90,7 +90,7 @@ export class TrackerCapturePage implements OnInit {
       error => {
         this.isLoading = false;
         this.loadingMessage = "";
-        this.appProvider.setNormalNotification("Fail to load user information");
+        this.appProvider.setNormalNotification("fail to load user information");
       }
     );
   }
@@ -127,8 +127,7 @@ export class TrackerCapturePage implements OnInit {
                   this.isLoading = false;
                   console.log(JSON.stringify(error));
                   this.appProvider.setNormalNotification(
-                    "Fail to load registration form for " +
-                      this.selectedProgram.name
+                    "fail to load registration form"
                   );
                 }
               );
@@ -141,7 +140,7 @@ export class TrackerCapturePage implements OnInit {
           this.loadingMessage = "";
           console.log(JSON.stringify(error));
           this.appProvider.setNormalNotification(
-            "Fail to load assigned programs"
+            "fail to load assigned programs"
           );
         }
       );
@@ -220,8 +219,7 @@ export class TrackerCapturePage implements OnInit {
                 this.isLoading = false;
                 console.log(JSON.stringify(error));
                 this.appProvider.setNormalNotification(
-                  "Fail to load registration form for " +
-                    this.selectedProgram.name
+                  "fail to load registration form"
                 );
               }
             );
@@ -229,15 +227,13 @@ export class TrackerCapturePage implements OnInit {
       });
       modal.present();
     } else {
-      this.appProvider.setNormalNotification(
-        "There are no program to select on " + this.selectedOrgUnit.name
-      );
+      this.appProvider.setNormalNotification("there are no program to select");
     }
   }
 
   loadingSavedTrackedEntityInstances(programId, orgUnitId) {
     this.isLoading = true;
-    this.loadingMessage = "Loading tracked entity list";
+    this.loadingMessage = "loading tracked entity list";
     this.trackerCaptureProvider
       .loadTrackedEntityInstancesList(programId, orgUnitId, this.currentUser)
       .subscribe(
@@ -249,7 +245,7 @@ export class TrackerCapturePage implements OnInit {
           console.log(JSON.stringify(error));
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            "Fail to load tracked entity list"
+            "fail to load tracked entity list"
           );
         }
       );
@@ -279,7 +275,7 @@ export class TrackerCapturePage implements OnInit {
         error => {
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            "Fail to prepare table for display"
+            "fail to prepare table for display"
           );
         }
       );

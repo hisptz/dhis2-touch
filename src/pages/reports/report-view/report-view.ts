@@ -185,7 +185,7 @@ export class ReportViewPage implements OnInit {
         error => {
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            "Fail to load  report details"
+            "fail to load  report details"
           );
         }
       );

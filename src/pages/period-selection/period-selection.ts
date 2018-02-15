@@ -1,6 +1,6 @@
-import { Component,OnInit } from '@angular/core';
-import {IonicPage, NavParams, ViewController} from 'ionic-angular';
-import {PeriodSelectionProvider} from "../../providers/period-selection/period-selection";
+import { Component, OnInit } from "@angular/core";
+import { IonicPage, NavParams, ViewController } from "ionic-angular";
+import { PeriodSelectionProvider } from "../../providers/period-selection/period-selection";
 
 /**
  * Generated class for the PeriodSelectionPage page.
@@ -11,54 +11,64 @@ import {PeriodSelectionProvider} from "../../providers/period-selection/period-s
 
 @IonicPage()
 @Component({
-  selector: 'page-period-selection',
-  templateUrl: 'period-selection.html',
+  selector: "page-period-selection",
+  templateUrl: "period-selection.html"
 })
-export class PeriodSelectionPage implements  OnInit{
+export class PeriodSelectionPage implements OnInit {
+  periodType: string;
+  openFuturePeriods: number;
+  currentPeriodOffset: number;
+  currentPeriod: any;
 
-  periodType : string;
-  openFuturePeriods : number;
-  currentPeriodOffset : number;
-  currentPeriod : any;
+  periods: Array<any>;
+  icon: string;
 
-  periods : Array<any>;
-  icon :string;
+  constructor(
+    private navParams: NavParams,
+    private viewCtrl: ViewController,
+    private periodSelection: PeriodSelectionProvider
+  ) {}
 
-  constructor( private navParams: NavParams,private viewCtrl : ViewController,private periodSelection : PeriodSelectionProvider) {
-  }
-
-  ngOnInit(){
+  ngOnInit() {
     this.icon = "assets/icon/period.png";
     this.periodType = this.navParams.get("periodType");
     this.openFuturePeriods = parseInt(this.navParams.get("openFuturePeriods"));
-    this.currentPeriodOffset = parseInt(this.navParams.get("currentPeriodOffset"));
+    this.currentPeriodOffset = parseInt(
+      this.navParams.get("currentPeriodOffset")
+    );
     this.currentPeriod = this.navParams.get("currentPeriod");
     this.loadPeriodSelection();
   }
 
-  loadPeriodSelection(){
+  loadPeriodSelection() {
     this.periods = [];
-    let periods = this.periodSelection.getPeriods(this.periodType,this.openFuturePeriods,this.currentPeriodOffset);
-    if(periods.length > 0){
+    let periods = this.periodSelection.getPeriods(
+      this.periodType,
+      this.openFuturePeriods,
+      this.currentPeriodOffset
+    );
+    if (periods.length > 0) {
       this.periods = periods;
-    }else{
-      this.currentPeriodOffset = this.currentPeriodOffset -1;
+    } else {
+      this.currentPeriodOffset = this.currentPeriodOffset - 1;
       this.loadPeriodSelection();
     }
   }
 
-  changePeriodSelection(currentPeriodOffset){
+  changePeriodSelection(currentPeriodOffset) {
     this.currentPeriodOffset = currentPeriodOffset;
     this.loadPeriodSelection();
   }
 
-  setSelectedPeriod(selectedPeriod){
+  setSelectedPeriod(selectedPeriod) {
     this.periodSelection.setLastSelectedPeriod(selectedPeriod.name);
-    this.viewCtrl.dismiss({selectedPeriod: selectedPeriod,currentPeriodOffset : this.currentPeriodOffset});
+    this.viewCtrl.dismiss({
+      selectedPeriod: selectedPeriod,
+      currentPeriodOffset: this.currentPeriodOffset
+    });
   }
 
-  dismiss(){
+  dismiss() {
     this.viewCtrl.dismiss({});
   }
-
 }

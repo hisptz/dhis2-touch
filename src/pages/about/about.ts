@@ -56,7 +56,7 @@ export class AboutPage implements OnInit {
       },
       error => {
         this.isLoading = false;
-        this.appProvider.setNormalNotification("Fail to load user information");
+        this.appProvider.setNormalNotification("fail to load user information");
       }
     );
   }
@@ -84,7 +84,7 @@ export class AboutPage implements OnInit {
             this.isLoading = false;
             console.log(JSON.stringify(error));
             this.appProvider.setNormalNotification(
-              "Fail to load system information"
+              "fail to load system information"
             );
           }
         );
@@ -92,7 +92,7 @@ export class AboutPage implements OnInit {
       error => {
         this.isLoading = false;
         console.log(JSON.stringify(error));
-        this.appProvider.setNormalNotification("Fail to load app information");
+        this.appProvider.setNormalNotification("fail to load app information");
       }
     );
   }
@@ -134,7 +134,7 @@ export class AboutPage implements OnInit {
               error => {
                 console.log(JSON.stringify(error));
                 this.appProvider.setNormalNotification(
-                  "Fail to load data values storage status"
+                  "fail to load data values storage status"
                 );
                 this.isLoading = false;
               }
@@ -143,7 +143,7 @@ export class AboutPage implements OnInit {
         error => {
           console.log(JSON.stringify(error));
           this.appProvider.setNormalNotification(
-            "Fail to load data values storage status"
+            "fail to load data values storage status"
           );
           this.isLoading = false;
         }
@@ -190,7 +190,7 @@ export class AboutPage implements OnInit {
                           error => {
                             console.log(JSON.stringify(error));
                             this.appProvider.setNormalNotification(
-                              "Fail to load enrollments storage status"
+                              "fail to load enrollments storage status"
                             );
                             this.isLoading = false;
                           }
@@ -199,7 +199,7 @@ export class AboutPage implements OnInit {
                     error => {
                       console.log(JSON.stringify(error));
                       this.appProvider.setNormalNotification(
-                        "Fail to load enrollments storage status"
+                        "fail to load enrollments storage status"
                       );
                       this.isLoading = false;
                     }
@@ -208,7 +208,7 @@ export class AboutPage implements OnInit {
               error => {
                 console.log(JSON.stringify(error));
                 this.appProvider.setNormalNotification(
-                  "Fail to load enrollments storage status"
+                  "fail to load enrollments storage status"
                 );
                 this.isLoading = false;
               }
@@ -217,7 +217,7 @@ export class AboutPage implements OnInit {
         error => {
           console.log(JSON.stringify(error));
           this.appProvider.setNormalNotification(
-            "Fail to load enrollments storage status"
+            "fail to load enrollments storage status"
           );
           this.isLoading = false;
         }
@@ -241,7 +241,7 @@ export class AboutPage implements OnInit {
             error => {
               console.log(JSON.stringify(error));
               this.appProvider.setNormalNotification(
-                "Fail to load enrollments storage status"
+                "fail to load enrollments storage status"
               );
             }
           );

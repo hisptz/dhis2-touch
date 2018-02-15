@@ -219,5 +219,112 @@
   "downloading reports from server": "Transferir relatórios do servidor",
   "prepare local storage for updates":
     "Preparar armazenamento local para actualizações",
-  "saving reports from server": "Gravando relatórios do servidor"
+  "saving reports from server": "Gravando relatórios do servidor",
+  "you are online": "Você está online",
+  "you are offline": "Você está offline",
+  "fail to load user information": "Falha ao carregar informações do usuário",
+  "fail to load system information": "Falha ao carregar informações do sistema",
+  "fail to load app information": "Falha ao carregar informações do aplicativo",
+  "fail to load data values storage status":
+    "Falha ao carregar valores de dados de status de armazenamento",
+  "fail to load enrollments storage status":
+    "Falha no carregamento do status de armazenamento das inscrições",
+  "fail to load entry form": "Falha ao carregar o formulário de inscrição",
+  "there are no entry form to select":
+    "Não há formulário de entrada para selecionar",
+  "please select entry form first":
+    "Por favor, selecione o formulário de inscrição primeiro",
+  "fail to load entry form information":
+    "Falha ao carregar a informação do formulário de entrada",
+  "fail to save data from the server": "Falha ao salvar dados do servidor",
+  "fail to load data from the server": "Falha ao carregar dados do servidor",
+  "fail to prepare entry form": "Fail to prepare entry form",
+  "fail to load available local data":
+    "Falha na carga de dados locais disponíveis",
+  "fail to load entry form completeness information":
+    "Falha ao carregar as informações de preenchimento do formulário de preenchimento",
+  "there are no indicators to view": "Não há indicadores para ver",
+  "fail to un complete entry form": "Falha no formulário de inscrição completo",
+  "fail to complete entry form":
+    "Falha na conclusão do formulário de inscrição",
+  "fail to load assigned programs": "Falha ao carregar os programas atribuídos",
+  "there are no program to select": "Não há nenhum programa para selecionar",
+  "loading program stages": "Carregando etapas do programa",
+  "fail to load program stages": "Falha ao carregar os estágios do programa",
+  "fail to prepare table for display":
+    "Falha na preparação da tabela para exibição",
+  "loading data from local storage": "Loading data from local storage",
+  "fail to set translation": "Falha na criação de tradução",
+  "fail to prepare local storage": "Falha na preparação do armazenamento local",
+  "fail to load user authorities":
+    "Falha ao carregar as autoridades dos usuários",
+  "fail to save current user information":
+    "Falha ao salvar as informações atuais do usuário",
+  "please check server address": "Verifique o endereço do servidor",
+  "you have enter wrong username or password or server address":
+    "Você inseriu o nome de usuário ou a senha ou o endereço do servidor errado",
+  "please check your network connectivity":
+    "Verifique a sua conectividade de rede",
+  "please enter server address, username and password":
+    "Digite o endereço do servidor, o nome de usuário e a senha",
+  "fail to save organisation data": "Falha ao salvar dados da organização",
+  "fail to load organisation data": "Falha ao carregar dados da organização",
+  "fail to save entry form": "Falha em salvar o formulário de inscrição",
+  "fail to save entry form's sections":
+    "Falha ao salvar as seções do formulário de entrada",
+  "fail to load entry form's sections":
+    "Falha ao carregar as seções do formulário de entrada",
+  "fail to save entry form's fields":
+    "Falha ao salvar os campos do formulário de entrada",
+  "fail to load entry form's fields":
+    "Falha ao carregar os campos do formulário de entrada",
+  "fail to save SMS commands": "Falha ao salvar comandos SMS",
+  "fail to load SMS commands": "Falha ao carregar comandos do SMS",
+  "fail to save programs": "Falha ao salvar programas",
+  "fail to load programs": "Falha ao carregar programas",
+  "fail to save program stage sections":
+    "Falha ao salvar seções do estágio do programa",
+  "fail to load program-stage-sections":
+    "Falha ao carregar as seções do estágio do programa",
+  "fail to save indicators": "Falha na economia de indicadores",
+  "fail to load indicators": "Falha ao carregar indicadores",
+  "fail to save reports": "Falha na gravação de relatórios",
+  "fail to load reports": "Falha na carga de relatórios",
+  "fail to save constants": "Falha ao salvar constantes",
+  "fail to load constants": "Fail to load constants",
+  "currently there is on assigned organisation unit on local storage, Please metadata on sync app":
+    "Atualmente, está na unidade de organização atribuída no armazenamento local, por favor, metadados no aplicativo de sincronização",
+  "fail to load organisation unit": "Falha na carga da unidade organizacional",
+  "fail to load profile information": "Falha ao carregar informações de perfil",
+  "fail to prepare local storage for updates":
+    "Falha na preparação de armazenamento local para atualizações",
+  "fail to download reports": "Falha no download de relatórios",
+  "fail to load organisation units information":
+    "Falha ao carregar informações sobre as unidades organizacionais",
+  "fail to load  report details": "Falha ao carregar os detalhes do relatório",
+  "fail to load settings": "Falha na carga de configurações",
+  "fail to load available local instances":
+    "Falha ao carregar as instâncias locais disponíveis",
+  "fail to load current user information":
+    "Falha ao carregar informações atualizadas do usuário",
+  "settings have been updated successfully":
+    "as configurações foram atualizadas com sucesso",
+  "fail to apply changes on  settings":
+    "Falha na aplicação de alterações nas configurações",
+  "fail to load registration form": "Falha na carga do formulário de registro",
+  "loading tracked entity list":
+    "Carregando lista de entidades de rastreamento",
+  "fail to load tracked entity list":
+    "Falha ao carregar a lista de entidades de rastreamento",
+  "a case has not yet registered": "Um caso ainda não foi registrado",
+  "deleting all information related to this tracked entity instance":
+    "Excluindo todas as informações relacionadas a essa instância de entidade rastreada",
+  "tracked entity instance has been delete successfully":
+    "A instância de entidade com rastreamento foi excluída com êxito",
+  "fail to delete all information related to this tracked entity instance":
+    "Falha em excluir todas as informações relacionadas a essa instância de entidade rastreada",
+  "loading tracked entity": "Carregando entidade rastreada",
+  "fail to load tracked entity": "Falha ao carregar a entidade rastreada",
+  "loading registration fields": "Carregando campos de registro",
+  "fail to load registration fields": "Falha na carga de campos de registro"
 }

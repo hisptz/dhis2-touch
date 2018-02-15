@@ -226,5 +226,129 @@
     "Télécharger des rapports depuis le serveur",
   "prepare local storage for updates":
     "Préparation du stockage local pour les mises à jour",
-  "saving reports from server": "Enregistrement de rapports à partir du serveur"
+  "saving reports from server":
+    "Enregistrement de rapports à partir du serveur",
+  "you are online": "Tu es en ligne",
+  "you are offline": "Tu es hors ligne",
+  "fail to load user information":
+    "Impossible de charger les informations utilisateur",
+  "fail to load system information":
+    "Impossible de charger les informations système",
+  "fail to load app information":
+    "Impossible de charger les informations de l'application",
+  "fail to load data values storage status":
+    "Impossible de charger l'état de stockage des valeurs de données",
+  "fail to load enrollments storage status":
+    "Impossible de charger l'état de stockage des inscriptions",
+  "fail to load entry form": "Impossible de charger le formulaire d'entrée",
+  "there are no entry form to select":
+    "Il n'y a pas de formulaire d'inscription à sélectionner",
+  "please select entry form first":
+    "Veuillez d'abord sélectionner le formulaire d'inscription",
+  "fail to load entry form information":
+    "Impossible de charger les informations du formulaire d'entrée",
+  "fail to save data from the server":
+    "Impossible d'enregistrer les données du serveur",
+  "fail to load data from the server":
+    "Impossible de charger les données du serveur",
+  "fail to prepare entry form":
+    "Impossible de préparer le formulaire d'inscription",
+  "fail to load available local data":
+    "Impossible de charger les données locales disponibles",
+  "fail to load entry form completeness information":
+    "Impossible de charger les informations d'exhaustivité du formulaire d'entrée",
+  "there are no indicators to view": "Il n'y a pas d'indicateurs à voir",
+  "fail to un complete entry form":
+    "Échec du formulaire d'inscription incomplet",
+  "fail to complete entry form":
+    "Impossible de remplir le formulaire d'inscription",
+  "fail to load assigned programs":
+    "Impossible de charger les programmes affectés",
+  "there are no program to select": "Il n'y a pas de programme à sélectionner",
+  "loading program stages": "Chargement des étapes du programme",
+  "fail to load program stages":
+    "Impossible de charger les étapes du programme",
+  "fail to prepare table for display":
+    "Impossible de préparer la table pour l'affichage",
+  "loading data from local storage": "Chargement des données du stockage local",
+  "fail to set translation": "Impossible de définir la traduction",
+  "fail to prepare local storage": "Impossible de préparer le stockage local",
+  "fail to load user authorities":
+    "Impossible de charger les autorisations d'utilisateur",
+  "fail to save current user information":
+    "Impossible d'enregistrer les informations utilisateur actuelles",
+  "please check server address": "Veuillez vérifier l'adresse du serveur",
+  "you have enter wrong username or password or server address":
+    "Vous avez entré un nom d'utilisateur ou un mot de passe incorrect ou une adresse de serveur",
+  "please check your network connectivity":
+    "Veuillez vérifier votre connectivité réseau",
+  "please enter server address, username and password":
+    "Veuillez entrer l'adresse du serveur, le nom d'utilisateur et le mot de passe",
+  "fail to save organisation data":
+    "Impossible d'enregistrer les données de l'organisation",
+  "fail to load organisation data":
+    "Impossible de charger les données de l'organisation",
+  "fail to save entry form":
+    "Impossible de sauvegarder le formulaire d'inscription",
+  "fail to save entry form's sections":
+    "Impossible d'enregistrer les sections du formulaire d'entrée",
+  "fail to load entry form's sections":
+    "Impossible de charger les sections du formulaire d'entrée",
+  "fail to save entry form's fields":
+    "Impossible d'enregistrer les champs du formulaire d'entrée",
+  "fail to load entry form's fields":
+    "Impossible de charger les champs du formulaire d'entrée",
+  "fail to save SMS commands": "Impossible d'enregistrer les commandes SMS",
+  "fail to load SMS commands": "Impossible de charger les commandes SMS",
+  "fail to save programs": "Impossible d'enregistrer les programmes",
+  "fail to load programs": "Impossible de charger les programmes",
+  "fail to save program stage sections":
+    "Impossible d'enregistrer les sections de l'étape du programme",
+  "fail to load program-stage-sections":
+    "Impossible de charger les sections de l'étape du programme",
+  "fail to save indicators": "Impossible d'enregistrer les indicateurs",
+  "fail to load indicators": "Impossible de charger les indicateurs",
+  "fail to save reports": "Impossible d'enregistrer les rapports",
+  "fail to load reports": "Impossible de charger les rapports",
+  "fail to save constants": "Impossible d'enregistrer les constantes",
+  "fail to load constants": "Impossible de charger les constantes",
+  "currently there is on assigned organisation unit on local storage, Please metadata on sync app":
+    "Actuellement, il y a une unité d'organisation assignée sur le stockage local, s'il vous plaît metadata sur l'application de synchronisation",
+  "fail to load organisation unit":
+    "Impossible de charger l'unité d'organisation",
+  "fail to load profile information":
+    "Impossible de charger les informations de profil",
+  "fail to prepare local storage for updates":
+    "Impossible de préparer le stockage local pour les mises à jour",
+  "fail to download reports": "Impossible de télécharger les rapports",
+  "fail to load organisation units information":
+    "Impossible de charger les informations sur les unités d'organisation",
+  "fail to load  report details":
+    "Impossible de charger les détails du rapport",
+  "fail to load settings": "Impossible de charger les paramètres",
+  "fail to load available local instances":
+    "Impossible de charger les instances locales disponibles",
+  "fail to load current user information":
+    "Impossible de charger les informations utilisateur en cours",
+  "settings have been updated successfully":
+    "Les paramètres ont été mis à jour avec succès",
+  "fail to apply changes on  settings":
+    "Impossible d'appliquer les modifications sur les paramètres",
+  "fail to load registration form":
+    "Impossible de charger le formulaire d'inscription",
+  "loading tracked entity list": "Chargement de la liste des entités suivies",
+  "fail to load tracked entity list":
+    "Impossible de charger la liste des entités suivies",
+  "a case has not yet registered": "Un cas n'a pas encore été enregistré",
+  "deleting all information related to this tracked entity instance":
+    "Suppression de toutes les informations relatives à cette instance d'entité suivie",
+  "tracked entity instance has been delete successfully":
+    "L'instance d'entité suivie a été supprimée avec succès",
+  "fail to delete all information related to this tracked entity instance":
+    "Échec de la suppression de toutes les informations relatives à cette instance d'entité suivie",
+  "loading tracked entity": "Chargement de l'entité suivie",
+  "fail to load tracked entity": "Impossible de charger l'entité suivie",
+  "loading registration fields": "Chargement des champs d'enregistrement",
+  "fail to load registration fields":
+    "Impossible de charger les champs d'inscription"
 }

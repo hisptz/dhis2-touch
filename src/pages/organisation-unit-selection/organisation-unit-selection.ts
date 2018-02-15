@@ -72,14 +72,14 @@ export class OrganisationUnitSelectionPage implements OnInit {
           } else {
             this.isLoading = false;
             this.emptyMessage =
-              "Currently there is on assigned organisation unit on local storage, Please metadata on sync app";
+              "currently there is on assigned organisation unit on local storage, Please metadata on sync app";
             this.appProvider.setNormalNotification(this.emptyMessage);
           }
         },
         error => {
           console.log(JSON.stringify(error));
           this.isLoading = false;
-          this.emptyMessage = "Fail to load organisation unit";
+          this.emptyMessage = "fail to load organisation unit";
           this.appProvider.setNormalNotification(this.emptyMessage);
         }
       );

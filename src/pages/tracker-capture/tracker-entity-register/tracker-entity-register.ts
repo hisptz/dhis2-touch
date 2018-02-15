@@ -95,7 +95,7 @@ export class TrackerEntityRegisterPage implements OnInit {
       error => {
         console.log(error);
         this.isLoading = false;
-        this.appProvider.setNormalNotification("Fail to load user information");
+        this.appProvider.setNormalNotification("fail to load user information");
       }
     );
   }
@@ -116,7 +116,7 @@ export class TrackerEntityRegisterPage implements OnInit {
   }
 
   loadingProgramStages(programId, currentUser) {
-    this.loadingMessage = "Loading program stages " + this.currentProgram.name;
+    this.loadingMessage = "loading program stages";
     this.eventCaptureFormProvider
       .getProgramStages(programId, currentUser)
       .subscribe(
@@ -137,16 +137,13 @@ export class TrackerEntityRegisterPage implements OnInit {
         error => {
           console.log(JSON.stringify(error));
           this.isLoading = false;
-          this.appProvider.setNormalNotification(
-            "Fail to load program stages " + this.currentProgram.name
-          );
+          this.appProvider.setNormalNotification("fail to load program stages");
         }
       );
   }
 
   loadTrackedEntityRegistration(programId, currentUser) {
-    this.loadingMessage =
-      "Loading registration form " + this.currentProgram.name;
+    this.loadingMessage = "loading registration form";
     this.isLoading = true;
     this.trackerCaptureProvider
       .getTrackedEntityRegistration(programId, currentUser)
@@ -160,7 +157,7 @@ export class TrackerEntityRegisterPage implements OnInit {
           this.isLoading = false;
           console.log(JSON.stringify(error));
           this.appProvider.setNormalNotification(
-            "Fail to load registration form for " + this.currentProgram.name
+            "fail to load registration form"
           );
         }
       );
@@ -190,7 +187,7 @@ export class TrackerEntityRegisterPage implements OnInit {
       });
       modal.present();
     } else {
-      this.appProvider.setNormalNotification("A case has not yet registered");
+      this.appProvider.setNormalNotification("a case has not yet registered");
     }
   }
 
@@ -239,7 +236,7 @@ export class TrackerEntityRegisterPage implements OnInit {
           handler: () => {
             this.isLoading = true;
             this.loadingMessage =
-              "Deleting all information related to this tracked entity instance";
+              "deleting all information related to this tracked entity instance";
             this.trackerCaptureProvider
               .deleteTrackedEntityInstance(
                 trackedEntityInstanceId,
@@ -249,14 +246,14 @@ export class TrackerEntityRegisterPage implements OnInit {
                 () => {
                   this.navCtrl.pop();
                   this.appProvider.setNormalNotification(
-                    "Tracked entity instance has been delete successfully"
+                    "tracked entity instance has been delete successfully"
                   );
                 },
                 error => {
                   this.isLoading = false;
                   console.log(JSON.stringify(error));
                   this.appProvider.setNormalNotification(
-                    "Fail to delete all information related to this tracked entity instance"
+                    "fail to delete all information related to this tracked entity instance"
                   );
                 }
               );

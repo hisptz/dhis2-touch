@@ -56,7 +56,7 @@ export class ReportsPage implements OnInit {
         this.isLoading = false;
       },
       error => {
-        this.appProvider.setNormalNotification("Fail to load reports");
+        this.appProvider.setNormalNotification("fail to load reports");
         this.isLoading = false;
       }
     );
@@ -123,7 +123,7 @@ export class ReportsPage implements OnInit {
                           error => {
                             this.isLoading = true;
                             this.appProvider.setNormalNotification(
-                              "Fail to save reports"
+                              "fail to save reports"
                             );
                           }
                         );
@@ -131,7 +131,7 @@ export class ReportsPage implements OnInit {
                     error => {
                       this.isLoading = true;
                       this.appProvider.setNormalNotification(
-                        "Fail to prepare local storage for updates"
+                        "fail to prepare local storage for updates"
                       );
                     }
                   );
@@ -139,14 +139,14 @@ export class ReportsPage implements OnInit {
               error => {
                 this.isLoading = true;
                 this.appProvider.setNormalNotification(
-                  "Fail to prepare local storage for updates"
+                  "fail to prepare local storage for updates"
                 );
               }
             );
         },
         error => {
           this.isLoading = true;
-          this.appProvider.setNormalNotification("Fail to download reports");
+          this.appProvider.setNormalNotification("fail to download reports");
         }
       );
   }

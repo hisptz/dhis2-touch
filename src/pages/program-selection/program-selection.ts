@@ -1,6 +1,6 @@
-import { Component,OnInit } from '@angular/core';
-import {ViewController, NavParams, IonicPage} from 'ionic-angular';
-import {ProgramsProvider} from "../../providers/programs/programs";
+import { Component, OnInit } from "@angular/core";
+import { ViewController, NavParams, IonicPage } from "ionic-angular";
+import { ProgramsProvider } from "../../providers/programs/programs";
 
 /*
  Generated class for the ProgramSelection page.
@@ -10,38 +10,43 @@ import {ProgramsProvider} from "../../providers/programs/programs";
  */
 @IonicPage()
 @Component({
-  selector: 'page-program-selection',
-  templateUrl: 'program-selection.html'
+  selector: "page-program-selection",
+  templateUrl: "program-selection.html"
 })
-export class ProgramSelection implements OnInit{
+export class ProgramSelection implements OnInit {
+  public programsList: any;
+  public currentProgram: any;
+  icons: any = {};
 
-  public programsList : any;
-  public currentProgram : any;
-  icons:any = {};
-
-  constructor(public viewCtrl: ViewController,public params : NavParams, public programProvider: ProgramsProvider) {}
+  constructor(
+    public viewCtrl: ViewController,
+    public params: NavParams,
+    public programProvider: ProgramsProvider
+  ) {}
 
   ngOnInit() {
     this.setModalData();
   }
 
-  setModalData(){
+  setModalData() {
     this.icons.program = "assets/icon/program.png";
-    this.programsList = this.params.get('programsList');
-    this.currentProgram = this.params.get('currentProgram');
+    this.programsList = this.params.get("programsList");
+    this.currentProgram = this.params.get("currentProgram");
   }
 
   getFilteredList(ev: any) {
     let searchValue = ev.target.value;
-    this.programsList = this.params.get('programsList');
-    if(searchValue && searchValue.trim() != ''){
-      this.programsList = this.programsList.filter((program:any) => {
-        return (program.name.toLowerCase().indexOf(searchValue.toLowerCase()) > -1);
-      })
+    this.programsList = this.params.get("programsList");
+    if (searchValue && searchValue.trim() != "") {
+      this.programsList = this.programsList.filter((program: any) => {
+        return (
+          program.name.toLowerCase().indexOf(searchValue.toLowerCase()) > -1
+        );
+      });
     }
   }
 
-  setSelectedProgram(selectedProgram){
+  setSelectedProgram(selectedProgram) {
     this.programProvider.setLastSelectedProgram(selectedProgram);
     this.viewCtrl.dismiss(selectedProgram);
   }
@@ -50,5 +55,4 @@ export class ProgramSelection implements OnInit{
     var parameter = {};
     this.viewCtrl.dismiss(parameter);
   }
-
 }

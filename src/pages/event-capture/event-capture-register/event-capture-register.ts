@@ -53,7 +53,7 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
       error => {
         console.log(JSON.stringify(error));
         this.isLoading = false;
-        this.appProvider.setNormalNotification("Fail to load user information");
+        this.appProvider.setNormalNotification("fail to load user information");
       }
     );
   }
@@ -63,7 +63,7 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
   }
 
   loadProgramStages(programId) {
-    this.loadingMessage = "Loading program stages " + this.currentProgram.name;
+    this.loadingMessage = "loading program stages";
     this.eventCaptureFormProvider
       .getProgramStages(programId, this.currentUser)
       .subscribe(
@@ -73,7 +73,7 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
           }
           let eventId = this.params.get("eventId");
           if (eventId) {
-            this.loadingMessage = "Loading data from local storage";
+            this.loadingMessage = "loading data from local storage";
             this.eventCaptureFormProvider
               .getEventsByAttribute("id", [eventId], this.currentUser)
               .subscribe(
@@ -104,9 +104,7 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
         error => {
           console.log(JSON.stringify(error));
           this.isLoading = false;
-          this.appProvider.setNormalNotification(
-            "Fail to load program stages " + this.currentProgram.name
-          );
+          this.appProvider.setNormalNotification("fail to load program stages");
         }
       );
   }

@@ -146,7 +146,7 @@ export class LoginPage implements OnInit {
       this.currentUser.currentLanguage = language;
       this.UserProvider.setCurrentUser(this.currentUser).subscribe(() => {});
     } catch (e) {
-      this.AppProvider.setNormalNotification("Fail to set translation ");
+      this.AppProvider.setNormalNotification("fail to set translation");
       console.log(JSON.stringify(e));
     }
   }
@@ -253,7 +253,7 @@ export class LoginPage implements OnInit {
                                       this.cancelLoginProcessData
                                     );
                                     this.AppProvider.setNormalNotification(
-                                      "Fail to prepare local storage"
+                                      "fail to prepare local storage"
                                     );
                                     console.error(
                                       "error : " + JSON.stringify(error)
@@ -266,7 +266,7 @@ export class LoginPage implements OnInit {
                                 this.cancelLoginProcessData
                               );
                               this.AppProvider.setNormalNotification(
-                                "Fail to load user authorities"
+                                "fail to load user authorities"
                               );
                               console.error("error : " + JSON.stringify(error));
                             }
@@ -276,7 +276,7 @@ export class LoginPage implements OnInit {
                       error => {
                         this.cancelLoginProcess(this.cancelLoginProcessData);
                         this.AppProvider.setNormalNotification(
-                          "Fail to load user authorities"
+                          "fail to load user authorities"
                         );
                         console.error("error : " + JSON.stringify(error));
                       }
@@ -285,7 +285,7 @@ export class LoginPage implements OnInit {
                   error => {
                     this.cancelLoginProcess(this.cancelLoginProcessData);
                     this.AppProvider.setNormalNotification(
-                      "Fail to load system information"
+                      "fail to load system information"
                     );
                     console.error("error : " + JSON.stringify(error));
                   }
@@ -295,7 +295,7 @@ export class LoginPage implements OnInit {
             error => {
               this.cancelLoginProcess(this.cancelLoginProcessData);
               this.AppProvider.setNormalNotification(
-                "Fail to save current user information"
+                "fail to save current user information"
               );
               console.error("error : " + JSON.stringify(error));
             }
@@ -304,16 +304,16 @@ export class LoginPage implements OnInit {
         (error: any) => {
           if (error.status == 0) {
             this.AppProvider.setNormalNotification(
-              "Please check your network connectivity"
+              "please check your network connectivity"
             );
           } else if (error.status == 401) {
             this.AppProvider.setNormalNotification(
-              "You have enter wrong username or password or server address"
+              "you have enter wrong username or password or server address"
             );
           } else if (error.status == 404) {
             console.log(JSON.stringify(error));
             this.AppProvider.setNormalNotification(
-              "Please check server address"
+              "please check server address"
             );
           } else if (error.error) {
             this.AppProvider.setNormalNotification(error.error);
@@ -326,7 +326,7 @@ export class LoginPage implements OnInit {
     } else {
       this.cancelLoginProcess(this.cancelLoginProcessData);
       this.AppProvider.setNormalNotification(
-        "Please enter server address, username and password"
+        "please enter server address, username and password"
       );
     }
   }
@@ -368,7 +368,7 @@ export class LoginPage implements OnInit {
                       this.cancelLoginProcess(this.cancelLoginProcessData);
                       console.log(JSON.stringify(error));
                       this.AppProvider.setNormalNotification(
-                        "Fail to save organisation data."
+                        "fail to save organisation data"
                       );
                     }
                   );
@@ -378,7 +378,7 @@ export class LoginPage implements OnInit {
               this.cancelLoginProcess(this.cancelLoginProcessData);
               console.log(JSON.stringify(error));
               this.AppProvider.setNormalNotification(
-                "Fail to load organisation data."
+                "fail to load organisation data"
               );
             }
           );
@@ -415,7 +415,7 @@ export class LoginPage implements OnInit {
                       this.cancelLoginProcess(this.cancelLoginProcessData);
                       console.log(JSON.stringify(error));
                       this.AppProvider.setNormalNotification(
-                        "Fail to s ave entry form."
+                        "fail to save entry form"
                       );
                     }
                   );
@@ -424,9 +424,7 @@ export class LoginPage implements OnInit {
             error => {
               this.cancelLoginProcess(this.cancelLoginProcessData);
               console.log(JSON.stringify(error));
-              this.AppProvider.setNormalNotification(
-                "Fail to load entry form."
-              );
+              this.AppProvider.setNormalNotification("fail to load entry form");
             }
           );
       }
@@ -463,7 +461,7 @@ export class LoginPage implements OnInit {
                       this.cancelLoginProcess(this.cancelLoginProcessData);
                       console.log(JSON.stringify(error));
                       this.AppProvider.setNormalNotification(
-                        "Fail to save entry form's sections."
+                        "fail to save entry form's sections"
                       );
                     }
                   );
@@ -473,7 +471,7 @@ export class LoginPage implements OnInit {
               this.cancelLoginProcess(this.cancelLoginProcessData);
               console.log(JSON.stringify(error));
               this.AppProvider.setNormalNotification(
-                "Fail to load entry form's sections."
+                "fail to load entry form's sections"
               );
             }
           );
@@ -514,7 +512,7 @@ export class LoginPage implements OnInit {
                       this.cancelLoginProcess(this.cancelLoginProcessData);
                       console.log(JSON.stringify(error));
                       this.AppProvider.setNormalNotification(
-                        "Fail to save entry form's fields"
+                        "fail to save entry form's fields"
                       );
                     }
                   );
@@ -524,7 +522,7 @@ export class LoginPage implements OnInit {
               this.cancelLoginProcess(this.cancelLoginProcessData);
               console.log(JSON.stringify(error));
               this.AppProvider.setNormalNotification(
-                "Fail to load entry form's fields"
+                "fail to load entry form's fields"
               );
             }
           );
@@ -565,7 +563,7 @@ export class LoginPage implements OnInit {
                       this.cancelLoginProcess(this.cancelLoginProcessData);
                       console.log(JSON.stringify(error));
                       this.AppProvider.setNormalNotification(
-                        "Fail to save SMS commands"
+                        "fail to save SMS commands"
                       );
                     }
                   );
@@ -575,7 +573,7 @@ export class LoginPage implements OnInit {
               this.cancelLoginProcess(this.cancelLoginProcessData);
               console.log(JSON.stringify(error));
               this.AppProvider.setNormalNotification(
-                "Fail to load SMS commands"
+                "fail to load SMS commands"
               );
             }
           );
@@ -612,7 +610,7 @@ export class LoginPage implements OnInit {
                       this.cancelLoginProcess(this.cancelLoginProcessData);
                       console.log(JSON.stringify(error));
                       this.AppProvider.setNormalNotification(
-                        "Fail to save programs"
+                        "fail to save programs"
                       );
                     }
                   );
@@ -621,7 +619,7 @@ export class LoginPage implements OnInit {
             error => {
               this.cancelLoginProcess(this.cancelLoginProcessData);
               console.log(JSON.stringify(error));
-              this.AppProvider.setNormalNotification("Fail to load programs");
+              this.AppProvider.setNormalNotification("fail to load programs");
             }
           );
       }
@@ -661,7 +659,7 @@ export class LoginPage implements OnInit {
                       this.cancelLoginProcess(this.cancelLoginProcessData);
                       console.log(JSON.stringify(error));
                       this.AppProvider.setNormalNotification(
-                        "Fail to save program stage sections"
+                        "fail to save program stage sections"
                       );
                     }
                   );
@@ -671,7 +669,7 @@ export class LoginPage implements OnInit {
               this.cancelLoginProcess(this.cancelLoginProcessData);
               console.log(JSON.stringify(error));
               this.AppProvider.setNormalNotification(
-                "Failed to load program-stage-sections"
+                "fail to load program-stage-sections"
               );
             }
           );
@@ -711,7 +709,7 @@ export class LoginPage implements OnInit {
                       this.cancelLoginProcess(this.cancelLoginProcessData);
                       console.log(JSON.stringify(error));
                       this.AppProvider.setNormalNotification(
-                        "Fail to save indicators"
+                        "fail to save indicators"
                       );
                     }
                   );
@@ -720,7 +718,7 @@ export class LoginPage implements OnInit {
             error => {
               this.cancelLoginProcess(this.cancelLoginProcessData);
               console.log(JSON.stringify(error));
-              this.AppProvider.setNormalNotification("Fail to load indicators");
+              this.AppProvider.setNormalNotification("fail to load indicators");
             }
           );
       }
@@ -756,7 +754,7 @@ export class LoginPage implements OnInit {
                       this.cancelLoginProcess(this.cancelLoginProcessData);
                       console.log(JSON.stringify(error));
                       this.AppProvider.setNormalNotification(
-                        "Fail to save reports"
+                        "fail to save reports"
                       );
                     }
                   );
@@ -765,7 +763,7 @@ export class LoginPage implements OnInit {
             error => {
               this.cancelLoginProcess(this.cancelLoginProcessData);
               console.log(JSON.stringify(error));
-              this.AppProvider.setNormalNotification("Fail to load reports");
+              this.AppProvider.setNormalNotification("fail to load reports");
             }
           );
       }
@@ -801,7 +799,7 @@ export class LoginPage implements OnInit {
                       this.cancelLoginProcess(this.cancelLoginProcessData);
                       console.log(JSON.stringify(error));
                       this.AppProvider.setNormalNotification(
-                        "Fail to save constants"
+                        "fail to save constants"
                       );
                     }
                   );
@@ -810,7 +808,7 @@ export class LoginPage implements OnInit {
             error => {
               this.cancelLoginProcess(this.cancelLoginProcessData);
               console.log(JSON.stringify(error));
-              this.AppProvider.setNormalNotification("Fail to load constants");
+              this.AppProvider.setNormalNotification("fail to load constants");
             }
           );
       }

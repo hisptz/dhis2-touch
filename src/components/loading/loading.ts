@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input } from "@angular/core";
 
 /**
  * Generated class for the LoadingComponent component.
@@ -7,15 +7,12 @@ import {Component, Input} from '@angular/core';
  * Components.
  */
 @Component({
-  selector: 'loading',
-  templateUrl: 'loading.html'
+  selector: "loading",
+  templateUrl: "loading.html"
 })
 export class LoadingComponent {
-
   @Input() loadingSize;
   @Input() loadingMessage;
 
-  constructor() {
-  }
-
+  constructor() {}
 }

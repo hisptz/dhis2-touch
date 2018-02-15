@@ -98,7 +98,7 @@ export class DataEntryFormPage implements OnInit {
       error => {
         console.log(JSON.stringify(error));
         this.isLoading = false;
-        this.appProvider.setNormalNotification("Fail to load user information");
+        this.appProvider.setNormalNotification("fail to load user information");
       }
     );
   }
@@ -139,7 +139,7 @@ export class DataEntryFormPage implements OnInit {
           this.isLoading = false;
           this.loadingMessage = "";
           this.appProvider.setNormalNotification(
-            "Fail to load entry form information"
+            "fail to load entry form information"
           );
         }
       );
@@ -202,7 +202,7 @@ export class DataEntryFormPage implements OnInit {
                       error => {
                         console.log(JSON.stringify(error));
                         this.appProvider.setNormalNotification(
-                          "Fail to save data from the server"
+                          "fail to save data from the server"
                         );
                         this.loadingLocalData(
                           dataSetId,
@@ -224,7 +224,7 @@ export class DataEntryFormPage implements OnInit {
               error => {
                 console.log(JSON.stringify(error));
                 this.appProvider.setNormalNotification(
-                  "Fail to load data from the server"
+                  "fail to load data from the server"
                 );
                 this.loadingLocalData(
                   dataSetId,
@@ -239,7 +239,7 @@ export class DataEntryFormPage implements OnInit {
           console.log(JSON.stringify(error));
           this.isLoading = false;
           this.loadingMessage = "";
-          this.appProvider.setNormalNotification("Fail to prepare entry form");
+          this.appProvider.setNormalNotification("");
         }
       );
   }
@@ -268,7 +268,7 @@ export class DataEntryFormPage implements OnInit {
         error => {
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            "Fail to load available local data"
+            "fail to load available local data"
           );
         }
       );
@@ -301,7 +301,7 @@ export class DataEntryFormPage implements OnInit {
         error => {
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            "Fail to load entry form completeness information"
+            "fail to load entry form completeness information"
           );
         }
       );
@@ -345,7 +345,7 @@ export class DataEntryFormPage implements OnInit {
       modal.onDidDismiss(() => {});
       modal.present();
     } else {
-      this.appProvider.setNormalNotification("There are no indicators to view");
+      this.appProvider.setNormalNotification("there are no indicators to view");
     }
   }
 
@@ -449,7 +449,7 @@ export class DataEntryFormPage implements OnInit {
             this.isDataSetCompletenessProcessRunning = false;
             console.log(JSON.stringify(error));
             this.appProvider.setNormalNotification(
-              "Fail to un complete entry form"
+              "fail to un complete entry form"
             );
           }
         );
@@ -493,7 +493,7 @@ export class DataEntryFormPage implements OnInit {
                   console.log(JSON.stringify(error));
                   this.isDataSetCompletenessProcessRunning = false;
                   this.appProvider.setNormalNotification(
-                    "Fail to load entry form completeness information"
+                    "fail to load entry form completeness information"
                   );
                 }
               );
@@ -502,7 +502,7 @@ export class DataEntryFormPage implements OnInit {
             this.isDataSetCompletenessProcessRunning = false;
             console.log(JSON.stringify(error));
             this.appProvider.setNormalNotification(
-              "Fail to complete entry form"
+              "fail to complete entry form"
             );
           }
         );
