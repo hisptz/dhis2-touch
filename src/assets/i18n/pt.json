@@ -219,10 +219,5 @@
   "downloading reports from server": "Transferir relatórios do servidor",
   "prepare local storage for updates":
     "Preparar armazenamento local para actualizações",
-  "saving reports from server": "Gravando relatórios do servidor",
-  "there no dashboard found": "There are no dashboard found",
-  "search dashboard by name": "Search dashboard by name",
-  "loading dashboard": "Discovering dashboards",
-  "loading visualization": "Discovering visualization data",
-  "there no dashboard item found": "There are no dashboard items found"
+  "saving reports from server": "Gravando relatórios do servidor"
 }
