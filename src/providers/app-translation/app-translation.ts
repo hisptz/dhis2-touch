@@ -1,5 +1,6 @@
-import {Injectable} from '@angular/core';
-import {TranslateService} from "@ngx-translate/core";
+import { Injectable } from "@angular/core";
+import { TranslateService } from "@ngx-translate/core";
+import { Observable } from "rxjs/Observable";
 
 /*
   Generated class for the AppTranslationProvider provider.
@@ -9,9 +10,7 @@ import {TranslateService} from "@ngx-translate/core";
 */
 @Injectable()
 export class AppTranslationProvider {
-
-  constructor(private translateService: TranslateService) {
-  }
+  constructor(private translateService: TranslateService) {}
 
   /**
    *
@@ -37,4 +36,12 @@ export class AppTranslationProvider {
     return lang;
   }
 
+  /**
+   *
+   * @param stringToTranslate
+   * @returns {Observable<any>}
+   */
+  getTransalations(stringToTranslate: Array<string>): Observable<any> {
+    return this.translateService.get(stringToTranslate);
+  }
 }
