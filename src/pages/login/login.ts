@@ -15,7 +15,6 @@ import { SettingsProvider } from "../../providers/settings/settings";
 import { HttpClientProvider } from "../../providers/http-client/http-client";
 import { ProgramsProvider } from "../../providers/programs/programs";
 import { ProgramStageSectionsProvider } from "../../providers/program-stage-sections/program-stage-sections";
-import { BackgroundMode } from "@ionic-native/background-mode";
 import { LocalInstanceProvider } from "../../providers/local-instance/local-instance";
 import { AppTranslationProvider } from "../../providers/app-translation/app-translation";
 import { CurrentUser } from "../../models/currentUser";
@@ -74,7 +73,6 @@ export class LoginPage implements OnInit {
     private HttpClientProvider: HttpClientProvider,
     private programsProvider: ProgramsProvider,
     private programStageSectionProvider: ProgramStageSectionsProvider,
-    private backgroundMode: BackgroundMode,
     private localInstanceProvider: LocalInstanceProvider,
     private appTranslationProvider: AppTranslationProvider
   ) {}
@@ -84,7 +82,6 @@ export class LoginPage implements OnInit {
     this.translationCodes = this.appTranslationProvider.getSupportedTranslationObjects();
     this.isLocalInstancesListOpen = false;
     this.isTranslationListOpen = false;
-    this.backgroundMode.disable();
     this.animationEffect = {
       loginForm: "animated slideInUp",
       progressBar: "animated fadeIn"
@@ -173,7 +170,6 @@ export class LoginPage implements OnInit {
 
   startLoginProcess() {
     this.hasUserAuthenticated = false;
-    this.backgroundMode.enable();
     this.progressBar = "0";
     this.loggedInInInstance = this.currentUser.serverUrl;
     this.isLoginProcessActive = true;
@@ -854,7 +850,6 @@ export class LoginPage implements OnInit {
     setTimeout(() => {
       this.isLoginProcessActive = data.isProcessActive;
     }, 300);
-    this.backgroundMode.disable();
   }
 
   setLandingPage(currentUser: CurrentUser) {
@@ -883,7 +878,6 @@ export class LoginPage implements OnInit {
         .subscribe(() => {});
     }
     this.UserProvider.setCurrentUser(currentUser).subscribe(() => {
-      this.backgroundMode.disable();
       this.navCtrl.setRoot(TabsPage);
     });
   }

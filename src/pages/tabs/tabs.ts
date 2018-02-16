@@ -1,39 +1,30 @@
-import { Component } from '@angular/core';
-import {BackgroundMode} from "@ionic-native/background-mode";
-import {UserProvider} from "../../providers/user/user";
+import { Component } from "@angular/core";
+import { UserProvider } from "../../providers/user/user";
 
-
-import {AppsPage} from "../apps/apps";
-import {AccountPage} from "../account/account";
-
+import { AppsPage } from "../apps/apps";
+import { AccountPage } from "../account/account";
 
 @Component({
-  templateUrl: 'tabs.html'
+  templateUrl: "tabs.html"
 })
 export class TabsPage {
-
   tab1Root = AppsPage;
   tab2Root = AccountPage;
-  accountName : string = 'account';
+  accountName: string = "account";
 
-  constructor(private user : UserProvider,
-    private backgroundMode: BackgroundMode) {
-
-  }
+  constructor(private user: UserProvider) {}
 
   ngOnInit() {
-    this.backgroundMode.disable().then(()=>{
-    },reason => (console.log('here : ' + JSON.stringify(reason))));
-    this.user.getUserData().subscribe(userData=>{
+    this.user.getUserData().subscribe(userData => {
       this.setUserAccountName(userData);
     });
   }
 
-  setUserAccountName(userData){
+  setUserAccountName(userData) {
     let newValue = "";
-    if(userData && userData.Name){
-      let nameList = userData.Name.split(' ');
-      nameList.forEach(name=>{
+    if (userData && userData.Name) {
+      let nameList = userData.Name.split(" ");
+      nameList.forEach(name => {
         newValue += name.charAt(0).toUpperCase();
       });
       this.accountName = newValue;
