@@ -42,7 +42,7 @@
     "@types/geojson": "^1.0.2",
     "angular-tree-component": "^7.0.1",
     "cordova-android": "~6.3.0",
-    "cordova-plugin-advanced-http": "^1.10.0",
+    "cordova-plugin-advanced-http": "^1.10.1",
     "cordova-plugin-app-version": "^0.1.9",
     "cordova-plugin-background-mode": "^0.7.2",
     "cordova-plugin-console": "^1.1.0",
