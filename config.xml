@@ -94,6 +94,4 @@
     <plugin name="cordova-sms-plugin" spec="^0.1.11" />
     <plugin name="cordova.plugins.diagnostic" spec="^3.9.2" />
     <engine name="android" spec="~6.3.0" />
-    <allow-navigation href="http://192.168.1.10:8100" />
-    <allow-navigation href="http://192.168.43.70:8100" />
 </widget>

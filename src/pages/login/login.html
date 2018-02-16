@@ -84,18 +84,28 @@
     </ion-row>
 
 
-    <div *ngIf="!isLoginProcessActive">
+    <div *ngIf="!isLoginProcessActive ">
 
-      <div *ngIf="isLocalInstancesListOpen">
+      <div *ngIf="isLocalInstancesListOpen && !isTranslationListOpen">
         <ion-row>
           <ion-col>
             <div class="round-form-container">
-              <available-local-instance (onClose)="toggleLoginFormAndLocalInstances()" (onSelectCurrentUser)="changeCurrentUser($event)"></available-local-instance>
+              <available-local-instance (onClose)="toggleLocalInstancesList()" (onSelectCurrentUser)="changeCurrentUser($event)"></available-local-instance>
             </div>
           </ion-col>
         </ion-row>
       </div>
-      <div *ngIf="!isLocalInstancesListOpen">
+      <div *ngIf="!isLocalInstancesListOpen && isTranslationListOpen">
+        <ion-row>
+          <ion-col>
+            <div class="round-form-container">
+              <language-translation-selection [currentLanguage]="currentLanguage" (onSelectLanguage)="changeLanguageFromList($event)" (onClose)="toggleTransalationCodesSelectionList()"
+                [translationCodes]="translationCodes"></language-translation-selection>
+            </div>
+          </ion-col>
+        </ion-row>
+      </div>
+      <div *ngIf="!isLocalInstancesListOpen && !isTranslationListOpen">
         <form (ngSubmit)="startLoginProcess()" [ngClass]="animationEffect.loginForm">
           <ion-row>
             <ion-col>
@@ -127,7 +137,7 @@
           <div class="strike">
             <span [translate]="'or'"></span>
           </div>
-          <button ion-button block clear color="light" text-capitalize (click)="toggleLoginFormAndLocalInstances()">
+          <button ion-button block clear color="light" text-capitalize (click)="toggleLocalInstancesList()">
             <img class="side-menu-icon" [src]="offlineIcon" />&nbsp;&nbsp;
             <span [translate]="'offline instances'"></span>
           </button>
@@ -138,10 +148,18 @@
       <ion-col class="bottomSLogan">
         <p>
           <span class="translation-codes">
-            <span (click)="updateTranslationLanguage('en')" [ngClass]="(currentLanguage == 'en') ?'currentLang' : ''">en</span>&nbsp;|&nbsp;
-            <span (click)="updateTranslationLanguage('fr')" [ngClass]="(currentLanguage == 'fr') ?'currentLang' : ''">fr</span>&nbsp;|&nbsp;
-            <span (click)="updateTranslationLanguage('id')" [ngClass]="(currentLanguage == 'id') ?'currentLang' : ''">id</span>&nbsp;|&nbsp;
-            <span (click)="updateTranslationLanguage('pt')" [ngClass]="(currentLanguage == 'pt') ?'currentLang' : ''">pt</span>
+            <span *ngFor="let code of topThreeTranslationCodes; let currentIndex = index">
+              <span (click)="updateTranslationLanguage(code)" [ngClass]="(currentLanguage == code) ?'currentLang' : ''">{{ code }}</span>
+              <span *ngIf="currentIndex < 3">&nbsp;|&nbsp;</span>
+            </span>
+            <span *ngIf="topThreeTranslationCodes.indexOf(currentLanguage) == -1">
+              &nbsp;|&nbsp;
+              <span (click)="updateTranslationLanguage(currentLanguage)" [ngClass]="'currentLang'">{{ currentLanguage }}</span>
+            </span>
+            <span (click)="toggleTransalationCodesSelectionList()">
+              &nbsp;
+              <ion-icon name="ios-more"></ion-icon>
+            </span>
           </span>
         </p>
         <p>

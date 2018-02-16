@@ -9,7 +9,7 @@ import { WarningComponent } from "./warning/warning";
 import { AvailableLocalInstanceComponent } from "./available-local-instance/available-local-instance";
 import { ProgressLoaderComponent } from "./progress-loader/progress-loader.component";
 import { TranslateModule } from "@ngx-translate/core";
-
+import { LanguageTranslationSelectionComponent } from "./language-translation-selection/language-translation-selection";
 @NgModule({
   declarations: [
     ProgressBarComponent,
@@ -19,7 +19,8 @@ import { TranslateModule } from "@ngx-translate/core";
     EmptyListNotificationComponent,
     HelpContentsComponent,
     WarningComponent,
-    AvailableLocalInstanceComponent
+    AvailableLocalInstanceComponent,
+    LanguageTranslationSelectionComponent
   ],
   imports: [IonicModule, TranslateModule.forChild()],
   exports: [
@@ -30,7 +31,8 @@ import { TranslateModule } from "@ngx-translate/core";
     EmptyListNotificationComponent,
     HelpContentsComponent,
     WarningComponent,
-    AvailableLocalInstanceComponent
+    AvailableLocalInstanceComponent,
+    LanguageTranslationSelectionComponent
   ]
 })
 export class SharedModule {}

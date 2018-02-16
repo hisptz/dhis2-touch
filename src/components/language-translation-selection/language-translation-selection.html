@@ -1,0 +1,20 @@
+<ion-grid>
+  <ion-row>
+    <ion-col col-11>
+      <ion-searchbar animated="true" autocomplete="on" (ionInput)="getFilteredList($event)"></ion-searchbar>
+    </ion-col>
+    <ion-col col-1 (click)="closeContainer()" padding-top class="cancel-button">
+      <img [src]="cancelIcon" />
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-list>
+        <ion-item *ngFor="let translationCode of translationCodes" (click)="selectLanguage(translationCode)">
+          <span ion-text [color]="(translationCode.code == currentLanguage) ?'current' : 'font-color'">{{ translationCode.name }}</span>
+          <span item-right ion-text [color]="(translationCode.code == currentLanguage) ?'current' : 'font-color'">{{ translationCode.code }}</span>
+        </ion-item>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+</ion-grid>

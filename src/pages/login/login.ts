@@ -51,6 +51,9 @@ export class LoginPage implements OnInit {
   currentResourceType: string;
   localInstances: any;
   currentLanguage: string;
+  topThreeTranslationCodes: Array<string> = [];
+  translationCodes: Array<any> = [];
+  isTranslationListOpen: boolean;
   isLocalInstancesListOpen: boolean;
 
   constructor(
@@ -77,7 +80,10 @@ export class LoginPage implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.topThreeTranslationCodes = this.appTranslationProvider.getTopThreeSupportedTranslationCodes();
+    this.translationCodes = this.appTranslationProvider.getSupportedTranslationObjects();
     this.isLocalInstancesListOpen = false;
+    this.isTranslationListOpen = false;
     this.backgroundMode.disable();
     this.animationEffect = {
       loginForm: "animated slideInUp",
@@ -132,11 +138,25 @@ export class LoginPage implements OnInit {
     if (data && data.currentUser) {
       this.setUpCurrentUser(data.currentUser);
     }
-    this.toggleLoginFormAndLocalInstances();
+    this.toggleLocalInstancesList();
   }
 
-  toggleLoginFormAndLocalInstances() {
+  toggleLocalInstancesList() {
     this.isLocalInstancesListOpen = !this.isLocalInstancesListOpen;
+  }
+
+  changeLanguageFromList(language: string) {
+    if (language) {
+      this.updateTranslationLanguage(language);
+    }
+    this.toggleTransalationCodesSelectionList();
+  }
+
+  toggleTransalationCodesSelectionList() {
+    if (!this.isLoginProcessActive) {
+      this.isTranslationListOpen = !this.isTranslationListOpen;
+      this.isLocalInstancesListOpen = false;
+    }
   }
 
   updateTranslationLanguage(language: string) {
