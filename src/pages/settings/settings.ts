@@ -28,6 +28,7 @@ export class SettingsPage implements OnInit {
 
   currentUser: any;
   currentLanguage: string;
+  translationCodes: Array<any> = [];
   localInstances: any;
 
   constructor(
@@ -40,7 +41,8 @@ export class SettingsPage implements OnInit {
 
   ngOnInit() {
     this.settingObject = {};
-    this.loadingMessage = "loading_current_user_information";
+    this.loadingMessage = "loading current user information";
+    this.translationCodes = this.appTranslationProvider.getSupportedTranslationObjects();
     this.isLoading = true;
     this.isSettingContentOpen = {};
     this.settingContents = this.settingsProvider.getSettingContentDetails();
