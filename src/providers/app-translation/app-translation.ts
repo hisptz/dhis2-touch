@@ -53,7 +53,7 @@ export class AppTranslationProvider {
   getTopThreeSupportedTranslationCodes() {
     let topThreeTransalationCodes = [];
     this.getSupportedTranslationObjects().map((translationObject: any) => {
-      if (topThreeTransalationCodes.length <= 3) {
+      if (topThreeTransalationCodes.length < 3) {
         topThreeTransalationCodes.push(translationObject.code);
       }
     });

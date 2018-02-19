@@ -150,7 +150,7 @@
           <span class="translation-codes">
             <span *ngFor="let code of topThreeTranslationCodes; let currentIndex = index">
               <span (click)="updateTranslationLanguage(code)" [ngClass]="(currentLanguage == code) ?'currentLang' : ''">{{ code }}</span>
-              <span *ngIf="currentIndex < 3">&nbsp;|&nbsp;</span>
+              <span *ngIf="currentIndex < 2">&nbsp;|&nbsp;</span>
             </span>
             <span *ngIf="topThreeTranslationCodes.indexOf(currentLanguage) == -1">
               &nbsp;|&nbsp;
