@@ -8,7 +8,7 @@
 
   <ion-navbar color="primary">
     <ion-title>
-      <span [translate]="'settings'"></span>
+      <span [translate]="'Settings'"></span>
     </ion-title>
   </ion-navbar>
 
@@ -50,7 +50,7 @@
                 <ion-col>
                   <ion-item>
                     <ion-label>
-                      <span [translate]="'current language'"></span>
+                      <span [translate]="'Current language'"></span>
                     </ion-label>
                     <ion-select (ionChange)="updateCurrentLanguage()" [(ngModel)]="currentLanguage" interface="action-sheet">
                       <ion-option *ngFor="let translationCode of translationCodes" value="{{translationCode.code}}">{{translationCode.name}}</ion-option>
@@ -76,8 +76,8 @@
                   <ion-col col-7>
                     <ion-item>
                       <ion-select (ionChange)="applySettings(settingContent)" [(ngModel)]="settingObject.synchronization.timeType" interface="action-sheet">
-                        <ion-option value="minutes">{{'minutes'|translate}}</ion-option>
-                        <ion-option value="hours">{{'hours'|translate}}</ion-option>
+                        <ion-option value="minutes">{{'Minutes'|translate}}</ion-option>
+                        <ion-option value="hours">{{'Hours'|translate}}</ion-option>
                       </ion-select>
                     </ion-item>
                   </ion-col>
@@ -86,7 +86,7 @@
                   <ion-col>
                     <ion-item no-lines>
                       <ion-label>
-                        <span [translate]="'auto sync'"></span>
+                        <span [translate]="'Auto synchronization'"></span>
                       </ion-label>
                       <ion-toggle (ionChange)="applySettings(settingContent)" color="primary" [(ngModel)]="settingObject.synchronization.isAutoSync"></ion-toggle>
                     </ion-item>
@@ -106,33 +106,33 @@
                   <ion-col>
                     <ion-item>
                       <ion-label>
-                        <span [translate]="'form label'"></span>
+                        <span [translate]="'Form label'"></span>
                       </ion-label>
                       <ion-select (ionChange)="applySettings(settingContent)" [(ngModel)]="settingObject.entryForm.label" interface="action-sheet">
                         <ion-option value="displayName">
-                          <span [translate]="'display name'"></span>
+                          <span [translate]="'Display name'"></span>
                         </ion-option>
                         <ion-option value="formName">
-                          <span [translate]="'form name'"></span>
+                          <span [translate]="'Form name'"></span>
                         </ion-option>
                       </ion-select>
                     </ion-item>
                     <ion-item>
                       <ion-label>
-                        <span [translate]="'form layout'"></span>
+                        <span [translate]="'Form layout'"></span>
                       </ion-label>
                       <ion-select (ionChange)="applySettings(settingContent)" [(ngModel)]="settingObject.entryForm.formLayout" interface="action-sheet">
                         <ion-option value="listLayout">
-                          <span [translate]="'list layout'"></span>
+                          <span [translate]="'List layout'"></span>
                         </ion-option>
                         <ion-option value="tableLayout">
-                          <span [translate]="'table layout'"></span>
+                          <span [translate]="'Table layout'"></span>
                         </ion-option>
                       </ion-select>
                     </ion-item>
                     <ion-item>
                       <ion-label floating>
-                        <span [translate]="'data element per page'"></span>
+                        <span [translate]="'Data element per page'"></span>
                       </ion-label>
                       <ion-input (ionBlur)="applySettings(settingContent)" type="number" min="1" [(ngModel)]="settingObject.entryForm.maxDataElementOnDefaultForm"></ion-input>
                     </ion-item>

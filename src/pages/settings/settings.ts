@@ -21,15 +21,14 @@ import { AppTranslationProvider } from "../../providers/app-translation/app-tran
 export class SettingsPage implements OnInit {
   isSettingContentOpen: any;
   settingContents: Array<any>;
-
   isLoading: boolean = false;
   settingObject: any;
   loadingMessage: string;
-
   currentUser: any;
   currentLanguage: string;
   translationCodes: Array<any> = [];
   localInstances: any;
+  translationMapper: any;
 
   constructor(
     private settingsProvider: SettingsProvider,
@@ -41,7 +40,6 @@ export class SettingsPage implements OnInit {
 
   ngOnInit() {
     this.settingObject = {};
-    this.loadingMessage = "loading current user information";
     this.translationCodes = this.appTranslationProvider.getSupportedTranslationObjects();
     this.isLoading = true;
     this.isSettingContentOpen = {};
@@ -49,12 +47,34 @@ export class SettingsPage implements OnInit {
     if (this.settingContents.length > 0) {
       this.toggleSettingContents(this.settingContents[0]);
     }
+    this.translationMapper = {};
+    this.appTranslationProvider
+      .getTransalations(this.getValuesToTranslate())
+      .subscribe(
+        (data: any) => {
+          this.translationMapper = data;
+          this.loadingUserInformation();
+        },
+        error => {
+          this.loadingUserInformation();
+        }
+      );
+  }
+
+  loadingUserInformation() {
+    let key = "Discovering current user information";
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     let defaultSettings = this.settingsProvider.getDefaultSettings();
     this.userProvider.getCurrentUser().subscribe(
       (currentUser: any) => {
         this.currentUser = currentUser;
         this.currentLanguage = currentUser.currentLanguage;
-        this.loadingMessage = "loading_settings";
+        key = "Discovering settings";
+        this.loadingMessage = this.translationMapper[key]
+          ? this.translationMapper[key]
+          : key;
         this.localInstanceProvider.getLocalInstances().subscribe(
           (instances: any) => {
             this.localInstances = instances;
@@ -69,7 +89,7 @@ export class SettingsPage implements OnInit {
                   this.isLoading = false;
                   this.initiateSettings(defaultSettings, null);
                   this.appProvider.setNormalNotification(
-                    "fail to load settings"
+                    "Fail to discover settings"
                   );
                 }
               );
@@ -77,7 +97,7 @@ export class SettingsPage implements OnInit {
           error => {
             this.isLoading = false;
             this.appProvider.setNormalNotification(
-              "fail to load available local instances"
+              "Fail to discover available local instances"
             );
           }
         );
@@ -87,7 +107,7 @@ export class SettingsPage implements OnInit {
         this.isLoading = false;
         this.initiateSettings(defaultSettings, null);
         this.appProvider.setNormalNotification(
-          "fail to load current user information"
+          "Fail to discover current user information"
         );
       }
     );
@@ -134,7 +154,7 @@ export class SettingsPage implements OnInit {
         )
         .subscribe(() => {});
     } catch (e) {
-      this.appProvider.setNormalNotification("fail to set translation");
+      this.appProvider.setNormalNotification("Fail to set translation");
       console.log(JSON.stringify(e));
     }
   }
@@ -145,7 +165,7 @@ export class SettingsPage implements OnInit {
       .subscribe(
         () => {
           this.appProvider.setNormalNotification(
-            "settings have been updated successfully",
+            "Settings have been updated successfully",
             2000
           );
           this.settingsProvider
@@ -162,7 +182,9 @@ export class SettingsPage implements OnInit {
               },
               error => {
                 console.log(error);
-                this.appProvider.setNormalNotification("fail to load settings");
+                this.appProvider.setNormalNotification(
+                  "Fail to discover settings"
+                );
                 this.updateLoadingStatusOfSavingSetting(settingContent, false);
               }
             );
@@ -170,7 +192,7 @@ export class SettingsPage implements OnInit {
         error => {
           this.updateLoadingStatusOfSavingSetting(settingContent, false);
           this.appProvider.setNormalNotification(
-            "fail to apply changes on  settings"
+            "Fail to apply changes on  settings"
           );
         }
       );
@@ -195,5 +217,9 @@ export class SettingsPage implements OnInit {
         this.isSettingContentOpen[content.id] = true;
       }
     }
+  }
+
+  getValuesToTranslate() {
+    return ["Discovering current user information", "Discovering settings"];
   }
 }

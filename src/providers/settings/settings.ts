@@ -20,21 +20,21 @@ export class SettingsProvider {
     let settingContents = [
       {
         id: "appSettings",
-        name: "app settings",
+        name: "App settings",
         icon: "assets/icon/app-setting.png",
         isLoading: false,
         loadingMessage: ""
       },
       {
         id: "entryForm",
-        name: "entry form",
+        name: "Entry form",
         icon: "assets/icon/form.png",
         isLoading: false,
         loadingMessage: ""
       },
       {
         id: "synchronization",
-        name: "synchronization",
+        name: "Synchronization",
         icon: "assets/icon/synchronization.png",
         isLoading: false,
         loadingMessage: ""
