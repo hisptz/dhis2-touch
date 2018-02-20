@@ -6,6 +6,7 @@ import { DataValuesProvider } from "../../providers/data-values/data-values";
 import { UserProvider } from "../../providers/user/user";
 import { TrackerCaptureProvider } from "../../providers/tracker-capture/tracker-capture";
 import { EventCaptureFormProvider } from "../../providers/event-capture-form/event-capture-form";
+import { AppTranslationProvider } from "../../providers/app-translation/app-translation";
 
 /**
  * Generated class for the AboutPage page.
@@ -33,6 +34,7 @@ export class AboutPage implements OnInit {
   eventsStorage: any = { online: 0, offline: 0 };
   eventsForTrackerStorage: any = { online: 0, offline: 0 };
   enrollmentStorage: any = { online: 0, offline: 0 };
+  translationMapper: any;
 
   constructor(
     public navCtrl: NavController,
@@ -41,14 +43,31 @@ export class AboutPage implements OnInit {
     private eventCaptureFormProvider: EventCaptureFormProvider,
     private aboutProvider: AboutProvider,
     private dataValuesProvider: DataValuesProvider,
-    private userProvider: UserProvider
+    private userProvider: UserProvider,
+    private appTranslation: AppTranslationProvider
   ) {}
 
   ngOnInit() {
-    this.loadingMessage = "loading app information";
     this.isLoading = true;
     this.logoUrl = "assets/img/logo.png";
+    this.translationMapper = {};
     this.aboutContents = this.aboutProvider.getAboutContentDetails();
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+        this.loadingUserInformation();
+      },
+      error => {
+        this.loadingUserInformation();
+      }
+    );
+  }
+
+  loadingUserInformation() {
+    let key = "Discovering app information";
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.userProvider.getCurrentUser().subscribe(
       (currentUser: any) => {
         this.currentUser = currentUser;
@@ -56,7 +75,9 @@ export class AboutPage implements OnInit {
       },
       error => {
         this.isLoading = false;
-        this.appProvider.setNormalNotification("fail to load user information");
+        this.appProvider.setNormalNotification(
+          "Fail to discover user information"
+        );
       }
     );
   }
@@ -66,7 +87,10 @@ export class AboutPage implements OnInit {
     this.aboutProvider.getAppInformation().subscribe(
       appInformation => {
         this.appInformation = appInformation;
-        this.loadingMessage = "loading system information";
+        let key = "Discovering system information";
+        this.loadingMessage = this.translationMapper[key]
+          ? this.translationMapper[key]
+          : key;
         this.aboutProvider.getSystemInformation().subscribe(
           systemInfo => {
             this.systemInfo = systemInfo;
@@ -84,7 +108,7 @@ export class AboutPage implements OnInit {
             this.isLoading = false;
             console.log(JSON.stringify(error));
             this.appProvider.setNormalNotification(
-              "fail to load system information"
+              "Fail to discover system information"
             );
           }
         );
@@ -92,7 +116,9 @@ export class AboutPage implements OnInit {
       error => {
         this.isLoading = false;
         console.log(JSON.stringify(error));
-        this.appProvider.setNormalNotification("fail to load app information");
+        this.appProvider.setNormalNotification(
+          "Fail to discover app information"
+        );
       }
     );
   }
@@ -117,7 +143,10 @@ export class AboutPage implements OnInit {
   }
 
   loadingDataValueStatus() {
-    this.loadingMessage = "loading data values storage status";
+    let key = "Discovering data values storage status";
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.isLoading = true;
     this.dataValuesProvider
       .getDataValuesByStatus("synced", this.currentUser)
@@ -134,7 +163,7 @@ export class AboutPage implements OnInit {
               error => {
                 console.log(JSON.stringify(error));
                 this.appProvider.setNormalNotification(
-                  "fail to load data values storage status"
+                  "Fail to discover data values storage status"
                 );
                 this.isLoading = false;
               }
@@ -143,7 +172,7 @@ export class AboutPage implements OnInit {
         error => {
           console.log(JSON.stringify(error));
           this.appProvider.setNormalNotification(
-            "fail to load data values storage status"
+            "Fail to discover data values storage status"
           );
           this.isLoading = false;
         }
@@ -151,7 +180,10 @@ export class AboutPage implements OnInit {
   }
 
   loadingEventStatus() {
-    this.loadingMessage = "loading events storage status";
+    let key = "Discovering events storage status";
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.eventCaptureFormProvider
       .getEventsByStatusAndType("synced", "event-capture", this.currentUser)
       .subscribe(
@@ -190,7 +222,7 @@ export class AboutPage implements OnInit {
                           error => {
                             console.log(JSON.stringify(error));
                             this.appProvider.setNormalNotification(
-                              "fail to load enrollments storage status"
+                              "Fail to discover enrollments storage status"
                             );
                             this.isLoading = false;
                           }
@@ -199,7 +231,7 @@ export class AboutPage implements OnInit {
                     error => {
                       console.log(JSON.stringify(error));
                       this.appProvider.setNormalNotification(
-                        "fail to load enrollments storage status"
+                        "Fail to discover enrollments storage status"
                       );
                       this.isLoading = false;
                     }
@@ -208,7 +240,7 @@ export class AboutPage implements OnInit {
               error => {
                 console.log(JSON.stringify(error));
                 this.appProvider.setNormalNotification(
-                  "fail to load enrollments storage status"
+                  "Fail to discover enrollments storage status"
                 );
                 this.isLoading = false;
               }
@@ -217,7 +249,7 @@ export class AboutPage implements OnInit {
         error => {
           console.log(JSON.stringify(error));
           this.appProvider.setNormalNotification(
-            "fail to load enrollments storage status"
+            "Fail to discover enrollments storage status"
           );
           this.isLoading = false;
         }
@@ -225,7 +257,10 @@ export class AboutPage implements OnInit {
   }
 
   loadingEnrollmentStatus() {
-    this.loadingMessage = "loading enrollments storage status";
+    let key = "Discovering enrollments storage status";
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.trackerCaptureProvider
       .getTrackedEntityInstanceByStatus("synced", this.currentUser)
       .subscribe((trackedEntityInstances: any) => {
@@ -241,10 +276,20 @@ export class AboutPage implements OnInit {
             error => {
               console.log(JSON.stringify(error));
               this.appProvider.setNormalNotification(
-                "fail to load enrollments storage status"
+                "Fail to discover enrollments storage status"
               );
             }
           );
       });
+  }
+
+  getValuesToTranslate() {
+    return [
+      "Discovering app information",
+      "Discovering system information",
+      "Discovering data values storage status",
+      "Discovering events storage status",
+      "Discovering enrollments storage status"
+    ];
   }
 }

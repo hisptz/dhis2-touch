@@ -10,9 +10,11 @@ import { AvailableLocalInstanceComponent } from "./available-local-instance/avai
 import { ProgressLoaderComponent } from "./progress-loader/progress-loader.component";
 import { TranslateModule } from "@ngx-translate/core";
 import { LanguageTranslationSelectionComponent } from "./language-translation-selection/language-translation-selection";
+import { MultiOrganisationUnitComponent } from "./multi-organisation-unit/multi-organisation-unit";
 @NgModule({
   declarations: [
     ProgressBarComponent,
+    MultiOrganisationUnitComponent,
     ProgressLoaderComponent,
     LoadingComponent,
     NotificationComponent,
@@ -25,6 +27,7 @@ import { LanguageTranslationSelectionComponent } from "./language-translation-se
   imports: [IonicModule, TranslateModule.forChild()],
   exports: [
     ProgressBarComponent,
+    MultiOrganisationUnitComponent,
     ProgressLoaderComponent,
     LoadingComponent,
     NotificationComponent,

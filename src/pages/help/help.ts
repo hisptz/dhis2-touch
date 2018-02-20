@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { IonicPage } from "ionic-angular";
 import { HelpContentsProvider } from "../../providers/help-contents/help-contents";
+import { AppTranslationProvider } from "../../providers/app-translation/app-translation";
 
 /**
  * Generated class for the HelpPage page.
@@ -20,12 +21,32 @@ export class HelpPage implements OnInit {
   isLoading: boolean = false;
   isHelpContentOpened: any = {};
   helpContents: any;
+  translationMapper: any;
 
-  constructor(private HelpContentsProvider: HelpContentsProvider) {}
+  constructor(
+    private HelpContentsProvider: HelpContentsProvider,
+    private appTranslation: AppTranslationProvider
+  ) {}
 
   ngOnInit() {
     this.isLoading = true;
-    this.loadingMessage = "loading help contents";
+    this.translationMapper = {};
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+        this.loadingHelpContents();
+      },
+      error => {
+        this.loadingHelpContents();
+      }
+    );
+  }
+
+  loadingHelpContents() {
+    let key = "Discovering help contents";
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.helpContentsObject = this.HelpContentsProvider.getHelpContents();
     this.helpContents = this.getHelpContents(this.helpContentsObject);
     if (this.helpContents.length > 0) {
@@ -78,5 +99,9 @@ export class HelpPage implements OnInit {
     } else {
       return false;
     }
+  }
+
+  getValuesToTranslate() {
+    return ["Discovering help contents"];
   }
 }

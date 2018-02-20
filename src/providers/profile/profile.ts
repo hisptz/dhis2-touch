@@ -16,21 +16,21 @@ export class ProfileProvider {
     let profileContents = [
       {
         id: "userInfo",
-        name: "user information",
+        name: "User information",
         icon: "assets/icon/user-info.png"
       },
       {
         id: "orgUnits",
-        name: "assigned organisation units",
+        name: "Assigned organisation units",
         icon: "assets/icon/orgUnit.png"
       },
-      { id: "roles", name: "assigned roles", icon: "assets/icon/roles.png" },
+      { id: "roles", name: "Assigned roles", icon: "assets/icon/roles.png" },
       {
         id: "program",
-        name: "assigned program",
+        name: "Assigned programs",
         icon: "assets/icon/program.png"
       },
-      { id: "form", name: "assigned form", icon: "assets/icon/form.png" }
+      { id: "form", name: "Assigned entry forms", icon: "assets/icon/form.png" }
     ];
     return profileContents;
   }

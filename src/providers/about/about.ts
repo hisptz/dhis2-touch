@@ -25,27 +25,27 @@ export class AboutProvider {
       //{id : 'appInformation',name : 'App information',icon: 'assets/icon/app-information.png'},
       {
         id: "dataValues",
-        name: "aggregate status",
+        name: "Aggregate status",
         icon: "assets/icon/data-values.png"
       },
       {
         id: "eventStatus",
-        name: "event status",
+        name: "Event status",
         icon: "assets/icon/event-status.png"
       },
       {
         id: "eventForTrackerStatus",
-        name: "event for tracker status",
+        name: "Event for tracker status",
         icon: "assets/icon/event-status.png"
       },
       {
         id: "enrollment",
-        name: "enrollments",
+        name: "Enrollments",
         icon: "assets/icon/profile-tracker.png"
       },
       {
         id: "systemInfo",
-        name: "system info",
+        name: "System info",
         icon: "assets/icon/system-info.png"
       }
     ];
