@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ViewController, NavParams, IonicPage } from "ionic-angular";
 import { ProgramsProvider } from "../../providers/programs/programs";
+import { AppTranslationProvider } from "../../providers/app-translation/app-translation";
 
 /*
  Generated class for the ProgramSelection page.
@@ -14,17 +15,29 @@ import { ProgramsProvider } from "../../providers/programs/programs";
   templateUrl: "program-selection.html"
 })
 export class ProgramSelection implements OnInit {
-  public programsList: any;
-  public currentProgram: any;
+  programsList: any;
+  currentProgram: any;
   icons: any = {};
+  translationMapper: any;
 
   constructor(
-    public viewCtrl: ViewController,
-    public params: NavParams,
-    public programProvider: ProgramsProvider
+    private viewCtrl: ViewController,
+    private params: NavParams,
+    private programProvider: ProgramsProvider,
+    private appTranslation: AppTranslationProvider
   ) {}
 
   ngOnInit() {
+    this.translationMapper = {};
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+        this.setModalData();
+      },
+      error => {
+        this.setModalData();
+      }
+    );
     this.setModalData();
   }
 
@@ -54,5 +67,9 @@ export class ProgramSelection implements OnInit {
   dismiss() {
     var parameter = {};
     this.viewCtrl.dismiss(parameter);
+  }
+
+  getValuesToTranslate() {
+    return ["There is no program to select"];
   }
 }
