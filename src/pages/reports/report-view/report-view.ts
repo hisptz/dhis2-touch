@@ -6,6 +6,7 @@ import { DataSetsProvider } from "../../../providers/data-sets/data-sets";
 import { AppProvider } from "../../../providers/app/app";
 import { StandardReportProvider } from "../../../providers/standard-report/standard-report";
 import { DATABASE_STRUCTURE } from "../../../models/database";
+import { AppTranslationProvider } from "../../../providers/app-translation/app-translation";
 
 /**
  * Generated class for the ReportViewPage page.
@@ -32,6 +33,7 @@ export class ReportViewPage implements OnInit {
   loadingMessage: string = "";
   currentUser: any;
   reportType: string = "";
+  translationMapper: any;
 
   constructor(
     private navCtrl: NavController,
@@ -41,12 +43,29 @@ export class ReportViewPage implements OnInit {
     private reportProvider: StandardReportProvider,
     private sanitizer: DomSanitizer,
     private appProvider: AppProvider,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    private appTranslation: AppTranslationProvider
   ) {}
 
   ngOnInit() {
     this.isLoading = true;
-    this.loadingMessage = "loading user information";
+    this.translationMapper = {};
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+        this.loadingUserAndReportData();
+      },
+      error => {
+        this.loadingUserAndReportData();
+      }
+    );
+  }
+
+  loadingUserAndReportData() {
+    let key = "Discovering user information";
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.user.getCurrentUser().subscribe((user: any) => {
       this.currentUser = user;
       dhis2.database = user.currentDatabase;
@@ -106,7 +125,7 @@ export class ReportViewPage implements OnInit {
                   error => {
                     this.isLoading = false;
                     this.appProvider.setNormalNotification(
-                      "Fail to load organisation units information"
+                      "Fail to discover organisation units information"
                     );
                   }
                 );
@@ -114,7 +133,7 @@ export class ReportViewPage implements OnInit {
               error => {
                 this.isLoading = false;
                 this.appProvider.setNormalNotification(
-                  "Fail to load organisation units information"
+                  "Fail to discover organisation units information"
                 );
               }
             );
@@ -161,7 +180,10 @@ export class ReportViewPage implements OnInit {
 
   loadReportDesignContent(reportId) {
     this.isLoading = true;
-    this.loadingMessage = "loading report metadata";
+    let key = "Discovering report metadata";
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     //for standard reports
     if (this.reportType && this.reportType == "standardReport") {
       this.reportProvider.getReportDesign(reportId, this.currentUser).subscribe(
@@ -185,7 +207,7 @@ export class ReportViewPage implements OnInit {
         error => {
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            "fail to load  report details"
+            "Fail to discover report metadata"
           );
         }
       );
@@ -193,7 +215,9 @@ export class ReportViewPage implements OnInit {
       //for data set reports
       this.isLoading = false;
     } else {
-      this.appProvider.setNormalNotification("Report type has not set");
+      this.appProvider.setNormalNotification(
+        "Report type has not set,please contact system administrator"
+      );
       this.isLoading = false;
     }
   }
@@ -257,5 +281,9 @@ export class ReportViewPage implements OnInit {
       });
     }
     return url;
+  }
+
+  getValuesToTranslate() {
+    return ["Discovering user information", "Discovering report metadata"];
   }
 }
