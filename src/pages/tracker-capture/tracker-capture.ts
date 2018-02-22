@@ -1,10 +1,11 @@
-import { Component, OnInit } from "@angular/core";
-import { IonicPage, ModalController, NavController } from "ionic-angular";
-import { UserProvider } from "../../providers/user/user";
-import { AppProvider } from "../../providers/app/app";
-import { OrganisationUnitsProvider } from "../../providers/organisation-units/organisation-units";
-import { ProgramsProvider } from "../../providers/programs/programs";
-import { TrackerCaptureProvider } from "../../providers/tracker-capture/tracker-capture";
+import { Component, OnInit } from '@angular/core';
+import { IonicPage, ModalController, NavController } from 'ionic-angular';
+import { UserProvider } from '../../providers/user/user';
+import { AppProvider } from '../../providers/app/app';
+import { OrganisationUnitsProvider } from '../../providers/organisation-units/organisation-units';
+import { ProgramsProvider } from '../../providers/programs/programs';
+import { TrackerCaptureProvider } from '../../providers/tracker-capture/tracker-capture';
+import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the TrackerCapturePage page.
@@ -15,8 +16,8 @@ import { TrackerCaptureProvider } from "../../providers/tracker-capture/tracker-
 
 @IonicPage()
 @Component({
-  selector: "page-tracker-capture",
-  templateUrl: "tracker-capture.html"
+  selector: 'page-tracker-capture',
+  templateUrl: 'tracker-capture.html'
 })
 export class TrackerCapturePage implements OnInit {
   selectedOrgUnit: any;
@@ -36,6 +37,7 @@ export class TrackerCapturePage implements OnInit {
   attributeToDisplay: any;
   icons: any = {};
   tableLayout: any;
+  translationMapper: any;
 
   constructor(
     public navCtrl: NavController,
@@ -44,7 +46,8 @@ export class TrackerCapturePage implements OnInit {
     private appProvider: AppProvider,
     private programsProvider: ProgramsProvider,
     private trackerCaptureProvider: TrackerCaptureProvider,
-    private organisationUnitsProvider: OrganisationUnitsProvider
+    private organisationUnitsProvider: OrganisationUnitsProvider,
+    private appTranslation: AppTranslationProvider
   ) {}
 
   ionViewDidEnter() {
@@ -57,13 +60,29 @@ export class TrackerCapturePage implements OnInit {
   }
 
   ngOnInit() {
-    this.icons.orgUnit = "assets/icon/orgUnit.png";
-    this.icons.program = "assets/icon/program.png";
+    this.icons.orgUnit = 'assets/icon/orgUnit.png';
+    this.icons.program = 'assets/icon/program.png';
     this.trackedEntityInstances = [];
     this.attributeToDisplay = {};
-    this.loadingMessage = "loading user information";
     this.isLoading = true;
     this.isFormReady = false;
+    this.translationMapper = {};
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+        this.loadingCurrentUserInformation();
+      },
+      error => {
+        this.loadingCurrentUserInformation();
+      }
+    );
+  }
+
+  loadingCurrentUserInformation() {
+    let key = 'Discovering current user information';
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.userProvider.getCurrentUser().subscribe(
       (currentUser: any) => {
         this.currentUser = currentUser;
@@ -89,16 +108,21 @@ export class TrackerCapturePage implements OnInit {
       },
       error => {
         this.isLoading = false;
-        this.loadingMessage = "";
-        this.appProvider.setNormalNotification("fail to load user information");
+        this.loadingMessage = '';
+        this.appProvider.setNormalNotification(
+          'Fail to discover current user information'
+        );
       }
     );
   }
 
   loadingPrograms() {
     this.isLoading = true;
-    this.loadingMessage = "loading assigned programs";
-    let programType = "WITH_REGISTRATION";
+    let key = 'Discovering assigned programs';
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
+    let programType = 'WITH_REGISTRATION';
     this.programsProvider
       .getProgramsAssignedOnOrgUnitAndUserRoles(
         this.selectedOrgUnit.id,
@@ -121,13 +145,13 @@ export class TrackerCapturePage implements OnInit {
                   this.programTrackedEntityAttributes = programTrackedEntityAttributes;
                   this.updateTrackerCaptureSelections();
                   this.isLoading = false;
-                  this.loadingMessage = "";
+                  this.loadingMessage = '';
                 },
                 error => {
                   this.isLoading = false;
                   console.log(JSON.stringify(error));
                   this.appProvider.setNormalNotification(
-                    "fail to load registration form"
+                    'Fail to discover registration form'
                   );
                 }
               );
@@ -137,10 +161,10 @@ export class TrackerCapturePage implements OnInit {
         },
         error => {
           this.isLoading = false;
-          this.loadingMessage = "";
+          this.loadingMessage = '';
           console.log(JSON.stringify(error));
           this.appProvider.setNormalNotification(
-            "fail to load assigned programs"
+            'Fail to discover assigned programs'
           );
         }
       );
@@ -151,16 +175,16 @@ export class TrackerCapturePage implements OnInit {
       this.selectedOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
       this.organisationUnitLabel = this.selectedOrgUnit.name;
     } else {
-      this.organisationUnitLabel = "touch to select organisation unit";
+      this.organisationUnitLabel = 'Touch to select organisation unit';
     }
     if (this.selectedProgram && this.selectedProgram.name) {
       this.programLabel = this.selectedProgram.name;
     } else {
-      this.programLabel = "touch to select program";
+      this.programLabel = 'Touch to select program';
     }
     this.isFormReady = this.isAllParameterSelected();
     this.isLoading = false;
-    this.loadingMessage = "";
+    this.loadingMessage = '';
     if (this.isFormReady) {
       this.attributeToDisplay = {};
       if (
@@ -187,7 +211,7 @@ export class TrackerCapturePage implements OnInit {
   }
 
   openOrganisationUnitTree() {
-    let modal = this.modalCtrl.create("OrganisationUnitSelectionPage", {});
+    let modal = this.modalCtrl.create('OrganisationUnitSelectionPage', {});
     modal.onDidDismiss((selectedOrgUnit: any) => {
       if (selectedOrgUnit && selectedOrgUnit.id) {
         this.selectedOrgUnit = selectedOrgUnit;
@@ -200,7 +224,7 @@ export class TrackerCapturePage implements OnInit {
 
   openProgramList() {
     if (this.programs && this.programs.length > 0) {
-      let modal = this.modalCtrl.create("ProgramSelection", {
+      let modal = this.modalCtrl.create('ProgramSelection', {
         currentProgram: this.selectedProgram,
         programsList: this.programs
       });
@@ -219,7 +243,7 @@ export class TrackerCapturePage implements OnInit {
                 this.isLoading = false;
                 console.log(JSON.stringify(error));
                 this.appProvider.setNormalNotification(
-                  "fail to load registration form"
+                  'Fail to discover registration form'
                 );
               }
             );
@@ -227,13 +251,18 @@ export class TrackerCapturePage implements OnInit {
       });
       modal.present();
     } else {
-      this.appProvider.setNormalNotification("there are no program to select");
+      this.appProvider.setNormalNotification(
+        'There are no program to select, please select another organisation unit'
+      );
     }
   }
 
   loadingSavedTrackedEntityInstances(programId, orgUnitId) {
     this.isLoading = true;
-    this.loadingMessage = "loading tracked entity list";
+    let key = 'Discovering tracked entity list';
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.trackerCaptureProvider
       .loadTrackedEntityInstancesList(programId, orgUnitId, this.currentUser)
       .subscribe(
@@ -245,7 +274,7 @@ export class TrackerCapturePage implements OnInit {
           console.log(JSON.stringify(error));
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            "fail to load tracked entity list"
+            'Fail to discover tracked entity list'
           );
         }
       );
@@ -260,7 +289,10 @@ export class TrackerCapturePage implements OnInit {
   }
 
   renderDataAsTable() {
-    this.loadingMessage = "preparing table";
+    let key = 'Preparing table for display';
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.trackerCaptureProvider
       .getTableFormatResult(
         this.attributeToDisplay,
@@ -275,14 +307,14 @@ export class TrackerCapturePage implements OnInit {
         error => {
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            "fail to prepare table for display"
+            'Fail to prepare table for display'
           );
         }
       );
   }
 
   hideAndShowColumns() {
-    let modal = this.modalCtrl.create("TrackerHideShowColumnPage", {
+    let modal = this.modalCtrl.create('TrackerHideShowColumnPage', {
       attributeToDisplay: this.attributeToDisplay,
       programTrackedEntityAttributes: this.programTrackedEntityAttributes
     });
@@ -296,13 +328,22 @@ export class TrackerCapturePage implements OnInit {
   }
 
   registerNewTrackedEntity() {
-    this.navCtrl.push("TrackerEntityRegisterPage", {});
+    this.navCtrl.push('TrackerEntityRegisterPage', {});
   }
 
   openTrackedEntityDashboard(currentIndex) {
     let trackedEntityInstancesId = this.trackedEntityInstancesIds[currentIndex];
-    this.navCtrl.push("TrackedEntityDashboardPage", {
+    this.navCtrl.push('TrackedEntityDashboardPage', {
       trackedEntityInstancesId: trackedEntityInstancesId
     });
+  }
+
+  getValuesToTranslate() {
+    return [
+      'Discovering current user information',
+      'Discovering assigned programs',
+      'Discovering tracked entity list',
+      'Preparing table for display'
+    ];
   }
 }
