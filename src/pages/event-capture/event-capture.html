@@ -8,7 +8,7 @@
 
   <ion-navbar color="primary">
     <ion-title>
-      <span [translate]="'event capture'"></span>
+      <span [translate]="'Event capture'"></span>
     </ion-title>
   </ion-navbar>
 
@@ -37,25 +37,25 @@
                 </div>
                 <div *ngIf="selectedDataDimension[categoryIndex]">{{ selectedDataDimension[categoryIndex].name }}</div>
                 <div *ngIf="!selectedDataDimension[categoryIndex]">
-                  <span [translate]="'touch to select option'"></span>
+                  <span [translate]="'Touch to select option'"></span>
                 </div>
               </div>
             </div>
           </div>
           <div class="item-card" padding-top padding-bottom *ngIf="!isProgramDimensionApplicable">
-            <warning [warningMessage]="programDimensionNotApplicableMessage"></warning>
+            <warning [warningMessage]="translationMapper[programDimensionNotApplicableMessage]"></warning>
           </div>
         </div>
         <div *ngIf="isFormReady">
           <div class="item-card" (click)="hideAndShowColumns()" color="font-color" padding-top padding-bottom ion-button clear text-center
             text-capitalize icon-start>
             <ion-icon name="ios-eye" color="icon-color"></ion-icon>
-            <span [translate]="'columns'"></span>
+            <span [translate]="'Columns'"></span>
           </div>
           <div class="item-card" (click)="goToEventRegister()" color="font-color" padding-top padding-bottom ion-button clear text-center
             text-capitalize icon-start>
             <ion-icon name="add" color="icon-color"></ion-icon>
-            <span [translate]="'add'"></span>
+            <span [translate]="'Add'"></span>
           </div>
         </div>
 
@@ -83,7 +83,7 @@
                   </tr>
                   <tr *ngIf="tableLayout.rows.length == 0">
                     <td colspan="100%">
-                      <span [translate]="'there no data at the moment'"></span>
+                      <span [translate]="'There no data at the moment'"></span>
                     </td>
                   </tr>
                 </tbody>
