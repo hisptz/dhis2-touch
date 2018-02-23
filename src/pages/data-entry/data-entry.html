@@ -8,7 +8,7 @@
 
   <ion-navbar color="primary">
     <ion-title>
-      <span [translate]="'data entry'"></span>
+      <span [translate]="'Data entry'"></span>
     </ion-title>
   </ion-navbar>
 
@@ -47,7 +47,7 @@
                 </div>
                 <div *ngIf="selectedDataDimension[categoryIndex]">{{ selectedDataDimension[categoryIndex].name }}</div>
                 <div *ngIf="!selectedDataDimension[categoryIndex]">
-                  <span [translate]="'touch to select option'"></span>
+                  <span [translate]="'Touch to select option'"></span>
                 </div>
               </div>
             </div>
@@ -59,20 +59,20 @@
         <div *ngIf="isFormReady" class="item-card animated fadeIn" padding-top padding-bottom full (tap)="openDataEntryForm()">
           <div>
             <b>
-              <span [translate]="'organisation unit'"></span>
+              <span [translate]="'Organisation unit'"></span>
             </b> : {{ organisationUnitLabel }}
             <br>
             <b>
-              <span [translate]="'form'"></span>
+              <span [translate]="'Form'"></span>
             </b> : {{ dataSetLabel }}
             <br>
             <b>
-              <span [translate]="'period'"></span>
+              <span [translate]="'Period'"></span>
             </b> : {{ periodLabel}}
           </div>
           <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize>
             <img class="side-menu-icon" [src]="icons.goToDataEntryForm" />&nbsp;&nbsp;
-            <span [translate]="'enter data'"></span>
+            <span [translate]="'Enter data'"></span>
           </div>
         </div>
       </ion-col>

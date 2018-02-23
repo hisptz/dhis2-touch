@@ -1,10 +1,11 @@
-import { Component, OnInit } from "@angular/core";
-import { IonicPage, ModalController, NavController } from "ionic-angular";
-import { OrganisationUnitsProvider } from "../../providers/organisation-units/organisation-units";
-import { UserProvider } from "../../providers/user/user";
-import { AppProvider } from "../../providers/app/app";
-import { DataSetsProvider } from "../../providers/data-sets/data-sets";
-import { PeriodSelectionProvider } from "../../providers/period-selection/period-selection";
+import { Component, OnInit } from '@angular/core';
+import { IonicPage, ModalController, NavController } from 'ionic-angular';
+import { OrganisationUnitsProvider } from '../../providers/organisation-units/organisation-units';
+import { UserProvider } from '../../providers/user/user';
+import { AppProvider } from '../../providers/app/app';
+import { DataSetsProvider } from '../../providers/data-sets/data-sets';
+import { PeriodSelectionProvider } from '../../providers/period-selection/period-selection';
+import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the DataEntryPage page.
@@ -15,8 +16,8 @@ import { PeriodSelectionProvider } from "../../providers/period-selection/period
 
 @IonicPage()
 @Component({
-  selector: "page-data-entry",
-  templateUrl: "data-entry.html"
+  selector: 'page-data-entry',
+  templateUrl: 'data-entry.html'
 })
 export class DataEntryPage implements OnInit {
   selectedOrgUnit: any;
@@ -38,6 +39,7 @@ export class DataEntryPage implements OnInit {
   selectedDataDimension: Array<any>;
   currentPeriodOffset: number;
   icons: any = {};
+  translationMapper: any;
 
   constructor(
     private navCtrl: NavController,
@@ -46,20 +48,35 @@ export class DataEntryPage implements OnInit {
     private appProvider: AppProvider,
     private dataSetProvider: DataSetsProvider,
     private periodSelection: PeriodSelectionProvider,
-    private organisationUnitsProvider: OrganisationUnitsProvider
+    private organisationUnitsProvider: OrganisationUnitsProvider,
+    private appTranslation: AppTranslationProvider
   ) {}
 
   ngOnInit() {
-    this.icons.orgUnit = "assets/icon/orgUnit.png";
-    this.icons.dataSet = "assets/icon/form.png";
-    this.icons.period = "assets/icon/period.png";
-    this.icons.goToDataEntryForm = "assets/icon/enterDataPen.png";
-
-    this.loadingMessage = "loading user information";
+    this.icons.orgUnit = 'assets/icon/orgUnit.png';
+    this.icons.dataSet = 'assets/icon/form.png';
+    this.icons.period = 'assets/icon/period.png';
+    this.icons.goToDataEntryForm = 'assets/icon/enterDataPen.png';
     this.isLoading = true;
     this.currentPeriodOffset = 0;
     this.isDataSetDimensionApplicable = false;
+    this.translationMapper = {};
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+        this.loadingCurrentUserInformation();
+      },
+      error => {
+        this.loadingCurrentUserInformation();
+      }
+    );
+  }
 
+  loadingCurrentUserInformation() {
+    let key = 'Discovering current user information';
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.userProvider.getCurrentUser().subscribe(
       (currentUser: any) => {
         this.currentUser = currentUser;
@@ -85,8 +102,10 @@ export class DataEntryPage implements OnInit {
       },
       error => {
         this.isLoading = false;
-        this.loadingMessage = "";
-        this.appProvider.setNormalNotification("fail to load user information");
+        this.loadingMessage = '';
+        this.appProvider.setNormalNotification(
+          'Fail to discover current user information'
+        );
       }
     );
   }
@@ -96,27 +115,27 @@ export class DataEntryPage implements OnInit {
       this.selectedOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
       this.organisationUnitLabel = this.selectedOrgUnit.name;
     } else {
-      this.organisationUnitLabel = "touch to select organisation unit";
+      this.organisationUnitLabel = 'Touch to select organisation unit';
     }
     if (this.selectedDataSet && this.selectedDataSet.name) {
       this.dataSetLabel = this.selectedDataSet.name;
     } else {
-      this.dataSetLabel = "touch to select entry form";
+      this.dataSetLabel = 'Touch to select entry form';
       this.selectedPeriod = null;
     }
 
     if (this.selectedPeriod && this.selectedPeriod.name) {
       this.periodLabel = this.selectedPeriod.name;
     } else {
-      this.periodLabel = "touch to select period";
+      this.periodLabel = 'Touch to select period';
     }
     this.isFormReady = this.isAllFormParameterSelected();
     this.isLoading = false;
-    this.loadingMessage = "";
+    this.loadingMessage = '';
   }
 
   openOrganisationUnitTree() {
-    let modal = this.modalCtrl.create("OrganisationUnitSelectionPage", {});
+    let modal = this.modalCtrl.create('OrganisationUnitSelectionPage', {});
     modal.onDidDismiss((selectedOrgUnit: any) => {
       if (selectedOrgUnit && selectedOrgUnit.id) {
         this.selectedOrgUnit = selectedOrgUnit;
@@ -153,18 +172,18 @@ export class DataEntryPage implements OnInit {
           this.updateDataEntryFormSelections();
         },
         error => {
-          this.appProvider.setNormalNotification("fail to load entry form");
+          this.appProvider.setNormalNotification('Fail to discover entry form');
         }
       );
   }
 
   openEntryFormList() {
     if (this.dataSets && this.dataSets.length > 0) {
-      let modal = this.modalCtrl.create("DataSetSelectionPage", {
+      let modal = this.modalCtrl.create('DataSetSelectionPage', {
         dataSetsList: this.dataSets,
         currentDataSet: {
-          id: this.selectedDataSet.id,
-          name: this.selectedDataSet.name
+          id: this.selectedDataSet.id || '',
+          name: this.selectedDataSet.name || ''
         }
       });
       modal.onDidDismiss((selectedDataSet: any) => {
@@ -186,7 +205,7 @@ export class DataEntryPage implements OnInit {
       modal.present();
     } else {
       this.appProvider.setNormalNotification(
-        "there are no entry form to select"
+        'There are no entry form to select on selected organisation unit'
       );
     }
   }
@@ -211,7 +230,7 @@ export class DataEntryPage implements OnInit {
 
   openPeriodList() {
     if (this.selectedDataSet && this.selectedDataSet.id) {
-      let modal = this.modalCtrl.create("PeriodSelectionPage", {
+      let modal = this.modalCtrl.create('PeriodSelectionPage', {
         periodType: this.selectedDataSet.periodType,
         currentPeriodOffset: this.currentPeriodOffset,
         openFuturePeriods: this.selectedDataSet.openFuturePeriods,
@@ -227,7 +246,7 @@ export class DataEntryPage implements OnInit {
       });
       modal.present();
     } else {
-      this.appProvider.setNormalNotification("please select entry form first");
+      this.appProvider.setNormalNotification('Please select entry form first');
     }
   }
 
@@ -238,9 +257,9 @@ export class DataEntryPage implements OnInit {
       category.categoryOptions.length > 0
     ) {
       let currentIndex = this.dataSetCategoryCombo.categories.indexOf(category);
-      let modal = this.modalCtrl.create("DataDimensionSelectionPage", {
+      let modal = this.modalCtrl.create('DataDimensionSelectionPage', {
         categoryOptions: category.categoryOptions,
-        title: category.name + "'s selection",
+        title: category.name,
         currentSelection: this.selectedDataDimension[currentIndex]
           ? this.selectedDataDimension[currentIndex]
           : {}
@@ -254,40 +273,32 @@ export class DataEntryPage implements OnInit {
       modal.present();
     } else {
       let message =
-        "There is no option for " +
-        category.name +
-        " that associated with " +
-        this.selectedOrgUnit.name;
+        'There is no option for seleted category that associated with selected organisation unit';
       this.appProvider.setNormalNotification(message);
     }
   }
 
   updateDataSetCategoryCombo(categoryCombo) {
     let dataSetCategoryCombo = {};
-    if (categoryCombo.name != "default") {
-      dataSetCategoryCombo["id"] = categoryCombo.id;
-      dataSetCategoryCombo["name"] = categoryCombo.name;
+    if (categoryCombo.name != 'default') {
+      dataSetCategoryCombo['id'] = categoryCombo.id;
+      dataSetCategoryCombo['name'] = categoryCombo.name;
       let categories = this.dataSetProvider.getDataSetCategoryComboCategories(
         this.selectedOrgUnit.id,
         this.selectedDataSet.categoryCombo.categories
       );
-      dataSetCategoryCombo["categories"] = categories;
+      dataSetCategoryCombo['categories'] = categories;
       this.isDataSetDimensionApplicable = true;
 
-      this.isDataSetDimensionApplicableCategoriesMessage = "All";
+      this.isDataSetDimensionApplicableCategoriesMessage = 'All';
       categories.forEach((category: any) => {
         if (category.categoryOptions && category.categoryOptions.length == 0) {
-          this.isDataSetDimensionApplicableCategoriesMessage =
-            this.isDataSetDimensionApplicableCategoriesMessage +
-            " " +
-            category.name.toLowerCase();
           this.isDataSetDimensionApplicable = false;
         }
       });
-      this.isDataSetDimensionApplicableCategoriesMessage +=
-        " disaggregation are restricted from entry in " +
-        this.selectedOrgUnit.name +
-        ", choose a different form or contact your support desk";
+      this.isDataSetDimensionApplicableCategoriesMessage = this.translationMapper[
+        'All disaggregation are restricted from entry in selected organisation unit, please choose a different form or contact your support desk'
+      ];
     }
     this.selectedDataDimension = [];
     this.dataSetCategoryCombo = dataSetCategoryCombo;
@@ -301,17 +312,17 @@ export class DataEntryPage implements OnInit {
       period: { iso: this.selectedPeriod.iso, name: this.selectedPeriod.name },
       dataDimension: this.getDataDimensions()
     };
-    this.navCtrl.push("DataEntryFormPage", { parameter: parameter });
+    this.navCtrl.push('DataEntryFormPage', { parameter: parameter });
   }
 
   getDataDimensions() {
     let cc = this.selectedDataSet.categoryCombo.id;
-    let cp = "";
+    let cp = '';
     this.selectedDataDimension.forEach((dimension: any, index: any) => {
       if (index == 0) {
         cp += dimension.id;
       } else {
-        cp += ";" + dimension.id;
+        cp += ';' + dimension.id;
       }
     });
     return { cc: cc, cp: cp };
@@ -324,7 +335,7 @@ export class DataEntryPage implements OnInit {
       this.selectedPeriod.name &&
       this.selectedDataSet &&
       this.selectedDataSet.categoryCombo.name &&
-      this.selectedDataSet.categoryCombo.name != "default"
+      this.selectedDataSet.categoryCombo.name != 'default'
     ) {
       if (
         this.selectedDataDimension &&
@@ -343,11 +354,18 @@ export class DataEntryPage implements OnInit {
         isFormReady = false;
       }
     } else if (
-      this.periodLabel == "touch to select period" ||
-      this.dataSetLabel == "touch to select entry form"
+      this.periodLabel == 'Touch to select period' ||
+      this.dataSetLabel == 'Touch to select entry form'
     ) {
       isFormReady = false;
     }
     return isFormReady;
+  }
+
+  getValuesToTranslate() {
+    return [
+      'All disaggregation are restricted from entry in selected organisation unit, please choose a different form or contact your support desk',
+      'Discovering current user information'
+    ];
   }
 }
