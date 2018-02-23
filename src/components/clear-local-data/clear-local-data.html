@@ -6,21 +6,21 @@
     <ion-col *ngIf="!showLoadingMessage">
       <ion-item>
         <ion-label>
-          Aggregate data&nbsp;
+          {{ translationMapper['Aggregate data'] }}&nbsp;
           <ion-badge color="badge-color">{{ dataObject.dataValues }}</ion-badge>
         </ion-label>
         <ion-checkbox [(ngModel)]="selectedItems.dataValues" disabled="{{(dataObject.dataValues == 0)?'true':'false'}}" (ionChange)="updateItemsToBeDeleted()"></ion-checkbox>
       </ion-item>
       <ion-item>
         <ion-label>
-          Events&nbsp;
+          {{ translationMapper['Events'] }}&nbsp;
           <ion-badge color="badge-color">{{ dataObject.events }}</ion-badge>
         </ion-label>
         <ion-checkbox [(ngModel)]="selectedItems.events" disabled="{{(dataObject.events == 0)?'true':'false'}}" (ionChange)="updateItemsToBeDeleted()"></ion-checkbox>
       </ion-item>
       <ion-item>
         <ion-label>
-          Events for tracker&nbsp;
+          {{ translationMapper['Events for tracker'] }}&nbsp;
           <ion-badge color="badge-color">{{ dataObject.eventsForTracker }}</ion-badge>
         </ion-label>
         <ion-checkbox [(ngModel)]="selectedItems.eventsForTracker" disabled="{{(dataObject.eventsForTracker == 0)?'true':'false'}}"
@@ -28,13 +28,13 @@
       </ion-item>
       <ion-item>
         <ion-label>
-          enrollments&nbsp;
+          {{ translationMapper['Enrollments'] }}&nbsp;
           <ion-badge color="badge-color">{{ dataObject.enrollments }}</ion-badge>
         </ion-label>
         <ion-checkbox [(ngModel)]="selectedItems.enrollments" disabled="{{(dataObject.enrollments == 0)?'true':'false'}}" (ionChange)="updateItemsToBeDeleted()"></ion-checkbox>
       </ion-item>
       <button [disabled]="( itemsToBeDeleted.length == 0)" ion-button full text-capitalize (tap)="deleteSelectedItems()">
-        Clear local data
+        {{ translationMapper['Clear local data'] }}}
       </button>
     </ion-col>
   </ion-row>

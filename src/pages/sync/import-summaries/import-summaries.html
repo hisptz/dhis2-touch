@@ -8,7 +8,7 @@
 
   <ion-toolbar color="primary">
     <ion-title>
-      <span [translate]="'import summaries'"></span>
+      <span [translate]="'Import summaries'"></span>
     </ion-title>
     <ion-buttons start>
       <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
@@ -29,19 +29,19 @@
                   <tr>
                     <th [attr.colspan]="'2'">
                       <div *ngIf="key == 'dataValues'">
-                        <span [translate]="'aggregate data'"></span>
+                        <span [translate]="'Aggregate data'"></span>
                       </div>
                       <div *ngIf="key == 'events'">
-                        <span [translate]="'events'"></span>
+                        <span [translate]="'Events'"></span>
                       </div>
                       <div *ngIf="key == 'trackedEntityInstances'">
-                        <span [translate]="'tracked entity instances'"></span>
+                        <span [translate]="'Tracked entity instances'"></span>
                       </div>
                       <div *ngIf="key == 'Enrollments'">
-                        <span [translate]="'tracked entity enrollments'"></span>
+                        <span [translate]="'Tracked entity enrollments'"></span>
                       </div>
                       <div *ngIf="key == 'eventsForTracker'">
-                        <span [translate]="'events for tracker'"></span>
+                        <span [translate]="'Events for tracker'"></span>
                       </div>
                     </th>
                   </tr>
@@ -49,10 +49,10 @@
                 <tbody>
                   <tr>
                     <td>
-                      <span [translate]="'success'"></span>
+                      <span [translate]="'Success'"></span>
                     </td>
                     <td>
-                      <span [translate]="'failed'"></span>
+                      <span [translate]="'Failed'"></span>
                     </td>
                   </tr>
                   <tr>
@@ -61,7 +61,7 @@
                   </tr>
                   <tr *ngIf="importSummaries[key].errorMessages && importSummaries[key].errorMessages.length > 0">
                     <th [attr.colspan]="'2'">
-                      <span [translate]="'import conflicts errors'"></span>
+                      <span [translate]="'Import conflicts or errors'"></span>
                     </th>
                   </tr>
                   <tr *ngFor="let errorMessage of importSummaries[key].errorMessages">

@@ -24,7 +24,9 @@
                   <b>{{ category.name }}</b>
                 </div>
                 <div *ngIf="selectedDataDimension[categoryIndex]">{{ selectedDataDimension[categoryIndex].name }}</div>
-                <div *ngIf="!selectedDataDimension[categoryIndex]">Touch to select option</div>
+                <div *ngIf="!selectedDataDimension[categoryIndex]">
+                  <span [translate]="'Touch to select option'"></span>
+                </div>
               </div>
             </div>
           </div>
@@ -35,10 +37,10 @@
         <div *ngIf="isFormReady" full>
           <div>
             <div class="item-card">
-              <ion-input type="text" placeholder="Mobile Number" [(ngModel)]="sendDataViaSmsObject.mobileNumber"></ion-input>
+              <ion-input type="text" placeholder="{{translationMapper['Mobile Number'] }}" [(ngModel)]="sendDataViaSmsObject.mobileNumber"></ion-input>
             </div>
             <button (click)="sendDataViaSms()" [disabled]="sendDataViaSmsObject.mobileNumber.length < 9" ion-button style="text-transform: none;"
-              block>Upload data</button>
+              block>{{ translationMapper['Upload data'] }}</button>
           </div>
         </div>
       </ion-col>

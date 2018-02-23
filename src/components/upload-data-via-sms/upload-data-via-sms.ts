@@ -1,12 +1,13 @@
-import { Component, OnInit } from "@angular/core";
-import { PeriodSelectionProvider } from "../../providers/period-selection/period-selection";
-import { ModalController } from "ionic-angular";
-import { OrganisationUnitsProvider } from "../../providers/organisation-units/organisation-units";
-import { UserProvider } from "../../providers/user/user";
-import { AppProvider } from "../../providers/app/app";
-import { DataSetsProvider } from "../../providers/data-sets/data-sets";
-import { SmsCommandProvider } from "../../providers/sms-command/sms-command";
-import { SmsCommand } from "../../models/smsCommand";
+import { Component, OnInit } from '@angular/core';
+import { PeriodSelectionProvider } from '../../providers/period-selection/period-selection';
+import { ModalController } from 'ionic-angular';
+import { OrganisationUnitsProvider } from '../../providers/organisation-units/organisation-units';
+import { UserProvider } from '../../providers/user/user';
+import { AppProvider } from '../../providers/app/app';
+import { DataSetsProvider } from '../../providers/data-sets/data-sets';
+import { SmsCommandProvider } from '../../providers/sms-command/sms-command';
+import { SmsCommand } from '../../models/smsCommand';
+import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the UploadDataViaSmsComponent component.
@@ -15,8 +16,8 @@ import { SmsCommand } from "../../models/smsCommand";
  * for more info on Angular Components.
  */
 @Component({
-  selector: "upload-data-via-sms",
-  templateUrl: "upload-data-via-sms.html"
+  selector: 'upload-data-via-sms',
+  templateUrl: 'upload-data-via-sms.html'
 })
 export class UploadDataViaSmsComponent implements OnInit {
   selectedOrgUnit: any;
@@ -43,10 +44,11 @@ export class UploadDataViaSmsComponent implements OnInit {
     dataSet: {},
     period: {},
     dataDimension: {},
-    mobileNumber: "",
+    mobileNumber: '',
     isLoading: false,
-    loadingMessage: ""
+    loadingMessage: ''
   };
+  translationMapper: any;
 
   constructor(
     private modalCtrl: ModalController,
@@ -55,19 +57,34 @@ export class UploadDataViaSmsComponent implements OnInit {
     private smsCommand: SmsCommandProvider,
     private dataSetProvider: DataSetsProvider,
     private periodSelection: PeriodSelectionProvider,
-    private organisationUnitsProvider: OrganisationUnitsProvider
+    private organisationUnitsProvider: OrganisationUnitsProvider,
+    private appTranslation: AppTranslationProvider
   ) {}
 
   ngOnInit() {
-    this.icons.orgUnit = "assets/icon/orgUnit.png";
-    this.icons.dataSet = "assets/icon/form.png";
-    this.icons.period = "assets/icon/period.png";
-    this.icons.goToDataEntryForm = "assets/icon/enterDataPen.png";
-    this.loadingMessage = "loading_user_information";
+    this.icons.orgUnit = 'assets/icon/orgUnit.png';
+    this.icons.dataSet = 'assets/icon/form.png';
+    this.icons.period = 'assets/icon/period.png';
     this.isLoading = true;
     this.currentPeriodOffset = 0;
     this.isDataSetDimensionApplicable = false;
+    this.translationMapper = {};
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+        this.loadingCurrentUserInformation();
+      },
+      error => {
+        this.loadingCurrentUserInformation();
+      }
+    );
+  }
 
+  loadingCurrentUserInformation() {
+    let key = 'Discovering current user information';
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.userProvider.getCurrentUser().subscribe(
       (currentUser: any) => {
         this.currentUser = currentUser;
@@ -93,8 +110,10 @@ export class UploadDataViaSmsComponent implements OnInit {
       },
       error => {
         this.isLoading = false;
-        this.loadingMessage = "";
-        this.appProvider.setNormalNotification("Fail to load user information");
+        this.loadingMessage = '';
+        this.appProvider.setNormalNotification(
+          'Fail to discover current user information'
+        );
       }
     );
   }
@@ -104,26 +123,27 @@ export class UploadDataViaSmsComponent implements OnInit {
       this.selectedOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
       this.organisationUnitLabel = this.selectedOrgUnit.name;
     } else {
-      this.organisationUnitLabel = "Touch to select organisation Unit";
+      this.organisationUnitLabel = 'Touch to select organisation unit';
     }
     if (this.selectedDataSet && this.selectedDataSet.name) {
       this.dataSetLabel = this.selectedDataSet.name;
     } else {
-      this.dataSetLabel = "Touch to select entry form";
+      this.dataSetLabel = 'Touch to select entry form';
+      this.selectedPeriod = null;
     }
 
     if (this.selectedPeriod && this.selectedPeriod.name) {
       this.periodLabel = this.selectedPeriod.name;
     } else {
-      this.periodLabel = "Touch to select period";
+      this.periodLabel = 'Touch to select period';
     }
     this.isFormReady = this.isAllFormParameterSelected();
     this.isLoading = false;
-    this.loadingMessage = "";
+    this.loadingMessage = '';
   }
 
   openOrganisationUnitTree() {
-    let modal = this.modalCtrl.create("OrganisationUnitSelectionPage", {});
+    let modal = this.modalCtrl.create('OrganisationUnitSelectionPage', {});
     modal.onDidDismiss((selectedOrgUnit: any) => {
       if (selectedOrgUnit && selectedOrgUnit.id) {
         this.selectedOrgUnit = selectedOrgUnit;
@@ -145,24 +165,34 @@ export class UploadDataViaSmsComponent implements OnInit {
         (dataSets: any) => {
           this.dataSets = dataSets;
           this.selectedDataSet = this.dataSetProvider.lastSelectedDataSet;
-          this.currentPeriodOffset = 0;
-          this.updateDataEntryFormSelections();
-          this.loadPeriodSelection();
-          if (this.selectedDataSet && this.selectedDataSet.categoryCombo) {
-            this.updateDataSetCategoryCombo(this.selectedDataSet.categoryCombo);
+          if (dataSets.length == 0) {
+            this.selectedPeriod = {};
+            this.selectedDataSet = {};
+          } else {
+            this.currentPeriodOffset = 0;
+            if (this.selectedDataSet && this.selectedDataSet.categoryCombo) {
+              this.updateDataSetCategoryCombo(
+                this.selectedDataSet.categoryCombo
+              );
+            }
+            this.loadPeriodSelection();
           }
+          this.updateDataEntryFormSelections();
         },
         error => {
-          this.appProvider.setNormalNotification("Fail to reload entry form");
+          this.appProvider.setNormalNotification('Fail to discover entry form');
         }
       );
   }
 
   openEntryFormList() {
     if (this.dataSets && this.dataSets.length > 0) {
-      let modal = this.modalCtrl.create("DataSetSelectionPage", {
+      let modal = this.modalCtrl.create('DataSetSelectionPage', {
         dataSetsList: this.dataSets,
-        currentDataSet: this.selectedDataSet.name
+        currentDataSet: {
+          id: this.selectedDataSet.id || '',
+          name: this.selectedDataSet.name || ''
+        }
       });
       modal.onDidDismiss((selectedDataSet: any) => {
         if (
@@ -183,7 +213,7 @@ export class UploadDataViaSmsComponent implements OnInit {
       modal.present();
     } else {
       this.appProvider.setNormalNotification(
-        "There are no entry form to select on " + this.selectedOrgUnit.name
+        'There are no entry form to select on selected organisation unit'
       );
     }
   }
@@ -208,12 +238,13 @@ export class UploadDataViaSmsComponent implements OnInit {
 
   openPeriodList() {
     if (this.selectedDataSet && this.selectedDataSet.id) {
-      let modal = this.modalCtrl.create("PeriodSelectionPage", {
+      let modal = this.modalCtrl.create('PeriodSelectionPage', {
         periodType: this.selectedDataSet.periodType,
         currentPeriodOffset: this.currentPeriodOffset,
         openFuturePeriods: this.selectedDataSet.openFuturePeriods,
         currentPeriod: this.selectedPeriod
       });
+
       modal.onDidDismiss((data: any) => {
         if (data && data.selectedPeriod) {
           this.selectedPeriod = data.selectedPeriod;
@@ -223,7 +254,7 @@ export class UploadDataViaSmsComponent implements OnInit {
       });
       modal.present();
     } else {
-      this.appProvider.setNormalNotification("Please select entry form first");
+      this.appProvider.setNormalNotification('Please select entry form first');
     }
   }
 
@@ -234,9 +265,9 @@ export class UploadDataViaSmsComponent implements OnInit {
       category.categoryOptions.length > 0
     ) {
       let currentIndex = this.dataSetCategoryCombo.categories.indexOf(category);
-      let modal = this.modalCtrl.create("DataDimensionSelectionPage", {
+      let modal = this.modalCtrl.create('DataDimensionSelectionPage', {
         categoryOptions: category.categoryOptions,
-        title: category.name + "'s selection",
+        title: category.name,
         currentSelection: this.selectedDataDimension[currentIndex]
           ? this.selectedDataDimension[currentIndex]
           : {}
@@ -250,37 +281,32 @@ export class UploadDataViaSmsComponent implements OnInit {
       modal.present();
     } else {
       let message =
-        "There is no option for " +
-        category.name +
-        " that associated with " +
-        this.selectedOrgUnit.name;
+        'There is no option for seleted category that associated with selected organisation unit';
       this.appProvider.setNormalNotification(message);
     }
   }
 
   updateDataSetCategoryCombo(categoryCombo) {
     let dataSetCategoryCombo = {};
-    if (categoryCombo.name != "default") {
-      dataSetCategoryCombo["id"] = categoryCombo.id;
-      dataSetCategoryCombo["name"] = categoryCombo.name;
+    if (categoryCombo.name != 'default') {
+      dataSetCategoryCombo['id'] = categoryCombo.id;
+      dataSetCategoryCombo['name'] = categoryCombo.name;
       let categories = this.dataSetProvider.getDataSetCategoryComboCategories(
         this.selectedOrgUnit.id,
         this.selectedDataSet.categoryCombo.categories
       );
-      dataSetCategoryCombo["categories"] = categories;
+      dataSetCategoryCombo['categories'] = categories;
       this.isDataSetDimensionApplicable = true;
-      this.isDataSetDimensionApplicableCategories = "Options for";
+
+      this.isDataSetDimensionApplicableCategories = 'All';
       categories.forEach((category: any) => {
         if (category.categoryOptions && category.categoryOptions.length == 0) {
-          this.isDataSetDimensionApplicableCategories =
-            this.isDataSetDimensionApplicableCategories +
-            " " +
-            category.name.toLowerCase();
           this.isDataSetDimensionApplicable = false;
         }
       });
-      this.isDataSetDimensionApplicableCategories +=
-        " are not applicable on " + this.selectedOrgUnit.name;
+      this.isDataSetDimensionApplicableCategories = this.translationMapper[
+        'All disaggregation are restricted from entry in selected organisation unit, please choose a different form or contact your support desk'
+      ];
     }
     this.selectedDataDimension = [];
     this.dataSetCategoryCombo = dataSetCategoryCombo;
@@ -289,12 +315,12 @@ export class UploadDataViaSmsComponent implements OnInit {
 
   getDataDimensions() {
     let cc = this.selectedDataSet.categoryCombo.id;
-    let cp = "";
+    let cp = '';
     this.selectedDataDimension.forEach((dimension: any, index: any) => {
       if (index == 0) {
         cp += dimension.id;
       } else {
-        cp += ";" + dimension.id;
+        cp += ';' + dimension.id;
       }
     });
     return { cc: cc, cp: cp };
@@ -306,7 +332,7 @@ export class UploadDataViaSmsComponent implements OnInit {
       this.selectedPeriod &&
       this.selectedPeriod.name &&
       this.selectedDataSet &&
-      this.selectedDataSet.categoryCombo.name != "default"
+      this.selectedDataSet.categoryCombo.name != 'default'
     ) {
       if (
         this.selectedDataDimension &&
@@ -324,7 +350,7 @@ export class UploadDataViaSmsComponent implements OnInit {
       } else {
         isFormReady = false;
       }
-    } else if (this.periodLabel == "Touch to select period") {
+    } else if (this.periodLabel == 'Touch to select period') {
       isFormReady = false;
     }
     return isFormReady;
@@ -347,13 +373,18 @@ export class UploadDataViaSmsComponent implements OnInit {
       this.sendDataViaSmsObject.dataDimension = this.getDataDimensions();
     }
     this.sendDataViaSmsObject.isLoading = true;
-    this.sendDataViaSmsObject.loadingMessage = "Loading Sms Configuration";
+    let key = 'Discovering SMS Configuration';
+    this.sendDataViaSmsObject.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.smsCommand
       .getSmsCommandForDataSet(this.selectedDataSet.id, this.currentUser)
       .subscribe(
         (smsCommandConfiguration: SmsCommand) => {
-          this.sendDataViaSmsObject.loadingMessage =
-            "Preparing entry form fields";
+          key = 'Preparing entry form fields';
+          this.sendDataViaSmsObject.loadingMessage = this.translationMapper[key]
+            ? this.translationMapper[key]
+            : key;
           this.dataSetProvider
             .getAllDataSetElementsMapper(this.currentUser)
             .subscribe(
@@ -361,7 +392,11 @@ export class UploadDataViaSmsComponent implements OnInit {
                 if (dataSetElementMapper[this.selectedDataSet.id]) {
                   let dataElements =
                     dataSetElementMapper[this.selectedDataSet.id];
-                  this.sendDataViaSmsObject.loadingMessage = "Preparing data";
+                  key = 'Preparing data';
+                  this.sendDataViaSmsObject.loadingMessage = this
+                    .translationMapper[key]
+                    ? this.translationMapper[key]
+                    : key;
                   this.smsCommand
                     .getEntryFormDataValuesObjectFromStorage(
                       this.selectedDataSet.id,
@@ -374,8 +409,11 @@ export class UploadDataViaSmsComponent implements OnInit {
                     .subscribe(
                       (entryFormDataValuesObject: any) => {
                         if (Object.keys(entryFormDataValuesObject).length > 0) {
-                          this.sendDataViaSmsObject.loadingMessage =
-                            "Preparing SMS";
+                          key = 'Preparing SMS';
+                          this.sendDataViaSmsObject.loadingMessage = this
+                            .translationMapper[key]
+                            ? this.translationMapper[key]
+                            : key;
                           this.smsCommand
                             .getSmsForReportingData(
                               smsCommandConfiguration,
@@ -384,12 +422,15 @@ export class UploadDataViaSmsComponent implements OnInit {
                             )
                             .subscribe(
                               (reportingSms: any) => {
-                                let message = "Sending " + reportingSms.length;
+                                let message = 'Sending ';
                                 if (reportingSms.length == 1) {
-                                  message += " SMS";
+                                  message += ' SMS';
                                 } else {
-                                  message += " SMSes";
+                                  message += ' SMSes';
                                 }
+                                message = this.translationMapper[message];
+                                message += ' (' + reportingSms.length + ')';
+
                                 this.sendDataViaSmsObject.loadingMessage = message;
                                 this.smsCommand
                                   .sendSmsForReportingData(
@@ -400,17 +441,17 @@ export class UploadDataViaSmsComponent implements OnInit {
                                     () => {
                                       this.sendDataViaSmsObject.isLoading = false;
                                       this.sendDataViaSmsObject.loadingMessage =
-                                        "";
+                                        '';
                                       this.appProvider.setNormalNotification(
-                                        "SMS has been sent"
+                                        'SMS has been sent'
                                       );
                                     },
                                     error => {
                                       this.sendDataViaSmsObject.isLoading = false;
                                       this.sendDataViaSmsObject.loadingMessage =
-                                        "";
+                                        '';
                                       this.appProvider.setNormalNotification(
-                                        "Fail to send some of SMS, Please go into your SMS inbox and resend them manually"
+                                        'Fail to send some of SMS, Please go into your SMS inbox and resend them manually'
                                       );
                                       console.log(JSON.stringify(error));
                                     }
@@ -418,43 +459,41 @@ export class UploadDataViaSmsComponent implements OnInit {
                               },
                               error => {
                                 this.sendDataViaSmsObject.isLoading = false;
-                                this.sendDataViaSmsObject.loadingMessage = "";
+                                this.sendDataViaSmsObject.loadingMessage = '';
                                 this.appProvider.setNormalNotification(
-                                  "Fail to preparing SMS for " +
-                                    this.selectedDataSet.name
+                                  'Fail to preparing SMS'
                                 );
                                 console.log(JSON.stringify(error));
                               }
                             );
                         } else {
                           this.sendDataViaSmsObject.isLoading = false;
-                          this.sendDataViaSmsObject.loadingMessage = "";
+                          this.sendDataViaSmsObject.loadingMessage = '';
                           this.appProvider.setNormalNotification(
-                            "There is no data to be sent via SMS for " +
-                              this.selectedDataSet.name
+                            'There is no data to be sent via SMS'
                           );
                         }
                       },
                       error => {
                         this.sendDataViaSmsObject.isLoading = false;
-                        this.sendDataViaSmsObject.loadingMessage = "";
+                        this.sendDataViaSmsObject.loadingMessage = '';
                         console.log(JSON.stringify(error));
                         this.appProvider.setNormalNotification(
-                          "Fail to load data values"
+                          'Fail to discover data values'
                         );
                       }
                     );
                 } else {
                   this.sendDataViaSmsObject.isLoading = false;
-                  this.sendDataViaSmsObject.loadingMessage = "";
+                  this.sendDataViaSmsObject.loadingMessage = '';
                   this.appProvider.setNormalNotification(
-                    this.selectedDataSet.name + " has no field set"
+                    'Selected entry form has no field set, please contact your help desk'
                   );
                 }
               },
               error => {
                 this.sendDataViaSmsObject.isLoading = false;
-                this.sendDataViaSmsObject.loadingMessage = "";
+                this.sendDataViaSmsObject.loadingMessage = '';
                 console.log(JSON.stringify(error));
               }
             );
@@ -462,11 +501,26 @@ export class UploadDataViaSmsComponent implements OnInit {
         error => {
           console.log(JSON.stringify(error));
           this.sendDataViaSmsObject.isLoading = false;
-          this.sendDataViaSmsObject.loadingMessage = "";
+          this.sendDataViaSmsObject.loadingMessage = '';
           this.appProvider.setNormalNotification(
-            "Fail to load sms configurations for " + this.selectedDataSet.name
+            'Fail to discover sms configurations'
           );
         }
       );
+  }
+
+  getValuesToTranslate() {
+    return [
+      'All disaggregation are restricted from entry in selected organisation unit, please choose a different form or contact your support desk',
+      'Discovering current user information',
+      'Mobile Number',
+      'Upload data',
+      'Discovering SMS Configuration',
+      'Preparing entry form fields',
+      'Preparing data',
+      'Preparing SMS',
+      'Sending SMS',
+      'Sending SMSes'
+    ];
   }
 }
