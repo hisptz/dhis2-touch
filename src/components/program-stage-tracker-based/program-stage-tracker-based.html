@@ -4,11 +4,11 @@
 <div *ngIf="!isLoading" class="over-flow-container">
   <!--programStageSections : {{ programStage.programStageSections |json }}<br><br>-->
   <div *ngIf="tableLayout && tableLayout.headers && tableLayout.headers.length > 0">
-    <table class="table table-bordered" width="100%" >
+    <table class="table table-bordered" width="100%">
       <thead *ngIf="tableLayout && tableLayout.headers">
-      <tr >
-        <th *ngFor="let header of tableLayout.headers" >{{ header}}</th>
-      </tr>
+        <tr>
+          <th *ngFor="let header of tableLayout.headers">{{ header}}</th>
+        </tr>
       </thead>
       <tbody *ngFor="let row of tableLayout.rows;let currentIndex = index">
         <tr [ngStyle]="{'background-color': isTableRowOpened[currentIndex] ? '#B9FFB9' :'#F4F4F4' }" (click)="openProgramStageEventEntryForm(currentIndex)">
@@ -19,28 +19,25 @@
         <tr *ngIf="isTableRowOpened[currentIndex]">
           <td colspan="100%">
             <div text-left>
-              <tracker-event-container
-                [programStage]="programStage"
-                [currentUser]="currentUser"
-                [(currentOpenEvent)]="currentEvents[currentIndex]"
-                [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
-                [isOpenRow]="'true'"
-                (onChange)="updateData($event)"></tracker-event-container>
-              <div >
+              <tracker-event-container [programStage]="programStage" [currentUser]="currentUser" [(currentOpenEvent)]="currentEvents[currentIndex]"
+                [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [isOpenRow]="'true'" (onChange)="updateData($event)"></tracker-event-container>
+              <div>
                 <div no-padding>
                   <div style="display: inline-block;width: 49.3%">
                     <div float-left>
-                      <button *ngIf="programStage.repeatable" [disabled]="isAddButtonDisabled" class="item-card" (click)="addRepeatableEvent(currentOpenEvent)" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
+                      <button *ngIf="programStage.repeatable" [disabled]="isAddButtonDisabled" class="item-card" (click)="addRepeatableEvent(currentOpenEvent)"
+                        color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
                         <ion-icon name="add" color="icon-color"></ion-icon>
-                        New event
+                        {{translationMapper['New event']}}
                       </button>
                     </div>
                   </div>
                   <div style="display: inline-block;width: 49.3%">
                     <div float-right>
-                      <div class="item-card" float-left color="danger"(click)="deleteEvent(currentEventId)"  *ngIf="couldEventBeDeleted()" padding ion-button clear text-center text-capitalize >
-                        <ion-icon name="trash" ></ion-icon>
-                        Delete
+                      <div class="item-card" float-left color="danger" (click)="deleteEvent(currentEventId)" *ngIf="couldEventBeDeleted()" padding
+                        ion-button clear text-center text-capitalize>
+                        <ion-icon name="trash"></ion-icon>
+                        {{translationMapper['Delete']}}
                       </div>
                     </div>
                   </div>
@@ -53,30 +50,27 @@
       </tbody>
     </table>
   </div>
-  <div *ngIf="isNewEventFormOpened" >
+  <div *ngIf="isNewEventFormOpened">
     <div class="item-card-with-no-margin" [ngStyle]="{'border-top':currentEvents.length > 0? '0px':''}">
-      <tracker-event-container
-        [programStage]="programStage"
-        [currentUser]="currentUser"
-        [(currentOpenEvent)]="currentOpenEvent"
-        [isOpenRow]="'false'"
-        [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
-        (onChange)="updateData($event)"></tracker-event-container>
+      <tracker-event-container [programStage]="programStage" [currentUser]="currentUser" [(currentOpenEvent)]="currentOpenEvent"
+        [isOpenRow]="'false'" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" (onChange)="updateData($event)"></tracker-event-container>
     </div>
     <div no-padding>
       <div style="display: inline-block;width: 49.3%">
         <div float-left>
-          <button *ngIf="programStage.repeatable" [disabled]="isAddButtonDisabled" class="item-card" (click)="addRepeatableEvent(currentOpenEvent)" color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
+          <button *ngIf="programStage.repeatable" [disabled]="isAddButtonDisabled" class="item-card" (click)="addRepeatableEvent(currentOpenEvent)"
+            color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
             <ion-icon name="add" color="icon-color"></ion-icon>
-            New event
+            {{translationMapper['New event']}}
           </button>
         </div>
       </div>
       <div style="display: inline-block;width: 49.3%">
         <div float-right>
-          <div class="item-card" float-left color="danger"(click)="deleteEvent(currentEventId)"  *ngIf="couldEventBeDeleted()" padding ion-button clear text-center text-capitalize >
-            <ion-icon name="trash" ></ion-icon>
-            Delete
+          <div class="item-card" float-left color="danger" (click)="deleteEvent(currentEventId)" *ngIf="couldEventBeDeleted()" padding
+            ion-button clear text-center text-capitalize>
+            <ion-icon name="trash"></ion-icon>
+            {{translationMapper['Delete']}}
           </div>
         </div>
       </div>
@@ -85,12 +79,14 @@
 
 
   <div class="item-card-program-stage-section">
-    <div class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex -1 )" padding ion-button clear text-center text-capitalize >
-      <ion-icon name="ios-arrow-back-outline" ></ion-icon>
+    <div class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex -1 )" padding ion-button clear
+      text-center text-capitalize>
+      <ion-icon name="ios-arrow-back-outline"></ion-icon>
     </div>
 
-    <div class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex + 1)" *ngIf="!isLastStage" padding ion-button clear text-center text-capitalize >
-      <ion-icon name="ios-arrow-forward-outline" ></ion-icon>
+    <div class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex + 1)" *ngIf="!isLastStage" padding
+      ion-button clear text-center text-capitalize>
+      <ion-icon name="ios-arrow-forward-outline"></ion-icon>
     </div>
 
   </div>

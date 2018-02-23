@@ -1,5 +1,6 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { IonicPage, NavParams, ViewController } from "ionic-angular";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { IonicPage, NavParams, ViewController } from 'ionic-angular';
+import { AppTranslationProvider } from '../../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the TrackedEntityWidgetSelectionPage page.
@@ -10,26 +11,38 @@ import { IonicPage, NavParams, ViewController } from "ionic-angular";
 
 @IonicPage()
 @Component({
-  selector: "page-tracked-entity-widget-selection",
-  templateUrl: "tracked-entity-widget-selection.html"
+  selector: 'page-tracked-entity-widget-selection',
+  templateUrl: 'tracked-entity-widget-selection.html'
 })
 export class TrackedEntityWidgetSelectionPage implements OnInit, OnDestroy {
   dashboardWidgets: any;
   currentWidget: any;
   icon: string;
+  translationMapper: any;
 
-  constructor(private navParams: NavParams, private viewCtrl: ViewController) {}
+  constructor(
+    private navParams: NavParams,
+    private viewCtrl: ViewController,
+    private appTranslation: AppTranslationProvider
+  ) {}
 
   ngOnInit() {
-    this.icon = "assets/icon/list-of-items.png";
-    this.dashboardWidgets = this.navParams.get("dashboardWidgets");
-    this.currentWidget = this.navParams.get("currentWidget");
+    this.icon = 'assets/icon/list-of-items.png';
+    this.dashboardWidgets = this.navParams.get('dashboardWidgets');
+    this.currentWidget = this.navParams.get('currentWidget');
+    this.translationMapper = {};
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+      },
+      error => {}
+    );
   }
 
   getFilteredList(ev: any) {
     let val = ev.target.value;
-    this.dashboardWidgets = this.navParams.get("dashboardWidgets");
-    if (val && val.trim() != "") {
+    this.dashboardWidgets = this.navParams.get('dashboardWidgets');
+    if (val && val.trim() != '') {
       this.dashboardWidgets = this.dashboardWidgets.filter(
         (dashboardWidget: any) => {
           return (
@@ -51,5 +64,9 @@ export class TrackedEntityWidgetSelectionPage implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.currentWidget = null;
     this.dashboardWidgets = null;
+  }
+
+  getValuesToTranslate() {
+    return ['There is no widget to select'];
   }
 }

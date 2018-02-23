@@ -1,18 +1,19 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   ActionSheetController,
   Content,
   IonicPage,
   ModalController,
   NavController
-} from "ionic-angular";
-import { TrackerCaptureProvider } from "../../../providers/tracker-capture/tracker-capture";
-import { UserProvider } from "../../../providers/user/user";
-import { AppProvider } from "../../../providers/app/app";
-import { ProgramsProvider } from "../../../providers/programs/programs";
-import { OrganisationUnitsProvider } from "../../../providers/organisation-units/organisation-units";
-import { TrackedEntityAttributeValuesProvider } from "../../../providers/tracked-entity-attribute-values/tracked-entity-attribute-values";
-import { EventCaptureFormProvider } from "../../../providers/event-capture-form/event-capture-form";
+} from 'ionic-angular';
+import { TrackerCaptureProvider } from '../../../providers/tracker-capture/tracker-capture';
+import { UserProvider } from '../../../providers/user/user';
+import { AppProvider } from '../../../providers/app/app';
+import { ProgramsProvider } from '../../../providers/programs/programs';
+import { OrganisationUnitsProvider } from '../../../providers/organisation-units/organisation-units';
+import { TrackedEntityAttributeValuesProvider } from '../../../providers/tracked-entity-attribute-values/tracked-entity-attribute-values';
+import { EventCaptureFormProvider } from '../../../providers/event-capture-form/event-capture-form';
+import { AppTranslationProvider } from '../../../providers/app-translation/app-translation';
 
 declare var dhis2: any;
 /**
@@ -24,14 +25,13 @@ declare var dhis2: any;
 
 @IonicPage()
 @Component({
-  selector: "page-tracker-entity-register",
-  templateUrl: "tracker-entity-register.html"
+  selector: 'page-tracker-entity-register',
+  templateUrl: 'tracker-entity-register.html'
 })
 export class TrackerEntityRegisterPage implements OnInit {
   currentProgram: any;
   currentOrganisationUnit: any;
   currentUser: any;
-
   programTrackedEntityAttributes: Array<any>;
   dashboardWidgets: Array<any>;
   programStages: Array<any>;
@@ -39,7 +39,6 @@ export class TrackerEntityRegisterPage implements OnInit {
   isLoading: boolean;
   isRegistrationProcessingRunning: boolean;
   loadingMessage: string;
-
   incidentDate: any;
   enrollmentDate: any;
   dataObject: any;
@@ -48,12 +47,10 @@ export class TrackerEntityRegisterPage implements OnInit {
   isTrackedEntityRegistered: boolean = false;
   trackedEntityInstance: string;
   icons: any = {};
-
   currentWidget: any;
   currentWidgetIndex: any;
-
   currentTrackedEntityId: string;
-
+  translationMapper: any;
   @ViewChild(Content) content: Content;
 
   constructor(
@@ -66,16 +63,33 @@ export class TrackerEntityRegisterPage implements OnInit {
     private programsProvider: ProgramsProvider,
     private trackedEntityAttributeValuesProvider: TrackedEntityAttributeValuesProvider,
     private organisationUnitsProvider: OrganisationUnitsProvider,
-    private trackerCaptureProvider: TrackerCaptureProvider
+    private trackerCaptureProvider: TrackerCaptureProvider,
+    private appTranslation: AppTranslationProvider
   ) {}
 
   ngOnInit() {
-    this.icons["addNewCase"] = "assets/icon/add-new-case.png";
-    this.icons["menu"] = "assets/icon/menu.png";
-    this.loadingMessage = "loading user information";
+    this.icons['addNewCase'] = 'assets/icon/add-new-case.png';
+    this.icons['menu'] = 'assets/icon/menu.png';
     this.isLoading = true;
     this.isRegistrationProcessingRunning = false;
-    let today = new Date().toISOString().split("T")[0];
+    this.translationMapper = {};
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+        this.loadingCurrentUserInformation();
+      },
+      error => {
+        this.loadingCurrentUserInformation();
+      }
+    );
+  }
+
+  loadingCurrentUserInformation() {
+    let key = 'Discovering current user information';
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
+    let today = new Date().toISOString().split('T')[0];
     this.dataObject = {};
     this.trackedEntityAttributesSavingStatusClass = {};
     this.trackedEntityAttributeValuesObject = {};
@@ -95,13 +109,15 @@ export class TrackerEntityRegisterPage implements OnInit {
       error => {
         console.log(error);
         this.isLoading = false;
-        this.appProvider.setNormalNotification("fail to load user information");
+        this.appProvider.setNormalNotification(
+          'Fail to discover current user information'
+        );
       }
     );
   }
 
   resetRegistration() {
-    let today = new Date().toISOString().split("T")[0];
+    let today = new Date().toISOString().split('T')[0];
     this.dataObject = {};
     this.trackedEntityAttributeValuesObject = {};
     this.incidentDate = today;
@@ -116,7 +132,10 @@ export class TrackerEntityRegisterPage implements OnInit {
   }
 
   loadingProgramStages(programId, currentUser) {
-    this.loadingMessage = "loading program stages";
+    let key = 'Discovering program stages';
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.eventCaptureFormProvider
       .getProgramStages(programId, currentUser)
       .subscribe(
@@ -137,13 +156,18 @@ export class TrackerEntityRegisterPage implements OnInit {
         error => {
           console.log(JSON.stringify(error));
           this.isLoading = false;
-          this.appProvider.setNormalNotification("fail to load program stages");
+          this.appProvider.setNormalNotification(
+            'Fail to discover program stages'
+          );
         }
       );
   }
 
   loadTrackedEntityRegistration(programId, currentUser) {
-    this.loadingMessage = "loading registration form";
+    let key = 'Discovering registration form';
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.isLoading = true;
     this.trackerCaptureProvider
       .getTrackedEntityRegistration(programId, currentUser)
@@ -157,7 +181,7 @@ export class TrackerEntityRegisterPage implements OnInit {
           this.isLoading = false;
           console.log(JSON.stringify(error));
           this.appProvider.setNormalNotification(
-            "fail to load registration form"
+            'Fail to discover registration form'
           );
         }
       );
@@ -166,16 +190,16 @@ export class TrackerEntityRegisterPage implements OnInit {
   getDashboardWidgets() {
     return [
       {
-        id: "enrollment",
-        name: "Enrollment & Profile",
-        icon: "assets/icon/profile.png"
+        id: 'enrollment',
+        name: 'Enrollment & Profile',
+        icon: 'assets/icon/profile.png'
       }
     ];
   }
 
   openWidgetList() {
     if (this.isTrackedEntityRegistered) {
-      let modal = this.modalCtrl.create("TrackedEntityWidgetSelectionPage", {
+      let modal = this.modalCtrl.create('TrackedEntityWidgetSelectionPage', {
         dashboardWidgets: this.dashboardWidgets,
         currentWidget: this.currentWidget
       });
@@ -187,7 +211,9 @@ export class TrackerEntityRegisterPage implements OnInit {
       });
       modal.present();
     } else {
-      this.appProvider.setNormalNotification("a case has not yet registered");
+      this.appProvider.setNormalNotification(
+        'A tracked entity instance has not yet registered'
+      );
     }
   }
 
@@ -213,7 +239,7 @@ export class TrackerEntityRegisterPage implements OnInit {
 
   //@todo changes of enrollments as well
   updateData(updateDataValue) {
-    let id = updateDataValue.id.split("-")[0];
+    let id = updateDataValue.id.split('-')[0];
     this.currentTrackedEntityId = updateDataValue.id;
     this.trackedEntityAttributeValuesObject[id] = updateDataValue.value;
     this.dataObject[updateDataValue.id] = updateDataValue;
@@ -228,15 +254,19 @@ export class TrackerEntityRegisterPage implements OnInit {
 
   deleteTrackedEntity(trackedEntityInstanceId) {
     const actionSheet = this.actionSheetCtrl.create({
-      title:
-        "You are about to delete all information related to this tracked entity instance, are you sure?",
+      title: this.translationMapper[
+        'You are about to delete all information related to this tracked entity instance, are you sure?'
+      ],
       buttons: [
         {
-          text: "Yes",
+          text: this.translationMapper['Yes'],
           handler: () => {
             this.isLoading = true;
-            this.loadingMessage =
-              "deleting all information related to this tracked entity instance";
+            let key =
+              'Deleting all information related to this tracked entity instance';
+            this.loadingMessage = this.translationMapper[key]
+              ? this.translationMapper[key]
+              : key;
             this.trackerCaptureProvider
               .deleteTrackedEntityInstance(
                 trackedEntityInstanceId,
@@ -246,21 +276,21 @@ export class TrackerEntityRegisterPage implements OnInit {
                 () => {
                   this.navCtrl.pop();
                   this.appProvider.setNormalNotification(
-                    "tracked entity instance has been delete successfully"
+                    'A tracked entity instance has been deleted successfully'
                   );
                 },
                 error => {
                   this.isLoading = false;
                   console.log(JSON.stringify(error));
                   this.appProvider.setNormalNotification(
-                    "fail to delete all information related to this tracked entity instance"
+                    'Fail to delete all information related to this tracked entity instance'
                   );
                 }
               );
           }
         },
         {
-          text: "No",
+          text: this.translationMapper['No'],
           handler: () => {}
         }
       ]
@@ -289,25 +319,17 @@ export class TrackerEntityRegisterPage implements OnInit {
             this.trackedEntityAttributesSavingStatusClass[
               this.currentTrackedEntityId
             ] =
-              "input-field-container-success";
+              'input-field-container-success';
           },
           error => {
             this.trackedEntityAttributesSavingStatusClass[
               this.currentTrackedEntityId
             ] =
-              "input-field-container-failed";
+              'input-field-container-failed';
             console.log(JSON.stringify(error));
           }
         );
     } else {
-      let caseName = "case";
-      if (
-        this.currentProgram.trackedEntity.displayName &&
-        this.currentProgram.trackedEntity &&
-        this.currentProgram.trackedEntity.displayName
-      ) {
-        caseName = this.currentProgram.trackedEntity.displayName;
-      }
       this.trackerCaptureProvider
         .saveTrackedEntityRegistration(
           this.incidentDate,
@@ -318,15 +340,15 @@ export class TrackerEntityRegisterPage implements OnInit {
         .subscribe(
           (reseponse: any) => {
             this.appProvider.setNormalNotification(
-              "A " + caseName + " has been saved successfully"
+              'A tracked entity instance has been saved successfully'
             );
             this.isTrackedEntityRegistered = true;
             Object.keys(this.trackedEntityAttributeValuesObject).forEach(
               key => {
                 this.trackedEntityAttributesSavingStatusClass[
-                  key + "-trackedEntityAttribute"
+                  key + '-trackedEntityAttribute'
                 ] =
-                  "input-field-container-success";
+                  'input-field-container-success';
               }
             );
             this.registerEntity();
@@ -335,13 +357,13 @@ export class TrackerEntityRegisterPage implements OnInit {
             Object.keys(this.trackedEntityAttributeValuesObject).forEach(
               key => {
                 this.trackedEntityAttributesSavingStatusClass[
-                  key + "-trackedEntityAttribute"
+                  key + '-trackedEntityAttribute'
                 ] =
-                  "input-field-container-failed";
+                  'input-field-container-failed';
               }
             );
             this.appProvider.setNormalNotification(
-              "Fail to save a " + caseName
+              'Fail to save a tracked entity instance'
             );
             console.log(JSON.stringify(error));
           }
@@ -373,5 +395,17 @@ export class TrackerEntityRegisterPage implements OnInit {
       }
     );
     return result;
+  }
+
+  getValuesToTranslate() {
+    return [
+      'Discovering current user information',
+      'Discovering program stages',
+      'Discovering registration form',
+      'You are about to delete all information related to this tracked entity instance, are you sure?',
+      'Yes',
+      'No',
+      'Deleting all information related to this tracked entity instance'
+    ];
   }
 }

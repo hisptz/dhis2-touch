@@ -7,7 +7,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>
-      <span [translate]="'list of widgets'"></span>
+      <span [translate]="'List of widgets'"></span>
     </ion-title>
     <ion-buttons start>
       <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
@@ -19,7 +19,7 @@
 
 
 <ion-content>
-  <ion-searchbar animated="true" autocomplete="on" (ionInput)="getFilteredList($event)"></ion-searchbar>
+  <ion-searchbar animated="true" autocomplete="on" placeholder="{{'Search'|translate}}" (ionInput)="getFilteredList($event)"></ion-searchbar>
   <ion-grid>
     <ion-row>
       <ion-col>
@@ -41,7 +41,7 @@
             </div>
           </ion-item>
           <ion-item *ngIf="dashboardWidgets.length == 0">
-            <empty-list-notification [emptyListMessage]="'there is no widget to select'"></empty-list-notification>
+            <empty-list-notification [emptyListMessage]="translationMapper['There is no widget to select']"></empty-list-notification>
           </ion-item>
         </ion-list>
       </ion-col>
