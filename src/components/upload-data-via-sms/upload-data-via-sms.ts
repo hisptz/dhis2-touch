@@ -503,7 +503,7 @@ export class UploadDataViaSmsComponent implements OnInit {
           this.sendDataViaSmsObject.isLoading = false;
           this.sendDataViaSmsObject.loadingMessage = '';
           this.appProvider.setNormalNotification(
-            'Fail to discover sms configurations'
+            'Fail to discover SMS configurations'
           );
         }
       );
@@ -514,6 +514,10 @@ export class UploadDataViaSmsComponent implements OnInit {
       'All disaggregation are restricted from entry in selected organisation unit, please choose a different form or contact your support desk',
       'Discovering current user information',
       'Mobile Number',
+      'Touch to select option',
+      'Touch to select organisation unit',
+      'Touch to select entry form',
+      'Touch to select period',
       'Upload data',
       'Discovering SMS Configuration',
       'Preparing entry form fields',

@@ -34,7 +34,7 @@
         <ion-checkbox [(ngModel)]="selectedItems.enrollments" disabled="{{(dataObject.enrollments == 0)?'true':'false'}}" (ionChange)="updateItemsToBeDeleted()"></ion-checkbox>
       </ion-item>
       <button [disabled]="( itemsToBeDeleted.length == 0)" ion-button full text-capitalize (tap)="deleteSelectedItems()">
-        {{ translationMapper['Clear local data'] }}}
+        {{ translationMapper['Clear local data'] }}
       </button>
     </ion-col>
   </ion-row>

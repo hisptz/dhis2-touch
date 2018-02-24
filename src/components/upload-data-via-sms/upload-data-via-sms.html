@@ -7,13 +7,14 @@
     <ion-row>
       <ion-col>
         <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openOrganisationUnitTree()">
-          <img class="side-menu-icon" [src]="icons.orgUnit" />&nbsp;&nbsp; {{ organisationUnitLabel }}
+          <img class="side-menu-icon" [src]="icons.orgUnit" />&nbsp;&nbsp; {{ (translationMapper[organisationUnitLabel])? translationMapper[organisationUnitLabel] :organisationUnitLabel
+          }}
         </div>
         <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openEntryFormList()">
-          <img class="side-menu-icon" [src]="icons.dataSet" />&nbsp;&nbsp; {{ dataSetLabel }}
+          <img class="side-menu-icon" [src]="icons.dataSet" />&nbsp;&nbsp; {{ (translationMapper[dataSetLabel])? translationMapper[dataSetLabel] :dataSetLabel }}
         </div>
         <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openPeriodList()">
-          <img class="side-menu-icon" [src]="icons.period" />&nbsp;&nbsp; {{ periodLabel }}
+          <img class="side-menu-icon" [src]="icons.period" />&nbsp;&nbsp; {{ (translationMapper[periodLabel])? translationMapper[periodLabel] :periodLabel }}
         </div>
         <div *ngIf="selectedPeriod && selectedPeriod.iso && dataSetCategoryCombo && dataSetCategoryCombo.id ">
           <div *ngIf="isDataSetDimensionApplicable">
@@ -25,7 +26,7 @@
                 </div>
                 <div *ngIf="selectedDataDimension[categoryIndex]">{{ selectedDataDimension[categoryIndex].name }}</div>
                 <div *ngIf="!selectedDataDimension[categoryIndex]">
-                  <span [translate]="'Touch to select option'"></span>
+                  <span>{{translationMapper['Touch to select option'] }}</span>
                 </div>
               </div>
             </div>
