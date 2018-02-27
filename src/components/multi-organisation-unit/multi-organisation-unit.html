@@ -1,4 +1,4 @@
 <div *ngFor="let organisationUnit of organisationUnits;let currentIndex = index;">
-  <multi-organisation-unit-tree [organisationUnit]="organisationUnit" [currentUser]="currentUser" [selectedOrgUnits]="selectedOrgUnits"
-    [toggledOuIds]="toggledOuIds"></multi-organisation-unit-tree>
+  <multi-organisation-unit-tree [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened" [organisationUnit]="organisationUnit"
+    [currentUser]="currentUser" [selectedOrgUnits]="selectedOrgUnits" [toggledOuIds]="toggledOuIds"></multi-organisation-unit-tree>
 </div>

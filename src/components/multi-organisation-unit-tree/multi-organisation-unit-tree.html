@@ -3,14 +3,37 @@
     item-left></ion-icon>
   <ion-icon (click)="toggleTree(organisationUnit)" name="ios-remove-circle-outline" *ngIf="(toggledOuIds.indexOf(organisationUnit.id) > -1) && (organisationUnit.children && organisationUnit.children.length > 0)"
     item-left></ion-icon>
-  <div (click)="selectOrganisationUnit(organisationUnit)">
-    {{ organisationUnit.name }}
+  <div (click)="selectOrganisationUnit(organisationUnit)" seletectedOrganisationUnitIds>
+    <span ion-text [color]="(seletectedOrganisationUnitIds.indexOf(organisationUnit.id) > -1) ?'current' : 'font-color'">{{ organisationUnit.name }}</span>
   </div>
 </ion-item>
 
-<div padding-left *ngIf="(toggledOuIds.indexOf(organisationUnit.id) > -1)">
-  <div *ngFor="let organisationUnit of organisationUnit.children">
-    <multi-organisation-unit-tree [selectedOrgUnits]="selectedOrgUnits" [organisationUnit]="organisationUnit" [currentUser]="currentUser"
-      [toggledOuIds]="toggledOuIds"></multi-organisation-unit-tree>
+<div padding-left *ngIf="hasOrgUnitChildrenOpened[organisationUnit.id]">
+  <div *ngIf="!(isOrganisationUnitsFetched && hasOrgUnitChildrenLoaded)">
+    <ion-item>
+      <div style="text-align: center" item-left>
+        <loading loadingSize="small"></loading>
+      </div>
+      <span>
+        {{ 'Discovering organisation units' }}
+      </span>
+    </ion-item>
   </div>
+
+  <div *ngIf="hasErrorOccurred">
+    <ion-item>
+      {{ 'Fail to discover organisation unit children' }}
+    </ion-item>
+  </div>
+
+  <div *ngIf="isOrganisationUnitsFetched && hasOrgUnitChildrenLoaded && !hasErrorOccurred">
+    <div *ngFor="let organisationUnit of organisationUnit.children">
+      <multi-organisation-unit-tree [selectedOrgUnits]="selectedOrgUnits" [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened"
+        [organisationUnit]="organisationUnit" [currentUser]="currentUser" [toggledOuIds]="toggledOuIds"></multi-organisation-unit-tree>
+    </div>
+  </div>
+
+
+
+
 </div>

@@ -16,14 +16,21 @@ export class MultiOrganisationUnitTreeComponent implements OnInit {
   @Input() organisationUnit;
   @Input() selectedOrgUnits;
   @Input() currentUser;
+  @Input() hasOrgUnitChildrenOpened;
+  seletectedOrganisationUnitIds: Array<string> = [];
+
+  isOrganisationUnitsFetched: boolean = true;
+  hasErrorOccurred: boolean = false;
+  hasOrgUnitChildrenLoaded: boolean;
 
   constructor(private organisationUnitProvider: OrganisationUnitsProvider) {}
 
   ngOnInit() {
     if (this.selectedOrgUnits && this.selectedOrgUnits.length > 0) {
       let ids = [];
-      this.selectedOrgUnits.map((ou: any) => {
-        ids.push(ou.id);
+      this.selectedOrgUnits.map((selectedOrgUnit: any) => {
+        ids.push(selectedOrgUnit.id);
+        this.seletectedOrganisationUnitIds.push(selectedOrgUnit.id);
       });
       this.organisationUnitProvider
         .getOrganisationUnitsByIds(ids, this.currentUser)
@@ -35,8 +42,7 @@ export class MultiOrganisationUnitTreeComponent implements OnInit {
             if (parentCopy.indexOf(this.organisationUnit.id) > -1) {
               selectedOrganisationUnit.ancestors.forEach((ancestor: any) => {
                 if (ancestor.id == this.organisationUnit.id) {
-                  console.log('expand');
-                  this.expandTree(ancestor);
+                  this.toggleTree(ancestor);
                 }
               });
             }
@@ -46,16 +52,23 @@ export class MultiOrganisationUnitTreeComponent implements OnInit {
   }
 
   toggleTree(organisationUnit) {
-    let ouIndex = this.toggledOuIds.indexOf(organisationUnit.id);
-    if (ouIndex > -1) {
-      this.toggledOuIds.splice(ouIndex, 1);
+    console.log('Toggle : ' + organisationUnit.name);
+    if (this.hasOrgUnitChildrenOpened[organisationUnit.id]) {
+      this.hasOrgUnitChildrenOpened[organisationUnit.id] = !this
+        .hasOrgUnitChildrenOpened[organisationUnit.id];
+    } else if (
+      Object.keys(this.hasOrgUnitChildrenOpened).indexOf(organisationUnit.id) >
+      -1
+    ) {
+      this.hasOrgUnitChildrenOpened[organisationUnit.id] = !this
+        .hasOrgUnitChildrenOpened[organisationUnit.id];
+      this.isOrganisationUnitsFetched = true;
+      this.hasOrgUnitChildrenLoaded = true;
+      this.hasErrorOccurred = false;
     } else {
-      this.expandTree(organisationUnit);
-    }
-  }
-
-  expandTree(organisationUnit) {
-    if (this.toggledOuIds.indexOf(organisationUnit.id) == -1) {
+      this.isOrganisationUnitsFetched = false;
+      this.hasOrgUnitChildrenLoaded = false;
+      this.hasOrgUnitChildrenOpened[organisationUnit.id] = true;
       let childrenOrganisationUnitIds = this.getOrganisationUnitsChildrenIds(
         organisationUnit
       );
@@ -66,13 +79,15 @@ export class MultiOrganisationUnitTreeComponent implements OnInit {
         )
         .subscribe(
           (childrenOrganisationUnits: any) => {
-            if (this.organisationUnit && this.organisationUnit.children) {
-              this.organisationUnit.children = childrenOrganisationUnits;
-              this.toggledOuIds.push(organisationUnit.id);
-            }
+            this.organisationUnit.children = childrenOrganisationUnits;
+            this.isOrganisationUnitsFetched = true;
+            this.hasOrgUnitChildrenLoaded = true;
+            this.hasErrorOccurred = false;
           },
           error => {
-            console.log(JSON.stringify(error));
+            this.isOrganisationUnitsFetched = true;
+            this.hasOrgUnitChildrenLoaded = true;
+            this.hasErrorOccurred = true;
           }
         );
     }
