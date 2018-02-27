@@ -27,12 +27,17 @@ export class MultiOrganisationUnitComponent implements OnInit {
     this.selectedOrgUnits = [
       {
         id: 'YuQRtpLP10I',
-        name: 'Kunike',
+        name: '',
         type: 'ORGANISATION_UNIT'
       },
       {
         id: 'g8upMTyEZGZ',
-        name: 'Kunike',
+        name: '',
+        type: 'ORGANISATION_UNIT'
+      },
+      {
+        id: 'DiszpKrYNg8',
+        name: '',
         type: 'ORGANISATION_UNIT'
       }
     ];

@@ -29,30 +29,46 @@ export class MultiOrganisationUnitTreeComponent implements OnInit {
     if (this.selectedOrgUnits && this.selectedOrgUnits.length > 0) {
       let ids = [];
       this.selectedOrgUnits.map((selectedOrgUnit: any) => {
-        ids.push(selectedOrgUnit.id);
+        if (
+          Object.keys(this.hasOrgUnitChildrenOpened).indexOf(
+            selectedOrgUnit.id
+          ) == -1
+        ) {
+          ids.push(selectedOrgUnit.id);
+        }
         this.seletectedOrganisationUnitIds.push(selectedOrgUnit.id);
       });
-      this.organisationUnitProvider
-        .getOrganisationUnitsByIds(ids, this.currentUser)
-        .subscribe((selectedOrganisationUnits: any) => {
-          selectedOrganisationUnits.map((selectedOrganisationUnit: any) => {
-            let parentCopy = selectedOrganisationUnit.path
-              .substring(1, selectedOrganisationUnit.path.length)
-              .split('/');
-            if (parentCopy.indexOf(this.organisationUnit.id) > -1) {
-              selectedOrganisationUnit.ancestors.forEach((ancestor: any) => {
-                if (ancestor.id == this.organisationUnit.id) {
-                  this.toggleTree(ancestor);
-                }
-              });
-            }
+      if (ids.length > 0) {
+        this.organisationUnitProvider
+          .getOrganisationUnitsByIds(ids, this.currentUser)
+          .subscribe((selectedOrganisationUnits: any) => {
+            selectedOrganisationUnits.map((selectedOrganisationUnit: any) => {
+              let parentCopy = selectedOrganisationUnit.path
+                .substring(1, selectedOrganisationUnit.path.length)
+                .split('/');
+              if (parentCopy.indexOf(this.organisationUnit.id) > -1) {
+                selectedOrganisationUnit.ancestors.forEach((ancestor: any) => {
+                  if (
+                    ancestor.id == this.organisationUnit.id &&
+                    Object.keys(this.hasOrgUnitChildrenOpened).indexOf(
+                      ancestor.id
+                    ) == -1
+                  ) {
+                    this.toggleTree(ancestor);
+                  } else {
+                    this.isOrganisationUnitsFetched = true;
+                    this.hasOrgUnitChildrenLoaded = true;
+                    this.hasErrorOccurred = false;
+                  }
+                });
+              }
+            });
           });
-        });
+      }
     }
   }
 
   toggleTree(organisationUnit) {
-    console.log('Toggle : ' + organisationUnit.name);
     if (this.hasOrgUnitChildrenOpened[organisationUnit.id]) {
       this.hasOrgUnitChildrenOpened[organisationUnit.id] = !this
         .hasOrgUnitChildrenOpened[organisationUnit.id];
@@ -85,6 +101,8 @@ export class MultiOrganisationUnitTreeComponent implements OnInit {
             this.hasErrorOccurred = false;
           },
           error => {
+            console.log(JSON.stringify(error));
+            let message = 'Fail to discover organisation unit children';
             this.isOrganisationUnitsFetched = true;
             this.hasOrgUnitChildrenLoaded = true;
             this.hasErrorOccurred = true;
