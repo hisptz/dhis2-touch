@@ -10,6 +10,7 @@
 
 <div padding-left *ngIf="(toggledOuIds.indexOf(organisationUnit.id) > -1)">
   <div *ngFor="let organisationUnit of organisationUnit.children">
-    <multi-organisation-unit-tree [organisationUnit]="organisationUnit" [currentUser]="currentUser" [toggledOuIds]="toggledOuIds"></multi-organisation-unit-tree>
+    <multi-organisation-unit-tree [selectedOrgUnits]="selectedOrgUnits" [organisationUnit]="organisationUnit" [currentUser]="currentUser"
+      [toggledOuIds]="toggledOuIds"></multi-organisation-unit-tree>
   </div>
 </div>
