@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { OrganisationUnitsProvider } from '../../providers/organisation-units/organisation-units';
+import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the MultiOrganisationUnitTreeComponent component.
@@ -18,14 +19,30 @@ export class MultiOrganisationUnitTreeComponent implements OnInit {
   @Input() currentUser;
   @Input() hasOrgUnitChildrenOpened;
   seletectedOrganisationUnitIds: Array<string> = [];
-
+  translationMapper: any;
   isOrganisationUnitsFetched: boolean = true;
   hasErrorOccurred: boolean = false;
   hasOrgUnitChildrenLoaded: boolean;
 
-  constructor(private organisationUnitProvider: OrganisationUnitsProvider) {}
+  constructor(
+    private organisationUnitProvider: OrganisationUnitsProvider,
+    private appTranslation: AppTranslationProvider
+  ) {}
 
   ngOnInit() {
+    this.translationMapper = {};
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+        this.setMetadata();
+      },
+      error => {
+        this.setMetadata();
+      }
+    );
+  }
+
+  setMetadata() {
     if (this.selectedOrgUnits && this.selectedOrgUnits.length > 0) {
       let ids = [];
       this.selectedOrgUnits.map((selectedOrgUnit: any) => {
@@ -121,5 +138,12 @@ export class MultiOrganisationUnitTreeComponent implements OnInit {
 
   selectOrganisationUnit(organisationUnit) {
     console.log(organisationUnit.name);
+  }
+
+  getValuesToTranslate() {
+    return [
+      'Discovering organisation units',
+      'Fail to discover organisation unit children'
+    ];
   }
 }

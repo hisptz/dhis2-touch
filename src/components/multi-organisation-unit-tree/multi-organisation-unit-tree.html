@@ -1,7 +1,7 @@
 <ion-item>
-  <ion-icon (click)="toggleTree(organisationUnit)" name="ios-add-circle-outline" *ngIf="(toggledOuIds.indexOf(organisationUnit.id) == -1) && (organisationUnit.children && organisationUnit.children.length > 0)"
+  <ion-icon (click)="toggleTree(organisationUnit)" name="ios-add-circle-outline" *ngIf="(!hasOrgUnitChildrenOpened[organisationUnit.id]) && (organisationUnit.children && organisationUnit.children.length > 0)"
     item-left></ion-icon>
-  <ion-icon (click)="toggleTree(organisationUnit)" name="ios-remove-circle-outline" *ngIf="(toggledOuIds.indexOf(organisationUnit.id) > -1) && (organisationUnit.children && organisationUnit.children.length > 0)"
+  <ion-icon (click)="toggleTree(organisationUnit)" name="ios-remove-circle-outline" *ngIf="(hasOrgUnitChildrenOpened[organisationUnit.id]) && (organisationUnit.children && organisationUnit.children.length > 0)"
     item-left></ion-icon>
   <div (click)="selectOrganisationUnit(organisationUnit)" seletectedOrganisationUnitIds>
     <span ion-text [color]="(seletectedOrganisationUnitIds.indexOf(organisationUnit.id) > -1) ?'current' : 'font-color'">{{ organisationUnit.name }}</span>
@@ -15,25 +15,19 @@
         <loading loadingSize="small"></loading>
       </div>
       <span>
-        {{ 'Discovering organisation units' }}
+        {{ translationMapper['Discovering organisation units'] }}
       </span>
     </ion-item>
   </div>
-
   <div *ngIf="hasErrorOccurred">
     <ion-item>
-      {{ 'Fail to discover organisation unit children' }}
+      {{ translationMapper['Fail to discover organisation unit children'] }}
     </ion-item>
   </div>
-
   <div *ngIf="isOrganisationUnitsFetched && hasOrgUnitChildrenLoaded && !hasErrorOccurred">
     <div *ngFor="let organisationUnit of organisationUnit.children">
       <multi-organisation-unit-tree [selectedOrgUnits]="selectedOrgUnits" [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened"
         [organisationUnit]="organisationUnit" [currentUser]="currentUser" [toggledOuIds]="toggledOuIds"></multi-organisation-unit-tree>
     </div>
   </div>
-
-
-
-
 </div>
