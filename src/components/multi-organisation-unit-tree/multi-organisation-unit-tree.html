@@ -1,0 +1,15 @@
+<ion-item>
+  <ion-icon (click)="toggleTree(organisationUnit)" name="ios-add-circle-outline" *ngIf="(toggledOuIds.indexOf(organisationUnit.id) == -1) && (organisationUnit.children && organisationUnit.children.length > 0)"
+    item-left></ion-icon>
+  <ion-icon (click)="toggleTree(organisationUnit)" name="ios-remove-circle-outline" *ngIf="(toggledOuIds.indexOf(organisationUnit.id) > -1) && (organisationUnit.children && organisationUnit.children.length > 0)"
+    item-left></ion-icon>
+  <div (click)="selectOrganisationUnit(organisationUnit)">
+    {{ organisationUnit.name }}
+  </div>
+</ion-item>
+
+<div padding-left *ngIf="(toggledOuIds.indexOf(organisationUnit.id) > -1)">
+  <div *ngFor="let organisationUnit of organisationUnit.children">
+    <multi-organisation-unit-tree [organisationUnit]="organisationUnit" [currentUser]="currentUser" [toggledOuIds]="toggledOuIds"></multi-organisation-unit-tree>
+  </div>
+</div>
