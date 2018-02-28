@@ -137,7 +137,43 @@ export class MultiOrganisationUnitTreeComponent implements OnInit {
   }
 
   selectOrganisationUnit(organisationUnit) {
-    console.log(organisationUnit.name);
+    if (
+      this.isOrganisationUnitPreviousSelected(
+        this.selectedOrgUnits,
+        organisationUnit
+      )
+    ) {
+      let index = this.seletectedOrganisationUnitIds.indexOf(
+        organisationUnit.id
+      );
+      this.seletectedOrganisationUnitIds.splice(index, 1);
+      let newSelectedOrganisationUnits = [];
+      this.selectedOrgUnits.map((selectedOrgUnit: any) => {
+        if (selectedOrgUnit.id != organisationUnit.id) {
+          newSelectedOrganisationUnits.push(selectedOrgUnit);
+        }
+      });
+      this.selectedOrgUnits = [];
+      this.selectedOrgUnits = newSelectedOrganisationUnits;
+    } else {
+      const seletectOrganisationUnit = {
+        id: organisationUnit.id,
+        name: organisationUnit.name,
+        type: 'ORGANISATION_UNIT'
+      };
+      this.seletectedOrganisationUnitIds.push(organisationUnit.id);
+      this.selectedOrgUnits.push(seletectOrganisationUnit);
+    }
+  }
+
+  isOrganisationUnitPreviousSelected(selectedOrgUnits, organisationUnit) {
+    let result = false;
+    selectedOrgUnits.map((selectedOrgUnit: any) => {
+      if (selectedOrgUnit.id == organisationUnit.id) {
+        result = true;
+      }
+    });
+    return result;
   }
 
   getValuesToTranslate() {

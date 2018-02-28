@@ -26,7 +26,7 @@
   </div>
   <div *ngIf="isOrganisationUnitsFetched && hasOrgUnitChildrenLoaded && !hasErrorOccurred">
     <div *ngFor="let organisationUnit of organisationUnit.children">
-      <multi-organisation-unit-tree [selectedOrgUnits]="selectedOrgUnits" [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened"
+      <multi-organisation-unit-tree [(selectedOrgUnits)]="selectedOrgUnits" [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened"
         [organisationUnit]="organisationUnit" [currentUser]="currentUser" [toggledOuIds]="toggledOuIds"></multi-organisation-unit-tree>
     </div>
   </div>
