@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { OrganisationUnitsProvider } from '../../providers/organisation-units/organisation-units';
 import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 
@@ -18,6 +18,9 @@ export class MultiOrganisationUnitTreeComponent implements OnInit {
   @Input() selectedOrgUnits;
   @Input() currentUser;
   @Input() hasOrgUnitChildrenOpened;
+  @Output() activate = new EventEmitter();
+  @Output() deactivate = new EventEmitter();
+
   seletectedOrganisationUnitIds: Array<string> = [];
   translationMapper: any;
   isOrganisationUnitsFetched: boolean = true;
@@ -155,6 +158,8 @@ export class MultiOrganisationUnitTreeComponent implements OnInit {
       });
       this.selectedOrgUnits = [];
       this.selectedOrgUnits = newSelectedOrganisationUnits;
+      //deactivate ou
+      this.onDeactivateOu(organisationUnit);
     } else {
       const seletectOrganisationUnit = {
         id: organisationUnit.id,
@@ -163,7 +168,17 @@ export class MultiOrganisationUnitTreeComponent implements OnInit {
       };
       this.seletectedOrganisationUnitIds.push(organisationUnit.id);
       this.selectedOrgUnits.push(seletectOrganisationUnit);
+      //activate ou
+      this.onActivateOu(organisationUnit);
     }
+  }
+
+  onDeactivateOu(organisationUnit) {
+    this.deactivate.emit(organisationUnit);
+  }
+
+  onActivateOu(organisationUnit) {
+    this.activate.emit(organisationUnit);
   }
 
   isOrganisationUnitPreviousSelected(selectedOrgUnits, organisationUnit) {

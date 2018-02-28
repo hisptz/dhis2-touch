@@ -78,6 +78,21 @@ export class MultiOrganisationUnitComponent implements OnInit {
         }
       );
   }
+  onDeactivateOu(organisationUnit) {
+    const data = {
+      node: {
+        data: organisationUnit
+      }
+    };
+    this.deactivate.emit(data);
+  }
 
-  //node.data
+  onActivateOu(organisationUnit) {
+    const data = {
+      node: {
+        data: organisationUnit
+      }
+    };
+    this.activate.emit(data);
+  }
 }
