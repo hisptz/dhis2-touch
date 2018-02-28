@@ -1,23 +1,26 @@
-<ion-item>
-  <ion-icon (click)="toggleTree(organisationUnit)" name="ios-add-circle-outline" *ngIf="(!hasOrgUnitChildrenOpened[organisationUnit.id]) && (organisationUnit.children && organisationUnit.children.length > 0)"
-    item-left></ion-icon>
-  <ion-icon (click)="toggleTree(organisationUnit)" name="ios-remove-circle-outline" *ngIf="(hasOrgUnitChildrenOpened[organisationUnit.id]) && (organisationUnit.children && organisationUnit.children.length > 0)"
-    item-left></ion-icon>
-  <div (click)="selectOrganisationUnit(organisationUnit)" seletectedOrganisationUnitIds>
+<div class="organisation-unit">
+  <span class="organisation-unit-icon">
+    <ion-icon (click)="toggleTree(organisationUnit)" name="ios-add-circle-outline" *ngIf="(!hasOrgUnitChildrenOpened[organisationUnit.id]) && (organisationUnit.children && organisationUnit.children.length > 0)"
+      item-left></ion-icon>
+    <ion-icon (click)="toggleTree(organisationUnit)" name="ios-remove-circle-outline" *ngIf="(hasOrgUnitChildrenOpened[organisationUnit.id]) && (organisationUnit.children && organisationUnit.children.length > 0)"
+      item-left></ion-icon>
+  </span>
+  <span (click)="selectOrganisationUnit(organisationUnit)" [ngClass]="(organisationUnit.children && organisationUnit.children.length == 0)? 'organisation-unit-without-children':''">
+    &nbsp;
     <span ion-text [color]="(seletectedOrganisationUnitIds.indexOf(organisationUnit.id) > -1) ?'current' : 'font-color'">{{ organisationUnit.name }}</span>
-  </div>
-</ion-item>
+  </span>
+</div>
 
-<div padding-left *ngIf="hasOrgUnitChildrenOpened[organisationUnit.id]">
+<div class="organisation-unit-children" *ngIf="hasOrgUnitChildrenOpened[organisationUnit.id]">
   <div *ngIf="!(isOrganisationUnitsFetched && hasOrgUnitChildrenLoaded)">
-    <ion-item>
-      <div style="text-align: center" item-left>
+    <div>
+      <span style="text-align: center" item-left>
         <loading loadingSize="small"></loading>
-      </div>
+      </span>
       <span>
         {{ translationMapper['Discovering organisation units'] }}
       </span>
-    </ion-item>
+    </div>
   </div>
   <div *ngIf="hasErrorOccurred">
     <ion-item>
