@@ -1,5 +1,6 @@
 {
   "Account": "Account",
+  "Apps": "Apps",
   "Log out": "Kubuda",
   "About": "About",
   "Aggregate status": "uwandu hwezvinhu zvose zvabatanidzwa. chinzvimbo",
@@ -245,6 +246,13 @@
   "Fail to un complete entry form":
     "Akakundikana Un zvakakwana kupinda muchimiro",
   "Fail to complete entry form": "Tadza kupedza kupinda muchimiro",
+  "Completeness information": "kuzara mashoko",
+  "Discovering completeness information": "Kuwana kukwana mashoko",
+  "Fail to discover completeness information": "Tadza kuona kukwana mashoko",
+  "Username": "Username",
+  "Full name": "Zita rizere",
+  "E-mial": "E-mial",
+  "Phone number": "Nhamba yenhare",
   "Sync": "Sync",
   "Clear local metadata": "Clear omunharaunda metadata",
   "Clear metaData": "Clear metaData",

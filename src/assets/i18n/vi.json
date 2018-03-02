@@ -1,5 +1,6 @@
 {
   "Account": "Tài khoản",
+  "Apps": "Apps",
   "Log out": "Đăng xuất",
   "About": "Trong khoảng",
   "Aggregate status": "tình trạng tổng hợp",
@@ -263,6 +264,14 @@
   "Fail to un complete entry form":
     "Không phù hợp với mẫu đăng ký hoàn chỉnh un",
   "Fail to complete entry form": "Thất bại trong việc hoàn thành mẫu đăng ký",
+  "Completeness information": "thông tin đầy đủ",
+  "Discovering completeness information": "Khám phá thông tin đầy đủ",
+  "Fail to discover completeness information":
+    "Thất bại trong việc khám phá thông tin đầy đủ",
+  "Username": "Tên đăng nhập",
+  "Full name": "Họ và tên",
+  "E-mial": "E-mial",
+  "Phone number": "Số điện thoại",
   "Sync": "Đồng bộ hóa",
   "Clear local metadata": "siêu dữ liệu địa phương rõ ràng",
   "Clear metaData": "rõ ràng siêu dữ liệu",

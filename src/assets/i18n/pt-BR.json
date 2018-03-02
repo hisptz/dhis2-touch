@@ -1,5 +1,6 @@
 {
   "Account": "Conta",
+  "Apps": "Apps",
   "Log out": "Sair",
   "About": "Sobre",
   "Aggregate status": "estado de agregado",
@@ -264,6 +265,14 @@
   "Fail to un complete entry form":
     "Falha ao formulário de inscrição completa un",
   "Fail to complete entry form": "Deixar de preencher o formulário de entrada",
+  "Completeness information": "informações integralidade",
+  "Discovering completeness information": "Descobrir informações integralidade",
+  "Fail to discover completeness information":
+    "Não conseguem descobrir informações integralidade",
+  "Username": "Nome de Usuário",
+  "Full name": "Nome completo",
+  "E-mial": "E-mial",
+  "Phone number": "Número de telefone",
   "Sync": "Sincronizar",
   "Clear local metadata": "metadados locais Limpar",
   "Clear metaData": "Limpar metaData",

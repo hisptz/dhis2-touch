@@ -259,6 +259,15 @@
     "Versuim om inskrywingsvorm volledigheid inligting te ontdek",
   "Fail to un complete entry form": "Versuim om un volledige inskrywingsvorm",
   "Fail to complete entry form": "Versuim om inskrywingsvorm voltooi",
+  "Completeness information": "volledigheid inligting",
+  "Discovering completeness information":
+    "Die ontdekking van volledigheid inligting",
+  "Fail to discover completeness information":
+    "Versuim om volledigheid inligting te ontdek",
+  "Username": "Gebruikersnaam",
+  "Full name": "Volle naam",
+  "E-mial": "E-mial",
+  "Phone number": "Telefoon nommer",
   "Sync": "Sync",
   "Clear local metadata": "Duidelike plaaslike metadata",
   "Clear metaData": "duidelik metadata",

@@ -1,5 +1,6 @@
 {
   "Account": "Konto",
+  "Apps": "Apps",
   "Log out": "Logg ut",
   "About": "Handle om",
   "Aggregate status": "samlet status",
@@ -254,6 +255,14 @@
   "Fail to un complete entry form":
     "Unnlater å un fullstendig oppføring skjema",
   "Fail to complete entry form": "Mislykkes i å fullføre påmeldingsskjema",
+  "Completeness information": "fullstendighet informasjon",
+  "Discovering completeness information": "Oppdage fullstendighet informasjon",
+  "Fail to discover completeness information":
+    "Ikke klarer å oppdage fullstendighet informasjon",
+  "Username": "Brukernavn",
+  "Full name": "Fullt navn",
+  "E-mial": "E-Mial",
+  "Phone number": "Telefonnummer",
   "Sync": "Sync",
   "Clear local metadata": "Clear lokale metadata",
   "Clear metaData": "klare metadata",
@@ -424,7 +433,7 @@
   "Dashboard list": "Dashboard liste",
   "Search dashboard by name": "Søk dashbordet etter navn",
   "Layout": "Oppsett",
-  "Table , Chart Layout": "Tabell / Chart Layout",
+  "Table / Chart Layout": "Tabell / Chart Layout",
   "Filters": "filtre",
   "Column": "Kolonne",
   "Row": "Rad",

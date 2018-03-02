@@ -1,5 +1,6 @@
 {
   "Account": "i-Akhawunti",
+  "Apps": "Izinhlelo ze",
   "Log out": "Phuma",
   "About": "mayelana",
   "Aggregate status": "isimo ezihlanganisiwe",
@@ -252,6 +253,14 @@
     "Ukuhluleka ukuthola ulwazi entry ifomu ukuphelela",
   "Fail to un complete entry form": "Ukuhluleka un ephelele entry ifomu",
   "Fail to complete entry form": "Ukuhluleka ugcwalise ifomu entry",
+  "Completeness information": "Imininingwane ukuphelela",
+  "Discovering completeness information": "Ukuthola ulwazi ukuphelela",
+  "Fail to discover completeness information":
+    "Ukuhluleka ukuthola ulwazi ukuphelela",
+  "Username": "Igama lomsebenzisi",
+  "Full name": "Igama eligcwele",
+  "E-mial": "E-mial",
+  "Phone number": "Inombolo yocingo",
   "Sync": "Ukuvumelanisa",
   "Clear local metadata": "Sula imethadatha wendawo",
   "Clear metaData": "Sula imethadatha",

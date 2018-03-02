@@ -1,5 +1,6 @@
 {
   "Account": "ගිණුම",
+  "Apps": "යෙදුම්",
   "Log out": "ලොග් අවුට්",
   "About": "ගැන",
   "Aggregate status": "සමස්ත තත්වය",
@@ -243,6 +244,14 @@
   "Fail to un complete entry form":
     "එක්සත් ජාතීන්ගේ සම්පූර්ණ ඇයැදුම්පත් කිරීමට අසමත්",
   "Fail to complete entry form": "පිවිසුම් ආකෘතිය සම්පූර්ණ කිරීමට අසමත්",
+  "Completeness information": "සම්පූර්ණත්වය තොරතුරු",
+  "Discovering completeness information": "සම්පූර්ණත්වය තොරතුරු සොයා",
+  "Fail to discover completeness information":
+    "සම්පූර්ණත්වය තොරතුරු සොයා ගැනීමට අසමත්",
+  "Username": "පරිශීලක නාමය",
+  "Full name": "සම්පූර්ණ නම",
+  "E-mial": "ඊ-mial",
+  "Phone number": "දුරකතන අංකය",
   "Sync": "සමමුහුර්ත කරන්න",
   "Clear local metadata": "පැහැදිලි දේශීය පාර-දත්ත",
   "Clear metaData": "පැහැදිලි පාරදත්ත",

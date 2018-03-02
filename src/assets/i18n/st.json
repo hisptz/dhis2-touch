@@ -1,5 +1,6 @@
 {
   "Account": "Account",
+  "Apps": "Apps",
   "Log out": "Loka tsoa",
   "About": "About",
   "Aggregate status": "boemo Aggregate",
@@ -258,6 +259,14 @@
   "Fail to un complete entry form":
     "Ba hlōleha ho Machaba a Kopaneng e feletseng foromo kena",
   "Fail to complete entry form": "Ba hlōleha ho tlatsa foromo kena",
+  "Completeness information": "lesedi e feletseng",
+  "Discovering completeness information": "Ho Fumana lesedi e feletseng",
+  "Fail to discover completeness information":
+    "Ba hlōleha ho fumana lesedi e feletseng",
+  "Username": "Username",
+  "Full name": "Mabitso a felletseng",
+  "E-mial": "E-mial",
+  "Phone number": "Nomoro ea mohala",
   "Sync": "kgokagantswe",
   "Clear local metadata": "phaketse hlakile ea moo",
   "Clear metaData": "hlakile phaketse ya metadata",
@@ -426,7 +435,7 @@
   "Dashboard list": "lethathamo Dashboard",
   "Search dashboard by name": "Search Dashboard ka lebitso",
   "Layout": "Halli",
-  "Table / Chart Layout": "Tafole / Chate Halli",
+  "Table , Chart Layout": "Tafole / Chate Halli",
   "Filters": "filter",
   "Column": "lenaneng la",
   "Row": "Row",

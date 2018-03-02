@@ -1,5 +1,6 @@
 {
   "Account": "ບັນຊີ",
+  "Apps": "Apps",
   "Log out": "ອອກ​ຈາກ​ລະ​ບົບ",
   "About": "ກ່ຽວກັບ",
   "Aggregate status": "ສະຖານະພາບລວມ",
@@ -250,6 +251,14 @@
   "Fail to un complete entry form":
     "ເຊັ່ນການແລກປ່ຽນຮູບແບບການຫະປະຊາຊາດທີ່ສົມບູນ",
   "Fail to complete entry form": "ບໍ່ສໍາເລັດແບບຟອມການ",
+  "Completeness information": "ຂໍ້ມູນຄົບຖ້ວນ",
+  "Discovering completeness information": "ຄົ້ນພົບຂໍ້ມູນສົມບູນ",
+  "Fail to discover completeness information":
+    "ເຊັ່ນການແລກປ່ຽນຄົ້ນພົບຂໍ້ມູນສົມບູນ",
+  "Username": "ຊື່ຜູ້ໃຊ້",
+  "Full name": "ຊື່​ເຕັມ",
+  "E-mial": "ອີ Mial",
+  "Phone number": "ເບີ​ໂທລະ​ສັບ",
   "Sync": "Sync",
   "Clear local metadata": "metadata ທ້ອງຖິ່ນ Clear",
   "Clear metaData": "Metadata Clear",

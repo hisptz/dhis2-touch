@@ -1,5 +1,6 @@
 {
   "Account": "اکاؤنٹ",
+  "Apps": "اطلاقات",
   "Log out": "لاگ آوٹ",
   "About": "کے بارے میں",
   "Aggregate status": "مجموعی حیثیت کا",
@@ -252,6 +253,14 @@
     "انٹری فارم کاملیت معلومات دریافت کرنے میں ناکام",
   "Fail to un complete entry form": "اقوام متحدہ کی مکمل اندراج فارم میں ناکام",
   "Fail to complete entry form": "اندراج فارم مکمل کرنے میں ناکام",
+  "Completeness information": "کاملیت معلومات",
+  "Discovering completeness information": "کاملیت معلومات کی دریافت",
+  "Fail to discover completeness information":
+    "کاملیت معلومات دریافت کرنے میں ناکام",
+  "Username": "صارف کا نام",
+  "Full name": "پورا نام",
+  "E-mial": "ای mial",
+  "Phone number": "فون نمبر",
   "Sync": "مطابقت پذیر بنائیں",
   "Clear local metadata": "واضح مقامی میٹاڈیٹا",
   "Clear metaData": "واضح میٹا ڈیٹا",

@@ -1,5 +1,6 @@
 {
   "Account": "konto",
+  "Apps": "Apps",
   "Log out": "Logga ut",
   "About": "Handla om",
   "Aggregate status": "Aggregate status",
@@ -262,6 +263,14 @@
     "Misslyckas med att un komplett anmälningsblankett",
   "Fail to complete entry form":
     "Misslyckas med att slutföra anmälningsblankett",
+  "Completeness information": "fullständighet uppgifter",
+  "Discovering completeness information": "Upptäcka fullständighet uppgifter",
+  "Fail to discover completeness information":
+    "Misslyckas med att upptäcka fullständig informations",
+  "Username": "Användarnamn",
+  "Full name": "Fullständiga namn",
+  "E-mial": "E-mial",
+  "Phone number": "Telefonnummer",
   "Sync": "Synkronisera",
   "Clear local metadata": "Rensa lokal metadata",
   "Clear metaData": "tydliga metaData",

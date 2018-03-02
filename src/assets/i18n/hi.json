@@ -246,6 +246,14 @@
   "Fail to un complete entry form":
     "संयुक्त राष्ट्र पूर्ण प्रविष्टि प्रपत्र के लिए असफल",
   "Fail to complete entry form": "प्रवेश पत्र को पूरा करने में विफल",
+  "Completeness information": "पूर्णता जानकारी",
+  "Discovering completeness information": "पूर्णता जानकारी की खोज",
+  "Fail to discover completeness information":
+    "पूर्णता जानकारी की खोज करने में विफल",
+  "Username": "उपयोगकर्ता नाम",
+  "Full name": "पूरा नाम",
+  "E-mial": "ई एमआईएएल",
+  "Phone number": "फ़ोन नंबर",
   "Sync": "सिंक",
   "Clear local metadata": "साफ स्थानीय मेटाडाटा",
   "Clear metaData": "मेटाडाटा साफ़",

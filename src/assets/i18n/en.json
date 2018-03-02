@@ -247,6 +247,15 @@
     "Fail to discover entry form completeness information",
   "Fail to un complete entry form": "Fail to un complete entry form",
   "Fail to complete entry form": "Fail to complete entry form",
+  "Completeness information": "Completeness information",
+  "Discovering completeness information":
+    "Discovering completeness information",
+  "Fail to discover completeness information":
+    "Fail to discover completeness information",
+  "Username": "Username",
+  "Full name": "Full name",
+  "E-mial": "E-mial",
+  "Phone number": "Phone number",
   "Sync": "Sync",
   "Clear local metadata": "Clear local metadata",
   "Clear metaData": "Clear metaData",

@@ -1,5 +1,6 @@
 {
   "Account": "Rekening",
+  "Apps": "aplikasi",
   "Log out": "Keluar",
   "About": "Tentang",
   "Aggregate status": "Status agregat",
@@ -257,6 +258,14 @@
     "Gagal menemukan informasi entri bentuk kelengkapan",
   "Fail to un complete entry form": "Gagal formulir pendaftaran lengkap un",
   "Fail to complete entry form": "Gagal untuk melengkapi formulir entri",
+  "Completeness information": "informasi kelengkapan",
+  "Discovering completeness information": "Menemukan informasi kelengkapan",
+  "Fail to discover completeness information":
+    "Gagal untuk menemukan informasi kelengkapan",
+  "Username": "Nama pengguna",
+  "Full name": "Nama lengkap",
+  "E-mial": "E-mial",
+  "Phone number": "Nomor telepon",
   "Sync": "Sync",
   "Clear local metadata": "metadata lokal yang jelas",
   "Clear metaData": "jelas metadata",

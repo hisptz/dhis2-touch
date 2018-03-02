@@ -1,5 +1,6 @@
 {
   "Account": "rekening",
+  "Apps": "aplikasi",
   "Log out": "Kaluar",
   "About": "kira-kira",
   "Aggregate status": "status agrégat",
@@ -251,6 +252,14 @@
     "Gagal pikeun manggihan informasi Éntri formulir completeness",
   "Fail to un complete entry form": "Kalah ka formulir Éntri lengkep un",
   "Fail to complete entry form": "Kalah ka ngalengkepan formulir Éntri",
+  "Completeness information": "inpo Completeness",
+  "Discovering completeness information": "Ngajalajah informasi completeness",
+  "Fail to discover completeness information":
+    "Gagal pikeun manggihan informasi completeness",
+  "Username": "ngaran pamaké",
+  "Full name": "Nami lengkep",
+  "E-mial": "E-mial",
+  "Phone number": "Nomer telepon",
   "Sync": "Sync",
   "Clear local metadata": "metadata lokal jelas",
   "Clear metaData": "jelas metadata",

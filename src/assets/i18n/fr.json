@@ -276,6 +276,15 @@
     "Défaut de formulaire d'inscription complète un",
   "Fail to complete entry form":
     "Défaut de remplir le formulaire d'inscription",
+  "Completeness information": "informations exhaustivité",
+  "Discovering completeness information":
+    "A la découverte d'informations complet",
+  "Fail to discover completeness information":
+    "Défaut de découvrir des informations complet",
+  "Username": "Nom d'utilisateur",
+  "Full name": "Nom complet",
+  "E-mial": "E-Mial",
+  "Phone number": "Numéro de téléphone",
   "Sync": "Sync",
   "Clear local metadata": "métadonnées locales Effacer",
   "Clear metaData": "clair metaData",

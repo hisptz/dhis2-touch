@@ -1,5 +1,6 @@
 {
   "Account": "खाता",
+  "Apps": "अनुप्रयोगहरू",
   "Log out": "बाहिर निस्कनु",
   "About": "बारेमा",
   "Aggregate status": "समग्र स्थिति",
@@ -237,6 +238,14 @@
     "प्रवेश फारम पूर्णता जानकारी पत्ता लगाउन असफल",
   "Fail to un complete entry form": "संयुक्त राष्ट्र पूर्ण प्रवेश फारम असफल",
   "Fail to complete entry form": "प्रवेश फारम पूरा गर्न असफल",
+  "Completeness information": "पूर्णता जानकारी",
+  "Discovering completeness information": "पूर्णता जानकारी खोजी",
+  "Fail to discover completeness information":
+    "पूर्णता जानकारी पत्ता लगाउन असफल",
+  "Username": "प्रयोगकर्ता नाम",
+  "Full name": "पुरा नाम",
+  "E-mial": "ई-mial",
+  "Phone number": "फोन नम्बर",
   "Sync": "सिंक",
   "Clear local metadata": "स्थानीय मेटाडाटा स्पष्ट",
   "Clear metaData": "मेटाडाटा स्पष्ट",

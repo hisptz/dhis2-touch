@@ -2,7 +2,7 @@
   <textarea cols="100" rows="1" Autosize autofocus required minlength="2" [(ngModel)]="interpretation.text" name="text" #text="ngModel"
     placeholder="{{ translationMapper['Write new interpretation'] }}" class="interpretation-edit-input"></textarea>
   <div class="pull-right" [hidden]="text.invalid || interpretation.text === ''">
-    <button class="dashboard-border dashboard-btn " (click)="cancel($event)">Cancel</button>
+    <button class="dashboard-border dashboard-btn " (click)="cancel($event)">{{ translationMapper['Cancel'] }}</button>
     <button class="dashboard-border dashboard-btn " [disabled]="creating" (click)="editInterpretation($event)">
       {{creating ? translationMapper['Posting'] : translationMapper['Post']}}
     </button>

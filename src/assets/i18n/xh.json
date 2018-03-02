@@ -1,5 +1,6 @@
 {
   "Account": "Akhawunti",
+  "Apps": "apps",
   "Log out": "Phuma",
   "About": "malunga",
   "Aggregate status": "isimo semali",
@@ -251,6 +252,14 @@
     "Fail ukuze ufumane iinkcukacha kwifomu yokungenela ukuphelela",
   "Fail to un complete entry form": "Fail ukuba ifomu un ungeno epheleleyo",
   "Fail to complete entry form": "Fail ukuba ugcwalise ifom yokungenela",
+  "Completeness information": "ulwazi kuphelele",
+  "Discovering completeness information": "Ukubona ulwazi kuphelele",
+  "Fail to discover completeness information":
+    "Fail ukuba bazifumanele ulwazi ukugqibelela",
+  "Username": "Igama lomsebenzisi",
+  "Full name": "Igama eliphelele",
+  "E-mial": "E-mial",
+  "Phone number": "Inombolo yomnxeba",
   "Sync": "sync",
   "Clear local metadata": "Sula metadata lendawo",
   "Clear metaData": "metadata ecacileyo",

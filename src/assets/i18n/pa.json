@@ -1,5 +1,6 @@
 {
   "Account": "ਖਾਤਾ",
+  "Apps": "ਐਪਸ",
   "Log out": "ਲਾੱਗ ਆਊਟ, ਬਾਹਰ ਆਉਣਾ",
   "About": "ਬਾਰੇ",
   "Aggregate status": "ਸਕਲ ਦੀ ਸਥਿਤੀ",
@@ -239,6 +240,13 @@
   "Fail to un complete entry form":
     "ਸੰਯੁਕਤ ਰਾਸ਼ਟਰ ਦਾ ਪੂਰਾ ਇੰਦਰਾਜ਼ ਫਾਰਮ ਕਰਨ ਵਿੱਚ ਅਸਫਲ",
   "Fail to complete entry form": "ਇੰਦਰਾਜ਼ ਫਾਰਮ ਨੂੰ ਪੂਰਾ ਕਰਨ ਵਿੱਚ ਅਸਫਲ",
+  "Completeness information": "ਸੰਪੂਰਨਤਾ ਜਾਣਕਾਰੀ",
+  "Discovering completeness information": "ਪੂਰਾ ਜਾਣਕਾਰੀ ਲੱਭਣ",
+  "Fail to discover completeness information": "ਪੂਰਾ ਜਾਣਕਾਰੀ ਖੋਜਣ ਲਈ ਅਸਫ਼ਲ",
+  "Username": "ਯੂਜ਼ਰ",
+  "Full name": "ਪੂਰਾ ਨਾਂਮ",
+  "E-mial": "ਈ-mial",
+  "Phone number": "ਫੋਨ ਨੰਬਰ",
   "Sync": "ਸਿੰਕ",
   "Clear local metadata": "ਆਸਮਾਨ ਸਥਾਨਕ ਮੈਟਾਡਾਟਾ",
   "Clear metaData": "ਮੈਟਾਡਾਟਾ ਆਸਮਾਨ",

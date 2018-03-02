@@ -1,5 +1,6 @@
 {
   "Account": "akaunti",
+  "Apps": "programu",
   "Log out": "ondoka kwenye",
   "About": "kuhusu",
   "Aggregate status": "hali kwa jumla ya mabao",
@@ -249,6 +250,14 @@
     "Kushindwa kugundua kuingia fomu ukamilifu habari",
   "Fail to un complete entry form": "Kushindwa un kamili ya kujaza Fomu",
   "Fail to complete entry form": "Kushindwa kujaza fomu ya kuingia",
+  "Completeness information": "habari ukamilifu",
+  "Discovering completeness information": "Kugundua habari ukamilifu",
+  "Fail to discover completeness information":
+    "Kushindwa kutambua maelezo ya ukamilifu",
+  "Username": "jina la mtumiaji",
+  "Full name": "Jina kamili",
+  "E-mial": "E-MIAL",
+  "Phone number": "Nambari ya simu",
   "Sync": "Usawazishaji",
   "Clear local metadata": "metadata wazi mitaa",
   "Clear metaData": "Clear metadata",

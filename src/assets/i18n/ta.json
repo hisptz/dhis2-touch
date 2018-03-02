@@ -1,5 +1,6 @@
 {
   "Account": "கணக்கு",
+  "Apps": "ஆப்ஸ்",
   "Log out": "வெளியேறு",
   "About": "பற்றி",
   "Aggregate status": "மதிப்பீட்டு நிலையை",
@@ -251,6 +252,14 @@
     "நுழைவு வடிவம் முழுமை தகவலைக் கண்டறிய தோல்வி",
   "Fail to un complete entry form": "ஐ.நா. முழு நுழைவு வடிவத்தில் தோல்வி",
   "Fail to complete entry form": "நுழைவு படிவத்தை பூர்த்தி தோல்வி",
+  "Completeness information": "முழுமையான தகவல்",
+  "Discovering completeness information": "முழுமையான தகவல் டிஸ்கவர்",
+  "Fail to discover completeness information":
+    "முழுமையான தகவலைக் கண்டறிய தோல்வி",
+  "Username": "பயனர்பெயர்",
+  "Full name": "முழு பெயர்",
+  "E-mial": "மின் mial",
+  "Phone number": "தொலைபேசி எண்",
   "Sync": "ஒத்திசைவு",
   "Clear local metadata": "தெளிவு உள்ளூர் மெட்டா",
   "Clear metaData": "தெளிவு மெட்டா",
