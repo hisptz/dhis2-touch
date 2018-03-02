@@ -1,9 +1,9 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { AppProvider } from "../../providers/app/app";
-import { DataSetReportProvider } from "../../providers/data-set-report/data-set-report";
-import { DataEntryFormProvider } from "../../providers/data-entry-form/data-entry-form";
-import { SettingsProvider } from "../../providers/settings/settings";
-import { AppTranslationProvider } from "../../providers/app-translation/app-translation";
+import { Component, Input, OnInit } from '@angular/core';
+import { AppProvider } from '../../providers/app/app';
+import { DataSetReportProvider } from '../../providers/data-set-report/data-set-report';
+import { DataEntryFormProvider } from '../../providers/data-entry-form/data-entry-form';
+import { SettingsProvider } from '../../providers/settings/settings';
+import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the DataSetReportComponent component.
@@ -12,8 +12,8 @@ import { AppTranslationProvider } from "../../providers/app-translation/app-tran
  * Components.
  */
 @Component({
-  selector: "data-set-report",
-  templateUrl: "data-set-report.html"
+  selector: 'data-set-report',
+  templateUrl: 'data-set-report.html'
 })
 export class DataSetReportComponent implements OnInit {
   @Input() dataSetId;
@@ -42,12 +42,24 @@ export class DataSetReportComponent implements OnInit {
     this.isLoading = true;
     this.dataElementDataValuesMapper = {};
     this.translationMapper = {};
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+        this.loadingDataSetInformation();
+      },
+      error => {
+        this.loadingDataSetInformation();
+      }
+    );
+  }
+
+  loadingDataSetInformation() {
     if (this.currentUser) {
       this.settingsProvider
         .getSettingsForTheApp(this.currentUser)
         .subscribe((appSettings: any) => {
           this.appSettings = appSettings;
-          let key = "Discovering data set report information";
+          let key = 'Discovering data set report information';
           this.loadingMessage = this.translationMapper[key]
             ? this.translationMapper[key]
             : key;
@@ -57,7 +69,7 @@ export class DataSetReportComponent implements OnInit {
               (dataSetInformation: any) => {
                 this.dataSet = dataSetInformation.dataSet;
                 this.sectionIds = dataSetInformation.sectionIds;
-                key = "Preparing data set report";
+                key = 'Preparing data set report';
                 this.loadingMessage = this.translationMapper[key]
                   ? this.translationMapper[key]
                   : key;
@@ -72,7 +84,7 @@ export class DataSetReportComponent implements OnInit {
                     (entryFormSections: any) => {
                       entryFormSections.forEach((section: any) => {
                         if (this.sectionIds.length == 0) {
-                          section.name = "";
+                          section.name = '';
                         }
                         section.dataElements.forEach((dataElement: any) => {
                           this.dataElementDataValuesMapper[dataElement.id] = [];
@@ -102,18 +114,18 @@ export class DataSetReportComponent implements OnInit {
                     },
                     error => {
                       this.isLoading = false;
-                      this.loadingMessage = "";
+                      this.loadingMessage = '';
                       this.appProvider.setNormalNotification(
-                        "Fail to prepare data set report"
+                        'Fail to prepare data set report'
                       );
                     }
                   );
               },
               error => {
                 this.isLoading = false;
-                this.loadingMessage = "";
+                this.loadingMessage = '';
                 this.appProvider.setNormalNotification(
-                  "Fail to discover data set report information"
+                  'Fail to discover data set report information'
                 );
               }
             );
@@ -121,13 +133,11 @@ export class DataSetReportComponent implements OnInit {
     }
   }
 
-  loadingDataSetInformation() {}
-
-  getValuesTranslate() {
+  getValuesToTranslate() {
     return [
-      "Discovering data set report information",
-      "Preparing data set report",
-      "Missing entry form sections, please contact administarator"
+      'Discovering data set report information',
+      'Preparing data set report',
+      'Missing entry form sections, please contact administarator'
     ];
   }
 }

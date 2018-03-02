@@ -1,12 +1,12 @@
-import { Component, ElementRef, OnInit } from "@angular/core";
-import { IonicPage, NavController, NavParams } from "ionic-angular";
-import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
-import { UserProvider } from "../../../providers/user/user";
-import { DataSetsProvider } from "../../../providers/data-sets/data-sets";
-import { AppProvider } from "../../../providers/app/app";
-import { StandardReportProvider } from "../../../providers/standard-report/standard-report";
-import { DATABASE_STRUCTURE } from "../../../models/database";
-import { AppTranslationProvider } from "../../../providers/app-translation/app-translation";
+import { Component, ElementRef, OnInit } from '@angular/core';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { UserProvider } from '../../../providers/user/user';
+import { DataSetsProvider } from '../../../providers/data-sets/data-sets';
+import { AppProvider } from '../../../providers/app/app';
+import { StandardReportProvider } from '../../../providers/standard-report/standard-report';
+import { DATABASE_STRUCTURE } from '../../../models/database';
+import { AppTranslationProvider } from '../../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the ReportViewPage page.
@@ -19,8 +19,8 @@ declare var dhis2;
 
 @IonicPage()
 @Component({
-  selector: "page-report-view",
-  templateUrl: "report-view.html"
+  selector: 'page-report-view',
+  templateUrl: 'report-view.html'
 })
 export class ReportViewPage implements OnInit {
   reportId: string;
@@ -30,9 +30,9 @@ export class ReportViewPage implements OnInit {
   _htmlMarkup: SafeHtml;
   hasScriptSet: boolean = false;
   isLoading: boolean = false;
-  loadingMessage: string = "";
+  loadingMessage: string = '';
   currentUser: any;
-  reportType: string = "";
+  reportType: string = '';
   translationMapper: any;
 
   constructor(
@@ -62,34 +62,34 @@ export class ReportViewPage implements OnInit {
   }
 
   loadingUserAndReportData() {
-    let key = "Discovering user information";
+    let key = 'Discovering user information';
     this.loadingMessage = this.translationMapper[key]
       ? this.translationMapper[key]
       : key;
     this.user.getCurrentUser().subscribe((user: any) => {
       this.currentUser = user;
       dhis2.database = user.currentDatabase;
-      this.reportId = this.params.get("id");
-      this.reportName = this.params.get("name");
-      this.reportType = this.params.get("reportType");
+      this.reportId = this.params.get('id');
+      this.reportName = this.params.get('name');
+      this.reportType = this.params.get('reportType');
       this.isLoading = false;
-      if (this.params.get("period")) {
-        this.selectedPeriod = this.params.get("period");
-        this.selectedOrganisationUnit = this.params.get("organisationUnit");
+      if (this.params.get('period')) {
+        this.selectedPeriod = this.params.get('period');
+        this.selectedOrganisationUnit = this.params.get('organisationUnit');
         let ids = [];
         let organisationUnitHierarchy = [];
         let periods = [];
-        let date = "";
-        let period = "";
+        let date = '';
+        let period = '';
         if (this.selectedPeriod && this.selectedPeriod.name) {
           periods.push(this.selectedPeriod.iso);
           date = this.selectedPeriod.startDate;
           period = this.selectedPeriod.iso;
         }
         if (this.selectedOrganisationUnit && this.selectedOrganisationUnit.id) {
-          this.selectedOrganisationUnit["dataSets"] = [];
+          this.selectedOrganisationUnit['dataSets'] = [];
           let organisationUnitHierarchy = this.getOrganisationUnitHierarchy(
-            this.params.get("organisationUnit")
+            this.params.get('organisationUnit')
           );
           this.dataSetProvider
             .getDataSetSource(
@@ -111,7 +111,7 @@ export class ReportViewPage implements OnInit {
                     dhis2.report = {
                       organisationUnit: this.selectedOrganisationUnit,
                       organisationUnitChildren: this.params.get(
-                        "organisationUnitChildren"
+                        'organisationUnitChildren'
                       ),
                       organisationUnitHierarchy: organisationUnitHierarchy,
                       periods: periods,
@@ -125,7 +125,7 @@ export class ReportViewPage implements OnInit {
                   error => {
                     this.isLoading = false;
                     this.appProvider.setNormalNotification(
-                      "Fail to discover organisation units information"
+                      'Fail to discover organisation units information'
                     );
                   }
                 );
@@ -133,7 +133,7 @@ export class ReportViewPage implements OnInit {
               error => {
                 this.isLoading = false;
                 this.appProvider.setNormalNotification(
-                  "Fail to discover organisation units information"
+                  'Fail to discover organisation units information'
                 );
               }
             );
@@ -141,7 +141,7 @@ export class ReportViewPage implements OnInit {
           dhis2.report = {
             organisationUnit: this.selectedOrganisationUnit,
             organisationUnitChildren: this.params.get(
-              "organisationUnitChildren"
+              'organisationUnitChildren'
             ),
             organisationUnitHierarchy: organisationUnitHierarchy,
             periods: periods,
@@ -159,7 +159,7 @@ export class ReportViewPage implements OnInit {
 
   backToPreviousView() {
     this.isLoading = true;
-    this.loadingMessage = "Closing report";
+    this.loadingMessage = 'Closing report';
     this.navCtrl.pop();
   }
 
@@ -180,12 +180,12 @@ export class ReportViewPage implements OnInit {
 
   loadReportDesignContent(reportId) {
     this.isLoading = true;
-    let key = "Discovering report metadata";
+    let key = 'Discovering report metadata';
     this.loadingMessage = this.translationMapper[key]
       ? this.translationMapper[key]
       : key;
     //for standard reports
-    if (this.reportType && this.reportType == "standardReport") {
+    if (this.reportType && this.reportType == 'standardReport') {
       this.reportProvider.getReportDesign(reportId, this.currentUser).subscribe(
         (report: any) => {
           if (report && report.designContent) {
@@ -207,16 +207,16 @@ export class ReportViewPage implements OnInit {
         error => {
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            "Fail to discover report metadata"
+            'Fail to discover report metadata'
           );
         }
       );
-    } else if (this.reportType && this.reportType == "dataSetReport") {
+    } else if (this.reportType && this.reportType == 'dataSetReport') {
       //for data set reports
       this.isLoading = false;
     } else {
       this.appProvider.setNormalNotification(
-        "Report type has not set,please contact system administrator"
+        'Report type has not set,please contact system administrator'
       );
       this.isLoading = false;
     }
@@ -226,16 +226,16 @@ export class ReportViewPage implements OnInit {
     let scriptsWithClosingScript = [];
     if (html.match(/<script[^>]*>([\w|\W]*)<\/script>/im)) {
       if (
-        html.match(/<script[^>]*>([\w|\W]*)<\/script>/im)[0].split("<script>")
+        html.match(/<script[^>]*>([\w|\W]*)<\/script>/im)[0].split('<script>')
           .length > 0
       ) {
         html
           .match(/<script[^>]*>([\w|\W]*)<\/script>/im)[0]
-          .split("<script>")
+          .split('<script>')
           .forEach((scriptFunctionWithCLosingScriptTag: any) => {
-            if (scriptFunctionWithCLosingScriptTag != "") {
+            if (scriptFunctionWithCLosingScriptTag != '') {
               scriptsWithClosingScript.push(
-                scriptFunctionWithCLosingScriptTag.split("</script>")[0]
+                scriptFunctionWithCLosingScriptTag.split('</script>')[0]
               );
             }
           });
@@ -247,22 +247,22 @@ export class ReportViewPage implements OnInit {
   setScriptsOnHtmlContent(scriptsContentsArray) {
     if (!this.hasScriptSet) {
       scriptsContentsArray.forEach(scriptsContents => {
-        if (scriptsContents.indexOf("<script") > -1) {
+        if (scriptsContents.indexOf('<script') > -1) {
           try {
             let srcUrl = this.getScriptUrl(scriptsContents);
-            let script = document.createElement("script");
+            let script = document.createElement('script');
             script.src = srcUrl;
             this.elementRef.nativeElement.appendChild(script);
           } catch (e) {
-            console.log("error : " + JSON.stringify(e));
-            let script = document.createElement("script");
-            script.type = "text/javascript";
+            console.log('error : ' + JSON.stringify(e));
+            let script = document.createElement('script');
+            script.type = 'text/javascript';
             script.innerHTML = scriptsContents;
             this.elementRef.nativeElement.appendChild(script);
           }
         } else {
-          let script = document.createElement("script");
-          script.type = "text/javascript";
+          let script = document.createElement('script');
+          script.type = 'text/javascript';
           script.innerHTML = scriptsContents;
           this.elementRef.nativeElement.appendChild(script);
         }
@@ -272,11 +272,11 @@ export class ReportViewPage implements OnInit {
   }
 
   getScriptUrl(scriptsContents) {
-    let url = "";
-    if (scriptsContents && scriptsContents.split("<script").length > 0) {
-      scriptsContents.split("<script").forEach((scriptsContent: any) => {
-        if (scriptsContent != "") {
-          url = scriptsContent.split("src=")[1].split(">")[0];
+    let url = '';
+    if (scriptsContents && scriptsContents.split('<script').length > 0) {
+      scriptsContents.split('<script').forEach((scriptsContent: any) => {
+        if (scriptsContent != '') {
+          url = scriptsContent.split('src=')[1].split('>')[0];
         }
       });
     }
@@ -284,6 +284,6 @@ export class ReportViewPage implements OnInit {
   }
 
   getValuesToTranslate() {
-    return ["Discovering user information", "Discovering report metadata"];
+    return ['Discovering user information', 'Discovering report metadata'];
   }
 }

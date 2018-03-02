@@ -1,10 +1,10 @@
-import { Component, OnInit } from "@angular/core";
-import { IonicPage, NavController, NavParams } from "ionic-angular";
-import { UserProvider } from "../../providers/user/user";
-import { AppProvider } from "../../providers/app/app";
-import { StandardReportProvider } from "../../providers/standard-report/standard-report";
-import { SqlLiteProvider } from "../../providers/sql-lite/sql-lite";
-import { AppTranslationProvider } from "../../providers/app-translation/app-translation";
+import { Component, OnInit } from '@angular/core';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { UserProvider } from '../../providers/user/user';
+import { AppProvider } from '../../providers/app/app';
+import { StandardReportProvider } from '../../providers/standard-report/standard-report';
+import { SqlLiteProvider } from '../../providers/sql-lite/sql-lite';
+import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the ReportsPage page.
@@ -15,8 +15,8 @@ import { AppTranslationProvider } from "../../providers/app-translation/app-tran
 
 @IonicPage()
 @Component({
-  selector: "page-reports",
-  templateUrl: "reports.html"
+  selector: 'page-reports',
+  templateUrl: 'reports.html'
 })
 export class ReportsPage implements OnInit {
   public isLoading: boolean = false;
@@ -39,8 +39,8 @@ export class ReportsPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.icons.standardReport = "assets/icon/reports.png";
-    this.icons.dataSetReport = "assets/icon/form.png";
+    this.icons.standardReport = 'assets/icon/reports.png';
+    this.icons.dataSetReport = 'assets/icon/form.png';
     this.loadingMessages = [];
     this.isLoading = true;
     this.reportList = [];
@@ -62,7 +62,10 @@ export class ReportsPage implements OnInit {
   }
 
   loadReportsList(user) {
-    this.loadingMessage = "Discovering reports";
+    let key = 'Discovering reports';
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.standardReportProvider.getReportList(user).subscribe(
       (reportList: any) => {
         this.reportList = reportList;
@@ -70,7 +73,7 @@ export class ReportsPage implements OnInit {
         this.isLoading = false;
       },
       error => {
-        this.appProvider.setNormalNotification("Fail  to discover reports");
+        this.appProvider.setNormalNotification('Fail  to discover reports');
         this.isLoading = false;
       }
     );
@@ -90,16 +93,16 @@ export class ReportsPage implements OnInit {
         report.reportParams
       )
     ) {
-      this.navCtrl.push("ReportParameterSelectionPage", parameter);
+      this.navCtrl.push('ReportParameterSelectionPage', parameter);
     } else {
-      this.navCtrl.push("ReportViewPage", parameter);
+      this.navCtrl.push('ReportViewPage', parameter);
     }
   }
 
   getFilteredList(ev: any) {
     let val = ev.target.value;
     this.reportList = this.reportListCopy;
-    if (val && val.trim() != "") {
+    if (val && val.trim() != '') {
       this.reportList = this.reportList.filter((report: any) => {
         return report.name.toLowerCase().indexOf(val.toLowerCase()) > -1;
       });
@@ -108,14 +111,20 @@ export class ReportsPage implements OnInit {
 
   doRefresh(refresher) {
     refresher.complete();
-    this.loadingMessage = "Downloading reports from server";
+    let key = 'Downloading reports from server';
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.isLoading = true;
-    let resource = "reports";
+    let resource = 'reports';
     this.standardReportProvider
       .downloadReportsFromServer(this.currentUser)
       .subscribe(
         (response: any) => {
-          this.loadingMessage = "Preparing local storage for updates";
+          key = 'Preparing local storage for updates';
+          this.loadingMessage = this.translationMapper[key]
+            ? this.translationMapper[key]
+            : key;
           this.sqLite
             .dropTable(resource, this.currentUser.currentDatabase)
             .subscribe(
@@ -124,7 +133,10 @@ export class ReportsPage implements OnInit {
                   .createTable(resource, this.currentUser.currentDatabase)
                   .subscribe(
                     () => {
-                      this.loadingMessage = "Saving reports from server";
+                      key = 'Saving reports from server';
+                      this.loadingMessage = this.translationMapper[key]
+                        ? this.translationMapper[key]
+                        : key;
                       this.standardReportProvider
                         .saveReportsFromServer(
                           response[resource],
@@ -137,7 +149,7 @@ export class ReportsPage implements OnInit {
                           error => {
                             this.isLoading = true;
                             this.appProvider.setNormalNotification(
-                              "Fail to save reports"
+                              'Fail to save reports'
                             );
                           }
                         );
@@ -145,7 +157,7 @@ export class ReportsPage implements OnInit {
                     error => {
                       this.isLoading = true;
                       this.appProvider.setNormalNotification(
-                        "Fail to prepare local storage for updates"
+                        'Fail to prepare local storage for updates'
                       );
                     }
                   );
@@ -153,25 +165,25 @@ export class ReportsPage implements OnInit {
               error => {
                 this.isLoading = true;
                 this.appProvider.setNormalNotification(
-                  "Fail to prepare local storage for updates"
+                  'Fail to prepare local storage for updates'
                 );
               }
             );
         },
         error => {
           this.isLoading = true;
-          this.appProvider.setNormalNotification("Fail to download reports");
+          this.appProvider.setNormalNotification('Fail to download reports');
         }
       );
   }
 
   getValuesToTranslate() {
     return [
-      "Discovering reports",
-      "Downloading reports from server",
-      "Preparing local storage for updates",
-      "Saving reports from server",
-      "there is no report to select"
+      'Discovering reports',
+      'Downloading reports from server',
+      'Preparing local storage for updates',
+      'Saving reports from server',
+      'there is no report to select'
     ];
   }
 }

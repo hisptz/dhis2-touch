@@ -1,7 +1,8 @@
-import { Component, OnInit } from "@angular/core";
-import { IonicPage, ViewController, NavParams } from "ionic-angular";
-import { DataSetCompletenessProvider } from "../../../providers/data-set-completeness/data-set-completeness";
-import { AppProvider } from "../../../providers/app/app";
+import { Component, OnInit } from '@angular/core';
+import { IonicPage, ViewController, NavParams } from 'ionic-angular';
+import { DataSetCompletenessProvider } from '../../../providers/data-set-completeness/data-set-completeness';
+import { AppProvider } from '../../../providers/app/app';
+import { AppTranslationProvider } from '../../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the EntryFormCompletenessPage page.
@@ -12,27 +13,44 @@ import { AppProvider } from "../../../providers/app/app";
 
 @IonicPage()
 @Component({
-  selector: "page-entry-form-completeness",
-  templateUrl: "entry-form-completeness.html"
+  selector: 'page-entry-form-completeness',
+  templateUrl: 'entry-form-completeness.html'
 })
 export class EntryFormCompletenessPage implements OnInit {
   isLoading: boolean;
   loadingMessage: string;
   userInformation: Array<any>;
+  translationMapper: any;
 
   constructor(
     public viewCtrl: ViewController,
     public navParams: NavParams,
     private appProvider: AppProvider,
-    private dataSetCompletenessProvider: DataSetCompletenessProvider
+    private dataSetCompletenessProvider: DataSetCompletenessProvider,
+    private appTranslation: AppTranslationProvider
   ) {}
 
   ngOnInit() {
-    let currentUser = this.navParams.get("currentUser");
-    let username = this.navParams.get("username");
-    this.loadingMessage = "Loading information for " + username;
     this.isLoading = true;
     this.userInformation = [];
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+        this.loadingCompletenessInformation();
+      },
+      error => {
+        this.loadingCompletenessInformation();
+      }
+    );
+  }
+
+  loadingCompletenessInformation() {
+    let key = 'Discovering completeness information';
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
+    let currentUser = this.navParams.get('currentUser');
+    let username = this.navParams.get('username');
     this.dataSetCompletenessProvider
       .getUserCompletenessInformation(username, currentUser)
       .subscribe(
@@ -41,10 +59,13 @@ export class EntryFormCompletenessPage implements OnInit {
         },
         error => {
           console.log(JSON.stringify(error));
-          this.userInformation.push({ key: "Username", value: username });
+          this.userInformation.push({
+            key: this.translationMapper['Username'],
+            value: username
+          });
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            "fail to load user information"
+            'Fail to discover completeness information'
           );
         }
       );
@@ -57,16 +78,22 @@ export class EntryFormCompletenessPage implements OnInit {
   prepareUserInformation(user, username) {
     //@todo checking keys on future
     this.userInformation.push({
-      key: "full name",
-      value: user.firstName + " " + user.surname
+      key: this.translationMapper['Full name'],
+      value: user.firstName + ' ' + user.surname
     });
-    this.userInformation.push({ key: "username", value: username });
+    this.userInformation.push({
+      key: this.translationMapper['Username'],
+      value: username
+    });
     if (user && user.email) {
-      this.userInformation.push({ key: "e mail", value: user.email });
+      this.userInformation.push({
+        key: this.translationMapper['E-mail'],
+        value: user.email
+      });
     }
     if (user && user.phoneNumber) {
       this.userInformation.push({
-        key: "phone number",
+        key: this.translationMapper['Phone number'],
         value: user.phoneNumber
       });
     }
@@ -76,8 +103,8 @@ export class EntryFormCompletenessPage implements OnInit {
         organisationUnits.push(organisationUnit.name);
       });
       this.userInformation.push({
-        key: "assigned organisation units",
-        value: organisationUnits.join(", ")
+        key: this.translationMapper['Assigned organisation units'],
+        value: organisationUnits.join(', ')
       });
     }
     if (user && user.roles) {
@@ -86,10 +113,21 @@ export class EntryFormCompletenessPage implements OnInit {
         roles.push(role.name);
       });
       this.userInformation.push({
-        key: "assigned roles",
-        value: roles.join(", ")
+        key: this.translationMapper['Assigned roles'],
+        value: roles.join(', ')
       });
     }
     this.isLoading = false;
+  }
+
+  getValuesToTranslate() {
+    return [
+      'Discovering completeness information',
+      'Username',
+      'E-mail',
+      'Phone number',
+      'Assigned organisation units',
+      'Assigned roles'
+    ];
   }
 }
