@@ -1,0 +1,12 @@
+<div class="full-screen-dashboard-item-view">
+    <div class="full-screen-dashboard-item-card">
+        <div class="full-screen-dashboard-item-header">
+            <a (click)="closeDashboardItem($event)" class="full-screen-dashboard-item-close">
+                <img src="assets/icon/close.png" alt="Close">
+            </a>
+        </div>
+        <div class="full-screen-dashboard-item-body" *ngIf="currentVisualization$ | async">
+            <!-- <dashboard-visualization-card [visualizationObject]="currentVisualization$ | async" [currentUser]="currentUser$ | async "></dashboard-visualization-card> -->
+        </div>
+    </div>
+</div>

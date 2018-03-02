@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
-import { AppVersion } from "@ionic-native/app-version";
-import { Observable } from "rxjs/Rx";
-import "rxjs/add/operator/map";
-import { ToastController } from "ionic-angular";
-import { SqlLiteProvider } from "../sql-lite/sql-lite";
-import { Http } from "@angular/http";
-import { AppTranslationProvider } from "../app-translation/app-translation";
+import { Injectable } from '@angular/core';
+import { AppVersion } from '@ionic-native/app-version';
+import { Observable } from 'rxjs/Rx';
+import 'rxjs/add/operator/map';
+import { ToastController } from 'ionic-angular';
+import { SqlLiteProvider } from '../sql-lite/sql-lite';
+import { Http } from '@angular/http';
+import { AppTranslationProvider } from '../app-translation/app-translation';
 
 /*
   Generated class for the AppProvider provider.
@@ -34,7 +34,7 @@ export class AppProvider {
         this.toastController
           .create({
             message: data[message],
-            position: "top",
+            position: 'top',
             duration: 4500
           })
           .present();
@@ -53,7 +53,7 @@ export class AppProvider {
         this.toastController
           .create({
             message: data[message],
-            position: "bottom",
+            position: 'bottom',
             duration: time
           })
           .present();
@@ -70,22 +70,22 @@ export class AppProvider {
     return new Observable(observer => {
       promises.push(
         this.appVersion.getAppName().then(appName => {
-          appInformation["appName"] = appName;
+          appInformation['appName'] = appName;
         })
       );
       promises.push(
         this.appVersion.getPackageName().then(packageName => {
-          appInformation["packageName"] = packageName;
+          appInformation['packageName'] = packageName;
         })
       );
       promises.push(
         this.appVersion.getVersionCode().then(versionCode => {
-          appInformation["versionCode"] = versionCode;
+          appInformation['versionCode'] = versionCode;
         })
       );
       promises.push(
         this.appVersion.getVersionNumber().then(versionNumber => {
-          appInformation["versionNumber"] = versionNumber;
+          appInformation['versionNumber'] = versionNumber;
         })
       );
       Observable.forkJoin(promises).subscribe(
@@ -102,15 +102,17 @@ export class AppProvider {
 
   /**
    *
-   * @param {String} url
+   * @param url
+   * @param username
    * @returns {string}
    */
-  getDataBaseName(url: String) {
+  getDataBaseName(url: string, username: string) {
     let databaseName: string = url
-      .replace("://", "_")
-      .replace(/[/\s]/g, "_")
-      .replace(/[.\s]/g, "_")
-      .replace(/[:\s]/g, "_");
+      .replace('://', '_')
+      .replace(/[/\s]/g, '_')
+      .replace(/[.\s]/g, '_')
+      .replace(/[:\s]/g, '_');
+    databaseName += '_' + username;
     return databaseName;
   }
 
@@ -120,25 +122,25 @@ export class AppProvider {
    * @returns {string}
    */
   getFormattedBaseUrl(url: string) {
-    let formattedBaseUrl: string = "";
-    let urlToBeFormatted: string = "",
+    let formattedBaseUrl: string = '';
+    let urlToBeFormatted: string = '',
       urlArray: any = [],
       baseUrlString: any;
-    if (!(url.split("/")[0] == "https:" || url.split("/")[0] == "http:")) {
-      urlToBeFormatted = "http://" + url;
+    if (!(url.split('/')[0] == 'https:' || url.split('/')[0] == 'http:')) {
+      urlToBeFormatted = 'http://' + url;
     } else {
       urlToBeFormatted = url;
     }
-    baseUrlString = urlToBeFormatted.split("/");
+    baseUrlString = urlToBeFormatted.split('/');
     for (let index in baseUrlString) {
       if (baseUrlString[index]) {
         urlArray.push(baseUrlString[index]);
       }
     }
-    formattedBaseUrl = urlArray[0] + "/";
+    formattedBaseUrl = urlArray[0] + '/';
     for (let i = 0; i < urlArray.length; i++) {
       if (i != 0) {
-        formattedBaseUrl = formattedBaseUrl + "/" + urlArray[i];
+        formattedBaseUrl = formattedBaseUrl + '/' + urlArray[i];
       }
     }
 
@@ -152,11 +154,11 @@ export class AppProvider {
    * @returns {string}
    */
   getUrlWithLowercaseDomain(formattedBaseUrl: string) {
-    let baseUrlArray = formattedBaseUrl.split("://");
+    let baseUrlArray = formattedBaseUrl.split('://');
 
     if (baseUrlArray.length > 0) {
-      let domainName = baseUrlArray[1].split("/")[0];
-      let lowerCaseDomain = baseUrlArray[1].split("/")[0].toLowerCase();
+      let domainName = baseUrlArray[1].split('/')[0];
+      let lowerCaseDomain = baseUrlArray[1].split('/')[0].toLowerCase();
       formattedBaseUrl = formattedBaseUrl.replace(domainName, lowerCaseDomain);
     }
     return formattedBaseUrl;

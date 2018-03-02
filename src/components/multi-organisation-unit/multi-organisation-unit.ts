@@ -78,7 +78,7 @@ export class MultiOrganisationUnitComponent implements OnInit {
         }
       );
   }
-  onDeactivateOu(organisationUnit) {
+  onDeactivateOrganisationUnit(organisationUnit) {
     const data = {
       node: {
         data: organisationUnit
@@ -87,7 +87,7 @@ export class MultiOrganisationUnitComponent implements OnInit {
     this.deactivate.emit(data);
   }
 
-  onActivateOu(organisationUnit) {
+  onActivateOrganisationUnit(organisationUnit) {
     const data = {
       node: {
         data: organisationUnit

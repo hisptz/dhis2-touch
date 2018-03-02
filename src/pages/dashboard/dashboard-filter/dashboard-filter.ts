@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicPage, ViewController } from 'ionic-angular';
-import {Store} from '@ngrx/store';
-import {ApplicationState} from '../../../store/reducers/index';
-import {Observable} from 'rxjs/Observable';
-import {DashboardMenuItem} from '../../../models/dashboard-menu-item';
+import { Store } from '@ngrx/store';
+import { ApplicationState } from '../../../store/reducers/index';
+import { Observable } from 'rxjs/Observable';
+import { DashboardMenuItem } from '../../../models/dashboard-menu-item';
 import * as fromDashboardSelectors from '../../../store/selectors/dashboard.selectors';
 import * as fromDashboardActions from '../../../store/actions/dashboard.actions';
-import {Dashboard} from '../../../models/dashboard';
-
+import { Dashboard } from '../../../models/dashboard';
+import { AppTranslationProvider } from '../../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the DashboardFilterPage page.
@@ -18,36 +18,52 @@ import {Dashboard} from '../../../models/dashboard';
 @IonicPage()
 @Component({
   selector: 'page-dashboard-filter',
-  templateUrl: 'dashboard-filter.html',
+  templateUrl: 'dashboard-filter.html'
 })
-export class DashboardFilterPage implements OnInit{
-
+export class DashboardFilterPage implements OnInit {
   dashboards$: Observable<DashboardMenuItem[]>;
   currentDashboard$: Observable<Dashboard>;
   searchTerm: string;
+  translationMapper: any;
 
   constructor(
     private viewCtrl: ViewController,
-    private store: Store<ApplicationState>
+    private store: Store<ApplicationState>,
+    private appTranslation: AppTranslationProvider
   ) {
-    this.dashboards$ = store.select(fromDashboardSelectors.getDashboardMenuItems);
-    this.currentDashboard$ = store.select(fromDashboardSelectors.getCurrentDashboard);
+    this.dashboards$ = store.select(
+      fromDashboardSelectors.getDashboardMenuItems
+    );
+    this.currentDashboard$ = store.select(
+      fromDashboardSelectors.getCurrentDashboard
+    );
   }
 
   ngOnInit() {
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+      },
+      error => {}
+    );
   }
 
   getFilteredList(event: any) {
     this.searchTerm = event.target.value;
   }
 
-  setCurrentDashboard(selectedDashboard){
-    this.store.dispatch(new fromDashboardActions.SetCurrentAction(selectedDashboard.id));
-    this.dismiss()
+  setCurrentDashboard(selectedDashboard) {
+    this.store.dispatch(
+      new fromDashboardActions.SetCurrentAction(selectedDashboard.id)
+    );
+    this.dismiss();
   }
 
   dismiss() {
     this.viewCtrl.dismiss();
   }
 
+  getValuesToTranslate() {
+    return ['There no dashboard item found'];
+  }
 }

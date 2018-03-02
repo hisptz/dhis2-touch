@@ -1,20 +1,21 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as fromPeriodFilterModel from './period-filter.model';
 import * as _ from 'lodash';
-import {PeriodService} from './period.service';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Observable} from 'rxjs/Observable';
+import { PeriodService } from './period.service';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
+import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 
 @Component({
   selector: 'app-period-filter',
   templateUrl: './period-filter.component.html'
 })
 export class PeriodFilterComponent implements OnInit {
-
   periodTypes: any[];
   @Input() selectedPeriodType = '';
   @Input() selectedPeriods: any[] = [];
-  @Input() periodConfig: any = {
+  @Input()
+  periodConfig: any = {
     resetOnPeriodTypeChange: false,
     emitOnSelection: false
   };
@@ -26,8 +27,12 @@ export class PeriodFilterComponent implements OnInit {
   private _periods: any[];
   selectedYear: number;
   currentYear: number;
+  translationMapper: any;
 
-  constructor(private periodService: PeriodService) {
+  constructor(
+    private periodService: PeriodService,
+    private appTranslation: AppTranslationProvider
+  ) {
     const date = new Date();
     this.selectedYear = date.getFullYear();
     this.currentYear = date.getFullYear();
@@ -41,18 +46,29 @@ export class PeriodFilterComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.translationMapper = {};
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+      },
+      error => {}
+    );
     if (this.selectedPeriodType === '') {
       this.selectedPeriodType = 'Monthly';
     }
-    this._periods = this.getPeriods(this.selectedPeriodType, this.selectedYear, this.selectedPeriods);
+    this._periods = this.getPeriods(
+      this.selectedPeriodType,
+      this.selectedYear,
+      this.selectedPeriods
+    );
     this.periods$.next(this._periods);
   }
 
   getPeriods(selectedPeriodType: string, year: number, selectedPeriods: any[]) {
     return this.updatePeriodsWithSelected(
-      this.periodService.getPeriodsBasedOnType(
-        selectedPeriodType, year), selectedPeriods);
+      this.periodService.getPeriodsBasedOnType(selectedPeriodType, year),
+      selectedPeriods
+    );
   }
 
   updatePeriodsWithSelected(periods: any[], selectedPeriods: any[]) {
@@ -73,7 +89,10 @@ export class PeriodFilterComponent implements OnInit {
 
   togglePeriod(period, e) {
     e.stopPropagation();
-    const periodIndex = _.findIndex(this._periods, _.find(this._periods, ['id', period.id]));
+    const periodIndex = _.findIndex(
+      this._periods,
+      _.find(this._periods, ['id', period.id])
+    );
 
     if (periodIndex !== -1) {
       if (period.selected) {
@@ -112,13 +131,15 @@ export class PeriodFilterComponent implements OnInit {
 
   updatePeriodType(periodType: string, e) {
     e.stopPropagation();
-    const selectedPeriods = this.periodConfig.resetOnPeriodTypeChange ? [] :
-      this._periods.filter((period) => period.selected);
+    const selectedPeriods = this.periodConfig.resetOnPeriodTypeChange
+      ? []
+      : this._periods.filter(period => period.selected);
 
     this._periods = this.getPeriods(
       periodType,
       this.selectedYear,
-      selectedPeriods);
+      selectedPeriods
+    );
     this.periods$.next(this._periods);
   }
 
@@ -128,7 +149,8 @@ export class PeriodFilterComponent implements OnInit {
     this._periods = this.getPeriods(
       this.selectedPeriodType,
       this.selectedYear,
-      this._periods.filter((period) => period.selected));
+      this._periods.filter(period => period.selected)
+    );
     this.periods$.next(this._periods);
   }
 
@@ -138,14 +160,15 @@ export class PeriodFilterComponent implements OnInit {
     this._periods = this.getPeriods(
       this.selectedPeriodType,
       this.selectedYear,
-      this._periods.filter((period) => period.selected));
+      this._periods.filter(period => period.selected)
+    );
     this.periods$.next(this._periods);
   }
 
   selectAllPeriods(e) {
     e.stopPropagation();
     this._periods = this._periods.map((period: any) => {
-      const newPeriod = {...period};
+      const newPeriod = { ...period };
       newPeriod.selected = true;
       return newPeriod;
     });
@@ -158,11 +181,13 @@ export class PeriodFilterComponent implements OnInit {
 
   deselectAllPeriods(e) {
     e.stopPropagation();
-    this._periods = this._periods.map((period: any) => {
-      const newPeriod = {...period};
-      newPeriod.selected = false;
-      return newPeriod;
-    }).filter((period: any) => period.type === this.selectedPeriodType);
+    this._periods = this._periods
+      .map((period: any) => {
+        const newPeriod = { ...period };
+        newPeriod.selected = false;
+        return newPeriod;
+      })
+      .filter((period: any) => period.type === this.selectedPeriodType);
     this.periods$.next(this._periods);
 
     if (this.periodConfig.emitOnSelection) {
@@ -176,11 +201,13 @@ export class PeriodFilterComponent implements OnInit {
   }
 
   getPeriodOutput() {
-    const selectedPeriods = this._periods.filter((period: any) => period.selected);
+    const selectedPeriods = this._periods.filter(
+      (period: any) => period.selected
+    );
     this.onPeriodUpdate.emit({
       items: selectedPeriods,
       name: 'pe',
-      value: selectedPeriods.map((period) => period.id).join(';')
+      value: selectedPeriods.map(period => period.id).join(';')
     });
   }
 
@@ -189,4 +216,15 @@ export class PeriodFilterComponent implements OnInit {
     this.onPeriodFilterClose.emit(true);
   }
 
+  getValuesToTranslate() {
+    return [
+      'Select period type',
+      'Previous year',
+      'Next year',
+      'Available',
+      'Selected',
+      'Update',
+      'Close'
+    ];
+  }
 }

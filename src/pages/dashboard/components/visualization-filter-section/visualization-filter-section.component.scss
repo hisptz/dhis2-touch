@@ -6,6 +6,11 @@
   display: flex;
 }
 
+.visualization-filter-btn {
+  border-radius: 15px;
+  width: 30px;
+}
+
 .visualization-filter-btn img {
   display: block;
   margin: auto;
@@ -31,16 +36,22 @@
 .org-unit-filter-btn,
 .layout-filter-btn {
   margin-right: 5px;
+  padding: 5px;
   display: flex;
   width: auto;
-  font-size: 12px;
+  font-size: 10px;
   border-radius: 15px;
+}
+
+.filter-text {
+  padding-top: 3px;
+  padding-left: 2px;
 }
 
 .data-filter-btn img {
   display: block;
   margin: auto;
-  height: 15px;
+  height: 11px;
 }
 
 .org-unit-filter-btn img {
@@ -61,13 +72,13 @@
 }
 
 .visualization-filter-body {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.95);
   position: absolute;
   padding: 5px;
   top: 40px;
   width: 400px;
   height: 350px;
-  z-index: 1200000;
+  z-index: 20000;
 }
 
 .active-filter {

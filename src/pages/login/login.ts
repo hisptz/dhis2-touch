@@ -207,10 +207,10 @@ export class LoginPage implements OnInit {
           this.currentUser.authorizationKey = btoa(
             this.currentUser.username + ':' + this.currentUser.password
           );
-          this.currentUser.currentDatabase =
-            this.AppProvider.getDataBaseName(this.currentUser.serverUrl) +
-            ' ' +
-            this.currentUser.username;
+          this.currentUser.currentDatabase = this.AppProvider.getDataBaseName(
+            this.currentUser.serverUrl,
+            this.currentUser.username
+          );
           this.reInitiateProgressTrackerObject(this.currentUser);
           this.updateProgressTracker(resource);
           this.UserProvider.setUserData(JSON.parse(response.data)).subscribe(
@@ -884,10 +884,10 @@ export class LoginPage implements OnInit {
       this.currentUser.serverUrl &&
       this.currentUser.username
     ) {
-      this.currentUser['currentDatabase'] =
-        this.AppProvider.getDataBaseName(this.currentUser.serverUrl) +
-        ' ' +
-        this.currentUser.username;
+      this.currentUser['currentDatabase'] = this.AppProvider.getDataBaseName(
+        this.currentUser.serverUrl,
+        this.currentUser.username
+      );
       this.localInstanceProvider
         .setLocalInstanceInstances(
           this.localInstances,

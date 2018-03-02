@@ -1,7 +1,7 @@
-import { Injectable } from "@angular/core";
-import { TranslateService } from "@ngx-translate/core";
-import { Observable } from "rxjs/Observable";
-import * as _ from "lodash";
+import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { Observable } from 'rxjs/Observable';
+import * as _ from 'lodash';
 
 /*
   Generated class for the AppTranslationProvider provider.
@@ -30,7 +30,7 @@ export class AppTranslationProvider {
    * @returns {string}
    */
   getCurrentLanguage() {
-    let lang = "en";
+    let lang = 'en';
     if (this.translateService.getDefaultLang()) {
       lang = this.translateService.getDefaultLang();
     }
@@ -66,17 +66,43 @@ export class AppTranslationProvider {
    */
   getSupportedTranslationObjects() {
     return [
-      { code: "en", name: "English" },
-      { code: "fr", name: "French" },
-      { code: "pt", name: "Portuguese" },
-      { code: "id", name: "Indonesian" },
-      { code: "hi", name: "Hindi" },
-      { code: "ar", name: "Arabic" },
-      { code: "vi", name: "Vietnamese" },
-      { code: "sw", name: "Swahili" },
-      { code: "am", name: "Amharic (Ethiopia)" },
-      { code: "es", name: "Spanish" },
-      { code: "no", name: "Norwegian" }
+      { code: 'en', name: 'English' },
+      { code: 'fr', name: 'French' },
+      { code: 'pt-PT', name: 'Portuguese (Portugal)' },
+      { code: 'pt-BR', name: 'Portuguese (Brazil)' },
+      { code: 'af', name: 'Afrikaans' },
+      { code: 'am', name: 'Amharic' },
+      { code: 'ar', name: 'Arabic' },
+      { code: 'bn', name: 'Bengali' },
+      { code: 'zh-CN', name: 'Chinese (Simplified)' },
+      { code: 'zh-TW', name: 'Chinese (Traditional)' },
+      { code: 'da', name: 'Danish' },
+      { code: 'ht', name: 'Haitian Creole' },
+      { code: 'ha', name: 'Hausa' },
+      { code: 'hi', name: 'Hindi' },
+      { code: 'id', name: 'Indonesian' },
+      { code: 'lo', name: 'Laothian' },
+      { code: 'mn', name: 'Mongolian' },
+      { code: 'ne', name: 'Nepali' },
+      { code: 'no', name: 'Norwegian' },
+      { code: 'pa', name: 'Punjabi' },
+      { code: 'ru', name: 'Russian' },
+      { code: 'st', name: 'Sesotho' },
+      { code: 'sn', name: 'Shona' },
+      { code: 'sd', name: 'Sindhi' },
+      { code: 'si', name: 'Sinhalese' },
+      { code: 'so', name: 'Somali' },
+      { code: 'es', name: 'Spanish' },
+      { code: 'es-419', name: 'Spanish (Latin American)' },
+      { code: 'su', name: 'Sundanese' },
+      { code: 'sw', name: 'Swahili' },
+      { code: 'sv', name: 'Swedish' },
+      { code: 'tg', name: 'Tajik' },
+      { code: 'ta', name: 'Tamil' },
+      { code: 'ur', name: 'Urdu' },
+      { code: 'vi', name: 'Vietnamese' },
+      { code: 'xh', name: 'Xhosa' },
+      { code: 'zu', name: 'Zulu' }
     ];
   }
 }

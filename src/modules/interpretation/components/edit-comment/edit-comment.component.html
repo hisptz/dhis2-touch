@@ -2,9 +2,9 @@
   <textarea cols="100" rows="1" Autosize autofocus required minlength="10" [(ngModel)]="comment.text" name="text" #text="ngModel"
     class="interpretation-edit-input"></textarea>
   <div class="pull-right" [hidden]="text.invalid || comment.text === ''">
-    <button class="dashboard-border dashboard-btn " (click)="cancel($event)">CANCEL</button>
+    <button class="dashboard-border dashboard-btn " (click)="cancel($event)">{{ translationMapper['Cancel'] }}</button>
     <button class="dashboard-border dashboard-btn " [disabled]="creating" (click)="editComment($event)">
-      {{creating ? 'POSTING' : 'POST'}}
+      {{creating ? translationMapper['Posting'] : translationMapper['Post']}}
     </button>
   </div>
 </div>

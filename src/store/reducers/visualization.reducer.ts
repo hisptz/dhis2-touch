@@ -11,7 +11,7 @@ export interface VisualizationState {
 export const INITIAL_VISUALIZATION_STATE: VisualizationState = {
   currentVisualization: undefined,
   visualizationObjects: []
-}
+};
 
 export function visualizationReducer(
   state: VisualizationState = INITIAL_VISUALIZATION_STATE,
@@ -35,33 +35,33 @@ export function visualizationReducer(
 
       return visualizationIndex !== -1
         ? {
-          ...state,
-          visualizationObjects:
-            action.payload.placementPreference === 'first'
-              ? [
-                action.payload.visualizationObject,
-                ...state.visualizationObjects.slice(0, visualizationIndex),
-                ...state.visualizationObjects.slice(visualizationIndex + 1)
-              ]
-              : [
-                ...state.visualizationObjects.slice(0, visualizationIndex),
-                action.payload.visualizationObject,
-                ...state.visualizationObjects.slice(visualizationIndex + 1)
-              ]
-        }
+            ...state,
+            visualizationObjects:
+              action.payload.placementPreference === 'first'
+                ? [
+                    action.payload.visualizationObject,
+                    ...state.visualizationObjects.slice(0, visualizationIndex),
+                    ...state.visualizationObjects.slice(visualizationIndex + 1)
+                  ]
+                : [
+                    ...state.visualizationObjects.slice(0, visualizationIndex),
+                    action.payload.visualizationObject,
+                    ...state.visualizationObjects.slice(visualizationIndex + 1)
+                  ]
+          }
         : {
-          ...state,
-          visualizationObjects:
-            action.payload.placementPreference === 'first'
-              ? [
-                action.payload.visualizationObject,
-                ...state.visualizationObjects
-              ]
-              : [
-                ...state.visualizationObjects,
-                action.payload.visualizationObject
-              ]
-        };
+            ...state,
+            visualizationObjects:
+              action.payload.placementPreference === 'first'
+                ? [
+                    action.payload.visualizationObject,
+                    ...state.visualizationObjects
+                  ]
+                : [
+                    ...state.visualizationObjects,
+                    action.payload.visualizationObject
+                  ]
+          };
 
     case fromVisualizationActions.VisualizationActions.SET_CURRENT:
       return { ...state, currentVisualization: action.payload };
@@ -77,23 +77,23 @@ export function visualizationReducer(
       );
       return visualizationObjectIndex !== -1
         ? {
-          ...state,
-          visualizationObjects: [
-            ...state.visualizationObjects.slice(0, visualizationObjectIndex),
-            {
-              ...visualizationObject,
-              shape: action.payload.shape,
-              details: {
-                ...visualizationObject.details,
-                width: fromVisualizationHelpers.getVisualizationWidthFromShape(
-                  action.payload.shape
-                ),
-                shape: action.payload.shape
-              }
-            },
-            ...state.visualizationObjects.slice(visualizationObjectIndex + 1)
-          ]
-        }
+            ...state,
+            visualizationObjects: [
+              ...state.visualizationObjects.slice(0, visualizationObjectIndex),
+              {
+                ...visualizationObject,
+                shape: action.payload.shape,
+                details: {
+                  ...visualizationObject.details,
+                  width: fromVisualizationHelpers.getVisualizationWidthFromShape(
+                    action.payload.shape
+                  ),
+                  shape: action.payload.shape
+                }
+              },
+              ...state.visualizationObjects.slice(visualizationObjectIndex + 1)
+            ]
+          }
         : state;
     }
     case fromVisualizationActions.VisualizationActions.TOGGLE_INTERPRETATION: {
@@ -118,25 +118,25 @@ export function visualizationReducer(
 
       return visualizationObjectIndex !== -1
         ? {
-          ...state,
-          visualizationObjects: [
-            ...state.visualizationObjects.slice(0, visualizationObjectIndex),
-            {
-              ...visualizationObject,
-              shape: newShape,
-              details: {
-                ...visualizationObject.details,
-                width: fromVisualizationHelpers.getVisualizationWidthFromShape(
-                  newShape
-                ),
-                showInterpretationBlock: !visualizationObject.details
-                  .showInterpretationBlock,
-                shape: visualizationObject.shape
-              }
-            },
-            ...state.visualizationObjects.slice(visualizationObjectIndex + 1)
-          ]
-        }
+            ...state,
+            visualizationObjects: [
+              ...state.visualizationObjects.slice(0, visualizationObjectIndex),
+              {
+                ...visualizationObject,
+                shape: newShape,
+                details: {
+                  ...visualizationObject.details,
+                  width: fromVisualizationHelpers.getVisualizationWidthFromShape(
+                    newShape
+                  ),
+                  showInterpretationBlock: !visualizationObject.details
+                    .showInterpretationBlock,
+                  shape: visualizationObject.shape
+                }
+              },
+              ...state.visualizationObjects.slice(visualizationObjectIndex + 1)
+            ]
+          }
         : state;
     }
 
@@ -150,16 +150,16 @@ export function visualizationReducer(
       );
       return visualizationObjectIndex !== -1
         ? {
-          ...state,
-          visualizationObjects: [
-            ...state.visualizationObjects.slice(0, visualizationObjectIndex),
-            {
-              ...visualizationObject,
-              details: { ...visualizationObject.details, deleting: true }
-            },
-            ...state.visualizationObjects.slice(visualizationObjectIndex + 1)
-          ]
-        }
+            ...state,
+            visualizationObjects: [
+              ...state.visualizationObjects.slice(0, visualizationObjectIndex),
+              {
+                ...visualizationObject,
+                details: { ...visualizationObject.details, deleting: true }
+              },
+              ...state.visualizationObjects.slice(visualizationObjectIndex + 1)
+            ]
+          }
         : state;
     }
 
@@ -174,12 +174,12 @@ export function visualizationReducer(
 
       return visualizationObjectIndex !== -1
         ? {
-          ...state,
-          visualizationObjects: [
-            ...state.visualizationObjects.slice(0, visualizationObjectIndex),
-            ...state.visualizationObjects.slice(visualizationObjectIndex + 1)
-          ]
-        }
+            ...state,
+            visualizationObjects: [
+              ...state.visualizationObjects.slice(0, visualizationObjectIndex),
+              ...state.visualizationObjects.slice(visualizationObjectIndex + 1)
+            ]
+          }
         : state;
     }
 
@@ -193,20 +193,20 @@ export function visualizationReducer(
       );
       return visualizationObjectIndex !== -1
         ? {
-          ...state,
-          visualizationObjects: [
-            ...state.visualizationObjects.slice(0, visualizationObjectIndex),
-            {
-              ...visualizationObject,
-              details: {
-                ...visualizationObject.details,
-                deleting: false,
-                deleteFail: true
-              }
-            },
-            ...state.visualizationObjects.slice(visualizationObjectIndex + 1)
-          ]
-        }
+            ...state,
+            visualizationObjects: [
+              ...state.visualizationObjects.slice(0, visualizationObjectIndex),
+              {
+                ...visualizationObject,
+                details: {
+                  ...visualizationObject.details,
+                  deleting: false,
+                  deleteFail: true
+                }
+              },
+              ...state.visualizationObjects.slice(visualizationObjectIndex + 1)
+            ]
+          }
         : state;
     }
 
@@ -220,20 +220,20 @@ export function visualizationReducer(
       );
       return visualizationObjectIndex !== -1
         ? {
-          ...state,
-          visualizationObjects: [
-            ...state.visualizationObjects.slice(0, visualizationObjectIndex),
-            {
-              ...visualizationObject,
-              details: {
-                ...visualizationObject.details,
-                showDeleteDialog: !visualizationObject.details
-                  .showDeleteDialog
-              }
-            },
-            ...state.visualizationObjects.slice(visualizationObjectIndex + 1)
-          ]
-        }
+            ...state,
+            visualizationObjects: [
+              ...state.visualizationObjects.slice(0, visualizationObjectIndex),
+              {
+                ...visualizationObject,
+                details: {
+                  ...visualizationObject.details,
+                  showDeleteDialog: !visualizationObject.details
+                    .showDeleteDialog
+                }
+              },
+              ...state.visualizationObjects.slice(visualizationObjectIndex + 1)
+            ]
+          }
         : state;
     }
 
@@ -247,25 +247,62 @@ export function visualizationReducer(
       );
       return visualizationObjectIndex !== -1
         ? {
-          ...state,
-          visualizationObjects: [
-            ...state.visualizationObjects.slice(0, visualizationObjectIndex),
-            {
-              ...visualizationObject,
-              details: {
-                ...visualizationObject.details,
-                expanded: !visualizationObject.details.expanded
-              }
-            },
-            ...state.visualizationObjects.slice(visualizationObjectIndex + 1)
-          ]
-        }
+            ...state,
+            visualizationObjects: [
+              ...state.visualizationObjects.slice(0, visualizationObjectIndex),
+              {
+                ...visualizationObject,
+                details: {
+                  ...visualizationObject.details,
+                  expanded: !visualizationObject.details.expanded
+                }
+              },
+              ...state.visualizationObjects.slice(visualizationObjectIndex + 1)
+            ]
+          }
         : state;
     }
+
+    case fromVisualizationActions.VisualizationActions.TOGGLE_FULLSCREEN: {
+      const visualizationObject: Visualization = _.find(
+        state.visualizationObjects,
+        ['id', action.payload]
+      );
+      const visualizationObjectIndex = state.visualizationObjects.indexOf(
+        visualizationObject
+      );
+
+      return visualizationObjectIndex !== -1
+        ? {
+            ...state,
+            currentVisualization: action.payload,
+            visualizationObjects: [
+              ...state.visualizationObjects.slice(0, visualizationObjectIndex),
+              {
+                ...visualizationObject,
+                details: {
+                  ...visualizationObject.details,
+                  showFullScreen: !visualizationObject.details.showFullScreen,
+                  cardHeight: visualizationObject.details.showFullScreen
+                    ? '450px'
+                    : '100vh',
+                  itemHeight: visualizationObject.details.showFullScreen
+                    ? '430px'
+                    : '96vh'
+                }
+              },
+              ...state.visualizationObjects.slice(visualizationObjectIndex + 1)
+            ]
+          }
+        : state;
+    }
+
     default:
       return state;
   }
 }
 
-export const getVisualizationObjectState = (state: VisualizationState) => state.visualizationObjects;
-export const getCurrentVisualizationState = (state: VisualizationState) => state.currentVisualization;
+export const getVisualizationObjectState = (state: VisualizationState) =>
+  state.visualizationObjects;
+export const getCurrentVisualizationState = (state: VisualizationState) =>
+  state.currentVisualization;

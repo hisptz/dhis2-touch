@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { InterpretationService } from '../../services/interpretation.service';
+import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
 
 @Component({
   selector: 'app-interpretation-comment',
   templateUrl: './interpretation-comment.component.html'
 })
 export class InterpretationCommentComponent implements OnInit {
-
   @Input() showCommentInput: boolean;
   @Input() comment: any;
   @Input() interpretation: any;
@@ -15,12 +15,15 @@ export class InterpretationCommentComponent implements OnInit {
   @Output() onCommentDelete: EventEmitter<any> = new EventEmitter<any>();
   @Output() onCommentCreated: EventEmitter<any> = new EventEmitter<any>();
   @Output() onCommentUpdated: EventEmitter<any> = new EventEmitter<any>();
-  constructor(private interpretationService: InterpretationService) {
+  translationMapper: any;
+  constructor(
+    private interpretationService: InterpretationService,
+    private appTranslation: AppTranslationProvider
+  ) {
     this.showCommentInput = false;
   }
 
   ngOnInit() {
-
     if (this.comment) {
       this.comment = {
         ...this.comment,
@@ -29,8 +32,17 @@ export class InterpretationCommentComponent implements OnInit {
         showDeleteButton: this.comment.user.id === this.currentUser.id
       };
     }
+    this.translationMapper = {};
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+      },
+      error => {}
+    );
+  }
 
-
+  getValuesToTranslate() {
+    return ['Edit', 'Delete'];
   }
 
   toggleCommentOptions(e, mouseEnter: boolean = false) {
@@ -54,15 +66,19 @@ export class InterpretationCommentComponent implements OnInit {
     if (e) {
       e.stopPropagation();
     }
-    this.comment = { ...this.comment, showDeleteDialog: !this.comment.showDeleteDialog, showDropdownOptions: false };
+    this.comment = {
+      ...this.comment,
+      showDeleteDialog: !this.comment.showDeleteDialog,
+      showDropdownOptions: false
+    };
   }
 
   commentCreated(interpretation: any) {
-    this.onCommentCreated.emit(interpretation)
+    this.onCommentCreated.emit(interpretation);
   }
 
   commentDeleted(comment: any) {
-    this.onCommentDelete.emit(comment)
+    this.onCommentDelete.emit(comment);
   }
 
   commentUpdated(interpretation) {
@@ -79,5 +95,4 @@ export class InterpretationCommentComponent implements OnInit {
       showDropdownOptions: !this.comment.showDropdownOptions
     };
   }
-
 }

@@ -1,67 +1,76 @@
 app-layout {
-
-.drop-target {
-  height: 100px
+    .drop-target {
+        height: 100px;
+    }
+    .layout-table {
+        width: 100%;
+    }
+    .dimension-drops {
+        height: 125px;
+        width: 50%;
+        display: inline-block;
+    }
+    .draggable {
+        border: 1px solid lightgrey;
+        display: flex;
+        padding: 6px;
+        img {
+            height: 15px;
+        }
+    }
+    .dimension-label {
+        padding: 5px;
+        display: flex;
+        justify-content: flex-start;
+    }
+    .layout-btn {
+        display: block;
+        height: 29px;
+        padding-top: 3px;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    .layout-btn:hover {
+        background-color: #ececec;
+    }
+    .dnd-drag-enter {
+        opacity: 0.7;
+        border: 1px dotted #204d74;
+    }
+    .dnd-drag-over {
+        border: 0px dotted #204d74;
+    }
+    .dnd-sortable-drag {
+        -moz-transform: scale(0.9);
+        -webkit-transform: scale(0.9);
+        transform: scale(0.9);
+        opacity: 0.7;
+        border: 2px dashed #000;
+    }
+    .draggable:hover {
+        cursor: move;
+    }
+    .drag-container {
+        height: 100%;
+    }
+    .layout-footer {
+        display: flex;
+        justify-content: flex-end;
+        padding: 2px;
+    }
+    .layout-action-btn {
+        -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
+        -moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
+        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
+        border-style: none;
+        cursor: pointer;
+        background-color: rgba(255, 255, 255, 0.5);
+        height: 30px;
+        padding: 5px;
+        margin-left: 2px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        border-radius: 3px;
+    }
 }
-
-.draggable {
-  border: 1px solid lightgrey;
-  display: flex;
-  padding: 3px;
-}
-
-.layout-btn {
-  display: block;
-  height: 29px;
-  padding-top: 3px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-.layout-btn:hover {
-  background-color: #ececec;
-}
-
-.dimension-drops {
-  height: 125px;
-  width: 50%;
-}
-
-.dnd-drag-enter {
-  opacity: 0.7;
-  border: 1px dotted #204d74;
-}
-
-.dnd-drag-over {
-  border: 0px dotted #204d74;
-}
-
-.dnd-sortable-drag {
-  -moz-transform: scale(0.9);
-  -webkit-transform: scale(0.9);
-  transform: scale(0.9);
-  opacity: 0.7;
-  border: 2px dashed #000;
-}
-
-.draggable:hover {
-  cursor: move;
-}
-
-.draggable img {
-  padding-top: 5px;
-  padding-left: 5px;
-  height: 20px;
-  width: 20px;
-}
-
-.drag-container {
-  height: 100%;
-}
-
-.layout-footer {
-  display: flex;
-}
-
-}
-

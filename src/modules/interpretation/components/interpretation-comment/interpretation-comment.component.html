@@ -29,10 +29,10 @@
       <img src="assets/icon/more.png" alt="" style="height: 20px;">
       <ul class="comment-more-options-dropdown" *ngIf="comment?.showDropdownOptions">
         <li>
-          <a (click)="toggleCommentEditForm($event)">Edit</a>
+          <a (click)="toggleCommentEditForm($event)">{{ translationMapper['Edit'] }}</a>
         </li>
         <li>
-          <a class="text-danger" (click)="toggleDeleteConfirmationDialog($event)" *ngIf="comment?.showDeleteButton">Delete</a>
+          <a class="text-danger" (click)="toggleDeleteConfirmationDialog($event)" *ngIf="comment?.showDeleteButton">{{ translationMapper['Delete'] }}</a>
         </li>
       </ul>
     </a>

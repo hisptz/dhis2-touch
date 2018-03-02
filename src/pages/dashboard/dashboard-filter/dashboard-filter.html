@@ -2,7 +2,7 @@
 
   <ion-toolbar color="primary">
     <ion-title>
-      {{'dashboard_list'|translate}}
+      <span [translate]="'Dashboard list'"></span>
     </ion-title>
     <ion-buttons end>
       <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
@@ -10,26 +10,23 @@
       </button>
     </ion-buttons>
   </ion-toolbar>
-
 </ion-header>
-
-
 <ion-content>
-
   <ion-grid>
-    <ion-searchbar animated="true"autocomplete="on" placeholder="{{'search_dashboard_by_name'|translate}}"  (ionInput)="getFilteredList($event)"></ion-searchbar>
+    <ion-searchbar animated="true" autocomplete="on" placeholder="{{'Search dashboard by name'|translate}}" (ionInput)="getFilteredList($event)"></ion-searchbar>
     <ion-row>
-      <ion-col >
+      <ion-col>
         <ion-list>
-          <ion-item *ngFor="let dashboard of dashboards$ | async | filterByName: searchTerm" (tap)="setCurrentDashboard(dashboard)" class="list-separator">
-            <span ion-text [color]="((currentDashboard$ | async).id === dashboard.id) ?'current' : 'font-color'" >{{ dashboard.name }}</span>
+          <ion-item *ngFor="let dashboard of dashboards$ | async | filterByName: searchTerm" (tap)="setCurrentDashboard(dashboard)"
+            class="list-separator">
+            <span ion-text [color]="((currentDashboard$ | async).id === dashboard.id) ?'current' : 'font-color'">{{ dashboard.name }}</span>
           </ion-item>
         </ion-list>
       </ion-col>
     </ion-row>
 
     <div *ngIf="(dashboards$ | async).length == 0">
-      <empty-list-notification [emptyListMessage]="'there_no_dashboard_found'|translate"></empty-list-notification>
+      <empty-list-notification [emptyListMessage]="translationMapper['There no dashboard item found']"></empty-list-notification>
     </div>
   </ion-grid>
 
