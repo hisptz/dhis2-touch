@@ -15,8 +15,8 @@ import { OrganisationUnitsProvider } from '../../providers/organisation-units/or
 })
 export class MultiOrganisationUnitComponent implements OnInit {
   @Input() selectedOrgUnits;
-  @Output() activate = new EventEmitter();
-  @Output() deactivate = new EventEmitter();
+  @Output() activateOrganisationUnit = new EventEmitter();
+  @Output() deactivateOrganisationUnit = new EventEmitter();
   hasOrgUnitChildrenOpened: any;
   toggledOuIds: Array<string>;
   isLoading: boolean;
@@ -78,21 +78,22 @@ export class MultiOrganisationUnitComponent implements OnInit {
         }
       );
   }
-  onDeactivateOrganisationUnit(organisationUnit) {
+  onDeactivateOu(organisationUnit) {
     const data = {
       node: {
         data: organisationUnit
       }
     };
-    this.deactivate.emit(data);
+    this.deactivateOrganisationUnit.emit(data);
   }
 
-  onActivateOrganisationUnit(organisationUnit) {
+  onActivateOu(organisationUnit) {
     const data = {
       node: {
         data: organisationUnit
       }
     };
-    this.activate.emit(data);
+
+    this.activateOrganisationUnit.emit(data);
   }
 }
