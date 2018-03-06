@@ -1,16 +1,16 @@
-import { Injectable } from "@angular/core";
-import { HTTP } from "@ionic-native/http";
-import { Http, Headers } from "@angular/http";
-import "rxjs/add/operator/map";
-import "rxjs/add/operator/timeout";
-import { Observable } from "rxjs/Observable";
-import { ApplicationState } from "../../store/reducers/index";
-import { Store } from "@ngrx/store";
-import { getCurrentUser } from "../../store/selectors/currentUser.selectors";
-import { CurrentUser } from "../../models/currentUser";
-import { EncryptionProvider } from "../encryption/encryption";
-import * as _ from "lodash";
-import { NetworkAvailabilityProvider } from "../network-availability/network-availability";
+import { Injectable } from '@angular/core';
+import { HTTP } from '@ionic-native/http';
+import { Http, Headers } from '@angular/http';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/timeout';
+import { Observable } from 'rxjs/Observable';
+import { ApplicationState } from '../../store/reducers/index';
+import { Store } from '@ngrx/store';
+import { getCurrentUser } from '../../store/selectors/currentUser.selectors';
+import { CurrentUser } from '../../models/currentUser';
+import { EncryptionProvider } from '../encryption/encryption';
+import * as _ from 'lodash';
+import { NetworkAvailabilityProvider } from '../network-availability/network-availability';
 
 /*
   Generated class for the HttpClientProvider provider.
@@ -38,12 +38,12 @@ export class HttpClientProvider {
    * @returns {any}
    */
   getUrlBasedOnDhisVersion(url, user) {
-    if (url.indexOf("/api/") == -1 && url.indexOf(".json") > 0) {
-      url = "/api/" + url;
+    if (url.indexOf('/api/') == -1 && url.indexOf('.json') > 0) {
+      url = '/api/' + url;
     }
     if (user.dhisVersion && parseInt(user.dhisVersion) < 25) {
-      let pattern = "/api/" + user.dhisVersion;
-      url = url.replace(pattern, "/api/");
+      let pattern = '/api/' + user.dhisVersion;
+      url = url.replace(pattern, '/api/');
     }
     return url;
   }
@@ -74,7 +74,7 @@ export class HttpClientProvider {
           observer.complete();
         }
       } else {
-        observer.error({ error: "network is not available" });
+        observer.error({ error: 'network is not available' });
       }
     });
   }
@@ -95,7 +95,7 @@ export class HttpClientProvider {
     resourceName?,
     pageSize?
   ): Observable<any> {
-    let apiUrl = "";
+    let apiUrl = '';
     return new Observable(observer => {
       this.getSanitizedUser(user).subscribe(
         (sanitizedUser: CurrentUser) => {
@@ -111,9 +111,9 @@ export class HttpClientProvider {
             let promises = [];
             let testUrl =
               user.serverUrl +
-              "/api/25/" +
+              '/api/25/' +
               resourceName +
-              ".json?fields=none&pageSize=" +
+              '.json?fields=none&pageSize=' +
               pageSize;
             this.http
               .get(testUrl, {}, {})
@@ -124,7 +124,7 @@ export class HttpClientProvider {
                     initialResponse[resourceName] = [];
                     for (let i = 1; i <= initialResponse.pager.pageCount; i++) {
                       let paginatedUrl =
-                        apiUrl + "&pageSize=" + pageSize + "&page=" + i;
+                        apiUrl + '&pageSize=' + pageSize + '&page=' + i;
                       promises.push(
                         this.http
                           .get(paginatedUrl, {}, {})
@@ -201,6 +201,7 @@ export class HttpClientProvider {
    * @returns {Observable<any>}
    */
   post(url, data, user?): Observable<any> {
+    let apiUrl = '';
     return new Observable(observer => {
       this.getSanitizedUser(user).subscribe(
         (sanitizedUser: CurrentUser) => {
@@ -209,10 +210,10 @@ export class HttpClientProvider {
             sanitizedUser.password
           );
           this.http.setRequestTimeout(this.timeOutTime);
-          url =
+          apiUrl =
             user.serverUrl + this.getUrlBasedOnDhisVersion(url, sanitizedUser);
           this.http
-            .post(url, data, {})
+            .post(apiUrl, data, {})
             .then(
               (response: any) => {
                 observer.next(response);
@@ -241,17 +242,20 @@ export class HttpClientProvider {
    * @returns {Observable<any>}
    */
   defaultPost(url, data, user?): Observable<any> {
+    let apiUrl = '';
     return new Observable(observer => {
       this.getSanitizedUser(user).subscribe(
         (sanitizedUser: CurrentUser) => {
-          url = this.getUrlBasedOnDhisVersion(url, sanitizedUser);
+          apiUrl =
+            sanitizedUser.serverUrl +
+            this.getUrlBasedOnDhisVersion(url, sanitizedUser);
           let headers = new Headers();
           headers.append(
-            "Authorization",
-            "Basic " + sanitizedUser.authorizationKey
+            'Authorization',
+            'Basic ' + sanitizedUser.authorizationKey
           );
           this.defaultHttp
-            .post(sanitizedUser.serverUrl + url, data, { headers: headers })
+            .post(apiUrl, data, { headers: headers })
             .timeout(this.timeOutTime)
             .subscribe(
               (response: any) => {
@@ -284,8 +288,8 @@ export class HttpClientProvider {
           url = this.getUrlBasedOnDhisVersion(url, sanitizedUser);
           let headers = new Headers();
           headers.append(
-            "Authorization",
-            "Basic " + sanitizedUser.authorizationKey
+            'Authorization',
+            'Basic ' + sanitizedUser.authorizationKey
           );
           this.defaultHttp
             .put(sanitizedUser.serverUrl + url, data, { headers: headers })
@@ -321,8 +325,8 @@ export class HttpClientProvider {
           url = this.getUrlBasedOnDhisVersion(url, sanitizedUser);
           let headers = new Headers();
           headers.append(
-            "Authorization",
-            "Basic " + sanitizedUser.authorizationKey
+            'Authorization',
+            'Basic ' + sanitizedUser.authorizationKey
           );
           this.defaultHttp
             .delete(sanitizedUser.serverUrl + url, { headers: headers })
