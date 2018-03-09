@@ -422,7 +422,7 @@ export class UploadDataViaSmsComponent implements OnInit {
                             )
                             .subscribe(
                               (reportingSms: any) => {
-                                let message = 'Sending ';
+                                let message = 'Sending';
                                 if (reportingSms.length == 1) {
                                   message += ' SMS';
                                 } else {
