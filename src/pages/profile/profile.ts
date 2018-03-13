@@ -1,8 +1,10 @@
-import { Component, OnInit } from "@angular/core";
-import { IonicPage, NavController } from "ionic-angular";
-import { ProfileProvider } from "../../providers/profile/profile";
-import { AppProvider } from "../../providers/app/app";
-import { AppTranslationProvider } from "../../providers/app-translation/app-translation";
+import { Component, OnInit } from '@angular/core';
+import { IonicPage, NavController } from 'ionic-angular';
+import { ProfileProvider } from '../../providers/profile/profile';
+import { AppProvider } from '../../providers/app/app';
+import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
+import { UserProvider } from '../../providers/user/user';
+import { CurrentUser } from '../../models/currentUser';
 
 /**
  * Generated class for the ProfilePage page.
@@ -13,13 +15,14 @@ import { AppTranslationProvider } from "../../providers/app-translation/app-tran
 
 @IonicPage()
 @Component({
-  selector: "page-profile",
-  templateUrl: "profile.html"
+  selector: 'page-profile',
+  templateUrl: 'profile.html'
 })
 export class ProfilePage implements OnInit {
   isProfileContentOpen: any;
   profileContents: Array<any>;
   userData: any;
+  currentUser: CurrentUser;
   translationMapper: any;
   loadingMessage: string;
   isLoading: boolean = true;
@@ -28,7 +31,8 @@ export class ProfilePage implements OnInit {
     public navCtrl: NavController,
     private appProvider: AppProvider,
     private profileProvider: ProfileProvider,
-    private appTranslation: AppTranslationProvider
+    private appTranslation: AppTranslationProvider,
+    private userProvider: UserProvider
   ) {}
 
   ngOnInit() {
@@ -46,7 +50,7 @@ export class ProfilePage implements OnInit {
   }
 
   loadingProfileInformation() {
-    let key = "Discovering profile information";
+    let key = 'Discovering profile information';
     this.loadingMessage = this.translationMapper[key]
       ? this.translationMapper[key]
       : key;
@@ -55,18 +59,30 @@ export class ProfilePage implements OnInit {
     if (this.profileContents.length > 0) {
       this.toggleProfileContents(this.profileContents[0]);
     }
-    this.profileProvider.getSavedUserData().subscribe(
-      userData => {
-        this.userData = userData;
-        this.isLoading = false;
-        this.loadingMessage = "";
+    this.userProvider.getCurrentUser().subscribe(
+      currentUser => {
+        this.profileProvider.getSavedUserData(currentUser).subscribe(
+          userData => {
+            this.userData = userData;
+            this.isLoading = false;
+            this.loadingMessage = '';
+          },
+          error => {
+            this.isLoading = false;
+            this.loadingMessage = '';
+            console.log(JSON.stringify(error));
+            this.appProvider.setNormalNotification(
+              'Fail to discover profile information'
+            );
+          }
+        );
       },
       error => {
         this.isLoading = false;
-        this.loadingMessage = "";
+        this.loadingMessage = '';
         console.log(JSON.stringify(error));
         this.appProvider.setNormalNotification(
-          "Fail to discover profile information"
+          'Fail to discover profile information'
         );
       }
     );
@@ -86,6 +102,6 @@ export class ProfilePage implements OnInit {
   }
 
   getValuesToTranslate() {
-    return ["Discovering profile information"];
+    return ['Discovering profile information'];
   }
 }
