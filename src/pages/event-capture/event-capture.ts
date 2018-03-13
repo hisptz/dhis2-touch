@@ -87,14 +87,7 @@ export class EventCapturePage implements OnInit {
       (currentUser: any) => {
         this.currentUser = currentUser;
         this.userProvider.getUserData().subscribe((userData: any) => {
-          this.programIdsByUserRoles = [];
-          userData.userRoles.forEach((userRole: any) => {
-            if (userRole.programs) {
-              userRole.programs.forEach((program: any) => {
-                this.programIdsByUserRoles.push(program.id);
-              });
-            }
-          });
+          this.programIdsByUserRoles = userData.programs;
           this.organisationUnitsProvider
             .getLastSelectedOrganisationUnitUnit(currentUser)
             .subscribe((lastSelectedOrgUnit: any) => {

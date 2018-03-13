@@ -274,7 +274,6 @@ export class UserProvider {
 
   getAssignedDataSetIds(userData) {
     let dataSetsIds = [];
-
     if (userData && userData.dataSets) {
       dataSetsIds = userData.dataSets;
     } else if (
