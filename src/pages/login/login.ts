@@ -122,7 +122,7 @@ export class LoginPage implements OnInit {
       this.currentUser = currentUser;
     } else {
       this.currentUser = {
-        serverUrl: 'play.hisptz.org/28',
+        serverUrl: 'play.hisptz.org/29',
         username: 'admin',
         password: 'district',
         currentLanguage: 'en'
@@ -184,6 +184,7 @@ export class LoginPage implements OnInit {
       this.currentUser.username &&
       this.currentUser.password
     ) {
+      delete this.currentUser.dhisVersion;
       let currentResourceType = 'communication';
       this.progressTracker = {};
       let resource = 'Authenticating user';
