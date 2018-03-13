@@ -6,7 +6,7 @@
         <div class="logo">
           <img [src]="logoUrl">
         </div>
-        <p [translate]="'innovation in every dimension'">Innovation in every dimension</p>
+        <p [translate]="'Innovation in every dimension'"></p>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="isLoginProcessActive">
@@ -28,7 +28,7 @@
               </div>
             </div>
             <span text-wrap *ngIf="progressTracker.communication.message !=''" [translate]="progressTracker.communication.message"></span>
-            <span text-wrap *ngIf="progressTracker.communication.message ==''" [translate]="'establishing connection to server'"></span>
+            <span text-wrap *ngIf="progressTracker.communication.message ==''" [translate]="'Establishing connection to server'"></span>
             <div style="text-align: center" item-right>
               {{ progressTracker.communication.passStepCount}}/{{ progressTracker.communication.count}}
             </div>
@@ -43,7 +43,7 @@
               </div>
             </div>
             <span text-wrap *ngIf="progressTracker.entryForm.message !=''" [translate]="progressTracker.entryForm.message"></span>
-            <span text-wrap *ngIf="progressTracker.entryForm.message ==''" [translate]="'aggregate metadata'"></span>
+            <span text-wrap *ngIf="progressTracker.entryForm.message ==''" [translate]="'Aggregate metadata'"></span>
             <div style="text-align: center" item-right>
               {{ progressTracker.entryForm.passStepCount}}/{{ progressTracker.entryForm.count}}
             </div>
@@ -74,7 +74,7 @@
               </div>
             </div>
             <span text-wrap *ngIf="progressTracker.report.message !=''" [translate]="progressTracker.report.message"></span>
-            <span text-wrap *ngIf="progressTracker.report.message ==''" [translate]="'report metadata'"></span>
+            <span text-wrap *ngIf="progressTracker.report.message ==''" [translate]="'Reports metadata'"></span>
             <div style="text-align: center" item-right>
               {{ progressTracker.report.passStepCount}}/{{ progressTracker.report.count}}
             </div>
@@ -111,15 +111,15 @@
             <ion-col>
               <div class="round-form-container">
                 <ion-item>
-                  <ion-input [(ngModel)]="currentUser.serverUrl" type="text" name="serverUrl" placeholder="{{'enter server address'|translate}}"></ion-input>
+                  <ion-input [(ngModel)]="currentUser.serverUrl" type="text" name="serverUrl" placeholder="{{'Enter server address'|translate}}"></ion-input>
                 </ion-item>
 
                 <ion-item>
-                  <ion-input [(ngModel)]="currentUser.username" type="text" name="username" placeholder="{{'enter username'|translate}}"></ion-input>
+                  <ion-input [(ngModel)]="currentUser.username" type="text" name="username" placeholder="{{'Enter username'|translate}}"></ion-input>
                 </ion-item>
 
                 <ion-item>
-                  <ion-input [(ngModel)]="currentUser.password" name="password" type="password" placeholder="{{'enter password'|translate}}"></ion-input>
+                  <ion-input [(ngModel)]="currentUser.password" name="password" type="password" placeholder="{{'Enter password'|translate}}"></ion-input>
                 </ion-item>
               </div>
             </ion-col>
@@ -128,7 +128,7 @@
           <ion-row>
             <ion-col>
               <button type="submit" class="normalButton" ion-button full text-capitalize>
-                <span [translate]="'login'"></span>
+                <span [translate]="'Login'"></span>
               </button>
             </ion-col>
           </ion-row>
@@ -139,7 +139,7 @@
           </div>
           <button ion-button block clear color="light" text-capitalize (click)="toggleLocalInstancesList()">
             <img class="side-menu-icon" [src]="offlineIcon" />&nbsp;&nbsp;
-            <span [translate]="'offline instances'"></span>
+            <span [translate]="'Offline instances'"></span>
           </button>
         </div>
       </div>
@@ -150,7 +150,7 @@
           <span class="translation-codes">
             <span *ngFor="let code of topThreeTranslationCodes; let currentIndex = index">
               <span (click)="updateTranslationLanguage(code)" [ngClass]="(currentLanguage == code) ?'currentLang' : ''">{{ code }}</span>
-              <span *ngIf="currentIndex < 3">&nbsp;|&nbsp;</span>
+              <span *ngIf="currentIndex < 2">&nbsp;|&nbsp;</span>
             </span>
             <span *ngIf="topThreeTranslationCodes.indexOf(currentLanguage) == -1">
               &nbsp;|&nbsp;

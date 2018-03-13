@@ -1,0 +1,497 @@
+{
+  "Account": "Conta",
+  "Apps": "Apps",
+  "Log out": "Sair",
+  "About": "Sobre",
+  "Aggregate status": "estado de agregado",
+  "Event status": "status do evento",
+  "Event for tracker status": "Evento de estado perseguidor",
+  "Enrollments": "matrículas",
+  "System info": "Informação do sistema",
+  "Synced": "Sincronizado",
+  "Not synced": "não sincronizada",
+  "Discovering app information": "Descobrir informações aplicativo",
+  "Discovering system information": "Descobrir informações do sistema",
+  "Discovering data values storage status":
+    "Descobrir dados valores de status de armazenamento",
+  "Discovering events storage status":
+    "estatuto de armazenamento eventos descobrindo",
+  "Discovering enrollments storage status":
+    "estatuto de armazenamento matrículas descobrindo",
+  "Fail to discover user information":
+    "Não conseguem descobrir informações do usuário",
+  "Fail to discover system information":
+    "Não conseguem descobrir informações do sistema",
+  "Fail to discover app information":
+    "Não conseguem descobrir informações aplicativo",
+  "Fail to discover data values storage status":
+    "Não conseguem descobrir o status de armazenamento de valores de dados",
+  "Fail to discover enrollments storage status":
+    "Não conseguem descobrir o status de armazenamento de matrículas",
+  "Profile": "Perfil",
+  "User information": "Informação do usuário",
+  "Assigned organisation units": "unidades organizacionais atribuídos",
+  "Assigned roles": "funções atribuídas",
+  "Assigned programs": "programas atribuídos",
+  "Assigned entry forms": "formulários de entrada atribuídos",
+  "Discovering profile information": "Descobrir informações de perfil",
+  "Fail to discover profile information":
+    "Não conseguem descobrir informações de perfil",
+  "Help": "Socorro",
+  "Help search": "procure ajuda",
+  "Search help by title": "Procure ajuda por título",
+  "Settings": "Configurações",
+  "Applying changes": "aplicando alterações",
+  "Minutes": "Minutos",
+  "Hours": "horas",
+  "Auto synchronization": "sincronização automática",
+  "Form layout": "layout do formulário",
+  "List layout": "layout da lista",
+  "Table layout": "disposição da tabela",
+  "Form label": "etiqueta forma",
+  "Display name": "Mostrar nome",
+  "Form name": "Nome do formulario",
+  "Data element per page": "elemento de dados por página",
+  "Current language": "idioma atual",
+  "App settings": "Configurações do aplicativo",
+  "Entry form": "formulário de inscrição",
+  "Synchronization": "Sincronização",
+  "Discovering current user information":
+    "Descobrir informações do usuário atual",
+  "Discovering settings": "descobrir as configurações",
+  "Settings have been updated successfully":
+    "As configurações foram atualizadas com sucesso",
+  "Fail to discover settings": "Não conseguem descobrir as configurações",
+  "Fail to discover available local instances":
+    "Não conseguem descobrir instâncias locais disponíveis",
+  "Fail to discover current user information":
+    "Não conseguem descobrir informações do usuário atual",
+  "Fail to set translation": "Falha ao definir tradução",
+  "Fail to apply changes on  settings":
+    "Deixar de aplicar as alterações sobre as definições",
+  "Reports": "Relatórios",
+  "Search": "Pesquisa",
+  "Discovering reports": "descobrir relatórios",
+  "Downloading reports from server": "Baixando relatórios de servidor",
+  "Preparing local storage for updates":
+    "Preparando armazenamento local para atualizações",
+  "Saving reports from server": "Salvando relatórios de servidor",
+  "there is no report to select": "não há relato para selecionar",
+  "Fail  to discover reports": "Não conseguem descobrir relatórios",
+  "Fail to save reports": "Falha ao salvar relatórios",
+  "Fail to prepare local storage for updates":
+    "Não se prepararem armazenamento local para atualizações",
+  "Fail to download reports": "Deixar de download de relatórios",
+  "Data set report": "relatório de conjunto de dados",
+  "Standard report": "relatório padrão",
+  "Report name": "nome do relatório",
+  "Organisation unit": "unidade de organização",
+  "Period": "Período",
+  "Generate report": "gerar relatório",
+  "Touch to select organisation unit":
+    "Toque para selecionar unidade de organização",
+  "Touch to select period": "Toque para selecionar período",
+  "Report view": "vista do relatório",
+  "Discovering user information": "Descobrir informações do usuário",
+  "Discovering report metadata": "Descobrir metadados relatório",
+  "Fail to discover organisation units information":
+    "Não conseguem descobrir unidades organizacionais informações",
+  "Fail to discover report metadata":
+    "Não conseguem descobrir metadados relatório",
+  "Report type has not set,please contact system administrator":
+    "tipo de relatório não definiu, entre em contato com administrador do sistema",
+  "Discovering data set report information":
+    "dados descobrindo definir relatar informações",
+  "Preparing data set report": "Preparando relatório conjunto de dados",
+  "Fail to prepare data set report":
+    "Falha ao preparar o relatório conjunto de dados",
+  "Fail to discover data set report information":
+    "Não conseguem descobrir informações relatório de conjunto de dados",
+  "Program selection": "selecção de programas",
+  "There is no program to select": "Não há nenhum programa para selecionar",
+  "Period selection": "seleção de período",
+  "Previous": "Anterior",
+  "Next": "Próximo",
+  "There is no period to select": "Não há período para selecionar",
+  "Organisation unit selection": "seleção unidade de organização",
+  "Discovering assigned organisation units":
+    "Descobrir unidades organizacionais atribuídos",
+  "Currently there is on assigned organisation unit on local storage, Please metadata on sync app":
+    "Atualmente há na unidade de organização atribuída no armazenamento local, por favor metadados no aplicativo de sincronização",
+  "Fail to discover organisation units":
+    "Não conseguem descobrir unidades organizacionais",
+  "Discovering organisation units": "Descobrir unidades organizacionais",
+  "Fail to discover organisation unit children":
+    "Não conseguem descobrir crianças unidade de organização",
+  "Event capture": "captura de eventos",
+  "Columns": "colunas",
+  "Add": "Adicionar",
+  "Discovering assigned programs": "Descobrir programas atribuídos",
+  "Discovering program stages": "Descobrir etapas do programa",
+  "Discovering data": "descobrir dados",
+  "Preparing table for display": "Preparar a tabela para exibição",
+  "All of selected category disaggregation are restricted from entry in selcted organisation unit, choose a different form or contact your support desk":
+    "Todos categoria desagregação selecionados são impedidos de entrada na unidade de organização selcted, escolher uma forma diferente ou entre em contato com a assistência técnica",
+  "There is no option for selected category that associated with selected organisation unit":
+    "Não há opção para a categoria selecionada que associado com a unidade de organização selecionada",
+  "There are no program to select": "Não há nenhum programa para selecionar",
+  "Touch to select program": "Toque para selecionar o programa",
+  "Touch to select option": "Toque para seleccionar a opção",
+  "There no data at the moment": "Não há dados no momento",
+  "Visible header": "cabeçalho visível",
+  "Select all": "Selecionar tudo",
+  "Deselect all": "Desmarcar todos",
+  "Save": "Salve ",
+  "Event register": "registro de eventos",
+  "Program": "Programa",
+  "Discovering data from local storage":
+    "Descobrindo dados de armazenamento local",
+  "Fail to discover program stages":
+    "Não conseguem descobrir fases do programa",
+  "Report date": "Data do relatório",
+  "Touch to pick date": "Toque para escolher data",
+  "Delete": "Excluir",
+  "There are no data elements, please contact you help desk":
+    "Não existem elementos de dados, entre em contato com você ajuda mesa",
+  "You are about to delete this event, are you sure?":
+    "Você está prestes a excluir este evento, você tem certeza?",
+  "Yes": "sim",
+  "No": "Não",
+  "Deleting event": "Excluindo eventos",
+  "Event has been deleted successfully": "Evento foi excluído com sucesso",
+  "Fail to delete event": "Falha ao excluir eventos",
+  "Tracker capture": "captura de rastreador",
+  "Discovering tracked entity list": "Descobrir lista entidade rastreado",
+  "There are no program to select, please select another organisation unit":
+    "Não há nenhum programa para selecionar, por favor seleccione outra unidade organizacional",
+  "Fail to discover registration form":
+    "Não conseguem descobrir formulário de inscrição",
+  "Fail to discover assigned programs":
+    "Não conseguem descobrir programas atribuídos",
+  "Fail to discover tracked entity list":
+    "Não conseguem descobrir lista entidade tracked",
+  "Fail to prepare table for display": "Não se preparar mesa para exibição",
+  "List of widgets": "Lista de widgets",
+  "There is no widget to select": "Não há widget para seleccionar",
+  "Registration": "Cadastro",
+  "Enrollment & Profile": "Inscrição & Profile",
+  "Enrolling organisation unit": "Matricular unidade de organização",
+  "Enrolling program": "programa de inscrição",
+  "Discovering registration form": "Descobrir formulário de inscrição",
+  "You are about to delete all information related to this tracked entity instance, are you sure?":
+    "Você está prestes a excluir todas as informações relacionadas a essa instância entidade rastreado, você tem certeza?",
+  "Deleting all information related to this tracked entity instance":
+    "Apagar todas as informações relacionadas a essa instância entidade rastreado",
+  "A tracked entity instance has not yet registered":
+    "Uma instância de entidade rastreado ainda não registrado",
+  "A tracked entity instance has been deleted successfully":
+    "Uma instância de entidade rastreado foi excluído com sucesso",
+  "A tracked entity instance has been saved successfully":
+    "Uma instância de entidade rastreado foi salva com sucesso",
+  "Fail to delete all information related to this tracked entity instance":
+    "Não conseguem eliminar todas as informações relacionadas a essa instância entidade rastreado",
+  "Fail to save a tracked entity instance":
+    "Falha ao salvar uma instância de entidade rastreado",
+  "New event": "Novo evento",
+  "Discovering events": "descobrir eventos",
+  "Fail to discover events": "Não conseguem descobrir eventos",
+  "Due date": "Data de Vencimento",
+  "Contact your help desk to add data elements on this stage":
+    "Contacte o seu help desk para adicionar elementos de dados neste palco",
+  "Tracked entity dashboard": "dashboard entidade tracked",
+  "Discovering tracked entity": "Descobrir entidade rastreado",
+  "Discovering registration fields": "Descobrir campos de registo",
+  "Tracked entity instance has been delete successfully":
+    "instância de entidade rastreado foi eliminar com sucesso",
+  "Fail to discover tracked entity": "Não conseguem descobrir entidade tracked",
+  "Fail to discover registration fields":
+    "Não conseguem descobrir campos de registo",
+  "Data entry": "Entrada de dados",
+  "Touch to select entry form": "Toque para selecionar formulário de inscrição",
+  "Form": "Formato",
+  "Enter data": "Inserir dados",
+  "There are no entry form to select on selected organisation unit":
+    "Não há forma de entrada para selecionar a unidade de organização selecionada",
+  "Please select entry form first":
+    "Por favor, selecione formulário de inscrição primeira",
+  "There is no option for seleted category that associated with selected organisation unit":
+    "Não há opção para a categoria Seleted que associado com a unidade de organização selecionada",
+  "All disaggregation are restricted from entry in selected organisation unit, please choose a different form or contact your support desk":
+    "Todos desagregação são impedidos de entrada na unidade organizacional selecionada, por favor, escolha uma forma diferente ou entre em contato com a assistência técnica",
+  "Fail to discover entry form":
+    "Não conseguem descobrir formulário de inscrição",
+  "Data entry form selection": "selecção formulário de entrada de dados",
+  "There is no data entry form to select":
+    "Não há nenhuma forma de entrada de dados para selecionar",
+  "Data dimension selection": "selecção Dimension Data",
+  "There is no option to select": "Não há opção para selecionar",
+  "Data entry form sections": "seções do formulário de entrada de dados",
+  "There is nothing to select": "Não há nada para selecionar",
+  "Entry form's indicators": "indicadores do formulário de entrada",
+  "Name": "Nome",
+  "Numerator Description": "numerador Descrição",
+  "Denominator Description": "denominador Descrição",
+  "Indicator value": "valor do indicador",
+  "Data entry form": "formulário de entrada de dados",
+  "Available indicators": "Os indicadores disponíveis",
+  "Complete": "Completo",
+  "Undo complete": "desfazer completa",
+  "Completed by": "Completado por",
+  "on": "em",
+  "Please wait ...": "Por favor, espere ...",
+  "The is no field associated with this entry form, Please contact our help desk":
+    "A nenhum campo associado a este formulário de inscrição, por favor, entre em contato com o nosso help desk",
+  "Discovering entry form information":
+    "Descobrir informações formulário de inscrição",
+  "Discovering indicators": "descobrir indicadores",
+  "Preparing entry form": "Preparando formulário de inscrição",
+  "Discovering data from the server": "Descobrir dados do servidor",
+  "Saving data from server": "Salvando dados do servidor",
+  "Discovering available local data": "Descobrir dados locais disponíveis",
+  "Discovering entry form completeness information":
+    "Descobrir informações do formulário integralidade entrada",
+  "There are no indicators to view": "Não há indicadores para ver",
+  "Uploading data": "A carregar dados",
+  "Fail to discover indicators": "Não conseguem descobrir indicadores",
+  "Fail to discover entry form information":
+    "Não conseguem descobrir informações formulário de inscrição",
+  "Fail to save data from the server": "Falha ao salvar dados do servidor",
+  "Fail to discover data from the server":
+    "Não conseguem descobrir dados do servidor",
+  "Fail to discover available local data":
+    "Não conseguem descobrir dados locais disponíveis",
+  "Fail to discover entry form completeness information":
+    "Não conseguem descobrir informações de entrada de forma a integralidade",
+  "Fail to un complete entry form":
+    "Falha ao formulário de inscrição completa un",
+  "Fail to complete entry form": "Deixar de preencher o formulário de entrada",
+  "Completeness information": "informações integralidade",
+  "Discovering completeness information": "Descobrir informações integralidade",
+  "Fail to discover completeness information":
+    "Não conseguem descobrir informações integralidade",
+  "Username": "Nome de Usuário",
+  "Full name": "Nome completo",
+  "E-mial": "E-mial",
+  "Phone number": "Número de telefone",
+  "Sync": "Sincronizar",
+  "Clear local metadata": "metadados locais Limpar",
+  "Clear metaData": "Limpar metaData",
+  "Clear local metadata confirmation": "confirmação de metadados locais Limpar",
+  "You are about to clear all selected items, Are you sure?":
+    "Você está prestes a limpar todos os itens selecionados, você tem certeza?",
+  "Clearing selected items": "Limpando itens selecionados",
+  "Applying updates to local storage":
+    "Aplicação de atualizações para o armazenamento local",
+  "Please select at least one item to clear":
+    "Selecione pelo menos um item para limpar",
+  "All selected metadata has been cleared successfully":
+    "Todos os metadados selecionado foi apagado com sucesso",
+  "Fail to apply updates to local storage":
+    "Deixar de aplicar as atualizações para o armazenamento local",
+  "Clear local data": "dados local Limpar",
+  "Aggregate data": "Dados agregados",
+  "Events": "Eventos",
+  "Events for tracker": "Eventos para rastreador",
+  "Clear offline data confirmation": "confirmação de dados offline clara",
+  "You are about to clear all selected items, are you sure?":
+    "Você está prestes a limpar todos os itens selecionados, você tem certeza?",
+  "All selected items has been cleared successfully":
+    "Todos os itens selecionados foi apagada com sucesso",
+  "Fail to clear selected items": "Deixar de limpar os itens selecionados",
+  "Download metadata": "Baixar metadados",
+  "Please select at least one item": "Selecione pelo menos um item",
+  "Downloading updates": "Baixando atualizações",
+  "Applying updates": "aplicação de atualizações",
+  "All updates has been applied successfully":
+    "Todas as atualizações foi aplicada com sucesso",
+  "Fail to apply updates": "Deixar de aplicar atualizações",
+  "Fail to prepare local storage for update":
+    "Não se prepararem armazenamento local para atualização",
+  "Fail to download updates": "Falha ao baixar atualizações",
+  "Upload data via internet": "Upload de dados via internet",
+  "Upload data": "dados Carregar",
+  "Uploading selected local data, please wait...":
+    "Upload de dados locais selecionados, por favor aguarde ...",
+  "Import summaries": "resumos de importação",
+  "Tracked entity instances": "instâncias de entidade de lagartas",
+  "Tracked entity enrollments": "matrículas entidade de lagartas",
+  "Success": "Sucesso",
+  "Failed": "fracassado",
+  "Import conflicts or errors": "conflitos de importação ou erros",
+  "Upload data via SMS": "Upload de dados via SMS",
+  "Mobile Number": "Número de celular",
+  "Discovering SMS Configuration": "Configuração SMS Discovering",
+  "Preparing entry form fields":
+    "Preparando os campos do formulário de entrada",
+  "Preparing data": "preparando dados",
+  "Preparing SMS": "preparando SMS",
+  "Sending SMS": "envio de SMS",
+  "Sending SMSes": "enviando SMSes",
+  "SMS has been sent": "SMS foi enviada",
+  "Fail to send some of SMS, Please go into your SMS inbox and resend them manually":
+    "Deixar de enviar alguns de SMS, por favor, entrar em sua caixa de entrada SMS e reenviá-los manualmente",
+  "Fail to preparing SMS": "Deixar de preparar SMS",
+  "There is no data to be sent via SMS":
+    "Não há dados a serem enviados via SMS",
+  "Fail to discover data values": "Não conseguem descobrir valores de dados",
+  "Selected entry form has no field set, please contact your help desk":
+    "formulário de entrada selecionada não tem campo definido, contacte o seu help desk",
+  "Fail to discover SMS configurations":
+    "Não conseguem descobrir configurações SMS",
+  "Innovation in every dimension": "Inovação em todas as dimensões",
+  "Establishing connection to server": "Estabelecer conexão com o servidor",
+  "Aggregate metadata": "metadados agregado",
+  "Event and tracker metadata": "Evento e rastreador metadados",
+  "Reports metadata": "relatórios de metadados",
+  "Enter server address": "Digite o endereço do servidor",
+  "Enter username": "Insira nome de usuário",
+  "Enter password": "Digite a senha",
+  "Login": "Entrar",
+  "or": "ou",
+  "Offline instances": "casos offline",
+  "Powered by": "Distribuído por",
+  "Discovering current user authorities":
+    "Descobrir autoridades do usuário atual",
+  "Preparing local storage": "Preparando armazenamento local",
+  "Fail to prepare local storage": "Não se prepararem armazenamento local",
+  "Fail to discover user authorities":
+    "Não conseguem descobrir autoridades de usuários",
+  "Fail to save current user information":
+    "Falha ao salvar as informações do usuário atual",
+  "Please check your network connectivity":
+    "Verifique sua conectividade de rede",
+  "You have enter wrong username or password or server address":
+    "Você tem inserir nome de usuário ou senha incorreta ou endereço do servidor",
+  "Please check server address, or contact your help desk":
+    "Por favor, verifique o endereço do servidor, ou contacte o seu help desk",
+  "Please enter server address, username and password":
+    "Por favor, indique servidor endereço, nome de usuário e senha",
+  "Assigned organisation units have been discovered":
+    "unidades organizacionais atribuídos foram descobertos",
+  "Saving assigned organisation units":
+    "Salvando unidades organizacionais atribuídos",
+  "Assigned organisation units have been saved":
+    "unidades organizacionais atribuídos foram salvos",
+  "Fail to save organisation data": "Falha ao salvar dados da organização",
+  "Fail to discover organisation data":
+    "Não conseguem descobrir os dados da organização",
+  "Discovering entry forms": "Descobrir formas de entrada",
+  "Entry forms have been discovered":
+    "Os formulários de inscrição foram descobertos",
+  "Saving entry forms": "Salvando formulários de inscrição",
+  "Entry form have been saved": "formulário de inscrição foram salvos",
+  "Fail to save entry form": "Falha ao salvar formulário de inscrição",
+  "Discovering entry form sections":
+    "Descobrir seções do formulário de entrada",
+  "Entry form sections have been discovered":
+    "seções do formulário de entrada foram descobertos",
+  "Saving entry form sections": "Salvando seções do formulário de entrada",
+  "Entry form sections have been saved":
+    "seções do formulário de entrada foram salvos",
+  "Fail to save entry form sections":
+    "São incapazes de salvar seções do formulário de entrada",
+  "Fail to discover entry form sections":
+    "Não conseguem descobrir seções do formulário de entrada",
+  "Discovering entry form fields":
+    "Descobrir os campos do formulário de entrada",
+  "Entry form fields have been discovered":
+    "campos do formulário de entrada foram descobertos",
+  "Saving entry form fields": "Salvando os campos do formulário de entrada",
+  "Entry form fields have been saved":
+    "campos do formulário de entrada foram salvos",
+  "Fail to save entry form fields":
+    "São incapazes de salvar os campos do formulário de entrada",
+  "Fail to discover entry form fields":
+    "Não conseguem descobrir campos do formulário de entrada",
+  "Discovering SMS commands": "Descobrir comandos SMS",
+  "SMS commands have been discovered": "comandos SMS foram descobertos",
+  "Saving SMS commands": "Salvando comandos SMS",
+  "SMS commands have been saved": "comandos SMS foram salvos",
+  "Fail to save SMS commands": "São incapazes de salvar comandos SMS",
+  "Fail to discover SMS commands": "Não conseguem descobrir comandos SMS",
+  "Discovering programs": "descobrir programas",
+  "Programs have been discovered": "Programas foram descobertos",
+  "Saving programs": "economizando programas",
+  "Programs have been saved": "Programas foram salvos",
+  "Fail to save programs": "São incapazes de salvar programas",
+  "Fail to discover programs": "Não conseguem descobrir programas",
+  "Discovering program stage section": "seção estágio programa descobrindo",
+  "Program stage section have been discovered":
+    "seção de estágio Programa foram descobertos",
+  "Saving program stage section": "seção estágio programa de poupança",
+  "Program stage section have been saved":
+    "seção de estágio Programa foram salvos",
+  "Fail to save program stage sections":
+    "São incapazes de salvar seções estágio programa",
+  "Fail to discover program stage sections":
+    "Não conseguem descobrir seções estágio programa",
+  "Indicators have been discovered": "Indicadores foram descobertos",
+  "Saving indicators": "salvando indicadores",
+  "Indicators have been saved": "Indicadores foram salvos",
+  "Fail to save indicators": "São incapazes de salvar indicadores",
+  "Reports have been discovered": "Relatórios foram descobertos",
+  "Saving reports": "salvando relatórios",
+  "Reports have been saved": "Os relatórios foram salvos",
+  "Fail to discover reports": "Não conseguem descobrir relatórios",
+  "Discovering constants": "descobrir constantes",
+  "Constants have been discovered": "Constantes foram descobertos",
+  "Saving constants": "salvando constantes",
+  "Constants have been saved": "Constantes foram salvos",
+  "Fail to save constants": "São incapazes de salvar constantes",
+  "Fail to discover constants": "Não conseguem descobrir constantes",
+  "There is no local instance to select":
+    "Não há nenhuma instância local para selecionar",
+  "Discovering available local instances":
+    "Descobrir instâncias locais disponíveis",
+  "Fail to load available local instances":
+    "Falhar ao carregar instâncias locais disponíveis",
+  "Dashboard": "painel de controle",
+  "Discovering dashboards": "descobrir dashboards",
+  "There no dashboard item found": "Não há nenhum item do painel encontrado",
+  "Dashboard list": "lista de painel",
+  "Search dashboard by name": "Pesquisa dashboard pelo nome",
+  "Layout": "traçado",
+  "Table / Chart Layout": "Tabela / Esquema Gráfico",
+  "Filters": "filtros",
+  "Column": "Coluna",
+  "Row": "Linha",
+  "Categories": "categorias",
+  "Series": "Series",
+  "Update": "Atualizar",
+  "Close": "Fechar",
+  "Data": "Dados",
+  "Select": "selecionar",
+  "All": "Todos",
+  "Data elements": "Os elementos de dados",
+  "Indicators": "indicadores",
+  "Data sets": "conjuntos de dados",
+  "Program indicators": "indicadores do programa",
+  "Functions": "Funções",
+  "Available": "acessível",
+  "Selected": "Selecionado",
+  "Discovering...": "Descobrir ...",
+  "No items": "nenhum item",
+  "Select period type": "Selecione o tipo de período",
+  "Previous year": "Ano anterior",
+  "Next year": "Próximo ano",
+  "Org-unit": "Org-unidade",
+  "Interpretation": "Interpretação",
+  "Not found": "Não encontrado",
+  "Search interpretation": "pesquisa interpretação",
+  "This interpretation will be deleted, are you sure?":
+    "Esta interpretação será excluído, você tem certeza?",
+  "Deleting interpretation": "interpretação Excluindo",
+  "Comment": "Comente",
+  "Edit": "Editar",
+  "Updating likes status": "Atualização gosta de status",
+  "Unlike": "Ao contrário",
+  "Like": "Gostar",
+  "Write new interpretation": "Escrever nova interpretação",
+  "Cancel": "Cancelar",
+  "Posting": "postagem",
+  "Post": "Postar",
+  "This comment will be deleted, are you sure?":
+    "Este comentário será excluído, você tem certeza?",
+  "Deleting comment": "comentário exclusão",
+  "Write your comment": "Escreva o seu comentário"
+}

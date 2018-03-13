@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { IonicPage, NavController, NavParams } from "ionic-angular";
-import { UserProvider } from "../../../providers/user/user";
-import { AppProvider } from "../../../providers/app/app";
-import { ProgramsProvider } from "../../../providers/programs/programs";
-import { OrganisationUnitsProvider } from "../../../providers/organisation-units/organisation-units";
-import { EventCaptureFormProvider } from "../../../providers/event-capture-form/event-capture-form";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { UserProvider } from '../../../providers/user/user';
+import { AppProvider } from '../../../providers/app/app';
+import { ProgramsProvider } from '../../../providers/programs/programs';
+import { OrganisationUnitsProvider } from '../../../providers/organisation-units/organisation-units';
+import { EventCaptureFormProvider } from '../../../providers/event-capture-form/event-capture-form';
+import { AppTranslationProvider } from '../../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the EventCaptureRegisterPage page.
@@ -15,8 +16,8 @@ import { EventCaptureFormProvider } from "../../../providers/event-capture-form/
 
 @IonicPage()
 @Component({
-  selector: "page-event-capture-register",
-  templateUrl: "event-capture-register.html"
+  selector: 'page-event-capture-register',
+  templateUrl: 'event-capture-register.html'
 })
 export class EventCaptureRegisterPage implements OnDestroy, OnInit {
   currentOrgUnit: any;
@@ -26,7 +27,7 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
   dataDimension: any;
   isLoading: boolean;
   loadingMessage: string;
-
+  translationMapper: any;
   currentEvent: any;
 
   constructor(
@@ -36,15 +37,32 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
     private programsProvider: ProgramsProvider,
     private eventCaptureFormProvider: EventCaptureFormProvider,
     private organisationUnitProvider: OrganisationUnitsProvider,
-    private appProvider: AppProvider
+    private appProvider: AppProvider,
+    private appTranslation: AppTranslationProvider
   ) {}
 
   ngOnInit() {
+    this.translationMapper = {};
     this.currentProgram = this.programsProvider.lastSelectedProgram;
     this.currentOrgUnit = this.organisationUnitProvider.lastSelectedOrgUnit;
-    this.loadingMessage = "loading user information";
     this.isLoading = true;
-    this.dataDimension = this.params.get("dataDimension");
+    this.dataDimension = this.params.get('dataDimension');
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+        this.loadingCurrentUserInformation();
+      },
+      error => {
+        this.loadingCurrentUserInformation();
+      }
+    );
+  }
+
+  loadingCurrentUserInformation() {
+    let key = 'Discovering current user information';
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.userProvider.getCurrentUser().subscribe(
       (user: any) => {
         this.currentUser = user;
@@ -53,7 +71,9 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
       error => {
         console.log(JSON.stringify(error));
         this.isLoading = false;
-        this.appProvider.setNormalNotification("fail to load user information");
+        this.appProvider.setNormalNotification(
+          'Fail to discover current user information'
+        );
       }
     );
   }
@@ -63,7 +83,10 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
   }
 
   loadProgramStages(programId) {
-    this.loadingMessage = "loading program stages";
+    let key = 'Discovering program stages';
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.eventCaptureFormProvider
       .getProgramStages(programId, this.currentUser)
       .subscribe(
@@ -71,11 +94,14 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
           if (programStages && programStages.length > 0) {
             this.programStage = programStages[0];
           }
-          let eventId = this.params.get("eventId");
+          let eventId = this.params.get('eventId');
           if (eventId) {
-            this.loadingMessage = "loading data from local storage";
+            key = 'Discovering data from local storage';
+            this.loadingMessage = this.translationMapper[key]
+              ? this.translationMapper[key]
+              : key;
             this.eventCaptureFormProvider
-              .getEventsByAttribute("id", [eventId], this.currentUser)
+              .getEventsByAttribute('id', [eventId], this.currentUser)
               .subscribe(
                 (events: any) => {
                   if (events && events.length > 0) {
@@ -85,7 +111,7 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
                 },
                 error => {
                   this.isLoading = false;
-                  console.log("On loading event with id" + eventId);
+                  console.log('On loading event with id' + eventId);
                   console.log(JSON.stringify(error));
                 }
               );
@@ -96,7 +122,7 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
               this.programStage.id,
               this.dataDimension.attributeCos,
               this.dataDimension.attributeCc,
-              "event-capture"
+              'event-capture'
             );
             this.isLoading = false;
           }
@@ -104,7 +130,9 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
         error => {
           console.log(JSON.stringify(error));
           this.isLoading = false;
-          this.appProvider.setNormalNotification("fail to load program stages");
+          this.appProvider.setNormalNotification(
+            'Fail to discover program stages'
+          );
         }
       );
   }
@@ -116,5 +144,13 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
   ngOnDestroy() {
     this.currentProgram = null;
     this.currentProgram = null;
+  }
+
+  getValuesToTranslate() {
+    return [
+      'Discovering current user information',
+      'Discovering program stages',
+      'Discovering data from local storage'
+    ];
   }
 }

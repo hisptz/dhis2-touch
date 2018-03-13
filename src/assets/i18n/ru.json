@@ -1,0 +1,485 @@
+{
+  "Account": "Счет",
+  "Apps": "Программы",
+  "Log out": "Выйти",
+  "About": "Около",
+  "Aggregate status": "Совокупное состояние",
+  "Event status": "состояние события",
+  "Event for tracker status": "Событие для состояния трекера",
+  "Enrollments": "Учащиеся",
+  "System info": "Системная информация",
+  "Synced": "синхронизированные",
+  "Not synced": "Не синхронизируются",
+  "Discovering app information": "Обнаружив приложение информации",
+  "Discovering system information": "Обнаружив информационную систему",
+  "Discovering data values storage status":
+    "Обнаружив значение данных состояния хранения",
+  "Discovering events storage status": "Обнаружение событий состояния хранения",
+  "Discovering enrollments storage status":
+    "Обретение статуса учащихся хранения",
+  "Fail to discover user information":
+    "Не удалось обнаружить информацию о пользователе",
+  "Fail to discover system information":
+    "Не удалось обнаружить информацию о системе",
+  "Fail to discover app information":
+    "Не удалось открыть приложение информации",
+  "Fail to discover data values storage status":
+    "Не удалось обнаружить статус значения данных для хранения",
+  "Fail to discover enrollments storage status":
+    "Не удалось обнаружить статус учащихся хранения",
+  "Profile": "Профиль",
+  "User information": "Информация о пользователе",
+  "Assigned organisation units": "Назначенные организации единиц",
+  "Assigned roles": "Назначенные роли",
+  "Assigned programs": "Назначенные программы",
+  "Assigned entry forms": "Назначенные формы ввода",
+  "Discovering profile information": "Обнаружив информацию о профиле",
+  "Fail to discover profile information":
+    "Не удалось обнаружить информацию о профиле",
+  "Help": "Помогите",
+  "Help search": "Помощь поиск",
+  "Search help by title": "Поиск справки по названию",
+  "Settings": "настройки",
+  "Applying changes": "Применение изменений",
+  "Minutes": "минут",
+  "Hours": "часов",
+  "Auto synchronization": "Автоматическая синхронизация",
+  "Form layout": "макет формы",
+  "List layout": "раскладка Список",
+  "Table layout": "Сервировка стола",
+  "Form label": "Форма этикетки",
+  "Display name": "Отображаемое имя",
+  "Form name": "имя формы",
+  "Data element per page": "Элемент данных на странице",
+  "Current language": "Текущий язык",
+  "App settings": "настройки приложения",
+  "Entry form": "форма входа",
+  "Synchronization": "синхронизация",
+  "Discovering current user information":
+    "Обнаружив текущую информацию о пользователе",
+  "Discovering settings": "Обнаружив настройки",
+  "Settings have been updated successfully": "Настройки были успешно обновлены",
+  "Fail to discover settings": "Не удалось открыть настройки",
+  "Fail to discover available local instances":
+    "Не удалось обнаружить доступные локальные экземпляры",
+  "Fail to discover current user information":
+    "Не удалось обнаружить текущую информацию о пользователе",
+  "Fail to set translation": "Не удалось установить перевод",
+  "Fail to apply changes on  settings":
+    "Не удалось применить изменения в настройках",
+  "Reports": "Отчеты",
+  "Search": "Поиск",
+  "Discovering reports": "Обнаружив отчеты",
+  "Downloading reports from server": "Загрузка сообщений с сервера",
+  "Preparing local storage for updates":
+    "Подготовка локального хранилища для обновлений",
+  "Saving reports from server": "Сохранение отчетов с сервера",
+  "there is no report to select": "нет никакого отчета, чтобы выбрать",
+  "Fail  to discover reports": "Не удалось обнаружить отчеты",
+  "Fail to save reports": "Не удалось сохранить отчеты",
+  "Fail to prepare local storage for updates":
+    "Не удалось подготовить локальное хранилище для обновлений",
+  "Fail to download reports": "Не удалось загрузить отчеты",
+  "Data set report": "Набор данных отчета",
+  "Standard report": "Стандартный отчет",
+  "Report name": "название отчета",
+  "Organisation unit": "блок организации",
+  "Period": "период",
+  "Generate report": "Создать отчет",
+  "Touch to select organisation unit":
+    "Нажмите, чтобы выбрать организационную единицу",
+  "Touch to select period": "Нажмите, чтобы выбрать период",
+  "Report view": "Просмотреть отчет",
+  "Discovering user information": "Обнаружив информацию о пользователе",
+  "Discovering report metadata": "Обнаружив метаданные отчета",
+  "Fail to discover organisation units information":
+    "Не удалось обнаружить организации единиц информации",
+  "Fail to discover report metadata": "Не удалось открыть метаданные отчета",
+  "Report type has not set,please contact system administrator":
+    "Тип отчета не установлен, обратитесь к системному администратору",
+  "Discovering data set report information":
+    "Открываем набор данных сообщать информацию",
+  "Preparing data set report": "Подготовка набора данных отчета",
+  "Fail to prepare data set report":
+    "Ошибка при подготовке набора данных отчета",
+  "Fail to discover data set report information":
+    "Не удалось обнаружить информацию набора отчетов данных",
+  "Program selection": "выбор программы",
+  "There is no program to select": "Там нет программы, чтобы выбрать",
+  "Period selection": "выбор периода",
+  "Previous": "предыдущий",
+  "Next": "следующий",
+  "There is no period to select": "Там нет периода, чтобы выбрать",
+  "Organisation unit selection": "Выбор организации блока",
+  "Discovering assigned organisation units":
+    "Обнаружив присвоенные организации подразделения",
+  "Currently there is on assigned organisation unit on local storage, Please metadata on sync app":
+    "В настоящее время на присвоенной организационной единицы на локальном хранилище, пожалуйста метаданные на синхронизацию приложения",
+  "Fail to discover organisation units":
+    "Не удалось обнаружить организации единиц",
+  "Discovering organisation units": "Обнаружив организационные подразделения",
+  "Fail to discover organisation unit children":
+    "Не удалось обнаружить организации единичных детей",
+  "Event capture": "захват событий",
+  "Columns": "Колонны",
+  "Add": "Добавить",
+  "Discovering assigned programs": "Обнаружив присвоенные программы",
+  "Discovering program stages": "Обнаружив этапы программы",
+  "Discovering data": "Обнаружение данных",
+  "Preparing table for display": "Подготовка таблицы для отображения",
+  "All of selected category disaggregation are restricted from entry in selcted organisation unit, choose a different form or contact your support desk":
+    "Все выбранной категории дезагрегации ограничены от входа в selcted единицы организации, выбрать другую форму или обратитесь в справочную службу",
+  "There is no option for selected category that associated with selected organisation unit":
+    "Там нет опции для выбранной категории, которая связана с выбранной единицей организации",
+  "There are no program to select": "Там нет программы, чтобы выбрать",
+  "Touch to select program": "Нажмите, чтобы выбрать программу",
+  "Touch to select option": "Нажмите, чтобы выбрать опцию",
+  "There no data at the moment": "Не существует никаких данных в данный момент",
+  "Visible header": "Видимый заголовок",
+  "Select all": "Выбрать все",
+  "Deselect all": "Убрать выделение со всего",
+  "Save": "Сохранить",
+  "Event register": "Регистр событий",
+  "Program": "программа",
+  "Discovering data from local storage":
+    "Открываем данные из локального хранилища",
+  "Fail to discover program stages": "Не удалось обнаружить этапы программ",
+  "Report date": "Дата отчета",
+  "Touch to pick date": "Нажмите, чтобы выбрать дату",
+  "Delete": "Удалить",
+  "There are no data elements, please contact you help desk":
+    "Там нет элементов данных, пожалуйста, свяжитесь вы помогаете столу",
+  "You are about to delete this event, are you sure?":
+    "Вы собираетесь удалить это событие, вы уверены?",
+  "Yes": "да",
+  "No": "нет",
+  "Deleting event": "Удаление события",
+  "Event has been deleted successfully": "Событие было успешно удалено",
+  "Fail to delete event": "Не удалось удалить событие",
+  "Tracker capture": "захват Tracker",
+  "Discovering tracked entity list": "Обнаружив гусеничный список сущностей",
+  "There are no program to select, please select another organisation unit":
+    "Там нет программы для выбора, пожалуйста, выберите другую организацию блок",
+  "Fail to discover registration form":
+    "Не удалось открыть регистрационную форму",
+  "Fail to discover assigned programs":
+    "Не удалось обнаружить присвоенные программы",
+  "Fail to discover tracked entity list":
+    "Не удалось обнаружить Гусеничная список сущностей",
+  "Fail to prepare table for display":
+    "Не удалось подготовить таблицу для отображения",
+  "List of widgets": "Список виджетов",
+  "There is no widget to select": "Там нет виджета, чтобы выбрать",
+  "Registration": "Постановка на учет",
+  "Enrollment & Profile": "Зачисление и профиль",
+  "Enrolling organisation unit": "Поступив блок организации",
+  "Enrolling program": "поступив программа",
+  "Discovering registration form": "Обнаружив регистрационную форму",
+  "You are about to delete all information related to this tracked entity instance, are you sure?":
+    "Вы собираетесь удалить всю информацию, связанную с этим гусеничным экземпляром объекта, вы уверены?",
+  "Deleting all information related to this tracked entity instance":
+    "Удаление всей информации, связанной с этим гусеничного экземпляра объекта",
+  "A tracked entity instance has not yet registered":
+    "Гусеничный экземпляр объекта еще не зарегистрирован",
+  "A tracked entity instance has been deleted successfully":
+    "Гусеничный экземпляр объекта был успешно удален",
+  "A tracked entity instance has been saved successfully":
+    "Гусеничный экземпляр объекта был успешно сохранен",
+  "Fail to delete all information related to this tracked entity instance":
+    "Не удалось удалить всю информацию, связанную с этим гусеничным экземпляром объекта",
+  "Fail to save a tracked entity instance":
+    "Не удалось сохранить гусеничный экземпляра сущности",
+  "New event": "Новое событие",
+  "Discovering events": "Обнаружив события",
+  "Fail to discover events": "Не удалось обнаружить события",
+  "Due date": "Срок",
+  "Contact your help desk to add data elements on this stage":
+    "Обратитесь к справочной службе для добавления элементов данных на этом этапе",
+  "Tracked entity dashboard": "Гусеничный объект панели",
+  "Discovering tracked entity": "Обнаружив гусеничный объект",
+  "Discovering registration fields": "Обнаружив регистрационные поля",
+  "Tracked entity instance has been delete successfully":
+    "Гусеничный экземпляр объекта был успешно удалить",
+  "Fail to discover tracked entity": "Не удалось обнаружить Гусеничная объект",
+  "Fail to discover registration fields":
+    "Не удалось обнаружить регистрационные поля",
+  "Data entry": "Ввод данных",
+  "Touch to select entry form": "Нажмите, чтобы выбрать форму входа",
+  "Form": "форма",
+  "Enter data": "Введите данные",
+  "There are no entry form to select on selected organisation unit":
+    "Там нет входа формы, чтобы выбрать на выбранную единицу организации",
+  "Please select entry form first": "Пожалуйста, выберите форму ввода первой",
+  "There is no option for seleted category that associated with selected organisation unit":
+    "Там нет опции для seleted категории, которая связана с выбранной единицей организации",
+  "All disaggregation are restricted from entry in selected organisation unit, please choose a different form or contact your support desk":
+    "Все разукрупнение ограничены от входа в выбранной единицы организации, пожалуйста, выберите другую форму или обратитесь в справочную службу",
+  "Fail to discover entry form": "Не удалось открыть форму ввода",
+  "Data entry form selection": "Выбор данных формы ввода",
+  "There is no data entry form to select":
+    "Там нет формы ввода данных для выбора",
+  "Data dimension selection": "Выбор размера данных",
+  "There is no option to select": "Там нет возможности для выбора",
+  "Data entry form sections": "Разделы формы ввода данных",
+  "There is nothing to select": "Там нет ничего, чтобы выбрать",
+  "Entry form's indicators": "Показатели Регистрационной формы в",
+  "Name": "имя",
+  "Numerator Description": "Числитель Описание",
+  "Denominator Description": "Знаменатель Описание",
+  "Indicator value": "значение индикатора",
+  "Data entry form": "Форма ввода данных",
+  "Available indicators": "Доступные показатели",
+  "Complete": "полный",
+  "Undo complete": "Отменить полный",
+  "Completed by": "Завершено",
+  "on": "на",
+  "Please wait ...": "Пожалуйста, подождите ...",
+  "The is no field associated with this entry form, Please contact our help desk":
+    "Не поле, связанное с этой формой входа, пожалуйста, свяжитесь с нашей справочной службой",
+  "Discovering entry form information": "Открывать информация Форма ввода",
+  "Discovering indicators": "Обнаружив индикаторы",
+  "Preparing entry form": "Подготовка формы ввода",
+  "Discovering data from the server": "Обнаружив данные с сервера",
+  "Saving data from server": "Сохранение данных с сервера",
+  "Discovering available local data": "Обнаружив доступные локальные данные",
+  "Discovering entry form completeness information":
+    "Открывать информация Форма входа Полнота",
+  "There are no indicators to view":
+    "Там нет никаких индикаторов для просмотра",
+  "Uploading data": "данные Uploading",
+  "Fail to discover indicators": "Не удалось обнаружить индикаторы",
+  "Fail to discover entry form information":
+    "Не удалось обнаружить информацию Регистрационной формы",
+  "Fail to save data from the server": "Не удалось сохранить данные с сервера",
+  "Fail to discover data from the server":
+    "Не удалось обнаружить данные с сервера",
+  "Fail to discover available local data":
+    "Не удалось обнаружить доступные локальные данные",
+  "Fail to discover entry form completeness information":
+    "Не удалось обнаружить информацию входной формы полноты",
+  "Fail to un complete entry form": "Ошибка при ООН полной формы ввода",
+  "Fail to complete entry form": "Не удалось завершить форму ввода",
+  "Completeness information": "Полнота информации",
+  "Discovering completeness information": "Обнаружив полноту информации",
+  "Fail to discover completeness information":
+    "Не удалось обнаружить полноту информации",
+  "Username": "имя пользователя",
+  "Full name": "Полное имя",
+  "E-mial": "E-MIAL",
+  "Phone number": "Номер телефона",
+  "Sync": "Синхронизация",
+  "Clear local metadata": "Очистка локальных метаданных",
+  "Clear metaData": "Очистить мЕТАДАННЫЕ",
+  "Clear local metadata confirmation":
+    "Очистить местное подтверждение метаданных",
+  "You are about to clear all selected items, Are you sure?":
+    "Вы собираетесь удалить все выбранные элементы, Вы уверены?",
+  "Clearing selected items": "Удаление выбранных элементов",
+  "Applying updates to local storage":
+    "Применение обновлений для локального хранения",
+  "Please select at least one item to clear":
+    "Пожалуйста, выберите хотя бы один элемент, чтобы очистить",
+  "All selected metadata has been cleared successfully":
+    "Все выбранные метаданные были удалены успешно",
+  "Fail to apply updates to local storage":
+    "Не удалось применить обновления для локального хранения",
+  "Clear local data": "Очистить локальные данные",
+  "Aggregate data": "Совокупные данные",
+  "Events": "Мероприятия",
+  "Events for tracker": "События на трекере",
+  "Clear offline data confirmation": "Очистить форум подтверждение данных",
+  "You are about to clear all selected items, are you sure?":
+    "Вы собираетесь удалить все выбранные элементы, вы уверены?",
+  "All selected items has been cleared successfully":
+    "Все выбранные элементы были очищены успешно",
+  "Fail to clear selected items": "Не удалось удалить выбранные элементы",
+  "Download metadata": "Скачать метаданные",
+  "Please select at least one item": "Пожалуйста, выберите хотя бы один пункт",
+  "Downloading updates": "Загрузка обновлений",
+  "Applying updates": "Применение обновлений",
+  "All updates has been applied successfully":
+    "Все обновления были успешно применены",
+  "Fail to apply updates": "Не удалось применить обновления",
+  "Fail to prepare local storage for update":
+    "Не удалось подготовить локальное хранилище для обновления",
+  "Fail to download updates": "Сбой загрузки обновлений",
+  "Upload data via internet": "Выгрузка данных через Интернет",
+  "Upload data": "Загрузить данные",
+  "Uploading selected local data, please wait...":
+    "Выгрузка выбранных локальных данных, пожалуйста, подождите ...",
+  "Import summaries": "Импорт резюме",
+  "Tracked entity instances": "Гусеничные экземпляры сущностей",
+  "Tracked entity enrollments": "Гусеничный учащихся объектные",
+  "Success": "успех",
+  "Failed": "Не смогли",
+  "Import conflicts or errors": "Импортные конфликты или ошибки",
+  "Upload data via SMS": "Загрузка данных с помощью SMS",
+  "Mobile Number": "Мобильный номер",
+  "Discovering SMS Configuration": "Конфигурация Обнаружение SMS",
+  "Preparing entry form fields": "Подготовка ввода поля формы",
+  "Preparing data": "Подготовка данных",
+  "Preparing SMS": "Подготовка SMS",
+  "Sending SMS": "Отправка SMS",
+  "Sending SMSes": "Отправка SMS-сообщения",
+  "SMS has been sent": "SMS было отправлено",
+  "Fail to send some of SMS, Please go into your SMS inbox and resend them manually":
+    "Не удалось отправить некоторые SMS, пожалуйста, перейдите в ваш почтовый ящик SMS и отправить их вручную",
+  "Fail to preparing SMS": "Ошибка при подготовке SMS",
+  "There is no data to be sent via SMS":
+    "Там нет данных для отправки через SMS",
+  "Fail to discover data values": "Не удалось обнаружить значение данных",
+  "Selected entry form has no field set, please contact your help desk":
+    "Выбранная форма ввода не имеет набора поля, пожалуйста, обратитесь к справочной службе",
+  "Fail to discover SMS configurations":
+    "Не удалось обнаружить SMS конфигурации",
+  "Innovation in every dimension": "Инновации в каждом измерении",
+  "Establishing connection to server": "Установление соединения с сервером",
+  "Aggregate metadata": "Совокупные метаданные",
+  "Event and tracker metadata": "Событий и отслеживания метаданных",
+  "Reports metadata": "метаданные Отчеты",
+  "Enter server address": "Введите адрес сервера",
+  "Enter username": "Введите имя пользователя",
+  "Enter password": "Введите пароль",
+  "Login": "Авторизоваться",
+  "or": "или",
+  "Offline instances": "Offline экземпляры",
+  "Powered by": "Питаться от",
+  "Discovering current user authorities":
+    "Обнаружив нынешние власти пользователей",
+  "Preparing local storage": "Подготовка локального хранения",
+  "Fail to prepare local storage": "Не удалось подготовить локальное хранилище",
+  "Fail to discover user authorities":
+    "Не удалось обнаружить пользовательскую власть",
+  "Fail to save current user information":
+    "Не удалось сохранить текущую информацию о пользователе",
+  "Please check your network connectivity":
+    "Пожалуйста, проверьте подключение к сети",
+  "You have enter wrong username or password or server address":
+    "Вы должны ввести неправильный логин или пароль или адрес сервера",
+  "Please check server address, or contact your help desk":
+    "Пожалуйста, проверьте адрес сервера, или обратитесь к справочной службе",
+  "Please enter server address, username and password":
+    "Пожалуйста, введите адрес сервера, имя пользователя и пароль",
+  "Assigned organisation units have been discovered":
+    "Назначенные организации единиц были обнаружены",
+  "Saving assigned organisation units":
+    "Сохранение назначенных организационных подразделений",
+  "Assigned organisation units have been saved":
+    "Назначенные организации подразделение было сохранено",
+  "Fail to save organisation data": "Не удалось сохранить данные организации",
+  "Fail to discover organisation data":
+    "Не удалось обнаружить организации данных",
+  "Discovering entry forms": "Обнаружив формы ввода",
+  "Entry forms have been discovered": "Заявки были обнаружены",
+  "Saving entry forms": "Сохранение форм ввода",
+  "Entry form have been saved": "Форма заявки были сохранены",
+  "Fail to save entry form": "Не удалось сохранить форму ввода",
+  "Discovering entry form sections": "Открывать разделы формы ввода",
+  "Entry form sections have been discovered":
+    "Форма входа секция была обнаружена",
+  "Saving entry form sections": "Сохранение разделов формы входа",
+  "Entry form sections have been saved": "Форма входа секции были сохранены",
+  "Fail to save entry form sections":
+    "Не удалось сохранить запись формы разделов",
+  "Fail to discover entry form sections":
+    "Не удалось обнаружить запись формы разделов",
+  "Discovering entry form fields": "Обнаружив въездных поля формы",
+  "Entry form fields have been discovered": "Форма входа поля были обнаружены",
+  "Saving entry form fields": "Сохранение ввода полей формы",
+  "Entry form fields have been saved": "Форма входа поля были сохранены",
+  "Fail to save entry form fields": "Не удалось сохранить запись поля формы",
+  "Fail to discover entry form fields":
+    "Не удалось обнаружить запись поля формы",
+  "Discovering SMS commands": "Обнаружив SMS-команды",
+  "SMS commands have been discovered": "SMS команда была обнаружена",
+  "Saving SMS commands": "Сохранение SMS-команд",
+  "SMS commands have been saved": "SMS команды были сохранены",
+  "Fail to save SMS commands": "Не удалось сохранить SMS-команды",
+  "Fail to discover SMS commands": "Не удалось открыть SMS-команды",
+  "Discovering programs": "Открытие программ",
+  "Programs have been discovered": "Программы были обнаружены",
+  "Saving programs": "Сохранение программ",
+  "Programs have been saved": "Программы были сохранены",
+  "Fail to save programs": "Не удалось сохранить программы",
+  "Fail to discover programs": "Не удалось обнаружить программы",
+  "Discovering program stage section": "Обнаружив раздел этапа программы",
+  "Program stage section have been discovered":
+    "этап программы раздела были обнаружены",
+  "Saving program stage section": "Сохранение раздела этап программы",
+  "Program stage section have been saved":
+    "этап программы раздела были сохранены",
+  "Fail to save program stage sections":
+    "Не удалось сохранить разделы этапа программы",
+  "Fail to discover program stage sections":
+    "Не удалось открыть разделы этапа программы",
+  "Indicators have been discovered": "Показатели были обнаружены",
+  "Saving indicators": "Сохранение показателей",
+  "Indicators have been saved": "Показатели были сохранены",
+  "Fail to save indicators": "Не удалось сохранить показатели",
+  "Reports have been discovered": "Отчеты были обнаружены",
+  "Saving reports": "Сохранение отчетов",
+  "Reports have been saved": "Отчеты были сохранены",
+  "Fail to discover reports": "Не удалось обнаружить отчеты",
+  "Discovering constants": "Обнаружив константы",
+  "Constants have been discovered": "Константы были обнаружены",
+  "Saving constants": "Сохранение констант",
+  "Constants have been saved": "Константы были сохранены",
+  "Fail to save constants": "Не удалось сохранить константы",
+  "Fail to discover constants": "Не удалось обнаружить константы",
+  "There is no local instance to select":
+    "Там нет локального экземпляра, чтобы выбрать",
+  "Discovering available local instances":
+    "Обнаружив доступные локальные экземпляры",
+  "Fail to load available local instances":
+    "Не удалось загрузить доступные локальные экземпляры",
+  "Dashboard": "Панель приборов",
+  "Discovering dashboards": "Открытие панелей",
+  "There no dashboard item found":
+    "Там ни один элемент приборной панели не найдено",
+  "Dashboard list": "список Dashboard",
+  "Search dashboard by name": "Поиск по названию панели",
+  "Layout": "раскладка",
+  "Table / Chart Layout": "Макет таблицы / диаграммы",
+  "Filters": "фильтры",
+  "Column": "колонка",
+  "Row": "Ряд",
+  "Categories": "категории",
+  "Series": "Серии",
+  "Update": "Обновить",
+  "Close": "Закрыть",
+  "Data": "Данные",
+  "Select": "Выбрать",
+  "All": "Все",
+  "Data elements": "элементы данных",
+  "Indicators": "индикаторы",
+  "Data sets": "наборы данных",
+  "Program indicators": "показатели программы",
+  "Functions": "функции",
+  "Available": "Доступный",
+  "Selected": "выбранный",
+  "Discovering...": "Обнаружив ...",
+  "No items": "Нет товаров",
+  "Select period type": "Выберите тип периода",
+  "Previous year": "Предыдущий год",
+  "Next year": "Следующий год",
+  "Org-unit": "Орг-модуль",
+  "Interpretation": "интерпретация",
+  "Not found": "Не найдено",
+  "Search interpretation": "интерпретация Поиск",
+  "This interpretation will be deleted, are you sure?":
+    "Эта интерпретация будет удалена, вы уверены?",
+  "Deleting interpretation": "Удаление интерпретации",
+  "Comment": "Комментарий",
+  "Edit": "редактировать",
+  "Updating likes status": "Обновление нравится статус",
+  "Unlike": "В отличие от",
+  "Like": "подобно",
+  "Write new interpretation": "Написать новую интерпретацию",
+  "Cancel": "Отмена",
+  "Posting": "оприходование",
+  "Post": "После",
+  "This comment will be deleted, are you sure?":
+    "Этот комментарий будет удален, вы уверены?",
+  "Deleting comment": "Удаление комментария",
+  "Write your comment": "Написать комментарий"
+}

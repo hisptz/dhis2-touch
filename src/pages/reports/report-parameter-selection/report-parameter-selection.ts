@@ -74,7 +74,7 @@ export class ReportParameterSelectionPage implements OnInit {
             this.currentPeriodOffset
           );
           if (periods && periods.length > 0) {
-            //this.selectedPeriod = periods[0];
+            this.selectedPeriod = periods[0];
           }
           this.updateReportParameterSelections();
         });
@@ -86,12 +86,12 @@ export class ReportParameterSelectionPage implements OnInit {
       this.selectedOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
       this.selectedOrganisationUnitLabel = this.selectedOrgUnit.name;
     } else {
-      this.selectedOrganisationUnitLabel = "touch to select organisation unit";
+      this.selectedOrganisationUnitLabel = "Touch to select organisation unit";
     }
     if (this.selectedPeriod && this.selectedPeriod.name) {
       this.selectedPeriodLabel = this.selectedPeriod.name;
     } else {
-      this.selectedPeriodLabel = "touch to select period";
+      this.selectedPeriodLabel = "Touch to select period";
     }
     this.isAllReportParameterSet = this.isAllReportParameterSelected();
   }

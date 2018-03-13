@@ -1,11 +1,12 @@
-import { Component, OnInit } from "@angular/core";
-import { IonicPage, ModalController, NavController } from "ionic-angular";
-import { UserProvider } from "../../providers/user/user";
-import { OrganisationUnitsProvider } from "../../providers/organisation-units/organisation-units";
-import { ProgramsProvider } from "../../providers/programs/programs";
-import { AppProvider } from "../../providers/app/app";
-import { EventCaptureFormProvider } from "../../providers/event-capture-form/event-capture-form";
-import { SettingsProvider } from "../../providers/settings/settings";
+import { Component, OnInit } from '@angular/core';
+import { IonicPage, ModalController, NavController } from 'ionic-angular';
+import { UserProvider } from '../../providers/user/user';
+import { OrganisationUnitsProvider } from '../../providers/organisation-units/organisation-units';
+import { ProgramsProvider } from '../../providers/programs/programs';
+import { AppProvider } from '../../providers/app/app';
+import { EventCaptureFormProvider } from '../../providers/event-capture-form/event-capture-form';
+import { SettingsProvider } from '../../providers/settings/settings';
+import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the EventCapturePage page.
@@ -16,8 +17,8 @@ import { SettingsProvider } from "../../providers/settings/settings";
 
 @IonicPage()
 @Component({
-  selector: "page-event-capture",
-  templateUrl: "event-capture.html"
+  selector: 'page-event-capture',
+  templateUrl: 'event-capture.html'
 })
 export class EventCapturePage implements OnInit {
   selectedOrgUnit: any;
@@ -37,11 +38,10 @@ export class EventCapturePage implements OnInit {
   programStage: any;
   columnsToDisplay: any = {};
   icons: any = {};
-
   tableLayout: any;
   eventIds: Array<string>;
   currentEvents: Array<any>;
-
+  translationMapper: any;
   dataEntrySettings: any;
 
   constructor(
@@ -52,32 +52,42 @@ export class EventCapturePage implements OnInit {
     private organisationUnitsProvider: OrganisationUnitsProvider,
     private programsProvider: ProgramsProvider,
     private appProvider: AppProvider,
-    private eventCaptureFormProvider: EventCaptureFormProvider
+    private eventCaptureFormProvider: EventCaptureFormProvider,
+    private appTranslation: AppTranslationProvider
   ) {}
 
   ngOnInit() {
-    this.icons.orgUnit = "assets/icon/orgUnit.png";
-    this.icons.program = "assets/icon/program.png";
-
+    this.icons.orgUnit = 'assets/icon/orgUnit.png';
+    this.icons.program = 'assets/icon/program.png';
     this.selectedDataDimension = [];
     this.programIdsByUserRoles = [];
     this.programs = [];
-    this.loadingMessage = "loading user information";
     this.isLoading = true;
     this.isFormReady = false;
     this.isProgramDimensionApplicable = false;
+
+    this.translationMapper = {};
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+        this.loadingCurrentUserInformation();
+      },
+      error => {
+        this.loadingCurrentUserInformation();
+      }
+    );
+  }
+
+  loadingCurrentUserInformation() {
+    let key = 'Discovering current user information';
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.userProvider.getCurrentUser().subscribe(
       (currentUser: any) => {
         this.currentUser = currentUser;
         this.userProvider.getUserData().subscribe((userData: any) => {
-          this.programIdsByUserRoles = [];
-          userData.userRoles.forEach((userRole: any) => {
-            if (userRole.programs) {
-              userRole.programs.forEach((program: any) => {
-                this.programIdsByUserRoles.push(program.id);
-              });
-            }
-          });
+          this.programIdsByUserRoles = userData.programs;
           this.organisationUnitsProvider
             .getLastSelectedOrganisationUnitUnit(currentUser)
             .subscribe((lastSelectedOrgUnit: any) => {
@@ -92,8 +102,10 @@ export class EventCapturePage implements OnInit {
       },
       error => {
         this.isLoading = false;
-        this.loadingMessage = "";
-        this.appProvider.setNormalNotification("fail to load user information");
+        this.loadingMessage = '';
+        this.appProvider.setNormalNotification(
+          'Fail to discover user information'
+        );
       }
     );
   }
@@ -114,8 +126,11 @@ export class EventCapturePage implements OnInit {
 
   loadingPrograms() {
     this.isLoading = true;
-    this.loadingMessage = "loading assigned programs";
-    let programType = "WITHOUT_REGISTRATION";
+    let key = 'Discovering assigned programs';
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
+    let programType = 'WITHOUT_REGISTRATION';
     this.programsProvider
       .getProgramsAssignedOnOrgUnitAndUserRoles(
         this.selectedOrgUnit.id,
@@ -133,14 +148,14 @@ export class EventCapturePage implements OnInit {
             this.loadProgramStages(this.selectedProgram.id);
           }
           this.isLoading = false;
-          this.loadingMessage = "";
+          this.loadingMessage = '';
         },
         error => {
           this.isLoading = false;
-          this.loadingMessage = "";
+          this.loadingMessage = '';
           console.log(JSON.stringify(error));
           this.appProvider.setNormalNotification(
-            "fail to load assigned programs"
+            'Fail to discover assigned programs'
           );
         }
       );
@@ -151,23 +166,23 @@ export class EventCapturePage implements OnInit {
       this.selectedOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
       this.organisationUnitLabel = this.selectedOrgUnit.name;
     } else {
-      this.organisationUnitLabel = "touch to select organisation unit";
+      this.organisationUnitLabel = 'Touch to select organisation unit';
     }
     if (this.selectedProgram && this.selectedProgram.name) {
       this.programLabel = this.selectedProgram.name;
     } else {
-      this.programLabel = "touch to select program";
+      this.programLabel = 'Touch to select program';
     }
     this.isFormReady = this.isAllParameterSelected();
     this.isLoading = false;
-    this.loadingMessage = "";
+    this.loadingMessage = '';
     if (this.isFormReady) {
       this.loadingEvents();
     }
   }
 
   openOrganisationUnitTree() {
-    let modal = this.modalCtrl.create("OrganisationUnitSelectionPage", {});
+    let modal = this.modalCtrl.create('OrganisationUnitSelectionPage', {});
     modal.onDidDismiss((selectedOrgUnit: any) => {
       if (selectedOrgUnit && selectedOrgUnit.id) {
         this.selectedOrgUnit = selectedOrgUnit;
@@ -180,7 +195,7 @@ export class EventCapturePage implements OnInit {
 
   openProgramList() {
     if (this.programs && this.programs.length > 0) {
-      let modal = this.modalCtrl.create("ProgramSelection", {
+      let modal = this.modalCtrl.create('ProgramSelection', {
         currentProgram: this.selectedProgram,
         programsList: this.programs
       });
@@ -195,7 +210,7 @@ export class EventCapturePage implements OnInit {
       });
       modal.present();
     } else {
-      this.appProvider.setNormalNotification("There are no program to select");
+      this.appProvider.setNormalNotification('There are no program to select');
     }
   }
 
@@ -206,9 +221,9 @@ export class EventCapturePage implements OnInit {
       category.categoryOptions.length > 0
     ) {
       let currentIndex = this.programCategoryCombo.categories.indexOf(category);
-      let modal = this.modalCtrl.create("DataDimensionSelectionPage", {
+      let modal = this.modalCtrl.create('DataDimensionSelectionPage', {
         categoryOptions: category.categoryOptions,
-        title: category.name + "'s selection",
+        title: category.name,
         currentSelection: this.selectedDataDimension[currentIndex]
           ? this.selectedDataDimension[currentIndex]
           : {}
@@ -222,10 +237,7 @@ export class EventCapturePage implements OnInit {
       modal.present();
     } else {
       let message =
-        "There is no option for " +
-        category.name +
-        " that associated with " +
-        this.selectedOrgUnit.name;
+        'There is no option for selected category that associated with selected organisation unit';
       this.appProvider.setNormalNotification(message);
     }
   }
@@ -233,12 +245,12 @@ export class EventCapturePage implements OnInit {
   getDataDimensions() {
     if (this.selectedProgram && this.selectedProgram.categoryCombo) {
       let attributeCc = this.selectedProgram.categoryCombo.id;
-      let attributeCos = "";
+      let attributeCos = '';
       this.selectedDataDimension.forEach((dimension: any, index: any) => {
         if (index == 0) {
           attributeCos += dimension.id;
         } else {
-          attributeCos += ";" + dimension.id;
+          attributeCos += ';' + dimension.id;
         }
       });
       return { attributeCc: attributeCc, attributeCos: attributeCos };
@@ -253,7 +265,7 @@ export class EventCapturePage implements OnInit {
       this.selectedProgram &&
       this.selectedProgram.name &&
       this.selectedProgram.categoryCombo.name &&
-      this.selectedProgram.categoryCombo.name != "default"
+      this.selectedProgram.categoryCombo.name != 'default'
     ) {
       if (
         this.selectedDataDimension &&
@@ -283,32 +295,25 @@ export class EventCapturePage implements OnInit {
     if (categoryCombo) {
       let programCategoryCombo = {};
       this.isProgramDimensionApplicable = false;
-      if (categoryCombo.name != "default") {
-        programCategoryCombo["id"] = categoryCombo.id;
-        programCategoryCombo["name"] = categoryCombo.name;
+      if (categoryCombo.name != 'default') {
+        programCategoryCombo['id'] = categoryCombo.id;
+        programCategoryCombo['name'] = categoryCombo.name;
         let categories = this.programsProvider.getProgramCategoryComboCategories(
           this.selectedOrgUnit.id,
           categoryCombo.categories
         );
-        programCategoryCombo["categories"] = categories;
+        programCategoryCombo['categories'] = categories;
         this.isProgramDimensionApplicable = true;
-        this.programDimensionNotApplicableMessage = "All";
         categories.forEach((category: any) => {
           if (
             category.categoryOptions &&
             category.categoryOptions.length == 0
           ) {
-            this.programDimensionNotApplicableMessage =
-              this.programDimensionNotApplicableMessage +
-              " " +
-              category.name.toLowerCase();
             this.isProgramDimensionApplicable = false;
           }
         });
-        this.programDimensionNotApplicableMessage +=
-          " disaggregation are restricted from entry in " +
-          this.selectedOrgUnit.name +
-          ", choose a different form or contact your support desk";
+        this.programDimensionNotApplicableMessage =
+          'All of selected category disaggregation are restricted from entry in selcted organisation unit, choose a different form or contact your support desk';
       }
       this.selectedDataDimension = [];
       this.programCategoryCombo = programCategoryCombo;
@@ -317,7 +322,10 @@ export class EventCapturePage implements OnInit {
   }
 
   loadProgramStages(programId) {
-    this.loadingMessage = "Loading program stages";
+    let key = 'Discovering program stages';
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.columnsToDisplay = {};
     this.eventCaptureFormProvider
       .getProgramStages(programId, this.currentUser)
@@ -344,7 +352,7 @@ export class EventCapturePage implements OnInit {
                       if (
                         programStageDataElement.dataElement[
                           this.dataEntrySettings.label
-                        ] != "0"
+                        ] != '0'
                       ) {
                         fieldLabelKey =
                           programStageDataElement.dataElement[
@@ -367,13 +375,15 @@ export class EventCapturePage implements OnInit {
         error => {
           console.log(JSON.stringify(error));
           this.isLoading = false;
-          this.appProvider.setNormalNotification("fail to load program stages");
+          this.appProvider.setNormalNotification(
+            'Fail to discover program stages'
+          );
         }
       );
   }
 
   hideAndShowColumns() {
-    let modal = this.modalCtrl.create("EventHideShowColumnPage", {
+    let modal = this.modalCtrl.create('EventHideShowColumnPage', {
       columnsToDisplay: this.columnsToDisplay,
       programStage: this.programStage,
       dataEntrySettings: this.dataEntrySettings
@@ -395,7 +405,10 @@ export class EventCapturePage implements OnInit {
       this.selectedProgram.id
     ) {
       this.isLoading = true;
-      this.loadingMessage = "Loading data";
+      let key = 'Discovering data';
+      this.loadingMessage = this.translationMapper[key]
+        ? this.translationMapper[key]
+        : key;
       let dataDimension = this.getDataDimensions();
       this.eventCaptureFormProvider
         .getEventsBasedOnEventsSelection(
@@ -413,7 +426,10 @@ export class EventCapturePage implements OnInit {
 
   renderDataAsTable() {
     this.isLoading = true;
-    this.loadingMessage = "Preparing table";
+    let key = 'Preparing table';
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.eventCaptureFormProvider
       .getTableFormatResult(this.columnsToDisplay, this.currentEvents)
       .subscribe(
@@ -425,7 +441,7 @@ export class EventCapturePage implements OnInit {
         error => {
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            "fail to prepare table for display"
+            'fail to prepare table for display'
           );
         }
       );
@@ -436,11 +452,22 @@ export class EventCapturePage implements OnInit {
       dataDimension: this.getDataDimensions(),
       eventId: this.eventIds[currentIndex]
     };
-    this.navCtrl.push("EventCaptureRegisterPage", params);
+    this.navCtrl.push('EventCaptureRegisterPage', params);
   }
 
   goToEventRegister() {
     let params = { dataDimension: this.getDataDimensions() };
-    this.navCtrl.push("EventCaptureRegisterPage", params);
+    this.navCtrl.push('EventCaptureRegisterPage', params);
+  }
+
+  getValuesToTranslate() {
+    return [
+      'Discovering current user information',
+      'Discovering assigned programs',
+      'Discovering program stages',
+      'Discovering data',
+      'Preparing table for display',
+      'All of selected category disaggregation are restricted from entry in selcted organisation unit, choose a different form or contact your support desk'
+    ];
   }
 }

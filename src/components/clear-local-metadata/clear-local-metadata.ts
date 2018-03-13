@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {SyncProvider} from "../../providers/sync/sync";
-import {AppProvider} from "../../providers/app/app";
-import {SqlLiteProvider} from "../../providers/sql-lite/sql-lite";
-import {UserProvider} from "../../providers/user/user";
-import {AlertController} from "ionic-angular";
-import {SyncPage} from "../../pages/sync/sync";
+import { Component, OnInit } from '@angular/core';
+import { SyncProvider } from '../../providers/sync/sync';
+import { AppProvider } from '../../providers/app/app';
+import { SqlLiteProvider } from '../../providers/sql-lite/sql-lite';
+import { UserProvider } from '../../providers/user/user';
+import { AlertController } from 'ionic-angular';
+import { SyncPage } from '../../pages/sync/sync';
+import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the ClearLocalMetadataComponent component.
@@ -16,62 +17,69 @@ import {SyncPage} from "../../pages/sync/sync";
   selector: 'clear-local-metadata',
   templateUrl: 'clear-local-metadata.html'
 })
-export class ClearLocalMetadataComponent implements OnInit{
-
+export class ClearLocalMetadataComponent implements OnInit {
   resources: any;
   dataBaseStructure: any;
   currentUser: any;
   hasAllSelected: boolean;
   isLoading: boolean = false;
-  loadingMessage: string = "";
+  loadingMessage: string = '';
+  translationMapper: any;
 
-  constructor(private syncProvider: SyncProvider, private appProvider: AppProvider, private sqLite: SqlLiteProvider, private user: UserProvider,
-              public alertCtrl: AlertController, public syncPage: SyncPage) {
+  constructor(
+    private syncProvider: SyncProvider,
+    private appProvider: AppProvider,
+    private sqLite: SqlLiteProvider,
+    private user: UserProvider,
+    private alertCtrl: AlertController,
+    private syncPage: SyncPage,
+    private appTranslation: AppTranslationProvider
+  ) {}
 
-  }
-
-  ngOnInit(){
+  ngOnInit() {
     this.hasAllSelected = false;
-    this.user.getCurrentUser().subscribe((user:any)=>{
+    this.translationMapper = {};
+    this.user.getCurrentUser().subscribe((user: any) => {
       this.currentUser = user;
     });
     this.resources = this.syncPage.resources;
-    this.autoSelect("");
+    this.autoSelect('');
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+      },
+      error => {}
+    );
   }
 
-
-  autoSelect(selectType){
-    if(selectType== 'selectAll'){
-      this.resources.forEach((resource:any) =>{
+  autoSelect(selectType) {
+    if (selectType == 'selectAll') {
+      this.resources.forEach((resource: any) => {
         resource.status = true;
       });
       this.hasAllSelected = true;
-    }else{
-      this.resources.forEach((resource:any) =>{
+    } else {
+      this.resources.forEach((resource: any) => {
         resource.status = false;
       });
       this.hasAllSelected = false;
     }
   }
 
-  verifyingDeleteOfResources(){
-    let displayList = [];
-    this.resources.forEach((resource:any) =>{
-      if(resource.status){
-        displayList.push(resource.displayName);
-      }
-    });
+  verifyingDeleteOfResources() {
     let confirmAlert = this.alertCtrl.create({
-      title: 'Clear local metadata confirmation',
-      message: 'You are about to clear \n' +
-                ' \t' + ' '+displayList.join(', ') + ". Are you sure?",
-      buttons:[
+      title: this.translationMapper['Clear local metadata confirmation'],
+      message: this.translationMapper[
+        'You are about to clear all selected items, Are you sure?'
+      ],
+      buttons: [
         {
-          text: 'No',
-          role: 'cancel',
-        },{
-          text: 'Yes',
-          handler:() =>{
+          text: this.translationMapper['No'],
+          role: 'cancel'
+        },
+        {
+          text: this.translationMapper['Yes'],
+          handler: () => {
             this.checkingForResourceToDelete();
           }
         }
@@ -80,40 +88,72 @@ export class ClearLocalMetadataComponent implements OnInit{
     confirmAlert.present();
   }
 
-  checkingForResourceToDelete(){
+  checkingForResourceToDelete() {
     let resourcesToDelete = [];
-    this.resources.forEach((resource:any) =>{
-      if(resource.status){
+    this.resources.forEach((resource: any) => {
+      if (resource.status) {
         resourcesToDelete.push(resource.name);
-        if(resource.dependentTable.length > 0){
-          resource.dependentTable.forEach((tableNames: any)=>{
-            resourcesToDelete.push(tableNames)
+        if (resource.dependentTable.length > 0) {
+          resource.dependentTable.forEach((tableNames: any) => {
+            resourcesToDelete.push(tableNames);
           });
         }
       }
     });
-    if(resourcesToDelete.length == 0){
-      this.appProvider.setNormalNotification("Please select at least one resources to update");
-    }else{
+    if (resourcesToDelete.length == 0) {
+      this.appProvider.setNormalNotification(
+        'Please select at least one item to clear'
+      );
+    } else {
       this.deleteResources(resourcesToDelete);
       this.isLoading = true;
     }
   }
 
+  deleteResources(resources) {
+    this.loadingMessage = 'Clearing selected items';
+    this.syncProvider
+      .prepareTablesToApplyChanges(resources, this.currentUser)
+      .subscribe(
+        () => {
+          this.loadingMessage = 'Applying updates to local storage';
+          this.sqLite
+            .generateTables(this.currentUser.currentDatabase)
+            .subscribe(
+              () => {
+                this.autoSelect('un-selectAll');
+                this.appProvider.setNormalNotification(
+                  'All selected metadata has been cleared successfully'
+                );
+                this.isLoading = false;
+              },
+              error => {
+                this.appProvider.setTopNotification(
+                  'Fail to apply updates to local storage'
+                );
+              }
+            );
+        },
+        error => {
+          this.appProvider.setNormalNotification(
+            'Fail to apply updates to local storage'
+          );
+          console.log(JSON.stringify(error));
+        }
+      );
+  }
 
-  deleteResources(resources){
-    this.loadingMessage= "Clearing selected Metadata";
-    this.syncProvider.prepareTablesToApplyChanges(resources,this.currentUser).subscribe(()=>{
-      this.loadingMessage= "Applying updates";
-      this.sqLite.generateTables(this.currentUser.currentDatabase).subscribe(()=>{
-        this.autoSelect("un-selectAll");
-        this.appProvider.setNormalNotification("All selected local metadata has been cleared successfully");
-        this.isLoading = false;
-      },error=>{
-        this.appProvider.setTopNotification("Failed. to Drop "+resources+" Database table");
-      });
-    },error=>{
-      this.appProvider.setNormalNotification("Fail to apply updates 0 : " + JSON.stringify(error));
-    });
+  getValuesToTranslate() {
+    return [
+      'Select all',
+      'Deselect all',
+      'Clear metaData',
+      'Clear local metadata confirmation',
+      'You are about to clear all selected items, Are you sure?',
+      'Yes',
+      'No',
+      'Clearing selected items',
+      'Applying updates to local storage'
+    ];
   }
 }

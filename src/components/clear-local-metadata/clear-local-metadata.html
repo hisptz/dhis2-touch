@@ -3,10 +3,10 @@
 <ion-grid>
   <ion-row *ngIf="!showLoadingMessage">
     <ion-col>
-      <button ion-button block style="text-transform: none;" (tap)="autoSelect('selectAll')">Select All</button>
+      <button ion-button block style="text-transform: none;" (tap)="autoSelect('selectAll')">{{ translationMapper['Select all'] }}</button>
     </ion-col>
     <ion-col>
-      <button ion-button block style="text-transform: none;" (tap)="autoSelect('unSelectAll')">Deselect All </button>
+      <button ion-button block style="text-transform: none;" (tap)="autoSelect('unSelectAll')">{{ translationMapper['Deselect all'] }} </button>
     </ion-col>
   </ion-row>
   <ion-row *ngIf="!showLoadingMessage">
@@ -27,7 +27,7 @@
   </span>
 
   <ion-row *ngIf="!showLoadingMessage">
-    <button ion-button style="text-transform: none;" (tap)="verifyingDeleteOfResources()" block>Clear MetaData</button>
+    <button ion-button style="text-transform: none;" (tap)="verifyingDeleteOfResources()" block> {{ translationMapper['Clear metaData'] }}</button>
   </ion-row>
 
 </ion-grid>

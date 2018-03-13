@@ -1,10 +1,9 @@
 <div class="interpretation-container">
     <div class="interpretation-block" [style.minheight]="itemHeight">
-        <h4>Interpretation</h4>
-        <!--<p>Description will be here</p>-->
-        <input [(ngModel)]="interpretationTerm" class="interpretation-input" placeholder="Search interpretation">
+        <h4>{{ translationMapper['Interpretation'] }}</h4>
+        <input [(ngModel)]="interpretationTerm" class="interpretation-input" placeholder="{{ translationMapper['Search interpretation'] }}">
         <div *ngIf="interpretationTerm && (interpretations | filterBy: interpretationTerm).length === 0" style="padding: 15px;">
-            Not found
+            {{ translationMapper['Not found'] }}
         </div>
         <div *ngFor="let interpretation of interpretations  | filterBy: interpretationTerm ; let i = index" (mouseenter)="toggleInterpretationOptions(interpretation, $event, true)"
             (mouseleave)="toggleInterpretationOptions(interpretation, $event)" [ngClass]="{
@@ -23,7 +22,7 @@
                 <div class="interpretation-text" *ngIf="!interpretation.showEditForm && !interpretation.showDeleteDialog && !interpretation.deleting">{{interpretation.text}}</div>
 
                 <div class="interpretation-delete-block" *ngIf="interpretation.showDeleteDialog">
-                    This interpretation will be deleted, are you sure?
+                    {{ translationMapper['This interpretation will be deleted, are you sure?'] }}
                     <a class="btn btn-xs btn-outline-danger" (click)="deleteInterpretation(interpretation, $event)">
                         <img src="assets/icon/trash.png" alt="" style="height: 12px; display: block; margin: auto;">
                     </a>
@@ -31,15 +30,15 @@
                         <img src="assets/icon/close.png" alt="" style="height: 12px; display: block; margin: auto;">
                     </a>
                 </div>
-                <div *ngIf="interpretation.deleting">Deleting interpretation</div>
+                <div *ngIf="interpretation.deleting">{{ translationMapper['Deleting interpretation'] }}</div>
                 <div class="interpretation-edit-input" *ngIf="interpretation.showEditForm">
                     <app-edit-interpretation [interpretation]="interpretation" [rootUrl]="rootUrl" (onInterpretationEdit)="updateInterpretationText($event)"></app-edit-interpretation>
                 </div>
                 <div class="interpretation-options">
                     <a class="interpretation-comment-btn" (click)="toggleCommentBlock(i, $event)">
-                        <span *ngIf="interpretation.comments.length === 0">Comment</span>
+                        <span *ngIf="interpretation.comments.length === 0">{{ translationMapper['Comment'] }}</span>
                         <span *ngIf="interpretation.comments.length > 0">
-                            {{ interpretation.comments.length }} comment{{interpretation.comments.length > 1 ? 's' : ''}}
+                            {{ interpretation.comments.length }} {{ translationMapper['Comment'] }}{{interpretation.comments.length > 1 ? 's' : ''}}
                         </span>
                     </a>
                     <app-interpretation-like [interpretation]="interpretation" [rootUrl]="rootUrl" [currentUser]="currentUser" (onInterpretationUpdate)="updateInterpretationLikeStatus($event)"></app-interpretation-like>
@@ -66,10 +65,10 @@
                     </a>
                     <ul class="interpretation-more-options-dropdown" *ngIf="interpretation.showDropdownOptions">
                         <li>
-                            <a (click)="openInterpretationEditForm(interpretation, $event)">Edit</a>
+                            <a (click)="openInterpretationEditForm(interpretation, $event)">{{ translationMapper['Edit'] }}</a>
                         </li>
                         <li>
-                            <a (click)="toggleDeleteConfirmationDialog(interpretation, $event)" class="text-danger" *ngIf="interpretation.showDeleteButton">Delete</a>
+                            <a (click)="toggleDeleteConfirmationDialog(interpretation, $event)" class="text-danger" *ngIf="interpretation.showDeleteButton">{{ translationMapper['Delete'] }}</a>
                         </li>
                     </ul>
                 </div>

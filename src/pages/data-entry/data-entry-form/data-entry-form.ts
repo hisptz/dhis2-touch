@@ -1,17 +1,18 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   IonicPage,
   ModalController,
   NavController,
   NavParams,
   Content
-} from "ionic-angular";
-import { UserProvider } from "../../../providers/user/user";
-import { AppProvider } from "../../../providers/app/app";
-import { DataEntryFormProvider } from "../../../providers/data-entry-form/data-entry-form";
-import { SettingsProvider } from "../../../providers/settings/settings";
-import { DataValuesProvider } from "../../../providers/data-values/data-values";
-import { DataSetCompletenessProvider } from "../../../providers/data-set-completeness/data-set-completeness";
+} from 'ionic-angular';
+import { UserProvider } from '../../../providers/user/user';
+import { AppProvider } from '../../../providers/app/app';
+import { DataEntryFormProvider } from '../../../providers/data-entry-form/data-entry-form';
+import { SettingsProvider } from '../../../providers/settings/settings';
+import { DataValuesProvider } from '../../../providers/data-values/data-values';
+import { DataSetCompletenessProvider } from '../../../providers/data-set-completeness/data-set-completeness';
+import { AppTranslationProvider } from '../../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the DataEntryFormPage page.
@@ -22,8 +23,8 @@ import { DataSetCompletenessProvider } from "../../../providers/data-set-complet
 
 @IonicPage()
 @Component({
-  selector: "page-data-entry-form",
-  templateUrl: "data-entry-form.html"
+  selector: 'page-data-entry-form',
+  templateUrl: 'data-entry-form.html'
 })
 export class DataEntryFormPage implements OnInit {
   entryFormParameter: any;
@@ -32,12 +33,10 @@ export class DataEntryFormPage implements OnInit {
   loadingMessage: string;
   currentUser: any;
   appSettings: any;
-
   indicators: Array<any>;
   sectionIds: Array<string>;
   dataSet: any;
   dataSetAttributeOptionCombo: any;
-
   entryFormSections: any;
   entryFormLayout: string;
   icons: any = {};
@@ -48,7 +47,7 @@ export class DataEntryFormPage implements OnInit {
   dataSetsCompletenessInfo: any;
   isDataSetCompleted: boolean;
   isDataSetCompletenessProcessRunning: boolean;
-
+  translationMapper: any;
   @ViewChild(Content) content: Content;
 
   constructor(
@@ -60,11 +59,12 @@ export class DataEntryFormPage implements OnInit {
     private dataEntryFormProvider: DataEntryFormProvider,
     private settingsProvider: SettingsProvider,
     private dataValuesProvider: DataValuesProvider,
-    private navParams: NavParams
+    private navParams: NavParams,
+    private appTranslation: AppTranslationProvider
   ) {}
 
   ngOnInit() {
-    this.icons["menu"] = "assets/icon/menu.png";
+    this.icons['menu'] = 'assets/icon/menu.png';
     this.storageStatus = {
       online: 0,
       offline: 0
@@ -73,9 +73,25 @@ export class DataEntryFormPage implements OnInit {
     this.isDataSetCompleted = false;
     this.dataValuesObject = {};
     this.dataValuesSavingStatusClass = {};
-    this.loadingMessage = "loading user information";
     this.isLoading = true;
-    this.entryFormParameter = this.navParams.get("parameter");
+    this.translationMapper = {};
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+        this.loadingCurrentUserInformation();
+      },
+      error => {
+        this.loadingCurrentUserInformation();
+      }
+    );
+  }
+
+  loadingCurrentUserInformation() {
+    let key = 'Discovering current user information';
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
+    this.entryFormParameter = this.navParams.get('parameter');
     this.userProvider.getCurrentUser().subscribe(
       user => {
         this.currentUser = user;
@@ -90,7 +106,7 @@ export class DataEntryFormPage implements OnInit {
             ) {
               this.entryFormLayout = appSettings.entryForm.formLayout;
             } else {
-              this.entryFormLayout = "listLayout";
+              this.entryFormLayout = 'listLayout';
             }
             this.loadingDataSetInformation(this.entryFormParameter.dataSet.id);
           });
@@ -98,7 +114,9 @@ export class DataEntryFormPage implements OnInit {
       error => {
         console.log(JSON.stringify(error));
         this.isLoading = false;
-        this.appProvider.setNormalNotification("fail to load user information");
+        this.appProvider.setNormalNotification(
+          'Fail to discover current user information'
+        );
       }
     );
   }
@@ -108,14 +126,20 @@ export class DataEntryFormPage implements OnInit {
   }
 
   loadingDataSetInformation(dataSetId) {
-    this.loadingMessage = "loading entry form information";
+    let key = 'Discovering entry form information';
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.dataEntryFormProvider
       .loadingDataSetInformation(dataSetId, this.currentUser)
       .subscribe(
         (dataSetInformation: any) => {
           this.dataSet = dataSetInformation.dataSet;
           this.sectionIds = dataSetInformation.sectionIds;
-          this.loadingMessage = "loading indicators";
+          key = 'Discovering indicators';
+          this.loadingMessage = this.translationMapper[key]
+            ? this.translationMapper[key]
+            : key;
           this.dataEntryFormProvider
             .getEntryFormIndicators(
               dataSetInformation.indicatorIds,
@@ -128,32 +152,35 @@ export class DataEntryFormPage implements OnInit {
               },
               error => {
                 this.isLoading = false;
-                this.loadingMessage = "";
+                this.loadingMessage = '';
                 this.appProvider.setNormalNotification(
-                  "Fail to load indicators"
+                  'Fail to discover indicators'
                 );
               }
             );
         },
         error => {
           this.isLoading = false;
-          this.loadingMessage = "";
+          this.loadingMessage = '';
           this.appProvider.setNormalNotification(
-            "fail to load entry form information"
+            'Fail to discover entry form information'
           );
         }
       );
   }
 
   loadingEntryForm(dataSet, sectionIds) {
-    this.loadingMessage = "prepare entry form";
+    let key = 'Preparing entry form';
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.dataEntryFormProvider
       .getEntryForm(sectionIds, dataSet.id, this.appSettings, this.currentUser)
       .subscribe(
         (entryForm: any) => {
           this.entryFormSections = entryForm;
-          this.pager["page"] = 1;
-          this.pager["total"] = entryForm.length;
+          this.pager['page'] = 1;
+          this.pager['total'] = entryForm.length;
           let dataSetId = this.dataSet.id;
           let period = this.entryFormParameter.period.iso;
           let orgUnitId = this.entryFormParameter.orgUnit.id;
@@ -162,7 +189,10 @@ export class DataEntryFormPage implements OnInit {
             dataDimension,
             this.dataSet.categoryCombo.categoryOptionCombos
           );
-          this.loadingMessage = "loading data from the server";
+          key = 'Discovering data from the server';
+          this.loadingMessage = this.translationMapper[key]
+            ? this.translationMapper[key]
+            : key;
           this.dataValuesProvider
             .getDataValueSetFromServer(
               dataSetId,
@@ -174,12 +204,15 @@ export class DataEntryFormPage implements OnInit {
             .subscribe(
               (dataValues: any) => {
                 if (dataValues.length > 0) {
-                  dataValues.forEach((dataValue: any) => {
-                    dataValue["period"] = this.entryFormParameter.period.name;
-                    dataValue["orgUnit"] = this.entryFormParameter.orgUnit.name;
+                  dataValues.map((dataValue: any) => {
+                    dataValue['period'] = this.entryFormParameter.period.name;
+                    dataValue['orgUnit'] = this.entryFormParameter.orgUnit.name;
                   });
-                  this.loadingMessage = "saving data from server";
-                  let syncStatus = "synced";
+                  key = 'Saving data from server';
+                  this.loadingMessage = this.translationMapper[key]
+                    ? this.translationMapper[key]
+                    : key;
+                  let syncStatus = 'synced';
                   this.dataValuesProvider
                     .saveDataValues(
                       dataValues,
@@ -202,7 +235,7 @@ export class DataEntryFormPage implements OnInit {
                       error => {
                         console.log(JSON.stringify(error));
                         this.appProvider.setNormalNotification(
-                          "fail to save data from the server"
+                          'Fail to save data from the server'
                         );
                         this.loadingLocalData(
                           dataSetId,
@@ -224,7 +257,7 @@ export class DataEntryFormPage implements OnInit {
               error => {
                 console.log(JSON.stringify(error));
                 this.appProvider.setNormalNotification(
-                  "fail to load data from the server"
+                  'Fail to discover data from the server'
                 );
                 this.loadingLocalData(
                   dataSetId,
@@ -238,14 +271,17 @@ export class DataEntryFormPage implements OnInit {
         error => {
           console.log(JSON.stringify(error));
           this.isLoading = false;
-          this.loadingMessage = "";
-          this.appProvider.setNormalNotification("");
+          this.loadingMessage = '';
+          this.appProvider.setNormalNotification('');
         }
       );
   }
 
   loadingLocalData(dataSetId, period, orgUnitId, dataDimension) {
-    this.loadingMessage = "loading available local data";
+    let key = 'Discovering available local data';
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.dataValuesProvider
       .getAllEntryFormDataValuesFromStorage(
         dataSetId,
@@ -259,7 +295,7 @@ export class DataEntryFormPage implements OnInit {
         (entryFormDataValues: any) => {
           entryFormDataValues.forEach((dataValue: any) => {
             this.dataValuesObject[dataValue.id] = dataValue;
-            dataValue.status == "synced"
+            dataValue.status == 'synced'
               ? this.storageStatus.online++
               : this.storageStatus.offline++;
           });
@@ -268,14 +304,17 @@ export class DataEntryFormPage implements OnInit {
         error => {
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            "fail to load available local data"
+            'Fail to discover available local data'
           );
         }
       );
   }
 
   loadingDataSetCompleteness() {
-    this.loadingMessage = "loading entry form completeness information";
+    let key = 'Discovering entry form completeness information';
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.isDataSetCompleted = false;
     this.dataSetsCompletenessInfo = {};
     let dataSetId = this.dataSet.id;
@@ -301,14 +340,14 @@ export class DataEntryFormPage implements OnInit {
         error => {
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            "fail to load entry form completeness information"
+            'Fail to discover entry form completeness information'
           );
         }
       );
   }
 
   openSectionList() {
-    let modal = this.modalCtrl.create("DataEntrySectionSelectionPage", {
+    let modal = this.modalCtrl.create('DataEntrySectionSelectionPage', {
       pager: this.pager,
       sections: this.getEntryFormSections(this.entryFormSections)
     });
@@ -328,8 +367,8 @@ export class DataEntryFormPage implements OnInit {
     let username =
       dataSetsCompletenessInfo && dataSetsCompletenessInfo.storedBy
         ? dataSetsCompletenessInfo.storedBy
-        : "";
-    let modal = this.modalCtrl.create("EntryFormCompletenessPage", {
+        : '';
+    let modal = this.modalCtrl.create('EntryFormCompletenessPage', {
       username: username,
       currentUser: this.currentUser
     });
@@ -338,14 +377,14 @@ export class DataEntryFormPage implements OnInit {
 
   viewEntryFormIndicators(indicators) {
     if (indicators && indicators.length > 0) {
-      let modal = this.modalCtrl.create("DataEntryIndicatorsPage", {
+      let modal = this.modalCtrl.create('DataEntryIndicatorsPage', {
         indicators: indicators,
         dataSet: { id: this.dataSet.id, name: this.dataSet.name }
       });
       modal.onDidDismiss(() => {});
       modal.present();
     } else {
-      this.appProvider.setNormalNotification("there are no indicators to view");
+      this.appProvider.setNormalNotification('There are no indicators to view');
     }
   }
 
@@ -370,7 +409,7 @@ export class DataEntryFormPage implements OnInit {
     let orgUnitName = this.entryFormParameter.orgUnit.name;
     let dataDimension = this.entryFormParameter.dataDimension;
     let newDataValue = [];
-    let fieldIdArray = dataValueId.split("-");
+    let fieldIdArray = dataValueId.split('-');
     newDataValue.push({
       orgUnit: orgUnitName,
       dataElement: fieldIdArray[0],
@@ -392,7 +431,7 @@ export class DataEntryFormPage implements OnInit {
         () => {
           if (
             this.dataValuesObject[dataValueId] &&
-            this.dataValuesObject[dataValueId].status == "synced"
+            this.dataValuesObject[dataValueId].status == 'synced'
           ) {
             this.storageStatus.online--;
             this.storageStatus.offline++;
@@ -400,12 +439,12 @@ export class DataEntryFormPage implements OnInit {
             this.storageStatus.offline++;
           }
           this.dataValuesSavingStatusClass[dataValueId] =
-            "input-field-container-success";
+            'input-field-container-success';
           this.dataValuesObject[dataValueId] = updateDataValue;
         },
         error => {
           this.dataValuesSavingStatusClass[dataValueId] =
-            "input-field-container-failed";
+            'input-field-container-failed';
         }
       );
   }
@@ -449,7 +488,7 @@ export class DataEntryFormPage implements OnInit {
             this.isDataSetCompletenessProcessRunning = false;
             console.log(JSON.stringify(error));
             this.appProvider.setNormalNotification(
-              "fail to un complete entry form"
+              'Fail to un complete entry form'
             );
           }
         );
@@ -493,7 +532,7 @@ export class DataEntryFormPage implements OnInit {
                   console.log(JSON.stringify(error));
                   this.isDataSetCompletenessProcessRunning = false;
                   this.appProvider.setNormalNotification(
-                    "fail to load entry form completeness information"
+                    'Fail to discover entry form completeness information'
                   );
                 }
               );
@@ -502,7 +541,7 @@ export class DataEntryFormPage implements OnInit {
             this.isDataSetCompletenessProcessRunning = false;
             console.log(JSON.stringify(error));
             this.appProvider.setNormalNotification(
-              "fail to complete entry form"
+              'Fail to complete entry form'
             );
           }
         );
@@ -513,10 +552,10 @@ export class DataEntryFormPage implements OnInit {
     let dataValues = [];
     if (this.dataValuesObject) {
       Object.keys(this.dataValuesObject).forEach((fieldId: any) => {
-        let fieldIdArray = fieldId.split("-");
+        let fieldIdArray = fieldId.split('-');
         if (this.dataValuesObject[fieldId]) {
           let dataValue = this.dataValuesObject[fieldId];
-          if (dataValue.status != "synced") {
+          if (dataValue.status != 'synced') {
             dataValues.push({
               de: fieldIdArray[0],
               co: fieldIdArray[1],
@@ -531,7 +570,7 @@ export class DataEntryFormPage implements OnInit {
       });
     }
     if (dataValues.length > 0) {
-      this.loadingMessage = "Uploading data";
+      this.loadingMessage = 'Uploading data';
       let formattedDataValues = this.dataValuesProvider.getFormattedDataValueForUpload(
         dataValues
       );
@@ -545,12 +584,28 @@ export class DataEntryFormPage implements OnInit {
           () => {
             this.storageStatus.offline = 0;
             this.storageStatus.online += dataValues.length;
-            console.log("Success uploading data");
+            console.log('Success uploading data');
           },
           error => {
-            console.log("Fail to upload data");
+            console.log('Fail to upload data');
           }
         );
     }
+  }
+
+  getValuesToTranslate() {
+    return [
+      'The is no field associated with this entry form, Please contact our help desk',
+      'Discovering current user information',
+      'Discovering entry form information',
+      'Discovering indicators',
+      'Preparing entry form',
+      'Discovering data from the server',
+      'Saving data from server',
+      'Discovering available local data',
+      'Discovering entry form completeness information',
+      'There are no indicators to view',
+      'Uploading data'
+    ];
   }
 }

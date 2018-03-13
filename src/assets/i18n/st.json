@@ -1,0 +1,481 @@
+{
+  "Account": "Account",
+  "Apps": "Apps",
+  "Log out": "Loka tsoa",
+  "About": "About",
+  "Aggregate status": "boemo Aggregate",
+  "Event status": "boemo ba ketsahalo",
+  "Event for tracker status": "Ketsahalo bakeng sa boemo ba tracker",
+  "Enrollments": "ikwadiseditseng",
+  "System info": "System Info",
+  "Synced": "setsholadifaele se se tsamaisanngwang",
+  "Not synced": "ha setsholadifaele se se tsamaisanngwang",
+  "Discovering app information": "Ho Fumana lesedi app e",
+  "Discovering system information": "Ho Fumana tsamaiso ya tshedimosetso",
+  "Discovering data values storage status":
+    "Ho Fumana ya data o nka boemo polokelo",
+  "Discovering events storage status": "Ho Fumana liketsahalo boemo polokelo",
+  "Discovering enrollments storage status":
+    "Ho Fumana ikwadiseditseng boemo polokelo",
+  "Fail to discover user information": "Ba hlōleha ho fumana lesedi mosebedisi",
+  "Fail to discover system information":
+    "Ba hlōleha ho fumana lesedi oona tsamaisong",
+  "Fail to discover app information": "Ba hlōleha ho fumana lesedi app e",
+  "Fail to discover data values storage status":
+    "Ba hlōleha ho fumana boemo ya data makgabane polokelo",
+  "Fail to discover enrollments storage status":
+    "Ba hlōleha ho fumana boemo ikwadiseditseng polokelo",
+  "Profile": "Profile",
+  "User information": "lesedi mosebedisi",
+  "Assigned organisation units": "Abeloa diyuniti mokgatlo",
+  "Assigned roles": "likarolo abeloa",
+  "Assigned programs": "mananeo a abeloa",
+  "Assigned entry forms": "Abeloa liforomo kena",
+  "Discovering profile information": "Ho Fumana lesedi profil",
+  "Fail to discover profile information": "Ba hlōleha ho fumana lesedi profil",
+  "Help": "Thusa",
+  "Help search": "Help fuputso",
+  "Search help by title": "Search thuso ke le sehlooho",
+  "Settings": "Litlhophiso",
+  "Applying changes": "Ho sebelisa liphetoho",
+  "Minutes": "metsotso",
+  "Hours": "dihora",
+  "Auto synchronization": "Auto kahamahanyo",
+  "Form layout": "moralo foromo",
+  "List layout": "List moralo",
+  "Table layout": "tafole moralo",
+  "Form label": "labels foromo",
+  "Display name": "Lebitso le hlahang",
+  "Form name": "lebitso foromo",
+  "Data element per page": "Data elements ka leqepheng la",
+  "Current language": "puo jwale",
+  "App settings": "Litlhophiso tsa App",
+  "Entry form": "mofuta o kena",
+  "Synchronization": "kahamahanyo",
+  "Discovering current user information":
+    "Ho Fumana morao-rao mosebedisi lesedi",
+  "Discovering settings": "Ho Fumana Litlhophiso",
+  "Settings have been updated successfully":
+    "Litlhophiso tsa di ntjhafatswa ka katleho",
+  "Fail to discover settings": "Ba hlōleha ho Litlhophiso tsa sibolla",
+  "Fail to discover available local instances":
+    "Ba hlōleha ho fumana fumanehang maemong a ea moo",
+  "Fail to discover current user information":
+    "Ba hlōleha ho fumana tsa morao-rao mosebedisi lesedi",
+  "Fail to set translation": "Ba hlōleha ho beha phetolelo",
+  "Fail to apply changes on  settings":
+    "Ba hlōleha ho etsa liphetoho tse ka Litlhophiso",
+  "Reports": "Reports",
+  "Search": "Search",
+  "Discovering reports": "Ho Fumana litlaleho tse",
+  "Downloading reports from server": "Downloading litlaleho tse tsoang seva",
+  "Preparing local storage for updates":
+    "Lokisetsa poloko ea moo bakeng sa ho diapdeite",
+  "Saving reports from server": "Pholosang litlaleho tse tsoang seva",
+  "there is no report to select": "ho na le ha ho na tlaleho ea ho khetha",
+  "Fail  to discover reports": "Ba hlōleha ho fumana litlaleho tse",
+  "Fail to save reports": "Ba hlōleha ho boloka litlaleho tse",
+  "Fail to prepare local storage for updates":
+    "Ba hlōleha ho lokisa polokelo ea moo bakeng sa ho diapdeite",
+  "Fail to download reports": "Ba hlōleha ho thowuni litlaleho tse",
+  "Data set report": "Data sete Tlaleho",
+  "Standard report": "Standard tlaleho",
+  "Report name": "tlaleho lebitso",
+  "Organisation unit": "mokhatlo o hlophisitsoeng oa unit trust",
+  "Period": "nako",
+  "Generate report": "hlahisa tlaleho",
+  "Touch to select organisation unit": "Ama ho khetha mokgatlo unit trust",
+  "Touch to select period": "Ama ho khetha nako",
+  "Report view": "tlaleho pono",
+  "Discovering user information": "Ho Fumana lesedi mosebedisi",
+  "Discovering report metadata": "Ho Fumana phaketse Tlaleho",
+  "Fail to discover organisation units information":
+    "Ba hlōleha ho fumana mokhatlo o hlophisitsoeng oa diyuniti lesedi",
+  "Fail to discover report metadata": "Ba hlōleha ho fumana phaketse Tlaleho",
+  "Report type has not set,please contact system administrator":
+    "Tlaleho mofuta ha e beha, ka kopo ikopanya le motsamaisi oona tsamaisong",
+  "Discovering data set report information":
+    "Ho Fumana ya data beha tlaleha lesedi",
+  "Preparing data set report": "Lokisetsa ya data sete Tlaleho",
+  "Fail to prepare data set report":
+    "Ba hlōleha ho lokisetsa ya data sete Tlaleho",
+  "Fail to discover data set report information":
+    "Ba hlōleha ho fumana ya data sete tlaleho lesedi",
+  "Program selection": "kgetho lenaneo",
+  "There is no program to select": "Ha ho na lenaneo ho khetha",
+  "Period selection": "nako kgetho",
+  "Previous": "fetileng",
+  "Next": "E 'ngoe",
+  "There is no period to select": "Ha ho na nako ya ho khetha",
+  "Organisation unit selection":
+    "Mokhatlo o hlophisitsoeng oa unit trust kgetho",
+  "Discovering assigned organisation units":
+    "Ho Fumana abeloa mokgatlo diyuniti",
+  "Currently there is on assigned organisation unit on local storage, Please metadata on sync app":
+    "Hona joale ho na le ka abeloa mokgatlo unit trust ka polokelo ea moo, Ka kopo phaketse ya metadata ka app e kgokagantswe",
+  "Fail to discover organisation units":
+    "Ba hlōleha ho fumana diyuniti mokgatlo",
+  "Discovering organisation units": "Ho Fumana diyuniti mokgatlo",
+  "Fail to discover organisation unit children":
+    "Ba hlōleha ho fumana bana ba mokhatlo o hlophisitsoeng oa unit trust",
+  "Event capture": "ketsahalo nkhape",
+  "Columns": "litšiea",
+  "Add": "eketsa",
+  "Discovering assigned programs": "Fumana mananeo a abeloa",
+  "Discovering program stages": "Ho Fumana mekhahlelo lenaneo",
+  "Discovering data": "Ho Fumana ya data",
+  "Preparing table for display": "Lokisetsa tafole bakeng bontshiweng",
+  "All of selected category disaggregation are restricted from entry in selcted organisation unit, choose a different form or contact your support desk":
+    "Kaofela ha a khetha sehlopha disaggregation ba thibeloa ho tloha kena ka selcted mokhatlo o hlophisitsoeng oa yuniti, khetha mofuta o fapaneng kapa ikopanya tšehetso hao deskeng",
+  "There is no option for selected category that associated with selected organisation unit":
+    "Ha ho na kgetho bakeng sa kgethile sehlopha hore amanang le kgethile mokgatlo unit trust",
+  "There are no program to select": "Ha ho na lenaneo ho khetha",
+  "Touch to select program": "Ama ho khetha lenaneo",
+  "Touch to select option": "Ama ho khetha khetho",
+  "There no data at the moment": "Ho na le ha ho na ya data ka nako eo",
+  "Visible header": "platform bonahalang",
+  "Select all": "khetha kaofela",
+  "Deselect all": "Deselect tsohle",
+  "Save": "Save",
+  "Event register": "ketsahalo registratevi",
+  "Program": "lenaneo",
+  "Discovering data from local storage":
+    "Ho Fumana data ho tswa polokelo ea moo",
+  "Fail to discover program stages":
+    "Ba hlōleha ho fumana mekhahlelo e lenaneo",
+  "Report date": "tlaleho letsatsi",
+  "Touch to pick date": "Ama ho nka letsatsi",
+  "Delete": "Tlosa",
+  "There are no data elements, please contact you help desk":
+    "Ha ho na likarolo ya data, ka kopo ikopanya le wena thusa deskeng",
+  "You are about to delete this event, are you sure?":
+    "O le haufi le ho hlakola ketsahalo ena, u bonnete ba hore?",
+  "Yes": "E",
+  "No": "No",
+  "Deleting event": "hlakola ketsahalo",
+  "Event has been deleted successfully": "Ketsahalo e se e hlakolwa ka katleho",
+  "Fail to delete event": "Ba hlōleha ho hlakola ketsahalo",
+  "Tracker capture": "Tracker nkhape",
+  "Discovering tracked entity list": "Ho Fumana bonwe mokhatlo lethathamo",
+  "There are no program to select, please select another organisation unit":
+    "Ha ho na lenaneo ho khetha, ka kōpo khetha e mong unit trust mokgatlo",
+  "Fail to discover registration form":
+    "Ba hlōleha ho fumana foromo ya ngodiso",
+  "Fail to discover assigned programs": "Ba hlōleha ho fumana mananeo a abeloa",
+  "Fail to discover tracked entity list":
+    "Ba hlōleha ho fumana bonwe mokhatlo lethathamo",
+  "Fail to prepare table for display":
+    "Ba hlōleha ho lokisa tafole bakeng bontshiweng",
+  "List of widgets": "List of diwidget",
+  "There is no widget to select": "Ha ho na widget tsa ho khetha",
+  "Registration": "ngodiso",
+  "Enrollment & Profile": "Ngoliso & Profile",
+  "Enrolling organisation unit":
+    "Ngolisa batho ba mokhatlo o hlophisitsoeng oa unit trust",
+  "Enrolling program": "lenaneo ngolisa",
+  "Discovering registration form": "Ho Fumana foromo ngodiso",
+  "You are about to delete all information related to this tracked entity instance, are you sure?":
+    "O le haufi le ho hlakola lesedi tsohle tse amanang le ena bonwe mokhatlo mohlala, na u se u bonnete?",
+  "Deleting all information related to this tracked entity instance":
+    "Hlakola lesedi tsohle tse amanang le ena bonwe mokhatlo mohlala",
+  "A tracked entity instance has not yet registered":
+    "A bonwe mokhatlo mohlala e-s'o ngolisitsoeng",
+  "A tracked entity instance has been deleted successfully":
+    "A bonwe mokhatlo mohlala e se e hlakolwa ka katleho",
+  "A tracked entity instance has been saved successfully":
+    "A bonwe mokhatlo mohlala o pholositsoe ka katleho",
+  "Fail to delete all information related to this tracked entity instance":
+    "Ba hlōleha ho hlakola lesedi tsohle tse amanang le ena bonwe mokhatlo mohlala",
+  "Fail to save a tracked entity instance":
+    "Ba hlōleha ho boloka ya bonwe mokhatlo mohlala",
+  "New event": "ketsahalo e ncha",
+  "Discovering events": "Ho Fumana liketsahalo",
+  "Fail to discover events": "Ba hlōleha ho fumana liketsahalo",
+  "Due date": "Letsatsi la tebello",
+  "Contact your help desk to add data elements on this stage":
+    "Iteanye le thuso ea hao deskeng ea ho eketsa boemo ba leholimo ya data sethaleng sena",
+  "Tracked entity dashboard": "Bonwe mokhatlo Dashboard",
+  "Discovering tracked entity": "Ho Fumana bonwe mokhatlo",
+  "Discovering registration fields": "Ho Fumana masimo a ngoliso",
+  "Tracked entity instance has been delete successfully":
+    "Bonwe mokhatlo mohlala e bile hlakola ka katleho",
+  "Fail to discover tracked entity": "Ba hlōleha ho fumana bonwe mokhatlo",
+  "Fail to discover registration fields":
+    "Ba hlōleha ho fumana masimo a ngoliso",
+  "Data entry": "ho kena Data",
+  "Touch to select entry form": "Ama ho khetha mofuta o kena",
+  "Form": "foromo",
+  "Enter data": "kena ya data",
+  "There are no entry form to select on selected organisation unit":
+    "Ha ho na mofuta o kena ho khetha ka kgethile mokgatlo unit trust",
+  "Please select entry form first": "Ka kopo, khetha mofuta o kena pele",
+  "There is no option for seleted category that associated with selected organisation unit":
+    "Ha ho na kgetho bakeng sa sehlopha seleted hore amanang le kgethile mokgatlo unit trust",
+  "All disaggregation are restricted from entry in selected organisation unit, please choose a different form or contact your support desk":
+    "disaggregation tsohle li etsoa feela ho tswa ho kena ka kgethile mokhatlo o hlophisitsoeng oa yuniti, o kotjwa hore o khetha mofuta o fapaneng kapa ikopanya tšehetso hao deskeng",
+  "Fail to discover entry form": "Ba hlōleha ho fumana mofuta o kena",
+  "Data entry form selection": "Data ho kena foromo kgetho",
+  "There is no data entry form to select":
+    "Ha ho na ya data ho kena foromo ho khetha",
+  "Data dimension selection": "Data teba kgetho",
+  "There is no option to select": "Ha ho na khetho ho khetha",
+  "Data entry form sections": "Data ho kena foromo dikarolo",
+  "There is nothing to select": "Ho na le ha ho letho le ho khetha",
+  "Entry form's indicators": "litsupa kena foromo ya",
+  "Name": "lebitso",
+  "Numerator Description": "palotlase Tlhaloso",
+  "Denominator Description": "lerei Tlhaloso",
+  "Indicator value": "boleng pontshi",
+  "Data entry form": "Data foromo kena",
+  "Available indicators": "fumaneha litsupa",
+  "Complete": "Complete",
+  "Undo complete": "etsolla ka ho feletseng",
+  "Completed by": "phethoa ke",
+  "on": "ka",
+  "Please wait ...": "Ke kopa u eme ...",
+  "The is no field associated with this entry form, Please contact our help desk":
+    "The ha tšimo amanang le foromo ena ho kena, Ka kopo ikopanya le rona thuso deskeng",
+  "Discovering entry form information": "Ho Fumana lesedi kena foromo",
+  "Discovering indicators": "Ho Fumana litsupa",
+  "Preparing entry form": "Lokisetsa foromo kena",
+  "Discovering data from the server": "Ho Fumana data ho tswa seva ya",
+  "Saving data from server": "Ho pholosa ya data ho tswa ho seva",
+  "Discovering available local data": "Ho Fumana fumaneha ya data ea moo",
+  "Discovering entry form completeness information":
+    "Ho Fumana kena foromo e feletseng lesedi",
+  "There are no indicators to view": "Ha ho na litsupa ho sheba",
+  "Uploading data": "ya data Uploading",
+  "Fail to discover indicators": "Ba hlōleha ho fumana litsupa",
+  "Fail to discover entry form information":
+    "Ba hlōleha ho fumana ho kena foromo lesedi",
+  "Fail to save data from the server":
+    "Ba hlōleha ho boloka data ho tswa seva ya",
+  "Fail to discover data from the server":
+    "Ba hlōleha ho fumana data ho tswa seva ya",
+  "Fail to discover available local data":
+    "Ba hlōleha ho fumana fumaneha ya data ea moo",
+  "Fail to discover entry form completeness information":
+    "Ba hlōleha ho fumana ho kena foromo e feletseng lesedi",
+  "Fail to un complete entry form":
+    "Ba hlōleha ho Machaba a Kopaneng e feletseng foromo kena",
+  "Fail to complete entry form": "Ba hlōleha ho tlatsa foromo kena",
+  "Completeness information": "lesedi e feletseng",
+  "Discovering completeness information": "Ho Fumana lesedi e feletseng",
+  "Fail to discover completeness information":
+    "Ba hlōleha ho fumana lesedi e feletseng",
+  "Username": "Username",
+  "Full name": "Mabitso a felletseng",
+  "E-mial": "E-mial",
+  "Phone number": "Nomoro ea mohala",
+  "Sync": "kgokagantswe",
+  "Clear local metadata": "phaketse hlakile ea moo",
+  "Clear metaData": "hlakile phaketse ya metadata",
+  "Clear local metadata confirmation": "Hlakile ea moo phaketse netefatso",
+  "You are about to clear all selected items, Are you sure?":
+    "U leng haufi le ho tlosa lintho tse tsohle kgethile, Na ehlile?",
+  "Clearing selected items": "Tlosa lintho kgethile",
+  "Applying updates to local storage":
+    "Ho sebelisa diapdeite ho polokelo ea moo",
+  "Please select at least one item to clear":
+    "Ka kopo, khetha ntlha ya bonyane le nngwe ho tlosa",
+  "All selected metadata has been cleared successfully":
+    "phaketse All kgethile e se e tlosoa ka katleho",
+  "Fail to apply updates to local storage":
+    "Ba hlōleha ho etsa diapdeite ho polokelo ea moo",
+  "Clear local data": "Hlakile ya data ea moo",
+  "Aggregate data": "ya data Aggregate",
+  "Events": "Events",
+  "Events for tracker": "Liketsahalo tsa tracker",
+  "Clear offline data confirmation": "Hlakile ya data, offline netefatso",
+  "You are about to clear all selected items, are you sure?":
+    "U leng haufi le ho tlosa lintho tse tsohle kgethile, na u etsa bonnete ba?",
+  "All selected items has been cleared successfully":
+    "dintho tsohle kgethile e se e tlosoa ka katleho",
+  "Fail to clear selected items": "Ba hlōleha ho hleka lintho tse kgethile",
+  "Download metadata": "Download phaketse",
+  "Please select at least one item":
+    "Ka kopo, khetha ntlha ya bonyane le nngwe",
+  "Downloading updates": "Downloading diapdeite",
+  "Applying updates": "Ho sebelisa diapdeite",
+  "All updates has been applied successfully":
+    "diapdeite tsohle e se e sebelisoa ka katleho",
+  "Fail to apply updates": "Ba hlōleha ho etsa diapdeite",
+  "Fail to prepare local storage for update":
+    "Ba hlōleha ho lokisa polokelo ea moo bakeng sa update lam",
+  "Fail to download updates": "Ba hlōleha ho thowuni diapdeite",
+  "Upload data via internet": "Kenya ya data ka tsela inthanete",
+  "Upload data": "Upload ya data",
+  "Uploading selected local data, please wait...":
+    "Uploading kgethile ya data ea moo, ka kopo ema ...",
+  "Import summaries": "Import kakareso",
+  "Tracked entity instances": "Bonwe Maemong mokhatlo",
+  "Tracked entity enrollments": "Bonwe ikwadiseditseng mokhatlo",
+  "Success": "katleho",
+  "Failed": "hlolehile",
+  "Import conflicts or errors": "likhohlano Import kapa liphoso",
+  "Upload data via SMS": "Kenya ya data ka tsela SMS",
+  "Mobile Number": "Nomoro ea lekolulo",
+  "Discovering SMS Configuration": "Sibolla SMS phetolo",
+  "Preparing entry form fields": "Lokisetsa ho kena masimo a foromo",
+  "Preparing data": "Lokisetsa ya data",
+  "Preparing SMS": "Lokisetsa SMS",
+  "Sending SMS": "romela SMS",
+  "Sending SMSes": "romela SMSes",
+  "SMS has been sent": "SMS e rometsoe",
+  "Fail to send some of SMS, Please go into your SMS inbox and resend them manually":
+    "Ba hlōleha ho romela ba bang ba SMS, Ka kopo kena SMS inbox ea hao le resend bona ka letsoho",
+  "Fail to preparing SMS": "Ba hlōleha ho lokisetsa SMS",
+  "There is no data to be sent via SMS":
+    "Ha ho na ya data ho romeloa ka tsela SMS",
+  "Fail to discover data values": "Ba hlōleha ho fumana makgabane ya data",
+  "Selected entry form has no field set, please contact your help desk":
+    "Kgethile ho kena foromo ea se nang sete ea tšimo, ka kōpo ikopanye le thuso ea hao deskeng",
+  "Fail to discover SMS configurations": "Ba hlōleha ho fumana diphetolo SMS",
+  "Innovation in every dimension": "Le popontshwa le leng le le teba",
+  "Establishing connection to server": "Theha mabapi ho seva",
+  "Aggregate metadata": "phaketse Aggregate",
+  "Event and tracker metadata": "Ketsahalo le tracker phaketse",
+  "Reports metadata": "phaketse Reports",
+  "Enter server address": "Kena seva aterese",
+  "Enter username": "Kenya lebitso la mosebedisi",
+  "Enter password": "Kenya phasewete",
+  "Login": "Kena",
+  "or": "kapa",
+  "Offline instances": "Maemong Offline",
+  "Powered by": "E tsamaisoa ke",
+  "Discovering current user authorities":
+    "Ho Fumana ba boholong jwale mosebedisi",
+  "Preparing local storage": "Lokisetsa poloko ea moo",
+  "Fail to prepare local storage": "Ba hlōleha ho lokisa polokelo ea moo",
+  "Fail to discover user authorities":
+    "Ba hlōleha ho fumana hore ba boholong mosebedisi",
+  "Fail to save current user information":
+    "Ba hlōleha ho boloka jwale mosebedisi lesedi",
+  "Please check your network connectivity":
+    "Ka kopo, hlahloba marangrang kgokelo ya hao",
+  "You have enter wrong username or password or server address":
+    "O na le kenye mosebedisi e fosahetseng kapa password ya kapa seva aterese",
+  "Please check server address, or contact your help desk":
+    "Ka kopo, hlahloba seva aterese, kapa ikopanya thuso ea hao deskeng",
+  "Please enter server address, username and password":
+    "Ka kopo, kenya seva aterese, mosebedisi le phasewete",
+  "Assigned organisation units have been discovered":
+    "Abeloa mokgatlo diyuniti 'nile ha fumanoa",
+  "Saving assigned organisation units": "Pholosang abeloa mokgatlo diyuniti",
+  "Assigned organisation units have been saved":
+    "Abeloa mokgatlo diyuniti le pholositsoe",
+  "Fail to save organisation data": "Ba hlōleha ho boloka ya data mokgatlo",
+  "Fail to discover organisation data": "Ba hlōleha ho fumana ya data mokgatlo",
+  "Discovering entry forms": "Fumana diforomo tsa ho kena",
+  "Entry forms have been discovered": "Ho kena liforomo 'nile ha fumanoa",
+  "Saving entry forms": "Pholosang liforomo kena",
+  "Entry form have been saved": "Ho kena foromo le pholositsoe",
+  "Fail to save entry form": "Ba hlōleha ho boloka foromo kena",
+  "Discovering entry form sections": "Ho Fumana kena foromo dikarolo",
+  "Entry form sections have been discovered":
+    "dikarolo kena foromo 'nile ha fumanoa",
+  "Saving entry form sections": "Ho pholosa ho kena foromo dikarolo",
+  "Entry form sections have been saved": "dikarolo kena foromo le pholositsoe",
+  "Fail to save entry form sections":
+    "Ba hlōleha ho boloka dikarolo kena foromo",
+  "Fail to discover entry form sections":
+    "Ba hlōleha ho fumana likarolo tse kena foromo",
+  "Discovering entry form fields": "Ho Fumana kena masimo a foromo",
+  "Entry form fields have been discovered":
+    "masimo a kena foromo 'nile ha fumanoa",
+  "Saving entry form fields": "Ho pholosa ho kena masimo a foromo",
+  "Entry form fields have been saved": "masimo a kena foromo le pholositsoe",
+  "Fail to save entry form fields": "Ba hlōleha ho boloka masimo a kena foromo",
+  "Fail to discover entry form fields":
+    "Ba hlōleha ho fumana masimo a kena foromo",
+  "Discovering SMS commands": "Fumana litaelo SMS",
+  "SMS commands have been discovered": "litaelo SMS 'nile ha fumanoa",
+  "Saving SMS commands": "Pholosang litaelo SMS",
+  "SMS commands have been saved": "litaelo SMS le pholositsoe",
+  "Fail to save SMS commands": "Ba hlōleha ho boloka litaelo tsa SMS",
+  "Fail to discover SMS commands": "Ba hlōleha ho fumana litaelo SMS",
+  "Discovering programs": "Fumana mananeo a",
+  "Programs have been discovered": "Mananeo a 'nile ha fumanoa",
+  "Saving programs": "pholosang mananeo",
+  "Programs have been saved": "Mananeo a le pholositsoe",
+  "Fail to save programs": "Ba hlōleha ho boloka mananeo",
+  "Fail to discover programs": "Ba hlōleha ho fumana mananeo",
+  "Discovering program stage section": "Ho Fumana lenaneo sethaleng karolo",
+  "Program stage section have been discovered":
+    "sethaleng lenaneo karolo 'nile ha fumanoa",
+  "Saving program stage section": "Pholosang lenaneo sethaleng karolo",
+  "Program stage section have been saved":
+    "sethaleng lenaneo karolo le pholositsoe",
+  "Fail to save program stage sections":
+    "Ba hlōleha ho boloka likarolo tse lenaneo sethaleng",
+  "Fail to discover program stage sections":
+    "Ba hlōleha ho fumana likarolo tse lenaneo sethaleng",
+  "Indicators have been discovered": "Litsupa 'nile ha fumanoa",
+  "Saving indicators": "pholosang litsupa",
+  "Indicators have been saved": "Litsupa le pholositsoe",
+  "Fail to save indicators": "Ba hlōleha ho boloka litsupa",
+  "Reports have been discovered": "Reports 'nile ha fumanoa",
+  "Saving reports": "pholosang litlaleho tse",
+  "Reports have been saved": "Reports le pholositsoe",
+  "Fail to discover reports": "Ba hlōleha ho fumana litlaleho tse",
+  "Discovering constants": "Ho Fumana lulang li",
+  "Constants have been discovered": "Lulang li 'nile ha fumanoa",
+  "Saving constants": "pholosang lulang li",
+  "Constants have been saved": "Lulang li le pholositsoe",
+  "Fail to save constants": "Ba hlōleha ho boloka lulang li",
+  "Fail to discover constants": "Ba hlōleha ho fumana lulang li",
+  "There is no local instance to select": "Ha ho na mohlala ea moo ho khetha",
+  "Discovering available local instances":
+    "Ho Fumana fumanehang maemong a ea moo",
+  "Fail to load available local instances":
+    "Hlōleha ho laela fumanehang maemong a ea moo",
+  "Dashboard": "Dashboard",
+  "Discovering dashboards": "Ho Fumana dashboards",
+  "There no dashboard item found": "Ho na le ha ho na ntho Dashboard fumanwa",
+  "Dashboard list": "lethathamo Dashboard",
+  "Search dashboard by name": "Search Dashboard ka lebitso",
+  "Layout": "Halli",
+  "Table , Chart Layout": "Tafole / Chate Halli",
+  "Filters": "filter",
+  "Column": "lenaneng la",
+  "Row": "Row",
+  "Categories": "Categories",
+  "Series": "Series",
+  "Update": "Update",
+  "Close": "haufi",
+  "Data": "Data",
+  "Select": "khetha",
+  "All": "All",
+  "Data elements": "likarolo Data",
+  "Indicators": "litsupa",
+  "Data sets": "disete Data",
+  "Program indicators": "litsupa lenaneo",
+  "Functions": "mesebetsi",
+  "Available": "fumaneha",
+  "Selected": "kgethile",
+  "Discovering...": "Fumana ...",
+  "No items": "Ha ho dintho",
+  "Select period type": "Select mofuta nako",
+  "Previous year": "selemo se fetileng",
+  "Next year": "selemong se tlang",
+  "Org-unit": "Ru-unit trust",
+  "Interpretation": "Phetolelo",
+  "Not found": "Ha ea fumanoa",
+  "Search interpretation": "Search tlhaloso",
+  "This interpretation will be deleted, are you sure?":
+    "tlhaloso ena e tla hlakolwa, na u etsa bonnete ba?",
+  "Deleting interpretation": "hlakola tlhaloso",
+  "Comment": "Comment",
+  "Edit": "Edit",
+  "Updating likes status": "Tlhabololwa like boemo",
+  "Unlike": "Ho fapana",
+  "Like": "joaloka",
+  "Write new interpretation": "Ngola tlhaloso e ncha",
+  "Cancel": "Hlakola",
+  "Posting": "Posting",
+  "Post": "Post",
+  "This comment will be deleted, are you sure?":
+    "tlhaloso ena e tla hlakolwa, na u etsa bonnete ba?",
+  "Deleting comment": "phumula ho hlahisa maikutlo",
+  "Write your comment": "Ngola ho hlahisa maikutlo hao"
+}

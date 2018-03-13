@@ -8,7 +8,7 @@
 
   <ion-navbar color="primary">
     <ion-title>
-      <span [translate]="'help search'"></span>
+      <span [translate]="'Help search'"></span>
     </ion-title>
   </ion-navbar>
 
@@ -27,7 +27,7 @@
     </div>
     <div *ngIf="!isLoading">
       <div>
-        <ion-searchbar animated="true" autocomplete="on" placeholder="{{'search help by title'|translate}}" (ionInput)="getFilteredList($event)"></ion-searchbar>
+        <ion-searchbar animated="true" autocomplete="on" placeholder="{{'Search help by title'|translate}}" (ionInput)="getFilteredList($event)"></ion-searchbar>
         <div *ngIf="helpContents && helpContents.length > 0">
           <div class="help-card" *ngFor="let helpContent of helpContents">
             <div *ngIf="helpContent && helpContent.id">

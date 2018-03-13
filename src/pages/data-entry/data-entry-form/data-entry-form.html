@@ -8,7 +8,7 @@
 
   <ion-navbar color="primary">
     <ion-title>
-      <span [translate]="'entry form'"></span>
+      <span [translate]="'Data entry form'"></span>
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -21,15 +21,15 @@
         <div *ngIf="entryFormParameter" class="item-card" full padding-bottom padding-top>
           <div (tap)="goBack()" padding-bottom>
             <b>
-              <span [translate]="'organisation unit'"></span>
+              <span [translate]="'Organisation unit'"></span>
             </b> : {{ entryFormParameter.orgUnit.name }}
             <br>
             <b>
-              <span [translate]="'form'"></span>
+              <span [translate]="'Form'"></span>
             </b> : {{ entryFormParameter.dataSet.name }}
             <br>
             <b>
-              <span [translate]="'period'"></span>
+              <span [translate]="'Period'"></span>
             </b> : {{ entryFormParameter.period.name }}
             <br>
             <span *ngIf="!isLoading">
@@ -43,7 +43,7 @@
           <div *ngIf="!isLoading && indicators && indicators.length > 0">
             <div (click)="viewEntryFormIndicators(indicators)" class="item-card" color="font-color">
               <ion-item>
-                <span [translate]="'available indicators'"></span>
+                <span [translate]="'Available indicators'"></span>
                 <ion-badge color="icon-color" item-end>{{ indicators.length }}</ion-badge>
               </ion-item>
             </div>
@@ -54,7 +54,7 @@
         </div>
         <div *ngIf="!isLoading">
           <div *ngIf="entryFormSections && entryFormSections.length == 0">
-            <empty-list-notification [emptyListMessage]="'The is no field associated with ' + entryFormParameter.dataSet.name +', Please contact our system administrator' "></empty-list-notification>
+            <empty-list-notification [emptyListMessage]="translationMapper['The is no field associated with this entry form, Please contact our help desk'] "></empty-list-notification>
           </div>
           <div *ngFor="let section of entryFormSections;let currentSectionIndex = index">
             <div *ngIf="(currentSectionIndex + 1) == pager.page" class="item-card" no-padding (click)="openSectionList()">
@@ -99,12 +99,12 @@
               </ion-col>
               <ion-col col-5 col-sm-8 *ngIf="!isDataSetCompleted">
                 <button color="favorite" round ion-button full [disabled]="isDataSetCompletenessProcessRunning" (tap)="updateDataSetCompleteness()">
-                  <span [translate]="'complete'"></span>
+                  <span [translate]="'Complete'"></span>
                 </button>
               </ion-col>
               <ion-col col-5 col-sm-8 *ngIf="isDataSetCompleted">
                 <button color="danger" round ion-button full [disabled]="isDataSetCompletenessProcessRunning" (tap)="updateDataSetCompleteness()">
-                  <span [translate]="'undo complete'"></span>
+                  <span [translate]="'Undo complete'"></span>
                 </button>
               </ion-col>
             </ion-row>
@@ -112,12 +112,12 @@
             <ion-row *ngIf="entryFormSections.length == 1">
               <ion-col col-6 col-sm-6>
                 <button color="favorite" round ion-button full [disabled]="isDataSetCompletenessProcessRunning || isDataSetCompleted" (tap)="updateDataSetCompleteness()">
-                  <span [translate]="'complete'"></span>
+                  <span [translate]="'Complete'"></span>
                 </button>
               </ion-col>
               <ion-col col-6 col-sm-6>
                 <button color="danger" round ion-button full [disabled]="isDataSetCompletenessProcessRunning || !isDataSetCompleted" (tap)="updateDataSetCompleteness()">
-                  <span [translate]="'undo complete'"></span>
+                  <span [translate]="'Undo complete'"></span>
                 </button>
               </ion-col>
             </ion-row>
@@ -129,7 +129,7 @@
                 </ion-col>
                 <ion-col col-11>
                   <p>&nbsp;
-                    <span [translate]="'please wait'"></span>
+                    <span [translate]="'Please wait ...'"></span>
                   </p>
                 </ion-col>
               </ion-row>
@@ -137,7 +137,7 @@
             <div *ngIf="!isDataSetCompletenessProcessRunning">
               <div *ngIf="dataSetsCompletenessInfo && dataSetsCompletenessInfo.complete">
                 <div class="item-card" padding-bottom padding-top (click)="viewUserCompletenessInformation(dataSetsCompletenessInfo)">
-                  <span [translate]="'completed by'"></span>
+                  <span [translate]="'Completed by'"></span>
                   <b>{{ dataSetsCompletenessInfo.storedBy }}</b> {{'on'|translate }}
                   <b>{{ dataSetsCompletenessInfo.date }}</b>
                 </div>

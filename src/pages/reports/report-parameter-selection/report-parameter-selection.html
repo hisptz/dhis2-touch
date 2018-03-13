@@ -20,8 +20,8 @@
             <span *ngIf="reportType == 'standardReport'">SD</span>
           </span>&nbsp;
           <span *ngIf="reportType">
-            <span *ngIf="reportType == 'dataSetReport'" [translate]="'data set report'"></span>
-            <span *ngIf="reportType == 'standardReport'" [translate]="'standard report'"></span>
+            <span *ngIf="reportType == 'dataSetReport'" [translate]="'Data set report'"></span>
+            <span *ngIf="reportType == 'standardReport'" [translate]="'Standard report'"></span>
           </span>
         </b>
       </ion-col>
@@ -40,23 +40,23 @@
         <div *ngIf="isAllReportParameterSet" class="item-card" padding-top padding-bottom full (tap)="goToView()">
           <div>
             <b>
-              <span [translate]="'report name'"></span>
+              <span [translate]="'Report name'"></span>
             </b> : {{ reportName }}
             <br>
             <span *ngIf="reportParams.paramOrganisationUnit">
               <b>
-                <span [translate]="'organisation unit'"></span>
+                <span [translate]="'Organisation unit'"></span>
               </b> : {{ selectedOrganisationUnitLabel }}
               <br>
             </span>
             <span *ngIf="reportParams.paramReportingPeriod">
               <b>
-                <span [translate]="'period'"></span>
+                <span [translate]="'Period'"></span>
               </b> : {{ selectedPeriodLabel }}</span>
           </div>
           <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize>
             <img class="side-menu-icon" [src]="icons.report" />&nbsp;&nbsp;
-            <span [translate]="'generate report'"></span>
+            <span [translate]="'Generate report'"></span>
           </div>
         </div>
       </ion-col>

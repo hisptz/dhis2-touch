@@ -1,6 +1,6 @@
 <div class="interpretation-delete-block">
   <div *ngIf="!deleting">
-    This comment will be deleted, are you sure?
+    {{ translationMapper['This comment will be deleted, are you sure?'] }}
     <a class="btn btn-xs btn-outline-danger" (click)="deleteComment($event)">
       <img src="assets/icon/trash.png" alt="" style="height: 12px; display: block; margin: auto;">
     </a>
@@ -8,5 +8,5 @@
       <img src="assets/icon/close.png" alt="" style="height: 12px; display: block; margin: auto;">
     </a>
   </div>
-  <div *ngIf="deleting">Deleting comment</div>
+  <div *ngIf="deleting">{{ translationMapper['Deleting comment'] }}</div>
 </div>

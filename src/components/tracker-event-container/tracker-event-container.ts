@@ -1,5 +1,13 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {EventCaptureFormProvider} from "../../providers/event-capture-form/event-capture-form";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output
+} from '@angular/core';
+import { EventCaptureFormProvider } from '../../providers/event-capture-form/event-capture-form';
+import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the TrackerEventContainerComponent component.
@@ -12,27 +20,43 @@ import {EventCaptureFormProvider} from "../../providers/event-capture-form/event
   templateUrl: 'tracker-event-container.html'
 })
 export class TrackerEventContainerComponent implements OnInit, OnDestroy {
-
   @Input() programStage;
   @Input() currentOpenEvent;
   @Input() currentUser;
   @Input() isOpenRow;
   @Input() dataValuesSavingStatusClass;
   @Output() onChange = new EventEmitter();
-
+  translationMapper: any;
   dataObjectModel: any;
 
-  constructor(private eventCaptureFormProvider: EventCaptureFormProvider) {
-  }
+  constructor(
+    private eventCaptureFormProvider: EventCaptureFormProvider,
+    private appTranslation: AppTranslationProvider
+  ) {}
 
   ngOnInit() {
     if (this.isOpenRow) {
       this.isOpenRow = JSON.parse(this.isOpenRow);
     }
     this.dataObjectModel = {};
-    if (this.currentOpenEvent && this.currentOpenEvent.dataValues && this.programStage && this.programStage.programStageDataElements) {
-      this.updateDataObjectModel(this.currentOpenEvent.dataValues, this.programStage.programStageDataElements);
+    if (
+      this.currentOpenEvent &&
+      this.currentOpenEvent.dataValues &&
+      this.programStage &&
+      this.programStage.programStageDataElements
+    ) {
+      this.updateDataObjectModel(
+        this.currentOpenEvent.dataValues,
+        this.programStage.programStageDataElements
+      );
     }
+    this.translationMapper = {};
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+      },
+      error => {}
+    );
   }
 
   ngOnDestroy() {
@@ -46,9 +70,12 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
       dataValuesMapper[dataValue.dataElement] = dataValue;
     });
     programStageDataElements.forEach((programStageDataElement: any) => {
-      if (programStageDataElement.dataElement && programStageDataElement.dataElement.id) {
+      if (
+        programStageDataElement.dataElement &&
+        programStageDataElement.dataElement.id
+      ) {
         let dataElementId = programStageDataElement.dataElement.id;
-        let fieldId = programStageDataElement.dataElement.id + "-dataElement";
+        let fieldId = programStageDataElement.dataElement.id + '-dataElement';
         if (dataValuesMapper[dataElementId]) {
           this.dataObjectModel[fieldId] = dataValuesMapper[dataElementId];
         }
@@ -69,15 +96,30 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
       });
     });
     this.currentOpenEvent.dataValues = dataValues;
-    this.currentOpenEvent.syncStatus = "not-synced";
+    this.currentOpenEvent.syncStatus = 'not-synced';
     this.onChange.emit(this.isOpenRow);
-    this.eventCaptureFormProvider.saveEvents([this.currentOpenEvent], this.currentUser).subscribe(() => {
-      this.dataValuesSavingStatusClass[updatedData.id] = "input-field-container-success";
-      this.dataObjectModel[updatedData.id] = updatedData;
-    }, (error) => {
-      this.dataValuesSavingStatusClass[updatedData.id] = "input-field-container-failed";
-      console.log(JSON.stringify(error));
-    });
+    this.eventCaptureFormProvider
+      .saveEvents([this.currentOpenEvent], this.currentUser)
+      .subscribe(
+        () => {
+          this.dataValuesSavingStatusClass[updatedData.id] =
+            'input-field-container-success';
+          this.dataObjectModel[updatedData.id] = updatedData;
+        },
+        error => {
+          this.dataValuesSavingStatusClass[updatedData.id] =
+            'input-field-container-failed';
+          console.log(JSON.stringify(error));
+        }
+      );
   }
 
+  getValuesToTranslate() {
+    return [
+      'Report date',
+      'Due date',
+      'Touch to pick date',
+      'Contact your help desk to add data elements on this stage'
+    ];
+  }
 }

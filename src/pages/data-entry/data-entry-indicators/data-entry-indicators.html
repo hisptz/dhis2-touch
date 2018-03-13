@@ -23,18 +23,25 @@
     <ion-row>
       <ion-col>
         <div class="item-card" *ngFor="let indicator of indicators">
-          <b>Name </b> : {{ indicator.name }}
+          <b>
+            <span [translate]="'Name'"></span>
+          </b> : {{ indicator.name }}
           <br>
           <span *ngIf="indicator.numeratorDescription != ''">
-            <b>Numerator Description </b> : {{ indicator.numeratorDescription }}
+            <b>
+              <span [translate]="'Numerator Description'"></span>
+            </b> : {{ indicator.numeratorDescription }}
             <br>
           </span>
           <!-- <b>Numerator</b> : {{ indicator.numerator }}<br> -->
           <span *ngIf="indicator.denominatorDescription != ''">
-            <b>Denominator Description </b> : {{ indicator.denominatorDescription }}
+            <b>
+              <span [translate]="'Denominator Description'"></span>
+            </b> : {{ indicator.denominatorDescription }}
             <br>
           </span>
           <!-- <b>Denominator </b> : {{ indicator.denominator }}<br> -->
+          <!-- Indicator value -->
         </div>
       </ion-col>
     </ion-row>

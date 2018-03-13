@@ -1,4 +1,5 @@
-import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the LanguageTranslationSelectionComponent component.
@@ -7,8 +8,8 @@ import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
  * Components.
  */
 @Component({
-  selector: "language-translation-selection",
-  templateUrl: "language-translation-selection.html"
+  selector: 'language-translation-selection',
+  templateUrl: 'language-translation-selection.html'
 })
 export class LanguageTranslationSelectionComponent implements OnInit {
   @Input() translationCodes: any;
@@ -17,11 +18,19 @@ export class LanguageTranslationSelectionComponent implements OnInit {
   @Output() onSelectLanguage = new EventEmitter();
   cancelIcon: string;
   backupTranslationCodes: any;
-  constructor() {}
+  translationMapper: any;
+  constructor(private appTranslation: AppTranslationProvider) {}
 
   ngOnInit() {
-    this.cancelIcon = "assets/icon/cancel.png";
+    this.cancelIcon = 'assets/icon/cancel.png';
     this.backupTranslationCodes = this.translationCodes;
+    this.translationMapper = {};
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+      },
+      error => {}
+    );
   }
 
   closeContainer() {
@@ -35,7 +44,7 @@ export class LanguageTranslationSelectionComponent implements OnInit {
   getFilteredList(ev: any) {
     let val = ev.target.value;
     this.translationCodes = this.backupTranslationCodes;
-    if (val && val.trim() != "") {
+    if (val && val.trim() != '') {
       this.translationCodes = this.translationCodes.filter(
         (translationCode: any) => {
           return (
@@ -46,5 +55,9 @@ export class LanguageTranslationSelectionComponent implements OnInit {
         }
       );
     }
+  }
+
+  getValuesToTranslate() {
+    return ['Search'];
   }
 }

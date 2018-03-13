@@ -2,19 +2,16 @@
   <loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></loading>
 </div>
 <div *ngIf="!isLoading">
-
-
-
-
   <div class="item-card">
     <div>
-      <span *ngIf="programStage.executionDateLabel == '0'">Report date</span>
+      <span *ngIf="programStage.executionDateLabel == '0'">{{ translationMapper['Report date']}} </span>
       <span *ngIf="programStage.executionDateLabel !='0'">{{ programStage.executionDateLabel }}</span>
       <span class="required">*</span>
     </div>
     <div class="input-field-container">
       <ion-item>
-        <ion-datetime doneText="Update" (ionChange)="updateEventDate()" placeholder="Touch to pick date" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [(ngModel)]="eventDate"></ion-datetime>
+        <ion-datetime doneText="Update" (ionChange)="updateEventDate()" placeholder="{{translationMapper['Touch to pick date']}}"
+          displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [(ngModel)]="eventDate"></ion-datetime>
       </ion-item>
     </div>
     <div *ngIf="eventDate && eventDate != ''">
@@ -31,12 +28,8 @@
                 <td>
                   <div text-left>
                     <div *ngFor="let dataElement of programStageSection.dataElements">
-                      <event-input-container [dataElement]="dataElement"
-                                             [currentUser]="currentUser"
-                                             [data]="dataObjectModel"
-                                             [mandatory]="'false'"
-                                             [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
-                                             (onChange)="updateData($event)"></event-input-container>
+                      <event-input-container [dataElement]="dataElement" [currentUser]="currentUser" [data]="dataObjectModel" [mandatory]="'false'"
+                        [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" (onChange)="updateData($event)"></event-input-container>
                     </div>
                   </div>
                 </td>
@@ -50,10 +43,9 @@
             </div>
           </div>
           <div style="display: inline-block;width: 49.3%">
-            <div  *ngIf="canEventBeDeleted()" float-right>
+            <div *ngIf="canEventBeDeleted()" float-right>
               <div class="item-card" color="danger" ion-button clear text-justify (click)="deleteEvent(currentEvent.id)">
-                <ion-icon name="trash" ></ion-icon>&nbsp;
-                Delete
+                <ion-icon name="trash"></ion-icon>&nbsp; {{ translationMapper['Delete']}}
               </div>
             </div>
           </div>
@@ -63,12 +55,9 @@
         <div *ngIf="programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0 ">
           <div *ngFor="let programStageDataElement of programStage.programStageDataElements">
             <div *ngIf="programStageDataElement.dataElement && programStageDataElement.dataElement.id">
-              <event-input-container [dataElement]="programStageDataElement.dataElement"
-                                     [currentUser]="currentUser"
-                                     [data]="dataObjectModel"
-                                     [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
-                                     [mandatory]="programStageDataElement.compulsory"
-                                     (onChange)="updateData($event)"></event-input-container>
+              <event-input-container [dataElement]="programStageDataElement.dataElement" [currentUser]="currentUser" [data]="dataObjectModel"
+                [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [mandatory]="programStageDataElement.compulsory"
+                (onChange)="updateData($event)"></event-input-container>
             </div>
           </div>
           <div no-padding>
@@ -77,10 +66,9 @@
               </div>
             </div>
             <div style="display: inline-block;width: 49.3%">
-              <div  *ngIf="canEventBeDeleted()" float-right>
+              <div *ngIf="canEventBeDeleted()" float-right>
                 <div class="item-card" color="danger" ion-button clear text-justify (click)="deleteEvent(currentEvent.id)">
-                  <ion-icon name="trash" ></ion-icon>&nbsp;
-                  Delete
+                  <ion-icon name="trash"></ion-icon>&nbsp; {{ translationMapper['Delete']}}
                 </div>
               </div>
             </div>
@@ -88,7 +76,7 @@
         </div>
       </div>
       <div *ngIf="!(programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
-        <notification [message]="'Contact system to add data elements'"></notification>
+        <notification [message]="translationMapper['There are no data elements, please contact you help desk']"></notification>
       </div>
     </div>
   </div>

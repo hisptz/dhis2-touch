@@ -1,21 +1,22 @@
-
 <div padding-top>
   <div style="display: inline-block;width: 49.3%">
-    <span *ngIf="programStage.executionDateLabel == '0'">Report date</span>
+    <span *ngIf="programStage.executionDateLabel == '0'">{{ translationMapper['Report date'] }}</span>
     <span *ngIf="programStage.executionDateLabel !='0'">{{ programStage.executionDateLabel }}</span>
     <span class="required">*</span>
     <div class="input-field-container">
       <ion-item>
-        <ion-datetime doneText="Update" [(ngModel)]="currentOpenEvent['eventDate']" placeholder="Touch to pick date" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>
+        <ion-datetime doneText="Update" [(ngModel)]="currentOpenEvent['eventDate']" placeholder="Touch to pick date" displayFormat="YYYY-MM-DD"
+          pickerFormat="YYYY MM DD"></ion-datetime>
       </ion-item>
     </div>
   </div>
   <div style="display: inline-block;width: 49.3%">
-    <span *ngIf="programStage.dueDateLabel == '0'">Due date</span>
+    <span *ngIf="programStage.dueDateLabel == '0'"> {{ translationMapper['Due date'] }}</span>
     <span *ngIf="programStage.dueDateLabel !='0'">{{ programStage.executionDateLabel }}</span>
     <div class="input-field-container">
       <ion-item>
-        <ion-datetime doneText="Update" [(ngModel)]="currentOpenEvent['dueDate']" placeholder="Touch to pick date" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>
+        <ion-datetime doneText="Update" [(ngModel)]="currentOpenEvent['dueDate']" placeholder="{{ translationMapper['Touch to pick date'] }}"
+          displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>
       </ion-item>
     </div>
   </div>
@@ -25,25 +26,21 @@
     <div *ngFor="let programStageSection of programStage.programStageSections" padding-bottom>
       <table width="100%">
         <tbody>
-        <tr>
-          <td [ngStyle]="{'background-color': '#F4F4F4'}">
-            {{ programStageSection.displayName }}
-          </td>
-        </tr>
-        <tr *ngIf="programStageSection.dataElements">
-          <td>
-            <div text-left>
-              <div *ngFor="let dataElement of programStageSection.dataElements">
-                <event-input-container [dataElement]="dataElement"
-                                       [currentUser]="currentUser"
-                                       [data]="dataObjectModel"
-                                       [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
-                                       [mandatory]="'false'"
-                                       (onChange)="updateData($event)"></event-input-container>
+          <tr>
+            <td [ngStyle]="{'background-color': '#F4F4F4'}">
+              {{ programStageSection.displayName }}
+            </td>
+          </tr>
+          <tr *ngIf="programStageSection.dataElements">
+            <td>
+              <div text-left>
+                <div *ngFor="let dataElement of programStageSection.dataElements">
+                  <event-input-container [dataElement]="dataElement" [currentUser]="currentUser" [data]="dataObjectModel" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
+                    [mandatory]="'false'" (onChange)="updateData($event)"></event-input-container>
+                </div>
               </div>
-            </div>
-          </td>
-        </tr>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -52,20 +49,16 @@
     <div *ngIf="programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0 ">
       <div *ngFor="let programStageDataElement of programStage.programStageDataElements">
         <div *ngIf="programStageDataElement.dataElement && programStageDataElement.dataElement.id">
-          <event-input-container [dataElement]="programStageDataElement.dataElement"
-                                 [currentUser]="currentUser"
-                                 [data]="dataObjectModel"
-                                 [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
-                                 [mandatory]="programStageDataElement.compulsory"
-                                 (onChange)="updateData($event)"></event-input-container>
+          <event-input-container [dataElement]="programStageDataElement.dataElement" [currentUser]="currentUser" [data]="dataObjectModel"
+            [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [mandatory]="programStageDataElement.compulsory"
+            (onChange)="updateData($event)"></event-input-container>
         </div>
       </div>
     </div>
   </div>
   <div *ngIf="!(programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
     <div *ngIf="currentOpenEvent['eventDate'] && currentOpenEvent['eventDate'] !=''">
-      <notification [message]="'Contact system to add data elements'"></notification>
+      <notification [message]="translationMapper['Contact your help desk to add data elements on this stage']"></notification>
     </div>
   </div>
 </div>
-

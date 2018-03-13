@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { IonicPage, NavParams, ViewController } from "ionic-angular";
 import { PeriodSelectionProvider } from "../../providers/period-selection/period-selection";
+import { AppTranslationProvider } from "../../providers/app-translation/app-translation";
 
 /**
  * Generated class for the PeriodSelectionPage page.
@@ -19,14 +20,15 @@ export class PeriodSelectionPage implements OnInit {
   openFuturePeriods: number;
   currentPeriodOffset: number;
   currentPeriod: any;
-
+  translationMapper: any;
   periods: Array<any>;
   icon: string;
 
   constructor(
     private navParams: NavParams,
     private viewCtrl: ViewController,
-    private periodSelection: PeriodSelectionProvider
+    private periodSelection: PeriodSelectionProvider,
+    private appTranslation: AppTranslationProvider
   ) {}
 
   ngOnInit() {
@@ -37,7 +39,16 @@ export class PeriodSelectionPage implements OnInit {
       this.navParams.get("currentPeriodOffset")
     );
     this.currentPeriod = this.navParams.get("currentPeriod");
-    this.loadPeriodSelection();
+    this.translationMapper = {};
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+        this.loadPeriodSelection();
+      },
+      error => {
+        this.loadPeriodSelection();
+      }
+    );
   }
 
   loadPeriodSelection() {
@@ -70,5 +81,9 @@ export class PeriodSelectionPage implements OnInit {
 
   dismiss() {
     this.viewCtrl.dismiss({});
+  }
+
+  getValuesToTranslate() {
+    return ["There is no period to select"];
   }
 }

@@ -1,7 +1,7 @@
 <ion-grid>
   <ion-row>
     <ion-col col-11>
-      <ion-searchbar animated="true" autocomplete="on" (ionInput)="getFilteredList($event)"></ion-searchbar>
+      <ion-searchbar animated="true" autocomplete="on" placeholder="{{ translationMapper['Search'] }}" (ionInput)="getFilteredList($event)"></ion-searchbar>
     </ion-col>
     <ion-col col-1 (click)="closeContainer()" padding-top class="cancel-button">
       <img [src]="cancelIcon" />

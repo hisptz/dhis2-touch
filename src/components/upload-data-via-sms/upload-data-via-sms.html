@@ -7,13 +7,14 @@
     <ion-row>
       <ion-col>
         <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openOrganisationUnitTree()">
-          <img class="side-menu-icon" [src]="icons.orgUnit" />&nbsp;&nbsp; {{ organisationUnitLabel }}
+          <img class="side-menu-icon" [src]="icons.orgUnit" />&nbsp;&nbsp; {{ (translationMapper[organisationUnitLabel])? translationMapper[organisationUnitLabel] :organisationUnitLabel
+          }}
         </div>
         <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openEntryFormList()">
-          <img class="side-menu-icon" [src]="icons.dataSet" />&nbsp;&nbsp; {{ dataSetLabel }}
+          <img class="side-menu-icon" [src]="icons.dataSet" />&nbsp;&nbsp; {{ (translationMapper[dataSetLabel])? translationMapper[dataSetLabel] :dataSetLabel }}
         </div>
         <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize (tap)="openPeriodList()">
-          <img class="side-menu-icon" [src]="icons.period" />&nbsp;&nbsp; {{ periodLabel }}
+          <img class="side-menu-icon" [src]="icons.period" />&nbsp;&nbsp; {{ (translationMapper[periodLabel])? translationMapper[periodLabel] :periodLabel }}
         </div>
         <div *ngIf="selectedPeriod && selectedPeriod.iso && dataSetCategoryCombo && dataSetCategoryCombo.id ">
           <div *ngIf="isDataSetDimensionApplicable">
@@ -24,7 +25,9 @@
                   <b>{{ category.name }}</b>
                 </div>
                 <div *ngIf="selectedDataDimension[categoryIndex]">{{ selectedDataDimension[categoryIndex].name }}</div>
-                <div *ngIf="!selectedDataDimension[categoryIndex]">Touch to select option</div>
+                <div *ngIf="!selectedDataDimension[categoryIndex]">
+                  <span>{{translationMapper['Touch to select option'] }}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -35,10 +38,10 @@
         <div *ngIf="isFormReady" full>
           <div>
             <div class="item-card">
-              <ion-input type="text" placeholder="Mobile Number" [(ngModel)]="sendDataViaSmsObject.mobileNumber"></ion-input>
+              <ion-input type="text" placeholder="{{translationMapper['Mobile Number'] }}" [(ngModel)]="sendDataViaSmsObject.mobileNumber"></ion-input>
             </div>
             <button (click)="sendDataViaSms()" [disabled]="sendDataViaSmsObject.mobileNumber.length < 9" ion-button style="text-transform: none;"
-              block>Upload data</button>
+              block>{{ translationMapper['Upload data'] }}</button>
           </div>
         </div>
       </ion-col>

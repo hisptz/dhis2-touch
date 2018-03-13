@@ -6,14 +6,15 @@ import {
   OnDestroy,
   OnInit,
   Output
-} from "@angular/core";
-import * as _ from "lodash";
-import * as moment from "moment";
-import { InterpretationService } from "../../services/interpretation.service";
+} from '@angular/core';
+import * as _ from 'lodash';
+import * as moment from 'moment';
+import { InterpretationService } from '../../services/interpretation.service';
+import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
 
 @Component({
-  selector: "app-interpretation-list",
-  templateUrl: "./interpretation-list.component.html"
+  selector: 'app-interpretation-list',
+  templateUrl: './interpretation-list.component.html'
 })
 export class InterpretationListComponent implements OnInit {
   @Input() interpretations: any[];
@@ -23,7 +24,11 @@ export class InterpretationListComponent implements OnInit {
   @Output() onInterpretationUpdate: EventEmitter<any> = new EventEmitter<any>();
   @Input() visualizationTypeObject: any;
   interpretationTerm: string;
-  constructor(private interpretationService: InterpretationService) {}
+  translationMapper: any;
+  constructor(
+    private interpretationService: InterpretationService,
+    private appTranslation: AppTranslationProvider
+  ) {}
 
   ngOnInit() {
     if (this.interpretations) {
@@ -32,6 +37,26 @@ export class InterpretationListComponent implements OnInit {
           this._sanitizeInterpretation(interpretation, index)
       );
     }
+    this.translationMapper = {};
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+      },
+      error => {}
+    );
+  }
+
+  getValuesToTranslate() {
+    return [
+      'Interpretation',
+      'Search interpretation',
+      'Not found',
+      'This interpretation will be deleted, are you sure?',
+      'Deleting interpretation',
+      'Comment',
+      'Edit',
+      'Delete'
+    ];
   }
 
   private _sanitizeInterpretation(interpretation: any, index) {
@@ -72,7 +97,7 @@ export class InterpretationListComponent implements OnInit {
     e.stopPropagation();
     const interpretationIndex = _.findIndex(
       this.interpretations,
-      _.find(this.interpretations, ["id", interpretation.id])
+      _.find(this.interpretations, ['id', interpretation.id])
     );
 
     if (interpretationIndex !== -1) {
@@ -112,7 +137,7 @@ export class InterpretationListComponent implements OnInit {
     if (interpretationList) {
       const newInterpretationList = interpretationList.filter(
         interpretation =>
-          !_.find(this.interpretations, ["id", interpretation.id])
+          !_.find(this.interpretations, ['id', interpretation.id])
       );
 
       this.interpretations = [
@@ -180,7 +205,7 @@ export class InterpretationListComponent implements OnInit {
 
   deleteInterpretationComment(interpretation, deletedComment) {
     const correspondinginterpretation: any = _.find(this.interpretations, [
-      "id",
+      'id',
       interpretation.id
     ]);
 
@@ -191,7 +216,7 @@ export class InterpretationListComponent implements OnInit {
       );
 
       const availableComment = _.find(correspondinginterpretation.comments, [
-        "id",
+        'id',
         deletedComment.id
       ]);
 
@@ -278,7 +303,7 @@ export class InterpretationListComponent implements OnInit {
       () => {
         const interpretationIndex = _.findIndex(
           this.interpretations,
-          _.find(this.interpretations, ["id", interpretation.id])
+          _.find(this.interpretations, ['id', interpretation.id])
         );
 
         if (interpretationIndex !== -1) {

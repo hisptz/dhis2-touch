@@ -1,6 +1,10 @@
-import { Injectable } from "@angular/core";
-import { UserProvider } from "../user/user";
-import { Observable } from "rxjs/Observable";
+import { Injectable } from '@angular/core';
+import { UserProvider } from '../user/user';
+import { Observable } from 'rxjs/Observable';
+import { DataSetsProvider } from '../data-sets/data-sets';
+import { ProgramsProvider } from '../programs/programs';
+import { CurrentUser } from '../../models/currentUser';
+import { DataSet } from '../../modules/data-filter/model/dataset';
 
 /*
   Generated class for the ProfileProvider provider.
@@ -10,27 +14,31 @@ import { Observable } from "rxjs/Observable";
 */
 @Injectable()
 export class ProfileProvider {
-  constructor(private userProvider: UserProvider) {}
+  constructor(
+    private userProvider: UserProvider,
+    private dataSetProvider: DataSetsProvider,
+    private programProvider: ProgramsProvider
+  ) {}
 
   getProfileContentDetails() {
     let profileContents = [
       {
-        id: "userInfo",
-        name: "user information",
-        icon: "assets/icon/user-info.png"
+        id: 'userInfo',
+        name: 'User information',
+        icon: 'assets/icon/user-info.png'
       },
       {
-        id: "orgUnits",
-        name: "assigned organisation units",
-        icon: "assets/icon/orgUnit.png"
+        id: 'orgUnits',
+        name: 'Assigned organisation units',
+        icon: 'assets/icon/orgUnit.png'
       },
-      { id: "roles", name: "assigned roles", icon: "assets/icon/roles.png" },
+      { id: 'roles', name: 'Assigned roles', icon: 'assets/icon/roles.png' },
       {
-        id: "program",
-        name: "assigned program",
-        icon: "assets/icon/program.png"
+        id: 'program',
+        name: 'Assigned programs',
+        icon: 'assets/icon/program.png'
       },
-      { id: "form", name: "assigned form", icon: "assets/icon/form.png" }
+      { id: 'form', name: 'Assigned entry forms', icon: 'assets/icon/form.png' }
     ];
     return profileContents;
   }
@@ -39,18 +47,40 @@ export class ProfileProvider {
    *
    * @returns {Observable<any>}
    */
-  getSavedUserData(): Observable<any> {
+  getSavedUserData(currentUser: CurrentUser): Observable<any> {
     let userData = {};
     return new Observable(observer => {
       this.userProvider.getUserData().subscribe(
         (savedUserData: any) => {
-          userData["userInfo"] = this.getUserInformation(savedUserData);
-          userData["orgUnits"] = this.getAssignedOrgUnits(savedUserData);
-          userData["roles"] = this.getUserRoles(savedUserData);
-          userData["program"] = this.getAssignedProgram(savedUserData);
-          userData["form"] = this.getAssignedForm(savedUserData);
-          observer.next(userData);
-          observer.complete();
+          this.dataSetProvider.getAllDataSets(currentUser).subscribe(
+            (dataSets: any) => {
+              this.programProvider.getAllPrograms(currentUser).subscribe(
+                programs => {
+                  userData['userInfo'] = this.getUserInformation(savedUserData);
+                  userData['orgUnits'] = this.getAssignedOrgUnits(
+                    savedUserData
+                  );
+                  userData['roles'] = this.getUserRoles(savedUserData);
+                  userData['program'] = this.getAssignedProgram(
+                    savedUserData,
+                    programs
+                  );
+                  userData['form'] = this.getAssignedForm(
+                    savedUserData,
+                    dataSets
+                  );
+                  observer.next(userData);
+                  observer.complete();
+                },
+                error => {
+                  observer.error(error);
+                }
+              );
+            },
+            error => {
+              observer.error(error);
+            }
+          );
         },
         error => {
           observer.error(error);
@@ -67,15 +97,17 @@ export class ProfileProvider {
   getUserInformation(userData) {
     let userInfo = {};
     let omittedKey = [
-      "userRoles",
-      "organisationUnits",
-      "dataViewOrganisationUnits"
+      'userRoles',
+      'organisationUnits',
+      'dataViewOrganisationUnits',
+      'dataSets',
+      'programs'
     ];
-    Object.keys(userData).forEach(key => {
+    Object.keys(userData).map(key => {
       if (omittedKey.indexOf(key) == -1) {
         let value = userData[key];
         if (Date.parse(value)) {
-          value = value.split("T")[0];
+          value = value.split('T')[0];
         }
         userInfo[key] = value;
       }
@@ -91,7 +123,7 @@ export class ProfileProvider {
   getUserRoles(userData) {
     let userRoles = [];
     if (userData && userData.userRoles) {
-      userData.userRoles.forEach((userRole: any) => {
+      userData.userRoles.map((userRole: any) => {
         if (userRoles.indexOf(userRole.name) == -1) {
           userRoles.push(userRole.name);
         }
@@ -108,7 +140,7 @@ export class ProfileProvider {
   getAssignedOrgUnits(userData) {
     let organisationUnits = [];
     if (userData && userData.organisationUnits) {
-      userData.organisationUnits.forEach((organisationUnit: any) => {
+      userData.organisationUnits.map((organisationUnit: any) => {
         if (organisationUnits.indexOf(organisationUnit.name) == -1) {
           organisationUnits.push(organisationUnit.name);
         }
@@ -122,18 +154,14 @@ export class ProfileProvider {
    * @param userData
    * @returns {Array}
    */
-  getAssignedProgram(userData) {
-    let programs = [];
-    if (userData && userData.userRoles) {
-      userData.userRoles.forEach((userRole: any) => {
-        userRole.programs.forEach((program: any) => {
-          if (programs.indexOf(program.name) == -1) {
-            programs.push(program.name);
-          }
-        });
-      });
-    }
-    return programs.sort();
+  getAssignedProgram(userData, programs) {
+    let assignedPrograms = [];
+    programs.map((program: any) => {
+      if (userData.programs && userData.programs.indexOf(program.id) > -1) {
+        assignedPrograms.push(program.name);
+      }
+    });
+    return assignedPrograms.sort();
   }
 
   /**
@@ -141,18 +169,14 @@ export class ProfileProvider {
    * @param userData
    * @returns {Array}
    */
-  getAssignedForm(userData) {
-    let dataSets = [];
-    if (userData && userData.userRoles) {
-      userData.userRoles.forEach((userRole: any) => {
-        userRole.dataSets.forEach((dataSet: any) => {
-          if (dataSets.indexOf(dataSet.name) == -1) {
-            dataSets.push(dataSet.name);
-          }
-        });
-      });
-    }
-    return dataSets.sort();
+  getAssignedForm(userData, dataSets) {
+    let assignedDataSets = [];
+    dataSets.map((dataSet: any) => {
+      if (userData.dataSets && userData.dataSets.indexOf(dataSet.id) > -1) {
+        assignedDataSets.push(dataSet.name);
+      }
+    });
+    return assignedDataSets.sort();
   }
 
   /**
@@ -164,13 +188,14 @@ export class ProfileProvider {
     let array = [];
     for (let key in object) {
       let newValue = object[key];
+      const id = key;
       if (newValue instanceof Object) {
         newValue = JSON.stringify(newValue);
       }
       let newKey = (key.charAt(0).toUpperCase() + key.slice(1))
-        .replace(/([A-Z])/g, " $1")
+        .replace(/([A-Z])/g, ' $1')
         .trim();
-      array.push({ key: newKey, value: newValue });
+      array.push({ key: newKey, value: newValue, id: id });
     }
     return array;
   }

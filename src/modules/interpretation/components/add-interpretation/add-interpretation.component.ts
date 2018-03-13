@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { InterpretationService } from '../../services/interpretation.service';
 import { Subscription } from 'rxjs/Subscription';
+import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
 
 @Component({
   selector: 'app-add-interpretation',
@@ -14,8 +15,12 @@ export class AddInterpretationComponent implements OnInit {
   interpretation: any;
   creating: boolean;
   subscription: Subscription;
+  translationMapper: any;
 
-  constructor(private interpretationService: InterpretationService) {
+  constructor(
+    private interpretationService: InterpretationService,
+    private appTranslation: AppTranslationProvider
+  ) {
     this.creating = false;
   }
 
@@ -27,6 +32,17 @@ export class AddInterpretationComponent implements OnInit {
         message: ''
       };
     }
+    this.translationMapper = {};
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+      },
+      error => {}
+    );
+  }
+
+  getValuesToTranslate() {
+    return ['Write new interpretation', 'Cancel', 'Posting', 'Post'];
   }
 
   postInterpretation(e) {
@@ -35,12 +51,12 @@ export class AddInterpretationComponent implements OnInit {
     this.subscription = this.interpretationService
       .create(this.interpretation, this.rootUrl)
       .subscribe(
-      (interpretations: any[]) => {
-        this.creating = false;
-        this.interpretation.message = '';
-        this.onInterpretationCreate.emit(interpretations);
-      },
-      error => console.log(error)
+        (interpretations: any[]) => {
+          this.creating = false;
+          this.interpretation.message = '';
+          this.onInterpretationCreate.emit(interpretations);
+        },
+        error => console.log(error)
       );
   }
 

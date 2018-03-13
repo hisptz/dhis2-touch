@@ -1,12 +1,12 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {INITIAL_LAYOUT_MODEL} from './model/layout-model';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { INITIAL_LAYOUT_MODEL } from './model/layout-model';
+import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html'
 })
 export class LayoutComponent implements OnInit {
-
   @Input() layoutModel = INITIAL_LAYOUT_MODEL;
   @Input() visualizationType: string;
   @Output() onLayoutUpdate = new EventEmitter();
@@ -18,8 +18,9 @@ export class LayoutComponent implements OnInit {
   dimensions: any;
   columnName: string;
   rowName: string;
+  translationMapper: any;
 
-  constructor() {
+  constructor(private appTranslation: AppTranslationProvider) {
     this.icons = {
       dx: 'assets/icon/data.png',
       ou: 'assets/icon/tree.png',
@@ -31,15 +32,22 @@ export class LayoutComponent implements OnInit {
       columnDimension: [],
       rowDimension: []
     };
-    this.columnName = 'Column dimensions';
-    this.rowName = 'Row dimensions';
+    this.columnName = 'Column';
+    this.rowName = 'Row';
   }
 
   ngOnInit() {
+    this.translationMapper = {};
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+      },
+      error => {}
+    );
     this.updateLayoutDimensions();
     if (this.visualizationType === 'CHART') {
-      this.rowName = 'Categories dimensions';
-      this.columnName = 'Series dimensions';
+      this.rowName = 'Categories';
+      this.columnName = 'Series';
     }
   }
 
@@ -59,5 +67,18 @@ export class LayoutComponent implements OnInit {
 
   close() {
     this.onLayoutClose.emit(true);
+  }
+
+  getValuesToTranslate() {
+    return [
+      'Table / Chart Layout',
+      'Filters',
+      'Column',
+      'Row',
+      'Categories',
+      'Series',
+      'Update',
+      'Close'
+    ];
   }
 }

@@ -6,6 +6,7 @@ import {
 } from "../../providers/organisation-units/organisation-units";
 import { UserProvider } from "../../providers/user/user";
 import { AppProvider } from "../../providers/app/app";
+import { AppTranslationProvider } from "../../providers/app-translation/app-translation";
 
 /**
  * Generated class for the OrganisationUnitSelectionPage page.
@@ -23,7 +24,7 @@ export class OrganisationUnitSelectionPage implements OnInit {
   loadingMessage: string;
   isLoading: boolean = false;
   emptyMessage: string;
-
+  translationMapper: any;
   currentUser: any;
   lastSelectedOrgUnit: OrganisationUnitModel;
   organisationUnits: OrganisationUnitModel[];
@@ -33,13 +34,30 @@ export class OrganisationUnitSelectionPage implements OnInit {
     private viewCtrl: ViewController,
     private organisationUnitProvider: OrganisationUnitsProvider,
     private userProvider: UserProvider,
-    private appProvider: AppProvider
+    private appProvider: AppProvider,
+    private appTranslation: AppTranslationProvider
   ) {}
 
   ngOnInit() {
-    this.loadingMessage = "loading current user information";
     this.emptyMessage = "";
     this.isLoading = true;
+    this.translationMapper = {};
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+        this.loadingCurrentUserInformation();
+      },
+      error => {
+        this.loadingCurrentUserInformation();
+      }
+    );
+  }
+
+  loadingCurrentUserInformation() {
+    let key = "Discovering current user information";
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.userProvider.getCurrentUser().subscribe(
       user => {
         this.currentUser = user;
@@ -52,7 +70,10 @@ export class OrganisationUnitSelectionPage implements OnInit {
   }
 
   loadingOrganisationUnits() {
-    this.loadingMessage = "loading assigned organisation units";
+    let key = "Discovering assigned organisation units";
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
     this.hasOrgUnitChildrenOpened = {};
     this.organisationUnitProvider
       .getOrganisationUnits(this.currentUser)
@@ -71,16 +92,22 @@ export class OrganisationUnitSelectionPage implements OnInit {
             this.isLoading = false;
           } else {
             this.isLoading = false;
-            this.emptyMessage =
-              "currently there is on assigned organisation unit on local storage, Please metadata on sync app";
-            this.appProvider.setNormalNotification(this.emptyMessage);
+            key =
+              "Currently there is on assigned organisation unit on local storage, Please metadata on sync app";
+            this.emptyMessage = this.translationMapper[key]
+              ? this.translationMapper[key]
+              : key;
+            this.appProvider.setNormalNotification(key);
           }
         },
         error => {
           console.log(JSON.stringify(error));
           this.isLoading = false;
-          this.emptyMessage = "fail to load organisation unit";
-          this.appProvider.setNormalNotification(this.emptyMessage);
+          key = "Fail to discover organisation units";
+          this.emptyMessage = this.translationMapper[key]
+            ? this.translationMapper[key]
+            : key;
+          this.appProvider.setNormalNotification(key);
         }
       );
   }
@@ -94,5 +121,14 @@ export class OrganisationUnitSelectionPage implements OnInit {
 
   dismiss() {
     this.viewCtrl.dismiss({});
+  }
+
+  getValuesToTranslate() {
+    return [
+      "Discovering current user information",
+      "Discovering assigned organisation units",
+      "Currently there is on assigned organisation unit on local storage, Please metadata on sync app",
+      "Fail to discover organisation units"
+    ];
   }
 }

@@ -1,4 +1,3 @@
-
 <div *ngIf="isLoading">
   <loading loadingSize="large" [loadingMessage]="loadingMessage"></loading>
 </div>
@@ -7,34 +6,36 @@
     <ion-col *ngIf="!showLoadingMessage">
       <ion-item>
         <ion-label>
-          Aggregate data&nbsp;
+          {{ translationMapper['Aggregate data'] }}&nbsp;
           <ion-badge color="badge-color">{{ dataObject.dataValues.length }}</ion-badge>
         </ion-label>
-        <ion-checkbox [(ngModel)]="selectedItems.dataValues" disabled = "{{(dataObject.dataValues.length == 0)?'true':'false'}}" (ionChange)="updateItemsToUpload()"></ion-checkbox>
+        <ion-checkbox [(ngModel)]="selectedItems.dataValues" disabled="{{(dataObject.dataValues.length == 0)?'true':'false'}}" (ionChange)="updateItemsToUpload()"></ion-checkbox>
       </ion-item>
       <ion-item>
         <ion-label>
-          Events&nbsp;
+          {{ translationMapper['Events'] }}&nbsp;
           <ion-badge color="badge-color">{{ dataObject.events.length }}</ion-badge>
         </ion-label>
-        <ion-checkbox [(ngModel)]="selectedItems.events" disabled = "{{(dataObject.events.length == 0)?'true':'false'}}" (ionChange)="updateItemsToUpload()" ></ion-checkbox>
+        <ion-checkbox [(ngModel)]="selectedItems.events" disabled="{{(dataObject.events.length == 0)?'true':'false'}}" (ionChange)="updateItemsToUpload()"></ion-checkbox>
       </ion-item>
       <ion-item>
         <ion-label>
-          Events for tracker&nbsp;
+          {{ translationMapper['Events for tracker'] }}&nbsp;
           <ion-badge color="badge-color">{{ dataObject.eventsForTracker.length }}</ion-badge>
         </ion-label>
-        <ion-checkbox [(ngModel)]="selectedItems.eventsForTracker" disabled = "{{(dataObject.eventsForTracker.length == 0)?'true':'false'}}" (ionChange)="updateItemsToUpload()" ></ion-checkbox>
+        <ion-checkbox [(ngModel)]="selectedItems.eventsForTracker" disabled="{{(dataObject.eventsForTracker.length == 0)?'true':'false'}}"
+          (ionChange)="updateItemsToUpload()"></ion-checkbox>
       </ion-item>
       <ion-item>
         <ion-label>
-          Enrollments&nbsp;
+          {{ translationMapper['Enrollments'] }}&nbsp;
           <ion-badge color="badge-color">{{ dataObject.Enrollments.length }}</ion-badge>
         </ion-label>
-        <ion-checkbox [(ngModel)]="selectedItems.Enrollments" disabled = "{{(dataObject.Enrollments.length == 0)?'true':'false'}}" (ionChange)="updateItemsToUpload()" ></ion-checkbox>
+        <ion-checkbox [(ngModel)]="selectedItems.Enrollments" disabled="{{(dataObject.Enrollments.length == 0)?'true':'false'}}"
+          (ionChange)="updateItemsToUpload()"></ion-checkbox>
       </ion-item>
       <button [disabled]="itemsToUpload.length == 0" ion-button full text-capitalize (tap)="uploadData()">
-        Upload Data
+        {{ translationMapper['Upload data'] }}
       </button>
     </ion-col>
   </ion-row>
