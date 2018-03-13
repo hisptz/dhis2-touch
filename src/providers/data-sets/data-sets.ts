@@ -516,14 +516,13 @@ export class DataSetsProvider {
           });
         }
       });
-
       if (entryFormDesign.length == 0) {
         observer.next();
         observer.complete();
       } else {
         this.SqlLite.insertBulkDataOnTable(
           this.resource,
-          dataSets,
+          entryFormDesign,
           currentUser.currentDatabase
         ).subscribe(() => {}, error => {});
       }

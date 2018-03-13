@@ -81,15 +81,7 @@ export class DataEntryPage implements OnInit {
       (currentUser: any) => {
         this.currentUser = currentUser;
         this.userProvider.getUserData().subscribe((userData: any) => {
-          this.dataSetIdsByUserRoles = [];
-          userData.userRoles.forEach((userRole: any) => {
-            if (userRole.dataSets) {
-              userRole.dataSets.forEach((dataSet: any) => {
-                this.dataSetIdsByUserRoles.push(dataSet.id);
-              });
-            }
-          });
-
+          this.dataSetIdsByUserRoles = userData.dataSets;
           this.organisationUnitsProvider
             .getLastSelectedOrganisationUnitUnit(currentUser)
             .subscribe(lastSelectedOrgUnit => {

@@ -287,17 +287,20 @@ export class HttpClientProvider {
    * @returns {Observable<any>}
    */
   put(url, data, user?): Observable<any> {
+    let apiUrl = '';
     return new Observable(observer => {
       this.getSanitizedUser(user).subscribe(
         (sanitizedUser: CurrentUser) => {
-          url = this.getUrlBasedOnDhisVersion(url, sanitizedUser);
+          apiUrl =
+            sanitizedUser.serverUrl +
+            this.getUrlBasedOnDhisVersion(url, sanitizedUser);
           let headers = new Headers();
           headers.append(
             'Authorization',
             'Basic ' + sanitizedUser.authorizationKey
           );
           this.defaultHttp
-            .put(sanitizedUser.serverUrl + url, data, { headers: headers })
+            .put(apiUrl, data, { headers: headers })
             .timeout(this.timeOutTime)
             .map(res => res.json())
             .subscribe(
@@ -324,17 +327,20 @@ export class HttpClientProvider {
    * @returns {Observable<any>}
    */
   delete(url, user?): Observable<any> {
+    let apiUrl = '';
     return new Observable(observer => {
       this.getSanitizedUser(user).subscribe(
         (sanitizedUser: CurrentUser) => {
-          url = this.getUrlBasedOnDhisVersion(url, sanitizedUser);
+          apiUrl =
+            sanitizedUser.serverUrl +
+            this.getUrlBasedOnDhisVersion(url, sanitizedUser);
           let headers = new Headers();
           headers.append(
             'Authorization',
             'Basic ' + sanitizedUser.authorizationKey
           );
           this.defaultHttp
-            .delete(sanitizedUser.serverUrl + url, { headers: headers })
+            .delete(apiUrl, { headers: headers })
             .timeout(this.timeOutTime)
             .map(res => res.json())
             .subscribe(

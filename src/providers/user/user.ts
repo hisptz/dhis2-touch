@@ -14,8 +14,6 @@ import { CurrentUser } from '../../models/currentUser';
  */
 @Injectable()
 export class UserProvider {
-  public userData: any;
-
   constructor(
     public storage: Storage,
     public http: HTTP,
@@ -30,7 +28,7 @@ export class UserProvider {
   getUserDataFromServer(user, withBaseUrl: boolean = false): Observable<any> {
     this.http.useBasicAuth(user.username, user.password);
     let fields =
-      'fields=[:all],organisationUnits[id,name],dataViewOrganisationUnits[id,name],userCredentials[userRoles[name,dataSets[id,name],programs[id,name]],programs,dataSets';
+      'fields=[:all],organisationUnits[id,name],dataViewOrganisationUnits[id,name],userCredentials[userRoles[name,dataSets[id],programs[id]],programs,dataSets';
     let url = user.serverUrl.split('/dhis-web-commons')[0];
     url = url.split('/dhis-web-dashboard')[0];
     url = url.split('/api/apps')[0];
@@ -42,7 +40,7 @@ export class UserProvider {
     }
     return new Observable(observer => {
       this.http
-        .get(url, {}, {})
+        .get(apiurl, {}, {})
         .then(
           (data: any) => {
             if (data.data.indexOf('login.action') > -1) {
@@ -246,7 +244,7 @@ export class UserProvider {
    * @returns {Promise<T>}
    */
   setUserData(userDataResponse): Observable<any> {
-    this.userData = {
+    const userData = {
       Name: userDataResponse.name,
       Employer: userDataResponse.employer,
       'Job Title': userDataResponse.jobTitle,
@@ -257,13 +255,14 @@ export class UserProvider {
       Interests: userDataResponse.interests,
       userRoles: userDataResponse.userCredentials.userRoles,
       organisationUnits: userDataResponse.organisationUnits,
-      dataViewOrganisationUnits: userDataResponse.dataViewOrganisationUnits
+      dataViewOrganisationUnits: userDataResponse.dataViewOrganisationUnits,
+      dataSets: this.getAssignedDataSetIds(userDataResponse),
+      programs: this.getAssignedProgramsId(userDataResponse)
     };
-    let userData = JSON.stringify(this.userData);
     return new Observable(observer => {
-      this.storage.set('userData', userData).then(
+      this.storage.set('userData', JSON.stringify(userData)).then(
         () => {
-          observer.next(JSON.parse(userData));
+          observer.next(userData);
           observer.complete();
         },
         error => {
@@ -271,6 +270,51 @@ export class UserProvider {
         }
       );
     });
+  }
+
+  getAssignedDataSetIds(userData) {
+    let dataSetsIds = [];
+
+    if (userData && userData.dataSets) {
+      dataSetsIds = userData.dataSets;
+    } else if (
+      userData &&
+      userData.userCredentials &&
+      userData.userCredentials.userRoles
+    ) {
+      userData.userCredentials.userRoles.map((userRole: any) => {
+        if (userRole.dataSets) {
+          userRole.dataSets.map((dataset: any) => {
+            if (dataSetsIds.indexOf(dataset.id) == -1) {
+              dataSetsIds.push(dataset.id);
+            }
+          });
+        }
+      });
+    }
+    return dataSetsIds;
+  }
+
+  getAssignedProgramsId(userData) {
+    let programIds = [];
+    if (userData && userData.programs) {
+      programIds = userData.programs;
+    } else if (
+      userData &&
+      userData.userCredentials &&
+      userData.userCredentials.userRoles
+    ) {
+      userData.userCredentials.userRoles.map((userRole: any) => {
+        if (userRole.programs) {
+          userRole.programs.map((program: any) => {
+            if (programIds.indexOf(program.id) == -1) {
+              programIds.push(program.id);
+            }
+          });
+        }
+      });
+    }
+    return programIds;
   }
 
   /**
