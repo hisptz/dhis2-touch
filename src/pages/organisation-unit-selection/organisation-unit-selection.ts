@@ -127,6 +127,7 @@ export class OrganisationUnitSelectionPage implements OnInit {
   //tracker capture: WITH_REGISTRATION
   loadingProgramAndDataSetAssignments(user) {
     const filterType = this.navParams.get('filterType');
+    //@todo to revise setting
     if (filterType) {
       this.shouldIndicateAssigmentsIssues = true;
     }
@@ -193,15 +194,30 @@ export class OrganisationUnitSelectionPage implements OnInit {
     const filterType = this.navParams.get('filterType');
     if (
       filterType &&
+      this.shouldIndicateAssigmentsIssues &&
       this.ouIdsWithAssigments.length > 0 &&
       this.ouIdsWithAssigments.indexOf(selectedOrganisationUnit.id) == -1
     ) {
-      console.log('No assignment [Data set or porgram]');
+      if (filterType == 'dataSets') {
+        this.appProvider.setNormalNotification(
+          'There is no entry form assigned to selected organisation unit, please select others or contact you help desk',
+          8 * 1000
+        );
+      } else if (
+        filterType == 'WITHOUT_REGISTRATION' ||
+        filterType == 'WITH_REGISTRATION'
+      ) {
+        this.appProvider.setNormalNotification(
+          'There is no program assigned to selected organisation unit, please select others or contact you help desk',
+          8 * 1000
+        );
+      }
+    } else {
+      this.organisationUnitProvider.setLastSelectedOrganisationUnitUnit(
+        selectedOrganisationUnit
+      );
+      this.viewCtrl.dismiss(selectedOrganisationUnit);
     }
-    this.organisationUnitProvider.setLastSelectedOrganisationUnitUnit(
-      selectedOrganisationUnit
-    );
-    this.viewCtrl.dismiss(selectedOrganisationUnit);
   }
 
   dismiss() {
