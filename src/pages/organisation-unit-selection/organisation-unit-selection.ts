@@ -32,6 +32,7 @@ export class OrganisationUnitSelectionPage implements OnInit {
   organisationUnits: OrganisationUnitModel[];
   hasOrgUnitChildrenOpened: any = {};
   ouIdsWithAssigments: Array<string>;
+  shouldIndicateAssigmentsIssues: boolean;
 
   constructor(
     private viewCtrl: ViewController,
@@ -49,6 +50,7 @@ export class OrganisationUnitSelectionPage implements OnInit {
     this.isLoading = true;
     this.translationMapper = {};
     this.ouIdsWithAssigments = [];
+    this.shouldIndicateAssigmentsIssues = false;
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
       (data: any) => {
         this.translationMapper = data;
@@ -68,6 +70,7 @@ export class OrganisationUnitSelectionPage implements OnInit {
     this.userProvider.getCurrentUser().subscribe(
       user => {
         this.currentUser = user;
+        this.loadingProgramAndDataSetAssignments(user);
         this.loadingOrganisationUnits();
       },
       error => {
@@ -96,7 +99,7 @@ export class OrganisationUnitSelectionPage implements OnInit {
                 organisationUnits[0]
               );
             }
-            this.loadingProgramAndDataSetAssignments();
+            this.isLoading = false;
           } else {
             this.isLoading = false;
             key =
@@ -119,18 +122,58 @@ export class OrganisationUnitSelectionPage implements OnInit {
       );
   }
 
-  loadingProgramAndDataSetAssignments() {
+  loadingProgramAndDataSetAssignments(user) {
     const filterType = this.navParams.get('filterType');
-    alert('filterType : ' + filterType);
-
+    if (filterType) {
+      this.shouldIndicateAssigmentsIssues = true;
+    }
+    switch (filterType) {
+      case 'dataSets': {
+        this.dataSetsProvider.getAllDataSetSources(this.currentUser).subscribe(
+          (dataSetSources: any) => {
+            this.userProvider.getUserData().subscribe((userData: any) => {
+              dataSetSources.map((dataSetSource: any) => {
+                if (
+                  dataSetSource &&
+                  dataSetSource.organisationUnitId &&
+                  dataSetSource.dataSetId &&
+                  this.ouIdsWithAssigments.indexOf(
+                    dataSetSource.organisationUnitId
+                  ) == -1 &&
+                  userData.dataSets &&
+                  userData.dataSets.indexOf(dataSetSource.dataSetId) > -1
+                ) {
+                  this.ouIdsWithAssigments.push(
+                    dataSetSource.organisationUnitId
+                  );
+                }
+              });
+            });
+          },
+          error => {
+            console.log(JSON.stringify(error));
+          }
+        );
+      }
+      case 'WITHOUT_REGISTRATION': {
+      }
+      case 'WITH_REGISTRATION': {
+      }
+    }
     //event : WITHOUT_REGISTRATION
     //data entry : dataSets
     //tracker : WITH_REGISTRATION
-
-    this.isLoading = false;
   }
 
   setSelectedOrganisationUnit(selectedOrganisationUnit) {
+    const filterType = this.navParams.get('filterType');
+    if (
+      filterType &&
+      this.ouIdsWithAssigments.length > 0 &&
+      this.ouIdsWithAssigments.indexOf(selectedOrganisationUnit.id) == -1
+    ) {
+      console.log('No assignment [Data set or porgram]');
+    }
     this.organisationUnitProvider.setLastSelectedOrganisationUnitUnit(
       selectedOrganisationUnit
     );

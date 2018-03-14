@@ -6,6 +6,9 @@
 
   <div (tap)="setSelectedOrganisationUnit(organisationUnit)">
     <span ion-text [color]="(currentSelectedOrgUnitName == organisationUnit.name) ?'current' : 'font-color'">{{ organisationUnit.name }}</span>
+    <span *ngIf="shouldIndicateAssigmentsIssues && ouIdsWithAssigments">
+      &nbsp;==&nbsp;{{ ouIdsWithAssigments.indexOf(organisationUnit.id) }}
+    </span>
   </div>
 
 </ion-item>
@@ -30,7 +33,8 @@
 
   <div *ngIf="isOrganisationUnitsFetched && hasOrgUnitChildrenLoaded && !hasErrorOccurred">
     <div *ngFor="let child of organisationUnit.children">
-      <organisation-unit-tree [organisationUnit]="child" [currentSelectedOrgUnitName]="currentSelectedOrgUnitName" [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened"
+      <organisation-unit-tree [organisationUnit]="child" [currentSelectedOrgUnitName]="currentSelectedOrgUnitName" [ouIdsWithAssigments]="ouIdsWithAssigments"
+        [shouldIndicateAssigmentsIssues]="shouldIndicateAssigmentsIssues" [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened"
         (selectedOrganisationUnit)="setSelectedOrganisationUnit($event)" [currentUser]="currentUser"></organisation-unit-tree>
 
     </div>

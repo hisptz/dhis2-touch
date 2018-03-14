@@ -3,6 +3,7 @@ import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
 import { DataSet } from '../../models/dataSet';
+import { CurrentUser } from '../../models/currentUser';
 
 /*
   Generated class for the DataSetsProvider provider.
@@ -657,6 +658,24 @@ export class DataSetsProvider {
         attributeKey,
         attributeValue,
         dataBaseName
+      ).subscribe(
+        (dataSetSource: any) => {
+          observer.next(dataSetSource);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
+    });
+  }
+
+  getAllDataSetSources(currentUser: CurrentUser): Observable<any> {
+    let resource = 'dataSetSource';
+    return new Observable(observer => {
+      this.SqlLite.getAllDataFromTable(
+        resource,
+        currentUser.currentDatabase
       ).subscribe(
         (dataSetSource: any) => {
           observer.next(dataSetSource);
