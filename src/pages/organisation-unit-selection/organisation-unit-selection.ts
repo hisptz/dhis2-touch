@@ -122,29 +122,61 @@ export class OrganisationUnitSelectionPage implements OnInit {
       );
   }
 
+  //event capture: WITHOUT_REGISTRATION
+  //data entry : dataSets
+  //tracker capture: WITH_REGISTRATION
   loadingProgramAndDataSetAssignments(user) {
     const filterType = this.navParams.get('filterType');
     if (filterType) {
       this.shouldIndicateAssigmentsIssues = true;
     }
-    switch (filterType) {
-      case 'dataSets': {
-        this.dataSetsProvider.getAllDataSetSources(this.currentUser).subscribe(
-          (dataSetSources: any) => {
+    if (filterType == 'dataSets') {
+      this.dataSetsProvider.getAllDataSetSources(this.currentUser).subscribe(
+        (dataSetSources: any) => {
+          this.userProvider.getUserData().subscribe((userData: any) => {
+            dataSetSources.map((dataSetSource: any) => {
+              if (
+                dataSetSource &&
+                dataSetSource.organisationUnitId &&
+                dataSetSource.dataSetId &&
+                this.ouIdsWithAssigments.indexOf(
+                  dataSetSource.organisationUnitId
+                ) == -1 &&
+                userData.dataSets &&
+                userData.dataSets.indexOf(dataSetSource.dataSetId) > -1
+              ) {
+                this.ouIdsWithAssigments.push(dataSetSource.organisationUnitId);
+              }
+            });
+          });
+        },
+        error => {
+          console.log(JSON.stringify(error));
+        }
+      );
+    } else if (
+      filterType == 'WITHOUT_REGISTRATION' ||
+      filterType == 'WITH_REGISTRATION'
+    ) {
+      this.programProvider
+        .getProgramOrganisationUnitsByProgramType(user, filterType)
+        .subscribe(
+          (programOrganisationUnits: any) => {
             this.userProvider.getUserData().subscribe((userData: any) => {
-              dataSetSources.map((dataSetSource: any) => {
+              programOrganisationUnits.map((programOrganisationUnit: any) => {
                 if (
-                  dataSetSource &&
-                  dataSetSource.organisationUnitId &&
-                  dataSetSource.dataSetId &&
+                  programOrganisationUnit &&
+                  programOrganisationUnit.programId &&
+                  programOrganisationUnit.orgUnitId &&
                   this.ouIdsWithAssigments.indexOf(
-                    dataSetSource.organisationUnitId
+                    programOrganisationUnit.orgUnitId
                   ) == -1 &&
-                  userData.dataSets &&
-                  userData.dataSets.indexOf(dataSetSource.dataSetId) > -1
+                  userData.programs &&
+                  userData.programs.indexOf(programOrganisationUnit.programId) >
+                    -1
                 ) {
                   this.ouIdsWithAssigments.push(
-                    dataSetSource.organisationUnitId
+                    programOrganisationUnit.orgUnitId
                   );
                 }
               });
@@ -154,15 +186,7 @@ export class OrganisationUnitSelectionPage implements OnInit {
             console.log(JSON.stringify(error));
           }
         );
-      }
-      case 'WITHOUT_REGISTRATION': {
-      }
-      case 'WITH_REGISTRATION': {
-      }
     }
-    //event : WITHOUT_REGISTRATION
-    //data entry : dataSets
-    //tracker : WITH_REGISTRATION
   }
 
   setSelectedOrganisationUnit(selectedOrganisationUnit) {
