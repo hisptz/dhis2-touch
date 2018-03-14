@@ -7,14 +7,16 @@
 <ion-header>
 
   <ion-toolbar color="primary">
+    <ion-buttons left>
+      <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
+        &nbsp;&nbsp;&nbsp;
+        <ion-icon name="arrow-back"></ion-icon>
+        &nbsp;&nbsp;
+      </button>
+    </ion-buttons>
     <ion-title>
       <span [translate]="'Organisation unit selection'"></span>
     </ion-title>
-    <ion-buttons start>
-      <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
-        <ion-icon name="close"></ion-icon>
-      </button>
-    </ion-buttons>
   </ion-toolbar>
 
 </ion-header>
