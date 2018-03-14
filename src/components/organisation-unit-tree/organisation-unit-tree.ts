@@ -1,7 +1,7 @@
-import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
-import { OrganisationUnitsProvider } from "../../providers/organisation-units/organisation-units";
-import { AppProvider } from "../../providers/app/app";
-import { AppTranslationProvider } from "../../providers/app-translation/app-translation";
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { OrganisationUnitsProvider } from '../../providers/organisation-units/organisation-units';
+import { AppProvider } from '../../providers/app/app';
+import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the OrganisationUnitTreeComponent component.
@@ -10,14 +10,16 @@ import { AppTranslationProvider } from "../../providers/app-translation/app-tran
  * for more info on Angular Components.
  */
 @Component({
-  selector: "organisation-unit-tree",
-  templateUrl: "organisation-unit-tree.html"
+  selector: 'organisation-unit-tree',
+  templateUrl: 'organisation-unit-tree.html'
 })
 export class OrganisationUnitTreeComponent implements OnInit {
   @Input() currentUser;
   @Input() organisationUnit;
   @Input() hasOrgUnitChildrenOpened;
   @Input() currentSelectedOrgUnitName;
+  @Input() ouIdsWithAssigments;
+  @Input() shouldIndicateAssigmentsIssues;
   @Output() selectedOrganisationUnit = new EventEmitter();
 
   isOrganisationUnitsFetched: boolean = true;
@@ -48,7 +50,7 @@ export class OrganisationUnitTreeComponent implements OnInit {
     let lastSelectedOrgUnit = this.organisationUnitProvider.lastSelectedOrgUnit;
     let parentCopy = lastSelectedOrgUnit.path
       .substring(1, lastSelectedOrgUnit.path.length)
-      .split("/");
+      .split('/');
     if (parentCopy.indexOf(this.organisationUnit.id) > -1) {
       lastSelectedOrgUnit.ancestors.forEach((ancestor: any) => {
         if (ancestor.id == this.organisationUnit.id) {
@@ -92,7 +94,7 @@ export class OrganisationUnitTreeComponent implements OnInit {
           },
           error => {
             console.log(JSON.stringify(error));
-            let message = "Fail to discover organisation unit children";
+            let message = 'Fail to discover organisation unit children';
             this.appProvider.setNormalNotification(message);
             this.isOrganisationUnitsFetched = true;
             this.hasOrgUnitChildrenLoaded = true;
@@ -116,8 +118,8 @@ export class OrganisationUnitTreeComponent implements OnInit {
 
   getValuesToTranslate() {
     return [
-      "Discovering organisation units",
-      "Fail to discover organisation unit children"
+      'Discovering organisation units',
+      'Fail to discover organisation unit children'
     ];
   }
 }

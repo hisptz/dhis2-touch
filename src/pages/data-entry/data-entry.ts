@@ -127,7 +127,9 @@ export class DataEntryPage implements OnInit {
   }
 
   openOrganisationUnitTree() {
-    let modal = this.modalCtrl.create('OrganisationUnitSelectionPage', {});
+    let modal = this.modalCtrl.create('OrganisationUnitSelectionPage', {
+      filterType: 'dataSets'
+    });
     modal.onDidDismiss((selectedOrgUnit: any) => {
       if (selectedOrgUnit && selectedOrgUnit.id) {
         this.selectedOrgUnit = selectedOrgUnit;

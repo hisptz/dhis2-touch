@@ -29,7 +29,8 @@
   </div>
   <div *ngIf="!isLoading">
     <div *ngFor="let organisationUnit of organisationUnits">
-      <organisation-unit-tree [organisationUnit]="organisationUnit" [currentSelectedOrgUnitName]="lastSelectedOrgUnit.name" [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened"
+      <organisation-unit-tree [organisationUnit]="organisationUnit" [shouldIndicateAssigmentsIssues]="shouldIndicateAssigmentsIssues"
+        [ouIdsWithAssigments]="ouIdsWithAssigments" [currentSelectedOrgUnitName]="lastSelectedOrgUnit.name" [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened"
         (selectedOrganisationUnit)="setSelectedOrganisationUnit($event)" [currentUser]="currentUser"></organisation-unit-tree>
     </div>
     <div *ngIf="organisationUnits.length == 0 && emptyMessage !=''">

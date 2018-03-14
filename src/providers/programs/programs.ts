@@ -110,7 +110,7 @@ export class ProgramsProvider {
    */
   savingProgramProgramRuleVariables(programs, currentUser): Observable<any> {
     let programProgramRuleVariables = [];
-    let resource = 'programProgramRuleVariables';
+    const resource = 'programProgramRuleVariables';
     programs.forEach((program: any) => {
       if (
         program.programRuleVariables &&
@@ -171,7 +171,7 @@ export class ProgramsProvider {
    */
   savingProgramProgramRules(programs, currentUser): Observable<any> {
     let programProgramRules = [];
-    let resource = 'programProgramRules';
+    const resource = 'programProgramRules';
     programs.forEach((program: any) => {
       if (program.programRules && program.programRules.length > 0) {
         program.programRules.forEach((programRule: any) => {
@@ -232,7 +232,7 @@ export class ProgramsProvider {
    */
   savingProgramOrganisationUnits(programs, currentUser): Observable<any> {
     let programOrganisationUnits = [];
-    let resource = 'programOrganisationUnits';
+    const resource = 'programOrganisationUnits';
     programs.forEach((program: any) => {
       if (program.organisationUnits && program.organisationUnits.length > 0) {
         program.organisationUnits.forEach((organisationUnit: any) => {
@@ -290,7 +290,7 @@ export class ProgramsProvider {
    */
   savingProgramIndicators(programs, currentUser): Observable<any> {
     let programIndicators = [];
-    let resource = 'programIndicators';
+    const resource = 'programIndicators';
     programs.forEach((program: any) => {
       if (program.programIndicators && program.programIndicators.length > 0) {
         program.programIndicators.forEach((programIndicator: any) => {
@@ -349,7 +349,7 @@ export class ProgramsProvider {
    */
   savingProgramProgramStages(programs, currentUser): Observable<any> {
     let programProgramStages = [];
-    let resource = 'programProgramStages';
+    const resource = 'programProgramStages';
     programs.forEach((program: any) => {
       if (program.programStages && program.programStages.length > 0) {
         program.programStages.forEach((programStage: any) => {
@@ -430,7 +430,7 @@ export class ProgramsProvider {
   ): Observable<any> {
     let programTrackedEntityAttributes = [];
     let trackedEntityAttributes = [];
-    let resource = 'programTrackedEntityAttributes';
+    const resource = 'programTrackedEntityAttributes';
     programs.forEach((program: any) => {
       if (
         program.programTrackedEntityAttributes &&
@@ -518,7 +518,7 @@ export class ProgramsProvider {
     trackedEntityAttributes,
     currentUser
   ): Observable<any> {
-    let resource = 'trackedEntityAttribute';
+    const resource = 'trackedEntityAttribute';
     return new Observable(observer => {
       if (trackedEntityAttributes.length == 0) {
         observer.next();
@@ -714,7 +714,7 @@ export class ProgramsProvider {
    * @returns {Observable<any>}
    */
   getProgramOrganisationUnits(orgUnitId, dataBaseName): Observable<any> {
-    let resource = 'programOrganisationUnits';
+    const resource = 'programOrganisationUnits';
     let attributeValue = [orgUnitId];
     let attributeKey = 'orgUnitId';
     return new Observable(observer => {
@@ -727,6 +727,31 @@ export class ProgramsProvider {
         )
         .subscribe(
           (programOrganisationUnits: any) => {
+            observer.next(programOrganisationUnits);
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+    });
+  }
+
+  getProgramOrganisationUnitsByProgramType(
+    currentUser: CurrentUser,
+    programType
+  ): Observable<any> {
+    const resource = 'programOrganisationUnits';
+    return new Observable(observer => {
+      const query =
+        'SELECT * FROM programOrganisationUnits WHERE programId IN (SELECT id FROM programs WHERE programType = ' +
+        "'" +
+        programType +
+        "');";
+      this.sqlLite
+        .getByUsingQuery(query, resource, currentUser.currentDatabase)
+        .subscribe(
+          programOrganisationUnits => {
             observer.next(programOrganisationUnits);
             observer.complete();
           },
@@ -794,7 +819,7 @@ export class ProgramsProvider {
    * @returns {Observable<any>}
    */
   getProgramsStages(programId, currentUser): Observable<any> {
-    let resource = 'programProgramStages';
+    const resource = 'programProgramStages';
     let attribute = 'programId';
     let attributeValue = [];
     attributeValue.push(programId);
@@ -825,7 +850,7 @@ export class ProgramsProvider {
    * @returns {Observable<any>}
    */
   getOrganisationUnitsinPrograms(programId, dataBaseName): Observable<any> {
-    let resource = 'programOrganisationUnits';
+    const resource = 'programOrganisationUnits';
     let attributeValue = [programId];
     let attributeKey = 'programId';
     return new Observable(observer => {
@@ -855,7 +880,7 @@ export class ProgramsProvider {
    * @returns {Observable<any>}
    */
   getProgramRules(programId, dataBaseName): Observable<any> {
-    let resource = 'programProgramRules';
+    const resource = 'programProgramRules';
     let attributeValue = [programId];
     let attributeKey = 'programId';
     return new Observable(observer => {
@@ -885,7 +910,7 @@ export class ProgramsProvider {
    * @returns {Observable<any>}
    */
   getProgramRulesVariables(programId, dataBaseName): Observable<any> {
-    let resource = 'programProgramRuleVariables';
+    const resource = 'programProgramRuleVariables';
     let attributeValue = [programId];
     let attributeKey = 'programId';
     return new Observable(observer => {
@@ -915,7 +940,7 @@ export class ProgramsProvider {
    * @returns {Observable<any>}
    */
   getProgramIndicators(programId, dataBaseName): Observable<any> {
-    let resource = 'programIndicators';
+    const resource = 'programIndicators';
     let attributeValue = [programId];
     let attributeKey = 'programId';
     return new Observable(observer => {
@@ -950,7 +975,7 @@ export class ProgramsProvider {
   ): Observable<any> {
     let attributeKey = 'programId';
     let attributeArray = [programId];
-    let resource = 'programTrackedEntityAttributes';
+    const resource = 'programTrackedEntityAttributes';
     return new Observable(observer => {
       this.sqlLite
         .getDataFromTableByAttributes(
@@ -982,7 +1007,7 @@ export class ProgramsProvider {
     currentUser
   ): Observable<any> {
     let attributeKey = 'programTrackedEntityAttributeId';
-    let resource = 'trackedEntityAttribute';
+    const resource = 'trackedEntityAttribute';
     return new Observable(observer => {
       this.sqlLite
         .getDataFromTableByAttributes(
