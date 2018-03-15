@@ -15,11 +15,16 @@
   <div *ngIf="!isLoading">
     <ion-searchbar (ionInput)="getItems($event)" placeholder="{{'Search'|translate}}"></ion-searchbar>
     <ion-grid>
-      <ion-row *ngIf="arrayOfOptions.length > 0 && arrayOfOptions[currentPage]">
-        <div class="animated fadeIn">
-          <div *ngFor="let option of arrayOfOptions[currentPage];trackBy: trackByFn" class="animate">
-            {{ option.name }}
+      <ion-row>
+        <div *ngIf="(arrayOfOptions.length > 0 && arrayOfOptions[currentPage])">
+          <div class="animated fadeIn">
+            <div *ngFor="let option of arrayOfOptions[currentPage];trackBy: trackByFn" class="animate">
+              {{ option.name }}
+            </div>
           </div>
+        </div>
+        <div *ngIf="!(arrayOfOptions.length > 0 && arrayOfOptions[currentPage])">
+          <!-- <empty-list-notification [emptyListMessage]="'There is no option found'"></empty-list-notification> -->
         </div>
       </ion-row>
     </ion-grid>
@@ -35,7 +40,8 @@
         <button ion-button clear color="font-color" text-capitalize>
           {{ (arrayOfOptions.length > 0)? currentPage + 1 : 0 }}/ {{ arrayOfOptions.length }}
         </button>
-        <button ion-button outline [disabled]="(currentPage + 1 == arrayOfOptions.length)" color="font-color" text-capitalize (click)="nextPage()">
+        <button ion-button outline [disabled]="!(this.currentPage < this.arrayOfOptions.length)" color="font-color" text-capitalize
+          (click)="nextPage()">
           <ion-icon name="skip-forward"></ion-icon>
         </button>
       </ion-col>

@@ -18,7 +18,6 @@ export class OptionListModalPage implements OnInit {
   arrayOfOptions: Array<any>;
   arrayOfOptionsBackup: Array<any>;
   isLoading: boolean;
-  shouldFilter: boolean;
   currentPage: number;
 
   constructor(private navParams: NavParams, private viewCtrl: ViewController) {
@@ -38,9 +37,25 @@ export class OptionListModalPage implements OnInit {
     if (options) {
       this.arrayOfOptions = this.getOptionsWithPaginations(options);
       this.arrayOfOptionsBackup = this.arrayOfOptions;
-      this.currentPage = 71;
+      this.currentPage = 20;
     }
     this.isLoading = false;
+  }
+
+  getItems(event: any) {
+    let value = event.target.value;
+    if (value && value.trim() != '') {
+      const options = this.navParams.get('options').filter((option: any) => {
+        return option.name.toLowerCase().indexOf(value.toLowerCase()) > -1;
+      });
+      this.arrayOfOptions = this.getOptionsWithPaginations(options);
+      this.currentPage = 0;
+    } else {
+      if (this.arrayOfOptions.length != this.arrayOfOptionsBackup.length) {
+        this.arrayOfOptions = this.arrayOfOptionsBackup;
+        this.currentPage = 0;
+      }
+    }
   }
 
   dismiss() {
@@ -61,29 +76,22 @@ export class OptionListModalPage implements OnInit {
 
   getOptionsWithPaginations(options) {
     let pageNumber = 0;
-    const pageSize = 200;
+    const pageSize = 500;
     let array = [];
-    while (this.paginate(options, pageSize, pageNumber).length > 0) {
-      array.push(this.paginate(options, pageSize, pageNumber));
+    while (
+      this.getSubArryByPagination(options, pageSize, pageNumber).length > 0
+    ) {
+      array.push(this.getSubArryByPagination(options, pageSize, pageNumber));
       pageNumber++;
     }
     return array;
   }
 
-  paginate(array, pageSize, pageNumber) {
+  getSubArryByPagination(array, pageSize, pageNumber) {
     return array.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
   }
 
   trackByFn(index, item) {
     return item.id;
-  }
-
-  getItems(event: any) {
-    let value = event.target.value;
-    if (value && value.trim() != '') {
-      this.shouldFilter = true;
-    } else {
-      this.shouldFilter = false;
-    }
   }
 }
