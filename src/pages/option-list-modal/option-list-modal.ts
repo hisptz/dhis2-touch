@@ -19,6 +19,7 @@ export class OptionListModalPage implements OnInit {
   arrayOfOptionsBackup: Array<any>;
   isLoading: boolean;
   currentPage: number;
+  currentValue: string;
 
   constructor(private navParams: NavParams, private viewCtrl: ViewController) {
     this.arrayOfOptions = [];
@@ -26,10 +27,12 @@ export class OptionListModalPage implements OnInit {
     this.title = 'Options selections';
     this.isLoading = true;
     this.currentPage = 1;
+    this.currentValue = '';
   }
 
   ngOnInit() {
     const title = this.navParams.get('title');
+    //this.currentValue = this.navParams.get('currentValue');
     const options = this.navParams.get('options');
     if (title) {
       this.title = title;
@@ -57,6 +60,10 @@ export class OptionListModalPage implements OnInit {
     }
   }
 
+  selectOption(option) {
+    this.viewCtrl.dismiss(option);
+  }
+
   dismiss() {
     this.viewCtrl.dismiss();
   }
@@ -73,7 +80,7 @@ export class OptionListModalPage implements OnInit {
 
   getOptionsWithPaginations(options) {
     let pageNumber = 0;
-    const pageSize = 500;
+    const pageSize = 300;
     let array = [];
     while (
       this.getSubArryByPagination(options, pageSize, pageNumber).length > 0

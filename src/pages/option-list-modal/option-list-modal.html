@@ -2,8 +2,8 @@
   <ion-navbar color="primary">
     <ion-title> {{ title }}</ion-title>
     <ion-buttons end (click)="dismiss()">
-      <button ion-button icon-only>
-        <ion-icon name='close' color="danger"></ion-icon>
+      <button ion-button clear color="danger" text-capitalize>
+        <ion-icon name='close'></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -18,13 +18,12 @@
       <ion-row>
         <div *ngIf="(arrayOfOptions.length > 0 && arrayOfOptions[currentPage - 1])">
           <div class="animated fadeIn">
-            <div *ngFor="let option of arrayOfOptions[currentPage - 1];trackBy: trackByFn" class="animate">
-              {{ option.name }}
-            </div>
+            <ion-list>
+              <ion-item *ngFor="let option of arrayOfOptions[currentPage - 1];trackBy: trackByFn" (click)="selectOption(option)">
+                <span ion-text>{{ option.name }}</span>
+              </ion-item>
+            </ion-list>
           </div>
-        </div>
-        <div *ngIf="!(arrayOfOptions.length > 0 && arrayOfOptions[currentPage - 1])">
-          <!-- <empty-list-notification [emptyListMessage]="'There is no option found'"></empty-list-notification> -->
         </div>
       </ion-row>
     </ion-grid>
