@@ -182,7 +182,9 @@ export class EventCapturePage implements OnInit {
   }
 
   openOrganisationUnitTree() {
-    let modal = this.modalCtrl.create('OrganisationUnitSelectionPage', {});
+    let modal = this.modalCtrl.create('OrganisationUnitSelectionPage', {
+      filterType: 'WITHOUT_REGISTRATION'
+    });
     modal.onDidDismiss((selectedOrgUnit: any) => {
       if (selectedOrgUnit && selectedOrgUnit.id) {
         this.selectedOrgUnit = selectedOrgUnit;

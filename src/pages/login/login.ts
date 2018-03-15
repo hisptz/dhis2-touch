@@ -22,6 +22,7 @@ import { Store } from '@ngrx/store';
 import { ApplicationState } from '../../store';
 import { LoadedCurrentUser } from '../../store/actions/currentUser.actons';
 import { EncryptionProvider } from '../../providers/encryption/encryption';
+import { NetworkAvailabilityProvider } from '../../providers/network-availability/network-availability';
 
 /**
  * Generated class for the LoginPage page.
@@ -54,6 +55,7 @@ export class LoginPage implements OnInit {
   translationCodes: Array<any> = [];
   isTranslationListOpen: boolean;
   isLocalInstancesListOpen: boolean;
+  isNetworkAvailable: boolean;
 
   constructor(
     public navCtrl: NavController,
@@ -74,7 +76,8 @@ export class LoginPage implements OnInit {
     private programsProvider: ProgramsProvider,
     private programStageSectionProvider: ProgramStageSectionsProvider,
     private localInstanceProvider: LocalInstanceProvider,
-    private appTranslationProvider: AppTranslationProvider
+    private appTranslationProvider: AppTranslationProvider,
+    private networkProvider: NetworkAvailabilityProvider
   ) {}
 
   ngOnInit() {
@@ -180,7 +183,7 @@ export class LoginPage implements OnInit {
       this.currentUser.username &&
       this.currentUser.password
     ) {
-      delete this.currentUser.dhisVersion;
+      this.isNetworkAvailable = this.networkProvider.getNetWorkStatus().isAvailable;
       let currentResourceType = 'communication';
       this.progressTracker = {};
       let resource = 'Authenticating user';
@@ -191,165 +194,183 @@ export class LoginPage implements OnInit {
       this.reInitiateProgressTrackerObject(this.currentUser);
       this.progressTracker[currentResourceType].message =
         'Establishing connection to server';
-      this.UserProvider.authenticateUser(this.currentUser).subscribe(
-        (response: any) => {
-          response = this.getResponseData(response);
-          this.currentUser = response.user;
-          this.loggedInInInstance = this.currentUser.serverUrl;
-          if (this.currentUser.serverUrl.split('://').length > 1) {
-            this.loggedInInInstance = this.currentUser.serverUrl.split(
-              '://'
-            )[1];
-          }
-          this.currentUser.authorizationKey = btoa(
-            this.currentUser.username + ':' + this.currentUser.password
-          );
-          this.currentUser.currentDatabase = this.AppProvider.getDataBaseName(
-            this.currentUser.serverUrl,
-            this.currentUser.username
-          );
-          this.reInitiateProgressTrackerObject(this.currentUser);
-          this.updateProgressTracker(resource);
-          resource = 'Discovering system information';
-          if (this.isLoginProcessActive) {
-            this.progressTracker[currentResourceType].message =
-              'Discovering system information';
-            this.HttpClientProvider.get(
-              '/api/system/info',
-              false,
-              this.currentUser
-            ).subscribe(
-              (response: any) => {
-                this.UserProvider.setCurrentUserSystemInformation(
-                  JSON.parse(response.data)
-                ).subscribe(
-                  (dhisVersion: string) => {
-                    this.currentUser.dhisVersion = dhisVersion;
-                    this.updateProgressTracker(resource);
-                    if (this.isLoginProcessActive) {
-                      this.progressTracker[currentResourceType].message =
-                        'Discovering current user authorities';
-                      this.UserProvider.getUserAuthorities(
-                        this.currentUser
-                      ).subscribe(
-                        (response: any) => {
-                          this.currentUser.id = response.id;
-                          this.currentUser.name = response.name;
-                          this.currentUser.authorities = response.authorities;
-                          this.currentUser.dataViewOrganisationUnits =
-                            response.dataViewOrganisationUnits;
-                          resource = 'Preparing local storage';
-                          this.progressTracker[currentResourceType].message =
-                            'Preparing local storage';
-                          this.sqlLite
-                            .generateTables(this.currentUser.currentDatabase)
-                            .subscribe(
-                              () => {
-                                this.UserProvider.getUserDataFromServer(
-                                  this.currentUser,
-                                  true
-                                ).subscribe(
-                                  (response: any) => {
-                                    response = this.getResponseData(response);
-                                    this.UserProvider.setUserData(
-                                      JSON.parse(response.data)
-                                    ).subscribe(
-                                      userData => {
-                                        this.updateProgressTracker(resource);
-                                        this.hasUserAuthenticated = true;
-                                        this.downloadingOrganisationUnits(
-                                          userData
-                                        );
-                                        this.downloadingDataSets();
-                                        this.downloadingSections();
-                                        this.downloadingDataElements();
-                                        this.downloadingSmsCommands();
-                                        this.downloadingPrograms();
-                                        this.downloadingProgramStageSections();
-                                        this.downloadingIndicators();
-                                        this.downloadingStandardReports();
-                                        this.downloadingConstants();
-                                      },
-                                      error => {}
-                                    );
-                                  },
-                                  error => {
-                                    this.cancelLoginProcess(
-                                      this.cancelLoginProcessData
-                                    );
-                                    this.AppProvider.setNormalNotification(
-                                      'Fail to save current user information'
-                                    );
-                                    console.error(
-                                      'error : ' + JSON.stringify(error)
-                                    );
-                                  }
-                                );
-                              },
-                              error => {
-                                this.cancelLoginProcess(
-                                  this.cancelLoginProcessData
-                                );
-                                this.AppProvider.setNormalNotification(
-                                  'Fail to prepare local storage'
-                                );
-                                console.error(
-                                  'error : ' + JSON.stringify(error)
-                                );
-                              }
-                            );
-                        },
-                        error => {
-                          this.cancelLoginProcess(this.cancelLoginProcessData);
-                          this.AppProvider.setNormalNotification(
-                            'Fail to discover user authorities'
-                          );
-                          console.error('error : ' + JSON.stringify(error));
-                        }
-                      );
-                    }
-                  },
-                  error => {
-                    this.cancelLoginProcess(this.cancelLoginProcessData);
-                    this.AppProvider.setNormalNotification(
-                      'Fail to discover user authorities'
-                    );
-                    console.error('error : ' + JSON.stringify(error));
-                  }
-                );
-              },
-              error => {
-                this.cancelLoginProcess(this.cancelLoginProcessData);
-                this.AppProvider.setNormalNotification(
-                  'Fail to discover system information'
-                );
-                console.error('error : ' + JSON.stringify(error));
-              }
+      if (!this.isNetworkAvailable) {
+        this.UserProvider.offlineUserAuthentication(this.currentUser).subscribe(
+          (user: CurrentUser) => {
+            this.currentUser.authorizationKey = btoa(
+              this.currentUser.username + ':' + this.currentUser.password
             );
-          }
-        },
-        (error: any) => {
-          if (error.status == 0) {
-            this.AppProvider.setNormalNotification(
-              'Please check your network connectivity'
-            );
-          } else if (error.status == 401) {
-            this.AppProvider.setNormalNotification(
-              'You have enter wrong username or password or server address'
-            );
-          } else if (error.status == 404) {
-            console.log(JSON.stringify(error));
-            this.AppProvider.setNormalNotification(
-              'Please check server address, or contact your help desk'
-            );
-          } else if (error.error) {
+            this.setLandingPage(this.currentUser);
+          },
+          error => {
+            this.cancelLoginProcess(this.cancelLoginProcessData);
             this.AppProvider.setNormalNotification(error.error);
-          } else {
-            this.AppProvider.setNormalNotification(JSON.stringify(error));
           }
-          this.cancelLoginProcess(this.cancelLoginProcessData);
-        }
-      );
+        );
+      } else {
+        delete this.currentUser.dhisVersion;
+        this.UserProvider.authenticateUser(this.currentUser).subscribe(
+          (response: any) => {
+            response = this.getResponseData(response);
+            this.currentUser = response.user;
+            this.loggedInInInstance = this.currentUser.serverUrl;
+            if (this.currentUser.serverUrl.split('://').length > 1) {
+              this.loggedInInInstance = this.currentUser.serverUrl.split(
+                '://'
+              )[1];
+            }
+            this.currentUser.authorizationKey = btoa(
+              this.currentUser.username + ':' + this.currentUser.password
+            );
+            this.currentUser.currentDatabase = this.AppProvider.getDataBaseName(
+              this.currentUser.serverUrl,
+              this.currentUser.username
+            );
+            this.reInitiateProgressTrackerObject(this.currentUser);
+            this.updateProgressTracker(resource);
+            resource = 'Discovering system information';
+            if (this.isLoginProcessActive) {
+              this.progressTracker[currentResourceType].message =
+                'Discovering system information';
+              this.HttpClientProvider.get(
+                '/api/system/info',
+                false,
+                this.currentUser
+              ).subscribe(
+                (response: any) => {
+                  this.UserProvider.setCurrentUserSystemInformation(
+                    JSON.parse(response.data)
+                  ).subscribe(
+                    (dhisVersion: string) => {
+                      this.currentUser.dhisVersion = dhisVersion;
+                      this.updateProgressTracker(resource);
+                      if (this.isLoginProcessActive) {
+                        this.progressTracker[currentResourceType].message =
+                          'Discovering current user authorities';
+                        this.UserProvider.getUserAuthorities(
+                          this.currentUser
+                        ).subscribe(
+                          (response: any) => {
+                            this.currentUser.id = response.id;
+                            this.currentUser.name = response.name;
+                            this.currentUser.authorities = response.authorities;
+                            this.currentUser.dataViewOrganisationUnits =
+                              response.dataViewOrganisationUnits;
+                            resource = 'Preparing local storage';
+                            this.progressTracker[currentResourceType].message =
+                              'Preparing local storage';
+                            this.sqlLite
+                              .generateTables(this.currentUser.currentDatabase)
+                              .subscribe(
+                                () => {
+                                  this.UserProvider.getUserDataFromServer(
+                                    this.currentUser,
+                                    true
+                                  ).subscribe(
+                                    (response: any) => {
+                                      response = this.getResponseData(response);
+                                      this.UserProvider.setUserData(
+                                        JSON.parse(response.data)
+                                      ).subscribe(
+                                        userData => {
+                                          this.updateProgressTracker(resource);
+                                          this.hasUserAuthenticated = true;
+                                          this.downloadingOrganisationUnits(
+                                            userData
+                                          );
+                                          this.downloadingDataSets();
+                                          this.downloadingSections();
+                                          this.downloadingDataElements();
+                                          this.downloadingSmsCommands();
+                                          this.downloadingPrograms();
+                                          this.downloadingProgramStageSections();
+                                          this.downloadingIndicators();
+                                          this.downloadingStandardReports();
+                                          this.downloadingConstants();
+                                        },
+                                        error => {}
+                                      );
+                                    },
+                                    error => {
+                                      this.cancelLoginProcess(
+                                        this.cancelLoginProcessData
+                                      );
+                                      this.AppProvider.setNormalNotification(
+                                        'Fail to save current user information'
+                                      );
+                                      console.error(
+                                        'error : ' + JSON.stringify(error)
+                                      );
+                                    }
+                                  );
+                                },
+                                error => {
+                                  this.cancelLoginProcess(
+                                    this.cancelLoginProcessData
+                                  );
+                                  this.AppProvider.setNormalNotification(
+                                    'Fail to prepare local storage'
+                                  );
+                                  console.error(
+                                    'error : ' + JSON.stringify(error)
+                                  );
+                                }
+                              );
+                          },
+                          error => {
+                            this.cancelLoginProcess(
+                              this.cancelLoginProcessData
+                            );
+                            this.AppProvider.setNormalNotification(
+                              'Fail to discover user authorities'
+                            );
+                            console.error('error : ' + JSON.stringify(error));
+                          }
+                        );
+                      }
+                    },
+                    error => {
+                      this.cancelLoginProcess(this.cancelLoginProcessData);
+                      this.AppProvider.setNormalNotification(
+                        'Fail to discover user authorities'
+                      );
+                      console.error('error : ' + JSON.stringify(error));
+                    }
+                  );
+                },
+                error => {
+                  this.cancelLoginProcess(this.cancelLoginProcessData);
+                  this.AppProvider.setNormalNotification(
+                    'Fail to discover system information'
+                  );
+                  console.error('error : ' + JSON.stringify(error));
+                }
+              );
+            }
+          },
+          (error: any) => {
+            if (error.status == 0) {
+              this.AppProvider.setNormalNotification(
+                'Please check your network connectivity'
+              );
+            } else if (error.status == 401) {
+              this.AppProvider.setNormalNotification(
+                'You have enter wrong username or password or server address'
+              );
+            } else if (error.status == 404) {
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Please check server address, or contact your help desk'
+              );
+            } else if (error.error) {
+              this.AppProvider.setNormalNotification(error.error);
+            } else {
+              this.AppProvider.setNormalNotification(JSON.stringify(error));
+            }
+            this.cancelLoginProcess(this.cancelLoginProcessData);
+          }
+        );
+      }
     } else {
       this.cancelLoginProcess(this.cancelLoginProcessData);
       this.AppProvider.setNormalNotification(
@@ -883,6 +904,9 @@ export class LoginPage implements OnInit {
     this.smsCommandProvider
       .checkAndGenerateSmsCommands(currentUser)
       .subscribe(() => {}, error => {});
+    currentUser.hashedKeyForOfflineAuthentication = this.encryption.getHashedKeyForOfflineAuthentication(
+      currentUser
+    );
     currentUser.password = this.encryption.encode(currentUser.password);
     this.store.dispatch(new LoadedCurrentUser(currentUser));
     if (
@@ -1068,6 +1092,7 @@ export class LoginPage implements OnInit {
         }
       });
     });
+    console.log('completedTrackedProcess : ' + completedTrackedProcess);
     return completedTrackedProcess;
   }
 }

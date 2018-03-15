@@ -1,18 +1,18 @@
 <ion-header>
   <ion-toolbar color="primary">
+    <ion-buttons left>
+      <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
+        &nbsp;&nbsp;&nbsp;
+        <ion-icon name="arrow-back"></ion-icon>
+        &nbsp;&nbsp;
+      </button>
+    </ion-buttons>
     <ion-title>
       <span [translate]="'Program selection'"></span>
     </ion-title>
-    <ion-buttons start>
-      <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
-        <ion-icon name="close"></ion-icon>
-      </button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
-
   <ion-searchbar animated="true" (ionInput)="getFilteredList($event)" placeholder="{{'Search'|translate }}"></ion-searchbar>
   <ion-grid>
     <ion-row>

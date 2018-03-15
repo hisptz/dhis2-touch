@@ -204,7 +204,9 @@ export class TrackerCapturePage implements OnInit {
   }
 
   openOrganisationUnitTree() {
-    let modal = this.modalCtrl.create('OrganisationUnitSelectionPage', {});
+    let modal = this.modalCtrl.create('OrganisationUnitSelectionPage', {
+      filterType: 'WITH_REGISTRATION'
+    });
     modal.onDidDismiss((selectedOrgUnit: any) => {
       if (selectedOrgUnit && selectedOrgUnit.id) {
         this.selectedOrgUnit = selectedOrgUnit;
