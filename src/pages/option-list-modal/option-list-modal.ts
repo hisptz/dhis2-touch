@@ -15,13 +15,18 @@ import { IonicPage, NavParams, ViewController } from 'ionic-angular';
 })
 export class OptionListModalPage implements OnInit {
   title: string;
-  options: Array<any>;
+  arrayOfOptions: Array<any>;
+  arrayOfOptionsBackup: Array<any>;
   isLoading: boolean;
+  shouldFilter: boolean;
+  currentPage: number;
 
   constructor(private navParams: NavParams, private viewCtrl: ViewController) {
-    this.options = [];
+    this.arrayOfOptions = [];
+    this.arrayOfOptionsBackup = [];
     this.title = 'Options selections';
     this.isLoading = true;
+    this.currentPage = 0;
   }
 
   ngOnInit() {
@@ -31,7 +36,9 @@ export class OptionListModalPage implements OnInit {
       this.title = title;
     }
     if (options) {
-      this.options = options;
+      this.arrayOfOptions = this.getOptionsWithPaginations(options);
+      this.arrayOfOptionsBackup = this.arrayOfOptions;
+      this.currentPage = 71;
     }
     this.isLoading = false;
   }
@@ -40,5 +47,43 @@ export class OptionListModalPage implements OnInit {
     this.viewCtrl.dismiss();
   }
 
-  getItems(event: any) {}
+  previousPage() {
+    if (this.currentPage > -1) {
+      this.currentPage--;
+    }
+  }
+
+  nextPage() {
+    if (this.currentPage < this.arrayOfOptions.length) {
+      this.currentPage++;
+    }
+  }
+
+  getOptionsWithPaginations(options) {
+    let pageNumber = 0;
+    const pageSize = 200;
+    let array = [];
+    while (this.paginate(options, pageSize, pageNumber).length > 0) {
+      array.push(this.paginate(options, pageSize, pageNumber));
+      pageNumber++;
+    }
+    return array;
+  }
+
+  paginate(array, pageSize, pageNumber) {
+    return array.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
+  }
+
+  trackByFn(index, item) {
+    return item.id;
+  }
+
+  getItems(event: any) {
+    let value = event.target.value;
+    if (value && value.trim() != '') {
+      this.shouldFilter = true;
+    } else {
+      this.shouldFilter = false;
+    }
+  }
 }

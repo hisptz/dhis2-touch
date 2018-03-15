@@ -3,7 +3,7 @@
     <ion-title> {{ title }}</ion-title>
     <ion-buttons end (click)="dismiss()">
       <button ion-button icon-only>
-        <ion-icon name='close'></ion-icon>
+        <ion-icon name='close' color="danger"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -15,17 +15,36 @@
   <div *ngIf="!isLoading">
     <ion-searchbar (ionInput)="getItems($event)" placeholder="{{'Search'|translate}}"></ion-searchbar>
     <ion-grid>
-      <ion-row>
-        {{ options |json}}
+      <ion-row *ngIf="arrayOfOptions.length > 0 && arrayOfOptions[currentPage]">
+        <div class="animated fadeIn">
+          <div *ngFor="let option of arrayOfOptions[currentPage];trackBy: trackByFn" class="animate">
+            {{ option.name }}
+          </div>
+        </div>
       </ion-row>
     </ion-grid>
   </div>
 </ion-content>
 <ion-footer>
-  <ion-buttons end (click)="dismiss()">
-    <button ion-button outline color="danger" text-capitalize>
-      <span [translate]="'Cancel'"></span>
-    </button>
-  </ion-buttons>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-10>
+        <button ion-button outline [disabled]="(currentPage == 0)" color="font-color" text-capitalize (click)="previousPage()">
+          <ion-icon name="skip-backward"></ion-icon>
+        </button>
+        <button ion-button clear color="font-color" text-capitalize>
+          {{ (arrayOfOptions.length > 0)? currentPage + 1 : 0 }}/ {{ arrayOfOptions.length }}
+        </button>
+        <button ion-button outline [disabled]="(currentPage + 1 == arrayOfOptions.length)" color="font-color" text-capitalize (click)="nextPage()">
+          <ion-icon name="skip-forward"></ion-icon>
+        </button>
+      </ion-col>
+      <ion-col>
+        <button ion-button outline color="danger" text-capitalize (click)="dismiss()">
+          <ion-icon name='close'></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-footer>
