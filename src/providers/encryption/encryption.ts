@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Md5 } from 'md5-typescript';
+import { CurrentUser } from '../../models/currentUser';
 /*
   Generated class for the EncryptionProvider provider.
 
@@ -10,8 +11,9 @@ import { Md5 } from 'md5-typescript';
 export class EncryptionProvider {
   constructor() {}
 
-  getHashPassowrd(password) {
-    return Md5.init(password);
+  getHashedPassowrd(user: CurrentUser) {
+    const hashedPassword = Md5.init(user.password);
+    return hashedPassword;
   }
 
   /**

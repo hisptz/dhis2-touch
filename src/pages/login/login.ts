@@ -56,6 +56,7 @@ export class LoginPage implements OnInit {
   translationCodes: Array<any> = [];
   isTranslationListOpen: boolean;
   isLocalInstancesListOpen: boolean;
+  isNetworkAvailable: boolean;
 
   constructor(
     public navCtrl: NavController,
@@ -186,7 +187,7 @@ export class LoginPage implements OnInit {
       this.currentUser.username &&
       this.currentUser.password
     ) {
-      const { isAvailable } = this.networkProvider.getNetWorkStatus();
+      this.isNetworkAvailable = this.networkProvider.getNetWorkStatus().isAvailable;
       let currentResourceType = 'communication';
       this.progressTracker = {};
       let resource = 'Authenticating user';
@@ -197,7 +198,7 @@ export class LoginPage implements OnInit {
       this.reInitiateProgressTrackerObject(this.currentUser);
       this.progressTracker[currentResourceType].message =
         'Establishing connection to server';
-      if (!isAvailable) {
+      if (!this.isNetworkAvailable) {
         this.UserProvider.offlineUserAuthentication(this.currentUser).subscribe(
           (user: CurrentUser) => {
             this.currentUser.authorizationKey = btoa(
@@ -206,6 +207,7 @@ export class LoginPage implements OnInit {
             this.setLandingPage(this.currentUser);
           },
           error => {
+            this.cancelLoginProcess(this.cancelLoginProcessData);
             this.AppProvider.setNormalNotification(error.error);
           }
         );
@@ -907,9 +909,7 @@ export class LoginPage implements OnInit {
     this.smsCommandProvider
       .checkAndGenerateSmsCommands(currentUser)
       .subscribe(() => {}, error => {});
-    currentUser.hashpassword = this.encryption.getHashPassowrd(
-      currentUser.password
-    );
+    currentUser.hashpassword = this.encryption.getHashedPassowrd(currentUser);
     currentUser.password = this.encryption.encode(currentUser.password);
     this.store.dispatch(new LoadedCurrentUser(currentUser));
     if (

@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { HttpClientProvider } from '../http-client/http-client';
 import { CurrentUser } from '../../models/currentUser';
 import { Md5 } from 'md5-typescript';
+import { EncryptionProvider } from '../encryption/encryption';
 
 /*
  Generated class for the UserProvider provider.
@@ -18,7 +19,8 @@ export class UserProvider {
   constructor(
     public storage: Storage,
     public http: HTTP,
-    private httpProvider: HttpClientProvider
+    private httpProvider: HttpClientProvider,
+    private encryptionProvider: EncryptionProvider
   ) {}
 
   /**
@@ -196,7 +198,7 @@ export class UserProvider {
   offlineUserAuthentication(user: CurrentUser): Observable<any> {
     return new Observable(observer => {
       if (user && user.hashpassword) {
-        const hashpassword = Md5.init(user.password);
+        const hashpassword = this.encryptionProvider.getHashedPassowrd(user);
         if (hashpassword == user.hashpassword) {
           observer.next(user);
           observer.complete();
