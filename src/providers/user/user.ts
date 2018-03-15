@@ -5,6 +5,7 @@ import { HTTP } from '@ionic-native/http';
 import { Observable } from 'rxjs/Observable';
 import { HttpClientProvider } from '../http-client/http-client';
 import { CurrentUser } from '../../models/currentUser';
+import { Md5 } from 'md5-typescript';
 
 /*
  Generated class for the UserProvider provider.
@@ -189,6 +190,27 @@ export class UserProvider {
             observer.error(error);
           }
         });
+    });
+  }
+
+  offlineUserAuthentication(user: CurrentUser): Observable<any> {
+    return new Observable(observer => {
+      if (user && user.hashpassword) {
+        const hashpassword = Md5.init(user.password);
+        if (hashpassword == user.hashpassword) {
+          observer.next(user);
+          observer.complete();
+        } else {
+          observer.error({
+            error: 'You have enter wrong username or password or server address'
+          });
+        }
+      } else {
+        observer.error({
+          error:
+            'You can not login offline, please make sure you have network and try in again'
+        });
+      }
     });
   }
 
