@@ -8,7 +8,7 @@ export interface CurrentUser {
   currentLanguage: string;
   isLogin?: boolean;
   authorizationKey?: string;
-  hashpassword?: string;
+  hashedKeyForOfflineAuthentication?: string;
   currentDatabase?: string;
   dhisVersion?: string;
   authorities?: Array<string>;

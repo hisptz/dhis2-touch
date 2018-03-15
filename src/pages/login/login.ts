@@ -909,7 +909,9 @@ export class LoginPage implements OnInit {
     this.smsCommandProvider
       .checkAndGenerateSmsCommands(currentUser)
       .subscribe(() => {}, error => {});
-    currentUser.hashpassword = this.encryption.getHashedPassowrd(currentUser);
+    currentUser.hashedKeyForOfflineAuthentication = this.encryption.getHashedKeyForOfflineAuthentication(
+      currentUser
+    );
     currentUser.password = this.encryption.encode(currentUser.password);
     this.store.dispatch(new LoadedCurrentUser(currentUser));
     if (
@@ -1096,6 +1098,7 @@ export class LoginPage implements OnInit {
         }
       });
     });
+    console.log('completedTrackedProcess : ' + completedTrackedProcess);
     return completedTrackedProcess;
   }
 }

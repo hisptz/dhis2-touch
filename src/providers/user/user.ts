@@ -5,7 +5,6 @@ import { HTTP } from '@ionic-native/http';
 import { Observable } from 'rxjs/Observable';
 import { HttpClientProvider } from '../http-client/http-client';
 import { CurrentUser } from '../../models/currentUser';
-import { Md5 } from 'md5-typescript';
 import { EncryptionProvider } from '../encryption/encryption';
 
 /*
@@ -197,9 +196,14 @@ export class UserProvider {
 
   offlineUserAuthentication(user: CurrentUser): Observable<any> {
     return new Observable(observer => {
-      if (user && user.hashpassword) {
-        const hashpassword = this.encryptionProvider.getHashedPassowrd(user);
-        if (hashpassword == user.hashpassword) {
+      if (user && user.hashedKeyForOfflineAuthentication) {
+        const hashedKeyForOfflineAuthentication = this.encryptionProvider.getHashedKeyForOfflineAuthentication(
+          user
+        );
+        if (
+          hashedKeyForOfflineAuthentication ==
+          user.hashedKeyForOfflineAuthentication
+        ) {
           observer.next(user);
           observer.complete();
         } else {

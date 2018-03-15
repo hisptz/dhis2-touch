@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Md5 } from 'md5-typescript';
 import { CurrentUser } from '../../models/currentUser';
 /*
   Generated class for the EncryptionProvider provider.
@@ -11,8 +10,13 @@ import { CurrentUser } from '../../models/currentUser';
 export class EncryptionProvider {
   constructor() {}
 
-  getHashedPassowrd(user: CurrentUser) {
-    const hashedPassword = Md5.init(user.password);
+  getHashedKeyForOfflineAuthentication(user: CurrentUser) {
+    const serverUrlArray = user.serverUrl.split('://');
+    let urlWithoutHttp =
+      serverUrlArray.length > 1 ? serverUrlArray[1] : serverUrlArray[0];
+    const hashedPassword = this.encode(
+      urlWithoutHttp + ':' + user.username + ':' + user.password
+    );
     return hashedPassword;
   }
 
