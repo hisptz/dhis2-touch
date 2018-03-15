@@ -17,69 +17,83 @@
     </ion-row>
     <ion-row *ngIf="isLoginProcessActive" [ngClass]="animationEffect.progressBar">
       <ion-col>
-        <ion-list>
-          <ion-item>
-            <div style="text-align: center" item-left>
-              <div *ngIf="progressTracker.communication.passStepCount == progressTracker.communication.count">
-                <ion-icon name="done-all" color="favorite"></ion-icon>
+        <div *ngIf="!isNetworkAvailable">
+          <ion-list>
+            <ion-item>
+              <div style="text-align: center" item-left>
+                <div>
+                  <loading loadingSize="small"></loading>
+                </div>
               </div>
-              <div *ngIf="progressTracker.communication.passStepCount != progressTracker.communication.count">
-                <loading loadingSize="small"></loading>
+              <span text-wrap [translate]="'Authenticating current user offline'"></span>
+            </ion-item>
+          </ion-list>
+        </div>
+        <div *ngIf="isNetworkAvailable">
+          <ion-list>
+            <ion-item>
+              <div style="text-align: center" item-left>
+                <div *ngIf="progressTracker.communication.passStepCount == progressTracker.communication.count">
+                  <ion-icon name="done-all" color="favorite"></ion-icon>
+                </div>
+                <div *ngIf="progressTracker.communication.passStepCount != progressTracker.communication.count">
+                  <loading loadingSize="small"></loading>
+                </div>
               </div>
-            </div>
-            <span text-wrap *ngIf="progressTracker.communication.message !=''" [translate]="progressTracker.communication.message"></span>
-            <span text-wrap *ngIf="progressTracker.communication.message ==''" [translate]="'Establishing connection to server'"></span>
-            <div style="text-align: center" item-right>
-              {{ progressTracker.communication.passStepCount}}/{{ progressTracker.communication.count}}
-            </div>
-          </ion-item>
-          <ion-item>
-            <div style="text-align: center" item-left>
-              <div *ngIf="progressTracker.entryForm.passStepCount == progressTracker.entryForm.count">
-                <ion-icon name="done-all" color="favorite"></ion-icon>
+              <span text-wrap *ngIf="progressTracker.communication.message !=''" [translate]="progressTracker.communication.message"></span>
+              <span text-wrap *ngIf="progressTracker.communication.message ==''" [translate]="'Establishing connection to server'"></span>
+              <div style="text-align: center" item-right>
+                {{ progressTracker.communication.passStepCount}}/{{ progressTracker.communication.count}}
               </div>
-              <div *ngIf="hasUserAuthenticated && progressTracker.entryForm.passStepCount != progressTracker.entryForm.count ">
-                <loading loadingSize="small"></loading>
+            </ion-item>
+            <ion-item>
+              <div style="text-align: center" item-left>
+                <div *ngIf="progressTracker.entryForm.passStepCount == progressTracker.entryForm.count">
+                  <ion-icon name="done-all" color="favorite"></ion-icon>
+                </div>
+                <div *ngIf="hasUserAuthenticated && progressTracker.entryForm.passStepCount != progressTracker.entryForm.count ">
+                  <loading loadingSize="small"></loading>
+                </div>
               </div>
-            </div>
-            <span text-wrap *ngIf="progressTracker.entryForm.message !=''" [translate]="progressTracker.entryForm.message"></span>
-            <span text-wrap *ngIf="progressTracker.entryForm.message ==''" [translate]="'Aggregate metadata'"></span>
-            <div style="text-align: center" item-right>
-              {{ progressTracker.entryForm.passStepCount}}/{{ progressTracker.entryForm.count}}
-            </div>
-          </ion-item>
-          <ion-item>
-            <div style="text-align: center" item-left>
-              <div *ngIf="progressTracker.event.passStepCount == progressTracker.event.count">
-                <ion-icon name="done-all" color="favorite"></ion-icon>
+              <span text-wrap *ngIf="progressTracker.entryForm.message !=''" [translate]="progressTracker.entryForm.message"></span>
+              <span text-wrap *ngIf="progressTracker.entryForm.message ==''" [translate]="'Aggregate metadata'"></span>
+              <div style="text-align: center" item-right>
+                {{ progressTracker.entryForm.passStepCount}}/{{ progressTracker.entryForm.count}}
               </div>
-              <div *ngIf="hasUserAuthenticated && progressTracker.event.passStepCount != progressTracker.event.count">
-                <loading loadingSize="small"></loading>
+            </ion-item>
+            <ion-item>
+              <div style="text-align: center" item-left>
+                <div *ngIf="progressTracker.event.passStepCount == progressTracker.event.count">
+                  <ion-icon name="done-all" color="favorite"></ion-icon>
+                </div>
+                <div *ngIf="hasUserAuthenticated && progressTracker.event.passStepCount != progressTracker.event.count">
+                  <loading loadingSize="small"></loading>
+                </div>
               </div>
-            </div>
-            <span text-wrap *ngIf="progressTracker.event.message !=''" [translate]="progressTracker.event.message"></span>
-            <span text-wrap *ngIf="progressTracker.event.message ==''" [translate]="'Event and tracker metadata'">
-            </span>
-            <div style="text-align: center" item-right>
-              {{ progressTracker.event.passStepCount}}/{{ progressTracker.event.count}}
-            </div>
-          </ion-item>
-          <ion-item>
-            <div style="text-align: center" item-left>
-              <div *ngIf="progressTracker.report.passStepCount == progressTracker.report.count">
-                <ion-icon name="done-all" color="favorite"></ion-icon>
+              <span text-wrap *ngIf="progressTracker.event.message !=''" [translate]="progressTracker.event.message"></span>
+              <span text-wrap *ngIf="progressTracker.event.message ==''" [translate]="'Event and tracker metadata'">
+              </span>
+              <div style="text-align: center" item-right>
+                {{ progressTracker.event.passStepCount}}/{{ progressTracker.event.count}}
               </div>
-              <div *ngIf="hasUserAuthenticated && progressTracker.report.passStepCount != progressTracker.report.count">
-                <loading loadingSize="small"></loading>
+            </ion-item>
+            <ion-item>
+              <div style="text-align: center" item-left>
+                <div *ngIf="progressTracker.report.passStepCount == progressTracker.report.count">
+                  <ion-icon name="done-all" color="favorite"></ion-icon>
+                </div>
+                <div *ngIf="hasUserAuthenticated && progressTracker.report.passStepCount != progressTracker.report.count">
+                  <loading loadingSize="small"></loading>
+                </div>
               </div>
-            </div>
-            <span text-wrap *ngIf="progressTracker.report.message !=''" [translate]="progressTracker.report.message"></span>
-            <span text-wrap *ngIf="progressTracker.report.message ==''" [translate]="'Reports metadata'"></span>
-            <div style="text-align: center" item-right>
-              {{ progressTracker.report.passStepCount}}/{{ progressTracker.report.count}}
-            </div>
-          </ion-item>
-        </ion-list>
+              <span text-wrap *ngIf="progressTracker.report.message !=''" [translate]="progressTracker.report.message"></span>
+              <span text-wrap *ngIf="progressTracker.report.message ==''" [translate]="'Reports metadata'"></span>
+              <div style="text-align: center" item-right>
+                {{ progressTracker.report.passStepCount}}/{{ progressTracker.report.count}}
+              </div>
+            </ion-item>
+          </ion-list>
+        </div>
       </ion-col>
     </ion-row>
 
