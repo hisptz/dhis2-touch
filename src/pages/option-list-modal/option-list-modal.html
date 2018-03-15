@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <ion-title> {{ title }}</ion-title>
     <ion-buttons end (click)="dismiss()">
       <button ion-button icon-only>
@@ -16,14 +16,14 @@
     <ion-searchbar (ionInput)="getItems($event)" placeholder="{{'Search'|translate}}"></ion-searchbar>
     <ion-grid>
       <ion-row>
-        <div *ngIf="(arrayOfOptions.length > 0 && arrayOfOptions[currentPage])">
+        <div *ngIf="(arrayOfOptions.length > 0 && arrayOfOptions[currentPage - 1])">
           <div class="animated fadeIn">
-            <div *ngFor="let option of arrayOfOptions[currentPage];trackBy: trackByFn" class="animate">
+            <div *ngFor="let option of arrayOfOptions[currentPage - 1];trackBy: trackByFn" class="animate">
               {{ option.name }}
             </div>
           </div>
         </div>
-        <div *ngIf="!(arrayOfOptions.length > 0 && arrayOfOptions[currentPage])">
+        <div *ngIf="!(arrayOfOptions.length > 0 && arrayOfOptions[currentPage - 1])">
           <!-- <empty-list-notification [emptyListMessage]="'There is no option found'"></empty-list-notification> -->
         </div>
       </ion-row>
@@ -34,14 +34,13 @@
   <ion-grid>
     <ion-row>
       <ion-col col-10>
-        <button ion-button outline [disabled]="(currentPage == 0)" color="font-color" text-capitalize (click)="previousPage()">
+        <button ion-button outline [disabled]="(currentPage == 1)" color="font-color" text-capitalize (click)="previousPage()">
           <ion-icon name="skip-backward"></ion-icon>
         </button>
         <button ion-button clear color="font-color" text-capitalize>
-          {{ (arrayOfOptions.length > 0)? currentPage + 1 : 0 }}/ {{ arrayOfOptions.length }}
+          {{ (arrayOfOptions.length > 0)? currentPage : 0 }}/ {{ arrayOfOptions.length }}
         </button>
-        <button ion-button outline [disabled]="!(this.currentPage < this.arrayOfOptions.length)" color="font-color" text-capitalize
-          (click)="nextPage()">
+        <button ion-button outline [disabled]="!(currentPage < arrayOfOptions.length)" color="font-color" text-capitalize (click)="nextPage()">
           <ion-icon name="skip-forward"></ion-icon>
         </button>
       </ion-col>

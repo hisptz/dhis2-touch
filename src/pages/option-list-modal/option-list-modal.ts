@@ -25,7 +25,7 @@ export class OptionListModalPage implements OnInit {
     this.arrayOfOptionsBackup = [];
     this.title = 'Options selections';
     this.isLoading = true;
-    this.currentPage = 0;
+    this.currentPage = 1;
   }
 
   ngOnInit() {
@@ -37,7 +37,6 @@ export class OptionListModalPage implements OnInit {
     if (options) {
       this.arrayOfOptions = this.getOptionsWithPaginations(options);
       this.arrayOfOptionsBackup = this.arrayOfOptions;
-      this.currentPage = 20;
     }
     this.isLoading = false;
   }
@@ -49,11 +48,11 @@ export class OptionListModalPage implements OnInit {
         return option.name.toLowerCase().indexOf(value.toLowerCase()) > -1;
       });
       this.arrayOfOptions = this.getOptionsWithPaginations(options);
-      this.currentPage = 0;
+      this.currentPage = 1;
     } else {
       if (this.arrayOfOptions.length != this.arrayOfOptionsBackup.length) {
         this.arrayOfOptions = this.arrayOfOptionsBackup;
-        this.currentPage = 0;
+        this.currentPage = 1;
       }
     }
   }
@@ -63,9 +62,7 @@ export class OptionListModalPage implements OnInit {
   }
 
   previousPage() {
-    if (this.currentPage > -1) {
-      this.currentPage--;
-    }
+    this.currentPage--;
   }
 
   nextPage() {
