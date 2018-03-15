@@ -16,8 +16,10 @@
 
 
 <ion-content>
+  <button ion-button (click)="open()">Open</button>
   <ion-grid>
     <ion-row class="animated fadeIn">
+
 
       <ion-col col-4 [ngClass]="animationEffect.data_entry" (tap)="goToView('data_entry')">
         <div class="apps-contents" padding>

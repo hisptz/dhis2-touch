@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavParams } from 'ionic-angular';
+import { IonicPage, NavParams, ViewController } from 'ionic-angular';
 
 /**
  * Generated class for the OptionListModalPage page.
@@ -14,7 +14,31 @@ import { IonicPage, NavParams } from 'ionic-angular';
   templateUrl: 'option-list-modal.html'
 })
 export class OptionListModalPage implements OnInit {
-  constructor(private navParams: NavParams) {}
+  title: string;
+  options: Array<any>;
+  isLoading: boolean;
 
-  ngOnInit() {}
+  constructor(private navParams: NavParams, private viewCtrl: ViewController) {
+    this.options = [];
+    this.title = 'Options selections';
+    this.isLoading = true;
+  }
+
+  ngOnInit() {
+    const title = this.navParams.get('title');
+    const options = this.navParams.get('options');
+    if (title) {
+      this.title = title;
+    }
+    if (options) {
+      this.options = options;
+    }
+    this.isLoading = false;
+  }
+
+  dismiss() {
+    this.viewCtrl.dismiss();
+  }
+
+  getItems(event: any) {}
 }
