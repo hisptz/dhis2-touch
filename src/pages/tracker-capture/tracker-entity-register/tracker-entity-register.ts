@@ -120,6 +120,7 @@ export class TrackerEntityRegisterPage implements OnInit {
     let today = new Date().toISOString().split('T')[0];
     this.dataObject = {};
     this.trackedEntityAttributeValuesObject = {};
+    this.trackedEntityAttributesSavingStatusClass = {};
     this.incidentDate = today;
     this.enrollmentDate = today;
     this.dashboardWidgets = this.getDashboardWidgets();

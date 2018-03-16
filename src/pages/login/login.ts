@@ -1092,7 +1092,6 @@ export class LoginPage implements OnInit {
         }
       });
     });
-    console.log('completedTrackedProcess : ' + completedTrackedProcess);
     return completedTrackedProcess;
   }
 }
