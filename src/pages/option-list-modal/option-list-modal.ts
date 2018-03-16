@@ -84,7 +84,7 @@ export class OptionListModalPage implements OnInit {
 
   getOptionsWithPaginations(options) {
     let pageNumber = 0;
-    const pageSize = 300;
+    const pageSize = 250;
     let array = [];
     while (
       this.getSubArryByPagination(options, pageSize, pageNumber).length > 0

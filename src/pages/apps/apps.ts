@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, ModalController, ModalOptions } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 
 /**
  * Generated class for the AppsPage page.
@@ -15,10 +15,7 @@ import { NavController, ModalController, ModalOptions } from 'ionic-angular';
 export class AppsPage implements OnInit {
   animationEffect: any;
 
-  constructor(
-    private navCtrl: NavController,
-    private modalCtrl: ModalController
-  ) {}
+  constructor(private navCtrl: NavController) {}
 
   ngOnInit() {
     this.animationEffect = {
@@ -30,29 +27,6 @@ export class AppsPage implements OnInit {
       sync: '',
       settings: ''
     };
-  }
-
-  open() {
-    let options: ModalOptions = {
-      cssClass: 'inset-modal',
-      enableBackdropDismiss: true
-    };
-    let data = {
-      options: this.getOptions(),
-      currentValue: 'Penicillin',
-      title: 'title'
-    };
-    const modal = this.modalCtrl.create(
-      'OptionListModalPage',
-      { data: data },
-      options
-    );
-    modal.onDidDismiss((result: any) => {
-      if (result) {
-        console.log(JSON.stringify(result));
-      }
-    });
-    modal.present();
   }
 
   goToView(key) {
@@ -84,7 +58,7 @@ export class AppsPage implements OnInit {
     this.animationEffect[key] = 'animated bounceIn';
     setTimeout(() => {
       this.animationEffect[key] = '';
-    }, 100);
+    }, 50);
   }
 
   getOptions() {
