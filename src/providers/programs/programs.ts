@@ -38,7 +38,7 @@ export class ProgramsProvider {
    */
   downloadProgramsFromServer(currentUser): Observable<any> {
     let fields =
-      'id,name,displayName,programType,withoutRegistration,trackedEntity[id,displayName],ignoreOverdueEvents,skipOffline,captureCoordinates,enrollmentDateLabel,onlyEnrollOnce,selectIncidentDatesInFuture,incidentDateLabel,useFirstStageDuringRegistration,completeEventsExpiryDays,displayFrontPageList,categoryCombo[id,name,categories[id,name,categoryOptions[name,id,organisationUnits[id]]]],programStages[id,name,executionDateLabel,hideDueDate,allowGenerateNextVisit,blockEntryForm,repeatable,formType,sortOrder,generatedByEnrollmentDate,autoGenerateEvent,captureCoordinates,dueDateLabel,programStageDataElements[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,*,dataElement[id]],programStageSections[id]],organisationUnits[id],programIndicators[id,name,description,expression],translations,attributeValues[value,attribute[name]],validationCriterias,programRuleVariables,programTrackedEntityAttributes[id,mandatory,externalAccess,allowFutureDate,displayInList,sortOrder,trackedEntityAttribute[id,name,code,name,formName,description,confidential,searchScope,translations,inherit,legendSets,optionSet[name,options[name,id,code]]unique,orgunitScope,programScope,displayInListNoProgramaggregationType,displayInListNoProgram,pattern,sortOrderInListNoProgram,generated,displayOnVisitSchedule,valueType,sortOrderInVisitSchedule]],programRules';
+      'id,name,displayName,programType,withoutRegistration,trackedEntityType[id,displayName],trackedEntity[id,displayName],ignoreOverdueEvents,skipOffline,captureCoordinates,enrollmentDateLabel,onlyEnrollOnce,selectIncidentDatesInFuture,incidentDateLabel,useFirstStageDuringRegistration,completeEventsExpiryDays,displayFrontPageList,categoryCombo[id,name,categories[id,name,categoryOptions[name,id,organisationUnits[id]]]],programStages[id,name,executionDateLabel,hideDueDate,allowGenerateNextVisit,blockEntryForm,repeatable,formType,sortOrder,generatedByEnrollmentDate,autoGenerateEvent,captureCoordinates,dueDateLabel,programStageDataElements[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,*,dataElement[id]],programStageSections[id]],organisationUnits[id],programIndicators[id,name,description,expression],translations,attributeValues[value,attribute[name]],validationCriterias,programRuleVariables,programTrackedEntityAttributes[id,mandatory,externalAccess,allowFutureDate,displayInList,sortOrder,trackedEntityAttribute[id,name,code,name,formName,description,confidential,searchScope,translations,inherit,legendSets,optionSet[name,options[name,id,code]]unique,orgunitScope,programScope,displayInListNoProgramaggregationType,displayInListNoProgram,pattern,sortOrderInListNoProgram,generated,displayOnVisitSchedule,valueType,sortOrderInVisitSchedule]],programRules';
     let url =
       '/api/25/' + this.resource + '.json?paging=false&fields=' + fields;
     return new Observable(observer => {
@@ -54,6 +54,18 @@ export class ProgramsProvider {
     });
   }
 
+  getSanitizedPrograms(programs) {
+    let sanitizedPrograms = [];
+    programs.map((program: any) => {
+      if (program && program.trackedEntityType) {
+        program['trackedEntity'] = program.trackedEntityType;
+        delete program.trackedEntityType;
+        sanitizedPrograms.push(program);
+      }
+    });
+    return sanitizedPrograms;
+  }
+
   /**
    *
    * @param programs
@@ -61,28 +73,22 @@ export class ProgramsProvider {
    * @returns {Observable<any>}
    */
   saveProgramsFromServer(programs, currentUser): Observable<any> {
+    const sanitizedPrograms = this.getSanitizedPrograms(programs);
     return new Observable(observer => {
-      if (programs.length == 0) {
-        this.savingProgramProgramRuleVariables(programs, currentUser).subscribe(
-          () => {
-            observer.next();
-            observer.complete();
-          },
-          error => {
-            observer.error(error);
-          }
-        );
+      if (sanitizedPrograms.length == 0) {
+        observer.next();
+        observer.complete();
       } else {
         this.sqlLite
           .insertBulkDataOnTable(
             this.resource,
-            programs,
+            sanitizedPrograms,
             currentUser.currentDatabase
           )
           .subscribe(
             () => {
               this.savingProgramProgramRuleVariables(
-                programs,
+                sanitizedPrograms,
                 currentUser
               ).subscribe(
                 () => {
