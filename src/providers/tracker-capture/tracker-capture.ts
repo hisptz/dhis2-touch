@@ -528,8 +528,6 @@ export class TrackerCaptureProvider {
     return new Observable(observer => {
       let currentProgram = this.programsProvider.lastSelectedProgram;
       let currentOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
-      console.log(JSON.stringify(currentProgram));
-      console.log(JSON.stringify(currentOrgUnit));
       if (!syncStatus) {
         syncStatus = 'not-synced';
       }

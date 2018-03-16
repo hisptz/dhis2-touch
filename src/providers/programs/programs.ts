@@ -60,8 +60,8 @@ export class ProgramsProvider {
       if (program && program.trackedEntityType) {
         program['trackedEntity'] = program.trackedEntityType;
         delete program.trackedEntityType;
-        sanitizedPrograms.push(program);
       }
+      sanitizedPrograms.push(program);
     });
     return sanitizedPrograms;
   }
