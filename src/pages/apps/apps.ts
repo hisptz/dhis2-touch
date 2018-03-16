@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, ModalController } from 'ionic-angular';
+import { NavController, ModalController, ModalOptions } from 'ionic-angular';
 
 /**
  * Generated class for the AppsPage page.
@@ -33,14 +33,25 @@ export class AppsPage implements OnInit {
   }
 
   open() {
-    const modal = this.modalCtrl.create('OptionListModalPage', {options : this.getOptions()}, {
-      cssClass: 'inset-modal'
-    });
-    modal.onDidDismiss((result : any)=>{
-      if(result){
-        console.log(JSON.stringify(result))
+    let options: ModalOptions = {
+      cssClass: 'inset-modal',
+      enableBackdropDismiss: true
+    };
+    let data = {
+      options: this.getOptions(),
+      currentValue: 'Penicillin',
+      title: 'title'
+    };
+    const modal = this.modalCtrl.create(
+      'OptionListModalPage',
+      { data: data },
+      options
+    );
+    modal.onDidDismiss((result: any) => {
+      if (result) {
+        console.log(JSON.stringify(result));
       }
-    })
+    });
     modal.present();
   }
 
@@ -76,8 +87,20 @@ export class AppsPage implements OnInit {
     }, 100);
   }
 
-  getOptions(){
-    return [{"code":"None","name":"None","id":"FvELRchwEUh"},{"code":"Penicillin","name":"Penicillin","id":"kfHfAdZM7Rb"},{"code":"Other medicine - please specify","name":"Other medicine - please specify","id":"PNSFVo0NsBh"},{"code":"Other severe allergy - please specify","name":"Other severe allergy - please specify","id":"QWmvlWyapCP"}]
+  getOptions() {
+    return [
+      { code: 'None', name: 'None', id: 'FvELRchwEUh' },
+      { code: 'Penicillin', name: 'Penicillin', id: 'kfHfAdZM7Rb' },
+      {
+        code: 'Other medicine - please specify',
+        name: 'Other medicine - please specify',
+        id: 'PNSFVo0NsBh'
+      },
+      {
+        code: 'Other severe allergy - please specify',
+        name: 'Other severe allergy - please specify',
+        id: 'QWmvlWyapCP'
+      }
+    ];
   }
-
 }

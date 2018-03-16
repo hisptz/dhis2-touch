@@ -20,7 +20,7 @@
           <div class="animated fadeIn">
             <ion-list>
               <ion-item *ngFor="let option of arrayOfOptions[currentPage - 1];trackBy: trackByFn" (click)="selectOption(option)">
-                <span ion-text>{{ option.name }}</span>
+                <span ion-text [color]="(currentValue && currentValue == option.code) ?'current' : 'font-color'">{{ option.name }}</span>
               </ion-item>
             </ion-list>
           </div>

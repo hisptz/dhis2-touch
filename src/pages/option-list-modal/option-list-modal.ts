@@ -31,15 +31,19 @@ export class OptionListModalPage implements OnInit {
   }
 
   ngOnInit() {
-    const title = this.navParams.get('title');
-    //this.currentValue = this.navParams.get('currentValue');
-    const options = this.navParams.get('options');
+    const data = this.navParams.get('data');
+    const { title } = data;
+    const { currentValue } = data;
+    const { options } = data;
     if (title) {
       this.title = title;
     }
     if (options) {
       this.arrayOfOptions = this.getOptionsWithPaginations(options);
       this.arrayOfOptionsBackup = this.arrayOfOptions;
+    }
+    if (currentValue) {
+      this.currentValue = currentValue;
     }
     this.isLoading = false;
   }
