@@ -32,27 +32,6 @@ export class AppsPage implements OnInit {
     };
   }
 
-  open() {
-    let options: ModalOptions = {
-      cssClass: 'inset-modal',
-      enableBackdropDismiss: true
-    };
-    let data = {
-      ouIdsWithAssigments: ['GvFqTavdpGE'],
-      currentSelectedOrgUnitName: 'Agape CHP',
-      filterType: 'dataSets'
-    };
-    const modal = this.modalCtrl.create(
-      'OrganisationUnitSearchPage',
-      { data: data },
-      options
-    );
-    modal.onDidDismiss((selectedOption: any) => {
-      console.log(JSON.stringify(selectedOption));
-    });
-    modal.present();
-  }
-
   goToView(key) {
     this.applyAnimation(key);
     setTimeout(() => {
