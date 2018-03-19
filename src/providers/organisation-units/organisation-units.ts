@@ -1,8 +1,9 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
-import {SqlLiteProvider} from "../sql-lite/sql-lite";
-import {HttpClientProvider} from "../http-client/http-client";
-import {Observable} from "rxjs/Observable";
+import { SqlLiteProvider } from '../sql-lite/sql-lite';
+import { HttpClientProvider } from '../http-client/http-client';
+import { Observable } from 'rxjs/Observable';
+import { CurrentUser } from '../../models/currentUser';
 
 /*
   Generated class for the OrganisationUnitsProvider provider.
@@ -26,15 +27,16 @@ export interface OrganisationUnitModel {
 
 @Injectable()
 export class OrganisationUnitsProvider {
-
   organisationUnits: OrganisationUnitModel[];
   lastSelectedOrgUnit: OrganisationUnitModel;
   resource: string;
 
-  constructor(private sqlLite: SqlLiteProvider, private HttpClient: HttpClientProvider) {
-    this.resource = "organisationUnits";
+  constructor(
+    private sqlLite: SqlLiteProvider,
+    private HttpClient: HttpClientProvider
+  ) {
+    this.resource = 'organisationUnits';
   }
-
 
   /**
    * reset organisation unit
@@ -50,29 +52,45 @@ export class OrganisationUnitsProvider {
    * @param currentUser
    * @returns {Promise<T>}
    */
-  downloadingOrganisationUnitsFromServer(orgUnitIds, currentUser): Observable<any> {
+  downloadingOrganisationUnitsFromServer(
+    orgUnitIds,
+    currentUser
+  ): Observable<any> {
     let orgUnits = [];
     return new Observable(observer => {
       let counts = 0;
       for (let orgUnitId of orgUnitIds) {
-        let fields = "fields=id,name,path,ancestors[id,name,children[id]],openingDate,closedDate,level,children[id,name,children[id],parent";
-        let filter = "filter=path:ilike:";
-        let url = "/api/25/" + this.resource + ".json?";
-        url += fields + "&" + filter + orgUnitId;
-        this.HttpClient.get(url, false, currentUser, this.resource, 800).subscribe((response: any) => {
-          try {
-            counts = counts + 1;
-            orgUnits = this.appendOrgUnitsFromServerToOrgUnitArray(orgUnits, response);
-            if (counts == orgUnitIds.length) {
-              observer.next(orgUnits);
-              observer.complete();
+        let fields =
+          'fields=id,name,path,ancestors[id,name,children[id]],openingDate,closedDate,level,children[id,name,children[id],parent';
+        let filter = 'filter=path:ilike:';
+        let url = '/api/25/' + this.resource + '.json?';
+        url += fields + '&' + filter + orgUnitId;
+        this.HttpClient.get(
+          url,
+          false,
+          currentUser,
+          this.resource,
+          800
+        ).subscribe(
+          (response: any) => {
+            try {
+              counts = counts + 1;
+              orgUnits = this.appendOrgUnitsFromServerToOrgUnitArray(
+                orgUnits,
+                response
+              );
+              if (counts == orgUnitIds.length) {
+                observer.next(orgUnits);
+                observer.complete();
+              }
+            } catch (e) {
+              observer.error(e);
             }
-          } catch (e) {
-            observer.error(e);
+          },
+          error => {
+            observer.error(error);
           }
-        }, error => {
-          observer.error(error);
-        })
+        );
       }
     });
   }
@@ -100,12 +118,21 @@ export class OrganisationUnitsProvider {
    */
   savingOrganisationUnitsFromServer(orgUnits, currentUser): Observable<any> {
     return new Observable(observer => {
-      this.sqlLite.insertBulkDataOnTable(this.resource, orgUnits, currentUser.currentDatabase).subscribe(() => {
-        observer.next();
-        observer.complete();
-      }, error => {
-        observer.error(error);
-      });
+      this.sqlLite
+        .insertBulkDataOnTable(
+          this.resource,
+          orgUnits,
+          currentUser.currentDatabase
+        )
+        .subscribe(
+          () => {
+            observer.next();
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
     });
   }
 
@@ -128,21 +155,43 @@ export class OrganisationUnitsProvider {
         observer.next(this.lastSelectedOrgUnit);
         observer.complete();
       } else {
-        this.getOrganisationUnits(currentUser).subscribe((organisationUnits: any) => {
-          if (organisationUnits && organisationUnits.length > 0) {
-            this.lastSelectedOrgUnit = organisationUnits[0];
-            observer.next(organisationUnits[0]);
-          } else {
-            observer.next({});
+        this.getOrganisationUnits(currentUser).subscribe(
+          (organisationUnits: any) => {
+            if (organisationUnits && organisationUnits.length > 0) {
+              this.lastSelectedOrgUnit = organisationUnits[0];
+              observer.next(organisationUnits[0]);
+            } else {
+              observer.next({});
+            }
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
           }
-          observer.complete();
-        }, error => {
-          observer.error(error)
-        })
+        );
       }
     });
   }
 
+  getAllOrganisationUnits(currentUser: CurrentUser): Observable<any> {
+    return new Observable(observer => {
+      this.sqlLite
+        .getAllDataFromTable(this.resource, currentUser.currentDatabase)
+        .subscribe(
+          (organisationUnits: any) => {
+            this.getSortedOrganisationUnits(organisationUnits).subscribe(
+              (organisationUnits: any) => {
+                observer.next(organisationUnits);
+                observer.complete();
+              }
+            );
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+    });
+  }
 
   /**
    *
@@ -153,18 +202,33 @@ export class OrganisationUnitsProvider {
     let userOrgUnitIds = currentUser.userOrgUnitIds;
     return new Observable(observer => {
       if (this.organisationUnits && this.organisationUnits.length > 0) {
-        observer.next({organisationUnits: this.organisationUnits, lastSelectedOrgUnit: this.lastSelectedOrgUnit})
+        observer.next({
+          organisationUnits: this.organisationUnits,
+          lastSelectedOrgUnit: this.lastSelectedOrgUnit
+        });
         observer.complete();
       } else {
         if (userOrgUnitIds && userOrgUnitIds.length > 0) {
-          this.sqlLite.getDataFromTableByAttributes(this.resource, "id", userOrgUnitIds, currentUser.currentDatabase).subscribe((organisationUnits: any) => {
-            this.getSortedOrganisationUnits(organisationUnits).subscribe((organisationUnits: any) => {
-              observer.next(organisationUnits);
-              observer.complete();
-            });
-          }, error => {
-            observer.error(error);
-          });
+          this.sqlLite
+            .getDataFromTableByAttributes(
+              this.resource,
+              'id',
+              userOrgUnitIds,
+              currentUser.currentDatabase
+            )
+            .subscribe(
+              (organisationUnits: any) => {
+                this.getSortedOrganisationUnits(organisationUnits).subscribe(
+                  (organisationUnits: any) => {
+                    observer.next(organisationUnits);
+                    observer.complete();
+                  }
+                );
+              },
+              error => {
+                observer.error(error);
+              }
+            );
         } else {
           observer.next([]);
           observer.complete();
@@ -182,18 +246,30 @@ export class OrganisationUnitsProvider {
   getOrganisationUnitsByIds(organisationUnitIds, currentUser): Observable<any> {
     return new Observable(observer => {
       if (organisationUnitIds && organisationUnitIds.length > 0) {
-        this.sqlLite.getDataFromTableByAttributes(this.resource, "id", organisationUnitIds, currentUser.currentDatabase).subscribe((organisationUnits: any) => {
-          this.getSortedOrganisationUnits(organisationUnits).subscribe((organisationUnits: any) => {
-            if (organisationUnits && organisationUnits.length > 0) {
-              observer.next(organisationUnits);
-            } else {
-              observer.next([]);
+        this.sqlLite
+          .getDataFromTableByAttributes(
+            this.resource,
+            'id',
+            organisationUnitIds,
+            currentUser.currentDatabase
+          )
+          .subscribe(
+            (organisationUnits: any) => {
+              this.getSortedOrganisationUnits(organisationUnits).subscribe(
+                (organisationUnits: any) => {
+                  if (organisationUnits && organisationUnits.length > 0) {
+                    observer.next(organisationUnits);
+                  } else {
+                    observer.next([]);
+                  }
+                  observer.complete();
+                }
+              );
+            },
+            error => {
+              observer.error(error);
             }
-            observer.complete();
-          });
-        }, error => {
-          observer.error(error);
-        });
+          );
       } else {
         observer.next([]);
         observer.complete();
@@ -210,21 +286,29 @@ export class OrganisationUnitsProvider {
   getOrganisationUnitsByLevels(parentIds, currentUser): Observable<any> {
     let organisationUnitIdToOrganisationUnits = {};
     return new Observable(observer => {
-      this.getOrganisationUnitsByIds(parentIds, currentUser).subscribe((organisationUnits: any) => {
-        for (let organisationUnit of organisationUnits) {
-          organisationUnitIdToOrganisationUnits[organisationUnit.id] = organisationUnit;
+      this.getOrganisationUnitsByIds(parentIds, currentUser).subscribe(
+        (organisationUnits: any) => {
+          for (let organisationUnit of organisationUnits) {
+            organisationUnitIdToOrganisationUnits[
+              organisationUnit.id
+            ] = organisationUnit;
+          }
+          let parentId = parentIds.splice(0, 1)[0];
+          let orgUnitTree = organisationUnitIdToOrganisationUnits[parentId];
+          this.recursiveFetch(
+            parentIds,
+            organisationUnitIdToOrganisationUnits,
+            orgUnitTree
+          );
+          observer.next(orgUnitTree);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
         }
-        let parentId = parentIds.splice(0, 1)[0];
-        let orgUnitTree = organisationUnitIdToOrganisationUnits[parentId];
-        this.recursiveFetch(parentIds, organisationUnitIdToOrganisationUnits, orgUnitTree);
-        observer.next(orgUnitTree);
-        observer.complete();
-      }, error => {
-        observer.error(error);
-      });
+      );
     });
   }
-
 
   /**
    *
@@ -237,7 +321,7 @@ export class OrganisationUnitsProvider {
     let parentId = parentIds.splice(0, 1)[0];
     let newChildren = [];
     if (orgUnit && orgUnit.children) {
-      orgUnit.children.forEach(function (child) {
+      orgUnit.children.forEach(function(child) {
         if (child.id == parentId) {
           newChildren.push(organisationUnitIdToOrganisationUnits[parentId]);
         } else {
@@ -245,14 +329,17 @@ export class OrganisationUnitsProvider {
         }
       });
       orgUnit.children = newChildren;
-      orgUnit.children.forEach(function (child) {
+      orgUnit.children.forEach(function(child) {
         if (child.id == parentId) {
-          self.recursiveFetch(parentIds, organisationUnitIdToOrganisationUnits, child);
+          self.recursiveFetch(
+            parentIds,
+            organisationUnitIdToOrganisationUnits,
+            child
+          );
         }
-      })
+      });
     }
   }
-
 
   /**
    *
@@ -293,9 +380,9 @@ export class OrganisationUnitsProvider {
         }
         return 0;
       });
-      organisationUnit.children.forEach((child) => {
+      organisationUnit.children.forEach(child => {
         this.sortOrganisationUnits(child);
-      })
+      });
     }
   }
 }
