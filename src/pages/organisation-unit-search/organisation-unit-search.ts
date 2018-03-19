@@ -24,6 +24,7 @@ export class OrganisationUnitSearchPage implements OnInit {
   currentPage: number;
   currentValue: string;
   ouIdsWithAssigments: any;
+  organisationUnits: any;
 
   constructor(
     private viewCtrl: ViewController,
@@ -50,6 +51,7 @@ export class OrganisationUnitSearchPage implements OnInit {
       (user: CurrentUser) => {
         this.organisationUnitProvider.getAllOrganisationUnits(user).subscribe(
           (organisationUnits: any) => {
+            this.organisationUnits = organisationUnits;
             this.arrayOfOrganisationUnitsArray = this.getOrganisationUnitsWithPaginations(
               organisationUnits
             );
@@ -72,13 +74,17 @@ export class OrganisationUnitSearchPage implements OnInit {
   getItems(event: any) {
     let value = event.target.value;
     if (value && value.trim() != '') {
-      const options = this.arrayOfOrganisationUnitsArrayBackup.filter(
-        (option: any) => {
-          return option.name.toLowerCase().indexOf(value.toLowerCase()) > -1;
+      const backUpOrganisationUnits = this.organisationUnits;
+      const filteredOrganisationUnits = backUpOrganisationUnits.filter(
+        (organisationUnit: any) => {
+          return (
+            organisationUnit.name.toLowerCase().indexOf(value.toLowerCase()) >
+            -1
+          );
         }
       );
       this.arrayOfOrganisationUnitsArray = this.getOrganisationUnitsWithPaginations(
-        options
+        filteredOrganisationUnits
       );
       this.currentPage = 1;
     } else {
@@ -92,8 +98,8 @@ export class OrganisationUnitSearchPage implements OnInit {
     }
   }
 
-  selectOption(option) {
-    this.viewCtrl.dismiss(option);
+  selectOrganisationUnit(organisationUnit) {
+    this.viewCtrl.dismiss(organisationUnit);
   }
 
   dismiss() {
@@ -112,7 +118,7 @@ export class OrganisationUnitSearchPage implements OnInit {
 
   getOrganisationUnitsWithPaginations(options) {
     let pageNumber = 0;
-    const pageSize = 250;
+    const pageSize = 200;
     let array = [];
     while (
       this.getSubArryByPagination(options, pageSize, pageNumber).length > 0

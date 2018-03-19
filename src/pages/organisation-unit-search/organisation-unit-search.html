@@ -22,8 +22,8 @@
         <div *ngIf="(arrayOfOrganisationUnitsArray.length > 0 && arrayOfOrganisationUnitsArray[currentPage - 1])">
           <div class="animated fadeIn">
             <ion-list>
-              <ion-item *ngFor="let option of arrayOfOrganisationUnitsArray[currentPage - 1];trackBy: trackByFn" (click)="selectOption(option)">
-                <span ion-text [color]="(currentValue && currentValue == option.code) ?'current' : 'font-color'">{{ option.name }}</span>
+              <ion-item *ngFor="let organisationUnit of arrayOfOrganisationUnitsArray[currentPage - 1];trackBy: trackByFn" (click)="selectOrganisationUnit(organisationUnit)">
+                <span ion-text [color]="(currentValue && currentValue == organisationUnit.name) ?'current' : 'font-color'">{{ organisationUnit.name }}</span>
               </ion-item>
             </ion-list>
           </div>
