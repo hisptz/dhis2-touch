@@ -53,50 +53,53 @@
           <ion-row>
             <ion-col>
               <div *ngIf="currentWidget.id == 'enrollment'">
-                <div class="item-card">
-                  <div class="inputLabel">
-                    <b>
+                <form>
+                  <div class="item-card">
+                    <div class="inputLabel">
+                      <b>
+                        <div class="inputLabel">
+                          <span [translate]="'Enrollments'"></span>
+                        </div>
+                      </b>
+                      <hr>
+                    </div>
+                    <div class="inputLabel">
+                      <span [translate]="'Enrolling organisation unit'"></span>
+                    </div>
+                    <div class="input-field-container">
+                      <ion-item>
+                        <ion-input [(ngModel)]="currentOrganisationUnit.name" readonly="true"></ion-input>
+                      </ion-item>
+                    </div>
+                    <div class="inputLabel">
+                      <span [translate]="'Enrolling program'"></span>
+                    </div>
+                    <div class="input-field-container">
+                      <ion-item>
+                        <ion-input [(ngModel)]="currentProgram.name" readonly="true"></ion-input>
+                      </ion-item>
+                    </div>
+                    <div>
                       <div class="inputLabel">
-                        <span [translate]="'Enrollments'"></span>
+                        {{ currentProgram.enrollmentDateLabel}}
                       </div>
-                    </b>
-                    <hr>
-                  </div>
-                  <div class="inputLabel">
-                    <span [translate]="'Enrolling organisation unit'"></span>
-                  </div>
-                  <div class="input-field-container">
-                    <ion-item>
-                      <ion-input [(ngModel)]="currentOrganisationUnit.name" readonly="true"></ion-input>
-                    </ion-item>
-                  </div>
-                  <div class="inputLabel">
-                    <span [translate]="'Enrolling program'"></span>
-                  </div>
-                  <div class="input-field-container">
-                    <ion-item>
-                      <ion-input [(ngModel)]="currentProgram.name" readonly="true"></ion-input>
-                    </ion-item>
-                  </div>
-                  <div>
-                    <div class="inputLabel">
-                      {{ currentProgram.enrollmentDateLabel}}
-                    </div>
-                    <div [ngClass]="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container'">
-                      <ion-item>
-                        <ion-datetime [(ngModel)]="enrollmentDate" doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>
-                      </ion-item>
-                    </div>
-                    <div class="inputLabel">
-                      {{ currentProgram.incidentDateLabel}}
-                    </div>
-                    <div [ngClass]="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container'">
-                      <ion-item>
-                        <ion-datetime [(ngModel)]="incidentDate" doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>
-                      </ion-item>
+                      <div [ngClass]="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container'">
+                        <ion-item>
+                          <ion-datetime [(ngModel)]="enrollmentDate" doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>
+                        </ion-item>
+                      </div>
+                      <div class="inputLabel">
+                        {{ currentProgram.incidentDateLabel}}
+                      </div>
+                      <div [ngClass]="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container'">
+                        <ion-item>
+                          <ion-datetime [(ngModel)]="incidentDate" doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>
+                        </ion-item>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </form>
+
                 <div class="item-card">
                   <div class="inputLabel">
                     <b>
@@ -107,11 +110,13 @@
                     <hr>
                   </div>
                   <div *ngIf="programTrackedEntityAttributes && programTrackedEntityAttributes.length > 0">
-                    <div *ngFor="let programTrackedEntityAttribute of programTrackedEntityAttributes">
-                      <tracked-entity-inputs [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute" [currentUser]="currentUser"
-                        [data]="dataObject" [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
-                        [mandatory]="programTrackedEntityAttribute.mandatory" (onChange)="updateData($event)"></tracked-entity-inputs>
-                    </div>
+                    <form>
+                      <div *ngFor="let programTrackedEntityAttribute of programTrackedEntityAttributes">
+                        <tracked-entity-inputs [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute" [currentUser]="currentUser"
+                          [data]="dataObject" [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
+                          [mandatory]="programTrackedEntityAttribute.mandatory" (onChange)="updateData($event)"></tracked-entity-inputs>
+                      </div>
+                    </form>
                   </div>
                 </div>
 
