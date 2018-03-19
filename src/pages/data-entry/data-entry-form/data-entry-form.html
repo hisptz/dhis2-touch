@@ -74,13 +74,14 @@
             <div *ngIf="(currentSectionIndex + 1) == pager.page">
               <div class="item-card-entry-form">
                 <div class="entry-form-container">
-                  <div *ngFor="let dataElement of section.dataElements">
-                    <input-container [dataElement]="dataElement" [currentUser]="currentUser" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
-                      [(data)]="dataValuesObject" (onChange)="updateData($event)"></input-container>
-                  </div>
+                  <form>
+                    <div *ngFor="let dataElement of section.dataElements">
+                      <input-container [dataElement]="dataElement" [currentUser]="currentUser" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
+                        [(data)]="dataValuesObject" (onChange)="updateData($event)"></input-container>
+                    </div>
+                  </form>
                 </div>
               </div>
-
             </div>
           </div>
 
