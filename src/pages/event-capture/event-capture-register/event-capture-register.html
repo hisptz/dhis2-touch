@@ -33,7 +33,9 @@
               </b> : {{ currentProgram.name }}
               <br>
             </div>
-            <program-stage-event-based [programStage]="programStage" [dataDimension]="dataDimension" [currentEvent]="currentEvent" (onDeleteEvent)="onEventDeleted()"></program-stage-event-based>
+            <form>
+              <program-stage-event-based [programStage]="programStage" [dataDimension]="dataDimension" [currentEvent]="currentEvent" (onDeleteEvent)="onEventDeleted()"></program-stage-event-based>
+            </form>
           </ion-col>
         </ion-row>
       </div>
