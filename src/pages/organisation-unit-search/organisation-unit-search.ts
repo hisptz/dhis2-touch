@@ -48,8 +48,19 @@ export class OrganisationUnitSearchPage implements OnInit {
     }
     this.userProvider.getCurrentUser().subscribe(
       (user: CurrentUser) => {
-        console.info(JSON.stringify(user));
-        this.isLoading = false;
+        this.organisationUnitProvider.getAllOrganisationUnits(user).subscribe(
+          (organisationUnits: any) => {
+            this.arrayOfOrganisationUnitsArray = this.getOrganisationUnitsWithPaginations(
+              organisationUnits
+            );
+            this.arrayOfOrganisationUnitsArrayBackup = this.arrayOfOrganisationUnitsArray;
+            this.isLoading = false;
+          },
+          error => {
+            this.isLoading = false;
+            console.log(JSON.stringify(error));
+          }
+        );
       },
       error => {
         this.isLoading = false;
@@ -66,7 +77,7 @@ export class OrganisationUnitSearchPage implements OnInit {
           return option.name.toLowerCase().indexOf(value.toLowerCase()) > -1;
         }
       );
-      this.arrayOfOrganisationUnitsArray = this.getOptionsWithPaginations(
+      this.arrayOfOrganisationUnitsArray = this.getOrganisationUnitsWithPaginations(
         options
       );
       this.currentPage = 1;
@@ -99,7 +110,7 @@ export class OrganisationUnitSearchPage implements OnInit {
     }
   }
 
-  getOptionsWithPaginations(options) {
+  getOrganisationUnitsWithPaginations(options) {
     let pageNumber = 0;
     const pageSize = 250;
     let array = [];
