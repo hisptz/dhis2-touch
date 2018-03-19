@@ -3,6 +3,7 @@ import { IonicPage, ViewController, NavParams } from 'ionic-angular';
 import { CurrentUser } from '../../models/currentUser';
 import { UserProvider } from '../../providers/user/user';
 import { OrganisationUnitsProvider } from '../../providers/organisation-units/organisation-units';
+import { AppProvider } from '../../providers/app/app';
 
 /**
  * Generated class for the OrganisationUnitSearchPage page.
@@ -22,28 +23,38 @@ export class OrganisationUnitSearchPage implements OnInit {
   arrayOfOrganisationUnitsArrayBackup: Array<any>;
   isLoading: boolean;
   currentPage: number;
-  currentValue: string;
+  currentSelectedOrgUnitName: string;
   ouIdsWithAssigments: any;
   organisationUnits: any;
+  filterType: string;
 
   constructor(
     private viewCtrl: ViewController,
     private userProvider: UserProvider,
     private organisationUnitProvider: OrganisationUnitsProvider,
-    private navParams: NavParams
+    private navParams: NavParams,
+    private appProvider: AppProvider
   ) {
     this.arrayOfOrganisationUnitsArray = [];
     this.arrayOfOrganisationUnitsArrayBackup = [];
     this.title = 'Organisation Unit search';
     this.isLoading = true;
     this.currentPage = 1;
-    this.currentValue = '';
+    this.currentSelectedOrgUnitName = '';
     this.ouIdsWithAssigments = [];
   }
 
   ngOnInit() {
     const data = this.navParams.get('data');
+    const { currentSelectedOrgUnitName } = data;
     const { ouIdsWithAssigments } = data;
+    const { filterType } = data;
+    if (filterType) {
+      this.filterType = filterType;
+    }
+    if (currentSelectedOrgUnitName) {
+      this.currentSelectedOrgUnitName = currentSelectedOrgUnitName;
+    }
     if (ouIdsWithAssigments) {
       this.ouIdsWithAssigments = ouIdsWithAssigments;
     }
@@ -98,8 +109,32 @@ export class OrganisationUnitSearchPage implements OnInit {
     }
   }
 
-  selectOrganisationUnit(organisationUnit) {
-    this.viewCtrl.dismiss(organisationUnit);
+  selectOrganisationUnit(selectedOrganisationUnit) {
+    if (
+      this.filterType &&
+      this.ouIdsWithAssigments.length > 0 &&
+      this.ouIdsWithAssigments.indexOf(selectedOrganisationUnit.id) == -1
+    ) {
+      if (this.filterType == 'dataSets') {
+        this.appProvider.setNormalNotification(
+          'There is no entry form assigned to selected organisation unit, please select others or contact you help desk',
+          8 * 1000
+        );
+      } else if (
+        this.filterType == 'WITHOUT_REGISTRATION' ||
+        this.filterType == 'WITH_REGISTRATION'
+      ) {
+        this.appProvider.setNormalNotification(
+          'There is no program assigned to selected organisation unit, please select others or contact you help desk',
+          8 * 1000
+        );
+      }
+    } else {
+      this.organisationUnitProvider.setLastSelectedOrganisationUnitUnit(
+        selectedOrganisationUnit
+      );
+      this.viewCtrl.dismiss(selectedOrganisationUnit);
+    }
   }
 
   dismiss() {

@@ -38,7 +38,9 @@ export class AppsPage implements OnInit {
       enableBackdropDismiss: true
     };
     let data = {
-      ouIdsWithAssigments: []
+      ouIdsWithAssigments: ['GvFqTavdpGE'],
+      currentSelectedOrgUnitName: 'Agape CHP',
+      filterType: 'dataSets'
     };
     const modal = this.modalCtrl.create(
       'OrganisationUnitSearchPage',
