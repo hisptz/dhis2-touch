@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, ViewController, NavParams } from 'ionic-angular';
+import {
+  IonicPage,
+  ViewController,
+  NavParams,
+  ModalOptions,
+  ModalController
+} from 'ionic-angular';
 import {
   OrganisationUnitModel,
   OrganisationUnitsProvider
@@ -32,7 +38,6 @@ export class OrganisationUnitSelectionPage implements OnInit {
   organisationUnits: OrganisationUnitModel[];
   hasOrgUnitChildrenOpened: any = {};
   ouIdsWithAssigments: Array<string>;
-  shouldIndicateAssigmentsIssues: boolean;
 
   constructor(
     private viewCtrl: ViewController,
@@ -42,7 +47,8 @@ export class OrganisationUnitSelectionPage implements OnInit {
     private navParams: NavParams,
     private userProvider: UserProvider,
     private appProvider: AppProvider,
-    private appTranslation: AppTranslationProvider
+    private appTranslation: AppTranslationProvider,
+    private modalCtrl: ModalController
   ) {}
 
   ngOnInit() {
@@ -50,7 +56,6 @@ export class OrganisationUnitSelectionPage implements OnInit {
     this.isLoading = true;
     this.translationMapper = {};
     this.ouIdsWithAssigments = [];
-    this.shouldIndicateAssigmentsIssues = false;
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
       (data: any) => {
         this.translationMapper = data;
@@ -122,15 +127,36 @@ export class OrganisationUnitSelectionPage implements OnInit {
       );
   }
 
-  //event capture: WITHOUT_REGISTRATION
-  //data entry : dataSets
-  //tracker capture: WITH_REGISTRATION
+  openSearchOrganisatioUnitModal() {
+    let options: ModalOptions = {
+      cssClass: 'inset-modal',
+      enableBackdropDismiss: false
+    };
+    let data = {
+      ouIdsWithAssigments: this.ouIdsWithAssigments,
+      currentSelectedOrgUnitName: this.lastSelectedOrgUnit.name,
+      filterType: this.navParams.get('filterType')
+    };
+    const modal = this.modalCtrl.create(
+      'OrganisationUnitSearchPage',
+      { data: data },
+      options
+    );
+    modal.onDidDismiss((selectedOrganisationUnit: any) => {
+      if (selectedOrganisationUnit && selectedOrganisationUnit.id) {
+        this.organisationUnitProvider.setLastSelectedOrganisationUnitUnit(
+          selectedOrganisationUnit
+        );
+        this.viewCtrl.dismiss(selectedOrganisationUnit);
+      }
+    });
+    modal.present();
+  }
+
   loadingProgramAndDataSetAssignments(user) {
     const filterType = this.navParams.get('filterType');
     //@todo to revise setting
-    if (filterType) {
-      this.shouldIndicateAssigmentsIssues = true;
-    }
+    //@todo improving searching mechanisms
     if (filterType == 'dataSets') {
       this.dataSetsProvider.getAllDataSetSources(this.currentUser).subscribe(
         (dataSetSources: any) => {
@@ -194,7 +220,6 @@ export class OrganisationUnitSelectionPage implements OnInit {
     const filterType = this.navParams.get('filterType');
     if (
       filterType &&
-      this.shouldIndicateAssigmentsIssues &&
       this.ouIdsWithAssigments.length > 0 &&
       this.ouIdsWithAssigments.indexOf(selectedOrganisationUnit.id) == -1
     ) {

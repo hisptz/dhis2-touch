@@ -17,6 +17,14 @@
     <ion-title>
       <span [translate]="'Organisation unit selection'"></span>
     </ion-title>
+    <ion-buttons end>
+      <span (tap)="openSearchOrganisatioUnitModal()">
+        <button class="normalButton" ion-button text-capitalize outline full large>
+          &nbsp;&nbsp;&nbsp;
+          <ion-icon name="search"></ion-icon>&nbsp;&nbsp;&nbsp;
+        </button>
+      </span>
+    </ion-buttons>
   </ion-toolbar>
 
 </ion-header>
@@ -29,9 +37,9 @@
   </div>
   <div *ngIf="!isLoading">
     <div *ngFor="let organisationUnit of organisationUnits">
-      <organisation-unit-tree [organisationUnit]="organisationUnit" [shouldIndicateAssigmentsIssues]="shouldIndicateAssigmentsIssues"
-        [ouIdsWithAssigments]="ouIdsWithAssigments" [currentSelectedOrgUnitName]="lastSelectedOrgUnit.name" [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened"
-        (selectedOrganisationUnit)="setSelectedOrganisationUnit($event)" [currentUser]="currentUser"></organisation-unit-tree>
+      <organisation-unit-tree [organisationUnit]="organisationUnit" [ouIdsWithAssigments]="ouIdsWithAssigments" [currentSelectedOrgUnitName]="lastSelectedOrgUnit.name"
+        [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened" (selectedOrganisationUnit)="setSelectedOrganisationUnit($event)"
+        [currentUser]="currentUser"></organisation-unit-tree>
     </div>
     <div *ngIf="organisationUnits.length == 0 && emptyMessage !=''">
       <empty-list-notification [emptyListMessage]="emptyMessage"></empty-list-notification>

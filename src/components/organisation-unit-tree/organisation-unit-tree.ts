@@ -19,7 +19,6 @@ export class OrganisationUnitTreeComponent implements OnInit {
   @Input() hasOrgUnitChildrenOpened;
   @Input() currentSelectedOrgUnitName;
   @Input() ouIdsWithAssigments;
-  @Input() shouldIndicateAssigmentsIssues;
   @Output() selectedOrganisationUnit = new EventEmitter();
 
   isOrganisationUnitsFetched: boolean = true;

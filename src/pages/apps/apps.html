@@ -18,7 +18,6 @@
 <ion-content>
   <ion-grid>
     <ion-row class="animated fadeIn">
-
       <ion-col col-4 [ngClass]="animationEffect.data_entry" (tap)="goToView('data_entry')">
         <div class="apps-contents" padding>
           <ion-thumbnail>
@@ -26,9 +25,7 @@
           </ion-thumbnail>
           <p class="menu-app" [translate]="'Data entry'"></p>
         </div>
-
       </ion-col>
-
       <ion-col col-4 [ngClass]="animationEffect.event_capture" (tap)="goToView('event_capture')">
         <div class="apps-contents" padding>
           <ion-thumbnail>
@@ -37,13 +34,12 @@
           <p class="menu-app" [translate]="'Event capture'"></p>
         </div>
       </ion-col>
-
-      <ion-col col-4 [ngClass]="animationEffect.reports" (tap)="goToView('reports')">
+      <ion-col col-4 [ngClass]="animationEffect.tracker_capture" (tap)="goToView('tracker_capture')">
         <div class="apps-contents" padding>
           <ion-thumbnail>
-            <img class="menu-app-icon-list" src="assets/icon/reports.png">
+            <img class="menu-app-icon-list" src="assets/icon/tracker-capture.png">
           </ion-thumbnail>
-          <p class="menu-app" [translate]="'Reports'"></p>
+          <p class="menu-app" [translate]="'Tracker capture'"></p>
         </div>
       </ion-col>
     </ion-row>
@@ -57,12 +53,12 @@
           <p class="menu-app" [translate]="'Dashboard'"></p>
         </div>
       </ion-col>
-      <ion-col col-4 [ngClass]="animationEffect.tracker_capture" (tap)="goToView('tracker_capture')">
+      <ion-col col-4 [ngClass]="animationEffect.reports" (tap)="goToView('reports')">
         <div class="apps-contents" padding>
           <ion-thumbnail>
-            <img class="menu-app-icon-list" src="assets/icon/tracker-capture.png">
+            <img class="menu-app-icon-list" src="assets/icon/reports.png">
           </ion-thumbnail>
-          <p class="menu-app" [translate]="'Tracker capture'"></p>
+          <p class="menu-app" [translate]="'Reports'"></p>
         </div>
       </ion-col>
       <ion-col col-4 [ngClass]="animationEffect.sync" (tap)="goToView('sync')">
