@@ -49,6 +49,7 @@ export class DataEntryFormPage implements OnInit {
   isDataSetCompletenessProcessRunning: boolean;
   translationMapper: any;
   dataEntryFormDesign: string;
+  entryFormType: string;
   @ViewChild(Content) content: Content;
 
   constructor(
@@ -64,6 +65,7 @@ export class DataEntryFormPage implements OnInit {
     private appTranslation: AppTranslationProvider
   ) {
     this.dataEntryFormDesign = '';
+    this.entryFormType = 'SECTION';
     this.icons['menu'] = 'assets/icon/menu.png';
     this.storageStatus = {
       online: 0,
@@ -190,11 +192,12 @@ export class DataEntryFormPage implements OnInit {
           if (dataSet.formType == 'CUSTOM') {
             this.dataEntryFormDesign = entryFormResponse.entryForm;
             this.entryFormSections = entryFormResponse.entryFormSections;
+            this.entryFormType = 'CUSTOM';
           } else {
             this.entryFormSections = entryFormResponse;
             this.pager['page'] = 1;
             this.pager['total'] = entryFormResponse.length;
-            this.dataEntryFormDesign = '';
+            this.entryFormType = 'SECTION';
           }
           let dataSetId = this.dataSet.id;
           let period = this.entryFormParameter.period.iso;
