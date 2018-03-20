@@ -54,6 +54,9 @@
         </div>
         <div *ngIf="!isLoading">
 
+
+          {{ dataSet.formtype != 'CUSTOM' }} :: {{ entryFormSections.length > 1 }} :: {{ entryFormSections.length > 1 && dataSet.formtype
+          != 'CUSTOM' }}
           <div *ngIf="dataSet.formType == 'CUSTOM'">
 
 
@@ -96,7 +99,7 @@
             </div>
           </div>
           <div class="item-card">
-            <ion-row *ngIf="entryFormSections.length > 1">
+            <ion-row *ngIf="entryFormSections.length > 1 && dataSet.formtype != 'CUSTOM'">
               <ion-col col-2 col-sm-1 (click)="changePagination(pager.page - 1)" padding-left padding-bottom padding-top>
                 <ion-icon name="ios-arrow-back-outline"></ion-icon>
               </ion-col>

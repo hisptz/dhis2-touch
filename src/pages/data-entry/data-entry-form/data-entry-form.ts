@@ -184,13 +184,14 @@ export class DataEntryFormPage implements OnInit {
         this.currentUser
       )
       .subscribe(
-        (entryForm: any) => {
+        (entryFormResponse: any) => {
           if (dataSet.formType == 'CUSTOM') {
-            this.dataEntryFormDesign = entryForm;
+            this.dataEntryFormDesign = entryFormResponse.entryForm;
+            this.entryFormSections = entryFormResponse.entryFormSections;
           } else {
-            this.entryFormSections = entryForm;
+            this.entryFormSections = entryFormResponse;
             this.pager['page'] = 1;
-            this.pager['total'] = entryForm.length;
+            this.pager['total'] = entryFormResponse.length;
           }
           let dataSetId = this.dataSet.id;
           let period = this.entryFormParameter.period.iso;

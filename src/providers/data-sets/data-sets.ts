@@ -522,7 +522,7 @@ export class DataSetsProvider {
         observer.complete();
       } else {
         this.SqlLite.insertBulkDataOnTable(
-          this.resource,
+          resource,
           entryFormDesign,
           currentUser.currentDatabase
         ).subscribe(() => {}, error => {});
@@ -534,6 +534,13 @@ export class DataSetsProvider {
     return new Observable(observer => {
       let entryFormDesign = '';
       const resource = 'dataSetDesign';
+      this.SqlLite.getAllDataFromTable(
+        resource,
+        currentUser.currentDatabase
+      ).subscribe(data => {
+        console.log(data.length);
+      });
+
       this.SqlLite.getDataFromTableByAttributes(
         resource,
         'id',
@@ -541,8 +548,9 @@ export class DataSetsProvider {
         currentUser.currentDatabase
       ).subscribe(
         (entryFormDesigns: any) => {
+          console.log(JSON.stringify(entryFormDesigns));
           if (entryFormDesigns && entryFormDesigns.length > 0) {
-            entryFormDesign = entryFormDesigns[0];
+            entryFormDesign = entryFormDesigns[0].dataSetDesign;
           }
           observer.next(entryFormDesign);
           observer.complete();

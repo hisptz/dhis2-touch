@@ -95,8 +95,24 @@ export class DataEntryFormProvider {
           .getDataEntryFormDesign(dataSetId, currentUser)
           .subscribe(
             (entryForm: string) => {
-              Observer.next(entryForm);
-              Observer.complete();
+              this.getDefaultEntryForm(
+                dataSetId,
+                appSettings,
+                currentUser
+              ).subscribe(
+                (entryFormSections: any) => {
+                  const response = {
+                    entryFormSections: entryFormSections,
+                    entryForm: entryForm
+                  };
+                  console.log(JSON.stringify(response.entryForm));
+                  Observer.next(response);
+                  Observer.complete();
+                },
+                error => {
+                  Observer.error(error);
+                }
+              );
             },
             error => {
               Observer.error(error);
