@@ -62,9 +62,8 @@ export class DataEntryFormPage implements OnInit {
     private dataValuesProvider: DataValuesProvider,
     private navParams: NavParams,
     private appTranslation: AppTranslationProvider
-  ) {}
-
-  ngOnInit() {
+  ) {
+    this.dataEntryFormDesign = '';
     this.icons['menu'] = 'assets/icon/menu.png';
     this.storageStatus = {
       online: 0,
@@ -76,6 +75,9 @@ export class DataEntryFormPage implements OnInit {
     this.dataValuesSavingStatusClass = {};
     this.isLoading = true;
     this.translationMapper = {};
+  }
+
+  ngOnInit() {
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
       (data: any) => {
         this.translationMapper = data;
@@ -192,6 +194,7 @@ export class DataEntryFormPage implements OnInit {
             this.entryFormSections = entryFormResponse;
             this.pager['page'] = 1;
             this.pager['total'] = entryFormResponse.length;
+            this.dataEntryFormDesign = '';
           }
           let dataSetId = this.dataSet.id;
           let period = this.entryFormParameter.period.iso;
