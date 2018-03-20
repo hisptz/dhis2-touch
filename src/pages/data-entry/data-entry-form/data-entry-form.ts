@@ -48,6 +48,7 @@ export class DataEntryFormPage implements OnInit {
   isDataSetCompleted: boolean;
   isDataSetCompletenessProcessRunning: boolean;
   translationMapper: any;
+  dataEntryFormDesign: string;
   @ViewChild(Content) content: Content;
 
   constructor(
@@ -175,12 +176,22 @@ export class DataEntryFormPage implements OnInit {
       ? this.translationMapper[key]
       : key;
     this.dataEntryFormProvider
-      .getEntryForm(sectionIds, dataSet.id, this.appSettings, this.currentUser)
+      .getEntryForm(
+        sectionIds,
+        dataSet.id,
+        dataSet.formType,
+        this.appSettings,
+        this.currentUser
+      )
       .subscribe(
         (entryForm: any) => {
-          this.entryFormSections = entryForm;
-          this.pager['page'] = 1;
-          this.pager['total'] = entryForm.length;
+          if (dataSet.formType == 'CUSTOM') {
+            this.dataEntryFormDesign = entryForm;
+          } else {
+            this.entryFormSections = entryForm;
+            this.pager['page'] = 1;
+            this.pager['total'] = entryForm.length;
+          }
           let dataSetId = this.dataSet.id;
           let period = this.entryFormParameter.period.iso;
           let orgUnitId = this.entryFormParameter.orgUnit.id;

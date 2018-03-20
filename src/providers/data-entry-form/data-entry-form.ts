@@ -1,9 +1,10 @@
-import {Injectable} from '@angular/core';
-import {DataSetsProvider} from "../data-sets/data-sets";
-import {DataElementsProvider} from "../data-elements/data-elements";
-import {IndicatorsProvider} from "../indicators/indicators";
-import {SectionsProvider} from "../sections/sections";
-import {Observable} from "rxjs/Observable";
+import { Injectable } from '@angular/core';
+import { DataSetsProvider } from '../data-sets/data-sets';
+import { DataElementsProvider } from '../data-elements/data-elements';
+import { IndicatorsProvider } from '../indicators/indicators';
+import { SectionsProvider } from '../sections/sections';
+import { Observable } from 'rxjs/Observable';
+import { CurrentUser } from '../../models/currentUser';
 
 /*
   Generated class for the DataEntryFormProvider provider.
@@ -13,12 +14,12 @@ import {Observable} from "rxjs/Observable";
 */
 @Injectable()
 export class DataEntryFormProvider {
-
-  constructor(private dataSetProvider: DataSetsProvider,
-              private indicatorProvider: IndicatorsProvider,
-              private sectionProvider: SectionsProvider,
-              private dataElementProvider: DataElementsProvider) {
-  }
+  constructor(
+    private dataSetProvider: DataSetsProvider,
+    private indicatorProvider: IndicatorsProvider,
+    private sectionProvider: SectionsProvider,
+    private dataElementProvider: DataElementsProvider
+  ) {}
 
   /**
    *
@@ -28,22 +29,37 @@ export class DataEntryFormProvider {
    */
   loadingDataSetInformation(dataSetId, currentUser): Observable<any> {
     return new Observable(observer => {
-      this.dataSetProvider.getDataSetById(dataSetId, currentUser).subscribe((dataSet: any) => {
-        this.dataSetProvider.getDataSetSectionsIds(dataSetId, currentUser).subscribe(sectionIds => {
-          this.dataSetProvider.getDataSetIndicatorIds(dataSetId, currentUser).subscribe(indicatorIds => {
-            observer.next({
-              dataSet: dataSet, sectionIds: sectionIds, indicatorIds: indicatorIds
-            });
-            observer.complete();
-          }, error => {
-            observer.error(error)
-          });
-        }, error => {
-          observer.error(error)
-        });
-      }, error => {
-        observer.error(error)
-      });
+      this.dataSetProvider.getDataSetById(dataSetId, currentUser).subscribe(
+        (dataSet: any) => {
+          this.dataSetProvider
+            .getDataSetSectionsIds(dataSetId, currentUser)
+            .subscribe(
+              sectionIds => {
+                this.dataSetProvider
+                  .getDataSetIndicatorIds(dataSetId, currentUser)
+                  .subscribe(
+                    indicatorIds => {
+                      observer.next({
+                        dataSet: dataSet,
+                        sectionIds: sectionIds,
+                        indicatorIds: indicatorIds
+                      });
+                      observer.complete();
+                    },
+                    error => {
+                      observer.error(error);
+                    }
+                  );
+              },
+              error => {
+                observer.error(error);
+              }
+            );
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
 
@@ -61,56 +77,91 @@ export class DataEntryFormProvider {
    *
    * @param sectionIds
    * @param dataSetId
+   * @param formType
    * @param appSettings
    * @param currentUser
    * @returns {Observable<any>}
    */
-  getEntryForm(sectionIds, dataSetId, appSettings, currentUser): Observable<any> {
+  getEntryForm(
+    sectionIds,
+    dataSetId,
+    formType,
+    appSettings,
+    currentUser
+  ): Observable<any> {
     return new Observable(Observer => {
-      if (sectionIds && sectionIds.length > 0) {
-        this.getSectionEntryForm(sectionIds, currentUser).subscribe((entryForm: any) => {
-          Observer.next(entryForm);
-          Observer.complete();
-        }, error => {
-          Observer.error(error)
-        });
+      if (formType && formType == 'CUSTOM') {
+        this.dataSetProvider
+          .getDataEntryFormDesign(dataSetId, currentUser)
+          .subscribe(
+            (entryForm: string) => {
+              Observer.next(entryForm);
+              Observer.complete();
+            },
+            error => {
+              Observer.error(error);
+            }
+          );
+      } else if (sectionIds && sectionIds.length > 0) {
+        this.getSectionEntryForm(sectionIds, currentUser).subscribe(
+          (entryForm: any) => {
+            Observer.next(entryForm);
+            Observer.complete();
+          },
+          error => {
+            Observer.error(error);
+          }
+        );
       } else {
-        this.getDefaultEntryForm(dataSetId, appSettings, currentUser).subscribe((entryForm: any) => {
-          Observer.next(entryForm);
-          Observer.complete();
-        }, error => {
-          Observer.error(error)
-        });
+        this.getDefaultEntryForm(dataSetId, appSettings, currentUser).subscribe(
+          (entryForm: any) => {
+            Observer.next(entryForm);
+            Observer.complete();
+          },
+          error => {
+            Observer.error(error);
+          }
+        );
       }
     });
   }
 
   /**
    *
-   * @param sectionIds
    * @param currentUser
    * @returns {Observable<any>}
    */
   getSectionEntryForm(sectionIds, currentUser): Observable<any> {
     return new Observable(observer => {
-      this.sectionProvider.getSectionByIds(sectionIds, currentUser).subscribe((sections: any) => {
-        let count = 0;
-        sections.forEach((section: any) => {
-          this.dataElementProvider.getDataElementsByIdsForDataEntry(section.dataElementIds, currentUser).subscribe((dataElements: any) => {
-            section["dataElements"] = dataElements;
-            count++;
-            if (count == sections.length) {
-              sections = this.getSortedSections(sections);
-              observer.next(sections);
-              observer.complete();
-            }
-          }, error => {
-            observer.error(error)
+      this.sectionProvider.getSectionByIds(sectionIds, currentUser).subscribe(
+        (sections: any) => {
+          let count = 0;
+          sections.forEach((section: any) => {
+            this.dataElementProvider
+              .getDataElementsByIdsForDataEntry(
+                section.dataElementIds,
+                currentUser
+              )
+              .subscribe(
+                (dataElements: any) => {
+                  section['dataElements'] = dataElements;
+                  count++;
+                  if (count == sections.length) {
+                    sections = this.getSortedSections(sections);
+                    observer.next(sections);
+                    observer.complete();
+                  }
+                },
+                error => {
+                  observer.error(error);
+                }
+              );
           });
-        });
-      }, error => {
-        observer.error(error)
-      });
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
 
@@ -135,17 +186,34 @@ export class DataEntryFormProvider {
    */
   getDefaultEntryForm(dataSetId, appSettings, currentUser): Observable<any> {
     return new Observable(observer => {
-      this.dataSetProvider.getDataSetDataElements(dataSetId, currentUser).subscribe((dataSetDatElements: any) => {
-        this.dataElementProvider.getDataElementsByIdsForDataEntry(dataSetDatElements, currentUser).subscribe((dataElements: any) => {
-          let maxDataElements = (appSettings && appSettings.entryForm && appSettings.entryForm.maxDataElementOnDefaultForm) ? appSettings.entryForm.maxDataElementOnDefaultForm : 10;
-          observer.next(this.getDataElementSections(dataElements, maxDataElements));
-          observer.complete();
-        }, error => {
-          observer.error(error)
-        });
-      }, error => {
-        observer.error(error)
-      });
+      this.dataSetProvider
+        .getDataSetDataElements(dataSetId, currentUser)
+        .subscribe(
+          (dataSetDatElements: any) => {
+            this.dataElementProvider
+              .getDataElementsByIdsForDataEntry(dataSetDatElements, currentUser)
+              .subscribe(
+                (dataElements: any) => {
+                  let maxDataElements =
+                    appSettings &&
+                    appSettings.entryForm &&
+                    appSettings.entryForm.maxDataElementOnDefaultForm
+                      ? appSettings.entryForm.maxDataElementOnDefaultForm
+                      : 10;
+                  observer.next(
+                    this.getDataElementSections(dataElements, maxDataElements)
+                  );
+                  observer.complete();
+                },
+                error => {
+                  observer.error(error);
+                }
+              );
+          },
+          error => {
+            observer.error(error);
+          }
+        );
     });
   }
 
@@ -160,12 +228,11 @@ export class DataEntryFormProvider {
     let sections = [];
     for (let index = 0; index < sectionsCounter; index++) {
       sections.push({
-        name: "Page " + (index + 1) + " of " + sectionsCounter,
+        name: 'Page ' + (index + 1) + ' of ' + sectionsCounter,
         id: index,
         dataElements: dataElements.splice(0, maxDataElements)
       });
     }
     return sections;
   }
-
 }
