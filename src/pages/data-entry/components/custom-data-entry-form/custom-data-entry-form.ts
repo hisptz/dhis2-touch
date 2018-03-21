@@ -1,5 +1,6 @@
-import { Component, Input, OnInit, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, ElementRef, HostListener, AfterViewInit } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+declare var $;
 
 /**
  * Generated class for the CustomDataEntryFormComponent component.
@@ -11,8 +12,13 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   selector: 'custom-data-entry-form',
   templateUrl: 'custom-data-entry-form.html'
 })
-export class CustomDataEntryFormComponent implements OnInit {
+export class CustomDataEntryFormComponent implements OnInit, AfterViewInit {
   @Input() dataEntryFormDesign;
+  @Input() data;
+
+  @HostListener('change') onChange() {
+    alert('changed')
+  }
   _htmlMarkup: SafeHtml;
   hasScriptSet: boolean;
 
@@ -22,14 +28,16 @@ export class CustomDataEntryFormComponent implements OnInit {
 
   ngOnInit() {
     try {
-      let scriptsContents = this.getScriptsContents(this.dataEntryFormDesign);
-      this.setScriptsOnHtmlContent(scriptsContents);
       this._htmlMarkup = this.sanitizer.bypassSecurityTrustHtml(
         this.dataEntryFormDesign
       );
     } catch (e) {
       console.log(JSON.stringify(e));
     }
+  }
+
+  ngAfterViewInit() {
+    this.setScriptsOnHtmlContent(this.getScriptsContents(this.dataEntryFormDesign));
   }
 
   getScriptsContents(html) {
@@ -54,14 +62,37 @@ export class CustomDataEntryFormComponent implements OnInit {
     return scriptsWithClosingScript;
   }
 
+  getDefaultScriptContents() {
+    const script = `
+    var data = ${JSON.stringify(this.data)}
+    $("input[name='entryfield']").each(function() {
+      var id = $( this ).attr( 'id' ).split('-');
+      var dataElementId = id[0];
+      var optionComboId = id[1];
+      var value = getDataValue(data, dataElementId + '-' + optionComboId);
+      // insert data value if available
+      if (value) {
+        $(this).val(value)
+      }
+      
+    })
+    
+     function getDataValue(data, id) {
+      var dataObject = data[id];
+      return dataObject ? dataObject.value : null;
+    }
+    `;
+    return script;
+  }
+
   setScriptsOnHtmlContent(scriptsContentsArray) {
+    scriptsContentsArray = [this.getDefaultScriptContents(), ...scriptsContentsArray]
     if (!this.hasScriptSet) {
       scriptsContentsArray.forEach(scriptsContents => {
         if (scriptsContents.indexOf('<script') > -1) {
           try {
             let srcUrl = this.getScriptUrl(scriptsContents);
             let script = document.createElement('script');
-            script.src = srcUrl;
             this.elementRef.nativeElement.appendChild(script);
           } catch (e) {
             console.log('error : ' + JSON.stringify(e));

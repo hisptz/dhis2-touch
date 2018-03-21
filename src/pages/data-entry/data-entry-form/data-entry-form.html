@@ -55,7 +55,7 @@
         <div *ngIf="!isLoading">
 
           <div *ngIf="entryFormType && entryFormType == 'CUSTOM'">
-            <custom-data-entry-form [dataEntryFormDesign]="dataEntryFormDesign"></custom-data-entry-form>
+            <custom-data-entry-form [dataEntryFormDesign]="dataEntryFormDesign" [data]="dataValuesObject"></custom-data-entry-form>
           </div>
           <div *ngIf="entryFormType && entryFormType != 'CUSTOM'">
             <div *ngIf="entryFormSections && entryFormSections.length == 0">
