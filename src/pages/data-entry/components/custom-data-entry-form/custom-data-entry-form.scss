@@ -1,5 +1,22 @@
 custom-data-entry-form {
-  .cutom-entry-form {
+  .custom-entry-form {
     overflow: auto;
+  }
+
+  td {
+    text-align: left;
+    padding-left: 15px;
+  }
+  input, textarea {
+    border: solid thin #dddddd;
+    padding: 5px;
+  }
+
+  textarea {
+    width: 90%;
+  }
+
+  input {
+    text-align: center;
   }
 }
