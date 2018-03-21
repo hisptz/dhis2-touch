@@ -67,6 +67,7 @@ export class CustomDataEntryFormComponent implements OnInit, AfterViewInit {
     const script = `
     var data = ${JSON.stringify(this.data)}
     var dataElements = ${JSON.stringify(_.flatten(_.map(this.entryFormSections, entrySection => entrySection.dataElements)))}
+    
     $("input[name='entryfield']").each(function() {
       var id = $( this ).attr( 'id' ).split('-');
       var dataElementId = id[0];
@@ -77,55 +78,66 @@ export class CustomDataEntryFormComponent implements OnInit, AfterViewInit {
       // get dataElement type
       var type = dataElementDetails ? dataElementDetails.valueType : null;
       
-      // update input with corresponding type
-      if (type) {
-        if (type === 'TRUE_ONLY') {
-        $(this).attr('type', 'checkbox')
-        } else if (type == 'LONG_TEXT') {
-         $(this).replaceWith('<textarea></textarea>')
-        } else if (type === 'DATE') {
-        $(this).attr('type', 'date')
-        }
-      }
       var value = getSanitizedValue(getDataValue(data, dataElementId + '-' + optionComboId), type);
-      // insert data value if available
-      if (value) {
+
+      // update input with corresponding type
       if (type === 'TRUE_ONLY') {
-      $(this).attr('checked', value)
-      } else {
-      $(this).val(value, type)
-      }
-      }
-      
+          $(this).attr('type', 'checkbox');
+          $(this).attr('checked', value);
+       } else if (type === 'LONG_TEXT') {
+          $(this).replaceWith(getTextArea(id, value));
+          $(this).val(value);
+       } else if (type === 'DATE') {
+          $(this).attr('type', 'date');
+          $(this).val(value);
+       } else if (type === 'BOOLEAN') {
+          $(this).replaceWith(getRadioInput(id, value, true, 'Yes') + getRadioInput(id, value, false, 'No'));
+       } else if (type === 'NUMBER') {
+          $(this).attr('type', 'number');
+          $(this).val(value)
+       } else {
+          $(this).val(value)
+          alert(type)
+       }
     });
+
+    function getTextArea(id, value) {
+        return '<textarea id="' + id + '" name="entryform">' + value + '</textarea>';
+    }
+
+    function getRadioInput(id, savedValue, value, name) {
+        <!--alert(savedValue == value)-->
+        var checked = false;
+        return '<input id="' + id + '" type="radio" name="' + id + '" value="' + value + '" checked="' + checked + '">' + name;
+    }
     
-     function getDataValue(data, id) {
+    function getDataValue(data, id) {
       var dataObject = data[id];
       return dataObject ? dataObject.value : null;
     }
     
     function getDataElementDetails(dataElements, dataElementId) {
-    var dataElementDetails;
-    dataElements.forEach(function(dataElement) {
-    if (dataElement.id === dataElementId) {
-    dataElementDetails = dataElement
-    }
-    })
-    
-    return dataElementDetails
+        var dataElementDetails;
+        dataElements.forEach(function(dataElement) {
+            if (dataElement.id === dataElementId) {
+                dataElementDetails = dataElement
+            }
+        })
+        
+        return dataElementDetails
     }
     
     function getSanitizedValue(value, type) {
-    switch(type) {
-    case 'TRUE_ONLY':
-    return convertToBoolean(value)
-    default:
-    return value
-    }
+        switch(type) {
+            case 'TRUE_ONLY':
+                return convertToBoolean(value)
+            default:
+                return value;
+            }
     }
     
     function convertToBoolean(stringValue) {
-    return stringValue == 'true' ? Boolean(true) : Boolean(false);
+        return stringValue == 'true' ? Boolean(true) : Boolean(false);
     }
     `;
     return script;

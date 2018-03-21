@@ -3,7 +3,7 @@
     <name>DHIS 2 Touch</name>
     <description>An awesome dhis 2 mobile experience</description>
     <author email="" href="" />
-    <content original-src="index.html" src="http://192.168.43.247:8100" />
+    <content original-src="index.html" src="http://192.168.1.9:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -95,5 +95,6 @@
     <plugin name="cordova-sms-plugin" spec="^0.1.11" />
     <plugin name="cordova.plugins.diagnostic" spec="^3.9.2" />
     <allow-navigation href="http://192.168.43.247:8100" />
+    <allow-navigation href="http://192.168.1.9:8100" />
     <engine name="android" spec="6.3.0" />
 </widget>
