@@ -424,7 +424,7 @@ export class UploadDataViaSmsComponent implements OnInit {
                                 }
                                 message = this.translationMapper[message];
                                 message += ' (' + reportingSms.length + ')';
-
+                                this.sendDataViaSmsObject.isLoading = false;
                                 this.sendDataViaSmsObject.loadingMessage = message;
                                 this.smsCommand
                                   .sendSmsForReportingData(
