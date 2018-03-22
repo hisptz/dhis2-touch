@@ -42,6 +42,27 @@ export class DataSetsProvider {
   /**
    *
    * @param currentUser
+   * @returns {Observable<any>}
+   */
+  getAllDataSetsSMSCodeGeneration(currentUser): Observable<any> {
+    let url =
+      '/api/dataSets.json?fields=id,dataSetElements[dataElement[id,categoryCombo[categoryOptionCombos[id]]]],dataElements[id,categoryCombo[categoryOptionCombos[id]]]';
+    return new Observable(observer => {
+      this.HttpClient.get(url, false, currentUser, this.resource, 50).subscribe(
+        (response: any) => {
+          observer.next(response[this.resource]);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
+    });
+  }
+
+  /**
+   *
+   * @param currentUser
    */
   getAllDataSets(currentUser): Observable<any> {
     return new Observable(observer => {

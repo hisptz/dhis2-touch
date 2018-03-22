@@ -89,47 +89,49 @@ export class SmsCommandProvider {
    */
   checkAndGenerateSmsCommands(currentUser): Observable<any> {
     return new Observable(observer => {
-      this.dataSetProvider.getAllDataSets(currentUser).subscribe(
-        (dataSets: Array<DataSet>) => {
-          let smsCommands: Array<SmsCommand> = this.getGenerateSmsCommands(
-            dataSets
-          );
-          this.savingSmsCommand(
-            smsCommands,
-            currentUser.currentDatabase
-          ).subscribe(() => {});
-          let smsCommandUrl = '/api/25/dataStore/sms/commands';
-          this.HttpClient.defaultPost(
-            smsCommandUrl,
-            smsCommands,
-            currentUser
-          ).subscribe(
-            () => {
-              observer.next();
-              observer.complete();
-            },
-            error => {
-              //update data store
-              this.HttpClient.put(
-                smsCommandUrl,
-                smsCommands,
-                currentUser
-              ).subscribe(
-                data => {
-                  observer.next(data);
-                  observer.complete();
-                },
-                errro => {
-                  observer.error(error);
-                }
-              );
-            }
-          );
-        },
-        error => {
-          observer.error(error);
-        }
-      );
+      this.dataSetProvider
+        .getAllDataSetsSMSCodeGeneration(currentUser)
+        .subscribe(
+          (dataSets: Array<DataSet>) => {
+            let smsCommands: Array<SmsCommand> = this.getGenerateSmsCommands(
+              dataSets
+            );
+            this.savingSmsCommand(
+              smsCommands,
+              currentUser.currentDatabase
+            ).subscribe(() => {});
+            let smsCommandUrl = '/api/25/dataStore/sms/commands';
+            this.HttpClient.defaultPost(
+              smsCommandUrl,
+              smsCommands,
+              currentUser
+            ).subscribe(
+              () => {
+                observer.next();
+                observer.complete();
+              },
+              error => {
+                //update data store
+                this.HttpClient.put(
+                  smsCommandUrl,
+                  smsCommands,
+                  currentUser
+                ).subscribe(
+                  data => {
+                    observer.next(data);
+                    observer.complete();
+                  },
+                  errro => {
+                    observer.error(error);
+                  }
+                );
+              }
+            );
+          },
+          error => {
+            observer.error(error);
+          }
+        );
     });
   }
 
@@ -346,18 +348,17 @@ export class SmsCommandProvider {
   ): Observable<any> {
     return new Observable(observer => {
       let sms = [];
-      let smsLimit = 135;
+      const smsLimit = 135;
       let smsForReportingData =
         smsCommand.commandName + ' ' + selectedPeriod.iso + ' ';
       let firstValuesFound = false;
       smsCommand.smsCode.map((smsCodeObject: any) => {
-        let id =
+        const id =
           smsCodeObject.dataElement.id +
           '-' +
           smsCodeObject.categoryOptionCombos;
         if (entryFormDataValuesObject[id]) {
           let value = entryFormDataValuesObject[id];
-          console.log('id ' + id + ' :: value ' + value);
           if (!firstValuesFound) {
             firstValuesFound = true;
           } else if (
@@ -380,8 +381,6 @@ export class SmsCommandProvider {
             smsCodeObject.smsCode +
             smsCommand.separator +
             value;
-
-          console.log(smsForReportingData);
         }
       });
       sms.push(smsForReportingData);
