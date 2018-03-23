@@ -527,5 +527,51 @@ export const DATABASE_STRUCTURE = {
     resourceType: 'event',
     displayName: 'Program Stage Sections',
     dependentTable: []
+  },
+  programRules: {
+    columns: [
+      { value: 'id', type: 'TEXT' },
+      { value: 'name', type: 'TEXT' },
+      { value: 'displayName', type: 'TEXT' },
+      { value: 'condition', type: 'TEXT' },
+      { value: 'description', type: 'TEXT' },
+      { value: 'program', type: 'LONGTEXT' },
+      { value: 'programRuleActions', type: 'LONGTEXT' }
+    ],
+    isMetadata: true,
+    batchSize: 100,
+    resourceType: 'event',
+    displayName: 'Program Rules',
+    dependentTable: []
+  },
+  programRuleActions: {
+    columns: [
+      { value: 'id', type: 'TEXT' },
+      { value: 'data', type: 'TEXT' },
+      { value: 'content', type: 'TEXT' },
+      { value: 'programRuleActionType', type: 'TEXT' },
+      { value: 'location', type: 'TEXT' },
+      { value: 'programRule', type: 'LONGTEXT' }
+    ],
+    isMetadata: true,
+    batchSize: 200,
+    resourceType: 'event',
+    displayName: 'Program Rule Actions',
+    dependentTable: []
+  },
+  programRuleVariables: {
+    columns: [
+      { value: 'id', type: 'TEXT' },
+      { value: 'name', type: 'TEXT' },
+      { value: 'displayName', type: 'TEXT' },
+      { value: 'programRuleVariableSourceType', type: 'TEXT' },
+      { value: 'program', type: 'LONGTEXT' },
+      { value: 'dataElement', type: 'LONGTEXT' }
+    ],
+    isMetadata: true,
+    batchSize: 200,
+    resourceType: 'event',
+    displayName: 'Program Rules Variables',
+    dependentTable: []
   }
 };
