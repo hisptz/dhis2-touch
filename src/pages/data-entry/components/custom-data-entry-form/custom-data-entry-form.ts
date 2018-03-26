@@ -91,7 +91,7 @@ export class CustomDataEntryFormComponent implements OnInit, AfterViewInit {
           $(this).attr('type', 'date');
           $(this).val(value);
        } else if (type === 'BOOLEAN') {
-          $(this).replaceWith(getRadioInput(id, value, true, 'Yes') + getRadioInput(id, value, false, 'No'));
+          $(this).replaceWith(getRadioInputs(id, value));
        } else if (type === 'NUMBER') {
           $(this).attr('type', 'number');
           $(this).val(value)
@@ -105,10 +105,20 @@ export class CustomDataEntryFormComponent implements OnInit, AfterViewInit {
         return '<textarea id="' + id + '" name="entryform">' + value + '</textarea>';
     }
 
-    function getRadioInput(id, savedValue, value, name) {
-        <!--alert(savedValue == value)-->
-        var checked = false;
-        return '<input id="' + id + '" type="radio" name="' + id + '" value="' + value + '" checked="' + checked + '">' + name;
+    function getRadioInputs(id, savedValue) {
+        var inputs;
+        if (savedValue == 'true') { 
+          inputs = '<input id="' + id + '" type="radio" name="' + id + '" value="true" checked> Yes' +
+          '<input id="' + id + '" type="radio" name="' + id + '" value="false"> No';
+        } else if (savedValue == 'false') {
+          inputs = '<input id="' + id + '" type="radio" name="' + id + '" value="true"> Yes' +
+          '<input id="' + id + '" type="radio" name="' + id + '" value="false" checked> No';
+        } else {
+        inputs = '<input id="' + id + '" type="radio" name="' + id + '" value="true"> Yes' +
+          '<input id="' + id + '" type="radio" name="' + id + '" value="false"> No';
+        }
+        
+        return inputs
     }
     
     function getDataValue(data, id) {
@@ -137,7 +147,7 @@ export class CustomDataEntryFormComponent implements OnInit, AfterViewInit {
     }
     
     function convertToBoolean(stringValue) {
-        return stringValue == 'true' ? Boolean(true) : Boolean(false);
+        return stringValue == 'true' ? Boolean(true) : 'false' ? Boolean(false) : stringValue;
     }
     `;
     return script;
