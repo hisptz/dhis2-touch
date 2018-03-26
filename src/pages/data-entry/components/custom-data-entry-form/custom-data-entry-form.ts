@@ -108,13 +108,13 @@ export class CustomDataEntryFormComponent implements OnInit, AfterViewInit {
     function getRadioInputs(id, savedValue) {
         var inputs;
         if (savedValue == 'true') { 
-          inputs = '<input id="' + id + '" type="radio" name="' + id + '" value="true" checked> Yes' +
+          inputs = '<input id="' + id + '" type="radio" name="' + id + '" value="true" checked> Yes ' +
           '<input id="' + id + '" type="radio" name="' + id + '" value="false"> No';
         } else if (savedValue == 'false') {
-          inputs = '<input id="' + id + '" type="radio" name="' + id + '" value="true"> Yes' +
+          inputs = '<input id="' + id + '" type="radio" name="' + id + '" value="true"> Yes ' +
           '<input id="' + id + '" type="radio" name="' + id + '" value="false" checked> No';
         } else {
-        inputs = '<input id="' + id + '" type="radio" name="' + id + '" value="true"> Yes' +
+        inputs = '<input id="' + id + '" type="radio" name="' + id + '" value="true"> Yes ' +
           '<input id="' + id + '" type="radio" name="' + id + '" value="false"> No';
         }
         
