@@ -67,8 +67,7 @@ export class CustomDataEntryFormComponent implements OnInit, AfterViewInit {
     const script = `
     var data = ${JSON.stringify(this.data)}
     var dataElements = ${JSON.stringify(_.flatten(_.map(this.entryFormSections, entrySection => entrySection.dataElements)))}
-    
-    $("input[name='entryfield']").each(function() {
+    $("input").each(function() {
       var id = $( this ).attr( 'id' ).split('-');
       var dataElementId = id[0];
       var optionComboId = id[1];
