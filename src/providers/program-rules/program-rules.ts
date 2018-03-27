@@ -18,41 +18,108 @@ export class ProgramRulesProvider {
     private httpClientProvider: HttpClientProvider
   ) {}
 
-  // programRules programRuleActions programRuleVariables
-
   downloadingProgramRules(currentUser: CurrentUser): Observable<any> {
     const resource = 'programRules';
     const fields =
       'id,name,displayName,description,condition,program[id],programRuleActions[id]';
-    return new Observable(observer => {});
+    const url = '/api/' + resource + '.json?paging=false&fields=' + fields;
+    return new Observable(observer => {
+      this.httpClientProvider.get(url, true, currentUser).subscribe(
+        (response: any) => {
+          const { programRules } = response;
+          observer.next(programRules);
+        },
+        error => {
+          observer.error(error);
+        }
+      );
+    });
   }
 
   downloadingProgramRuleActions(currentUser: CurrentUser): Observable<any> {
     const resource = 'programRuleActions';
     const fields =
       'id,data,content,programRuleActionType,location,programRule[id]';
-    return new Observable(observer => {});
+    const url = '/api/' + resource + '.json?paging=false&fields=' + fields;
+    return new Observable(observer => {
+      this.httpClientProvider.get(url, true, currentUser).subscribe(
+        (response: any) => {
+          const { programRuleActions } = response;
+          observer.next(programRuleActions);
+        },
+        error => {
+          observer.error(error);
+        }
+      );
+    });
   }
 
   downloadingProgramRuleVariables(currentUser: CurrentUser): Observable<any> {
     const resource = 'programRuleVariables';
     const fields =
       'id,name,displayName,programRuleVariableSourceType,program[id],dataElement[id]';
-    return new Observable(observer => {});
+    const url = '/api/' + resource + '.json?paging=false&fields=' + fields;
+    return new Observable(observer => {
+      this.httpClientProvider.get(url, true, currentUser).subscribe(
+        (response: any) => {
+          const { programRuleVariables } = response;
+          observer.next(programRuleVariables);
+        },
+        error => {
+          observer.error(error);
+        }
+      );
+    });
   }
 
   savingProgramRules(data, currentUser: CurrentUser): Observable<any> {
     const resource = 'programRules';
-    return new Observable(observer => {});
+    return new Observable(observer => {
+      this.sqlLite
+        .insertBulkDataOnTable(resource, data, currentUser.currentDatabase)
+        .subscribe(
+          () => {
+            observer.next();
+            observer.complete();
+          },
+          error => {
+            observer.error();
+          }
+        );
+    });
   }
 
   savingProgramRuleActions(data, currentUser: CurrentUser): Observable<any> {
     const resource = 'programRuleActions';
-    return new Observable(observer => {});
+    return new Observable(observer => {
+      this.sqlLite
+        .insertBulkDataOnTable(resource, data, currentUser.currentDatabase)
+        .subscribe(
+          () => {
+            observer.next();
+            observer.complete();
+          },
+          error => {
+            observer.error();
+          }
+        );
+    });
   }
 
   savingProgramRuleVariables(data, currentUser: CurrentUser): Observable<any> {
     const resource = 'programRuleVariables';
-    return new Observable(observer => {});
+    return new Observable(observer => {
+      this.sqlLite
+        .insertBulkDataOnTable(resource, data, currentUser.currentDatabase)
+        .subscribe(
+          () => {
+            observer.next();
+            observer.complete();
+          },
+          error => {
+            observer.error();
+          }
+        );
+    });
   }
 }
