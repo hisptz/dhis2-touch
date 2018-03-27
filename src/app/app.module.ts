@@ -72,6 +72,7 @@ import { EnrollmentsProvider } from '../providers/enrollments/enrollments';
 import { TrackedEntityAttributeValuesProvider } from '../providers/tracked-entity-attribute-values/tracked-entity-attribute-values';
 import { EncryptionProvider } from '../providers/encryption/encryption';
 import { SmsGatewayProvider } from '../providers/sms-gateway/sms-gateway';
+import { ProgramRulesProvider } from '../providers/program-rules/program-rules';
 
 @NgModule({
   declarations: [
@@ -149,7 +150,8 @@ import { SmsGatewayProvider } from '../providers/sms-gateway/sms-gateway';
     DataSetReportProvider,
     LocalInstanceProvider,
     AppTranslationProvider,
-    EncryptionProvider
+    EncryptionProvider,
+    ProgramRulesProvider
   ]
 })
 export class AppModule {}

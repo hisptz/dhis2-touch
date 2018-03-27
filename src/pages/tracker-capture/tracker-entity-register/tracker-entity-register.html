@@ -66,18 +66,22 @@
                     <div class="inputLabel">
                       <span [translate]="'Enrolling organisation unit'"></span>
                     </div>
-                    <div class="input-field-container">
-                      <ion-item>
-                        <ion-input [(ngModel)]="currentOrganisationUnit.name" readonly="true"></ion-input>
-                      </ion-item>
+                    <div class="input-field-container grey-field">
+                      <div padding-left>
+                        <div padding>
+                          {{ currentOrganisationUnit.name }}
+                        </div>
+                      </div>
                     </div>
                     <div class="inputLabel">
                       <span [translate]="'Enrolling program'"></span>
                     </div>
-                    <div class="input-field-container">
-                      <ion-item>
-                        <ion-input [(ngModel)]="currentProgram.name" readonly="true"></ion-input>
-                      </ion-item>
+                    <div class="input-field-container grey-field">
+                      <div padding-left>
+                        <div padding>
+                          {{ currentProgram.name }}
+                        </div>
+                      </div>
                     </div>
                     <div>
                       <div class="inputLabel">
@@ -85,7 +89,8 @@
                       </div>
                       <div [ngClass]="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container'">
                         <ion-item>
-                          <ion-datetime [(ngModel)]="enrollmentDate" doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>
+                          <ion-datetime [(ngModel)]="date.enrollmentDate" [ngModelOptions]="{standalone:true}" doneText="Update" displayFormat="YYYY-MM-DD"
+                            pickerFormat="YYYY MM DD"></ion-datetime>
                         </ion-item>
                       </div>
                       <div class="inputLabel">
@@ -93,7 +98,8 @@
                       </div>
                       <div [ngClass]="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container'">
                         <ion-item>
-                          <ion-datetime [(ngModel)]="incidentDate" doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>
+                          <ion-datetime [(ngModel)]="date.incidentDate" [ngModelOptions]="{standalone:true}" doneText="Update" displayFormat="YYYY-MM-DD"
+                            pickerFormat="YYYY MM DD"></ion-datetime>
                         </ion-item>
                       </div>
                     </div>

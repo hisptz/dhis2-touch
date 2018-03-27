@@ -23,6 +23,7 @@ import { ApplicationState } from '../../store';
 import { LoadedCurrentUser } from '../../store/actions/currentUser.actons';
 import { EncryptionProvider } from '../../providers/encryption/encryption';
 import { NetworkAvailabilityProvider } from '../../providers/network-availability/network-availability';
+import { ProgramRulesProvider } from '../../providers/program-rules/program-rules';
 
 /**
  * Generated class for the LoginPage page.
@@ -77,7 +78,8 @@ export class LoginPage implements OnInit {
     private programStageSectionProvider: ProgramStageSectionsProvider,
     private localInstanceProvider: LocalInstanceProvider,
     private appTranslationProvider: AppTranslationProvider,
-    private networkProvider: NetworkAvailabilityProvider
+    private networkProvider: NetworkAvailabilityProvider,
+    private programRulesProvider: ProgramRulesProvider
   ) {}
 
   ngOnInit() {
@@ -284,6 +286,9 @@ export class LoginPage implements OnInit {
                                           this.downloadingSmsCommands();
                                           this.downloadingPrograms();
                                           this.downloadingProgramStageSections();
+                                          this.downloadingProgramRuleActions();
+                                          this.downloadingProgramRules();
+                                          this.downloadingProgramRuleVariables();
                                           this.downloadingIndicators();
                                           this.downloadingStandardReports();
                                           this.downloadingConstants();
@@ -727,6 +732,156 @@ export class LoginPage implements OnInit {
               );
             }
           );
+      }
+    }
+  }
+
+  downloadingProgramRules() {
+    if (this.isLoginProcessActive) {
+      let resource = 'programRules';
+      let currentResourceType = 'event';
+      this.progressTracker[currentResourceType].message =
+        'Discovering program rules';
+      if (this.completedTrackedProcess.indexOf(resource) > -1) {
+        this.progressTracker[currentResourceType].message =
+          'Program Rules have been discovered';
+        this.updateProgressTracker(resource);
+      } else {
+        if (this.isLoginProcessActive) {
+          this.programRulesProvider
+            .downloadingProgramRules(this.currentUser)
+            .subscribe(
+              data => {
+                if (this.isLoginProcessActive) {
+                  this.progressTracker[currentResourceType].message =
+                    'Saving program rules';
+                  this.programRulesProvider
+                    .savingProgramRules(data, this.currentUser)
+                    .subscribe(
+                      () => {
+                        this.progressTracker[currentResourceType].message =
+                          'Program rules have been saved successfully';
+                        this.updateProgressTracker(resource);
+                      },
+                      error => {
+                        this.cancelLoginProcess(this.cancelLoginProcessData);
+                        console.log(JSON.stringify(error));
+                        this.AppProvider.setNormalNotification(
+                          'Fail to save program rules'
+                        );
+                      }
+                    );
+                }
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Fail to discover program rules'
+                );
+              }
+            );
+        }
+      }
+    }
+  }
+
+  downloadingProgramRuleActions() {
+    if (this.isLoginProcessActive) {
+      let resource = 'programRuleActions';
+      let currentResourceType = 'event';
+      this.progressTracker[currentResourceType].message =
+        'Discovering program rules actions';
+      if (this.completedTrackedProcess.indexOf(resource) > -1) {
+        this.progressTracker[currentResourceType].message =
+          'Program rules actions have been discovered';
+        this.updateProgressTracker(resource);
+      } else {
+        if (this.isLoginProcessActive) {
+          this.programRulesProvider
+            .downloadingProgramRuleActions(this.currentUser)
+            .subscribe(
+              data => {
+                if (this.isLoginProcessActive) {
+                  this.progressTracker[currentResourceType].message =
+                    'Saving program rules actions';
+                  this.programRulesProvider
+                    .savingProgramRuleActions(data, this.currentUser)
+                    .subscribe(
+                      () => {
+                        this.progressTracker[currentResourceType].message =
+                          'Program rules actions have been saved successfully';
+                        this.updateProgressTracker(resource);
+                      },
+                      error => {
+                        this.cancelLoginProcess(this.cancelLoginProcessData);
+                        console.log(JSON.stringify(error));
+                        this.AppProvider.setNormalNotification(
+                          'Fail to save program rules actions'
+                        );
+                      }
+                    );
+                }
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Fail to discover program rules actions'
+                );
+              }
+            );
+        }
+      }
+    }
+  }
+
+  downloadingProgramRuleVariables() {
+    if (this.isLoginProcessActive) {
+      let resource = 'programRuleVariables';
+      let currentResourceType = 'event';
+      this.progressTracker[currentResourceType].message =
+        'Discovering program rules variables';
+      if (this.completedTrackedProcess.indexOf(resource) > -1) {
+        this.progressTracker[currentResourceType].message =
+          'Program rules variables have been discovered';
+        this.updateProgressTracker(resource);
+      } else {
+        if (this.isLoginProcessActive) {
+          this.programRulesProvider
+            .downloadingProgramRuleVariables(this.currentUser)
+            .subscribe(
+              data => {
+                if (this.isLoginProcessActive) {
+                  this.progressTracker[currentResourceType].message =
+                    'Saving program rules variables';
+                  this.programRulesProvider
+                    .savingProgramRuleVariables(data, this.currentUser)
+                    .subscribe(
+                      () => {
+                        this.progressTracker[currentResourceType].message =
+                          'Program rules variables have been saved successfully';
+                        this.updateProgressTracker(resource);
+                      },
+                      error => {
+                        this.cancelLoginProcess(this.cancelLoginProcessData);
+                        console.log(JSON.stringify(error));
+                        this.AppProvider.setNormalNotification(
+                          'Fail to save program rules variables'
+                        );
+                      }
+                    );
+                }
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Fail to discover program rules variables'
+                );
+              }
+            );
+        }
       }
     }
   }
