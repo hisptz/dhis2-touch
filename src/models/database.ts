@@ -404,7 +404,7 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: false,
     resourceType: '',
-    batchSize: 100,
+    batchSize: 200,
     displayName: '',
     dependentTable: []
   },

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
+import * as _ from 'lodash';
 import { DataSet } from '../../models/dataSet';
 import { CurrentUser } from '../../models/currentUser';
 
@@ -110,11 +111,13 @@ export class DataSetsProvider {
         currentUser.currentDatabase
       ).subscribe(
         (dataSetElements: any) => {
-          let dataElementids = [];
+          const dataElementids = _.map(
+            dataSetElements,
+            (dataSetElement: any) => {
+              return dataSetElement.dataElementId;
+            }
+          );
           let dataSetElementMapper = {};
-          dataSetElements.map((dataSetElement: any) => {
-            dataElementids.push(dataSetElement.dataElementId);
-          });
           this.getAllDataElementsMapper(currentUser, dataElementids).subscribe(
             (dataElementMapper: any) => {
               dataSetElements.map((dataSetElement: any) => {
@@ -191,8 +194,8 @@ export class DataSetsProvider {
             currentUser.authorities &&
             currentUser.authorities.indexOf('ALL') > -1
           ) {
-            dataSources.map((dataSource: any) => {
-              attributeArray.push(dataSource.dataSetId);
+            attributeArray = _.map(dataSources, (dataSource: any) => {
+              return dataSource.dataSetId;
             });
           } else {
             dataSources.map((dataSource: any) => {
@@ -212,11 +215,12 @@ export class DataSetsProvider {
                 dataSets = this.sortDataSetList(dataSets);
                 let hasSelectedDataSet = false;
                 if (this.lastSelectedDataSet && this.lastSelectedDataSet.id) {
-                  dataSets.map((dataSet: any) => {
-                    if (dataSet.id == this.lastSelectedDataSet.id) {
-                      hasSelectedDataSet = true;
-                    }
+                  const matchDataSetIds = _.filter(dataSets, {
+                    id: this.lastSelectedDataSet.id
                   });
+                  if (matchDataSetIds.length > 0) {
+                    hasSelectedDataSet = true;
+                  }
                 }
                 if (!hasSelectedDataSet) {
                   this.setLastSelectedDataSet(dataSets[0]);
@@ -279,11 +283,12 @@ export class DataSetsProvider {
       categoryOption.organisationUnits.length > 0
     ) {
       result = false;
-      categoryOption.organisationUnits.map((organisationUnit: any) => {
-        if (selectedOrgUnitId == organisationUnit.id) {
-          result = true;
-        }
+      const matchedOus = _.filter(categoryOption.organisationUnits, {
+        id: selectedOrgUnitId
       });
+      if (matchedOus.length > 0) {
+        result = true;
+      }
     }
     return result;
   }
@@ -326,7 +331,7 @@ export class DataSetsProvider {
    * @returns {Observable<any>}
    */
   getDataSetSectionsIds(dataSetId, currentUser): Observable<any> {
-    let resource = 'dataSetSections';
+    const resource = 'dataSetSections';
     let attributeKey = 'dataSetId';
     let attributeArray = [dataSetId];
     let sectionIds = [];
@@ -363,7 +368,7 @@ export class DataSetsProvider {
     let attributeKey = 'dataSetId';
     let attributeArray = [dataSetId];
     let dataSetElements = [];
-    let resource = 'dataSetElements';
+    const resource = 'dataSetElements';
     return new Observable(observer => {
       this.SqlLite.getDataFromTableByAttributes(
         resource,
@@ -397,7 +402,7 @@ export class DataSetsProvider {
    * @returns {Observable}
    */
   getDataSetIndicatorIds(dataSetId, currentUser): Observable<any> {
-    let resource = 'dataSetIndicators';
+    const resource = 'dataSetIndicators';
     let attributeKey = 'dataSetId';
     let attributeArray = [dataSetId];
     let indicatorIds = [];
@@ -410,9 +415,12 @@ export class DataSetsProvider {
       ).subscribe(
         (dataSetsIndicatorIds: any) => {
           if (dataSetsIndicatorIds && dataSetsIndicatorIds.length > 0) {
-            dataSetsIndicatorIds.map((dataSetsSection: any) => {
-              indicatorIds.push(dataSetsSection.indicatorId);
-            });
+            indicatorIds = _.map(
+              dataSetsIndicatorIds,
+              (dataSetsSection: any) => {
+                return dataSetsSection.indicatorId;
+              }
+            );
           }
           observer.next(indicatorIds);
           observer.complete();
@@ -478,9 +486,7 @@ export class DataSetsProvider {
    */
   appendDataSetsFromServerToDataSetArray(dataSetArray, dataSetsResponse) {
     if (dataSetsResponse[this.resource]) {
-      for (let dataSets of dataSetsResponse[this.resource]) {
-        dataSetArray.push(dataSets);
-      }
+      dataSetArray = _.concat(dataSetArray, dataSetsResponse[this.resource]);
     }
     return dataSetArray;
   }
@@ -493,33 +499,104 @@ export class DataSetsProvider {
    */
   saveDataSetsFromServer(dataSets, currentUser): Observable<any> {
     return new Observable(observer => {
-      //saving entry form designs
-      this.saveDataEntryFormDesign(dataSets, currentUser).subscribe(
-        () => {},
-        error => {}
-      );
       if (dataSets.length == 0) {
         observer.next();
         observer.complete();
       } else {
+        const totalProcess = 7;
+        let completeProcess = 0;
         this.SqlLite.insertBulkDataOnTable(
           this.resource,
           dataSets,
           currentUser.currentDatabase
         ).subscribe(
           () => {
-            this.saveDataSetIndicators(dataSets, currentUser).subscribe(
-              () => {
-                observer.next();
-                observer.complete();
-              },
-              error => {
-                observer.error(error);
-              }
-            );
+            completeProcess++;
+            if (completeProcess == totalProcess) {
+              observer.next();
+              observer.complete();
+            }
           },
           error => {
             observer.error(error);
+          }
+        );
+        this.saveDataEntryFormDesign(dataSets, currentUser).subscribe(
+          () => {
+            completeProcess++;
+            if (completeProcess == totalProcess) {
+              observer.next();
+              observer.complete();
+            }
+          },
+          error => {
+            observer.error();
+          }
+        );
+        this.saveDataSetIndicators(dataSets, currentUser).subscribe(
+          () => {
+            completeProcess++;
+            if (completeProcess == totalProcess) {
+              observer.next();
+              observer.complete();
+            }
+          },
+          error => {
+            observer.error();
+          }
+        );
+        this.saveDataSetSource(dataSets, currentUser).subscribe(
+          () => {
+            completeProcess++;
+            if (completeProcess == totalProcess) {
+              observer.next();
+              observer.complete();
+            }
+          },
+          error => {
+            observer.error();
+          }
+        );
+        this.saveDataSetSections(dataSets, currentUser).subscribe(
+          () => {
+            completeProcess++;
+            if (completeProcess == totalProcess) {
+              observer.next();
+              observer.complete();
+            }
+          },
+          error => {
+            observer.error();
+          }
+        );
+        this.saveDataSetOperands(dataSets, currentUser).subscribe(
+          () => {
+            completeProcess++;
+            if (completeProcess == totalProcess) {
+              observer.next();
+              observer.complete();
+            }
+          },
+          error => {
+            observer.error();
+          }
+        );
+        this.saveDataSetElements(dataSets, currentUser).subscribe(
+          () => {
+            completeProcess++;
+            console.log(
+              'completeProcess : ' +
+                completeProcess +
+                ' :: totalProcess : ' +
+                totalProcess
+            );
+            if (completeProcess == totalProcess) {
+              observer.next();
+              observer.complete();
+            }
+          },
+          error => {
+            observer.error();
           }
         );
       }
@@ -529,7 +606,7 @@ export class DataSetsProvider {
   saveDataEntryFormDesign(dataSets, currentUser): Observable<any> {
     return new Observable(observer => {
       let entryFormDesign = [];
-      let resource = 'dataSetDesign';
+      const resource = 'dataSetDesign';
       dataSets.map((dataSet: any) => {
         if (dataSet.dataEntryForm && dataSet.dataEntryForm.htmlCode) {
           entryFormDesign.push({
@@ -543,10 +620,18 @@ export class DataSetsProvider {
         observer.complete();
       } else {
         this.SqlLite.insertBulkDataOnTable(
-          this.resource,
+          resource,
           entryFormDesign,
           currentUser.currentDatabase
-        ).subscribe(() => {}, error => {});
+        ).subscribe(
+          () => {
+            observer.next();
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
       }
     });
   }
@@ -559,29 +644,25 @@ export class DataSetsProvider {
    */
   saveDataSetIndicators(dataSets, currentUser): Observable<any> {
     let dataSetIndicators = [];
-    let resource = 'dataSetIndicators';
+    const resource = 'dataSetIndicators';
     dataSets.map((dataSet: any) => {
       if (dataSet.indicators && dataSet.indicators.length > 0) {
-        dataSet.indicators.map((indicator: any) => {
-          dataSetIndicators.push({
-            id: dataSet.id + '-' + indicator.id,
-            dataSetId: dataSet.id,
-            indicatorId: indicator.id
-          });
-        });
+        dataSetIndicators = _.concat(
+          dataSetIndicators,
+          _.map(dataSet.indicators, (indicator: any) => {
+            return {
+              id: dataSet.id + '-' + indicator.id,
+              dataSetId: dataSet.id,
+              indicatorId: indicator.id
+            };
+          })
+        );
       }
     });
     return new Observable(observer => {
       if (dataSetIndicators.length == 0) {
-        this.saveDataSetSource(dataSets, currentUser).subscribe(
-          () => {
-            observer.next();
-            observer.complete();
-          },
-          error => {
-            observer.error(error);
-          }
-        );
+        observer.next();
+        observer.complete();
       } else {
         this.SqlLite.insertBulkDataOnTable(
           resource,
@@ -589,15 +670,8 @@ export class DataSetsProvider {
           currentUser.currentDatabase
         ).subscribe(
           () => {
-            this.saveDataSetSource(dataSets, currentUser).subscribe(
-              () => {
-                observer.next();
-                observer.complete();
-              },
-              error => {
-                observer.error(error);
-              }
-            );
+            observer.next();
+            observer.complete();
           },
           error => {
             observer.error(error);
@@ -615,29 +689,25 @@ export class DataSetsProvider {
    */
   saveDataSetSource(dataSets, currentUser): Observable<any> {
     let dataSetSource = [];
-    let resource = 'dataSetSource';
+    const resource = 'dataSetSource';
     dataSets.map((dataSet: any) => {
       if (dataSet.organisationUnits && dataSet.organisationUnits.length > 0) {
-        dataSet.organisationUnits.map((organisationUnit: any) => {
-          dataSetSource.push({
-            id: dataSet.id + '-' + organisationUnit.id,
-            dataSetId: dataSet.id,
-            organisationUnitId: organisationUnit.id
-          });
-        });
+        dataSetSource = _.concat(
+          dataSetSource,
+          _.map(dataSet.organisationUnits, (organisationUnit: any) => {
+            return {
+              id: dataSet.id + '-' + organisationUnit.id,
+              dataSetId: dataSet.id,
+              organisationUnitId: organisationUnit.id
+            };
+          })
+        );
       }
     });
     return new Observable(observer => {
       if (dataSetSource.length == 0) {
-        this.saveDataSetSections(dataSets, currentUser).subscribe(
-          () => {
-            observer.next();
-            observer.complete();
-          },
-          error => {
-            observer.error(error);
-          }
-        );
+        observer.next();
+        observer.complete();
       } else {
         this.SqlLite.insertBulkDataOnTable(
           resource,
@@ -645,15 +715,8 @@ export class DataSetsProvider {
           currentUser.currentDatabase
         ).subscribe(
           () => {
-            this.saveDataSetSections(dataSets, currentUser).subscribe(
-              () => {
-                observer.next();
-                observer.complete();
-              },
-              error => {
-                observer.error(error);
-              }
-            );
+            observer.next();
+            observer.complete();
           },
           error => {
             observer.error(error);
@@ -670,7 +733,7 @@ export class DataSetsProvider {
    * @returns {Observable<any>}
    */
   getDataSetSource(orgUnitId, dataBaseName): Observable<any> {
-    let resource = 'dataSetSource';
+    const resource = 'dataSetSource';
     let attributeValue = [orgUnitId];
     let attributeKey = 'organisationUnitId';
     return new Observable(observer => {
@@ -692,7 +755,7 @@ export class DataSetsProvider {
   }
 
   getAllDataSetSources(currentUser: CurrentUser): Observable<any> {
-    let resource = 'dataSetSource';
+    const resource = 'dataSetSource';
     return new Observable(observer => {
       this.SqlLite.getAllDataFromTable(
         resource,
@@ -717,29 +780,25 @@ export class DataSetsProvider {
    */
   saveDataSetSections(dataSets, currentUser): Observable<any> {
     let dataSetSections = [];
-    let resource = 'dataSetSections';
+    const resource = 'dataSetSections';
     dataSets.map((dataSet: any) => {
       if (dataSet.sections && dataSet.sections.length > 0) {
-        dataSet.sections.map((section: any) => {
-          dataSetSections.push({
-            id: dataSet.id + '-' + section.id,
-            dataSetId: dataSet.id,
-            sectionId: section.id
-          });
-        });
+        dataSetSections = _.concat(
+          dataSetSections,
+          _.map((section: any) => {
+            return {
+              id: dataSet.id + '-' + section.id,
+              dataSetId: dataSet.id,
+              sectionId: section.id
+            };
+          })
+        );
       }
     });
     return new Observable(observer => {
       if (dataSetSections.length == 0) {
-        this.saveDataSetOperands(dataSets, currentUser).subscribe(
-          () => {
-            observer.next();
-            observer.complete();
-          },
-          error => {
-            observer.error(error);
-          }
-        );
+        observer.next();
+        observer.complete();
       } else {
         this.SqlLite.insertBulkDataOnTable(
           resource,
@@ -747,15 +806,8 @@ export class DataSetsProvider {
           currentUser.currentDatabase
         ).subscribe(
           () => {
-            this.saveDataSetOperands(dataSets, currentUser).subscribe(
-              () => {
-                observer.next();
-                observer.complete();
-              },
-              error => {
-                observer.error(error);
-              }
-            );
+            observer.next();
+            observer.complete();
           },
           error => {
             observer.error(error);
@@ -773,36 +825,35 @@ export class DataSetsProvider {
    */
   saveDataSetOperands(dataSets, currentUser): Observable<any> {
     let dataSetOperands = [];
-    let resource = 'dataSetOperands';
+    const resource = 'dataSetOperands';
     dataSets.map((dataSet: any) => {
       if (
         dataSet.compulsoryDataElementOperands &&
         dataSet.compulsoryDataElementOperands.length > 0
       ) {
-        dataSet.compulsoryDataElementOperands.map(
-          (compulsoryDataElementOperand: any) => {
-            dataSetOperands.push({
-              id: dataSet.id + '-' + compulsoryDataElementOperand.dimensionItem,
-              dataSetId: dataSet.id,
-              name: compulsoryDataElementOperand.name,
-              dimensionItemType: compulsoryDataElementOperand.dimensionItemType,
-              dimensionItem: compulsoryDataElementOperand.dimensionItem
-            });
-          }
+        dataSetOperands = _.concat(
+          dataSetOperands,
+          _.map(
+            dataSet.compulsoryDataElementOperands,
+            (compulsoryDataElementOperand: any) => {
+              return {
+                id:
+                  dataSet.id + '-' + compulsoryDataElementOperand.dimensionItem,
+                dataSetId: dataSet.id,
+                name: compulsoryDataElementOperand.name,
+                dimensionItemType:
+                  compulsoryDataElementOperand.dimensionItemType,
+                dimensionItem: compulsoryDataElementOperand.dimensionItem
+              };
+            }
+          )
         );
       }
     });
     return new Observable(observer => {
       if (dataSetOperands.length == 0) {
-        this.saveDataSetElements(dataSets, currentUser).subscribe(
-          () => {
-            observer.next();
-            observer.complete();
-          },
-          error => {
-            observer.error(error);
-          }
-        );
+        observer.next();
+        observer.complete();
       } else {
         this.SqlLite.insertBulkDataOnTable(
           resource,
@@ -810,15 +861,8 @@ export class DataSetsProvider {
           currentUser.currentDatabase
         ).subscribe(
           () => {
-            this.saveDataSetElements(dataSets, currentUser).subscribe(
-              () => {
-                observer.next();
-                observer.complete();
-              },
-              error => {
-                observer.error(error);
-              }
-            );
+            observer.next();
+            observer.complete();
           },
           error => {
             observer.error(error);
@@ -836,7 +880,7 @@ export class DataSetsProvider {
    */
   saveDataSetElements(dataSets, currentUser): Observable<any> {
     let dataSetElements = [];
-    let resource = 'dataSetElements';
+    const resource = 'dataSetElements';
     dataSets.map((dataSet: any) => {
       if (dataSet.dataSetElements && dataSet.dataSetElements.length > 0) {
         let count = 0;
@@ -892,16 +936,7 @@ export class DataSetsProvider {
    * @returns {any}
    */
   sortDataSetList(dataSetList) {
-    dataSetList.sort((a, b) => {
-      if (a.name > b.name) {
-        return 1;
-      }
-      if (a.name < b.name) {
-        return -1;
-      }
-      return 0;
-    });
-    return dataSetList;
+    return _.sortBy(dataSetList, ['name']);
   }
 
   /**

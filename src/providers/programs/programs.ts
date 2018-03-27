@@ -80,7 +80,6 @@ export class ProgramsProvider {
         observer.next();
         observer.complete();
       } else {
-        //saving porgrams and its derived stages
         const totalProcess = 7;
         let completedStage = 0;
         this.sqlLite
@@ -206,15 +205,15 @@ export class ProgramsProvider {
         program.programRuleVariables &&
         program.programRuleVariables.length > 0
       ) {
-        programProgramRuleVariables = _.map(
-          program.programRuleVariables,
-          (programRuleVariable: any) => {
+        programProgramRuleVariables = _.concat(
+          programProgramRuleVariables,
+          _.map(program.programRuleVariables, (programRuleVariable: any) => {
             return {
               id: program.id + '-' + programRuleVariable.id,
               programId: program.id,
               programRuleVariableId: programRuleVariable.id
             };
-          }
+          })
         );
       }
     });
@@ -253,15 +252,15 @@ export class ProgramsProvider {
     const resource = 'programProgramRules';
     programs.map((program: any) => {
       if (program.programRules && program.programRules.length > 0) {
-        programProgramRules = _.map(
-          program.programRules,
-          (programRule: any) => {
+        programProgramRules = _.concat(
+          programProgramRules,
+          _.map(program.programRules, (programRule: any) => {
             return {
               id: program.id + '-' + programRule.id,
               programId: program.id,
               programRuleId: programRule.id
             };
-          }
+          })
         );
       }
     });
@@ -300,15 +299,15 @@ export class ProgramsProvider {
     const resource = 'programOrganisationUnits';
     programs.map((program: any) => {
       if (program.organisationUnits && program.organisationUnits.length > 0) {
-        programOrganisationUnits = _.map(
-          program.organisationUnits,
-          (organisationUnit: any) => {
+        programOrganisationUnits = _.concat(
+          programOrganisationUnits,
+          _.map(program.organisationUnits, (organisationUnit: any) => {
             return {
               id: program.id + '-' + organisationUnit.id,
               programId: program.id,
               orgUnitId: organisationUnit.id
             };
-          }
+          })
         );
       }
     });
@@ -347,16 +346,16 @@ export class ProgramsProvider {
     const resource = 'programIndicators';
     programs.map((program: any) => {
       if (program.programIndicators && program.programIndicators.length > 0) {
-        programIndicators = _.map(
-          program.programIndicators,
-          (programIndicator: any) => {
+        programIndicators = _.concat(
+          programIndicators,
+          _.map(program.programIndicators, (programIndicator: any) => {
             return {
               id: program.id + '-' + programIndicator.id,
               programId: program.id,
               name: programIndicator.name,
               expression: programIndicator.expression
             };
-          }
+          })
         );
       }
     });
@@ -596,9 +595,12 @@ export class ProgramsProvider {
             currentUser.authorities &&
             currentUser.authorities.indexOf('ALL') > -1
           ) {
-            programOrganisationUnits.forEach((programOrganisationUnit: any) => {
-              attributeArray.push(programOrganisationUnit.programId);
-            });
+            attributeArray = _.map(
+              programOrganisationUnits,
+              (programOrganisationUnit: any) => {
+                return programOrganisationUnit.programId;
+              }
+            );
           } else {
             programOrganisationUnits.forEach((programOrganisationUnit: any) => {
               if (
@@ -622,7 +624,7 @@ export class ProgramsProvider {
                 if (programsResponse && programsResponse.length > 0) {
                   programsResponse = this.getSortedPrograms(programsResponse);
                   let hasProgramSelected = false;
-                  programsResponse.forEach((program: any) => {
+                  programsResponse.map((program: any) => {
                     if (
                       program.programType &&
                       program.programType == programType
@@ -674,9 +676,9 @@ export class ProgramsProvider {
    */
   getProgramCategoryComboCategories(selectedOrgUnitId, categories) {
     let categoryComboCategories = [];
-    categories.forEach((category: any) => {
+    categories.map((category: any) => {
       let categoryOptions = [];
-      category.categoryOptions.forEach((categoryOption: any) => {
+      category.categoryOptions.map((categoryOption: any) => {
         if (this.isOrganisationUnitAllowed(selectedOrgUnitId, categoryOption)) {
           categoryOptions.push({
             id: categoryOption.id,
@@ -706,11 +708,12 @@ export class ProgramsProvider {
       categoryOption.organisationUnits.length > 0
     ) {
       result = false;
-      categoryOption.organisationUnits.forEach((organisationUnit: any) => {
-        if (selectedOrgUnitId == organisationUnit.id) {
-          result = true;
-        }
+      const matchedOus = _.filter(categoryOption.organisationUnits, {
+        id: selectedOrgUnitId
       });
+      if (matchedOus.length > 0) {
+        result = true;
+      }
     }
     return result;
   }
@@ -721,16 +724,7 @@ export class ProgramsProvider {
    * @returns {any}
    */
   getSortedPrograms(programs) {
-    programs.sort((a, b) => {
-      if (a.name > b.name) {
-        return 1;
-      }
-      if (a.name < b.name) {
-        return -1;
-      }
-      return 0;
-    });
-    return programs;
+    return _.sortBy(programs, ['name']);
   }
 
   /**
