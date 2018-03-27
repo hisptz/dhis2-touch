@@ -1,4 +1,13 @@
-import { Component, Input, OnInit, ElementRef, HostListener, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnInit,
+  ElementRef,
+  HostListener,
+  AfterViewInit
+} from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import * as _ from 'lodash';
 
@@ -16,9 +25,23 @@ export class CustomDataEntryFormComponent implements OnInit, AfterViewInit {
   @Input() dataEntryFormDesign;
   @Input() data;
   @Input() entryFormSections;
+  @Output() onCustomFormInputChange = new EventEmitter();
 
-  @HostListener('change') onChange() {
-    alert('changed')
+  @HostListener('change')
+  onChange() {
+    const dataElementId = 'dataElementId';
+    const categoryOptionComboId = 'categoryOptionComboId';
+    const value = 'value';
+    const data = {
+      id: dataElementId + '-' + categoryOptionComboId,
+      value: value,
+      status: 'synced'
+    };
+    this.onCustomFormInputChange.emit({
+      id: dataElementId + '-' + categoryOptionComboId,
+      value: value,
+      status: 'not-synced'
+    });
   }
   _htmlMarkup: SafeHtml;
   hasScriptSet: boolean;
@@ -38,7 +61,9 @@ export class CustomDataEntryFormComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.setScriptsOnHtmlContent(this.getScriptsContents(this.dataEntryFormDesign));
+    this.setScriptsOnHtmlContent(
+      this.getScriptsContents(this.dataEntryFormDesign)
+    );
   }
 
   getScriptsContents(html) {
@@ -66,7 +91,11 @@ export class CustomDataEntryFormComponent implements OnInit, AfterViewInit {
   getDefaultScriptContents() {
     const script = `
     var data = ${JSON.stringify(this.data)}
-    var dataElements = ${JSON.stringify(_.flatten(_.map(this.entryFormSections, entrySection => entrySection.dataElements)))}
+    var dataElements = ${JSON.stringify(
+      _.flatten(
+        _.map(this.entryFormSections, entrySection => entrySection.dataElements)
+      )
+    )}
     $("input").each(function() {
       var id = $( this ).attr( 'id' ).split('-');
       var dataElementId = id[0];
@@ -153,7 +182,10 @@ export class CustomDataEntryFormComponent implements OnInit, AfterViewInit {
   }
 
   setScriptsOnHtmlContent(scriptsContentsArray) {
-    scriptsContentsArray = [this.getDefaultScriptContents(), ...scriptsContentsArray]
+    scriptsContentsArray = [
+      this.getDefaultScriptContents(),
+      ...scriptsContentsArray
+    ];
     if (!this.hasScriptSet) {
       scriptsContentsArray.forEach(scriptsContents => {
         if (scriptsContents.indexOf('<script') > -1) {
