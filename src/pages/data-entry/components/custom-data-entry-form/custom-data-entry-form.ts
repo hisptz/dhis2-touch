@@ -1,7 +1,6 @@
-import { Component, Input, OnInit, ElementRef, HostListener, AfterViewInit } from '@angular/core';
+import { Component, Input, OnInit, ElementRef, HostListener, AfterViewInit, EventEmitter, Output } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import * as _ from 'lodash';
-declare var $;
 
 /**
  * Generated class for the CustomDataEntryFormComponent component.
@@ -17,19 +16,23 @@ export class CustomDataEntryFormComponent implements OnInit, AfterViewInit {
   @Input() dataEntryFormDesign;
   @Input() data;
   @Input() entryFormSections;
+  @Output() onCustomFormInputChange = new EventEmitter();
 
   _htmlMarkup: SafeHtml;
   hasScriptSet: boolean;
 
   constructor(private sanitizer: DomSanitizer, private elementRef: ElementRef) {
-
     this.hasScriptSet = false;
 
     document.body.addEventListener('dataValueUpdate', (e) => {
-      alert(JSON.stringify(e.detail))
+      const dataValueObject = e.detail;
+
+      if (dataValueObject) {
+        this.onCustomFormInputChange.emit(dataValueObject);
+      }
+
     }, false);
   }
-
 
   ngOnInit() {
     try {
@@ -78,7 +81,7 @@ export class CustomDataEntryFormComponent implements OnInit, AfterViewInit {
       var dataElementId = id[0];
       var optionComboId = id[1];
      
-      var dataValueEvent = new CustomEvent("dataValueUpdate", {detail: {de: dataElementId, co: optionComboId, value: $(this).val()}});
+      var dataValueEvent = new CustomEvent("dataValueUpdate", {detail: {id: dataElementId + '-' + optionComboId, value: $(this).val(), status: 'not-synced'}});
       document.body.dispatchEvent(dataValueEvent);
     })
     })
@@ -171,10 +174,6 @@ export class CustomDataEntryFormComponent implements OnInit, AfterViewInit {
     }
     `;
     return script;
-  }
-
-  dataValueUpdate(event) {
-    alert(JSON.stringify(event))
   }
 
   setScriptsOnHtmlContent(scriptsContentsArray) {
