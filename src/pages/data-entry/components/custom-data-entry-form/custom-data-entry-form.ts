@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, ElementRef, HostListener, AfterViewInit } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import * as _ from 'lodash';
+declare var $;
 
 /**
  * Generated class for the CustomDataEntryFormComponent component.
@@ -17,15 +18,18 @@ export class CustomDataEntryFormComponent implements OnInit, AfterViewInit {
   @Input() data;
   @Input() entryFormSections;
 
-  @HostListener('change') onChange() {
-    alert('changed')
-  }
   _htmlMarkup: SafeHtml;
   hasScriptSet: boolean;
 
   constructor(private sanitizer: DomSanitizer, private elementRef: ElementRef) {
+
     this.hasScriptSet = false;
+
+    document.body.addEventListener('dataValueUpdate', (e) => {
+      alert(JSON.stringify(e.detail))
+    }, false);
   }
+
 
   ngOnInit() {
     try {
@@ -65,9 +69,22 @@ export class CustomDataEntryFormComponent implements OnInit, AfterViewInit {
 
   getDefaultScriptContents() {
     const script = `
-    var data = ${JSON.stringify(this.data)}
+    var data = ${JSON.stringify(this.data)};
     var dataElements = ${JSON.stringify(_.flatten(_.map(this.entryFormSections, entrySection => entrySection.dataElements)))}
-    $("input").each(function() {
+    
+    onFormReady(function () {
+    $('.entryfield').change(function() {
+      var id = $( this ).attr( 'id' ).split('-');
+      var dataElementId = id[0];
+      var optionComboId = id[1];
+     
+      var dataValueEvent = new CustomEvent("dataValueUpdate", {detail: {de: dataElementId, co: optionComboId, value: $(this).val()}});
+      document.body.dispatchEvent(dataValueEvent);
+    })
+    })
+    
+    function onFormReady(formReady) {
+      $("input").each(function() {
       var id = $( this ).attr( 'id' ).split('-');
       var dataElementId = id[0];
       var optionComboId = id[1];
@@ -78,6 +95,8 @@ export class CustomDataEntryFormComponent implements OnInit, AfterViewInit {
       var type = dataElementDetails ? dataElementDetails.valueType : null;
       
       var value = getSanitizedValue(getDataValue(data, dataElementId + '-' + optionComboId), type);
+      
+      $(this).attr('class', 'entryfield');
 
       // update input with corresponding type
       if (type === 'TRUE_ONLY') {
@@ -99,22 +118,24 @@ export class CustomDataEntryFormComponent implements OnInit, AfterViewInit {
           alert(type)
        }
     });
+      formReady();
+    }
 
     function getTextArea(id, value) {
-        return '<textarea id="' + id + '" name="entryform">' + value + '</textarea>';
+        return '<textarea id="' + id + '" name="entryform" class="entryfield">' + value + '</textarea>';
     }
 
     function getRadioInputs(id, savedValue) {
         var inputs;
         if (savedValue == 'true') { 
-          inputs = '<input id="' + id + '" type="radio" name="' + id + '" value="true" checked> Yes ' +
-          '<input id="' + id + '" type="radio" name="' + id + '" value="false"> No';
+          inputs = '<input id="' + id + '" type="radio" name="' + id + '" value="true" class="entryfield" checked> Yes ' +
+          '<input id="' + id + '" type="radio" name="' + id + '" value="false" class="entryfield"> No';
         } else if (savedValue == 'false') {
-          inputs = '<input id="' + id + '" type="radio" name="' + id + '" value="true"> Yes ' +
-          '<input id="' + id + '" type="radio" name="' + id + '" value="false" checked> No';
+          inputs = '<input id="' + id + '" type="radio" name="' + id + '" value="true" class="entryfield"> Yes ' +
+          '<input id="' + id + '" type="radio" name="' + id + '" value="false" class="entryfield" checked> No';
         } else {
-        inputs = '<input id="' + id + '" type="radio" name="' + id + '" value="true"> Yes ' +
-          '<input id="' + id + '" type="radio" name="' + id + '" value="false"> No';
+        inputs = '<input id="' + id + '" type="radio" name="' + id + '" value="true" class="entryfield"> Yes ' +
+          '<input id="' + id + '" type="radio"  name="' + id + '" value="false" class="entryfield"> No';
         }
         
         return inputs
@@ -150,6 +171,10 @@ export class CustomDataEntryFormComponent implements OnInit, AfterViewInit {
     }
     `;
     return script;
+  }
+
+  dataValueUpdate(event) {
+    alert(JSON.stringify(event))
   }
 
   setScriptsOnHtmlContent(scriptsContentsArray) {
