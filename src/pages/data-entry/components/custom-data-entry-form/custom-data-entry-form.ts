@@ -23,8 +23,7 @@ export class CustomDataEntryFormComponent implements OnInit, AfterViewInit {
 
   constructor(private sanitizer: DomSanitizer, private elementRef: ElementRef) {
     this.hasScriptSet = false;
-
-    document.body.addEventListener('dataValueUpdate', (e) => {
+    document.body.addEventListener('dataValueUpdate', (e: CustomEvent) => {
       const dataValueObject = e.detail;
 
       if (dataValueObject) {
@@ -125,7 +124,7 @@ export class CustomDataEntryFormComponent implements OnInit, AfterViewInit {
     }
 
     function getTextArea(id, value) {
-        return '<textarea id="' + id + '" name="entryform" class="entryfield">' + value + '</textarea>';
+        return '<textarea id="' + id + '" name="entryform" class="entryfield">' + (value ? value: "") + '</textarea>';
     }
 
     function getRadioInputs(id, savedValue) {
