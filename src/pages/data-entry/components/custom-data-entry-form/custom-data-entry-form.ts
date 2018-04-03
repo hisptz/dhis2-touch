@@ -95,8 +95,13 @@ export class CustomDataEntryFormComponent implements OnInit, AfterViewInit {
       var id = $( this ).attr( 'id' ).split('-');
       var dataElementId = id[0];
       var optionComboId = id[1];
-     
-      var dataValueEvent = new CustomEvent("dataValueUpdate", {detail: {id: dataElementId + '-' + optionComboId, value: $(this).val(), status: 'not-synced'}});
+  
+      var value = $(this).val();
+      if ($( this ).attr( 'type' ) == 'checkbox' && !$( this ).is(':checked')) {
+        value = '';
+      }
+      
+      var dataValueEvent = new CustomEvent("dataValueUpdate", {detail: {id: dataElementId + '-' + optionComboId, value: value, status: 'not-synced'}});
       document.body.dispatchEvent(dataValueEvent);
     });
     ${scriptsContentsArray.join('')}

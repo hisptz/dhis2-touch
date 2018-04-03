@@ -65,6 +65,7 @@ var dataEntry = {
       // update input with corresponding type
       if ( type === 'TRUE_ONLY' ) {
         $( this ).attr( 'type', 'checkbox' );
+        $( this ).attr( 'value', true );
         $( this ).attr( 'checked', value );
       } else if ( type === 'LONG_TEXT' ) {
         $( this ).replaceWith( getTextArea( $( this ).attr( 'id' ), value ) );
