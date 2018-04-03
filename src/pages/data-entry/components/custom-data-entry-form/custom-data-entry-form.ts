@@ -84,28 +84,28 @@ export class CustomDataEntryFormComponent implements OnInit, AfterViewInit {
   }
 
   setScriptsOnHtmlContent(scriptsContentsArray) {
-    scriptsContentsArray = [this.getDefaultScriptContents(), ...scriptsContentsArray]
+
     if (!this.hasScriptSet) {
-      scriptsContentsArray.forEach(scriptsContents => {
-        if (scriptsContents.indexOf('<script') > -1) {
-          try {
-            let srcUrl = this.getScriptUrl(scriptsContents);
-            let script = document.createElement('script');
-            this.elementRef.nativeElement.appendChild(script);
-          } catch (e) {
-            console.log('error : ' + JSON.stringify(e));
-            let script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.innerHTML = scriptsContents;
-            this.elementRef.nativeElement.appendChild(script);
-          }
-        } else {
-          let script = document.createElement('script');
-          script.type = 'text/javascript';
-          script.innerHTML = scriptsContents;
-          this.elementRef.nativeElement.appendChild(script);
-        }
-      });
+      const scriptsContents = `
+    var data = ${JSON.stringify(this.data)};
+    var dataElements = ${JSON.stringify(_.flatten(_.map(this.entryFormSections, entrySection => entrySection.dataElements)))}
+    
+    dataEntry.onFormReady(function () {
+    $('.entryfield').change(function() {
+      var id = $( this ).attr( 'id' ).split('-');
+      var dataElementId = id[0];
+      var optionComboId = id[1];
+     
+      var dataValueEvent = new CustomEvent("dataValueUpdate", {detail: {id: dataElementId + '-' + optionComboId, value: $(this).val(), status: 'not-synced'}});
+      document.body.dispatchEvent(dataValueEvent);
+    });
+    ${scriptsContentsArray.join('')}
+    })
+    `;
+      let script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.innerHTML = scriptsContents;
+      this.elementRef.nativeElement.appendChild(script);
       this.hasScriptSet = true;
     }
   }

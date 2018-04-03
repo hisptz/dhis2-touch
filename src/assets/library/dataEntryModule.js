@@ -67,13 +67,13 @@ var dataEntry = {
         $( this ).attr( 'type', 'checkbox' );
         $( this ).attr( 'checked', value );
       } else if ( type === 'LONG_TEXT' ) {
-        $( this ).replaceWith( getTextArea( id, value ) );
+        $( this ).replaceWith( getTextArea( $( this ).attr( 'id' ), value ) );
         $( this ).val( value );
       } else if ( type === 'DATE' ) {
         $( this ).attr( 'type', 'date' );
         $( this ).val( value );
       } else if ( type === 'BOOLEAN' ) {
-        $( this ).replaceWith( getRadioInputs( id, value ) );
+        $( this ).replaceWith( getRadioInputs( $( this ).attr( 'id' ), value ) );
       } else if ( type === 'NUMBER' ) {
         $( this ).attr( 'type', 'number' );
         $( this ).val( value );
