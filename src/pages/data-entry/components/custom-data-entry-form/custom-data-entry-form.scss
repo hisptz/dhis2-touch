@@ -7,13 +7,17 @@ custom-data-entry-form {
     text-align: left;
     padding-left: 15px;
   }
-  input, textarea {
+  input, textarea, select {
     border: solid thin #dddddd;
     padding: 5px;
   }
 
   textarea {
     width: 90%;
+  }
+
+  select {
+    background-color: #ffffff;
   }
 
   input {

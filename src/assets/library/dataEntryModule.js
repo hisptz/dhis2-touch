@@ -18,6 +18,19 @@ function getRadioInputs(id, savedValue) {
   return inputs
 }
 
+function getSelectInput(id, value, options) {
+  var select = '<select id="' + id + '" class="entryfield">';
+  options.forEach(function(option) {
+    if (option.code === value) {
+      select += '<option value="' + option.code + '" selected>' + option.name + '</option>'
+    } else {
+      select += '<option value="' + option.code + '">' + option.name + '</option>';
+    }
+  });
+  select += '</select>';
+  return select;
+}
+
 function getDataValue(data, id) {
   var dataObject = data[id];
   return dataObject ? dataObject.value : null;
@@ -30,7 +43,7 @@ function getDataElementDetails(dataElements, dataElementId) {
       dataElementDetails = dataElement
     }
   });
-  return dataElementDetails
+  return dataElementDetails;
 }
 
 function getSanitizedValue(value, type) {
@@ -60,38 +73,42 @@ var dataEntry = {
 
       var value = getSanitizedValue( getDataValue( data, dataElementId + '-' + optionComboId ), type );
 
-      $( this ).attr( 'class', 'entryfield' );
-
       // update input with corresponding type
-      if (type) {
-        if ( type === 'TRUE_ONLY' ) {
-          $( this ).attr( 'type', 'checkbox' );
-          $( this ).attr( 'value', true );
-          $( this ).attr( 'checked', value );
-        } else if ( type === 'LONG_TEXT' ) {
-          $( this ).replaceWith( getTextArea( $( this ).attr( 'id' ), value ) );
-          $( this ).val( value );
-        } else if ( type === 'DATE' ) {
-          $( this ).attr( 'type', 'date' );
-          $( this ).val( value );
-        } else if ( type === 'BOOLEAN' ) {
-          $( this ).replaceWith( getRadioInputs( $( this ).attr( 'id' ), value ) );
-        } else if ( type === 'NUMBER' || type.indexOf('INTEGER') > -1 ) {
-          alert(type);
-          $( this ).attr( 'type', 'number' );
 
-          if (type === 'INTEGER_POSITIVE') {
-            $( this ).attr( 'min', 1 );
-          } else if (type === 'INTEGER_NEGATIVE') {
-            $( this ).attr( 'max', -1 );
-          } else if (type === 'INTEGER_ZERO_OR_POSITIVE') {
-            $( this ).attr( 'min', 0 );
-          }
-          $( this ).val( value );
+      if (type) {
+        if (dataElementDetails.optionSet) {
+          $(this).replaceWith(getSelectInput($( this ).attr( 'id' ), value, dataElementDetails.optionSet.options))
         } else {
-          $( this ).val( value );
+          if ( type === 'TRUE_ONLY' ) {
+            $( this ).attr( 'type', 'checkbox' );
+            $( this ).attr( 'value', true );
+            $( this ).attr( 'checked', value );
+          } else if ( type === 'LONG_TEXT' ) {
+            $( this ).replaceWith( getTextArea( $( this ).attr( 'id' ), value ) );
+            $( this ).val( value );
+          } else if ( type === 'DATE' ) {
+            $( this ).attr( 'type', 'date' );
+            $( this ).val( value );
+          } else if ( type === 'BOOLEAN' ) {
+            $( this ).replaceWith( getRadioInputs( $( this ).attr( 'id' ), value ) );
+          } else if ( type === 'NUMBER' || type.indexOf('INTEGER') > -1 ) {
+            $( this ).attr( 'type', 'number' );
+
+            if (type === 'INTEGER_POSITIVE') {
+              $( this ).attr( 'min', 1 );
+            } else if (type === 'INTEGER_NEGATIVE') {
+              $( this ).attr( 'max', -1 );
+            } else if (type === 'INTEGER_ZERO_OR_POSITIVE') {
+              $( this ).attr( 'min', 0 );
+            }
+            $( this ).val( value );
+          } else {
+            $( this ).val( value );
+          }
         }
       }
+
+      $( this ).attr( 'class', 'entryfield' );
 
     } );
     formReady();

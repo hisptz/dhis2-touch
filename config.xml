@@ -3,7 +3,7 @@
     <name>DHIS 2 Touch</name>
     <description>An awesome dhis 2 mobile experience</description>
     <author email="" href="" />
-    <content original-src="index.html" src="http://172.20.10.5:8100" />
+    <content original-src="index.html" src="http://192.168.1.19:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -99,5 +99,6 @@
     <allow-navigation href="http://192.168.1.237:8100" />
     <allow-navigation href="http://192.168.43.29:8100" />
     <allow-navigation href="http://172.20.10.5:8100" />
+    <allow-navigation href="http://192.168.1.19:8100" />
     <engine name="android" spec="6.3.0" />
 </widget>
