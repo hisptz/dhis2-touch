@@ -92,15 +92,10 @@ export class ReportViewPage implements OnInit {
             this.params.get('organisationUnit')
           );
           this.dataSetProvider
-            .getDataSetSource(
-              this.selectedOrganisationUnit.id,
-              user.currentDatabase
-            )
+            .getDataSetSourceDataSetIds(this.selectedOrganisationUnit.id, user)
             .subscribe(
-              (dataSetSources: any) => {
-                dataSetSources.forEach((dataSetSource: any) => {
-                  ids.push(dataSetSource.dataSetId);
-                });
+              (dataSetIds: any) => {
+                ids = dataSetIds;
                 this.dataSetProvider.getDataSetsByIds(ids, user).subscribe(
                   (DataSets: any) => {
                     let dataSets = [];

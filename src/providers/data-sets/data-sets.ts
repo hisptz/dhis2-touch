@@ -188,19 +188,17 @@ export class DataSetsProvider {
     let attributeKey = 'id';
     let attributeArray = [];
     return new Observable(observer => {
-      this.getDataSetSource(orgUnitId, currentUser.currentDatabase).subscribe(
-        (dataSources: any) => {
+      this.getDataSetSourceDataSetIds(orgUnitId, currentUser).subscribe(
+        (dataSetSourceDataSetIds: any) => {
           if (
             currentUser.authorities &&
             currentUser.authorities.indexOf('ALL') > -1
           ) {
-            attributeArray = _.map(dataSources, (dataSource: any) => {
-              return dataSource.dataSetId;
-            });
+            attributeArray = dataSetSourceDataSetIds;
           } else {
-            dataSources.map((dataSource: any) => {
-              if (dataSetIds.indexOf(dataSource.dataSetId) != -1) {
-                attributeArray.push(dataSource.dataSetId);
+            dataSetSourceDataSetIds.map((dataSetSourceDataSetId: any) => {
+              if (dataSetIds.indexOf(dataSetSourceDataSetId) != -1) {
+                attributeArray.push(dataSetSourceDataSetId);
               }
             });
           }
@@ -403,7 +401,7 @@ export class DataSetsProvider {
    */
   getDataSetIndicatorIds(dataSetId, currentUser): Observable<any> {
     const resource = 'dataSetIndicators';
-    let attributeKey = 'dataSetId';
+    let attributeKey = 'id';
     let attributeArray = [dataSetId];
     let indicatorIds = [];
     return new Observable(observer => {
@@ -413,14 +411,9 @@ export class DataSetsProvider {
         attributeArray,
         currentUser.currentDatabase
       ).subscribe(
-        (dataSetsIndicatorIds: any) => {
-          if (dataSetsIndicatorIds && dataSetsIndicatorIds.length > 0) {
-            indicatorIds = _.map(
-              dataSetsIndicatorIds,
-              (dataSetsSection: any) => {
-                return dataSetsSection.indicatorId;
-              }
-            );
+        (data: any) => {
+          if (data && data.length > 0) {
+            indicatorIds = data[0].indicatorIds;
           }
           observer.next(indicatorIds);
           observer.complete();
@@ -444,7 +437,7 @@ export class DataSetsProvider {
     return new Observable(observer => {
       for (let userOrgUnitId of userOrgUnitIds) {
         let fields =
-          'fields=id,name,timelyDays,formType,dataEntryForm[id,htmlCode],compulsoryDataElementOperands[name,dimensionItemType,dimensionItem],version,periodType,openFuturePeriods,expiryDays,dataSetElements[dataElement[id]],dataElements[id],organisationUnits[id],sections[id],indicators[id],categoryCombo[id,name,categoryOptionCombos[id,name,categoryOptions[id]],categories[id,name,categoryOptions[id,name,organisationUnits[id]]]]';
+          'fields=id,name,timelyDays,formType,dataEntryForm[htmlCode],compulsoryDataElementOperands[name,dimensionItemType,dimensionItem],version,periodType,openFuturePeriods,expiryDays,dataSetElements[dataElement[id]],dataElements[id],organisationUnits[id],sections[id],indicators[id],categoryCombo[id,name,categoryOptionCombos[id,name,categoryOptions[id]],categories[id,name,categoryOptions[id,name,organisationUnits[id]]]]';
         let filter = 'filter=organisationUnits.path:ilike:';
         let url = '/api/25/' + this.resource + '.json?paging=false&';
         url += fields + '&' + filter + userOrgUnitId;
@@ -584,12 +577,6 @@ export class DataSetsProvider {
         this.saveDataSetElements(dataSets, currentUser).subscribe(
           () => {
             completeProcess++;
-            console.log(
-              'completeProcess : ' +
-                completeProcess +
-                ' :: totalProcess : ' +
-                totalProcess
-            );
             if (completeProcess == totalProcess) {
               observer.next();
               observer.complete();
@@ -647,16 +634,12 @@ export class DataSetsProvider {
     const resource = 'dataSetIndicators';
     dataSets.map((dataSet: any) => {
       if (dataSet.indicators && dataSet.indicators.length > 0) {
-        dataSetIndicators = _.concat(
-          dataSetIndicators,
-          _.map(dataSet.indicators, (indicator: any) => {
-            return {
-              id: dataSet.id + '-' + indicator.id,
-              dataSetId: dataSet.id,
-              indicatorId: indicator.id
-            };
+        dataSetIndicators = _.concat(dataSetIndicators, {
+          id: dataSet.id,
+          indicatorIds: _.map(dataSet.indicators, (indicator: any) => {
+            return indicator.id;
           })
-        );
+        });
       }
     });
     return new Observable(observer => {
@@ -692,16 +675,15 @@ export class DataSetsProvider {
     const resource = 'dataSetSource';
     dataSets.map((dataSet: any) => {
       if (dataSet.organisationUnits && dataSet.organisationUnits.length > 0) {
-        dataSetSource = _.concat(
-          dataSetSource,
-          _.map(dataSet.organisationUnits, (organisationUnit: any) => {
-            return {
-              id: dataSet.id + '-' + organisationUnit.id,
-              dataSetId: dataSet.id,
-              organisationUnitId: organisationUnit.id
-            };
-          })
-        );
+        dataSetSource = _.concat(dataSetSource, {
+          id: dataSet.id,
+          organisationUnitIds: _.map(
+            dataSet.organisationUnits,
+            (organisationUnit: any) => {
+              return organisationUnit.id;
+            }
+          )
+        });
       }
     });
     return new Observable(observer => {
@@ -732,19 +714,27 @@ export class DataSetsProvider {
    * @param dataBaseName
    * @returns {Observable<any>}
    */
-  getDataSetSource(orgUnitId, dataBaseName): Observable<any> {
+  getDataSetSourceDataSetIds(
+    orgUnitId,
+    currentUser: CurrentUser
+  ): Observable<any> {
     const resource = 'dataSetSource';
-    let attributeValue = [orgUnitId];
-    let attributeKey = 'organisationUnitId';
+    let dataSetIds = [];
     return new Observable(observer => {
-      this.SqlLite.getDataFromTableByAttributes(
-        resource,
-        attributeKey,
-        attributeValue,
-        dataBaseName
-      ).subscribe(
-        (dataSetSource: any) => {
-          observer.next(dataSetSource);
+      this.getAllDataSetSources(currentUser).subscribe(
+        (dataSetSourcesResponse: any) => {
+          if (dataSetSourcesResponse && dataSetSourcesResponse.length > 0) {
+            dataSetSourcesResponse.map((dataSetSource: any) => {
+              if (
+                dataSetSource &&
+                dataSetSource.organisationUnitIds &&
+                dataSetSource.organisationUnitIds.indexOf(orgUnitId) > -1
+              ) {
+                dataSetIds.push(dataSetSource.id);
+              }
+            });
+          }
+          observer.next(dataSetIds);
           observer.complete();
         },
         error => {

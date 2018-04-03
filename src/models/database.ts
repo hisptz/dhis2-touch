@@ -82,8 +82,7 @@ export const DATABASE_STRUCTURE = {
   dataSetIndicators: {
     columns: [
       { value: 'id', type: 'TEXT' },
-      { value: 'dataSetId', type: 'TEXT' },
-      { value: 'indicatorId', type: 'TEXT' }
+      { value: 'indicatorIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
     resourceType: '',
@@ -94,8 +93,7 @@ export const DATABASE_STRUCTURE = {
   dataSetSource: {
     columns: [
       { value: 'id', type: 'TEXT' },
-      { value: 'dataSetId', type: 'TEXT' },
-      { value: 'organisationUnitId', type: 'TEXT' }
+      { value: 'organisationUnitIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
     resourceType: '',
