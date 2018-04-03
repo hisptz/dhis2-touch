@@ -330,7 +330,7 @@ export class DataSetsProvider {
    */
   getDataSetSectionsIds(dataSetId, currentUser): Observable<any> {
     const resource = 'dataSetSections';
-    let attributeKey = 'dataSetId';
+    let attributeKey = 'id';
     let attributeArray = [dataSetId];
     let sectionIds = [];
     return new Observable(observer => {
@@ -340,11 +340,9 @@ export class DataSetsProvider {
         attributeArray,
         currentUser.currentDatabase
       ).subscribe(
-        (dataSetsSections: any) => {
-          if (dataSetsSections && dataSetsSections.length > 0) {
-            dataSetsSections.map((dataSetsSection: any) => {
-              sectionIds.push(dataSetsSection.sectionId);
-            });
+        (dataSetsSectionsResponse: any) => {
+          if (dataSetsSectionsResponse && dataSetsSectionsResponse.length > 0) {
+            sectionIds = dataSetsSectionsResponse[0].sectionIds;
           }
           observer.next(sectionIds);
           observer.complete();
@@ -773,16 +771,12 @@ export class DataSetsProvider {
     const resource = 'dataSetSections';
     dataSets.map((dataSet: any) => {
       if (dataSet.sections && dataSet.sections.length > 0) {
-        dataSetSections = _.concat(
-          dataSetSections,
-          _.map((section: any) => {
-            return {
-              id: dataSet.id + '-' + section.id,
-              dataSetId: dataSet.id,
-              sectionId: section.id
-            };
+        dataSetSections = _.concat(dataSetSections, {
+          id: dataSet.id,
+          sectionIds: _.map(dataSet.sections, (section: any) => {
+            return section.id;
           })
-        );
+        });
       }
     });
     return new Observable(observer => {

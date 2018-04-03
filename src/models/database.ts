@@ -104,8 +104,7 @@ export const DATABASE_STRUCTURE = {
   dataSetSections: {
     columns: [
       { value: 'id', type: 'TEXT' },
-      { value: 'dataSetId', type: 'TEXT' },
-      { value: 'sectionId', type: 'TEXT' }
+      { value: 'sectionIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
     resourceType: '',
