@@ -43,44 +43,10 @@ export class CustomDataEntryFormComponent implements OnInit, AfterViewInit {
   }
 
   getScriptsContents(html) {
-    let scriptsWithClosingScript = [];
-    if (html.match(/<script[^>]*>([\w|\W]*)<\/script>/im)) {
-      if (
-        html.match(/<script[^>]*>([\w|\W]*)<\/script>/im)[0].split('<script>')
-          .length > 0
-      ) {
-        html
-          .match(/<script[^>]*>([\w|\W]*)<\/script>/im)[0]
-          .split('<script>')
-          .forEach((scriptFunctionWithCLosingScriptTag: any) => {
-            if (scriptFunctionWithCLosingScriptTag != '') {
-              scriptsWithClosingScript.push(
-                scriptFunctionWithCLosingScriptTag.split('</script>')[0]
-              );
-            }
-          });
-      }
-    }
-    return scriptsWithClosingScript;
-  }
-
-  getDefaultScriptContents() {
-    const script = `
-    var data = ${JSON.stringify(this.data)};
-    var dataElements = ${JSON.stringify(_.flatten(_.map(this.entryFormSections, entrySection => entrySection.dataElements)))}
-    
-    dataEntry.onFormReady(function () {
-    $('.entryfield').change(function() {
-      var id = $( this ).attr( 'id' ).split('-');
-      var dataElementId = id[0];
-      var optionComboId = id[1];
-     
-      var dataValueEvent = new CustomEvent("dataValueUpdate", {detail: {id: dataElementId + '-' + optionComboId, value: $(this).val(), status: 'not-synced'}});
-      document.body.dispatchEvent(dataValueEvent);
-    })
-    })
-    `;
-    return script;
+    const matchedScriptArray = html.match(/<script[^>]*>([\w|\W]*)<\/script>/im);
+    return matchedScriptArray && matchedScriptArray.length > 0 ?
+        matchedScriptArray[0]
+        .replace(/(<([^>]+)>)/ig,":separator:").split(":separator:").filter(content=>content.length>0) : [];
   }
 
   setScriptsOnHtmlContent(scriptsContentsArray) {
