@@ -69,9 +69,7 @@ export const DATABASE_STRUCTURE = {
   dataSetElements: {
     columns: [
       { value: 'id', type: 'TEXT' },
-      { value: 'dataSetId', type: 'TEXT' },
-      { value: 'sortOrder', type: 'TEXT' },
-      { value: 'dataElementId', type: 'TEXT' }
+      { value: 'dataElementIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
     resourceType: '',

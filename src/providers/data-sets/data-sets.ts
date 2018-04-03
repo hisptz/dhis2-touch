@@ -361,7 +361,7 @@ export class DataSetsProvider {
    * @returns {Observable<any>}
    */
   getDataSetDataElements(dataSetId, currentUser): Observable<any> {
-    let attributeKey = 'dataSetId';
+    let attributeKey = 'id';
     let attributeArray = [dataSetId];
     let dataSetElements = [];
     const resource = 'dataSetElements';
@@ -372,14 +372,21 @@ export class DataSetsProvider {
         attributeArray,
         currentUser.currentDatabase
       ).subscribe(
-        (dataSetElementsIds: any) => {
-          if (dataSetElementsIds && dataSetElementsIds.length > 0) {
-            dataSetElementsIds.map((dataSetIndicatorId: any) => {
-              dataSetElements.push({
-                id: dataSetIndicatorId.dataElementId,
-                sortOrder: dataSetIndicatorId.sortOrder
-              });
-            });
+        (dataSetDataElementsResponse: any) => {
+          if (
+            dataSetDataElementsResponse &&
+            dataSetDataElementsResponse.length > 0
+          ) {
+            let counter = 0;
+            dataSetDataElementsResponse[0].dataElementIds.map(
+              (dataElementId: any) => {
+                dataSetElements = _.concat(dataSetElements, {
+                  id: dataElementId,
+                  sortOrder: counter
+                });
+                counter++;
+              }
+            );
           }
           observer.next(dataSetElements);
           observer.complete();
@@ -867,28 +874,22 @@ export class DataSetsProvider {
     const resource = 'dataSetElements';
     dataSets.map((dataSet: any) => {
       if (dataSet.dataSetElements && dataSet.dataSetElements.length > 0) {
-        let count = 0;
-        dataSet.dataSetElements.map((dataSetElement: any) => {
-          if (dataSetElement.dataElement.id && dataSetElement.dataElement.id)
-            dataSetElements.push({
-              id: dataSet.id + '-' + dataSetElement.dataElement.id,
-              dataSetId: dataSet.id,
-              sortOrder: count,
-              dataElementId: dataSetElement.dataElement.id
-            });
-          count++;
+        dataSetElements = _.concat(dataSetElements, {
+          id: dataSet.id,
+          dataElementIds: _.map(
+            dataSet.dataSetElements,
+            (dataSetElement: any) => {
+              return dataSetElement.dataElement.id;
+            }
+          )
         });
       }
       if (dataSet.dataElements && dataSet.dataElements.length > 0) {
-        let count = 0;
-        dataSet.dataElements.map((dataElement: any) => {
-          dataSetElements.push({
-            id: dataSet.id + '-' + dataElement.id,
-            dataSetId: dataSet.id,
-            sortOrder: count,
-            dataElementId: dataElement.id
-          });
-          count++;
+        dataSetElements = _.concat(dataSetElements, {
+          id: dataSet.id,
+          dataElementIds: _.map(dataSet.dataElements, (dataElement: any) => {
+            return dataElement.id;
+          })
         });
       }
     });
