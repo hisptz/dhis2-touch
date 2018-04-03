@@ -63,25 +63,36 @@ var dataEntry = {
       $( this ).attr( 'class', 'entryfield' );
 
       // update input with corresponding type
-      if ( type === 'TRUE_ONLY' ) {
-        $( this ).attr( 'type', 'checkbox' );
-        $( this ).attr( 'value', true );
-        $( this ).attr( 'checked', value );
-      } else if ( type === 'LONG_TEXT' ) {
-        $( this ).replaceWith( getTextArea( $( this ).attr( 'id' ), value ) );
-        $( this ).val( value );
-      } else if ( type === 'DATE' ) {
-        $( this ).attr( 'type', 'date' );
-        $( this ).val( value );
-      } else if ( type === 'BOOLEAN' ) {
-        $( this ).replaceWith( getRadioInputs( $( this ).attr( 'id' ), value ) );
-      } else if ( type === 'NUMBER' ) {
-        $( this ).attr( 'type', 'number' );
-        $( this ).val( value );
-      } else {
-        $( this ).val( value );
-        alert( type );
+      if (type) {
+        if ( type === 'TRUE_ONLY' ) {
+          $( this ).attr( 'type', 'checkbox' );
+          $( this ).attr( 'value', true );
+          $( this ).attr( 'checked', value );
+        } else if ( type === 'LONG_TEXT' ) {
+          $( this ).replaceWith( getTextArea( $( this ).attr( 'id' ), value ) );
+          $( this ).val( value );
+        } else if ( type === 'DATE' ) {
+          $( this ).attr( 'type', 'date' );
+          $( this ).val( value );
+        } else if ( type === 'BOOLEAN' ) {
+          $( this ).replaceWith( getRadioInputs( $( this ).attr( 'id' ), value ) );
+        } else if ( type === 'NUMBER' || type.indexOf('INTEGER') > -1 ) {
+          alert(type);
+          $( this ).attr( 'type', 'number' );
+
+          if (type === 'INTEGER_POSITIVE') {
+            $( this ).attr( 'min', 1 );
+          } else if (type === 'INTEGER_NEGATIVE') {
+            $( this ).attr( 'max', -1 );
+          } else if (type === 'INTEGER_ZERO_OR_POSITIVE') {
+            $( this ).attr( 'min', 0 );
+          }
+          $( this ).val( value );
+        } else {
+          $( this ).val( value );
+        }
       }
+
     } );
     formReady();
   }
