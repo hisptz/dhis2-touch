@@ -19,7 +19,8 @@ function getRadioInputs(id, savedValue) {
 }
 
 function getSelectInput(id, value, options) {
-  var select = '<select id="' + id + '" class="entryfield">';
+  var select = '<select id="' + id + '" class="entryfield"><option value="" disabled selected>Select option</option>';
+
   options.forEach(function(option) {
     if (option.code === value) {
       select += '<option value="' + option.code + '" selected>' + option.name + '</option>'
