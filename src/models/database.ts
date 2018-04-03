@@ -140,9 +140,7 @@ export const DATABASE_STRUCTURE = {
   sectionDataElements: {
     columns: [
       { value: 'id', type: 'TEXT' },
-      { value: 'sectionId', type: 'TEXT' },
-      { value: 'sortOrder', type: 'TEXT' },
-      { value: 'dataElementId', type: 'TEXT' }
+      { value: 'dataElementIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
     resourceType: '',
@@ -153,8 +151,7 @@ export const DATABASE_STRUCTURE = {
   sectionIndicators: {
     columns: [
       { value: 'id', type: 'TEXT' },
-      { value: 'sectionId', type: 'TEXT' },
-      { value: 'indicatorId', type: 'TEXT' }
+      { value: 'indicatorIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
     resourceType: '',
