@@ -194,18 +194,15 @@ export class OrganisationUnitSelectionPage implements OnInit {
               programOrganisationUnits.map((programOrganisationUnit: any) => {
                 if (
                   programOrganisationUnit &&
-                  programOrganisationUnit.programId &&
-                  programOrganisationUnit.orgUnitId &&
-                  this.ouIdsWithAssigments.indexOf(
-                    programOrganisationUnit.orgUnitId
-                  ) == -1 &&
+                  programOrganisationUnit.id &&
                   userData.programs &&
-                  userData.programs.indexOf(programOrganisationUnit.programId) >
-                    -1
+                  userData.programs.indexOf(programOrganisationUnit.id) > -1
                 ) {
-                  this.ouIdsWithAssigments.push(
-                    programOrganisationUnit.orgUnitId
-                  );
+                  programOrganisationUnit.orgUnitIds.map((ouId: string) => {
+                    if (this.ouIdsWithAssigments.indexOf(ouId) == -1) {
+                      this.ouIdsWithAssigments.push(ouId);
+                    }
+                  });
                 }
               });
             });

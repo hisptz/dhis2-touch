@@ -205,16 +205,15 @@ export class ProgramsProvider {
         program.programRuleVariables &&
         program.programRuleVariables.length > 0
       ) {
-        programProgramRuleVariables = _.concat(
-          programProgramRuleVariables,
-          _.map(program.programRuleVariables, (programRuleVariable: any) => {
-            return {
-              id: program.id + '-' + programRuleVariable.id,
-              programId: program.id,
-              programRuleVariableId: programRuleVariable.id
-            };
-          })
-        );
+        programProgramRuleVariables = _.concat(programProgramRuleVariables, {
+          id: program.id,
+          programRuleVariableIds: _.map(
+            program.programRuleVariables,
+            (programRuleVariable: any) => {
+              return programRuleVariable.id;
+            }
+          )
+        });
       }
     });
     return new Observable(observer => {
@@ -252,16 +251,12 @@ export class ProgramsProvider {
     const resource = 'programProgramRules';
     programs.map((program: any) => {
       if (program.programRules && program.programRules.length > 0) {
-        programProgramRules = _.concat(
-          programProgramRules,
-          _.map(program.programRules, (programRule: any) => {
-            return {
-              id: program.id + '-' + programRule.id,
-              programId: program.id,
-              programRuleId: programRule.id
-            };
+        programProgramRules = _.concat(programProgramRules, {
+          id: program.id,
+          programRuleIds: _.map(program.programRules, (programRule: any) => {
+            return programRule.id;
           })
-        );
+        });
       }
     });
     return new Observable(observer => {
@@ -299,16 +294,15 @@ export class ProgramsProvider {
     const resource = 'programOrganisationUnits';
     programs.map((program: any) => {
       if (program.organisationUnits && program.organisationUnits.length > 0) {
-        programOrganisationUnits = _.concat(
-          programOrganisationUnits,
-          _.map(program.organisationUnits, (organisationUnit: any) => {
-            return {
-              id: program.id + '-' + organisationUnit.id,
-              programId: program.id,
-              orgUnitId: organisationUnit.id
-            };
-          })
-        );
+        programOrganisationUnits = _.concat(programOrganisationUnits, {
+          id: program.id,
+          orgUnitIds: _.map(
+            program.organisationUnits,
+            (organisationUnit: any) => {
+              return organisationUnit.id;
+            }
+          )
+        });
       }
     });
     return new Observable(observer => {
@@ -586,29 +580,20 @@ export class ProgramsProvider {
     let attributeArray = [];
     let programs = [];
     return new Observable(observer => {
-      this.getProgramOrganisationUnits(
+      this.getProgramIdsByOrganisationUnit(
         orgUnitId,
         currentUser.currentDatabase
       ).subscribe(
-        (programOrganisationUnits: any) => {
+        (programIds: any) => {
           if (
             currentUser.authorities &&
             currentUser.authorities.indexOf('ALL') > -1
           ) {
-            attributeArray = _.map(
-              programOrganisationUnits,
-              (programOrganisationUnit: any) => {
-                return programOrganisationUnit.programId;
-              }
-            );
+            attributeArray = programIds;
           } else {
-            programOrganisationUnits.forEach((programOrganisationUnit: any) => {
-              if (
-                programIdsByUserRoles.indexOf(
-                  programOrganisationUnit.programId
-                ) != -1
-              ) {
-                attributeArray.push(programOrganisationUnit.programId);
+            programIds.forEach((programId: string) => {
+              if (programIdsByUserRoles.indexOf(programId) > -1) {
+                attributeArray.push(programId);
               }
             });
           }
@@ -733,27 +718,39 @@ export class ProgramsProvider {
    * @param dataBaseName
    * @returns {Observable<any>}
    */
-  getProgramOrganisationUnits(orgUnitId, dataBaseName): Observable<any> {
+  getProgramIdsByOrganisationUnit(orgUnitId, dataBaseName): Observable<any> {
     const resource = 'programOrganisationUnits';
-    let attributeValue = [orgUnitId];
-    let attributeKey = 'orgUnitId';
+    let programIdsByOrganisationUnit = [];
     return new Observable(observer => {
-      this.sqlLite
-        .getDataFromTableByAttributes(
-          resource,
-          attributeKey,
-          attributeValue,
-          dataBaseName
-        )
-        .subscribe(
-          (programOrganisationUnits: any) => {
-            observer.next(programOrganisationUnits);
-            observer.complete();
-          },
-          error => {
-            observer.error(error);
+      this.sqlLite.getAllDataFromTable(resource, dataBaseName).subscribe(
+        (programIdsByOrganisationUnitResponse: any) => {
+          if (
+            programIdsByOrganisationUnitResponse &&
+            programIdsByOrganisationUnitResponse.length > 0
+          ) {
+            programIdsByOrganisationUnitResponse.map((response: any) => {
+              if (
+                response.id &&
+                response.orgUnitIds &&
+                response.orgUnitIds.indexOf(orgUnitId) > -1
+              ) {
+                if (programIdsByOrganisationUnit.indexOf(response.id) == -1) {
+                  programIdsByOrganisationUnit.push(response.id);
+                }
+              }
+            });
           }
-        );
+          console.log(
+            'programIdsByOrganisationUnit : ' +
+              JSON.stringify(programIdsByOrganisationUnit)
+          );
+          observer.next(programIdsByOrganisationUnit);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
 
@@ -764,7 +761,7 @@ export class ProgramsProvider {
     const resource = 'programOrganisationUnits';
     return new Observable(observer => {
       const query =
-        'SELECT * FROM programOrganisationUnits WHERE programId IN (SELECT id FROM programs WHERE programType = ' +
+        'SELECT * FROM programOrganisationUnits WHERE id IN (SELECT id FROM programs WHERE programType = ' +
         "'" +
         programType +
         "');";
@@ -899,10 +896,11 @@ export class ProgramsProvider {
    * @param dataBaseName
    * @returns {Observable<any>}
    */
-  getProgramRules(programId, dataBaseName): Observable<any> {
+  getProgramRuleIds(programId, dataBaseName): Observable<any> {
     const resource = 'programProgramRules';
-    let attributeValue = [programId];
-    let attributeKey = 'programId';
+    const attributeValue = [programId];
+    const attributeKey = 'id';
+    let programRuleIds = [];
     return new Observable(observer => {
       this.sqlLite
         .getDataFromTableByAttributes(
@@ -912,8 +910,11 @@ export class ProgramsProvider {
           dataBaseName
         )
         .subscribe(
-          (orgUnitsInProgram: any) => {
-            observer.next(orgUnitsInProgram);
+          (programRuleIdsResponse: any) => {
+            if (programRuleIdsResponse && programRuleIdsResponse.length > 0) {
+              programRuleIds = programRuleIdsResponse[0].programRuleIds;
+            }
+            observer.next(programRuleIds);
             observer.complete();
           },
           error => {
@@ -929,10 +930,11 @@ export class ProgramsProvider {
    * @param dataBaseName
    * @returns {Observable<any>}
    */
-  getProgramRulesVariables(programId, dataBaseName): Observable<any> {
+  getProgramRulesVariablesIds(programId, dataBaseName): Observable<any> {
     const resource = 'programProgramRuleVariables';
-    let attributeValue = [programId];
-    let attributeKey = 'programId';
+    const attributeValue = [programId];
+    const attributeKey = 'id';
+    let programRulesVariablesIds = [];
     return new Observable(observer => {
       this.sqlLite
         .getDataFromTableByAttributes(
@@ -942,8 +944,15 @@ export class ProgramsProvider {
           dataBaseName
         )
         .subscribe(
-          (orgUnitsInProgram: any) => {
-            observer.next(orgUnitsInProgram);
+          (programRulesVariablesIdsResponse: any) => {
+            if (
+              programRulesVariablesIdsResponse &&
+              programRulesVariablesIdsResponse.length > 0
+            ) {
+              programRulesVariablesIds =
+                programRulesVariablesIdsResponse[0].programRuleVariableIds;
+            }
+            observer.next(programRulesVariablesIds);
             observer.complete();
           },
           error => {
