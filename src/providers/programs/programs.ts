@@ -388,11 +388,11 @@ export class ProgramsProvider {
     const resource = 'programProgramStages';
     programs.map((program: any) => {
       if (program.programStages && program.programStages.length > 0) {
-        programProgramStages = _.map(
-          program.programStages,
-          (programStage: any) => {
+        programProgramStages = _.concat(
+          programProgramStages,
+          _.map(program.programStages, (programStage: any) => {
             return {
-              id: program.id + '-' + programStage.id,
+              id: programStage.id,
               programId: program.id,
               name: programStage.name,
               executionDateLabel: programStage.executionDateLabel,
@@ -409,7 +409,7 @@ export class ProgramsProvider {
               programStageDataElements: programStage.programStageDataElements,
               programStageSections: programStage.programStageSections
             };
-          }
+          })
         );
       }
     });
@@ -740,10 +740,6 @@ export class ProgramsProvider {
               }
             });
           }
-          console.log(
-            'programIdsByOrganisationUnit : ' +
-              JSON.stringify(programIdsByOrganisationUnit)
-          );
           observer.next(programIdsByOrganisationUnit);
           observer.complete();
         },
@@ -837,9 +833,8 @@ export class ProgramsProvider {
    */
   getProgramsStages(programId, currentUser): Observable<any> {
     const resource = 'programProgramStages';
-    let attribute = 'programId';
-    let attributeValue = [];
-    attributeValue.push(programId);
+    const attribute = 'programId';
+    const attributeValue = [programId];
     return new Observable(observer => {
       this.sqlLite
         .getDataFromTableByAttributes(
@@ -849,8 +844,8 @@ export class ProgramsProvider {
           currentUser.currentDatabase
         )
         .subscribe(
-          (programs: any) => {
-            observer.next(programs);
+          (programProgramStages: any) => {
+            observer.next(programProgramStages);
             observer.complete();
           },
           error => {

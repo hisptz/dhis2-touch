@@ -1,9 +1,10 @@
-import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
-import {SqlLiteProvider} from "../sql-lite/sql-lite";
-import {HttpClientProvider} from "../http-client/http-client";
-import {Observable} from "rxjs/Observable";
+import { SqlLiteProvider } from '../sql-lite/sql-lite';
+import { HttpClientProvider } from '../http-client/http-client';
+import { Observable } from 'rxjs/Observable';
+import * as _ from 'lodash';
 
 /*
   Generated class for the ProgramStageSectionsProvider provider.
@@ -13,11 +14,14 @@ import {Observable} from "rxjs/Observable";
 */
 @Injectable()
 export class ProgramStageSectionsProvider {
-
   public resource: string;
 
-  constructor(public http: Http, private sqlLite: SqlLiteProvider, private HttpClient: HttpClientProvider) {
-    this.resource = "programStageSections";
+  constructor(
+    public http: Http,
+    private sqlLite: SqlLiteProvider,
+    private HttpClient: HttpClientProvider
+  ) {
+    this.resource = 'programStageSections';
   }
 
   /**
@@ -26,14 +30,19 @@ export class ProgramStageSectionsProvider {
    * @returns {Observable<any>}
    */
   downloadProgramsStageSectionsFromServer(currentUser): Observable<any> {
-    let fields = "id,name,displayName,sortOrder,programStage[id],attributeValues[value,attribute[name]],translations[*],programStageDataElements[dataElement[id]],dataElements[id]";
-    let url = "/api/25/" + this.resource + ".json?paging=false&fields=" + fields;
+    let fields =
+      'id,name,displayName,sortOrder,programStage[id],attributeValues[value,attribute[name]],translations[*],programStageDataElements[dataElement[id]],dataElements[id]';
+    let url =
+      '/api/25/' + this.resource + '.json?paging=false&fields=' + fields;
     return new Observable(observer => {
-      this.HttpClient.get(url, true, currentUser).subscribe((response: any) => {
-        observer.next(response);
-      }, error => {
-        observer.error(error);
-      });
+      this.HttpClient.get(url, true, currentUser).subscribe(
+        (response: any) => {
+          observer.next(response);
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
 
@@ -43,19 +52,33 @@ export class ProgramStageSectionsProvider {
    * @param currentUser
    * @returns {Observable<any>}
    */
-  saveProgramsStageSectionsFromServer(programsStageSections, currentUser): Observable<any> {
+  saveProgramsStageSectionsFromServer(
+    programsStageSections,
+    currentUser
+  ): Observable<any> {
     return new Observable(observer => {
       if (programsStageSections.length == 0) {
         observer.next();
         observer.complete();
       } else {
-        programsStageSections = this.getPreparedProgramStageSectionForSaving(programsStageSections);
-        this.sqlLite.insertBulkDataOnTable(this.resource, programsStageSections, currentUser.currentDatabase).subscribe(() => {
-          observer.next();
-          observer.complete();
-        }, error => {
-          observer.error(error);
-        });
+        programsStageSections = this.getPreparedProgramStageSectionForSaving(
+          programsStageSections
+        );
+        this.sqlLite
+          .insertBulkDataOnTable(
+            this.resource,
+            programsStageSections,
+            currentUser.currentDatabase
+          )
+          .subscribe(
+            () => {
+              observer.next();
+              observer.complete();
+            },
+            error => {
+              observer.error(error);
+            }
+          );
       }
     });
   }
@@ -66,19 +89,22 @@ export class ProgramStageSectionsProvider {
    * @returns {any}
    */
   getPreparedProgramStageSectionForSaving(programsStageSections) {
-    programsStageSections.forEach((programsStageSection: any) => {
-      if (programsStageSection.programStage && programsStageSection.programStage.id) {
-        programsStageSection["programStageId"] = programsStageSection.programStage.id;
+    programsStageSections.map((programsStageSection: any) => {
+      if (
+        programsStageSection.programStage &&
+        programsStageSection.programStage.id
+      ) {
+        programsStageSection['programStageId'] =
+          programsStageSection.programStage.id;
       }
-      if (!programsStageSection.dataElements) {
-        programsStageSection["dataElements"] = [];
-        if (programsStageSection.programStageDataElements) {
-          programsStageSection.programStageDataElements.forEach((programStageDataElement: any) => {
-            if (programStageDataElement.dataElement && programStageDataElement.dataElement.id) {
-              programsStageSection.dataElements.push({id: programStageDataElement.dataElement.id});
-            }
-          });
-        }
+      if (programsStageSection.programStageDataElements) {
+        programsStageSection['dataElements'] = _.map(
+          programsStageSection.programStageDataElements,
+          (programStageDataElement: any) => {
+            return { id: programStageDataElement.dataElement.id };
+          }
+        );
+        delete programsStageSection.programStageDataElements;
       }
     });
     return programsStageSections;
@@ -90,21 +116,32 @@ export class ProgramStageSectionsProvider {
    * @param currentUser
    * @returns {Observable<any>}
    */
-  getProgramStageSectionsByIds(programStageSectionIds, currentUser): Observable<any> {
+  getProgramStageSectionsByIds(
+    programStageSectionIds,
+    currentUser
+  ): Observable<any> {
     return new Observable(observer => {
       if (programStageSectionIds.length == 0) {
         observer.next([]);
         observer.complete();
       } else {
-        this.sqlLite.getDataFromTableByAttributes(this.resource, 'id', programStageSectionIds, currentUser.currentDatabase).subscribe((programStageSections: any) => {
-          observer.next(programStageSections);
-          observer.complete();
-        }, error => {
-          observer.error(error);
-        });
+        this.sqlLite
+          .getDataFromTableByAttributes(
+            this.resource,
+            'id',
+            programStageSectionIds,
+            currentUser.currentDatabase
+          )
+          .subscribe(
+            (programStageSections: any) => {
+              observer.next(programStageSections);
+              observer.complete();
+            },
+            error => {
+              observer.error(error);
+            }
+          );
       }
     });
   }
-
-
 }
