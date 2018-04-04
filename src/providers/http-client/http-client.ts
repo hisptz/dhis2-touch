@@ -28,7 +28,7 @@ export class HttpClientProvider {
     private defaultHttp: Http,
     private networkProvider: NetworkAvailabilityProvider
   ) {
-    this.timeOutTime = 2 * 60 * 1000;
+    this.timeOutTime = 4 * 60 * 1000;
   }
 
   /**

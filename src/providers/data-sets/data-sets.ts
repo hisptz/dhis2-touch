@@ -49,7 +49,7 @@ export class DataSetsProvider {
     let url =
       '/api/dataSets.json?fields=id,dataSetElements[dataElement[id,categoryCombo[categoryOptionCombos[id]]]],dataElements[id,categoryCombo[categoryOptionCombos[id]]]';
     return new Observable(observer => {
-      this.HttpClient.get(url, false, currentUser, this.resource, 50).subscribe(
+      this.HttpClient.get(url, false, currentUser, this.resource, 25).subscribe(
         (response: any) => {
           observer.next(response[this.resource]);
           observer.complete();
@@ -444,7 +444,7 @@ export class DataSetsProvider {
         let fields =
           'fields=id,name,timelyDays,formType,dataEntryForm[htmlCode],compulsoryDataElementOperands[name,dimensionItemType,dimensionItem],version,periodType,openFuturePeriods,expiryDays,dataSetElements[dataElement[id]],dataElements[id],organisationUnits[id],sections[id],indicators[id],categoryCombo[id,name,categoryOptionCombos[id,name,categoryOptions[id]],categories[id,name,categoryOptions[id,name,organisationUnits[id]]]]';
         let filter = 'filter=organisationUnits.path:ilike:';
-        let url = '/api/25/' + this.resource + '.json?paging=false&';
+        let url = '/api/25/' + this.resource + '.json?';
         url += fields + '&' + filter + userOrgUnitId;
         this.HttpClient.get(
           url,
