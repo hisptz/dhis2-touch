@@ -74,6 +74,7 @@ import { TrackedEntityAttributeValuesProvider } from '../providers/tracked-entit
 import { EncryptionProvider } from '../providers/encryption/encryption';
 import { SmsGatewayProvider } from '../providers/sms-gateway/sms-gateway';
 import { ProgramRulesProvider } from '../providers/program-rules/program-rules';
+import { SynchronizationProvider } from '../providers/synchronization/synchronization';
 
 @NgModule({
   declarations: [
@@ -153,7 +154,8 @@ import { ProgramRulesProvider } from '../providers/program-rules/program-rules';
     LocalInstanceProvider,
     AppTranslationProvider,
     EncryptionProvider,
-    ProgramRulesProvider
+    ProgramRulesProvider,
+    SynchronizationProvider
   ]
 })
 export class AppModule {}
