@@ -40,9 +40,12 @@ export class SynchronizationProvider {
         if (this.subscription) {
           clearInterval(this.subscription);
         }
+        console.log('Updating sync process');
         if (synchronizationSettings.isAutoSync) {
-          this.subscription = setInterval(() => {},
-          synchronizationSettings.time);
+          this.subscription = setInterval(() => {
+            this.loadingDataToUpload(currentUser);
+            console.log('Starting loading data');
+          }, synchronizationSettings.time);
         }
       },
       error => {
@@ -86,7 +89,7 @@ export class SynchronizationProvider {
                         }
                       });
                       if (this.isThereAnyOfflineData(dataObject)) {
-                        console.log('Start sync');
+                        console.log('Starting uploading process');
                         this.uploadData(dataObject, currentUser);
                       }
                     },
@@ -116,20 +119,17 @@ export class SynchronizationProvider {
         result = true;
       }
     }
+    return result;
   }
 
   uploadData(dataObject, currentUser) {
     for (let item of Object.keys(dataObject)) {
       if (dataObject[item].length > 0 && item == 'dataValues') {
         let formattedDataValues = this.dataValuesProvider.getFormattedDataValueForUpload(
-          dataObject['dataValues']
+          dataObject[item]
         );
         this.dataValuesProvider
-          .uploadDataValues(
-            formattedDataValues,
-            dataObject['dataValues'],
-            currentUser
-          )
+          .uploadDataValues(formattedDataValues, dataObject[item], currentUser)
           .subscribe(
             importSummaries => {
               console.log(
@@ -146,8 +146,8 @@ export class SynchronizationProvider {
       } else if (dataObject[item].length > 0 && item == 'Enrollments') {
         this.trackerCaptureProvider
           .uploadTrackedEntityInstancesToServer(
-            dataObject['Enrollments'],
-            dataObject['Enrollments'],
+            dataObject[item],
+            dataObject[item],
             currentUser
           )
           .subscribe(
@@ -205,7 +205,7 @@ export class SynchronizationProvider {
           );
       } else if (dataObject[item].length > 0 && item == 'eventsForTracker') {
         this.eventCaptureFormProvider
-          .uploadEventsToSever(dataObject['eventsForTracker'], currentUser)
+          .uploadEventsToSever(dataObject[item], currentUser)
           .subscribe(
             importSummaries => {
               console.log(
@@ -221,7 +221,7 @@ export class SynchronizationProvider {
           );
       } else if (dataObject[item].length > 0 && item == 'events') {
         this.eventCaptureFormProvider
-          .uploadEventsToSever(dataObject['events'], currentUser)
+          .uploadEventsToSever(dataObject[item], currentUser)
           .subscribe(
             importSummaries => {
               console.log(

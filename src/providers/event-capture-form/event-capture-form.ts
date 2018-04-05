@@ -562,7 +562,7 @@ export class EventCaptureFormProvider {
                       observer.complete();
                     },
                     error => {
-                      observer.error();
+                      observer.error(error);
                     }
                   );
                 }
@@ -589,7 +589,7 @@ export class EventCaptureFormProvider {
                           observer.complete();
                         },
                         error => {
-                          observer.error();
+                          observer.error(error);
                         }
                       );
                     }
@@ -624,9 +624,17 @@ export class EventCaptureFormProvider {
                       if (errorMessages.indexOf(message) == -1) {
                         errorMessages.push(message);
                       }
+                    } else if (
+                      error &&
+                      error.response &&
+                      error.response.description
+                    ) {
+                      let message = error.response.description;
+                      if (errorMessages.indexOf(message) == -1) {
+                        errorMessages.push(message);
+                      }
                     } else {
-                      let message =
-                        'There are and error with connection to server, please check the network';
+                      let message = JSON.stringify(error);
                       if (errorMessages.indexOf(message) == -1) {
                         errorMessages.push(message);
                       }

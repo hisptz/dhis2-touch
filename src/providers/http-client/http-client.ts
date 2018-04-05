@@ -268,7 +268,7 @@ export class HttpClientProvider {
                 observer.complete();
               },
               error => {
-                observer.error(error);
+                observer.error(error.json());
               }
             );
         },
@@ -309,7 +309,7 @@ export class HttpClientProvider {
                 observer.complete();
               },
               error => {
-                observer.error(error);
+                observer.error(error.json());
               }
             );
         },
@@ -349,7 +349,7 @@ export class HttpClientProvider {
                 observer.complete();
               },
               error => {
-                observer.error(error);
+                observer.error(error.json());
               }
             );
         },
