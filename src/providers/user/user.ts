@@ -141,7 +141,7 @@ export class UserProvider {
             this.getUserDataFromServer(user).subscribe(
               (data: any) => {
                 let url = user.serverUrl.split('/dhis-web-commons')[0];
-                url = url.split('/dhis-web-dashboard-integration')[0];
+                url = url.split('/dhis-web-dashboard')[0];
                 user.serverUrl = url;
                 observer.next({ data: data.data, user: data.user });
                 observer.complete();
@@ -155,7 +155,7 @@ export class UserProvider {
                   this.authenticateUser(user).subscribe(
                     (data: any) => {
                       let url = user.serverUrl.split('/dhis-web-commons')[0];
-                      url = url.split('/dhis-web-dashboard-integration')[0];
+                      url = url.split('/dhis-web-dashboard')[0];
                       user.serverUrl = url;
                       observer.next({ data: data, user: user });
                       observer.complete();
@@ -180,7 +180,7 @@ export class UserProvider {
               this.authenticateUser(user).subscribe(
                 (data: any) => {
                   let url = user.serverUrl.split('/dhis-web-commons')[0];
-                  url = url.split('/dhis-web-dashboard-integration')[0];
+                  url = url.split('/dhis-web-dashboard')[0];
                   user.serverUrl = url;
                   observer.next({ data: data, user: user });
                   observer.complete();
@@ -194,7 +194,7 @@ export class UserProvider {
               this.authenticateUser(user).subscribe(
                 (data: any) => {
                   let url = user.serverUrl.split('/dhis-web-commons')[0];
-                  url = url.split('/dhis-web-dashboard-integration')[0];
+                  url = url.split('/dhis-web-dashboard')[0];
                   user.serverUrl = url;
                   observer.next({ data: data, user: user });
                   observer.complete();
