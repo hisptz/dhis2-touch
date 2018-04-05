@@ -5,6 +5,9 @@ import { TrackerCaptureProvider } from '../tracker-capture/tracker-capture';
 import { EnrollmentsProvider } from '../enrollments/enrollments';
 import { EventCaptureFormProvider } from '../event-capture-form/event-capture-form';
 import * as _ from 'lodash';
+import { AppTranslationProvider } from '../app-translation/app-translation';
+import { AppProvider } from '../app/app';
+import { SettingsProvider } from '../settings/settings';
 /*
   Generated class for the SynchronizationProvider provider.
 
@@ -13,19 +16,40 @@ import * as _ from 'lodash';
 */
 @Injectable()
 export class SynchronizationProvider {
+  subscription: any;
+
   constructor(
     private dataValuesProvider: DataValuesProvider,
     private trackerCaptureProvider: TrackerCaptureProvider,
     private enrollmentsProvider: EnrollmentsProvider,
     private eventCaptureFormProvider: EventCaptureFormProvider,
-    private user: UserProvider
+    private user: UserProvider,
+    private appTranslation: AppTranslationProvider,
+    private appProvider: AppProvider,
+    private settingsProvider: SettingsProvider
   ) {}
 
   startSynchronization(currentUser) {
-    setInterval(() => {
-      console.log('Starting sync');
-      this.loadingDataToUpload(currentUser);
-    }, 10000);
+    const defaultSettings = this.settingsProvider.getDefaultSettings();
+    this.settingsProvider.getSettingsForTheApp(currentUser).subscribe(
+      (appSettings: any) => {
+        const synchronizationSettings =
+          appSettings && appSettings.synchronization
+            ? appSettings.synchronization
+            : defaultSettings.synchronization;
+        if (this.subscription) {
+          clearInterval(this.subscription);
+        }
+        if (synchronizationSettings.isAutoSync) {
+          this.subscription = setInterval(() => {},
+          synchronizationSettings.time);
+        }
+      },
+      error => {
+        console.log;
+        JSON.stringify(error);
+      }
+    );
   }
 
   loadingDataToUpload(currentUser) {
@@ -61,8 +85,10 @@ export class SynchronizationProvider {
                           dataObject.eventsForTracker.push(event);
                         }
                       });
-                      //upload data
-                      this.uploadData(dataObject, currentUser);
+                      if (this.isThereAnyOfflineData(dataObject)) {
+                        console.log('Start sync');
+                        this.uploadData(dataObject, currentUser);
+                      }
                     },
                     error => {
                       console.log('error : events');
@@ -83,9 +109,17 @@ export class SynchronizationProvider {
       );
   }
 
+  isThereAnyOfflineData(dataObject) {
+    let result = false;
+    for (let item of Object.keys(dataObject)) {
+      if (dataObject[item].length > 0) {
+        result = true;
+      }
+    }
+  }
+
   uploadData(dataObject, currentUser) {
     for (let item of Object.keys(dataObject)) {
-      console.log('item : ' + item + dataObject[item].length);
       if (dataObject[item].length > 0 && item == 'dataValues') {
         let formattedDataValues = this.dataValuesProvider.getFormattedDataValueForUpload(
           dataObject['dataValues']
