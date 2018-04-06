@@ -96,7 +96,7 @@ export class DataEntryPage implements OnInit {
         this.isLoading = false;
         this.loadingMessage = '';
         this.appProvider.setNormalNotification(
-          'Fail to discover current user information'
+          'Failed to discover current user information'
         );
       }
     );
@@ -166,7 +166,9 @@ export class DataEntryPage implements OnInit {
           this.updateDataEntryFormSelections();
         },
         error => {
-          this.appProvider.setNormalNotification('Fail to discover entry form');
+          this.appProvider.setNormalNotification(
+            'Failed to discover entry form'
+          );
         }
       );
   }

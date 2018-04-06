@@ -72,7 +72,7 @@ export class ProfilePage implements OnInit {
             this.loadingMessage = '';
             console.log(JSON.stringify(error));
             this.appProvider.setNormalNotification(
-              'Fail to discover profile information'
+              'Failed to discover profile information'
             );
           }
         );
@@ -82,7 +82,7 @@ export class ProfilePage implements OnInit {
         this.loadingMessage = '';
         console.log(JSON.stringify(error));
         this.appProvider.setNormalNotification(
-          'Fail to discover profile information'
+          'Failed to discover profile information'
         );
       }
     );

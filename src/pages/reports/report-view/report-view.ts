@@ -120,7 +120,7 @@ export class ReportViewPage implements OnInit {
                   error => {
                     this.isLoading = false;
                     this.appProvider.setNormalNotification(
-                      'Fail to discover organisation units information'
+                      'Failed to discover organisation units information'
                     );
                   }
                 );
@@ -128,7 +128,7 @@ export class ReportViewPage implements OnInit {
               error => {
                 this.isLoading = false;
                 this.appProvider.setNormalNotification(
-                  'Fail to discover organisation units information'
+                  'Failed to discover organisation units information'
                 );
               }
             );
@@ -202,7 +202,7 @@ export class ReportViewPage implements OnInit {
         error => {
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            'Fail to discover report metadata'
+            'Failed to discover report metadata'
           );
         }
       );

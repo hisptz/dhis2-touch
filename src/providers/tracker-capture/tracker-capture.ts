@@ -593,7 +593,7 @@ export class TrackerCaptureProvider {
             );
         });
       } else {
-        observer.error({ message: 'Fail to set OU and program' });
+        observer.error({ message: 'Failed to set OU and program' });
       }
     });
   }

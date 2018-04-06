@@ -116,7 +116,7 @@ export class TrackerEntityRegisterPage implements OnInit {
         console.log(error);
         this.isLoading = false;
         this.appProvider.setNormalNotification(
-          'Fail to discover current user information'
+          'Failed to discover current user information'
         );
       }
     );
@@ -166,7 +166,7 @@ export class TrackerEntityRegisterPage implements OnInit {
           console.log(JSON.stringify(error));
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            'Fail to discover program stages'
+            'Failed to discover program stages'
           );
         }
       );
@@ -190,7 +190,7 @@ export class TrackerEntityRegisterPage implements OnInit {
           this.isLoading = false;
           console.log(JSON.stringify(error));
           this.appProvider.setNormalNotification(
-            'Fail to discover registration form'
+            'Failed to discover registration form'
           );
         }
       );
@@ -292,7 +292,7 @@ export class TrackerEntityRegisterPage implements OnInit {
                   this.isLoading = false;
                   console.log(JSON.stringify(error));
                   this.appProvider.setNormalNotification(
-                    'Fail to delete all information related to this tracked entity instance'
+                    'Failed to delete all information related to this tracked entity instance'
                   );
                 }
               );
@@ -372,7 +372,7 @@ export class TrackerEntityRegisterPage implements OnInit {
               }
             );
             this.appProvider.setNormalNotification(
-              'Fail to save a tracked entity instance'
+              'Failed to save a tracked entity instance'
             );
             console.log(JSON.stringify(error));
           }
