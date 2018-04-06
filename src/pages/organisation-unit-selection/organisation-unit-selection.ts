@@ -157,6 +157,7 @@ export class OrganisationUnitSelectionPage implements OnInit {
     const filterType = this.navParams.get('filterType');
     //@todo to revise setting
     //@todo improving searching mechanisms
+
     if (filterType == 'dataSets') {
       this.dataSetsProvider.getAllDataSetSources(this.currentUser).subscribe(
         (dataSetSources: any) => {
@@ -164,15 +165,15 @@ export class OrganisationUnitSelectionPage implements OnInit {
             dataSetSources.map((dataSetSource: any) => {
               if (
                 dataSetSource &&
-                dataSetSource.organisationUnitId &&
-                dataSetSource.dataSetId &&
-                this.ouIdsWithAssigments.indexOf(
-                  dataSetSource.organisationUnitId
-                ) == -1 &&
+                dataSetSource.id &&
                 userData.dataSets &&
-                userData.dataSets.indexOf(dataSetSource.dataSetId) > -1
+                userData.dataSets.indexOf(dataSetSource.id) > -1
               ) {
-                this.ouIdsWithAssigments.push(dataSetSource.organisationUnitId);
+                dataSetSource.organisationUnitIds.map((ouId: string) => {
+                  if (this.ouIdsWithAssigments.indexOf(ouId) == -1) {
+                    this.ouIdsWithAssigments.push(ouId);
+                  }
+                });
               }
             });
           });
@@ -193,18 +194,15 @@ export class OrganisationUnitSelectionPage implements OnInit {
               programOrganisationUnits.map((programOrganisationUnit: any) => {
                 if (
                   programOrganisationUnit &&
-                  programOrganisationUnit.programId &&
-                  programOrganisationUnit.orgUnitId &&
-                  this.ouIdsWithAssigments.indexOf(
-                    programOrganisationUnit.orgUnitId
-                  ) == -1 &&
+                  programOrganisationUnit.id &&
                   userData.programs &&
-                  userData.programs.indexOf(programOrganisationUnit.programId) >
-                    -1
+                  userData.programs.indexOf(programOrganisationUnit.id) > -1
                 ) {
-                  this.ouIdsWithAssigments.push(
-                    programOrganisationUnit.orgUnitId
-                  );
+                  programOrganisationUnit.orgUnitIds.map((ouId: string) => {
+                    if (this.ouIdsWithAssigments.indexOf(ouId) == -1) {
+                      this.ouIdsWithAssigments.push(ouId);
+                    }
+                  });
                 }
               });
             });

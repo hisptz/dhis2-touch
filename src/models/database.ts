@@ -69,9 +69,7 @@ export const DATABASE_STRUCTURE = {
   dataSetElements: {
     columns: [
       { value: 'id', type: 'TEXT' },
-      { value: 'dataSetId', type: 'TEXT' },
-      { value: 'sortOrder', type: 'TEXT' },
-      { value: 'dataElementId', type: 'TEXT' }
+      { value: 'dataElementIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
     resourceType: '',
@@ -82,8 +80,7 @@ export const DATABASE_STRUCTURE = {
   dataSetIndicators: {
     columns: [
       { value: 'id', type: 'TEXT' },
-      { value: 'dataSetId', type: 'TEXT' },
-      { value: 'indicatorId', type: 'TEXT' }
+      { value: 'indicatorIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
     resourceType: '',
@@ -94,8 +91,7 @@ export const DATABASE_STRUCTURE = {
   dataSetSource: {
     columns: [
       { value: 'id', type: 'TEXT' },
-      { value: 'dataSetId', type: 'TEXT' },
-      { value: 'organisationUnitId', type: 'TEXT' }
+      { value: 'organisationUnitIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
     resourceType: '',
@@ -106,8 +102,7 @@ export const DATABASE_STRUCTURE = {
   dataSetSections: {
     columns: [
       { value: 'id', type: 'TEXT' },
-      { value: 'dataSetId', type: 'TEXT' },
-      { value: 'sectionId', type: 'TEXT' }
+      { value: 'sectionIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
     resourceType: '',
@@ -145,9 +140,7 @@ export const DATABASE_STRUCTURE = {
   sectionDataElements: {
     columns: [
       { value: 'id', type: 'TEXT' },
-      { value: 'sectionId', type: 'TEXT' },
-      { value: 'sortOrder', type: 'TEXT' },
-      { value: 'dataElementId', type: 'TEXT' }
+      { value: 'dataElementIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
     resourceType: '',
@@ -158,8 +151,7 @@ export const DATABASE_STRUCTURE = {
   sectionIndicators: {
     columns: [
       { value: 'id', type: 'TEXT' },
-      { value: 'sectionId', type: 'TEXT' },
-      { value: 'indicatorId', type: 'TEXT' }
+      { value: 'indicatorIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
     resourceType: '',
@@ -360,8 +352,7 @@ export const DATABASE_STRUCTURE = {
   programProgramRuleVariables: {
     columns: [
       { value: 'id', type: 'TEXT' },
-      { value: 'programId', type: 'TEXT' },
-      { value: 'programRuleVariableId', type: 'TEXT' }
+      { value: 'programRuleVariableIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
     resourceType: '',
@@ -372,8 +363,7 @@ export const DATABASE_STRUCTURE = {
   programProgramRules: {
     columns: [
       { value: 'id', type: 'TEXT' },
-      { value: 'programId', type: 'TEXT' },
-      { value: 'programRuleId', type: 'TEXT' }
+      { value: 'programRuleIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
     resourceType: '',
@@ -502,8 +492,7 @@ export const DATABASE_STRUCTURE = {
   programOrganisationUnits: {
     columns: [
       { value: 'id', type: 'TEXT' },
-      { value: 'programId', type: 'TEXT' },
-      { value: 'orgUnitId', type: 'TEXT' }
+      { value: 'orgUnitIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
     resourceType: '',

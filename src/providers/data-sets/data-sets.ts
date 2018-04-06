@@ -49,7 +49,7 @@ export class DataSetsProvider {
     let url =
       '/api/dataSets.json?fields=id,dataSetElements[dataElement[id,categoryCombo[categoryOptionCombos[id]]]],dataElements[id,categoryCombo[categoryOptionCombos[id]]]';
     return new Observable(observer => {
-      this.HttpClient.get(url, false, currentUser, this.resource, 50).subscribe(
+      this.HttpClient.get(url, false, currentUser, this.resource, 25).subscribe(
         (response: any) => {
           observer.next(response[this.resource]);
           observer.complete();
@@ -188,19 +188,17 @@ export class DataSetsProvider {
     let attributeKey = 'id';
     let attributeArray = [];
     return new Observable(observer => {
-      this.getDataSetSource(orgUnitId, currentUser.currentDatabase).subscribe(
-        (dataSources: any) => {
+      this.getDataSetSourceDataSetIds(orgUnitId, currentUser).subscribe(
+        (dataSetSourceDataSetIds: any) => {
           if (
             currentUser.authorities &&
             currentUser.authorities.indexOf('ALL') > -1
           ) {
-            attributeArray = _.map(dataSources, (dataSource: any) => {
-              return dataSource.dataSetId;
-            });
+            attributeArray = dataSetSourceDataSetIds;
           } else {
-            dataSources.map((dataSource: any) => {
-              if (dataSetIds.indexOf(dataSource.dataSetId) != -1) {
-                attributeArray.push(dataSource.dataSetId);
+            dataSetSourceDataSetIds.map((dataSetSourceDataSetId: any) => {
+              if (dataSetIds.indexOf(dataSetSourceDataSetId) != -1) {
+                attributeArray.push(dataSetSourceDataSetId);
               }
             });
           }
@@ -332,7 +330,7 @@ export class DataSetsProvider {
    */
   getDataSetSectionsIds(dataSetId, currentUser): Observable<any> {
     const resource = 'dataSetSections';
-    let attributeKey = 'dataSetId';
+    let attributeKey = 'id';
     let attributeArray = [dataSetId];
     let sectionIds = [];
     return new Observable(observer => {
@@ -342,11 +340,9 @@ export class DataSetsProvider {
         attributeArray,
         currentUser.currentDatabase
       ).subscribe(
-        (dataSetsSections: any) => {
-          if (dataSetsSections && dataSetsSections.length > 0) {
-            dataSetsSections.map((dataSetsSection: any) => {
-              sectionIds.push(dataSetsSection.sectionId);
-            });
+        (dataSetsSectionsResponse: any) => {
+          if (dataSetsSectionsResponse && dataSetsSectionsResponse.length > 0) {
+            sectionIds = dataSetsSectionsResponse[0].sectionIds;
           }
           observer.next(sectionIds);
           observer.complete();
@@ -365,7 +361,7 @@ export class DataSetsProvider {
    * @returns {Observable<any>}
    */
   getDataSetDataElements(dataSetId, currentUser): Observable<any> {
-    let attributeKey = 'dataSetId';
+    let attributeKey = 'id';
     let attributeArray = [dataSetId];
     let dataSetElements = [];
     const resource = 'dataSetElements';
@@ -376,14 +372,21 @@ export class DataSetsProvider {
         attributeArray,
         currentUser.currentDatabase
       ).subscribe(
-        (dataSetElementsIds: any) => {
-          if (dataSetElementsIds && dataSetElementsIds.length > 0) {
-            dataSetElementsIds.map((dataSetIndicatorId: any) => {
-              dataSetElements.push({
-                id: dataSetIndicatorId.dataElementId,
-                sortOrder: dataSetIndicatorId.sortOrder
-              });
-            });
+        (dataSetDataElementsResponse: any) => {
+          if (
+            dataSetDataElementsResponse &&
+            dataSetDataElementsResponse.length > 0
+          ) {
+            let counter = 0;
+            dataSetDataElementsResponse[0].dataElementIds.map(
+              (dataElementId: any) => {
+                dataSetElements = _.concat(dataSetElements, {
+                  id: dataElementId,
+                  sortOrder: counter
+                });
+                counter++;
+              }
+            );
           }
           observer.next(dataSetElements);
           observer.complete();
@@ -403,7 +406,7 @@ export class DataSetsProvider {
    */
   getDataSetIndicatorIds(dataSetId, currentUser): Observable<any> {
     const resource = 'dataSetIndicators';
-    let attributeKey = 'dataSetId';
+    let attributeKey = 'id';
     let attributeArray = [dataSetId];
     let indicatorIds = [];
     return new Observable(observer => {
@@ -413,14 +416,9 @@ export class DataSetsProvider {
         attributeArray,
         currentUser.currentDatabase
       ).subscribe(
-        (dataSetsIndicatorIds: any) => {
-          if (dataSetsIndicatorIds && dataSetsIndicatorIds.length > 0) {
-            indicatorIds = _.map(
-              dataSetsIndicatorIds,
-              (dataSetsSection: any) => {
-                return dataSetsSection.indicatorId;
-              }
-            );
+        (data: any) => {
+          if (data && data.length > 0) {
+            indicatorIds = data[0].indicatorIds;
           }
           observer.next(indicatorIds);
           observer.complete();
@@ -444,9 +442,9 @@ export class DataSetsProvider {
     return new Observable(observer => {
       for (let userOrgUnitId of userOrgUnitIds) {
         let fields =
-          'fields=id,name,timelyDays,formType,dataEntryForm[id,htmlCode],compulsoryDataElementOperands[name,dimensionItemType,dimensionItem],version,periodType,openFuturePeriods,expiryDays,dataSetElements[dataElement[id]],dataElements[id],organisationUnits[id],sections[id],indicators[id],categoryCombo[id,name,categoryOptionCombos[id,name,categoryOptions[id]],categories[id,name,categoryOptions[id,name,organisationUnits[id]]]]';
+          'fields=id,name,timelyDays,formType,dataEntryForm[htmlCode],compulsoryDataElementOperands[name,dimensionItemType,dimensionItem],version,periodType,openFuturePeriods,expiryDays,dataSetElements[dataElement[id]],dataElements[id],organisationUnits[id],sections[id],indicators[id],categoryCombo[id,name,categoryOptionCombos[id,name,categoryOptions[id]],categories[id,name,categoryOptions[id,name,organisationUnits[id]]]]';
         let filter = 'filter=organisationUnits.path:ilike:';
-        let url = '/api/25/' + this.resource + '.json?paging=false&';
+        let url = '/api/25/' + this.resource + '.json?';
         url += fields + '&' + filter + userOrgUnitId;
         this.HttpClient.get(
           url,
@@ -584,12 +582,6 @@ export class DataSetsProvider {
         this.saveDataSetElements(dataSets, currentUser).subscribe(
           () => {
             completeProcess++;
-            console.log(
-              'completeProcess : ' +
-                completeProcess +
-                ' :: totalProcess : ' +
-                totalProcess
-            );
             if (completeProcess == totalProcess) {
               observer.next();
               observer.complete();
@@ -647,16 +639,12 @@ export class DataSetsProvider {
     const resource = 'dataSetIndicators';
     dataSets.map((dataSet: any) => {
       if (dataSet.indicators && dataSet.indicators.length > 0) {
-        dataSetIndicators = _.concat(
-          dataSetIndicators,
-          _.map(dataSet.indicators, (indicator: any) => {
-            return {
-              id: dataSet.id + '-' + indicator.id,
-              dataSetId: dataSet.id,
-              indicatorId: indicator.id
-            };
+        dataSetIndicators = _.concat(dataSetIndicators, {
+          id: dataSet.id,
+          indicatorIds: _.map(dataSet.indicators, (indicator: any) => {
+            return indicator.id;
           })
-        );
+        });
       }
     });
     return new Observable(observer => {
@@ -692,16 +680,15 @@ export class DataSetsProvider {
     const resource = 'dataSetSource';
     dataSets.map((dataSet: any) => {
       if (dataSet.organisationUnits && dataSet.organisationUnits.length > 0) {
-        dataSetSource = _.concat(
-          dataSetSource,
-          _.map(dataSet.organisationUnits, (organisationUnit: any) => {
-            return {
-              id: dataSet.id + '-' + organisationUnit.id,
-              dataSetId: dataSet.id,
-              organisationUnitId: organisationUnit.id
-            };
-          })
-        );
+        dataSetSource = _.concat(dataSetSource, {
+          id: dataSet.id,
+          organisationUnitIds: _.map(
+            dataSet.organisationUnits,
+            (organisationUnit: any) => {
+              return organisationUnit.id;
+            }
+          )
+        });
       }
     });
     return new Observable(observer => {
@@ -732,19 +719,27 @@ export class DataSetsProvider {
    * @param dataBaseName
    * @returns {Observable<any>}
    */
-  getDataSetSource(orgUnitId, dataBaseName): Observable<any> {
+  getDataSetSourceDataSetIds(
+    orgUnitId,
+    currentUser: CurrentUser
+  ): Observable<any> {
     const resource = 'dataSetSource';
-    let attributeValue = [orgUnitId];
-    let attributeKey = 'organisationUnitId';
+    let dataSetIds = [];
     return new Observable(observer => {
-      this.SqlLite.getDataFromTableByAttributes(
-        resource,
-        attributeKey,
-        attributeValue,
-        dataBaseName
-      ).subscribe(
-        (dataSetSource: any) => {
-          observer.next(dataSetSource);
+      this.getAllDataSetSources(currentUser).subscribe(
+        (dataSetSourcesResponse: any) => {
+          if (dataSetSourcesResponse && dataSetSourcesResponse.length > 0) {
+            dataSetSourcesResponse.map((dataSetSource: any) => {
+              if (
+                dataSetSource &&
+                dataSetSource.organisationUnitIds &&
+                dataSetSource.organisationUnitIds.indexOf(orgUnitId) > -1
+              ) {
+                dataSetIds.push(dataSetSource.id);
+              }
+            });
+          }
+          observer.next(dataSetIds);
           observer.complete();
         },
         error => {
@@ -783,16 +778,12 @@ export class DataSetsProvider {
     const resource = 'dataSetSections';
     dataSets.map((dataSet: any) => {
       if (dataSet.sections && dataSet.sections.length > 0) {
-        dataSetSections = _.concat(
-          dataSetSections,
-          _.map((section: any) => {
-            return {
-              id: dataSet.id + '-' + section.id,
-              dataSetId: dataSet.id,
-              sectionId: section.id
-            };
+        dataSetSections = _.concat(dataSetSections, {
+          id: dataSet.id,
+          sectionIds: _.map(dataSet.sections, (section: any) => {
+            return section.id;
           })
-        );
+        });
       }
     });
     return new Observable(observer => {
@@ -883,28 +874,22 @@ export class DataSetsProvider {
     const resource = 'dataSetElements';
     dataSets.map((dataSet: any) => {
       if (dataSet.dataSetElements && dataSet.dataSetElements.length > 0) {
-        let count = 0;
-        dataSet.dataSetElements.map((dataSetElement: any) => {
-          if (dataSetElement.dataElement.id && dataSetElement.dataElement.id)
-            dataSetElements.push({
-              id: dataSet.id + '-' + dataSetElement.dataElement.id,
-              dataSetId: dataSet.id,
-              sortOrder: count,
-              dataElementId: dataSetElement.dataElement.id
-            });
-          count++;
+        dataSetElements = _.concat(dataSetElements, {
+          id: dataSet.id,
+          dataElementIds: _.map(
+            dataSet.dataSetElements,
+            (dataSetElement: any) => {
+              return dataSetElement.dataElement.id;
+            }
+          )
         });
       }
       if (dataSet.dataElements && dataSet.dataElements.length > 0) {
-        let count = 0;
-        dataSet.dataElements.map((dataElement: any) => {
-          dataSetElements.push({
-            id: dataSet.id + '-' + dataElement.id,
-            dataSetId: dataSet.id,
-            sortOrder: count,
-            dataElementId: dataElement.id
-          });
-          count++;
+        dataSetElements = _.concat(dataSetElements, {
+          id: dataSet.id,
+          dataElementIds: _.map(dataSet.dataElements, (dataElement: any) => {
+            return dataElement.id;
+          })
         });
       }
     });
