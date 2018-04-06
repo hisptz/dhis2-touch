@@ -77,10 +77,7 @@ export class SyncProvider {
       for (let resource of resources) {
         if (resource == 'organisationUnits') {
           this.orgUnitsProvider
-            .downloadingOrganisationUnitsFromServer(
-              currentUser.userOrgUnitIds,
-              currentUser
-            )
+            .downloadingOrganisationUnitsFromServer(currentUser)
             .subscribe(
               (response: any) => {
                 data[resource] = response;
