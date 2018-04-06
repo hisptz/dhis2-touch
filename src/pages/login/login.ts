@@ -306,14 +306,29 @@ export class LoginPage implements OnInit {
                                               return organisationUnit.id;
                                             }
                                           );
-
-                                          console.log(
-                                            'this.currentUser.userOrgUnitIds ' +
-                                              JSON.stringify(
-                                                this.currentUser.userOrgUnitIds
-                                              )
+                                          const metadataList = [
+                                            'organisationUnits',
+                                            'dataSets',
+                                            'sections',
+                                            'dataElements',
+                                            'smsCommand',
+                                            'programs',
+                                            'programStageSections',
+                                            'programRules',
+                                            'programRuleActions',
+                                            'programRuleVariables',
+                                            'indicators',
+                                            'reports',
+                                            'constants'
+                                          ];
+                                          metadataList.map(
+                                            (process: string) => {
+                                              this.addIntoQueue(
+                                                process,
+                                                'dowmloading'
+                                              );
+                                            }
                                           );
-
                                           // this.downloadingOrganisationUnits(
                                           //   userData
                                           // );
@@ -534,6 +549,7 @@ export class LoginPage implements OnInit {
           return process == denqueuedProcess;
         }
       );
+      this.addIntoQueue(process, 'saving', { name: process });
       this.checkingAndStartDownloadProcess();
     }
   }
@@ -584,9 +600,19 @@ export class LoginPage implements OnInit {
     }
   }
 
-  startDownloadProcess(process: string) {}
+  startDownloadProcess(process: string) {
+    console.log('Downloading : ' + process);
+    setTimeout(() => {
+      this.removeFromQueue(process, 'dowmloading');
+    }, 2000);
+  }
 
-  startSavingProcess(process, data) {}
+  startSavingProcess(process, data) {
+    console.log('Saving : ' + process + ' ::: data : ' + JSON.stringify(data));
+    setTimeout(() => {
+      this.removeFromQueue(process, 'saving');
+    }, 2000);
+  }
 
   reInitiateProgressTrackerObject(user) {
     const emptyProcessTracker = this.getEmptyProgressTracker();
