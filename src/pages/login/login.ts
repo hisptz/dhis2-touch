@@ -266,6 +266,9 @@ export class LoginPage implements OnInit {
         user.currentDatabase
       ] = emptyProcessTracker;
       this.progressTracker = emptyProcessTracker;
+    } else {
+      this.currentUser['progressTracker'] = {};
+      this.progressTracker = emptyProcessTracker;
     }
   }
 
@@ -274,6 +277,7 @@ export class LoginPage implements OnInit {
     let progressTracker = {};
     progressTracker['communication'] = {
       expectedProcesses: 3,
+      totalPassedProcesses: 0,
       passedProcesses: [],
       message: ''
     };
@@ -287,6 +291,7 @@ export class LoginPage implements OnInit {
         if (!progressTracker[tableObject.resourceType]) {
           progressTracker[tableObject.resourceType] = {
             expectedProcesses: 0,
+            totalPassedProcesses: 0,
             passedProcesses: [],
             message: ''
           };
@@ -310,6 +315,7 @@ export class LoginPage implements OnInit {
     );
     Object.keys(this.progressTracker).map((resourceType: string) => {
       this.progressTracker[resourceType].message = '';
+      this.progressTracker[resourceType].totalPassedProcesses = 0;
       this.progressTracker[resourceType].passedProcesses.forEach(
         (passedProcess: any) => {
           passedProcess.hasBeenPassed = false;
@@ -343,9 +349,8 @@ export class LoginPage implements OnInit {
         this.progressTracker[resourceType].passedProcesses,
         { name: resourceName }
       );
-      console.log('Matched process : ' + JSON.stringify(currentProcess));
       if (currentProcess) {
-        _.renove(
+        _.remove(
           this.progressTracker[resourceType].passedProcesses,
           process => {
             return process.name == resourceName;
@@ -361,6 +366,7 @@ export class LoginPage implements OnInit {
         }
       );
     }
+    this.progressTracker[resourceType].totalPassedProcesses += 1;
     this.currentUser['progressTracker'][
       this.currentUser.currentDatabase
     ] = this.progressTracker;
@@ -374,7 +380,7 @@ export class LoginPage implements OnInit {
     Object.keys(this.progressTracker).map((resourceType: string) => {
       this.progressTracker[resourceType].passedProcesses.map(
         (passedProcess: any) => {
-          if (passedProcess.name && passedProcess.hasBeenPassed) {
+          if (passedProcess.name && passedProcess.hasBeenSaved) {
             completedTrackedProcess = _.concat(
               completedTrackedProcess,
               passedProcess.name
