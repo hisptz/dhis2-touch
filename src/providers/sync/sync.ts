@@ -10,6 +10,8 @@ import { IndicatorsProvider } from '../indicators/indicators';
 import { StandardReportProvider } from '../standard-report/standard-report';
 import { ProgramsProvider } from '../programs/programs';
 import { ProgramStageSectionsProvider } from '../program-stage-sections/program-stage-sections';
+import * as _ from 'lodash';
+import { CurrentUser } from '../../models/currentUser';
 
 /*
   Generated class for the SyncProvider provider.
@@ -75,12 +77,11 @@ export class SyncProvider {
     let completedProcess = 0;
     return new Observable(observer => {
       for (let resource of resources) {
+        console.log('resource : ' + resource);
+
         if (resource == 'organisationUnits') {
           this.orgUnitsProvider
-            .downloadingOrganisationUnitsFromServer(
-              currentUser.userOrgUnitIds,
-              currentUser
-            )
+            .downloadingOrganisationUnitsFromServer(currentUser)
             .subscribe(
               (response: any) => {
                 data[resource] = response;
@@ -248,7 +249,7 @@ export class SyncProvider {
    * @param currentUser
    * @returns {Observable<any>}
    */
-  savingResources(resources, data, currentUser): Observable<any> {
+  savingResources(resources, data, currentUser: CurrentUser): Observable<any> {
     let completedProcess = 0;
     return new Observable(observer => {
       for (let resource of resources) {
@@ -327,7 +328,7 @@ export class SyncProvider {
             );
         } else if (resource == 'smsCommand') {
           this.smsCommandsProvider
-            .savingSmsCommand(data[resource], currentUser)
+            .savingSmsCommand(data[resource], currentUser.currentDatabase)
             .subscribe(
               () => {
                 completedProcess++;
@@ -414,11 +415,12 @@ export class SyncProvider {
   prepareTablesToApplyChanges(resources, currentUser): Observable<any> {
     let completedProcess = 0;
     return new Observable(observer => {
-      for (let resource of resources) {
+      const tablesTobeDeleted = this.getTablesToBeDeleted(resources);
+      for (let resource of tablesTobeDeleted) {
         this.sqLite.dropTable(resource, currentUser.currentDatabase).subscribe(
           () => {
             completedProcess++;
-            if (completedProcess == resources.length) {
+            if (completedProcess == tablesTobeDeleted.length) {
               observer.next();
               observer.complete();
             }
@@ -426,7 +428,7 @@ export class SyncProvider {
           error => {
             console.log(JSON.stringify(error));
             completedProcess++;
-            if (completedProcess == resources.length) {
+            if (completedProcess == tablesTobeDeleted.length) {
               observer.next();
               observer.complete();
             }
@@ -434,5 +436,16 @@ export class SyncProvider {
         );
       }
     });
+  }
+
+  getTablesToBeDeleted(resources) {
+    let additionalTables = [];
+    const dataBaseStructure = this.sqLite.getDataBaseStructure();
+    resources.map((resource: string) => {
+      const { dependentTable } = dataBaseStructure[resource];
+      additionalTables = _.concat(additionalTables, dependentTable);
+    });
+    resources = _.concat(resources, additionalTables);
+    return resources;
   }
 }

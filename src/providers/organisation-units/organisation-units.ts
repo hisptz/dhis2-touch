@@ -53,13 +53,12 @@ export class OrganisationUnitsProvider {
    * @returns {Promise<T>}
    */
   downloadingOrganisationUnitsFromServer(
-    orgUnitIds,
-    currentUser
+    currentUser: CurrentUser
   ): Observable<any> {
     let orgUnits = [];
     return new Observable(observer => {
       let counts = 0;
-      for (let orgUnitId of orgUnitIds) {
+      for (let orgUnitId of currentUser.userOrgUnitIds) {
         let fields =
           'fields=id,name,path,ancestors[id,name,children[id]],openingDate,closedDate,level,children[id,name,children[id],parent';
         let filter = 'filter=path:ilike:';
@@ -79,7 +78,7 @@ export class OrganisationUnitsProvider {
                 orgUnits,
                 response
               );
-              if (counts == orgUnitIds.length) {
+              if (counts == currentUser.userOrgUnitIds.length) {
                 observer.next(orgUnits);
                 observer.complete();
               }

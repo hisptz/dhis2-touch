@@ -18,12 +18,14 @@ import { ProgramStageSectionsProvider } from '../../providers/program-stage-sect
 import { LocalInstanceProvider } from '../../providers/local-instance/local-instance';
 import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 import { CurrentUser } from '../../models/currentUser';
+import { QueueManager } from '../../models/queueManager';
 import { Store } from '@ngrx/store';
 import { ApplicationState } from '../../store';
 import { LoadedCurrentUser } from '../../store/actions/currentUser.actons';
 import { EncryptionProvider } from '../../providers/encryption/encryption';
 import { NetworkAvailabilityProvider } from '../../providers/network-availability/network-availability';
 import { ProgramRulesProvider } from '../../providers/program-rules/program-rules';
+import * as _ from 'lodash';
 
 /**
  * Generated class for the LoginPage page.
@@ -57,6 +59,8 @@ export class LoginPage implements OnInit {
   isTranslationListOpen: boolean;
   isLocalInstancesListOpen: boolean;
   isNetworkAvailable: boolean;
+  downloadingQueueManager: QueueManager;
+  savingingQueueManager: QueueManager;
 
   constructor(
     public navCtrl: NavController,
@@ -80,7 +84,9 @@ export class LoginPage implements OnInit {
     private appTranslationProvider: AppTranslationProvider,
     private networkProvider: NetworkAvailabilityProvider,
     private programRulesProvider: ProgramRulesProvider
-  ) {}
+  ) {
+    this.resetQueueManager();
+  }
 
   ngOnInit() {
     this.topThreeTranslationCodes = this.appTranslationProvider.getTopThreeSupportedTranslationCodes();
@@ -168,7 +174,7 @@ export class LoginPage implements OnInit {
       this.currentUser.currentLanguage = language;
       this.UserProvider.setCurrentUser(this.currentUser).subscribe(() => {});
     } catch (e) {
-      this.AppProvider.setNormalNotification('Fail to set translation');
+      this.AppProvider.setNormalNotification('Failed to set translation');
       console.log(JSON.stringify(e));
     }
   }
@@ -229,6 +235,7 @@ export class LoginPage implements OnInit {
               this.currentUser.username
             );
             this.reInitiateProgressTrackerObject(this.currentUser);
+            this.resetQueueManager();
             this.updateProgressTracker(resource);
             resource = 'Discovering system information';
             if (this.isLoginProcessActive) {
@@ -277,21 +284,37 @@ export class LoginPage implements OnInit {
                                         userData => {
                                           this.updateProgressTracker(resource);
                                           this.hasUserAuthenticated = true;
-                                          this.downloadingOrganisationUnits(
-                                            userData
+                                          this.currentUser[
+                                            'userOrgUnitIds'
+                                          ] = _.map(
+                                            userData.organisationUnits,
+                                            (organisationUnit: any) => {
+                                              return organisationUnit.id;
+                                            }
                                           );
-                                          this.downloadingDataSets();
-                                          this.downloadingSections();
-                                          this.downloadingDataElements();
-                                          this.downloadingSmsCommands();
-                                          this.downloadingPrograms();
-                                          this.downloadingProgramStageSections();
-                                          this.downloadingProgramRuleActions();
-                                          this.downloadingProgramRules();
-                                          this.downloadingProgramRuleVariables();
-                                          this.downloadingIndicators();
-                                          this.downloadingStandardReports();
-                                          this.downloadingConstants();
+                                          const metadataList = [
+                                            'organisationUnits',
+                                            'dataSets',
+                                            'sections',
+                                            'dataElements',
+                                            'smsCommand',
+                                            'programs',
+                                            'programStageSections',
+                                            'programRules',
+                                            'programRuleActions',
+                                            'programRuleVariables',
+                                            'indicators',
+                                            'reports',
+                                            'constants'
+                                          ];
+                                          metadataList.map(
+                                            (process: string) => {
+                                              this.addIntoQueue(
+                                                process,
+                                                'dowmloading'
+                                              );
+                                            }
+                                          );
                                         },
                                         error => {}
                                       );
@@ -301,7 +324,7 @@ export class LoginPage implements OnInit {
                                         this.cancelLoginProcessData
                                       );
                                       this.AppProvider.setNormalNotification(
-                                        'Fail to save current user information'
+                                        'Failed to save current user information'
                                       );
                                       console.error(
                                         'error : ' + JSON.stringify(error)
@@ -314,7 +337,7 @@ export class LoginPage implements OnInit {
                                     this.cancelLoginProcessData
                                   );
                                   this.AppProvider.setNormalNotification(
-                                    'Fail to prepare local storage'
+                                    'Failed to prepare local storage'
                                   );
                                   console.error(
                                     'error : ' + JSON.stringify(error)
@@ -327,7 +350,7 @@ export class LoginPage implements OnInit {
                               this.cancelLoginProcessData
                             );
                             this.AppProvider.setNormalNotification(
-                              'Fail to discover user authorities'
+                              'Failed to discover user authorities'
                             );
                             console.error('error : ' + JSON.stringify(error));
                           }
@@ -337,7 +360,7 @@ export class LoginPage implements OnInit {
                     error => {
                       this.cancelLoginProcess(this.cancelLoginProcessData);
                       this.AppProvider.setNormalNotification(
-                        'Fail to discover user authorities'
+                        'Failed to discover user authorities'
                       );
                       console.error('error : ' + JSON.stringify(error));
                     }
@@ -346,7 +369,7 @@ export class LoginPage implements OnInit {
                 error => {
                   this.cancelLoginProcess(this.cancelLoginProcessData);
                   this.AppProvider.setNormalNotification(
-                    'Fail to discover system information'
+                    'Failed to discover system information'
                   );
                   console.error('error : ' + JSON.stringify(error));
                 }
@@ -384,654 +407,6 @@ export class LoginPage implements OnInit {
     }
   }
 
-  downloadingOrganisationUnits(userData) {
-    if (this.isLoginProcessActive) {
-      let resource = 'organisationUnits';
-      let currentResourceType = 'communication';
-      let orgUnitIds = [];
-      this.progressTracker[currentResourceType].message =
-        'Discovering assigned organisation units';
-      userData.organisationUnits.forEach(organisationUnit => {
-        if (organisationUnit.id) {
-          orgUnitIds.push(organisationUnit.id);
-        }
-      });
-      this.currentUser['userOrgUnitIds'] = orgUnitIds;
-      if (this.completedTrackedProcess.indexOf(resource) > -1) {
-        this.updateProgressTracker(resource);
-        this.progressTracker[currentResourceType].message =
-          'Assigned organisation units have been discovered';
-      } else {
-        this.organisationUnitsProvider
-          .downloadingOrganisationUnitsFromServer(orgUnitIds, this.currentUser)
-          .subscribe(
-            (orgUnits: any) => {
-              if (this.isLoginProcessActive) {
-                this.progressTracker[currentResourceType].message =
-                  'Saving assigned organisation units';
-                this.organisationUnitsProvider
-                  .savingOrganisationUnitsFromServer(orgUnits, this.currentUser)
-                  .subscribe(
-                    () => {
-                      this.progressTracker[currentResourceType].message =
-                        'Assigned organisation units have been saved';
-                      this.updateProgressTracker(resource);
-                    },
-                    error => {
-                      this.cancelLoginProcess(this.cancelLoginProcessData);
-                      console.log(JSON.stringify(error));
-                      this.AppProvider.setNormalNotification(
-                        'Fail to save organisation data'
-                      );
-                    }
-                  );
-              }
-            },
-            error => {
-              this.cancelLoginProcess(this.cancelLoginProcessData);
-              console.log(JSON.stringify(error));
-              this.AppProvider.setNormalNotification(
-                'Fail to discover organisation data'
-              );
-            }
-          );
-      }
-    }
-  }
-
-  downloadingDataSets() {
-    if (this.isLoginProcessActive) {
-      let resource = 'dataSets';
-      let currentResourceType = 'entryForm';
-      this.progressTracker[currentResourceType].message =
-        'Discovering entry forms';
-      if (this.completedTrackedProcess.indexOf(resource) > -1) {
-        this.progressTracker[currentResourceType].message =
-          'Entry forms have been discovered';
-        this.updateProgressTracker(resource);
-      } else {
-        this.dataSetsProvider
-          .downloadDataSetsFromServer(this.currentUser)
-          .subscribe(
-            (dataSets: any) => {
-              if (this.isLoginProcessActive) {
-                this.progressTracker[currentResourceType].message =
-                  'Saving entry forms';
-                this.dataSetsProvider
-                  .saveDataSetsFromServer(dataSets, this.currentUser)
-                  .subscribe(
-                    () => {
-                      this.progressTracker[currentResourceType].message =
-                        'Entry form have been saved';
-                      this.updateProgressTracker(resource);
-                    },
-                    error => {
-                      this.cancelLoginProcess(this.cancelLoginProcessData);
-                      console.log(JSON.stringify(error));
-                      this.AppProvider.setNormalNotification(
-                        'Fail to save entry form'
-                      );
-                    }
-                  );
-              }
-            },
-            error => {
-              this.cancelLoginProcess(this.cancelLoginProcessData);
-              console.log(JSON.stringify(error));
-              this.AppProvider.setNormalNotification(
-                'Fail to discover entry form'
-              );
-            }
-          );
-      }
-    }
-  }
-
-  downloadingSections() {
-    if (this.isLoginProcessActive) {
-      let resource = 'sections';
-      let currentResourceType = 'entryForm';
-      this.progressTracker[currentResourceType].message =
-        'Discovering entry form sections';
-      if (this.completedTrackedProcess.indexOf(resource) > -1) {
-        this.progressTracker[currentResourceType].message =
-          'Entry form sections have been discovered';
-        this.updateProgressTracker(resource);
-      } else {
-        this.sectionsProvider
-          .downloadSectionsFromServer(this.currentUser)
-          .subscribe(
-            (response: any) => {
-              if (this.isLoginProcessActive) {
-                this.progressTracker[currentResourceType].message =
-                  'Saving entry form sections';
-                this.sectionsProvider
-                  .saveSectionsFromServer(response[resource], this.currentUser)
-                  .subscribe(
-                    () => {
-                      this.progressTracker[currentResourceType].message =
-                        'Entry form sections have been saved';
-                      this.updateProgressTracker(resource);
-                    },
-                    error => {
-                      this.cancelLoginProcess(this.cancelLoginProcessData);
-                      console.log(JSON.stringify(error));
-                      this.AppProvider.setNormalNotification(
-                        'Fail to save entry form sections'
-                      );
-                    }
-                  );
-              }
-            },
-            error => {
-              this.cancelLoginProcess(this.cancelLoginProcessData);
-              console.log(JSON.stringify(error));
-              this.AppProvider.setNormalNotification(
-                'Fail to discover entry form sections'
-              );
-            }
-          );
-      }
-    }
-  }
-
-  downloadingDataElements() {
-    if (this.isLoginProcessActive) {
-      let resource = 'dataElements';
-      let currentResourceType = 'entryForm';
-      this.progressTracker[currentResourceType].message =
-        'Discovering entry form fields';
-      if (this.completedTrackedProcess.indexOf(resource) > -1) {
-        this.progressTracker[currentResourceType].message =
-          'Entry form fields have been discovered';
-        this.updateProgressTracker(resource);
-      } else {
-        this.dataElementsProvider
-          .downloadDataElementsFromServer(this.currentUser)
-          .subscribe(
-            (response: any) => {
-              if (this.isLoginProcessActive) {
-                this.progressTracker[currentResourceType].message =
-                  'Saving entry form fields';
-                this.dataElementsProvider
-                  .saveDataElementsFromServer(
-                    response[resource],
-                    this.currentUser
-                  )
-                  .subscribe(
-                    () => {
-                      this.progressTracker[currentResourceType].message =
-                        'Entry form fields have been saved';
-                      this.updateProgressTracker(resource);
-                    },
-                    error => {
-                      this.cancelLoginProcess(this.cancelLoginProcessData);
-                      console.log(JSON.stringify(error));
-                      this.AppProvider.setNormalNotification(
-                        'Fail to save entry form fields'
-                      );
-                    }
-                  );
-              }
-            },
-            error => {
-              this.cancelLoginProcess(this.cancelLoginProcessData);
-              console.log(JSON.stringify(error));
-              this.AppProvider.setNormalNotification(
-                'Fail to discover entry form fields'
-              );
-            }
-          );
-      }
-    }
-  }
-
-  downloadingSmsCommands() {
-    if (this.isLoginProcessActive) {
-      let resource = 'smsCommand';
-      let currentResourceType = 'entryForm';
-      this.progressTracker[currentResourceType].message =
-        'Discovering SMS commands';
-      if (this.completedTrackedProcess.indexOf(resource) > -1) {
-        this.progressTracker[currentResourceType].message =
-          'SMS commands have been discovered';
-        this.updateProgressTracker(resource);
-      } else {
-        this.smsCommandProvider
-          .getSmsCommandFromServer(this.currentUser)
-          .subscribe(
-            (smsCommands: any) => {
-              if (this.isLoginProcessActive) {
-                this.progressTracker[currentResourceType].message =
-                  'Saving SMS commands';
-                this.smsCommandProvider
-                  .savingSmsCommand(
-                    smsCommands,
-                    this.currentUser.currentDatabase
-                  )
-                  .subscribe(
-                    () => {
-                      this.progressTracker[currentResourceType].message =
-                        'SMS commands have been saved';
-                      this.updateProgressTracker(resource);
-                    },
-                    error => {
-                      this.cancelLoginProcess(this.cancelLoginProcessData);
-                      console.log(JSON.stringify(error));
-                      this.AppProvider.setNormalNotification(
-                        'Fail to save SMS commands'
-                      );
-                    }
-                  );
-              }
-            },
-            error => {
-              this.cancelLoginProcess(this.cancelLoginProcessData);
-              console.log(JSON.stringify(error));
-              this.AppProvider.setNormalNotification(
-                'Fail to discover SMS commands'
-              );
-            }
-          );
-      }
-    }
-  }
-
-  downloadingPrograms() {
-    if (this.isLoginProcessActive) {
-      let resource = 'programs';
-      let currentResourceType = 'event';
-      this.progressTracker[currentResourceType].message =
-        'Discovering programs';
-      if (this.completedTrackedProcess.indexOf(resource) > -1) {
-        this.progressTracker[currentResourceType].message =
-          'Programs have been discovered';
-        this.updateProgressTracker(resource);
-      } else {
-        this.programsProvider
-          .downloadProgramsFromServer(this.currentUser)
-          .subscribe(
-            response => {
-              if (this.isLoginProcessActive) {
-                this.progressTracker[currentResourceType].message =
-                  'Saving programs';
-                this.programsProvider
-                  .saveProgramsFromServer(response[resource], this.currentUser)
-                  .subscribe(
-                    () => {
-                      this.progressTracker[currentResourceType].message =
-                        'Programs have been saved';
-                      this.updateProgressTracker(resource);
-                    },
-                    error => {
-                      this.cancelLoginProcess(this.cancelLoginProcessData);
-                      console.log(JSON.stringify(error));
-                      this.AppProvider.setNormalNotification(
-                        'Fail to save programs'
-                      );
-                    }
-                  );
-              }
-            },
-            error => {
-              this.cancelLoginProcess(this.cancelLoginProcessData);
-              console.log(JSON.stringify(error));
-              this.AppProvider.setNormalNotification(
-                'Fail to discover programs'
-              );
-            }
-          );
-      }
-    }
-  }
-
-  downloadingProgramStageSections() {
-    if (this.isLoginProcessActive) {
-      let resource = 'programStageSections';
-      let currentResourceType = 'event';
-      this.progressTracker[currentResourceType].message =
-        'Discovering program stage section';
-      if (this.completedTrackedProcess.indexOf(resource) > -1) {
-        this.progressTracker[currentResourceType].message =
-          'Program stage section have been discovered';
-        this.updateProgressTracker(resource);
-      } else {
-        this.programStageSectionProvider
-          .downloadProgramsStageSectionsFromServer(this.currentUser)
-          .subscribe(
-            response => {
-              if (this.isLoginProcessActive) {
-                this.progressTracker[currentResourceType].message =
-                  'Saving program stage section';
-                this.programStageSectionProvider
-                  .saveProgramsStageSectionsFromServer(
-                    response[resource],
-                    this.currentUser
-                  )
-                  .subscribe(
-                    () => {
-                      this.progressTracker[currentResourceType].message =
-                        'Program stage section have been saved';
-                      this.updateProgressTracker(resource);
-                    },
-                    error => {
-                      this.cancelLoginProcess(this.cancelLoginProcessData);
-                      console.log(JSON.stringify(error));
-                      this.AppProvider.setNormalNotification(
-                        'Fail to save program stage sections'
-                      );
-                    }
-                  );
-              }
-            },
-            error => {
-              this.cancelLoginProcess(this.cancelLoginProcessData);
-              console.log(JSON.stringify(error));
-              this.AppProvider.setNormalNotification(
-                'Fail to discover program stage sections'
-              );
-            }
-          );
-      }
-    }
-  }
-
-  downloadingProgramRules() {
-    if (this.isLoginProcessActive) {
-      let resource = 'programRules';
-      let currentResourceType = 'event';
-      this.progressTracker[currentResourceType].message =
-        'Discovering program rules';
-      if (this.completedTrackedProcess.indexOf(resource) > -1) {
-        this.progressTracker[currentResourceType].message =
-          'Program Rules have been discovered';
-        this.updateProgressTracker(resource);
-      } else {
-        if (this.isLoginProcessActive) {
-          this.programRulesProvider
-            .downloadingProgramRules(this.currentUser)
-            .subscribe(
-              data => {
-                if (this.isLoginProcessActive) {
-                  this.progressTracker[currentResourceType].message =
-                    'Saving program rules';
-                  this.programRulesProvider
-                    .savingProgramRules(data, this.currentUser)
-                    .subscribe(
-                      () => {
-                        this.progressTracker[currentResourceType].message =
-                          'Program rules have been saved successfully';
-                        this.updateProgressTracker(resource);
-                      },
-                      error => {
-                        this.cancelLoginProcess(this.cancelLoginProcessData);
-                        console.log(JSON.stringify(error));
-                        this.AppProvider.setNormalNotification(
-                          'Fail to save program rules'
-                        );
-                      }
-                    );
-                }
-              },
-              error => {
-                this.cancelLoginProcess(this.cancelLoginProcessData);
-                console.log(JSON.stringify(error));
-                this.AppProvider.setNormalNotification(
-                  'Fail to discover program rules'
-                );
-              }
-            );
-        }
-      }
-    }
-  }
-
-  downloadingProgramRuleActions() {
-    if (this.isLoginProcessActive) {
-      let resource = 'programRuleActions';
-      let currentResourceType = 'event';
-      this.progressTracker[currentResourceType].message =
-        'Discovering program rules actions';
-      if (this.completedTrackedProcess.indexOf(resource) > -1) {
-        this.progressTracker[currentResourceType].message =
-          'Program rules actions have been discovered';
-        this.updateProgressTracker(resource);
-      } else {
-        if (this.isLoginProcessActive) {
-          this.programRulesProvider
-            .downloadingProgramRuleActions(this.currentUser)
-            .subscribe(
-              data => {
-                if (this.isLoginProcessActive) {
-                  this.progressTracker[currentResourceType].message =
-                    'Saving program rules actions';
-                  this.programRulesProvider
-                    .savingProgramRuleActions(data, this.currentUser)
-                    .subscribe(
-                      () => {
-                        this.progressTracker[currentResourceType].message =
-                          'Program rules actions have been saved successfully';
-                        this.updateProgressTracker(resource);
-                      },
-                      error => {
-                        this.cancelLoginProcess(this.cancelLoginProcessData);
-                        console.log(JSON.stringify(error));
-                        this.AppProvider.setNormalNotification(
-                          'Fail to save program rules actions'
-                        );
-                      }
-                    );
-                }
-              },
-              error => {
-                this.cancelLoginProcess(this.cancelLoginProcessData);
-                console.log(JSON.stringify(error));
-                this.AppProvider.setNormalNotification(
-                  'Fail to discover program rules actions'
-                );
-              }
-            );
-        }
-      }
-    }
-  }
-
-  downloadingProgramRuleVariables() {
-    if (this.isLoginProcessActive) {
-      let resource = 'programRuleVariables';
-      let currentResourceType = 'event';
-      this.progressTracker[currentResourceType].message =
-        'Discovering program rules variables';
-      if (this.completedTrackedProcess.indexOf(resource) > -1) {
-        this.progressTracker[currentResourceType].message =
-          'Program rules variables have been discovered';
-        this.updateProgressTracker(resource);
-      } else {
-        if (this.isLoginProcessActive) {
-          this.programRulesProvider
-            .downloadingProgramRuleVariables(this.currentUser)
-            .subscribe(
-              data => {
-                if (this.isLoginProcessActive) {
-                  this.progressTracker[currentResourceType].message =
-                    'Saving program rules variables';
-                  this.programRulesProvider
-                    .savingProgramRuleVariables(data, this.currentUser)
-                    .subscribe(
-                      () => {
-                        this.progressTracker[currentResourceType].message =
-                          'Program rules variables have been saved successfully';
-                        this.updateProgressTracker(resource);
-                      },
-                      error => {
-                        this.cancelLoginProcess(this.cancelLoginProcessData);
-                        console.log(JSON.stringify(error));
-                        this.AppProvider.setNormalNotification(
-                          'Fail to save program rules variables'
-                        );
-                      }
-                    );
-                }
-              },
-              error => {
-                this.cancelLoginProcess(this.cancelLoginProcessData);
-                console.log(JSON.stringify(error));
-                this.AppProvider.setNormalNotification(
-                  'Fail to discover program rules variables'
-                );
-              }
-            );
-        }
-      }
-    }
-  }
-
-  downloadingIndicators() {
-    if (this.isLoginProcessActive) {
-      let resource = 'indicators';
-      let currentResourceType = 'report';
-      this.progressTracker[currentResourceType].message =
-        'Discovering indicators';
-      if (this.completedTrackedProcess.indexOf(resource) > -1) {
-        this.progressTracker[currentResourceType].message =
-          'Indicators have been discovered';
-        this.updateProgressTracker(resource);
-      } else {
-        this.indicatorsProvider
-          .downloadingIndicatorsFromServer(this.currentUser)
-          .subscribe(
-            (response: any) => {
-              if (this.isLoginProcessActive) {
-                this.progressTracker[currentResourceType].message =
-                  'Saving indicators';
-                this.indicatorsProvider
-                  .savingIndicatorsFromServer(
-                    response[resource],
-                    this.currentUser
-                  )
-                  .subscribe(
-                    () => {
-                      this.progressTracker[currentResourceType].message =
-                        'Indicators have been saved';
-                      this.updateProgressTracker(resource);
-                    },
-                    error => {
-                      this.cancelLoginProcess(this.cancelLoginProcessData);
-                      console.log(JSON.stringify(error));
-                      this.AppProvider.setNormalNotification(
-                        'Fail to save indicators'
-                      );
-                    }
-                  );
-              }
-            },
-            error => {
-              this.cancelLoginProcess(this.cancelLoginProcessData);
-              console.log(JSON.stringify(error));
-              this.AppProvider.setNormalNotification(
-                'Fail to discover indicators'
-              );
-            }
-          );
-      }
-    }
-  }
-
-  downloadingStandardReports() {
-    if (this.isLoginProcessActive) {
-      let resource = 'reports';
-      let currentResourceType = 'report';
-      this.progressTracker[currentResourceType].message = 'Discovering reports';
-      if (this.completedTrackedProcess.indexOf(resource) > -1) {
-        this.progressTracker[currentResourceType].message =
-          'Reports have been discovered';
-        this.updateProgressTracker(resource);
-      } else {
-        this.standardReports
-          .downloadReportsFromServer(this.currentUser)
-          .subscribe(
-            (reports: any) => {
-              if (this.isLoginProcessActive) {
-                this.progressTracker[currentResourceType].message =
-                  'Saving reports';
-                this.standardReports
-                  .saveReportsFromServer(reports[resource], this.currentUser)
-                  .subscribe(
-                    () => {
-                      this.progressTracker[currentResourceType].message =
-                        'Reports have been saved';
-                      this.updateProgressTracker(resource);
-                    },
-                    error => {
-                      this.cancelLoginProcess(this.cancelLoginProcessData);
-                      console.log(JSON.stringify(error));
-                      this.AppProvider.setNormalNotification(
-                        'Fail to save reports'
-                      );
-                    }
-                  );
-              }
-            },
-            error => {
-              this.cancelLoginProcess(this.cancelLoginProcessData);
-              console.log(JSON.stringify(error));
-              this.AppProvider.setNormalNotification(
-                'Fail to discover reports'
-              );
-            }
-          );
-      }
-    }
-  }
-
-  downloadingConstants() {
-    if (this.isLoginProcessActive) {
-      let resource = 'constants';
-      let currentResourceType = 'report';
-      this.progressTracker[currentResourceType].message =
-        'Discovering constants';
-      if (this.completedTrackedProcess.indexOf(resource) > -1) {
-        this.progressTracker[currentResourceType].message =
-          'Constants have been discovered';
-        this.updateProgressTracker(resource);
-      } else {
-        this.standardReports
-          .downloadConstantsFromServer(this.currentUser)
-          .subscribe(
-            (constants: any) => {
-              if (this.isLoginProcessActive) {
-                this.progressTracker[currentResourceType].message =
-                  'Saving constants';
-                this.standardReports
-                  .saveConstantsFromServer(constants, this.currentUser)
-                  .subscribe(
-                    () => {
-                      this.progressTracker[currentResourceType].message =
-                        'Constants have been saved';
-                      this.updateProgressTracker(resource);
-                    },
-                    error => {
-                      this.cancelLoginProcess(this.cancelLoginProcessData);
-                      console.log(JSON.stringify(error));
-                      this.AppProvider.setNormalNotification(
-                        'Fail to save constants'
-                      );
-                    }
-                  );
-              }
-            },
-            error => {
-              this.cancelLoginProcess(this.cancelLoginProcessData);
-              console.log(JSON.stringify(error));
-              this.AppProvider.setNormalNotification(
-                'Fail to discover constants'
-              );
-            }
-          );
-      }
-    }
-  }
-
   getResponseData(response) {
     if (response.data.data) {
       return this.getResponseData(response.data);
@@ -1045,7 +420,7 @@ export class LoginPage implements OnInit {
     this.animationEffect.loginForm = 'animated fadeIn';
     if (this.currentUser && this.currentUser.serverUrl) {
       let url = this.currentUser.serverUrl.split('/dhis-web-commons')[0];
-      url = url.split('/dhis-web-dashboard-integration')[0];
+      url = url.split('/dhis-web-dashboard')[0];
       this.currentUser.serverUrl = url;
     }
     setTimeout(() => {
@@ -1105,37 +480,8 @@ export class LoginPage implements OnInit {
       });
   }
 
-  resetPassSteps() {
-    let noEmptyStep;
-    this.progressTracker.communication.passStep.forEach((step: any) => {
-      if (step.name == 'organisationUnits') {
-        step.hasBeenPassed = false;
-        noEmptyStep = step;
-      }
-    });
-    this.progressTracker.communication.passStep = [];
-    if (noEmptyStep) {
-      this.progressTracker.communication.passStep.push(noEmptyStep);
-    }
-    this.progressTracker.communication.passStepCount = 0;
-    let dataBaseStructure = this.sqlLite.getDataBaseStructure();
-    Object.keys(dataBaseStructure).forEach(key => {
-      let table = dataBaseStructure[key];
-      if (table.isMetadata && table.resourceType && table.resourceType != '') {
-        if (this.progressTracker[table.resourceType]) {
-          this.progressTracker[table.resourceType].passStepCount = 0;
-          this.progressTracker[table.resourceType].message = '';
-          this.progressTracker[table.resourceType].passStep.forEach(
-            (passStep: any) => {
-              passStep.hasBeenPassed = false;
-            }
-          );
-        }
-      }
-    });
-  }
-
   reInitiateProgressTrackerObject(user) {
+    const emptyProcessTracker = this.getEmptyProgressTracker();
     if (
       user.progressTracker &&
       user.currentDatabase &&
@@ -1146,72 +492,109 @@ export class LoginPage implements OnInit {
     } else if (user.currentDatabase && user.progressTracker) {
       this.currentUser.progressTracker[
         user.currentDatabase
-      ] = this.getEmptyProgressTracker();
-      this.progressTracker = this.currentUser.progressTracker[
-        user.currentDatabase
-      ];
+      ] = emptyProcessTracker;
+      this.progressTracker = emptyProcessTracker;
     } else {
       this.currentUser['progressTracker'] = {};
-      this.progressTracker = {};
-      this.progressTracker = this.getEmptyProgressTracker();
+      this.progressTracker = emptyProcessTracker;
     }
   }
 
   getEmptyProgressTracker() {
-    let dataBaseStructure = this.sqlLite.getDataBaseStructure();
+    const dataBaseStructure = this.sqlLite.getDataBaseStructure();
     let progressTracker = {};
     progressTracker['communication'] = {
-      count: 3,
-      passStep: [],
-      passStepCount: 0,
+      expectedProcesses: 3,
+      totalPassedProcesses: 0,
+      passedProcesses: [],
       message: ''
     };
-    Object.keys(dataBaseStructure).forEach(key => {
-      let table = dataBaseStructure[key];
-      if (table.isMetadata && table.resourceType && table.resourceType != '') {
-        if (!progressTracker[table.resourceType]) {
-          progressTracker[table.resourceType] = {
-            count: 1,
-            passStep: [],
-            passStepCount: 0,
+    Object.keys(dataBaseStructure).map(key => {
+      const tableObject = dataBaseStructure[key];
+      if (
+        tableObject.isMetadata &&
+        tableObject.resourceType &&
+        tableObject.resourceType != ''
+      ) {
+        if (!progressTracker[tableObject.resourceType]) {
+          progressTracker[tableObject.resourceType] = {
+            expectedProcesses: 0,
+            totalPassedProcesses: 0,
+            passedProcesses: [],
             message: ''
           };
-        } else {
-          progressTracker[table.resourceType].count += 1;
         }
+        progressTracker[tableObject.resourceType].expectedProcesses += 1;
       }
     });
     return progressTracker;
   }
 
+  resetPassSteps() {
+    const nonEmptyCommunicationStep = _.filter(
+      this.progressTracker.communication.passedProcesses,
+      process => {
+        return process.name == 'organisationUnits';
+      }
+    );
+    this.progressTracker.communication.passedProcesses = _.concat(
+      [],
+      nonEmptyCommunicationStep
+    );
+    Object.keys(this.progressTracker).map((resourceType: string) => {
+      this.progressTracker[resourceType].message = '';
+      this.progressTracker[resourceType].totalPassedProcesses = 0;
+      this.progressTracker[resourceType].passedProcesses.forEach(
+        (passedProcess: any) => {
+          passedProcess.hasBeenPassed = false;
+        }
+      );
+    });
+  }
+
   updateProgressTracker(resourceName) {
-    let dataBaseStructure = this.sqlLite.getDataBaseStructure();
+    const dataBaseStructure = this.sqlLite.getDataBaseStructure();
     let resourceType = 'communication';
     if (dataBaseStructure[resourceName]) {
-      let table = dataBaseStructure[resourceName];
-      if (table.isMetadata && table.resourceType) {
-        resourceType = table.resourceType;
+      const tableObject = dataBaseStructure[resourceName];
+      if (tableObject.isMetadata && tableObject.resourceType) {
+        resourceType = tableObject.resourceType;
       }
     }
     if (
-      this.progressTracker[resourceType].passStep.length ==
-      this.progressTracker[resourceType].count
+      this.progressTracker[resourceType].passedProcesses.length ==
+      this.progressTracker[resourceType].expectedProcesses
     ) {
-      this.progressTracker[resourceType].passStep.forEach((passStep: any) => {
-        if (passStep.name == resourceName && passStep.hasBeenDownloaded) {
-          passStep.hasBeenPassed = true;
-        }
+      Object.keys(this.progressTracker).map((resourceType: string) => {
+        this.progressTracker[resourceType].passedProcesses.forEach(
+          (passedProcess: any) => {
+            passedProcess.hasBeenPassed = true;
+          }
+        );
       });
     } else {
-      this.progressTracker[resourceType].passStep.push({
-        name: resourceName,
-        hasBeenSaved: true,
-        hasBeenDownloaded: true,
-        hasBeenPassed: true
-      });
+      const currentProcess = _.find(
+        this.progressTracker[resourceType].passedProcesses,
+        { name: resourceName }
+      );
+      if (currentProcess) {
+        _.remove(
+          this.progressTracker[resourceType].passedProcesses,
+          process => {
+            return process.name == resourceName;
+          }
+        );
+      }
+      this.progressTracker[resourceType].passedProcesses = _.concat(
+        this.progressTracker[resourceType].passedProcesses,
+        {
+          name: resourceName,
+          hasBeenSaved: true,
+          hasBeenPassed: true
+        }
+      );
     }
-    this.progressTracker[resourceType].passStepCount =
-      this.progressTracker[resourceType].passStepCount + 1;
+    this.progressTracker[resourceType].totalPassedProcesses += 1;
     this.currentUser['progressTracker'][
       this.currentUser.currentDatabase
     ] = this.progressTracker;
@@ -1220,13 +603,36 @@ export class LoginPage implements OnInit {
     this.updateProgressBarPercentage();
   }
 
+  getCompletedTrackedProcess() {
+    let completedTrackedProcess = [];
+    Object.keys(this.progressTracker).map((resourceType: string) => {
+      this.progressTracker[resourceType].passedProcesses.map(
+        (passedProcess: any) => {
+          if (passedProcess.name && passedProcess.hasBeenSaved) {
+            completedTrackedProcess = _.concat(
+              completedTrackedProcess,
+              passedProcess.name
+            );
+          }
+        }
+      );
+    });
+    return completedTrackedProcess;
+  }
+
   updateProgressBarPercentage() {
     let total = 0;
     let completed = 0;
-    Object.keys(this.progressTracker).forEach(key => {
-      let process = this.progressTracker[key];
-      completed += process.passStepCount;
-      total += process.count;
+    Object.keys(this.progressTracker).map(key => {
+      const trackedProcess = this.progressTracker[key];
+      const completedProcess = _.filter(
+        trackedProcess.passedProcesses,
+        process => {
+          return process && process.hasBeenPassed;
+        }
+      );
+      completed += completedProcess.length;
+      total += trackedProcess.expectedProcesses;
     });
     let value = completed / total * 100;
     this.progressBar = String(value);
@@ -1235,18 +641,724 @@ export class LoginPage implements OnInit {
     }
   }
 
-  getCompletedTrackedProcess() {
-    let completedTrackedProcess = [];
-    Object.keys(this.progressTracker).forEach(key => {
-      let process = this.progressTracker[key];
-      process.passStep.forEach((passStep: any) => {
-        if (passStep.name && passStep.hasBeenDownloaded) {
-          if (completedTrackedProcess.indexOf(passStep.name) == -1) {
-            completedTrackedProcess.push(passStep.name);
+  resetQueueManager() {
+    this.savingingQueueManager = {
+      enqueuedProcess: [],
+      dequeuingLimit: 1,
+      denqueuedProcess: [],
+      data: {}
+    };
+    this.downloadingQueueManager = {
+      totalProcess: 13,
+      enqueuedProcess: [],
+      dequeuingLimit: 2,
+      denqueuedProcess: []
+    };
+  }
+
+  addIntoQueue(process: string, type?: string, data?: any) {
+    if (type && type == 'saving') {
+      if (data) {
+        this.savingingQueueManager.enqueuedProcess = _.concat(
+          this.savingingQueueManager.enqueuedProcess,
+          process
+        );
+        this.savingingQueueManager.data[process] = data;
+      }
+      this.checkingAndStartSavingProcess();
+    } else if (type && type == 'dowmloading') {
+      this.downloadingQueueManager.enqueuedProcess = _.concat(
+        this.downloadingQueueManager.enqueuedProcess,
+        process
+      );
+      this.checkingAndStartDownloadProcess();
+    }
+  }
+
+  removeFromQueue(process: string, type: string, data?: any) {
+    if (type && type == 'saving') {
+      _.remove(
+        this.savingingQueueManager.denqueuedProcess,
+        denqueuedProcess => {
+          return process == denqueuedProcess;
+        }
+      );
+      this.checkingAndStartSavingProcess();
+    } else if (type && type == 'dowmloading') {
+      _.remove(
+        this.downloadingQueueManager.denqueuedProcess,
+        denqueuedProcess => {
+          return process == denqueuedProcess;
+        }
+      );
+      if (data) {
+        this.addIntoQueue(process, 'saving', data);
+      }
+      this.checkingAndStartDownloadProcess();
+    }
+  }
+
+  startDownloadProcess(process: string) {
+    if (this.isLoginProcessActive) {
+      if (process == 'organisationUnits') {
+        const currentResourceType = 'communication';
+        this.progressTracker[currentResourceType].message =
+          'Discovering assigned organisation units';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Assigned organisation units have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.organisationUnitsProvider
+            .downloadingOrganisationUnitsFromServer(this.currentUser)
+            .subscribe(
+              (orgUnits: any) => {
+                this.removeFromQueue(process, 'dowmloading', orgUnits);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover organisation data'
+                );
+              }
+            );
+        }
+      } else if (process == 'dataSets') {
+        const currentResourceType = 'entryForm';
+        this.progressTracker[currentResourceType].message =
+          'Discovering entry forms';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Entry forms have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.dataSetsProvider
+            .downloadDataSetsFromServer(this.currentUser)
+            .subscribe(
+              (dataSets: any) => {
+                this.removeFromQueue(process, 'dowmloading', dataSets);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover entry form'
+                );
+              }
+            );
+        }
+      } else if (process == 'sections') {
+        const currentResourceType = 'entryForm';
+        this.progressTracker[currentResourceType].message =
+          'Discovering entry form sections';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Entry form sections have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.sectionsProvider
+            .downloadSectionsFromServer(this.currentUser)
+            .subscribe(
+              (response: any) => {
+                const { sections } = response;
+                this.removeFromQueue(process, 'dowmloading', sections);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover entry form sections'
+                );
+              }
+            );
+        }
+      } else if (process == 'dataElements') {
+        const currentResourceType = 'entryForm';
+        this.progressTracker[currentResourceType].message =
+          'Discovering entry form fields';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Entry form fields have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.dataElementsProvider
+            .downloadDataElementsFromServer(this.currentUser)
+            .subscribe(
+              (response: any) => {
+                const { dataElements } = response;
+                this.removeFromQueue(process, 'dowmloading', dataElements);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover entry form fields'
+                );
+              }
+            );
+        }
+      } else if (process == 'smsCommand') {
+        const currentResourceType = 'entryForm';
+        this.progressTracker[currentResourceType].message =
+          'Discovering SMS commands';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'SMS commands have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.smsCommandProvider
+            .getSmsCommandFromServer(this.currentUser)
+            .subscribe(
+              (smsCommands: any) => {
+                this.removeFromQueue(process, 'dowmloading', smsCommands);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover SMS commands'
+                );
+              }
+            );
+        }
+      } else if (process == 'programs') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Discovering programs';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Programs have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.programsProvider
+            .downloadProgramsFromServer(this.currentUser)
+            .subscribe(
+              response => {
+                const { programs } = response;
+                this.removeFromQueue(process, 'dowmloading', programs);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover programs'
+                );
+              }
+            );
+        }
+      } else if (process == 'programStageSections') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Discovering program stage section';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Program stage section have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.programStageSectionProvider
+            .downloadProgramsStageSectionsFromServer(this.currentUser)
+            .subscribe(
+              response => {
+                const { programStageSections } = response;
+                this.removeFromQueue(
+                  process,
+                  'dowmloading',
+                  programStageSections
+                );
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover program stage sections'
+                );
+              }
+            );
+        }
+      } else if (process == 'programRules') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Discovering program rules';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Program Rules have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          if (this.isLoginProcessActive) {
+            this.programRulesProvider
+              .downloadingProgramRules(this.currentUser)
+              .subscribe(
+                data => {
+                  this.removeFromQueue(process, 'dowmloading', data);
+                },
+                error => {
+                  this.cancelLoginProcess(this.cancelLoginProcessData);
+                  console.log(JSON.stringify(error));
+                  this.AppProvider.setNormalNotification(
+                    'Failed to discover program rules'
+                  );
+                }
+              );
           }
         }
-      });
-    });
-    return completedTrackedProcess;
+      } else if (process == 'programRuleActions') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Discovering program rules actions';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Program rules actions have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          if (this.isLoginProcessActive) {
+            this.programRulesProvider
+              .downloadingProgramRuleActions(this.currentUser)
+              .subscribe(
+                data => {
+                  this.removeFromQueue(process, 'dowmloading', data);
+                },
+                error => {
+                  this.cancelLoginProcess(this.cancelLoginProcessData);
+                  console.log(JSON.stringify(error));
+                  this.AppProvider.setNormalNotification(
+                    'Failed to discover program rules actions'
+                  );
+                }
+              );
+          }
+        }
+      } else if (process == 'programRuleVariables') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Discovering program rules variables';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Program rules variables have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          if (this.isLoginProcessActive) {
+            this.programRulesProvider
+              .downloadingProgramRuleVariables(this.currentUser)
+              .subscribe(
+                data => {
+                  this.removeFromQueue(process, 'dowmloading', data);
+                },
+                error => {
+                  this.cancelLoginProcess(this.cancelLoginProcessData);
+                  console.log(JSON.stringify(error));
+                  this.AppProvider.setNormalNotification(
+                    'Failed to discover program rules variables'
+                  );
+                }
+              );
+          }
+        }
+      } else if (process == 'indicators') {
+        const currentResourceType = 'report';
+        this.progressTracker[currentResourceType].message =
+          'Discovering indicators';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Indicators have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.indicatorsProvider
+            .downloadingIndicatorsFromServer(this.currentUser)
+            .subscribe(
+              (response: any) => {
+                const { indicators } = response;
+                this.removeFromQueue(process, 'dowmloading', indicators);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover indicators'
+                );
+              }
+            );
+        }
+      } else if (process == 'reports') {
+        const currentResourceType = 'report';
+        this.progressTracker[currentResourceType].message =
+          'Discovering reports';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Reports have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.standardReports
+            .downloadReportsFromServer(this.currentUser)
+            .subscribe(
+              (response: any) => {
+                const { reports } = response;
+                this.removeFromQueue(process, 'dowmloading', reports);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover reports'
+                );
+              }
+            );
+        }
+      } else if (process == 'constants') {
+        const currentResourceType = 'report';
+        this.progressTracker[currentResourceType].message =
+          'Discovering constants';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Constants have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.standardReports
+            .downloadConstantsFromServer(this.currentUser)
+            .subscribe(
+              (constants: any) => {
+                this.removeFromQueue(process, 'dowmloading', constants);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover constants'
+                );
+              }
+            );
+        }
+      }
+    }
+  }
+
+  startSavingProcess(process, data) {
+    if (this.isLoginProcessActive) {
+      if (process == 'organisationUnits') {
+        const currentResourceType = 'communication';
+        this.progressTracker[currentResourceType].message =
+          'Saving assigned organisation units';
+        this.organisationUnitsProvider
+          .savingOrganisationUnitsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Assigned organisation units have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save organisation data'
+              );
+            }
+          );
+      } else if (process == 'dataSets') {
+        const currentResourceType = 'entryForm';
+        this.progressTracker[currentResourceType].message =
+          'Saving entry forms';
+        this.dataSetsProvider
+          .saveDataSetsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Entry form have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save entry form'
+              );
+            }
+          );
+      } else if (process == 'sections') {
+        const currentResourceType = 'entryForm';
+        this.progressTracker[currentResourceType].message =
+          'Saving entry form sections';
+        this.sectionsProvider
+          .saveSectionsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Entry form sections have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save entry form sections'
+              );
+            }
+          );
+      } else if (process == 'dataElements') {
+        const currentResourceType = 'entryForm';
+        this.progressTracker[currentResourceType].message =
+          'Saving entry form fields';
+        this.dataElementsProvider
+          .saveDataElementsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Entry form fields have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save entry form fields'
+              );
+            }
+          );
+      } else if (process == 'smsCommand') {
+        const currentResourceType = 'entryForm';
+        this.progressTracker[currentResourceType].message =
+          'Saving SMS commands';
+        this.smsCommandProvider
+          .savingSmsCommand(data, this.currentUser.currentDatabase)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'SMS commands have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save SMS commands'
+              );
+            }
+          );
+      } else if (process == 'programs') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message = 'Saving programs';
+        this.programsProvider
+          .saveProgramsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Programs have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification('Failed to save programs');
+            }
+          );
+      } else if (process == 'programStageSections') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Saving program stage section';
+        this.programStageSectionProvider
+          .saveProgramsStageSectionsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Program stage section have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save program stage sections'
+              );
+            }
+          );
+      } else if (process == 'programRules') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Saving program rules';
+        this.programRulesProvider
+          .savingProgramRules(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Program rules have been saved successfully';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save program rules'
+              );
+            }
+          );
+      } else if (process == 'programRuleActions') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Saving program rules actions';
+        this.programRulesProvider
+          .savingProgramRuleActions(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Program rules actions have been saved successfully';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save program rules actions'
+              );
+            }
+          );
+      } else if (process == 'programRuleVariables') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Saving program rules variables';
+        this.programRulesProvider
+          .savingProgramRuleVariables(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Program rules variables have been saved successfully';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save program rules variables'
+              );
+            }
+          );
+      } else if (process == 'indicators') {
+        const currentResourceType = 'report';
+        this.progressTracker[currentResourceType].message = 'Saving indicators';
+        this.indicatorsProvider
+          .savingIndicatorsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Indicators have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save indicators'
+              );
+            }
+          );
+      } else if (process == 'reports') {
+        const currentResourceType = 'report';
+        this.progressTracker[currentResourceType].message = 'Saving reports';
+        this.standardReports
+          .saveReportsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Reports have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification('Failed to save reports');
+            }
+          );
+      } else if (process == 'constants') {
+        const currentResourceType = 'report';
+        this.progressTracker[currentResourceType].message = 'Saving constants';
+        this.standardReports
+          .saveConstantsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Constants have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save constants'
+              );
+            }
+          );
+      }
+    }
+  }
+
+  checkingAndStartSavingProcess() {
+    if (
+      this.savingingQueueManager.denqueuedProcess.length <
+      this.savingingQueueManager.dequeuingLimit
+    ) {
+      const process = _.head(this.savingingQueueManager.enqueuedProcess);
+      if (process) {
+        const data = this.savingingQueueManager.data[process];
+        delete this.savingingQueueManager.data[process];
+        this.savingingQueueManager.denqueuedProcess = _.concat(
+          this.savingingQueueManager.denqueuedProcess,
+          process
+        );
+        _.remove(
+          this.savingingQueueManager.enqueuedProcess,
+          enqueuedProcess => {
+            return process == enqueuedProcess;
+          }
+        );
+        this.startSavingProcess(process, data);
+      }
+    }
+  }
+
+  checkingAndStartDownloadProcess() {
+    if (
+      this.downloadingQueueManager.denqueuedProcess.length <
+      this.downloadingQueueManager.dequeuingLimit
+    ) {
+      const process = _.head(this.downloadingQueueManager.enqueuedProcess);
+      if (process) {
+        this.downloadingQueueManager.denqueuedProcess = _.concat(
+          this.downloadingQueueManager.denqueuedProcess,
+          process
+        );
+        _.remove(
+          this.downloadingQueueManager.enqueuedProcess,
+          enqueuedProcess => {
+            return process == enqueuedProcess;
+          }
+        );
+        this.startDownloadProcess(process);
+      }
+    }
   }
 }

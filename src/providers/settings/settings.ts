@@ -1,6 +1,6 @@
-import { Injectable } from "@angular/core";
-import { Storage } from "@ionic/storage";
-import { Observable } from "rxjs/Observable";
+import { Injectable } from '@angular/core';
+import { Storage } from '@ionic/storage';
+import { Observable } from 'rxjs/Observable';
 
 /*
   Generated class for the SettingsProvider provider.
@@ -19,25 +19,25 @@ export class SettingsProvider {
   getSettingContentDetails() {
     let settingContents = [
       {
-        id: "appSettings",
-        name: "App settings",
-        icon: "assets/icon/app-setting.png",
+        id: 'appSettings',
+        name: 'App settings',
+        icon: 'assets/icon/app-setting.png',
         isLoading: false,
-        loadingMessage: ""
+        loadingMessage: ''
       },
       {
-        id: "entryForm",
-        name: "Entry form",
-        icon: "assets/icon/form.png",
+        id: 'entryForm',
+        name: 'Entry form',
+        icon: 'assets/icon/form.png',
         isLoading: false,
-        loadingMessage: ""
+        loadingMessage: ''
       },
       {
-        id: "synchronization",
-        name: "Synchronization",
-        icon: "assets/icon/synchronization.png",
+        id: 'synchronization',
+        name: 'Synchronization',
+        icon: 'assets/icon/synchronization.png',
         isLoading: false,
-        loadingMessage: ""
+        loadingMessage: ''
       }
     ];
     return settingContents;
@@ -53,9 +53,9 @@ export class SettingsProvider {
     appSettings = this.getSanitizedSettings(appSettings);
     return new Observable(observer => {
       let key =
-        "appSettings" + (currentUser && currentUser.currentDatabase)
+        'appSettings' + (currentUser && currentUser.currentDatabase)
           ? currentUser.currentDatabase
-          : "";
+          : '';
       appSettings = JSON.stringify(appSettings);
       this.storage.set(key, appSettings).then(
         () => {
@@ -77,9 +77,9 @@ export class SettingsProvider {
   getSettingsForTheApp(currentUser): Observable<any> {
     return new Observable(observer => {
       let key =
-        "appSettings" + (currentUser && currentUser.currentDatabase)
+        'appSettings' + (currentUser && currentUser.currentDatabase)
           ? currentUser.currentDatabase
-          : "";
+          : '';
       this.storage.get(key).then(
         appSettings => {
           try {
@@ -105,9 +105,9 @@ export class SettingsProvider {
    */
   getSynchronizationTimeToSave(time, timeType) {
     let value = time;
-    if (timeType == "minutes") {
+    if (timeType == 'minutes') {
       value = time * 60 * 1000;
-    } else if (timeType == "hours") {
+    } else if (timeType == 'hours') {
       value = time * 60 * 60 * 1000;
     }
     return value;
@@ -121,9 +121,9 @@ export class SettingsProvider {
    */
   getDisplaySynchronizationTime(time, timeType) {
     let value = time;
-    if (timeType == "minutes") {
+    if (timeType == 'minutes') {
       value = time / (60 * 1000);
-    } else if (timeType == "hours") {
+    } else if (timeType == 'hours') {
       value = time / (60 * 60 * 1000);
     }
     return value;
@@ -136,13 +136,13 @@ export class SettingsProvider {
   getDefaultSettings() {
     let defaultSettings = {
       entryForm: {
-        label: "formName",
+        label: 'formName',
         maxDataElementOnDefaultForm: 10,
-        formLayout: "listLayout"
+        formLayout: 'tableLayout'
       },
       synchronization: {
         time: 2 * 60 * 1000,
-        timeType: "minutes",
+        timeType: 'minutes',
         isAutoSync: true
       }
     };

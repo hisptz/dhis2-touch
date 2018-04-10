@@ -118,7 +118,7 @@ export class OrganisationUnitSelectionPage implements OnInit {
         error => {
           console.log(JSON.stringify(error));
           this.isLoading = false;
-          key = 'Fail to discover organisation units';
+          key = 'Failed to discover organisation units';
           this.emptyMessage = this.translationMapper[key]
             ? this.translationMapper[key]
             : key;
@@ -252,7 +252,7 @@ export class OrganisationUnitSelectionPage implements OnInit {
       'Discovering current user information',
       'Discovering assigned organisation units',
       'Currently there is on assigned organisation unit on local storage, Please metadata on sync app',
-      'Fail to discover organisation units'
+      'Failed to discover organisation units'
     ];
   }
 }

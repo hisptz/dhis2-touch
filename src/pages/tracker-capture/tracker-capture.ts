@@ -103,7 +103,7 @@ export class TrackerCapturePage implements OnInit {
         this.isLoading = false;
         this.loadingMessage = '';
         this.appProvider.setNormalNotification(
-          'Fail to discover current user information'
+          'Failed to discover current user information'
         );
       }
     );
@@ -144,7 +144,7 @@ export class TrackerCapturePage implements OnInit {
                   this.isLoading = false;
                   console.log(JSON.stringify(error));
                   this.appProvider.setNormalNotification(
-                    'Fail to discover registration form'
+                    'Failed to discover registration form'
                   );
                 }
               );
@@ -157,7 +157,7 @@ export class TrackerCapturePage implements OnInit {
           this.loadingMessage = '';
           console.log(JSON.stringify(error));
           this.appProvider.setNormalNotification(
-            'Fail to discover assigned programs'
+            'Failed to discover assigned programs'
           );
         }
       );
@@ -238,7 +238,7 @@ export class TrackerCapturePage implements OnInit {
                 this.isLoading = false;
                 console.log(JSON.stringify(error));
                 this.appProvider.setNormalNotification(
-                  'Fail to discover registration form'
+                  'Failed to discover registration form'
                 );
               }
             );
@@ -269,7 +269,7 @@ export class TrackerCapturePage implements OnInit {
           console.log(JSON.stringify(error));
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            'Fail to discover tracked entity list'
+            'Failed to discover tracked entity list'
           );
         }
       );
@@ -302,7 +302,7 @@ export class TrackerCapturePage implements OnInit {
         error => {
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            'Fail to prepare table for display'
+            'Failed to prepare table for display'
           );
         }
       );
