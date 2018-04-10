@@ -87,18 +87,7 @@ export class LoginPage implements OnInit {
     private networkProvider: NetworkAvailabilityProvider,
     private programRulesProvider: ProgramRulesProvider
   ) {
-    this.savingingQueueManager = {
-      enqueuedProcess: [],
-      dequeuingLimit: 1,
-      denqueuedProcess: [],
-      data: {}
-    };
-    this.downloadingQueueManager = {
-      totalProcess: 13,
-      enqueuedProcess: [],
-      dequeuingLimit: 3,
-      denqueuedProcess: []
-    };
+    this.resetQueueManager();
   }
 
   ngOnInit() {
@@ -250,6 +239,7 @@ export class LoginPage implements OnInit {
               this.currentUser.username
             );
             this.reInitiateProgressTrackerObject(this.currentUser);
+            this.resetQueueManager();
             this.updateProgressTracker(resource);
             resource = 'Discovering system information';
             if (this.isLoginProcessActive) {
@@ -511,13 +501,28 @@ export class LoginPage implements OnInit {
       });
   }
 
+  resetQueueManager() {
+    this.savingingQueueManager = {
+      enqueuedProcess: [],
+      dequeuingLimit: 1,
+      denqueuedProcess: [],
+      data: {}
+    };
+    this.downloadingQueueManager = {
+      totalProcess: 13,
+      enqueuedProcess: [],
+      dequeuingLimit: 3,
+      denqueuedProcess: []
+    };
+  }
+
   addIntoQueue(process: string, type?: string, data?: any) {
     if (type && type == 'saving') {
-      this.savingingQueueManager.enqueuedProcess = _.concat(
-        this.savingingQueueManager.enqueuedProcess,
-        process
-      );
       if (data) {
+        this.savingingQueueManager.enqueuedProcess = _.concat(
+          this.savingingQueueManager.enqueuedProcess,
+          process
+        );
         this.savingingQueueManager.data[process] = data;
       }
       this.checkingAndStartSavingProcess();
@@ -526,14 +531,11 @@ export class LoginPage implements OnInit {
         this.downloadingQueueManager.enqueuedProcess,
         process
       );
-      if (data) {
-        this.downloadingQueueManager.data[process] = data;
-      }
       this.checkingAndStartDownloadProcess();
     }
   }
 
-  removeFromQueue(process: string, type: string) {
+  removeFromQueue(process: string, type: string, data?: any) {
     if (type && type == 'saving') {
       _.remove(
         this.savingingQueueManager.denqueuedProcess,
@@ -549,8 +551,38 @@ export class LoginPage implements OnInit {
           return process == denqueuedProcess;
         }
       );
-      this.addIntoQueue(process, 'saving', { name: process });
+      if (data) {
+        this.addIntoQueue(process, 'saving', data);
+      }
       this.checkingAndStartDownloadProcess();
+    }
+  }
+
+  startDownloadProcess(process: string) {
+    if (this.isLoginProcessActive) {
+      console.log('Downloading : ' + process);
+      if (this.completedTrackedProcess.indexOf(process) == -1) {
+        setTimeout(() => {
+          this.removeFromQueue(process, 'dowmloading', { data: 'data' });
+        }, 2500);
+      } else {
+        console.log('Download and saving was completed for :: ' + process);
+        this.updateProgressTracker(process);
+        this.removeFromQueue(process, 'dowmloading');
+      }
+    }
+  }
+
+  startSavingProcess(process, data) {
+    if (this.isLoginProcessActive) {
+      console.log(
+        'Saving : ' + process + ' ::: data : ' + JSON.stringify(data)
+      );
+      setTimeout(() => {
+        console.log('Complete saving :: ' + process);
+        this.removeFromQueue(process, 'saving');
+        this.updateProgressTracker(process);
+      }, 2000);
     }
   }
 
@@ -598,20 +630,6 @@ export class LoginPage implements OnInit {
         this.startDownloadProcess(process);
       }
     }
-  }
-
-  startDownloadProcess(process: string) {
-    console.log('Downloading : ' + process);
-    setTimeout(() => {
-      this.removeFromQueue(process, 'dowmloading');
-    }, 2000);
-  }
-
-  startSavingProcess(process, data) {
-    console.log('Saving : ' + process + ' ::: data : ' + JSON.stringify(data));
-    setTimeout(() => {
-      this.removeFromQueue(process, 'saving');
-    }, 2000);
   }
 
   reInitiateProgressTrackerObject(user) {
