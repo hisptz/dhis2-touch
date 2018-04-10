@@ -19,7 +19,7 @@ export class DataEntryFormProvider {
     private indicatorProvider: IndicatorsProvider,
     private sectionProvider: SectionsProvider,
     private dataElementProvider: DataElementsProvider
-  ) {}
+  ) { }
 
   /**
    *
@@ -212,8 +212,8 @@ export class DataEntryFormProvider {
                 (dataElements: any) => {
                   let maxDataElements =
                     appSettings &&
-                    appSettings.entryForm &&
-                    appSettings.entryForm.maxDataElementOnDefaultForm
+                      appSettings.entryForm &&
+                      appSettings.entryForm.maxDataElementOnDefaultForm
                       ? appSettings.entryForm.maxDataElementOnDefaultForm
                       : 10;
                   observer.next(

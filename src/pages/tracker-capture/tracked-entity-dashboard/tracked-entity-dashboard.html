@@ -63,18 +63,22 @@
                   <div class="inputLabel">
                     <span [translate]="'Organisation unit'"></span>
                   </div>
-                  <div class="input-field-container">
-                    <ion-item>
-                      <ion-input [(ngModel)]="currentOrgUnit.name" readonly="true"></ion-input>
-                    </ion-item>
+                  <div class="input-field-container grey-field">
+                    <div padding-left>
+                      <div padding>
+                        {{ currentOrgUnit.name }}
+                      </div>
+                    </div>
                   </div>
                   <div class="inputLabel">
                     <span [translate]="'Program'"></span>
                   </div>
-                  <div class="input-field-container">
-                    <ion-item>
-                      <ion-input [(ngModel)]="currentProgram.name" readonly="true"></ion-input>
-                    </ion-item>
+                  <div class="input-field-container grey-field">
+                    <div padding-left>
+                      <div padding>
+                        {{ currentProgram.name }}
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="item-card">

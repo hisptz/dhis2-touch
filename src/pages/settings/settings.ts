@@ -1,10 +1,11 @@
-import { Component, OnInit } from "@angular/core";
-import { IonicPage } from "ionic-angular";
-import { SettingsProvider } from "../../providers/settings/settings";
-import { UserProvider } from "../../providers/user/user";
-import { AppProvider } from "../../providers/app/app";
-import { LocalInstanceProvider } from "../../providers/local-instance/local-instance";
-import { AppTranslationProvider } from "../../providers/app-translation/app-translation";
+import { Component, OnInit } from '@angular/core';
+import { IonicPage } from 'ionic-angular';
+import { SettingsProvider } from '../../providers/settings/settings';
+import { UserProvider } from '../../providers/user/user';
+import { AppProvider } from '../../providers/app/app';
+import { LocalInstanceProvider } from '../../providers/local-instance/local-instance';
+import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
+import { SynchronizationProvider } from '../../providers/synchronization/synchronization';
 
 /**
  * Generated class for the SettingsPage page.
@@ -15,8 +16,8 @@ import { AppTranslationProvider } from "../../providers/app-translation/app-tran
 
 @IonicPage()
 @Component({
-  selector: "page-settings",
-  templateUrl: "settings.html"
+  selector: 'page-settings',
+  templateUrl: 'settings.html'
 })
 export class SettingsPage implements OnInit {
   isSettingContentOpen: any;
@@ -29,14 +30,18 @@ export class SettingsPage implements OnInit {
   translationCodes: Array<any> = [];
   localInstances: any;
   translationMapper: any;
+  shouldRestartSynchronizationProcess: boolean;
 
   constructor(
     private settingsProvider: SettingsProvider,
     private appProvider: AppProvider,
     private localInstanceProvider: LocalInstanceProvider,
     private appTranslationProvider: AppTranslationProvider,
-    private userProvider: UserProvider
-  ) {}
+    private userProvider: UserProvider,
+    private synchronizationProvider: SynchronizationProvider
+  ) {
+    this.shouldRestartSynchronizationProcess = false;
+  }
 
   ngOnInit() {
     this.settingObject = {};
@@ -62,16 +67,16 @@ export class SettingsPage implements OnInit {
   }
 
   loadingUserInformation() {
-    let key = "Discovering current user information";
+    let key = 'Discovering current user information';
     this.loadingMessage = this.translationMapper[key]
       ? this.translationMapper[key]
       : key;
-    let defaultSettings = this.settingsProvider.getDefaultSettings();
+    const defaultSettings = this.settingsProvider.getDefaultSettings();
     this.userProvider.getCurrentUser().subscribe(
       (currentUser: any) => {
         this.currentUser = currentUser;
         this.currentLanguage = currentUser.currentLanguage;
-        key = "Discovering settings";
+        key = 'Discovering settings';
         this.loadingMessage = this.translationMapper[key]
           ? this.translationMapper[key]
           : key;
@@ -89,7 +94,7 @@ export class SettingsPage implements OnInit {
                   this.isLoading = false;
                   this.initiateSettings(defaultSettings, null);
                   this.appProvider.setNormalNotification(
-                    "Fail to discover settings"
+                    'Failed to discover settings'
                   );
                 }
               );
@@ -97,7 +102,7 @@ export class SettingsPage implements OnInit {
           error => {
             this.isLoading = false;
             this.appProvider.setNormalNotification(
-              "Fail to discover available local instances"
+              'Failed to discover available local instances'
             );
           }
         );
@@ -107,7 +112,7 @@ export class SettingsPage implements OnInit {
         this.isLoading = false;
         this.initiateSettings(defaultSettings, null);
         this.appProvider.setNormalNotification(
-          "Fail to discover current user information"
+          'Failed to discover current user information'
         );
       }
     );
@@ -116,14 +121,14 @@ export class SettingsPage implements OnInit {
   initiateSettings(defaultSettings, appSettings) {
     if (appSettings) {
       if (appSettings.synchronization) {
-        this.settingObject["synchronization"] = appSettings.synchronization;
+        this.settingObject['synchronization'] = appSettings.synchronization;
       } else {
-        this.settingObject["synchronization"] = defaultSettings.synchronization;
+        this.settingObject['synchronization'] = defaultSettings.synchronization;
       }
       if (appSettings.entryForm) {
-        this.settingObject["entryForm"] = appSettings.entryForm;
+        this.settingObject['entryForm'] = appSettings.entryForm;
       } else {
-        this.settingObject["entryForm"] = defaultSettings.entryForm;
+        this.settingObject['entryForm'] = defaultSettings.entryForm;
       }
     } else {
       this.settingObject = defaultSettings;
@@ -140,8 +145,8 @@ export class SettingsPage implements OnInit {
   updateCurrentLanguage() {
     try {
       let loggedInInInstance = this.currentUser.serverUrl;
-      if (this.currentUser.serverUrl.split("://").length > 1) {
-        loggedInInInstance = this.currentUser.serverUrl.split("://")[1];
+      if (this.currentUser.serverUrl.split('://').length > 1) {
+        loggedInInInstance = this.currentUser.serverUrl.split('://')[1];
       }
       this.appTranslationProvider.setAppTranslation(this.currentLanguage);
       this.currentUser.currentLanguage = this.currentLanguage;
@@ -154,9 +159,14 @@ export class SettingsPage implements OnInit {
         )
         .subscribe(() => {});
     } catch (e) {
-      this.appProvider.setNormalNotification("Fail to set translation");
+      this.appProvider.setNormalNotification('Failed to set translation');
       console.log(JSON.stringify(e));
     }
+  }
+
+  updateAutoSyncSetting(settingContent) {
+    this.shouldRestartSynchronizationProcess = true;
+    this.applySettings(settingContent);
   }
 
   applySettings(settingContent) {
@@ -165,7 +175,7 @@ export class SettingsPage implements OnInit {
       .subscribe(
         () => {
           this.appProvider.setNormalNotification(
-            "Settings have been updated successfully",
+            'Settings have been updated successfully',
             2000
           );
           this.settingsProvider
@@ -179,31 +189,27 @@ export class SettingsPage implements OnInit {
                   timeValue,
                   timeType
                 );
+                if (this.shouldRestartSynchronizationProcess) {
+                  this.synchronizationProvider.startSynchronization(
+                    this.currentUser
+                  );
+                }
+                this.shouldRestartSynchronizationProcess = false;
               },
               error => {
                 console.log(error);
                 this.appProvider.setNormalNotification(
-                  "Fail to discover settings"
+                  'Failed to discover settings'
                 );
-                this.updateLoadingStatusOfSavingSetting(settingContent, false);
               }
             );
         },
         error => {
-          this.updateLoadingStatusOfSavingSetting(settingContent, false);
           this.appProvider.setNormalNotification(
-            "Fail to apply changes on  settings"
+            'Failed to apply changes on  settings'
           );
         }
       );
-  }
-
-  updateLoadingStatusOfSavingSetting(savingSettingContent, status) {
-    this.settingContents.forEach((settingContent: any) => {
-      if (settingContent.id == savingSettingContent.id) {
-        settingContent.isLoading = status;
-      }
-    });
   }
 
   toggleSettingContents(content) {
@@ -220,6 +226,6 @@ export class SettingsPage implements OnInit {
   }
 
   getValuesToTranslate() {
-    return ["Discovering current user information", "Discovering settings"];
+    return ['Discovering current user information', 'Discovering settings'];
   }
 }

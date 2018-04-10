@@ -39,8 +39,9 @@ export class TrackerEntityRegisterPage implements OnInit {
   isLoading: boolean;
   isRegistrationProcessingRunning: boolean;
   loadingMessage: string;
-  incidentDate: any;
-  enrollmentDate: any;
+  date: any;
+  currentProgramName: string;
+  currentOrganisationUnitName: string;
   dataObject: any;
   trackedEntityAttributesSavingStatusClass: any;
   trackedEntityAttributeValuesObject: any;
@@ -65,7 +66,15 @@ export class TrackerEntityRegisterPage implements OnInit {
     private organisationUnitsProvider: OrganisationUnitsProvider,
     private trackerCaptureProvider: TrackerCaptureProvider,
     private appTranslation: AppTranslationProvider
-  ) {}
+  ) {
+    this.currentProgramName = '';
+    this.currentOrganisationUnitName = '';
+    const today = new Date().toISOString().split('T')[0];
+    this.date = {
+      incidentDate: today,
+      enrollmentDate: today
+    };
+  }
 
   ngOnInit() {
     this.icons['addNewCase'] = 'assets/icon/add-new-case.png';
@@ -89,12 +98,9 @@ export class TrackerEntityRegisterPage implements OnInit {
     this.loadingMessage = this.translationMapper[key]
       ? this.translationMapper[key]
       : key;
-    let today = new Date().toISOString().split('T')[0];
     this.dataObject = {};
     this.trackedEntityAttributesSavingStatusClass = {};
     this.trackedEntityAttributeValuesObject = {};
-    this.incidentDate = today;
-    this.enrollmentDate = today;
     this.dashboardWidgets = this.getDashboardWidgets();
     this.currentOrganisationUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
     this.currentProgram = this.programsProvider.getLastSelectedProgram();
@@ -110,7 +116,7 @@ export class TrackerEntityRegisterPage implements OnInit {
         console.log(error);
         this.isLoading = false;
         this.appProvider.setNormalNotification(
-          'Fail to discover current user information'
+          'Failed to discover current user information'
         );
       }
     );
@@ -121,8 +127,10 @@ export class TrackerEntityRegisterPage implements OnInit {
     this.dataObject = {};
     this.trackedEntityAttributeValuesObject = {};
     this.trackedEntityAttributesSavingStatusClass = {};
-    this.incidentDate = today;
-    this.enrollmentDate = today;
+    this.date = {
+      incidentDate: today,
+      enrollmentDate: today
+    };
     this.dashboardWidgets = this.getDashboardWidgets();
     this.isTrackedEntityRegistered = false;
     if (this.dashboardWidgets.length > 0) {
@@ -158,7 +166,7 @@ export class TrackerEntityRegisterPage implements OnInit {
           console.log(JSON.stringify(error));
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            'Fail to discover program stages'
+            'Failed to discover program stages'
           );
         }
       );
@@ -182,7 +190,7 @@ export class TrackerEntityRegisterPage implements OnInit {
           this.isLoading = false;
           console.log(JSON.stringify(error));
           this.appProvider.setNormalNotification(
-            'Fail to discover registration form'
+            'Failed to discover registration form'
           );
         }
       );
@@ -284,7 +292,7 @@ export class TrackerEntityRegisterPage implements OnInit {
                   this.isLoading = false;
                   console.log(JSON.stringify(error));
                   this.appProvider.setNormalNotification(
-                    'Fail to delete all information related to this tracked entity instance'
+                    'Failed to delete all information related to this tracked entity instance'
                   );
                 }
               );
@@ -333,8 +341,8 @@ export class TrackerEntityRegisterPage implements OnInit {
     } else {
       this.trackerCaptureProvider
         .saveTrackedEntityRegistration(
-          this.incidentDate,
-          this.enrollmentDate,
+          this.date.incidentDate,
+          this.date.enrollmentDate,
           this.currentUser,
           this.trackedEntityInstance
         )
@@ -364,7 +372,7 @@ export class TrackerEntityRegisterPage implements OnInit {
               }
             );
             this.appProvider.setNormalNotification(
-              'Fail to save a tracked entity instance'
+              'Failed to save a tracked entity instance'
             );
             console.log(JSON.stringify(error));
           }
@@ -395,6 +403,11 @@ export class TrackerEntityRegisterPage implements OnInit {
         }
       }
     );
+
+    // if (result && (!this.incidentDate && this.incidentDate != '')) {
+    // } else if (result && (!this.incidentDate && this.incidentDate != '')) {
+    // }
+
     return result;
   }
 

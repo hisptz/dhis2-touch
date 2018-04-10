@@ -65,7 +65,7 @@ export class EntryFormCompletenessPage implements OnInit {
           });
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            'Fail to discover completeness information'
+            'Failed to discover completeness information'
           );
         }
       );

@@ -120,7 +120,7 @@ export class DataEntryFormPage implements OnInit {
         console.log(JSON.stringify(error));
         this.isLoading = false;
         this.appProvider.setNormalNotification(
-          'Fail to discover current user information'
+          'Failed to discover current user information'
         );
       }
     );
@@ -159,7 +159,7 @@ export class DataEntryFormPage implements OnInit {
                 this.isLoading = false;
                 this.loadingMessage = '';
                 this.appProvider.setNormalNotification(
-                  'Fail to discover indicators'
+                  'Failed to discover indicators'
                 );
               }
             );
@@ -168,7 +168,7 @@ export class DataEntryFormPage implements OnInit {
           this.isLoading = false;
           this.loadingMessage = '';
           this.appProvider.setNormalNotification(
-            'Fail to discover entry form information'
+            'Failed to discover entry form information'
           );
         }
       );
@@ -253,7 +253,7 @@ export class DataEntryFormPage implements OnInit {
                       error => {
                         console.log(JSON.stringify(error));
                         this.appProvider.setNormalNotification(
-                          'Fail to save data from the server'
+                          'Failed to save data from the server'
                         );
                         this.loadingLocalData(
                           dataSetId,
@@ -275,7 +275,7 @@ export class DataEntryFormPage implements OnInit {
               error => {
                 console.log(JSON.stringify(error));
                 this.appProvider.setNormalNotification(
-                  'Fail to discover data from the server'
+                  'Failed to discover data from the server'
                 );
                 this.loadingLocalData(
                   dataSetId,
@@ -322,7 +322,7 @@ export class DataEntryFormPage implements OnInit {
         error => {
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            'Fail to discover available local data'
+            'Failed to discover available local data'
           );
         }
       );
@@ -358,7 +358,7 @@ export class DataEntryFormPage implements OnInit {
         error => {
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            'Fail to discover entry form completeness information'
+            'Failed to discover entry form completeness information'
           );
         }
       );
@@ -506,7 +506,7 @@ export class DataEntryFormPage implements OnInit {
             this.isDataSetCompletenessProcessRunning = false;
             console.log(JSON.stringify(error));
             this.appProvider.setNormalNotification(
-              'Fail to un complete entry form'
+              'Failed to un complete entry form'
             );
           }
         );
@@ -550,7 +550,7 @@ export class DataEntryFormPage implements OnInit {
                   console.log(JSON.stringify(error));
                   this.isDataSetCompletenessProcessRunning = false;
                   this.appProvider.setNormalNotification(
-                    'Fail to discover entry form completeness information'
+                    'Failed to discover entry form completeness information'
                   );
                 }
               );
@@ -559,7 +559,7 @@ export class DataEntryFormPage implements OnInit {
             this.isDataSetCompletenessProcessRunning = false;
             console.log(JSON.stringify(error));
             this.appProvider.setNormalNotification(
-              'Fail to complete entry form'
+              'Failed to complete entry form'
             );
           }
         );
@@ -605,7 +605,7 @@ export class DataEntryFormPage implements OnInit {
             console.log('Success uploading data');
           },
           error => {
-            console.log('Fail to upload data');
+            console.log('Failed to upload data');
           }
         );
     }

@@ -1,7 +1,6 @@
-import {Injectable} from '@angular/core';
-import {SqlLiteProvider} from "../sql-lite/sql-lite";
-import {Observable} from "rxjs/Observable";
-
+import { Injectable } from '@angular/core';
+import { SqlLiteProvider } from '../sql-lite/sql-lite';
+import { Observable } from 'rxjs/Observable';
 
 /*
   Generated class for the LocalInstanceProvider provider.
@@ -11,13 +10,10 @@ import {Observable} from "rxjs/Observable";
 */
 @Injectable()
 export class LocalInstanceProvider {
-
   LOCAL_INSTANCE_KEY: string;
 
   constructor(private sqlLiteProvider: SqlLiteProvider) {
-    this.LOCAL_INSTANCE_KEY = "LOCAL_INSTANCE_KEY";
-    this.sqlLiteProvider.createTable(this.LOCAL_INSTANCE_KEY, this.LOCAL_INSTANCE_KEY).subscribe(() => {
-    })
+    this.LOCAL_INSTANCE_KEY = 'LOCAL_INSTANCE_KEY';
   }
 
   /**
@@ -26,13 +22,30 @@ export class LocalInstanceProvider {
    */
   getLocalInstances(): Observable<any> {
     return new Observable(observer => {
-      this.sqlLiteProvider.getAllDataFromTable(this.LOCAL_INSTANCE_KEY, this.LOCAL_INSTANCE_KEY).subscribe((localInstances: any) => {
-        observer.next(localInstances);
-        observer.complete();
-      }, (error) => {
-        observer.error(error);
-      })
-    })
+      this.sqlLiteProvider
+        .createTable(this.LOCAL_INSTANCE_KEY, this.LOCAL_INSTANCE_KEY)
+        .subscribe(
+          () => {
+            this.sqlLiteProvider
+              .getAllDataFromTable(
+                this.LOCAL_INSTANCE_KEY,
+                this.LOCAL_INSTANCE_KEY
+              )
+              .subscribe(
+                (localInstances: any) => {
+                  observer.next(localInstances);
+                  observer.complete();
+                },
+                error => {
+                  observer.error(error);
+                }
+              );
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+    });
   }
 
   /**
@@ -42,13 +55,17 @@ export class LocalInstanceProvider {
    * @param loggedInInInstance
    * @returns {Observable<any>}
    */
-  setLocalInstanceInstances(localInstances, currentUser, loggedInInInstance): Observable<any> {
+  setLocalInstanceInstances(
+    localInstances,
+    currentUser,
+    loggedInInInstance
+  ): Observable<any> {
     return new Observable(observer => {
       let newInstances = [];
       if (!loggedInInInstance && (currentUser && currentUser.serverUrl)) {
         loggedInInInstance = currentUser.serverUrl;
-        if (currentUser.serverUrl.split("://").length > 1) {
-          loggedInInInstance = currentUser.serverUrl.split("://")[1];
+        if (currentUser.serverUrl.split('://').length > 1) {
+          loggedInInInstance = currentUser.serverUrl.split('://')[1];
         }
       }
       newInstances.push({
@@ -61,20 +78,28 @@ export class LocalInstanceProvider {
         localInstances.forEach((localInstance: any) => {
           if (localInstance.id != currentUser.currentDatabase) {
             if (!localInstance.currentUser.currentLanguage) {
-              localInstance.currentLanguage = "en";
-              localInstance.currentUser.currentLanguage = "en";
+              localInstance.currentLanguage = 'en';
+              localInstance.currentUser.currentLanguage = 'en';
             }
             newInstances.push(localInstance);
           }
         });
       }
-      this.sqlLiteProvider.insertBulkDataOnTable(this.LOCAL_INSTANCE_KEY, newInstances, this.LOCAL_INSTANCE_KEY).subscribe(() => {
-        observer.next();
-        observer.complete();
-      }, (error => {
-        observer.error(error);
-      }));
-    })
+      this.sqlLiteProvider
+        .insertBulkDataOnTable(
+          this.LOCAL_INSTANCE_KEY,
+          newInstances,
+          this.LOCAL_INSTANCE_KEY
+        )
+        .subscribe(
+          () => {
+            observer.next();
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+    });
   }
-
 }

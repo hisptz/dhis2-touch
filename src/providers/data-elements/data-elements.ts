@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {SqlLiteProvider} from "../sql-lite/sql-lite";
-import {HttpClientProvider} from "../http-client/http-client";
-import {Observable} from "rxjs/Observable";
+import { Injectable } from '@angular/core';
+import { SqlLiteProvider } from '../sql-lite/sql-lite';
+import { HttpClientProvider } from '../http-client/http-client';
+import { Observable } from 'rxjs/Observable';
 
 /*
   Generated class for the DataElementsProvider provider.
@@ -11,11 +11,13 @@ import {Observable} from "rxjs/Observable";
 */
 @Injectable()
 export class DataElementsProvider {
-
   resource: string;
 
-  constructor(private SqlLite: SqlLiteProvider, private HttpClient: HttpClientProvider) {
-    this.resource = "dataElements";
+  constructor(
+    private SqlLite: SqlLiteProvider,
+    private HttpClient: HttpClientProvider
+  ) {
+    this.resource = 'dataElements';
   }
 
   /**
@@ -24,14 +26,18 @@ export class DataElementsProvider {
    * @returns {Observable<any>}
    */
   downloadDataElementsFromServer(currentUser): Observable<any> {
-    let fields = "id,name,formName,aggregationType,categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]";
-    let url = "/api/25/" + this.resource + ".json?paging=false&fields=" + fields;
+    let fields =
+      'id,name,formName,aggregationType,categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]';
+    let url = '/api/' + this.resource + '.json?paging=false&fields=' + fields;
     return new Observable(observer => {
-      this.HttpClient.get(url, true, currentUser).subscribe((response: any) => {
-        observer.next(response);
-      }, error => {
-        observer.error(error);
-      });
+      this.HttpClient.get(url, true, currentUser, this.resource, 200).subscribe(
+        (response: any) => {
+          observer.next(response);
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
 
@@ -47,12 +53,19 @@ export class DataElementsProvider {
         observer.next();
         observer.complete();
       } else {
-        this.SqlLite.insertBulkDataOnTable(this.resource, dataElements, currentUser.currentDatabase).subscribe(() => {
-          observer.next();
-          observer.complete();
-        }, error => {
-          observer.error(error);
-        });
+        this.SqlLite.insertBulkDataOnTable(
+          this.resource,
+          dataElements,
+          currentUser.currentDatabase
+        ).subscribe(
+          () => {
+            observer.next();
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
       }
     });
   }
@@ -63,19 +76,32 @@ export class DataElementsProvider {
    * @param currentUser
    * @returns {Observable<any>}
    */
-  getDataElementsByIdsForDataEntry(dataSetDatElements, currentUser): Observable<any> {
-    let attributeKey = "id";
+  getDataElementsByIdsForDataEntry(
+    dataSetDatElements,
+    currentUser
+  ): Observable<any> {
+    let attributeKey = 'id';
     let dataElementIds = [];
     dataSetDatElements.forEach((dataSetDatElement: any) => {
       dataElementIds.push(dataSetDatElement.id);
     });
     return new Observable(observer => {
-      this.SqlLite.getDataFromTableByAttributes(this.resource, attributeKey, dataElementIds, currentUser.currentDatabase).subscribe((dataElements: any) => {
-        observer.next(this.getSortedListOfDataElements(dataSetDatElements, dataElements));
-        observer.complete();
-      }, error => {
-        observer.error(error)
-      })
+      this.SqlLite.getDataFromTableByAttributes(
+        this.resource,
+        attributeKey,
+        dataElementIds,
+        currentUser.currentDatabase
+      ).subscribe(
+        (dataElements: any) => {
+          observer.next(
+            this.getSortedListOfDataElements(dataSetDatElements, dataElements)
+          );
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
 
@@ -86,14 +112,22 @@ export class DataElementsProvider {
    * @returns {Observable<any>}
    */
   getDataElementsByIdsForEvents(dataElementIds, currentUser): Observable<any> {
-    let attributeKey = "id";
+    let attributeKey = 'id';
     return new Observable(observer => {
-      this.SqlLite.getDataFromTableByAttributes(this.resource, attributeKey, dataElementIds, currentUser.currentDatabase).subscribe((dataElements: any) => {
-        observer.next(dataElements);
-        observer.complete();
-      }, error => {
-        observer.error(error)
-      })
+      this.SqlLite.getDataFromTableByAttributes(
+        this.resource,
+        attributeKey,
+        dataElementIds,
+        currentUser.currentDatabase
+      ).subscribe(
+        (dataElements: any) => {
+          observer.next(dataElements);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
 
@@ -118,10 +152,9 @@ export class DataElementsProvider {
       }
       return 0;
     });
-    dataSetDatElements.forEach((dataSetDatElement) => {
+    dataSetDatElements.forEach(dataSetDatElement => {
       sortedDataElements.push(dataElementObject[dataSetDatElement.id]);
     });
     return sortedDataElements;
   }
-
 }

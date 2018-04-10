@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CurrentUser } from '../../models/currentUser';
+import * as sha1 from 'js-sha1';
 /*
   Generated class for the EncryptionProvider provider.
 
@@ -14,7 +15,7 @@ export class EncryptionProvider {
     const serverUrlArray = user.serverUrl.split('://');
     let urlWithoutHttp =
       serverUrlArray.length > 1 ? serverUrlArray[1] : serverUrlArray[0];
-    const hashedPassword = this.encode(
+    const hashedPassword = sha1(
       urlWithoutHttp + ':' + user.username + ':' + user.password
     );
     return hashedPassword;

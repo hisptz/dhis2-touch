@@ -55,12 +55,12 @@ export class DownloadMetaDataComponent implements OnInit {
 
   autoSelect(selectType) {
     if (selectType == 'selectAll') {
-      this.resources.forEach((resource: any) => {
+      this.resources.map((resource: any) => {
         resource.status = true;
       });
       this.hasAllSelected = true;
     } else {
-      this.resources.forEach((resource: any) => {
+      this.resources.map((resource: any) => {
         resource.status = false;
       });
       this.hasAllSelected = false;
@@ -69,14 +69,9 @@ export class DownloadMetaDataComponent implements OnInit {
 
   checkingForResourceUpdate() {
     let resourceUpdated = [];
-    this.resources.forEach((resource: any) => {
+    this.resources.map((resource: any) => {
       if (resource.status) {
         resourceUpdated.push(resource.name);
-        if (resource.dependentTable.length > 0) {
-          resource.dependentTable.forEach((tableName: any) => {
-            resourceUpdated.push(tableName);
-          });
-        }
         this.showLoadingMessage = true;
       }
     });

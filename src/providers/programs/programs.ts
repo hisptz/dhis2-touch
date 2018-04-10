@@ -3,6 +3,7 @@ import 'rxjs/add/operator/map';
 import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
+import * as _ from 'lodash';
 import { CurrentUser } from '../../models/currentUser';
 
 /*
@@ -79,6 +80,8 @@ export class ProgramsProvider {
         observer.next();
         observer.complete();
       } else {
+        const totalProcess = 7;
+        let completedStage = 0;
         this.sqlLite
           .insertBulkDataOnTable(
             this.resource,
@@ -87,23 +90,103 @@ export class ProgramsProvider {
           )
           .subscribe(
             () => {
-              this.savingProgramProgramRuleVariables(
-                sanitizedPrograms,
-                currentUser
-              ).subscribe(
-                () => {
-                  observer.next();
-                  observer.complete();
-                },
-                error => {
-                  observer.error(error);
-                }
-              );
+              completedStage++;
+              if (completedStage == totalProcess) {
+                observer.next();
+                observer.complete();
+              }
             },
             error => {
               observer.error(error);
             }
           );
+        this.savingProgramProgramRuleVariables(
+          sanitizedPrograms,
+          currentUser
+        ).subscribe(
+          () => {
+            completedStage++;
+            if (completedStage == totalProcess) {
+              observer.next();
+              observer.complete();
+            }
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+        this.savingProgramProgramRules(
+          sanitizedPrograms,
+          currentUser
+        ).subscribe(
+          () => {
+            completedStage++;
+            if (completedStage == totalProcess) {
+              observer.next();
+              observer.complete();
+            }
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+        this.savingProgramOrganisationUnits(
+          sanitizedPrograms,
+          currentUser
+        ).subscribe(
+          () => {
+            completedStage++;
+            if (completedStage == totalProcess) {
+              observer.next();
+              observer.complete();
+            }
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+        this.savingProgramIndicators(sanitizedPrograms, currentUser).subscribe(
+          () => {
+            completedStage++;
+            if (completedStage == totalProcess) {
+              observer.next();
+              observer.complete();
+            }
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+        this.savingProgramProgramStages(
+          sanitizedPrograms,
+          currentUser
+        ).subscribe(
+          () => {
+            completedStage++;
+            if (completedStage == totalProcess) {
+              observer.next();
+              observer.complete();
+            }
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+        this.savingProgramProgramTrackedEntityAttributes(
+          sanitizedPrograms,
+          currentUser
+        ).subscribe(
+          () => {
+            completedStage++;
+            if (completedStage == totalProcess) {
+              observer.next();
+              observer.complete();
+            }
+          },
+          error => {
+            observer.error(error);
+          }
+        );
       }
     });
   }
@@ -117,31 +200,26 @@ export class ProgramsProvider {
   savingProgramProgramRuleVariables(programs, currentUser): Observable<any> {
     let programProgramRuleVariables = [];
     const resource = 'programProgramRuleVariables';
-    programs.forEach((program: any) => {
+    programs.map((program: any) => {
       if (
         program.programRuleVariables &&
         program.programRuleVariables.length > 0
       ) {
-        program.programRuleVariables.forEach((programRuleVariable: any) => {
-          programProgramRuleVariables.push({
-            id: program.id + '-' + programRuleVariable.id,
-            programId: program.id,
-            programRuleVariableId: programRuleVariable.id
-          });
+        programProgramRuleVariables = _.concat(programProgramRuleVariables, {
+          id: program.id,
+          programRuleVariableIds: _.map(
+            program.programRuleVariables,
+            (programRuleVariable: any) => {
+              return programRuleVariable.id;
+            }
+          )
         });
       }
     });
     return new Observable(observer => {
       if (programProgramRuleVariables.length == 0) {
-        this.savingProgramProgramRules(programs, currentUser).subscribe(
-          () => {
-            observer.next();
-            observer.complete();
-          },
-          error => {
-            observer.error(error);
-          }
-        );
+        observer.next();
+        observer.complete();
       } else {
         this.sqlLite
           .insertBulkDataOnTable(
@@ -151,15 +229,8 @@ export class ProgramsProvider {
           )
           .subscribe(
             () => {
-              this.savingProgramProgramRules(programs, currentUser).subscribe(
-                () => {
-                  observer.next();
-                  observer.complete();
-                },
-                error => {
-                  observer.error(error);
-                }
-              );
+              observer.next();
+              observer.complete();
             },
             error => {
               observer.error(error);
@@ -178,28 +249,20 @@ export class ProgramsProvider {
   savingProgramProgramRules(programs, currentUser): Observable<any> {
     let programProgramRules = [];
     const resource = 'programProgramRules';
-    programs.forEach((program: any) => {
+    programs.map((program: any) => {
       if (program.programRules && program.programRules.length > 0) {
-        program.programRules.forEach((programRule: any) => {
-          programProgramRules.push({
-            id: program.id + '-' + programRule.id,
-            programId: program.id,
-            programRuleId: programRule.id
-          });
+        programProgramRules = _.concat(programProgramRules, {
+          id: program.id,
+          programRuleIds: _.map(program.programRules, (programRule: any) => {
+            return programRule.id;
+          })
         });
       }
     });
     return new Observable(observer => {
       if (programProgramRules.length == 0) {
-        this.savingProgramOrganisationUnits(programs, currentUser).subscribe(
-          () => {
-            observer.next();
-            observer.complete();
-          },
-          error => {
-            observer.error(error);
-          }
-        );
+        observer.next();
+        observer.complete();
       } else {
         this.sqlLite
           .insertBulkDataOnTable(
@@ -209,18 +272,8 @@ export class ProgramsProvider {
           )
           .subscribe(
             () => {
-              this.savingProgramOrganisationUnits(
-                programs,
-                currentUser
-              ).subscribe(
-                () => {
-                  observer.next();
-                  observer.complete();
-                },
-                error => {
-                  observer.error(error);
-                }
-              );
+              observer.next();
+              observer.complete();
             },
             error => {
               observer.error(error);
@@ -239,28 +292,23 @@ export class ProgramsProvider {
   savingProgramOrganisationUnits(programs, currentUser): Observable<any> {
     let programOrganisationUnits = [];
     const resource = 'programOrganisationUnits';
-    programs.forEach((program: any) => {
+    programs.map((program: any) => {
       if (program.organisationUnits && program.organisationUnits.length > 0) {
-        program.organisationUnits.forEach((organisationUnit: any) => {
-          programOrganisationUnits.push({
-            id: program.id + '-' + organisationUnit.id,
-            programId: program.id,
-            orgUnitId: organisationUnit.id
-          });
+        programOrganisationUnits = _.concat(programOrganisationUnits, {
+          id: program.id,
+          orgUnitIds: _.map(
+            program.organisationUnits,
+            (organisationUnit: any) => {
+              return organisationUnit.id;
+            }
+          )
         });
       }
     });
     return new Observable(observer => {
       if (programOrganisationUnits.length == 0) {
-        this.savingProgramIndicators(programs, currentUser).subscribe(
-          () => {
-            observer.next();
-            observer.complete();
-          },
-          error => {
-            observer.error(error);
-          }
-        );
+        observer.next();
+        observer.complete();
       } else {
         this.sqlLite
           .insertBulkDataOnTable(
@@ -270,15 +318,8 @@ export class ProgramsProvider {
           )
           .subscribe(
             () => {
-              this.savingProgramIndicators(programs, currentUser).subscribe(
-                () => {
-                  observer.next();
-                  observer.complete();
-                },
-                error => {
-                  observer.error(error);
-                }
-              );
+              observer.next();
+              observer.complete();
             },
             error => {
               observer.error(error);
@@ -297,29 +338,25 @@ export class ProgramsProvider {
   savingProgramIndicators(programs, currentUser): Observable<any> {
     let programIndicators = [];
     const resource = 'programIndicators';
-    programs.forEach((program: any) => {
+    programs.map((program: any) => {
       if (program.programIndicators && program.programIndicators.length > 0) {
-        program.programIndicators.forEach((programIndicator: any) => {
-          programIndicators.push({
-            id: program.id + '-' + programIndicator.id,
-            programId: program.id,
-            name: programIndicator.name,
-            expression: programIndicator.expression
-          });
-        });
+        programIndicators = _.concat(
+          programIndicators,
+          _.map(program.programIndicators, (programIndicator: any) => {
+            return {
+              id: program.id + '-' + programIndicator.id,
+              programId: program.id,
+              name: programIndicator.name,
+              expression: programIndicator.expression
+            };
+          })
+        );
       }
     });
     return new Observable(observer => {
       if (programIndicators.length == 0) {
-        this.savingProgramProgramStages(programs, currentUser).subscribe(
-          () => {
-            observer.next();
-            observer.complete();
-          },
-          error => {
-            observer.error(error);
-          }
-        );
+        observer.next();
+        observer.complete();
       } else {
         this.sqlLite
           .insertBulkDataOnTable(
@@ -329,15 +366,8 @@ export class ProgramsProvider {
           )
           .subscribe(
             () => {
-              this.savingProgramProgramStages(programs, currentUser).subscribe(
-                () => {
-                  observer.next();
-                  observer.complete();
-                },
-                error => {
-                  observer.error(error);
-                }
-              );
+              observer.next();
+              observer.complete();
             },
             error => {
               observer.error(error);
@@ -356,44 +386,37 @@ export class ProgramsProvider {
   savingProgramProgramStages(programs, currentUser): Observable<any> {
     let programProgramStages = [];
     const resource = 'programProgramStages';
-    programs.forEach((program: any) => {
+    programs.map((program: any) => {
       if (program.programStages && program.programStages.length > 0) {
-        program.programStages.forEach((programStage: any) => {
-          programProgramStages.push({
-            id: program.id + '-' + programStage.id,
-            programId: program.id,
-            name: programStage.name,
-            executionDateLabel: programStage.executionDateLabel,
-            formType: programStage.formType,
-            blockEntryForm: programStage.blockEntryForm,
-            hideDueDate: programStage.hideDueDate,
-            repeatable: programStage.repeatable,
-            allowGenerateNextVisit: programStage.allowGenerateNextVisit,
-            generatedByEnrollmentDate: programStage.generatedByEnrollmentDate,
-            autoGenerateEvent: programStage.autoGenerateEvent,
-            captureCoordinates: programStage.captureCoordinates,
-            dueDateLabel: programStage.dueDateLabel,
-            sortOrder: programStage.sortOrder,
-            programStageDataElements: programStage.programStageDataElements,
-            programStageSections: programStage.programStageSections
-          });
-        });
+        programProgramStages = _.concat(
+          programProgramStages,
+          _.map(program.programStages, (programStage: any) => {
+            return {
+              id: programStage.id,
+              programId: program.id,
+              name: programStage.name,
+              executionDateLabel: programStage.executionDateLabel,
+              formType: programStage.formType,
+              blockEntryForm: programStage.blockEntryForm,
+              hideDueDate: programStage.hideDueDate,
+              repeatable: programStage.repeatable,
+              allowGenerateNextVisit: programStage.allowGenerateNextVisit,
+              generatedByEnrollmentDate: programStage.generatedByEnrollmentDate,
+              autoGenerateEvent: programStage.autoGenerateEvent,
+              captureCoordinates: programStage.captureCoordinates,
+              dueDateLabel: programStage.dueDateLabel,
+              sortOrder: programStage.sortOrder,
+              programStageDataElements: programStage.programStageDataElements,
+              programStageSections: programStage.programStageSections
+            };
+          })
+        );
       }
     });
     return new Observable(observer => {
       if (programProgramStages.length == 0) {
-        this.savingProgramProgramTrackedEntityAttributes(
-          programs,
-          currentUser
-        ).subscribe(
-          () => {
-            observer.next();
-            observer.complete();
-          },
-          error => {
-            observer.error(error);
-          }
-        );
+        observer.next();
+        observer.complete();
       } else {
         this.sqlLite
           .insertBulkDataOnTable(
@@ -403,18 +426,8 @@ export class ProgramsProvider {
           )
           .subscribe(
             () => {
-              this.savingProgramProgramTrackedEntityAttributes(
-                programs,
-                currentUser
-              ).subscribe(
-                () => {
-                  observer.next();
-                  observer.complete();
-                },
-                error => {
-                  observer.error(error);
-                }
-              );
+              observer.next();
+              observer.complete();
             },
             error => {
               observer.error(error);
@@ -437,12 +450,12 @@ export class ProgramsProvider {
     let programTrackedEntityAttributes = [];
     let trackedEntityAttributes = [];
     const resource = 'programTrackedEntityAttributes';
-    programs.forEach((program: any) => {
+    programs.map((program: any) => {
       if (
         program.programTrackedEntityAttributes &&
         program.programTrackedEntityAttributes.length > 0
       ) {
-        program.programTrackedEntityAttributes.forEach(
+        program.programTrackedEntityAttributes.map(
           (programTrackedEntityAttribute: any) => {
             programTrackedEntityAttributes.push({
               id: program.id + '-' + programTrackedEntityAttribute.id,
@@ -567,26 +580,20 @@ export class ProgramsProvider {
     let attributeArray = [];
     let programs = [];
     return new Observable(observer => {
-      this.getProgramOrganisationUnits(
+      this.getProgramIdsByOrganisationUnit(
         orgUnitId,
         currentUser.currentDatabase
       ).subscribe(
-        (programOrganisationUnits: any) => {
+        (programIds: any) => {
           if (
             currentUser.authorities &&
             currentUser.authorities.indexOf('ALL') > -1
           ) {
-            programOrganisationUnits.forEach((programOrganisationUnit: any) => {
-              attributeArray.push(programOrganisationUnit.programId);
-            });
+            attributeArray = programIds;
           } else {
-            programOrganisationUnits.forEach((programOrganisationUnit: any) => {
-              if (
-                programIdsByUserRoles.indexOf(
-                  programOrganisationUnit.programId
-                ) != -1
-              ) {
-                attributeArray.push(programOrganisationUnit.programId);
+            programIds.forEach((programId: string) => {
+              if (programIdsByUserRoles.indexOf(programId) > -1) {
+                attributeArray.push(programId);
               }
             });
           }
@@ -602,7 +609,7 @@ export class ProgramsProvider {
                 if (programsResponse && programsResponse.length > 0) {
                   programsResponse = this.getSortedPrograms(programsResponse);
                   let hasProgramSelected = false;
-                  programsResponse.forEach((program: any) => {
+                  programsResponse.map((program: any) => {
                     if (
                       program.programType &&
                       program.programType == programType
@@ -654,9 +661,9 @@ export class ProgramsProvider {
    */
   getProgramCategoryComboCategories(selectedOrgUnitId, categories) {
     let categoryComboCategories = [];
-    categories.forEach((category: any) => {
+    categories.map((category: any) => {
       let categoryOptions = [];
-      category.categoryOptions.forEach((categoryOption: any) => {
+      category.categoryOptions.map((categoryOption: any) => {
         if (this.isOrganisationUnitAllowed(selectedOrgUnitId, categoryOption)) {
           categoryOptions.push({
             id: categoryOption.id,
@@ -686,11 +693,12 @@ export class ProgramsProvider {
       categoryOption.organisationUnits.length > 0
     ) {
       result = false;
-      categoryOption.organisationUnits.forEach((organisationUnit: any) => {
-        if (selectedOrgUnitId == organisationUnit.id) {
-          result = true;
-        }
+      const matchedOus = _.filter(categoryOption.organisationUnits, {
+        id: selectedOrgUnitId
       });
+      if (matchedOus.length > 0) {
+        result = true;
+      }
     }
     return result;
   }
@@ -701,16 +709,7 @@ export class ProgramsProvider {
    * @returns {any}
    */
   getSortedPrograms(programs) {
-    programs.sort((a, b) => {
-      if (a.name > b.name) {
-        return 1;
-      }
-      if (a.name < b.name) {
-        return -1;
-      }
-      return 0;
-    });
-    return programs;
+    return _.sortBy(programs, ['name']);
   }
 
   /**
@@ -719,27 +718,35 @@ export class ProgramsProvider {
    * @param dataBaseName
    * @returns {Observable<any>}
    */
-  getProgramOrganisationUnits(orgUnitId, dataBaseName): Observable<any> {
+  getProgramIdsByOrganisationUnit(orgUnitId, dataBaseName): Observable<any> {
     const resource = 'programOrganisationUnits';
-    let attributeValue = [orgUnitId];
-    let attributeKey = 'orgUnitId';
+    let programIdsByOrganisationUnit = [];
     return new Observable(observer => {
-      this.sqlLite
-        .getDataFromTableByAttributes(
-          resource,
-          attributeKey,
-          attributeValue,
-          dataBaseName
-        )
-        .subscribe(
-          (programOrganisationUnits: any) => {
-            observer.next(programOrganisationUnits);
-            observer.complete();
-          },
-          error => {
-            observer.error(error);
+      this.sqlLite.getAllDataFromTable(resource, dataBaseName).subscribe(
+        (programIdsByOrganisationUnitResponse: any) => {
+          if (
+            programIdsByOrganisationUnitResponse &&
+            programIdsByOrganisationUnitResponse.length > 0
+          ) {
+            programIdsByOrganisationUnitResponse.map((response: any) => {
+              if (
+                response.id &&
+                response.orgUnitIds &&
+                response.orgUnitIds.indexOf(orgUnitId) > -1
+              ) {
+                if (programIdsByOrganisationUnit.indexOf(response.id) == -1) {
+                  programIdsByOrganisationUnit.push(response.id);
+                }
+              }
+            });
           }
-        );
+          observer.next(programIdsByOrganisationUnit);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
 
@@ -750,7 +757,7 @@ export class ProgramsProvider {
     const resource = 'programOrganisationUnits';
     return new Observable(observer => {
       const query =
-        'SELECT * FROM programOrganisationUnits WHERE programId IN (SELECT id FROM programs WHERE programType = ' +
+        'SELECT * FROM programOrganisationUnits WHERE id IN (SELECT id FROM programs WHERE programType = ' +
         "'" +
         programType +
         "');";
@@ -826,9 +833,8 @@ export class ProgramsProvider {
    */
   getProgramsStages(programId, currentUser): Observable<any> {
     const resource = 'programProgramStages';
-    let attribute = 'programId';
-    let attributeValue = [];
-    attributeValue.push(programId);
+    const attribute = 'programId';
+    const attributeValue = [programId];
     return new Observable(observer => {
       this.sqlLite
         .getDataFromTableByAttributes(
@@ -838,8 +844,8 @@ export class ProgramsProvider {
           currentUser.currentDatabase
         )
         .subscribe(
-          (programs: any) => {
-            observer.next(programs);
+          (programProgramStages: any) => {
+            observer.next(programProgramStages);
             observer.complete();
           },
           error => {
@@ -885,10 +891,11 @@ export class ProgramsProvider {
    * @param dataBaseName
    * @returns {Observable<any>}
    */
-  getProgramRules(programId, dataBaseName): Observable<any> {
+  getProgramRuleIds(programId, dataBaseName): Observable<any> {
     const resource = 'programProgramRules';
-    let attributeValue = [programId];
-    let attributeKey = 'programId';
+    const attributeValue = [programId];
+    const attributeKey = 'id';
+    let programRuleIds = [];
     return new Observable(observer => {
       this.sqlLite
         .getDataFromTableByAttributes(
@@ -898,8 +905,11 @@ export class ProgramsProvider {
           dataBaseName
         )
         .subscribe(
-          (orgUnitsInProgram: any) => {
-            observer.next(orgUnitsInProgram);
+          (programRuleIdsResponse: any) => {
+            if (programRuleIdsResponse && programRuleIdsResponse.length > 0) {
+              programRuleIds = programRuleIdsResponse[0].programRuleIds;
+            }
+            observer.next(programRuleIds);
             observer.complete();
           },
           error => {
@@ -915,10 +925,11 @@ export class ProgramsProvider {
    * @param dataBaseName
    * @returns {Observable<any>}
    */
-  getProgramRulesVariables(programId, dataBaseName): Observable<any> {
+  getProgramRulesVariablesIds(programId, dataBaseName): Observable<any> {
     const resource = 'programProgramRuleVariables';
-    let attributeValue = [programId];
-    let attributeKey = 'programId';
+    const attributeValue = [programId];
+    const attributeKey = 'id';
+    let programRulesVariablesIds = [];
     return new Observable(observer => {
       this.sqlLite
         .getDataFromTableByAttributes(
@@ -928,8 +939,15 @@ export class ProgramsProvider {
           dataBaseName
         )
         .subscribe(
-          (orgUnitsInProgram: any) => {
-            observer.next(orgUnitsInProgram);
+          (programRulesVariablesIdsResponse: any) => {
+            if (
+              programRulesVariablesIdsResponse &&
+              programRulesVariablesIdsResponse.length > 0
+            ) {
+              programRulesVariablesIds =
+                programRulesVariablesIdsResponse[0].programRuleVariableIds;
+            }
+            observer.next(programRulesVariablesIds);
             observer.complete();
           },
           error => {

@@ -69,9 +69,7 @@ export const DATABASE_STRUCTURE = {
   dataSetElements: {
     columns: [
       { value: 'id', type: 'TEXT' },
-      { value: 'dataSetId', type: 'TEXT' },
-      { value: 'sortOrder', type: 'TEXT' },
-      { value: 'dataElementId', type: 'TEXT' }
+      { value: 'dataElementIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
     resourceType: '',
@@ -82,8 +80,7 @@ export const DATABASE_STRUCTURE = {
   dataSetIndicators: {
     columns: [
       { value: 'id', type: 'TEXT' },
-      { value: 'dataSetId', type: 'TEXT' },
-      { value: 'indicatorId', type: 'TEXT' }
+      { value: 'indicatorIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
     resourceType: '',
@@ -94,8 +91,7 @@ export const DATABASE_STRUCTURE = {
   dataSetSource: {
     columns: [
       { value: 'id', type: 'TEXT' },
-      { value: 'dataSetId', type: 'TEXT' },
-      { value: 'organisationUnitId', type: 'TEXT' }
+      { value: 'organisationUnitIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
     resourceType: '',
@@ -106,8 +102,7 @@ export const DATABASE_STRUCTURE = {
   dataSetSections: {
     columns: [
       { value: 'id', type: 'TEXT' },
-      { value: 'dataSetId', type: 'TEXT' },
-      { value: 'sectionId', type: 'TEXT' }
+      { value: 'sectionIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
     resourceType: '',
@@ -145,9 +140,7 @@ export const DATABASE_STRUCTURE = {
   sectionDataElements: {
     columns: [
       { value: 'id', type: 'TEXT' },
-      { value: 'sectionId', type: 'TEXT' },
-      { value: 'sortOrder', type: 'TEXT' },
-      { value: 'dataElementId', type: 'TEXT' }
+      { value: 'dataElementIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
     resourceType: '',
@@ -158,8 +151,7 @@ export const DATABASE_STRUCTURE = {
   sectionIndicators: {
     columns: [
       { value: 'id', type: 'TEXT' },
-      { value: 'sectionId', type: 'TEXT' },
-      { value: 'indicatorId', type: 'TEXT' }
+      { value: 'indicatorIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
     resourceType: '',
@@ -360,8 +352,7 @@ export const DATABASE_STRUCTURE = {
   programProgramRuleVariables: {
     columns: [
       { value: 'id', type: 'TEXT' },
-      { value: 'programId', type: 'TEXT' },
-      { value: 'programRuleVariableId', type: 'TEXT' }
+      { value: 'programRuleVariableIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
     resourceType: '',
@@ -372,8 +363,7 @@ export const DATABASE_STRUCTURE = {
   programProgramRules: {
     columns: [
       { value: 'id', type: 'TEXT' },
-      { value: 'programId', type: 'TEXT' },
-      { value: 'programRuleId', type: 'TEXT' }
+      { value: 'programRuleIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
     resourceType: '',
@@ -404,7 +394,7 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: false,
     resourceType: '',
-    batchSize: 100,
+    batchSize: 200,
     displayName: '',
     dependentTable: []
   },
@@ -502,8 +492,7 @@ export const DATABASE_STRUCTURE = {
   programOrganisationUnits: {
     columns: [
       { value: 'id', type: 'TEXT' },
-      { value: 'programId', type: 'TEXT' },
-      { value: 'orgUnitId', type: 'TEXT' }
+      { value: 'orgUnitIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
     resourceType: '',
@@ -526,6 +515,52 @@ export const DATABASE_STRUCTURE = {
     batchSize: 100,
     resourceType: 'event',
     displayName: 'Program Stage Sections',
+    dependentTable: []
+  },
+  programRules: {
+    columns: [
+      { value: 'id', type: 'TEXT' },
+      { value: 'name', type: 'TEXT' },
+      { value: 'displayName', type: 'TEXT' },
+      { value: 'condition', type: 'TEXT' },
+      { value: 'description', type: 'TEXT' },
+      { value: 'program', type: 'LONGTEXT' },
+      { value: 'programRuleActions', type: 'LONGTEXT' }
+    ],
+    isMetadata: true,
+    batchSize: 100,
+    resourceType: 'event',
+    displayName: 'Program Rules',
+    dependentTable: []
+  },
+  programRuleActions: {
+    columns: [
+      { value: 'id', type: 'TEXT' },
+      { value: 'data', type: 'TEXT' },
+      { value: 'content', type: 'TEXT' },
+      { value: 'programRuleActionType', type: 'TEXT' },
+      { value: 'location', type: 'TEXT' },
+      { value: 'programRule', type: 'LONGTEXT' }
+    ],
+    isMetadata: true,
+    batchSize: 200,
+    resourceType: 'event',
+    displayName: 'Program Rule Actions',
+    dependentTable: []
+  },
+  programRuleVariables: {
+    columns: [
+      { value: 'id', type: 'TEXT' },
+      { value: 'name', type: 'TEXT' },
+      { value: 'displayName', type: 'TEXT' },
+      { value: 'programRuleVariableSourceType', type: 'TEXT' },
+      { value: 'program', type: 'LONGTEXT' },
+      { value: 'dataElement', type: 'LONGTEXT' }
+    ],
+    isMetadata: true,
+    batchSize: 200,
+    resourceType: 'event',
+    displayName: 'Program Rules Variables',
     dependentTable: []
   }
 };

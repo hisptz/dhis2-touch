@@ -79,7 +79,6 @@
         <splash height="480" src="resources/ios/splash/Default~iphone.png" width="320" />
         <splash height="2732" src="resources/ios/splash/Default@2x~universal~anyany.png" width="2732" />
     </platform>
-    <allow-navigation href="http://192.168.1.2:8100" />
     <plugin name="cordova-plugin-ionic-webview" spec="^1.1.16" />
     <plugin name="cordova-plugin-app-version" spec="^0.1.9" />
     <plugin name="cordova-plugin-background-mode" spec="^0.7.2" />
@@ -94,11 +93,5 @@
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
     <plugin name="cordova-sms-plugin" spec="^0.1.11" />
     <plugin name="cordova.plugins.diagnostic" spec="^3.9.2" />
-    <allow-navigation href="http://192.168.43.247:8100" />
-    <allow-navigation href="http://192.168.1.9:8100" />
-    <allow-navigation href="http://192.168.1.237:8100" />
-    <allow-navigation href="http://192.168.43.29:8100" />
-    <allow-navigation href="http://172.20.10.5:8100" />
-    <allow-navigation href="http://192.168.1.19:8100" />
-    <engine name="android" spec="6.3.0" />
+    <engine name="android" spec="~6.3.0" />
 </widget>

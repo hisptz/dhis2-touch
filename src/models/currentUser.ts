@@ -13,4 +13,5 @@ export interface CurrentUser {
   dhisVersion?: string;
   authorities?: Array<string>;
   progressTracker?: any;
+  userOrgUnitIds?: Array<string>;
 }

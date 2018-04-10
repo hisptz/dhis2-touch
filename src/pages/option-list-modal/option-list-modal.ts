@@ -51,7 +51,8 @@ export class OptionListModalPage implements OnInit {
   getItems(event: any) {
     let value = event.target.value;
     if (value && value.trim() != '') {
-      const options = this.navParams.get('options').filter((option: any) => {
+      const data = this.navParams.get('data');
+      const options = data.options.filter((option: any) => {
         return option.name.toLowerCase().indexOf(value.toLowerCase()) > -1;
       });
       this.arrayOfOptions = this.getOptionsWithPaginations(options);
