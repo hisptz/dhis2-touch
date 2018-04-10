@@ -32,7 +32,7 @@ export class SyncProvider {
     private reportsProvider: StandardReportProvider,
     private programProvider: ProgramsProvider,
     private programStageSectionsProvider: ProgramStageSectionsProvider
-  ) {}
+  ) { }
 
   getSyncContentDetails() {
     let syncContents = [
@@ -77,8 +77,6 @@ export class SyncProvider {
     let completedProcess = 0;
     return new Observable(observer => {
       for (let resource of resources) {
-        console.log('resource : ' + resource);
-
         if (resource == 'organisationUnits') {
           this.orgUnitsProvider
             .downloadingOrganisationUnitsFromServer(currentUser)
@@ -264,7 +262,7 @@ export class SyncProvider {
                   observer.complete();
                 }
               },
-              error => {}
+              error => { }
             );
         } else if (resource == 'dataSets') {
           this.dataSetsProvider
