@@ -657,7 +657,7 @@ export class LoginPage implements OnInit {
     this.downloadingQueueManager = {
       totalProcess: 13,
       enqueuedProcess: [],
-      dequeuingLimit: 3,
+      dequeuingLimit: 2,
       denqueuedProcess: []
     };
   }
