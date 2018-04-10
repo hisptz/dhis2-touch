@@ -29,44 +29,53 @@
             </ion-item>
           </ion-list>
         </div>
+        <div *ngIf="downloadingQueueManager">
+          completedTrackedProcess :: {{ completedTrackedProcess|json }}
+          <br>
+          <br> savingingQueueManager :: {{ savingingQueueManager.denqueuedProcess.length + savingingQueueManager.enqueuedProcess.length
+          }}
+          <br>
+          <br>downloadingQueueManager :: {{ downloadingQueueManager.denqueuedProcess.length + downloadingQueueManager.enqueuedProcess.length
+          }}
+        </div>
         <div *ngIf="isNetworkAvailable">
           <ion-list>
             <ion-item>
               <div style="text-align: center" item-left>
-                <div *ngIf="progressTracker.communication.passStepCount == progressTracker.communication.count">
+                <div *ngIf="progressTracker.communication.totalPassedProcesses == progressTracker.communication.expectedProcesses">
                   <ion-icon name="done-all" color="favorite"></ion-icon>
                 </div>
-                <div *ngIf="progressTracker.communication.passStepCount != progressTracker.communication.count">
+                <div *ngIf="progressTracker.communication.totalPassedProcesses != progressTracker.communication.expectedProcesses">
                   <loading loadingSize="small"></loading>
                 </div>
               </div>
               <span text-wrap *ngIf="progressTracker.communication.message !=''" [translate]="progressTracker.communication.message"></span>
               <span text-wrap *ngIf="progressTracker.communication.message ==''" [translate]="'Establishing connection to server'"></span>
               <div style="text-align: center" item-right>
-                {{ progressTracker.communication.passStepCount}}/{{ progressTracker.communication.count}}
+                {{ progressTracker.communication.totalPassedProcesses}}/{{ progressTracker.communication.expectedProcesses}}
               </div>
             </ion-item>
             <ion-item>
               <div style="text-align: center" item-left>
-                <div *ngIf="progressTracker.entryForm.passStepCount == progressTracker.entryForm.count">
+                <div *ngIf="progressTracker.entryForm.totalPassedProcesses == progressTracker.entryForm.expectedProcesses">
                   <ion-icon name="done-all" color="favorite"></ion-icon>
                 </div>
-                <div *ngIf="hasUserAuthenticated && progressTracker.entryForm.passStepCount != progressTracker.entryForm.count ">
+                <div *ngIf="hasUserAuthenticated && progressTracker.entryForm.totalPassedProcesses != progressTracker.entryForm.expectedProcesses ">
                   <loading loadingSize="small"></loading>
                 </div>
               </div>
               <span text-wrap *ngIf="progressTracker.entryForm.message !=''" [translate]="progressTracker.entryForm.message"></span>
               <span text-wrap *ngIf="progressTracker.entryForm.message ==''" [translate]="'Aggregate metadata'"></span>
               <div style="text-align: center" item-right>
-                {{ progressTracker.entryForm.passStepCount}}/{{ progressTracker.entryForm.count}}
+                {{ progressTracker.entryForm.totalPassedProcesses}}/{{ progressTracker.entryForm.expectedProcesses}}
               </div>
             </ion-item>
             <ion-item>
               <div style="text-align: center" item-left>
-                <div *ngIf="progressTracker.event.passStepCount == progressTracker.event.count">
+                <div *ngIf="progressTracker.event.totalPassedProcesses == progressTracker.event.expectedProcesses">
                   <ion-icon name="done-all" color="favorite"></ion-icon>
                 </div>
-                <div *ngIf="hasUserAuthenticated && progressTracker.event.passStepCount != progressTracker.event.count">
+                <div *ngIf="hasUserAuthenticated && progressTracker.event.totalPassedProcesses != progressTracker.event.expectedProcesses">
                   <loading loadingSize="small"></loading>
                 </div>
               </div>
@@ -74,22 +83,22 @@
               <span text-wrap *ngIf="progressTracker.event.message ==''" [translate]="'Event and tracker metadata'">
               </span>
               <div style="text-align: center" item-right>
-                {{ progressTracker.event.passStepCount}}/{{ progressTracker.event.count}}
+                {{ progressTracker.event.totalPassedProcesses}}/{{ progressTracker.event.expectedProcesses}}
               </div>
             </ion-item>
             <ion-item>
               <div style="text-align: center" item-left>
-                <div *ngIf="progressTracker.report.passStepCount == progressTracker.report.count">
+                <div *ngIf="progressTracker.report.totalPassedProcesses == progressTracker.report.expectedProcesses">
                   <ion-icon name="done-all" color="favorite"></ion-icon>
                 </div>
-                <div *ngIf="hasUserAuthenticated && progressTracker.report.passStepCount != progressTracker.report.count">
+                <div *ngIf="hasUserAuthenticated && progressTracker.report.totalPassedProcesses != progressTracker.report.expectedProcesses">
                   <loading loadingSize="small"></loading>
                 </div>
               </div>
               <span text-wrap *ngIf="progressTracker.report.message !=''" [translate]="progressTracker.report.message"></span>
               <span text-wrap *ngIf="progressTracker.report.message ==''" [translate]="'Reports metadata'"></span>
               <div style="text-align: center" item-right>
-                {{ progressTracker.report.passStepCount}}/{{ progressTracker.report.count}}
+                {{ progressTracker.report.totalPassedProcesses}}/{{ progressTracker.report.expectedProcesses}}
               </div>
             </ion-item>
           </ion-list>

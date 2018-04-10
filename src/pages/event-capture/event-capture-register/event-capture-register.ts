@@ -72,7 +72,7 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
         console.log(JSON.stringify(error));
         this.isLoading = false;
         this.appProvider.setNormalNotification(
-          'Fail to discover current user information'
+          'Failed to discover current user information'
         );
       }
     );
@@ -131,7 +131,7 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
           console.log(JSON.stringify(error));
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            'Fail to discover program stages'
+            'Failed to discover program stages'
           );
         }
       );

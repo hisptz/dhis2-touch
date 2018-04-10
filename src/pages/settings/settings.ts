@@ -94,7 +94,7 @@ export class SettingsPage implements OnInit {
                   this.isLoading = false;
                   this.initiateSettings(defaultSettings, null);
                   this.appProvider.setNormalNotification(
-                    'Fail to discover settings'
+                    'Failed to discover settings'
                   );
                 }
               );
@@ -102,7 +102,7 @@ export class SettingsPage implements OnInit {
           error => {
             this.isLoading = false;
             this.appProvider.setNormalNotification(
-              'Fail to discover available local instances'
+              'Failed to discover available local instances'
             );
           }
         );
@@ -112,7 +112,7 @@ export class SettingsPage implements OnInit {
         this.isLoading = false;
         this.initiateSettings(defaultSettings, null);
         this.appProvider.setNormalNotification(
-          'Fail to discover current user information'
+          'Failed to discover current user information'
         );
       }
     );
@@ -159,7 +159,7 @@ export class SettingsPage implements OnInit {
         )
         .subscribe(() => {});
     } catch (e) {
-      this.appProvider.setNormalNotification('Fail to set translation');
+      this.appProvider.setNormalNotification('Failed to set translation');
       console.log(JSON.stringify(e));
     }
   }
@@ -199,14 +199,14 @@ export class SettingsPage implements OnInit {
               error => {
                 console.log(error);
                 this.appProvider.setNormalNotification(
-                  'Fail to discover settings'
+                  'Failed to discover settings'
                 );
               }
             );
         },
         error => {
           this.appProvider.setNormalNotification(
-            'Fail to apply changes on  settings'
+            'Failed to apply changes on  settings'
           );
         }
       );

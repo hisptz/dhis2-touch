@@ -104,7 +104,7 @@ export class EventCapturePage implements OnInit {
         this.isLoading = false;
         this.loadingMessage = '';
         this.appProvider.setNormalNotification(
-          'Fail to discover user information'
+          'Failed to discover user information'
         );
       }
     );
@@ -155,7 +155,7 @@ export class EventCapturePage implements OnInit {
           this.loadingMessage = '';
           console.log(JSON.stringify(error));
           this.appProvider.setNormalNotification(
-            'Fail to discover assigned programs'
+            'Failed to discover assigned programs'
           );
         }
       );
@@ -378,7 +378,7 @@ export class EventCapturePage implements OnInit {
           console.log(JSON.stringify(error));
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            'Fail to discover program stages'
+            'Failed to discover program stages'
           );
         }
       );
@@ -443,7 +443,7 @@ export class EventCapturePage implements OnInit {
         error => {
           this.isLoading = false;
           this.appProvider.setNormalNotification(
-            'fail to prepare table for display'
+            'Failed to prepare table for display'
           );
         }
       );
