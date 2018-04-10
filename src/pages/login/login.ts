@@ -319,21 +319,6 @@ export class LoginPage implements OnInit {
                                               );
                                             }
                                           );
-                                          // this.downloadingOrganisationUnits(
-                                          //   userData
-                                          // );
-                                          // this.downloadingDataSets();
-                                          // this.downloadingSections();
-                                          // this.downloadingDataElements();
-                                          // this.downloadingSmsCommands();
-                                          // this.downloadingPrograms();
-                                          // this.downloadingProgramStageSections();
-                                          // this.downloadingProgramRuleActions();
-                                          // this.downloadingProgramRules();
-                                          // this.downloadingProgramRuleVariables();
-                                          // this.downloadingIndicators();
-                                          // this.downloadingStandardReports();
-                                          // this.downloadingConstants();
                                         },
                                         error => {}
                                       );
@@ -501,137 +486,6 @@ export class LoginPage implements OnInit {
       });
   }
 
-  resetQueueManager() {
-    this.savingingQueueManager = {
-      enqueuedProcess: [],
-      dequeuingLimit: 1,
-      denqueuedProcess: [],
-      data: {}
-    };
-    this.downloadingQueueManager = {
-      totalProcess: 13,
-      enqueuedProcess: [],
-      dequeuingLimit: 3,
-      denqueuedProcess: []
-    };
-  }
-
-  addIntoQueue(process: string, type?: string, data?: any) {
-    if (type && type == 'saving') {
-      if (data) {
-        this.savingingQueueManager.enqueuedProcess = _.concat(
-          this.savingingQueueManager.enqueuedProcess,
-          process
-        );
-        this.savingingQueueManager.data[process] = data;
-      }
-      this.checkingAndStartSavingProcess();
-    } else if (type && type == 'dowmloading') {
-      this.downloadingQueueManager.enqueuedProcess = _.concat(
-        this.downloadingQueueManager.enqueuedProcess,
-        process
-      );
-      this.checkingAndStartDownloadProcess();
-    }
-  }
-
-  removeFromQueue(process: string, type: string, data?: any) {
-    if (type && type == 'saving') {
-      _.remove(
-        this.savingingQueueManager.denqueuedProcess,
-        denqueuedProcess => {
-          return process == denqueuedProcess;
-        }
-      );
-      this.checkingAndStartSavingProcess();
-    } else if (type && type == 'dowmloading') {
-      _.remove(
-        this.downloadingQueueManager.denqueuedProcess,
-        denqueuedProcess => {
-          return process == denqueuedProcess;
-        }
-      );
-      if (data) {
-        this.addIntoQueue(process, 'saving', data);
-      }
-      this.checkingAndStartDownloadProcess();
-    }
-  }
-
-  startDownloadProcess(process: string) {
-    if (this.isLoginProcessActive) {
-      console.log('Downloading : ' + process);
-      if (this.completedTrackedProcess.indexOf(process) == -1) {
-        setTimeout(() => {
-          this.removeFromQueue(process, 'dowmloading', { data: 'data' });
-        }, 2500);
-      } else {
-        console.log('Download and saving was completed for :: ' + process);
-        this.updateProgressTracker(process);
-        this.removeFromQueue(process, 'dowmloading');
-      }
-    }
-  }
-
-  startSavingProcess(process, data) {
-    if (this.isLoginProcessActive) {
-      console.log(
-        'Saving : ' + process + ' ::: data : ' + JSON.stringify(data)
-      );
-      setTimeout(() => {
-        console.log('Complete saving :: ' + process);
-        this.removeFromQueue(process, 'saving');
-        this.updateProgressTracker(process);
-      }, 2000);
-    }
-  }
-
-  checkingAndStartSavingProcess() {
-    if (
-      this.savingingQueueManager.denqueuedProcess.length <
-      this.savingingQueueManager.dequeuingLimit
-    ) {
-      const process = _.head(this.savingingQueueManager.enqueuedProcess);
-      if (process) {
-        const data = this.savingingQueueManager.data[process];
-        delete this.savingingQueueManager.data[process];
-        this.savingingQueueManager.denqueuedProcess = _.concat(
-          this.savingingQueueManager.denqueuedProcess,
-          process
-        );
-        _.remove(
-          this.savingingQueueManager.enqueuedProcess,
-          enqueuedProcess => {
-            return process == enqueuedProcess;
-          }
-        );
-        this.startSavingProcess(process, data);
-      }
-    }
-  }
-
-  checkingAndStartDownloadProcess() {
-    if (
-      this.downloadingQueueManager.denqueuedProcess.length <
-      this.downloadingQueueManager.dequeuingLimit
-    ) {
-      const process = _.head(this.downloadingQueueManager.enqueuedProcess);
-      if (process) {
-        this.downloadingQueueManager.denqueuedProcess = _.concat(
-          this.downloadingQueueManager.denqueuedProcess,
-          process
-        );
-        _.remove(
-          this.downloadingQueueManager.enqueuedProcess,
-          enqueuedProcess => {
-            return process == enqueuedProcess;
-          }
-        );
-        this.startDownloadProcess(process);
-      }
-    }
-  }
-
   reInitiateProgressTrackerObject(user) {
     const emptyProcessTracker = this.getEmptyProgressTracker();
     if (
@@ -790,6 +644,727 @@ export class LoginPage implements OnInit {
     this.progressBar = String(value);
     if (completed == total) {
       this.setLandingPage(this.currentUser);
+    }
+  }
+
+  resetQueueManager() {
+    this.savingingQueueManager = {
+      enqueuedProcess: [],
+      dequeuingLimit: 1,
+      denqueuedProcess: [],
+      data: {}
+    };
+    this.downloadingQueueManager = {
+      totalProcess: 13,
+      enqueuedProcess: [],
+      dequeuingLimit: 3,
+      denqueuedProcess: []
+    };
+  }
+
+  addIntoQueue(process: string, type?: string, data?: any) {
+    if (type && type == 'saving') {
+      if (data) {
+        this.savingingQueueManager.enqueuedProcess = _.concat(
+          this.savingingQueueManager.enqueuedProcess,
+          process
+        );
+        this.savingingQueueManager.data[process] = data;
+      }
+      this.checkingAndStartSavingProcess();
+    } else if (type && type == 'dowmloading') {
+      this.downloadingQueueManager.enqueuedProcess = _.concat(
+        this.downloadingQueueManager.enqueuedProcess,
+        process
+      );
+      this.checkingAndStartDownloadProcess();
+    }
+  }
+
+  removeFromQueue(process: string, type: string, data?: any) {
+    if (type && type == 'saving') {
+      _.remove(
+        this.savingingQueueManager.denqueuedProcess,
+        denqueuedProcess => {
+          return process == denqueuedProcess;
+        }
+      );
+      this.checkingAndStartSavingProcess();
+    } else if (type && type == 'dowmloading') {
+      _.remove(
+        this.downloadingQueueManager.denqueuedProcess,
+        denqueuedProcess => {
+          return process == denqueuedProcess;
+        }
+      );
+      if (data) {
+        this.addIntoQueue(process, 'saving', data);
+      }
+      this.checkingAndStartDownloadProcess();
+    }
+  }
+
+  startDownloadProcess(process: string) {
+    if (this.isLoginProcessActive) {
+      if (process == 'organisationUnits') {
+        const currentResourceType = 'communication';
+        this.progressTracker[currentResourceType].message =
+          'Discovering assigned organisation units';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Assigned organisation units have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.organisationUnitsProvider
+            .downloadingOrganisationUnitsFromServer(this.currentUser)
+            .subscribe(
+              (orgUnits: any) => {
+                this.removeFromQueue(process, 'dowmloading', orgUnits);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover organisation data'
+                );
+              }
+            );
+        }
+      } else if (process == 'dataSets') {
+        const currentResourceType = 'entryForm';
+        this.progressTracker[currentResourceType].message =
+          'Discovering entry forms';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Entry forms have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.dataSetsProvider
+            .downloadDataSetsFromServer(this.currentUser)
+            .subscribe(
+              (dataSets: any) => {
+                this.removeFromQueue(process, 'dowmloading', dataSets);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover entry form'
+                );
+              }
+            );
+        }
+      } else if (process == 'sections') {
+        const currentResourceType = 'entryForm';
+        this.progressTracker[currentResourceType].message =
+          'Discovering entry form sections';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Entry form sections have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.sectionsProvider
+            .downloadSectionsFromServer(this.currentUser)
+            .subscribe(
+              (response: any) => {
+                const { sections } = response;
+                this.removeFromQueue(process, 'dowmloading', sections);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover entry form sections'
+                );
+              }
+            );
+        }
+      } else if (process == 'dataElements') {
+        const currentResourceType = 'entryForm';
+        this.progressTracker[currentResourceType].message =
+          'Discovering entry form fields';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Entry form fields have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.dataElementsProvider
+            .downloadDataElementsFromServer(this.currentUser)
+            .subscribe(
+              (response: any) => {
+                const { dataElements } = response;
+                this.removeFromQueue(process, 'dowmloading', dataElements);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover entry form fields'
+                );
+              }
+            );
+        }
+      } else if (process == 'smsCommand') {
+        const currentResourceType = 'entryForm';
+        this.progressTracker[currentResourceType].message =
+          'Discovering SMS commands';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'SMS commands have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.smsCommandProvider
+            .getSmsCommandFromServer(this.currentUser)
+            .subscribe(
+              (smsCommands: any) => {
+                this.removeFromQueue(process, 'dowmloading', smsCommands);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover SMS commands'
+                );
+              }
+            );
+        }
+      } else if (process == 'programs') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Discovering programs';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Programs have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.programsProvider
+            .downloadProgramsFromServer(this.currentUser)
+            .subscribe(
+              response => {
+                const { programs } = response;
+                this.removeFromQueue(process, 'dowmloading', programs);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover programs'
+                );
+              }
+            );
+        }
+      } else if (process == 'programStageSections') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Discovering program stage section';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Program stage section have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.programStageSectionProvider
+            .downloadProgramsStageSectionsFromServer(this.currentUser)
+            .subscribe(
+              response => {
+                const { programStageSections } = response;
+                this.removeFromQueue(
+                  process,
+                  'dowmloading',
+                  programStageSections
+                );
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover program stage sections'
+                );
+              }
+            );
+        }
+      } else if (process == 'programRules') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Discovering program rules';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Program Rules have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          if (this.isLoginProcessActive) {
+            this.programRulesProvider
+              .downloadingProgramRules(this.currentUser)
+              .subscribe(
+                data => {
+                  this.removeFromQueue(process, 'dowmloading', data);
+                },
+                error => {
+                  this.cancelLoginProcess(this.cancelLoginProcessData);
+                  console.log(JSON.stringify(error));
+                  this.AppProvider.setNormalNotification(
+                    'Failed to discover program rules'
+                  );
+                }
+              );
+          }
+        }
+      } else if (process == 'programRuleActions') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Discovering program rules actions';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Program rules actions have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          if (this.isLoginProcessActive) {
+            this.programRulesProvider
+              .downloadingProgramRuleActions(this.currentUser)
+              .subscribe(
+                data => {
+                  this.removeFromQueue(process, 'dowmloading', data);
+                },
+                error => {
+                  this.cancelLoginProcess(this.cancelLoginProcessData);
+                  console.log(JSON.stringify(error));
+                  this.AppProvider.setNormalNotification(
+                    'Failed to discover program rules actions'
+                  );
+                }
+              );
+          }
+        }
+      } else if (process == 'programRuleVariables') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Discovering program rules variables';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Program rules variables have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          if (this.isLoginProcessActive) {
+            this.programRulesProvider
+              .downloadingProgramRuleVariables(this.currentUser)
+              .subscribe(
+                data => {
+                  this.removeFromQueue(process, 'dowmloading', data);
+                },
+                error => {
+                  this.cancelLoginProcess(this.cancelLoginProcessData);
+                  console.log(JSON.stringify(error));
+                  this.AppProvider.setNormalNotification(
+                    'Failed to discover program rules variables'
+                  );
+                }
+              );
+          }
+        }
+      } else if (process == 'indicators') {
+        const currentResourceType = 'report';
+        this.progressTracker[currentResourceType].message =
+          'Discovering indicators';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Indicators have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.indicatorsProvider
+            .downloadingIndicatorsFromServer(this.currentUser)
+            .subscribe(
+              (response: any) => {
+                const { indicators } = response;
+                this.removeFromQueue(process, 'dowmloading', indicators);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover indicators'
+                );
+              }
+            );
+        }
+      } else if (process == 'reports') {
+        const currentResourceType = 'report';
+        this.progressTracker[currentResourceType].message =
+          'Discovering reports';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Reports have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.standardReports
+            .downloadReportsFromServer(this.currentUser)
+            .subscribe(
+              (response: any) => {
+                const { reports } = response;
+                this.removeFromQueue(process, 'dowmloading', reports);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover reports'
+                );
+              }
+            );
+        }
+      } else if (process == 'constants') {
+        const currentResourceType = 'report';
+        this.progressTracker[currentResourceType].message =
+          'Discovering constants';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Constants have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.standardReports
+            .downloadConstantsFromServer(this.currentUser)
+            .subscribe(
+              (constants: any) => {
+                this.removeFromQueue(process, 'dowmloading', constants);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover constants'
+                );
+              }
+            );
+        }
+      }
+    }
+  }
+
+  startSavingProcess(process, data) {
+    if (this.isLoginProcessActive) {
+      if (process == 'organisationUnits') {
+        const currentResourceType = 'communication';
+        this.progressTracker[currentResourceType].message =
+          'Saving assigned organisation units';
+        this.organisationUnitsProvider
+          .savingOrganisationUnitsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Assigned organisation units have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save organisation data'
+              );
+            }
+          );
+      } else if (process == 'dataSets') {
+        const currentResourceType = 'entryForm';
+        this.progressTracker[currentResourceType].message =
+          'Saving entry forms';
+        this.dataSetsProvider
+          .saveDataSetsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Entry form have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save entry form'
+              );
+            }
+          );
+      } else if (process == 'sections') {
+        const currentResourceType = 'entryForm';
+        this.progressTracker[currentResourceType].message =
+          'Saving entry form sections';
+        this.sectionsProvider
+          .saveSectionsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Entry form sections have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save entry form sections'
+              );
+            }
+          );
+      } else if (process == 'dataElements') {
+        const currentResourceType = 'entryForm';
+        this.progressTracker[currentResourceType].message =
+          'Saving entry form fields';
+        this.dataElementsProvider
+          .saveDataElementsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Entry form fields have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save entry form fields'
+              );
+            }
+          );
+      } else if (process == 'smsCommand') {
+        const currentResourceType = 'entryForm';
+        this.progressTracker[currentResourceType].message =
+          'Saving SMS commands';
+        this.smsCommandProvider
+          .savingSmsCommand(data, this.currentUser.currentDatabase)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'SMS commands have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save SMS commands'
+              );
+            }
+          );
+      } else if (process == 'programs') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message = 'Saving programs';
+        this.programsProvider
+          .saveProgramsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Programs have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification('Failed to save programs');
+            }
+          );
+      } else if (process == 'programStageSections') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Saving program stage section';
+        this.programStageSectionProvider
+          .saveProgramsStageSectionsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Program stage section have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save program stage sections'
+              );
+            }
+          );
+      } else if (process == 'programRules') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Saving program rules';
+        this.programRulesProvider
+          .savingProgramRules(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Program rules have been saved successfully';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save program rules'
+              );
+            }
+          );
+      } else if (process == 'programRuleActions') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Saving program rules actions';
+        this.programRulesProvider
+          .savingProgramRuleActions(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Program rules actions have been saved successfully';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save program rules actions'
+              );
+            }
+          );
+      } else if (process == 'programRuleVariables') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Saving program rules variables';
+        this.programRulesProvider
+          .savingProgramRuleVariables(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Program rules variables have been saved successfully';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save program rules variables'
+              );
+            }
+          );
+      } else if (process == 'indicators') {
+        const currentResourceType = 'report';
+        this.progressTracker[currentResourceType].message = 'Saving indicators';
+        this.indicatorsProvider
+          .savingIndicatorsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Indicators have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save indicators'
+              );
+            }
+          );
+      } else if (process == 'reports') {
+        const currentResourceType = 'report';
+        this.progressTracker[currentResourceType].message = 'Saving reports';
+        this.standardReports
+          .saveReportsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Reports have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification('Failed to save reports');
+            }
+          );
+      } else if (process == 'constants') {
+        const currentResourceType = 'report';
+        this.progressTracker[currentResourceType].message = 'Saving constants';
+        this.standardReports
+          .saveConstantsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Constants have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save constants'
+              );
+            }
+          );
+      }
+    }
+  }
+
+  checkingAndStartSavingProcess() {
+    if (
+      this.savingingQueueManager.denqueuedProcess.length <
+      this.savingingQueueManager.dequeuingLimit
+    ) {
+      const process = _.head(this.savingingQueueManager.enqueuedProcess);
+      if (process) {
+        const data = this.savingingQueueManager.data[process];
+        delete this.savingingQueueManager.data[process];
+        this.savingingQueueManager.denqueuedProcess = _.concat(
+          this.savingingQueueManager.denqueuedProcess,
+          process
+        );
+        _.remove(
+          this.savingingQueueManager.enqueuedProcess,
+          enqueuedProcess => {
+            return process == enqueuedProcess;
+          }
+        );
+        this.startSavingProcess(process, data);
+      }
+    }
+  }
+
+  checkingAndStartDownloadProcess() {
+    if (
+      this.downloadingQueueManager.denqueuedProcess.length <
+      this.downloadingQueueManager.dequeuingLimit
+    ) {
+      const process = _.head(this.downloadingQueueManager.enqueuedProcess);
+      if (process) {
+        this.downloadingQueueManager.denqueuedProcess = _.concat(
+          this.downloadingQueueManager.denqueuedProcess,
+          process
+        );
+        _.remove(
+          this.downloadingQueueManager.enqueuedProcess,
+          enqueuedProcess => {
+            return process == enqueuedProcess;
+          }
+        );
+        this.startDownloadProcess(process);
+      }
     }
   }
 }
