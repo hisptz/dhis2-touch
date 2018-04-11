@@ -4,6 +4,7 @@ import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
 import { CurrentUser } from '../../models/currentUser';
+import * as _ from 'lodash';
 
 /*
   Generated class for the OrganisationUnitsProvider provider.
@@ -16,6 +17,7 @@ export interface OrganisationUnitModel {
   name: string;
   level: string;
   path: string;
+  displayName?: string;
   openingDate: string;
   closedDate: string;
   children: Array<any>;
@@ -198,6 +200,38 @@ export class OrganisationUnitsProvider {
     });
   }
 
+  getAllOrganisationUnitsForSearching(
+    currentUser: CurrentUser
+  ): Observable<any> {
+    let searchedOrganisationUnits = [];
+    return new Observable(observer => {
+      this.getAllOrganisationUnits(currentUser).subscribe(
+        (organisationUnits: Array<OrganisationUnitModel>) => {
+          searchedOrganisationUnits = _.map(
+            organisationUnits,
+            (organisationUnit: OrganisationUnitModel) => {
+              const ancestors = _.reverse(organisationUnit.ancestors);
+              let label = organisationUnit.name;
+              if (ancestors && ancestors.length > 0) {
+                label = ancestors[0].name + '/' + label;
+              }
+              organisationUnit['displayName'] = label;
+              return organisationUnit;
+            }
+          );
+          searchedOrganisationUnits = _.sortBy(searchedOrganisationUnits, [
+            'displayName'
+          ]);
+          observer.next(searchedOrganisationUnits);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
+    });
+  }
+
   /**
    *
    * @param currentUser
@@ -353,15 +387,7 @@ export class OrganisationUnitsProvider {
    */
   getSortedOrganisationUnits(organisationUnits): Observable<any> {
     return new Observable(observer => {
-      organisationUnits.sort((a, b) => {
-        if (a.name > b.name) {
-          return 1;
-        }
-        if (a.name < b.name) {
-          return -1;
-        }
-        return 0;
-      });
+      organisationUnits = _.sortBy(organisationUnits, ['name']);
       organisationUnits.forEach((organisationUnit: any) => {
         this.sortOrganisationUnits(organisationUnit);
       });
@@ -376,15 +402,7 @@ export class OrganisationUnitsProvider {
    */
   sortOrganisationUnits(organisationUnit) {
     if (organisationUnit.children) {
-      organisationUnit.children.sort((a, b) => {
-        if (a.name > b.name) {
-          return 1;
-        }
-        if (a.name < b.name) {
-          return -1;
-        }
-        return 0;
-      });
+      organisationUnit.children = _.sortBy(organisationUnit.children, ['name']);
       organisationUnit.children.forEach(child => {
         this.sortOrganisationUnits(child);
       });

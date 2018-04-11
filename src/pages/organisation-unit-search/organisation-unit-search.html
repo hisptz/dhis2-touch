@@ -22,7 +22,7 @@
           <div class="animated fadeIn">
             <ion-list>
               <ion-item *ngFor="let organisationUnit of arrayOfOrganisationUnitsArray[currentPage - 1];trackBy: trackByFn" (click)="selectOrganisationUnit(organisationUnit)">
-                <span ion-text [color]="(ouIdsWithAssigments && ouIdsWithAssigments.indexOf(organisationUnit.id)  == -1 )? 'ou-assigment-issues' : (currentSelectedOrgUnitName == organisationUnit.name) ?'current' : 'font-color'">{{ organisationUnit.name }}</span>
+                <span ion-text [color]="(ouIdsWithAssigments && ouIdsWithAssigments.length > 0 && ouIdsWithAssigments.indexOf(organisationUnit.id)  == -1 )? 'ou-assigment-issues' : (currentSelectedOrgUnitName == organisationUnit.name) ?'current' : 'font-color'">{{ getOrganisationUnitLabel(organisationUnit) }}</span>
               </ion-item>
             </ion-list>
           </div>

@@ -139,6 +139,12 @@
                       </ion-label>
                       <ion-input (ionBlur)="applySettings(settingContent)" type="number" min="1" [(ngModel)]="settingObject.entryForm.maxDataElementOnDefaultForm"></ion-input>
                     </ion-item>
+                    <ion-item no-lines>
+                      <ion-label>
+                        <span [translate]="'Show alert on ssignement issues'"></span>
+                      </ion-label>
+                      <ion-toggle (ionChange)="applySettings(settingContent)" color="primary" [(ngModel)]="settingObject.entryForm.showAlertOnFormAssignement"></ion-toggle>
+                    </ion-item>
                   </ion-col>
                 </ion-row>
               </div>
