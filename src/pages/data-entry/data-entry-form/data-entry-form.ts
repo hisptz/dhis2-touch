@@ -189,7 +189,13 @@ export class DataEntryFormPage implements OnInit {
       )
       .subscribe(
         (entryFormResponse: any) => {
-          if (dataSet.formType == 'CUSTOM') {
+          if (
+            dataSet.formType == 'CUSTOM' &&
+            this.appSettings &&
+            this.appSettings.entryForm &&
+            this.appSettings.entryForm.formLayout &&
+            this.appSettings.entryForm.formLayout == 'customLayout'
+          ) {
             this.dataEntryFormDesign = entryFormResponse.entryForm;
             this.entryFormSections = entryFormResponse.entryFormSections;
             this.entryFormType = 'CUSTOM';
