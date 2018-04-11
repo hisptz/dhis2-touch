@@ -15,6 +15,7 @@ import { AppProvider } from '../../providers/app/app';
 import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 import { ProgramsProvider } from '../../providers/programs/programs';
 import { DataSetsProvider } from '../../providers/data-sets/data-sets';
+import { SettingsProvider } from '../../providers/settings/settings';
 
 /**
  * Generated class for the OrganisationUnitSelectionPage page.
@@ -48,7 +49,8 @@ export class OrganisationUnitSelectionPage implements OnInit {
     private userProvider: UserProvider,
     private appProvider: AppProvider,
     private appTranslation: AppTranslationProvider,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private settingsProvider: SettingsProvider
   ) {}
 
   ngOnInit() {
@@ -75,10 +77,24 @@ export class OrganisationUnitSelectionPage implements OnInit {
     this.userProvider.getCurrentUser().subscribe(
       user => {
         this.currentUser = user;
-        this.loadingProgramAndDataSetAssignments(user);
-        this.loadingOrganisationUnits();
+        this.settingsProvider.getSettingsForTheApp(user).subscribe(
+          (appSettings: any) => {
+            const { entryForm } = appSettings;
+            const { showAlertOnFormAssignement } = entryForm;
+            this.loadingProgramAndDataSetAssignments(
+              user,
+              showAlertOnFormAssignement
+            );
+            this.loadingOrganisationUnits();
+          },
+          error => {
+            this.isLoading = false;
+            console.log(JSON.stringify(error));
+          }
+        );
       },
       error => {
+        this.isLoading = false;
         console.log(JSON.stringify(error));
       }
     );
@@ -153,52 +169,22 @@ export class OrganisationUnitSelectionPage implements OnInit {
     modal.present();
   }
 
-  loadingProgramAndDataSetAssignments(user) {
-    const filterType = this.navParams.get('filterType');
-    //@todo to revise setting
-    //@todo improving searching mechanisms
+  loadingProgramAndDataSetAssignments(user, showAlertOnFormAssignement) {
     this.ouIdsWithAssigments = [];
-    if (filterType == 'dataSets') {
-      this.dataSetsProvider.getAllDataSetSources(this.currentUser).subscribe(
-        (dataSetSources: any) => {
-          this.userProvider.getUserData().subscribe((userData: any) => {
-            dataSetSources.map((dataSetSource: any) => {
-              if (
-                dataSetSource &&
-                dataSetSource.id &&
-                userData.dataSets &&
-                userData.dataSets.indexOf(dataSetSource.id) > -1
-              ) {
-                dataSetSource.organisationUnitIds.map((ouId: string) => {
-                  if (this.ouIdsWithAssigments.indexOf(ouId) == -1) {
-                    this.ouIdsWithAssigments.push(ouId);
-                  }
-                });
-              }
-            });
-          });
-        },
-        error => {
-          console.log(JSON.stringify(error));
-        }
-      );
-    } else if (
-      filterType == 'WITHOUT_REGISTRATION' ||
-      filterType == 'WITH_REGISTRATION'
-    ) {
-      this.programProvider
-        .getProgramOrganisationUnitsByProgramType(user, filterType)
-        .subscribe(
-          (programOrganisationUnits: any) => {
+    if (showAlertOnFormAssignement) {
+      const filterType = this.navParams.get('filterType');
+      if (filterType == 'dataSets') {
+        this.dataSetsProvider.getAllDataSetSources(this.currentUser).subscribe(
+          (dataSetSources: any) => {
             this.userProvider.getUserData().subscribe((userData: any) => {
-              programOrganisationUnits.map((programOrganisationUnit: any) => {
+              dataSetSources.map((dataSetSource: any) => {
                 if (
-                  programOrganisationUnit &&
-                  programOrganisationUnit.id &&
-                  userData.programs &&
-                  userData.programs.indexOf(programOrganisationUnit.id) > -1
+                  dataSetSource &&
+                  dataSetSource.id &&
+                  userData.dataSets &&
+                  userData.dataSets.indexOf(dataSetSource.id) > -1
                 ) {
-                  programOrganisationUnit.orgUnitIds.map((ouId: string) => {
+                  dataSetSource.organisationUnitIds.map((ouId: string) => {
                     if (this.ouIdsWithAssigments.indexOf(ouId) == -1) {
                       this.ouIdsWithAssigments.push(ouId);
                     }
@@ -211,6 +197,36 @@ export class OrganisationUnitSelectionPage implements OnInit {
             console.log(JSON.stringify(error));
           }
         );
+      } else if (
+        filterType == 'WITHOUT_REGISTRATION' ||
+        filterType == 'WITH_REGISTRATION'
+      ) {
+        this.programProvider
+          .getProgramOrganisationUnitsByProgramType(user, filterType)
+          .subscribe(
+            (programOrganisationUnits: any) => {
+              this.userProvider.getUserData().subscribe((userData: any) => {
+                programOrganisationUnits.map((programOrganisationUnit: any) => {
+                  if (
+                    programOrganisationUnit &&
+                    programOrganisationUnit.id &&
+                    userData.programs &&
+                    userData.programs.indexOf(programOrganisationUnit.id) > -1
+                  ) {
+                    programOrganisationUnit.orgUnitIds.map((ouId: string) => {
+                      if (this.ouIdsWithAssigments.indexOf(ouId) == -1) {
+                        this.ouIdsWithAssigments.push(ouId);
+                      }
+                    });
+                  }
+                });
+              });
+            },
+            error => {
+              console.log(JSON.stringify(error));
+            }
+          );
+      }
     }
   }
 

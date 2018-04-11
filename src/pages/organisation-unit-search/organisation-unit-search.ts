@@ -8,6 +8,7 @@ import {
 } from '../../providers/organisation-units/organisation-units';
 import { AppProvider } from '../../providers/app/app';
 import * as _ from 'lodash';
+import { SettingsProvider } from '../../providers/settings/settings';
 
 /**
  * Generated class for the OrganisationUnitSearchPage page.
@@ -37,7 +38,8 @@ export class OrganisationUnitSearchPage implements OnInit {
     private userProvider: UserProvider,
     private organisationUnitProvider: OrganisationUnitsProvider,
     private navParams: NavParams,
-    private appProvider: AppProvider
+    private appProvider: AppProvider,
+    private settingsProvider: SettingsProvider
   ) {
     this.arrayOfOrganisationUnitsArray = [];
     this.arrayOfOrganisationUnitsArrayBackup = [];
@@ -59,27 +61,37 @@ export class OrganisationUnitSearchPage implements OnInit {
     if (currentSelectedOrgUnitName) {
       this.currentSelectedOrgUnitName = currentSelectedOrgUnitName;
     }
-    if (ouIdsWithAssigments) {
-      this.ouIdsWithAssigments = ouIdsWithAssigments;
-    }
     this.userProvider.getCurrentUser().subscribe(
       (user: CurrentUser) => {
-        this.organisationUnitProvider
-          .getAllOrganisationUnitsForSearching(user)
-          .subscribe(
-            (organisationUnits: any) => {
-              this.organisationUnits = organisationUnits;
-              this.arrayOfOrganisationUnitsArray = this.getOrganisationUnitsWithPaginations(
-                organisationUnits
-              );
-              this.arrayOfOrganisationUnitsArrayBackup = this.arrayOfOrganisationUnitsArray;
-              this.isLoading = false;
-            },
-            error => {
-              this.isLoading = false;
-              console.log(JSON.stringify(error));
+        this.settingsProvider.getSettingsForTheApp(user).subscribe(
+          (appSettings: any) => {
+            const { entryForm } = appSettings;
+            const { showAlertOnFormAssignement } = entryForm;
+            if (ouIdsWithAssigments && showAlertOnFormAssignement) {
+              this.ouIdsWithAssigments = ouIdsWithAssigments;
             }
-          );
+            this.organisationUnitProvider
+              .getAllOrganisationUnitsForSearching(user)
+              .subscribe(
+                (organisationUnits: any) => {
+                  this.organisationUnits = organisationUnits;
+                  this.arrayOfOrganisationUnitsArray = this.getOrganisationUnitsWithPaginations(
+                    organisationUnits
+                  );
+                  this.arrayOfOrganisationUnitsArrayBackup = this.arrayOfOrganisationUnitsArray;
+                  this.isLoading = false;
+                },
+                error => {
+                  this.isLoading = false;
+                  console.log(JSON.stringify(error));
+                }
+              );
+          },
+          error => {
+            this.isLoading = false;
+            console.log(JSON.stringify(error));
+          }
+        );
       },
       error => {
         this.isLoading = false;
