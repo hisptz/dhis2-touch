@@ -2,8 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { IonicPage, ViewController, NavParams } from 'ionic-angular';
 import { CurrentUser } from '../../models/currentUser';
 import { UserProvider } from '../../providers/user/user';
-import { OrganisationUnitsProvider } from '../../providers/organisation-units/organisation-units';
+import {
+  OrganisationUnitsProvider,
+  OrganisationUnitModel
+} from '../../providers/organisation-units/organisation-units';
 import { AppProvider } from '../../providers/app/app';
+import * as _ from 'lodash';
 
 /**
  * Generated class for the OrganisationUnitSearchPage page.
@@ -19,12 +23,12 @@ import { AppProvider } from '../../providers/app/app';
 })
 export class OrganisationUnitSearchPage implements OnInit {
   title: string;
-  arrayOfOrganisationUnitsArray: Array<any>;
-  arrayOfOrganisationUnitsArrayBackup: Array<any>;
+  arrayOfOrganisationUnitsArray: Array<OrganisationUnitModel>;
+  arrayOfOrganisationUnitsArrayBackup: Array<OrganisationUnitModel>;
   isLoading: boolean;
   currentPage: number;
   currentSelectedOrgUnitName: string;
-  ouIdsWithAssigments: any;
+  ouIdsWithAssigments: Array<string>;
   organisationUnits: any;
   filterType: string;
 
@@ -60,20 +64,22 @@ export class OrganisationUnitSearchPage implements OnInit {
     }
     this.userProvider.getCurrentUser().subscribe(
       (user: CurrentUser) => {
-        this.organisationUnitProvider.getAllOrganisationUnits(user).subscribe(
-          (organisationUnits: any) => {
-            this.organisationUnits = organisationUnits;
-            this.arrayOfOrganisationUnitsArray = this.getOrganisationUnitsWithPaginations(
-              organisationUnits
-            );
-            this.arrayOfOrganisationUnitsArrayBackup = this.arrayOfOrganisationUnitsArray;
-            this.isLoading = false;
-          },
-          error => {
-            this.isLoading = false;
-            console.log(JSON.stringify(error));
-          }
-        );
+        this.organisationUnitProvider
+          .getAllOrganisationUnitsForSearching(user)
+          .subscribe(
+            (organisationUnits: any) => {
+              this.organisationUnits = organisationUnits;
+              this.arrayOfOrganisationUnitsArray = this.getOrganisationUnitsWithPaginations(
+                organisationUnits
+              );
+              this.arrayOfOrganisationUnitsArrayBackup = this.arrayOfOrganisationUnitsArray;
+              this.isLoading = false;
+            },
+            error => {
+              this.isLoading = false;
+              console.log(JSON.stringify(error));
+            }
+          );
       },
       error => {
         this.isLoading = false;
@@ -87,10 +93,12 @@ export class OrganisationUnitSearchPage implements OnInit {
     if (value && value.trim() != '') {
       const backUpOrganisationUnits = this.organisationUnits;
       const filteredOrganisationUnits = backUpOrganisationUnits.filter(
-        (organisationUnit: any) => {
+        (organisationUnit: OrganisationUnitModel) => {
           return (
-            organisationUnit.name.toLowerCase().indexOf(value.toLowerCase()) >
-            -1
+            organisationUnit.displayName &&
+            organisationUnit.displayName
+              .toLowerCase()
+              .indexOf(value.toLowerCase()) > -1
           );
         }
       );
@@ -151,21 +159,15 @@ export class OrganisationUnitSearchPage implements OnInit {
     }
   }
 
-  getOrganisationUnitsWithPaginations(options) {
-    let pageNumber = 0;
-    const pageSize = 500;
-    let array = [];
-    while (
-      this.getSubArryByPagination(options, pageSize, pageNumber).length > 0
-    ) {
-      array.push(this.getSubArryByPagination(options, pageSize, pageNumber));
-      pageNumber++;
-    }
-    return array;
+  getOrganisationUnitLabel(organisationUnit: OrganisationUnitModel) {
+    return organisationUnit.displayName
+      ? organisationUnit.displayName
+      : organisationUnit.name;
   }
 
-  getSubArryByPagination(array, pageSize, pageNumber) {
-    return array.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
+  getOrganisationUnitsWithPaginations(organisationUnits) {
+    const pageSize = 200;
+    return _.chunk(organisationUnits, pageSize);
   }
 
   trackByFn(index, item) {
