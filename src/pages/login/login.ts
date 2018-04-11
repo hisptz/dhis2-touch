@@ -298,16 +298,16 @@ export class LoginPage implements OnInit {
                                           );
                                           const metadataList = [
                                             'organisationUnits',
-                                            'dataSets',
                                             'sections',
                                             'dataElements',
                                             'smsCommand',
                                             'programs',
                                             'programStageSections',
                                             'programRules',
+                                            'indicators',
                                             'programRuleActions',
                                             'programRuleVariables',
-                                            'indicators',
+                                            'dataSets',
                                             'reports',
                                             'constants'
                                           ];
