@@ -35,7 +35,7 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-item *ngFor="let period of periods" (tap)="setSelectedPeriod(period)">
+        <ion-item *ngFor="let period of periods;trackBy: trackByFn" (tap)="setSelectedPeriod(period)">
           <img class="side-menu-icon" [src]="icon" />&nbsp;
           <span ion-text [color]="(currentPeriod.iso == period.iso) ?'current' : 'font-color'">{{ period.name }}</span>
         </ion-item>

@@ -57,7 +57,7 @@ export class AvailableLocalInstanceComponent implements OnInit {
       error => {
         this.isLoading = false;
         this.appProvider.setNormalNotification(
-          'Fail to load available local instances'
+          'Failed to load available local instances'
         );
       }
     );
@@ -85,6 +85,10 @@ export class AvailableLocalInstanceComponent implements OnInit {
         );
       });
     }
+  }
+
+  trackByFn(index, item) {
+    return item.id;
   }
 
   getValuesToTranslate() {

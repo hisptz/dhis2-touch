@@ -36,7 +36,7 @@
       <ion-row>
         <ion-col>
           <ion-list>
-            <ion-item *ngFor="let report of reportList" (tap)="selectReport(report)">
+            <ion-item *ngFor="let report of reportList;trackBy: trackByFn" (tap)="selectReport(report)">
               <img *ngIf="report && report.type" class="side-menu-icon" [src]="icons[report.type]" />&nbsp;
               <span class="circled-btn-border circled-btn">
                 <span *ngIf="report && report.type == 'dataSetReport'">DS</span>

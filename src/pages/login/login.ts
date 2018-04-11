@@ -133,7 +133,7 @@ export class LoginPage implements OnInit {
       this.currentUser = currentUser;
     } else {
       this.currentUser = {
-        serverUrl: 'play.dhis2.org/2.29',
+        serverUrl: 'play.dhis2.org/2.28',
         username: 'admin',
         password: 'district',
         currentLanguage: 'en'

@@ -48,7 +48,7 @@
         </ion-col>
       </ion-row>
 
-      <div *ngFor="let widget of dashboardWidgets">
+      <div *ngFor="let widget of dashboardWidgets;trackBy: trackByFn">
         <div *ngIf="(isDashboardWidgetOpen[widget.id])">
           <ion-row>
             <ion-col>
@@ -117,7 +117,7 @@
                   </div>
                   <div *ngIf="programTrackedEntityAttributes && programTrackedEntityAttributes.length > 0">
                     <form>
-                      <div *ngFor="let programTrackedEntityAttribute of programTrackedEntityAttributes">
+                      <div *ngFor="let programTrackedEntityAttribute of programTrackedEntityAttributes;trackBy: trackByFn">
                         <tracked-entity-inputs [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute" [currentUser]="currentUser"
                           [data]="dataObject" [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
                           [mandatory]="programTrackedEntityAttribute.mandatory" (onChange)="updateData($event)"></tracked-entity-inputs>
@@ -152,7 +152,7 @@
 
               <div *ngIf="currentWidget.id != 'enrollment'">
                 <div *ngIf="programStages && programStages.length > 0">
-                  <div *ngFor="let programStage of programStages">
+                  <div *ngFor="let programStage of programStages;trackBy: trackByFn">
                     <div *ngIf="widget.id == programStage.id">
                       <program-stage-tracker-based [programStage]="programStage" [trackedEntityInstance]="trackedEntityInstance" [currentWidgetIndex]="currentWidgetIndex"
                         [isLastStage]="(currentWidgetIndex == programStages.length)" (onChange)="updateWidgetPagination($event)"></program-stage-tracker-based>
@@ -171,7 +171,7 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <button ion-button clear text-capitalize *ngFor="let widget of dashboardWidgets" [disabled]="(!isTrackedEntityRegistered && widget.iconName) || (isDashboardWidgetOpen[widget.id])"
+        <button ion-button clear text-capitalize *ngFor="let widget of dashboardWidgets;trackBy: trackByFn" [disabled]="(!isTrackedEntityRegistered && widget.iconName) || (isDashboardWidgetOpen[widget.id])"
           (tap)="changeDashboardWidget(widget)">
           <div [ngClass]=" (isDashboardWidgetOpen[widget.id])?'program-stage-button-label':''">
             <div *ngIf="widget.icon">

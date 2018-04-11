@@ -66,6 +66,10 @@ export class TrackedEntityWidgetSelectionPage implements OnInit, OnDestroy {
     this.dashboardWidgets = null;
   }
 
+  trackByFn(index, item) {
+    return item.id;
+  }
+
   getValuesToTranslate() {
     return ['There is no widget to select'];
   }

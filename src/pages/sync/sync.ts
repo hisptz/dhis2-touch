@@ -1,7 +1,7 @@
-import { Component, OnInit } from "@angular/core";
-import { IonicPage, NavController, NavParams } from "ionic-angular";
-import { SyncProvider } from "../../providers/sync/sync";
-import { SqlLiteProvider } from "../../providers/sql-lite/sql-lite";
+import { Component, OnInit } from '@angular/core';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { SyncProvider } from '../../providers/sync/sync';
+import { SqlLiteProvider } from '../../providers/sql-lite/sql-lite';
 
 /**
  * Generated class for the SyncPage page.
@@ -12,8 +12,8 @@ import { SqlLiteProvider } from "../../providers/sql-lite/sql-lite";
 
 @IonicPage()
 @Component({
-  selector: "page-sync",
-  templateUrl: "sync.html"
+  selector: 'page-sync',
+  templateUrl: 'sync.html'
 })
 export class SyncPage implements OnInit {
   isSyncContentOpen: any;
@@ -61,5 +61,9 @@ export class SyncPage implements OnInit {
         this.isSyncContentOpen[content.id] = true;
       }
     }
+  }
+
+  trackByFn(index, item) {
+    return item.id;
   }
 }

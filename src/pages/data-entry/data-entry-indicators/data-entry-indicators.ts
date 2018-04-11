@@ -27,6 +27,10 @@ export class DataEntryIndicatorsPage implements OnInit {
     }
   }
 
+  trackByFn(index, item) {
+    return item.id;
+  }
+
   dismiss() {
     this.viewCtrl.dismiss({});
   }

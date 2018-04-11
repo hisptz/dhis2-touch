@@ -23,7 +23,7 @@
       <loading [loadingMessage]="loadingMessage" [loadingSize]="'large'"></loading>
     </div>
     <div *ngIf="!isLoading">
-      <div class="item-card" *ngFor="let settingContent of settingContents">
+      <div class="item-card" *ngFor="let settingContent of settingContents;trackBy: trackByFn">
         <ion-row (tap)="toggleSettingContents(settingContent)">
           <ion-col col-11>
             <img class="side-menu-icon" [src]="settingContent.icon" />&nbsp;&nbsp;

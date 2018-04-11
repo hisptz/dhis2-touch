@@ -411,6 +411,10 @@ export class TrackerEntityRegisterPage implements OnInit {
     return result;
   }
 
+  trackByFn(index, item) {
+    return item.id;
+  }
+
   getValuesToTranslate() {
     return [
       'Discovering current user information',

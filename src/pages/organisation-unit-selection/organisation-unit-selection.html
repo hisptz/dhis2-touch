@@ -36,7 +36,7 @@
     <loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></loading>
   </div>
   <div *ngIf="!isLoading">
-    <div *ngFor="let organisationUnit of organisationUnits">
+    <div *ngFor="let organisationUnit of organisationUnits;trackBy: trackByFn">
       <organisation-unit-tree [organisationUnit]="organisationUnit" [ouIdsWithAssigments]="ouIdsWithAssigments" [currentSelectedOrgUnitName]="lastSelectedOrgUnit.name"
         [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened" (selectedOrganisationUnit)="setSelectedOrganisationUnit($event)"
         [currentUser]="currentUser"></organisation-unit-tree>

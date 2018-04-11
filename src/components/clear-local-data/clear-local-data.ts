@@ -91,13 +91,13 @@ export class ClearLocalDataComponent implements OnInit {
           },
           error => {
             this.isLoading = false;
-            console.log('Fail to discover events');
+            console.log('Failed to discover events');
           }
         );
       },
       error => {
         this.isLoading = false;
-        console.log('Fail to discover data values');
+        console.log('Failed to discover data values');
       }
     );
   }
@@ -230,7 +230,7 @@ export class ClearLocalDataComponent implements OnInit {
           error => {
             this.isLoading = false;
             this.appProvider.setNormalNotification(
-              'Fail to clear selected items'
+              'Failed to clear selected items'
             );
           }
         );

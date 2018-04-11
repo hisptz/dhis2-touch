@@ -154,7 +154,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
       },
       error => {
         this.appProvider.setNormalNotification(
-          'Fail to discover current user information'
+          'Failed to discover current user information'
         );
       }
     );
@@ -202,7 +202,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
         error => {
           console.log(JSON.stringify(error));
           this.isLoading = false;
-          this.appProvider.setNormalNotification('Fail to discover events');
+          this.appProvider.setNormalNotification('Failed to discover events');
         }
       );
   }
@@ -303,7 +303,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
                   console.log(JSON.stringify(error));
                   this.isLoading = false;
                   this.appProvider.setNormalNotification(
-                    'Fail to delete event'
+                    'Failed to delete event'
                   );
                 }
               );
@@ -332,7 +332,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
         },
         error => {
           this.appProvider.setNormalNotification(
-            'Fail to prepare table for display'
+            'Failed to prepare table for display'
           );
         }
       );
@@ -368,7 +368,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
           },
           error => {
             this.appProvider.setNormalNotification(
-              'Fail to prepare table for display'
+              'Failed to prepare table for display'
             );
           }
         );

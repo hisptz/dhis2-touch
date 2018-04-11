@@ -5,7 +5,7 @@
     </div>
     <div *ngIf="!isLoading">
       <div *ngIf="entryFormSections && entryFormSections.length > 0">
-        <div *ngFor="let section of entryFormSections">
+        <div *ngFor="let section of entryFormSections;trackBy: trackByFn">
           <table width="100%">
             <tbody>
               <tr *ngIf="section.name != ''">
@@ -16,7 +16,7 @@
               <tr *ngIf="section.dataElements">
                 <td>
                   <div text-left>
-                    <div *ngFor="let dataElement of section.dataElements">
+                    <div *ngFor="let dataElement of section.dataElements;trackBy: trackByFn">
                       <data-set-report-row [dataElement]="dataElement" [dataValues]="dataElementDataValuesMapper[dataElement.id]" [appSettings]="appSettings"></data-set-report-row>
                     </div>
                   </div>

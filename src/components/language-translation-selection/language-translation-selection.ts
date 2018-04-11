@@ -60,4 +60,8 @@ export class LanguageTranslationSelectionComponent implements OnInit {
   getValuesToTranslate() {
     return ['Search'];
   }
+
+  trackByFn(index, item) {
+    return item.id;
+  }
 }

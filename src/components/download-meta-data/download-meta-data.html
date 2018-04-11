@@ -11,7 +11,7 @@
   </ion-row>
   <ion-row *ngIf="!showLoadingMessage">
     <ion-col>
-      <div *ngFor="let resourceObject of resources">
+      <div *ngFor="let resourceObject of resources;trackBy: trackByFn">
         <ion-item>
           <ion-checkbox color="blue" [(ngModel)]="resourceObject.status"></ion-checkbox>
           <ion-label> {{ resourceObject.displayName }} </ion-label>

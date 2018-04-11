@@ -24,12 +24,12 @@
 
   <div *ngIf="hasErrorOccurred">
     <ion-item>
-      {{ translationMapper['Fail to discover organisation unit children']}}
+      {{ translationMapper['Failed to discover organisation unit children']}}
     </ion-item>
   </div>
 
   <div *ngIf="isOrganisationUnitsFetched && hasOrgUnitChildrenLoaded && !hasErrorOccurred">
-    <div *ngFor="let child of organisationUnit.children">
+    <div *ngFor="let child of organisationUnit.children;trackBy: trackByFn">
       <organisation-unit-tree [organisationUnit]="child" [currentSelectedOrgUnitName]="currentSelectedOrgUnitName" [ouIdsWithAssigments]="ouIdsWithAssigments"
         [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened" (selectedOrganisationUnit)="setSelectedOrganisationUnit($event)"
         [currentUser]="currentUser"></organisation-unit-tree>

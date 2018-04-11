@@ -14,7 +14,7 @@
 </ion-header>
 <ion-content>
   <ion-grid>
-    <div class="item-card" *ngFor="let syncContent of syncContents">
+    <div class="item-card" *ngFor="let syncContent of syncContents;trackBy: trackByFn">
       <ion-row (tap)="toggleSyncContents(syncContent)">
         <ion-col col-11>
           <img class="side-menu-icon" [src]="syncContent.icon" />&nbsp;&nbsp;
