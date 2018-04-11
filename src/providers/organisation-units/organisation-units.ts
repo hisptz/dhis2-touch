@@ -56,40 +56,46 @@ export class OrganisationUnitsProvider {
     currentUser: CurrentUser
   ): Observable<any> {
     let orgUnits = [];
+    let counts = 0;
+    const { userOrgUnitIds } = currentUser;
     return new Observable(observer => {
-      let counts = 0;
-      for (let orgUnitId of currentUser.userOrgUnitIds) {
-        let fields =
-          'fields=id,name,path,ancestors[id,name,children[id]],openingDate,closedDate,level,children[id,name,children[id],parent';
-        let filter = 'filter=path:ilike:';
-        let url = '/api/25/' + this.resource + '.json?';
-        url += fields + '&' + filter + orgUnitId;
-        this.HttpClient.get(
-          url,
-          false,
-          currentUser,
-          this.resource,
-          800
-        ).subscribe(
-          (response: any) => {
-            try {
-              counts = counts + 1;
-              orgUnits = this.appendOrgUnitsFromServerToOrgUnitArray(
-                orgUnits,
-                response
-              );
-              if (counts == currentUser.userOrgUnitIds.length) {
-                observer.next(orgUnits);
-                observer.complete();
+      if (userOrgUnitIds && userOrgUnitIds.length == 0) {
+        observer.next(orgUnits);
+        observer.complete();
+      } else {
+        for (let orgUnitId of userOrgUnitIds) {
+          let fields =
+            'fields=id,name,path,ancestors[id,name,children[id]],openingDate,closedDate,level,children[id,name,children[id],parent';
+          let filter = 'filter=path:ilike:';
+          let url = '/api/25/' + this.resource + '.json?';
+          url += fields + '&' + filter + orgUnitId;
+          this.HttpClient.get(
+            url,
+            false,
+            currentUser,
+            this.resource,
+            800
+          ).subscribe(
+            (response: any) => {
+              try {
+                counts = counts + 1;
+                orgUnits = this.appendOrgUnitsFromServerToOrgUnitArray(
+                  orgUnits,
+                  response
+                );
+                if (counts == userOrgUnitIds.length) {
+                  observer.next(orgUnits);
+                  observer.complete();
+                }
+              } catch (e) {
+                observer.error(e);
               }
-            } catch (e) {
-              observer.error(e);
+            },
+            error => {
+              observer.error(error);
             }
-          },
-          error => {
-            observer.error(error);
-          }
-        );
+          );
+        }
       }
     });
   }
