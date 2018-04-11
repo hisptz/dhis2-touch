@@ -90,19 +90,14 @@ export class DataEntryFormProvider {
     currentUser
   ): Observable<any> {
     return new Observable(Observer => {
-      console.log(appSettings.entryForm.formLayout);
-
       if (
         formType &&
         formType == 'CUSTOM' &&
+        appSettings &&
+        appSettings.entryForm &&
+        appSettings.entryForm.formLayout &&
         appSettings.entryForm.formLayout == 'customLayout'
       ) {
-        alert('Render as custom form');
-      } else {
-        alert('Render as table or list');
-      }
-
-      if (formType && formType == 'CUSTOM') {
         this.dataSetProvider
           .getDataEntryFormDesign(dataSetId, currentUser)
           .subscribe(
