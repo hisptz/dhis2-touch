@@ -153,7 +153,7 @@ export class OrganisationUnitSearchPage implements OnInit {
 
   getOrganisationUnitsWithPaginations(options) {
     let pageNumber = 0;
-    const pageSize = 200;
+    const pageSize = 500;
     let array = [];
     while (
       this.getSubArryByPagination(options, pageSize, pageNumber).length > 0

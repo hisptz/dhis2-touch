@@ -157,7 +157,7 @@ export class OrganisationUnitSelectionPage implements OnInit {
     const filterType = this.navParams.get('filterType');
     //@todo to revise setting
     //@todo improving searching mechanisms
-
+    this.ouIdsWithAssigments = [];
     if (filterType == 'dataSets') {
       this.dataSetsProvider.getAllDataSetSources(this.currentUser).subscribe(
         (dataSetSources: any) => {
