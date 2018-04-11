@@ -122,11 +122,14 @@
                         <span [translate]="'Form layout'"></span>
                       </ion-label>
                       <ion-select (ionChange)="applySettings(settingContent)" [(ngModel)]="settingObject.entryForm.formLayout" interface="action-sheet">
+                        <ion-option value="tableLayout">
+                          <span [translate]="'Table layout'"></span>
+                        </ion-option>
                         <ion-option value="listLayout">
                           <span [translate]="'List layout'"></span>
                         </ion-option>
-                        <ion-option value="tableLayout">
-                          <span [translate]="'Table layout'"></span>
+                        <ion-option value="customLayout">
+                          <span [translate]="'Custom layout'"></span>
                         </ion-option>
                       </ion-select>
                     </ion-item>
