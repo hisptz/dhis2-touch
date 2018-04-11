@@ -120,6 +120,10 @@ export class EntryFormCompletenessPage implements OnInit {
     this.isLoading = false;
   }
 
+  trackByFn(index, item) {
+    return item.id;
+  }
+
   getValuesToTranslate() {
     return [
       'Discovering completeness information',

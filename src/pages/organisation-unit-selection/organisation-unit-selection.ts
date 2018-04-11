@@ -247,6 +247,10 @@ export class OrganisationUnitSelectionPage implements OnInit {
     this.viewCtrl.dismiss({});
   }
 
+  trackByFn(index, item) {
+    return item.id;
+  }
+
   getValuesToTranslate() {
     return [
       'Discovering current user information',

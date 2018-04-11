@@ -122,7 +122,7 @@ export class MultiOrganisationUnitTreeComponent implements OnInit {
           },
           error => {
             console.log(JSON.stringify(error));
-            let message = 'Fail to discover organisation unit children';
+            let message = 'Failed to discover organisation unit children';
             this.isOrganisationUnitsFetched = true;
             this.hasOrgUnitChildrenLoaded = true;
             this.hasErrorOccurred = true;
@@ -191,10 +191,14 @@ export class MultiOrganisationUnitTreeComponent implements OnInit {
     return result;
   }
 
+  trackByFn(index, item) {
+    return item.id;
+  }
+
   getValuesToTranslate() {
     return [
       'Discovering organisation units',
-      'Fail to discover organisation unit children'
+      'Failed to discover organisation unit children'
     ];
   }
 }

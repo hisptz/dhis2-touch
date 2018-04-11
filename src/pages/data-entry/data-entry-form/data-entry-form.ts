@@ -611,6 +611,10 @@ export class DataEntryFormPage implements OnInit {
     }
   }
 
+  trackByFn(index, item) {
+    return item.id;
+  }
+
   getValuesToTranslate() {
     return [
       'The is no field associated with this entry form, Please contact our help desk',

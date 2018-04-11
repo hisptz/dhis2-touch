@@ -225,6 +225,10 @@ export class SettingsPage implements OnInit {
     }
   }
 
+  trackByFn(index, item) {
+    return item.id;
+  }
+
   getValuesToTranslate() {
     return ['Discovering current user information', 'Discovering settings'];
   }

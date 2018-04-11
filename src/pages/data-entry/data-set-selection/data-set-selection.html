@@ -27,7 +27,7 @@
     <ion-row>
       <ion-col>
         <ion-list>
-          <ion-item *ngFor="let dataSet of dataSetsList" (tap)="setSelectedDataSet(dataSet)">
+          <ion-item *ngFor="let dataSet of dataSetsList;trackBy: trackByFn" (tap)="setSelectedDataSet(dataSet)">
             <img class="side-menu-icon" [src]="icon" />&nbsp;&nbsp;
             <span ion-text [color]="(currentDataSet.id == dataSet.id) ?'current' : 'font-color'">{{ dataSet.name }}</span>
           </ion-item>

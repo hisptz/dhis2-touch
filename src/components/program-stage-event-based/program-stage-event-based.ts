@@ -96,7 +96,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
         this.isLoading = false;
         console.log(JSON.stringify(error));
         this.appProvider.setNormalNotification(
-          'Fail to discover current user information'
+          'Failed to discover current user information'
         );
       }
     );
@@ -133,7 +133,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
                   console.log(JSON.stringify(error));
                   this.isLoading = false;
                   this.appProvider.setNormalNotification(
-                    'Fail to delete event'
+                    'Failed to delete event'
                   );
                 }
               );
@@ -209,6 +209,10 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     this.currentOrgUnit = null;
   }
 
+  trackByFn(index, item) {
+    return item.id;
+  }
+
   getValuesToTranslate() {
     return [
       'Report date',
@@ -221,8 +225,8 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
       'No',
       'Deleting event',
       'Event has been deleted successfully',
-      'Fail to discover current user information',
-      'Fail to delete event'
+      'Failed to discover current user information',
+      'Failed to delete event'
     ];
   }
 }

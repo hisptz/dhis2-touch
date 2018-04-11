@@ -114,6 +114,10 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
       );
   }
 
+  trackByFn(index, item) {
+    return item.id;
+  }
+
   getValuesToTranslate() {
     return [
       'Report date',

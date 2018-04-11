@@ -1,7 +1,7 @@
-import { Component, OnInit } from "@angular/core";
-import { IonicPage } from "ionic-angular";
-import { HelpContentsProvider } from "../../providers/help-contents/help-contents";
-import { AppTranslationProvider } from "../../providers/app-translation/app-translation";
+import { Component, OnInit } from '@angular/core';
+import { IonicPage } from 'ionic-angular';
+import { HelpContentsProvider } from '../../providers/help-contents/help-contents';
+import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the HelpPage page.
@@ -12,8 +12,8 @@ import { AppTranslationProvider } from "../../providers/app-translation/app-tran
 
 @IonicPage()
 @Component({
-  selector: "page-help",
-  templateUrl: "help.html"
+  selector: 'page-help',
+  templateUrl: 'help.html'
 })
 export class HelpPage implements OnInit {
   helpContentsObject: any;
@@ -43,7 +43,7 @@ export class HelpPage implements OnInit {
   }
 
   loadingHelpContents() {
-    let key = "Discovering help contents";
+    let key = 'Discovering help contents';
     this.loadingMessage = this.translationMapper[key]
       ? this.translationMapper[key]
       : key;
@@ -59,7 +59,7 @@ export class HelpPage implements OnInit {
 
   getHelpContents(helpContentsObject) {
     let helpContents = [];
-    Object.keys(helpContentsObject).forEach(key => {
+    Object.keys(helpContentsObject).map(key => {
       helpContents.push(helpContentsObject[key]);
     });
     return helpContents;
@@ -68,7 +68,7 @@ export class HelpPage implements OnInit {
   getFilteredList(event: any) {
     let searchValue = event.target.value;
     this.helpContents = this.getHelpContents(this.helpContentsObject);
-    if (searchValue && searchValue.trim() != "") {
+    if (searchValue && searchValue.trim() != '') {
       this.helpContents = this.helpContents.filter(
         (currentHelpContent: any) => {
           return (
@@ -101,7 +101,11 @@ export class HelpPage implements OnInit {
     }
   }
 
+  trackByFn(index, item) {
+    return item.id;
+  }
+
   getValuesToTranslate() {
-    return ["Discovering help contents"];
+    return ['Discovering help contents'];
   }
 }

@@ -18,7 +18,7 @@
     <ion-row>
       <ion-col>
         <ion-list class="programFormSelection">
-          <ion-item *ngFor="let program of programsList" (tap)="setSelectedProgram(program)">
+          <ion-item *ngFor="let program of programsList;trackBy: trackByFn" (tap)="setSelectedProgram(program)">
             <img class="side-menu-icon" [src]="icons.program" />&nbsp;&nbsp;
             <span ion-text [color]="(currentProgram.id == program.id)? 'current': 'font-color'">{{ program.name}}</span>
           </ion-item>

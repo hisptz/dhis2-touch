@@ -19,7 +19,7 @@ export class DataEntryFormProvider {
     private indicatorProvider: IndicatorsProvider,
     private sectionProvider: SectionsProvider,
     private dataElementProvider: DataElementsProvider
-  ) { }
+  ) {}
 
   /**
    *
@@ -105,7 +105,6 @@ export class DataEntryFormProvider {
                     entryFormSections: entryFormSections,
                     entryForm: entryForm
                   };
-                  console.log(JSON.stringify(response.entryForm));
                   Observer.next(response);
                   Observer.complete();
                 },
@@ -212,8 +211,8 @@ export class DataEntryFormProvider {
                 (dataElements: any) => {
                   let maxDataElements =
                     appSettings &&
-                      appSettings.entryForm &&
-                      appSettings.entryForm.maxDataElementOnDefaultForm
+                    appSettings.entryForm &&
+                    appSettings.entryForm.maxDataElementOnDefaultForm
                       ? appSettings.entryForm.maxDataElementOnDefaultForm
                       : 10;
                   observer.next(

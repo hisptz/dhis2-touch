@@ -93,7 +93,7 @@ export class OrganisationUnitTreeComponent implements OnInit {
           },
           error => {
             console.log(JSON.stringify(error));
-            let message = 'Fail to discover organisation unit children';
+            let message = 'Failed to discover organisation unit children';
             this.appProvider.setNormalNotification(message);
             this.isOrganisationUnitsFetched = true;
             this.hasOrgUnitChildrenLoaded = true;
@@ -115,10 +115,14 @@ export class OrganisationUnitTreeComponent implements OnInit {
     return childrenIds;
   }
 
+  trackByFn(index, item) {
+    return item.id;
+  }
+
   getValuesToTranslate() {
     return [
       'Discovering organisation units',
-      'Fail to discover organisation unit children'
+      'Failed to discover organisation unit children'
     ];
   }
 }
