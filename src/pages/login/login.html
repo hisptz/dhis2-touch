@@ -29,15 +29,6 @@
             </ion-item>
           </ion-list>
         </div>
-        <div *ngIf="downloadingQueueManager">
-          completedTrackedProcess :: {{ completedTrackedProcess|json }}
-          <br>
-          <br> savingingQueueManager :: {{ savingingQueueManager.denqueuedProcess.length + savingingQueueManager.enqueuedProcess.length
-          }}
-          <br>
-          <br>downloadingQueueManager :: {{ downloadingQueueManager.denqueuedProcess.length + downloadingQueueManager.enqueuedProcess.length
-          }}
-        </div>
         <div *ngIf="isNetworkAvailable">
           <ion-list>
             <ion-item>

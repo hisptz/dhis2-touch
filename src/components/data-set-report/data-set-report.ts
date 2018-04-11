@@ -77,6 +77,7 @@ export class DataSetReportComponent implements OnInit {
                   .getEntryForm(
                     this.sectionIds,
                     this.dataSet.id,
+                    '',
                     this.appSettings,
                     this.currentUser
                   )

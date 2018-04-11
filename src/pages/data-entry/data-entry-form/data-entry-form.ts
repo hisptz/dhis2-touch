@@ -48,6 +48,8 @@ export class DataEntryFormPage implements OnInit {
   isDataSetCompleted: boolean;
   isDataSetCompletenessProcessRunning: boolean;
   translationMapper: any;
+  dataEntryFormDesign: string;
+  entryFormType: string;
   @ViewChild(Content) content: Content;
 
   constructor(
@@ -61,9 +63,9 @@ export class DataEntryFormPage implements OnInit {
     private dataValuesProvider: DataValuesProvider,
     private navParams: NavParams,
     private appTranslation: AppTranslationProvider
-  ) {}
-
-  ngOnInit() {
+  ) {
+    this.dataEntryFormDesign = '';
+    this.entryFormType = 'SECTION';
     this.icons['menu'] = 'assets/icon/menu.png';
     this.storageStatus = {
       online: 0,
@@ -75,6 +77,9 @@ export class DataEntryFormPage implements OnInit {
     this.dataValuesSavingStatusClass = {};
     this.isLoading = true;
     this.translationMapper = {};
+  }
+
+  ngOnInit() {
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
       (data: any) => {
         this.translationMapper = data;
@@ -175,12 +180,25 @@ export class DataEntryFormPage implements OnInit {
       ? this.translationMapper[key]
       : key;
     this.dataEntryFormProvider
-      .getEntryForm(sectionIds, dataSet.id, this.appSettings, this.currentUser)
+      .getEntryForm(
+        sectionIds,
+        dataSet.id,
+        dataSet.formType,
+        this.appSettings,
+        this.currentUser
+      )
       .subscribe(
-        (entryForm: any) => {
-          this.entryFormSections = entryForm;
-          this.pager['page'] = 1;
-          this.pager['total'] = entryForm.length;
+        (entryFormResponse: any) => {
+          if (dataSet.formType == 'CUSTOM') {
+            this.dataEntryFormDesign = entryFormResponse.entryForm;
+            this.entryFormSections = entryFormResponse.entryFormSections;
+            this.entryFormType = 'CUSTOM';
+          } else {
+            this.entryFormSections = entryFormResponse;
+            this.pager['page'] = 1;
+            this.pager['total'] = entryFormResponse.length;
+            this.entryFormType = 'SECTION';
+          }
           let dataSetId = this.dataSet.id;
           let period = this.entryFormParameter.period.iso;
           let orgUnitId = this.entryFormParameter.orgUnit.id;

@@ -628,6 +628,38 @@ export class DataSetsProvider {
     });
   }
 
+  getDataEntryFormDesign(dataSetId, currentUser: CurrentUser): Observable<any> {
+    return new Observable(observer => {
+      let entryFormDesign = '';
+      const resource = 'dataSetDesign';
+      this.SqlLite.getAllDataFromTable(
+        resource,
+        currentUser.currentDatabase
+      ).subscribe(data => {
+        console.log(data.length);
+      });
+
+      this.SqlLite.getDataFromTableByAttributes(
+        resource,
+        'id',
+        [dataSetId],
+        currentUser.currentDatabase
+      ).subscribe(
+        (entryFormDesigns: any) => {
+          console.log(JSON.stringify(entryFormDesigns));
+          if (entryFormDesigns && entryFormDesigns.length > 0) {
+            entryFormDesign = entryFormDesigns[0].dataSetDesign;
+          }
+          observer.next(entryFormDesign);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
+    });
+  }
+
   /**
    *
    * @param dataSets

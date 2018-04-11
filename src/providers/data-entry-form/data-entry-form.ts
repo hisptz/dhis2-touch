@@ -4,6 +4,7 @@ import { DataElementsProvider } from '../data-elements/data-elements';
 import { IndicatorsProvider } from '../indicators/indicators';
 import { SectionsProvider } from '../sections/sections';
 import { Observable } from 'rxjs/Observable';
+import { CurrentUser } from '../../models/currentUser';
 
 /*
   Generated class for the DataEntryFormProvider provider.
@@ -18,7 +19,7 @@ export class DataEntryFormProvider {
     private indicatorProvider: IndicatorsProvider,
     private sectionProvider: SectionsProvider,
     private dataElementProvider: DataElementsProvider
-  ) {}
+  ) { }
 
   /**
    *
@@ -76,6 +77,7 @@ export class DataEntryFormProvider {
    *
    * @param sectionIds
    * @param dataSetId
+   * @param formType
    * @param appSettings
    * @param currentUser
    * @returns {Observable<any>}
@@ -83,11 +85,40 @@ export class DataEntryFormProvider {
   getEntryForm(
     sectionIds,
     dataSetId,
+    formType,
     appSettings,
     currentUser
   ): Observable<any> {
     return new Observable(Observer => {
-      if (sectionIds && sectionIds.length > 0) {
+      if (formType && formType == 'CUSTOM') {
+        this.dataSetProvider
+          .getDataEntryFormDesign(dataSetId, currentUser)
+          .subscribe(
+            (entryForm: string) => {
+              this.getDefaultEntryForm(
+                dataSetId,
+                appSettings,
+                currentUser
+              ).subscribe(
+                (entryFormSections: any) => {
+                  const response = {
+                    entryFormSections: entryFormSections,
+                    entryForm: entryForm
+                  };
+                  console.log(JSON.stringify(response.entryForm));
+                  Observer.next(response);
+                  Observer.complete();
+                },
+                error => {
+                  Observer.error(error);
+                }
+              );
+            },
+            error => {
+              Observer.error(error);
+            }
+          );
+      } else if (sectionIds && sectionIds.length > 0) {
         this.getSectionEntryForm(sectionIds, currentUser).subscribe(
           (entryForm: any) => {
             Observer.next(entryForm);
@@ -113,7 +144,6 @@ export class DataEntryFormProvider {
 
   /**
    *
-   * @param sectionIds
    * @param currentUser
    * @returns {Observable<any>}
    */
@@ -182,8 +212,8 @@ export class DataEntryFormProvider {
                 (dataElements: any) => {
                   let maxDataElements =
                     appSettings &&
-                    appSettings.entryForm &&
-                    appSettings.entryForm.maxDataElementOnDefaultForm
+                      appSettings.entryForm &&
+                      appSettings.entryForm.maxDataElementOnDefaultForm
                       ? appSettings.entryForm.maxDataElementOnDefaultForm
                       : 10;
                   observer.next(
