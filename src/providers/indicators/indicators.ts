@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
+import * as _ from 'lodash';
 
 /*
   Generated class for the IndicatorsProvider provider.
@@ -98,19 +99,34 @@ export class IndicatorsProvider {
     });
   }
 
-  getIndicatorValues() {
-    const dataObject = {
-      'J2eDsDShu8s-FoS2ElguZ6D': 2,
-      'J2eDsDShu8s-CRk7N9zVu1e': 55,
-      'J2eDsDShu8s-sZju15olqw2': 2
-    };
-    const factor = '45';
-    const numerator = '#{J2eDsDShu8s.CRk7N9zVu1e}+#{J2eDsDShu8s.sZju15olqw2}';
-    const denominator =
-      '#{J2eDsDShu8s.CRk7N9zVu1e}+#{J2eDsDShu8s.sZju15olqw2}+#{J2eDsDShu8s.FoS2ElguZ6D})';
-    const expresion = '(' + numerator + '/' + denominator + ')*' + factor;
-    const generatedExpresion = this.generateExpresion(expresion, dataObject);
-    return generatedExpresion;
+  getIndicatorValues(indicators, dataObject) {
+    let indicatorToValue = {};
+    indicators.map((indicator: any) => {
+      const { id } = indicator;
+      const { numerator } = indicator;
+      const { denominator } = indicator;
+      const { indicatorType } = indicator;
+      const expresion =
+        '(' +
+        numerator +
+        '/' +
+        denominator +
+        ')*' +
+        (indicatorType && indicatorType.factor ? indicatorType.factor : 1);
+      let value = 0;
+      const generatedExpresion = this.generateExpresion(expresion, dataObject);
+      try {
+        value = eval(generatedExpresion);
+        if (isNaN(value)) {
+          indicatorToValue[id] = '-';
+        } else {
+          indicatorToValue[id] = Math.round(value);
+        }
+      } catch (e) {
+        console.log('Fail to evaluate : ' + generatedExpresion);
+      }
+    });
+    return { indicators: indicators, indicatorToValue: indicatorToValue };
   }
 
   generateExpresion(expression, dataObject) {
