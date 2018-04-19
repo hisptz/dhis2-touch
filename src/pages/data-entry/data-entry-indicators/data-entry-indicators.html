@@ -35,15 +35,18 @@
             </b> : {{ indicator.numeratorDescription }}
             <br>
           </span>
-          <!-- <b>Numerator</b> : {{ indicator.numerator }}<br> -->
           <span *ngIf="indicator.denominatorDescription != ''">
             <b>
               <span [translate]="'Denominator Description'"></span>
             </b> : {{ indicator.denominatorDescription }}
             <br>
           </span>
-          <!-- <b>Denominator </b> : {{ indicator.denominator }}<br> -->
-          <!-- Indicator value -->
+          <span>
+            <b>
+              <span [translate]="'Value'"></span>
+            </b> : {{ (indicatorToValue[indicator.id])? indicatorToValue[indicator.id] : '' }}
+            <br>
+          </span>
         </div>
       </ion-col>
     </ion-row>
