@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavParams, ViewController } from 'ionic-angular';
+import { IndicatorsProvider } from '../../../providers/indicators/indicators';
 
 /**
  * Generated class for the DataEntryIndicatorsPage page.
@@ -15,15 +16,30 @@ import { IonicPage, NavParams, ViewController } from 'ionic-angular';
 })
 export class DataEntryIndicatorsPage implements OnInit {
   indicators: any;
-  dataSet: any;
+  indicatorToValue: any;
   title: string = "Entry form's indicators";
-  constructor(public viewCtrl: ViewController, public navParams: NavParams) {}
+  constructor(
+    public viewCtrl: ViewController,
+    public navParams: NavParams,
+    private indicatorProvider: IndicatorsProvider
+  ) {
+    this.indicators = [];
+    this.indicatorToValue = {};
+  }
 
   ngOnInit() {
     this.indicators = this.navParams.get('indicators');
-    this.dataSet = this.navParams.get('dataSet');
-    if (this.dataSet && this.dataSet.name) {
-      this.title = this.dataSet.name + "'s indicators";
+    const dataValuesObject = this.navParams.get('dataValuesObject');
+    const dataSet = this.navParams.get('dataSet');
+    if (dataSet && dataSet.name) {
+      this.title = dataSet.name + "'s indicators";
+    }
+    const { indicatorToValue } = this.indicatorProvider.getIndicatorValues(
+      this.indicators,
+      dataValuesObject
+    );
+    if (indicatorToValue) {
+      this.indicatorToValue = indicatorToValue;
     }
   }
 

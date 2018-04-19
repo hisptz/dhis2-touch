@@ -142,7 +142,7 @@ export class IndicatorsProvider {
       } else {
         const valueKey = operand.replace('.', '-');
         if (dataObject[valueKey]) {
-          value = dataObject[valueKey];
+          value = dataObject[valueKey].value;
         }
       }
       expression = expression.replace(match, value);
@@ -157,7 +157,7 @@ export class IndicatorsProvider {
       return key.indexOf(pattern) > -1;
     });
     matchedKeys.map(key => {
-      const value = dataObject[key];
+      const value = dataObject[key].value;
       if (!isNaN(value)) {
         sum += parseFloat(new Number(value).toString());
       }

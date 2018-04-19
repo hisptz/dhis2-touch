@@ -403,6 +403,7 @@ export class DataEntryFormPage implements OnInit {
     if (indicators && indicators.length > 0) {
       let modal = this.modalCtrl.create('DataEntryIndicatorsPage', {
         indicators: indicators,
+        dataValuesObject: this.dataValuesObject,
         dataSet: { id: this.dataSet.id, name: this.dataSet.name }
       });
       modal.onDidDismiss(() => {});
