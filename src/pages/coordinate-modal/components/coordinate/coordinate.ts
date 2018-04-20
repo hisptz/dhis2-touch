@@ -34,7 +34,7 @@ export class CoordinateComponent {
   }
 
   initMap() {
-    //center based on location of phone
+    //center based on location
     const defaultPosition = [3.3, 11.7];
     const center =
       this.position && this.position.lat && this.position.lng

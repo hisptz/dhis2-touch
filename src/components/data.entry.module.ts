@@ -14,7 +14,6 @@ import { ProgramStageEventBasedComponent } from './program-stage-event-based/pro
 import { ProgramStageTrackerBasedComponent } from './program-stage-tracker-based/program-stage-tracker-based';
 import { EventInputContainerComponent } from './event-input-container/event-input-container';
 import { TrackerEventContainerComponent } from './tracker-event-container/tracker-event-container';
-import { CoordinateComponent } from './coordinate/coordinate';
 
 @NgModule({
   declarations: [
@@ -30,8 +29,7 @@ import { CoordinateComponent } from './coordinate/coordinate';
     ProgramStageEventBasedComponent,
     ProgramStageTrackerBasedComponent,
     EventInputContainerComponent,
-    TrackerEventContainerComponent,
-    CoordinateComponent
+    TrackerEventContainerComponent
   ],
   imports: [IonicModule, SharedModule],
   exports: [
@@ -47,8 +45,7 @@ import { CoordinateComponent } from './coordinate/coordinate';
     ProgramStageEventBasedComponent,
     ProgramStageTrackerBasedComponent,
     EventInputContainerComponent,
-    TrackerEventContainerComponent,
-    CoordinateComponent
+    TrackerEventContainerComponent
   ]
 })
 export class DataEntryModule {}
