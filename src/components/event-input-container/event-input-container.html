@@ -38,6 +38,11 @@
         [data]="data">
       </boolean-input-field>
     </div>
+    <div *ngIf="dataElement.valueType == 'COORDINATE'">
+      <coordinate-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="'dataElement'"
+        [data]="data">
+      </coordinate-input>
+    </div>
 
     <div *ngIf="supportValueTypes.indexOf(dataElement.valueType) == -1">
       <div padding>

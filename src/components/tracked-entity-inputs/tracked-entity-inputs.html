@@ -38,6 +38,11 @@
         [data]="data">
       </boolean-input-field>
     </div>
+    <div *ngIf="trackedEntityAttribute.valueType == 'COORDINATE'">
+      <coordinate-input (onChange)="updateValue($event)" [dataElementId]="trackedEntityAttribute.id" [categoryOptionComboId]="'trackedEntityAttribute'"
+        [data]="data">
+      </coordinate-input>
+    </div>
 
     <div *ngIf="supportValueTypes.indexOf(trackedEntityAttribute.valueType) == -1">
       <div padding>

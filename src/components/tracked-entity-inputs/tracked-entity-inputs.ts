@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {SettingsProvider} from "../../providers/settings/settings";
-import {ActionSheetController} from "ionic-angular";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { SettingsProvider } from '../../providers/settings/settings';
+import { ActionSheetController } from 'ionic-angular';
 
 /**
  * Generated class for the TrackedEntityInputsComponent component.
@@ -13,7 +13,6 @@ import {ActionSheetController} from "ionic-angular";
   templateUrl: 'tracked-entity-inputs.html'
 })
 export class TrackedEntityInputsComponent implements OnInit {
-
   @Input() trackedEntityAttribute;
   @Input() currentUser;
   @Input() mandatory;
@@ -27,49 +26,81 @@ export class TrackedEntityInputsComponent implements OnInit {
   supportValueTypes: Array<string>;
   formLayout: string;
 
-  constructor(private settingProvider: SettingsProvider, private actionSheetCtrl: ActionSheetController) {
-  }
+  constructor(
+    private settingProvider: SettingsProvider,
+    private actionSheetCtrl: ActionSheetController
+  ) {}
 
   ngOnInit() {
-    this.numericalInputField = ['INTEGER_NEGATIVE', 'INTEGER_POSITIVE', 'INTEGER', 'NUMBER', 'INTEGER_ZERO_OR_POSITIVE'];
+    this.numericalInputField = [
+      'INTEGER_NEGATIVE',
+      'INTEGER_POSITIVE',
+      'INTEGER',
+      'NUMBER',
+      'INTEGER_ZERO_OR_POSITIVE'
+    ];
     this.textInputField = ['TEXT', 'LONG_TEXT'];
-    this.supportValueTypes = ['BOOLEAN', 'TRUE_ONLY', 'DATE', 'TEXT', 'LONG_TEXT', 'INTEGER_NEGATIVE', 'INTEGER_POSITIVE', 'INTEGER', 'NUMBER', 'INTEGER_ZERO_OR_POSITIVE'];
+    this.supportValueTypes = [
+      'BOOLEAN',
+      'TRUE_ONLY',
+      'DATE',
+      'TEXT',
+      'LONG_TEXT',
+      'INTEGER_NEGATIVE',
+      'INTEGER_POSITIVE',
+      'INTEGER',
+      'NUMBER',
+      'INTEGER_ZERO_OR_POSITIVE',
+      'COORDINATE'
+    ];
     if (this.trackedEntityAttribute && this.trackedEntityAttribute.id) {
       this.fieldLabelKey = this.trackedEntityAttribute.name;
-      this.formLayout = "listLayout";
-      this.settingProvider.getSettingsForTheApp(this.currentUser).subscribe((appSettings: any) => {
-        let dataEntrySettings = appSettings.entryForm;
-        if (dataEntrySettings.formLayout) {
-          this.formLayout = dataEntrySettings.formLayout;
-        }
-        if (dataEntrySettings.label) {
-          if (this.trackedEntityAttribute[dataEntrySettings.label]) {
-            this.fieldLabelKey = this.trackedEntityAttribute[dataEntrySettings.label];
+      this.formLayout = 'listLayout';
+      this.settingProvider
+        .getSettingsForTheApp(this.currentUser)
+        .subscribe((appSettings: any) => {
+          let dataEntrySettings = appSettings.entryForm;
+          if (dataEntrySettings.formLayout) {
+            this.formLayout = dataEntrySettings.formLayout;
           }
-        }
-      });
+          if (dataEntrySettings.label) {
+            if (this.trackedEntityAttribute[dataEntrySettings.label]) {
+              this.fieldLabelKey = this.trackedEntityAttribute[
+                dataEntrySettings.label
+              ];
+            }
+          }
+        });
     }
   }
 
   showTooltips() {
     let title = this.fieldLabelKey;
-    let subTitle = "";
+    let subTitle = '';
     if (this.trackedEntityAttribute.description) {
-      title += ". Description : " + this.trackedEntityAttribute.description;
+      title += '. Description : ' + this.trackedEntityAttribute.description;
     }
-    subTitle += "Value Type : " + this.trackedEntityAttribute.valueType.toLocaleLowerCase().replace(/_/g, " ");
+    subTitle +=
+      'Value Type : ' +
+      this.trackedEntityAttribute.valueType
+        .toLocaleLowerCase()
+        .replace(/_/g, ' ');
     if (this.trackedEntityAttribute.optionSet) {
-      title += ". It has " + this.trackedEntityAttribute.optionSet.options.length + " options to select.";
+      title +=
+        '. It has ' +
+        this.trackedEntityAttribute.optionSet.options.length +
+        ' options to select.';
     }
     let actionSheet = this.actionSheetCtrl.create({
-      title: title, subTitle: subTitle
+      title: title,
+      subTitle: subTitle
     });
     actionSheet.present();
   }
 
   updateValue(updatedValue) {
-    this.trackedEntityAttributesSavingStatusClass[updatedValue.id] = "input-field-container-saving";
+    this.trackedEntityAttributesSavingStatusClass[updatedValue.id] =
+      'input-field-container-saving';
     this.onChange.emit(updatedValue);
-  };
-
+  }
 }
