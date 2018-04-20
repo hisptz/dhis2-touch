@@ -13,7 +13,6 @@ import { AppProvider } from '../../providers/app/app';
 import { EventCaptureFormProvider } from '../../providers/event-capture-form/event-capture-form';
 import { ActionSheetController } from 'ionic-angular';
 import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
-import * as _ from 'lodash';
 
 /**
  * Generated class for the ProgramStageEventBasedComponent component.
@@ -29,6 +28,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   @Input() programStage;
   @Input() dataDimension;
   @Input() currentEvent;
+  @Input() emptyEvent;
   @Output() onDeleteEvent = new EventEmitter();
   @Output() onCancelEvent = new EventEmitter();
 
@@ -104,7 +104,12 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     );
   }
 
-  AddNewEvent() {}
+  AddNewEvent() {
+    this.dataObjectModel = {};
+    this.dataValuesSavingStatusClass = {};
+    this.eventDate = '';
+    this.currentEvent = Object.assign({}, this.emptyEvent);
+  }
 
   goBack() {
     this.onCancelEvent.emit();
