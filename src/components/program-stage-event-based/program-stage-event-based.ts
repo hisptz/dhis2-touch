@@ -13,6 +13,7 @@ import { AppProvider } from '../../providers/app/app';
 import { EventCaptureFormProvider } from '../../providers/event-capture-form/event-capture-form';
 import { ActionSheetController } from 'ionic-angular';
 import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
+import * as _ from 'lodash';
 
 /**
  * Generated class for the ProgramStageEventBasedComponent component.
@@ -29,6 +30,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   @Input() dataDimension;
   @Input() currentEvent;
   @Output() onDeleteEvent = new EventEmitter();
+  @Output() onCancelEvent = new EventEmitter();
 
   currentOrgUnit: any;
   currentProgram: any;
@@ -102,6 +104,12 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     );
   }
 
+  AddNewEvent() {}
+
+  goBack() {
+    this.onCancelEvent.emit();
+  }
+
   canEventBeDeleted() {
     return this.currentEvent && this.currentEvent.eventDate;
   }
@@ -150,10 +158,10 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
 
   updateDataObjectModel(dataValues, programStageDataElements) {
     let dataValuesMapper = {};
-    dataValues.forEach((dataValue: any) => {
+    dataValues.map((dataValue: any) => {
       dataValuesMapper[dataValue.dataElement] = dataValue;
     });
-    programStageDataElements.forEach((programStageDataElement: any) => {
+    programStageDataElements.map((programStageDataElement: any) => {
       if (
         programStageDataElement.dataElement &&
         programStageDataElement.dataElement.id
@@ -223,6 +231,8 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
       'You are about to delete this event, are you sure?',
       'Yes',
       'No',
+      'Add New',
+      'Back',
       'Deleting event',
       'Event has been deleted successfully',
       'Failed to discover current user information',
