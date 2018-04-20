@@ -335,6 +335,12 @@ export class EventCapturePage implements OnInit {
         (programStages: any) => {
           if (programStages && programStages.length > 0) {
             this.programStage = programStages[0];
+            const { executionDateLabel } = this.programStage;
+            this.columnsToDisplay['eventDate'] =
+              executionDateLabel &&
+              (executionDateLabel != '0' || executionDateLabel != '0.0')
+                ? executionDateLabel
+                : 'Report date';
             if (this.programStage.programStageDataElements) {
               this.programStage.programStageDataElements.forEach(
                 (programStageDataElement: any) => {

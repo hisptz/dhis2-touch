@@ -308,6 +308,8 @@ export class EventCaptureFormProvider {
     events.map((event: any) => {
       let mapper = {};
       if (event && event.dataValues) {
+        const { eventDate } = event;
+        mapper['eventDate'] = eventDate;
         event.dataValues.map((dataValue: any) => {
           mapper[dataValue.dataElement] = dataValue.value;
         });
