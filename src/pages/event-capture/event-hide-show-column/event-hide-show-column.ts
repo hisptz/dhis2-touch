@@ -15,17 +15,28 @@ import { IonicPage, ViewController, NavParams } from 'ionic-angular';
 })
 export class EventHideShowColumnPage implements OnInit, OnDestroy {
   programStage: any;
-  dataElements: Array<any>;
+  fieldsToDisplay: Array<any>;
   selectedItemsModel: any;
 
   constructor(public viewCtrl: ViewController, public params: NavParams) {}
 
   ngOnInit() {
     this.selectedItemsModel = [];
-    this.dataElements = [];
+    this.fieldsToDisplay = [];
     this.programStage = this.params.get('programStage');
     let columnsToDisplay = this.params.get('columnsToDisplay');
     let dataEntrySettings = this.params.get('dataEntrySettings');
+    const { executionDateLabel } = this.programStage;
+    const reportDateLabel =
+      executionDateLabel &&
+      (executionDateLabel != '0' || executionDateLabel != '0.0')
+        ? executionDateLabel
+        : 'Report date';
+    this.fieldsToDisplay.push({
+      id: 'eventDate',
+      name: reportDateLabel
+    });
+
     Object.keys(columnsToDisplay).forEach(key => {
       this.selectedItemsModel[key] = true;
     });
@@ -49,7 +60,7 @@ export class EventHideShowColumnPage implements OnInit, OnDestroy {
                 programStageDataElement.dataElement[dataEntrySettings.label];
             }
           }
-          this.dataElements.push({
+          this.fieldsToDisplay.push({
             id: programStageDataElement.dataElement.id,
             name: fieldLabelKey
           });
@@ -59,23 +70,25 @@ export class EventHideShowColumnPage implements OnInit, OnDestroy {
   }
 
   autoSelectFields(status) {
-    this.dataElements.forEach((trackedEntityAttribute: any) => {
+    this.fieldsToDisplay.forEach((trackedEntityAttribute: any) => {
       this.selectedItemsModel[trackedEntityAttribute.id] = status;
     });
   }
 
   saveChanges() {
     let columnsToDisplay = {};
-    this.dataElements.forEach((dataElement: any) => {
+    this.fieldsToDisplay.forEach((dataElement: any) => {
       if (this.selectedItemsModel[dataElement.id]) {
         columnsToDisplay[dataElement.id] = dataElement.name;
       }
     });
     if (
       Object.keys(columnsToDisplay).length == 0 &&
-      this.dataElements.length > 0
+      this.fieldsToDisplay.length > 0
     ) {
-      columnsToDisplay[this.dataElements[0].id] = this.dataElements[0].name;
+      columnsToDisplay[
+        this.fieldsToDisplay[0].id
+      ] = this.fieldsToDisplay[0].name;
     }
     this.viewCtrl.dismiss(columnsToDisplay);
   }
