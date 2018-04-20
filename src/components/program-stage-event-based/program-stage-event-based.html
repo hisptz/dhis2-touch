@@ -4,7 +4,7 @@
 <div *ngIf="!isLoading">
   <div class="item-card">
     <div>
-      <span *ngIf="programStage.executionDateLabel == '0'">{{ translationMapper['Report date']}} </span>
+      <span *ngIf="programStage.executionDateLabel == '0' || programStage.executionDateLabel == '0.0'">{{ translationMapper['Report date']}} </span>
       <span *ngIf="programStage.executionDateLabel !='0'">{{ programStage.executionDateLabel }}</span>
       <span class="required">*</span>
     </div>
@@ -28,7 +28,7 @@
                 <td>
                   <div text-left>
                     <div *ngFor="let dataElement of programStageSection.dataElements;trackBy: trackByFn">
-                      <event-input-container [dataElement]="dataElement" [currentUser]="currentUser" [data]="dataObjectModel" [mandatory]="'false'"
+                      <event-input-container [dataElement]="dataElement" [currentUser]="currentUser" [(data)]="dataObjectModel" [mandatory]="'false'"
                         [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" (onChange)="updateData($event)"></event-input-container>
                     </div>
                   </div>
@@ -37,42 +37,50 @@
             </tbody>
           </table>
         </div>
-        <div no-padding>
-          <div style="display: inline-block;width: 49.3%">
-            <div float-left>
+        <ion-row no-padding>
+          <ion-col>
+            <div class="item-card" color="font-color" ion-button clear text-justify (click)="goBack()">
+              <ion-icon name="Back" color="icon-color"></ion-icon>&nbsp; {{ translationMapper['Back']}}
             </div>
-          </div>
-          <div style="display: inline-block;width: 49.3%">
+          </ion-col>
+          <ion-col col-auto>
             <div *ngIf="canEventBeDeleted()" float-right>
+              <div class="item-card" color="font-color" ion-button clear text-justify (click)="AddNewEvent()">
+                <ion-icon name="add" color="icon-color"></ion-icon>&nbsp; {{ translationMapper['Add New']}}
+              </div>
               <div class="item-card" color="danger" ion-button clear text-justify (click)="deleteEvent(currentEvent.id)">
                 <ion-icon name="trash"></ion-icon>&nbsp; {{ translationMapper['Delete']}}
               </div>
             </div>
-          </div>
-        </div>
+          </ion-col>
+        </ion-row>
       </div>
       <div *ngIf="programStage.programStageSections && programStage.programStageSections  && programStage.programStageSections.length == 0">
         <div *ngIf="programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0 ">
           <div *ngFor="let programStageDataElement of programStage.programStageDataElements;trackBy: trackByFn">
             <div *ngIf="programStageDataElement.dataElement && programStageDataElement.dataElement.id">
-              <event-input-container [dataElement]="programStageDataElement.dataElement" [currentUser]="currentUser" [data]="dataObjectModel"
+              <event-input-container [dataElement]="programStageDataElement.dataElement" [currentUser]="currentUser" [(data)]="dataObjectModel"
                 [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [mandatory]="programStageDataElement.compulsory"
                 (onChange)="updateData($event)"></event-input-container>
             </div>
           </div>
-          <div no-padding>
-            <div style="display: inline-block;width: 49.3%">
-              <div float-left>
+          <ion-row no-padding>
+            <ion-col>
+              <div class="item-card" color="font-color" ion-button clear text-justify (click)="goBack()">
+                <ion-icon name="Back" color="icon-color"></ion-icon>&nbsp; {{ translationMapper['Back']}}
               </div>
-            </div>
-            <div style="display: inline-block;width: 49.3%">
+            </ion-col>
+            <ion-col col-auto>
               <div *ngIf="canEventBeDeleted()" float-right>
+                <div class="item-card" color="font-color" ion-button clear text-justify (click)="AddNewEvent()">
+                  <ion-icon name="add" color="icon-color"></ion-icon>&nbsp; {{ translationMapper['Add New']}}
+                </div>
                 <div class="item-card" color="danger" ion-button clear text-justify (click)="deleteEvent(currentEvent.id)">
                   <ion-icon name="trash"></ion-icon>&nbsp; {{ translationMapper['Delete']}}
                 </div>
               </div>
-            </div>
-          </div>
+            </ion-col>
+          </ion-row>
         </div>
       </div>
       <div *ngIf="!(programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">

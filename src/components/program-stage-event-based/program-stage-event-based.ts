@@ -28,7 +28,9 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   @Input() programStage;
   @Input() dataDimension;
   @Input() currentEvent;
+  @Input() emptyEvent;
   @Output() onDeleteEvent = new EventEmitter();
+  @Output() onCancelEvent = new EventEmitter();
 
   currentOrgUnit: any;
   currentProgram: any;
@@ -102,6 +104,17 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     );
   }
 
+  AddNewEvent() {
+    this.dataObjectModel = {};
+    this.dataValuesSavingStatusClass = {};
+    this.eventDate = '';
+    this.currentEvent = Object.assign({}, this.emptyEvent);
+  }
+
+  goBack() {
+    this.onCancelEvent.emit();
+  }
+
   canEventBeDeleted() {
     return this.currentEvent && this.currentEvent.eventDate;
   }
@@ -150,10 +163,10 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
 
   updateDataObjectModel(dataValues, programStageDataElements) {
     let dataValuesMapper = {};
-    dataValues.forEach((dataValue: any) => {
+    dataValues.map((dataValue: any) => {
       dataValuesMapper[dataValue.dataElement] = dataValue;
     });
-    programStageDataElements.forEach((programStageDataElement: any) => {
+    programStageDataElements.map((programStageDataElement: any) => {
       if (
         programStageDataElement.dataElement &&
         programStageDataElement.dataElement.id
@@ -223,6 +236,8 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
       'You are about to delete this event, are you sure?',
       'Yes',
       'No',
+      'Add New',
+      'Back',
       'Deleting event',
       'Event has been deleted successfully',
       'Failed to discover current user information',
