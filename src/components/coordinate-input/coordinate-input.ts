@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ModalController } from 'ionic-angular';
+import { ModalController, ModalOptions } from 'ionic-angular';
 
 /**
  * Generated class for the CoordinateInputComponent component.
@@ -19,4 +19,12 @@ export class CoordinateInputComponent implements OnInit {
   constructor(private modalCtrl: ModalController) {}
 
   ngOnInit() {}
+
+  openMap() {
+    const modal = this.modalCtrl.create('CoordinateModalPage', {});
+    modal.onDidDismiss((data: any) => {
+      console.log('Data : ' + JSON.stringify(data));
+    });
+    modal.present();
+  }
 }

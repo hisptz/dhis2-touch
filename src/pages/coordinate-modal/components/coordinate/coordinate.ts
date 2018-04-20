@@ -30,20 +30,25 @@ export class CoordinateComponent {
   constructor() {}
 
   ngOnInit() {
-    this.initMap();
+    setTimeout(() => {
+      this.initMap();
+    }, 500);
   }
 
   initMap() {
-    //center based on location
-    const defaultPosition = [3.3, 11.7];
-    const center =
-      this.position && this.position.lat && this.position.lng
-        ? [this.position.lat, this.position.lng]
-        : defaultPosition;
+    const defaultPosition = { lat: 3.3, lng: 11.7 };
+    let center = [defaultPosition.lat, defaultPosition.lng];
+    if (this.position && this.position.lat && this.position.lng) {
+      center = [this.position.lat, this.position.lng];
+    } else {
+      this.onCoordinateChange.emit(defaultPosition);
+    }
     this.map = L.map('coordinate-selection', {
       center: center,
-      zoom: 5
+      zoom: 5,
+      zoomControl: false
     });
+    this.map.addControl(L.control.zoom({ position: 'topright' }));
     //Add OSM Layer
     L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution:
@@ -52,7 +57,7 @@ export class CoordinateComponent {
     //adding marker
     const marker = L.marker(center, {
       icon: L.icon({
-        iconUrl: 'assets/marker-icon.png',
+        iconUrl: 'assets/icon/marker-icon.png',
         iconSize: [21, 31], // size of the icon
         iconAnchor: [10, 31], // point of the icon which will correspond to marker's location
         popupAnchor: [0, -31]
@@ -62,8 +67,8 @@ export class CoordinateComponent {
     marker.on('dragend', event => {
       const newMarker = event.target;
       const position = newMarker.getLatLng();
+      this.position = position;
       marker.setLatLng(new L.LatLng(position.lat, position.lng));
-      this.onCoordinateChange.emit(position);
     });
   }
 }
