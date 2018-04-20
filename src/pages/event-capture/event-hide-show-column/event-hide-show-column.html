@@ -20,7 +20,7 @@
 </ion-header>
 <ion-content>
   <ion-grid>
-    <div *ngIf="dataElements && dataElements.length > 0">
+    <div *ngIf="fieldsToDisplay && fieldsToDisplay.length > 0">
       <ion-row>
         <ion-col>
           <button color="primary" (tap)="autoSelectFields(true)" round ion-button full>
@@ -35,9 +35,9 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <ion-item *ngFor="let dataElement of dataElements;trackBy: trackByFn">
-            <ion-label>{{ dataElement.name }}</ion-label>
-            <ion-checkbox [(ngModel)]="selectedItemsModel[dataElement.id]"></ion-checkbox>
+          <ion-item *ngFor="let field of fieldsToDisplay;trackBy: trackByFn">
+            <ion-label>{{ field.name }}</ion-label>
+            <ion-checkbox [(ngModel)]="selectedItemsModel[field.id]"></ion-checkbox>
           </ion-item>
         </ion-col>
       </ion-row>
