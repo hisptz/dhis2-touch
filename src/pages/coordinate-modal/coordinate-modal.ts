@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavParams } from 'ionic-angular';
+import { IonicPage, NavParams, ViewController } from 'ionic-angular';
 
 /**
  * Generated class for the CoordinateModalPage page.
@@ -16,7 +16,7 @@ import { IonicPage, NavParams } from 'ionic-angular';
 export class CoordinateModalPage implements OnInit {
   position: any;
   isLoading: boolean;
-  constructor(private navParams: NavParams) {
+  constructor(private navParams: NavParams, private viewCtrl: ViewController) {
     this.isLoading = true;
   }
 
@@ -27,5 +27,9 @@ export class CoordinateModalPage implements OnInit {
 
   changeCoordinate(position) {
     this.position = position;
+  }
+
+  dismiss() {
+    this.viewCtrl.dismiss();
   }
 }

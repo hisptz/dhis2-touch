@@ -40,7 +40,7 @@ export class CoordinateComponent {
       this.position && this.position.lat && this.position.lng
         ? [this.position.lat, this.position.lng]
         : defaultPosition;
-    this.map = L.map('map', {
+    this.map = L.map('coordinate-selection', {
       center: center,
       zoom: 5
     });

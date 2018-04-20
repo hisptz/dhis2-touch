@@ -5,11 +5,18 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title></ion-title>
-  </ion-navbar>
-
+  <ion-toolbar color="primary">
+    <ion-buttons left>
+      <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
+        &nbsp;&nbsp;&nbsp;
+        <ion-icon name="arrow-back"></ion-icon>
+        &nbsp;&nbsp;
+      </button>
+    </ion-buttons>
+    <ion-title>
+      <span [translate]="'Coordinate selection'"></span>
+    </ion-title>
+  </ion-toolbar>
 </ion-header>
 
 
