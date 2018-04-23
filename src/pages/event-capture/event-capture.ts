@@ -337,8 +337,7 @@ export class EventCapturePage implements OnInit {
             this.programStage = programStages[0];
             const { executionDateLabel } = this.programStage;
             this.columnsToDisplay['eventDate'] =
-              executionDateLabel &&
-              (executionDateLabel != '0' || executionDateLabel != '0.0')
+              executionDateLabel != 0 || executionDateLabel != 0.0
                 ? executionDateLabel
                 : 'Report date';
             if (this.programStage.programStageDataElements) {
@@ -391,7 +390,7 @@ export class EventCapturePage implements OnInit {
   }
 
   hideAndShowColumns() {
-    let modal = this.modalCtrl.create('EventHideShowColumnPage', {
+    const modal = this.modalCtrl.create('EventHideShowColumnPage', {
       columnsToDisplay: this.columnsToDisplay,
       programStage: this.programStage,
       dataEntrySettings: this.dataEntrySettings

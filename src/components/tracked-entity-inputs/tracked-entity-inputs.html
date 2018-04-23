@@ -38,6 +38,26 @@
         [data]="data">
       </boolean-input-field>
     </div>
+    <div *ngIf="trackedEntityAttribute.valueType == 'COORDINATE'">
+      <coordinate-input (onChange)="updateValue($event)" [dataElementId]="trackedEntityAttribute.id" [categoryOptionComboId]="'trackedEntityAttribute'"
+        [data]="data">
+      </coordinate-input>
+    </div>
+    <div *ngIf="trackedEntityAttribute.valueType == 'ORGANISATION_UNIT'">
+      <organisation-unit-input (onChange)="updateValue($event)" [dataElementId]="trackedEntityAttribute.id" [categoryOptionComboId]="'trackedEntityAttribute'"
+        [data]="data">
+      </organisation-unit-input>
+    </div>
+    <div *ngIf="trackedEntityAttribute.valueType == 'UNIT_INTERVAL'">
+      <unit-interval-input (onChange)="updateValue($event)" [dataElementId]="trackedEntityAttribute.id" [categoryOptionComboId]="'trackedEntityAttribute'"
+        [data]="data">
+      </unit-interval-input>
+    </div>
+    <div *ngIf="trackedEntityAttribute.valueType == 'PERCENTAGE'">
+      <percentage-input (onChange)="updateValue($event)" [dataElementId]="trackedEntityAttribute.id" [categoryOptionComboId]="'trackedEntityAttribute'"
+        [data]="data">
+      </percentage-input>
+    </div>
 
     <div *ngIf="supportValueTypes.indexOf(trackedEntityAttribute.valueType) == -1">
       <div padding>

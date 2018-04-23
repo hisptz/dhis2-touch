@@ -5,16 +5,41 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title></ion-title>
-  </ion-navbar>
-
+  <ion-toolbar color="primary">
+    <ion-buttons left>
+      <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
+        &nbsp;&nbsp;&nbsp;
+        <ion-icon name="arrow-back"></ion-icon>
+        &nbsp;&nbsp;
+      </button>
+    </ion-buttons>
+    <ion-title>
+      <span [translate]="'Coordinate selection'"></span>
+    </ion-title>
+  </ion-toolbar>
 </ion-header>
-
-
 <ion-content>
-  <div *ngIf="!isLoading">
-    <coordinate [position]="position" (onCoordinateChange)="changeCoordinate($event)"></coordinate>
-  </div>
+  <coordinate [position]="position" (onCoordinateChange)="changeCoordinate($event)"></coordinate>
 </ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <div>
+    </div>
+    <ion-row no-padding>
+      <ion-col>
+        <div class="item-card" color="font-color" (tap)="dismiss()" ion-button clear text-justify>
+          <ion-icon name="arrow-back" color="icon-color"></ion-icon>&nbsp;
+          <span [translate]="'Back'"></span>
+        </div>
+      </ion-col>
+      <ion-col col-auto>
+        <div float-right>
+          <div class="item-card" color="font-color" (tap)="save()" ion-button clear text-justify>
+            <ion-icon name="done-all" color="icon-color"></ion-icon>&nbsp;
+            <span [translate]="'Save'"></span>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

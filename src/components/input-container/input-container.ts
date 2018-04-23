@@ -49,7 +49,11 @@ export class InputContainerComponent implements OnInit {
       'INTEGER_POSITIVE',
       'INTEGER',
       'NUMBER',
-      'INTEGER_ZERO_OR_POSITIVE'
+      'INTEGER_ZERO_OR_POSITIVE',
+      'COORDINATE',
+      'ORGANISATION_UNIT',
+      'UNIT_INTERVAL',
+      'PERCENTAGE'
     ];
     this.settingProvider
       .getSettingsForTheApp(this.currentUser)

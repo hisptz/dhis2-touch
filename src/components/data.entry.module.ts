@@ -14,6 +14,10 @@ import { ProgramStageEventBasedComponent } from './program-stage-event-based/pro
 import { ProgramStageTrackerBasedComponent } from './program-stage-tracker-based/program-stage-tracker-based';
 import { EventInputContainerComponent } from './event-input-container/event-input-container';
 import { TrackerEventContainerComponent } from './tracker-event-container/tracker-event-container';
+import { CoordinateInputComponent } from './coordinate-input/coordinate-input';
+import { OrganisationUnitInputComponent } from './organisation-unit-input/organisation-unit-input';
+import { PercentageInputComponent } from './percentage-input/percentage-input';
+import { UnitIntervalInputComponent } from './unit-interval-input/unit-interval-input';
 
 @NgModule({
   declarations: [
@@ -29,7 +33,11 @@ import { TrackerEventContainerComponent } from './tracker-event-container/tracke
     ProgramStageEventBasedComponent,
     ProgramStageTrackerBasedComponent,
     EventInputContainerComponent,
-    TrackerEventContainerComponent
+    TrackerEventContainerComponent,
+    CoordinateInputComponent,
+    OrganisationUnitInputComponent,
+    PercentageInputComponent,
+    UnitIntervalInputComponent
   ],
   imports: [IonicModule, SharedModule],
   exports: [
@@ -45,7 +53,11 @@ import { TrackerEventContainerComponent } from './tracker-event-container/tracke
     ProgramStageEventBasedComponent,
     ProgramStageTrackerBasedComponent,
     EventInputContainerComponent,
-    TrackerEventContainerComponent
+    TrackerEventContainerComponent,
+    CoordinateInputComponent,
+    OrganisationUnitInputComponent,
+    PercentageInputComponent,
+    UnitIntervalInputComponent
   ]
 })
 export class DataEntryModule {}
