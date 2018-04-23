@@ -23,21 +23,53 @@ export class CoordinateInputComponent implements OnInit {
 
   ngOnInit() {
     const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
+    if (this.data && this.data[fieldId]) {
+      const dataValue = eval(this.data[fieldId].value);
+      if (dataValue.length == 0) {
+        this.position.lng = dataValue[1];
+        this.position.lat = dataValue[0];
+      }
+      this.position = { lat: dataValue[0], lng: dataValue[1] };
+    }
   }
 
   openMap() {
-    const modal = this.modalCtrl.create('CoordinateModalPage', {});
+    const data = {
+      position: this.position
+    };
+    const modal = this.modalCtrl.create('CoordinateModalPage', { data: data });
     modal.onDidDismiss((response: any) => {
       if (response && response.lat && response.lng) {
-        this.position.lng = response.lng;
-        this.position.lat = response.lat;
-        console.log(JSON.stringify(response));
+        this.position.lat = response.lat.toFixed(6);
+        this.position.lng = response.lng.toFixed(6);
+        const dataValue =
+          '[' + this.position.lat + ',' + this.position.lng + ']';
+        this.updateValue(dataValue);
       }
     });
     modal.present();
   }
 
-  updateValue() {
+  updateValue(dataValue: string) {
     const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
+    if (
+      this.data &&
+      this.data[fieldId] &&
+      dataValue != this.data[fieldId].value
+    ) {
+      this.onChange.emit({
+        id: fieldId,
+        value: dataValue,
+        status: 'not-synced'
+      });
+    } else if (this.data && !this.data[fieldId]) {
+      if (dataValue) {
+        this.onChange.emit({
+          id: fieldId,
+          value: dataValue,
+          status: 'not-synced'
+        });
+      }
+    }
   }
 }

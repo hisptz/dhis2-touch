@@ -18,7 +18,13 @@ export class CoordinateModalPage implements OnInit {
   constructor(private navParams: NavParams, private viewCtrl: ViewController) {}
 
   //logics for preparing data
-  ngOnInit() {}
+  ngOnInit() {
+    const data = this.navParams.get('data');
+    const { position } = data;
+    if (position && position.lng && position.lat) {
+      this.position = position;
+    }
+  }
 
   changeCoordinate(position) {
     this.position = position;

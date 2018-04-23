@@ -28,8 +28,7 @@ export class EventHideShowColumnPage implements OnInit, OnDestroy {
     let dataEntrySettings = this.params.get('dataEntrySettings');
     const { executionDateLabel } = this.programStage;
     const reportDateLabel =
-      executionDateLabel &&
-      (executionDateLabel != '0' || executionDateLabel != '0.0')
+      executionDateLabel != 0 || executionDateLabel != 0.0
         ? executionDateLabel
         : 'Report date';
     this.fieldsToDisplay.push({
