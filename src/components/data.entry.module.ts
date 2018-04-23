@@ -16,6 +16,8 @@ import { EventInputContainerComponent } from './event-input-container/event-inpu
 import { TrackerEventContainerComponent } from './tracker-event-container/tracker-event-container';
 import { CoordinateInputComponent } from './coordinate-input/coordinate-input';
 import { OrganisationUnitInputComponent } from './organisation-unit-input/organisation-unit-input';
+import { PercentageInputComponent } from './percentage-input/percentage-input';
+import { UnitIntervalInputComponent } from './unit-interval-input/unit-interval-input';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { OrganisationUnitInputComponent } from './organisation-unit-input/organi
     EventInputContainerComponent,
     TrackerEventContainerComponent,
     CoordinateInputComponent,
-    OrganisationUnitInputComponent
+    OrganisationUnitInputComponent,
+    PercentageInputComponent,
+    UnitIntervalInputComponent
   ],
   imports: [IonicModule, SharedModule],
   exports: [
@@ -51,7 +55,9 @@ import { OrganisationUnitInputComponent } from './organisation-unit-input/organi
     EventInputContainerComponent,
     TrackerEventContainerComponent,
     CoordinateInputComponent,
-    OrganisationUnitInputComponent
+    OrganisationUnitInputComponent,
+    PercentageInputComponent,
+    UnitIntervalInputComponent
   ]
 })
 export class DataEntryModule {}

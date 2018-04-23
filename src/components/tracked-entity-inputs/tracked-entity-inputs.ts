@@ -52,7 +52,9 @@ export class TrackedEntityInputsComponent implements OnInit {
       'NUMBER',
       'INTEGER_ZERO_OR_POSITIVE',
       'COORDINATE',
-      'ORGANISATION_UNIT'
+      'ORGANISATION_UNIT',
+      'UNIT_INTERVAL',
+      'PERCENTAGE'
     ];
     if (this.trackedEntityAttribute && this.trackedEntityAttribute.id) {
       this.fieldLabelKey = this.trackedEntityAttribute.name;

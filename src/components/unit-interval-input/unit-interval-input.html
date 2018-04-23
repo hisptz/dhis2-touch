@@ -1,0 +1,13 @@
+<ion-row>
+  <ion-col col-10>
+
+    <ion-range [(ngModel)]="singleValue" min="0" max="{{ maxCount }} " color="primary" (ionChange)="changeValue()"></ion-range>
+  </ion-col>
+
+  <ion-col col-auto>
+    <div margin-top padding-top>
+      {{ displayValue }}
+    </div>
+
+  </ion-col>
+</ion-row>

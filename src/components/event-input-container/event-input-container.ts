@@ -58,7 +58,9 @@ export class EventInputContainerComponent implements OnInit, OnDestroy {
       'NUMBER',
       'INTEGER_ZERO_OR_POSITIVE',
       'COORDINATE',
-      'ORGANISATION_UNIT'
+      'ORGANISATION_UNIT',
+      'UNIT_INTERVAL',
+      'PERCENTAGE'
     ];
     this.fieldLabelKey = this.dataElement.name;
     this.settingsProvider

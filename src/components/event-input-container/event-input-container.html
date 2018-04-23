@@ -48,6 +48,16 @@
         [data]="data">
       </organisation-unit-input>
     </div>
+    <div *ngIf="dataElement.valueType == 'UNIT_INTERVAL'">
+      <unit-interval-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="'dataElement'"
+        [data]="data">
+      </unit-interval-input>
+    </div>
+    <div *ngIf="dataElement.valueType == 'PERCENTAGE'">
+      <percentage-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="'dataElement'"
+        [data]="data">
+      </percentage-input>
+    </div>
 
     <div *ngIf="supportValueTypes.indexOf(dataElement.valueType) == -1">
       <div padding>

@@ -54,6 +54,15 @@
                 <organisation-unit-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id"
                   [data]="data"></organisation-unit-input>
               </div>
+              <div *ngIf="dataElement.valueType == 'UNIT_INTERVAL'">
+                <unit-interval-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id"
+                  [data]="data">
+                </unit-interval-input>
+              </div>
+              <div *ngIf="dataElement.valueType == 'PERCENTAGE'">
+                <percentage-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id"
+                  [data]="data"></percentage-input>
+              </div>
 
               <div *ngIf="supportValueTypes.indexOf(dataElement.valueType) == -1">
                 <div padding>
@@ -110,6 +119,15 @@
         <div *ngIf="dataElement.valueType == 'ORGANISATION_UNIT'">
           <organisation-unit-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id"
             [data]="data"></organisation-unit-input>
+        </div>
+        <div *ngIf="dataElement.valueType == 'UNIT_INTERVAL'">
+          <unit-interval-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id"
+            [data]="data">
+          </unit-interval-input>
+        </div>
+        <div *ngIf="dataElement.valueType == 'PERCENTAGE'">
+          <percentage-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id"
+            [data]="data"></percentage-input>
         </div>
 
         <div *ngIf="supportValueTypes.indexOf(dataElement.valueType) == -1">
