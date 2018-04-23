@@ -31,6 +31,12 @@ export class CoordinateInputComponent implements OnInit {
     }
   }
 
+  clearValue() {
+    this.position = { lat: '', lng: '' };
+    const dataValue = '[' + this.position.lat + ',' + this.position.lng + ']';
+    this.updateValue(dataValue);
+  }
+
   openMap() {
     const data = {
       position: this.position
