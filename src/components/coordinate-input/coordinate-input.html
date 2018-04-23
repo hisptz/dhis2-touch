@@ -1,0 +1,23 @@
+<ion-row>
+  <ion-col col-4>
+    <div class="full-width" padding color="font-color" text-justify (click)="openMap()">
+      {{ position.lat }}
+    </div>
+  </ion-col>
+  <ion-col col-4>
+    <div class="full-width" padding color="font-color" text-justify (click)="openMap()">
+      {{ position.lng}}
+    </div>
+  </ion-col>
+  <ion-col col-auto>
+    <div float-right>
+      <button color="danger" outline ion-button [disabled]="(position.lat == '' && position.lng == '')" (tap)="clearValue()">
+        <ion-icon name="trash" color="danger"></ion-icon>
+      </button>
+      <div class="item-card" color="font-color" ion-button clear text-justify (click)="openMap()">
+        <ion-icon name="locate" color="primary"></ion-icon>
+        <br>
+      </div>
+    </div>
+  </ion-col>
+</ion-row>
