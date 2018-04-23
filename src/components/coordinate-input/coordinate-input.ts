@@ -33,7 +33,7 @@ export class CoordinateInputComponent implements OnInit {
 
   clearValue() {
     this.position = { lat: '', lng: '' };
-    const dataValue = '[' + this.position.lat + ',' + this.position.lng + ']';
+    const dataValue = '';
     this.updateValue(dataValue);
   }
 
