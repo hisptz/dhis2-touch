@@ -69,6 +69,7 @@ export class CoordinateComponent {
       const position = newMarker.getLatLng();
       this.position = position;
       marker.setLatLng(new L.LatLng(position.lat, position.lng));
+      this.onCoordinateChange.emit(position);
     });
   }
 }
