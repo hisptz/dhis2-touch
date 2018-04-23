@@ -17,9 +17,7 @@ export class CoordinateInputComponent implements OnInit {
   @Input() data;
   @Output() onChange = new EventEmitter();
   position: { lat: string; lng: string } = { lat: '', lng: '' };
-  constructor(private modalCtrl: ModalController) {
-    this.position = { lat: '3.3', lng: '11.7' };
-  }
+  constructor(private modalCtrl: ModalController) {}
 
   ngOnInit() {
     const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;

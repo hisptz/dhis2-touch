@@ -16,12 +16,16 @@ import { IonicPage, NavParams, ViewController } from 'ionic-angular';
 export class CoordinateModalPage implements OnInit {
   position: any;
   constructor(private navParams: NavParams, private viewCtrl: ViewController) {}
-
-  //logics for preparing data
   ngOnInit() {
     const data = this.navParams.get('data');
     const { position } = data;
-    if (position && position.lng && position.lat) {
+    if (
+      position &&
+      position.lng &&
+      position.lat &&
+      position.lat != '' &&
+      position.lng != ''
+    ) {
       this.position = position;
     }
   }
