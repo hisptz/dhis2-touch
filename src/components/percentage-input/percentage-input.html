@@ -1,13 +1,15 @@
-<ion-row>
-  <ion-col col-10>
-
-    <ion-range [(ngModel)]="singleValue" color="primary" pin="true"></ion-range>
+<ion-row no-padding>
+  <ion-col col-7 no-padding>
+    <ion-range [(ngModel)]="rangeValue" color="primary" (ionChange)="updateValue()" pin="true"></ion-range>
   </ion-col>
-
   <ion-col col-auto>
-    <div margin-top padding-top>
-      {{ singleValue}}
+    <div class="top-padding">
+      <button color="font-color" outline ion-button>
+        {{ displayValue }}
+      </button>
+      <button color="danger" outline ion-button [disabled]="displayValue == ''" (tap)="clearValue()">
+        <ion-icon name="trash" color="danger"></ion-icon>
+      </button>
     </div>
-
   </ion-col>
 </ion-row>

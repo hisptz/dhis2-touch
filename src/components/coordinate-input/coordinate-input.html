@@ -10,12 +10,14 @@
     </div>
   </ion-col>
   <ion-col col-auto>
-    <button color="danger" outline ion-button [disabled]="(position.lat == '' && position.lng == '')" (tap)="clearValue()">
-      <ion-icon name="trash" color="danger"></ion-icon>
-    </button>
-    <div class="item-card" color="font-color" ion-button clear text-justify (click)="openMap()">
-      <ion-icon name="locate" color="primary"></ion-icon>
-      <br>
+    <div float-right>
+      <button color="danger" outline ion-button [disabled]="(position.lat == '' && position.lng == '')" (tap)="clearValue()">
+        <ion-icon name="trash" color="danger"></ion-icon>
+      </button>
+      <div class="item-card" color="font-color" ion-button clear text-justify (click)="openMap()">
+        <ion-icon name="locate" color="primary"></ion-icon>
+        <br>
+      </div>
     </div>
   </ion-col>
 </ion-row>

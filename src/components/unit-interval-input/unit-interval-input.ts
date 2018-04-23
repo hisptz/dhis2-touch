@@ -16,22 +16,60 @@ export class UnitIntervalInputComponent implements OnInit {
   @Input() data;
   @Output() onChange = new EventEmitter();
 
-  singleValue: number;
+  rangeValue: number;
   displayValue: any;
   maxCount: number;
   constructor() {
     this.maxCount = 100;
-    this.singleValue = 0;
-    this.updateDispayValue();
+    this.rangeValue = 0;
   }
 
-  ngOnInit() {}
-
-  changeValue() {
-    this.updateDispayValue();
+  ngOnInit() {
+    const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
+    if (this.data && this.data[fieldId]) {
+      const dataValue = this.data[fieldId].value;
+      if (dataValue) {
+        this.displayValue = dataValue;
+        this.rangeValue = dataValue * this.maxCount;
+      } else {
+        this.displayValue = '';
+      }
+    }
   }
 
-  updateDispayValue() {
-    this.displayValue = this.singleValue / this.maxCount;
+  clearValue() {
+    const dataValue = '';
+    this.rangeValue = 0;
+    this.displayValue = dataValue;
+    this.saveValue(dataValue);
+  }
+
+  updateValue() {
+    const dataValue = this.rangeValue / this.maxCount;
+    this.displayValue = dataValue;
+    this.saveValue(dataValue);
+  }
+
+  saveValue(dataValue) {
+    const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
+    if (
+      this.data &&
+      this.data[fieldId] &&
+      dataValue != this.data[fieldId].value
+    ) {
+      this.onChange.emit({
+        id: fieldId,
+        value: dataValue,
+        status: 'not-synced'
+      });
+    } else if (this.data && !this.data[fieldId]) {
+      if (dataValue) {
+        this.onChange.emit({
+          id: fieldId,
+          value: dataValue,
+          status: 'not-synced'
+        });
+      }
+    }
   }
 }

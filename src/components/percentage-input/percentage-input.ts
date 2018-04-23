@@ -16,10 +16,57 @@ export class PercentageInputComponent implements OnInit {
   @Input() data;
   @Output() onChange = new EventEmitter();
 
-  singleValue: number;
-  constructor() {
-    this.singleValue = 0;
+  rangeValue: any;
+  displayValue: any;
+  constructor() {}
+
+  ngOnInit() {
+    const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
+    if (this.data && this.data[fieldId]) {
+      const dataValue = this.data[fieldId].value;
+      if (dataValue) {
+        this.rangeValue = dataValue;
+        this.displayValue = dataValue;
+      } else {
+        this.rangeValue = 0;
+        this.displayValue = '';
+      }
+    }
   }
 
-  ngOnInit() {}
+  clearValue() {
+    const dataValue = '';
+    this.rangeValue = 0;
+    this.displayValue = dataValue;
+    this.saveValue(dataValue);
+  }
+
+  updateValue() {
+    const dataValue = this.rangeValue;
+    this.displayValue = dataValue;
+    this.saveValue(dataValue);
+  }
+
+  saveValue(dataValue) {
+    const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
+    if (
+      this.data &&
+      this.data[fieldId] &&
+      dataValue != this.data[fieldId].value
+    ) {
+      this.onChange.emit({
+        id: fieldId,
+        value: dataValue,
+        status: 'not-synced'
+      });
+    } else if (this.data && !this.data[fieldId]) {
+      if (dataValue) {
+        this.onChange.emit({
+          id: fieldId,
+          value: dataValue,
+          status: 'not-synced'
+        });
+      }
+    }
+  }
 }
