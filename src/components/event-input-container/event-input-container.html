@@ -43,6 +43,11 @@
         [data]="data">
       </coordinate-input>
     </div>
+    <div *ngIf="dataElement.valueType == 'ORGANISATION_UNIT'">
+      <organisation-unit-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="'dataElement'"
+        [data]="data">
+      </organisation-unit-input>
+    </div>
 
     <div *ngIf="supportValueTypes.indexOf(dataElement.valueType) == -1">
       <div padding>

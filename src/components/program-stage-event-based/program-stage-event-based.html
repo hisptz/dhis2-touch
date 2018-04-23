@@ -28,8 +28,8 @@
                 <td>
                   <div text-left>
                     <div *ngFor="let dataElement of programStageSection.dataElements;trackBy: trackByFn">
-                      <event-input-container [dataElement]="dataElement" [currentUser]="currentUser" [(data)]="dataObjectModel" [mandatory]="'false'"
-                        [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" (onChange)="updateData($event)"></event-input-container>
+                      <event-input-container [dataElement]="dataElement" [currentUser]="currentUser" [(data)]="dataObjectModel" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
+                        (onChange)="updateData($event)"></event-input-container>
                     </div>
                   </div>
                 </td>

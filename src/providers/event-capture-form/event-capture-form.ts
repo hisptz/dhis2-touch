@@ -571,6 +571,7 @@ export class EventCaptureFormProvider {
               },
               (error: any) => {
                 //try to update event
+                console.log('error posting : ' + JSON.stringify(error));
                 url = url + '/' + event.event;
                 this.httpClientProvider.put(url, event, currentUser).subscribe(
                   () => {

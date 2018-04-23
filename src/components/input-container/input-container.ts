@@ -50,7 +50,8 @@ export class InputContainerComponent implements OnInit {
       'INTEGER',
       'NUMBER',
       'INTEGER_ZERO_OR_POSITIVE',
-      'COORDINATE'
+      'COORDINATE',
+      'ORGANISATION_UNIT'
     ];
     this.settingProvider
       .getSettingsForTheApp(this.currentUser)
