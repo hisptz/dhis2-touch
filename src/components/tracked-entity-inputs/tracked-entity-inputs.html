@@ -58,6 +58,16 @@
         [data]="data">
       </percentage-input>
     </div>
+    <div *ngIf="dataElement.valueType == 'EMAIL'">
+      <email-input (onChange)="updateValue($event)" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [dataElementId]="trackedEntityAttribute.id"
+        [categoryOptionComboId]="'trackedEntityAttribute'" [data]="data">
+      </email-input>
+    </div>
+    <div *ngIf="dataElement.valueType == 'PHONE_NUMBER'">
+      <phone-number-input (onChange)="updateValue($event)" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [dataElementId]="trackedEntityAttribute.id"
+        [categoryOptionComboId]="'trackedEntityAttribute'" [data]="data">
+      </phone-number-input>
+    </div>
 
     <div *ngIf="supportValueTypes.indexOf(trackedEntityAttribute.valueType) == -1">
       <div padding>
