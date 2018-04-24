@@ -16,6 +16,7 @@ export class PhoneNumberInputComponent implements OnInit {
   @Input() data;
   @Input() valueType;
   @Output() onChange = new EventEmitter();
+  @Input() dataValuesSavingStatusClass;
   inputFieldValue: any;
   constructor() {}
 
@@ -26,33 +27,31 @@ export class PhoneNumberInputComponent implements OnInit {
     }
   }
 
-  saveValue() {
+  updateValue() {
     const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
-    if (
-      this.data &&
-      this.data[fieldId] &&
-      this.inputFieldValue != this.data[fieldId].value
-    ) {
-      this.onChange.emit({
-        id: fieldId,
-        value: this.inputFieldValue,
-        status: 'not-synced'
-      });
-    } else if (this.data && !this.data[fieldId]) {
-      if (this.inputFieldValue) {
+    if (this.inputFieldValue && this.isPhoneNumberValid(this.inputFieldValue)) {
+      if (
+        this.data &&
+        this.data[fieldId] &&
+        this.inputFieldValue != this.data[fieldId].value
+      ) {
         this.onChange.emit({
           id: fieldId,
           value: this.inputFieldValue,
           status: 'not-synced'
         });
+      } else if (this.data && !this.data[fieldId]) {
+        if (this.inputFieldValue) {
+          this.onChange.emit({
+            id: fieldId,
+            value: this.inputFieldValue,
+            status: 'not-synced'
+          });
+        }
       }
-    }
-  }
-
-  updateValue() {
-    console.log(this.inputFieldValue);
-    if (this.inputFieldValue) {
-      console.log(this.isPhoneNumberValid(this.inputFieldValue));
+    } else {
+      this.dataValuesSavingStatusClass[fieldId] =
+        'input-field-container-failed';
     }
   }
 

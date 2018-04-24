@@ -16,6 +16,7 @@ export class EmailInputComponent implements OnInit {
   @Input() data;
   @Input() valueType;
   @Output() onChange = new EventEmitter();
+  @Input() dataValuesSavingStatusClass;
   inputFieldValue: any;
   constructor() {}
 
@@ -26,36 +27,33 @@ export class EmailInputComponent implements OnInit {
     }
   }
 
-  saveValue() {
+  updateValue() {
     const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
-    if (
-      this.data &&
-      this.data[fieldId] &&
-      this.inputFieldValue != this.data[fieldId].value
-    ) {
-      this.onChange.emit({
-        id: fieldId,
-        value: this.inputFieldValue,
-        status: 'not-synced'
-      });
-    } else if (this.data && !this.data[fieldId]) {
-      if (this.inputFieldValue) {
+    if (this.inputFieldValue && this.isEmailValid(this.inputFieldValue)) {
+      if (
+        this.data &&
+        this.data[fieldId] &&
+        this.inputFieldValue != this.data[fieldId].value
+      ) {
         this.onChange.emit({
           id: fieldId,
           value: this.inputFieldValue,
           status: 'not-synced'
         });
+      } else if (this.data && !this.data[fieldId]) {
+        if (this.inputFieldValue) {
+          this.onChange.emit({
+            id: fieldId,
+            value: this.inputFieldValue,
+            status: 'not-synced'
+          });
+        }
       }
+    } else {
+      this.dataValuesSavingStatusClass[fieldId] =
+        'input-field-container-failed';
     }
   }
-
-  updateValue() {
-    console.log(this.inputFieldValue);
-    if (this.inputFieldValue) {
-      console.log(this.isEmailValid(this.inputFieldValue));
-    }
-  }
-
   isEmailValid(emial: string) {
     const emailvalidator = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     return emailvalidator.test(emial);
