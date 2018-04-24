@@ -14,7 +14,7 @@
     <ion-row>
       <ion-col>
         <ion-list>
-          <ion-item *ngFor="let localInstance of localInstancess;trackBy: trackByFn" (click)="setCurrentUser(localInstance.currentUser,localInstance.currentLanguage)">
+          <ion-item *ngFor="let localInstance of localInstances;trackBy: trackByFn" (click)="setCurrentUser(localInstance.currentUser,localInstance.currentLanguage)">
             <span ion-text>{{localInstance.currentUser.username}}&nbsp;{{ localInstance.name }}</span>
             <ion-icon name="ios-arrow-forward" item-right></ion-icon>
           </ion-item>
