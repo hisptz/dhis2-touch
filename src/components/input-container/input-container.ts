@@ -53,7 +53,9 @@ export class InputContainerComponent implements OnInit {
       'COORDINATE',
       'ORGANISATION_UNIT',
       'UNIT_INTERVAL',
-      'PERCENTAGE'
+      'PERCENTAGE',
+      'EMAIL',
+      'PHONE_NUMBER'
     ];
     this.settingProvider
       .getSettingsForTheApp(this.currentUser)
