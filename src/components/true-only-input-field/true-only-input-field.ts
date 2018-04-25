@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 /**
  * Generated class for the TrueOnlyInputFieldComponent component.
@@ -11,7 +11,6 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
   templateUrl: 'true-only-input-field.html'
 })
 export class TrueOnlyInputFieldComponent implements OnInit {
-
   @Input() dataElementId;
   @Input() categoryOptionComboId;
   @Input() data;
@@ -19,23 +18,33 @@ export class TrueOnlyInputFieldComponent implements OnInit {
   inputFieldValue: any;
   //{"id":"s46m5MS0hxu-Prlt0C1RF0s","value":"1","status":"synced"}
   //id = dataElementId + "-" + categoryOptionComboId
-  constructor() {
-  }
+  constructor() {}
 
   ngOnInit() {
-    let fieldId = this.dataElementId + "-" + this.categoryOptionComboId;
+    let fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
     if (this.data && this.data[fieldId]) {
-      this.inputFieldValue = this.data[fieldId].value;
+      const value = this.data[fieldId].value;
+      this.inputFieldValue = value == '' ? false : true;
+      console.log('this.data[fieldId].value : ' + this.inputFieldValue);
     }
   }
 
   updateValues() {
-    let fieldId = this.dataElementId + "-" + this.categoryOptionComboId;
-    if (this.data && this.data[fieldId] && this.inputFieldValue != this.data[fieldId].value) {
-      this.onChange.emit({"id": fieldId, "value": this.inputFieldValue, "status": "not-synced"});
+    let fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
+    const value = this.inputFieldValue ? this.inputFieldValue : '';
+    if (this.data && this.data[fieldId] && value != this.data[fieldId].value) {
+      this.onChange.emit({
+        id: fieldId,
+        value: value,
+        status: 'not-synced'
+      });
     } else if (this.data && !this.data[fieldId]) {
-      if (this.inputFieldValue) {
-        this.onChange.emit({"id": fieldId, "value": this.inputFieldValue, "status": "not-synced"});
+      if (value) {
+        this.onChange.emit({
+          id: fieldId,
+          value: value,
+          status: 'not-synced'
+        });
       }
     }
   }
