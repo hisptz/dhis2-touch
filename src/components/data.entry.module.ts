@@ -20,6 +20,7 @@ import { PercentageInputComponent } from './percentage-input/percentage-input';
 import { UnitIntervalInputComponent } from './unit-interval-input/unit-interval-input';
 import { EmailInputComponent } from './email-input/email-input';
 import { PhoneNumberInputComponent } from './phone-number-input/phone-number-input';
+import { RadioButtonInputComponent } from './radio-button-input/radio-button-input';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { PhoneNumberInputComponent } from './phone-number-input/phone-number-inp
     PercentageInputComponent,
     UnitIntervalInputComponent,
     EmailInputComponent,
-    PhoneNumberInputComponent
+    PhoneNumberInputComponent,
+    RadioButtonInputComponent
   ],
   imports: [IonicModule, SharedModule],
   exports: [
@@ -63,7 +65,8 @@ import { PhoneNumberInputComponent } from './phone-number-input/phone-number-inp
     PercentageInputComponent,
     UnitIntervalInputComponent,
     EmailInputComponent,
-    PhoneNumberInputComponent
+    PhoneNumberInputComponent,
+    RadioButtonInputComponent
   ]
 })
 export class DataEntryModule {}
