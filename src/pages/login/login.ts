@@ -61,6 +61,7 @@ export class LoginPage implements OnInit {
   isNetworkAvailable: boolean;
   downloadingQueueManager: QueueManager;
   savingingQueueManager: QueueManager;
+  hasUserSuccessLogin: boolean;
 
   constructor(
     public navCtrl: NavController,
@@ -86,6 +87,7 @@ export class LoginPage implements OnInit {
     private programRulesProvider: ProgramRulesProvider
   ) {
     this.resetQueueManager();
+    this.hasUserSuccessLogin = false;
   }
 
   ngOnInit() {
@@ -181,6 +183,7 @@ export class LoginPage implements OnInit {
 
   startLoginProcess() {
     this.hasUserAuthenticated = false;
+    this.hasUserSuccessLogin = false;
     this.progressBar = '0';
     this.loggedInInInstance = this.currentUser.serverUrl;
     this.isLoginProcessActive = true;
@@ -430,6 +433,7 @@ export class LoginPage implements OnInit {
 
   setLandingPage(currentUser: CurrentUser) {
     currentUser.isLogin = true;
+    this.hasUserSuccessLogin = true;
     this.reCheckingAppSetting(currentUser);
     this.smsCommandProvider
       .checkAndGenerateSmsCommands(currentUser)
@@ -637,7 +641,9 @@ export class LoginPage implements OnInit {
     let value = completed / total * 100;
     this.progressBar = String(value);
     if (completed == total) {
-      this.setLandingPage(this.currentUser);
+      if (!this.hasUserSuccessLogin) {
+        this.setLandingPage(this.currentUser);
+      }
     }
   }
 

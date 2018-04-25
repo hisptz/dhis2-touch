@@ -29,6 +29,13 @@ export class SynchronizationProvider {
     private settingsProvider: SettingsProvider
   ) {}
 
+  stopSynchronization() {
+    if (this.subscription) {
+      clearInterval(this.subscription);
+      console.log('Sync process has been stopped');
+    }
+  }
+
   startSynchronization(currentUser) {
     const defaultSettings = this.settingsProvider.getDefaultSettings();
     this.settingsProvider.getSettingsForTheApp(currentUser).subscribe(
@@ -37,9 +44,7 @@ export class SynchronizationProvider {
           appSettings && appSettings.synchronization
             ? appSettings.synchronization
             : defaultSettings.synchronization;
-        if (this.subscription) {
-          clearInterval(this.subscription);
-        }
+        this.stopSynchronization();
         console.log('Updating sync process');
         if (synchronizationSettings.isAutoSync) {
           this.subscription = setInterval(() => {

@@ -18,6 +18,8 @@ import { CoordinateInputComponent } from './coordinate-input/coordinate-input';
 import { OrganisationUnitInputComponent } from './organisation-unit-input/organisation-unit-input';
 import { PercentageInputComponent } from './percentage-input/percentage-input';
 import { UnitIntervalInputComponent } from './unit-interval-input/unit-interval-input';
+import { EmailInputComponent } from './email-input/email-input';
+import { PhoneNumberInputComponent } from './phone-number-input/phone-number-input';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,9 @@ import { UnitIntervalInputComponent } from './unit-interval-input/unit-interval-
     CoordinateInputComponent,
     OrganisationUnitInputComponent,
     PercentageInputComponent,
-    UnitIntervalInputComponent
+    UnitIntervalInputComponent,
+    EmailInputComponent,
+    PhoneNumberInputComponent
   ],
   imports: [IonicModule, SharedModule],
   exports: [
@@ -57,7 +61,9 @@ import { UnitIntervalInputComponent } from './unit-interval-input/unit-interval-
     CoordinateInputComponent,
     OrganisationUnitInputComponent,
     PercentageInputComponent,
-    UnitIntervalInputComponent
+    UnitIntervalInputComponent,
+    EmailInputComponent,
+    PhoneNumberInputComponent
   ]
 })
 export class DataEntryModule {}

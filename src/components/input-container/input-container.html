@@ -63,6 +63,16 @@
                 <percentage-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id"
                   [data]="data"></percentage-input>
               </div>
+              <div *ngIf="dataElement.valueType == 'EMAIL'">
+                <email-input (onChange)="updateValue($event)" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [dataElementId]="dataElement.id"
+                  [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
+                </email-input>
+              </div>
+              <div *ngIf="dataElement.valueType == 'PHONE_NUMBER'">
+                <phone-number-input (onChange)="updateValue($event)" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [dataElementId]="dataElement.id"
+                  [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
+                </phone-number-input>
+              </div>
 
               <div *ngIf="supportValueTypes.indexOf(dataElement.valueType) == -1">
                 <div padding>
@@ -128,6 +138,16 @@
         <div *ngIf="dataElement.valueType == 'PERCENTAGE'">
           <percentage-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id"
             [data]="data"></percentage-input>
+        </div>
+        <div *ngIf="dataElement.valueType == 'EMAIL'">
+          <email-input (onChange)="updateValue($event)" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [dataElementId]="dataElement.id"
+            [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
+          </email-input>
+        </div>
+        <div *ngIf="dataElement.valueType == 'PHONE_NUMBER'">
+          <phone-number-input (onChange)="updateValue($event)" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [dataElementId]="dataElement.id"
+            [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
+          </phone-number-input>
         </div>
 
         <div *ngIf="supportValueTypes.indexOf(dataElement.valueType) == -1">

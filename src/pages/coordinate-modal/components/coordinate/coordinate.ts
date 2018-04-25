@@ -19,7 +19,7 @@ import L from 'leaflet';
   selector: 'coordinate',
   templateUrl: 'coordinate.html'
 })
-export class CoordinateComponent {
+export class CoordinateComponent implements OnInit {
   @ViewChild('map') mapContainer: ElementRef;
   map: L.Map;
   center: L.PointTuple;
@@ -32,11 +32,11 @@ export class CoordinateComponent {
   ngOnInit() {
     setTimeout(() => {
       this.initMap();
-    }, 500);
+    }, 200);
   }
 
   initMap() {
-    const defaultPosition = { lat: 3.3, lng: 11.7 };
+    const defaultPosition = { lat: 0, lng: 0 };
     let center = [defaultPosition.lat, defaultPosition.lng];
     if (this.position && this.position.lat && this.position.lng) {
       center = [this.position.lat, this.position.lng];
