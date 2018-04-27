@@ -139,8 +139,9 @@ export class ClearLocalDataComponent implements OnInit {
   }
 
   clearingLocalData(itemsToBeDeleted) {
+    console.log('itemsToBeDeleted');
     let completedProcess = 0;
-    let shouldClearEventsTable =
+    const shouldClearEventsTable =
       itemsToBeDeleted.indexOf('eventsForTracker') > -1 &&
       itemsToBeDeleted.indexOf('events') > -1;
     if (shouldClearEventsTable) {
@@ -151,7 +152,12 @@ export class ClearLocalDataComponent implements OnInit {
             this.updateStorageAfterClearing();
           }
         },
-        error => {}
+        error => {
+          completedProcess += 2;
+          if (completedProcess == itemsToBeDeleted.length) {
+            this.updateStorageAfterClearing();
+          }
+        }
       );
     }
     for (let item of itemsToBeDeleted) {
@@ -169,7 +175,12 @@ export class ClearLocalDataComponent implements OnInit {
                 this.updateStorageAfterClearing();
               }
             },
-            error => {}
+            error => {
+              completedProcess += 1;
+              if (completedProcess == itemsToBeDeleted.length) {
+                this.updateStorageAfterClearing();
+              }
+            }
           );
       } else if (item == 'events' && !shouldClearEventsTable) {
         this.eventCaptureFormProvider
@@ -185,7 +196,12 @@ export class ClearLocalDataComponent implements OnInit {
                 this.updateStorageAfterClearing();
               }
             },
-            error => {}
+            error => {
+              completedProcess += 1;
+              if (completedProcess == itemsToBeDeleted.length) {
+                this.updateStorageAfterClearing();
+              }
+            }
           );
       } else if (item == 'enrollments') {
         this.trackerCaptureProvider
@@ -197,7 +213,12 @@ export class ClearLocalDataComponent implements OnInit {
                 this.updateStorageAfterClearing();
               }
             },
-            error => {}
+            error => {
+              completedProcess += 1;
+              if (completedProcess == itemsToBeDeleted.length) {
+                this.updateStorageAfterClearing();
+              }
+            }
           );
       } else if (item == 'dataValues') {
         this.dataValuesProvider.deleteAllDataValues(this.currentUser).subscribe(
@@ -207,7 +228,12 @@ export class ClearLocalDataComponent implements OnInit {
               this.updateStorageAfterClearing();
             }
           },
-          error => {}
+          error => {
+            completedProcess += 1;
+            if (completedProcess == itemsToBeDeleted.length) {
+              this.updateStorageAfterClearing();
+            }
+          }
         );
       }
     }
