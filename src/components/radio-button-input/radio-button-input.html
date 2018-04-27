@@ -1,13 +1,15 @@
 <ion-row>
-  <ion-col auto-col>
+  <ion-col col-10>
     <label class="radio inline" *ngFor="let option of options">
-      <input type="radio" value="{{ option.code }} " (change)="saveValue()" [(ngModel)]="selectedValue">
+      <input type="radio" value="{{ option.code }}" (change)="saveValue()" [(ngModel)]="selectedValue">
       <span> {{ option.name }} </span>
     </label>
   </ion-col>
-  <ion-col item-left col-1>
-    <button no-margin color="danger" [disabled]="selectedValue == ''" outline small ion-button (tap)="clearInput()">
-      <ion-icon name="trash" color="danger"></ion-icon>
-    </button>
+  <ion-col col-auto>
+    <div float-right>
+      <button color="danger" [disabled]="selectedValue == ''" outline small ion-button (tap)="clearInput()">
+        <ion-icon name="trash" color="danger"></ion-icon>
+      </button>
+    </div>
   </ion-col>
 </ion-row>
