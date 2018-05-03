@@ -19,20 +19,16 @@ export class RadioButtonInputComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    if (!this.selectedValue) {
-      this.selectedValue = '';
-    }
-
     this.dataModal[this.fieldId] = this.selectedValue;
   }
 
   clearInput() {
-    this.dataModal[this.dataModal] = '';
+    this.dataModal[this.fieldId] = '';
     this.saveValue();
   }
 
   saveValue() {
-    console.log('dataModal :: ' + JSON.stringify(this.dataModal));
-    //this.updateValueAction.emit(this.selectedValue);
+    this.selectedValue = this.dataModal[this.fieldId];
+    this.updateValueAction.emit(this.selectedValue);
   }
 }
