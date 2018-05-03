@@ -98,11 +98,14 @@
                           [mandatory]="programTrackedEntityAttribute.mandatory" (onChange)="updateData($event)"></tracked-entity-inputs>
                       </div>
                     </form>
-
                   </div>
                   <div no-padding>
                     <div style="display: inline-block;width: 49.3%">
                       <div float-left>
+                        <div class="item-card" color="font-color" (click)="goBack()" padding ion-button clear text-center text-capitalize>
+                          <ion-icon name="ios-arrow-back-outline"></ion-icon>&nbsp;&nbsp;
+                          <span [translate]="'Go back'"></span>
+                        </div>
                       </div>
                     </div>
                     <div style="display: inline-block;width: 49.3%">
@@ -115,11 +118,7 @@
                       </div>
                     </div>
                   </div>
-
                 </div>
-
-
-
                 <div class="item-card-program-stage-section">
                   <div class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex +1)" padding ion-button clear
                     text-center text-capitalize>

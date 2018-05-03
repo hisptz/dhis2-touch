@@ -80,11 +80,12 @@
   <div class="item-card-program-stage-section">
     <div class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex -1 )" padding ion-button clear
       text-center text-capitalize>
+      <span [translate]="'Prev'"></span>&nbsp;&nbsp;
       <ion-icon name="ios-arrow-back-outline"></ion-icon>
     </div>
-
     <div class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex + 1)" *ngIf="!isLastStage" padding
       ion-button clear text-center text-capitalize>
+      <span [translate]="'Next'"></span>&nbsp;&nbsp;
       <ion-icon name="ios-arrow-forward-outline"></ion-icon>
     </div>
 
