@@ -100,26 +100,30 @@
                     </form>
 
                   </div>
-                </div>
-
-                <div no-padding>
-                  <div style="display: inline-block;width: 49.3%">
-                    <div float-left>
+                  <div no-padding>
+                    <div style="display: inline-block;width: 49.3%">
+                      <div float-left>
+                      </div>
                     </div>
-                  </div>
-                  <div style="display: inline-block;width: 49.3%">
-                    <div float-right>
-                      <div class="item-card" color="danger" float-right (click)="deleteTrackedEntity(trackedEntityInstance.id)" padding ion-button
-                        clear text-center text-capitalize>
-                        <ion-icon name="trash"></ion-icon>
+                    <div style="display: inline-block;width: 49.3%">
+                      <div float-right>
+                        <div class="item-card" color="danger" float-right (click)="deleteTrackedEntity(trackedEntityInstance.id)" padding ion-button
+                          clear text-center text-capitalize>
+                          <span [translate]="'Delete'"></span>&nbsp;&nbsp;
+                          <ion-icon name="trash"></ion-icon>
+                        </div>
                       </div>
                     </div>
                   </div>
+
                 </div>
+
+
 
                 <div class="item-card-program-stage-section">
                   <div class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex +1)" padding ion-button clear
                     text-center text-capitalize>
+                    <span [translate]="'Next'"></span>&nbsp;&nbsp;
                     <ion-icon name="ios-arrow-forward-outline"></ion-icon>
                   </div>
                 </div>
