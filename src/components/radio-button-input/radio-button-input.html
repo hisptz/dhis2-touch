@@ -1,13 +1,13 @@
 <ion-row>
   <ion-col col-10>
     <label class="radio inline" *ngFor="let option of options">
-      <input type="radio" value="{{ option.code }}" (change)="saveValue()" [(ngModel)]="selectedValue">
+      <input type="radio" value="{{ option.code }}" name="{{ fieldId }}" (change)="saveValue()" [(ngModel)]="dataModal[fieldId]">
       <span> {{ option.name }} </span>
     </label>
   </ion-col>
   <ion-col col-auto>
     <div float-right>
-      <button color="danger" [disabled]="selectedValue == ''" outline small ion-button (tap)="clearInput()">
+      <button color="danger" [disabled]="dataModal[fieldId] == ''" outline small ion-button (tap)="clearInput()">
         <ion-icon name="trash" color="danger"></ion-icon>
       </button>
     </div>
