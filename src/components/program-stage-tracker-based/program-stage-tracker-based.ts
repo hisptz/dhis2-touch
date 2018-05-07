@@ -247,6 +247,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
       dataDimension.attributeCc,
       'tracker-capture'
     );
+    this.dataValuesSavingStatusClass = {};
     this.currentOpenEvent['trackedEntityInstance'] = this.trackedEntityInstance;
     this.dataObjectModel = {};
     this.currentEventId = this.currentOpenEvent.id;
@@ -414,7 +415,9 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
       'Discovering events',
       'You are about to delete this event, are you sure?',
       'Yes',
-      'No'
+      'No',
+      'Prev',
+      'Next'
     ];
   }
 }

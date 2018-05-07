@@ -237,7 +237,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
       'Yes',
       'No',
       'Add New',
-      'Back',
+      'Go back',
       'Deleting event',
       'Event has been deleted successfully',
       'Failed to discover current user information',
