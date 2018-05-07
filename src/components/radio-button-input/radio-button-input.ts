@@ -12,23 +12,23 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class RadioButtonInputComponent implements OnInit {
   @Input() options;
-  @Input() selectedValue;
+  @Input() selectedValue: string;
+  @Input() fieldId: string;
   @Output() updateValueAction = new EventEmitter();
-
+  dataModal: any = {};
   constructor() {}
 
   ngOnInit() {
-    if (!this.selectedValue) {
-      this.selectedValue = '';
-    }
+    this.dataModal[this.fieldId] = this.selectedValue;
   }
 
   clearInput() {
-    this.selectedValue = '';
+    this.dataModal[this.fieldId] = '';
     this.saveValue();
   }
 
   saveValue() {
+    this.selectedValue = this.dataModal[this.fieldId];
     this.updateValueAction.emit(this.selectedValue);
   }
 }
