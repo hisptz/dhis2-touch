@@ -16,6 +16,7 @@ export class BooleanInputFieldComponent implements OnInit {
   @Input() data;
   @Output() onChange = new EventEmitter();
   inputFieldValue: any;
+  fieldId: string;
   options: Array<{ name: string; code: any }>;
   //{"id":"s46m5MS0hxu-Prlt0C1RF0s","value":"1","status":"synced"}
   //id = dataElementId + "-" + categoryOptionComboId
@@ -34,8 +35,11 @@ export class BooleanInputFieldComponent implements OnInit {
 
   ngOnInit() {
     const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
+    this.fieldId = fieldId;
     if (this.data && this.data[fieldId]) {
-      this.inputFieldValue = this.data[fieldId].value;
+      this.inputFieldValue = '' + this.data[fieldId].value;
+    } else {
+      this.inputFieldValue = '';
     }
   }
 
@@ -46,26 +50,11 @@ export class BooleanInputFieldComponent implements OnInit {
   }
 
   updateValues(dataValue) {
-    console.log('dataValue : ' + dataValue);
     const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
-    if (
-      this.data &&
-      this.data[fieldId] &&
-      dataValue != this.data[fieldId].value
-    ) {
-      this.onChange.emit({
-        id: fieldId,
-        value: dataValue,
-        status: 'not-synced'
-      });
-    } else if (this.data && !this.data[fieldId]) {
-      if (dataValue) {
-        this.onChange.emit({
-          id: fieldId,
-          value: dataValue,
-          status: 'not-synced'
-        });
-      }
-    }
+    this.onChange.emit({
+      id: fieldId,
+      value: dataValue,
+      status: 'not-synced'
+    });
   }
 }
