@@ -66,6 +66,11 @@ export class OptionListModalPage implements OnInit {
     }
   }
 
+  clearValue() {
+    const option = { name: '', id: '', code: '' };
+    this.selectOption(option);
+  }
+
   selectOption(option) {
     this.viewCtrl.dismiss(option);
   }
