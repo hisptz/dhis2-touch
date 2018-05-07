@@ -93,6 +93,10 @@ export class TrackerEntityRegisterPage implements OnInit {
     );
   }
 
+  goBack() {
+    this.navCtrl.pop();
+  }
+
   loadingCurrentUserInformation() {
     let key = 'Discovering current user information';
     this.loadingMessage = this.translationMapper[key]
@@ -283,7 +287,7 @@ export class TrackerEntityRegisterPage implements OnInit {
               )
               .subscribe(
                 () => {
-                  this.navCtrl.pop();
+                  this.goBack();
                   this.appProvider.setNormalNotification(
                     'A tracked entity instance has been deleted successfully'
                   );
