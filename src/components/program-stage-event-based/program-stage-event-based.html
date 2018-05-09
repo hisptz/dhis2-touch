@@ -16,7 +16,7 @@
     </div>
     <div *ngIf="eventDate && eventDate != ''">
       <div *ngIf="programStage.programStageSections && programStage.programStageSections  && programStage.programStageSections.length > 0">
-        <div *ngFor="let programStageSection of programStage.programStageSections" padding-bottom>
+        <div *ngFor="let programStageSection of programStage.programStageSections;trackBy: trackByFn" padding-bottom>
           <table width="100%">
             <tbody>
               <tr>
@@ -67,7 +67,7 @@
           <ion-row no-padding>
             <ion-col>
               <div class="item-card" color="font-color" ion-button clear text-justify (click)="goBack()">
-                <ion-icon name="Back" color="icon-color"></ion-icon>&nbsp; {{ translationMapper['Go back']}}
+                <ion-icon name="Back" color="icon-color"></ion-icon>&nbsp; {{ translationMapper['Back']}}
               </div>
             </ion-col>
             <ion-col col-auto>

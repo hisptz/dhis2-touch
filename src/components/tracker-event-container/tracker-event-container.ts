@@ -59,7 +59,7 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
     );
   }
 
-  hasNoEventDatesLabel(value) {
+  hasEventDatesLabel(value) {
     return isNaN(value);
   }
 
