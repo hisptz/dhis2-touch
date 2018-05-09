@@ -12,7 +12,7 @@
   </div>
   <div style="display: inline-block;width: 49.3%">
     <span *ngIf="!hasEventDatesLabel(programStage.dueDateLabel)"> {{ translationMapper['Due date'] }}</span>
-    <span *ngIf="hasEventDatesLabel(programStage.dueDateLabel)">{{ programStage.executionDateLabel }}</span>
+    <span *ngIf="hasEventDatesLabel(programStage.dueDateLabel)">{{ programStage.dueDateLabel }}</span>
     <div class="input-field-container">
       <ion-item>
         <ion-datetime doneText="Update" [(ngModel)]="currentOpenEvent['dueDate']" placeholder="{{ translationMapper['Touch to pick date'] }}"
