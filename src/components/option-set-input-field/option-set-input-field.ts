@@ -21,10 +21,12 @@ export class OptionSetInputFieldComponent implements OnInit {
   @Output() onChange = new EventEmitter();
   inputFieldValue: string;
   labelMapper: any;
+  shouldDisplayAsRadio: boolean;
   //{"id":"s46m5MS0hxu-Prlt0C1RF0s","value":"1","status":"synced"}
   //id = dataElementId + "-" + categoryOptionComboId
   constructor(private modalCtrl: ModalController) {
     this.labelMapper = {};
+    this.shouldDisplayAsRadio = false;
   }
 
   ngOnInit() {
@@ -36,6 +38,9 @@ export class OptionSetInputFieldComponent implements OnInit {
       this.options.map((option: any) => {
         this.labelMapper[option.code] = option.name;
       });
+    }
+    if (this.dataEntrySettings && this.dataEntrySettings.shouldDisplayAsRadio) {
+      this.shouldDisplayAsRadio = this.dataEntrySettings.shouldDisplayAsRadio;
     }
   }
 
