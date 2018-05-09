@@ -1,6 +1,6 @@
 <div (click)="openOptionListModal()" padding-left>
   <ion-item>
-    <span *ngIf="!(inputFieldValue && labelMapper && labelMapper[inputFieldValue])">Touch to select option</span>
+    <span *ngIf="!(inputFieldValue && labelMapper && labelMapper[inputFieldValue]) || inputFieldValue ===''">Touch to select option</span>
     <span *ngIf="(inputFieldValue && labelMapper && labelMapper[inputFieldValue])"> {{ labelMapper[inputFieldValue] }}</span>
   </ion-item>
 </div>

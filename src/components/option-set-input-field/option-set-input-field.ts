@@ -54,7 +54,7 @@ export class OptionSetInputFieldComponent implements OnInit {
       options
     );
     modal.onDidDismiss((selectedOption: any) => {
-      if (selectedOption && selectedOption.code) {
+      if (selectedOption && selectedOption.id) {
         this.inputFieldValue = selectedOption.code;
         this.updateValues();
       }
@@ -63,25 +63,11 @@ export class OptionSetInputFieldComponent implements OnInit {
   }
 
   updateValues() {
-    let fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
-    if (
-      this.data &&
-      this.data[fieldId] &&
-      this.inputFieldValue != this.data[fieldId].value
-    ) {
-      this.onChange.emit({
-        id: fieldId,
-        value: this.inputFieldValue,
-        status: 'not-synced'
-      });
-    } else if (this.data && !this.data[fieldId]) {
-      if (this.inputFieldValue) {
-        this.onChange.emit({
-          id: fieldId,
-          value: this.inputFieldValue,
-          status: 'not-synced'
-        });
-      }
-    }
+    const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
+    this.onChange.emit({
+      id: fieldId,
+      value: this.inputFieldValue,
+      status: 'not-synced'
+    });
   }
 }
