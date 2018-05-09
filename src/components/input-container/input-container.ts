@@ -70,7 +70,7 @@ export class InputContainerComponent implements OnInit {
         if (dataEntrySettings.label) {
           if (
             this.dataElement[dataEntrySettings.label] &&
-            this.dataElement[dataEntrySettings.label] != '0'
+            isNaN(this.dataElement[dataEntrySettings.label])
           ) {
             this.fieldLabelKey = this.dataElement[dataEntrySettings.label];
           }
