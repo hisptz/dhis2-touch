@@ -4,8 +4,8 @@
 <div *ngIf="!isLoading">
   <div class="item-card">
     <div>
-      <span *ngIf="programStage.executionDateLabel == '0' || programStage.executionDateLabel == '0.0'">{{ translationMapper['Report date']}} </span>
-      <span *ngIf="programStage.executionDateLabel !='0'">{{ programStage.executionDateLabel }}</span>
+      <span *ngIf="!hasEventDatesLabel(programStage.executionDateLabel)">{{ translationMapper['Report date']}} </span>
+      <span *ngIf="hasEventDatesLabel(programStage.executionDateLabel)">{{ programStage.executionDateLabel }}</span>
       <span class="required">*</span>
     </div>
     <div class="input-field-container">

@@ -59,6 +59,10 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
     );
   }
 
+  hasNoEventDatesLabel(value) {
+    return isNaN(value);
+  }
+
   ngOnDestroy() {
     this.programStage = null;
     this.currentOpenEvent = null;

@@ -74,6 +74,10 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     }
   }
 
+  hasEventDatesLabel(value) {
+    return isNaN(value);
+  }
+
   loadingCurrentUserInformation() {
     let key = 'Discovering current user information';
     this.loadingMessage = this.translationMapper[key]
