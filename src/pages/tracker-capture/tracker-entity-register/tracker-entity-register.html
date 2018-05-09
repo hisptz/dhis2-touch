@@ -106,14 +106,22 @@
                     </b>
                     <hr>
                   </div>
-                  <div *ngIf="programTrackedEntityAttributes && programTrackedEntityAttributes.length > 0">
-                    <form>
-                      <div *ngFor="let programTrackedEntityAttribute of programTrackedEntityAttributes;trackBy: trackByFn">
-                        <tracked-entity-inputs [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute" [currentUser]="currentUser"
-                          [data]="dataObject" [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
-                          [mandatory]="programTrackedEntityAttribute.mandatory" (onChange)="updateData($event)"></tracked-entity-inputs>
-                      </div>
-                    </form>
+                  <div *ngIf="!isFormReady">
+                    <loading [loadingMessage]="''" [loadingSize]="'large'"></loading>
+                  </div>
+                  <div *ngIf="programTrackedEntityAttributes && programTrackedEntityAttributes.length > 0 && isFormReady">
+                    <ion-row no-padding no-margin>
+                      <ion-col>
+                        <form>
+                          <div *ngFor="let programTrackedEntityAttribute of programTrackedEntityAttributes;trackBy: trackByFn">
+                            <tracked-entity-inputs [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute" [currentUser]="currentUser"
+                              [data]="dataObject" [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
+                              [mandatory]="programTrackedEntityAttribute.mandatory" (onChange)="updateData($event)"></tracked-entity-inputs>
+                          </div>
+                        </form>
+                      </ion-col>
+                    </ion-row>
+
                   </div>
 
                   <ion-row no-padding no-margin>
@@ -127,13 +135,13 @@
                     </ion-col>
                     <ion-col col-auto>
                       <div float-right>
-                        <button ion-button outline text-capitalize color="border-color" [disabled]="!isTrackedEntityRegistered" (click)="resetRegistration()">
+                        <div class="item-card" color="font-color" padding ion-button clear text-center text-capitalize (click)="addNewTrackedEntity()">
                           <img class="footer-icon" [src]="icons.addNewCase" />&nbsp;&nbsp;
                           <span [translate]="'Add new'"></span>
-                        </button>&nbsp;&nbsp;
-                        <div class="item-card" color="danger" float-right (click)="deleteTrackedEntity(trackedEntityInstance)" *ngIf="isTrackedEntityRegistered"
-                          padding ion-button clear text-center text-capitalize>
-                          <span [translate]="'Delete'"></span>&nbsp;&nbsp;
+                        </div>
+                        <div class="item-card" color="danger" float-right (click)="deleteTrackedEntity(trackedEntityInstance)" padding ion-button
+                          clear text-center text-capitalize>
+                          <span color="font-color" [translate]="'Delete'"></span>&nbsp;&nbsp;
                           <ion-icon name="trash"></ion-icon>
                         </div>
                       </div>
