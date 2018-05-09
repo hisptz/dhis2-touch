@@ -126,11 +126,11 @@
                   </div>
 
                   <ion-row no-padding>
-                    <ion-col>
+                    <ion-col col-3>
                       <div float-left>
                         <div class="item-card" color="font-color" (click)="goBack()" padding ion-button clear text-center text-capitalize>
                           <ion-icon name="ios-arrow-back-outline"></ion-icon>&nbsp;&nbsp;
-                          <span [translate]="'Go back'"></span>
+                          <span [translate]="'Back'"></span>
                         </div>
                       </div>
                     </ion-col>
@@ -138,7 +138,7 @@
                       <div float-right>
                         <button ion-button outline text-capitalize color="font-color" [disabled]="!isTrackedEntityRegistered" (click)="resetRegistration()">
                           <img class="footer-icon" [src]="icons.addNewCase" />&nbsp;&nbsp;
-                          <span [translate]="'Add'"></span>
+                          <span [translate]="'Add new'"></span>
                         </button>&nbsp;&nbsp;
                         <div class="item-card" color="danger" float-right (click)="deleteTrackedEntity(trackedEntityInstance)" *ngIf="isTrackedEntityRegistered"
                           padding ion-button clear text-center text-capitalize>
