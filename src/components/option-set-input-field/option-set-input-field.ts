@@ -15,6 +15,7 @@ export class OptionSetInputFieldComponent implements OnInit {
   @Input() dataElementId: string;
   @Input() categoryOptionComboId: string;
   @Input() optionListTitle: string;
+  @Input() dataEntrySettings;
   @Input() data;
   @Input() options;
   @Output() onChange = new EventEmitter();
