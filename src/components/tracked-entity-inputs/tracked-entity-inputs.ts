@@ -25,6 +25,7 @@ export class TrackedEntityInputsComponent implements OnInit {
   numericalInputField: Array<string>;
   supportValueTypes: Array<string>;
   formLayout: string;
+  dataEntrySettings: any;
 
   constructor(
     private settingProvider: SettingsProvider,
@@ -64,7 +65,8 @@ export class TrackedEntityInputsComponent implements OnInit {
       this.settingProvider
         .getSettingsForTheApp(this.currentUser)
         .subscribe((appSettings: any) => {
-          let dataEntrySettings = appSettings.entryForm;
+          const dataEntrySettings = appSettings.entryForm;
+          this.dataEntrySettings = dataEntrySettings;
           if (dataEntrySettings.formLayout) {
             this.formLayout = dataEntrySettings.formLayout;
           }

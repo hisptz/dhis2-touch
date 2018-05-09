@@ -67,7 +67,7 @@ export class OptionListModalPage implements OnInit {
   }
 
   clearValue() {
-    const option = { name: '', id: '', code: '' };
+    const option = { name: 'Empty code', id: 'empty-code', code: '' };
     this.selectOption(option);
   }
 
