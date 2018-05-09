@@ -74,6 +74,10 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     }
   }
 
+  hasEventDatesLabel(value) {
+    return isNaN(value);
+  }
+
   loadingCurrentUserInformation() {
     let key = 'Discovering current user information';
     this.loadingMessage = this.translationMapper[key]
@@ -237,7 +241,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
       'Yes',
       'No',
       'Add New',
-      'Go back',
+      'Back',
       'Deleting event',
       'Event has been deleted successfully',
       'Failed to discover current user information',

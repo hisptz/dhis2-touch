@@ -357,9 +357,11 @@ export class EventCapturePage implements OnInit {
                       ]
                     ) {
                       if (
-                        programStageDataElement.dataElement[
-                          this.dataEntrySettings.label
-                        ] != '0'
+                        isNaN(
+                          programStageDataElement.dataElement[
+                            this.dataEntrySettings.label
+                          ]
+                        )
                       ) {
                         fieldLabelKey =
                           programStageDataElement.dataElement[

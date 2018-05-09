@@ -32,12 +32,12 @@
 <ion-footer>
   <ion-grid>
     <ion-row>
-      <ion-col col-10>
+      <ion-col>
         <button ion-button outline [disabled]="(currentPage == 1)" color="font-color" text-capitalize (click)="previousPage()">
           <ion-icon name="skip-backward"></ion-icon>
         </button>
         <button ion-button clear color="font-color" text-capitalize>
-          {{ (arrayOfOptions.length > 0)? currentPage : 0 }}/ {{ arrayOfOptions.length }}
+          {{ (arrayOfOptions.length > 0)? currentPage : 0 }}/{{ arrayOfOptions.length }}
         </button>
         <button ion-button outline [disabled]="!(currentPage < arrayOfOptions.length)" color="font-color" text-capitalize (click)="nextPage()">
           <ion-icon name="skip-forward"></ion-icon>

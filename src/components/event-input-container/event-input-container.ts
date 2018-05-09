@@ -31,6 +31,7 @@ export class EventInputContainerComponent implements OnInit, OnDestroy {
   textInputField: Array<string>;
   numericalInputField: Array<string>;
   supportValueTypes: Array<string>;
+  dataEntrySettings: any;
 
   constructor(
     private settingsProvider: SettingsProvider,
@@ -68,11 +69,12 @@ export class EventInputContainerComponent implements OnInit, OnDestroy {
     this.settingsProvider
       .getSettingsForTheApp(this.currentUser)
       .subscribe((appSettings: any) => {
-        let dataEntrySettings = appSettings.entryForm;
+        const dataEntrySettings = appSettings.entryForm;
+        this.dataEntrySettings = dataEntrySettings;
         if (dataEntrySettings.label) {
           if (
             this.dataElement[dataEntrySettings.label] &&
-            this.dataElement[dataEntrySettings.label] != '0'
+            isNaN(this.dataElement[dataEntrySettings.label])
           ) {
             this.fieldLabelKey = this.dataElement[dataEntrySettings.label];
           }

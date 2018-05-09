@@ -1,7 +1,7 @@
 <div padding-top>
   <div style="display: inline-block;width: 49.3%">
-    <span *ngIf="programStage.executionDateLabel == '0'">{{ translationMapper['Report date'] }}</span>
-    <span *ngIf="programStage.executionDateLabel !='0'">{{ programStage.executionDateLabel }}</span>
+    <span *ngIf="!hasEventDatesLabel(programStage.executionDateLabel)">{{ translationMapper['Report date'] }}</span>
+    <span *ngIf="hasEventDatesLabel(programStage.executionDateLabel)">{{ programStage.executionDateLabel }}</span>
     <span class="required">*</span>
     <div class="input-field-container">
       <ion-item>
@@ -11,8 +11,8 @@
     </div>
   </div>
   <div style="display: inline-block;width: 49.3%">
-    <span *ngIf="programStage.dueDateLabel == '0'"> {{ translationMapper['Due date'] }}</span>
-    <span *ngIf="programStage.dueDateLabel !='0'">{{ programStage.executionDateLabel }}</span>
+    <span *ngIf="!hasEventDatesLabel(programStage.dueDateLabel)"> {{ translationMapper['Due date'] }}</span>
+    <span *ngIf="hasEventDatesLabel(programStage.dueDateLabel)">{{ programStage.dueDateLabel }}</span>
     <div class="input-field-container">
       <ion-item>
         <ion-datetime doneText="Update" [(ngModel)]="currentOpenEvent['dueDate']" placeholder="{{ translationMapper['Touch to pick date'] }}"

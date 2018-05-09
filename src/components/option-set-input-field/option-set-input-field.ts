@@ -15,19 +15,24 @@ export class OptionSetInputFieldComponent implements OnInit {
   @Input() dataElementId: string;
   @Input() categoryOptionComboId: string;
   @Input() optionListTitle: string;
+  @Input() dataEntrySettings;
   @Input() data;
   @Input() options;
   @Output() onChange = new EventEmitter();
   inputFieldValue: string;
   labelMapper: any;
+  maxOptionCountAsRadion: number;
+  fieldId: string;
   //{"id":"s46m5MS0hxu-Prlt0C1RF0s","value":"1","status":"synced"}
   //id = dataElementId + "-" + categoryOptionComboId
   constructor(private modalCtrl: ModalController) {
     this.labelMapper = {};
+    this.maxOptionCountAsRadion = 5;
   }
 
   ngOnInit() {
-    let fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
+    const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
+    this.fieldId = fieldId;
     if (this.data && this.data[fieldId]) {
       this.inputFieldValue = this.data[fieldId].value;
     }
@@ -54,34 +59,20 @@ export class OptionSetInputFieldComponent implements OnInit {
       options
     );
     modal.onDidDismiss((selectedOption: any) => {
-      if (selectedOption && selectedOption.code) {
+      if (selectedOption && selectedOption.id) {
         this.inputFieldValue = selectedOption.code;
-        this.updateValues();
+        this.updateValues(this.inputFieldValue);
       }
     });
     modal.present();
   }
 
-  updateValues() {
-    let fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
-    if (
-      this.data &&
-      this.data[fieldId] &&
-      this.inputFieldValue != this.data[fieldId].value
-    ) {
-      this.onChange.emit({
-        id: fieldId,
-        value: this.inputFieldValue,
-        status: 'not-synced'
-      });
-    } else if (this.data && !this.data[fieldId]) {
-      if (this.inputFieldValue) {
-        this.onChange.emit({
-          id: fieldId,
-          value: this.inputFieldValue,
-          status: 'not-synced'
-        });
-      }
-    }
+  updateValues(value) {
+    const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
+    this.onChange.emit({
+      id: fieldId,
+      value: value,
+      status: 'not-synced'
+    });
   }
 }

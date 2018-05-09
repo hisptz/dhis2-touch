@@ -24,6 +24,7 @@ export class InputContainerComponent implements OnInit {
   numericalInputField: Array<string>;
   supportValueTypes: Array<string>;
   formLayout: string;
+  dataEntrySettings: any;
 
   constructor(
     private settingProvider: SettingsProvider,
@@ -60,7 +61,8 @@ export class InputContainerComponent implements OnInit {
     this.settingProvider
       .getSettingsForTheApp(this.currentUser)
       .subscribe((appSettings: any) => {
-        let dataEntrySettings = appSettings.entryForm;
+        const dataEntrySettings = appSettings.entryForm;
+        this.dataEntrySettings = dataEntrySettings;
         this.fieldLabelKey = this.dataElement.displayName;
         if (dataEntrySettings.formLayout) {
           this.formLayout = dataEntrySettings.formLayout;
@@ -70,7 +72,7 @@ export class InputContainerComponent implements OnInit {
         if (dataEntrySettings.label) {
           if (
             this.dataElement[dataEntrySettings.label] &&
-            this.dataElement[dataEntrySettings.label] != '0'
+            isNaN(this.dataElement[dataEntrySettings.label])
           ) {
             this.fieldLabelKey = this.dataElement[dataEntrySettings.label];
           }
