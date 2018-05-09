@@ -271,10 +271,9 @@ export class TrackerEntityRegisterPage implements OnInit {
   addNewTrackedEntity() {
     if (this.isTrackedEntityRegistered) {
       this.isFormReady = false;
-      this.resetRegistration();
       setTimeout(() => {
-        //this.resetRegistration();
-      }, 50);
+        this.resetRegistration();
+      });
     } else {
       this.appProvider.setNormalNotification(
         'A tracked entity instance has not yet registered'
