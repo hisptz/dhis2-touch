@@ -52,8 +52,9 @@ export class EventHideShowColumnPage implements OnInit, OnDestroy {
             programStageDataElement.dataElement[dataEntrySettings.label]
           ) {
             if (
-              programStageDataElement.dataElement[dataEntrySettings.label] !=
-              '0'
+              isNaN(
+                programStageDataElement.dataElement[dataEntrySettings.label]
+              )
             ) {
               fieldLabelKey =
                 programStageDataElement.dataElement[dataEntrySettings.label];
