@@ -1,5 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="org.hisptz.mobile.ios.touch" version="0.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="org.hisptz.mobile.ios.touch" version="0.0.4" 
+    xmlns="http://www.w3.org/ns/widgets" 
+    xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>DHIS 2 Touch</name>
     <description>An awesome dhis 2 mobile experience</description>
     <author email="" href="" />
@@ -92,6 +94,10 @@
     <plugin name="cordova-sqlite-storage" spec="^2.2.1" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
     <plugin name="cordova-sms-plugin" spec="^0.1.11" />
-    <plugin name="cordova.plugins.diagnostic" spec="^3.9.2" />
+    <plugin name="cordova.plugins.diagnostic" spec="^3.9.2" /><<<<<<< HEAD    
     <engine name="ios" spec="~4.5.4" />
+=======    
+    <engine name="android" spec="~6.3.0" />
+>>>>>>> stable-mobile-dev
+
 </widget>
