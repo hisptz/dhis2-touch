@@ -60,6 +60,7 @@ export class CoordinateComponent implements OnInit {
       attribution:
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.map);
+
     //adding marker
     this.marker = L.marker(center, {
       icon: L.icon({
@@ -88,6 +89,8 @@ export class CoordinateComponent implements OnInit {
         const latitude = resp.coords.latitude;
         const longitude = resp.coords.longitude;
         this.marker.setLatLng(new L.LatLng(latitude, longitude));
+        this.map.setView(latitude, longitude);
+        this.position = { lat: latitude, lng: longitude };
       })
       .catch(error => {
         this.appProvider.setNormalNotification(
