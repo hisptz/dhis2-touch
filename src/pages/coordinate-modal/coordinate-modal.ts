@@ -32,6 +32,7 @@ export class CoordinateModalPage implements OnInit {
 
   changeCoordinate(position) {
     this.position = position;
+    this.save();
   }
 
   save() {

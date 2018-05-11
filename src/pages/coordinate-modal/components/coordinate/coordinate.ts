@@ -26,6 +26,7 @@ export class CoordinateComponent implements OnInit {
   marker: any;
   @Input() position;
   @Output() onCoordinateChange = new EventEmitter();
+  @Output() onDismissView = new EventEmitter();
 
   constructor() {}
 
@@ -41,7 +42,7 @@ export class CoordinateComponent implements OnInit {
     if (this.position && this.position.lat && this.position.lng) {
       center = [this.position.lat, this.position.lng];
     } else {
-      this.onCoordinateChange.emit(defaultPosition);
+      this.position = defaultPosition;
     }
     this.map = L.map('coordinate-selection', {
       center: center,
@@ -69,7 +70,14 @@ export class CoordinateComponent implements OnInit {
       const position = newMarker.getLatLng();
       this.position = position;
       marker.setLatLng(new L.LatLng(position.lat, position.lng));
-      this.onCoordinateChange.emit(position);
     });
+  }
+
+  dismissView() {
+    this.onDismissView.emit();
+  }
+  getMylocation() {}
+  savingLoaction() {
+    this.onCoordinateChange.emit(this.position);
   }
 }
