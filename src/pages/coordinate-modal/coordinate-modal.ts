@@ -30,13 +30,9 @@ export class CoordinateModalPage implements OnInit {
     }
   }
 
-  changeCoordinate(position) {
+  saveCoordinate(position) {
     this.position = position;
-    this.save();
-  }
-
-  save() {
-    this.viewCtrl.dismiss(this.position);
+    this.viewCtrl.dismiss(position);
   }
 
   dismiss() {

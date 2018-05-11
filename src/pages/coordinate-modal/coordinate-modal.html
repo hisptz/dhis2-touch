@@ -19,5 +19,5 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <coordinate [position]="position" (onDismissView)="dismiss()" (onCoordinateChange)="changeCoordinate($event)"></coordinate>
+  <coordinate [position]="position" (onDismissView)="dismiss()" (onSavingCoordinate)="saveCoordinate($event)"></coordinate>
 </ion-content>

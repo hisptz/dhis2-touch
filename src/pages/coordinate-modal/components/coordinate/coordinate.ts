@@ -8,6 +8,8 @@ import {
   Output
 } from '@angular/core';
 import L from 'leaflet';
+import { Geolocation } from '@ionic-native/geolocation';
+import { AppProvider } from '../../../../providers/app/app';
 
 /**
  * Generated class for the CoordinateComponent component.
@@ -25,10 +27,13 @@ export class CoordinateComponent implements OnInit {
   center: L.PointTuple;
   marker: any;
   @Input() position;
-  @Output() onCoordinateChange = new EventEmitter();
+  @Output() onSavingCoordinate = new EventEmitter();
   @Output() onDismissView = new EventEmitter();
 
-  constructor() {}
+  constructor(
+    private geolocation: Geolocation,
+    private appProvider: AppProvider
+  ) {}
 
   ngOnInit() {
     setTimeout(() => {
@@ -56,7 +61,7 @@ export class CoordinateComponent implements OnInit {
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.map);
     //adding marker
-    const marker = L.marker(center, {
+    this.marker = L.marker(center, {
       icon: L.icon({
         iconUrl: 'assets/icon/marker-icon.png',
         iconSize: [21, 31], // size of the icon
@@ -64,20 +69,33 @@ export class CoordinateComponent implements OnInit {
         popupAnchor: [0, -31]
       })
     }).addTo(this.map);
-    marker.dragging.enable();
-    marker.on('dragend', event => {
+    this.marker.dragging.enable();
+    this.marker.on('dragend', event => {
       const newMarker = event.target;
       const position = newMarker.getLatLng();
       this.position = position;
-      marker.setLatLng(new L.LatLng(position.lat, position.lng));
+      this.marker.setLatLng(new L.LatLng(position.lat, position.lng));
     });
   }
 
   dismissView() {
     this.onDismissView.emit();
   }
-  getMylocation() {}
+  getMylocation() {
+    this.geolocation
+      .getCurrentPosition()
+      .then(resp => {
+        const latitude = resp.coords.latitude;
+        const longitude = resp.coords.longitude;
+        this.marker.setLatLng(new L.LatLng(latitude, longitude));
+      })
+      .catch(error => {
+        this.appProvider.setNormalNotification(
+          'Error : ' + JSON.stringify(error)
+        );
+      });
+  }
   savingLoaction() {
-    this.onCoordinateChange.emit(this.position);
+    this.onSavingCoordinate.emit(this.position);
   }
 }
