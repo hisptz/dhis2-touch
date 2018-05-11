@@ -134,8 +134,8 @@ export class TrackerEntityRegisterPage implements OnInit {
     this.trackedEntityAttributeValuesObject = {};
     this.trackedEntityAttributesSavingStatusClass = {};
     this.date = {
-      incidentDate: today,
-      enrollmentDate: today
+      incidentDate: '',
+      enrollmentDate: ''
     };
     this.dashboardWidgets = this.getDashboardWidgets();
     this.isTrackedEntityRegistered = false;
