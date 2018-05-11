@@ -81,19 +81,21 @@
                       </div>
                       <div [ngClass]="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container'">
                         <ion-item>
-                          <ion-datetime [(ngModel)]="date.enrollmentDate" [ngModelOptions]="{standalone:true}" doneText="Update" displayFormat="YYYY-MM-DD"
-                            pickerFormat="YYYY MM DD"></ion-datetime>
+                          <ion-datetime [(ngModel)]="date.enrollmentDate" (ionChange)="updateData('',true)" [ngModelOptions]="{standalone:true}" doneText="Update"
+                            displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>
                         </ion-item>
                       </div>
-                      <div class="inputLabel" *ngIf="currentProgram && currentProgram.displayIncidentDate">
-                        {{ currentProgram.incidentDateLabel}}
-                        <span class="required">&nbsp;*</span>
-                      </div>
-                      <div [ngClass]="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container'">
-                        <ion-item>
-                          <ion-datetime [(ngModel)]="date.incidentDate" [ngModelOptions]="{standalone:true}" doneText="Update" displayFormat="YYYY-MM-DD"
-                            pickerFormat="YYYY MM DD"></ion-datetime>
-                        </ion-item>
+                      <div *ngIf="currentProgram && currentProgram.displayIncidentDate">
+                        <div class="inputLabel">
+                          {{ currentProgram.incidentDateLabel}}
+                          <span class="required">&nbsp;*</span>
+                        </div>
+                        <div [ngClass]="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container'">
+                          <ion-item>
+                            <ion-datetime [(ngModel)]="date.incidentDate" (ionChange)="updateData('',true)" [ngModelOptions]="{standalone:true}" doneText="Update"
+                              displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>
+                          </ion-item>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -118,7 +120,7 @@
                           <div *ngFor="let programTrackedEntityAttribute of programTrackedEntityAttributes;trackBy: trackByFn">
                             <tracked-entity-inputs [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute" [currentUser]="currentUser"
                               [data]="dataObject" [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
-                              [mandatory]="programTrackedEntityAttribute.mandatory" (onChange)="updateData($event)"></tracked-entity-inputs>
+                              [mandatory]="programTrackedEntityAttribute.mandatory" (onChange)="updateData($event,false)"></tracked-entity-inputs>
                           </div>
                         </form>
                       </ion-col>

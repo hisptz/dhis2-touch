@@ -254,14 +254,17 @@ export class TrackerEntityRegisterPage implements OnInit {
   }
 
   //@todo changes of enrollments as well
-  updateData(updateDataValue) {
-    let id = updateDataValue.id.split('-')[0];
-    this.currentTrackedEntityId = updateDataValue.id;
-    this.trackedEntityAttributeValuesObject[id] = updateDataValue.value;
-    this.dataObject[updateDataValue.id] = updateDataValue;
-    let isFormReady = this.isALlRequiredFieldHasValue(
+  updateData(updateDataValue, shoulOnlyCheckDates?) {
+    if (!shoulOnlyCheckDates) {
+      const id = updateDataValue.id.split('-')[0];
+      this.currentTrackedEntityId = updateDataValue.id;
+      this.trackedEntityAttributeValuesObject[id] = updateDataValue.value;
+      this.dataObject[updateDataValue.id] = updateDataValue;
+    }
+    const isFormReady = this.isALlRequiredFieldHasValue(
       this.programTrackedEntityAttributes,
-      this.trackedEntityAttributeValuesObject
+      this.trackedEntityAttributeValuesObject,
+      shoulOnlyCheckDates
     );
     if (isFormReady) {
       this.registerEntity();
@@ -407,9 +410,10 @@ export class TrackerEntityRegisterPage implements OnInit {
 
   isALlRequiredFieldHasValue(
     programTrackedEntityAttributes,
-    trackedEntityAttributeValuesObject
+    trackedEntityAttributeValuesObject,
+    shoulOnlyCheckDates
   ) {
-    let result = true;
+    let result = Object.keys(trackedEntityAttributeValuesObject).length > 0;
     programTrackedEntityAttributes.forEach(
       (programTrackedEntityAttribute: any) => {
         if (
@@ -428,6 +432,27 @@ export class TrackerEntityRegisterPage implements OnInit {
         }
       }
     );
+    if (result) {
+      if (this.date.enrollmentDate === '') {
+        this.appProvider.setNormalNotification(
+          this.currentProgram.enrollmentDateLabel + ' is mandatory field'
+        );
+        result = false;
+      }
+      if (
+        result &&
+        this.currentProgram &&
+        this.currentProgram.displayIncidentDate &&
+        this.date.enrollmentDate !== ''
+      ) {
+        if (this.date.incidentDate === '') {
+          this.appProvider.setNormalNotification(
+            this.currentProgram.incidentDateLabel + ' is mandatory field'
+          );
+          result = false;
+        }
+      }
+    }
     return result;
   }
 
