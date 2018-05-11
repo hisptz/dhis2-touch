@@ -339,6 +339,10 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
       );
   }
 
+  trackByFn(index, item) {
+    return index;
+  }
+
   updateDataObjectModel(dataValues, programStageDataElements) {
     let dataValuesMapper = {};
     dataValues.forEach((dataValue: any) => {

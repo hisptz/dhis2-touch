@@ -6,12 +6,12 @@
     <table class="table table-bordered" width="100%">
       <thead *ngIf="tableLayout && tableLayout.headers">
         <tr>
-          <th *ngFor="let header of tableLayout.headers">{{ header}}</th>
+          <th *ngFor="let header of tableLayout.headers;trackBy: trackByFn">{{ header}}</th>
         </tr>
       </thead>
-      <tbody *ngFor="let row of tableLayout.rows;let currentIndex = index">
+      <tbody *ngFor="let row of tableLayout.rows;let currentIndex = index;trackBy: trackByFn">
         <tr [ngStyle]="{'background-color': isTableRowOpened[currentIndex] ? '#B9FFB9' :'#F4F4F4' }" (click)="openProgramStageEventEntryForm(currentIndex)">
-          <td *ngFor="let data of row">
+          <td *ngFor="let data of row;trackBy: trackByFn">
             {{ data }}
           </td>
         </tr>
