@@ -112,7 +112,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
                         this.dataEntrySettings.label &&
                         dataElement[this.dataEntrySettings.label]
                       ) {
-                        if (dataElement[this.dataEntrySettings.label] != '0') {
+                        if (isNaN(dataElement[this.dataEntrySettings.label])) {
                           fieldLabelKey =
                             dataElement[this.dataEntrySettings.label];
                         }
@@ -337,6 +337,10 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
           );
         }
       );
+  }
+
+  trackByFn(index, item) {
+    return index;
   }
 
   updateDataObjectModel(dataValues, programStageDataElements) {
