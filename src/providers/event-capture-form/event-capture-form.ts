@@ -278,7 +278,7 @@ export class EventCaptureFormProvider {
       eventDataValuesArrays.map((eventDataValues: any) => {
         let row = [];
         Object.keys(columnsToDisplay).map(key => {
-          if (eventDataValues[key]) {
+          if (!this.isEmpty(eventDataValues[key])) {
             row.push(eventDataValues[key]);
           } else {
             row.push('');
@@ -295,6 +295,10 @@ export class EventCaptureFormProvider {
       observer.next({ table: table, eventIds: eventIds });
       observer.complete();
     });
+  }
+
+  isEmpty(value) {
+    return value === undefined || value === null;
   }
 
   /**
