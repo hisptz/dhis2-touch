@@ -89,7 +89,9 @@ export class CoordinateComponent implements OnInit {
         const latitude = resp.coords.latitude;
         const longitude = resp.coords.longitude;
         this.marker.setLatLng(new L.LatLng(latitude, longitude));
-        this.map.setView(latitude, longitude);
+        this.map.setView(new L.LatLng(latitude, longitude), 8, {
+          animation: true
+        });
         this.position = { lat: latitude, lng: longitude };
       })
       .catch(error => {
