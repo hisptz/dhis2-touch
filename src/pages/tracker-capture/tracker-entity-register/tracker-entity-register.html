@@ -77,21 +77,25 @@
                     <div>
                       <div class="inputLabel">
                         {{ currentProgram.enrollmentDateLabel}}
+                        <span class="required">&nbsp;*</span>
                       </div>
                       <div [ngClass]="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container'">
                         <ion-item>
-                          <ion-datetime [(ngModel)]="date.enrollmentDate" [ngModelOptions]="{standalone:true}" doneText="Update" displayFormat="YYYY-MM-DD"
-                            pickerFormat="YYYY MM DD"></ion-datetime>
+                          <ion-datetime [(ngModel)]="date.enrollmentDate" (ionChange)="updateData('',true)" [ngModelOptions]="{standalone:true}" doneText="Update"
+                            displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>
                         </ion-item>
                       </div>
-                      <div class="inputLabel">
-                        {{ currentProgram.incidentDateLabel}}
-                      </div>
-                      <div [ngClass]="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container'">
-                        <ion-item>
-                          <ion-datetime [(ngModel)]="date.incidentDate" [ngModelOptions]="{standalone:true}" doneText="Update" displayFormat="YYYY-MM-DD"
-                            pickerFormat="YYYY MM DD"></ion-datetime>
-                        </ion-item>
+                      <div *ngIf="currentProgram && currentProgram.displayIncidentDate">
+                        <div class="inputLabel">
+                          {{ currentProgram.incidentDateLabel}}
+                          <span class="required">&nbsp;*</span>
+                        </div>
+                        <div [ngClass]="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container'">
+                          <ion-item>
+                            <ion-datetime [(ngModel)]="date.incidentDate" (ionChange)="updateData('',true)" [ngModelOptions]="{standalone:true}" doneText="Update"
+                              displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>
+                          </ion-item>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -116,7 +120,7 @@
                           <div *ngFor="let programTrackedEntityAttribute of programTrackedEntityAttributes;trackBy: trackByFn">
                             <tracked-entity-inputs [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute" [currentUser]="currentUser"
                               [data]="dataObject" [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
-                              [mandatory]="programTrackedEntityAttribute.mandatory" (onChange)="updateData($event)"></tracked-entity-inputs>
+                              [mandatory]="programTrackedEntityAttribute.mandatory" (onChange)="updateData($event,false)"></tracked-entity-inputs>
                           </div>
                         </form>
                       </ion-col>
@@ -141,14 +145,13 @@
                         </div>
                         <div class="item-card" color="danger" float-right (click)="deleteTrackedEntity(trackedEntityInstance)" padding ion-button
                           clear text-center text-capitalize>
-                          <span color="font-color" [translate]="'Delete'"></span>&nbsp;&nbsp;
-                          <ion-icon name="trash"></ion-icon>
+                          <ion-icon name="trash"></ion-icon>&nbsp;&nbsp;
+                          <span color="font-color" [translate]="'Delete'"></span>
                         </div>
                       </div>
                     </ion-col>
                   </ion-row>
                 </div>
-
 
                 <div *ngIf="isTrackedEntityRegistered" class="item-card-program-stage-section">
                   <div class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex + 1)" padding-top padding-bottom

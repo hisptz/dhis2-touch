@@ -318,6 +318,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'name', type: 'TEXT' },
       { value: 'displayName', type: 'TEXT' },
       { value: 'programType', type: 'TEXT' },
+      { value: 'displayIncidentDate', type: 'TEXT' },
       { value: 'withoutRegistration', type: 'TEXT' },
       { value: 'ignoreOverdueEvents', type: 'TEXT' },
       { value: 'skipOffline', type: 'TEXT' },
