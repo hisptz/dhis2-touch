@@ -50,6 +50,7 @@ export class DataEntryFormPage implements OnInit {
   translationMapper: any;
   dataEntryFormDesign: string;
   entryFormType: string;
+  dataUpdateStatus: {elementId: string, status: string};
   @ViewChild(Content) content: Content;
 
   constructor(
@@ -466,10 +467,16 @@ export class DataEntryFormPage implements OnInit {
           this.dataValuesSavingStatusClass[dataValueId] =
             'input-field-container-success';
           this.dataValuesObject[dataValueId] = updateDataValue;
+
+          // Update dataValue update status
+          this.dataUpdateStatus = {elementId: updateDataValue.domElementId, status: 'OK'};
         },
         error => {
           this.dataValuesSavingStatusClass[dataValueId] =
             'input-field-container-failed';
+
+          // Update dataValue update status
+          this.dataUpdateStatus = {elementId: updateDataValue.domElementId, status: 'FAIL'};
         }
       );
   }
