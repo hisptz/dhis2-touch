@@ -1,0 +1,30 @@
+<ion-content>
+  <div id="coordinate-selection" style="width:100%; height:100%;">
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <div>
+    </div>
+    <ion-row no-padding>
+      <ion-col>
+        <div class="item-card" color="font-color" (tap)="dismissView()" ion-button clear text-justify>
+          <ion-icon name="arrow-back" color="icon-color"></ion-icon>&nbsp;
+          <span [translate]="'Back'"></span>
+        </div>
+      </ion-col>
+      <ion-col col-auto>
+        <div float-right>
+          <div class="item-card" color="font-color" (tap)="getMylocation()" ion-button clear text-justify>
+            <ion-icon name="locate" color="icon-color"></ion-icon>&nbsp;
+            <span [translate]="'My location'"></span>
+          </div>
+          <div class="item-card" color="font-color" (tap)="savingLoaction()" ion-button clear text-justify>
+            <ion-icon name="done-all" color="icon-color"></ion-icon>&nbsp;
+            <span [translate]="'Done'"></span>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

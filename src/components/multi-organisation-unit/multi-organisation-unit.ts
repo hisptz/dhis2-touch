@@ -70,7 +70,7 @@ export class MultiOrganisationUnitComponent implements OnInit {
         error => {
           console.log(JSON.stringify(error));
           this.isLoading = false;
-          key = 'Fail to discover organisation units';
+          key = 'Failed to discover organisation units';
           this.emptyMessage = this.translationMapper[key]
             ? this.translationMapper[key]
             : key;
@@ -95,5 +95,9 @@ export class MultiOrganisationUnitComponent implements OnInit {
     };
 
     this.activateOrganisationUnit.emit(data);
+  }
+
+  trackByFn(index, item) {
+    return item.id;
   }
 }

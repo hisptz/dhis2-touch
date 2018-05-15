@@ -112,7 +112,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
                         this.dataEntrySettings.label &&
                         dataElement[this.dataEntrySettings.label]
                       ) {
-                        if (dataElement[this.dataEntrySettings.label] != '0') {
+                        if (isNaN(dataElement[this.dataEntrySettings.label])) {
                           fieldLabelKey =
                             dataElement[this.dataEntrySettings.label];
                         }
@@ -154,7 +154,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
       },
       error => {
         this.appProvider.setNormalNotification(
-          'Fail to discover current user information'
+          'Failed to discover current user information'
         );
       }
     );
@@ -202,7 +202,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
         error => {
           console.log(JSON.stringify(error));
           this.isLoading = false;
-          this.appProvider.setNormalNotification('Fail to discover events');
+          this.appProvider.setNormalNotification('Failed to discover events');
         }
       );
   }
@@ -247,6 +247,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
       dataDimension.attributeCc,
       'tracker-capture'
     );
+    this.dataValuesSavingStatusClass = {};
     this.currentOpenEvent['trackedEntityInstance'] = this.trackedEntityInstance;
     this.dataObjectModel = {};
     this.currentEventId = this.currentOpenEvent.id;
@@ -303,7 +304,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
                   console.log(JSON.stringify(error));
                   this.isLoading = false;
                   this.appProvider.setNormalNotification(
-                    'Fail to delete event'
+                    'Failed to delete event'
                   );
                 }
               );
@@ -332,10 +333,14 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
         },
         error => {
           this.appProvider.setNormalNotification(
-            'Fail to prepare table for display'
+            'Failed to prepare table for display'
           );
         }
       );
+  }
+
+  trackByFn(index, item) {
+    return index;
   }
 
   updateDataObjectModel(dataValues, programStageDataElements) {
@@ -368,7 +373,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
           },
           error => {
             this.appProvider.setNormalNotification(
-              'Fail to prepare table for display'
+              'Failed to prepare table for display'
             );
           }
         );
@@ -414,7 +419,9 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
       'Discovering events',
       'You are about to delete this event, are you sure?',
       'Yes',
-      'No'
+      'No',
+      'Prev',
+      'Next'
     ];
   }
 }

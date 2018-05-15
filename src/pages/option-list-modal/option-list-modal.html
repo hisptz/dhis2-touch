@@ -32,21 +32,23 @@
 <ion-footer>
   <ion-grid>
     <ion-row>
-      <ion-col col-10>
+      <ion-col>
         <button ion-button outline [disabled]="(currentPage == 1)" color="font-color" text-capitalize (click)="previousPage()">
           <ion-icon name="skip-backward"></ion-icon>
         </button>
         <button ion-button clear color="font-color" text-capitalize>
-          {{ (arrayOfOptions.length > 0)? currentPage : 0 }}/ {{ arrayOfOptions.length }}
+          {{ (arrayOfOptions.length > 0)? currentPage : 0 }}/{{ arrayOfOptions.length }}
         </button>
         <button ion-button outline [disabled]="!(currentPage < arrayOfOptions.length)" color="font-color" text-capitalize (click)="nextPage()">
           <ion-icon name="skip-forward"></ion-icon>
         </button>
       </ion-col>
-      <ion-col>
-        <button ion-button outline color="danger" text-capitalize (click)="dismiss()">
-          <ion-icon name='close'></ion-icon>
-        </button>
+      <ion-col col-auto>
+        <div float-right>
+          <button ion-button outline color="danger" text-capitalize (click)="clearValue()">
+            <ion-icon name='trash'></ion-icon>
+          </button>
+        </div>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -86,6 +86,10 @@ export class TrackedEntityDashboardPage implements OnInit {
     );
   }
 
+  goBack() {
+    this.navCtrl.pop();
+  }
+
   loadingCurrentUserInformation() {
     let trackedEntityInstancesId = this.navParams.get(
       'trackedEntityInstancesId'
@@ -221,7 +225,7 @@ export class TrackedEntityDashboardPage implements OnInit {
               )
               .subscribe(
                 () => {
-                  this.navCtrl.pop();
+                  this.goBack();
                   this.appProvider.setNormalNotification(
                     'Tracked entity instance has been delete successfully'
                   );
@@ -336,6 +340,10 @@ export class TrackedEntityDashboardPage implements OnInit {
         icon: 'assets/icon/profile.png'
       }
     ];
+  }
+
+  trackByFn(index, item) {
+    return item.id;
   }
 
   getValuesToTranslate() {

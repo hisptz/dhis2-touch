@@ -1,7 +1,7 @@
-import { Component, OnInit } from "@angular/core";
-import { IonicPage, NavParams, ViewController } from "ionic-angular";
-import { PeriodSelectionProvider } from "../../providers/period-selection/period-selection";
-import { AppTranslationProvider } from "../../providers/app-translation/app-translation";
+import { Component, OnInit } from '@angular/core';
+import { IonicPage, NavParams, ViewController } from 'ionic-angular';
+import { PeriodSelectionProvider } from '../../providers/period-selection/period-selection';
+import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the PeriodSelectionPage page.
@@ -12,8 +12,8 @@ import { AppTranslationProvider } from "../../providers/app-translation/app-tran
 
 @IonicPage()
 @Component({
-  selector: "page-period-selection",
-  templateUrl: "period-selection.html"
+  selector: 'page-period-selection',
+  templateUrl: 'period-selection.html'
 })
 export class PeriodSelectionPage implements OnInit {
   periodType: string;
@@ -32,13 +32,13 @@ export class PeriodSelectionPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.icon = "assets/icon/period.png";
-    this.periodType = this.navParams.get("periodType");
-    this.openFuturePeriods = parseInt(this.navParams.get("openFuturePeriods"));
+    this.icon = 'assets/icon/period.png';
+    this.periodType = this.navParams.get('periodType');
+    this.openFuturePeriods = parseInt(this.navParams.get('openFuturePeriods'));
     this.currentPeriodOffset = parseInt(
-      this.navParams.get("currentPeriodOffset")
+      this.navParams.get('currentPeriodOffset')
     );
-    this.currentPeriod = this.navParams.get("currentPeriod");
+    this.currentPeriod = this.navParams.get('currentPeriod');
     this.translationMapper = {};
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
       (data: any) => {
@@ -83,7 +83,11 @@ export class PeriodSelectionPage implements OnInit {
     this.viewCtrl.dismiss({});
   }
 
+  trackByFn(index, item) {
+    return item.iso;
+  }
+
   getValuesToTranslate() {
-    return ["There is no period to select"];
+    return ['There is no period to select'];
   }
 }

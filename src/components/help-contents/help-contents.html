@@ -1,26 +1,26 @@
-<div *ngFor="let helpContent of helpContents" >
+<div *ngFor="let helpContent of helpContents;trackBy: trackByFn">
 
   <div class="help-contents-card">
     <ion-row (tap)="toggleHelpContent(helpContent)">
       <ion-col col-11>
         {{ helpContent.id }}&nbsp;{{ helpContent.name }}
       </ion-col>
-      <ion-col col-1  >
+      <ion-col col-1>
         <div style="text-align: center;">
           <ion-icon *ngIf="!isHelpContentOpened[ helpContent.id]" name="ios-arrow-down" item-right></ion-icon>
-          <ion-icon *ngIf="isHelpContentOpened[ helpContent.id]" name="ios-arrow-up"  item-right></ion-icon>
+          <ion-icon *ngIf="isHelpContentOpened[ helpContent.id]" name="ios-arrow-up" item-right></ion-icon>
         </div>
       </ion-col>
     </ion-row>
     <div *ngIf="isHelpContentOpened[helpContent.id]">
       <hr>
-      <ion-row >
+      <ion-row>
         <ion-col col-12>
           {{ helpContent.contents }}
         </ion-col>
       </ion-row>
       <div *ngIf="helpContent.subMenu && helpContent.subMenu.length > 0" style="padding-left: 10px">
-        <help-contents [helpContents]="helpContent.subMenu" ></help-contents>
+        <help-contents [helpContents]="helpContent.subMenu"></help-contents>
       </div>
     </div>
   </div>

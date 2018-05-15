@@ -225,14 +225,9 @@ export class TrackerCaptureProvider {
                   }
                 }
               );
+
               programTrackedEntityAttributes.sort((a, b) => {
-                if (a.sortOrder > b.sortOrder) {
-                  return 1;
-                }
-                if (a.sortOrder < b.sortOrder) {
-                  return -1;
-                }
-                return 0;
+                return parseInt(a.sortOrder) - parseInt(b.sortOrder);
               });
               this.programsProvider
                 .getTrackedEntityAttributes(

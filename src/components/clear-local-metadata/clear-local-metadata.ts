@@ -129,18 +129,22 @@ export class ClearLocalMetadataComponent implements OnInit {
               },
               error => {
                 this.appProvider.setTopNotification(
-                  'Fail to apply updates to local storage'
+                  'Failed to apply updates to local storage'
                 );
               }
             );
         },
         error => {
           this.appProvider.setNormalNotification(
-            'Fail to apply updates to local storage'
+            'Failed to apply updates to local storage'
           );
           console.log(JSON.stringify(error));
         }
       );
+  }
+
+  trackByFn(index, item) {
+    return item.id;
   }
 
   getValuesToTranslate() {

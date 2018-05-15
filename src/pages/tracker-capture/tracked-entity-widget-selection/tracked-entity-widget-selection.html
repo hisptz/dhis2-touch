@@ -26,7 +26,8 @@
     <ion-row>
       <ion-col>
         <ion-list>
-          <ion-item *ngFor="let dashboardWidget of dashboardWidgets" (tap)="setSelectedWidget(dashboardWidget)" no-padding>
+          <ion-item *ngFor="let dashboardWidget of dashboardWidgets;trackBy: trackByFn" (tap)="setSelectedWidget(dashboardWidget)"
+            no-padding>
             <div style="padding:6px 0px;">
               <span>
                 <span class="program-stage-button-label">

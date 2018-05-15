@@ -59,6 +59,10 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
     );
   }
 
+  hasEventDatesLabel(value) {
+    return isNaN(value);
+  }
+
   ngOnDestroy() {
     this.programStage = null;
     this.currentOpenEvent = null;
@@ -112,6 +116,10 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
           console.log(JSON.stringify(error));
         }
       );
+  }
+
+  trackByFn(index, item) {
+    return item.id;
   }
 
   getValuesToTranslate() {

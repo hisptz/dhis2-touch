@@ -13,6 +13,7 @@ import { SMS } from '@ionic-native/sms';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { IonicStorageModule } from '@ionic/storage';
+import { Geolocation } from '@ionic-native/geolocation';
 
 // Multi-language
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -115,6 +116,7 @@ import { SynchronizationProvider } from '../providers/synchronization/synchroniz
     StatusBar,
     SQLite,
     SplashScreen,
+    Geolocation,
     HTTP,
     AppVersion,
     Network,

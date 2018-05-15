@@ -121,7 +121,7 @@ export class DownloadMetaDataComponent implements OnInit {
                         },
                         error => {
                           this.appProvider.setNormalNotification(
-                            'Fail to apply updates'
+                            'Failed to apply updates'
                           );
                           this.showLoadingMessage = false;
                         }
@@ -130,7 +130,7 @@ export class DownloadMetaDataComponent implements OnInit {
                   error => {
                     this.showLoadingMessage = false;
                     this.appProvider.setNormalNotification(
-                      'Fail to prepare local storage for update'
+                      'Failed to prepare local storage for update'
                     );
                   }
                 );
@@ -138,7 +138,7 @@ export class DownloadMetaDataComponent implements OnInit {
             error => {
               this.showLoadingMessage = false;
               this.appProvider.setNormalNotification(
-                'Fail to prepare local storage for update'
+                'Failed to prepare local storage for update'
               );
               console.log(JSON.stringify(error));
             }
@@ -146,10 +146,14 @@ export class DownloadMetaDataComponent implements OnInit {
       },
       error => {
         this.showLoadingMessage = false;
-        this.appProvider.setNormalNotification('Fail to download updates');
+        this.appProvider.setNormalNotification('Failed to download updates');
         console.log(JSON.stringify(error));
       }
     );
+  }
+
+  trackByFn(index, item) {
+    return item.id;
   }
 
   getValuesToTranslate() {

@@ -269,6 +269,12 @@ export class UploadViaInternetComponent implements OnInit {
         Object.keys(this.selectedItems).forEach((key: string) => {
           this.selectedItems[key] = false;
         });
+        this.dataObject = {
+          events: [],
+          dataValues: [],
+          eventsForTracker: [],
+          Enrollments: []
+        };
         this.loadingDataToUpload();
       });
       modal.present();

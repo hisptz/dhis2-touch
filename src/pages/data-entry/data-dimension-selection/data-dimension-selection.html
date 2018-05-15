@@ -26,7 +26,7 @@
     <ion-row>
       <ion-col>
         <ion-list>
-          <ion-item *ngFor="let categoryOption of categoryOptions" (tap)="setSelectedCategoryOption(categoryOption)">
+          <ion-item *ngFor="let categoryOption of categoryOptions;trackBy: trackByFn" (tap)="setSelectedCategoryOption(categoryOption)">
             <img class="side-menu-icon" [src]="icon" />&nbsp;&nbsp;
             <span ion-text [color]="(currentSelection.id == categoryOption.id) ?'current' : 'font-color'">{{ categoryOption.name }}</span>
           </ion-item>

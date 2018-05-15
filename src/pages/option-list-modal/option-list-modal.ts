@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavParams, ViewController } from 'ionic-angular';
+import * as _ from 'lodash';
 
 /**
  * Generated class for the OptionListModalPage page.
@@ -65,6 +66,11 @@ export class OptionListModalPage implements OnInit {
     }
   }
 
+  clearValue() {
+    const option = { name: 'Empty code', id: 'empty-code', code: '' };
+    this.selectOption(option);
+  }
+
   selectOption(option) {
     this.viewCtrl.dismiss(option);
   }
@@ -84,16 +90,8 @@ export class OptionListModalPage implements OnInit {
   }
 
   getOptionsWithPaginations(options) {
-    let pageNumber = 0;
     const pageSize = 250;
-    let array = [];
-    while (
-      this.getSubArryByPagination(options, pageSize, pageNumber).length > 0
-    ) {
-      array.push(this.getSubArryByPagination(options, pageSize, pageNumber));
-      pageNumber++;
-    }
-    return array;
+    return _.chunk(options, pageSize);
   }
 
   getSubArryByPagination(array, pageSize, pageNumber) {

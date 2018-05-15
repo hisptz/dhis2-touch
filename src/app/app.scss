@@ -139,12 +139,12 @@ ion-modal.inset-modal {
   word-wrap: break-word !important;
 }
 
-.list-ios > .item-block:first-child {
+.list-ios>.item-block:first-child {
   border-top: 0px solid #c8c7cc;
 }
 
-.list-ios > .item-block:last-child,
-.list-ios > .item-wrapper:last-child .item-block {
+.list-ios>.item-block:last-child,
+.list-ios>.item-wrapper:last-child .item-block {
   border-bottom: 0px solid #c8c7cc;
 }
 
@@ -329,6 +329,14 @@ ion-modal.inset-modal {
   padding-bottom: 1.3rem;
 }
 
+.item-car-tracker-details-sections {
+  border: 1px solid #e6e6e7;
+  border-radius: 0.1rem;
+  padding: 5px 2px 5px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
 .item-card {
   border: 1px solid #e6e6e7;
   border-radius: 0.1rem;
@@ -491,7 +499,7 @@ ion-select {
 
 /* Zebra striping */
 
-.table .table-bordered > thead {
+.table .table-bordered>thead {
   background: #fbfbfb;
   overflow: auto;
 }

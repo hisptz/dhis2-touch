@@ -1,12 +1,11 @@
-<!-- <ion-item>
-  <ion-label>Touch to select/update</ion-label>
-  <ion-select (ionChange)="updateValues()" [(ngModel)]="inputFieldValue"  interface="action-sheet" >
-    <ion-option *ngFor="let option of options" value="{{option.code}}">{{option.name}}</ion-option>
-  </ion-select>
-</ion-item> -->
-<div (click)="openOptionListModal()" padding-left>
-  <ion-item>
-    <span *ngIf="!(inputFieldValue && labelMapper && labelMapper[inputFieldValue])">Touch to select option</span>
-    <span *ngIf="(inputFieldValue && labelMapper && labelMapper[inputFieldValue])"> {{ labelMapper[inputFieldValue] }}</span>
-  </ion-item>
+<div *ngIf="!(dataEntrySettings && dataEntrySettings.shouldDisplayAsRadio && (options && options.length <= maxOptionCountAsRadion))">
+  <div (click)="openOptionListModal()" padding-left>
+    <ion-item>
+      <span *ngIf="!(inputFieldValue && labelMapper && labelMapper[inputFieldValue]) || inputFieldValue ===''">Touch to select option</span>
+      <span *ngIf="(inputFieldValue && labelMapper && labelMapper[inputFieldValue])"> {{ labelMapper[inputFieldValue] }}</span>
+    </ion-item>
+  </div>
+</div>
+<div *ngIf="(dataEntrySettings && dataEntrySettings.shouldDisplayAsRadio && (options && options.length <= maxOptionCountAsRadion))">
+  <radio-button-input [options]="options" [fieldId]="fieldId" [(selectedValue)]="inputFieldValue" (updateValueAction)="updateValues($event)"></radio-button-input>
 </div>

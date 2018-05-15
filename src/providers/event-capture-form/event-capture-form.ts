@@ -278,7 +278,7 @@ export class EventCaptureFormProvider {
       eventDataValuesArrays.map((eventDataValues: any) => {
         let row = [];
         Object.keys(columnsToDisplay).map(key => {
-          if (eventDataValues[key]) {
+          if (!this.isEmpty(eventDataValues[key])) {
             row.push(eventDataValues[key]);
           } else {
             row.push('');
@@ -297,6 +297,10 @@ export class EventCaptureFormProvider {
     });
   }
 
+  isEmpty(value) {
+    return value === undefined || value === null;
+  }
+
   /**
    *
    * @param events
@@ -308,6 +312,8 @@ export class EventCaptureFormProvider {
     events.map((event: any) => {
       let mapper = {};
       if (event && event.dataValues) {
+        const { eventDate } = event;
+        mapper['eventDate'] = eventDate;
         event.dataValues.map((dataValue: any) => {
           mapper[dataValue.dataElement] = dataValue.value;
         });
@@ -569,6 +575,7 @@ export class EventCaptureFormProvider {
               },
               (error: any) => {
                 //try to update event
+                console.log('error posting : ' + JSON.stringify(error));
                 url = url + '/' + event.event;
                 this.httpClientProvider.put(url, event, currentUser).subscribe(
                   () => {

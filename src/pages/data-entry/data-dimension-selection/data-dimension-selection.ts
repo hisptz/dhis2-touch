@@ -59,6 +59,10 @@ export class DataDimensionSelectionPage implements OnInit {
     this.viewCtrl.dismiss(categoryOption);
   }
 
+  trackByFn(index, item) {
+    return item.id;
+  }
+
   dismiss() {
     this.viewCtrl.dismiss({});
   }

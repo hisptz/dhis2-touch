@@ -117,7 +117,7 @@ export class DataSetReportComponent implements OnInit {
                       this.isLoading = false;
                       this.loadingMessage = '';
                       this.appProvider.setNormalNotification(
-                        'Fail to prepare data set report'
+                        'Failed to prepare data set report'
                       );
                     }
                   );
@@ -126,12 +126,16 @@ export class DataSetReportComponent implements OnInit {
                 this.isLoading = false;
                 this.loadingMessage = '';
                 this.appProvider.setNormalNotification(
-                  'Fail to discover data set report information'
+                  'Failed to discover data set report information'
                 );
               }
             );
         });
     }
+  }
+
+  trackByFn(index, item) {
+    return item.id;
   }
 
   getValuesToTranslate() {

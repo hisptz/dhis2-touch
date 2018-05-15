@@ -28,7 +28,9 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   @Input() programStage;
   @Input() dataDimension;
   @Input() currentEvent;
+  @Input() emptyEvent;
   @Output() onDeleteEvent = new EventEmitter();
+  @Output() onCancelEvent = new EventEmitter();
 
   currentOrgUnit: any;
   currentProgram: any;
@@ -72,6 +74,10 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     }
   }
 
+  hasEventDatesLabel(value) {
+    return isNaN(value);
+  }
+
   loadingCurrentUserInformation() {
     let key = 'Discovering current user information';
     this.loadingMessage = this.translationMapper[key]
@@ -96,10 +102,21 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
         this.isLoading = false;
         console.log(JSON.stringify(error));
         this.appProvider.setNormalNotification(
-          'Fail to discover current user information'
+          'Failed to discover current user information'
         );
       }
     );
+  }
+
+  AddNewEvent() {
+    this.dataObjectModel = {};
+    this.dataValuesSavingStatusClass = {};
+    this.eventDate = '';
+    this.currentEvent = Object.assign({}, this.emptyEvent);
+  }
+
+  goBack() {
+    this.onCancelEvent.emit();
   }
 
   canEventBeDeleted() {
@@ -133,7 +150,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
                   console.log(JSON.stringify(error));
                   this.isLoading = false;
                   this.appProvider.setNormalNotification(
-                    'Fail to delete event'
+                    'Failed to delete event'
                   );
                 }
               );
@@ -150,10 +167,10 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
 
   updateDataObjectModel(dataValues, programStageDataElements) {
     let dataValuesMapper = {};
-    dataValues.forEach((dataValue: any) => {
+    dataValues.map((dataValue: any) => {
       dataValuesMapper[dataValue.dataElement] = dataValue;
     });
-    programStageDataElements.forEach((programStageDataElement: any) => {
+    programStageDataElements.map((programStageDataElement: any) => {
       if (
         programStageDataElement.dataElement &&
         programStageDataElement.dataElement.id
@@ -209,6 +226,10 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     this.currentOrgUnit = null;
   }
 
+  trackByFn(index, item) {
+    return item.id;
+  }
+
   getValuesToTranslate() {
     return [
       'Report date',
@@ -219,10 +240,12 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
       'You are about to delete this event, are you sure?',
       'Yes',
       'No',
+      'Add New',
+      'Back',
       'Deleting event',
       'Event has been deleted successfully',
-      'Fail to discover current user information',
-      'Fail to delete event'
+      'Failed to discover current user information',
+      'Failed to delete event'
     ];
   }
 }

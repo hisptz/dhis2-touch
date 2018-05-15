@@ -29,6 +29,7 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
   loadingMessage: string;
   translationMapper: any;
   currentEvent: any;
+  emptyEvent: any;
 
   constructor(
     private navCtr: NavController,
@@ -82,6 +83,17 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
     this.navCtr.pop();
   }
 
+  setEmptyEventObject() {
+    this.emptyEvent = this.eventCaptureFormProvider.getEmptyEvent(
+      this.currentProgram,
+      this.currentOrgUnit,
+      this.programStage.id,
+      this.dataDimension.attributeCos,
+      this.dataDimension.attributeCc,
+      'event-capture'
+    );
+  }
+
   loadProgramStages(programId) {
     let key = 'Discovering program stages';
     this.loadingMessage = this.translationMapper[key]
@@ -93,6 +105,7 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
         (programStages: any) => {
           if (programStages && programStages.length > 0) {
             this.programStage = programStages[0];
+            this.setEmptyEventObject();
           }
           let eventId = this.params.get('eventId');
           if (eventId) {

@@ -189,7 +189,13 @@ export class DataEntryFormPage implements OnInit {
       )
       .subscribe(
         (entryFormResponse: any) => {
-          if (dataSet.formType == 'CUSTOM') {
+          if (
+            dataSet.formType == 'CUSTOM' &&
+            this.appSettings &&
+            this.appSettings.entryForm &&
+            this.appSettings.entryForm.formLayout &&
+            this.appSettings.entryForm.formLayout == 'customLayout'
+          ) {
             this.dataEntryFormDesign = entryFormResponse.entryForm;
             this.entryFormSections = entryFormResponse.entryFormSections;
             this.entryFormType = 'CUSTOM';
@@ -397,6 +403,7 @@ export class DataEntryFormPage implements OnInit {
     if (indicators && indicators.length > 0) {
       let modal = this.modalCtrl.create('DataEntryIndicatorsPage', {
         indicators: indicators,
+        dataValuesObject: this.dataValuesObject,
         dataSet: { id: this.dataSet.id, name: this.dataSet.name }
       });
       modal.onDidDismiss(() => {});
@@ -609,6 +616,10 @@ export class DataEntryFormPage implements OnInit {
           }
         );
     }
+  }
+
+  trackByFn(index, item) {
+    return item.id;
   }
 
   getValuesToTranslate() {

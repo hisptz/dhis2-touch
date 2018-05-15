@@ -1,5 +1,5 @@
-import { Component, OnInit } from "@angular/core";
-import { ViewController, NavParams, IonicPage } from "ionic-angular";
+import { Component, OnInit } from '@angular/core';
+import { ViewController, NavParams, IonicPage } from 'ionic-angular';
 
 /**
  * Generated class for the TrackerHideShowColumnPage page.
@@ -10,8 +10,8 @@ import { ViewController, NavParams, IonicPage } from "ionic-angular";
 
 @IonicPage()
 @Component({
-  selector: "page-tracker-hide-show-column",
-  templateUrl: "tracker-hide-show-column.html"
+  selector: 'page-tracker-hide-show-column',
+  templateUrl: 'tracker-hide-show-column.html'
 })
 export class TrackerHideShowColumnPage implements OnInit {
   selectedItemsModel: any;
@@ -21,10 +21,10 @@ export class TrackerHideShowColumnPage implements OnInit {
 
   ngOnInit() {
     this.selectedItemsModel = {};
-    let attributeToDisplay = this.params.get("attributeToDisplay");
+    let attributeToDisplay = this.params.get('attributeToDisplay');
     this.trackedEntityAttributes = [];
     let programTrackedEntityAttributes = this.params.get(
-      "programTrackedEntityAttributes"
+      'programTrackedEntityAttributes'
     );
     Object.keys(attributeToDisplay).forEach(key => {
       this.selectedItemsModel[key] = true;
@@ -65,6 +65,10 @@ export class TrackerHideShowColumnPage implements OnInit {
       ] = this.trackedEntityAttributes[0].name;
     }
     this.viewCtrl.dismiss(attributeToDisplay);
+  }
+
+  trackByFn(index, item) {
+    return item.id;
   }
 
   dismiss() {

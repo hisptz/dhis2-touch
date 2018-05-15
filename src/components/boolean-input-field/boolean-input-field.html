@@ -1,7 +1,1 @@
-<ion-item>
-  <ion-label>Touch to select/update</ion-label>
-  <ion-select (ionChange)="updateValues()" [(ngModel)]="inputFieldValue" interface="action-sheet" >
-    <ion-option value="true">Yes</ion-option>
-    <ion-option value="false">No</ion-option>
-  </ion-select>
-</ion-item>
+<radio-button-input [options]="options" [fieldId]="fieldId" [(selectedValue)]="inputFieldValue" (updateValueAction)="onUpdateValue($event)"></radio-button-input>

@@ -1,4 +1,4 @@
-import { Component,OnInit,Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 /**
  * Generated class for the HelpContentsComponent component.
@@ -10,13 +10,12 @@ import { Component,OnInit,Input } from '@angular/core';
   selector: 'help-contents',
   templateUrl: 'help-contents.html'
 })
-export class HelpContentsComponent implements OnInit{
+export class HelpContentsComponent implements OnInit {
+  loadingMessage: string;
+  isLoading: boolean = false;
+  isHelpContentOpened: any = {};
 
-  loadingMessage : string;
-  isLoading : boolean  = false;
-  isHelpContentOpened : any = {};
-
-  @Input() helpContents ;
+  @Input() helpContents;
 
   constructor() {}
 
@@ -25,15 +24,19 @@ export class HelpContentsComponent implements OnInit{
     this.isLoading = false;
   }
 
-
-  toggleHelpContent(helpContent){
-    if(helpContent && helpContent.id){
-      if(this.isHelpContentOpened[helpContent.id]){
-        this.isHelpContentOpened[helpContent.id] = !this.isHelpContentOpened[helpContent.id];
-      }else{
+  toggleHelpContent(helpContent) {
+    if (helpContent && helpContent.id) {
+      if (this.isHelpContentOpened[helpContent.id]) {
+        this.isHelpContentOpened[helpContent.id] = !this.isHelpContentOpened[
+          helpContent.id
+        ];
+      } else {
         this.isHelpContentOpened[helpContent.id] = true;
       }
     }
   }
 
+  trackByFn(index, item) {
+    return item.id;
+  }
 }

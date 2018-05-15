@@ -438,40 +438,45 @@ export class DataSetsProvider {
   downloadDataSetsFromServer(currentUser): Observable<any> {
     let dataSets = [];
     let counts = 0;
-    let userOrgUnitIds = currentUser.userOrgUnitIds;
+    const { userOrgUnitIds } = currentUser;
     return new Observable(observer => {
-      for (let userOrgUnitId of userOrgUnitIds) {
-        let fields =
-          'fields=id,name,timelyDays,formType,dataEntryForm[htmlCode],compulsoryDataElementOperands[name,dimensionItemType,dimensionItem],version,periodType,openFuturePeriods,expiryDays,dataSetElements[dataElement[id]],dataElements[id],organisationUnits[id],sections[id],indicators[id],categoryCombo[id,name,categoryOptionCombos[id,name,categoryOptions[id]],categories[id,name,categoryOptions[id,name,organisationUnits[id]]]]';
-        let filter = 'filter=organisationUnits.path:ilike:';
-        let url = '/api/25/' + this.resource + '.json?';
-        url += fields + '&' + filter + userOrgUnitId;
-        this.HttpClient.get(
-          url,
-          false,
-          currentUser,
-          this.resource,
-          25
-        ).subscribe(
-          (response: any) => {
-            try {
-              counts = counts + 1;
-              dataSets = this.appendDataSetsFromServerToDataSetArray(
-                dataSets,
-                response
-              );
-              if (counts == userOrgUnitIds.length) {
-                observer.next(dataSets);
-                observer.complete();
+      if (userOrgUnitIds && userOrgUnitIds.length == 0) {
+        observer.next(dataSets);
+        observer.complete();
+      } else {
+        for (let userOrgUnitId of userOrgUnitIds) {
+          let fields =
+            'fields=id,name,timelyDays,formType,dataEntryForm[htmlCode],compulsoryDataElementOperands[name,dimensionItemType,dimensionItem],version,periodType,openFuturePeriods,expiryDays,dataSetElements[dataElement[id]],dataElements[id],organisationUnits[id],sections[id],indicators[id],categoryCombo[id,name,categoryOptionCombos[id,name,categoryOptions[id]],categories[id,name,categoryOptions[id,name,organisationUnits[id]]]]';
+          let filter = 'filter=organisationUnits.path:ilike:';
+          let url = '/api/25/' + this.resource + '.json?';
+          url += fields + '&' + filter + userOrgUnitId;
+          this.HttpClient.get(
+            url,
+            false,
+            currentUser,
+            this.resource,
+            25
+          ).subscribe(
+            (response: any) => {
+              try {
+                counts = counts + 1;
+                dataSets = this.appendDataSetsFromServerToDataSetArray(
+                  dataSets,
+                  response
+                );
+                if (counts == userOrgUnitIds.length) {
+                  observer.next(dataSets);
+                  observer.complete();
+                }
+              } catch (e) {
+                observer.error(e);
               }
-            } catch (e) {
-              observer.error(e);
+            },
+            error => {
+              observer.error(error);
             }
-          },
-          error => {
-            observer.error(error);
-          }
-        );
+          );
+        }
       }
     });
   }
@@ -632,13 +637,6 @@ export class DataSetsProvider {
     return new Observable(observer => {
       let entryFormDesign = '';
       const resource = 'dataSetDesign';
-      this.SqlLite.getAllDataFromTable(
-        resource,
-        currentUser.currentDatabase
-      ).subscribe(data => {
-        console.log(data.length);
-      });
-
       this.SqlLite.getDataFromTableByAttributes(
         resource,
         'id',
@@ -646,7 +644,6 @@ export class DataSetsProvider {
         currentUser.currentDatabase
       ).subscribe(
         (entryFormDesigns: any) => {
-          console.log(JSON.stringify(entryFormDesigns));
           if (entryFormDesigns && entryFormDesigns.length > 0) {
             entryFormDesign = entryFormDesigns[0].dataSetDesign;
           }

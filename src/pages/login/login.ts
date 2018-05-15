@@ -62,6 +62,7 @@ export class LoginPage implements OnInit {
   isNetworkAvailable: boolean;
   downloadingQueueManager: QueueManager;
   savingingQueueManager: QueueManager;
+  hasUserSuccessLogin: boolean;
 
   constructor(
     public navCtrl: NavController,
@@ -88,6 +89,7 @@ export class LoginPage implements OnInit {
     private programRulesProvider: ProgramRulesProvider
   ) {
     this.resetQueueManager();
+    this.hasUserSuccessLogin = false;
   }
 
   ngOnInit() {
@@ -133,7 +135,7 @@ export class LoginPage implements OnInit {
       this.currentUser = currentUser;
     } else {
       this.currentUser = {
-        serverUrl: 'play.dhis2.org/2.29',
+        serverUrl: 'play.dhis2.org/2.28',
         username: 'admin',
         password: 'district',
         currentLanguage: 'en'
@@ -184,6 +186,7 @@ export class LoginPage implements OnInit {
 
   startLoginProcess() {
     this.hasUserAuthenticated = false;
+    this.hasUserSuccessLogin = false;
     this.backgroundMode.enable();
     this.progressBar = '0';
     this.loggedInInInstance = this.currentUser.serverUrl;
@@ -298,16 +301,16 @@ export class LoginPage implements OnInit {
                                           );
                                           const metadataList = [
                                             'organisationUnits',
-                                            'dataSets',
                                             'sections',
                                             'dataElements',
                                             'smsCommand',
                                             'programs',
                                             'programStageSections',
                                             'programRules',
+                                            'indicators',
                                             'programRuleActions',
                                             'programRuleVariables',
-                                            'indicators',
+                                            'dataSets',
                                             'reports',
                                             'constants'
                                           ];
@@ -435,6 +438,7 @@ export class LoginPage implements OnInit {
 
   setLandingPage(currentUser: CurrentUser) {
     currentUser.isLogin = true;
+    this.hasUserSuccessLogin = true;
     this.reCheckingAppSetting(currentUser);
     this.smsCommandProvider
       .checkAndGenerateSmsCommands(currentUser)
@@ -643,7 +647,9 @@ export class LoginPage implements OnInit {
     let value = completed / total * 100;
     this.progressBar = String(value);
     if (completed == total) {
-      this.setLandingPage(this.currentUser);
+      if (!this.hasUserSuccessLogin) {
+        this.setLandingPage(this.currentUser);
+      }
     }
   }
 
@@ -657,7 +663,7 @@ export class LoginPage implements OnInit {
     this.downloadingQueueManager = {
       totalProcess: 13,
       enqueuedProcess: [],
-      dequeuingLimit: 2,
+      dequeuingLimit: 5,
       denqueuedProcess: []
     };
   }

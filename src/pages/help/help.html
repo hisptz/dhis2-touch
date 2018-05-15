@@ -29,7 +29,7 @@
       <div>
         <ion-searchbar animated="true" autocomplete="on" placeholder="{{'Search help by title'|translate}}" (ionInput)="getFilteredList($event)"></ion-searchbar>
         <div *ngIf="helpContents && helpContents.length > 0">
-          <div class="help-card" *ngFor="let helpContent of helpContents">
+          <div class="help-card" *ngFor="let helpContent of helpContents;trackBy: trackByFn">
             <div *ngIf="helpContent && helpContent.id">
               <ion-row (tap)="toggleHelpContent(helpContent)">
                 <ion-col col-11>

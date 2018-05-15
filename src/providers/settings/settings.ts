@@ -138,7 +138,9 @@ export class SettingsProvider {
       entryForm: {
         label: 'formName',
         maxDataElementOnDefaultForm: 10,
-        formLayout: 'tableLayout'
+        formLayout: 'tableLayout',
+        showAlertOnFormAssignement: true,
+        shouldDisplayAsRadio: false
       },
       synchronization: {
         time: 2 * 60 * 1000,

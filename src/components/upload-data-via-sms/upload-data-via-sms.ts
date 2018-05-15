@@ -104,7 +104,7 @@ export class UploadDataViaSmsComponent implements OnInit {
         this.isLoading = false;
         this.loadingMessage = '';
         this.appProvider.setNormalNotification(
-          'Fail to discover current user information'
+          'Failed to discover current user information'
         );
       }
     );
@@ -174,7 +174,9 @@ export class UploadDataViaSmsComponent implements OnInit {
           this.updateDataEntryFormSelections();
         },
         error => {
-          this.appProvider.setNormalNotification('Fail to discover entry form');
+          this.appProvider.setNormalNotification(
+            'Failed to discover entry form'
+          );
         }
       );
   }
@@ -444,7 +446,7 @@ export class UploadDataViaSmsComponent implements OnInit {
                                       this.sendDataViaSmsObject.loadingMessage =
                                         '';
                                       this.appProvider.setNormalNotification(
-                                        'Fail to send some of SMS, Please go into your SMS inbox and resend them manually'
+                                        'Failed to send some of SMS, Please go into your SMS inbox and resend them manually'
                                       );
                                       console.log(JSON.stringify(error));
                                     }
@@ -454,7 +456,7 @@ export class UploadDataViaSmsComponent implements OnInit {
                                 this.sendDataViaSmsObject.isLoading = false;
                                 this.sendDataViaSmsObject.loadingMessage = '';
                                 this.appProvider.setNormalNotification(
-                                  'Fail to preparing SMS'
+                                  'Failed to preparing SMS'
                                 );
                                 console.log(JSON.stringify(error));
                               }
@@ -472,7 +474,7 @@ export class UploadDataViaSmsComponent implements OnInit {
                         this.sendDataViaSmsObject.loadingMessage = '';
                         console.log(JSON.stringify(error));
                         this.appProvider.setNormalNotification(
-                          'Fail to discover data values'
+                          'Failed to discover data values'
                         );
                       }
                     );
@@ -496,7 +498,7 @@ export class UploadDataViaSmsComponent implements OnInit {
           this.sendDataViaSmsObject.isLoading = false;
           this.sendDataViaSmsObject.loadingMessage = '';
           this.appProvider.setNormalNotification(
-            'Fail to discover SMS configurations'
+            'Failed to discover SMS configurations'
           );
         }
       );

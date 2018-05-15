@@ -5,7 +5,7 @@
     item-left></ion-icon>
 
   <div (tap)="setSelectedOrganisationUnit(organisationUnit)">
-    <span ion-text [color]="( ouIdsWithAssigments && ouIdsWithAssigments.indexOf(organisationUnit.id)  == -1 )? 'ou-assigment-issues' : (currentSelectedOrgUnitName == organisationUnit.name) ?'current' : 'font-color'">{{ organisationUnit.name }}</span>
+    <span ion-text [color]="( ouIdsWithAssigments && ouIdsWithAssigments.length > 0 && ouIdsWithAssigments.indexOf(organisationUnit.id)  == -1 )? 'ou-assigment-issues' : (currentSelectedOrgUnitName == organisationUnit.name) ?'current' : 'font-color'">{{ organisationUnit.name }}</span>
   </div>
 
 </ion-item>
@@ -24,12 +24,12 @@
 
   <div *ngIf="hasErrorOccurred">
     <ion-item>
-      {{ translationMapper['Fail to discover organisation unit children']}}
+      {{ translationMapper['Failed to discover organisation unit children']}}
     </ion-item>
   </div>
 
   <div *ngIf="isOrganisationUnitsFetched && hasOrgUnitChildrenLoaded && !hasErrorOccurred">
-    <div *ngFor="let child of organisationUnit.children">
+    <div *ngFor="let child of organisationUnit.children;trackBy: trackByFn">
       <organisation-unit-tree [organisationUnit]="child" [currentSelectedOrgUnitName]="currentSelectedOrgUnitName" [ouIdsWithAssigments]="ouIdsWithAssigments"
         [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened" (selectedOrganisationUnit)="setSelectedOrganisationUnit($event)"
         [currentUser]="currentUser"></organisation-unit-tree>

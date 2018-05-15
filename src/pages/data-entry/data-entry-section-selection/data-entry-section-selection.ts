@@ -59,6 +59,10 @@ export class DataEntrySectionSelectionPage implements OnInit {
     this.viewCtrl.dismiss();
   }
 
+  trackByFn(index, item) {
+    return item.id;
+  }
+
   getValuesToTranslate() {
     return ['There is nothing to select'];
   }

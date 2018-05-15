@@ -52,6 +52,7 @@ export class TrackerEntityRegisterPage implements OnInit {
   currentWidgetIndex: any;
   currentTrackedEntityId: string;
   translationMapper: any;
+  isFormReady: boolean;
   @ViewChild(Content) content: Content;
 
   constructor(
@@ -67,6 +68,7 @@ export class TrackerEntityRegisterPage implements OnInit {
     private trackerCaptureProvider: TrackerCaptureProvider,
     private appTranslation: AppTranslationProvider
   ) {
+    this.isFormReady = false;
     this.currentProgramName = '';
     this.currentOrganisationUnitName = '';
     const today = new Date().toISOString().split('T')[0];
@@ -91,6 +93,10 @@ export class TrackerEntityRegisterPage implements OnInit {
         this.loadingCurrentUserInformation();
       }
     );
+  }
+
+  goBack() {
+    this.navCtrl.pop();
   }
 
   loadingCurrentUserInformation() {
@@ -128,8 +134,8 @@ export class TrackerEntityRegisterPage implements OnInit {
     this.trackedEntityAttributeValuesObject = {};
     this.trackedEntityAttributesSavingStatusClass = {};
     this.date = {
-      incidentDate: today,
-      enrollmentDate: today
+      incidentDate: '',
+      enrollmentDate: ''
     };
     this.dashboardWidgets = this.getDashboardWidgets();
     this.isTrackedEntityRegistered = false;
@@ -137,6 +143,7 @@ export class TrackerEntityRegisterPage implements OnInit {
       this.changeDashboardWidget(this.dashboardWidgets[0]);
     }
     this.trackedEntityInstance = dhis2.util.uid();
+    this.isFormReady = true;
     this.loadingProgramStages(this.currentProgram.id, this.currentUser);
   }
 
@@ -247,64 +254,86 @@ export class TrackerEntityRegisterPage implements OnInit {
   }
 
   //@todo changes of enrollments as well
-  updateData(updateDataValue) {
-    let id = updateDataValue.id.split('-')[0];
-    this.currentTrackedEntityId = updateDataValue.id;
-    this.trackedEntityAttributeValuesObject[id] = updateDataValue.value;
-    this.dataObject[updateDataValue.id] = updateDataValue;
-    let isFormReady = this.isALlRequiredFieldHasValue(
+  updateData(updateDataValue, shoulOnlyCheckDates?) {
+    if (!shoulOnlyCheckDates) {
+      const id = updateDataValue.id.split('-')[0];
+      this.currentTrackedEntityId = updateDataValue.id;
+      this.trackedEntityAttributeValuesObject[id] = updateDataValue.value;
+      this.dataObject[updateDataValue.id] = updateDataValue;
+    }
+    const isFormReady = this.isALlRequiredFieldHasValue(
       this.programTrackedEntityAttributes,
-      this.trackedEntityAttributeValuesObject
+      this.trackedEntityAttributeValuesObject,
+      shoulOnlyCheckDates
     );
     if (isFormReady) {
       this.registerEntity();
     }
   }
 
+  addNewTrackedEntity() {
+    if (this.isTrackedEntityRegistered) {
+      this.isFormReady = false;
+      setTimeout(() => {
+        this.resetRegistration();
+      });
+    } else {
+      this.appProvider.setNormalNotification(
+        'A tracked entity instance has not yet registered'
+      );
+    }
+  }
+
   deleteTrackedEntity(trackedEntityInstanceId) {
-    const actionSheet = this.actionSheetCtrl.create({
-      title: this.translationMapper[
-        'You are about to delete all information related to this tracked entity instance, are you sure?'
-      ],
-      buttons: [
-        {
-          text: this.translationMapper['Yes'],
-          handler: () => {
-            this.isLoading = true;
-            let key =
-              'Deleting all information related to this tracked entity instance';
-            this.loadingMessage = this.translationMapper[key]
-              ? this.translationMapper[key]
-              : key;
-            this.trackerCaptureProvider
-              .deleteTrackedEntityInstance(
-                trackedEntityInstanceId,
-                this.currentUser
-              )
-              .subscribe(
-                () => {
-                  this.navCtrl.pop();
-                  this.appProvider.setNormalNotification(
-                    'A tracked entity instance has been deleted successfully'
-                  );
-                },
-                error => {
-                  this.isLoading = false;
-                  console.log(JSON.stringify(error));
-                  this.appProvider.setNormalNotification(
-                    'Failed to delete all information related to this tracked entity instance'
-                  );
-                }
-              );
+    if (this.isTrackedEntityRegistered) {
+      const actionSheet = this.actionSheetCtrl.create({
+        title: this.translationMapper[
+          'You are about to delete all information related to this tracked entity instance, are you sure?'
+        ],
+        buttons: [
+          {
+            text: this.translationMapper['Yes'],
+            handler: () => {
+              this.isLoading = true;
+              let key =
+                'Deleting all information related to this tracked entity instance';
+              this.loadingMessage = this.translationMapper[key]
+                ? this.translationMapper[key]
+                : key;
+              this.trackerCaptureProvider
+                .deleteTrackedEntityInstance(
+                  trackedEntityInstanceId,
+                  this.currentUser
+                )
+                .subscribe(
+                  () => {
+                    this.goBack();
+                    this.appProvider.setNormalNotification(
+                      'A tracked entity instance has been deleted successfully'
+                    );
+                  },
+                  error => {
+                    this.isLoading = false;
+                    console.log(JSON.stringify(error));
+                    this.appProvider.setNormalNotification(
+                      'Failed to delete all information related to this tracked entity instance'
+                    );
+                  }
+                );
+            }
+          },
+          {
+            text: this.translationMapper['No'],
+            handler: () => {}
           }
-        },
-        {
-          text: this.translationMapper['No'],
-          handler: () => {}
-        }
-      ]
-    });
-    actionSheet.present();
+        ]
+      });
+      actionSheet.present();
+    } else {
+      this.appProvider.setNormalNotification(
+        'A tracked entity instance has not yet registered'
+      );
+    }
   }
 
   registerEntity() {
@@ -315,7 +344,6 @@ export class TrackerEntityRegisterPage implements OnInit {
         attribute: key
       });
     });
-    //@todo color codes changes on saving
     if (this.isTrackedEntityRegistered) {
       this.trackedEntityAttributeValuesProvider
         .savingTrackedEntityAttributeValues(
@@ -382,9 +410,10 @@ export class TrackerEntityRegisterPage implements OnInit {
 
   isALlRequiredFieldHasValue(
     programTrackedEntityAttributes,
-    trackedEntityAttributeValuesObject
+    trackedEntityAttributeValuesObject,
+    shoulOnlyCheckDates
   ) {
-    let result = true;
+    let result = Object.keys(trackedEntityAttributeValuesObject).length > 0;
     programTrackedEntityAttributes.forEach(
       (programTrackedEntityAttribute: any) => {
         if (
@@ -403,12 +432,32 @@ export class TrackerEntityRegisterPage implements OnInit {
         }
       }
     );
-
-    // if (result && (!this.incidentDate && this.incidentDate != '')) {
-    // } else if (result && (!this.incidentDate && this.incidentDate != '')) {
-    // }
-
+    if (result) {
+      if (this.date.enrollmentDate === '') {
+        this.appProvider.setNormalNotification(
+          this.currentProgram.enrollmentDateLabel + ' is mandatory field'
+        );
+        result = false;
+      }
+      if (
+        result &&
+        this.currentProgram &&
+        this.currentProgram.displayIncidentDate &&
+        this.date.enrollmentDate !== ''
+      ) {
+        if (this.date.incidentDate === '') {
+          this.appProvider.setNormalNotification(
+            this.currentProgram.incidentDateLabel + ' is mandatory field'
+          );
+          result = false;
+        }
+      }
+    }
     return result;
+  }
+
+  trackByFn(index, item) {
+    return item.id;
   }
 
   getValuesToTranslate() {
