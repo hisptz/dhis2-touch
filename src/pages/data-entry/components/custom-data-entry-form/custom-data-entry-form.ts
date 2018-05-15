@@ -15,6 +15,7 @@ declare var dataEntry: any;
 export class CustomDataEntryFormComponent implements OnInit, AfterViewInit, OnChanges {
   entryFormStatusColors = {};
   @Input() dataEntryFormDesign;
+  @Input() type: string;
   @Input() data;
   @Input() entryFormSections;
   @Input() dataUpdateStatus: {elementId: string, status: string};
