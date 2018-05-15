@@ -28,7 +28,7 @@ export class DataElementsProvider {
   downloadDataElementsFromServer(currentUser): Observable<any> {
     let fields =
       'id,name,formName,aggregationType,categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]';
-    let url = '/api/' + this.resource + '.json?paging=false&fields=' + fields;
+    let url = '/api/' + this.resource + '.json?fields=' + fields;
     return new Observable(observer => {
       this.HttpClient.get(
         url,
