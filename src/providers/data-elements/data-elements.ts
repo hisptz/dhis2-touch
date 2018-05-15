@@ -30,8 +30,15 @@ export class DataElementsProvider {
       'id,name,formName,aggregationType,categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]';
     let url = '/api/' + this.resource + '.json?paging=false&fields=' + fields;
     return new Observable(observer => {
-      this.HttpClient.get(url, true, currentUser, this.resource, 200).subscribe(
+      this.HttpClient.get(
+        url,
+        false,
+        currentUser,
+        this.resource,
+        200
+      ).subscribe(
         (response: any) => {
+          console.log('Total found : ' + JSON.stringify(response));
           observer.next(response);
         },
         error => {
