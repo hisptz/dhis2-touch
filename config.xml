@@ -3,7 +3,7 @@
     <name>DHIS 2 Touch</name>
     <description>An awesome dhis 2 mobile experience</description>
     <author email="" href="" />
-    <content src="index.html" />
+    <content original-src="index.html" src="http://192.168.43.247:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -96,8 +96,9 @@
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
     <plugin name="cordova-sms-plugin" spec="^0.1.11" />
     <plugin name="cordova.plugins.diagnostic" spec="^3.9.2" />
-    <engine name="android" spec="~6.3.0" />
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1">
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="To locate location of phones for coordinate input" />
     </plugin>
+    <allow-navigation href="http://192.168.43.247:8100" />
+    <engine name="android" spec="~6.3.0" />
 </widget>
