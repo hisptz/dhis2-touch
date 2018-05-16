@@ -56,7 +56,7 @@
 
           <div *ngIf="entryFormType && entryFormType == 'CUSTOM'">
             <custom-data-entry-form [dataEntryFormDesign]="dataEntryFormDesign" (onCustomFormInputChange)="updateData($event)" [data]="dataValuesObject"
-              [entryFormSections]="entryFormSections"></custom-data-entry-form>
+              [entryFormType]="'aggregate'" [entryFormSections]="entryFormSections" [dataUpdateStatus]="dataUpdateStatus"></custom-data-entry-form>
           </div>
           <div *ngIf="entryFormType && entryFormType != 'CUSTOM'">
             <div *ngIf="entryFormSections && entryFormSections.length == 0">

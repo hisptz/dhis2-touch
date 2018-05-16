@@ -32,7 +32,7 @@ export class SyncProvider {
     private reportsProvider: StandardReportProvider,
     private programProvider: ProgramsProvider,
     private programStageSectionsProvider: ProgramStageSectionsProvider
-  ) { }
+  ) {}
 
   getSyncContentDetails() {
     let syncContents = [
@@ -262,7 +262,7 @@ export class SyncProvider {
                   observer.complete();
                 }
               },
-              error => { }
+              error => {}
             );
         } else if (resource == 'dataSets') {
           this.dataSetsProvider
@@ -424,7 +424,6 @@ export class SyncProvider {
             }
           },
           error => {
-            console.log(JSON.stringify(error));
             completedProcess++;
             if (completedProcess == tablesTobeDeleted.length) {
               observer.next();

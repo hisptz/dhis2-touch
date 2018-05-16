@@ -194,6 +194,7 @@ export class LoginPage implements OnInit {
       this.currentUser.username &&
       this.currentUser.password
     ) {
+      this.currentUser['isPasswordEncode'] = false;
       this.isNetworkAvailable = this.networkProvider.getNetWorkStatus().isAvailable;
       let currentResourceType = 'communication';
       this.progressTracker = {};
@@ -442,6 +443,7 @@ export class LoginPage implements OnInit {
       currentUser
     );
     currentUser.password = this.encryption.encode(currentUser.password);
+    currentUser.isPasswordEncode = true;
     this.store.dispatch(new LoadedCurrentUser(currentUser));
     if (
       this.currentUser &&
