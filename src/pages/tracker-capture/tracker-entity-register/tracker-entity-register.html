@@ -113,11 +113,10 @@
                   <div *ngIf="!isFormReady">
                     <loading [loadingMessage]="''" [loadingSize]="'large'"></loading>
                   </div>
-                  <div *ngIf="formLayout === 'customLayout' && trackerRegistrationForm !== '' ">
-                    formLayout : {{ formLayout }}
-                    <br> trackerRegistrationForm :: {{ trackerRegistrationForm }}
+                  <div *ngIf="formLayout === 'customLayout' && trackerRegistrationForm && trackerRegistrationForm !== '' ">
+                    <custom-data-entry-form [dataEntryFormDesign]="trackerRegistrationForm"></custom-data-entry-form>
                   </div>
-                  <div *ngIf="!(formLayout === 'customLayout' && trackerRegistrationForm !== '' )">
+                  <div *ngIf="!(formLayout === 'customLayout' && trackerRegistrationForm && trackerRegistrationForm !== '' )">
                     <div *ngIf="programTrackedEntityAttributes && programTrackedEntityAttributes.length > 0 && isFormReady">
                       <ion-row no-padding no-margin>
                         <ion-col>

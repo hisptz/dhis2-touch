@@ -70,11 +70,10 @@
                     </b>
                     <hr>
                   </div>
-                  <div *ngIf="formLayout === 'customLayout' && trackerRegistrationForm !== '' ">
-                    formLayout : {{ formLayout }}
-                    <br> trackerRegistrationForm :: {{ trackerRegistrationForm }}
+                  <div *ngIf="formLayout === 'customLayout' && trackerRegistrationForm && trackerRegistrationForm !== '' ">
+                    <custom-data-entry-form [dataEntryFormDesign]="trackerRegistrationForm"></custom-data-entry-form>
                   </div>
-                  <div *ngIf="!(formLayout === 'customLayout' && trackerRegistrationForm !== '' )">
+                  <div *ngIf="!(formLayout === 'customLayout' && trackerRegistrationForm && trackerRegistrationForm !== '' )">
                     <div *ngIf="programTrackedEntityAttributes && programTrackedEntityAttributes.length > 0">
                       <form>
                         <div *ngFor="let programTrackedEntityAttribute of programTrackedEntityAttributes;trackBy: trackByFn">
