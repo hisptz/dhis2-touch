@@ -223,13 +223,91 @@ export class ProgramsProvider {
   }
 
   savingTrackerRegistrationForm(programs, currentUser): Observable<any> {
+    let trackerRegistrationForms = [];
     const resource = 'trackerRegistrationForm';
-    return new Observable(observer => {});
+    programs.map((program: any) => {
+      if (program && program.dataEntryForm && program.dataEntryForm.htmlCode) {
+        trackerRegistrationForms.push({
+          id: program.id,
+          dataEntryForm: program.dataEntryForm.htmlCode
+        });
+      }
+    });
+    console.log(
+      'Saving ' + trackerRegistrationForms.length + ' trackerRegistrationForms'
+    );
+    return new Observable(observer => {
+      if (trackerRegistrationForms.length == 0) {
+        observer.next();
+        observer.complete();
+      } else {
+        this.sqlLite
+          .insertBulkDataOnTable(
+            resource,
+            trackerRegistrationForms,
+            currentUser.currentDatabase
+          )
+          .subscribe(
+            () => {
+              observer.next();
+              observer.complete();
+            },
+            error => {
+              observer.error(error);
+            }
+          );
+      }
+    });
   }
 
   savingProgramStageEntryForm(programs, currentUser): Observable<any> {
     const resource = 'programStageEntryForm';
-    return new Observable(observer => {});
+    let programStageEntryForms = [];
+    programs.map((program: any) => {
+      if (
+        program &&
+        program.programStages &&
+        program.programStages.length > 0
+      ) {
+        program.programStages.map((programStage: any) => {
+          if (
+            programStage &&
+            programStage.dataEntryForm &&
+            programStage.dataEntryForm.htmlCode
+          ) {
+            programStageEntryForms.push({
+              id: programStage.id,
+              dataEntryForm: programStage.dataEntryForm.htmlCode
+            });
+          }
+        });
+      }
+    });
+    console.log(
+      'Saving ' + programStageEntryForms.length + ' programStageEntryForms'
+    );
+    return new Observable(observer => {
+      if (programStageEntryForms.length == 0) {
+        observer.next();
+        observer.complete();
+      } else {
+        this.sqlLite
+          .insertBulkDataOnTable(
+            resource,
+            programStageEntryForms,
+            currentUser.currentDatabase
+          )
+          .subscribe(
+            () => {
+              observer.next();
+              observer.complete();
+            },
+            error => {
+              observer.error(error);
+            }
+          );
+      }
+    });
   }
 
   /**
