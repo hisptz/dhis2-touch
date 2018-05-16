@@ -113,21 +113,9 @@
                   <div *ngIf="!isFormReady">
                     <loading [loadingMessage]="''" [loadingSize]="'large'"></loading>
                   </div>
-                  <div *ngIf="programTrackedEntityAttributes && programTrackedEntityAttributes.length > 0 && isFormReady">
-                    <ion-row no-padding no-margin>
-                      <ion-col>
-                        <form>
-                          <div *ngFor="let programTrackedEntityAttribute of programTrackedEntityAttributes;trackBy: trackByFn">
-                            <tracked-entity-inputs [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute" [currentUser]="currentUser"
-                              [data]="dataObject" [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
-                              [mandatory]="programTrackedEntityAttribute.mandatory" (onChange)="updateData($event,false)"></tracked-entity-inputs>
-                          </div>
-                        </form>
-                      </ion-col>
-                    </ion-row>
-
-                  </div>
-
+                  <tracker-registration-form formLayout="formLayout" [dataObject]="dataObject" [currentUser]="currentUser" [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
+                    [trackerRegistrationForm]="trackerRegistrationForm" [programTrackedEntityAttributes]="programTrackedEntityAttributes"
+                    (onChange)="updateData($event,false)"></tracker-registration-form>
                   <ion-row no-padding no-margin>
                     <ion-col>
                       <div float-left>

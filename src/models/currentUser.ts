@@ -7,6 +7,7 @@ export interface CurrentUser {
   serverUrl: string;
   currentLanguage: string;
   isLogin?: boolean;
+  isPasswordEncode?: boolean;
   authorizationKey?: string;
   hashedKeyForOfflineAuthentication?: string;
   currentDatabase?: string;

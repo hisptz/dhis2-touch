@@ -16,6 +16,7 @@ import { OrganisationUnitsProvider } from '../../../providers/organisation-units
 import { TrackerCaptureProvider } from '../../../providers/tracker-capture/tracker-capture';
 import { TrackedEntityInstancesProvider } from '../../../providers/tracked-entity-instances/tracked-entity-instances';
 import { AppTranslationProvider } from '../../../providers/app-translation/app-translation';
+import { SettingsProvider } from '../../../providers/settings/settings';
 
 /**
  * Generated class for the TrackedEntityDashboardPage page.
@@ -48,6 +49,8 @@ export class TrackedEntityDashboardPage implements OnInit {
   currentWidgetIndex: any;
   icons: any = {};
   translationMapper: any;
+  trackerRegistrationForm: string;
+  formLayout: string;
   @ViewChild(Content) content: Content;
 
   constructor(
@@ -63,7 +66,8 @@ export class TrackedEntityDashboardPage implements OnInit {
     private trackedEntityAttributeValuesProvider: TrackedEntityAttributeValuesProvider,
     private trackedEntityInstancesProvider: TrackedEntityInstancesProvider,
     private navParams: NavParams,
-    private appTranslation: AppTranslationProvider
+    private appTranslation: AppTranslationProvider,
+    private settingProvider: SettingsProvider
   ) {}
 
   ngOnInit() {
@@ -101,6 +105,11 @@ export class TrackedEntityDashboardPage implements OnInit {
     this.userProvider.getCurrentUser().subscribe(
       user => {
         this.currentUser = user;
+        this.settingProvider.getSettingsForTheApp(user).subscribe(settings => {
+          if (settings && settings.entryForm && settings.entryForm.formLayout) {
+            this.formLayout = settings.entryForm.formLayout;
+          }
+        });
         this.loadTrackedEntityInstanceData(trackedEntityInstancesId);
       },
       error => {
@@ -192,6 +201,21 @@ export class TrackedEntityDashboardPage implements OnInit {
       .subscribe(
         (programTrackedEntityAttributes: any) => {
           this.programTrackedEntityAttributes = programTrackedEntityAttributes;
+          this.trackerCaptureProvider
+            .getTrackedEntityRegistrationDesignForm(programId, currentUser)
+            .subscribe(
+              form => {
+                this.trackerRegistrationForm = form;
+                this.isLoading = false;
+              },
+              error => {
+                this.isLoading = false;
+                console.log(JSON.stringify(error));
+                this.appProvider.setNormalNotification(
+                  'Failed to discover registration entry form'
+                );
+              }
+            );
           this.isLoading = false;
         },
         error => {

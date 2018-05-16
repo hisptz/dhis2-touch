@@ -37,11 +37,16 @@ export class ProgramsProvider {
    * @param currentUser
    * @returns {Observable<any>}
    */
-  downloadProgramsFromServer(currentUser): Observable<any> {
-    let fields =
-      'id,name,displayName,displayIncidentDate,programType,withoutRegistration,trackedEntityType[id,displayName],trackedEntity[id,displayName],ignoreOverdueEvents,skipOffline,captureCoordinates,enrollmentDateLabel,onlyEnrollOnce,selectIncidentDatesInFuture,incidentDateLabel,useFirstStageDuringRegistration,completeEventsExpiryDays,displayFrontPageList,categoryCombo[id,name,categories[id,name,categoryOptions[name,id,organisationUnits[id]]]],programStages[id,name,executionDateLabel,hideDueDate,allowGenerateNextVisit,blockEntryForm,repeatable,formType,sortOrder,generatedByEnrollmentDate,autoGenerateEvent,captureCoordinates,dueDateLabel,programStageDataElements[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,*,dataElement[id]],programStageSections[id]],organisationUnits[id],programIndicators[id,name,description,expression],translations,attributeValues[value,attribute[name]],validationCriterias,programRuleVariables,programTrackedEntityAttributes[id,mandatory,externalAccess,allowFutureDate,displayInList,sortOrder,trackedEntityAttribute[id,name,code,name,formName,description,confidential,searchScope,translations,inherit,legendSets,optionSet[name,options[name,id,code]]unique,orgunitScope,programScope,displayInListNoProgramaggregationType,displayInListNoProgram,pattern,sortOrderInListNoProgram,generated,displayOnVisitSchedule,valueType,sortOrderInVisitSchedule]],programRules';
-    let url =
-      '/api/25/' + this.resource + '.json?paging=false&fields=' + fields;
+  downloadProgramsFromServer(currentUser: CurrentUser): Observable<any> {
+    const { userOrgUnitIds } = currentUser;
+    const fields =
+      'fields=id,name,displayName,displayIncidentDate,programType,withoutRegistration,dataEntryForm[htmlCode],trackedEntityType[id,displayName],trackedEntity[id,displayName],ignoreOverdueEvents,skipOffline,captureCoordinates,enrollmentDateLabel,onlyEnrollOnce,selectIncidentDatesInFuture,incidentDateLabel,useFirstStageDuringRegistration,completeEventsExpiryDays,displayFrontPageList,categoryCombo[id,name,categories[id,name,categoryOptions[name,id,organisationUnits[id]]]],programStages[id,name,executionDateLabel,hideDueDate,dataEntryForm[htmlCode],allowGenerateNextVisit,blockEntryForm,repeatable,formType,sortOrder,generatedByEnrollmentDate,autoGenerateEvent,captureCoordinates,dueDateLabel,programStageDataElements[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id]],programStageSections[id]],organisationUnits[id],programIndicators[id,name,description,expression],translations,attributeValues[value,attribute[name]],validationCriterias,programRuleVariables,programTrackedEntityAttributes[id,mandatory,externalAccess,allowFutureDate,displayInList,sortOrder,trackedEntityAttribute[id,name,code,name,formName,description,confidential,searchScope,translations,inherit,legendSets,optionSet[name,options[name,id,code]]unique,orgunitScope,programScope,displayInListNoProgramaggregationType,displayInListNoProgram,pattern,sortOrderInListNoProgram,generated,displayOnVisitSchedule,valueType,sortOrderInVisitSchedule]],programRules';
+    const filter =
+      'filter=organisationUnits.path:ilike:' +
+      userOrgUnitIds.join('&filter=path:ilike:') +
+      '&rootJunction=OR';
+    let url = '/api/25/' + this.resource + '.json?paging=false&' + fields;
+    +'&' + filter;
     return new Observable(observer => {
       this.HttpClient.get(url, true, currentUser).subscribe(
         (response: any) => {
@@ -80,7 +85,7 @@ export class ProgramsProvider {
         observer.next();
         observer.complete();
       } else {
-        const totalProcess = 7;
+        const totalProcess = 9;
         let completedStage = 0;
         this.sqlLite
           .insertBulkDataOnTable(
@@ -187,6 +192,125 @@ export class ProgramsProvider {
             observer.error(error);
           }
         );
+        this.savingTrackerRegistrationForm(
+          sanitizedPrograms,
+          currentUser
+        ).subscribe(
+          () => {
+            completedStage++;
+            if (completedStage == totalProcess) {
+              observer.next();
+              observer.complete();
+            }
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+
+        this.savingProgramStageEntryForm(
+          sanitizedPrograms,
+          currentUser
+        ).subscribe(
+          () => {
+            completedStage++;
+            if (completedStage == totalProcess) {
+              observer.next();
+              observer.complete();
+            }
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+      }
+    });
+  }
+
+  savingTrackerRegistrationForm(programs, currentUser): Observable<any> {
+    let trackerRegistrationForms = [];
+    const resource = 'trackerRegistrationForm';
+    programs.map((program: any) => {
+      if (program && program.dataEntryForm && program.dataEntryForm.htmlCode) {
+        trackerRegistrationForms.push({
+          id: program.id,
+          dataEntryForm: program.dataEntryForm.htmlCode
+        });
+      }
+    });
+    console.log(
+      'Saving ' + trackerRegistrationForms.length + ' trackerRegistrationForms'
+    );
+    return new Observable(observer => {
+      if (trackerRegistrationForms.length == 0) {
+        observer.next();
+        observer.complete();
+      } else {
+        this.sqlLite
+          .insertBulkDataOnTable(
+            resource,
+            trackerRegistrationForms,
+            currentUser.currentDatabase
+          )
+          .subscribe(
+            () => {
+              observer.next();
+              observer.complete();
+            },
+            error => {
+              observer.error(error);
+            }
+          );
+      }
+    });
+  }
+
+  savingProgramStageEntryForm(programs, currentUser): Observable<any> {
+    const resource = 'programStageEntryForm';
+    let programStageEntryForms = [];
+    programs.map((program: any) => {
+      if (
+        program &&
+        program.programStages &&
+        program.programStages.length > 0
+      ) {
+        program.programStages.map((programStage: any) => {
+          if (
+            programStage &&
+            programStage.dataEntryForm &&
+            programStage.dataEntryForm.htmlCode
+          ) {
+            programStageEntryForms.push({
+              id: programStage.id,
+              dataEntryForm: programStage.dataEntryForm.htmlCode
+            });
+          }
+        });
+      }
+    });
+    console.log(
+      'Saving ' + programStageEntryForms.length + ' programStageEntryForms'
+    );
+    return new Observable(observer => {
+      if (programStageEntryForms.length == 0) {
+        observer.next();
+        observer.complete();
+      } else {
+        this.sqlLite
+          .insertBulkDataOnTable(
+            resource,
+            programStageEntryForms,
+            currentUser.currentDatabase
+          )
+          .subscribe(
+            () => {
+              observer.next();
+              observer.complete();
+            },
+            error => {
+              observer.error(error);
+            }
+          );
       }
     });
   }
@@ -1048,6 +1172,60 @@ export class ProgramsProvider {
         .subscribe(
           (trackedEntityAttributes: any) => {
             observer.next(trackedEntityAttributes);
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+    });
+  }
+
+  getTrackerRegistrationForm(
+    programId: string,
+    currentUser: CurrentUser
+  ): Observable<any> {
+    return new Observable(observer => {
+      const resource = 'trackerRegistrationForm';
+      this.sqlLite
+        .getDataFromTableByAttributes(
+          resource,
+          'id',
+          [programId],
+          currentUser.currentDatabase
+        )
+        .subscribe(
+          data => {
+            const response =
+              data && data.length > 0 ? data[0].dataEntryForm : '';
+            observer.next(response);
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+    });
+  }
+
+  getProgramStageEntryForm(
+    programStageId: string,
+    currentUser: CurrentUser
+  ): Observable<any> {
+    return new Observable(observer => {
+      const resource = 'programStageEntryForm';
+      this.sqlLite
+        .getDataFromTableByAttributes(
+          resource,
+          'id',
+          [programStageId],
+          currentUser.currentDatabase
+        )
+        .subscribe(
+          data => {
+            const response =
+              data && data.length > 0 ? data[0].dataEntryForm : '';
+            observer.next(response);
             observer.complete();
           },
           error => {

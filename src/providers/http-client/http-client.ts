@@ -4,14 +4,11 @@ import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/timeout';
 import { Observable } from 'rxjs/Observable';
-import { ApplicationState } from '../../store/reducers/index';
-import { Store } from '@ngrx/store';
-import { getCurrentUser } from '../../store/selectors/currentUser.selectors';
 import { CurrentUser } from '../../models/currentUser';
 import { EncryptionProvider } from '../encryption/encryption';
 import * as _ from 'lodash';
 import { NetworkAvailabilityProvider } from '../network-availability/network-availability';
-
+import { Storage } from '@ionic/storage';
 /*
   Generated class for the HttpClientProvider provider.
 
@@ -23,8 +20,8 @@ export class HttpClientProvider {
   public timeOutTime: number;
   constructor(
     private http: HTTP,
-    private store: Store<ApplicationState>,
     private encryption: EncryptionProvider,
+    public storage: Storage,
     private defaultHttp: Http,
     private networkProvider: NetworkAvailabilityProvider
   ) {
@@ -58,25 +55,32 @@ export class HttpClientProvider {
    * @param user
    * @returns {Observable<any>}
    */
-  getSanitizedUser(user): Observable<any> {
+  getSanitizedUser(user: CurrentUser): Observable<any> {
     return new Observable(observer => {
       const { isAvailable } = this.networkProvider.getNetWorkStatus();
       if (isAvailable) {
-        if (!user) {
-          this.store.select(getCurrentUser).subscribe(
-            (currentUser: CurrentUser) => {
-              user = _.assign({}, currentUser);
-              user.password = this.encryption.decode(user.password);
-              observer.next(user);
+        if (user) {
+          if (user.isPasswordEncode) {
+            user.password = this.encryption.decode(user.password);
+          }
+          observer.next(user);
+          observer.complete();
+        } else {
+          this.storage.get('user').then(
+            currentUser => {
+              currentUser = JSON.parse(currentUser);
+              if (currentUser.isPasswordEncode) {
+                currentUser.password = this.encryption.decode(
+                  currentUser.password
+                );
+              }
+              observer.next(currentUser);
               observer.complete();
             },
             error => {
               observer.error(error);
             }
           );
-        } else {
-          observer.next(user);
-          observer.complete();
         }
       } else {
         observer.error({ error: 'network is not available' });
@@ -114,7 +118,7 @@ export class HttpClientProvider {
           this.http.setRequestTimeout(this.timeOutTime);
           if (resourceName && pageSize) {
             let promises = [];
-            let testUrl =
+            const testUrl =
               user.serverUrl +
               '/api/' +
               resourceName +
@@ -128,7 +132,7 @@ export class HttpClientProvider {
                   if (initialResponse.pager.pageCount) {
                     initialResponse[resourceName] = [];
                     for (let i = 1; i <= initialResponse.pager.pageCount; i++) {
-                      let paginatedUrl =
+                      const paginatedUrl =
                         apiUrl + '&pageSize=' + pageSize + '&page=' + i;
                       promises.push(
                         this.http

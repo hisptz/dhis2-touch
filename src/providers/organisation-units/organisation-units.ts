@@ -65,56 +65,36 @@ export class OrganisationUnitsProvider {
         observer.next(orgUnits);
         observer.complete();
       } else {
-        for (let orgUnitId of userOrgUnitIds) {
-          let fields =
-            'fields=id,name,path,ancestors[id,name,children[id]],openingDate,closedDate,level,children[id,name,children[id],parent';
-          let filter = 'filter=path:ilike:';
-          let url = '/api/25/' + this.resource + '.json?';
-          url += fields + '&' + filter + orgUnitId;
-          this.HttpClient.get(
-            url,
-            false,
-            currentUser,
-            this.resource,
-            800
-          ).subscribe(
-            (response: any) => {
-              try {
-                counts = counts + 1;
-                orgUnits = this.appendOrgUnitsFromServerToOrgUnitArray(
-                  orgUnits,
-                  response
-                );
-                if (counts == userOrgUnitIds.length) {
-                  observer.next(orgUnits);
-                  observer.complete();
-                }
-              } catch (e) {
-                observer.error(e);
-              }
-            },
-            error => {
-              observer.error(error);
+        const fields =
+          'fields=id,name,path,ancestors[id,name,children[id]],openingDate,closedDate,level,children[id,name,children[id],parent';
+        const filter =
+          'filter=path:ilike:' +
+          userOrgUnitIds.join('&filter=path:ilike:') +
+          '&rootJunction=OR';
+        const url =
+          '/api/25/' + this.resource + '.json?' + fields + '&' + filter;
+        this.HttpClient.get(
+          url,
+          false,
+          currentUser,
+          this.resource,
+          800
+        ).subscribe(
+          (response: any) => {
+            try {
+              orgUnits = response[this.resource];
+              observer.next(orgUnits);
+              observer.complete();
+            } catch (e) {
+              observer.error(e);
             }
-          );
-        }
+          },
+          error => {
+            observer.error(error);
+          }
+        );
       }
     });
-  }
-
-  /**
-   * appendOrgUnitsFromServerToOrgUnitArray
-   * @param orgUnitArray
-   * @param orgUnitResponse
-   * @returns {any}
-   */
-  appendOrgUnitsFromServerToOrgUnitArray(orgUnitArray, orgUnitResponse) {
-    if (orgUnitResponse[this.resource]) {
-      for (let orgUnit of orgUnitResponse[this.resource]) {
-        orgUnitArray.push(orgUnit);
-      }
-    }
-    return orgUnitArray;
   }
 
   /**
