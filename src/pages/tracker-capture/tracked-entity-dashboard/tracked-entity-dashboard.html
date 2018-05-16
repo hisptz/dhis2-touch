@@ -70,14 +70,20 @@
                     </b>
                     <hr>
                   </div>
-                  <div *ngIf="programTrackedEntityAttributes && programTrackedEntityAttributes.length > 0">
-                    <form>
-                      <div *ngFor="let programTrackedEntityAttribute of programTrackedEntityAttributes;trackBy: trackByFn">
-                        <tracked-entity-inputs [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute" [currentUser]="currentUser"
-                          [data]="dataObject" [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
-                          [mandatory]="programTrackedEntityAttribute.mandatory" (onChange)="updateData($event)"></tracked-entity-inputs>
-                      </div>
-                    </form>
+                  <div *ngIf="formLayout === 'customLayout' && trackerRegistrationForm !== '' ">
+                    formLayout : {{ formLayout }}
+                    <br> trackerRegistrationForm :: {{ trackerRegistrationForm }}
+                  </div>
+                  <div *ngIf="!(formLayout === 'customLayout' && trackerRegistrationForm !== '' )">
+                    <div *ngIf="programTrackedEntityAttributes && programTrackedEntityAttributes.length > 0">
+                      <form>
+                        <div *ngFor="let programTrackedEntityAttribute of programTrackedEntityAttributes;trackBy: trackByFn">
+                          <tracked-entity-inputs [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute" [currentUser]="currentUser"
+                            [data]="dataObject" [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
+                            [mandatory]="programTrackedEntityAttribute.mandatory" (onChange)="updateData($event)"></tracked-entity-inputs>
+                        </div>
+                      </form>
+                    </div>
                   </div>
                   <div no-padding>
                     <div style="display: inline-block;width: 49.3%">

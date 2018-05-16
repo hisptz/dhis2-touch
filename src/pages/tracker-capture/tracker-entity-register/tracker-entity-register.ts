@@ -14,6 +14,7 @@ import { OrganisationUnitsProvider } from '../../../providers/organisation-units
 import { TrackedEntityAttributeValuesProvider } from '../../../providers/tracked-entity-attribute-values/tracked-entity-attribute-values';
 import { EventCaptureFormProvider } from '../../../providers/event-capture-form/event-capture-form';
 import { AppTranslationProvider } from '../../../providers/app-translation/app-translation';
+import { SettingsProvider } from '../../../providers/settings/settings';
 
 declare var dhis2: any;
 /**
@@ -53,6 +54,9 @@ export class TrackerEntityRegisterPage implements OnInit {
   currentTrackedEntityId: string;
   translationMapper: any;
   isFormReady: boolean;
+  trackerRegistrationForm: string;
+  formLayout: string;
+  data;
   @ViewChild(Content) content: Content;
 
   constructor(
@@ -66,7 +70,8 @@ export class TrackerEntityRegisterPage implements OnInit {
     private trackedEntityAttributeValuesProvider: TrackedEntityAttributeValuesProvider,
     private organisationUnitsProvider: OrganisationUnitsProvider,
     private trackerCaptureProvider: TrackerCaptureProvider,
-    private appTranslation: AppTranslationProvider
+    private appTranslation: AppTranslationProvider,
+    private settingProvider: SettingsProvider
   ) {
     this.isFormReady = false;
     this.currentProgramName = '';
@@ -113,6 +118,11 @@ export class TrackerEntityRegisterPage implements OnInit {
     this.userProvider.getCurrentUser().subscribe(
       user => {
         this.currentUser = user;
+        this.settingProvider.getSettingsForTheApp(user).subscribe(settings => {
+          if (settings && settings.entryForm && settings.entryForm.formLayout) {
+            this.formLayout = settings.entryForm.formLayout;
+          }
+        });
         this.loadTrackedEntityRegistration(
           this.currentProgram.id,
           this.currentUser
@@ -194,9 +204,9 @@ export class TrackerEntityRegisterPage implements OnInit {
             .getTrackedEntityRegistrationDesignForm(programId, currentUser)
             .subscribe(
               form => {
+                this.trackerRegistrationForm = form;
                 this.isLoading = false;
                 this.resetRegistration();
-                console.log('Form is : ' + form);
               },
               error => {
                 this.isLoading = false;
