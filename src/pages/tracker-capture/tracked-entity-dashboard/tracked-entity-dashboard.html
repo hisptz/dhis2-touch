@@ -70,20 +70,9 @@
                     </b>
                     <hr>
                   </div>
-                  <div *ngIf="formLayout === 'customLayout' && trackerRegistrationForm && trackerRegistrationForm !== '' ">
-                    <custom-data-entry-form [dataEntryFormDesign]="trackerRegistrationForm"></custom-data-entry-form>
-                  </div>
-                  <div *ngIf="!(formLayout === 'customLayout' && trackerRegistrationForm && trackerRegistrationForm !== '' )">
-                    <div *ngIf="programTrackedEntityAttributes && programTrackedEntityAttributes.length > 0">
-                      <form>
-                        <div *ngFor="let programTrackedEntityAttribute of programTrackedEntityAttributes;trackBy: trackByFn">
-                          <tracked-entity-inputs [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute" [currentUser]="currentUser"
-                            [data]="dataObject" [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
-                            [mandatory]="programTrackedEntityAttribute.mandatory" (onChange)="updateData($event)"></tracked-entity-inputs>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
+                  <tracker-registration-form formLayout="formLayout" [dataObject]="dataObject" [currentUser]="currentUser" [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
+                    [trackerRegistrationForm]="trackerRegistrationForm" [programTrackedEntityAttributes]="programTrackedEntityAttributes"
+                    (onChange)="updateData($event,false)"></tracker-registration-form>
                   <div no-padding>
                     <div style="display: inline-block;width: 49.3%">
                       <div float-left>

@@ -4,14 +4,14 @@ import { TrackerEntityRegisterPage } from './tracker-entity-register';
 import { SharedModule } from '../../../components/shared.module';
 import { DataEntryModule } from '../../../components/data.entry.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { DataEntryComponentsModule } from '../../data-entry/components/dataEntryComponents.module';
+import { TrackerCaptureComponentsModule } from '../components/trackerCaptureComponents.module';
 @NgModule({
   declarations: [TrackerEntityRegisterPage],
   imports: [
     IonicPageModule.forChild(TrackerEntityRegisterPage),
     SharedModule,
     DataEntryModule,
-    DataEntryComponentsModule,
+    TrackerCaptureComponentsModule,
     TranslateModule.forChild({})
   ]
 })
