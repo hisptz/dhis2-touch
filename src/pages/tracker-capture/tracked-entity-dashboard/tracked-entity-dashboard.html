@@ -70,7 +70,7 @@
                     </b>
                     <hr>
                   </div>
-                  <tracker-registration-form formLayout="formLayout" [dataObject]="dataObject" [currentUser]="currentUser" [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
+                  <tracker-registration-form [formLayout]="formLayout" [dataObject]="dataObject" [currentUser]="currentUser" [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
                     [trackerRegistrationForm]="trackerRegistrationForm" [programTrackedEntityAttributes]="programTrackedEntityAttributes"
                     (onChange)="updateData($event,false)"></tracker-registration-form>
                   <div no-padding>
