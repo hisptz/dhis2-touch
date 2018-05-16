@@ -347,8 +347,32 @@ export const DATABASE_STRUCTURE = {
       'trackedEntityAttribute',
       'programIndicators',
       'programProgramStages',
-      'programOrganisationUnits'
+      'programOrganisationUnits',
+      'trackerRegistrationForm',
+      'programStageEntryForm'
     ]
+  },
+  trackerRegistrationForm: {
+    columns: [
+      { value: 'id', type: 'TEXT' },
+      { value: 'dataEntryForm', type: 'TEXT' }
+    ],
+    isMetadata: false,
+    resourceType: '',
+    batchSize: 50,
+    displayName: 'Tracker registration entry form design',
+    dependentTable: []
+  },
+  programStageEntryForm: {
+    columns: [
+      { value: 'id', type: 'TEXT' },
+      { value: 'dataEntryForm', type: 'TEXT' }
+    ],
+    isMetadata: false,
+    resourceType: '',
+    batchSize: 50,
+    displayName: 'Program stage entry form design',
+    dependentTable: []
   },
   programProgramRuleVariables: {
     columns: [

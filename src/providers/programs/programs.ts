@@ -191,6 +191,16 @@ export class ProgramsProvider {
     });
   }
 
+  savingTrackerRegistrationForm(programs, currentUser): Observable<any> {
+    const resource = 'trackerRegistrationForm';
+    return new Observable(observer => {});
+  }
+
+  savingProgramStageEntryForm(programs, currentUser): Observable<any> {
+    const resource = 'programStageEntryForm';
+    return new Observable(observer => {});
+  }
+
   /**
    *
    * @param programs
