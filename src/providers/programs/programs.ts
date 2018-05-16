@@ -1180,4 +1180,58 @@ export class ProgramsProvider {
         );
     });
   }
+
+  getTrackerRegistrationForm(
+    programId: string,
+    currentUser: CurrentUser
+  ): Observable<any> {
+    return new Observable(observer => {
+      const resource = 'trackerRegistrationForm';
+      this.sqlLite
+        .getDataFromTableByAttributes(
+          resource,
+          'id',
+          [programId],
+          currentUser.currentDatabase
+        )
+        .subscribe(
+          data => {
+            const response =
+              data && data.length > 0 ? data[0].dataEntryForm : '';
+            observer.next(response);
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+    });
+  }
+
+  getProgramStageEntryForm(
+    programStageId: string,
+    currentUser: CurrentUser
+  ): Observable<any> {
+    return new Observable(observer => {
+      const resource = 'programStageEntryForm';
+      this.sqlLite
+        .getDataFromTableByAttributes(
+          resource,
+          'id',
+          [programStageId],
+          currentUser.currentDatabase
+        )
+        .subscribe(
+          data => {
+            const response =
+              data && data.length > 0 ? data[0].dataEntryForm : '';
+            observer.next(response);
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+    });
+  }
 }

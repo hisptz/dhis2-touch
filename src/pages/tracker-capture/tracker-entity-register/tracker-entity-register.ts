@@ -190,8 +190,22 @@ export class TrackerEntityRegisterPage implements OnInit {
       .subscribe(
         (programTrackedEntityAttributes: any) => {
           this.programTrackedEntityAttributes = programTrackedEntityAttributes;
-          this.isLoading = false;
-          this.resetRegistration();
+          this.trackerCaptureProvider
+            .getTrackedEntityRegistrationDesignForm(programId, currentUser)
+            .subscribe(
+              form => {
+                this.isLoading = false;
+                this.resetRegistration();
+                console.log('Form is : ' + form);
+              },
+              error => {
+                this.isLoading = false;
+                console.log(JSON.stringify(error));
+                this.appProvider.setNormalNotification(
+                  'Failed to discover registration entry form'
+                );
+              }
+            );
         },
         error => {
           this.isLoading = false;

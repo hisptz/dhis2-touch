@@ -182,6 +182,25 @@ export class TrackerCaptureProvider {
     });
   }
 
+  getTrackedEntityRegistrationDesignForm(
+    programId,
+    currentUser
+  ): Observable<any> {
+    return new Observable(observer => {
+      this.programsProvider
+        .getTrackerRegistrationForm(programId, currentUser)
+        .subscribe(
+          form => {
+            observer.next(form);
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+    });
+  }
+
   /**
    *
    * @param programId

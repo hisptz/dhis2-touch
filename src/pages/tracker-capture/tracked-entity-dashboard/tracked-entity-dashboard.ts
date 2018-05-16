@@ -192,6 +192,21 @@ export class TrackedEntityDashboardPage implements OnInit {
       .subscribe(
         (programTrackedEntityAttributes: any) => {
           this.programTrackedEntityAttributes = programTrackedEntityAttributes;
+          this.trackerCaptureProvider
+            .getTrackedEntityRegistrationDesignForm(programId, currentUser)
+            .subscribe(
+              form => {
+                this.isLoading = false;
+                console.log('Form is : ' + form);
+              },
+              error => {
+                this.isLoading = false;
+                console.log(JSON.stringify(error));
+                this.appProvider.setNormalNotification(
+                  'Failed to discover registration entry form'
+                );
+              }
+            );
           this.isLoading = false;
         },
         error => {
