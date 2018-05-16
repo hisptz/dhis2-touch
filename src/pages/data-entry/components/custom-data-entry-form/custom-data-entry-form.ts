@@ -22,6 +22,7 @@ export class CustomDataEntryFormComponent
   implements OnInit, AfterViewInit, OnChanges {
   entryFormStatusColors = {};
   @Input() dataEntryFormDesign;
+  @Input() type: string;
   @Input() data;
   @Input() entryFormType: string; //aggregate event tracker
   @Input() programTrackedEntityAttributes; // metada data for attribute
