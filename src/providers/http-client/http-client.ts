@@ -69,7 +69,7 @@ export class HttpClientProvider {
           this.storage.get('user').then(
             currentUser => {
               currentUser = JSON.parse(currentUser);
-              if (user.isPasswordEncode) {
+              if (currentUser.isPasswordEncode) {
                 currentUser.password = this.encryption.decode(
                   currentUser.password
                 );

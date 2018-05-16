@@ -38,7 +38,6 @@ export class DataElementsProvider {
         200
       ).subscribe(
         (response: any) => {
-          console.log('Total found : ' + JSON.stringify(response));
           observer.next(response);
         },
         error => {
