@@ -17,6 +17,7 @@ export class TrackerRegistrationFormComponent implements OnInit {
   @Input() trackedEntityAttributesSavingStatusClass;
   @Input() trackerRegistrationForm: string;
   @Input() programTrackedEntityAttributes;
+  @Input() dataUpdateStatus: [{elementId: string, status: string}];
   @Output() onChange = new EventEmitter();
   entryFormType: string;
   constructor() {}
