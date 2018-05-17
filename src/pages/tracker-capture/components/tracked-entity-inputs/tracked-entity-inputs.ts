@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { SettingsProvider } from '../../providers/settings/settings';
+import { SettingsProvider } from '../../../../providers/settings/settings';
 import { ActionSheetController } from 'ionic-angular';
 
 /**

@@ -6,8 +6,8 @@ import {
   OnInit,
   Output
 } from '@angular/core';
-import { EventCaptureFormProvider } from '../../providers/event-capture-form/event-capture-form';
-import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
+import { EventCaptureFormProvider } from '../../../../providers/event-capture-form/event-capture-form';
+import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the TrackerEventContainerComponent component.
