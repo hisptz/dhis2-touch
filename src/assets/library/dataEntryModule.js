@@ -61,8 +61,9 @@ function convertToBoolean(stringValue) {
 }
 
 var dataEntry = {
-  onFormReady: function (formReady) {
+  onFormReady: function (formType, dataElements, data, formReady) {
     $("input").each(function () {
+      alert(entryFormType)
       var id = $(this).attr("id").split("-");
       var dataElementId = id[0];
       var optionComboId = id[1];

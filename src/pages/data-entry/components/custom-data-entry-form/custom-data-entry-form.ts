@@ -25,7 +25,7 @@ export class CustomDataEntryFormComponent
   @Input() type: string;
   @Input() data;
   @Input() entryFormType: string; //aggregate event tracker
-  @Input() programTrackedEntityAttributes; // metada data for attribute
+  @Input() programTrackedEntityAttributes; // metadata for attribute
   @Input() entryFormSections;
   @Input() dataUpdateStatus: { elementId: string; status: string };
   @Output() onCustomFormInputChange = new EventEmitter();
@@ -95,6 +95,7 @@ export class CustomDataEntryFormComponent
   }
 
   setScriptsOnHtmlContent(scriptsContentsArray) {
+    alert(JSON.stringify(this.programTrackedEntityAttributes))
     if (!this.hasScriptSet) {
       const scriptsContents = `
     var data = ${JSON.stringify(this.data)};
@@ -104,8 +105,9 @@ export class CustomDataEntryFormComponent
       )
     )};
     var entryFormColors = ${JSON.stringify(this.entryFormStatusColors)};
+    var entryFormType = ${JSON.stringify(this.entryFormType)};
     
-    dataEntry.onFormReady(function () {
+    dataEntry.onFormReady(entryFormType, dataElements, data, function () {
     // listen to change events
     $('.entryfield, .entryselect, .entrytrueonly, .entryfileresource').change(function() {
     
