@@ -27,6 +27,7 @@ import { AppTranslationProvider } from '../../../../providers/app-translation/ap
 })
 export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
   @Input() programStage;
+  @Input() formLayout: string;
   @Input() trackedEntityInstance;
   @Input() currentWidgetIndex;
   @Input() isLastStage;
