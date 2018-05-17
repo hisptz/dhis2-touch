@@ -107,8 +107,9 @@
                   <div *ngFor="let programStage of programStages;trackBy: trackByFn">
                     <div *ngIf="widget.id == programStage.id">
                       <form>
-                        <program-stage-tracker-based [programStage]="programStage" [trackedEntityInstance]="trackedEntityInstance.id" [currentWidgetIndex]="currentWidgetIndex"
-                          [isLastStage]="(currentWidgetIndex == programStages.length)" (onChange)="updateWidgetPagination($event)"></program-stage-tracker-based>
+                        <program-stage-tracker-based [formLayout]="formLayout" [programStage]="programStage" [trackedEntityInstance]="trackedEntityInstance.id"
+                          [currentWidgetIndex]="currentWidgetIndex" [isLastStage]="(currentWidgetIndex == programStages.length)"
+                          (onChange)="updateWidgetPagination($event)"></program-stage-tracker-based>
                       </form>
                     </div>
                   </div>

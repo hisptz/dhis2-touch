@@ -6,14 +6,14 @@ import {
   OnInit,
   Output
 } from '@angular/core';
-import { ProgramsProvider } from '../../providers/programs/programs';
-import { OrganisationUnitsProvider } from '../../providers/organisation-units/organisation-units';
-import { UserProvider } from '../../providers/user/user';
-import { AppProvider } from '../../providers/app/app';
-import { EventCaptureFormProvider } from '../../providers/event-capture-form/event-capture-form';
-import { SettingsProvider } from '../../providers/settings/settings';
+import { ProgramsProvider } from '../../../../providers/programs/programs';
+import { OrganisationUnitsProvider } from '../../../../providers/organisation-units/organisation-units';
+import { UserProvider } from '../../../../providers/user/user';
+import { AppProvider } from '../../../../providers/app/app';
+import { EventCaptureFormProvider } from '../../../../providers/event-capture-form/event-capture-form';
+import { SettingsProvider } from '../../../../providers/settings/settings';
 import { ActionSheetController } from 'ionic-angular';
-import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
+import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the ProgramStageTrackerBasedComponent component.
@@ -27,6 +27,7 @@ import { AppTranslationProvider } from '../../providers/app-translation/app-tran
 })
 export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
   @Input() programStage;
+  @Input() formLayout: string;
   @Input() trackedEntityInstance;
   @Input() currentWidgetIndex;
   @Input() isLastStage;
