@@ -27,7 +27,7 @@ export class CustomDataEntryFormComponent
   @Input() entryFormType: string; //aggregate event tracker
   @Input() programTrackedEntityAttributes; // metadata for attribute
   @Input() entryFormSections;
-  @Input() dataUpdateStatus: {elementId: string; status: string};
+  @Input() dataUpdateStatus: {[elementId: string] : string};
   @Output() onCustomFormInputChange = new EventEmitter();
 
   _htmlMarkup: SafeHtml;
@@ -59,10 +59,13 @@ export class CustomDataEntryFormComponent
       changes['dataUpdateStatus'] &&
       !changes['dataUpdateStatus'].firstChange
     ) {
-      dataEntry.updateFormFieldColor(
-        this.dataUpdateStatus.elementId,
-        this.entryFormStatusColors[this.dataUpdateStatus.status]
-      );
+      _.each(_.keys(this.dataUpdateStatus), updateStatusKey => {
+        dataEntry.updateFormFieldColor(
+          updateStatusKey,
+          this.entryFormStatusColors[this.dataUpdateStatus[updateStatusKey]]
+        );
+      })
+
     }
   }
 

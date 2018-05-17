@@ -1,6 +1,6 @@
 <div *ngIf="formLayout === 'customLayout' && trackerRegistrationForm && trackerRegistrationForm !== '' ">
   <custom-data-entry-form [entryFormType]="entryFormType" [dataEntryFormDesign]="trackerRegistrationForm" [data]="dataObject"
-    [programTrackedEntityAttributes]="programTrackedEntityAttributes" (onCustomFormInputChange)="updateData($event)"></custom-data-entry-form>
+    [dataUpdateStatus]="dataUpdateStatus" [programTrackedEntityAttributes]="programTrackedEntityAttributes" (onCustomFormInputChange)="updateData($event)"></custom-data-entry-form>
 </div>
 <div *ngIf="!(formLayout === 'customLayout' && trackerRegistrationForm && trackerRegistrationForm !== '' )">
   <div *ngIf="programTrackedEntityAttributes && programTrackedEntityAttributes.length > 0">

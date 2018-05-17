@@ -6,6 +6,7 @@ import {
   ModalController,
   NavController
 } from 'ionic-angular';
+import * as _ from 'lodash';
 import { TrackerCaptureProvider } from '../../../providers/tracker-capture/tracker-capture';
 import { UserProvider } from '../../../providers/user/user';
 import { AppProvider } from '../../../providers/app/app';
@@ -15,6 +16,8 @@ import { TrackedEntityAttributeValuesProvider } from '../../../providers/tracked
 import { EventCaptureFormProvider } from '../../../providers/event-capture-form/event-capture-form';
 import { AppTranslationProvider } from '../../../providers/app-translation/app-translation';
 import { SettingsProvider } from '../../../providers/settings/settings';
+import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 declare var dhis2: any;
 /**
@@ -57,6 +60,9 @@ export class TrackerEntityRegisterPage implements OnInit {
   trackerRegistrationForm: string;
   formLayout: string;
   data;
+  private _dataUpdateStatus$: BehaviorSubject<{[elementId: string]: string}> = new BehaviorSubject<{[elementId: string]: string}>(
+    {});
+  dataUpdateStatus$: Observable<{[elementId: string]: string}>;
   @ViewChild(Content) content: Content;
 
   constructor(
@@ -81,6 +87,7 @@ export class TrackerEntityRegisterPage implements OnInit {
       incidentDate: today,
       enrollmentDate: today
     };
+    this.dataUpdateStatus$ = this._dataUpdateStatus$.asObservable();
   }
 
   ngOnInit() {
@@ -382,6 +389,13 @@ export class TrackerEntityRegisterPage implements OnInit {
               this.currentTrackedEntityId
             ] =
               'input-field-container-success';
+
+            // Update status for custom form
+            const dataUpdateStatus = {}
+            _.each(_.keys(this.dataObject), dataObjectId => {
+              dataUpdateStatus[dataObjectId] = 'OK'
+            });
+            this._dataUpdateStatus$.next(dataUpdateStatus)
           },
           error => {
             this.trackedEntityAttributesSavingStatusClass[
@@ -389,6 +403,13 @@ export class TrackerEntityRegisterPage implements OnInit {
             ] =
               'input-field-container-failed';
             console.log(JSON.stringify(error));
+
+            // Update status for custom form
+            const dataUpdateStatus = {}
+            _.each(_.keys(this.dataObject), dataObjectId => {
+              dataUpdateStatus[dataObjectId] = 'ERROR'
+            });
+            this._dataUpdateStatus$.next(dataUpdateStatus)
           }
         );
     } else {
@@ -413,6 +434,12 @@ export class TrackerEntityRegisterPage implements OnInit {
                   'input-field-container-success';
               }
             );
+            // Update status for custom form
+            const dataUpdateStatus = {}
+            _.each(_.keys(this.dataObject), dataObjectId => {
+              dataUpdateStatus[dataObjectId] = 'OK'
+            });
+            this._dataUpdateStatus$.next(dataUpdateStatus)
             this.registerEntity();
           },
           error => {
@@ -428,6 +455,13 @@ export class TrackerEntityRegisterPage implements OnInit {
               'Failed to save a tracked entity instance'
             );
             console.log(JSON.stringify(error));
+
+            // Update status for custom form
+            const dataUpdateStatus = {}
+            _.each(_.keys(this.dataObject), dataObjectId => {
+              dataUpdateStatus[dataObjectId] = 'OK'
+            });
+            this._dataUpdateStatus$.next(dataUpdateStatus)
           }
         );
     }
