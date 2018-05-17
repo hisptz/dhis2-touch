@@ -284,6 +284,7 @@ export class TrackerEntityRegisterPage implements OnInit {
       this.currentTrackedEntityId = updateDataValue.id;
       this.trackedEntityAttributeValuesObject[id] = updateDataValue.value;
       this.dataObject[updateDataValue.id] = updateDataValue;
+
     }
     const isFormReady = this.isALlRequiredFieldHasValue(
       this.programTrackedEntityAttributes,

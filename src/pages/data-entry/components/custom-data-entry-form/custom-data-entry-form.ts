@@ -27,7 +27,7 @@ export class CustomDataEntryFormComponent
   @Input() entryFormType: string; //aggregate event tracker
   @Input() programTrackedEntityAttributes; // metadata for attribute
   @Input() entryFormSections;
-  @Input() dataUpdateStatus: { elementId: string; status: string };
+  @Input() dataUpdateStatus: {elementId: string; status: string};
   @Output() onCustomFormInputChange = new EventEmitter();
 
   _htmlMarkup: SafeHtml;
@@ -87,23 +87,25 @@ export class CustomDataEntryFormComponent
       /<script[^>]*>([\w|\W]*)<\/script>/im
     );
     return matchedScriptArray && matchedScriptArray.length > 0
-      ? matchedScriptArray[0]
-          .replace(/(<([^>]+)>)/gi, ':separator:')
-          .split(':separator:')
-          .filter(content => content.length > 0)
+      ? matchedScriptArray[0].replace(/(<([^>]+)>)/gi, ':separator:').split(':separator:').
+        filter(content => content.length > 0)
       : [];
   }
 
   setScriptsOnHtmlContent(scriptsContentsArray) {
-    alert(JSON.stringify(this.programTrackedEntityAttributes))
     if (!this.hasScriptSet) {
       const scriptsContents = `
     var data = ${JSON.stringify(this.data)};
-    var dataElements = ${JSON.stringify(
-      _.flatten(
-        _.map(this.entryFormSections, entrySection => entrySection.dataElements)
-      )
-    )};
+    var dataElements = ${this.entryFormSections ? JSON.stringify(
+        _.flatten(
+          _.map(this.entryFormSections, entrySection => entrySection.dataElements)
+        )
+      ) : this.programTrackedEntityAttributes ? JSON.stringify(
+        _.flatten(
+          _.map(this.programTrackedEntityAttributes,
+            programTrackedEntityAttribute => programTrackedEntityAttribute.trackedEntityAttribute)
+        )
+      ) : []};
     var entryFormColors = ${JSON.stringify(this.entryFormStatusColors)};
     var entryFormType = ${JSON.stringify(this.entryFormType)};
     
