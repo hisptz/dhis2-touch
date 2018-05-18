@@ -15,7 +15,7 @@ export class DataTimeInputComponent implements OnInit {
   @Input() mode: string;
   @Input() inputValue;
   @Output() dateTimeUpdateAction = new EventEmitter();
-  displayValue: any;
+  displayValue: string;
 
   constructor(private datePicker: DatePicker) {}
 
