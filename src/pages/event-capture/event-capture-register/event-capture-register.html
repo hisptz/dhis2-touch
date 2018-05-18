@@ -34,8 +34,8 @@
               <br>
             </div>
             <form>
-              <program-stage-event-based [programStage]="programStage" [emptyEvent]="emptyEvent" (onCancelEvent)="goBack()" [dataDimension]="dataDimension"
-                [currentEvent]="currentEvent" (onDeleteEvent)="onEventDeleted()"></program-stage-event-based>
+              <program-stage-event-based [formLayout]="formLayout" [programStage]="programStage" [emptyEvent]="emptyEvent" (onCancelEvent)="goBack()"
+                [dataDimension]="dataDimension" [currentEvent]="currentEvent" (onDeleteEvent)="onEventDeleted()"></program-stage-event-based>
             </form>
           </ion-col>
         </ion-row>
