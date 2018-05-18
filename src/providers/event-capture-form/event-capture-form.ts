@@ -188,8 +188,36 @@ export class EventCaptureFormProvider {
                           ] = programStageSections;
                         }
                       });
-                      observer.next(programsStages);
-                      observer.complete();
+
+                      //loading avialable designs
+                      const programStageIds = programsStages.map(
+                        programStage => programStage.id
+                      );
+                      this.programsProvider
+                        .getProgramStageEntryFormByIds(
+                          programStageIds,
+                          currentUser
+                        )
+                        .subscribe(
+                          (programStageEntryForms: any) => {
+                            programsStages.forEach((programStage: any) => {
+                              const programStageEntryForm = _.find(
+                                programStageEntryForms,
+                                { id: programStage.id }
+                              );
+                              programStage['dataEntryForm'] =
+                                programStageEntryForm &&
+                                programStageEntryForm.dataEntryForm
+                                  ? programStageEntryForm.dataEntryForm
+                                  : '';
+                            });
+                            observer.next(programsStages);
+                            observer.complete();
+                          },
+                          error => {
+                            observer.error(error);
+                          }
+                        );
                     });
                 },
                 error => {

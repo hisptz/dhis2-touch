@@ -9,11 +9,6 @@ import { NumericalInputFieldComponent } from './numerical-input-field/numerical-
 import { OptionSetInputFieldComponent } from './option-set-input-field/option-set-input-field';
 import { TextInputFieldComponent } from './text-input-field/text-input-field';
 import { TrueOnlyInputFieldComponent } from './true-only-input-field/true-only-input-field';
-import { TrackedEntityInputsComponent } from './tracked-entity-inputs/tracked-entity-inputs';
-import { ProgramStageEventBasedComponent } from './program-stage-event-based/program-stage-event-based';
-import { ProgramStageTrackerBasedComponent } from './program-stage-tracker-based/program-stage-tracker-based';
-import { EventInputContainerComponent } from './event-input-container/event-input-container';
-import { TrackerEventContainerComponent } from './tracker-event-container/tracker-event-container';
 import { CoordinateInputComponent } from './coordinate-input/coordinate-input';
 import { OrganisationUnitInputComponent } from './organisation-unit-input/organisation-unit-input';
 import { PercentageInputComponent } from './percentage-input/percentage-input';
@@ -26,17 +21,12 @@ import { RadioButtonInputComponent } from './radio-button-input/radio-button-inp
   declarations: [
     OrganisationUnitTreeComponent,
     InputContainerComponent,
-    TrackedEntityInputsComponent,
     BooleanInputFieldComponent,
     DateInputFieldComponent,
     NumericalInputFieldComponent,
     OptionSetInputFieldComponent,
     TextInputFieldComponent,
     TrueOnlyInputFieldComponent,
-    ProgramStageEventBasedComponent,
-    ProgramStageTrackerBasedComponent,
-    EventInputContainerComponent,
-    TrackerEventContainerComponent,
     CoordinateInputComponent,
     OrganisationUnitInputComponent,
     PercentageInputComponent,
@@ -49,17 +39,12 @@ import { RadioButtonInputComponent } from './radio-button-input/radio-button-inp
   exports: [
     OrganisationUnitTreeComponent,
     InputContainerComponent,
-    TrackedEntityInputsComponent,
     BooleanInputFieldComponent,
     DateInputFieldComponent,
     NumericalInputFieldComponent,
     OptionSetInputFieldComponent,
     TextInputFieldComponent,
     TrueOnlyInputFieldComponent,
-    ProgramStageEventBasedComponent,
-    ProgramStageTrackerBasedComponent,
-    EventInputContainerComponent,
-    TrackerEventContainerComponent,
     CoordinateInputComponent,
     OrganisationUnitInputComponent,
     PercentageInputComponent,

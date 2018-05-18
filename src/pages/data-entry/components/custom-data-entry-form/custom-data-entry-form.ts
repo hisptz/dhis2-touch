@@ -22,10 +22,12 @@ export class CustomDataEntryFormComponent
   implements OnInit, AfterViewInit, OnChanges {
   entryFormStatusColors = {};
   @Input() dataEntryFormDesign;
+  @Input() type: string;
   @Input() data;
   @Input() entryFormType: string; //aggregate event tracker
-  @Input() programTrackedEntityAttributes; // metada data for attribute
+  @Input() programTrackedEntityAttributes; // metadata for attribute
   @Input() entryFormSections;
+  @Input() programStageDataElements; // metadata for events rendering
   @Input() dataUpdateStatus: { elementId: string; status: string };
   @Output() onCustomFormInputChange = new EventEmitter();
 
@@ -58,10 +60,13 @@ export class CustomDataEntryFormComponent
       changes['dataUpdateStatus'] &&
       !changes['dataUpdateStatus'].firstChange
     ) {
-      dataEntry.updateFormFieldColor(
-        this.dataUpdateStatus.elementId,
-        this.entryFormStatusColors[this.dataUpdateStatus.status]
-      );
+      _.each(_.keys(this.dataUpdateStatus), updateStatusKey => {
+        dataEntry.updateFormFieldColor(
+          updateStatusKey,
+          this.entryFormStatusColors[this.dataUpdateStatus[updateStatusKey]]
+        );
+      })
+
     }
   }
 
@@ -86,10 +91,8 @@ export class CustomDataEntryFormComponent
       /<script[^>]*>([\w|\W]*)<\/script>/im
     );
     return matchedScriptArray && matchedScriptArray.length > 0
-      ? matchedScriptArray[0]
-          .replace(/(<([^>]+)>)/gi, ':separator:')
-          .split(':separator:')
-          .filter(content => content.length > 0)
+      ? matchedScriptArray[0].replace(/(<([^>]+)>)/gi, ':separator:').split(':separator:').
+        filter(content => content.length > 0)
       : [];
   }
 
@@ -97,14 +100,20 @@ export class CustomDataEntryFormComponent
     if (!this.hasScriptSet) {
       const scriptsContents = `
     var data = ${JSON.stringify(this.data)};
-    var dataElements = ${JSON.stringify(
-      _.flatten(
-        _.map(this.entryFormSections, entrySection => entrySection.dataElements)
-      )
-    )};
+    var dataElements = ${this.entryFormSections ? JSON.stringify(
+        _.flatten(
+          _.map(this.entryFormSections, entrySection => entrySection.dataElements)
+        )
+      ) : this.programTrackedEntityAttributes ? JSON.stringify(
+        _.flatten(
+          _.map(this.programTrackedEntityAttributes,
+            programTrackedEntityAttribute => programTrackedEntityAttribute.trackedEntityAttribute)
+        )
+      ) : []};
     var entryFormColors = ${JSON.stringify(this.entryFormStatusColors)};
+    var entryFormType = ${JSON.stringify(this.entryFormType)};
     
-    dataEntry.onFormReady(function () {
+    dataEntry.onFormReady(entryFormType, dataElements, data, function () {
     // listen to change events
     $('.entryfield, .entryselect, .entrytrueonly, .entryfileresource').change(function() {
     

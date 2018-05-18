@@ -6,13 +6,13 @@ import {
   OnInit,
   Output
 } from '@angular/core';
-import { ProgramsProvider } from '../../providers/programs/programs';
-import { OrganisationUnitsProvider } from '../../providers/organisation-units/organisation-units';
-import { UserProvider } from '../../providers/user/user';
-import { AppProvider } from '../../providers/app/app';
-import { EventCaptureFormProvider } from '../../providers/event-capture-form/event-capture-form';
+import { ProgramsProvider } from '../../../../providers/programs/programs';
+import { OrganisationUnitsProvider } from '../../../../providers/organisation-units/organisation-units';
+import { UserProvider } from '../../../../providers/user/user';
+import { AppProvider } from '../../../../providers/app/app';
+import { EventCaptureFormProvider } from '../../../../providers/event-capture-form/event-capture-form';
 import { ActionSheetController } from 'ionic-angular';
-import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
+import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the ProgramStageEventBasedComponent component.

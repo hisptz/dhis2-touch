@@ -100,5 +100,6 @@
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="To locate location of phones for coordinate input" />
     </plugin>
     <allow-navigation href="http://192.168.43.247:8100" />
+    <allow-navigation href="http://192.168.1.7:8100" />
     <engine name="android" spec="~6.3.0" />
 </widget>
