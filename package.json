@@ -23,7 +23,9 @@
     "@angular/platform-browser-dynamic": "5.2.9",
     "@ionic-native/app-version": "^4.7.0",
     "@ionic-native/background-mode": "^4.7.0",
+    "@ionic-native/barcode-scanner": "^4.7.0",
     "@ionic-native/core": "4.5.3",
+    "@ionic-native/date-picker": "^4.7.0",
     "@ionic-native/diagnostic": "^4.7.0",
     "@ionic-native/geolocation": "^4.7.0",
     "@ionic-native/http": "^4.7.0",
@@ -47,6 +49,7 @@
     "cordova-plugin-app-version": "^0.1.9",
     "cordova-plugin-background-mode": "^0.7.2",
     "cordova-plugin-console": "^1.1.0",
+    "cordova-plugin-datepicker": "^0.9.3",
     "cordova-plugin-device": "^1.1.7",
     "cordova-plugin-file": "^6.0.1",
     "cordova-plugin-geolocation": "^4.0.1",
@@ -80,6 +83,7 @@
     "ng2-dnd": "^5.0.2",
     "ng2-dragula": "^1.5.0",
     "ngx-pagination": "^3.1.1",
+    "phonegap-plugin-barcodescanner": "^7.1.2",
     "rxjs": "5.5.2",
     "sw-toolbox": "3.6.0",
     "web-animations-js": "^2.3.1",
@@ -110,7 +114,11 @@
       "cordova.plugins.diagnostic": {},
       "cordova-plugin-geolocation": {
         "GEOLOCATION_USAGE_DESCRIPTION": "To locate location of phones for coordinate input"
-      }
+      },
+      "phonegap-plugin-barcodescanner": {
+        "ANDROID_SUPPORT_V4_VERSION": "27.+"
+      },
+      "cordova-plugin-datepicker": {}
     },
     "platforms": [
       "android"

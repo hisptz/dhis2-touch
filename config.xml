@@ -3,7 +3,7 @@
     <name>DHIS 2 Touch</name>
     <description>An awesome dhis 2 mobile experience</description>
     <author email="" href="" />
-    <content original-src="index.html" src="http://192.168.43.247:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -103,4 +103,8 @@
     <allow-navigation href="http://192.168.1.4:8100" />
     <allow-navigation href="http://192.168.8.101:8100" />
     <engine name="android" spec="~6.3.0" />
+    <plugin name="phonegap-plugin-barcodescanner" spec="^7.1.2">
+        <variable name="ANDROID_SUPPORT_V4_VERSION" value="27.+" />
+    </plugin>
+    <plugin name="cordova-plugin-datepicker" spec="^0.9.3" />
 </widget>

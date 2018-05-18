@@ -14,6 +14,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { IonicStorageModule } from '@ionic/storage';
 import { Geolocation } from '@ionic-native/geolocation';
+import { DatePicker } from '@ionic-native/date-picker';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
 // Multi-language
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -117,6 +119,8 @@ import { SynchronizationProvider } from '../providers/synchronization/synchroniz
     SQLite,
     SplashScreen,
     Geolocation,
+    DatePicker,
+    BarcodeScanner,
     HTTP,
     AppVersion,
     Network,
