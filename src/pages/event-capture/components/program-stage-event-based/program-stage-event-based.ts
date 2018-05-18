@@ -188,7 +188,8 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     });
   }
 
-  updateEventDate() {
+  updateEventDate(date) {
+    this.eventDate = date;
     this.currentEvent.syncStatus = 'not-synced';
   }
 

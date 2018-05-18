@@ -19,7 +19,9 @@ export class DataTimeInputComponent implements OnInit {
 
   constructor(private datePicker: DatePicker) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.displayValue = this.inputValue ? this.inputValue : '';
+  }
 
   showTime() {
     const date = this.getDatePickerValue(this.inputValue, this.mode);

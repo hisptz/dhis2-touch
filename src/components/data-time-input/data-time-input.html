@@ -1,6 +1,6 @@
 <ion-row>
   <ion-col>
-    <div (tap)="showTime()" class="item-card">
+    <div (tap)="showTime()" class="item-card" padding>
       <span *ngIf="displayValue && displayValue !=''" padding>
         {{ displayValue }}
       </span>
@@ -11,7 +11,8 @@
   </ion-col>
   <ion-col col-auto>
     <div float-right>
-      <button color="danger" [disabled]="dataModal[fieldId] == ''" outline small ion-button (tap)="clearInput()">
+      <button color="danger" margin-top padding-top padding-bottom [disabled]="dataModal[fieldId] == ''" outline small ion-button
+        (tap)="clearInput()">
         <ion-icon name="trash" color="danger"></ion-icon>
       </button>
     </div>
