@@ -27,6 +27,7 @@ export class CustomDataEntryFormComponent
   @Input() entryFormType: string; //aggregate event tracker
   @Input() programTrackedEntityAttributes; // metadata for attribute
   @Input() entryFormSections;
+  @Input() programStageId : string;
   @Input() programStageDataElements; // metadata for events rendering
   @Input() dataUpdateStatus: { elementId: string; status: string };
   @Output() onCustomFormInputChange = new EventEmitter();
@@ -46,6 +47,7 @@ export class CustomDataEntryFormComponent
     document.body.addEventListener(
       'dataValueUpdate',
       (e: CustomEvent) => {
+        e.stopPropagation();
         const dataValueObject = e.detail;
         if (dataValueObject) {
           this.onCustomFormInputChange.emit(dataValueObject);
@@ -109,18 +111,19 @@ export class CustomDataEntryFormComponent
           _.map(this.programTrackedEntityAttributes,
             programTrackedEntityAttribute => programTrackedEntityAttribute.trackedEntityAttribute)
         )
-      ) : []};
+      ) : JSON.stringify(
+        _.map(this.programStageDataElements, programStage => programStage.dataElement)
+      )};
     var entryFormColors = ${JSON.stringify(this.entryFormStatusColors)};
     var entryFormType = ${JSON.stringify(this.entryFormType)};
     
     dataEntry.onFormReady(entryFormType, dataElements, data, function () {
     // listen to change events
     $('.entryfield, .entryselect, .entrytrueonly, .entryfileresource').change(function() {
-    
       // find item id
       var id = $( this ).attr( 'id' ).split('-');
-      var dataElementId = id[0];
-      var optionComboId = id[1];
+      var dataElementId = entryFormType === 'event' ? id[1] : id[0];
+      var optionComboId = entryFormType === 'event' ? 'dataElement' : entryFormType === 'tracker' ? 'trackedEntityAttribute' : id[1];
   
       // find item values
       var value = $(this).val();

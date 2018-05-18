@@ -63,22 +63,24 @@ function convertToBoolean(stringValue) {
 var dataEntry = {
   onFormReady: function (formType, dataElements, data, formReady) {
     $("input").each(function () {
-      var id = formType === "aggregate" ? $(this).attr("id").split("-") : $(this).attr("attributeid").split("-");
-      var dataElementId = id[0];
-      var optionComboId = id[1];
+      var elementId = $(this).attr("id");
+      var attributeId = $(this).attr("attributeid");
+      var id = formType === "aggregate" || formType === "event" ? elementId ? elementId.split("-") : [] :
+        attributeId ? attributeId.split("-") : [];
+      var dataElementId = formType === "event" ? id[1] : id[0];
+      var optionComboId = formType === "event" ? "dataElement" :
+        formType === "tracker" ? "trackedEntityAttribute" : id[1];
 
       // create new id if not available
-      if(!$(this).attr('id')) {
-        $(this).attr('id', dataElementId + '-' + 'trackedEntityAttribute')
+      if (!$(this).attr("id")) {
+        $(this).attr("id", dataElementId + "-" + optionComboId + "-val");
       }
 
       var dataElementDetails = getDataElementDetails(dataElements, dataElementId);
 
       // get dataElement type
       var type = dataElementDetails ? dataElementDetails.valueType : null;
-
-      var value = getSanitizedValue(getDataValue(data, dataElementId + "-" + (optionComboId ? optionComboId :
-        "trackedEntityAttribute")), type);
+      var value = getSanitizedValue(getDataValue(data, dataElementId + "-" + optionComboId, type));
 
       // update input with corresponding type
 
