@@ -1234,4 +1234,29 @@ export class ProgramsProvider {
         );
     });
   }
+
+  getProgramStageEntryFormByIds(
+    programStageIds: Array<string>,
+    currentUser: CurrentUser
+  ): Observable<any> {
+    return new Observable(observer => {
+      const resource = 'programStageEntryForm';
+      this.sqlLite
+        .getDataFromTableByAttributes(
+          resource,
+          'id',
+          programStageIds,
+          currentUser.currentDatabase
+        )
+        .subscribe(
+          data => {
+            observer.next(data);
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+    });
+  }
 }

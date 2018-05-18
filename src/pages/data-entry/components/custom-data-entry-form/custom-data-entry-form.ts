@@ -27,7 +27,8 @@ export class CustomDataEntryFormComponent
   @Input() entryFormType: string; //aggregate event tracker
   @Input() programTrackedEntityAttributes; // metadata for attribute
   @Input() entryFormSections;
-  @Input() dataUpdateStatus: {[elementId: string] : string};
+  @Input() programStageDataElements; // metadata for events rendering
+  @Input() dataUpdateStatus: { elementId: string; status: string };
   @Output() onCustomFormInputChange = new EventEmitter();
 
   _htmlMarkup: SafeHtml;

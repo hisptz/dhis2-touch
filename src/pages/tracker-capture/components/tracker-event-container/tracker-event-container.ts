@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { EventCaptureFormProvider } from '../../../../providers/event-capture-form/event-capture-form';
 import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
+import { CurrentUser } from '../../../../models/currentUser';
 
 /**
  * Generated class for the TrackerEventContainerComponent component.
@@ -22,12 +23,14 @@ import { AppTranslationProvider } from '../../../../providers/app-translation/ap
 export class TrackerEventContainerComponent implements OnInit, OnDestroy {
   @Input() programStage;
   @Input() currentOpenEvent;
-  @Input() currentUser;
+  @Input() formLayout: string;
+  @Input() currentUser: CurrentUser;
   @Input() isOpenRow;
   @Input() dataValuesSavingStatusClass;
   @Output() onChange = new EventEmitter();
   translationMapper: any;
-  dataObjectModel: any;
+  dataObject: any;
+  entryFormType: string;
 
   constructor(
     private eventCaptureFormProvider: EventCaptureFormProvider,
@@ -35,10 +38,11 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.entryFormType = 'event';
     if (this.isOpenRow) {
       this.isOpenRow = JSON.parse(this.isOpenRow);
     }
-    this.dataObjectModel = {};
+    this.dataObject = {};
     if (
       this.currentOpenEvent &&
       this.currentOpenEvent.dataValues &&
@@ -70,10 +74,10 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
 
   updateDataObjectModel(dataValues, programStageDataElements) {
     let dataValuesMapper = {};
-    dataValues.forEach((dataValue: any) => {
+    dataValues.map((dataValue: any) => {
       dataValuesMapper[dataValue.dataElement] = dataValue;
     });
-    programStageDataElements.forEach((programStageDataElement: any) => {
+    programStageDataElements.map((programStageDataElement: any) => {
       if (
         programStageDataElement.dataElement &&
         programStageDataElement.dataElement.id
@@ -81,7 +85,7 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
         let dataElementId = programStageDataElement.dataElement.id;
         let fieldId = programStageDataElement.dataElement.id + '-dataElement';
         if (dataValuesMapper[dataElementId]) {
-          this.dataObjectModel[fieldId] = dataValuesMapper[dataElementId];
+          this.dataObject[fieldId] = dataValuesMapper[dataElementId];
         }
       }
     });
@@ -90,13 +94,13 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
   updateData(updatedData) {
     let dataValues = [];
     if (updatedData && updatedData.id) {
-      this.dataObjectModel[updatedData.id] = updatedData;
+      this.dataObject[updatedData.id] = updatedData;
     }
-    Object.keys(this.dataObjectModel).forEach((key: any) => {
+    Object.keys(this.dataObject).forEach((key: any) => {
       let dataElementId = key.split('-')[0];
       dataValues.push({
         dataElement: dataElementId,
-        value: this.dataObjectModel[key].value
+        value: this.dataObject[key].value
       });
     });
     this.currentOpenEvent.dataValues = dataValues;
@@ -108,7 +112,7 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
         () => {
           this.dataValuesSavingStatusClass[updatedData.id] =
             'input-field-container-success';
-          this.dataObjectModel[updatedData.id] = updatedData;
+          this.dataObject[updatedData.id] = updatedData;
         },
         error => {
           this.dataValuesSavingStatusClass[updatedData.id] =
