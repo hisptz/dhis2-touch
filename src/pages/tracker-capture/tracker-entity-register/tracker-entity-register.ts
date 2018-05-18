@@ -392,7 +392,7 @@ export class TrackerEntityRegisterPage implements OnInit {
             // Update status for custom form
             const dataUpdateStatus = {}
             _.each(_.keys(this.dataObject), dataObjectId => {
-              dataUpdateStatus[dataObjectId] = 'OK'
+              dataUpdateStatus[dataObjectId + '-val'] = 'OK'
             });
             this._dataUpdateStatus$.next(dataUpdateStatus)
           },
@@ -406,7 +406,7 @@ export class TrackerEntityRegisterPage implements OnInit {
             // Update status for custom form
             const dataUpdateStatus = {}
             _.each(_.keys(this.dataObject), dataObjectId => {
-              dataUpdateStatus[dataObjectId] = 'ERROR'
+              dataUpdateStatus[dataObjectId + '-val'] = 'ERROR'
             });
             this._dataUpdateStatus$.next(dataUpdateStatus)
           }
@@ -436,7 +436,7 @@ export class TrackerEntityRegisterPage implements OnInit {
             // Update status for custom form
             const dataUpdateStatus = {}
             _.each(_.keys(this.dataObject), dataObjectId => {
-              dataUpdateStatus[dataObjectId] = 'OK'
+              dataUpdateStatus[dataObjectId + '-val'] = 'OK'
             });
             this._dataUpdateStatus$.next(dataUpdateStatus)
             this.registerEntity();
@@ -458,7 +458,7 @@ export class TrackerEntityRegisterPage implements OnInit {
             // Update status for custom form
             const dataUpdateStatus = {}
             _.each(_.keys(this.dataObject), dataObjectId => {
-              dataUpdateStatus[dataObjectId] = 'OK'
+              dataUpdateStatus[dataObjectId + '-val'] = 'OK'
             });
             this._dataUpdateStatus$.next(dataUpdateStatus)
           }

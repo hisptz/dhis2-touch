@@ -6,6 +6,7 @@ import { ProgramsProvider } from '../../../providers/programs/programs';
 import { OrganisationUnitsProvider } from '../../../providers/organisation-units/organisation-units';
 import { EventCaptureFormProvider } from '../../../providers/event-capture-form/event-capture-form';
 import { AppTranslationProvider } from '../../../providers/app-translation/app-translation';
+import { SettingsProvider } from '../../../providers/settings/settings';
 
 /**
  * Generated class for the EventCaptureRegisterPage page.
@@ -30,6 +31,7 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
   translationMapper: any;
   currentEvent: any;
   emptyEvent: any;
+  formLayout: string;
 
   constructor(
     private navCtr: NavController,
@@ -39,6 +41,7 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
     private eventCaptureFormProvider: EventCaptureFormProvider,
     private organisationUnitProvider: OrganisationUnitsProvider,
     private appProvider: AppProvider,
+    private settingProvider: SettingsProvider,
     private appTranslation: AppTranslationProvider
   ) {}
 
@@ -67,6 +70,11 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
     this.userProvider.getCurrentUser().subscribe(
       (user: any) => {
         this.currentUser = user;
+        this.settingProvider.getSettingsForTheApp(user).subscribe(settings => {
+          if (settings && settings.entryForm && settings.entryForm.formLayout) {
+            this.formLayout = settings.entryForm.formLayout;
+          }
+        });
         this.loadProgramStages(this.currentProgram.id);
       },
       error => {
