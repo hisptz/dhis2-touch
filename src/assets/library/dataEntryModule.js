@@ -61,18 +61,24 @@ function convertToBoolean(stringValue) {
 }
 
 var dataEntry = {
-  onFormReady: function (formReady) {
+  onFormReady: function (formType, dataElements, data, formReady) {
     $("input").each(function () {
-      var id = $(this).attr("id").split("-");
+      var id = formType === "aggregate" ? $(this).attr("id").split("-") : $(this).attr("attributeid").split("-");
       var dataElementId = id[0];
       var optionComboId = id[1];
+
+      // create new id if not available
+      if(!$(this).attr('id')) {
+        $(this).attr('id', dataElementId + '-' + 'trackedEntityAttribute')
+      }
 
       var dataElementDetails = getDataElementDetails(dataElements, dataElementId);
 
       // get dataElement type
       var type = dataElementDetails ? dataElementDetails.valueType : null;
 
-      var value = getSanitizedValue(getDataValue(data, dataElementId + "-" + optionComboId), type);
+      var value = getSanitizedValue(getDataValue(data, dataElementId + "-" + (optionComboId ? optionComboId :
+        "trackedEntityAttribute")), type);
 
       // update input with corresponding type
 
