@@ -29,6 +29,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   @Input() dataDimension;
   @Input() currentEvent;
   @Input() emptyEvent;
+  @Input() formLayout: string;
   @Output() onDeleteEvent = new EventEmitter();
   @Output() onCancelEvent = new EventEmitter();
 
@@ -37,10 +38,11 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   currentUser: any;
   isLoading: boolean;
   loadingMessage: string;
-  dataObjectModel: any;
+  dataObject: any;
   eventDate: any;
   dataValuesSavingStatusClass: any;
   translationMapper: any;
+  entryFormType: string;
 
   constructor(
     private programsProvider: ProgramsProvider,
@@ -53,7 +55,8 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.dataObjectModel = {};
+    this.entryFormType = 'event';
+    this.dataObject = {};
     this.translationMapper = {};
     this.dataValuesSavingStatusClass = {};
     this.currentOrgUnit = this.organisationUnitProvider.lastSelectedOrgUnit;
@@ -109,7 +112,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   }
 
   AddNewEvent() {
-    this.dataObjectModel = {};
+    this.dataObject = {};
     this.dataValuesSavingStatusClass = {};
     this.eventDate = '';
     this.currentEvent = Object.assign({}, this.emptyEvent);
@@ -178,7 +181,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
         let dataElementId = programStageDataElement.dataElement.id;
         let fieldId = programStageDataElement.dataElement.id + '-dataElement';
         if (dataValuesMapper[dataElementId]) {
-          this.dataObjectModel[fieldId] = dataValuesMapper[dataElementId];
+          this.dataObject[fieldId] = dataValuesMapper[dataElementId];
         }
       }
     });
@@ -194,13 +197,13 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     this.currentEvent.syncStatus = 'not-synced';
     let dataValues = [];
     if (updatedData && updatedData.id) {
-      this.dataObjectModel[updatedData.id] = updatedData;
+      this.dataObject[updatedData.id] = updatedData;
     }
-    Object.keys(this.dataObjectModel).forEach((key: any) => {
+    Object.keys(this.dataObject).forEach((key: any) => {
       let dataElementId = key.split('-')[0];
       dataValues.push({
         dataElement: dataElementId,
-        value: this.dataObjectModel[key].value
+        value: this.dataObject[key].value
       });
     });
     this.currentEvent.dataValues = dataValues;
@@ -209,7 +212,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
       .saveEvents([this.currentEvent], this.currentUser)
       .subscribe(
         () => {
-          this.dataObjectModel[updatedData.id] = updatedData;
+          this.dataObject[updatedData.id] = updatedData;
           this.dataValuesSavingStatusClass[updatedData.id] =
             'input-field-container-success';
         },
