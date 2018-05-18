@@ -31,6 +31,7 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
   translationMapper: any;
   dataObject: any;
   entryFormType: string;
+  dataUpdateStatus: {[elementId: string]: string};
 
   constructor(
     private eventCaptureFormProvider: EventCaptureFormProvider,
@@ -113,11 +114,13 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
           this.dataValuesSavingStatusClass[updatedData.id] =
             'input-field-container-success';
           this.dataObject[updatedData.id] = updatedData;
+          this.dataUpdateStatus = {[updatedData.domElementId]: 'OK'};
         },
         error => {
           this.dataValuesSavingStatusClass[updatedData.id] =
             'input-field-container-failed';
           console.log(JSON.stringify(error));
+          this.dataUpdateStatus = {[updatedData.domElementId]: 'ERROR'};
         }
       );
   }

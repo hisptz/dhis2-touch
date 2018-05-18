@@ -298,7 +298,7 @@ export class TrackedEntityDashboardPage implements OnInit {
               'input-field-container-success';
 
             // Update status for custom form
-            this._dataUpdateStatus$.next({[updateDataValue.id] : 'OK'});
+            this._dataUpdateStatus$.next({[updateDataValue.id + '-val'] : 'OK'});
           },
           error => {
             this.trackedEntityAttributesSavingStatusClass[
@@ -308,7 +308,7 @@ export class TrackedEntityDashboardPage implements OnInit {
             console.log(JSON.stringify(error));
 
             // Update status for custom form
-            this._dataUpdateStatus$.next({[updateDataValue.id] : 'ERROR'});
+            this._dataUpdateStatus$.next({[updateDataValue.id + '-val'] : 'ERROR'});
           }
         );
       },
@@ -318,7 +318,7 @@ export class TrackedEntityDashboardPage implements OnInit {
         console.log(JSON.stringify(error));
 
         // Update status for custom form
-        this._dataUpdateStatus$.next({[updateDataValue.id] : 'ERROR'});
+        this._dataUpdateStatus$.next({[updateDataValue.id + '-val'] : 'ERROR'});
       }
     );
   }
