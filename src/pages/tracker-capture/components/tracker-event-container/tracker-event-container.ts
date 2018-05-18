@@ -30,6 +30,7 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
   @Output() onChange = new EventEmitter();
   translationMapper: any;
   dataObject: any;
+  entryFormType: string;
 
   constructor(
     private eventCaptureFormProvider: EventCaptureFormProvider,
@@ -37,6 +38,7 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.entryFormType = 'event';
     if (this.isOpenRow) {
       this.isOpenRow = JSON.parse(this.isOpenRow);
     }
