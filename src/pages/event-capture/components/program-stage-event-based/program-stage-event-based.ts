@@ -43,7 +43,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   dataValuesSavingStatusClass: any;
   translationMapper: any;
   entryFormType: string;
-  dataUpdateStatus: {[elementId: string]: string};
+  dataUpdateStatus: { [elementId: string]: string };
 
   constructor(
     private programsProvider: ProgramsProvider,
@@ -193,7 +193,6 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   }
 
   updateData(updatedData) {
-    alert(JSON.stringify(updatedData))
     this.currentEvent['eventDate'] = this.eventDate;
     this.currentEvent['dueDate'] = this.eventDate;
     this.currentEvent.syncStatus = 'not-synced';
@@ -218,14 +217,14 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
           this.dataValuesSavingStatusClass[updatedData.id] =
             'input-field-container-success';
           // Update dataValue update status
-          this.dataUpdateStatus = {[updatedData.domElementId]: 'OK'};
+          this.dataUpdateStatus = { [updatedData.domElementId]: 'OK' };
         },
         error => {
           this.dataValuesSavingStatusClass[updatedData.id] =
             'input-field-container-failed';
           console.log(JSON.stringify(error));
           // Update dataValue update status
-          this.dataUpdateStatus = {[updatedData.domElementId]: 'ERROR'};
+          this.dataUpdateStatus = { [updatedData.domElementId]: 'ERROR' };
         }
       );
   }
