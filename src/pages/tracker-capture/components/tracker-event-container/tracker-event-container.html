@@ -1,3 +1,7 @@
+formLayout : {{ formLayout }} :: {{ programStage }}
+
+
+
 <div padding-top>
   <div style="display: inline-block;width: 49.3%">
     <span *ngIf="!hasEventDatesLabel(programStage.executionDateLabel)">{{ translationMapper['Report date'] }}</span>
@@ -35,7 +39,7 @@
             <td>
               <div text-left>
                 <div *ngFor="let dataElement of programStageSection.dataElements;trackBy: trackByFn">
-                  <event-input-container [dataElement]="dataElement" [currentUser]="currentUser" [data]="dataObjectModel" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
+                  <event-input-container [dataElement]="dataElement" [currentUser]="currentUser" [data]="dataObject" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
                     [mandatory]="'false'" (onChange)="updateData($event)"></event-input-container>
                 </div>
               </div>
@@ -49,7 +53,7 @@
     <div *ngIf="programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0 ">
       <div *ngFor="let programStageDataElement of programStage.programStageDataElements;trackBy: trackByFn">
         <div *ngIf="programStageDataElement.dataElement && programStageDataElement.dataElement.id">
-          <event-input-container [dataElement]="programStageDataElement.dataElement" [currentUser]="currentUser" [data]="dataObjectModel"
+          <event-input-container [dataElement]="programStageDataElement.dataElement" [currentUser]="currentUser" [data]="dataObject"
             [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [mandatory]="programStageDataElement.compulsory"
             (onChange)="updateData($event)"></event-input-container>
         </div>

@@ -2,7 +2,6 @@
   <loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></loading>
 </div>
 <div *ngIf="!isLoading" class="over-flow-container">
-  formLayout : {{ formLayout }}
   <div *ngIf="tableLayout && tableLayout.headers && tableLayout.headers.length > 0">
     <table class="table table-bordered" width="100%">
       <thead *ngIf="tableLayout && tableLayout.headers">
@@ -19,7 +18,7 @@
         <tr *ngIf="isTableRowOpened[currentIndex]">
           <td colspan="100%">
             <div text-left>
-              <tracker-event-container [programStage]="programStage" [currentUser]="currentUser" [(currentOpenEvent)]="currentEvents[currentIndex]"
+              <tracker-event-container [formLayout]="formLayout" [programStage]="programStage" [currentUser]="currentUser" [(currentOpenEvent)]="currentEvents[currentIndex]"
                 [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [isOpenRow]="'true'" (onChange)="updateData($event)"></tracker-event-container>
               <div>
                 <div no-padding>
@@ -50,7 +49,7 @@
   </div>
   <div *ngIf="isNewEventFormOpened">
     <div class="item-card-with-no-margin" [ngStyle]="{'border-top':currentEvents.length > 0? '0px':''}">
-      <tracker-event-container [programStage]="programStage" [currentUser]="currentUser" [(currentOpenEvent)]="currentOpenEvent"
+      <tracker-event-container [formLayout]="formLayout" [programStage]="programStage" [currentUser]="currentUser" [(currentOpenEvent)]="currentOpenEvent"
         [isOpenRow]="'false'" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" (onChange)="updateData($event)"></tracker-event-container>
 
       <div no-padding>
