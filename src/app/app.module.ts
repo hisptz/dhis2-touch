@@ -78,6 +78,7 @@ import { EncryptionProvider } from '../providers/encryption/encryption';
 import { SmsGatewayProvider } from '../providers/sms-gateway/sms-gateway';
 import { ProgramRulesProvider } from '../providers/program-rules/program-rules';
 import { SynchronizationProvider } from '../providers/synchronization/synchronization';
+import { GeolocationProvider } from '../providers/geolocation/geolocation';
 
 @NgModule({
   declarations: [
@@ -161,7 +162,8 @@ import { SynchronizationProvider } from '../providers/synchronization/synchroniz
     AppTranslationProvider,
     EncryptionProvider,
     ProgramRulesProvider,
-    SynchronizationProvider
+    SynchronizationProvider,
+    GeolocationProvider
   ]
 })
 export class AppModule {}

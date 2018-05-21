@@ -8,8 +8,8 @@ import {
   Output
 } from '@angular/core';
 import L from 'leaflet';
-import { Geolocation } from '@ionic-native/geolocation';
 import { AppProvider } from '../../../../providers/app/app';
+import { GeolocationProvider } from '../../../../providers/geolocation/geolocation';
 
 /**
  * Generated class for the CoordinateComponent component.
@@ -31,7 +31,7 @@ export class CoordinateComponent implements OnInit {
   @Output() onDismissView = new EventEmitter();
 
   constructor(
-    private geolocation: Geolocation,
+    private geolocation: GeolocationProvider,
     private appProvider: AppProvider
   ) {}
 
@@ -83,22 +83,24 @@ export class CoordinateComponent implements OnInit {
     this.onDismissView.emit();
   }
   getMylocation() {
-    this.geolocation
-      .getCurrentPosition()
-      .then(resp => {
-        const latitude = resp.coords.latitude;
-        const longitude = resp.coords.longitude;
+    this.geolocation.getMyLocation().subscribe(
+      data => {
+        const latitude = data.latitude;
+        const longitude = data.longitude;
+        const accuracy = data.accuracy;
+        const altitude = data.altitude;
         this.marker.setLatLng(new L.LatLng(latitude, longitude));
         this.map.setView(new L.LatLng(latitude, longitude), 8, {
           animation: true
         });
         this.position = { lat: latitude, lng: longitude };
-      })
-      .catch(error => {
+      },
+      error => {
         this.appProvider.setNormalNotification(
           'Error : ' + JSON.stringify(error)
         );
-      });
+      }
+    );
   }
   savingLoaction() {
     this.onSavingCoordinate.emit(this.position);
