@@ -198,10 +198,14 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
       if (this.canEventBeDeleted()) {
         this.updateData({});
       }
-    } else if (this.canEventBeDeleted()) {
-      const title =
-        'Clearing this value results to deletion of this event, are you sure?';
-      this.deleteEvent(this.currentEvent.id, title);
+    } else {
+      if (this.canEventBeDeleted()) {
+        const title =
+          'Clearing this value results to deletion of this event, are you sure?';
+        this.deleteEvent(this.currentEvent.id, title);
+      } else {
+        this.eventDate = date;
+      }
     }
   }
 

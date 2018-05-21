@@ -37,8 +37,8 @@ export class DataTimeInputComponent implements OnInit {
       .show({
         date: date,
         mode: this.mode,
-        okText: 'Update',
-        cancelText: 'Cancel',
+        okText: 'Done',
+        cancelText: 'Back',
         todayText: 'Today',
         nowText: 'Now',
         allowFutureDates: true,
