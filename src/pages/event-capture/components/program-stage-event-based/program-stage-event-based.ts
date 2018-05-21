@@ -72,7 +72,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
         this.loadingCurrentUserInformation();
       }
     );
-
+    this.eventDate = '';
     if (this.currentEvent && this.currentEvent.eventDate) {
       this.eventDate = this.currentEvent.eventDate;
     }
@@ -127,11 +127,14 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     return this.currentEvent && this.currentEvent.eventDate;
   }
 
-  deleteEvent(currentEventId) {
+  deleteEvent(currentEventId, title?) {
     const actionSheet = this.actionSheetCtrl.create({
-      title: this.translationMapper[
-        'You are about to delete this event, are you sure?'
-      ],
+      title:
+        title && title !== ''
+          ? title
+          : this.translationMapper[
+              'You are about to delete this event, are you sure?'
+            ],
       buttons: [
         {
           text: this.translationMapper['Yes'],
@@ -196,7 +199,9 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
         this.updateData({});
       }
     } else if (this.canEventBeDeleted()) {
-      this.deleteEvent(this.currentEvent.id);
+      const title =
+        'Clearing this value results to deletion of this event, are you sure?';
+      this.deleteEvent(this.currentEvent.id, title);
     }
   }
 
@@ -255,6 +260,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
       'Delete',
       'There are no data elements, please contact you help desk',
       'Discovering current user information',
+      'Clearing this value results to deletion of this event, are you sure?',
       'You are about to delete this event, are you sure?',
       'Yes',
       'No',

@@ -15,13 +15,10 @@ export class DataTimeInputComponent implements OnInit {
   @Input() mode: string;
   @Input() inputValue;
   @Output() dateTimeUpdateAction = new EventEmitter();
-  displayValue: string;
 
   constructor(private datePicker: DatePicker) {}
 
-  ngOnInit() {
-    this.displayValue = this.inputValue ? this.inputValue : '';
-  }
+  ngOnInit() {}
 
   showTime() {
     const date = this.getDatePickerValue(this.inputValue, this.mode);
@@ -40,21 +37,13 @@ export class DataTimeInputComponent implements OnInit {
       .then(
         date => {
           const displayValue = this.getDisplayValue(new Date(date), this.mode);
-          this.displayValue = displayValue;
           this.dateTimeUpdateAction.emit(displayValue);
         },
         error => {}
       );
   }
 
-  getDisplayLable() {
-    const displayValue = this.inputValue ? this.inputValue : '';
-    this.displayValue = displayValue;
-    return displayValue;
-  }
-
   clearInput() {
-    this.displayValue = '';
     this.dateTimeUpdateAction.emit('');
   }
 
