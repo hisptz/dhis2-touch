@@ -1,5 +1,5 @@
 <ion-row>
-  <ion-col col-10>
+  <ion-col padding-top>
     <label class="radio inline" *ngFor="let option of options">
       <input type="radio" value="{{ option.code }}" name="{{ fieldId }}" (change)="saveValue()" [(ngModel)]="dataModal[fieldId]">
       <span> {{ option.name }} </span>
