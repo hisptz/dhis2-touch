@@ -1,7 +1,20 @@
 data-time-input {
-  .item-card {
+  .item-card-input {
     border: 1px solid #e6e6e7;
     border-radius: 0.1rem;
-    padding: 5px 10px 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 5px;
+    margin-left: 5px;
+    margin-top: 10px;
+  }
+  .item-card-without-horizontal-padding {
+    border: 1px solid #e6e6e7;
+    border-radius: 0.1rem;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 5px;
+    margin-left: 5px;
+    margin-top: 10px;
   }
 }

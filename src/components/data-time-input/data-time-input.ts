@@ -13,12 +13,23 @@ import * as moment from 'moment';
 })
 export class DataTimeInputComponent implements OnInit {
   @Input() mode: string;
-  @Input() inputValue;
+  @Input() inputValue: string;
+  @Input() withoutHorizontalPadding: boolean;
   @Output() dateTimeUpdateAction = new EventEmitter();
+  defaultLabel: string;
 
   constructor(private datePicker: DatePicker) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.defaultLabel =
+      this.mode === 'date'
+        ? 'Touch to pick date'
+        : this.mode === 'datetime'
+          ? 'Touch to pick date and time'
+          : this.mode === 'time'
+            ? 'Touch to pick time'
+            : '';
+  }
 
   showTime() {
     const date = this.getDatePickerValue(this.inputValue, this.mode);

@@ -1,11 +1,11 @@
 <ion-row>
   <ion-col>
-    <div (tap)="showTime()" class="item-card" padding>
-      <span *ngIf="inputValue && inputValue !=''" padding>
+    <div (tap)="showTime()" [ngClass]="(!withoutHorizontalPadding)? 'item-card-input' : 'item-card-without-horizontal-padding'">
+      <span *ngIf="inputValue && inputValue !=''" padding-left>
         {{ inputValue }}
       </span>
-      <span *ngIf="!(inputValue && inputValue !='')" padding>
-        Touch to select
+      <span *ngIf="!(inputValue && inputValue !='')">
+        {{ defaultLabel }}
       </span>
     </div>
   </ion-col>
