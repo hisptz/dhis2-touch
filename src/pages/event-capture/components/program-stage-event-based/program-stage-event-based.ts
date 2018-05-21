@@ -189,8 +189,15 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   }
 
   updateEventDate(date) {
-    this.eventDate = date;
-    this.currentEvent.syncStatus = 'not-synced';
+    if (date && date !== '') {
+      this.eventDate = date;
+      this.currentEvent.syncStatus = 'not-synced';
+      if (this.canEventBeDeleted()) {
+        this.updateData({});
+      }
+    } else if (this.canEventBeDeleted()) {
+      this.deleteEvent(this.currentEvent.id);
+    }
   }
 
   updateData(updatedData) {
@@ -208,26 +215,28 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
         value: this.dataObject[key].value
       });
     });
-    this.currentEvent.dataValues = dataValues;
-    this.currentEvent.syncStatus = 'not-synced';
-    this.eventCaptureFormProvider
-      .saveEvents([this.currentEvent], this.currentUser)
-      .subscribe(
-        () => {
-          this.dataObject[updatedData.id] = updatedData;
-          this.dataValuesSavingStatusClass[updatedData.id] =
-            'input-field-container-success';
-          // Update dataValue update status
-          this.dataUpdateStatus = { [updatedData.domElementId]: 'OK' };
-        },
-        error => {
-          this.dataValuesSavingStatusClass[updatedData.id] =
-            'input-field-container-failed';
-          console.log(JSON.stringify(error));
-          // Update dataValue update status
-          this.dataUpdateStatus = { [updatedData.domElementId]: 'ERROR' };
-        }
-      );
+    if (dataValues && dataValues.length > 0) {
+      this.currentEvent.dataValues = dataValues;
+      this.currentEvent.syncStatus = 'not-synced';
+      this.eventCaptureFormProvider
+        .saveEvents([this.currentEvent], this.currentUser)
+        .subscribe(
+          () => {
+            this.dataObject[updatedData.id] = updatedData;
+            this.dataValuesSavingStatusClass[updatedData.id] =
+              'input-field-container-success';
+            // Update dataValue update status
+            this.dataUpdateStatus = { [updatedData.domElementId]: 'OK' };
+          },
+          error => {
+            this.dataValuesSavingStatusClass[updatedData.id] =
+              'input-field-container-failed';
+            console.log(JSON.stringify(error));
+            // Update dataValue update status
+            this.dataUpdateStatus = { [updatedData.domElementId]: 'ERROR' };
+          }
+        );
+    }
   }
 
   ngOnDestroy() {

@@ -47,6 +47,12 @@ export class DataTimeInputComponent implements OnInit {
       );
   }
 
+  getDisplayLable() {
+    const displayValue = this.inputValue ? this.inputValue : '';
+    this.displayValue = displayValue;
+    return displayValue;
+  }
+
   clearInput() {
     this.displayValue = '';
     this.dateTimeUpdateAction.emit('');

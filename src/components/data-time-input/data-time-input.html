@@ -1,10 +1,10 @@
 <ion-row>
   <ion-col>
     <div (tap)="showTime()" class="item-card" padding>
-      <span *ngIf="displayValue && displayValue !=''" padding>
-        {{ displayValue }}
+      <span *ngIf="getDisplayLable() && getDisplayLable() !== ''" padding>
+        {{ getDisplayLable() }}
       </span>
-      <span *ngIf="!(displayValue && displayValue !='')" padding>
+      <span *ngIf="!(getDisplayLable() && getDisplayLable() !== '')" padding>
         Touch to select
       </span>
     </div>

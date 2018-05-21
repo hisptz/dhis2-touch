@@ -25,7 +25,8 @@
   <div *ngIf="(programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
     <div *ngIf="formLayout === 'customLayout' && programStage && programStage.dataEntryForm && programStage.dataEntryForm !== '' ">
       <custom-data-entry-form [entryFormType]="entryFormType" [dataEntryFormDesign]="programStage.dataEntryForm" [data]="dataObject"
-       [dataUpdateStatus]="dataUpdateStatus" [programStageDataElements]="programStage.programStageDataElements" [programStageId]="programStage.id" (onCustomFormInputChange)="updateData($event)"></custom-data-entry-form>
+        [dataUpdateStatus]="dataUpdateStatus" [programStageDataElements]="programStage.programStageDataElements" [programStageId]="programStage.id"
+        (onCustomFormInputChange)="updateData($event)"></custom-data-entry-form>
     </div>
     <div *ngIf="!(formLayout === 'customLayout' && programStage && programStage.dataEntryForm && programStage.dataEntryForm !== '' )">
       <div *ngIf="programStage.programStageSections && programStage.programStageSections  && programStage.programStageSections.length > 0">
