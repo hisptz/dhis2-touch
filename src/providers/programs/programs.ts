@@ -238,9 +238,6 @@ export class ProgramsProvider {
         });
       }
     });
-    console.log(
-      'Saving ' + trackerRegistrationForms.length + ' trackerRegistrationForms'
-    );
     return new Observable(observer => {
       if (trackerRegistrationForms.length == 0) {
         observer.next();
@@ -288,9 +285,6 @@ export class ProgramsProvider {
         });
       }
     });
-    console.log(
-      'Saving ' + programStageEntryForms.length + ' programStageEntryForms'
-    );
     return new Observable(observer => {
       if (programStageEntryForms.length == 0) {
         observer.next();

@@ -16,6 +16,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { Geolocation } from '@ionic-native/geolocation';
 import { DatePicker } from '@ionic-native/date-picker';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { Diagnostic } from '@ionic-native/diagnostic';
 
 // Multi-language
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -120,6 +121,7 @@ import { GeolocationProvider } from '../providers/geolocation/geolocation';
     SQLite,
     SplashScreen,
     Geolocation,
+    Diagnostic,
     DatePicker,
     BarcodeScanner,
     HTTP,
