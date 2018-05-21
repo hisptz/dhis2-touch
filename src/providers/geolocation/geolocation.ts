@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Geolocation } from '@ionic-native/geolocation';
+import { Geolocation, GeolocationOptions } from '@ionic-native/geolocation';
 import { Diagnostic } from '@ionic-native/diagnostic';
 import { Observable } from 'rxjs/Observable';
 
@@ -18,8 +18,12 @@ export class GeolocationProvider {
 
   getMyLocation(): Observable<any> {
     return new Observable(observer => {
+      const options: GeolocationOptions = {
+        timeout: 4000,
+        enableHighAccuracy: true
+      };
       this.geolocation
-        .getCurrentPosition()
+        .getCurrentPosition(options)
         .then(resp => {
           const latitude = resp.coords.latitude;
           const longitude = resp.coords.longitude;

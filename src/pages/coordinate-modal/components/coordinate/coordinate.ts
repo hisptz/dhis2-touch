@@ -85,6 +85,7 @@ export class CoordinateComponent implements OnInit {
   getMylocation() {
     this.geolocation.getMyLocation().subscribe(
       data => {
+        console.log('Here on find location');
         const latitude = data.latitude;
         const longitude = data.longitude;
         const accuracy = data.accuracy;
