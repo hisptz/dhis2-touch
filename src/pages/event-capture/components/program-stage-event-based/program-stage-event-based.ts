@@ -131,7 +131,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     const actionSheet = this.actionSheetCtrl.create({
       title:
         title && title !== ''
-          ? title
+          ? this.translationMapper[title]
           : this.translationMapper[
               'You are about to delete this event, are you sure?'
             ],

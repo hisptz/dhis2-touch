@@ -80,10 +80,8 @@
                         <span class="required">&nbsp;*</span>
                       </div>
                       <div [ngClass]="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container'">
-                        <ion-item>
-                          <ion-datetime [(ngModel)]="date.enrollmentDate" (ionChange)="updateData('',true)" [ngModelOptions]="{standalone:true}" doneText="Update"
-                            displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>
-                        </ion-item>
+                        <data-time-input [(inputValue)]="date['enrollmentDate']" (dateTimeUpdateAction)="updateDateSelection($event,'enrollmentDate')"
+                          [mode]="'date'"></data-time-input>
                       </div>
                       <div *ngIf="currentProgram && currentProgram.displayIncidentDate">
                         <div class="inputLabel">
@@ -91,10 +89,8 @@
                           <span class="required">&nbsp;*</span>
                         </div>
                         <div [ngClass]="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container'">
-                          <ion-item>
-                            <ion-datetime [(ngModel)]="date.incidentDate" (ionChange)="updateData('',true)" [ngModelOptions]="{standalone:true}" doneText="Update"
-                              displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>
-                          </ion-item>
+                          <data-time-input [(inputValue)]="date['incidentDate']" (dateTimeUpdateAction)="updateDateSelection($event,'incidentDate')"
+                            [mode]="'date'"></data-time-input>
                         </div>
                       </div>
                     </div>
@@ -113,7 +109,8 @@
                   <div *ngIf="!isFormReady">
                     <loading [loadingMessage]="''" [loadingSize]="'large'"></loading>
                   </div>
-                  <tracker-registration-form [formLayout]="formLayout" [dataObject]="dataObject" [dataUpdateStatus]="dataUpdateStatus$ | async" [currentUser]="currentUser" [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
+                  <tracker-registration-form [formLayout]="formLayout" [dataObject]="dataObject" [dataUpdateStatus]="dataUpdateStatus$ | async"
+                    [currentUser]="currentUser" [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
                     [trackerRegistrationForm]="trackerRegistrationForm" [programTrackedEntityAttributes]="programTrackedEntityAttributes"
                     (onChange)="updateData($event,false)"></tracker-registration-form>
                   <ion-row no-padding no-margin>
