@@ -26,6 +26,10 @@ export class CoordinateComponent implements OnInit {
   map: L.Map;
   center: L.PointTuple;
   marker: any;
+  accuracy: string;
+  altitude: string;
+  isLocationBasedOnPhone: boolean;
+  isLoadingMyLocation: boolean;
   @Input() position;
   @Output() onSavingCoordinate = new EventEmitter();
   @Output() onDismissView = new EventEmitter();
@@ -33,7 +37,12 @@ export class CoordinateComponent implements OnInit {
   constructor(
     private geolocation: GeolocationProvider,
     private appProvider: AppProvider
-  ) {}
+  ) {
+    this.accuracy = '';
+    this.altitude = '';
+    this.isLoadingMyLocation = false;
+    this.isLocationBasedOnPhone = false;
+  }
 
   ngOnInit() {
     setTimeout(() => {
@@ -71,7 +80,21 @@ export class CoordinateComponent implements OnInit {
       })
     }).addTo(this.map);
     this.marker.dragging.enable();
+    this.marker.on('moveend', event => {
+      this.isLoadingMyLocation = false;
+      this.isLocationBasedOnPhone = false;
+    });
+    this.marker.on('dragstart', event => {
+      this.isLoadingMyLocation = false;
+      this.isLocationBasedOnPhone = false;
+    });
+    this.marker.on('movestart', event => {
+      this.isLoadingMyLocation = false;
+      this.isLocationBasedOnPhone = false;
+    });
     this.marker.on('dragend', event => {
+      this.accuracy = '';
+      this.altitude = '';
       const newMarker = event.target;
       const position = newMarker.getLatLng();
       this.position = position;
@@ -83,20 +106,23 @@ export class CoordinateComponent implements OnInit {
     this.onDismissView.emit();
   }
   getMylocation() {
+    this.isLoadingMyLocation = true;
     this.geolocation.getMyLocation().subscribe(
       data => {
-        console.log('Here on find location');
         const latitude = data.latitude;
         const longitude = data.longitude;
-        const accuracy = data.accuracy;
-        const altitude = data.altitude;
+        this.accuracy = data.accuracy ? data.accuracy.toFixed(2) : ' meters';
+        this.altitude = data.altitude ? data.altitude.toFixed(2) : '';
         this.marker.setLatLng(new L.LatLng(latitude, longitude));
         this.map.setView(new L.LatLng(latitude, longitude), 8, {
           animation: true
         });
         this.position = { lat: latitude, lng: longitude };
+        this.isLoadingMyLocation = false;
+        this.isLocationBasedOnPhone = true;
       },
       error => {
+        this.isLoadingMyLocation = false;
         this.appProvider.setNormalNotification(
           'Error : ' + JSON.stringify(error)
         );
