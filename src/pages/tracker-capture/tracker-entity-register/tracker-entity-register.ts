@@ -123,6 +123,12 @@ export class TrackerEntityRegisterPage implements OnInit {
     this.dashboardWidgets = this.getDashboardWidgets();
     this.currentOrganisationUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
     this.currentProgram = this.programsProvider.getLastSelectedProgram();
+    if (!isNaN(this.currentProgram.incidentDateLabel)) {
+      this.currentProgram.incidentDateLabel = 'Incident date';
+    }
+    if (!isNaN(this.currentProgram.enrollmentDateLabel)) {
+      this.currentProgram.enrollmentDateLabel = 'Enrollment date';
+    }
     this.userProvider.getCurrentUser().subscribe(
       user => {
         this.currentUser = user;
