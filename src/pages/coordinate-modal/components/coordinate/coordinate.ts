@@ -107,19 +107,63 @@ export class CoordinateComponent implements OnInit {
   }
   getMylocation() {
     this.isLoadingMyLocation = true;
-    this.geolocation.getMyLocation().subscribe(
-      data => {
-        const latitude = data.latitude;
-        const longitude = data.longitude;
-        this.accuracy = data.accuracy ? data.accuracy.toFixed(2) : ' meters';
-        this.altitude = data.altitude ? data.altitude.toFixed(2) : '';
-        this.marker.setLatLng(new L.LatLng(latitude, longitude));
-        this.map.setView(new L.LatLng(latitude, longitude), 8, {
-          animation: true
-        });
-        this.position = { lat: latitude, lng: longitude };
-        this.isLoadingMyLocation = false;
-        this.isLocationBasedOnPhone = true;
+    this.geolocation.isLocationEnabled().subscribe(
+      enableStatus => {
+        if (enableStatus) {
+          this.geolocation.isLocationAuthorized().subscribe(
+            authorizatioStatus => {
+              if (authorizatioStatus) {
+                this.geolocation.getMyLocation().subscribe(
+                  data => {
+                    this.setMyLocation(data);
+                  },
+                  error => {
+                    this.isLoadingMyLocation = false;
+                    this.appProvider.setNormalNotification(
+                      'Error : ' + JSON.stringify(error)
+                    );
+                  }
+                );
+              } else {
+                this.geolocation.requestPermision().subscribe(
+                  requestStatus => {
+                    if (requestStatus.indexOf('DENIED') > -1) {
+                    } else {
+                      this.geolocation.getMyLocation().subscribe(
+                        data => {
+                          this.setMyLocation(data);
+                        },
+                        error => {
+                          this.isLoadingMyLocation = false;
+                          this.appProvider.setNormalNotification(
+                            'Error : ' + JSON.stringify(error)
+                          );
+                        }
+                      );
+                    }
+                  },
+                  error => {
+                    this.isLoadingMyLocation = false;
+                    this.appProvider.setNormalNotification(
+                      'Error : ' + JSON.stringify(error)
+                    );
+                  }
+                );
+              }
+            },
+            error => {
+              this.isLoadingMyLocation = false;
+              this.appProvider.setNormalNotification(
+                'Error : ' + JSON.stringify(error)
+              );
+            }
+          );
+        } else {
+          this.appProvider.setNormalNotification(
+            'Please switch on Location Services '
+          );
+          this.isLoadingMyLocation = false;
+        }
       },
       error => {
         this.isLoadingMyLocation = false;
@@ -128,6 +172,20 @@ export class CoordinateComponent implements OnInit {
         );
       }
     );
+  }
+
+  setMyLocation(data) {
+    const latitude = data.latitude;
+    const longitude = data.longitude;
+    this.accuracy = data.accuracy ? data.accuracy.toFixed(2) : ' meters';
+    this.altitude = data.altitude ? data.altitude.toFixed(2) : '';
+    this.marker.setLatLng(new L.LatLng(latitude, longitude));
+    this.map.setView(new L.LatLng(latitude, longitude), 8, {
+      animation: true
+    });
+    this.position = { lat: latitude, lng: longitude };
+    this.isLoadingMyLocation = false;
+    this.isLocationBasedOnPhone = true;
   }
   savingLoaction() {
     this.onSavingCoordinate.emit(this.position);

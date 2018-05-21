@@ -16,11 +16,71 @@ export class GeolocationProvider {
     private diagnostic: Diagnostic
   ) {}
 
+  isLocationAuthorized(): Observable<any> {
+    return new Observable(observer => {
+      this.diagnostic
+        .getLocationAuthorizationStatus()
+        .then(
+          status => {
+            if (status === 'GRANTED') {
+              observer.next(true);
+            } else {
+              observer.next(false);
+            }
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        )
+        .catch(error => {
+          observer.error(error);
+        });
+    });
+  }
+
+  requestPermision(): Observable<any> {
+    return new Observable(observer => {
+      this.diagnostic
+        .requestLocationAuthorization()
+        .then(
+          status => {
+            observer.next(status);
+          },
+          error => {
+            observer.error(error);
+          }
+        )
+        .catch(error => {
+          observer.error(error);
+        });
+    });
+  }
+
+  isLocationEnabled(): Observable<any> {
+    return new Observable(observer => {
+      this.diagnostic
+        .isLocationEnabled()
+        .then(
+          status => {
+            observer.next(status);
+          },
+          error => {
+            observer.error(error);
+          }
+        )
+        .catch(error => {
+          observer.error(error);
+        });
+    });
+  }
+
   getMyLocation(): Observable<any> {
     return new Observable(observer => {
       const options: GeolocationOptions = {
         timeout: 4000,
-        enableHighAccuracy: true
+        enableHighAccuracy: true,
+        maximumAge: 4000
       };
       this.geolocation
         .getCurrentPosition(options)
