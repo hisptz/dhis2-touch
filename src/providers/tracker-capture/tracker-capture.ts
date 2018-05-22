@@ -659,10 +659,10 @@ export class TrackerCaptureProvider {
   getAttributesMapperForDisplay(trackedEntityInstances) {
     let mapper = [];
     let trackedEntityInstancesIds = [];
-    trackedEntityInstances.forEach((trackedEntityInstance: any) => {
+    trackedEntityInstances.map((trackedEntityInstance: any) => {
       let attributeMapper = {};
       if (trackedEntityInstance.attributes) {
-        trackedEntityInstance.attributes.forEach((attributeObject: any) => {
+        trackedEntityInstance.attributes.map((attributeObject: any) => {
           attributeMapper[attributeObject.attribute] = attributeObject.value;
         });
       }

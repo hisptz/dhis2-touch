@@ -284,9 +284,20 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
     );
   }
 
-  deleteEvent(currentEventId) {
+  deleteEventAction(data) {
+    const { id } = data;
+    const { title } = data;
+    this.deleteEvent(id, title);
+  }
+
+  deleteEvent(currentEventId, title?) {
     const actionSheet = this.actionSheetCtrl.create({
-      title: 'You are about to delete this event, are you sure?',
+      title:
+        title && title !== ''
+          ? this.translationMapper[title]
+          : this.translationMapper[
+              'You are about to delete this event, are you sure?'
+            ],
       buttons: [
         {
           text: 'Yes',
@@ -419,6 +430,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
       'Discovering current user information',
       'Discovering events',
       'You are about to delete this event, are you sure?',
+      'Clearing this value results to deletion of this event, are you sure?',
       'Yes',
       'No',
       'Prev',

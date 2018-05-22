@@ -4,20 +4,16 @@
     <span *ngIf="hasEventDatesLabel(programStage.executionDateLabel)">{{ programStage.executionDateLabel }}</span>
     <span class="required">*</span>
     <div class="input-field-container">
-      <ion-item>
-        <ion-datetime doneText="Update" [(ngModel)]="currentOpenEvent['eventDate']" placeholder="Touch to pick date" displayFormat="YYYY-MM-DD"
-          pickerFormat="YYYY MM DD"></ion-datetime>
-      </ion-item>
+      <data-time-input [(inputValue)]="currentOpenEvent['eventDate']" (dateTimeUpdateAction)="updateEventDate($event,'eventDate')"
+        [mode]="'date'"></data-time-input>
     </div>
   </div>
-  <div style="display: inline-block;width: 49.3%">
+  <div style="display: inline-block;width: 49.3%" *ngIf="!programStage.hideDueDate">
     <span *ngIf="!hasEventDatesLabel(programStage.dueDateLabel)"> {{ translationMapper['Due date'] }}</span>
     <span *ngIf="hasEventDatesLabel(programStage.dueDateLabel)">{{ programStage.dueDateLabel }}</span>
     <div class="input-field-container">
-      <ion-item>
-        <ion-datetime doneText="Update" [(ngModel)]="currentOpenEvent['dueDate']" placeholder="{{ translationMapper['Touch to pick date'] }}"
-          displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD"></ion-datetime>
-      </ion-item>
+      <data-time-input [withoutHorizontalPadding]="true" [(inputValue)]="currentOpenEvent['dueDate']" (dateTimeUpdateAction)="updateEventDate($event,'dueDate')"
+        [mode]="'date'"></data-time-input>
     </div>
   </div>
 </div>
@@ -25,7 +21,8 @@
   <div *ngIf="(programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
     <div *ngIf="formLayout === 'customLayout' && programStage && programStage.dataEntryForm && programStage.dataEntryForm !== '' ">
       <custom-data-entry-form [entryFormType]="entryFormType" [dataEntryFormDesign]="programStage.dataEntryForm" [data]="dataObject"
-       [dataUpdateStatus]="dataUpdateStatus" [programStageDataElements]="programStage.programStageDataElements" [programStageId]="programStage.id" (onCustomFormInputChange)="updateData($event)"></custom-data-entry-form>
+        [dataUpdateStatus]="dataUpdateStatus" [programStageDataElements]="programStage.programStageDataElements" [programStageId]="programStage.id"
+        (onCustomFormInputChange)="updateData($event)"></custom-data-entry-form>
     </div>
     <div *ngIf="!(formLayout === 'customLayout' && programStage && programStage.dataEntryForm && programStage.dataEntryForm !== '' )">
       <div *ngIf="programStage.programStageSections && programStage.programStageSections  && programStage.programStageSections.length > 0">

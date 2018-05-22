@@ -72,7 +72,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
         this.loadingCurrentUserInformation();
       }
     );
-
+    this.eventDate = '';
     if (this.currentEvent && this.currentEvent.eventDate) {
       this.eventDate = this.currentEvent.eventDate;
     }
@@ -127,11 +127,14 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     return this.currentEvent && this.currentEvent.eventDate;
   }
 
-  deleteEvent(currentEventId) {
+  deleteEvent(currentEventId, title?) {
     const actionSheet = this.actionSheetCtrl.create({
-      title: this.translationMapper[
-        'You are about to delete this event, are you sure?'
-      ],
+      title:
+        title && title !== ''
+          ? this.translationMapper[title]
+          : this.translationMapper[
+              'You are about to delete this event, are you sure?'
+            ],
       buttons: [
         {
           text: this.translationMapper['Yes'],
@@ -188,8 +191,22 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     });
   }
 
-  updateEventDate() {
-    this.currentEvent.syncStatus = 'not-synced';
+  updateEventDate(date) {
+    if (date && date !== '') {
+      this.eventDate = date;
+      this.currentEvent.syncStatus = 'not-synced';
+      if (this.canEventBeDeleted()) {
+        this.updateData({});
+      }
+    } else {
+      if (this.canEventBeDeleted()) {
+        const title =
+          'Clearing this value results to deletion of this event, are you sure?';
+        this.deleteEvent(this.currentEvent.id, title);
+      } else {
+        this.eventDate = date;
+      }
+    }
   }
 
   updateData(updatedData) {
@@ -207,26 +224,28 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
         value: this.dataObject[key].value
       });
     });
-    this.currentEvent.dataValues = dataValues;
-    this.currentEvent.syncStatus = 'not-synced';
-    this.eventCaptureFormProvider
-      .saveEvents([this.currentEvent], this.currentUser)
-      .subscribe(
-        () => {
-          this.dataObject[updatedData.id] = updatedData;
-          this.dataValuesSavingStatusClass[updatedData.id] =
-            'input-field-container-success';
-          // Update dataValue update status
-          this.dataUpdateStatus = { [updatedData.domElementId]: 'OK' };
-        },
-        error => {
-          this.dataValuesSavingStatusClass[updatedData.id] =
-            'input-field-container-failed';
-          console.log(JSON.stringify(error));
-          // Update dataValue update status
-          this.dataUpdateStatus = { [updatedData.domElementId]: 'ERROR' };
-        }
-      );
+    if (dataValues && dataValues.length > 0) {
+      this.currentEvent.dataValues = dataValues;
+      this.currentEvent.syncStatus = 'not-synced';
+      this.eventCaptureFormProvider
+        .saveEvents([this.currentEvent], this.currentUser)
+        .subscribe(
+          () => {
+            this.dataObject[updatedData.id] = updatedData;
+            this.dataValuesSavingStatusClass[updatedData.id] =
+              'input-field-container-success';
+            // Update dataValue update status
+            this.dataUpdateStatus = { [updatedData.domElementId]: 'OK' };
+          },
+          error => {
+            this.dataValuesSavingStatusClass[updatedData.id] =
+              'input-field-container-failed';
+            console.log(JSON.stringify(error));
+            // Update dataValue update status
+            this.dataUpdateStatus = { [updatedData.domElementId]: 'ERROR' };
+          }
+        );
+    }
   }
 
   ngOnDestroy() {
@@ -245,6 +264,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
       'Delete',
       'There are no data elements, please contact you help desk',
       'Discovering current user information',
+      'Clearing this value results to deletion of this event, are you sure?',
       'You are about to delete this event, are you sure?',
       'Yes',
       'No',

@@ -1,3 +1,1 @@
-<ion-item>
-  <ion-datetime (ionChange)="updateValues()" placeholder="Touch to pick date"  [(ngModel)]="inputFieldValue" doneText="Update" displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" ></ion-datetime>
-</ion-item>
+<data-time-input [(inputValue)]="inputFieldValue" (dateTimeUpdateAction)="updateValue($event)" [mode]="mode"></data-time-input>

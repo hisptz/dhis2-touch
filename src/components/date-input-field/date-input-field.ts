@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 /**
  * Generated class for the DateInputFieldComponent component.
@@ -10,33 +10,37 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
   selector: 'date-input-field',
   templateUrl: 'date-input-field.html'
 })
-export class DateInputFieldComponent implements OnInit{
-
-  @Input() dataElementId;
-  @Input() categoryOptionComboId;
+export class DateInputFieldComponent implements OnInit {
+  @Input() dataElementId: string;
+  @Input() categoryOptionComboId: string;
   @Input() data;
+  @Input() valueType: string;
   @Output() onChange = new EventEmitter();
-  inputFieldValue : any;
-  //{"id":"s46m5MS0hxu-Prlt0C1RF0s","value":"1","status":"synced"}
-  //id = dataElementId + "-" + categoryOptionComboId
+
+  inputFieldValue: string;
+  mode: string;
+
   constructor() {}
 
-  ngOnInit(){
-    let fieldId = this.dataElementId + "-" + this.categoryOptionComboId;
-    if(this.data && this.data[fieldId]){
-      this.inputFieldValue  = this.data[fieldId].value;
+  ngOnInit() {
+    const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
+    if (this.data && this.data[fieldId]) {
+      this.inputFieldValue = this.data[fieldId].value;
     }
+    this.mode =
+      this.valueType && this.valueType != ''
+        ? this.valueType.toLowerCase()
+        : 'date';
   }
 
-  updateValues(){
-    let fieldId = this.dataElementId + "-" + this.categoryOptionComboId;
-    if(this.data && this.data[fieldId] && this.inputFieldValue  != this.data[fieldId].value){
-      this.onChange.emit({"id":fieldId,"value":this.inputFieldValue,"status":"not-synced"});
-    }else if(this.data && !this.data[fieldId]){
-      if(this.inputFieldValue){
-        this.onChange.emit({"id":fieldId,"value":this.inputFieldValue,"status":"not-synced"});
-      }
-    }
+  updateValue(value) {
+    const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
+    this.inputFieldValue = value;
+    const data = {
+      id: fieldId,
+      value: value,
+      status: 'not-synced'
+    };
+    this.onChange.emit(data);
   }
-
 }
