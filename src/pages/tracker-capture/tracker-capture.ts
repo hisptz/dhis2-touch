@@ -6,6 +6,7 @@ import { OrganisationUnitsProvider } from '../../providers/organisation-units/or
 import { ProgramsProvider } from '../../providers/programs/programs';
 import { TrackerCaptureProvider } from '../../providers/tracker-capture/tracker-capture';
 import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
+import * as _ from 'lodash';
 
 /**
  * Generated class for the TrackerCapturePage page.
@@ -184,15 +185,20 @@ export class TrackerCapturePage implements OnInit {
         this.programTrackedEntityAttributes &&
         this.programTrackedEntityAttributes.length > 0
       ) {
-        this.programTrackedEntityAttributes.forEach(
+        this.programTrackedEntityAttributes.map(
           (programTrackedEntityAttribute: any) => {
             if (programTrackedEntityAttribute.displayInList) {
-              let attribute =
+              const attribute =
                 programTrackedEntityAttribute.trackedEntityAttribute;
               this.attributeToDisplay[attribute.id] = attribute.name;
             }
           }
         );
+        if (_.keys(this.attributeToDisplay).length == 0) {
+          const attribute = this.programTrackedEntityAttributes[0]
+            .trackedEntityAttribute;
+          this.attributeToDisplay[attribute.id] = attribute.name;
+        }
       }
       this.loadingSavedTrackedEntityInstances(
         this.selectedProgram.id,

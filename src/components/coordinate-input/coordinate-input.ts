@@ -23,11 +23,12 @@ export class CoordinateInputComponent implements OnInit {
     const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
     if (this.data && this.data[fieldId]) {
       const dataValue = eval(this.data[fieldId].value);
-      if (dataValue.length == 0) {
+      if (dataValue && dataValue.length === 2) {
         this.position.lng = dataValue[1];
         this.position.lat = dataValue[0];
+      } else {
+        this.position = { lat: '', lng: '' };
       }
-      this.position = { lat: dataValue[0], lng: dataValue[1] };
     }
   }
 

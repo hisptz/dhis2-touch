@@ -60,9 +60,10 @@ export class TrackerEntityRegisterPage implements OnInit {
   trackerRegistrationForm: string;
   formLayout: string;
   data;
-  private _dataUpdateStatus$: BehaviorSubject<{[elementId: string]: string}> = new BehaviorSubject<{[elementId: string]: string}>(
-    {});
-  dataUpdateStatus$: Observable<{[elementId: string]: string}>;
+  private _dataUpdateStatus$: BehaviorSubject<{
+    [elementId: string]: string;
+  }> = new BehaviorSubject<{ [elementId: string]: string }>({});
+  dataUpdateStatus$: Observable<{ [elementId: string]: string }>;
   @ViewChild(Content) content: Content;
 
   constructor(
@@ -122,6 +123,12 @@ export class TrackerEntityRegisterPage implements OnInit {
     this.dashboardWidgets = this.getDashboardWidgets();
     this.currentOrganisationUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
     this.currentProgram = this.programsProvider.getLastSelectedProgram();
+    if (!isNaN(this.currentProgram.incidentDateLabel)) {
+      this.currentProgram.incidentDateLabel = 'Incident date';
+    }
+    if (!isNaN(this.currentProgram.enrollmentDateLabel)) {
+      this.currentProgram.enrollmentDateLabel = 'Enrollment date';
+    }
     this.userProvider.getCurrentUser().subscribe(
       user => {
         this.currentUser = user;
@@ -283,6 +290,21 @@ export class TrackerEntityRegisterPage implements OnInit {
     }
   }
 
+  updateDateSelection(date, dateType) {
+    if (date && date !== '') {
+      this.date[dateType] = date;
+      this.updateData('', true);
+    } else {
+      if (this.isTrackedEntityRegistered) {
+        const title =
+          'Clearing this value results to deletion of all information related to this instance, are you sure?';
+        this.deleteTrackedEntity(this.trackedEntityInstance, title);
+      } else {
+        this.date[dateType] = date;
+      }
+    }
+  }
+
   //@todo changes of enrollments as well
   updateData(updateDataValue, shoulOnlyCheckDates?) {
     if (!shoulOnlyCheckDates) {
@@ -290,7 +312,6 @@ export class TrackerEntityRegisterPage implements OnInit {
       this.currentTrackedEntityId = updateDataValue.id;
       this.trackedEntityAttributeValuesObject[id] = updateDataValue.value;
       this.dataObject[updateDataValue.id] = updateDataValue;
-
     }
     const isFormReady = this.isALlRequiredFieldHasValue(
       this.programTrackedEntityAttributes,
@@ -315,12 +336,15 @@ export class TrackerEntityRegisterPage implements OnInit {
     }
   }
 
-  deleteTrackedEntity(trackedEntityInstanceId) {
+  deleteTrackedEntity(trackedEntityInstanceId, title?) {
     if (this.isTrackedEntityRegistered) {
       const actionSheet = this.actionSheetCtrl.create({
-        title: this.translationMapper[
-          'You are about to delete all information related to this tracked entity instance, are you sure?'
-        ],
+        title:
+          title && title !== ''
+            ? this.translationMapper[title]
+            : this.translationMapper[
+                'You are about to delete all information related to this tracked entity instance, are you sure?'
+              ],
         buttons: [
           {
             text: this.translationMapper['Yes'],
@@ -390,11 +414,11 @@ export class TrackerEntityRegisterPage implements OnInit {
               'input-field-container-success';
 
             // Update status for custom form
-            const dataUpdateStatus = {}
+            const dataUpdateStatus = {};
             _.each(_.keys(this.dataObject), dataObjectId => {
-              dataUpdateStatus[dataObjectId + '-val'] = 'OK'
+              dataUpdateStatus[dataObjectId + '-val'] = 'OK';
             });
-            this._dataUpdateStatus$.next(dataUpdateStatus)
+            this._dataUpdateStatus$.next(dataUpdateStatus);
           },
           error => {
             this.trackedEntityAttributesSavingStatusClass[
@@ -404,11 +428,11 @@ export class TrackerEntityRegisterPage implements OnInit {
             console.log(JSON.stringify(error));
 
             // Update status for custom form
-            const dataUpdateStatus = {}
+            const dataUpdateStatus = {};
             _.each(_.keys(this.dataObject), dataObjectId => {
-              dataUpdateStatus[dataObjectId + '-val'] = 'ERROR'
+              dataUpdateStatus[dataObjectId + '-val'] = 'ERROR';
             });
-            this._dataUpdateStatus$.next(dataUpdateStatus)
+            this._dataUpdateStatus$.next(dataUpdateStatus);
           }
         );
     } else {
@@ -434,11 +458,11 @@ export class TrackerEntityRegisterPage implements OnInit {
               }
             );
             // Update status for custom form
-            const dataUpdateStatus = {}
+            const dataUpdateStatus = {};
             _.each(_.keys(this.dataObject), dataObjectId => {
-              dataUpdateStatus[dataObjectId + '-val'] = 'OK'
+              dataUpdateStatus[dataObjectId + '-val'] = 'OK';
             });
-            this._dataUpdateStatus$.next(dataUpdateStatus)
+            this._dataUpdateStatus$.next(dataUpdateStatus);
             this.registerEntity();
           },
           error => {
@@ -456,11 +480,11 @@ export class TrackerEntityRegisterPage implements OnInit {
             console.log(JSON.stringify(error));
 
             // Update status for custom form
-            const dataUpdateStatus = {}
+            const dataUpdateStatus = {};
             _.each(_.keys(this.dataObject), dataObjectId => {
-              dataUpdateStatus[dataObjectId + '-val'] = 'OK'
+              dataUpdateStatus[dataObjectId + '-val'] = 'OK';
             });
-            this._dataUpdateStatus$.next(dataUpdateStatus)
+            this._dataUpdateStatus$.next(dataUpdateStatus);
           }
         );
     }
@@ -523,6 +547,7 @@ export class TrackerEntityRegisterPage implements OnInit {
       'Discovering current user information',
       'Discovering program stages',
       'Discovering registration form',
+      'Clearing this value results to deletion of all information related to this instance, are you sure?',
       'You are about to delete all information related to this tracked entity instance, are you sure?',
       'Yes',
       'No',

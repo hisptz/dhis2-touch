@@ -16,6 +16,7 @@ import { UnitIntervalInputComponent } from './unit-interval-input/unit-interval-
 import { EmailInputComponent } from './email-input/email-input';
 import { PhoneNumberInputComponent } from './phone-number-input/phone-number-input';
 import { RadioButtonInputComponent } from './radio-button-input/radio-button-input';
+import { DataTimeInputComponent } from './data-time-input/data-time-input';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { RadioButtonInputComponent } from './radio-button-input/radio-button-inp
     UnitIntervalInputComponent,
     EmailInputComponent,
     PhoneNumberInputComponent,
-    RadioButtonInputComponent
+    RadioButtonInputComponent,
+    DataTimeInputComponent
   ],
   imports: [IonicModule, SharedModule],
   exports: [
@@ -51,7 +53,8 @@ import { RadioButtonInputComponent } from './radio-button-input/radio-button-inp
     UnitIntervalInputComponent,
     EmailInputComponent,
     PhoneNumberInputComponent,
-    RadioButtonInputComponent
+    RadioButtonInputComponent,
+    DataTimeInputComponent
   ]
 })
 export class DataEntryModule {}

@@ -13,6 +13,9 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { IonicStorageModule } from '@ionic/storage';
 import { Geolocation } from '@ionic-native/geolocation';
+import { DatePicker } from '@ionic-native/date-picker';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { Diagnostic } from '@ionic-native/diagnostic';
 
 // Multi-language
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -75,6 +78,7 @@ import { EncryptionProvider } from '../providers/encryption/encryption';
 import { SmsGatewayProvider } from '../providers/sms-gateway/sms-gateway';
 import { ProgramRulesProvider } from '../providers/program-rules/program-rules';
 import { SynchronizationProvider } from '../providers/synchronization/synchronization';
+import { GeolocationProvider } from '../providers/geolocation/geolocation';
 
 @NgModule({
   declarations: [
@@ -116,6 +120,9 @@ import { SynchronizationProvider } from '../providers/synchronization/synchroniz
     SQLite,
     SplashScreen,
     Geolocation,
+    Diagnostic,
+    DatePicker,
+    BarcodeScanner,
     HTTP,
     AppVersion,
     Network,
@@ -155,7 +162,8 @@ import { SynchronizationProvider } from '../providers/synchronization/synchroniz
     AppTranslationProvider,
     EncryptionProvider,
     ProgramRulesProvider,
-    SynchronizationProvider
+    SynchronizationProvider,
+    GeolocationProvider
   ]
 })
 export class AppModule {}
