@@ -16,36 +16,31 @@ export class DateInputFieldComponent implements OnInit {
   @Input() data;
   @Input() valueType: string;
   @Output() onChange = new EventEmitter();
-  inputFieldValue: any;
+
+  inputFieldValue: string;
+  mode: string;
+
   constructor() {}
 
   ngOnInit() {
-    let fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
+    const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
     if (this.data && this.data[fieldId]) {
       this.inputFieldValue = this.data[fieldId].value;
     }
+    this.mode =
+      this.valueType && this.valueType != ''
+        ? this.valueType.toLowerCase()
+        : 'date';
   }
 
-  updateValues() {
-    let fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
-    if (
-      this.data &&
-      this.data[fieldId] &&
-      this.inputFieldValue != this.data[fieldId].value
-    ) {
-      this.onChange.emit({
-        id: fieldId,
-        value: this.inputFieldValue,
-        status: 'not-synced'
-      });
-    } else if (this.data && !this.data[fieldId]) {
-      if (this.inputFieldValue) {
-        this.onChange.emit({
-          id: fieldId,
-          value: this.inputFieldValue,
-          status: 'not-synced'
-        });
-      }
-    }
+  updateValue(value) {
+    const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
+    this.inputFieldValue = value;
+    const data = {
+      id: fieldId,
+      value: value,
+      status: 'not-synced'
+    };
+    this.onChange.emit(data);
   }
 }
