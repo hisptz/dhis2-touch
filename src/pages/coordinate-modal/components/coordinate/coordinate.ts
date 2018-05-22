@@ -127,7 +127,14 @@ export class CoordinateComponent implements OnInit {
               } else {
                 this.geolocation.requestPermision().subscribe(
                   requestStatus => {
-                    if (requestStatus.indexOf('DENIED') > -1) {
+                    if (requestStatus === 'RESTRICTED') {
+                      this.appProvider.setNormalNotification(
+                        'Location services has been restricted on this phone'
+                      );
+                    } else if (requestStatus === 'DENIED_ALWAYS') {
+                      this.appProvider.setNormalNotification(
+                        'Please enable location service manually on the app permissions settings page'
+                      );
                     } else {
                       this.geolocation.getMyLocation().subscribe(
                         data => {
