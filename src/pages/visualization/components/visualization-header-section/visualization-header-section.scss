@@ -1,0 +1,12 @@
+visualization-header-section {
+  .visualization-header-section-container {
+    display: flex;
+    justify-content: space-between;
+    .visualization-filters {
+      margin-left: 3px;
+    }
+    .visualization-resize {
+      margin-right: 7px;
+    }
+  }
+}

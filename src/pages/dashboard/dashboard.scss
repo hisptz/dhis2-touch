@@ -1,90 +1,32 @@
 page-dashboard {
-    .list-separator {
-        height: 1.7rem;
+  .selected-dashboard-block {
+    position: fixed;
+    z-index: 1400;
+    width: 100%;
+    -webkit-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+    -moz-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+    border-radius: 2px;
+    background-color: #ffffff;
+    padding: 14px 12px 14px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .dashboard-name {
+      font-size: 1.4rem;
     }
-    .dashboard-card {
-        border: 1px solid #e6e6e7;
-        border-radius: 0.1rem;
-        padding: 0;
-        margin-top: 5px;
-        margin-bottom: 5px;
+    img {
+      height: 15px;
     }
-    .dashboard-card-body {
-        overflow: hidden;
-    }
-    .table-visualization {
-        overflow: auto !important;
-    }
-    .item-md.item-block .item-inner {
-        padding-right: 5px;
-        border-bottom: 0px solid #dedede;
-    }
-    .item-ios.item-block .item-inner {
-        padding-right: 5px;
-        border-bottom: 0px solid #dedede;
-    }
-    .visualization-card {
-        width: 100%;
-        position: absolute;
-        height: 100%;
-    }
-    .visualization-card-header {
-        display: flex;
-        justify-content: space-between;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-        padding: 5px;
-        z-index: 500000;
-    }
-    .visualization-card-header-right,
-    .visualization-card-header-left {
-        display: inline-block;
-    }
-    .visualization-filter-section-container {
-        margin-right: 5px;
-    }
-    .visualization-card-body {
-        height: 100%;
-        display: flex;
-    }
-    .full-screen-dashboard-item-resize {
-        cursor: pointer;
-        padding: 5px;
-        width: 30px;
-        border-radius: 15px;
-    }
-    .full-screen-dashboard-item-resize img {
-        display: block;
-        margin: auto;
-        height: 18px;
-    }
-    .visualization-block {
-        overflow: hidden;
-    }
-    .visualization-card-footer {
-        position: relative;
-        left: 0;
-        bottom: 0;
-        padding: 5px;
-        z-index: 1000;
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-    }
-    .table-container-block,
-    .users-container-block,
-    .resources-container-block {
-        padding: 20px 10px 10px 10px;
-        overflow: auto;
-    }
-    .map-container {
-        overflow: hidden;
-    }
-    .dictionary-container {
-        overflow: auto;
-        padding: 10px;
-    }
+  }
+
+  .visualization-card-list {
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 50px;
+  }
+
+  .visualization-card-container {
+    width: 100%;
+  }
 }

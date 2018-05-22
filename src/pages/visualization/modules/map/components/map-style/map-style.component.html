@@ -1,0 +1,69 @@
+<div class="style__container">
+  <div class="choice">
+    <div class="radio">
+      <input id="radio-1" (change)="toggleAtomatic('true')" name="radio" type="radio" [checked]="isAutomatic">
+      <label for="radio-1" class="radio-label">Automatic</label>
+    </div>
+
+    <div class="radio">
+      <input id="radio-2" (change)="toggleAtomatic('false')" name="radio" type="radio" [checked]="!isAutomatic">
+      <label for="radio-2" class="radio-label">Predifined</label>
+    </div>
+  </div>
+  <div class="legendSets" *ngIf="!isAutomatic">
+    <span>Legends</span>
+    <select (change)="onChangeLegend($event.target.value)" class="custom-select width-100">
+      <option *ngFor="let legendSet of legendSets" [value]="legendSet.id" [selected]="(currentLegendSet && legendSet.id === currentLegendSet.id)">{{legendSet.name}}</option>
+    </select>
+  </div>
+  <div class="classification" *ngIf="isAutomatic">
+    <span>Classfications</span>
+    <select (change)="onChange($event.target.value)" class="custom-select">
+      <option *ngFor="let classification of classifications" [value]="classification.method" [selected]="classification.method === legendProperties.method ">{{classification.name}}</option>
+    </select>
+  </div>
+  <div class="color-classes" *ngIf="isAutomatic">
+    <div class="classes">
+      <span>Classes</span>
+      <select (change)="onChangeClass($event.target.value)" class="custom-select">
+        <option *ngFor="let class of classes" [value]="class" [selected]="class === legendProperties.classes ">{{class}}</option>
+      </select>
+    </div>
+    <div class="colours">
+      <div class="dropdown-container" appClickOutside (clickOutside)="dropDownIsOpen = false">
+        <button type="button" class="form-control text-left nominal" (click)="toggleDropDown()">
+          <ul class="button-ul">
+            <li *ngFor="let code of getColors(default_color, legendProperties.classes)" [ngStyle]="{'background-color': code}"></li>
+          </ul>
+        </button>
+        <ul class="instead-option list-unstyled" *ngIf="dropDownIsOpen">
+          <li *ngFor="let color of colors">
+            <ul class="colours-ul">
+              <li *ngFor="let code of getColors(color, legendProperties.classes)" [ngStyle]="{'background-color': code}" (click)="onChangeColor(color)"></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="form-check labels">
+    <label class="form-check-label">
+      <input (change)="toggleShowLabel($event)" type="checkbox" class="form-check-input" [checked]="displaySettings.labels"> Show labels
+    </label>
+    <div class="labels-options">
+      <label class="form-check-label">
+        <input (change)="onFontSizeChange($event.target.value)" class="form-control size-input" type="number" [value]="getNumberFromFontSize(displaySettings.labelFontSize)">
+      </label>
+      <div class="labels-control">
+        <button type="button" class="btn btn-outline-dark font-weight-bold active mr-1">B</button>
+        <button type="button" class="btn btn-outline-dark font-italic ml-1">I</button>
+        <input class="color-picker" (change)="onColorChange($event.target.value)" type="color" [value]="displaySettings.labelFontColor">
+      </div>
+    </div>
+  </div>
+
+  <div class="style-filter-btns">
+    <button class="btn btn-outline-secondary btn-sm" (click)="onCanceling($event)">Close</button>
+    <button class="btn btn-outline-secondary btn-sm" (click)="onSubmit($event)">Update</button>
+  </div>
+</div>

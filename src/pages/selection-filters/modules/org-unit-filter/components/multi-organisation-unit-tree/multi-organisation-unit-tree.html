@@ -1,0 +1,49 @@
+<div class="organisation-unit">
+  <img
+    (click)="toggleTree()"
+    *ngIf="organisationUnit?.children.length > 0"
+    [src]="!organisationUnit?.isExpanded ? 'assets/icon/plus-circle.png' : 'assets/icon/minus-circle.png'" alt="">
+  <div
+    (click)="selectOrganisationUnit(organisationUnit)"
+    [ngClass]="{
+    'organisation-unit-without-children': organisationUnit?.children.length === 0,
+    'selected-organisation-unit': organisationUnit?.selected
+    }"
+  >
+    &nbsp;
+    {{ organisationUnit.name }}
+  </div>
+</div>
+
+<div class="organisation-unit-children" *ngIf="organisationUnit?.isExpanded">
+  <!--loading children block-->
+  <div class="organisation-unit-children-loading" *ngIf="loadingOrganisationUnitChildren$ | async">
+    <img [src]="'assets/img/balls-3.svg'" alt="">
+    <div [translate]="'Discovering organisation unit children'"></div>
+  </div>
+  <!--end of loading children block-->
+
+  <!--children error block-->
+  <div
+    class="organisation-unit-children-error"
+    *ngIf="hasErrorOccurred"
+    [translate]="'Fail to discover organisation unit children'">
+  </div>
+  <!--end of children error block-->
+
+  <!--organisation unit children block-->
+  <div *ngIf="organisationUnitChildrenLoaded && !hasErrorOccurred">
+    <div *ngFor="let organisationUnit of organisationUnitChildren">
+      <multi-organisation-unit-tree
+        [selectedOrgUnits]="selectedOrgUnits"
+        (activate)="onActivateOu($event)"
+        (deactivate)="onDeactivateOu($event)"
+        [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened"
+        [organisationUnit]="organisationUnit"
+        [currentUser]="currentUser"
+        [toggledOuIds]="toggledOuIds"
+      ></multi-organisation-unit-tree>
+    </div>
+  </div>
+  <!--end of organisation unit children block-->
+</div>
