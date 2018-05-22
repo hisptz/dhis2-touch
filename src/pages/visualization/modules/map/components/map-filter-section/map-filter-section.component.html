@@ -1,0 +1,52 @@
+<div class="visualization-filter-section">
+  <div class="visualization-filter-buttons">
+    <button class="dashboard-btn button-close visualization-filter-btn border-round-right" title="Filter by different dimensions"
+      [disabled]="!loaded" (click)="toggleFilters($event)">
+      <img *ngIf="showFilters" src="assets/icons/close.png" alt="">
+    </button>
+    <div class="visualization-filter-list" *ngIf="showFilters">
+
+      <button class="dashboard-btn org-unit-filter-btn border-round " [ngClass]="{'active-filter': selectedFilter === 'ORG_UNIT'}"
+        title="Filter by organisation unit" (click)="toggleCurrentFilter($event, 'ORG_UNIT')">
+        <img src="assets/icon/tree.png" alt="">
+        <span>Org Unit</span>
+      </button>
+      <button class="dashboard-btn data-filter-btn border-round" [ngClass]="{'active-filter': selectedFilter === 'DATA'}" title="Filter by data"
+        (click)="toggleCurrentFilter($event, 'DATA')">
+        <img src="assets/icon/data.png" alt="">
+        <span>Data</span>
+      </button>
+      <button class="dashboard-btn period-filter-btn border-round" [ngClass]="{'active-filter': selectedFilter === 'PERIOD'}" title="Filter by period"
+        (click)="toggleCurrentFilter($event, 'PERIOD')">
+        <img src="assets/icon/period.png" alt="">
+        <span>Period</span>
+      </button>
+      <button class="dashboard-btn style-filter-btn border-round" [ngClass]="{'active-filter': selectedFilter === 'STYLE'}" title="Filter by period"
+        (click)="toggleCurrentFilter($event, 'STYLE')">
+        <img src="assets/icon/period.png" alt="">
+        <span>Style</span>
+      </button>
+    </div>
+  </div>
+  <div class="visualization-filter-body dashboard-border" *ngIf="selectedFilter">
+    <!--org unit filter-->
+    <!--<app-org-unit-filter *ngIf="selectedFilter === 'ORG_UNIT'" [orgUnitModel]="orgUnitModel" (onOrgUnitClose)="onFilterClose($event)"-->
+      <!--(onOrgUnitUpdate)="onFilterUpdateAction($event, 'ORG_UNIT')"></app-org-unit-filter>-->
+    <!--end of org unit filter-->
+
+    <!--data filter-->
+    <!--<app-data-filter *ngIf="selectedFilter === 'DATA'" [selectedItems]="selectedDataItems" [singleSelection]="singleSelection"-->
+      <!--(onDataFilterClose)="onFilterClose($event)" (onDataUpdate)="onFilterUpdateAction($event, 'DATA')"></app-data-filter>-->
+    <!--end of data filter-->
+
+    <!--period filter-->
+    <!--<app-period-filter *ngIf="selectedFilter === 'PERIOD'" [selectedPeriods]="selectedPeriods" [periodConfig]="periodConfig"-->
+      <!--(onPeriodFilterClose)="onFilterClose($event)" (onPeriodUpdate)="onFilterUpdateAction($event, 'PERIOD')"></app-period-filter>-->
+    <!--end of period filter-->
+
+    <!-- style filter -->
+    <app-map-style *ngIf="selectedFilter === 'STYLE'" [selectedLayer]="selectedLayer" [legendSets]="legendSets$ | async" (onStyleFilterClose)="onFilterClose($event)"
+      (onStyleUpdate)="onStyleFilterUpdate($event)"></app-map-style>
+    <!-- end of style filter -->
+  </div>
+</div>

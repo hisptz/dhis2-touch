@@ -1,0 +1,8 @@
+<div class="visualization-footer-section-container">
+<div *ngIf="!hideTypeButtons">
+  <app-visualization-types-section
+    [currentVisualization]="type"
+    (visualizationTypeChange)="onVisualizationTypeChange($event)"
+  ></app-visualization-types-section>
+</div>
+</div>

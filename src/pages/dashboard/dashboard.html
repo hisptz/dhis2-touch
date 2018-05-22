@@ -1,81 +1,35 @@
 <ion-header>
 
-    <ion-navbar color="primary">
-        <button ion-button menuToggle>
-            <ion-icon name="menu"></ion-icon>
-        </button>
-        <ion-title>
-            <span [translate]="'Dashboard'"></span>
-        </ion-title>
-    </ion-navbar>
+  <ion-navbar color="primary">
+    <ion-title>
+      <span [translate]="'Dashboard'"></span>
+    </ion-title>
+  </ion-navbar>
 
 </ion-header>
-
-
 <ion-content>
 
-    <ion-grid>
-        <!-- loading area -->
-        <div *ngIf="loading$ | async">
-            <loading [loadingMessage]="translationMapper['Discovering dashboards']" [loadingSize]="'large'"></loading>
-        </div>
-        <!-- end of loading area -->
+  <!--dashboard loading block-->
+  <div class="dashboard-loading-block" *ngIf="loading$ | async">
+    Loading
+    <loading [loadingMessage]="'Discovering dashboards'"></loading>
+  </div>
+  <!--end dashboard loading block-->
 
-        <div *ngIf="!(loading$ |async)">
-            <!-- header section -->
-            <div class="entry-selection-container " (tap)="openDashboardListFilter()">
-                <ion-row>
-                    <ion-col col-11>
-                        {{ (currentDashboard$ | async)?.name }}
-                    </ion-col>
-                    <ion-col col-1>
-                        <img [src]="icons['menu']" width="20" height="20">
-                    </ion-col>
-                </ion-row>
-            </div>
-            <!-- end of header section -->
+  <!--header section-->
+  <div class="selected-dashboard-block" (tap)="openDashboardListFilter()" *ngIf="!(loading$ | async)">
+    <div class="dashboard-name">
+      {{(currentDashboard$ | async)?.name}}
+    </div>
+    <img [src]="'assets/icon/menu.png'" alt="">
+  </div>
+  <!--end of header section-->
 
-            <!-- no dashboard section -->
-            <div *ngIf="(visualizationObjects$ | async).length == 0">
-                <empty-list-notification [emptyListMessage]="translationMapper['There no dashboard item found']"></empty-list-notification>
-            </div>
-            <!-- end of no dashboard section -->
-
-            <!--cards for visualization -->
-            <div class="dashboard-card" *ngFor="let visualizationObject of visualizationObjects$ | async">
-
-                <!-- visualization card title section -->
-                <ion-row (tap)="toggleVisualization(visualizationObject)" style="padding-top : 2px; padding-bottom: 2px">
-                    <ion-col col-11>
-                        <ion-icon color="primary">
-                            <img class="dashboard-item-icon" [src]="icons[visualizationObject.details.currentVisualization]" />
-                        </ion-icon>
-                        <span ion-text [color]="(visualizationObject.details.expanded) ?'current' : 'font-color'">
-                            {{ visualizationObject.name }}
-                        </span>
-                    </ion-col>
-                    <ion-col col-1 item>
-                        <div style="text-align: center;">
-                            <ion-icon *ngIf="!visualizationObject.details.expanded" name="ios-arrow-down" [color]="(visualizationObject.details.expanded) ?'current' : 'font-color'"
-                                item-right></ion-icon>
-                            <ion-icon *ngIf="visualizationObject.details.expanded" name="ios-arrow-up" [color]="(visualizationObject.details.expanded) ?'current' : 'font-color'"
-                                item-right></ion-icon>
-                        </div>
-                    </ion-col>
-                </ion-row>
-                <!-- end of visualization card title section -->
-
-                <!-- visualization card body section -->
-                <div *ngIf="visualizationObject.details.expanded">
-
-                    <dashboard-visualization-card [visualizationObject]="visualizationObject" (onOpeningFullScreen)="openDashboardInFullScreen($event)"
-                        [currentUser]="currentUser$ | async "></dashboard-visualization-card>
-
-                    <!-- end of visualization card body section -->
-                </div>
-
-
-            </div>
-        </div>
-    </ion-grid>
+  <!--visualization section-->
+  <div class="visualization-card-list" *ngIf="!(loading$ | async)">
+    <div *ngFor="let visualizationId of currentDashboardVisualizations$ | async; trackBy: visualizationId" class="visualization-card-container">
+      <app-visualization-card [id]="visualizationId"></app-visualization-card>
+    </div>
+  </div>
+  <!--end of visualization section-->
 </ion-content>

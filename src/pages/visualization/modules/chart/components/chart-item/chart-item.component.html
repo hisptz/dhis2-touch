@@ -1,0 +1,20 @@
+<div class="chart-item-container">
+  <div
+    id="{{renderId}}"
+    class="chart-block"
+    [ngStyle]="{'width': '100%', height: 'calc(' + chartHeight + '- 10px)'}"></div>
+
+  <ul class="chart-type-list animated fadeInRight" [hidden]="!showOptions">
+    <li *ngFor="let chartType of chartTypes">
+      <button
+        (click)="updateChartType(chartType.type, $event)"
+        title="{{chartType.description}}"
+        [ngClass]="currentChartType == chartType.type ? 'active-chart-type' : ''"
+        [disabled]="currentChartType == chartType.type"
+      >
+        <img [src]="chartType.icon" class="chart-option-icon" alt="">
+      </button>
+    </li>
+  </ul>
+
+</div>

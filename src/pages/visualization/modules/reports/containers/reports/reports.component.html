@@ -1,0 +1,12 @@
+<div class="reports-block">
+  <table class="list-table">
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+    </tr>
+    <tr *ngFor="let report of reports; let i = index">
+      <td>{{i + 1}}</td>
+      <td><a [href]="report.url" target="_blank">{{report.displayName}}</a></td>
+    </tr>
+  </table>
+</div>

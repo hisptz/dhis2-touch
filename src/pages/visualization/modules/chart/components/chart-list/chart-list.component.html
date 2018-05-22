@@ -1,0 +1,10 @@
+<div
+  class="chart-list"
+  *ngFor="let chartLayer of chartLayers"
+>
+  <chart-item
+    [chartConfiguration]="chartLayer.chartConfiguration"
+    [analyticsObject]="chartLayer.analyticsObject"
+    [chartHeight]="chartHeight"
+  ></chart-item>
+</div>

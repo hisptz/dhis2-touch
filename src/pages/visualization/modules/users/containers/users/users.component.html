@@ -1,0 +1,12 @@
+<div class="users-container">
+  <table class="list-table">
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+    </tr>
+    <tr *ngFor="let user of users; let i = index">
+      <td>{{i + 1}}</td>
+      <td><a [href]="user.url" target="_blank">{{user.displayName}}</a></td>
+    </tr>
+  </table>
+</div>

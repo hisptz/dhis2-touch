@@ -1,0 +1,21 @@
+<a [href]="'../../../dhis-web-messaging/readMessage.action?id=' + messageConversation.id" target="_blank" class="message-conversation-item">
+  <div class="message-conversation-icon-block">
+    <div class="message-conversation-icon">
+      {{(messageConversation?.lastSender?.name || messageConversation?.user?.name)  | abbreviate}}
+    </div>
+  </div>
+  <div class="message-conversation-body">
+    <div class="message-conversation-names {{!messageConversation?.read ? 'unread-conversation' : ''}}">
+      {{messageConversation?.conversationNames}}
+      ({{messageConversation?.messages.length}})
+    </div>
+    <div
+      class="message-conversation-title {{!messageConversation?.read ? 'unread-conversation' : ''}}"
+    >
+      {{messageConversation?.name | truncate:50}}
+    </div>
+    <div class="message-conversation-content">
+      {{messageConversation?.body | truncate:60}}
+    </div>
+  </div>
+</a>

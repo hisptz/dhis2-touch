@@ -1,0 +1,21 @@
+app-visualization-resize-section {
+  .visualization-resize-section {
+    display: flex;
+    .visualization-resize-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 30px;
+      width: 30px;
+      border-radius: 50%;
+      -webkit-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.12);
+      -moz-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.12);
+      box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.12);
+      background-color: rgba(255, 255, 255, 0.5);
+      img {
+        height: 16px;
+      }
+    }
+  }
+
+}

@@ -1,0 +1,42 @@
+<ion-header>
+
+  <ion-toolbar color="primary">
+    <ion-title>
+      <span [translate]="'Dashboard list'"></span>
+    </ion-title>
+    <ion-buttons end>
+      <button class="normalButton" ion-button text-capitalize full large (tap)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-searchbar animated="true" autocomplete="on" placeholder="{{'Search dashboard by name'}}" (ionInput)="onDashboardSearch($event)"></ion-searchbar>
+  <ion-list [virtualScroll]="dashboards$ | async | filterByName: searchTerm" [approxItemHeight]="'40px'">
+    <ion-item *virtualItem="let dashboard" (tap)="onSetCurrentDashboard(dashboard)">
+      <span ion-text [color]="((currentDashboard$ | async).id === dashboard.id) ? 'current' : 'font-color'">{{ dashboard.name }}</span>
+    </ion-item>
+  </ion-list>
+  <!--<ion-grid>-->
+    <!--<ion-searchbar animated="true" autocomplete="on" placeholder="{{'Search dashboard by name'|translate}}" (ionInput)="getFilteredList($event)"></ion-searchbar>-->
+    <!--<ion-row>-->
+      <!--<ion-col>-->
+        <!--<ion-list>-->
+          <!--&lt;!&ndash;<ion-item *ngFor="let dashboard of dashboards$ | async | filterByName: searchTerm" (tap)="setCurrentDashboard(dashboard)"&ndash;&gt;-->
+                    <!--&lt;!&ndash;class="list-separator">&ndash;&gt;-->
+            <!--&lt;!&ndash;<span ion-text [color]="((currentDashboard$ | async).id === dashboard.id) ?'current' : 'font-color'">{{ dashboard.name }}</span>&ndash;&gt;-->
+          <!--&lt;!&ndash;</ion-item>&ndash;&gt;-->
+          <!--{{dashboards$ | async | json}}-->
+        <!--</ion-list>-->
+      <!--</ion-col>-->
+    <!--</ion-row>-->
+
+    <!--<div *ngIf="(dashboards$ | async).length == 0">-->
+      <!--&lt;!&ndash;<empty-list-notification [emptyListMessage]="translationMapper['There no dashboard item found']"></empty-list-notification>&ndash;&gt;-->
+    <!--</div>-->
+  <!--</ion-grid>-->
+</ion-content>

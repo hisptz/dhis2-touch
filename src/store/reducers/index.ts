@@ -1,21 +1,13 @@
-import {ActionReducerMap} from '@ngrx/store';
-import {currentUserReducer, CurrentUserState} from "./currentUser.reducers";
-import * as fromDashboardReducer from './dashboard.reducer';
-import * as fromVisualizationReducer from './visualization.reducer';
+import { ActionReducerMap } from '@ngrx/store';
+import { currentUserReducer, CurrentUserState } from './currentUser.reducers';
 
-export interface ApplicationState{
-  currentUser : CurrentUserState,
-  dashboard: fromDashboardReducer.DashboardState
-  visualization: fromVisualizationReducer.VisualizationState;
+export interface ApplicationState {
+  currentUser: CurrentUserState;
 }
 
 export const reducers: ActionReducerMap<ApplicationState> = {
-  currentUser : currentUserReducer,
-  dashboard: fromDashboardReducer.dashboardReducer,
-  visualization: fromVisualizationReducer.visualizationReducer
+  currentUser: currentUserReducer
 };
 
-
-export const getCurrentUserState = (state: ApplicationState) => state.currentUser;
-export const getVisualizationState = (state: ApplicationState) => state.visualization;
-export const getDashboardState = (state: ApplicationState) => state.dashboard;
+export const getCurrentUserState = (state: ApplicationState) =>
+  state.currentUser;

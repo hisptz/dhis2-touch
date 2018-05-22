@@ -1,108 +1,44 @@
-import { CurrentUser } from './../../models/currentUser';
 import { Component, OnInit } from '@angular/core';
-import {
-  IonicPage,
-  MenuController,
-  NavController,
-  ModalController
-} from 'ionic-angular';
-import * as _ from 'lodash';
-import { ApplicationState } from '../../store/reducers/index';
+import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
 import { Store } from '@ngrx/store';
+import { DashboardState } from './store/reducers/';
+import { LoadDashboardsAction } from './store/actions/dashboard.actions';
 import { Observable } from 'rxjs/Observable';
-import { Dashboard } from '../../models/dashboard';
-import { Visualization } from '../../models/visualization';
-import * as fromDashboardSelectors from '../../store/selectors/dashboard.selectors';
-import * as fromVisualizationSelectors from '../../store/selectors/visualization.selectors';
-import * as fromCurrentUserSelectors from '../../store/selectors/currentUser.selectors';
-import * as fromVisualizationActions from '../../store/actions/visualization.actions';
-import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
-
-/**
- * Generated class for the DashboardPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { getCurrentDashboard, getDashboardLoadingStatus } from './store/selectors/dashboard.selectors';
+import { Dashboard } from './models';
+import { getCurrentDashboardVisualizations } from './store/selectors/dashboard-visualizations.selectors';
 
 @IonicPage()
 @Component({
   selector: 'page-dashboard',
-  templateUrl: 'dashboard.html'
+  templateUrl: 'dashboard.html',
 })
 export class DashboardPage implements OnInit {
-  currentDashboard$: Observable<Dashboard>;
-  visualizationObjects$: Observable<Visualization[]>;
-  loading$: Observable<boolean>;
-  currentUser$: Observable<CurrentUser>;
-  icons: any = {};
-  opendeInterpreationsMapper: any = {};
-  translationMapper: any;
 
-  constructor(
-    public navCtrl: NavController,
-    public modalCtrl: ModalController,
-    private store: Store<ApplicationState>,
-    private menu: MenuController,
-    private appTranslation: AppTranslationProvider
-  ) {
-    this.currentDashboard$ = store.select(
-      fromDashboardSelectors.getCurrentDashboard
-    );
-    this.loading$ = store.select(
-      fromDashboardSelectors.getDashboardLoadingStatus
-    );
-    this.visualizationObjects$ = store.select(
-      fromVisualizationSelectors.getCurrentDashboardVisualizationObjects
-    );
-    this.currentUser$ = store.select(fromCurrentUserSelectors.getCurrentUser);
+  currentDashboard$: Observable<Dashboard>;
+  currentDashboardVisualizations$: Observable<Array<string>>;
+  loading$: Observable<boolean>;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private store: Store<DashboardState>,
+    public modalCtrl: ModalController,) {
+    this.currentDashboard$ = store.select(getCurrentDashboard);
+    this.currentDashboardVisualizations$ = store.select(getCurrentDashboardVisualizations);
+    this.loading$ = store.select(getDashboardLoadingStatus);
+  }
+
+  ionViewDidLoad() {
+
   }
 
   ngOnInit() {
-    this.menu.enable(true);
-    this.icons = {
-      menu: 'assets/icon/menu.png',
-      MAP: 'assets/icon/map.png',
-      CHART: 'assets/icon/column.png',
-      TABLE: 'assets/icon/table.png',
-      APP: 'assets/icon/app.png',
-      RESOURCES: 'assets/icon/resource.png',
-      REPORTS: 'assets/icon/report.png',
-      USERS: 'assets/icon/users.png',
-      MESSAGES: 'assets/icon/filled-chat.png',
-      INFO: 'assets/icon/info.png'
-    };
-    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
-      (data: any) => {
-        this.translationMapper = data;
-      },
-      error => {}
-    );
+    this.store.dispatch(new LoadDashboardsAction());
   }
 
   openDashboardListFilter() {
-    let modal = this.modalCtrl.create('DashboardFilterPage', {});
-    modal.onDidDismiss((dashboard: any) => {});
+    let modal = this.modalCtrl.create('DashboardListFilterPage', {});
+    modal.onDidDismiss(() => {
+    });
     modal.present();
   }
 
-  openDashboardInFullScreen(visualizationId: string) {
-    this.store.dispatch(
-      new fromVisualizationActions.ToggleFullScreenAction(visualizationId)
-    );
-    let modal = this.modalCtrl.create('FullScreenDashboardPage', {});
-    modal.onDidDismiss((dashboard: any) => {});
-    modal.present();
-  }
-
-  toggleVisualization(visualizationObject: Visualization) {
-    this.store.dispatch(
-      new fromVisualizationActions.ToggleVisualizationAction(
-        visualizationObject
-      )
-    );
-  }
-  getValuesToTranslate() {
-    return ['Discovering dashboards', 'There no dashboard item found'];
-  }
 }

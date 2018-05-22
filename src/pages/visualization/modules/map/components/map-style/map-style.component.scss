@@ -1,0 +1,214 @@
+app-map-style {
+  .style__container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+
+  .choice {
+    display: flex;
+    align-items: center;
+  }
+  .radio {
+    margin: 0.5rem;
+    display: inline-block;
+  }
+  .radio input[type='radio'] {
+    position: absolute;
+    opacity: 0;
+  }
+  .radio input[type='radio'] + .radio-label:before {
+    content: '';
+    background: #f4f4f4;
+    border-radius: 100%;
+    border: 1px solid #b4b4b4;
+    display: inline-block;
+    width: 1.4em;
+    height: 1.4em;
+    position: relative;
+    top: -0.2em;
+    margin-right: 1em;
+    vertical-align: top;
+    cursor: pointer;
+    text-align: center;
+    transition: all 250ms ease;
+  }
+  .radio input[type='radio']:checked + .radio-label:before {
+    background-color: #3197ee;
+    box-shadow: inset 0 0 0 4px #f4f4f4;
+  }
+  .radio input[type='radio']:focus + .radio-label:before {
+    outline: none;
+    border-color: #3197ee;
+  }
+  .radio input[type='radio']:disabled + .radio-label:before {
+    box-shadow: inset 0 0 0 4px #f4f4f4;
+    border-color: #b4b4b4;
+    background: #b4b4b4;
+  }
+  .radio input[type='radio'] + .radio-label:empty:before {
+    margin-right: 0;
+  }
+
+  .select_mate {
+    position: relative;
+    float: left;
+    min-width: 300px;
+    width: 300px;
+    min-height: 60px;
+    font-family: 'Roboto';
+    color: #777;
+    font-weight: 300;
+    background-color: #fff;
+    box-shadow: 1px 2px 10px -2px rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+    transition: all 375ms ease-in-out;
+  }
+  .select_mate select {
+    position: absolute;
+    overflow: hidden;
+    height: 0px;
+    opacity: 0;
+    z-index: -1;
+  }
+
+  .legendSets,
+  .classification {
+    display: flex;
+  }
+
+  .legendSets span,
+  .classification span {
+    margin: 0 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .color-classes {
+    display: flex;
+    margin: 16px 0;
+  }
+  .colours {
+    margin: 0 5px;
+    float: left;
+    width: 200px;
+  }
+  .colours-ul {
+    cursor: pointer;
+    display: flex;
+    margin: 2px 0;
+    height: 100%;
+    padding: 0;
+    overflow: visible;
+    white-space: nowrap;
+  }
+  .colours-ul li {
+    margin-left: 0px;
+    display: flex;
+    flex: 1;
+    background-color: rgb(255, 255, 212);
+    height: 100%;
+  }
+
+  .button-ul {
+    cursor: pointer;
+    display: flex;
+    height: 25px;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    white-space: nowrap;
+  }
+  .button-ul li {
+    margin-left: 0px;
+    display: flex;
+    flex: 1;
+    background-color: rgb(255, 255, 212);
+    height: 100%;
+  }
+
+  .instead-option {
+    z-index: 999;
+    position: absolute;
+    margin: 0;
+    border-radius: 4px;
+    border: 1px solid #dddddd;
+    overflow: auto;
+    display: inline-block;
+    width: 100%;
+    line-height: 1.5;
+    max-height: 150px;
+    color: #495057;
+    vertical-align: middle;
+    background: url('data:image/svg+xml;charset=utf8,%3Csvg xmlns=http://www.w3.org/2000/svg v…0 0 4 5%3E%3Cpath fill=%23333 d=M2 0L0 2h4zm0 5L0 3h4z/%3E%3C/svg%3E');
+    background-size: 8px 10px;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    -webkit-appearance: none;
+  }
+  .instead-option > li {
+    width: 100%;
+    background: #eee;
+    height: 25px;
+    line-height: 25px;
+    font-size: 14px;
+    padding: 0 10px;
+    cursor: pointer;
+    background-color: #ffffff;
+  }
+
+  .dropdown-container {
+    position: relative;
+  }
+  .dropdown-container .caret {
+    position: absolute;
+
+    /* Have the same padding to right as in the button*/
+    right: 12px;
+
+    /* Position the element from top by 50% of the parent element's height */
+    top: 50%;
+
+    /* Moves the element from its current position by -50% on Y axis to position the element vertically middle*/
+    transform: translateY(-50%);
+  }
+
+  .form-check.labels {
+    display: flex;
+    align-items: center;
+  }
+  .size-input {
+    width: 80px;
+  }
+
+  .labels-options {
+    display: flex;
+  }
+
+  .labels-control {
+    display: flex;
+    margin-left: 5px;
+  }
+
+  .color-picker {
+    height: 100%;
+    margin: 0 2px;
+    border-radius: 3px;
+  }
+
+  .style-filter-btns {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 0.2em;
+    padding-right: 5px;
+  }
+
+  .width-100 {
+    width: 100%;
+  }
+}
+
