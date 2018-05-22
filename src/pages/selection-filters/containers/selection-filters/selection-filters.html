@@ -1,0 +1,95 @@
+<div class="selection-filter-container">
+  <!--selection filter header-->
+  <div class="selection-filter-header">
+    <button
+      class="selection-filter-btn"
+      (click)="toggleFilters($event)"
+      [title]="'Filter by different dimensions' | translate"
+    >
+      <img *ngIf="!showFilters" src="assets/icon/filter.png" alt="">
+      <img *ngIf="showFilters" src="assets/icon/close.png" alt="">
+    </button>
+    <div
+      class="selection-filter-btn-list"
+      *ngIf="showFilters"
+    >
+      <!--data filter button-->
+      <button
+        [ngClass]="{
+        'selection-filter-btn': true,
+        'active-filter': selectedFilter === 'DATA'
+        }"
+        [title]="'Filter by data' | translate"
+        (click)="toggleCurrentFilter($event, 'DATA')"
+      >
+        <img src="assets/icon/data.png" alt="">
+      </button>
+      <!--end of data filter button-->
+
+      <!--period filter button-->
+      <button
+        [ngClass]="{
+        'selection-filter-btn': true,
+        'active-filter': selectedFilter === 'PERIOD'
+        }"
+        [title]="'Filter by period' | translate"
+        (click)="toggleCurrentFilter($event, 'PERIOD')"
+      >
+        <img src="assets/icon/period.png" alt="">
+      </button>
+      <!--end of period filter button-->
+
+      <!--org unit filter button-->
+      <button
+        [ngClass]="{
+        'selection-filter-btn': true,
+        'active-filter': selectedFilter === 'ORG_UNIT'
+        }"
+        [title]="'Filter by organisation unit' | translate"
+        (click)="toggleCurrentFilter($event, 'ORG_UNIT')"
+      >
+        <img src="assets/icon/tree.png" alt="">
+      </button>
+      <!--end of org unit filter button-->
+
+      <!--selections update button-->
+      <!--<button-->
+        <!--class="selection-filter-btn"-->
+        <!--[title]="'Update' | translate"-->
+      <!--&gt;-->
+        <!--<img src="assets/icon/tick.png" alt="">-->
+      <!--</button>-->
+      <!--end of selections update button-->
+    </div>
+  </div>
+  <!--end of selection filter header-->
+
+  <!--selection filter body-->
+  <div class="selection-filter-body" *ngIf="selectedFilter !== '' && showFilterBody">
+    <!--data filter-->
+    <app-data-filter
+      *ngIf="selectedFilter === 'DATA'"
+      [selectedItems]="selectedData"
+      (onDataFilterClose)="onFilterClose($event, 'DATA')"
+      (onDataUpdate)="onFilterUpdate($event, 'DATA')"></app-data-filter>
+    <!--end of data filter-->
+
+    <!--period filter-->
+    <app-period-filter
+      *ngIf="selectedFilter === 'PERIOD'"
+      [selectedPeriods]="selectedPeriods"
+      (onPeriodFilterClose)="onFilterClose($event, 'PERIOD')"
+      (onPeriodUpdate)="onFilterUpdate($event, 'PERIOD')"></app-period-filter>
+    <!--end of period filter-->
+
+    <!--org unit filter-->
+    <app-org-unit-filter
+      *ngIf="selectedFilter === 'ORG_UNIT'"
+      [selectedOrgUnits]="selectedOrgUnits"
+      (orgUnitClose)="onFilterClose($event, 'ORG_UNIT')"
+      (orgUnitUpdate)="onFilterUpdate($event, 'ORG_UNIT')"
+    ></app-org-unit-filter>
+    <!--end of org unit filter-->
+  </div>
+  <!--end of selection filter body-->
+</div>

@@ -1,0 +1,95 @@
+<div class="data-filter-container">
+    <div class="data-filter-options">
+        <ul class="data-filter-options-icon">
+            <li *ngFor="let option of dataFilterOptions">
+                <a (click)="toggleDataFilterOption(option, $event)" [ngClass]="{
+            'selected-options': option.selected
+           }" title="Click to see {{option.name}}">
+                    {{option.name | translate}}
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="data-filter-group-selection" appClickOutside (clickOutside)="showGroups = false">
+        <!--Group selection button-->
+        <button class="data-filter-group-btn" (click)="toggleDataFilterGroupList($event)">
+            <span>{{ selectedGroup?.name || 'Select' | translate}}</span>
+            <span>
+                <img src="assets/icon/arrow-down.png" alt="">
+            </span>
+        </button>
+
+        <!--Group selection list-->
+        <div class="data-filter-group-panel" *ngIf="showGroups">
+            <div class="panel-body data-filter-group-panel-body">
+                <input type="search" class="data-filter-input" placeholder="{{ 'Search' | translate }}" [(ngModel)]="querystring">
+                <ul class="data-filter-group-list">
+                    <li *ngFor="let item of dataGroups | filterByName: querystring">
+                        <a (click)="setSelectedGroup(item, scrollse, $event)">{{ item.name ? (item.name | translate) : item.name }}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--end of Group selection list-->
+    </div>
+
+    <div class="data-filter-list-search">
+        <input type="text" class="data-filter-input" (focus)="showBody = true" (keyup)="searchChanged()" placeholder="{{ 'Search' | translate }}"
+            [(ngModel)]="listchanges">
+    </div>
+
+    <div class="data-filter-available-header">
+        <span>{{ 'Available' | translate }} ({{(availableItems | filterByName:listchanges).length}})</span>
+        <a (click)="selectAllItems($event)">&raquo;</a>
+    </div>
+    <div class="data-filter-selected-header">
+        <a (click)="deselectAllItems($event)">&laquo;</a>
+        <span> {{ 'Selected' | translate }} ({{(selectedItems$ | async).length }})</span>
+    </div>
+
+
+    <div class="data-filter-available-body">
+        <ul #scrollse>
+            <li *ngIf="loading">{{ 'Discovering...' | translate }}</li>
+            <li *ngIf="!loading && (availableItems | filterByName:listchanges).length == 0">
+                <a>{{ 'No items' | translate }}</a>
+            </li>
+            <li *ngFor="let item of availableItems | filterByName:listchanges |  paginate: { id: 'foo',itemsPerPage: 25, currentPage: p }"
+                [ngClass]="{'hiddenTree': inSelected(item, selectedItems)}" title="Click to select item" id="{{item.id | addUnderscore}}">
+                <a (click)="addSelected(item, $event)">{{ item.name }}</a>
+            </li>
+
+            <li *ngIf="(availableItems | filterByName:listchanges).length >= 25">
+                <a>
+                    <pagination-controls id="foo" (pageChange)="p = $event" maxSize="0">
+                    </pagination-controls>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="data-filter-selected-body">
+        <ul>
+            <li *ngFor="let item of selectedItems$ | async | paginate:{id: 'selectedlist',itemsPerPage: 100, currentPage: k}" style="cursor: move"
+                dnd-droppable (onDropSuccess)="transferDataSuccess($event,item)" title="click to unselect item">
+                <a dnd-draggable [dragEnabled]="true" (click)="removeSelected(item, $event)" [dragData]="item" class="{{item.hasOwnProperty('programType') ? 'auto-growing' : ''}}">
+                    {{ item.name }} </a>
+            </li>
+            <li *ngIf="(selectedItems$ | async).length > 100">
+                <pagination-controls id='selectedlist' maxSize="0" (pageChange)="k = $event"></pagination-controls>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="data-filter-actions-btns">
+    <div>
+        <button
+          class="data-filter-actions-btn"
+          (click)="emit($event)"
+          [disabled]="(selectedItems$ | async).length === 0"
+        >{{ 'Update' | translate }}</button>
+        <button class="data-filter-actions-btn" (click)="close($event)">{{ 'Close' | translate }}</button>
+    </div>
+</div>

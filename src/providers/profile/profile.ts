@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/Observable';
 import { DataSetsProvider } from '../data-sets/data-sets';
 import { ProgramsProvider } from '../programs/programs';
 import { CurrentUser } from '../../models/currentUser';
-import { DataSet } from '../../modules/data-filter/model/dataset';
 
 /*
   Generated class for the ProfileProvider provider.

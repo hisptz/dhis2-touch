@@ -1,0 +1,43 @@
+table-item {
+
+.table-item-container {
+  overflow: hidden;
+}
+
+.custom-table {
+  display: table;
+  border-style: none !important;
+  width: 100%;
+}
+
+.custom-table th,
+.custom-table td {
+  border: solid thin #f1f1f1;
+}
+
+.custom-table > thead > tr > th,
+.custom-table > tbody > tr > td {
+  font-size: 13px !important;
+}
+
+table tr th {
+  background-color: rgba(238, 238, 238, 0.29);
+  padding: 4px;
+  text-align: center;
+}
+
+table tr td {
+  padding: 4px;
+}
+
+table tr td:first-child {
+  background-color: rgba(238, 238, 238, 0.29);
+}
+
+.table-title {
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+
+}

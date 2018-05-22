@@ -1,0 +1,27 @@
+<div class="org-unit-filter-container">
+  <div class="org-unit-filter-header">
+    <div class="selected-org-unit-display">
+      <selected-org-unit-section [selectedOrgUnits]="selectedOrgUnits"></selected-org-unit-section>
+    </div>
+    <button class="org-unit-filter-options-btn">
+      <img src="assets/icon/more.png" alt="">
+    </button>
+  </div>
+  <div class="org-unit-filter-tree" [style.height]="orgUnitTreeHeight">
+    <multi-organisation-unit
+      [selectedOrgUnits]="selectedOrgUnits"
+      (activateOrganisationUnit)="onActiveOrgUnit($event)"
+      (deactivateOrganisationUnit)="onDeactivateOrgUnit($event)"
+    ></multi-organisation-unit>
+  </div>
+  <div class="org-unit-filter-actions-btns">
+    <button
+      class="org-unit-filter-btn"
+      (click)="onUpdate($event)"
+      [disabled]="selectedOrgUnits.length === 0"
+    >{{ 'Update' | translate }}</button>
+    <button
+      class="org-unit-filter-btn"
+      (click)="onClose($event)">{{ 'Close' | translate }}</button>
+  </div>
+</div>

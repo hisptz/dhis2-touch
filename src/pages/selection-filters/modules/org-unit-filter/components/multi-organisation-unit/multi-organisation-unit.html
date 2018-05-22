@@ -1,0 +1,20 @@
+<div *ngIf="isLoading$ | async" class="organisation-unit-loading">
+  <img src="assets/img/balls-3.svg" alt="">
+  <div>{{loadingMessage | translate}}</div>
+</div>
+<div *ngIf="!(isLoading$ | async)">
+  <div *ngFor="let organisationUnit of organisationUnits">
+    <multi-organisation-unit-tree
+      [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened"
+      [organisationUnit]="organisationUnit"
+      (activate)="onActivateOu($event)"
+      (deactivate)="onDeactivateOu($event)"
+      [currentUser]="currentUser"
+      [selectedOrgUnits]="selectedOrgUnits"
+      [toggledOuIds]="toggledOuIds"
+    ></multi-organisation-unit-tree>
+  </div>
+  <div *ngIf="organisationUnits.length == 0">
+    {{emptyMessage | translate}}
+  </div>
+</div>

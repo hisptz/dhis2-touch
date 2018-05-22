@@ -1,0 +1,30 @@
+multi-organisation-unit-tree {
+  .organisation-unit {
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
+    img {
+      height: 17px;
+    }
+    .selected-organisation-unit {
+      color: #ffa500;
+    }
+  }
+  .organisation-unit-without-children {
+    padding-left: 10px;
+  }
+  .organisation-unit-children {
+    .organisation-unit-children-loading {
+      display: flex;
+      align-items: center;
+      font-size: 1.3rem;
+      img {
+        height: 22px;
+      }
+    }
+    .organisation-unit-children-error {
+      color: #e74c3c;
+    }
+    padding-left: 10px;
+  }
+}

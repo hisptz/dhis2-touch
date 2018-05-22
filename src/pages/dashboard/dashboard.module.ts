@@ -1,22 +1,30 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { DashboardPage } from './dashboard';
-import { TranslateModule } from '@ngx-translate/core';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
-import { ChartModule } from '../../modules/chart/chart.module';
-import { TableModule } from '../../modules/table/table.module';
-import { DashboardModule } from './components/dashboard.module';
-import { MapModule } from './../../modules/map/map.module';
-import { DictionaryModule } from './../../modules/dictionary/dictionary.module';
+import { DashboardPage } from './dashboard';
+
+import { containers } from './containers';
+import { reducers, effects } from './store';
+import { services } from './services';
+import { VisualizationPageModule } from '../visualization/visualization.module';
+import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '../../components/shared.module';
 
 @NgModule({
-  declarations: [DashboardPage],
+  declarations: [
+    ...containers,
+    DashboardPage
+  ],
   imports: [
     IonicPageModule.forChild(DashboardPage),
+    VisualizationPageModule,
     SharedModule,
-    DashboardModule,
+    StoreModule.forFeature('dashboard', reducers),
+    EffectsModule.forFeature(effects),
     TranslateModule.forChild()
-  ]
+  ],
+  providers: [...services]
 })
 export class DashboardPageModule {}

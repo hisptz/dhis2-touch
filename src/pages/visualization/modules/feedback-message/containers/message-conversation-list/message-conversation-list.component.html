@@ -1,0 +1,13 @@
+<div class="message-conversation-container" [style.height]="'calc(' + height + ' - 10px)'">
+  <div class="message-conversation-header">
+    Message conversations ({{(messageConversations$ | async).length}})
+  </div>
+  <div class="message-conversation-list" [style.height]="'calc(' + height + ' - 60px)'">
+    <div
+      class="message-conversation-item"
+      *ngFor="let messageConversation of messageConversations$ | async">
+      <app-message-conversation-item [messageConversation]="messageConversation"></app-message-conversation-item>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,67 @@
+<div class="period-filter-container">
+    <!--period type and year selection block-->
+    <div class="period-top-section">
+        <div class="period-type-section">
+            <select [(ngModel)]="selectedPeriodType" (change)="updatePeriodType(selectedPeriodType, $event)" class="period-filter-select">
+                <option [value]="''" disabled>{{ 'Select period type' | translate }}</option>
+                <option *ngFor="let periodType of periodTypes" [value]="periodType.value" [hidden]="!periodType.shown">{{periodType.name}}</option>
+            </select>
+        </div>
+        <div class="period-year-section">
+            <div>
+                <button type="button" class="period-filter-year-btn" (click)="pushPeriodBackward($event)">{{ 'Previous year' | translate }}</button>
+                <button type="button" class="period-filter-year-btn" (click)="pushPeriodForward($event)" [disabled]="selectedYear === currentYear">{{ 'Next year' | translate }}</button>
+            </div>
+        </div>
+    </div>
+    <!--end of period type and year selection block-->
+
+    <!--period available and selected section-->
+    <div class="period-header">
+        <div class="period-available-header">
+            <span>{{ 'Available' | translate }} ({{availablePeriods.length}})</span>
+            <a (click)="selectAllPeriods($event)">&raquo;</a>
+        </div>
+        <div class="period-selected-header">
+            <a (click)="deselectAllPeriods($event)">&laquo;</a>
+            <span>{{ 'Selected' | translate }} ({{selectedPeriods.length}})</span>
+        </div>
+    </div>
+    <!--end of period available and selected section-->
+
+    <!--period body-->
+    <div class="period-body">
+        <div class="period-available-body">
+            <ul class="period-list">
+                <li *ngFor="let availablePeriod of availablePeriods">
+                    <a (click)="togglePeriod(availablePeriod, $event)">
+                        {{availablePeriod.name}}
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="period-selected-body">
+            <ul class="period-list">
+                <li *ngFor="let selectedPeriod of selectedPeriods$ | async">
+                    <a (click)="togglePeriod(selectedPeriod, $event)">
+                        {{selectedPeriod.name}}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--end of period body-->
+
+    <!--period footer-->
+    <div class="period-filter-actions-btns">
+        <div>
+            <button
+              class="period-filter-action-btn"
+              (click)="updatePeriod($event)"
+              [disabled]="(selectedPeriods$ | async).length === 0"
+            > {{ 'Update' | translate }}</button>
+            <button class="period-filter-action-btn" (click)="closePeriodFilter($event)">{{ 'Close' | translate }}</button>
+        </div>
+    </div>
+    <!--end of period footer-->
+</div>

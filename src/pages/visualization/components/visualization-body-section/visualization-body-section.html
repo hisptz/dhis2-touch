@@ -1,0 +1,62 @@
+<div class="visualization-body-section-container">
+  <!--chart visualization-->
+  <div class="chart-visualization-block" *ngIf="visualizationConfig.currentType === 'CHART'">
+    <chart-list [visualizationId]="id" [visualizationLayers]="visualizationLayers" [chartHeight]="visualizationUiConfig.height"></chart-list>
+  </div>
+  <!--end of chart visualization-->
+
+  <!--table visualization-->
+  <div class="chart-visualization-block" *ngIf="visualizationConfig.currentType === 'TABLE'">
+    <table-list
+      [visualizationLayers]="visualizationLayers"
+      [visualizationType]="visualizationConfig.type"></table-list>
+  </div>
+  <!--end of table visualization-->
+
+  <!--map visualization-->
+  <div class="map-visualization-block" *ngIf="visualizationConfig.currentType === 'MAP'">
+    <app-map
+      [id]="id"
+      [visualizationLayers]="visualizationLayers"
+      [visualizationUiConfig]="visualizationUiConfig"
+      [visualizationConfig]="visualizationConfig"></app-map>
+  </div>
+  <!--end of map visualization-->
+
+  <!--info/dictionary visualization-->
+  <div class="chart-visualization-block" *ngIf="visualizationConfig.currentType === 'INFO'">
+    <dictionary-list [visualizationLayers]="visualizationLayers"></dictionary-list>
+  </div>
+  <!--end of info/dictionary visualization-->
+
+  <!--users visualization-->
+  <div class="users-visualization-block" *ngIf="visualizationConfig.currentType === 'USERS'">
+    <users [visualizationLayers]="visualizationLayers"></users>
+  </div>
+  <!--end of users visualization-->
+
+  <!--resources visualization-->
+  <div class="resources-visualization-block" *ngIf="visualizationConfig.currentType === 'RESOURCES'">
+    <resources [visualizationLayers]="visualizationLayers"></resources>
+  </div>
+  <!--end of resources visualization-->
+
+  <!--reports visualization-->
+  <div class="reports-visualization-block" *ngIf="visualizationConfig.currentType === 'REPORTS'">
+    <reports [visualizationLayers]="visualizationLayers"></reports>
+  </div>
+  <!--end of reports visualization-->
+
+  <!--app visualization-->
+  <div class="chart-visualization-block" *ngIf="visualizationConfig.currentType === 'APP'">
+    <widget [height]="visualizationUiConfig.height"></widget>
+  </div>
+  <!--end of app visualization-->
+
+  <!--messages visualization-->
+  <div class="message-visualization-block" *ngIf="visualizationConfig.currentType === 'MESSAGES'">
+    <app-message-conversation-list [height]="visualizationUiConfig.height"></app-message-conversation-list>
+  </div>
+  <!--end of messages visualization-->
+
+</div>

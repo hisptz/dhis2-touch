@@ -1,0 +1,11 @@
+<div class="selected-org-unit-section-container">
+  <div class="selected-org-unit-container" *ngFor="let selectedOrgUnit of  selectedOrgUnits | limitPipe:orgUnitShowLimit">
+    <div class="selected-org-unit-block">
+      <div class="selected-org-unit-name">{{selectedOrgUnit.name}}</div>
+      <button class="selected-org-unit-btn"><img src="assets/icon/close.png" alt=""></button>
+    </div>
+  </div>
+  <div class="more-selected-org-unit" *ngIf="selectedOrgUnits.length > orgUnitShowLimit">
+    {{'and' | translate}} {{selectedOrgUnits.length - orgUnitShowLimit}} {{'more' | translate}}
+  </div>
+</div>
