@@ -44,6 +44,8 @@ export class InputContainerComponent implements OnInit {
       'BOOLEAN',
       'TRUE_ONLY',
       'DATE',
+      'DATETIME',
+      'TIME',
       'TEXT',
       'LONG_TEXT',
       'INTEGER_NEGATIVE',

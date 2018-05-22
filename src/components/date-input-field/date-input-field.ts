@@ -11,13 +11,12 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   templateUrl: 'date-input-field.html'
 })
 export class DateInputFieldComponent implements OnInit {
-  @Input() dataElementId;
-  @Input() categoryOptionComboId;
+  @Input() dataElementId: string;
+  @Input() categoryOptionComboId: string;
   @Input() data;
+  @Input() valueType: string;
   @Output() onChange = new EventEmitter();
   inputFieldValue: any;
-  //{"id":"s46m5MS0hxu-Prlt0C1RF0s","value":"1","status":"synced"}
-  //id = dataElementId + "-" + categoryOptionComboId
   constructor() {}
 
   ngOnInit() {
