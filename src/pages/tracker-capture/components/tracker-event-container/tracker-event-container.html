@@ -16,6 +16,15 @@
         [mode]="'date'"></data-time-input>
     </div>
   </div>
+
+  <div *ngIf="!(currentOpenEvent['eventDate'] && currentOpenEvent['eventDate'] !='')">
+    <p>
+      Select&nbsp;
+      <span *ngIf="!hasEventDatesLabel(programStage.executionDateLabel)">{{ translationMapper['Report date'] }}</span>
+      <span *ngIf="hasEventDatesLabel(programStage.executionDateLabel)">{{ programStage.executionDateLabel }}</span>&nbsp;above to start entry
+    </p>
+  </div>
+
 </div>
 <div *ngIf="currentOpenEvent['eventDate'] && currentOpenEvent['eventDate'] !=''">
   <div *ngIf="(programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
