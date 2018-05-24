@@ -1,6 +1,7 @@
 <ion-content>
   <div *ngIf="isLocationBasedOnPhone" class="my-location animated fadeIn">
-    My location is {{ position|json }}, Accurate to {{ accuracy }} meter(s)
+    <div>Lat : {{position.lat.toFixed(5) }}&nbsp;,&nbsp;Long : {{position.lng.toFixed(5)}}</div>
+    <div>Accuracy : {{ accuracy }}</div>
   </div>
   <div id="coordinate-selection" style="width:100%; height:100%;">
   </div>

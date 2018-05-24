@@ -72,12 +72,14 @@ export class TrackedEntityInputsComponent implements OnInit {
           if (dataEntrySettings.formLayout) {
             this.formLayout = dataEntrySettings.formLayout;
           }
-          if (dataEntrySettings.label) {
-            if (this.trackedEntityAttribute[dataEntrySettings.label]) {
-              this.fieldLabelKey = this.trackedEntityAttribute[
-                dataEntrySettings.label
-              ];
-            }
+          if (
+            dataEntrySettings.label &&
+            this.trackedEntityAttribute[dataEntrySettings.label] &&
+            isNaN(this.trackedEntityAttribute[dataEntrySettings.label])
+          ) {
+            this.fieldLabelKey = this.trackedEntityAttribute[
+              dataEntrySettings.label
+            ];
           }
         });
     }

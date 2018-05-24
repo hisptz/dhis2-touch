@@ -184,8 +184,10 @@ export class CoordinateComponent implements OnInit {
   setMyLocation(data) {
     const latitude = data.latitude;
     const longitude = data.longitude;
-    this.accuracy = data.accuracy ? data.accuracy.toFixed(2) : ' meters';
-    this.altitude = data.altitude ? data.altitude.toFixed(2) : '';
+    this.accuracy =
+      (data.accuracy ? data.accuracy.toFixed(2) : ' ') + ' meter(s)';
+    this.altitude =
+      (data.altitude ? data.altitude.toFixed(2) : ' ') + ' meter(s)';
     this.marker.setLatLng(new L.LatLng(latitude, longitude));
     this.map.setView(new L.LatLng(latitude, longitude), 8, {
       animation: true
