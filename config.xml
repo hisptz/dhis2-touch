@@ -105,4 +105,5 @@
     <plugin name="cordova-plugin-datepicker" spec="^0.9.3" />
     <allow-navigation href="http://192.168.1.2:8100" />
     <engine name="android" spec="~7.0.0" />
+    <allow-navigation href="http://192.168.1.4:8100" />
 </widget>
