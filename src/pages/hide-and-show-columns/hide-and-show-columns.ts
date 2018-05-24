@@ -19,12 +19,16 @@ export class HideAndShowColumnsPage implements OnInit, OnDestroy {
   fieldsToDisplay: any;
   displayInLIst: any;
   isLoading: boolean;
+  loadingSize: string;
+  typeOfList: string;
 
   constructor(private navParams: NavParams, private viewCtrl: ViewController) {
     this.fieldsToDisplay = [];
     this.displayInLIst = [];
     this.selectedItemsModel = {};
     this.isLoading = true;
+    this.loadingSize = 'large';
+    this.typeOfList = '';
   }
 
   ngOnInit() {
@@ -42,6 +46,14 @@ export class HideAndShowColumnsPage implements OnInit, OnDestroy {
     //for events capture table list header
     if (programStage && programStage.programStageDataElements) {
       this.displayInLIst = _.concat(this.displayInLIst, 'eventDate');
+      const { executionDateLabel } = programStage;
+      const reportDateLabel = isNaN(executionDateLabel)
+        ? executionDateLabel
+        : 'Report date';
+      this.fieldsToDisplay.push({
+        id: 'eventDate',
+        name: reportDateLabel
+      });
       _.map(
         programStage.programStageDataElements,
         (programStageDataElement: any) => {
@@ -116,18 +128,60 @@ export class HideAndShowColumnsPage implements OnInit, OnDestroy {
     this.isLoading = false;
   }
 
-  ngOnDestroy() {
-    this.fieldsToDisplay = null;
-    this.selectedItemsModel = null;
-    this.displayInLIst = null;
-    this.isLoading = false;
-  }
-
   trackByFn(index, item) {
     return item.id;
   }
 
   dismiss() {
     this.viewCtrl.dismiss();
+  }
+
+  updateSelection(selectedValue) {
+    _.map(_.keys(this.selectedItemsModel), key => {
+      this.selectedItemsModel[key] = false;
+    });
+    if (selectedValue === 'All') {
+      this.fieldsToDisplay.map((field: any) => {
+        this.selectedItemsModel[field.id] = true;
+      });
+    } else if (selectedValue === 'None') {
+      //nothing to do as it has been rest
+    } else if (selectedValue === 'Reset') {
+      _.map(this.displayInLIst, key => {
+        this.selectedItemsModel[key] = true;
+      });
+    }
+  }
+
+  saveChanges() {
+    let columnsToDisplay = {};
+    _.map(this.fieldsToDisplay, (field: any) => {
+      if (this.selectedItemsModel[field.id]) {
+        columnsToDisplay[field.id] = field.name;
+      }
+    });
+    if (
+      _.keys(columnsToDisplay).length == 0 &&
+      this.fieldsToDisplay.length > 0 &&
+      this.displayInLIst.length > 0
+    ) {
+      const id = this.displayInLIst[0];
+      const field = _.find(this.fieldsToDisplay, fieldObject => {
+        return fieldObject.id === id;
+      });
+      if (field && field.id) {
+        columnsToDisplay[field.id] = field.name;
+      }
+    }
+    this.viewCtrl.dismiss(columnsToDisplay);
+  }
+
+  ngOnDestroy() {
+    this.fieldsToDisplay = null;
+    this.selectedItemsModel = null;
+    this.displayInLIst = null;
+    this.isLoading = null;
+    this.loadingSize = null;
+    this.typeOfList = null;
   }
 }
