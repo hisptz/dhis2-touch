@@ -392,10 +392,13 @@ export class EventCapturePage implements OnInit {
   }
 
   hideAndShowColumns() {
-    const modal = this.modalCtrl.create('EventHideShowColumnPage', {
+    const data = {
       columnsToDisplay: this.columnsToDisplay,
       programStage: this.programStage,
       dataEntrySettings: this.dataEntrySettings
+    };
+    const modal = this.modalCtrl.create('HideAndShowColumnsPage', {
+      data: data
     });
     modal.onDidDismiss((columnsToDisplay: any) => {
       if (columnsToDisplay) {
