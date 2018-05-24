@@ -1,7 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.hipstz.dhis2.dhis2touch" version="2.0.14" 
-    xmlns="http://www.w3.org/ns/widgets" 
-    xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.hipstz.dhis2.dhis2touch" version="2.0.14" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>DHIS 2 Touch</name>
     <description>An awesome dhis 2 mobile experience</description>
     <author email="" href="" />
@@ -85,12 +83,6 @@
         <splash height="2732" src="resources/ios/splash/Default@2x~universal~anyany.png" width="2732" />
     </platform>
     <plugin name="cordova-plugin-ionic-webview" spec="^1.1.16" />
-    <plugin name="cordova-plugin-app-version" spec="^0.1.9" />
-    <plugin name="cordova-plugin-background-mode" spec="^0.7.2" />
-    <plugin name="cordova-plugin-console" spec="^1.1.0" />
-    <plugin name="cordova-plugin-device" spec="^1.1.7" />
-    <plugin name="cordova-plugin-advanced-http" spec="^1.11.1" />
-    <plugin name="cordova-plugin-network-information" spec="^1.3.4" />
     <plugin name="cordova-plugin-splashscreen" spec="^4.1.0" />
     <plugin name="cordova-plugin-statusbar" spec="^2.4.2" />
     <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
@@ -106,4 +98,10 @@
     </plugin>
     <plugin name="cordova-plugin-datepicker" spec="^0.9.3" />
     <engine name="android" spec="~7.0.0" />
+    <plugin name="cordova-plugin-app-version" spec="^0.1.9" />
+    <plugin name="cordova-plugin-background-mode" spec="^0.7.2" />
+    <plugin name="cordova-plugin-console" spec="^1.1.0" />
+    <plugin name="cordova-plugin-device" spec="^1.1.7" />
+    <plugin name="cordova-plugin-advanced-http" spec="^1.11.1" />
+    <plugin name="cordova-plugin-network-information" spec="^1.3.4" />
 </widget>
