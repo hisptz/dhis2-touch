@@ -33,23 +33,33 @@
   <div *ngIf="!isLoading">
       
     <ion-searchbar animated="true" (ionInput)="getFilteredList($event)" placeholder="{{'Search'|translate}}"></ion-searchbar>
-    <ion-grid >
-      <ion-row >
-          <ion-col><button class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="filteringReports('all')">
-              <ion-icon class="side-menu-icon" name="list" ></ion-icon>&nbsp;&nbsp;
-              <span>all</span></button>
-
-          <button class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="filteringReports('standardReport')">
-            <img class="side-menu-icon" [src]="icons.standardReport" />&nbsp;&nbsp;
-            <span>standard</span> </button>
-
-            <button class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="filteringReports('dataSetReport')">
+     
+    <ion-grid>
+        <ion-row>
+            <!--<ion-col><button small class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="filteringReports('all')">
+                <ion-icon class="side-menu-icon" name="list" ></ion-icon>&nbsp;&nbsp;
+                <span>all</span></button>
+              <ion-col>
+    
+              </ion-col>
+              <button small class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="filteringReports('standardReport')">
+                  <img class="side-menu-icon" [src]="icons.standardReport" />&nbsp;&nbsp;
+                  <span>standard</span> </button>
+            </ion-col>
+    
+            <ion-col>
+            <button small class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="filteringReports('dataSetReport')">
                 <img class="side-menu-icon" [src]="icons.dataSetReport" />&nbsp;&nbsp;
                 <span>Dataset</span> </button>
-            </ion-col> 
-        </ion-row>
-  </ion-grid>
-    <ion-grid>
+               </ion-col>
+              -->
+          <ion-col>
+              <span class="item-card" color="font-color" ion-button clear text-capitalize (tap)="filteringReports('all')" ><ion-icon class="side-menu-icon" name="list" ></ion-icon>&nbsp;&nbsp; all</span>
+              <span class="item-card" color="font-color" ion-button clear text-capitalize (tap)="filteringReports('standardReport')" ><img class="side-menu-icon" [src]="icons.standardReport" />&nbsp;&nbsp; standard</span> 
+              <span class="item-card" color="font-color" ion-button clear text-capitalize (tap)="filteringReports('dataSetReport')" ><img class="side-menu-icon" [src]="icons.dataSetReport" />&nbsp;&nbsp;Dataset</span>
+          </ion-col>
+            </ion-row>
+       
       <ion-row>
         <ion-col>
           <ion-list>
@@ -79,7 +89,7 @@
 
     <ion-grid *ngIf="reportList.length !== 0">
       <ion-row>
-      <ion-col col-9>
+      <ion-col col-9 align="center">
        <!-- <pagination-controls (pageChange)="p = $event" maxSize="7" autoHide="true"></pagination-controls> -->
        <button ion-button outline [disabled]="(currentPage == 1)" color="font-color" text-capitalize (click)="previousPage()">
           <ion-icon name="skip-backward"></ion-icon>
