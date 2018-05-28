@@ -32,7 +32,7 @@
 
   <div *ngIf="!isLoading">
       
-    <ion-searchbar animated="true" (ionInput)="getFilteredList($event)" placeholder="{{'Search'|translate}}"></ion-searchbar>
+    <ion-searchbar animated="true" [(ngModel)]="search"  placeholder="{{'Search'|translate}}"></ion-searchbar>
      
     <ion-grid>
         <ion-row>
@@ -49,7 +49,7 @@
             <ion-item *ngIf="(reportList.length > 0 && reportList[currentPage - 1])">
                 <div class="animated fadeIn">
                   <ion-list>
-                    <ion-item *ngFor="let report of reportList[currentPage - 1];trackBy: trackByFn" (tap)="selectReport(report)">
+                    <ion-item *ngFor="let report of reportList[currentPage - 1] | searchReportListPipe : search ;trackBy: trackByFn" (tap)="selectReport(report)">
                       <img *ngIf="report && report.type" class="side-menu-icon" [src]="icons[report.type]" />&nbsp;
                        <span >{{ report.name }}</span>
                       <ion-icon name="ios-arrow-forward" item-right></ion-icon>
