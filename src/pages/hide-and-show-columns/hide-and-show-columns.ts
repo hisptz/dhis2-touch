@@ -21,11 +21,18 @@ export class HideAndShowColumnsPage implements OnInit, OnDestroy {
   isLoading: boolean;
   loadingSize: string;
   typeOfList: string;
+  icons: any;
 
   constructor(private navParams: NavParams, private viewCtrl: ViewController) {
     this.fieldsToDisplay = [];
     this.displayInLIst = [];
     this.selectedItemsModel = {};
+    this.icons = {
+      all: 'assets/icon/check-all.png',
+      none: 'assets/icon/uncheck-all.png',
+      reset: 'assets/icon/not-allowed.png',
+      done: 'assets/icon/circle-tick.png'
+    };
     this.isLoading = true;
     this.loadingSize = 'large';
     this.typeOfList = '';
