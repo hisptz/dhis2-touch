@@ -3,7 +3,8 @@ import {
   OnInit,
   OnDestroy,
   Output,
-  EventEmitter
+  EventEmitter,
+  Input
 } from '@angular/core';
 import { BarcodeReaderProvider } from '../../providers/barcode-reader/barcode-reader';
 import { AppProvider } from '../../providers/app/app';
@@ -92,8 +93,8 @@ export class BarcodeInputComponent implements OnInit, OnDestroy {
 
   scanBarcodeOrQrcode() {
     this.barcodeReaderProvider.scanBarcodeOrQrCode().subscribe(
-      data => {
-        alert(JSON.stringify(data));
+      dataResponse => {
+        this.barcodeReaderChange.emit(dataResponse);
       },
       error => {
         this.appProvider.setNormalNotification(

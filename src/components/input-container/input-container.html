@@ -1,4 +1,4 @@
-<div *ngIf="isLoading">
+<div *ngIf="!isLoading">
   <div *ngIf="dataElement && dataElement.categoryCombo && dataElement.categoryCombo.categoryOptionCombos">
     <div *ngIf="formLayout === 'tableLayout' || formLayout === 'customLayout'" padding-bottom>
       <table class="table table-bordered" width="100%">
@@ -31,7 +31,6 @@
                     [data]="data" [dataEntrySettings]="dataEntrySettings" [valueType]="dataElement.valueType"></text-input-field>
                 </div>
                 <div *ngIf="numericalInputField.indexOf(dataElement.valueType) > -1">
-                  {{ dataEntrySettings|json }}
                   <numerical-input-field (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id"
                     [data]="data" [dataEntrySettings]="dataEntrySettings" [valueType]="dataElement.valueType"></numerical-input-field>
                 </div>

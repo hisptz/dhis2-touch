@@ -1,23 +1,21 @@
-<div *ngIf="valueType == 'LONG_TEXT'">
-  <ion-item>
-    <ion-textarea (ionBlur)="updateValues()" [(ngModel)]="inputFieldValue"></ion-textarea>
-  </ion-item>
-</div>
-<div *ngIf="valueType == 'TEXT'">
-  <ion-item>
-    <ion-input type="text" (ionBlur)="updateValues()" [(ngModel)]="inputFieldValue"></ion-input>
-  </ion-item>
-</div>
-
-<!-- <ion-row>
-    <ion-col>
-      <div float-left>
-        
+<ion-row>
+  <ion-col>
+    <div float-left>
+      <div *ngIf="valueType == 'LONG_TEXT'">
+        <ion-item>
+          <ion-textarea (ionBlur)="updateValues()" [(ngModel)]="inputFieldValue"></ion-textarea>
+        </ion-item>
       </div>
-    </ion-col>
-    <ion-col col-auto>
-      <div float-right>
-        
+      <div *ngIf="valueType == 'TEXT'">
+        <ion-item>
+          <ion-input type="text" (ionBlur)="updateValues()" [(ngModel)]="inputFieldValue"></ion-input>
+        </ion-item>
       </div>
-    </ion-col>
-  </ion-row> -->
+    </div>
+  </ion-col>
+  <ion-col col-auto *ngIf="showBarcodeScanner">
+    <div float-right>
+      <barcode-input (barcodeReaderChange)="onChangeBarcodeReader($event)"></barcode-input>
+    </div>
+  </ion-col>
+</ion-row>

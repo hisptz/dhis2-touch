@@ -18,9 +18,17 @@ export class NumericalInputFieldComponent implements OnInit {
   @Input() dataEntrySettings;
   @Output() onChange = new EventEmitter();
   inputFieldValue: any;
-  constructor() {}
+  showBarcodeScanner: boolean;
+
+  constructor() {
+    this.showBarcodeScanner = false;
+  }
 
   ngOnInit() {
+    const { allowBarcodeReaderOnNumerical } = this.dataEntrySettings;
+    if (allowBarcodeReaderOnNumerical) {
+      this.showBarcodeScanner = allowBarcodeReaderOnNumerical;
+    }
     const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
     if (this.data && this.data[fieldId]) {
       this.inputFieldValue = this.data[fieldId].value;
@@ -48,5 +56,14 @@ export class NumericalInputFieldComponent implements OnInit {
         });
       }
     }
+  }
+
+  onChangeBarcodeReader(dataResponse) {
+    const { isMultlined } = dataResponse;
+    const { isMultidata } = dataResponse;
+    const { data } = dataResponse;
+    console.log('isMultidata : ' + isMultidata);
+    console.log('isMultlined : ' + isMultlined);
+    console.log('data : ' + data);
   }
 }

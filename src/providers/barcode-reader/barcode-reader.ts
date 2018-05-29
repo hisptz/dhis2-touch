@@ -86,12 +86,43 @@ export class BarcodeReaderProvider {
         .scan()
         .then((barcodeData: any) => {
           const { text } = barcodeData;
-          observer.next(text);
+          const dataResponse = this.getSanitizedData(text);
+          observer.next(dataResponse);
           observer.complete();
         })
         .catch(error => {
           observer.error(error);
         });
     });
+  }
+
+  // @todo revisit sanitizaation of possible values from scaned text
+  getSanitizedData(scanedText) {
+    let isMultlined = false;
+    let isMultidata = false;
+    let data;
+    if (!scanedText) {
+      data = '';
+    } else {
+      if (scanedText.indexOf('\n') == -1) {
+        data = scanedText;
+      } else if (
+        scanedText.indexOf(':') == -1 &&
+        scanedText.indexOf('\n') > -1
+      ) {
+        data = scanedText;
+        isMultlined = true;
+      } else if (
+        scanedText.indexOf(':') > -1 &&
+        scanedText.indexOf('\n') > -1
+      ) {
+        data = scanedText.split('\n');
+        isMultlined = true;
+        isMultidata = true;
+      } else {
+        data = scanedText;
+      }
+    }
+    return { isMultlined: isMultlined, isMultidata: isMultidata, data: data };
   }
 }
