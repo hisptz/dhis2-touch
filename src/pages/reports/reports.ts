@@ -5,7 +5,7 @@ import { AppProvider } from '../../providers/app/app';
 import { StandardReportProvider } from '../../providers/standard-report/standard-report';
 import { SqlLiteProvider } from '../../providers/sql-lite/sql-lite';
 import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
-
+import * as _ from 'lodash';
 /**
  * Generated class for the ReportsPage page.
  *
@@ -19,11 +19,16 @@ import { AppTranslationProvider } from '../../providers/app-translation/app-tran
   templateUrl: 'reports.html'
 })
 export class ReportsPage implements OnInit {
-  public isLoading: boolean = false;
   public loadingMessages: any = [];
   public currentUser: any;
-  public reportList: any;
-  public reportListCopy: any;
+  reportList: Array<any>;
+  reportListCopy: Array<any>;
+  currentPage: number;
+  currentValue: string;
+  isLoading: boolean = true;
+
+  public numberItems : number = 10 ;
+  public p: number = 1;
   icons: any = {};
   loadingMessage: string;
   translationMapper: any;
@@ -36,7 +41,14 @@ export class ReportsPage implements OnInit {
     public standardReportProvider: StandardReportProvider,
     private sqLite: SqlLiteProvider,
     private appTranslation: AppTranslationProvider
-  ) {}
+
+  ) {
+    this.reportList = [];
+    this.reportListCopy = [];
+    this.isLoading = false;
+    this.currentPage = 1;
+    this.currentValue = '';
+  }
 
   ngOnInit() {
     this.icons.standardReport = 'assets/icon/reports.png';
@@ -61,23 +73,6 @@ export class ReportsPage implements OnInit {
     });
   }
 
-  loadReportsList(user) {
-    let key = 'Discovering reports';
-    this.loadingMessage = this.translationMapper[key]
-      ? this.translationMapper[key]
-      : key;
-    this.standardReportProvider.getReportList(user).subscribe(
-      (reportList: any) => {
-        this.reportList = reportList;
-        this.reportListCopy = reportList;
-        this.isLoading = false;
-      },
-      error => {
-        this.appProvider.setNormalNotification('Fail  to discover reports');
-        this.isLoading = false;
-      }
-    );
-  }
 
   selectReport(report) {
     let parameter = {
@@ -99,18 +94,9 @@ export class ReportsPage implements OnInit {
     }
   }
 
-  getFilteredList(ev: any) {
-    let val = ev.target.value;
-    this.reportList = this.reportListCopy;
-    if (val && val.trim() != '') {
-      this.reportList = this.reportList.filter((report: any) => {
-        return report.name.toLowerCase().indexOf(val.toLowerCase()) > -1;
-      });
-    }
-  }
-
   doRefresh(refresher) {
     refresher.complete();
+    
     let key = 'Downloading reports from server';
     this.loadingMessage = this.translationMapper[key]
       ? this.translationMapper[key]
@@ -177,6 +163,43 @@ export class ReportsPage implements OnInit {
       );
   }
 
+  loadReportsList(user) {
+    let key = 'Discovering reports';
+    this.loadingMessage = this.translationMapper[key]
+      ? this.translationMapper[key]
+      : key;
+    this.standardReportProvider.getReportList(user).subscribe(
+      (reportList: any) => {
+        const { reports } = reportList ;
+        const {currentValue} = reportList ;
+        this.reportList = reportList;
+        this.reportListCopy = reportList;
+        this.filteringReports('all');
+        this.isLoading = false;
+      },
+      error => {
+        this.appProvider.setNormalNotification('Fail  to discover reports');
+        this.isLoading = false;
+      }
+    );
+  }
+  getFilteredList(ev: any) {
+    let val = ev.target.value;
+    this.reportList = this.reportListCopy;
+    if (val && val.trim() != '') {
+      const reports = this.reportList.filter((report: any) => {
+        return report.name.toLowerCase().indexOf(val.toLowerCase()) > -1;
+      });
+      this.reportList = this.getReportsWithPaginations(reports);
+      this.currentPage = 1;
+    } else {
+      if (this.reportList.length != this.reportListCopy.length) {
+        this.reportList = this.reportListCopy;
+        this.currentPage = 1;
+      }
+    }
+  }
+
   trackByFn(index, item) {
     return item.id;
   }
@@ -189,5 +212,42 @@ export class ReportsPage implements OnInit {
       'Saving reports from server',
       'there is no report to select'
     ];
+  }
+
+  filteringReports(reportType: any){
+    if(reportType == 'all'){
+      const reports = this.reportListCopy;
+      this.reportList = this.getReportsWithPaginations(reports);
+      this.currentPage = 1;
+    } 
+    else{
+      const reports =  _.filter(this.reportListCopy,['type',reportType]);  
+      this.reportList = this.getReportsWithPaginations(reports);
+      this.currentPage = 1;  
+      }
+  }
+  previousPage() {
+    this.currentPage--;
+  }
+
+  nextPage() {
+    if (this.currentPage < this.reportList.length) {
+      this.currentPage++;
+    }
+  }
+  changenumberItems(Items:any){
+    this.numberItems = Items;
+  this.reportList = this.getReportsPaginations(this.reportListCopy,this.numberItems);
+  this.currentPage = 1;  
+  }
+  getReportsWithPaginations(reports) {
+    const pageSize = 10;
+    return _.chunk(reports, pageSize);
+  }
+  getReportsPaginations(reportListCopy,numberItems){
+    return _.chunk(reportListCopy, numberItems);
+  }
+  getSubArryByPagination(array, pageSize, pageNumber) {
+    return array.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
   }
 }
