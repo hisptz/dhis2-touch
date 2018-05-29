@@ -140,7 +140,8 @@ export class SettingsProvider {
         maxDataElementOnDefaultForm: 10,
         formLayout: 'tableLayout',
         showAlertOnFormAssignement: true,
-        shouldDisplayAsRadio: true
+        shouldDisplayAsRadio: true,
+        allowBarcodeReader: false
       },
       synchronization: {
         time: 2 * 60 * 1000,
