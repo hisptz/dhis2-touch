@@ -25,11 +25,14 @@ export class InputContainerComponent implements OnInit {
   supportValueTypes: Array<string>;
   formLayout: string;
   dataEntrySettings: any;
+  isLoading: boolean;
 
   constructor(
     private settingProvider: SettingsProvider,
     private actionSheetCtrl: ActionSheetController
-  ) {}
+  ) {
+    this.isLoading = true;
+  }
 
   ngOnInit() {
     this.numericalInputField = [
@@ -79,6 +82,7 @@ export class InputContainerComponent implements OnInit {
             this.fieldLabelKey = this.dataElement[dataEntrySettings.label];
           }
         }
+        this.isLoading = false;
       });
   }
 

@@ -141,7 +141,8 @@ export class SettingsProvider {
         formLayout: 'tableLayout',
         showAlertOnFormAssignement: true,
         shouldDisplayAsRadio: true,
-        allowBarcodeReader: false
+        allowBarcodeReaderOnText: false,
+        allowBarcodeReaderOnNumerical: false
       },
       synchronization: {
         time: 2 * 60 * 1000,

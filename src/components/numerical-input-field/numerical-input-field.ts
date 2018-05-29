@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 /**
  * Generated class for the NumericalInputFieldComponent component.
@@ -10,34 +10,43 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
   selector: 'numerical-input-field',
   templateUrl: 'numerical-input-field.html'
 })
-export class NumericalInputFieldComponent implements OnInit{
-
+export class NumericalInputFieldComponent implements OnInit {
   @Input() dataElementId;
   @Input() categoryOptionComboId;
   @Input() data;
   @Input() valueType;
+  @Input() dataEntrySettings;
   @Output() onChange = new EventEmitter();
-  inputFieldValue : any;
-  //{"id":"s46m5MS0hxu-Prlt0C1RF0s","value":"1","status":"synced"}
-  //id = dataElementId + "-" + categoryOptionComboId
+  inputFieldValue: any;
   constructor() {}
 
-  ngOnInit(){
-    let fieldId = this.dataElementId + "-" + this.categoryOptionComboId;
-    if(this.data && this.data[fieldId]){
-      this.inputFieldValue  = this.data[fieldId].value;
+  ngOnInit() {
+    const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
+    if (this.data && this.data[fieldId]) {
+      this.inputFieldValue = this.data[fieldId].value;
     }
   }
 
-  updateValues(){
-    let fieldId = this.dataElementId + "-" + this.categoryOptionComboId;
-    if(this.data && this.data[fieldId] && this.inputFieldValue  != this.data[fieldId].value){
-      this.onChange.emit({"id":fieldId,"value":this.inputFieldValue,"status":"not-synced"});
-    }else if(this.data && !this.data[fieldId]){
-      if(this.inputFieldValue){
-        this.onChange.emit({"id":fieldId,"value":this.inputFieldValue,"status":"not-synced"});
+  updateValues() {
+    let fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
+    if (
+      this.data &&
+      this.data[fieldId] &&
+      this.inputFieldValue != this.data[fieldId].value
+    ) {
+      this.onChange.emit({
+        id: fieldId,
+        value: this.inputFieldValue,
+        status: 'not-synced'
+      });
+    } else if (this.data && !this.data[fieldId]) {
+      if (this.inputFieldValue) {
+        this.onChange.emit({
+          id: fieldId,
+          value: this.inputFieldValue,
+          status: 'not-synced'
+        });
       }
     }
   }
-
 }
