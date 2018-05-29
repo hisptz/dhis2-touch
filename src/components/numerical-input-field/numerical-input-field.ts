@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AppProvider } from '../../providers/app/app';
 
 /**
  * Generated class for the NumericalInputFieldComponent component.
@@ -20,7 +21,7 @@ export class NumericalInputFieldComponent implements OnInit {
   inputFieldValue: any;
   showBarcodeScanner: boolean;
 
-  constructor() {
+  constructor(private appProvider: AppProvider) {
     this.showBarcodeScanner = false;
   }
 
@@ -62,8 +63,19 @@ export class NumericalInputFieldComponent implements OnInit {
     const { isMultlined } = dataResponse;
     const { isMultidata } = dataResponse;
     const { data } = dataResponse;
-    console.log('isMultidata : ' + isMultidata);
-    console.log('isMultlined : ' + isMultlined);
-    console.log('data : ' + data);
+    if (!isMultlined && data) {
+      if (isNaN(data)) {
+        this.appProvider.setNormalNotification(
+          'Scanned value is not numerical value'
+        );
+      } else {
+        this.inputFieldValue = data;
+        this.updateValues();
+      }
+    } else {
+      this.appProvider.setNormalNotification(
+        'Scanned value for multi line for numerical values is not yet supported'
+      );
+    }
   }
 }

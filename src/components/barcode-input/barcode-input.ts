@@ -98,7 +98,7 @@ export class BarcodeInputComponent implements OnInit, OnDestroy {
       },
       error => {
         this.appProvider.setNormalNotification(
-          'Error on scaning ' + JSON.stringify(error)
+          'Error on scanning ' + JSON.stringify(error)
         );
       }
     );
