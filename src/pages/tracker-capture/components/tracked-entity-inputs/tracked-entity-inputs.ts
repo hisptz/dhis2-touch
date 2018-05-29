@@ -26,11 +26,14 @@ export class TrackedEntityInputsComponent implements OnInit {
   supportValueTypes: Array<string>;
   formLayout: string;
   dataEntrySettings: any;
+  isLoading: boolean;
 
   constructor(
     private settingProvider: SettingsProvider,
     private actionSheetCtrl: ActionSheetController
-  ) {}
+  ) {
+    this.isLoading = true;
+  }
 
   ngOnInit() {
     this.numericalInputField = [
@@ -81,6 +84,7 @@ export class TrackedEntityInputsComponent implements OnInit {
               dataEntrySettings.label
             ];
           }
+          this.isLoading = false;
         });
     }
   }
