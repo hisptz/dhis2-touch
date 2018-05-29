@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="!isLoading">
   <div (click)="showTooltips()" class="inputLabel">
     {{ fieldLabelKey }}
     <span *ngIf="mandatory" class="required">&nbsp;*</span>
@@ -14,12 +14,12 @@
   <div *ngIf="!trackedEntityAttribute.optionSet" [ngClass]="(trackedEntityAttributesSavingStatusClass[trackedEntityAttribute.id +'-trackedEntityAttribute'])?trackedEntityAttributesSavingStatusClass[trackedEntityAttribute.id +'-trackedEntityAttribute']:'input-field-container'">
     <div *ngIf="textInputField.indexOf(trackedEntityAttribute.valueType) > -1">
       <text-input-field (onChange)="updateValue($event)" [dataElementId]="trackedEntityAttribute.id" [categoryOptionComboId]="'trackedEntityAttribute'"
-        [data]="data" [valueType]="trackedEntityAttribute.valueType">
+        [data]="data" [dataEntrySettings]="dataEntrySettings" [valueType]="trackedEntityAttribute.valueType">
       </text-input-field>
     </div>
     <div *ngIf="numericalInputField.indexOf(trackedEntityAttribute.valueType) > -1">
       <numerical-input-field (onChange)="updateValue($event)" [dataElementId]="trackedEntityAttribute.id" [categoryOptionComboId]="'trackedEntityAttribute'"
-        [data]="data" [valueType]="trackedEntityAttribute.valueType">
+        [data]="data" [dataEntrySettings]="dataEntrySettings" [valueType]="trackedEntityAttribute.valueType">
       </numerical-input-field>
     </div>
     <div *ngIf="trackedEntityAttribute.valueType === 'DATE' || trackedEntityAttribute.valueType === 'DATETIME' || trackedEntityAttribute.valueType === 'TIME' ">
