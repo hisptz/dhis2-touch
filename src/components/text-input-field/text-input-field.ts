@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AppProvider } from '../../providers/app/app';
 
 /**
  * Generated class for the TextInputFieldComponent component.
@@ -15,13 +16,20 @@ export class TextInputFieldComponent implements OnInit {
   @Input() categoryOptionComboId;
   @Input() data;
   @Input() valueType;
+  @Input() dataEntrySettings;
   @Output() onChange = new EventEmitter();
   inputFieldValue: any;
-  //{"id":"s46m5MS0hxu-Prlt0C1RF0s","value":"1","status":"synced"}
-  //id = dataElementId + "-" + categoryOptionComboId
-  constructor() {}
+  showBarcodeScanner: boolean;
+
+  constructor(private appProvider: AppProvider) {
+    this.showBarcodeScanner = false;
+  }
 
   ngOnInit() {
+    const { allowBarcodeReaderOnText } = this.dataEntrySettings;
+    if (allowBarcodeReaderOnText) {
+      this.showBarcodeScanner = allowBarcodeReaderOnText;
+    }
     const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
     if (this.data && this.data[fieldId]) {
       this.inputFieldValue = this.data[fieldId].value;
@@ -48,6 +56,27 @@ export class TextInputFieldComponent implements OnInit {
           status: 'not-synced'
         });
       }
+    }
+  }
+
+  onChangeBarcodeReader(dataResponse) {
+    const { isMultlined } = dataResponse;
+    const { isMultidata } = dataResponse;
+    const { data } = dataResponse;
+    if (!isMultlined && data) {
+      this.inputFieldValue = data;
+      this.updateValues();
+    } else if (isMultlined && !isMultidata && data) {
+      if (this.valueType !== 'LONG_TEXT') {
+        this.inputFieldValue = data.split('\n').join(' ');
+      } else {
+        this.inputFieldValue = data;
+      }
+      this.updateValues();
+    } else {
+      this.appProvider.setNormalNotification(
+        'Scanned value for multi line for text values is not yet supported'
+      );
     }
   }
 }

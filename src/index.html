@@ -1,81 +1,85 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-<head>
-  <meta charset="UTF-8">
-  <title>Ionic App</title>
-  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="format-detection" content="telephone=no">
-  <meta name="msapplication-tap-highlight" content="no">
 
-  <link rel="icon" type="image/x-icon" href="assets/icon/favicon.ico">
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#488aff">
+  <head>
+    <meta charset="UTF-8">
+    <title>Ionic App</title>
+    <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
 
-  <!-- add to homescreen for ios -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="#488aff">
+    <link rel="icon" type="image/x-icon" href="assets/icon/favicon.ico">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4e8ef7">
 
-  <script type="application/javascript" src="assets/library/jquery/jquery-2.1.1.min.js"></script>
-  <script type="application/javascript" src="assets/library/jquery-ui/jquery-ui.min.js"></script>
+    <!-- add to homescreen for ios -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-  <!-- cordova.js required for cordova apps (remove if not needed) -->
-  <script src="cordova.js"></script>
+    <script type="application/javascript" src="assets/library/jquery/jquery-2.1.1.min.js"></script>
+    <script type="application/javascript" src="assets/library/jquery-ui/jquery-ui.min.js"></script>
 
-  <!-- un-comment this code to enable service worker
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('service worker installed'))
-        .catch(err => console.error('Error', err));
-    }
-  </script>-->
+    <!-- cordova.js required for cordova apps (remove if not needed) -->
+    <script src="cordova.js"></script>
 
-  <link href="build/main.css" rel="stylesheet">
-  <link rel="stylesheet" href="assets/library/animation/animate.min.css" rel="stylesheet" >
+    <!-- un-comment this code to enable service worker -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(() => console.log('service worker installed'))
+          .catch(err => console.error('Error' + JSON.stringify(err)));
+      }
 
-  <!-- add leaflet css from copied assets -->
-  <link href="assets/leaflet.css" rel="stylesheet">
-  <link href="assets/styles.css" rel="stylesheet">
+    </script>
 
-  <!--add css for jquery ui-->
-  <link href="assets/library/jquery-ui/jquery-ui.min.css" rel="stylesheet">
-  <link href="assets/library/jquery-ui/jquery-ui.structure.min.css" rel="stylesheet">
-</head>
-<body>
+    <link href="build/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/library/animation/animate.min.css" rel="stylesheet">
 
-  <!-- Ionic's root component and where the app will load -->
-  <ion-app></ion-app>
+    <!-- add leaflet css from copied assets -->
+    <link href="assets/leaflet.css" rel="stylesheet">
 
-  <!-- The polyfills js is generated during the build process -->
-  <script src="build/polyfills.js"></script>
+    <!--add css for jquery ui-->
+    <link href="assets/library/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="assets/library/jquery-ui/jquery-ui.structure.min.css" rel="stylesheet">
 
-  <!-- The vendor js is generated during the build process
+  </head>
+
+  <body>
+
+    <!-- Ionic's root component and where the app will load -->
+    <ion-app></ion-app>
+
+    <!-- The polyfills js is generated during the build process -->
+    <script src="build/polyfills.js"></script>
+
+    <!-- The vendor js is generated during the build process
        It contains all of the dependencies in node_modules -->
-  <script src="build/vendor.js"></script>
+    <script src="build/vendor.js"></script>
 
-  <!-- The main bundle js is generated during the build process -->
-  <script src="build/main.js"></script>
-  <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.min.js"></script>
-  <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.picker.min.js"></script>
-  <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.plus.min.js"></script>
-  <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.picker.ext.js"></script>
+    <!-- The main bundle js is generated during the build process -->
+    <script src="build/main.js"></script>
+    <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.min.js"></script>
+    <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.picker.min.js"></script>
+    <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.plus.min.js"></script>
+    <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.picker.ext.js"></script>
 
-  <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.coptic.min.js"></script>
-  <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.ethiopian.min.js"></script>
-  <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.islamic.min.js"></script>
-  <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.julian.min.js"></script>
-  <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.nepali.min.js"></script>
-  <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.thai.min.js"></script>
+    <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.coptic.min.js"></script>
+    <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.ethiopian.min.js"></script>
+    <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.islamic.min.js"></script>
+    <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.julian.min.js"></script>
+    <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.nepali.min.js"></script>
+    <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.thai.min.js"></script>
+    <script type="text/javascript" src="assets/library/reportModule.js"></script>
+    <script type="text/javascript" src="assets/library/dataEntryModule.js"></script>
+    <script type="text/javascript" src="assets/library/dhis2/dhis2.util.js"></script>
+    <script type="text/javascript" src="assets/library/dhis2/dhis2.period.js"></script>
+    <script>
+      dhis2.period.calendar = $.calendars.instance('gregorian');
+      dhis2.period.generator = new dhis2.period.PeriodGenerator(dhis2.period.calendar, dhis2.period.DEFAULT_DATE_FORMAT);
+      dhis2.network = {};
 
-  <script src="assets/library/reportModule.js"></script>
-  <script src="assets/library/dataEntryModule.js"></script>
-  <script src="assets/library/dhis2/dhis2.util.js"></script>
-  <script src="assets/library/dhis2/dhis2.period.js"></script>
-  <script>
-    dhis2.period.calendar = $.calendars.instance('gregorian');
-    dhis2.period.generator = new dhis2.period.PeriodGenerator(dhis2.period.calendar, dhis2.period.DEFAULT_DATE_FORMAT);
-    dhis2.network = {};
-  </script>
+    </script>
 
-</body>
+  </body>
+
 </html>
