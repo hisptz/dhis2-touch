@@ -1,0 +1,16 @@
+<div no-margin>
+  <div *ngIf="isLoading">
+    <ion-item no-lines>
+      <div style="text-align: center" item-left>
+        <loading loadingSize="small"></loading>
+      </div>
+      {{ loadingMessage }}
+    </ion-item>
+  </div>
+  <div *ngIf="!isLoading">
+    <div>orgUnitId : {{orgUnitId|json}}</div>
+    <div>dataSetId : {{dataSetId|json}}</div>
+    <div>period : {{period|json}}</div>
+    <div>dataDimension : {{dataDimension|json}}</div>
+  </div>
+</div>

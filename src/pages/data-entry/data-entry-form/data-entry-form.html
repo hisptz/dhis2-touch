@@ -40,6 +40,8 @@
                 <span [translate]="'not synced'"></span>
               </b> : {{storageStatus.offline }}</span>
           </div>
+          <aggregate-conflict-handler [orgUnitId]="entryFormParameter.orgUnit.id" [dataSetId]="entryFormParameter.dataSet.id" [period]="entryFormParameter.period.iso"
+            [dataDimension]="this.entryFormParameter.dataDimension"></aggregate-conflict-handler>
           <div *ngIf="!isLoading && indicators && indicators.length > 0">
             <div (click)="viewEntryFormIndicators(indicators)" class="item-card" color="font-color">
               <ion-item>
@@ -53,7 +55,6 @@
           <loading [loadingMessage]="loadingMessage" [loadingSize]="'large'"></loading>
         </div>
         <div *ngIf="!isLoading">
-
           <div *ngIf="entryFormType && entryFormType == 'CUSTOM'">
             <custom-data-entry-form [dataEntryFormDesign]="dataEntryFormDesign" (onCustomFormInputChange)="updateData($event)" [data]="dataValuesObject"
               [entryFormType]="'aggregate'" [entryFormSections]="entryFormSections" [dataUpdateStatus]="dataUpdateStatus"></custom-data-entry-form>

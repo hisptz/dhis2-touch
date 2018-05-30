@@ -50,7 +50,7 @@ export class DataEntryFormPage implements OnInit {
   translationMapper: any;
   dataEntryFormDesign: string;
   entryFormType: string;
-  dataUpdateStatus: {[elementId: string]: string};
+  dataUpdateStatus: { [elementId: string]: string };
   @ViewChild(Content) content: Content;
 
   constructor(
@@ -214,84 +214,7 @@ export class DataEntryFormPage implements OnInit {
             dataDimension,
             this.dataSet.categoryCombo.categoryOptionCombos
           );
-          key = 'Discovering data from the server';
-          this.loadingMessage = this.translationMapper[key]
-            ? this.translationMapper[key]
-            : key;
-          this.dataValuesProvider
-            .getDataValueSetFromServer(
-              dataSetId,
-              period,
-              orgUnitId,
-              this.dataSetAttributeOptionCombo,
-              this.currentUser
-            )
-            .subscribe(
-              (dataValues: any) => {
-                if (dataValues.length > 0) {
-                  dataValues.map((dataValue: any) => {
-                    dataValue['period'] = this.entryFormParameter.period.name;
-                    dataValue['orgUnit'] = this.entryFormParameter.orgUnit.name;
-                  });
-                  key = 'Saving data from server';
-                  this.loadingMessage = this.translationMapper[key]
-                    ? this.translationMapper[key]
-                    : key;
-                  let syncStatus = 'synced';
-                  this.dataValuesProvider
-                    .saveDataValues(
-                      dataValues,
-                      dataSetId,
-                      period,
-                      orgUnitId,
-                      dataDimension,
-                      syncStatus,
-                      this.currentUser
-                    )
-                    .subscribe(
-                      () => {
-                        this.loadingLocalData(
-                          dataSetId,
-                          period,
-                          orgUnitId,
-                          dataDimension
-                        );
-                      },
-                      error => {
-                        console.log(JSON.stringify(error));
-                        this.appProvider.setNormalNotification(
-                          'Failed to save data from the server'
-                        );
-                        this.loadingLocalData(
-                          dataSetId,
-                          period,
-                          orgUnitId,
-                          dataDimension
-                        );
-                      }
-                    );
-                } else {
-                  this.loadingLocalData(
-                    dataSetId,
-                    period,
-                    orgUnitId,
-                    dataDimension
-                  );
-                }
-              },
-              error => {
-                console.log(JSON.stringify(error));
-                this.appProvider.setNormalNotification(
-                  'Failed to discover data from the server'
-                );
-                this.loadingLocalData(
-                  dataSetId,
-                  period,
-                  orgUnitId,
-                  dataDimension
-                );
-              }
-            );
+          this.loadingLocalData(dataSetId, period, orgUnitId, dataDimension);
         },
         error => {
           console.log(JSON.stringify(error));
@@ -469,14 +392,14 @@ export class DataEntryFormPage implements OnInit {
           this.dataValuesObject[dataValueId] = updateDataValue;
 
           // Update dataValue update status
-          this.dataUpdateStatus = {[updateDataValue.domElementId]: 'OK'};
+          this.dataUpdateStatus = { [updateDataValue.domElementId]: 'OK' };
         },
         error => {
           this.dataValuesSavingStatusClass[dataValueId] =
             'input-field-container-failed';
 
           // Update dataValue update status
-          this.dataUpdateStatus = {[updateDataValue.domElementId]: 'FAIL'};
+          this.dataUpdateStatus = { [updateDataValue.domElementId]: 'FAIL' };
         }
       );
   }
