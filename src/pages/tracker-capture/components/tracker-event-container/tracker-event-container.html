@@ -18,11 +18,7 @@
   </div>
 
   <div *ngIf="!(currentOpenEvent['eventDate'] && currentOpenEvent['eventDate'] !='')">
-    <p>
-      Select&nbsp;
-      <span *ngIf="!hasEventDatesLabel(programStage.executionDateLabel)">{{ translationMapper['Report date'] }}</span>
-      <span *ngIf="hasEventDatesLabel(programStage.executionDateLabel)">{{ programStage.executionDateLabel }}</span>&nbsp;above to start entry
-    </p>
+    <event-date-notification [notification]="getEventDateNotification()"></event-date-notification>
   </div>
 
 </div>

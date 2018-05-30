@@ -63,6 +63,18 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
     );
   }
 
+  getEventDateNotification() {
+    const key = 'executionDateLabel';
+    let notificationTitle = 'Select ';
+    if (isNaN(this.programStage[key])) {
+      notificationTitle += this.programStage[key];
+    } else {
+      notificationTitle += 'Report date';
+    }
+    notificationTitle += ' above to start entry';
+    return notificationTitle;
+  }
+
   hasEventDatesLabel(value) {
     return isNaN(value);
   }

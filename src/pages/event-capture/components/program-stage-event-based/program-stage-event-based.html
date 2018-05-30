@@ -11,6 +11,11 @@
     <div class="input-field-container">
       <data-time-input [(inputValue)]="eventDate" (dateTimeUpdateAction)="updateEventDate($event)" [mode]="'date'"></data-time-input>
     </div>
+
+    <div *ngIf="!(eventDate && eventDate != '')">
+      <event-date-notification [notification]="getEventDateNotification()"></event-date-notification>
+    </div>
+
     <div *ngIf="eventDate && eventDate != ''">
       <div *ngIf="(programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
         <div *ngIf="formLayout === 'customLayout' && programStage && programStage.dataEntryForm && programStage.dataEntryForm !== '' ">

@@ -22,24 +22,24 @@
                 [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [isOpenRow]="true" [canEventBeDeleted]="couldEventBeDeleted()"
                 (onChange)="updateData($event)" (onDeleteEvent)="deleteEventAction($event)"></tracker-event-container>
               <div>
-                <div no-padding>
-                  <div style="display: inline-block;width: 49.3%">
+                <ion-row no-padding no-margin>
+                  <ion-col>
                     <div float-left>
                       <button *ngIf="programStage.repeatable" [disabled]="isAddButtonDisabled" class="item-card" (click)="addRepeatableEvent(currentOpenEvent)"
                         color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
                         <ion-icon name="add" color="icon-color"></ion-icon>&nbsp;&nbsp; {{translationMapper['New event']}}
                       </button>
                     </div>
-                  </div>
-                  <div style="display: inline-block;width: 49.3%">
+                  </ion-col>
+                  <ion-col col-auto>
                     <div float-right>
                       <div class="item-card" float-left color="danger" (click)="deleteEvent(currentEventId)" *ngIf="couldEventBeDeleted()" padding
                         ion-button clear text-center text-capitalize>
                         <ion-icon name="trash"></ion-icon>&nbsp;&nbsp; {{translationMapper['Delete']}}
                       </div>
                     </div>
-                  </div>
-                </div>
+                  </ion-col>
+                </ion-row>
               </div>
               <div style="float: none"></div>
             </div>
@@ -53,25 +53,24 @@
       <tracker-event-container [formLayout]="formLayout" [programStage]="programStage" [currentUser]="currentUser" [(currentOpenEvent)]="currentOpenEvent"
         [isOpenRow]="false" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [canEventBeDeleted]="couldEventBeDeleted()"
         (onChange)="updateData($event)" (onDeleteEvent)="deleteEventAction($event)"></tracker-event-container>
-
-      <div no-padding>
-        <div style="display: inline-block;width: 49.3%">
+      <ion-row no-padding no-margin>
+        <ion-col>
           <div float-left>
             <button *ngIf="programStage.repeatable" [disabled]="isAddButtonDisabled" class="item-card" (click)="addRepeatableEvent(currentOpenEvent)"
               color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
               <ion-icon name="add" color="icon-color"></ion-icon>&nbsp;&nbsp; {{translationMapper['New event']}}
             </button>
           </div>
-        </div>
-        <div style="display: inline-block;width: 49.3%">
+        </ion-col>
+        <ion-col col-auto>
           <div float-right>
             <div class="item-card" float-left color="danger" (click)="deleteEvent(currentEventId)" *ngIf="couldEventBeDeleted()" padding
               ion-button clear text-center text-capitalize>
               <ion-icon name="trash"></ion-icon>&nbsp;&nbsp; {{translationMapper['Delete']}}
             </div>
           </div>
-        </div>
-      </div>
+        </ion-col>
+      </ion-row>
     </div>
   </div>
   <div class="item-card-program-stage-section">
