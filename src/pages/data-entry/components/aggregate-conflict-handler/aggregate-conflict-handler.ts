@@ -26,6 +26,7 @@ export class AggregateConflictHandlerComponent implements OnInit {
   @Input() dataValuesObject;
   @Output() dataSetCompletenessInfoAction = new EventEmitter();
   @Output() mergeDataAction = new EventEmitter();
+  @Output() conflictFoundAction = new EventEmitter();
 
   translationMapper: any;
   loadingMessage: string;
@@ -161,6 +162,15 @@ export class AggregateConflictHandlerComponent implements OnInit {
         }
       }
     });
+    if (
+      this.summaryObject.conflicts.length > 0 ||
+      this.summaryObject.updates.length > 0
+    ) {
+      this.appProvider.setTopNotification(
+        'New updates has been found form server'
+      );
+      this.conflictFoundAction.emit();
+    }
   }
 
   conflictHandlingAction(key, action) {

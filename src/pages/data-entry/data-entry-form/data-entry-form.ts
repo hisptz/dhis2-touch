@@ -268,7 +268,7 @@ export class DataEntryFormPage implements OnInit {
   }
 
   onMergingWithOnlineData(dataValues) {
-    //this.isLoading = true;
+    this.isLoading = true;
     this.loadingMessage = '';
     let newDataValue = [];
     const dataSetId = this.dataSet.id;
@@ -324,6 +324,12 @@ export class DataEntryFormPage implements OnInit {
       );
   }
 
+  scrollEntryFormUp() {
+    setTimeout(() => {
+      this.content.scrollToTop(1300);
+    }, 200);
+  }
+
   openSectionList() {
     let modal = this.modalCtrl.create('DataEntrySectionSelectionPage', {
       pager: this.pager,
@@ -332,10 +338,7 @@ export class DataEntryFormPage implements OnInit {
     modal.onDidDismiss((pager: any) => {
       if (pager && pager.page) {
         this.pager = pager;
-        //scroll form to the top
-        setTimeout(() => {
-          this.content.scrollToTop(1300);
-        }, 200);
+        this.scrollEntryFormUp();
       }
     });
     modal.present();
@@ -373,10 +376,7 @@ export class DataEntryFormPage implements OnInit {
       this.isLoading = true;
       this.pager.page = page;
       this.isLoading = false;
-      //scroll form to the top
-      setTimeout(() => {
-        this.content.scrollToTop(1300);
-      }, 200);
+      this.scrollEntryFormUp();
     }
   }
 

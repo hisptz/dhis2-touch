@@ -40,9 +40,10 @@
                 <span [translate]="'not synced'"></span>
               </b> : {{storageStatus.offline }}</span>
           </div>
-          <aggregate-conflict-handler (mergeDataAction)="onMergingWithOnlineData($event)" (dataSetCompletenessInfoAction)="onDataSetCompletenessInformattionLoaded($event)"
-            [(dataValuesObject)]="dataValuesObject" [orgUnitId]="entryFormParameter.orgUnit.id" [dataSetId]="entryFormParameter.dataSet.id"
-            [period]="entryFormParameter.period.iso" [dataDimension]="this.entryFormParameter.dataDimension"></aggregate-conflict-handler>
+          <aggregate-conflict-handler (conflictFoundAction)="scrollEntryFormUp()" (mergeDataAction)="onMergingWithOnlineData($event)"
+            (dataSetCompletenessInfoAction)="onDataSetCompletenessInformattionLoaded($event)" [(dataValuesObject)]="dataValuesObject"
+            [orgUnitId]="entryFormParameter.orgUnit.id" [dataSetId]="entryFormParameter.dataSet.id" [period]="entryFormParameter.period.iso"
+            [dataDimension]="this.entryFormParameter.dataDimension"></aggregate-conflict-handler>
           <div *ngIf="!isLoading && indicators && indicators.length > 0">
             <div (click)="viewEntryFormIndicators(indicators)" class="item-card" color="font-color">
               <ion-item>
