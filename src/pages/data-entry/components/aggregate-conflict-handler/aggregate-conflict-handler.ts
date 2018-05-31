@@ -6,6 +6,7 @@ import { DataEntryFormProvider } from '../../../../providers/data-entry-form/dat
 import { DataSetCompletenessProvider } from '../../../../providers/data-set-completeness/data-set-completeness';
 import { AppProvider } from '../../../../providers/app/app';
 import * as _ from 'lodash';
+import { ActionSheetController } from 'ionic-angular';
 
 /**
  * Generated class for the AggregateConflictHandlerComponent component.
@@ -24,6 +25,7 @@ export class AggregateConflictHandlerComponent implements OnInit {
   @Input() dataDimension;
   @Input() dataValuesObject;
   @Output() dataSetCompletenessInfoAction = new EventEmitter();
+  @Output() mergeDataAction = new EventEmitter();
 
   translationMapper: any;
   loadingMessage: string;
@@ -37,7 +39,8 @@ export class AggregateConflictHandlerComponent implements OnInit {
     private userProvider: UserProvider,
     private dataEntryFormProvider: DataEntryFormProvider,
     private dataSetCompletenessProvider: DataSetCompletenessProvider,
-    private appProvider: AppProvider
+    private appProvider: AppProvider,
+    private actionSheetCtrl: ActionSheetController
   ) {
     this.isLoading = true;
     this.loadingMessage = '';
@@ -138,11 +141,6 @@ export class AggregateConflictHandlerComponent implements OnInit {
     }
   }
 
-  conflictHandlingAction(key, action) {
-    console.log('key : ' + key);
-    console.log('action : ' + action);
-  }
-
   updateSummaryObject(onlineDataValues, dataValuesObject) {
     _.map(onlineDataValues, dataValue => {
       if (dataValue.categoryOptionCombo && dataValue.dataElement) {
@@ -165,10 +163,72 @@ export class AggregateConflictHandlerComponent implements OnInit {
     });
   }
 
+  conflictHandlingAction(key, action) {
+    if (action === 'accept') {
+      const actionSheet = this.actionSheetCtrl.create({
+        title:
+          key === 'updates'
+            ? this.translationMapper[
+                'You are about to apply new updates to the from the server, are you sure?'
+              ]
+            : this.translationMapper[
+                'You are about to replace offline data with data from the server, are you sure?'
+              ],
+        buttons: [
+          {
+            text: this.translationMapper['Yes'],
+            handler: () => {
+              this.applyingDataToOffline(key);
+            }
+          },
+          {
+            text: this.translationMapper['No'],
+            handler: () => {}
+          }
+        ]
+      });
+      actionSheet.present();
+    }
+    if (action === 'decline') {
+      const actionSheet = this.actionSheetCtrl.create({
+        title: this.translationMapper[
+          'You are about to skip data from server, are you sure?'
+        ],
+        buttons: [
+          {
+            text: this.translationMapper['Yes'],
+            handler: () => {
+              if (this.summaryObject[key]) {
+                this.summaryObject[key] = [];
+              }
+            }
+          },
+          {
+            text: this.translationMapper['No'],
+            handler: () => {}
+          }
+        ]
+      });
+      actionSheet.present();
+    }
+  }
+
+  applyingDataToOffline(key) {
+    if (this.summaryObject[key]) {
+      this.mergeDataAction.emit(this.summaryObject[key]);
+      this.summaryObject[key] = [];
+    }
+  }
+
   getValuesToTranslate() {
     return [
       'Discovering data from the server',
-      'Discovering entry form completeness information'
+      'You are about to apply new updates to the from the server, are you sure?',
+      'You are about to replace offline data with data from the server, are you sure?',
+      'You are about to skip data from server, are you sure?',
+      'Discovering entry form completeness information',
+      'Yes',
+      'No'
     ];
   }
 }

@@ -13,6 +13,7 @@ import { SettingsProvider } from '../../../providers/settings/settings';
 import { DataValuesProvider } from '../../../providers/data-values/data-values';
 import { DataSetCompletenessProvider } from '../../../providers/data-set-completeness/data-set-completeness';
 import { AppTranslationProvider } from '../../../providers/app-translation/app-translation';
+import * as _ from 'lodash';
 
 /**
  * Generated class for the DataEntryFormPage page.
@@ -241,7 +242,7 @@ export class DataEntryFormPage implements OnInit {
       )
       .subscribe(
         (entryFormDataValues: any) => {
-          entryFormDataValues.forEach((dataValue: any) => {
+          entryFormDataValues.map((dataValue: any) => {
             this.dataValuesObject[dataValue.id] = dataValue;
             dataValue.status == 'synced'
               ? this.storageStatus.online++
@@ -264,6 +265,63 @@ export class DataEntryFormPage implements OnInit {
     if (dataSetCompletenessInfo && dataSetCompletenessInfo.complete) {
       this.isDataSetCompleted = true;
     }
+  }
+
+  onMergingWithOnlineData(dataValues) {
+    //this.isLoading = true;
+    this.loadingMessage = '';
+    let newDataValue = [];
+    const dataSetId = this.dataSet.id;
+    const period = this.entryFormParameter.period.iso;
+    const orgUnitId = this.entryFormParameter.orgUnit.id;
+    const orgUnitName = this.entryFormParameter.orgUnit.name;
+    const dataDimension = this.entryFormParameter.dataDimension;
+    const status = dataValues[0].status;
+    _.map(dataValues, dataValue => {
+      const dataValueId = dataValue.id;
+      const fieldIdArray = dataValueId.split('-');
+      newDataValue.push({
+        orgUnit: orgUnitName,
+        dataElement: fieldIdArray[0],
+        categoryOptionCombo: fieldIdArray[1],
+        value: dataValue.value,
+        period: this.entryFormParameter.period.name
+      });
+      this.dataValuesObject[dataValueId] = dataValue;
+    });
+    this.dataValuesProvider
+      .saveDataValues(
+        newDataValue,
+        dataSetId,
+        period,
+        orgUnitId,
+        dataDimension,
+        status,
+        this.currentUser
+      )
+      .subscribe(
+        () => {
+          _.map(dataValues, dataValue => {
+            this.dataValuesSavingStatusClass[dataValue.id] =
+              'input-field-container-success';
+            this.dataValuesObject[dataValue.id] = dataValue;
+          });
+          this.storageStatus.offline = 0;
+          this.storageStatus.online = 0;
+          _.map(_.keys(this.dataValuesObject), key => {
+            const dataValue = this.dataValuesObject[key];
+            if (dataValue.status === 'synced') {
+              this.storageStatus.online += 1;
+            } else {
+              this.storageStatus.offline += 1;
+            }
+          });
+          this.isLoading = false;
+        },
+        error => {
+          this.isLoading = false;
+        }
+      );
   }
 
   openSectionList() {
@@ -375,6 +433,18 @@ export class DataEntryFormPage implements OnInit {
         }
       );
   }
+
+  // updateSyncStatus(dataValuesObject) {
+  //   this.storageStatus.online = 0;
+  //   this.storageStatus.offline = 0;
+  //   _.map(_.keys(dataValuesObject), key => {
+  //     if(this.dataValuesObject[dataValueId].status == 'synced'){
+
+  //     }else{
+
+  //     }
+  //   });
+  // }
 
   getEntryFormSections(entryFormSections) {
     let sections = [];

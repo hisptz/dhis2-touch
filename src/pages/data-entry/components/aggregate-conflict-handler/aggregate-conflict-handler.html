@@ -1,4 +1,4 @@
-<div no-margin>
+<div no-margin no-padding>
   <div *ngIf="isLoading">
     <ion-item no-lines>
       <div style="text-align: center" item-left>
@@ -9,7 +9,7 @@
   </div>
   <div *ngIf="!isLoading">
     <ion-row>
-      <ion-col *ngIf="summaryObject.updates.length > 0">
+      <ion-col>
         <span *ngIf="summaryObject.updates.length > 0" padding-right>
           <span padding-top>
             {{ summaryObject.updates.length }} Updates&nbsp;
