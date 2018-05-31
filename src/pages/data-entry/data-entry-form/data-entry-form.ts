@@ -247,7 +247,8 @@ export class DataEntryFormPage implements OnInit {
               ? this.storageStatus.online++
               : this.storageStatus.offline++;
           });
-          this.loadingDataSetCompleteness();
+          //this.loadingDataSetCompleteness();
+          this.isLoading = false;
         },
         error => {
           this.isLoading = false;
@@ -258,40 +259,11 @@ export class DataEntryFormPage implements OnInit {
       );
   }
 
-  loadingDataSetCompleteness() {
-    let key = 'Discovering entry form completeness information';
-    this.loadingMessage = this.translationMapper[key]
-      ? this.translationMapper[key]
-      : key;
-    this.isDataSetCompleted = false;
-    this.dataSetsCompletenessInfo = {};
-    let dataSetId = this.dataSet.id;
-    let period = this.entryFormParameter.period.iso;
-    let orgUnitId = this.entryFormParameter.orgUnit.id;
-    let dataDimension = this.entryFormParameter.dataDimension;
-    this.dataSetCompletenessProvider
-      .getDataSetCompletenessInfo(
-        dataSetId,
-        period,
-        orgUnitId,
-        dataDimension,
-        this.currentUser
-      )
-      .subscribe(
-        (dataSetCompletenessInfo: any) => {
-          this.dataSetsCompletenessInfo = dataSetCompletenessInfo;
-          if (dataSetCompletenessInfo && dataSetCompletenessInfo.complete) {
-            this.isDataSetCompleted = true;
-          }
-          this.isLoading = false;
-        },
-        error => {
-          this.isLoading = false;
-          this.appProvider.setNormalNotification(
-            'Failed to discover entry form completeness information'
-          );
-        }
-      );
+  onDataSetCompletenessInformattionLoaded(dataSetCompletenessInfo) {
+    this.dataSetsCompletenessInfo = dataSetCompletenessInfo;
+    if (dataSetCompletenessInfo && dataSetCompletenessInfo.complete) {
+      this.isDataSetCompleted = true;
+    }
   }
 
   openSectionList() {
