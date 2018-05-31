@@ -29,6 +29,7 @@ export class AggregateConflictHandlerComponent implements OnInit {
   loadingMessage: string;
   isLoading: boolean;
   summaryObject: any;
+  icons: any;
 
   constructor(
     private dataValuesProvider: DataValuesProvider,
@@ -43,6 +44,10 @@ export class AggregateConflictHandlerComponent implements OnInit {
     this.summaryObject = {
       updates: [],
       conflicts: []
+    };
+    this.icons = {
+      accept: 'assets/icon/tick.png',
+      decline: 'assets/icon/cancel.png'
     };
   }
 
@@ -131,6 +136,11 @@ export class AggregateConflictHandlerComponent implements OnInit {
         }
       );
     }
+  }
+
+  conflictHandlingAction(key, action) {
+    console.log('key : ' + key);
+    console.log('action : ' + action);
   }
 
   updateSummaryObject(onlineDataValues, dataValuesObject) {

@@ -8,9 +8,31 @@
     </ion-item>
   </div>
   <div *ngIf="!isLoading">
-    <div>updates : {{ summaryObject.updates.length}}</div>
-    <div>conflicts : {{ summaryObject.conflicts.length}}</div>
-
-    <div> {{ summaryObject|json }}</div>
+    <ion-row>
+      <ion-col *ngIf="summaryObject.updates.length > 0">
+        <span *ngIf="summaryObject.updates.length > 0" padding-right>
+          <span padding-top>
+            {{ summaryObject.updates.length }} Updates&nbsp;
+          </span>
+          <span class="item-card" color="font-color" ion-button clear text-center text-capitalize (tap)="conflictHandlingAction('updates','accept')">
+            <img class="side-menu-icon" [src]="icons.accept" />
+          </span>
+          <span class="item-card" color="font-color" ion-button clear text-center text-capitalize (tap)="conflictHandlingAction('updates','decline')">
+            <img class="side-menu-icon" [src]="icons.decline" />
+          </span>
+        </span>
+        <span *ngIf="summaryObject.conflicts.length > 0">
+          <span padding-top>
+            {{ summaryObject.conflicts.length }} Conflicts&nbsp;
+          </span>
+          <span class="item-card" color="font-color" ion-button clear text-center text-capitalize (tap)="conflictHandlingAction('conflicts','accept')">
+            <img class="side-menu-icon" [src]="icons.accept" />
+          </span>
+          <span class="item-card" color="font-color" ion-button clear text-center text-capitalize (tap)="conflictHandlingAction('conflicts','decline')">
+            <img class="side-menu-icon" [src]="icons.decline" />
+          </span>
+        </span>
+      </ion-col>
+    </ion-row>
   </div>
 </div>

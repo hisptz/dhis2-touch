@@ -19,7 +19,7 @@
     <ion-row>
       <ion-col>
         <div *ngIf="entryFormParameter" class="item-card" full padding-bottom padding-top>
-          <div (tap)="goBack()" padding-bottom>
+          <div (tap)="goBack()">
             <b>
               <span [translate]="'Organisation unit'"></span>
             </b> : {{ entryFormParameter.orgUnit.name }}
