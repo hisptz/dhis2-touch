@@ -434,18 +434,6 @@ export class DataEntryFormPage implements OnInit {
       );
   }
 
-  // updateSyncStatus(dataValuesObject) {
-  //   this.storageStatus.online = 0;
-  //   this.storageStatus.offline = 0;
-  //   _.map(_.keys(dataValuesObject), key => {
-  //     if(this.dataValuesObject[dataValueId].status == 'synced'){
-
-  //     }else{
-
-  //     }
-  //   });
-  // }
-
   getEntryFormSections(entryFormSections) {
     let sections = [];
     entryFormSections.forEach((entryFormSection: any) => {
