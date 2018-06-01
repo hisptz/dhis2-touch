@@ -16,6 +16,11 @@
         [mode]="'date'"></data-time-input>
     </div>
   </div>
+
+  <div *ngIf="!(currentOpenEvent['eventDate'] && currentOpenEvent['eventDate'] !='')">
+    <event-date-notification [notification]="getEventDateNotification()"></event-date-notification>
+  </div>
+
 </div>
 <div *ngIf="currentOpenEvent['eventDate'] && currentOpenEvent['eventDate'] !=''">
   <div *ngIf="(programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
