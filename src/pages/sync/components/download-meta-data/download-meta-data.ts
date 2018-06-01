@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { SyncProvider } from '../../providers/sync/sync';
-import { AppProvider } from '../../providers/app/app';
-import { SqlLiteProvider } from '../../providers/sql-lite/sql-lite';
-import { UserProvider } from '../../providers/user/user';
-import { SyncPage } from '../../pages/sync/sync';
-import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
+import { SyncProvider } from '../../../../providers/sync/sync';
+import { AppProvider } from '../../../../providers/app/app';
+import { SqlLiteProvider } from '../../../../providers/sql-lite/sql-lite';
+import { UserProvider } from '../../../../providers/user/user';
+import { SyncPage } from '../../../../pages/sync/sync';
+import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the DownloadMetaDataComponent component.

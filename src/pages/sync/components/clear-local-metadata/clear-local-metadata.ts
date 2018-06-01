@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { SyncProvider } from '../../providers/sync/sync';
-import { AppProvider } from '../../providers/app/app';
-import { SqlLiteProvider } from '../../providers/sql-lite/sql-lite';
-import { UserProvider } from '../../providers/user/user';
+import { SyncProvider } from '../../../../providers/sync/sync';
+import { AppProvider } from '../../../../providers/app/app';
+import { SqlLiteProvider } from '../../../../providers/sql-lite/sql-lite';
+import { UserProvider } from '../../../../providers/user/user';
 import { AlertController } from 'ionic-angular';
-import { SyncPage } from '../../pages/sync/sync';
-import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
+import { SyncPage } from '../../../../pages/sync/sync';
+import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the ClearLocalMetadataComponent component.

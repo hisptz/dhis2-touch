@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { AppProvider } from '../../providers/app/app';
+import { AppProvider } from '../../../../providers/app/app';
 import { AlertController } from 'ionic-angular';
-import { UserProvider } from '../../providers/user/user';
-import { DataValuesProvider } from '../../providers/data-values/data-values';
-import { TrackerCaptureProvider } from '../../providers/tracker-capture/tracker-capture';
-import { EventCaptureFormProvider } from '../../providers/event-capture-form/event-capture-form';
-import { TrackedEntityInstancesProvider } from '../../providers/tracked-entity-instances/tracked-entity-instances';
-import { SqlLiteProvider } from '../../providers/sql-lite/sql-lite';
-import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
+import { UserProvider } from '../../../../providers/user/user';
+import { DataValuesProvider } from '../../../../providers/data-values/data-values';
+import { TrackerCaptureProvider } from '../../../../providers/tracker-capture/tracker-capture';
+import { EventCaptureFormProvider } from '../../../../providers/event-capture-form/event-capture-form';
+import { TrackedEntityInstancesProvider } from '../../../../providers/tracked-entity-instances/tracked-entity-instances';
+import { SqlLiteProvider } from '../../../../providers/sql-lite/sql-lite';
+import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the ClearLocalDataComponent component.
