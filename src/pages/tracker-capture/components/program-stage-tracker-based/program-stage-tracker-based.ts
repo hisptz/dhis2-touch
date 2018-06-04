@@ -14,6 +14,7 @@ import { EventCaptureFormProvider } from '../../../../providers/event-capture-fo
 import { SettingsProvider } from '../../../../providers/settings/settings';
 import { ActionSheetController } from 'ionic-angular';
 import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
+import * as _ from 'lodash';
 
 /**
  * Generated class for the ProgramStageTrackerBasedComponent component.
@@ -196,7 +197,14 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
             );
             this.isNewEventFormOpened = true;
           } else if (events && events.length > 1) {
+            this.currentOpenEvent = events.pop();
             this.currentEvents = events;
+            this.currentEventId = this.currentOpenEvent.id;
+            this.updateDataObjectModel(
+              this.currentOpenEvent.dataValues,
+              this.programStage.programStageDataElements
+            );
+            this.isNewEventFormOpened = true;
           }
           this.renderDataAsTable();
         },
@@ -249,7 +257,6 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         dueDate => {
-          console.log(dueDate);
           const dataDimension: any = this.getDataDimensions();
           this.currentOpenEvent = this.eventCaptureFormProvider.getEmptyEvent(
             this.currentProgram,
@@ -260,6 +267,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
             'tracker-capture'
           );
           this.dataValuesSavingStatusClass = {};
+          this.currentOpenEvent['dueDate'] = dueDate;
           this.currentOpenEvent[
             'trackedEntityInstance'
           ] = this.trackedEntityInstance;
@@ -352,6 +360,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
   }
 
   renderDataAsTable() {
+    this.currentEvents = _.sortBy(this.currentEvents, ['eventDate']);
     this.eventCaptureFormProvider
       .getTableFormatResult(
         this.columnsToDisplay,

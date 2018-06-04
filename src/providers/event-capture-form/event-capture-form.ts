@@ -554,6 +554,7 @@ export class EventCaptureFormProvider {
               events.push(event);
             }
           });
+          events = _.sortBy(events, ['eventDate']);
           observer.next(events);
           observer.complete();
         },
