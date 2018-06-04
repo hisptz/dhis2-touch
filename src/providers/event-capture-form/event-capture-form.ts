@@ -370,8 +370,9 @@ export class EventCaptureFormProvider {
     attributeCc,
     eventType
   ) {
-    let event = {
-      id: dhis2.util.uid(),
+    const uid = dhis2.util.uid();
+    const event = {
+      id: uid,
       program: currentProgram.id,
       programName: currentProgram.name,
       programStage: programStageId,
@@ -390,6 +391,10 @@ export class EventCaptureFormProvider {
       dataValues: []
     };
     return event;
+  }
+
+  getEventUid() {
+    return dhis2.util.uid();
   }
 
   /**
