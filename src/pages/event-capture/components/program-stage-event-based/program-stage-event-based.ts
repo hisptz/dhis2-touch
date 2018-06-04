@@ -127,11 +127,14 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   }
 
   AddNewEvent() {
-    this.dataObject = {};
-    this.dataValuesSavingStatusClass = {};
     this.eventDate = '';
     this.hasEntryFormReSet = true;
     this.currentEvent = Object.assign({}, this.emptyEvent);
+    this.currentEvent.id = this.eventCaptureFormProvider.getEventUid();
+    setTimeout(() => {
+      this.dataObject = {};
+      this.dataValuesSavingStatusClass = {};
+    }, 100);
   }
 
   goBack() {

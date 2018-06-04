@@ -14,6 +14,7 @@ import { EventCaptureFormProvider } from '../../../../providers/event-capture-fo
 import { SettingsProvider } from '../../../../providers/settings/settings';
 import { ActionSheetController } from 'ionic-angular';
 import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
+import * as _ from 'lodash';
 
 /**
  * Generated class for the ProgramStageTrackerBasedComponent component.
@@ -196,7 +197,14 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
             );
             this.isNewEventFormOpened = true;
           } else if (events && events.length > 1) {
+            this.currentOpenEvent = events.pop();
             this.currentEvents = events;
+            this.currentEventId = this.currentOpenEvent.id;
+            this.updateDataObjectModel(
+              this.currentOpenEvent.dataValues,
+              this.programStage.programStageDataElements
+            );
+            this.isNewEventFormOpened = true;
           }
           this.renderDataAsTable();
         },
@@ -238,23 +246,43 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
   }
 
   createEmptyEvent() {
-    //@todo creation of empty events based on
-    let dataDimension: any = this.getDataDimensions();
-    this.currentOpenEvent = this.eventCaptureFormProvider.getEmptyEvent(
-      this.currentProgram,
-      this.currentOrgUnit,
-      this.programStage.id,
-      dataDimension.attributeCos,
-      dataDimension.attributeCc,
-      'tracker-capture'
-    );
-    this.dataValuesSavingStatusClass = {};
-    this.currentOpenEvent['trackedEntityInstance'] = this.trackedEntityInstance;
-    this.dataObjectModel = {};
-    this.currentEventId = this.currentOpenEvent.id;
-    this.isNewEventFormOpened = true;
-    this.isAddButtonDisabled = true;
-    this.canEventBeDeleted = false;
+    this.eventCaptureFormProvider
+      .getEventDueDate(
+        this.currentEvents,
+        this.programStage,
+        this.trackedEntityInstance,
+        this.currentOrgUnit.id,
+        this.currentProgram.id,
+        this.currentUser
+      )
+      .subscribe(
+        dueDate => {
+          const dataDimension: any = this.getDataDimensions();
+          this.currentOpenEvent = this.eventCaptureFormProvider.getEmptyEvent(
+            this.currentProgram,
+            this.currentOrgUnit,
+            this.programStage.id,
+            dataDimension.attributeCos,
+            dataDimension.attributeCc,
+            'tracker-capture'
+          );
+          this.dataValuesSavingStatusClass = {};
+          this.currentOpenEvent['dueDate'] = dueDate;
+          this.currentOpenEvent[
+            'trackedEntityInstance'
+          ] = this.trackedEntityInstance;
+          this.dataObjectModel = {};
+          this.currentEventId = this.currentOpenEvent.id;
+          this.isNewEventFormOpened = true;
+          this.isAddButtonDisabled = true;
+          this.canEventBeDeleted = false;
+        },
+        error => {
+          console.log(
+            'Error on getting due date for new event ' + JSON.stringify(error)
+          );
+        }
+      );
   }
 
   addRepeatableEvent(currentOpenEvent) {
@@ -332,6 +360,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
   }
 
   renderDataAsTable() {
+    this.currentEvents = _.sortBy(this.currentEvents, ['eventDate']);
     this.eventCaptureFormProvider
       .getTableFormatResult(
         this.columnsToDisplay,

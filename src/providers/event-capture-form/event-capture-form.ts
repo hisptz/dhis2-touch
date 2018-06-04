@@ -6,6 +6,8 @@ import { HttpClientProvider } from '../http-client/http-client';
 import { ProgramStageSectionsProvider } from '../program-stage-sections/program-stage-sections';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
+import * as moment from 'moment';
+import { EnrollmentsProvider } from '../enrollments/enrollments';
 
 declare var dhis2: any;
 
@@ -22,8 +24,79 @@ export class EventCaptureFormProvider {
     private sqlLiteProvider: SqlLiteProvider,
     private httpClientProvider: HttpClientProvider,
     private programStageSectionsProvider: ProgramStageSectionsProvider,
-    private dataElementProvider: DataElementsProvider
+    private dataElementProvider: DataElementsProvider,
+    private enrollmentsProvider: EnrollmentsProvider
   ) {}
+
+  getEventDueDate(
+    currentEvents,
+    programStage,
+    trackedEntityInstance,
+    organisationUnitId,
+    programId,
+    currentUser
+  ): Observable<any> {
+    return new Observable(observer => {
+      this.enrollmentsProvider
+        .getSavedEnrollmentsByAttribute(
+          'trackedEntityInstance',
+          [trackedEntityInstance],
+          currentUser
+        )
+        .subscribe(
+          enrollments => {
+            const matchedEnrollment = _.find(enrollments, {
+              orgUnit: organisationUnitId,
+              program: programId
+            });
+            let dueDate = moment(new Date()).format('YYYY-MM-DD');
+            if (matchedEnrollment) {
+              let referenceDate = this.isValidDate(
+                matchedEnrollment.incidentDate
+              )
+                ? matchedEnrollment.incidentDate
+                : matchedEnrollment.enrollmentDate;
+              let offset = programStage.minDaysFromStart;
+
+              if (programStage.generatedByEnrollmentDate) {
+                referenceDate = matchedEnrollment.enrollmentDate;
+              }
+              if (programStage.repeatable) {
+                if (currentEvents.length > 0) {
+                  currentEvents = _.reverse(
+                    _.sortBy(currentEvents, ['eventDate'])
+                  );
+                  referenceDate = currentEvents[0].eventDate;
+                  if (programStage.standardInterval) {
+                    offset = programStage.standardInterval;
+                  }
+                }
+              }
+              dueDate = moment(referenceDate)
+                .add(offset, 'days')
+                .format('YYYY-MM-DD');
+            }
+            observer.next(dueDate);
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+    });
+  }
+
+  isValidDate(str) {
+    var d = moment(str, 'D/M/YYYY');
+    if (d == null || !d.isValid()) return false;
+
+    return (
+      str.indexOf(d.format('D/M/YYYY')) >= 0 ||
+      str.indexOf(d.format('DD/MM/YYYY')) >= 0 ||
+      str.indexOf(d.format('D/M/YY')) >= 0 ||
+      str.indexOf(d.format('DD/MM/YY')) >= 0
+    );
+  }
 
   /**
    *
@@ -370,8 +443,9 @@ export class EventCaptureFormProvider {
     attributeCc,
     eventType
   ) {
-    let event = {
-      id: dhis2.util.uid(),
+    const uid = dhis2.util.uid();
+    const event = {
+      id: uid,
       program: currentProgram.id,
       programName: currentProgram.name,
       programStage: programStageId,
@@ -390,6 +464,10 @@ export class EventCaptureFormProvider {
       dataValues: []
     };
     return event;
+  }
+
+  getEventUid() {
+    return dhis2.util.uid();
   }
 
   /**
@@ -476,6 +554,7 @@ export class EventCaptureFormProvider {
               events.push(event);
             }
           });
+          events = _.sortBy(events, ['eventDate']);
           observer.next(events);
           observer.complete();
         },
