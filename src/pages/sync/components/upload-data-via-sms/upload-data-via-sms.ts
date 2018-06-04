@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { PeriodSelectionProvider } from '../../providers/period-selection/period-selection';
+import { PeriodSelectionProvider } from '../../../../providers/period-selection/period-selection';
 import { ModalController } from 'ionic-angular';
-import { OrganisationUnitsProvider } from '../../providers/organisation-units/organisation-units';
-import { UserProvider } from '../../providers/user/user';
-import { AppProvider } from '../../providers/app/app';
-import { DataSetsProvider } from '../../providers/data-sets/data-sets';
-import { SmsCommandProvider } from '../../providers/sms-command/sms-command';
-import { SmsCommand } from '../../models/smsCommand';
-import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
+import { OrganisationUnitsProvider } from '../../../../providers/organisation-units/organisation-units';
+import { UserProvider } from '../../../../providers/user/user';
+import { AppProvider } from '../../../../providers/app/app';
+import { DataSetsProvider } from '../../../../providers/data-sets/data-sets';
+import { SmsCommandProvider } from '../../../../providers/sms-command/sms-command';
+import { SmsCommand } from '../../../../models/smsCommand';
+import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
 
 /**
  * Generated class for the UploadDataViaSmsComponent component.
