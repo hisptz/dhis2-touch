@@ -501,6 +501,8 @@ export const DATABASE_STRUCTURE = {
       { value: 'repeatable', type: 'TEXT' },
       { value: 'allowGenerateNextVisit', type: 'TEXT' },
       { value: 'sortOrder', type: 'TEXT' },
+      { value: 'standardInterval', type: 'TEXT' },
+      { value: 'minDaysFromStart', type: 'TEXT' },
       { value: 'generatedByEnrollmentDate', type: 'TEXT' },
       { value: 'autoGenerateEvent', type: 'TEXT' },
       { value: 'captureCoordinates', type: 'TEXT' },
