@@ -238,23 +238,43 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
   }
 
   createEmptyEvent() {
-    //@todo creation of empty events based on
-    let dataDimension: any = this.getDataDimensions();
-    this.currentOpenEvent = this.eventCaptureFormProvider.getEmptyEvent(
-      this.currentProgram,
-      this.currentOrgUnit,
-      this.programStage.id,
-      dataDimension.attributeCos,
-      dataDimension.attributeCc,
-      'tracker-capture'
-    );
-    this.dataValuesSavingStatusClass = {};
-    this.currentOpenEvent['trackedEntityInstance'] = this.trackedEntityInstance;
-    this.dataObjectModel = {};
-    this.currentEventId = this.currentOpenEvent.id;
-    this.isNewEventFormOpened = true;
-    this.isAddButtonDisabled = true;
-    this.canEventBeDeleted = false;
+    this.eventCaptureFormProvider
+      .getEventDueDate(
+        this.currentEvents,
+        this.programStage,
+        this.trackedEntityInstance,
+        this.currentOrgUnit.id,
+        this.currentProgram.id,
+        this.currentUser
+      )
+      .subscribe(
+        dueDate => {
+          console.log(dueDate);
+          const dataDimension: any = this.getDataDimensions();
+          this.currentOpenEvent = this.eventCaptureFormProvider.getEmptyEvent(
+            this.currentProgram,
+            this.currentOrgUnit,
+            this.programStage.id,
+            dataDimension.attributeCos,
+            dataDimension.attributeCc,
+            'tracker-capture'
+          );
+          this.dataValuesSavingStatusClass = {};
+          this.currentOpenEvent[
+            'trackedEntityInstance'
+          ] = this.trackedEntityInstance;
+          this.dataObjectModel = {};
+          this.currentEventId = this.currentOpenEvent.id;
+          this.isNewEventFormOpened = true;
+          this.isAddButtonDisabled = true;
+          this.canEventBeDeleted = false;
+        },
+        error => {
+          console.log(
+            'Error on getting due date for new event ' + JSON.stringify(error)
+          );
+        }
+      );
   }
 
   addRepeatableEvent(currentOpenEvent) {
