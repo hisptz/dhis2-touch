@@ -46,6 +46,7 @@
     "angular-tree-component": "^7.2.0",
     "angular2-virtual-scroll": "^0.3.2",
     "cordova-android": "7.1.0",
+    "cordova-ios": "4.5.4",
     "cordova-plugin-advanced-http": "^1.11.1",
     "cordova-plugin-app-version": "^0.1.9",
     "cordova-plugin-console": "^1.1.0",
