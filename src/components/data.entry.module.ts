@@ -18,6 +18,7 @@ import { PhoneNumberInputComponent } from './phone-number-input/phone-number-inp
 import { RadioButtonInputComponent } from './radio-button-input/radio-button-input';
 import { DataTimeInputComponent } from './data-time-input/data-time-input';
 import { BarcodeInputComponent } from './barcode-input/barcode-input';
+import { AgeInputComponent } from './age-input/age-input';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { BarcodeInputComponent } from './barcode-input/barcode-input';
     PhoneNumberInputComponent,
     RadioButtonInputComponent,
     DataTimeInputComponent,
-    BarcodeInputComponent
+    BarcodeInputComponent,
+    AgeInputComponent
   ],
   imports: [IonicModule, SharedModule],
   exports: [
@@ -57,7 +59,8 @@ import { BarcodeInputComponent } from './barcode-input/barcode-input';
     PhoneNumberInputComponent,
     RadioButtonInputComponent,
     DataTimeInputComponent,
-    BarcodeInputComponent
+    BarcodeInputComponent,
+    AgeInputComponent
   ]
 })
 export class DataEntryModule {}
