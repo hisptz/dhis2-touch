@@ -30,8 +30,6 @@
                         <ion-icon name="add" color="icon-color"></ion-icon>&nbsp;&nbsp; {{translationMapper['New event']}}
                       </button>
                     </div>
-                  </ion-col>
-                  <ion-col col-auto>
                     <div float-right>
                       <div class="item-card" float-left color="danger" (click)="deleteEvent(currentEventId)" *ngIf="couldEventBeDeleted()" padding
                         ion-button clear text-center text-capitalize>
@@ -61,8 +59,6 @@
               <ion-icon name="add" color="icon-color"></ion-icon>&nbsp;&nbsp; {{translationMapper['New event']}}
             </button>
           </div>
-        </ion-col>
-        <ion-col col-auto>
           <div float-right>
             <div class="item-card" float-left color="danger" (click)="deleteEvent(currentEventId)" *ngIf="couldEventBeDeleted()" padding
               ion-button clear text-center text-capitalize>

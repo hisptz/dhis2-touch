@@ -12,12 +12,12 @@
     </div>
     <ion-row no-padding>
       <ion-col>
-        <div class="item-card" color="font-color" (tap)="dismissView()" ion-button clear text-justify>
-          <ion-icon name="arrow-back" color="icon-color"></ion-icon>&nbsp;
-          <span [translate]="'Back'"></span>
+        <div float-left>
+          <div class="item-card" color="font-color" (tap)="dismissView()" ion-button clear text-justify>
+            <ion-icon name="arrow-back" color="icon-color"></ion-icon>&nbsp;
+            <span [translate]="'Back'"></span>
+          </div>
         </div>
-      </ion-col>
-      <ion-col col-auto>
         <div float-right>
           <div ion-button clear text-justify *ngIf="isLoadingMyLocation" class="animated fadeIn">
             <loading loadingSize="small"></loading>
