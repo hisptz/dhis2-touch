@@ -23,9 +23,7 @@ export class AgeInputComponent implements OnInit {
   @Input() categoryOptionComboId;
   @Input() data;
   @Output() onChange = new EventEmitter();
-
   inputFieldValue: string;
-
   currentAge: CurrentAge;
   momentFormat: string;
 

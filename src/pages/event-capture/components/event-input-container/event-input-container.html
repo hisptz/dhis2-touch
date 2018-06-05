@@ -32,6 +32,10 @@
         [data]="data">
       </true-only-input-field>
     </div>
+    <div *ngIf="dataElement.valueType === 'AGE'">
+      <age-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="'dataElement'" [data]="data">
+      </age-input>
+    </div>
     <div *ngIf="dataElement.valueType === 'BOOLEAN'">
       <boolean-input-field (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="'dataElement'"
         [data]="data">
