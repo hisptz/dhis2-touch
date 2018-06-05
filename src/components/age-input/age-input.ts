@@ -43,9 +43,6 @@ export class AgeInputComponent implements OnInit {
     } else {
       this.inputFieldValue = '';
     }
-    this.inputFieldValue = moment(this.inputFieldValue).format(
-      this.momentFormat
-    );
     this.setCurrentAgeValue();
   }
 
