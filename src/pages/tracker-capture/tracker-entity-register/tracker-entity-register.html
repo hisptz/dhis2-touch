@@ -122,15 +122,13 @@
                             <span [translate]="'Back'"></span>
                           </div>
                         </div>
-                      </ion-col>
-                      <ion-col col-auto>
                         <div float-right>
                           <div class="item-card" color="font-color" padding ion-button clear text-center text-capitalize (click)="addNewTrackedEntity()">
                             <img class="footer-icon" [src]="icons.addNewCase" />&nbsp;&nbsp;
                             <span [translate]="'Add new'"></span>
                           </div>
-                          <div class="item-card" color="danger" float-right (click)="deleteTrackedEntity(trackedEntityInstance)" padding ion-button
-                            clear text-center text-capitalize>
+                          <div class="item-card" color="danger" (click)="deleteTrackedEntity(trackedEntityInstance)" padding ion-button clear text-center
+                            text-capitalize>
                             <ion-icon name="trash"></ion-icon>&nbsp;&nbsp;
                             <span color="font-color" [translate]="'Delete'"></span>
                           </div>
