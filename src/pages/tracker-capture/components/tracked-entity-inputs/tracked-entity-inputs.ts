@@ -62,7 +62,8 @@ export class TrackedEntityInputsComponent implements OnInit {
       'UNIT_INTERVAL',
       'PERCENTAGE',
       'EMAIL',
-      'PHONE_NUMBER'
+      'PHONE_NUMBER',
+      'AGE'
     ];
     if (this.trackedEntityAttribute && this.trackedEntityAttribute.id) {
       this.fieldLabelKey = this.trackedEntityAttribute.name;

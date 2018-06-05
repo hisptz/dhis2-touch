@@ -61,7 +61,8 @@ export class InputContainerComponent implements OnInit {
       'UNIT_INTERVAL',
       'PERCENTAGE',
       'EMAIL',
-      'PHONE_NUMBER'
+      'PHONE_NUMBER',
+      'AGE'
     ];
     this.settingProvider
       .getSettingsForTheApp(this.currentUser)

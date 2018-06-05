@@ -68,7 +68,8 @@ export class EventInputContainerComponent implements OnInit, OnDestroy {
       'UNIT_INTERVAL',
       'PERCENTAGE',
       'EMAIL',
-      'PHONE_NUMBER'
+      'PHONE_NUMBER',
+      'AGE'
     ];
     this.fieldLabelKey = this.dataElement.name;
     this.settingsProvider
