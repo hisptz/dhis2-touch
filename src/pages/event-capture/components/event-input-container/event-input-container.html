@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="!isLoading">
   <div (click)="showTooltips()" class="inputLabel">
     {{ fieldLabelKey }}
     <span *ngIf="mandatory" class="required">&nbsp;*</span>
@@ -13,13 +13,13 @@
   </div>
   <div *ngIf="!dataElement.optionSet" [ngClass]="(dataValuesSavingStatusClass[dataElement.id +'-dataElement'])?dataValuesSavingStatusClass[dataElement.id +'-dataElement']:'input-field-container'">
     <div *ngIf="textInputField.indexOf(dataElement.valueType) > -1">
-      <text-input-field (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="'dataElement'"
-        [data]="data" [valueType]="dataElement.valueType">
+      <text-input-field [dataEntrySettings]="dataEntrySettings" (onChange)="updateValue($event)" [dataElementId]="dataElement.id"
+        [categoryOptionComboId]="'dataElement'" [data]="data" [valueType]="dataElement.valueType">
       </text-input-field>
     </div>
     <div *ngIf="numericalInputField.indexOf(dataElement.valueType) > -1">
       <numerical-input-field (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="'dataElement'"
-        [data]="data" [valueType]="dataElement.valueType">
+        [data]="data" [dataEntrySettings]="dataEntrySettings" [valueType]="dataElement.valueType">
       </numerical-input-field>
     </div>
     <div *ngIf="dataElement.valueType === 'DATE' || dataElement.valueType === 'DATETIME' || dataElement.valueType === 'TIME' ">
@@ -31,6 +31,10 @@
       <true-only-input-field (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="'dataElement'"
         [data]="data">
       </true-only-input-field>
+    </div>
+    <div *ngIf="dataElement.valueType === 'AGE'">
+      <age-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="'dataElement'" [data]="data">
+      </age-input>
     </div>
     <div *ngIf="dataElement.valueType === 'BOOLEAN'">
       <boolean-input-field (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="'dataElement'"

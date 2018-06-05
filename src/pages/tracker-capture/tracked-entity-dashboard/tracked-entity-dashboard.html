@@ -70,27 +70,28 @@
                     </b>
                     <hr>
                   </div>
-                  <tracker-registration-form [formLayout]="formLayout" [dataObject]="dataObject" [dataUpdateStatus]="dataUpdateStatus$ | async" [currentUser]="currentUser" [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
+                  <tracker-registration-form [formLayout]="formLayout" [dataObject]="dataObject" [dataUpdateStatus]="dataUpdateStatus$ | async"
+                    [currentUser]="currentUser" [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
                     [trackerRegistrationForm]="trackerRegistrationForm" [programTrackedEntityAttributes]="programTrackedEntityAttributes"
                     (onChange)="updateData($event,false)"></tracker-registration-form>
                   <div no-padding>
-                    <div style="display: inline-block;width: 49.3%">
-                      <div float-left>
-                        <div class="item-card" color="font-color" (click)="goBack()" padding ion-button clear text-center text-capitalize>
-                          <ion-icon name="ios-arrow-back-outline"></ion-icon>&nbsp;&nbsp;
-                          <span [translate]="'Back'"></span>
+                    <ion-row no-padding no-margin>
+                      <ion-col>
+                        <div float-left>
+                          <div class="item-card" color="font-color" (click)="goBack()" padding ion-button clear text-center text-capitalize>
+                            <ion-icon name="ios-arrow-back-outline"></ion-icon>&nbsp;&nbsp;
+                            <span [translate]="'Back'"></span>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                    <div style="display: inline-block;width: 49.3%">
-                      <div float-right>
-                        <div class="item-card" color="danger" float-right (click)="deleteTrackedEntity(trackedEntityInstance.id)" padding ion-button
-                          clear text-center text-capitalize>
-                          <span [translate]="'Delete'"></span>&nbsp;&nbsp;
-                          <ion-icon name="trash"></ion-icon>
+                        <div float-right>
+                          <div class="item-card" color="danger" (click)="deleteTrackedEntity(trackedEntityInstance.id)" padding ion-button clear text-center
+                            text-capitalize>
+                            <span [translate]="'Delete'"></span>&nbsp;&nbsp;
+                            <ion-icon name="trash"></ion-icon>
+                          </div>
                         </div>
-                      </div>
-                    </div>
+                      </ion-col>
+                    </ion-row>
                   </div>
                 </div>
                 <div class="item-card-program-stage-section">

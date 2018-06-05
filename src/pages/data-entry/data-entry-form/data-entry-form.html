@@ -19,7 +19,7 @@
     <ion-row>
       <ion-col>
         <div *ngIf="entryFormParameter" class="item-card" full padding-bottom padding-top>
-          <div (tap)="goBack()" padding-bottom>
+          <div (tap)="goBack()">
             <b>
               <span [translate]="'Organisation unit'"></span>
             </b> : {{ entryFormParameter.orgUnit.name }}
@@ -40,6 +40,10 @@
                 <span [translate]="'not synced'"></span>
               </b> : {{storageStatus.offline }}</span>
           </div>
+          <aggregate-conflict-handler (conflictFoundAction)="scrollEntryFormUp()" (mergeDataAction)="onMergingWithOnlineData($event)"
+            (dataSetCompletenessInfoAction)="onDataSetCompletenessInformattionLoaded($event)" [(dataValuesObject)]="dataValuesObject"
+            [orgUnitId]="entryFormParameter.orgUnit.id" [dataSetId]="entryFormParameter.dataSet.id" [period]="entryFormParameter.period.iso"
+            [dataDimension]="this.entryFormParameter.dataDimension"></aggregate-conflict-handler>
           <div *ngIf="!isLoading && indicators && indicators.length > 0">
             <div (click)="viewEntryFormIndicators(indicators)" class="item-card" color="font-color">
               <ion-item>
@@ -53,7 +57,6 @@
           <loading [loadingMessage]="loadingMessage" [loadingSize]="'large'"></loading>
         </div>
         <div *ngIf="!isLoading">
-
           <div *ngIf="entryFormType && entryFormType == 'CUSTOM'">
             <custom-data-entry-form [dataEntryFormDesign]="dataEntryFormDesign" (onCustomFormInputChange)="updateData($event)" [data]="dataValuesObject"
               [entryFormType]="'aggregate'" [entryFormSections]="entryFormSections" [dataUpdateStatus]="dataUpdateStatus"></custom-data-entry-form>
@@ -62,94 +65,12 @@
             <div *ngIf="entryFormSections && entryFormSections.length == 0">
               <empty-list-notification [emptyListMessage]="translationMapper['The is no field associated with this entry form, Please contact our help desk'] "></empty-list-notification>
             </div>
-            <div *ngFor="let section of entryFormSections;let currentSectionIndex = index;trackBy: trackByFn">
-              <div *ngIf="(currentSectionIndex + 1) == pager.page" class="item-card" no-padding (click)="openSectionList()">
-                <ion-item>
-                  <p ion-text color="font-color" no-padding align="center">
-                    {{ section.name }}
-                  </p>
-                  <div style="text-align: center" item-right>
-                    <span float-end class="side-menu-icon">
-                      <img [src]="icons.menu">
-                    </span>
-                  </div>
-                </ion-item>
-              </div>
-            </div>
-            <div *ngFor="let section of entryFormSections;let currentSectionIndex = index;trackBy: trackByFn">
-              <div *ngIf="(currentSectionIndex + 1) == pager.page">
-                <div class="item-card-entry-form">
-                  <div class="entry-form-container">
-                    <form>
-                      <div *ngFor="let dataElement of section.dataElements;trackBy: trackByFn">
-                        <input-container [dataElement]="dataElement" [currentUser]="currentUser" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
-                          [(data)]="dataValuesObject" (onChange)="updateData($event)"></input-container>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="item-card">
-            <ion-row *ngIf="entryFormSections.length > 1 && entryFormType && entryFormType != 'CUSTOM'">
-              <ion-col col-2 col-sm-1 (click)="changePagination(pager.page - 1)" padding-left padding-bottom padding-top>
-                <ion-icon name="ios-arrow-back-outline"></ion-icon>
-              </ion-col>
-              <ion-col col-3 col-sm-2 padding-bottom padding-top>
-                <div (tap)="openSectionList()">
-                  {{ pager.page + ' / ' + pager.total }}
-                </div>
-              </ion-col>
-              <ion-col col-2 col-sm-1 (click)="changePagination(pager.page  + 1)" padding-bottom padding-top>
-                <ion-icon name="ios-arrow-forward-outline"></ion-icon>
-              </ion-col>
-              <ion-col col-5 col-sm-8 *ngIf="!isDataSetCompleted">
-                <button color="favorite" round ion-button full [disabled]="isDataSetCompletenessProcessRunning" (tap)="updateDataSetCompleteness()">
-                  <span [translate]="'Complete'"></span>
-                </button>
-              </ion-col>
-              <ion-col col-5 col-sm-8 *ngIf="isDataSetCompleted">
-                <button color="danger" round ion-button full [disabled]="isDataSetCompletenessProcessRunning" (tap)="updateDataSetCompleteness()">
-                  <span [translate]="'Undo complete'"></span>
-                </button>
-              </ion-col>
-            </ion-row>
-
-            <ion-row *ngIf="entryFormSections.length == 1 || (entryFormType && entryFormType == 'CUSTOM') ">
-              <ion-col col-6 col-sm-6>
-                <button color="favorite" round ion-button full [disabled]="isDataSetCompletenessProcessRunning || isDataSetCompleted" (tap)="updateDataSetCompleteness()">
-                  <span [translate]="'Complete'"></span>
-                </button>
-              </ion-col>
-              <ion-col col-6 col-sm-6>
-                <button color="danger" round ion-button full [disabled]="isDataSetCompletenessProcessRunning || !isDataSetCompleted" (tap)="updateDataSetCompleteness()">
-                  <span [translate]="'Undo complete'"></span>
-                </button>
-              </ion-col>
-            </ion-row>
-
-            <div *ngIf="isDataSetCompletenessProcessRunning" class="item-card animated fadeIn">
-              <ion-row>
-                <ion-col col-1>
-                  <loading loadingSize="small"></loading>
-                </ion-col>
-                <ion-col col-11>
-                  <p>&nbsp;
-                    <span [translate]="'Please wait ...'"></span>
-                  </p>
-                </ion-col>
-              </ion-row>
-            </div>
-            <div *ngIf="!isDataSetCompletenessProcessRunning">
-              <div *ngIf="dataSetsCompletenessInfo && dataSetsCompletenessInfo.complete">
-                <div class="item-card" padding-bottom padding-top (click)="viewUserCompletenessInformation(dataSetsCompletenessInfo)">
-                  <span [translate]="'Completed by'"></span>
-                  <b>{{ dataSetsCompletenessInfo.storedBy }}</b> {{'on'|translate }}
-                  <b>{{ dataSetsCompletenessInfo.date }}</b>
-                </div>
-              </div>
-            </div>
+            <default-data-entry-form (onPaginationChange)="changePagination($event)" (onUpdateDataSetCompleteness)="updateDataSetCompleteness()"
+              (onViewUserCompletenessInformation)="viewUserCompletenessInformation($event)" (onChange)="updateData($event)"
+              (onSectionListOpen)="openSectionList()" [entryFormType]="entryFormType" [isDataSetCompletenessProcessRunning]="isDataSetCompletenessProcessRunning"
+              [currentUser]="currentUser" [icons]="icons" [isDataSetCompleted]="isDataSetCompleted" [dataSetsCompletenessInfo]="dataSetsCompletenessInfo"
+              [dataValuesSavingStatusClass]="dataValuesSavingStatusClass" [dataValuesObject]="dataValuesObject" [pager]="pager"
+              [entryFormSections]="entryFormSections"></default-data-entry-form>
           </div>
         </div>
       </ion-col>

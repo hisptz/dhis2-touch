@@ -7,6 +7,7 @@ import { ProgramsProvider } from '../../providers/programs/programs';
 import { TrackerCaptureProvider } from '../../providers/tracker-capture/tracker-capture';
 import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 import * as _ from 'lodash';
+import { SettingsProvider } from '../../providers/settings/settings';
 
 /**
  * Generated class for the TrackerCapturePage page.
@@ -35,10 +36,11 @@ export class TrackerCapturePage implements OnInit {
   trackedEntityInstances: Array<any>;
   programTrackedEntityAttributes: Array<any>;
   trackedEntityInstancesIds: Array<string>;
-  attributeToDisplay: any;
+  columnsToDisplay: any;
   icons: any = {};
   tableLayout: any;
   translationMapper: any;
+  dataEntrySettings: any;
 
   constructor(
     public navCtrl: NavController,
@@ -48,7 +50,8 @@ export class TrackerCapturePage implements OnInit {
     private programsProvider: ProgramsProvider,
     private trackerCaptureProvider: TrackerCaptureProvider,
     private organisationUnitsProvider: OrganisationUnitsProvider,
-    private appTranslation: AppTranslationProvider
+    private appTranslation: AppTranslationProvider,
+    private settingsProvider: SettingsProvider
   ) {}
 
   ionViewDidEnter() {
@@ -64,7 +67,7 @@ export class TrackerCapturePage implements OnInit {
     this.icons.orgUnit = 'assets/icon/orgUnit.png';
     this.icons.program = 'assets/icon/program.png';
     this.trackedEntityInstances = [];
-    this.attributeToDisplay = {};
+    this.columnsToDisplay = {};
     this.isLoading = true;
     this.isFormReady = false;
     this.translationMapper = {};
@@ -95,6 +98,7 @@ export class TrackerCapturePage implements OnInit {
               if (lastSelectedOrgUnit && lastSelectedOrgUnit.id) {
                 this.selectedOrgUnit = lastSelectedOrgUnit;
                 this.loadingPrograms();
+                this.loadingAppSetting();
               }
               this.updateTrackerCaptureSelections();
             });
@@ -108,6 +112,14 @@ export class TrackerCapturePage implements OnInit {
         );
       }
     );
+  }
+
+  loadingAppSetting() {
+    this.settingsProvider
+      .getSettingsForTheApp(this.currentUser)
+      .subscribe((appSettings: any) => {
+        this.dataEntrySettings = appSettings.entryForm;
+      });
   }
 
   loadingPrograms() {
@@ -180,7 +192,8 @@ export class TrackerCapturePage implements OnInit {
     this.isLoading = false;
     this.loadingMessage = '';
     if (this.isFormReady) {
-      this.attributeToDisplay = {};
+      this.columnsToDisplay = {};
+      const { label } = this.dataEntrySettings;
       if (
         this.programTrackedEntityAttributes &&
         this.programTrackedEntityAttributes.length > 0
@@ -190,14 +203,22 @@ export class TrackerCapturePage implements OnInit {
             if (programTrackedEntityAttribute.displayInList) {
               const attribute =
                 programTrackedEntityAttribute.trackedEntityAttribute;
-              this.attributeToDisplay[attribute.id] = attribute.name;
+              let fieldLabel = attribute.name;
+              if (attribute[label] && label && isNaN(attribute[label])) {
+                fieldLabel = attribute[label];
+              }
+              this.columnsToDisplay[attribute.id] = fieldLabel;
             }
           }
         );
-        if (_.keys(this.attributeToDisplay).length == 0) {
+        if (_.keys(this.columnsToDisplay).length == 0) {
           const attribute = this.programTrackedEntityAttributes[0]
             .trackedEntityAttribute;
-          this.attributeToDisplay[attribute.id] = attribute.name;
+          let fieldLabel = attribute.name;
+          if (attribute[label] && label && isNaN(attribute[label])) {
+            fieldLabel = attribute[label];
+          }
+          this.columnsToDisplay[attribute.id] = fieldLabel;
         }
       }
       this.loadingSavedTrackedEntityInstances(
@@ -295,10 +316,7 @@ export class TrackerCapturePage implements OnInit {
       ? this.translationMapper[key]
       : key;
     this.trackerCaptureProvider
-      .getTableFormatResult(
-        this.attributeToDisplay,
-        this.trackedEntityInstances
-      )
+      .getTableFormatResult(this.columnsToDisplay, this.trackedEntityInstances)
       .subscribe(
         (response: any) => {
           this.tableLayout = response.table;
@@ -315,13 +333,17 @@ export class TrackerCapturePage implements OnInit {
   }
 
   hideAndShowColumns() {
-    let modal = this.modalCtrl.create('TrackerHideShowColumnPage', {
-      attributeToDisplay: this.attributeToDisplay,
-      programTrackedEntityAttributes: this.programTrackedEntityAttributes
+    const data = {
+      columnsToDisplay: this.columnsToDisplay,
+      programTrackedEntityAttributes: this.programTrackedEntityAttributes,
+      dataEntrySettings: this.dataEntrySettings
+    };
+    const modal = this.modalCtrl.create('HideAndShowColumnsPage', {
+      data: data
     });
-    modal.onDidDismiss((attributeToDisplay: any) => {
-      if (attributeToDisplay) {
-        this.attributeToDisplay = attributeToDisplay;
+    modal.onDidDismiss((columnsToDisplay: any) => {
+      if (columnsToDisplay) {
+        this.columnsToDisplay = columnsToDisplay;
         this.renderDataAsTable();
       }
     });

@@ -43,6 +43,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   dataValuesSavingStatusClass: any;
   translationMapper: any;
   entryFormType: string;
+  hasEntryFormReSet: boolean;
   dataUpdateStatus: { [elementId: string]: string };
 
   constructor(
@@ -57,6 +58,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.entryFormType = 'event';
+    this.hasEntryFormReSet = false;
     this.dataObject = {};
     this.translationMapper = {};
     this.dataValuesSavingStatusClass = {};
@@ -76,6 +78,18 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     if (this.currentEvent && this.currentEvent.eventDate) {
       this.eventDate = this.currentEvent.eventDate;
     }
+  }
+
+  getEventDateNotification() {
+    const key = 'executionDateLabel';
+    let notificationTitle = 'Select ';
+    if (isNaN(this.programStage[key])) {
+      notificationTitle += this.programStage[key];
+    } else {
+      notificationTitle += 'Report date';
+    }
+    notificationTitle += ' above to start entry';
+    return notificationTitle;
   }
 
   hasEventDatesLabel(value) {
@@ -113,10 +127,14 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   }
 
   AddNewEvent() {
-    this.dataObject = {};
-    this.dataValuesSavingStatusClass = {};
     this.eventDate = '';
+    this.hasEntryFormReSet = true;
     this.currentEvent = Object.assign({}, this.emptyEvent);
+    this.currentEvent.id = this.eventCaptureFormProvider.getEventUid();
+    setTimeout(() => {
+      this.dataObject = {};
+      this.dataValuesSavingStatusClass = {};
+    }, 100);
   }
 
   goBack() {
@@ -192,6 +210,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   }
 
   updateEventDate(date) {
+    this.hasEntryFormReSet = false;
     if (date && date !== '') {
       this.eventDate = date;
       this.currentEvent.syncStatus = 'not-synced';
@@ -231,18 +250,20 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
         .saveEvents([this.currentEvent], this.currentUser)
         .subscribe(
           () => {
-            this.dataObject[updatedData.id] = updatedData;
-            this.dataValuesSavingStatusClass[updatedData.id] =
-              'input-field-container-success';
-            // Update dataValue update status
-            this.dataUpdateStatus = { [updatedData.domElementId]: 'OK' };
+            if (!this.hasEntryFormReSet) {
+              this.dataObject[updatedData.id] = updatedData;
+              this.dataValuesSavingStatusClass[updatedData.id] =
+                'input-field-container-success';
+              this.dataUpdateStatus = { [updatedData.domElementId]: 'OK' };
+            }
           },
           error => {
-            this.dataValuesSavingStatusClass[updatedData.id] =
-              'input-field-container-failed';
-            console.log(JSON.stringify(error));
-            // Update dataValue update status
-            this.dataUpdateStatus = { [updatedData.domElementId]: 'ERROR' };
+            if (!this.hasEntryFormReSet) {
+              this.dataValuesSavingStatusClass[updatedData.id] =
+                'input-field-container-failed';
+              console.log(JSON.stringify(error));
+              this.dataUpdateStatus = { [updatedData.domElementId]: 'ERROR' };
+            }
           }
         );
     }

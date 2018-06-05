@@ -8,7 +8,6 @@ ionic cordova plugin add cordova-plugin-splashscreen
 ionic cordova plugin add cordova-plugin-statusbar
 ionic cordova plugin add cordova-plugin-whitelist
 ionic cordova plugin add cordova-sqlite-storage
-ionic cordova plugin add ionic-plugin-keyboard
 ionic cordova plugin add cordova-sms-plugin
 ionic cordova plugin add cordova.plugins.diagnostic
 ionic cordova plugin add cordova-plugin-geolocation --variable GEOLOCATION_USAGE_DESCRIPTION="To locate location of phones for coordinate input"

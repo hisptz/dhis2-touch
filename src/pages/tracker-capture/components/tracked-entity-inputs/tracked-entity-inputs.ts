@@ -26,11 +26,14 @@ export class TrackedEntityInputsComponent implements OnInit {
   supportValueTypes: Array<string>;
   formLayout: string;
   dataEntrySettings: any;
+  isLoading: boolean;
 
   constructor(
     private settingProvider: SettingsProvider,
     private actionSheetCtrl: ActionSheetController
-  ) {}
+  ) {
+    this.isLoading = true;
+  }
 
   ngOnInit() {
     this.numericalInputField = [
@@ -59,7 +62,8 @@ export class TrackedEntityInputsComponent implements OnInit {
       'UNIT_INTERVAL',
       'PERCENTAGE',
       'EMAIL',
-      'PHONE_NUMBER'
+      'PHONE_NUMBER',
+      'AGE'
     ];
     if (this.trackedEntityAttribute && this.trackedEntityAttribute.id) {
       this.fieldLabelKey = this.trackedEntityAttribute.name;
@@ -72,13 +76,16 @@ export class TrackedEntityInputsComponent implements OnInit {
           if (dataEntrySettings.formLayout) {
             this.formLayout = dataEntrySettings.formLayout;
           }
-          if (dataEntrySettings.label) {
-            if (this.trackedEntityAttribute[dataEntrySettings.label]) {
-              this.fieldLabelKey = this.trackedEntityAttribute[
-                dataEntrySettings.label
-              ];
-            }
+          if (
+            dataEntrySettings.label &&
+            this.trackedEntityAttribute[dataEntrySettings.label] &&
+            isNaN(this.trackedEntityAttribute[dataEntrySettings.label])
+          ) {
+            this.fieldLabelKey = this.trackedEntityAttribute[
+              dataEntrySettings.label
+            ];
           }
+          this.isLoading = false;
         });
     }
   }

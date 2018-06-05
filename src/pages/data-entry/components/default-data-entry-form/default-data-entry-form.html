@@ -1,0 +1,34 @@
+<div *ngFor="let section of entryFormSections;let currentSectionIndex = index;trackBy: trackByFn">
+  <div *ngIf="(currentSectionIndex + 1) == pager.page" class="item-card" no-padding (click)="openSectionList()">
+    <ion-item>
+      <p ion-text color="font-color" no-padding align="center">
+        {{ section.name }}
+      </p>
+      <div style="text-align: center" item-right>
+        <span float-end class="side-menu-icon">
+          <img [src]="icons.menu">
+        </span>
+      </div>
+    </ion-item>
+  </div>
+</div>
+<div *ngFor="let section of entryFormSections;let currentSectionIndex = index;trackBy: trackByFn">
+  <div *ngIf="(currentSectionIndex + 1) == pager.page">
+    <div class="item-card-entry-form">
+      <div class="entry-form-container">
+        <form>
+          <div *ngFor="let dataElement of section.dataElements;trackBy: trackByFn">
+            <input-container [dataElement]="dataElement" [currentUser]="currentUser" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
+              [(data)]="dataValuesObject" (onChange)="updateData($event)"></input-container>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<data-entry-pagination (onUpdateDataSetCompleteness)="updateDataSetCompleteness()" (onSectionListOpen)="openSectionList()"
+  (onPaginationChange)="changePagination($event)" (onViewUserCompletenessInformation)="viewUserCompletenessInformation($event)"
+  [pager]="pager" [entryFormType]="entryFormType" [entryFormSectionsCount]="entryFormSections.length" [dataSetsCompletenessInfo]="dataSetsCompletenessInfo"
+  [isDataSetCompletenessProcessRunning]="isDataSetCompletenessProcessRunning" [isDataSetCompleted]="isDataSetCompleted"></data-entry-pagination>

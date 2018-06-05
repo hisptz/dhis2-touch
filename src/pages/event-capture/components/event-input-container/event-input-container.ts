@@ -32,11 +32,14 @@ export class EventInputContainerComponent implements OnInit, OnDestroy {
   numericalInputField: Array<string>;
   supportValueTypes: Array<string>;
   dataEntrySettings: any;
+  isLoading: boolean;
 
   constructor(
     private settingsProvider: SettingsProvider,
     private actionSheetCtrl: ActionSheetController
-  ) {}
+  ) {
+    this.isLoading = true;
+  }
 
   ngOnInit() {
     this.numericalInputField = [
@@ -65,7 +68,8 @@ export class EventInputContainerComponent implements OnInit, OnDestroy {
       'UNIT_INTERVAL',
       'PERCENTAGE',
       'EMAIL',
-      'PHONE_NUMBER'
+      'PHONE_NUMBER',
+      'AGE'
     ];
     this.fieldLabelKey = this.dataElement.name;
     this.settingsProvider
@@ -81,6 +85,7 @@ export class EventInputContainerComponent implements OnInit, OnDestroy {
             this.fieldLabelKey = this.dataElement[dataEntrySettings.label];
           }
         }
+        this.isLoading = false;
       });
   }
 
