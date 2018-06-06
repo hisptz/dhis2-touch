@@ -98,128 +98,41 @@ export class UploadViaInternetComponent implements OnInit {
   }
 
   uploadData() {
-    const key = 'Uploading selected local data, please wait...';
+    let key = 'Uploading selected local data, please wait...';
     this.loadingMessage = this.translationMapper[key]
       ? this.translationMapper[key]
       : key;
     this.isLoading = true;
-    this.importSummaries = {};
-    let keys = [];
-    let completedProcess = 0;
-    for (let item of this.itemsToUpload) {
-      if (item == 'dataValues') {
-        let formattedDataValues = this.dataValuesProvider.getFormattedDataValueForUpload(
-          this.dataObject['dataValues']
-        );
-        this.dataValuesProvider
-          .uploadDataValues(
-            formattedDataValues,
-            this.dataObject['dataValues'],
-            this.currentUser
-          )
-          .subscribe(
-            importSummaries => {
-              keys.push('dataValues');
-              this.importSummaries['dataValues'] = importSummaries;
-              completedProcess++;
-              if (completedProcess == this.itemsToUpload.length) {
-                this.isLoading = false;
-                this.viewUploadImportSummaries(keys);
-              }
-            },
-            error => {
-              console.log('Error ' + JSON.stringify(error));
-            }
-          );
-      } else if (item == 'Enrollments') {
-        this.trackerCaptureProvider
-          .uploadTrackedEntityInstancesToServer(
-            this.dataObject['Enrollments'],
-            this.dataObject['Enrollments'],
-            this.currentUser
-          )
-          .subscribe(
-            (response: any) => {
-              this.importSummaries['trackedEntityInstances'] =
-                response.importSummaries;
-              keys.push('trackedEntityInstances');
-              this.enrollmentsProvider
-                .getSavedEnrollmentsByAttribute(
-                  'trackedEntityInstance',
-                  response.trackedEntityInstanceIds,
-                  this.currentUser
-                )
-                .subscribe(
-                  (enrollments: any) => {
-                    this.trackerCaptureProvider
-                      .uploadEnrollments(enrollments, this.currentUser)
-                      .subscribe(
-                        () => {
-                          this.eventCaptureFormProvider
-                            .uploadEventsToSever(
-                              this.dataObject['eventsForTracker'],
-                              this.currentUser
-                            )
-                            .subscribe(
-                              importSummaries => {
-                                this.importSummaries[
-                                  'eventsForTracker'
-                                ] = importSummaries;
-                                keys.push('eventsForTracker');
-                                completedProcess++;
-                                if (
-                                  completedProcess == this.itemsToUpload.length
-                                ) {
-                                  this.isLoading = false;
-                                  this.viewUploadImportSummaries(keys);
-                                }
-                              },
-                              () => {}
-                            );
-                        },
-                        error => {}
-                      );
-                  },
-                  () => {}
-                );
-            },
-            error => {}
-          );
-      } else if (item == 'eventsForTracker') {
-        this.eventCaptureFormProvider
-          .uploadEventsToSever(
-            this.dataObject['eventsForTracker'],
-            this.currentUser
-          )
-          .subscribe(
-            importSummaries => {
-              this.importSummaries['eventsForTracker'] = importSummaries;
-              keys.push('eventsForTracker');
-              completedProcess++;
-              if (completedProcess == this.itemsToUpload.length) {
-                this.isLoading = false;
-                this.viewUploadImportSummaries(keys);
-              }
-            },
-            () => {}
-          );
-      } else if (item == 'events') {
-        this.eventCaptureFormProvider
-          .uploadEventsToSever(this.dataObject['events'], this.currentUser)
-          .subscribe(
-            importSummaries => {
-              this.importSummaries['events'] = importSummaries;
-              keys.push('events');
-              completedProcess++;
-              if (completedProcess == this.itemsToUpload.length) {
-                this.isLoading = false;
-                this.viewUploadImportSummaries(keys);
-              }
-            },
-            () => {}
-          );
+    let dataToUpload = {};
+    Object.keys(this.dataObject).map(item => {
+      if (this.itemsToUpload.indexOf(item) > -1) {
+        dataToUpload[item] = this.dataObject[item];
+      } else {
+        dataToUpload[item] = [];
       }
-    }
+    });
+    this.synchronizationProvider
+      .uploadingDataToTheServer(dataToUpload, this.currentUser)
+      .subscribe(
+        response => {
+          const { isCompleted } = response;
+          const { importSummaries } = response;
+          const { percentage } = response;
+          console.log('uploading percentage : ' + percentage);
+          if (isCompleted) {
+            this.importSummaries = importSummaries;
+            const keys = Object.keys(importSummaries);
+            this.isLoading = false;
+            this.viewUploadImportSummaries(keys);
+          }
+        },
+        error => {
+          this.isLoading = false;
+          console.log(
+            'Error on uploading offline data ' + JSON.stringify(error)
+          );
+        }
+      );
   }
 
   viewUploadImportSummaries(keys) {
