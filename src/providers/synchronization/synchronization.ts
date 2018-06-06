@@ -8,6 +8,8 @@ import * as _ from 'lodash';
 import { AppTranslationProvider } from '../app-translation/app-translation';
 import { AppProvider } from '../app/app';
 import { SettingsProvider } from '../settings/settings';
+import { Observable } from 'rxjs/Observable';
+
 /*
   Generated class for the SynchronizationProvider provider.
 
@@ -32,7 +34,6 @@ export class SynchronizationProvider {
   stopSynchronization() {
     if (this.subscription) {
       clearInterval(this.subscription);
-      console.log('Sync process has been stopped');
     }
   }
 
@@ -45,12 +46,22 @@ export class SynchronizationProvider {
             ? appSettings.synchronization
             : defaultSettings.synchronization;
         this.stopSynchronization();
-        console.log('Updating sync process');
         if (synchronizationSettings.isAutoSync) {
+          // this.subscription = setInterval(() => {
+          //   this.loadingDataToUpload(currentUser);
+          //   console.log('Starting loading data');
+          // }, synchronizationSettings.time);
           this.subscription = setInterval(() => {
-            this.loadingDataToUpload(currentUser);
-            console.log('Starting loading data');
-          }, synchronizationSettings.time);
+            this.getDataForUpload(currentUser).subscribe(
+              dataObject => {
+                if (this.isThereAnyOfflineData(dataObject)) {
+                  console.log('dataObject : ' + JSON.stringify(dataObject));
+                  //this.uploadData(dataObject, currentUser);
+                }
+              },
+              error => {}
+            );
+          }, 4000);
         }
       },
       error => {
@@ -60,61 +71,59 @@ export class SynchronizationProvider {
     );
   }
 
-  loadingDataToUpload(currentUser) {
-    const status = 'not-synced';
-    let dataObject = {
-      events: [],
-      dataValues: [],
-      eventsForTracker: [],
-      Enrollments: []
-    };
-    this.dataValuesProvider
-      .getDataValuesByStatus(status, currentUser)
-      .subscribe(
-        (dataValues: any) => {
-          dataObject.dataValues = dataValues;
-          this.trackerCaptureProvider
-            .getTrackedEntityInstanceByStatus(status, currentUser)
-            .subscribe(
-              (trackedEntityInstances: any) => {
-                dataObject.Enrollments = trackedEntityInstances;
-                this.eventCaptureFormProvider
-                  .getEventsByAttribute('syncStatus', [status], currentUser)
-                  .subscribe(
-                    (events: any) => {
-                      events.forEach((event: any) => {
-                        if (
-                          event &&
-                          event.eventType &&
-                          event.eventType == 'event-capture'
-                        ) {
-                          dataObject.events.push(event);
-                        } else {
-                          dataObject.eventsForTracker.push(event);
-                        }
-                      });
-                      if (this.isThereAnyOfflineData(dataObject)) {
-                        console.log('Starting uploading process');
-                        this.uploadData(dataObject, currentUser);
+  getDataForUpload(currentUser): Observable<any> {
+    return new Observable(observer => {
+      const status = 'not-synced';
+      let dataObject = {
+        events: [],
+        dataValues: [],
+        eventsForTracker: [],
+        Enrollments: []
+      };
+      this.dataValuesProvider
+        .getDataValuesByStatus(status, currentUser)
+        .subscribe(
+          (dataValues: any) => {
+            dataObject.dataValues = dataValues;
+            this.trackerCaptureProvider
+              .getTrackedEntityInstanceByStatus(status, currentUser)
+              .subscribe(
+                (trackedEntityInstances: any) => {
+                  dataObject.Enrollments = trackedEntityInstances;
+                  this.eventCaptureFormProvider
+                    .getEventsByAttribute('syncStatus', [status], currentUser)
+                    .subscribe(
+                      (events: any) => {
+                        dataObject.events = _.filter(events, {
+                          eventType: 'event-capture'
+                        });
+                        dataObject.eventsForTracker = _.filter(events, {
+                          eventType: 'tracker-capture'
+                        });
+                        observer.next(dataObject);
+                        observer.complete();
+                      },
+                      error => {
+                        console.log('error : events');
+                        console.log(JSON.stringify(error));
+                        observer.error(error);
                       }
-                    },
-                    error => {
-                      console.log('error : events');
-                      console.log(JSON.stringify(error));
-                    }
-                  );
-              },
-              error => {
-                console.log('error : enrollment');
-                console.log(JSON.stringify(error));
-              }
-            );
-        },
-        error => {
-          console.log('error : data values');
-          console.log(JSON.stringify(error));
-        }
-      );
+                    );
+                },
+                error => {
+                  console.log('error : enrollment');
+                  console.log(JSON.stringify(error));
+                  observer.error(error);
+                }
+              );
+          },
+          error => {
+            console.log('error : data values');
+            console.log(JSON.stringify(error));
+            observer.error(error);
+          }
+        );
+    });
   }
 
   isThereAnyOfflineData(dataObject) {
