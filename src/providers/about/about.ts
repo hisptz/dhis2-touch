@@ -1,7 +1,7 @@
-import { Injectable } from "@angular/core";
-import { AppProvider } from "../app/app";
-import { UserProvider } from "../user/user";
-import { Observable } from "rxjs/Observable";
+import { Injectable } from '@angular/core';
+import { AppProvider } from '../app/app';
+import { UserProvider } from '../user/user';
+import { Observable } from 'rxjs/Observable';
 
 /*
   Generated class for the AboutProvider provider.
@@ -21,32 +21,32 @@ export class AboutProvider {
    * @returns {{id: string; name: string; icon: string}[]}
    */
   getAboutContentDetails() {
-    let syncContents = [
+    const syncContents = [
       //{id : 'appInformation',name : 'App information',icon: 'assets/icon/app-information.png'},
       {
-        id: "dataValues",
-        name: "Aggregate status",
-        icon: "assets/icon/data-values.png"
+        id: 'dataValues',
+        name: 'Aggregate status',
+        icon: 'assets/icon/data-values.png'
       },
       {
-        id: "eventStatus",
-        name: "Event status",
-        icon: "assets/icon/event-status.png"
+        id: 'eventStatus',
+        name: 'Event status',
+        icon: 'assets/icon/event-status.png'
       },
       {
-        id: "eventForTrackerStatus",
-        name: "Event for tracker status",
-        icon: "assets/icon/event-status.png"
+        id: 'eventForTrackerStatus',
+        name: 'Event for tracker status',
+        icon: 'assets/icon/event-status.png'
       },
       {
-        id: "enrollment",
-        name: "Enrollments",
-        icon: "assets/icon/profile-tracker.png"
+        id: 'enrollment',
+        name: 'Enrollments',
+        icon: 'assets/icon/profile-tracker.png'
       },
       {
-        id: "systemInfo",
-        name: "System info",
-        icon: "assets/icon/system-info.png"
+        id: 'systemInfo',
+        name: 'System info',
+        icon: 'assets/icon/system-info.png'
       }
     ];
     return syncContents;
@@ -57,7 +57,7 @@ export class AboutProvider {
    * @returns {Observable<any>}
    */
   getAppInformation(): Observable<any> {
-    let appInformation = { name: "", version: "", package: "" };
+    let appInformation = { name: '', version: '', package: '' };
     return new Observable(observer => {
       this.appProvider.getAppInformation().subscribe(
         (response: any) => {
@@ -104,8 +104,8 @@ export class AboutProvider {
       if (newValue instanceof Object) {
         newValue = JSON.stringify(newValue);
       }
-      let newKey = (key.charAt(0).toUpperCase() + key.slice(1))
-        .replace(/([A-Z])/g, " $1")
+      const newKey = (key.charAt(0).toUpperCase() + key.slice(1))
+        .replace(/([A-Z])/g, ' $1')
         .trim();
       array.push({ key: newKey, value: newValue });
     }

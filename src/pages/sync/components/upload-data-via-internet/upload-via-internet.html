@@ -1,5 +1,6 @@
 <div *ngIf="isLoading">
   <loading loadingSize="large" [loadingMessage]="loadingMessage"></loading>
+  <div text-center padding-top> {{ progress }} %</div>
 </div>
 <div *ngIf="!isLoading">
   <ion-row>
