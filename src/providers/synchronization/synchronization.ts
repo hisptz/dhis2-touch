@@ -47,17 +47,26 @@ export class SynchronizationProvider {
             : defaultSettings.synchronization;
         this.stopSynchronization();
         if (synchronizationSettings.isAutoSync) {
-          // this.subscription = setInterval(() => {
-          //   this.loadingDataToUpload(currentUser);
-          //   console.log('Starting loading data');
-          // }, synchronizationSettings.time);
+          //synchronizationSettings.time
           this.subscription = setInterval(() => {
             this.getDataForUpload(currentUser).subscribe(
               dataObject => {
-                if (this.isThereAnyOfflineData(dataObject)) {
-                  console.log('dataObject : ' + JSON.stringify(dataObject));
-                  //this.uploadData(dataObject, currentUser);
-                }
+                this.uploadingDataToTheServer(
+                  dataObject,
+                  currentUser
+                ).subscribe(
+                  response => {
+                    const { isCompleted } = response;
+                    const { importSummaries } = response;
+                    const { percentage } = response;
+                    console.log('percentage : ' + percentage);
+                    console.log('isCompleted : ' + isCompleted);
+                    console.log(
+                      'importSummaries : ' + JSON.stringify(importSummaries)
+                    );
+                  },
+                  error => {}
+                );
               },
               error => {}
             );
@@ -69,6 +78,45 @@ export class SynchronizationProvider {
         JSON.stringify(error);
       }
     );
+  }
+
+  uploadingDataToTheServer(dataObject, currentUser): Observable<any> {
+    return new Observable(observer => {
+      const dataItems = Object.keys(dataObject);
+      const response = {
+        percentage: '',
+        importSummaries: {},
+        isCompleted: false
+      };
+      for (let item of dataItems) {
+        response.importSummaries[item] = item;
+        const percentage =
+          ((dataItems.indexOf(item) + 1) / dataItems.length) * 100;
+        response.percentage = percentage.toFixed(1);
+        if (dataObject[item].length > 0) {
+          if (item == 'dataValues') {
+            console.log('Uploading data values');
+          } else if (item == 'events') {
+            console.log('Uploading events');
+          } else if (
+            item == 'eventsForTracker' &&
+            dataObject['Enrollments'] &&
+            dataObject['Enrollments'].length === 0
+          ) {
+            console.log('Uploading events for tracker');
+          } else if (item == 'Enrollments') {
+            console.log('Uploading events for tracker and enrollment');
+          }
+          observer.next(response);
+        } else {
+          observer.next(response);
+          console.log('Skip uploading of ' + item);
+        }
+      }
+      response.isCompleted = true;
+      observer.next(response);
+      observer.complete();
+    });
   }
 
   getDataForUpload(currentUser): Observable<any> {
@@ -124,16 +172,6 @@ export class SynchronizationProvider {
           }
         );
     });
-  }
-
-  isThereAnyOfflineData(dataObject) {
-    let result = false;
-    for (let item of Object.keys(dataObject)) {
-      if (dataObject[item].length > 0) {
-        result = true;
-      }
-    }
-    return result;
   }
 
   uploadData(dataObject, currentUser) {
