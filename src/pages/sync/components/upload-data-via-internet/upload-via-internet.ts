@@ -28,6 +28,8 @@ export class UploadViaInternetComponent implements OnInit {
   dataObject: any;
   translationMapper: any;
 
+  progress: string;
+
   constructor(
     private modalCtrl: ModalController,
     private dataValuesProvider: DataValuesProvider,
@@ -37,9 +39,8 @@ export class UploadViaInternetComponent implements OnInit {
     private user: UserProvider,
     private appTranslation: AppTranslationProvider,
     private synchronizationProvider: SynchronizationProvider
-  ) {}
-
-  ngOnInit() {
+  ) {
+    this.progress = '';
     this.isLoading = true;
     this.itemsToUpload = [];
     this.dataObject = {
@@ -50,6 +51,9 @@ export class UploadViaInternetComponent implements OnInit {
     };
     this.importSummaries = null;
     this.translationMapper = {};
+  }
+
+  ngOnInit() {
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
       (data: any) => {
         this.translationMapper = data;
@@ -102,6 +106,7 @@ export class UploadViaInternetComponent implements OnInit {
     this.loadingMessage = this.translationMapper[key]
       ? this.translationMapper[key]
       : key;
+    this.progress = '0';
     this.isLoading = true;
     let dataToUpload = {};
     Object.keys(this.dataObject).map(item => {
@@ -118,7 +123,7 @@ export class UploadViaInternetComponent implements OnInit {
           const { isCompleted } = response;
           const { importSummaries } = response;
           const { percentage } = response;
-          console.log('uploading percentage : ' + percentage);
+          this.progress = percentage;
           if (isCompleted) {
             this.importSummaries = importSummaries;
             const keys = Object.keys(importSummaries);
