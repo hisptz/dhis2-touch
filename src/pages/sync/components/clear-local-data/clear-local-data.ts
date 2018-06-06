@@ -141,24 +141,8 @@ export class ClearLocalDataComponent implements OnInit {
     const shouldClearEventsTable =
       itemsToBeDeleted.indexOf('eventsForTracker') > -1 &&
       itemsToBeDeleted.indexOf('events') > -1;
-    if (shouldClearEventsTable) {
-      this.eventCaptureFormProvider.deleteALLEvents(this.currentUser).subscribe(
-        () => {
-          completedProcess += 2;
-          if (completedProcess == itemsToBeDeleted.length) {
-            this.updateStorageAfterClearing();
-          }
-        },
-        error => {
-          completedProcess += 2;
-          if (completedProcess == itemsToBeDeleted.length) {
-            this.updateStorageAfterClearing();
-          }
-        }
-      );
-    }
     for (let item of itemsToBeDeleted) {
-      if (item == 'eventsForTracker' && !shouldClearEventsTable) {
+      if (item == 'eventsForTracker') {
         this.eventCaptureFormProvider
           .deleteEventByAttribute(
             'eventType',
@@ -169,17 +153,17 @@ export class ClearLocalDataComponent implements OnInit {
             () => {
               completedProcess += 1;
               if (completedProcess == itemsToBeDeleted.length) {
-                this.updateStorageAfterClearing();
+                this.updateStorageAfterClearing(shouldClearEventsTable);
               }
             },
             error => {
               completedProcess += 1;
               if (completedProcess == itemsToBeDeleted.length) {
-                this.updateStorageAfterClearing();
+                this.updateStorageAfterClearing(shouldClearEventsTable);
               }
             }
           );
-      } else if (item == 'events' && !shouldClearEventsTable) {
+      } else if (item == 'events') {
         this.eventCaptureFormProvider
           .deleteEventByAttribute(
             'eventType',
@@ -190,13 +174,13 @@ export class ClearLocalDataComponent implements OnInit {
             () => {
               completedProcess += 1;
               if (completedProcess == itemsToBeDeleted.length) {
-                this.updateStorageAfterClearing();
+                this.updateStorageAfterClearing(shouldClearEventsTable);
               }
             },
             error => {
               completedProcess += 1;
               if (completedProcess == itemsToBeDeleted.length) {
-                this.updateStorageAfterClearing();
+                this.updateStorageAfterClearing(shouldClearEventsTable);
               }
             }
           );
@@ -207,13 +191,13 @@ export class ClearLocalDataComponent implements OnInit {
             () => {
               completedProcess += 1;
               if (completedProcess == itemsToBeDeleted.length) {
-                this.updateStorageAfterClearing();
+                this.updateStorageAfterClearing(shouldClearEventsTable);
               }
             },
             error => {
               completedProcess += 1;
               if (completedProcess == itemsToBeDeleted.length) {
-                this.updateStorageAfterClearing();
+                this.updateStorageAfterClearing(shouldClearEventsTable);
               }
             }
           );
@@ -222,13 +206,13 @@ export class ClearLocalDataComponent implements OnInit {
           () => {
             completedProcess += 1;
             if (completedProcess == itemsToBeDeleted.length) {
-              this.updateStorageAfterClearing();
+              this.updateStorageAfterClearing(shouldClearEventsTable);
             }
           },
           error => {
             completedProcess += 1;
             if (completedProcess == itemsToBeDeleted.length) {
-              this.updateStorageAfterClearing();
+              this.updateStorageAfterClearing(shouldClearEventsTable);
             }
           }
         );
@@ -236,28 +220,45 @@ export class ClearLocalDataComponent implements OnInit {
     }
   }
 
-  updateStorageAfterClearing() {
+  updateStorageAfterClearing(shouldClearEventsTable) {
     setTimeout(() => {
-      this.sqlliteProvider
-        .generateTables(this.currentUser.currentDatabase)
-        .subscribe(
-          () => {
-            Object.keys(this.selectedItems).forEach((key: string) => {
-              this.selectedItems[key] = false;
-            });
-            this.loadingDataToDeleted();
-            this.appProvider.setNormalNotification(
-              'All selected items has been cleared successfully'
-            );
-          },
-          error => {
-            this.isLoading = false;
-            this.appProvider.setNormalNotification(
-              'Failed to clear selected items'
-            );
-          }
-        );
-    }, 500);
+      if (shouldClearEventsTable) {
+        this.eventCaptureFormProvider
+          .deleteALLEvents(this.currentUser)
+          .subscribe(
+            () => {
+              this.regenerateAllTables();
+            },
+            error => {
+              this.regenerateAllTables();
+            }
+          );
+      } else {
+        this.regenerateAllTables();
+      }
+    }, 100);
+  }
+
+  regenerateAllTables() {
+    this.sqlliteProvider
+      .generateTables(this.currentUser.currentDatabase)
+      .subscribe(
+        () => {
+          Object.keys(this.selectedItems).forEach((key: string) => {
+            this.selectedItems[key] = false;
+          });
+          this.loadingDataToDeleted();
+          this.appProvider.setNormalNotification(
+            'All selected items has been cleared successfully'
+          );
+        },
+        error => {
+          this.isLoading = false;
+          this.appProvider.setNormalNotification(
+            'Failed to clear selected items'
+          );
+        }
+      );
   }
 
   getValuesToTranslate() {
