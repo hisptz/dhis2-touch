@@ -146,7 +146,7 @@ export class DataElementsProvider {
   getSortedListOfDataElements(dataSetDatElements, dataElements) {
     let sortedDataElements = [];
     let dataElementObject = {};
-    dataElements.forEach((dataElement: any) => {
+    dataElements.map((dataElement: any) => {
       dataElementObject[dataElement.id] = dataElement;
     });
     dataSetDatElements.sort((a, b) => {
@@ -158,7 +158,7 @@ export class DataElementsProvider {
       }
       return 0;
     });
-    dataSetDatElements.forEach(dataSetDatElement => {
+    dataSetDatElements.map(dataSetDatElement => {
       sortedDataElements.push(dataElementObject[dataSetDatElement.id]);
     });
     return sortedDataElements;
