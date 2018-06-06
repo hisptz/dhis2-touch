@@ -8,6 +8,7 @@ import { EventCaptureFormProvider } from '../../../../providers/event-capture-fo
 import { TrackedEntityInstancesProvider } from '../../../../providers/tracked-entity-instances/tracked-entity-instances';
 import { SqlLiteProvider } from '../../../../providers/sql-lite/sql-lite';
 import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
+import * as _ from 'lodash';
 
 /**
  * Generated class for the ClearLocalDataComponent component.
@@ -73,15 +74,12 @@ export class ClearLocalDataComponent implements OnInit {
         this.dataObject['dataValues'] = dataValues.length;
         this.eventCaptureFormProvider.getAllEvents(this.currentUser).subscribe(
           (events: any) => {
-            this.dataObject['events'] = 0;
-            this.dataObject['eventsForTracker'] = 0;
-            events.forEach((event: any) => {
-              if (event.eventType == 'event-capture') {
-                this.dataObject.events++;
-              } else {
-                this.dataObject.eventsForTracker++;
-              }
-            });
+            this.dataObject['events'] = _.filter(events, {
+              eventType: 'event-capture'
+            }).length;
+            this.dataObject['eventsForTracker'] = _.filter(events, {
+              eventType: 'tracker-capture'
+            }).length;
             this.trackedEntityInstancesProvider
               .getAllTrackedEntityInstances(this.currentUser)
               .subscribe((trackedEntityInstances: any) => {
@@ -104,7 +102,7 @@ export class ClearLocalDataComponent implements OnInit {
 
   updateItemsToBeDeleted() {
     this.itemsToBeDeleted = [];
-    Object.keys(this.selectedItems).forEach((key: string) => {
+    Object.keys(this.selectedItems).map((key: string) => {
       if (this.selectedItems[key]) {
         this.itemsToBeDeleted.push(key);
       }
@@ -139,7 +137,6 @@ export class ClearLocalDataComponent implements OnInit {
   }
 
   clearingLocalData(itemsToBeDeleted) {
-    console.log('itemsToBeDeleted');
     let completedProcess = 0;
     const shouldClearEventsTable =
       itemsToBeDeleted.indexOf('eventsForTracker') > -1 &&

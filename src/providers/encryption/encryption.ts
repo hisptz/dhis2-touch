@@ -13,7 +13,7 @@ export class EncryptionProvider {
 
   getHashedKeyForOfflineAuthentication(user: CurrentUser) {
     const serverUrlArray = user.serverUrl.split('://');
-    let urlWithoutHttp =
+    const urlWithoutHttp =
       serverUrlArray.length > 1 ? serverUrlArray[1] : serverUrlArray[0];
     const hashedPassword = sha1(
       urlWithoutHttp + ':' + user.username + ':' + user.password

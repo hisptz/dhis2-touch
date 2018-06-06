@@ -3,6 +3,7 @@ import { HttpClientProvider } from '../http-client/http-client';
 import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { NetworkAvailabilityProvider } from '../network-availability/network-availability';
 import { Observable } from 'rxjs/Observable';
+import * as _ from 'lodash';
 
 /*
   Generated class for the DataValuesProvider provider.
@@ -102,11 +103,11 @@ export class DataValuesProvider {
    */
   getFormattedDataValueForUpload(dataValues) {
     let formattedDataValues = [];
-    dataValues.forEach((dataValue: any) => {
+    dataValues.map((dataValue: any) => {
       let formParameter = 'de=' + dataValue.de + '&pe=' + dataValue.pe + '&ou=';
       formParameter +=
         dataValue.ou + '&co=' + dataValue.co + '&value=' + dataValue.value;
-      if (dataValue.cp != '0' && dataValue.cp != '') {
+      if (isNaN(dataValue.cp) && dataValue.cp != '') {
         formParameter =
           formParameter + '&cc=' + dataValue.cc + '&cp=' + dataValue.cp;
       }
@@ -225,9 +226,9 @@ export class DataValuesProvider {
   ): Observable<any> {
     let ids = [];
     let entryFormDataValuesFromStorage = [];
-    entryFormSections.forEach((section: any) => {
-      section.dataElements.forEach((dataElement: any) => {
-        dataElement.categoryCombo.categoryOptionCombos.forEach(
+    entryFormSections.map((section: any) => {
+      section.dataElements.map((dataElement: any) => {
+        dataElement.categoryCombo.categoryOptionCombos.map(
           (categoryOptionCombo: any) => {
             ids.push(
               dataSetId +
@@ -254,11 +255,11 @@ export class DataValuesProvider {
         )
         .subscribe(
           (dataValues: any) => {
-            dataValues.forEach((dataValue: any) => {
+            dataValues.map((dataValue: any) => {
               if (
                 (dataDimension.cp == dataValue.cp ||
                   dataValue.cp == '' ||
-                  dataValue.cp == '0') &&
+                  !isNaN(dataValue.cp)) &&
                 dataDimension.cc == dataValue.cc
               ) {
                 entryFormDataValuesFromStorage.push({
@@ -291,7 +292,7 @@ export class DataValuesProvider {
       for (let i = 0; i < categoryOptionCombos.length; i++) {
         let hasAttributeOptionCombo = true;
         let categoryOptionCombo = categoryOptionCombos[i];
-        categoryOptionCombo.categoryOptions.forEach((categoryOption: any) => {
+        categoryOptionCombo.categoryOptions.map((categoryOption: any) => {
           if (categoriesOptionsArray.indexOf(categoryOption.id) == -1) {
             hasAttributeOptionCombo = false;
           }
@@ -318,7 +319,7 @@ export class DataValuesProvider {
   ) {
     let FilteredDataValues = [];
     if (dataValuesResponse.dataValues) {
-      dataValuesResponse.dataValues.forEach((dataValue: any) => {
+      dataValuesResponse.dataValues.map((dataValue: any) => {
         if (dataValue.attributeOptionCombo == attributeOptionCombo) {
           FilteredDataValues.push({
             categoryOptionCombo: dataValue.categoryOptionCombo,
@@ -353,9 +354,8 @@ export class DataValuesProvider {
   ): Observable<any> {
     return new Observable(observer => {
       if (dataValues.length > 0) {
-        let bulkData = [];
-        for (let dataValue of dataValues) {
-          bulkData.push({
+        const bulkData = _.map(dataValues, dataValue => {
+          return {
             id:
               dataSetId +
               '-' +
@@ -377,8 +377,8 @@ export class DataValuesProvider {
             dataSetId: dataSetId,
             period: dataValue.period,
             orgUnit: dataValue.orgUnit
-          });
-        }
+          };
+        });
         this.sqlLite
           .insertBulkDataOnTable(
             this.resourceName,
