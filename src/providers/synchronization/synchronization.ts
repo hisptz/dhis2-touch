@@ -79,7 +79,7 @@ export class SynchronizationProvider {
               },
               error => {}
             );
-          }, 4000);
+          }, synchronizationSettings.time);
         }
       },
       error => {
@@ -99,9 +99,6 @@ export class SynchronizationProvider {
         isCompleted: false
       };
       for (let item of dataItems) {
-        const percentage =
-          ((dataItems.indexOf(item) + 1) / dataItems.length) * 100;
-        response.percentage = percentage.toFixed(1);
         if (dataObject[item].length > 0) {
           if (item == 'dataValues') {
             let formattedDataValues = this.dataValuesProvider.getFormattedDataValueForUpload(
@@ -117,6 +114,9 @@ export class SynchronizationProvider {
                 importSummaries => {
                   completedProcess++;
                   response.importSummaries[item] = importSummaries;
+                  const percentage =
+                    (completedProcess / dataItems.length) * 100;
+                  response.percentage = percentage.toFixed(1);
                   observer.next(response);
                   if (dataItems.length == completedProcess) {
                     response.isCompleted = true;
@@ -138,6 +138,9 @@ export class SynchronizationProvider {
                 importSummaries => {
                   completedProcess++;
                   response.importSummaries[item] = importSummaries;
+                  const percentage =
+                    (completedProcess / dataItems.length) * 100;
+                  response.percentage = percentage.toFixed(1);
                   observer.next(response);
                   if (dataItems.length == completedProcess) {
                     response.isCompleted = true;
@@ -163,6 +166,9 @@ export class SynchronizationProvider {
                 importSummaries => {
                   completedProcess++;
                   response.importSummaries[item] = importSummaries;
+                  const percentage =
+                    (completedProcess / dataItems.length) * 100;
+                  response.percentage = percentage.toFixed(1);
                   observer.next(response);
                   if (dataItems.length == completedProcess) {
                     response.isCompleted = true;
@@ -188,6 +194,9 @@ export class SynchronizationProvider {
                 (responseData: any) => {
                   completedProcess++;
                   response.importSummaries[item] = responseData.importSummaries;
+                  const percentage =
+                    (completedProcess / dataItems.length) * 100;
+                  response.percentage = percentage.toFixed(1);
                   observer.next(response);
                   this.enrollmentsProvider
                     .getSavedEnrollmentsByAttribute(
@@ -210,8 +219,7 @@ export class SynchronizationProvider {
                                   importSummaries => {
                                     completedProcess++;
                                     const percentage =
-                                      ((dataItems.indexOf(item) + 2) /
-                                        dataItems.length) *
+                                      (completedProcess / dataItems.length) *
                                       100;
                                     response.percentage = percentage.toFixed(1);
                                     response.importSummaries[
@@ -262,6 +270,8 @@ export class SynchronizationProvider {
           }
         } else {
           completedProcess++;
+          const percentage = (completedProcess / dataItems.length) * 100;
+          response.percentage = percentage.toFixed(1);
           observer.next(response);
           if (dataItems.length == completedProcess) {
             response.isCompleted = true;
