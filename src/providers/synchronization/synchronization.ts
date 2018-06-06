@@ -47,7 +47,6 @@ export class SynchronizationProvider {
             : defaultSettings.synchronization;
         this.stopSynchronization();
         if (synchronizationSettings.isAutoSync) {
-          //synchronizationSettings.time
           this.subscription = setInterval(() => {
             this.getDataForUpload(currentUser).subscribe(
               dataObject => {
@@ -60,10 +59,11 @@ export class SynchronizationProvider {
                     const { importSummaries } = response;
                     const { percentage } = response;
                     console.log('percentage : ' + percentage);
-                    console.log('isCompleted : ' + isCompleted);
-                    console.log(
-                      'importSummaries : ' + JSON.stringify(importSummaries)
-                    );
+                    if (isCompleted) {
+                      console.log(
+                        'importSummaries : ' + JSON.stringify(importSummaries)
+                      );
+                    }
                   },
                   error => {}
                 );
@@ -82,6 +82,7 @@ export class SynchronizationProvider {
 
   uploadingDataToTheServer(dataObject, currentUser): Observable<any> {
     return new Observable(observer => {
+      let completedProcess = 0;
       const dataItems = Object.keys(dataObject);
       const response = {
         percentage: '',
@@ -89,33 +90,184 @@ export class SynchronizationProvider {
         isCompleted: false
       };
       for (let item of dataItems) {
-        response.importSummaries[item] = item;
         const percentage =
           ((dataItems.indexOf(item) + 1) / dataItems.length) * 100;
         response.percentage = percentage.toFixed(1);
         if (dataObject[item].length > 0) {
           if (item == 'dataValues') {
-            console.log('Uploading data values');
+            let formattedDataValues = this.dataValuesProvider.getFormattedDataValueForUpload(
+              dataObject[item]
+            );
+            this.dataValuesProvider
+              .uploadDataValues(
+                formattedDataValues,
+                dataObject[item],
+                currentUser
+              )
+              .subscribe(
+                importSummaries => {
+                  completedProcess++;
+                  response.importSummaries[item] = importSummaries;
+                  observer.next(response);
+                  if (dataItems.length == completedProcess) {
+                    response.isCompleted = true;
+                    observer.next(response);
+                    observer.complete();
+                  }
+                },
+                error => {
+                  observer.error(error);
+                  console.log(
+                    'Error on uploading dataValues ' + JSON.stringify(error)
+                  );
+                }
+              );
           } else if (item == 'events') {
-            console.log('Uploading events');
+            this.eventCaptureFormProvider
+              .uploadEventsToSever(dataObject[item], currentUser)
+              .subscribe(
+                importSummaries => {
+                  completedProcess++;
+                  response.importSummaries[item] = importSummaries;
+                  observer.next(response);
+                  if (dataItems.length == completedProcess) {
+                    response.isCompleted = true;
+                    observer.next(response);
+                    observer.complete();
+                  }
+                },
+                error => {
+                  observer.error(error);
+                  console.log(
+                    'Error on uploading events ' + JSON.stringify(error)
+                  );
+                }
+              );
           } else if (
             item == 'eventsForTracker' &&
             dataObject['Enrollments'] &&
             dataObject['Enrollments'].length === 0
           ) {
-            console.log('Uploading events for tracker');
+            this.eventCaptureFormProvider
+              .uploadEventsToSever(dataObject[item], currentUser)
+              .subscribe(
+                importSummaries => {
+                  completedProcess++;
+                  response.importSummaries[item] = importSummaries;
+                  observer.next(response);
+                  if (dataItems.length == completedProcess) {
+                    response.isCompleted = true;
+                    observer.next(response);
+                    observer.complete();
+                  }
+                },
+                error => {
+                  observer.error(error);
+                  console.log(
+                    'Error on uploading tracker event ' + JSON.stringify(error)
+                  );
+                }
+              );
           } else if (item == 'Enrollments') {
-            console.log('Uploading events for tracker and enrollment');
+            this.trackerCaptureProvider
+              .uploadTrackedEntityInstancesToServer(
+                dataObject[item],
+                dataObject[item],
+                currentUser
+              )
+              .subscribe(
+                (responseData: any) => {
+                  completedProcess++;
+                  response.importSummaries[item] = responseData.importSummaries;
+                  observer.next(response);
+                  this.enrollmentsProvider
+                    .getSavedEnrollmentsByAttribute(
+                      'trackedEntityInstance',
+                      responseData.trackedEntityInstanceIds,
+                      currentUser
+                    )
+                    .subscribe(
+                      (enrollments: any) => {
+                        console.log(
+                          'enrollments : ' + JSON.stringify(enrollments)
+                        );
+                        this.trackerCaptureProvider
+                          .uploadEnrollments(enrollments, currentUser)
+                          .subscribe(
+                            () => {
+                              console.log(
+                                'enrollments : ' +
+                                  JSON.stringify(dataObject['eventsForTracker'])
+                              );
+                              this.eventCaptureFormProvider
+                                .uploadEventsToSever(
+                                  dataObject['eventsForTracker'],
+                                  currentUser
+                                )
+                                .subscribe(
+                                  importSummaries => {
+                                    completedProcess++;
+                                    const percentage =
+                                      ((dataItems.indexOf(item) + 2) /
+                                        dataItems.length) *
+                                      100;
+                                    response.percentage = percentage.toFixed(1);
+                                    response.importSummaries[
+                                      'eventsForTracker'
+                                    ] = importSummaries;
+                                    observer.next(response);
+                                    if (dataItems.length == completedProcess) {
+                                      response.isCompleted = true;
+                                      observer.next(response);
+                                      observer.complete();
+                                    }
+                                  },
+                                  error => {
+                                    observer.error(error);
+                                    console.log(
+                                      'Error on uploading tracker event ' +
+                                        JSON.stringify(error)
+                                    );
+                                  }
+                                );
+                            },
+                            error => {
+                              observer.error(error);
+                              console.log(
+                                'Error on uploading enrollments ' +
+                                  JSON.stringify(error)
+                              );
+                            }
+                          );
+                      },
+                      error => {
+                        observer.error(error);
+                        console.log(
+                          'Error on saving enrollments by attributes' +
+                            JSON.stringify(error)
+                        );
+                      }
+                    );
+                },
+                error => {
+                  observer.error(error);
+                  console.log(
+                    'Error on uloading tracked entities ' +
+                      JSON.stringify(error)
+                  );
+                }
+              );
           }
-          observer.next(response);
         } else {
+          completedProcess++;
           observer.next(response);
-          console.log('Skip uploading of ' + item);
+          if (dataItems.length == completedProcess) {
+            response.isCompleted = true;
+            observer.next(response);
+            observer.complete();
+          }
         }
       }
-      response.isCompleted = true;
-      observer.next(response);
-      observer.complete();
     });
   }
 
