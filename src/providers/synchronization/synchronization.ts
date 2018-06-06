@@ -58,11 +58,20 @@ export class SynchronizationProvider {
                     const { isCompleted } = response;
                     const { importSummaries } = response;
                     const { percentage } = response;
-                    console.log('percentage : ' + percentage);
                     if (isCompleted) {
-                      console.log(
-                        'importSummaries : ' + JSON.stringify(importSummaries)
-                      );
+                      let message = '';
+                      Object.keys(importSummaries).map(key => {
+                        let newKey = key.charAt(0).toUpperCase() + key.slice(1);
+                        newKey = newKey.replace(/([A-Z])/g, ' $1').trim();
+                        const { success } = importSummaries[key];
+                        if (success) {
+                          message += newKey + ' ' + success + ', ';
+                        }
+                      });
+                      if (message != '') {
+                        message += 'has been successfully imported ';
+                        this.appProvider.setTopNotification(message);
+                      }
                     }
                   },
                   error => {}
@@ -188,17 +197,10 @@ export class SynchronizationProvider {
                     )
                     .subscribe(
                       (enrollments: any) => {
-                        console.log(
-                          'enrollments : ' + JSON.stringify(enrollments)
-                        );
                         this.trackerCaptureProvider
                           .uploadEnrollments(enrollments, currentUser)
                           .subscribe(
                             () => {
-                              console.log(
-                                'enrollments : ' +
-                                  JSON.stringify(dataObject['eventsForTracker'])
-                              );
                               this.eventCaptureFormProvider
                                 .uploadEventsToSever(
                                   dataObject['eventsForTracker'],
@@ -324,122 +326,5 @@ export class SynchronizationProvider {
           }
         );
     });
-  }
-
-  uploadData(dataObject, currentUser) {
-    for (let item of Object.keys(dataObject)) {
-      if (dataObject[item].length > 0 && item == 'dataValues') {
-        let formattedDataValues = this.dataValuesProvider.getFormattedDataValueForUpload(
-          dataObject[item]
-        );
-        this.dataValuesProvider
-          .uploadDataValues(formattedDataValues, dataObject[item], currentUser)
-          .subscribe(
-            importSummaries => {
-              console.log(
-                'importSummaries : ' +
-                  item +
-                  ' : ' +
-                  JSON.stringify(importSummaries)
-              );
-            },
-            error => {
-              console.log('Error ' + JSON.stringify(error));
-            }
-          );
-      } else if (dataObject[item].length > 0 && item == 'Enrollments') {
-        this.trackerCaptureProvider
-          .uploadTrackedEntityInstancesToServer(
-            dataObject[item],
-            dataObject[item],
-            currentUser
-          )
-          .subscribe(
-            (response: any) => {
-              console.log(
-                'importSummaries : ' +
-                  item +
-                  ' : ' +
-                  JSON.stringify(response.importSummaries)
-              );
-              this.enrollmentsProvider
-                .getSavedEnrollmentsByAttribute(
-                  'trackedEntityInstance',
-                  response.trackedEntityInstanceIds,
-                  currentUser
-                )
-                .subscribe(
-                  (enrollments: any) => {
-                    this.trackerCaptureProvider
-                      .uploadEnrollments(enrollments, currentUser)
-                      .subscribe(
-                        () => {
-                          this.eventCaptureFormProvider
-                            .uploadEventsToSever(
-                              dataObject['eventsForTracker'],
-                              currentUser
-                            )
-                            .subscribe(
-                              importSummaries => {
-                                console.log(
-                                  'importSummaries : ' +
-                                    item +
-                                    ' : ' +
-                                    JSON.stringify(importSummaries)
-                                );
-                              },
-                              error => {
-                                console.log('Error ' + JSON.stringify(error));
-                              }
-                            );
-                        },
-                        error => {
-                          console.log('Error ' + JSON.stringify(error));
-                        }
-                      );
-                  },
-                  error => {
-                    console.log('Error ' + JSON.stringify(error));
-                  }
-                );
-            },
-            error => {
-              console.log('Error ' + JSON.stringify(error));
-            }
-          );
-      } else if (dataObject[item].length > 0 && item == 'eventsForTracker') {
-        this.eventCaptureFormProvider
-          .uploadEventsToSever(dataObject[item], currentUser)
-          .subscribe(
-            importSummaries => {
-              console.log(
-                'importSummaries : ' +
-                  item +
-                  ' : ' +
-                  JSON.stringify(importSummaries)
-              );
-            },
-            error => {
-              console.log('Error ' + JSON.stringify(error));
-            }
-          );
-      } else if (dataObject[item].length > 0 && item == 'events') {
-        this.eventCaptureFormProvider
-          .uploadEventsToSever(dataObject[item], currentUser)
-          .subscribe(
-            importSummaries => {
-              console.log(
-                'importSummaries : ' +
-                  item +
-                  ' : ' +
-                  JSON.stringify(importSummaries)
-              );
-            },
-            error => {
-              console.log('Error ' + JSON.stringify(error));
-            }
-          );
-      }
-    }
   }
 }
