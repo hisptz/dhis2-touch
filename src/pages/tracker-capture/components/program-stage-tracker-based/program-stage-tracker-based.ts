@@ -381,7 +381,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
   }
 
   trackByFn(index, item) {
-    return index;
+    return item && item.id ? item.id : index;
   }
 
   updateDataObjectModel(dataValues, programStageDataElements) {
