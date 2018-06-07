@@ -76,6 +76,10 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
           }
         });
         this.loadProgramStages(this.currentProgram.id);
+        this.loadingProgramSkipLogicMetadata(
+          this.currentProgram.id,
+          this.currentUser
+        );
       },
       error => {
         console.log(JSON.stringify(error));
@@ -153,6 +157,22 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
           this.isLoading = false;
           this.appProvider.setNormalNotification(
             'Failed to discover program stages'
+          );
+        }
+      );
+  }
+
+  loadingProgramSkipLogicMetadata(programId, currentUser) {
+    this.eventCaptureFormProvider
+      .getProgramSkipLogicMetadata(programId, currentUser)
+      .subscribe(
+        metadata => {
+          console.log('Program skip logic ' + JSON.stringify(metadata));
+        },
+        error => {
+          console.log(
+            'Error on getting program skip logic metadata ' +
+              JSON.stringify(error)
           );
         }
       );

@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { EnrollmentsProvider } from '../enrollments/enrollments';
+import { CurrentUser } from '../../models/currentUser';
 
 declare var dhis2: any;
 
@@ -96,6 +97,40 @@ export class EventCaptureFormProvider {
       str.indexOf(d.format('D/M/YY')) >= 0 ||
       str.indexOf(d.format('DD/MM/YY')) >= 0
     );
+  }
+
+  getProgramSkipLogicMetadata(
+    programId,
+    currentUser: CurrentUser
+  ): Observable<any> {
+    return new Observable(observer => {
+      this.programsProvider
+        .getProgramRuleIds(programId, currentUser.currentDatabase)
+        .subscribe(
+          programRuleIds => {
+            this.programsProvider
+              .getProgramRulesVariablesIds(
+                programId,
+                currentUser.currentDatabase
+              )
+              .subscribe(
+                programRulesVariablesIds => {
+                  observer.next({
+                    programRuleIds: programRuleIds,
+                    programRulesVariablesIds: programRulesVariablesIds
+                  });
+                  observer.complete();
+                },
+                error => {
+                  observer.error(error);
+                }
+              );
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+    });
   }
 
   /**

@@ -168,6 +168,10 @@ export class TrackerEntityRegisterPage implements OnInit {
     this.trackedEntityInstance = dhis2.util.uid();
     this.isFormReady = true;
     this.loadingProgramStages(this.currentProgram.id, this.currentUser);
+    this.loadingProgramSkipLogicMetadata(
+      this.currentProgram.id,
+      this.currentUser
+    );
   }
 
   loadingProgramStages(programId, currentUser) {
@@ -182,7 +186,7 @@ export class TrackerEntityRegisterPage implements OnInit {
           this.programStages = programStages;
           if (programStages && programStages.length > 0) {
             let counter = 1;
-            programStages.forEach((programStage: any) => {
+            programStages.map((programStage: any) => {
               this.dashboardWidgets.push({
                 id: programStage.id,
                 name: programStage.name,
@@ -197,6 +201,22 @@ export class TrackerEntityRegisterPage implements OnInit {
           this.isLoading = false;
           this.appProvider.setNormalNotification(
             'Failed to discover program stages'
+          );
+        }
+      );
+  }
+
+  loadingProgramSkipLogicMetadata(programId, currentUser) {
+    this.eventCaptureFormProvider
+      .getProgramSkipLogicMetadata(programId, currentUser)
+      .subscribe(
+        metadata => {
+          console.log('Program skip logic ' + JSON.stringify(metadata));
+        },
+        error => {
+          console.log(
+            'Error on getting program skip logic metadata ' +
+              JSON.stringify(error)
           );
         }
       );
