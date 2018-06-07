@@ -84,7 +84,7 @@ export class PeriodSelectionPage implements OnInit {
   }
 
   trackByFn(index, item) {
-    return item.iso;
+    return item && item.iso ? item.iso : index;
   }
 
   getValuesToTranslate() {

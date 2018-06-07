@@ -64,6 +64,6 @@ export class SyncPage implements OnInit {
   }
 
   trackByFn(index, item) {
-    return item.id;
+    return item && item.id ? item.id : index;
   }
 }
