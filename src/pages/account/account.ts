@@ -4,6 +4,7 @@ import { LoginPage } from '../login/login';
 import { UserProvider } from '../../providers/user/user';
 import { OrganisationUnitsProvider } from '../../providers/organisation-units/organisation-units';
 import { SynchronizationProvider } from '../../providers/synchronization/synchronization';
+import { AppProvider } from '../../providers/app/app';
 
 /**
  * Generated class for the AccountPage page.
@@ -12,22 +13,31 @@ import { SynchronizationProvider } from '../../providers/synchronization/synchro
  * Ionic pages and navigation.
  */
 
+interface AppItem {
+  id: string;
+  name: string;
+  src: string;
+  pageName: string;
+  authorites: Array<string>;
+}
+
 @Component({
   selector: 'page-account',
   templateUrl: 'account.html'
 })
 export class AccountPage implements OnInit {
   animationEffect: any;
+  authorizedApps: Array<AppItem>;
 
   constructor(
     private navCtrl: NavController,
     private app: App,
     private organisationUnitProvider: OrganisationUnitsProvider,
     private userProvider: UserProvider,
-    private synchronizationProvider: SynchronizationProvider
-  ) {}
-
-  ngOnInit() {
+    private synchronizationProvider: SynchronizationProvider,
+    private appProvider: AppProvider
+  ) {
+    this.authorizedApps = [];
     this.animationEffect = {
       profile: '',
       about: '',
@@ -36,17 +46,28 @@ export class AccountPage implements OnInit {
     };
   }
 
-  goToView(key) {
-    this.applyAnimation(key);
-    setTimeout(() => {
-      if (key == 'profile') {
-        this.setView('ProfilePage');
-      } else if (key == 'about') {
-        this.setView('AboutPage');
-      } else if (key == 'help') {
-        this.setView('HelpPage');
+  ngOnInit() {
+    this.userProvider.getCurrentUser().subscribe(
+      currentUser => {
+        const appItems = this.getAppItems();
+        this.setAuthorizedApps(appItems, currentUser);
+      },
+      error => {
+        this.appProvider.setNormalNotification('Fail to discover current user');
       }
-    }, 60);
+    );
+  }
+
+  setAuthorizedApps(appItems, currentUser) {
+    // @todo filter apps based on app authorites
+    this.authorizedApps = appItems;
+  }
+
+  goToView(appItem: AppItem) {
+    this.applyAnimation(appItem.id);
+    setTimeout(() => {
+      this.setView(appItem.pageName);
+    }, 50);
   }
 
   setView(viewName) {
@@ -58,6 +79,32 @@ export class AccountPage implements OnInit {
     setTimeout(() => {
       this.animationEffect[key] = '';
     }, 100);
+  }
+
+  getAppItems(): Array<AppItem> {
+    return [
+      {
+        id: 'profile',
+        name: 'Profile',
+        authorites: [],
+        pageName: 'ProfilePage',
+        src: 'assets/icon/profile.png'
+      },
+      {
+        id: 'about',
+        name: 'About',
+        authorites: [],
+        pageName: 'AboutPage',
+        src: 'assets/icon/about.png'
+      },
+      {
+        id: 'help',
+        name: 'Help',
+        authorites: [],
+        pageName: 'HelpPage',
+        src: 'assets/icon/help.png'
+      }
+    ];
   }
 
   async logOut() {

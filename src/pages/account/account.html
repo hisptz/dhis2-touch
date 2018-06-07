@@ -14,46 +14,31 @@
 
 
 <ion-content>
+
   <ion-grid>
     <ion-row class="animated fadeIn">
-      <ion-col [ngClass]="animationEffect.profile" col-4 (tap)="goToView('profile')">
-        <div class="apps-contents" padding>
-          <ion-thumbnail>
-            <img class="menu-app-icon-list" src="assets/icon/profile.png">
-          </ion-thumbnail>
-          <p class="menu-app" [translate]="'Profile'"></p>
+      <ion-col col-auto *ngFor="let app of authorizedApps">
+        <div class="app-item-container">
+          <div [ngClass]="animationEffect[app.id]" (tap)="goToView(app)">
+            <div class="apps-contents" padding>
+              <ion-thumbnail>
+                <img class="menu-app-icon-list" [src]="app.src">
+              </ion-thumbnail>
+              <p class="menu-app" [translate]="app.name"></p>
+            </div>
+          </div>
         </div>
       </ion-col>
-      <ion-col [ngClass]="animationEffect.about" col-4 (tap)="goToView('about')">
-        <div class="apps-contents" padding>
-          <ion-thumbnail>
-            <img class="menu-app-icon-list" src="assets/icon/about.png">
-          </ion-thumbnail>
-          <p class="menu-app" [translate]="'About'"></p>
+      <ion-col col-auto (tap)="logOut()" [ngClass]="animationEffect.logout">
+        <div class="app-item-container">
+          <div class="apps-contents" padding>
+            <ion-thumbnail>
+              <img class="menu-app-icon-list" src="assets/icon/logout.png">
+            </ion-thumbnail>
+            <p class="menu-app" [translate]="'Log out'"></p>
+          </div>
         </div>
       </ion-col>
-      <ion-col [ngClass]="animationEffect.help" col-4 (tap)="goToView('help')">
-        <div class="apps-contents" padding>
-          <ion-thumbnail>
-            <img class="menu-app-icon-list" src="assets/icon/help.png">
-          </ion-thumbnail>
-          <p class="menu-app" [translate]="'Help'"></p>
-        </div>
-      </ion-col>
-    </ion-row>
-
-    <ion-row class="animated fadeIn">
-      <ion-col [ngClass]="animationEffect.logout" col-4 (tap)="logOut()">
-        <div class="apps-contents" padding>
-          <ion-thumbnail>
-            <img class="menu-app-icon-list" src="assets/icon/logout.png">
-          </ion-thumbnail>
-          <p class="menu-app" [translate]="'Log out'"></p>
-        </div>
-      </ion-col>
-
     </ion-row>
   </ion-grid>
-
-
 </ion-content>
