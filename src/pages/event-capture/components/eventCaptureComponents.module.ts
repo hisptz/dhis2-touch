@@ -6,11 +6,14 @@ import { DataEntryModule } from '../../../components/data.entry.module';
 import { ProgramStageEventBasedComponent } from './program-stage-event-based/program-stage-event-based';
 import { EventInputContainerComponent } from './event-input-container/event-input-container';
 import { EventDateNotificationComponent } from './event-date-notification/event-date-notification';
+import { DefaultEventEntryFormComponent } from './default-event-entry-form/default-event-entry-form';
+
 @NgModule({
   declarations: [
     ProgramStageEventBasedComponent,
     EventDateNotificationComponent,
-    EventInputContainerComponent
+    EventInputContainerComponent,
+    DefaultEventEntryFormComponent
   ],
   imports: [
     IonicModule,
@@ -21,7 +24,8 @@ import { EventDateNotificationComponent } from './event-date-notification/event-
   exports: [
     ProgramStageEventBasedComponent,
     EventDateNotificationComponent,
-    EventInputContainerComponent
+    EventInputContainerComponent,
+    DefaultEventEntryFormComponent
   ]
 })
 export class EventCaptureComponentsModule {}
