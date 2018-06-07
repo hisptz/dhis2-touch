@@ -86,7 +86,8 @@ export class BarcodeReaderProvider {
         .scan()
         .then((barcodeData: any) => {
           const { text } = barcodeData;
-          const dataResponse = this.getSanitizedData(text);
+          const { cancelled } = barcodeData;
+          const dataResponse = this.getSanitizedData(text, cancelled);
           observer.next(dataResponse);
           observer.complete();
         })
@@ -97,11 +98,11 @@ export class BarcodeReaderProvider {
   }
 
   // @todo revisit sanitizaation of possible values from scaned text
-  getSanitizedData(scanedText) {
+  getSanitizedData(scanedText, cancelled) {
     let isMultlined = false;
     let isMultidata = false;
     let data;
-    if (!scanedText) {
+    if (!scanedText || cancelled) {
       data = '';
     } else {
       if (scanedText.indexOf('\n') == -1) {
