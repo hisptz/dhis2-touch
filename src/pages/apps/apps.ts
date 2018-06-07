@@ -79,6 +79,10 @@ export class AppsPage implements OnInit {
     }, 50);
   }
 
+  trackByFn(index, item) {
+    return item.id;
+  }
+
   getAppItems(): Array<AppItem> {
     return [
       {

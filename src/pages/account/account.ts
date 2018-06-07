@@ -81,6 +81,10 @@ export class AccountPage implements OnInit {
     }, 100);
   }
 
+  trackByFn(index, item) {
+    return item.id;
+  }
+
   getAppItems(): Array<AppItem> {
     return [
       {
