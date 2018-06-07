@@ -18,9 +18,34 @@ export class DefaultEventEntryFormComponent implements OnInit {
 
   @Output() onChange = new EventEmitter();
 
-  constructor() {}
+  isSectionOpen: any;
 
-  ngOnInit() {}
+  constructor() {
+    this.isSectionOpen = {};
+  }
+
+  ngOnInit() {
+    if (this.programStage) {
+      const { programStageSections } = this.programStage;
+      if (programStageSections && programStageSections.length > 0) {
+        const { id } = programStageSections[0];
+        this.toggleSection(id);
+      }
+    }
+  }
+
+  toggleSection(sectionId) {
+    if (sectionId) {
+      if (this.isSectionOpen[sectionId]) {
+        this.isSectionOpen[sectionId] = false;
+      } else {
+        Object.keys(this.isSectionOpen).map(key => {
+          this.isSectionOpen[key] = false;
+        });
+        this.isSectionOpen[sectionId] = true;
+      }
+    }
+  }
 
   updateData(data) {
     this.onChange.emit(data);

@@ -19,7 +19,6 @@ export class SyncPage implements OnInit {
   isSyncContentOpen: any;
   syncContents: Array<any>;
   public resources: any;
-  dataBaseStructure: any;
 
   constructor(
     public navCtrl: NavController,
@@ -35,16 +34,16 @@ export class SyncPage implements OnInit {
       this.toggleSyncContents(this.syncContents[0]);
     }
     this.resources = [];
-    this.dataBaseStructure = this.sqLiteProvider.getDataBaseStructure();
-    Object.keys(this.dataBaseStructure).forEach((resource: any) => {
-      if (this.dataBaseStructure[resource].isMetadata) {
+    const dataBaseStructure = this.sqLiteProvider.getDataBaseStructure();
+    Object.keys(dataBaseStructure).forEach((resource: any) => {
+      if (dataBaseStructure[resource].isMetadata) {
         this.resources.push({
           name: resource,
-          displayName: this.dataBaseStructure[resource].displayName
-            ? this.dataBaseStructure[resource].displayName
+          displayName: dataBaseStructure[resource].displayName
+            ? dataBaseStructure[resource].displayName
             : resource,
           status: false,
-          dependentTable: this.dataBaseStructure[resource].dependentTable
+          dependentTable: dataBaseStructure[resource].dependentTable
         });
       }
     });
@@ -55,7 +54,7 @@ export class SyncPage implements OnInit {
       if (this.isSyncContentOpen[content.id]) {
         this.isSyncContentOpen[content.id] = false;
       } else {
-        Object.keys(this.isSyncContentOpen).forEach(id => {
+        Object.keys(this.isSyncContentOpen).map(id => {
           this.isSyncContentOpen[id] = false;
         });
         this.isSyncContentOpen[content.id] = true;
