@@ -83,7 +83,6 @@ import { SmsGatewayProvider } from '../providers/sms-gateway/sms-gateway';
 import { ProgramRulesProvider } from '../providers/program-rules/program-rules';
 import { SynchronizationProvider } from '../providers/synchronization/synchronization';
 import { GeolocationProvider } from '../providers/geolocation/geolocation';
-import { DocumentsProvider } from '../providers/files/files';
 import { ResourcesProvider } from '../providers/resources/resources';
 
 
@@ -137,7 +136,6 @@ import { ResourcesProvider } from '../providers/resources/resources';
     Network,
     BackgroundMode,
     SMS,
-    DocumentsProvider,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     HttpClientProvider,
     UserProvider,
@@ -175,7 +173,6 @@ import { ResourcesProvider } from '../providers/resources/resources';
     ProgramRulesProvider,
     SynchronizationProvider,
     GeolocationProvider,
-    DocumentsProvider,
     ResourcesProvider
   ]
 })
