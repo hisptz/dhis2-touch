@@ -37,6 +37,16 @@ export class ResourcesProvider {
     return new Observable(observer => {
       this.HttpClient.get(url, true, currentUser).subscribe((response: any) => {
        this.documentsList = response.documents ;
+        //check if resource if a link or file
+  for(var i=0; i < this.documentsList.length; i++){
+    if(this.documentsList[i].contentType == undefined){
+   console.log(this.documentsList[i].name); 
+    }
+    else {
+      //download resources
+this.downloadResources(this.documentsList[i],currentUser);    
+     }
+  }
        observer.next(response);
     observer.complete();   
           
@@ -45,4 +55,22 @@ export class ResourcesProvider {
       });
     }); 
   }
+  downloadResources(document,currentUser){
+    let headers = new Headers();
+          headers.append(
+            'Authorization',
+            'Basic ' + currentUser.authorizationKey
+          );
+      let url = currentUser.serverUrl + '/api/documents/' +  document.id + '/data' ;
+      const fileTransfer: FileTransferObject = this.transfer.create();
+     let contentType = document.contentType.substr(12);
+     console.log(contentType);
+     
+     fileTransfer.download(url, this.file.externalDataDirectory + document.name + '.' + contentType,true,{ headers: headers }).then((entry) => {
+           console.log('download complete: ' + entry.toURL());
+     }, (error) => {
+       console.log(error);   
+     });  
+ }
+ 
   }
