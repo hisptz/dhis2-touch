@@ -1,4 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AppProvider } from '../../providers/app/app';
 
 /**
  * Generated class for the NumericalInputFieldComponent component.
@@ -10,34 +11,71 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
   selector: 'numerical-input-field',
   templateUrl: 'numerical-input-field.html'
 })
-export class NumericalInputFieldComponent implements OnInit{
-
+export class NumericalInputFieldComponent implements OnInit {
   @Input() dataElementId;
   @Input() categoryOptionComboId;
   @Input() data;
   @Input() valueType;
+  @Input() dataEntrySettings;
   @Output() onChange = new EventEmitter();
-  inputFieldValue : any;
-  //{"id":"s46m5MS0hxu-Prlt0C1RF0s","value":"1","status":"synced"}
-  //id = dataElementId + "-" + categoryOptionComboId
-  constructor() {}
+  inputFieldValue: any;
+  showBarcodeScanner: boolean;
 
-  ngOnInit(){
-    let fieldId = this.dataElementId + "-" + this.categoryOptionComboId;
-    if(this.data && this.data[fieldId]){
-      this.inputFieldValue  = this.data[fieldId].value;
+  constructor(private appProvider: AppProvider) {
+    this.showBarcodeScanner = false;
+  }
+
+  ngOnInit() {
+    const { allowBarcodeReaderOnNumerical } = this.dataEntrySettings;
+    if (allowBarcodeReaderOnNumerical) {
+      this.showBarcodeScanner = allowBarcodeReaderOnNumerical;
+    }
+    const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
+    if (this.data && this.data[fieldId]) {
+      this.inputFieldValue = this.data[fieldId].value;
     }
   }
 
-  updateValues(){
-    let fieldId = this.dataElementId + "-" + this.categoryOptionComboId;
-    if(this.data && this.data[fieldId] && this.inputFieldValue  != this.data[fieldId].value){
-      this.onChange.emit({"id":fieldId,"value":this.inputFieldValue,"status":"not-synced"});
-    }else if(this.data && !this.data[fieldId]){
-      if(this.inputFieldValue){
-        this.onChange.emit({"id":fieldId,"value":this.inputFieldValue,"status":"not-synced"});
+  updateValues() {
+    let fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
+    if (
+      this.data &&
+      this.data[fieldId] &&
+      this.inputFieldValue != this.data[fieldId].value
+    ) {
+      this.onChange.emit({
+        id: fieldId,
+        value: this.inputFieldValue,
+        status: 'not-synced'
+      });
+    } else if (this.data && !this.data[fieldId]) {
+      if (this.inputFieldValue) {
+        this.onChange.emit({
+          id: fieldId,
+          value: this.inputFieldValue,
+          status: 'not-synced'
+        });
       }
     }
   }
 
+  onChangeBarcodeReader(dataResponse) {
+    const { isMultlined } = dataResponse;
+    const { isMultidata } = dataResponse;
+    const { data } = dataResponse;
+    if (!isMultlined && data) {
+      if (isNaN(data)) {
+        this.appProvider.setNormalNotification(
+          'Scanned value is not numerical value'
+        );
+      } else {
+        this.inputFieldValue = data;
+        this.updateValues();
+      }
+    } else {
+      this.appProvider.setNormalNotification(
+        'Scanned value for multi line for numerical values is not yet supported'
+      );
+    }
+  }
 }

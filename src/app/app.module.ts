@@ -2,7 +2,6 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
-
 //native plugins
 import { SQLite } from '@ionic-native/sqlite';
 import { HTTP } from '@ionic-native/http';
@@ -83,8 +82,12 @@ import { SmsGatewayProvider } from '../providers/sms-gateway/sms-gateway';
 import { ProgramRulesProvider } from '../providers/program-rules/program-rules';
 import { SynchronizationProvider } from '../providers/synchronization/synchronization';
 import { GeolocationProvider } from '../providers/geolocation/geolocation';
+<<<<<<< HEAD
 import { ResourcesProvider } from '../providers/resources/resources';
 
+=======
+import { BarcodeReaderProvider } from '../providers/barcode-reader/barcode-reader';
+>>>>>>> 77fd0d1da322af4c0baf47f92007a6d653ffd299
 
 @NgModule({
   declarations: [
@@ -173,7 +176,11 @@ import { ResourcesProvider } from '../providers/resources/resources';
     ProgramRulesProvider,
     SynchronizationProvider,
     GeolocationProvider,
+<<<<<<< HEAD
     ResourcesProvider
+=======
+    BarcodeReaderProvider
+>>>>>>> 77fd0d1da322af4c0baf47f92007a6d653ffd299
   ]
 })
 export class AppModule {}

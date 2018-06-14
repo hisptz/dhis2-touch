@@ -16,8 +16,6 @@ export class TrueOnlyInputFieldComponent implements OnInit {
   @Input() data;
   @Output() onChange = new EventEmitter();
   inputFieldValue: any;
-  //{"id":"s46m5MS0hxu-Prlt0C1RF0s","value":"1","status":"synced"}
-  //id = dataElementId + "-" + categoryOptionComboId
   constructor() {}
 
   ngOnInit() {
@@ -25,7 +23,6 @@ export class TrueOnlyInputFieldComponent implements OnInit {
     if (this.data && this.data[fieldId]) {
       const value = this.data[fieldId].value;
       this.inputFieldValue = value == '' ? false : true;
-      console.log('this.data[fieldId].value : ' + this.inputFieldValue);
     }
   }
 
