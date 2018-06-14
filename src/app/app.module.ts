@@ -17,6 +17,9 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { DatePicker } from '@ionic-native/date-picker';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Diagnostic } from '@ionic-native/diagnostic';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
+import { File } from '@ionic-native/file';
+
 
 // Multi-language
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -80,6 +83,9 @@ import { SmsGatewayProvider } from '../providers/sms-gateway/sms-gateway';
 import { ProgramRulesProvider } from '../providers/program-rules/program-rules';
 import { SynchronizationProvider } from '../providers/synchronization/synchronization';
 import { GeolocationProvider } from '../providers/geolocation/geolocation';
+import { DocumentsProvider } from '../providers/files/files';
+import { ResourcesProvider } from '../providers/resources/resources';
+
 
 @NgModule({
   declarations: [
@@ -123,12 +129,15 @@ import { GeolocationProvider } from '../providers/geolocation/geolocation';
     Geolocation,
     Diagnostic,
     DatePicker,
+    FileTransfer, FileTransferObject,
+    File,
     BarcodeScanner,
     HTTP,
     AppVersion,
     Network,
     BackgroundMode,
     SMS,
+    DocumentsProvider,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     HttpClientProvider,
     UserProvider,
@@ -165,7 +174,9 @@ import { GeolocationProvider } from '../providers/geolocation/geolocation';
     EncryptionProvider,
     ProgramRulesProvider,
     SynchronizationProvider,
-    GeolocationProvider
+    GeolocationProvider,
+    DocumentsProvider,
+    ResourcesProvider
   ]
 })
 export class AppModule {}

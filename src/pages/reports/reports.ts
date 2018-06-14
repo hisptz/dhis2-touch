@@ -94,6 +94,10 @@ export class ReportsPage implements OnInit {
     }
   }
 
+  filesList(){  
+    this.navCtrl.push('DocumentsPage');
+  }
+
   doRefresh(refresher) {
     refresher.complete();
     
@@ -250,4 +254,7 @@ export class ReportsPage implements OnInit {
   getSubArryByPagination(array, pageSize, pageNumber) {
     return array.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
   }
+  TOdocuments(){
+    this.navCtrl.push('DocumentsPage');
+   }
 }

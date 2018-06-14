@@ -5,13 +5,11 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
   <ion-navbar color="primary">
     <ion-title>
       <span [translate]="'Reports'"></span>
     </ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
@@ -40,7 +38,9 @@
               <span class="item-card" color="font-color" ion-button clear text-capitalize (tap)="filteringReports('all')" ><ion-icon class="side-menu-icon" name="list" ></ion-icon>&nbsp;&nbsp; all</span>
               <span class="item-card" color="font-color" ion-button clear text-capitalize (tap)="filteringReports('standardReport')" ><img class="side-menu-icon" [src]="icons.standardReport" />&nbsp;&nbsp; standard</span> 
               <span class="item-card" color="font-color" ion-button clear text-capitalize (tap)="filteringReports('dataSetReport')" ><img class="side-menu-icon" [src]="icons.dataSetReport" />&nbsp;&nbsp;Dataset</span>
-          </ion-col>
+              <span class="item-card" color="font-color" ion-button clear text-capitalize (click)="filesList()" ><img class="side-menu-icon" [src]="icons.dataSetReport" />&nbsp;&nbsp;Resources</span>
+
+            </ion-col>
         </ion-row>
        
       <ion-row>
@@ -89,5 +89,5 @@
       </ion-row>
     </ion-grid>
   </div>
-
+ 
 </ion-content>
