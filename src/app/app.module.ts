@@ -83,8 +83,12 @@ import { ProgramRulesProvider } from '../providers/program-rules/program-rules';
 import { SynchronizationProvider } from '../providers/synchronization/synchronization';
 import { GeolocationProvider } from '../providers/geolocation/geolocation';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { ResourcesProvider } from '../providers/resources/resources';
 
+=======
+import { BarcodeReaderProvider } from '../providers/barcode-reader/barcode-reader';
+>>>>>>> 77fd0d1da322af4c0baf47f92007a6d653ffd299
 =======
 import { BarcodeReaderProvider } from '../providers/barcode-reader/barcode-reader';
 >>>>>>> 77fd0d1da322af4c0baf47f92007a6d653ffd299
@@ -177,7 +181,11 @@ import { BarcodeReaderProvider } from '../providers/barcode-reader/barcode-reade
     SynchronizationProvider,
     GeolocationProvider,
 <<<<<<< HEAD
+<<<<<<< HEAD
     ResourcesProvider
+=======
+    BarcodeReaderProvider
+>>>>>>> 77fd0d1da322af4c0baf47f92007a6d653ffd299
 =======
     BarcodeReaderProvider
 >>>>>>> 77fd0d1da322af4c0baf47f92007a6d653ffd299

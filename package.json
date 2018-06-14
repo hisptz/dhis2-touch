@@ -123,12 +123,18 @@
         "GEOLOCATION_USAGE_DESCRIPTION": "To locate location of phones for coordinate input"
       },
 <<<<<<< HEAD
+<<<<<<< HEAD
       "phonegap-plugin-barcodescanner": {
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
       },
       "cordova-plugin-datepicker": {},
       "cordova-plugin-file-transfer": {},
       "cordova-plugin-file": {}
+=======
+      "phonegap-plugin-barcodescanner": {},
+      "cordova-plugin-datepicker": {},
+      "cordova-plugin-ionic-keyboard": {}
+>>>>>>> 77fd0d1da322af4c0baf47f92007a6d653ffd299
 =======
       "phonegap-plugin-barcodescanner": {},
       "cordova-plugin-datepicker": {},
