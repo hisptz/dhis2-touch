@@ -250,8 +250,6 @@ export class SqlLiteProvider {
         }
         questionMarkParameter.push(questionMarks);
         query += questionMarkParameter.join(',') + ';';
-        console.log('query :' + query);
-        console.log('row : ' + JSON.stringify(row));
         queries.push([query, row]);
       }
     }

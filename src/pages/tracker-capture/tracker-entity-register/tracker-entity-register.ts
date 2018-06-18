@@ -60,6 +60,7 @@ export class TrackerEntityRegisterPage implements OnInit {
   trackerRegistrationForm: string;
   formLayout: string;
   data;
+  programSkipLogicMetadata: any;
   private _dataUpdateStatus$: BehaviorSubject<{
     [elementId: string]: string;
   }> = new BehaviorSubject<{ [elementId: string]: string }>({});
@@ -80,6 +81,9 @@ export class TrackerEntityRegisterPage implements OnInit {
     private appTranslation: AppTranslationProvider,
     private settingProvider: SettingsProvider
   ) {
+    this.programSkipLogicMetadata = {};
+    this.icons['addNewCase'] = 'assets/icon/add-new-case.png';
+    this.icons['menu'] = 'assets/icon/menu.png';
     this.isFormReady = false;
     this.currentProgramName = '';
     this.currentOrganisationUnitName = '';
@@ -92,8 +96,6 @@ export class TrackerEntityRegisterPage implements OnInit {
   }
 
   ngOnInit() {
-    this.icons['addNewCase'] = 'assets/icon/add-new-case.png';
-    this.icons['menu'] = 'assets/icon/menu.png';
     this.isLoading = true;
     this.isRegistrationProcessingRunning = false;
     this.translationMapper = {};
@@ -211,7 +213,7 @@ export class TrackerEntityRegisterPage implements OnInit {
       .getProgramSkipLogicMetadata(programId, currentUser)
       .subscribe(
         metadata => {
-          console.log('Program skip logic ' + JSON.stringify(metadata));
+          this.programSkipLogicMetadata = metadata;
         },
         error => {
           console.log(

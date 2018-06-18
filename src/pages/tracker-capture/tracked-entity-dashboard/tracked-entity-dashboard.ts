@@ -53,6 +53,7 @@ export class TrackedEntityDashboardPage implements OnInit {
   translationMapper: any;
   trackerRegistrationForm: string;
   formLayout: string;
+  programSkipLogicMetadata: any;
   private _dataUpdateStatus$: BehaviorSubject<{
     [elementId: string]: string;
   }> = new BehaviorSubject<{ [elementId: string]: string }>({});
@@ -75,6 +76,7 @@ export class TrackedEntityDashboardPage implements OnInit {
     private appTranslation: AppTranslationProvider,
     private settingProvider: SettingsProvider
   ) {
+    this.programSkipLogicMetadata = {};
     this.dataUpdateStatus$ = this._dataUpdateStatus$.asObservable();
   }
 
@@ -207,7 +209,7 @@ export class TrackedEntityDashboardPage implements OnInit {
       .getProgramSkipLogicMetadata(programId, currentUser)
       .subscribe(
         metadata => {
-          console.log('Program skip logic ' + JSON.stringify(metadata));
+          this.programSkipLogicMetadata = metadata;
         },
         error => {
           console.log(

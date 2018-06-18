@@ -676,8 +676,9 @@ export class EventCaptureFormProvider {
           eventResponse.map((event: any) => {
             if (
               event.orgUnit == orgUnitId &&
-              event.attributeCategoryOptions == dataDimension.attributeCos &&
-              event.attributeCc == dataDimension.attributeCc
+              event.attributeCc == dataDimension.attributeCc &&
+              (event.attributeCategoryOptions == dataDimension.attributeCos ||
+                dataDimension.attributeCos == '')
             ) {
               events.push(event);
             }

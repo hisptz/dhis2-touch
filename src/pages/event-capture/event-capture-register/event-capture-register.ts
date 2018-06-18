@@ -32,6 +32,7 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
   currentEvent: any;
   emptyEvent: any;
   formLayout: string;
+  programSkipLogicMetadata: any;
 
   constructor(
     private navCtr: NavController,
@@ -43,12 +44,14 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
     private appProvider: AppProvider,
     private settingProvider: SettingsProvider,
     private appTranslation: AppTranslationProvider
-  ) {}
-
-  ngOnInit() {
+  ) {
+    this.programSkipLogicMetadata = {};
     this.translationMapper = {};
     this.currentProgram = this.programsProvider.lastSelectedProgram;
     this.currentOrgUnit = this.organisationUnitProvider.lastSelectedOrgUnit;
+  }
+
+  ngOnInit() {
     this.isLoading = true;
     this.dataDimension = this.params.get('dataDimension');
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
@@ -167,7 +170,7 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
       .getProgramSkipLogicMetadata(programId, currentUser)
       .subscribe(
         metadata => {
-          console.log('Program skip logic ' + JSON.stringify(metadata));
+          this.programSkipLogicMetadata = metadata;
         },
         error => {
           console.log(
