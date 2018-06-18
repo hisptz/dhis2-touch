@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 import { EnrollmentsProvider } from '../enrollments/enrollments';
 import { CurrentUser } from '../../models/currentUser';
+import { ProgramRulesProvider } from '../program-rules/program-rules';
 
 declare var dhis2: any;
 
@@ -26,7 +27,8 @@ export class EventCaptureFormProvider {
     private httpClientProvider: HttpClientProvider,
     private programStageSectionsProvider: ProgramStageSectionsProvider,
     private dataElementProvider: DataElementsProvider,
-    private enrollmentsProvider: EnrollmentsProvider
+    private enrollmentsProvider: EnrollmentsProvider,
+    private programRulesProvider: ProgramRulesProvider
   ) {}
 
   getEventDueDate(
@@ -104,22 +106,69 @@ export class EventCaptureFormProvider {
     currentUser: CurrentUser
   ): Observable<any> {
     return new Observable(observer => {
+      let programRuleActionIds = [];
       this.programsProvider
         .getProgramRuleIds(programId, currentUser.currentDatabase)
         .subscribe(
           programRuleIds => {
-            this.programsProvider
-              .getProgramRulesVariablesIds(
-                programId,
-                currentUser.currentDatabase
-              )
+            this.programRulesProvider
+              .getgProgramRulesByIds(programRuleIds, currentUser)
               .subscribe(
-                programRulesVariablesIds => {
-                  observer.next({
-                    programRuleIds: programRuleIds,
-                    programRulesVariablesIds: programRulesVariablesIds
+                programRules => {
+                  _.map(programRules, programRule => {
+                    if (programRule && programRule.programRuleActions) {
+                      _.map(
+                        programRule.programRuleActions,
+                        programRuleAction => {
+                          if (programRuleAction && programRuleAction.id) {
+                            programRuleActionIds.push(programRuleAction.id);
+                          }
+                        }
+                      );
+                    }
                   });
-                  observer.complete();
+                  this.programRulesProvider
+                    .getProgramRuleActionsByIds(
+                      programRuleActionIds,
+                      currentUser
+                    )
+                    .subscribe(
+                      programRuleActions => {
+                        this.programsProvider
+                          .getProgramRulesVariablesIds(
+                            programId,
+                            currentUser.currentDatabase
+                          )
+                          .subscribe(
+                            programRulesVariablesIds => {
+                              this.programRulesProvider
+                                .getProgramRuleVariableByIds(
+                                  programRulesVariablesIds,
+                                  currentUser
+                                )
+                                .subscribe(
+                                  programRulesVariables => {
+                                    observer.next({
+                                      programRules: programRules,
+                                      programRuleActions: programRuleActions,
+                                      programRulesVariables: programRulesVariables
+                                    });
+                                    observer.complete();
+                                  },
+                                  error => {
+                                    observer.error(error);
+                                  }
+                                );
+                            },
+                            error => {
+                              observer.error(error);
+                            }
+                          );
+                      },
+                      error => {
+                        observer.error(error);
+                      }
+                    );
                 },
                 error => {
                   observer.error(error);

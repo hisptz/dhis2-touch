@@ -237,8 +237,11 @@ export class SqlLiteProvider {
         let row = [];
         for (let column of columns) {
           let attribute = column.value;
-          let attributeValue = bulkData[startPoint][attribute];
-          if (column.type != 'LONGTEXT' && attributeValue == undefined) {
+          let attributeValue =
+            bulkData[startPoint] && bulkData[startPoint][attribute]
+              ? bulkData[startPoint][attribute]
+              : '';
+          if (column.type != 'LONGTEXT' && attributeValue === '') {
             attributeValue = 0;
           } else if (column.type == 'LONGTEXT') {
             attributeValue = JSON.stringify(attributeValue);
@@ -247,6 +250,8 @@ export class SqlLiteProvider {
         }
         questionMarkParameter.push(questionMarks);
         query += questionMarkParameter.join(',') + ';';
+        console.log('query :' + query);
+        console.log('row : ' + JSON.stringify(row));
         queries.push([query, row]);
       }
     }

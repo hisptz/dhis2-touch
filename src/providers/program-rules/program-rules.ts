@@ -39,7 +39,7 @@ export class ProgramRulesProvider {
   downloadingProgramRuleActions(currentUser: CurrentUser): Observable<any> {
     const resource = 'programRuleActions';
     const fields =
-      'id,data,content,programRuleActionType,location,programRule[id]';
+      'id,data,content,programRuleActionType,location,programRule[id],dataElement[id],trackedEntityAttribute[id],programStageSection[id],programStage[id]';
     const url = '/api/' + resource + '.json?paging=false&fields=' + fields;
     return new Observable(observer => {
       this.httpClientProvider.get(url, true, currentUser).subscribe(
@@ -100,7 +100,8 @@ export class ProgramRulesProvider {
             observer.complete();
           },
           error => {
-            observer.error();
+            console.log(JSON.stringify(error));
+            observer.error(error);
           }
         );
     });
@@ -120,6 +121,94 @@ export class ProgramRulesProvider {
             observer.error();
           }
         );
+    });
+  }
+
+  getgProgramRulesByIds(
+    programRulesIds: Array<String>,
+    currentUser: CurrentUser
+  ): Observable<any> {
+    const resource = 'programRules';
+    return new Observable(observer => {
+      if (programRulesIds.length == 0) {
+        observer.next([]);
+        observer.complete();
+      } else {
+        this.sqlLite
+          .getDataFromTableByAttributes(
+            resource,
+            'id',
+            programRulesIds,
+            currentUser.currentDatabase
+          )
+          .subscribe(
+            programRules => {
+              observer.next(programRules);
+              observer.complete();
+            },
+            error => {
+              observer.error(error);
+            }
+          );
+      }
+    });
+  }
+
+  getProgramRuleActionsByIds(
+    ProgramRuleActionsIds: Array<String>,
+    currentUser: CurrentUser
+  ): Observable<any> {
+    const resource = 'programRuleActions';
+    return new Observable(observer => {
+      if (ProgramRuleActionsIds.length == 0) {
+        observer.next([]);
+        observer.complete();
+      } else {
+        this.sqlLite
+          .getDataFromTableByAttributes(
+            resource,
+            'id',
+            ProgramRuleActionsIds,
+            currentUser.currentDatabase
+          )
+          .subscribe(
+            programRuleActions => {
+              observer.next(programRuleActions);
+              observer.complete();
+            },
+            error => {
+              observer.error(error);
+            }
+          );
+      }
+    });
+  }
+
+  getProgramRuleVariableByIds(
+    programRuleVariableIds: Array<string>,
+    currentUser: CurrentUser
+  ): Observable<any> {
+    const resource = 'programRuleVariables';
+    return new Observable(observer => {
+      if (programRuleVariableIds.length == 0) {
+      } else {
+        this.sqlLite
+          .getDataFromTableByAttributes(
+            resource,
+            'id',
+            programRuleVariableIds,
+            currentUser.currentDatabase
+          )
+          .subscribe(
+            programRuleVariables => {
+              observer.next(programRuleVariables);
+              observer.complete();
+            },
+            error => {
+              observer.error(error);
+            }
+          );
+      }
     });
   }
 }
