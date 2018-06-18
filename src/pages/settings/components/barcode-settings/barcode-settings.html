@@ -1,0 +1,12 @@
+<ion-item no-lines>
+  <ion-label>
+    <span [translate]="'Show barcode reader on numerical fields'"></span>
+  </ion-label>
+  <ion-toggle (ionChange)="applySettings()" color="primary" [(ngModel)]="settingObject.barcode.allowBarcodeReaderOnNumerical"></ion-toggle>
+</ion-item>
+<ion-item no-lines>
+  <ion-label>
+    <span [translate]="'Show barcode reader on text fields'"></span>
+  </ion-label>
+  <ion-toggle (ionChange)="applySettings()" color="primary" [(ngModel)]="settingObject.barcode.allowBarcodeReaderOnText"></ion-toggle>
+</ion-item>

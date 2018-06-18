@@ -53,7 +53,7 @@ export class TrackedEntityDashboardPage implements OnInit {
   translationMapper: any;
   trackerRegistrationForm: string;
   formLayout: string;
-  programSkipLogicMetadata: any;
+  programSkipLogicMetadata: any; // programRules, programRuleActions,programRulesVariables
   private _dataUpdateStatus$: BehaviorSubject<{
     [elementId: string]: string;
   }> = new BehaviorSubject<{ [elementId: string]: string }>({});

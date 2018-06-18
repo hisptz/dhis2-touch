@@ -60,7 +60,7 @@ export class TrackerEntityRegisterPage implements OnInit {
   trackerRegistrationForm: string;
   formLayout: string;
   data;
-  programSkipLogicMetadata: any;
+  programSkipLogicMetadata: any; // programRules, programRuleActions,programRulesVariables
   private _dataUpdateStatus$: BehaviorSubject<{
     [elementId: string]: string;
   }> = new BehaviorSubject<{ [elementId: string]: string }>({});

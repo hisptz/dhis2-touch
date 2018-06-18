@@ -1,0 +1,29 @@
+<ion-row>
+  <ion-col col-5>
+    <ion-item>
+      <ion-input type="number" (ionBlur)="updateAutoSyncSetting()" min="1" [(ngModel)]="settingObject.synchronization.time"></ion-input>
+    </ion-item>
+  </ion-col>
+  <ion-col col-7>
+    <ion-item>
+      <ion-select (ionChange)="updateAutoSyncSetting()" [(ngModel)]="settingObject.synchronization.timeType" interface="action-sheet">
+        <ion-option value="minutes">
+          <span [translate]="'Minutes'"></span>
+        </ion-option>
+        <ion-option value="hours">
+          <span [translate]="'Hours'"></span>
+        </ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-col>
+</ion-row>
+<ion-row>
+  <ion-col>
+    <ion-item no-lines>
+      <ion-label>
+        <span [translate]="'Auto synchronization'"></span>
+      </ion-label>
+      <ion-toggle (ionChange)="updateAutoSyncSetting()" color="primary" [(ngModel)]="settingObject.synchronization.isAutoSync"></ion-toggle>
+    </ion-item>
+  </ion-col>
+</ion-row>
