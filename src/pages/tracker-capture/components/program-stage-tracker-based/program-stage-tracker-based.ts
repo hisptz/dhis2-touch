@@ -99,6 +99,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
             .getSettingsForTheApp(this.currentUser)
             .subscribe((appSettings: any) => {
               this.dataEntrySettings = appSettings.entryForm;
+
               this.columnsToDisplay = {};
               if (this.programStage.programStageDataElements) {
                 this.programStage.programStageDataElements.forEach(

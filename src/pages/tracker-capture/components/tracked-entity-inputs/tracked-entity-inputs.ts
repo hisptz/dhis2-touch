@@ -26,6 +26,7 @@ export class TrackedEntityInputsComponent implements OnInit {
   supportValueTypes: Array<string>;
   formLayout: string;
   dataEntrySettings: any;
+  barcodeSettings: any;
   isLoading: boolean;
 
   constructor(
@@ -72,6 +73,7 @@ export class TrackedEntityInputsComponent implements OnInit {
         .getSettingsForTheApp(this.currentUser)
         .subscribe((appSettings: any) => {
           const dataEntrySettings = appSettings.entryForm;
+          this.barcodeSettings = appSettings.barcode;
           this.dataEntrySettings = dataEntrySettings;
           if (dataEntrySettings.formLayout) {
             this.formLayout = dataEntrySettings.formLayout;

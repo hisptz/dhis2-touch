@@ -16,7 +16,7 @@ export class NumericalInputFieldComponent implements OnInit {
   @Input() categoryOptionComboId;
   @Input() data;
   @Input() valueType;
-  @Input() dataEntrySettings;
+  @Input() barcodeSettings;
   @Output() onChange = new EventEmitter();
   inputFieldValue: any;
   showBarcodeScanner: boolean;
@@ -26,7 +26,7 @@ export class NumericalInputFieldComponent implements OnInit {
   }
 
   ngOnInit() {
-    const { allowBarcodeReaderOnNumerical } = this.dataEntrySettings;
+    const { allowBarcodeReaderOnNumerical } = this.barcodeSettings;
     if (allowBarcodeReaderOnNumerical) {
       this.showBarcodeScanner = allowBarcodeReaderOnNumerical;
     }
