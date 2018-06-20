@@ -17,7 +17,7 @@
 
   <ion-grid>
     <ion-row class="animated fadeIn">
-      <ion-col col-auto *ngFor="let app of authorizedApps;trackBy: trackByFn">
+      <ion-col col-xs-4 col-sm-3 col-md-2 col-lg-1 col-xl-1 *ngFor="let app of authorizedApps;trackBy: trackByFn">
         <div class="app-item-container">
           <div [ngClass]="animationEffect[app.id]" (tap)="goToView(app)">
             <div class="apps-contents" padding>
