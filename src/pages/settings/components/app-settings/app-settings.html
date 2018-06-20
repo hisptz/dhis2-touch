@@ -1,7 +1,7 @@
 <ion-row>
   <ion-col>
     <ion-item>
-      <ion-label>
+      <ion-label text-wrap>
         <span [translate]="'Current language'"></span>
       </ion-label>
       <ion-select (ionChange)="updateCurrentLanguage()" [(ngModel)]="currentLanguage" interface="action-sheet">

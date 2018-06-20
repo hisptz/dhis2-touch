@@ -1,7 +1,7 @@
 <ion-row>
   <ion-col>
     <ion-item>
-      <ion-label>
+      <ion-label text-wrap>
         <span [translate]="'Form label'"></span>
       </ion-label>
       <ion-select (ionChange)="applySettings()" [(ngModel)]="settingObject.entryForm.label" interface="action-sheet">
@@ -14,7 +14,7 @@
       </ion-select>
     </ion-item>
     <ion-item>
-      <ion-label>
+      <ion-label text-wrap>
         <span [translate]="'Form layout'"></span>
       </ion-label>
       <ion-select (ionChange)="applySettings()" [(ngModel)]="settingObject.entryForm.formLayout" interface="action-sheet">
@@ -36,13 +36,13 @@
       <ion-input (ionBlur)="applySettings()" type="number" min="1" [(ngModel)]="settingObject.entryForm.maxDataElementOnDefaultForm"></ion-input>
     </ion-item>
     <ion-item no-lines>
-      <ion-label>
+      <ion-label text-wrap>
         <span [translate]="'Render option less than six as radio'"></span>
       </ion-label>
       <ion-toggle (ionChange)="applySettings()" color="primary" [(ngModel)]="settingObject.entryForm.shouldDisplayAsRadio"></ion-toggle>
     </ion-item>
     <ion-item no-lines>
-      <ion-label>
+      <ion-label text-wrap>
         <span [translate]="'Show alert on assignement issues'"></span>
       </ion-label>
       <ion-toggle (ionChange)="applySettings()" color="primary" [(ngModel)]="settingObject.entryForm.showAlertOnFormAssignement"></ion-toggle>
