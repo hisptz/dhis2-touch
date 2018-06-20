@@ -1,5 +1,6 @@
 page-apps {
   .app-item-container {
-    width: 105px;
+    min-width: 105px;
+    max-width: 120px;
   }
 }
