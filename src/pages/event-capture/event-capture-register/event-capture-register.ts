@@ -32,6 +32,7 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
   currentEvent: any;
   emptyEvent: any;
   formLayout: string;
+  programSkipLogicMetadata: any; // programRules, programRuleActions,programRulesVariables
 
   constructor(
     private navCtr: NavController,
@@ -43,12 +44,14 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
     private appProvider: AppProvider,
     private settingProvider: SettingsProvider,
     private appTranslation: AppTranslationProvider
-  ) {}
-
-  ngOnInit() {
+  ) {
+    this.programSkipLogicMetadata = {};
     this.translationMapper = {};
     this.currentProgram = this.programsProvider.lastSelectedProgram;
     this.currentOrgUnit = this.organisationUnitProvider.lastSelectedOrgUnit;
+  }
+
+  ngOnInit() {
     this.isLoading = true;
     this.dataDimension = this.params.get('dataDimension');
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
@@ -76,6 +79,10 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
           }
         });
         this.loadProgramStages(this.currentProgram.id);
+        this.loadingProgramSkipLogicMetadata(
+          this.currentProgram.id,
+          this.currentUser
+        );
       },
       error => {
         console.log(JSON.stringify(error));
@@ -153,6 +160,22 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
           this.isLoading = false;
           this.appProvider.setNormalNotification(
             'Failed to discover program stages'
+          );
+        }
+      );
+  }
+
+  loadingProgramSkipLogicMetadata(programId, currentUser) {
+    this.eventCaptureFormProvider
+      .getProgramSkipLogicMetadata(programId, currentUser)
+      .subscribe(
+        metadata => {
+          this.programSkipLogicMetadata = metadata;
+        },
+        error => {
+          console.log(
+            'Error on getting program skip logic metadata ' +
+              JSON.stringify(error)
           );
         }
       );

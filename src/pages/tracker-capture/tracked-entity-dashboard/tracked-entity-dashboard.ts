@@ -53,6 +53,7 @@ export class TrackedEntityDashboardPage implements OnInit {
   translationMapper: any;
   trackerRegistrationForm: string;
   formLayout: string;
+  programSkipLogicMetadata: any; // programRules, programRuleActions,programRulesVariables
   private _dataUpdateStatus$: BehaviorSubject<{
     [elementId: string]: string;
   }> = new BehaviorSubject<{ [elementId: string]: string }>({});
@@ -75,6 +76,7 @@ export class TrackedEntityDashboardPage implements OnInit {
     private appTranslation: AppTranslationProvider,
     private settingProvider: SettingsProvider
   ) {
+    this.programSkipLogicMetadata = {};
     this.dataUpdateStatus$ = this._dataUpdateStatus$.asObservable();
   }
 
@@ -151,6 +153,10 @@ export class TrackedEntityDashboardPage implements OnInit {
             });
           }
           this.loadingProgramStages(this.currentProgram.id, this.currentUser);
+          this.loadingProgramSkipLogicMetadata(
+            this.currentProgram.id,
+            this.currentUser
+          );
         },
         error => {
           console.log(JSON.stringify(error));
@@ -174,7 +180,7 @@ export class TrackedEntityDashboardPage implements OnInit {
           this.programStages = programStages;
           if (programStages && programStages.length > 0) {
             let counter = 1;
-            programStages.forEach((programStage: any) => {
+            programStages.map((programStage: any) => {
               this.dashboardWidgets.push({
                 id: programStage.id,
                 name: programStage.name,
@@ -193,6 +199,22 @@ export class TrackedEntityDashboardPage implements OnInit {
           this.isLoading = false;
           this.appProvider.setNormalNotification(
             'Failed to discover program stages'
+          );
+        }
+      );
+  }
+
+  loadingProgramSkipLogicMetadata(programId, currentUser) {
+    this.eventCaptureFormProvider
+      .getProgramSkipLogicMetadata(programId, currentUser)
+      .subscribe(
+        metadata => {
+          this.programSkipLogicMetadata = metadata;
+        },
+        error => {
+          console.log(
+            'Error on getting program skip logic metadata ' +
+              JSON.stringify(error)
           );
         }
       );

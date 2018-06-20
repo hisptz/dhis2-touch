@@ -38,6 +38,13 @@ export class SettingsProvider {
         icon: 'assets/icon/synchronization.png',
         isLoading: false,
         loadingMessage: ''
+      },
+      {
+        id: 'barcode',
+        name: 'Barcode behaviour',
+        icon: 'assets/icon/barcode-reader.png',
+        isLoading: false,
+        loadingMessage: ''
       }
     ];
     return settingContents;
@@ -140,14 +147,19 @@ export class SettingsProvider {
         maxDataElementOnDefaultForm: 10,
         formLayout: 'tableLayout',
         showAlertOnFormAssignement: true,
-        shouldDisplayAsRadio: true,
-        allowBarcodeReaderOnText: false,
-        allowBarcodeReaderOnNumerical: false
+        shouldDisplayAsRadio: true
       },
       synchronization: {
         time: 2 * 60 * 1000,
         timeType: 'minutes',
         isAutoSync: true
+      },
+      barcode: {
+        allowBarcodeReaderOnText: false,
+        allowBarcodeReaderOnNumerical: false,
+        activateMultiline: false,
+        keyPairSeparator: ':',
+        multilineSeparator: ';'
       }
     };
     return defaultSettings;

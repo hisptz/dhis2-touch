@@ -32,6 +32,7 @@ export class EventInputContainerComponent implements OnInit, OnDestroy {
   numericalInputField: Array<string>;
   supportValueTypes: Array<string>;
   dataEntrySettings: any;
+  barcodeSettings: any;
   isLoading: boolean;
 
   constructor(
@@ -77,6 +78,7 @@ export class EventInputContainerComponent implements OnInit, OnDestroy {
       .subscribe((appSettings: any) => {
         const dataEntrySettings = appSettings.entryForm;
         this.dataEntrySettings = dataEntrySettings;
+        this.barcodeSettings = appSettings.barcode;
         if (dataEntrySettings.label) {
           if (
             this.dataElement[dataEntrySettings.label] &&
