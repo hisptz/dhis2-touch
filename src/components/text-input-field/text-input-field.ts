@@ -59,6 +59,7 @@ export class TextInputFieldComponent implements OnInit {
     }
   }
 
+  //handling of multi lines data or key values pair
   onChangeBarcodeReader(dataResponse) {
     const { isMultlined } = dataResponse;
     const { isMultidata } = dataResponse;

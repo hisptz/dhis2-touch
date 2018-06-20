@@ -97,8 +97,7 @@ export class BarcodeInputComponent implements OnInit, OnDestroy {
       .scanBarcodeOrQrCode(this.barcodeSettings)
       .subscribe(
         dataResponse => {
-          //this.barcodeReaderChange.emit(dataResponse);
-          console.log(JSON.stringify(dataResponse));
+          this.barcodeReaderChange.emit(dataResponse);
         },
         error => {
           this.appProvider.setNormalNotification(
