@@ -156,7 +156,10 @@ export class SettingsProvider {
       },
       barcode: {
         allowBarcodeReaderOnText: false,
-        allowBarcodeReaderOnNumerical: false
+        allowBarcodeReaderOnNumerical: false,
+        activateMultiline: false,
+        keyPairSeparator: ':',
+        multilineSeparator: ';'
       }
     };
     return defaultSettings;

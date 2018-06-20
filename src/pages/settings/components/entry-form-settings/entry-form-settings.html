@@ -30,12 +30,12 @@
       </ion-select>
     </ion-item>
     <ion-item>
-      <ion-label floating>
+      <ion-label floating text-wrap>
         <span [translate]="'Data element per page'"></span>
       </ion-label>
       <ion-input (ionBlur)="applySettings()" type="number" min="1" [(ngModel)]="settingObject.entryForm.maxDataElementOnDefaultForm"></ion-input>
     </ion-item>
-    <ion-item no-lines>
+    <ion-item>
       <ion-label text-wrap>
         <span [translate]="'Render option less than six as radio'"></span>
       </ion-label>

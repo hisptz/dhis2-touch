@@ -1,4 +1,22 @@
-<ion-item no-lines>
+<ion-item>
+  <ion-label text-wrap>
+    <span [translate]="'Activate multiline barcode scan behaviour'"></span>
+  </ion-label>
+  <ion-toggle (ionChange)="applySettings()" color="primary" [(ngModel)]="settingObject.barcode.activateMultiline"></ion-toggle>
+</ion-item>
+<ion-item>
+  <ion-label floating text-wrap>
+    <span [translate]="'Key value pair separator'"></span>
+  </ion-label>
+  <ion-input (ionBlur)="applySettings()" type="text" [(ngModel)]="settingObject.barcode.keyPairSeparator"></ion-input>
+</ion-item>
+<ion-item>
+  <ion-label floating text-wrap>
+    <span [translate]="'Multiline separator'"></span>
+  </ion-label>
+  <ion-input (ionBlur)="applySettings()" type="text" [(ngModel)]="settingObject.barcode.multilineSeparator"></ion-input>
+</ion-item>
+<ion-item>
   <ion-label text-wrap>
     <span [translate]="'Show barcode reader on numerical fields'"></span>
   </ion-label>
