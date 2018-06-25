@@ -24,6 +24,10 @@
 </div>
 <div *ngIf="currentOpenEvent['eventDate'] && currentOpenEvent['eventDate'] !=''">
   <div *ngIf="(programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
+    <div *ngIf="programStage.captureCoordinates" class="item-card">
+      {{ translationMapper['Coordinate']}}
+      <event-coordinate-selector (onChangeEventCoordonate)="updateEventCoordonate($event)" [(coordinate)]="currentEvent.coordinate"></event-coordinate-selector>
+    </div>
     <div *ngIf="formLayout === 'customLayout' && programStage && programStage.dataEntryForm && programStage.dataEntryForm !== '' ">
       <custom-data-entry-form [entryFormType]="entryFormType" [dataEntryFormDesign]="programStage.dataEntryForm" [data]="dataObject"
         [dataUpdateStatus]="dataUpdateStatus" [programStageDataElements]="programStage.programStageDataElements" [programStageId]="programStage.id"
