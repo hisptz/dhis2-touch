@@ -48,6 +48,10 @@ export class EnrollmentsProvider {
     const payLoad = {
       id: enrollment,
       trackedEntity: trackedEntityId,
+      coordinate: {
+        latitude: '0',
+        longitude: '0'
+      },
       orgUnit: orgUnitId,
       program: programId,
       trackedEntityInstance: trackedEntityInstance,

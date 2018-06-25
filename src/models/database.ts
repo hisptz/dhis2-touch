@@ -467,6 +467,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'incidentDate', type: 'TEXT' },
       { value: 'status', type: 'TEXT' },
       { value: 'attributes', type: 'LONGTEXT' },
+      { value: 'coordinate', type: 'LONGTEXT' },
       { value: 'events', type: 'LONGTEXT' },
       { value: 'syncStatus', type: 'TEXT' }
     ],
