@@ -94,9 +94,11 @@
                         </div>
                       </div>
                     </div>
-                    <div *ngIf="currentProgram.captureCoordinates && isFormReady" class="item-card">
-                      {{ translationMapper['Coordinate']}}
-                      <event-coordinate-selector (onChangeEventCoordonate)="updateEventCoordonate($event)" [coordinate]="coordinate"></event-coordinate-selector>
+                    <div *ngIf="currentProgram.captureCoordinates && isFormReady">
+                      <span [translate]="'Coordinate'"></span>
+                      <div [ngClass]="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container'">
+                        <event-coordinate-selector (onChangeEventCoordonate)="updateEventCoordonate($event)" [coordinate]="coordinate"></event-coordinate-selector>
+                      </div>
                     </div>
                   </div>
                 </form>
