@@ -34,10 +34,10 @@
             <br>
             <span *ngIf="!isLoading">
               <b>
-                <span [translate]="'synced'"></span>
+                <span [translate]="'Synced'"></span>
               </b> : {{ storageStatus.online }}
               <b>
-                <span [translate]="'not synced'"></span>
+                <span [translate]="'Not synced'"></span>
               </b> : {{storageStatus.offline }}</span>
           </div>
           <aggregate-conflict-handler (conflictFoundAction)="scrollEntryFormUp()" (mergeDataAction)="onMergingWithOnlineData($event)"

@@ -18,6 +18,7 @@ import { AppTranslationProvider } from '../../../providers/app-translation/app-t
 import { SettingsProvider } from '../../../providers/settings/settings';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { EnrollmentsProvider } from '../../../providers/enrollments/enrollments';
 
 declare var dhis2: any;
 /**
@@ -60,6 +61,7 @@ export class TrackerEntityRegisterPage implements OnInit {
   trackerRegistrationForm: string;
   formLayout: string;
   data;
+  coordinate: any;
   programSkipLogicMetadata: any; // programRules, programRuleActions,programRulesVariables
   private _dataUpdateStatus$: BehaviorSubject<{
     [elementId: string]: string;
@@ -79,8 +81,13 @@ export class TrackerEntityRegisterPage implements OnInit {
     private organisationUnitsProvider: OrganisationUnitsProvider,
     private trackerCaptureProvider: TrackerCaptureProvider,
     private appTranslation: AppTranslationProvider,
-    private settingProvider: SettingsProvider
+    private settingProvider: SettingsProvider,
+    private enrollmentsProvider: EnrollmentsProvider
   ) {
+    this.coordinate = {
+      latitude: '0',
+      longitude: '0'
+    };
     this.programSkipLogicMetadata = {};
     this.icons['addNewCase'] = 'assets/icon/add-new-case.png';
     this.icons['menu'] = 'assets/icon/menu.png';
@@ -161,6 +168,10 @@ export class TrackerEntityRegisterPage implements OnInit {
     this.date = {
       incidentDate: '',
       enrollmentDate: ''
+    };
+    this.coordinate = {
+      latitude: '0',
+      longitude: '0'
     };
     this.dashboardWidgets = this.getDashboardWidgets();
     this.isTrackedEntityRegistered = false;
@@ -327,7 +338,11 @@ export class TrackerEntityRegisterPage implements OnInit {
     }
   }
 
-  //@todo changes of enrollments as well
+  updateEventCoordonate(coordinate) {
+    this.coordinate = coordinate;
+    this.updateData('', true);
+  }
+
   updateData(updateDataValue, shoulOnlyCheckDates?) {
     if (!shoulOnlyCheckDates) {
       const id = updateDataValue.id.split('-')[0];
@@ -337,8 +352,7 @@ export class TrackerEntityRegisterPage implements OnInit {
     }
     const isFormReady = this.isALlRequiredFieldHasValue(
       this.programTrackedEntityAttributes,
-      this.trackedEntityAttributeValuesObject,
-      shoulOnlyCheckDates
+      this.trackedEntityAttributeValuesObject
     );
     if (isFormReady) {
       this.registerEntity();
@@ -434,13 +448,23 @@ export class TrackerEntityRegisterPage implements OnInit {
               this.currentTrackedEntityId
             ] =
               'input-field-container-success';
-
             // Update status for custom form
             const dataUpdateStatus = {};
             _.each(_.keys(this.dataObject), dataObjectId => {
               dataUpdateStatus[dataObjectId + '-val'] = 'OK';
             });
             this._dataUpdateStatus$.next(dataUpdateStatus);
+            this.enrollmentsProvider
+              .updateEnrollement(
+                this.trackedEntityInstance,
+                this.date.incidentDate,
+                this.date.enrollment,
+                this.coordinate,
+                this.currentProgram.id,
+                this.currentOrganisationUnit.id,
+                this.currentUser
+              )
+              .subscribe(() => {}, () => {});
           },
           error => {
             this.trackedEntityAttributesSavingStatusClass[
@@ -448,7 +472,6 @@ export class TrackerEntityRegisterPage implements OnInit {
             ] =
               'input-field-container-failed';
             console.log(JSON.stringify(error));
-
             // Update status for custom form
             const dataUpdateStatus = {};
             _.each(_.keys(this.dataObject), dataObjectId => {
@@ -463,10 +486,11 @@ export class TrackerEntityRegisterPage implements OnInit {
           this.date.incidentDate,
           this.date.enrollmentDate,
           this.currentUser,
-          this.trackedEntityInstance
+          this.trackedEntityInstance,
+          this.coordinate
         )
         .subscribe(
-          (reseponse: any) => {
+          () => {
             this.appProvider.setNormalNotification(
               'A tracked entity instance has been saved successfully'
             );
@@ -500,7 +524,6 @@ export class TrackerEntityRegisterPage implements OnInit {
               'Failed to save a tracked entity instance'
             );
             console.log(JSON.stringify(error));
-
             // Update status for custom form
             const dataUpdateStatus = {};
             _.each(_.keys(this.dataObject), dataObjectId => {
@@ -514,8 +537,7 @@ export class TrackerEntityRegisterPage implements OnInit {
 
   isALlRequiredFieldHasValue(
     programTrackedEntityAttributes,
-    trackedEntityAttributeValuesObject,
-    shoulOnlyCheckDates
+    trackedEntityAttributeValuesObject
   ) {
     let result = Object.keys(trackedEntityAttributeValuesObject).length > 0;
     programTrackedEntityAttributes.forEach(

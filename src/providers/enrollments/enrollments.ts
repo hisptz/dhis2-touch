@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { Observable } from 'rxjs/Observable';
+import { CurrentUser } from '../../models/currentUser';
+import * as _ from 'lodash';
 
 declare var dhis2: any;
 
@@ -48,6 +50,10 @@ export class EnrollmentsProvider {
     const payLoad = {
       id: enrollment,
       trackedEntity: trackedEntityId,
+      coordinate: {
+        latitude: '0',
+        longitude: '0'
+      },
       orgUnit: orgUnitId,
       program: programId,
       trackedEntityInstance: trackedEntityInstance,
@@ -63,6 +69,56 @@ export class EnrollmentsProvider {
     const payLoads = [];
     payLoads.push(payLoad);
     return payLoads;
+  }
+
+  updateEnrollement(
+    trackedEntityInstance,
+    incidentDate,
+    enrollmentDate,
+    coorinates,
+    currentProgramId,
+    currentOrganisationUnitId,
+    currentUser: CurrentUser
+  ): Observable<any> {
+    const syncStatus = 'not-synced';
+    return new Observable(observer => {
+      this.getSavedEnrollments(
+        currentOrganisationUnitId,
+        currentProgramId,
+        currentUser
+      ).subscribe(
+        (enrollments: any) => {
+          let matchedEnrollments = _.filter(enrollments, {
+            trackedEntityInstance: trackedEntityInstance
+          });
+          matchedEnrollments.forEach((matchedEnrollment: any) => {
+            matchedEnrollments.syncStatus = syncStatus;
+            matchedEnrollment.coordinate = coorinates;
+            matchedEnrollment.enrollmentDate = enrollmentDate;
+            matchedEnrollment.incidentDate = incidentDate;
+          });
+          if (matchedEnrollments && matchedEnrollments.length > 0) {
+            this.updateEnrollmentsByStatus(
+              matchedEnrollments,
+              currentUser
+            ).subscribe(
+              () => {
+                observer.next();
+                observer.complete();
+              },
+              error => {
+                observer.error(error);
+              }
+            );
+          } else {
+            observer.error();
+          }
+        },
+        error => {
+          observer.error(error);
+        }
+      );
+    });
   }
 
   /**

@@ -542,8 +542,8 @@ export class EventCaptureFormProvider {
       eventType: eventType,
       syncStatus: 'not-synced',
       coordinate: {
-        latitude: 0,
-        longitude: 0
+        latitude: '0',
+        longitude: '0'
       },
       dataValues: []
     };

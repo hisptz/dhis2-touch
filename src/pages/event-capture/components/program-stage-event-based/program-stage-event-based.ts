@@ -54,9 +54,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     private appProvider: AppProvider,
     private organisationUnitProvider: OrganisationUnitsProvider,
     private appTranslation: AppTranslationProvider
-  ) {}
-
-  ngOnInit() {
+  ) {
     this.entryFormType = 'event';
     this.hasEntryFormReSet = false;
     this.dataObject = {};
@@ -65,6 +63,8 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     this.currentOrgUnit = this.organisationUnitProvider.lastSelectedOrgUnit;
     this.currentProgram = this.programsProvider.lastSelectedProgram;
     this.isLoading = true;
+  }
+  ngOnInit() {
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
       (data: any) => {
         this.translationMapper = data;
@@ -228,6 +228,11 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     }
   }
 
+  updateEventCoordonate(coordinate) {
+    this.currentEvent.coordinate = coordinate;
+    this.updateData({});
+  }
+
   updateData(updatedData) {
     this.currentEvent['eventDate'] = this.eventDate;
     this.currentEvent['dueDate'] = this.eventDate;
@@ -281,6 +286,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   getValuesToTranslate() {
     return [
       'Report date',
+      'Coordinate',
       'Touch to pick date',
       'Delete',
       'There are no data elements, please contact you help desk',

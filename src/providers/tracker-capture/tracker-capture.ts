@@ -545,11 +545,12 @@ export class TrackerCaptureProvider {
     enrollmentDate,
     currentUser,
     trackedEntityInstance,
+    coordinate,
     syncStatus?
   ): Observable<any> {
     return new Observable(observer => {
-      let currentProgram = this.programsProvider.lastSelectedProgram;
-      let currentOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
+      const currentProgram = this.programsProvider.lastSelectedProgram;
+      const currentOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
       if (!syncStatus) {
         syncStatus = 'not-synced';
       }
@@ -560,7 +561,7 @@ export class TrackerCaptureProvider {
         currentProgram.id &&
         currentProgram.trackedEntity
       ) {
-        let trackedEntityId = currentProgram.trackedEntity.id;
+        const trackedEntityId = currentProgram.trackedEntity.id;
         let payLoads = [];
         payLoads.push({
           resource: 'trackedEntityInstances',
@@ -572,18 +573,22 @@ export class TrackerCaptureProvider {
             trackedEntityInstance
           )
         });
+        let payLoadsData = this.enrollmentsProvider.getEnrollmentsPayLoad(
+          trackedEntityId,
+          currentOrgUnit.id,
+          currentOrgUnit.name,
+          currentProgram.id,
+          enrollmentDate,
+          incidentDate,
+          trackedEntityInstance,
+          syncStatus
+        );
+        payLoadsData.forEach((payLoad: any) => {
+          payLoad.coordinate = coordinate;
+        });
         payLoads.push({
           resource: 'enrollments',
-          payLoad: this.enrollmentsProvider.getEnrollmentsPayLoad(
-            trackedEntityId,
-            currentOrgUnit.id,
-            currentOrgUnit.name,
-            currentProgram.id,
-            enrollmentDate,
-            incidentDate,
-            trackedEntityInstance,
-            syncStatus
-          )
+          payLoad: payLoadsData
         });
         let counter = 0;
         payLoads.forEach((payLoadObject: any) => {

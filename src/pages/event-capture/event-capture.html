@@ -47,6 +47,16 @@
           </div>
         </div>
         <div *ngIf="isFormReady">
+          <div class="event-storage-status">
+            <span>
+              <b>
+                <span [translate]="'Synced'"></span>
+              </b> : {{ storageStatus.online }}
+              <b>
+                <span [translate]="'Not synced'"></span>
+              </b> : {{storageStatus.offline }}</span>
+          </div>
+
           <div class="item-card" (click)="hideAndShowColumns()" color="font-color" padding-top padding-bottom ion-button clear text-center
             text-capitalize icon-start>
             <ion-icon name="ios-eye" color="icon-color"></ion-icon>

@@ -7,6 +7,7 @@ import { AppProvider } from '../../providers/app/app';
 import { EventCaptureFormProvider } from '../../providers/event-capture-form/event-capture-form';
 import { SettingsProvider } from '../../providers/settings/settings';
 import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
+import * as _ from 'lodash';
 
 /**
  * Generated class for the EventCapturePage page.
@@ -43,6 +44,7 @@ export class EventCapturePage implements OnInit {
   currentEvents: Array<any>;
   translationMapper: any;
   dataEntrySettings: any;
+  storageStatus: any;
 
   constructor(
     private navCtrl: NavController,
@@ -54,9 +56,8 @@ export class EventCapturePage implements OnInit {
     private appProvider: AppProvider,
     private eventCaptureFormProvider: EventCaptureFormProvider,
     private appTranslation: AppTranslationProvider
-  ) {}
-
-  ngOnInit() {
+  ) {
+    this.storageStatus = { online: 0, offline: 0 };
     this.icons.orgUnit = 'assets/icon/orgUnit.png';
     this.icons.program = 'assets/icon/program.png';
     this.selectedDataDimension = [];
@@ -65,8 +66,10 @@ export class EventCapturePage implements OnInit {
     this.isLoading = true;
     this.isFormReady = false;
     this.isProgramDimensionApplicable = false;
-
     this.translationMapper = {};
+  }
+
+  ngOnInit() {
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
       (data: any) => {
         this.translationMapper = data;
@@ -442,6 +445,12 @@ export class EventCapturePage implements OnInit {
     this.loadingMessage = this.translationMapper[key]
       ? this.translationMapper[key]
       : key;
+    this.storageStatus.online = _.filter(this.currentEvents, {
+      syncStatus: 'synced'
+    }).length;
+    this.storageStatus.offline = _.filter(this.currentEvents, {
+      syncStatus: 'not-synced'
+    }).length;
     this.eventCaptureFormProvider
       .getTableFormatResult(this.columnsToDisplay, this.currentEvents)
       .subscribe(

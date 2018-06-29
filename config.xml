@@ -101,5 +101,5 @@
     </plugin>
     <plugin name="phonegap-plugin-barcodescanner" spec="^7.1.2" />
     <plugin name="cordova-plugin-datepicker" spec="^0.9.3" />
-    <engine name="android" spec="~7.1.0" />
+    <engine name="android" spec="7.1.0" />
 </widget>

@@ -130,6 +130,11 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
     }
   }
 
+  updateEventCoordonate(coordinate) {
+    this.currentOpenEvent.coordinate = coordinate;
+    this.updateData({});
+  }
+
   updateData(updatedData) {
     let dataValues = [];
     if (updatedData && updatedData.id) {
