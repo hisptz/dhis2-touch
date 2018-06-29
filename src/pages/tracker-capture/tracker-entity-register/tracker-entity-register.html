@@ -94,6 +94,10 @@
                         </div>
                       </div>
                     </div>
+                    <div *ngIf="currentProgram.captureCoordinates && isFormReady" class="item-card">
+                      {{ translationMapper['Coordinate']}}
+                      <event-coordinate-selector (onChangeEventCoordonate)="updateEventCoordonate($event)" [coordinate]="coordinate"></event-coordinate-selector>
+                    </div>
                   </div>
                 </form>
 
