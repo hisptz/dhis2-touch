@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
-import { ProfileProvider } from '../../providers/profile/profile';
+import { ProfileProvider } from './providers/profile/profile';
 import { AppProvider } from '../../providers/app/app';
 import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 import { UserProvider } from '../../providers/user/user';

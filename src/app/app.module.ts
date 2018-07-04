@@ -48,7 +48,6 @@ import { UserProvider } from '../providers/user/user';
 import { NetworkAvailabilityProvider } from '../providers/network-availability/network-availability';
 import { AppProvider } from '../providers/app/app';
 import { AboutProvider } from '../providers/about/about';
-import { ProfileProvider } from '../providers/profile/profile';
 import { SettingsProvider } from '../providers/settings/settings';
 import { HelpContentsProvider } from '../providers/help-contents/help-contents';
 import { SqlLiteProvider } from '../providers/sql-lite/sql-lite';
@@ -135,7 +134,6 @@ import { BarcodeReaderProvider } from '../providers/barcode-reader/barcode-reade
     NetworkAvailabilityProvider,
     AppProvider,
     AboutProvider,
-    ProfileProvider,
     SettingsProvider,
     HelpContentsProvider,
     SqlLiteProvider,

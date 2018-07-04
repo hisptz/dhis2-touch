@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { UserProvider } from '../user/user';
 import { Observable } from 'rxjs/Observable';
-import { DataSetsProvider } from '../data-sets/data-sets';
-import { ProgramsProvider } from '../programs/programs';
-import { CurrentUser } from '../../models/currentUser';
+import { CurrentUser } from '../../../../models/currentUser';
+import { UserProvider } from '../../../../providers/user/user';
+import { DataSetsProvider } from '../../../../providers/data-sets/data-sets';
+import { ProgramsProvider } from '../../../../providers/programs/programs';
 
 /*
   Generated class for the ProfileProvider provider.
