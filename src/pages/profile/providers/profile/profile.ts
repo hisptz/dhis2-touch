@@ -22,9 +22,14 @@ export class ProfileProvider {
   getProfileContentDetails() {
     let profileContents = [
       {
-        id: 'userInfo',
-        name: 'User information',
-        icon: 'assets/icon/user-info.png'
+        id: 'userProfile',
+        name: 'User Profile',
+        icon: 'assets/icon/profile.png'
+      },
+      {
+        id: 'accountSetting',
+        name: 'Account Setting',
+        icon: 'assets/icon/profile-access.png'
       },
       {
         id: 'orgUnits',
@@ -42,6 +47,83 @@ export class ProfileProvider {
     return profileContents;
   }
 
+  getProfileInfoForm() {
+    return [
+      {
+        id: 'firstName',
+        valueType: 'TEXT',
+        displayName: 'First name'
+      },
+      {
+        id: 'surname',
+        valueType: 'TEXT',
+        displayName: 'Surname'
+      },
+      {
+        id: 'email',
+        valueType: 'EMAIL',
+        displayName: 'E-mail'
+      },
+      {
+        id: 'phoneNumber',
+        valueType: 'PHONE_NUMBER',
+        displayName: 'Mobile phone number'
+      },
+      {
+        id: 'introduction',
+        valueType: 'LONG_TEXT',
+        displayName: 'Introduction'
+      },
+      {
+        id: 'jobTitle',
+        valueType: 'TEXT',
+        displayName: 'Job title'
+      },
+      {
+        id: 'gender',
+        valueType: 'TEXT',
+        displayName: 'Gender',
+        optionSet: {
+          options: [
+            { id: 'gender_Male', code: 'gender_Male', name: 'Male' },
+            { id: 'gender_Female', code: 'gender_Female', name: 'Female' },
+            { id: 'gender_other', code: 'gender_Female', name: 'Other' }
+          ]
+        }
+      },
+      {
+        id: 'birthday',
+        valueType: 'DATE',
+        displayName: 'Birthday'
+      },
+      {
+        id: 'nationality',
+        valueType: 'TEXT',
+        displayName: 'Nationality'
+      },
+      {
+        id: 'employer',
+        valueType: 'TEXT',
+        displayName: 'Employer'
+      },
+      {
+        id: 'education',
+        valueType: 'TEXT',
+        displayName: 'Education'
+      },
+      {
+        id: 'interests',
+        valueType: 'LONG_TEXT',
+        displayName: 'Interests'
+      },
+      {
+        id: 'languages',
+        valueType: 'TEXT',
+        displayName: 'Languages'
+      }
+    ];
+  }
+
   /**
    *
    * @returns {Observable<any>}
@@ -51,25 +133,32 @@ export class ProfileProvider {
     return new Observable(observer => {
       this.userProvider.getUserData().subscribe(
         (savedUserData: any) => {
-          this.dataSetProvider.getAllDataSets(currentUser).subscribe(
-            (dataSets: any) => {
-              this.programProvider.getAllPrograms(currentUser).subscribe(
-                programs => {
-                  userData['userInfo'] = this.getUserInformation(savedUserData);
-                  userData['orgUnits'] = this.getAssignedOrgUnits(
-                    savedUserData
+          this.userProvider.getProfileInformation().subscribe(
+            userProfile => {
+              this.dataSetProvider.getAllDataSets(currentUser).subscribe(
+                (dataSets: any) => {
+                  this.programProvider.getAllPrograms(currentUser).subscribe(
+                    programs => {
+                      userData['userProfile'] = userProfile;
+                      userData['orgUnits'] = this.getAssignedOrgUnits(
+                        savedUserData
+                      );
+                      userData['roles'] = this.getUserRoles(savedUserData);
+                      userData['program'] = this.getAssignedProgram(
+                        savedUserData,
+                        programs
+                      );
+                      userData['form'] = this.getAssignedForm(
+                        savedUserData,
+                        dataSets
+                      );
+                      observer.next(userData);
+                      observer.complete();
+                    },
+                    error => {
+                      observer.error(error);
+                    }
                   );
-                  userData['roles'] = this.getUserRoles(savedUserData);
-                  userData['program'] = this.getAssignedProgram(
-                    savedUserData,
-                    programs
-                  );
-                  userData['form'] = this.getAssignedForm(
-                    savedUserData,
-                    dataSets
-                  );
-                  observer.next(userData);
-                  observer.complete();
                 },
                 error => {
                   observer.error(error);
@@ -111,7 +200,7 @@ export class ProfileProvider {
         userInfo[key] = value;
       }
     });
-    return this.getArrayFromObject(userInfo);
+    return userInfo; //this.getArrayFromObject(userInfo);
   }
 
   /**

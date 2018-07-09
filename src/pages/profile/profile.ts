@@ -61,6 +61,7 @@ export class ProfilePage implements OnInit {
     }
     this.userProvider.getCurrentUser().subscribe(
       currentUser => {
+        this.currentUser = currentUser;
         this.profileProvider.getSavedUserData(currentUser).subscribe(
           userData => {
             this.userData = userData;
