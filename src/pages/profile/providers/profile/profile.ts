@@ -85,9 +85,9 @@ export class ProfileProvider {
         displayName: 'Gender',
         optionSet: {
           options: [
-            { id: 'gender_Male', code: 'gender_Male', name: 'Male' },
-            { id: 'gender_Female', code: 'gender_Female', name: 'Female' },
-            { id: 'gender_other', code: 'gender_Female', name: 'Other' }
+            { id: 'gender_Male', code: 'gender_male', name: 'Male' },
+            { id: 'gender_Female', code: 'gender_female', name: 'Female' },
+            { id: 'gender_other', code: 'gender_other', name: 'Other' }
           ]
         }
       },

@@ -5,6 +5,7 @@ import { AppProvider } from '../../providers/app/app';
 import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 import { UserProvider } from '../../providers/user/user';
 import { CurrentUser } from '../../models/currentUser';
+import { SettingsProvider } from '../../providers/settings/settings';
 
 /**
  * Generated class for the ProfilePage page.
@@ -23,6 +24,9 @@ export class ProfilePage implements OnInit {
   profileContents: Array<any>;
   userData: any;
   currentUser: CurrentUser;
+  profileInfoForm: any;
+  dataEntrySettings: any;
+  barcodeSettings: any;
   translationMapper: any;
   loadingMessage: string;
   isLoading: boolean = true;
@@ -32,7 +36,8 @@ export class ProfilePage implements OnInit {
     private appProvider: AppProvider,
     private profileProvider: ProfileProvider,
     private appTranslation: AppTranslationProvider,
-    private userProvider: UserProvider
+    private userProvider: UserProvider,
+    private settingProvider: SettingsProvider
   ) {}
 
   ngOnInit() {
@@ -65,8 +70,19 @@ export class ProfilePage implements OnInit {
         this.profileProvider.getSavedUserData(currentUser).subscribe(
           userData => {
             this.userData = userData;
-            this.isLoading = false;
-            this.loadingMessage = '';
+            this.profileInfoForm = this.profileProvider.getProfileInfoForm();
+            this.settingProvider.getSettingsForTheApp(currentUser).subscribe(
+              appSettings => {
+                this.barcodeSettings = appSettings.barcode;
+                this.dataEntrySettings = appSettings.entryForm;
+                this.isLoading = false;
+                this.loadingMessage = '';
+              },
+              error => {
+                this.isLoading = false;
+                this.loadingMessage = '';
+              }
+            );
           },
           error => {
             this.isLoading = false;

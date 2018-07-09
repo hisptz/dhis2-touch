@@ -45,7 +45,8 @@
           <ion-row>
             <ion-col>
               <div *ngIf="profileContent.id == 'userProfile'">
-                <profile-info [data]="userData[profileContent.id]" [currentUser]="currentUser"></profile-info>
+                <profile-info [profileInfoForm]="profileInfoForm" [barcodeSettings]="barcodeSettings" [dataEntrySettings]="dataEntrySettings"
+                  [data]="userData[profileContent.id]" [currentUser]="currentUser"></profile-info>
               </div>
               <div *ngIf="profileContent.id == 'accountSetting'">
                 <profile-password [currentUser]="currentUser"></profile-password>

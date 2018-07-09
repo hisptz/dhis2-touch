@@ -364,13 +364,14 @@ export class UserProvider {
         'id',
         'lastUpdated',
         'displayName',
-        'externalAccess'
+        'externalAccess',
+        'authorities',
+        'settings'
       ];
       status = status ? status : false;
       const profileInfo = { status: status };
       Object.keys(userDataResponse).map(key => {
         if (ommittedKeys.indexOf(key) === -1) {
-          console.log(key);
           profileInfo[key] = userDataResponse[key];
         }
       });
