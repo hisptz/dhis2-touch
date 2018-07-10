@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 /**
  * Generated class for the ProfileInfoComponent component.
@@ -16,12 +16,15 @@ export class ProfileInfoComponent implements OnInit {
   @Input() profileInfoForm;
   @Input() dataEntrySettings;
   @Input() barcodeSettings;
+  @Input() dataValuesSavingStatusClass;
+
+  @Output() onProfileInfoUpdate = new EventEmitter();
 
   numericalInputField;
   textInputField;
   dataObject: any = {};
   isLoading: boolean;
-  dataValuesSavingStatusClass: any = {};
+
   constructor() {
     this.isLoading = true;
     this.numericalInputField = [
@@ -44,8 +47,20 @@ export class ProfileInfoComponent implements OnInit {
     this.isLoading = false;
   }
 
+  trackByFn(index, item) {
+    return item && item.id ? item.id : index;
+  }
+
   updateValue(data) {
     this.data.status = false;
-    console.log('Data : ' + JSON.stringify(data));
+    if (data && data.id) {
+      const { id } = data;
+      const { value } = data;
+      this.dataValuesSavingStatusClass[id] = 'input-field-container-saving';
+      this.dataObject[id] = data;
+      const dataId = id.split('-profile')[0];
+      this.data[dataId] = value;
+      this.onProfileInfoUpdate.emit({ data: this.data, id: id });
+    }
   }
 }

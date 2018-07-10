@@ -3,11 +3,11 @@
     <div class="inputLabel">
       <span [translate]="field.displayName"></span>
     </div>
-    <div *ngIf="field.optionSet" [ngClass]="(dataValuesSavingStatusClass[field.id +'profile-info'])?dataValuesSavingStatusClass[field.id +'profile-info']:'input-field-container'">
-      <option-set-input-field [dataEntrySettings]="dataEntrySettings" (onChange)="updateValue($event)" [optionListTitle]="''" [dataElementId]="field.id"
-        [categoryOptionComboId]="'profile'" [data]="dataObject" [options]="field.optionSet.options"></option-set-input-field>
+    <div *ngIf="field.optionSet" [ngClass]="(dataValuesSavingStatusClass[field.id +'-profile'])?dataValuesSavingStatusClass[field.id +'-profile']:'input-field-container'">
+      <option-set-input-field [dataEntrySettings]="dataEntrySettings" (onChange)="updateValue($event)" [optionListTitle]="'List of option to select'"
+        [dataElementId]="field.id" [categoryOptionComboId]="'profile'" [data]="dataObject" [options]="field.optionSet.options"></option-set-input-field>
     </div>
-    <div *ngIf="!field.optionSet" [ngClass]="(dataValuesSavingStatusClass[field.id +'profile-info'])?dataValuesSavingStatusClass[field.id +'profile-info']:'input-field-container'">
+    <div *ngIf="!field.optionSet" [ngClass]="(dataValuesSavingStatusClass[field.id +'-profile'])?dataValuesSavingStatusClass[field.id +'-profile']:'input-field-container'">
       <div *ngIf="textInputField.indexOf(field.valueType) > -1">
         <text-input-field (onChange)="updateValue($event)" [dataElementId]="field.id" [categoryOptionComboId]="'profile'" [data]="dataObject"
           [barcodeSettings]="barcodeSettings" [valueType]="field.valueType"></text-input-field>

@@ -30,6 +30,7 @@ export class ProfilePage implements OnInit {
   translationMapper: any;
   loadingMessage: string;
   isLoading: boolean = true;
+  dataValuesSavingStatusClass: any;
 
   constructor(
     public navCtrl: NavController,
@@ -38,11 +39,13 @@ export class ProfilePage implements OnInit {
     private appTranslation: AppTranslationProvider,
     private userProvider: UserProvider,
     private settingProvider: SettingsProvider
-  ) {}
-
-  ngOnInit() {
+  ) {
+    this.dataValuesSavingStatusClass = {};
     this.isLoading = true;
     this.translationMapper = {};
+  }
+
+  ngOnInit() {
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
       (data: any) => {
         this.translationMapper = data;
@@ -116,6 +119,26 @@ export class ProfilePage implements OnInit {
         this.isProfileContentOpen[content.id] = true;
       }
     }
+  }
+
+  updateProfileInformation(eventData) {
+    const { data } = eventData;
+    const { id } = eventData;
+    this.profileProvider;
+    console.log('data before : ' + JSON.stringify(data));
+    this.userProvider.setProfileInformation(data).subscribe(
+      () => {
+        this.dataValuesSavingStatusClass[id] = 'input-field-container-success';
+      },
+      error => {
+        console.log('On saving profile info : ' + JSON.stringify(error));
+        this.dataValuesSavingStatusClass[id] = 'input-field-container-failed';
+      }
+    );
+  }
+
+  trackByFn(index, item) {
+    return item && item.id ? item.id : index;
   }
 
   getValuesToTranslate() {
