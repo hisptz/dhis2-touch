@@ -125,7 +125,6 @@ export class ProfilePage implements OnInit {
     const { data } = eventData;
     const { id } = eventData;
     this.profileProvider;
-    console.log('data before : ' + JSON.stringify(data));
     this.userProvider.setProfileInformation(data).subscribe(
       () => {
         this.dataValuesSavingStatusClass[id] = 'input-field-container-success';

@@ -36,6 +36,7 @@ import { LauncherPage } from '../pages/launcher/launcher';
 
 import { SharedModule } from '../components/shared.module';
 import { PipesModule } from '../pipes/pipes.module';
+import * as profileProviders from '../pages/profile/providers';
 
 //store
 import { reducers, effects } from '../store';
@@ -164,7 +165,8 @@ import { BarcodeReaderProvider } from '../providers/barcode-reader/barcode-reade
     ProgramRulesProvider,
     SynchronizationProvider,
     GeolocationProvider,
-    BarcodeReaderProvider
+    BarcodeReaderProvider,
+    ...profileProviders.providers
   ]
 })
 export class AppModule {}

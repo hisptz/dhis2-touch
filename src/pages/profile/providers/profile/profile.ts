@@ -4,6 +4,7 @@ import { CurrentUser } from '../../../../models/currentUser';
 import { UserProvider } from '../../../../providers/user/user';
 import { DataSetsProvider } from '../../../../providers/data-sets/data-sets';
 import { ProgramsProvider } from '../../../../providers/programs/programs';
+import { HttpClientProvider } from '../../../../providers/http-client/http-client';
 
 /*
   Generated class for the ProfileProvider provider.
@@ -16,7 +17,8 @@ export class ProfileProvider {
   constructor(
     private userProvider: UserProvider,
     private dataSetProvider: DataSetsProvider,
-    private programProvider: ProgramsProvider
+    private programProvider: ProgramsProvider,
+    private httpProvider: HttpClientProvider
   ) {}
 
   getProfileContentDetails() {
@@ -175,6 +177,26 @@ export class ProfileProvider {
         }
       );
     });
+  }
+
+  uploadingProfileInformation() {
+    this.userProvider.getProfileInformation().subscribe(
+      (data: any) => {
+        const { status } = data;
+        const url = '/api/25/me';
+        if (!status) {
+          this.httpProvider.put(url, data).subscribe(
+            () => {},
+            error => {
+              console.log(
+                'Error on updating profile : ' + JSON.stringify(error)
+              );
+            }
+          );
+        }
+      },
+      () => {}
+    );
   }
 
   /**
