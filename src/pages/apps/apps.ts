@@ -1,45 +1,139 @@
-import { Component,OnInit } from '@angular/core';
-import { NavController } from 'ionic-angular';
-import {SqlLite} from "../../providers/sql-lite";
-import {DataEntryHomePage} from "../data-entry-home/data-entry-home";
-import {EventCaptureHomePage} from "../event-capture-home/event-capture-home";
-import {DashBoardHomePage} from "../dash-board-home/dash-board-home";
-import {ReportHomePage} from "../report-home/report-home";
-import {UpdateManagerHomePage} from "../update-manager-home/update-manager-home";
-import {SettingHomePage} from "../setting-home/setting-home";
+import { Component, OnInit } from '@angular/core';
+import { NavController, ModalController, ModalOptions } from 'ionic-angular';
+import { UserProvider } from '../../providers/user/user';
+import { AppProvider } from '../../providers/app/app';
 
-declare var dhis2;
-/*
-  Generated class for the Apps page.
+/**
+ * Generated class for the AppsPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
+interface AppItem {
+  id: string;
+  name: string;
+  src: string;
+  pageName: string;
+  authorites: Array<string>;
+}
+
 @Component({
   selector: 'page-apps',
   templateUrl: 'apps.html'
 })
-export class AppsPage implements OnInit{
+export class AppsPage implements OnInit {
+  animationEffect: any;
+  authorizedApps: Array<AppItem>;
 
-  public viewMapperObject : any;
-
-  constructor(public navCtrl: NavController,public SqlLite : SqlLite) {
+  constructor(
+    private navCtrl: NavController,
+    private modalCtrl: ModalController,
+    private userProvider: UserProvider,
+    private appProvider: AppProvider
+  ) {
+    this.authorizedApps = [];
+    this.animationEffect = {
+      data_entry: '',
+      event_capture: '',
+      reports: '',
+      dashboard: '',
+      tracker_capture: '',
+      sync: '',
+      settings: ''
+    };
   }
 
   ngOnInit() {
-    dhis2.dataBaseStructure =  this.SqlLite.getDataBaseStructure();
-    this.viewMapperObject = {
-      "dataEntry" : DataEntryHomePage,
-      "eventCapture" : EventCaptureHomePage,
-      "report" : ReportHomePage,
-      "dashboard" : DashBoardHomePage,
-      "settings" : SettingHomePage,
-      "updateManager" : UpdateManagerHomePage
-    }
+    this.userProvider.getCurrentUser().subscribe(
+      currentUser => {
+        const appItems = this.getAppItems();
+        this.setAuthorizedApps(appItems, currentUser);
+      },
+      error => {
+        this.appProvider.setNormalNotification('Fail to discover current user');
+      }
+    );
   }
 
-  goToView(viewName){
-    this.navCtrl.push(this.viewMapperObject[viewName]);
+  setAuthorizedApps(appItems, currentUser) {
+    // @todo filter apps based on app authorites
+    this.authorizedApps = appItems;
   }
 
+  goToView(appItem: AppItem) {
+    this.applyAnimation(appItem.id);
+    setTimeout(() => {
+      this.setView(appItem.pageName);
+    }, 50);
+  }
+
+  setView(viewName) {
+    this.navCtrl.push(viewName).then(() => {});
+  }
+
+  applyAnimation(key: any) {
+    this.animationEffect[key] = 'animated bounceIn';
+    setTimeout(() => {
+      this.animationEffect[key] = '';
+    }, 50);
+  }
+
+  trackByFn(index, item) {
+    return item.id;
+  }
+
+  getAppItems(): Array<AppItem> {
+    return [
+      {
+        id: 'data_entry',
+        name: 'Data entry',
+        authorites: [],
+        pageName: 'DataEntryPage',
+        src: 'assets/icon/data-entry.png'
+      },
+      {
+        id: 'event_capture',
+        name: 'Event capture',
+        authorites: [],
+        pageName: 'EventCapturePage',
+        src: 'assets/icon/event-capture.png'
+      },
+      {
+        id: 'tracker_capture',
+        name: 'Tracker capture',
+        authorites: [],
+        pageName: 'TrackerCapturePage',
+        src: 'assets/icon/tracker-capture.png'
+      },
+      {
+        id: 'dashboard',
+        name: 'Dashboard',
+        authorites: [],
+        pageName: 'DashboardPage',
+        src: 'assets/icon/dashboard.png'
+      },
+      {
+        id: 'reports',
+        name: 'Reports',
+        authorites: [],
+        pageName: 'ReportsPage',
+        src: 'assets/icon/reports.png'
+      },
+      {
+        id: 'sync',
+        name: 'Sync',
+        authorites: [],
+        pageName: 'SyncPage',
+        src: 'assets/icon/sync.png'
+      },
+      {
+        id: 'settings',
+        name: 'Settings',
+        authorites: [],
+        pageName: 'SettingsPage',
+        src: 'assets/icon/settings.png'
+      }
+    ];
+  }
 }

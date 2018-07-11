@@ -1,53 +1,129 @@
-import { Component,OnInit} from '@angular/core';
-import { NavController,App } from 'ionic-angular';
-import {User} from "../../providers/user";
-//import {UpdateManagerHomePage} from "../update-manager-home/update-manager-home";
-//import {SettingHomePage} from "../setting-home/setting-home";
-import {AboutPage} from "../about/about";
-import {ProfilePage} from "../profile/profile";
-import {HelpPage} from "../help/help";
-import {LoginPage} from "../login/login";
-import {SqlLite} from "../../providers/sql-lite";
+import { Component, OnInit } from '@angular/core';
+import { App, NavController } from 'ionic-angular';
+import { LoginPage } from '../login/login';
+import { UserProvider } from '../../providers/user/user';
+import { OrganisationUnitsProvider } from '../../providers/organisation-units/organisation-units';
+import { SynchronizationProvider } from '../../providers/synchronization/synchronization';
+import { AppProvider } from '../../providers/app/app';
 
-/*
-  Generated class for the Account page.
+/**
+ * Generated class for the AccountPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
+interface AppItem {
+  id: string;
+  name: string;
+  src: string;
+  pageName: string;
+  authorites: Array<string>;
+}
+
 @Component({
   selector: 'page-account',
   templateUrl: 'account.html'
 })
-export class AccountPage implements OnInit{
+export class AccountPage implements OnInit {
+  animationEffect: any;
+  authorizedApps: Array<AppItem>;
 
-  private viewMapperObject : any;
-  private currentUser : any;
-
-  constructor(public navCtrl: NavController,public app : App,private user : User,private SqlLite : SqlLite) {}
+  constructor(
+    private navCtrl: NavController,
+    private app: App,
+    private organisationUnitProvider: OrganisationUnitsProvider,
+    private userProvider: UserProvider,
+    private synchronizationProvider: SynchronizationProvider,
+    private appProvider: AppProvider
+  ) {
+    this.authorizedApps = [];
+    this.animationEffect = {
+      profile: '',
+      about: '',
+      help: '',
+      logout: ''
+    };
+  }
 
   ngOnInit() {
-    this.viewMapperObject = {
-      "profile" : ProfilePage,
-      "about" : AboutPage,
-      "help" : HelpPage,
-      //"settings" : SettingHomePage,
-      //"updateManager" : UpdateManagerHomePage
-    };
-    this.user.getCurrentUser().then(user=>{
-      this.currentUser = user;
-    })
+    this.userProvider.getCurrentUser().subscribe(
+      currentUser => {
+        const appItems = this.getAppItems();
+        this.setAuthorizedApps(appItems, currentUser);
+      },
+      error => {
+        this.appProvider.setNormalNotification('Fail to discover current user');
+      }
+    );
   }
 
-  goToView(viewName){
-    this.navCtrl.push(this.viewMapperObject[viewName]);
+  setAuthorizedApps(appItems, currentUser) {
+    // @todo filter apps based on app authorites
+    this.authorizedApps = appItems;
   }
 
-  logOut(){
-    this.currentUser.isLogin = false;
-    this.user.setCurrentUser(this.currentUser).then(user=>{
-      this.app.getRootNav().setRoot(LoginPage);
-    },error=>{});
+  goToView(appItem: AppItem) {
+    this.applyAnimation(appItem.id);
+    setTimeout(() => {
+      this.setView(appItem.pageName);
+    }, 50);
   }
 
+  setView(viewName) {
+    this.navCtrl.push(viewName).then(() => {});
+  }
+
+  applyAnimation(key: any) {
+    this.animationEffect[key] = 'animated bounceIn';
+    setTimeout(() => {
+      this.animationEffect[key] = '';
+    }, 100);
+  }
+
+  trackByFn(index, item) {
+    return item.id;
+  }
+
+  getAppItems(): Array<AppItem> {
+    return [
+      {
+        id: 'profile',
+        name: 'Profile',
+        authorites: [],
+        pageName: 'ProfilePage',
+        src: 'assets/icon/profile.png'
+      },
+      {
+        id: 'about',
+        name: 'About',
+        authorites: [],
+        pageName: 'AboutPage',
+        src: 'assets/icon/about.png'
+      },
+      {
+        id: 'help',
+        name: 'Help',
+        authorites: [],
+        pageName: 'HelpPage',
+        src: 'assets/icon/help.png'
+      }
+    ];
+  }
+
+  async logOut() {
+    try {
+      this.applyAnimation('logout');
+      this.userProvider.getCurrentUser().subscribe(user => {
+        user.isLogin = false;
+        this.userProvider.setCurrentUser(user).subscribe(() => {
+          this.organisationUnitProvider.resetOrganisationUnit();
+        });
+        this.app.getRootNav().setRoot(LoginPage);
+        this.synchronizationProvider.stopSynchronization();
+      });
+    } catch (e) {
+      console.log(JSON.stringify(e));
+    }
+  }
 }

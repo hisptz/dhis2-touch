@@ -1,0 +1,483 @@
+{
+  "Account": "Rekening",
+  "Apps": "aplikasi",
+  "Log out": "Keluar",
+  "About": "Tentang",
+  "Aggregate status": "Status agregat",
+  "Event status": "Status acara",
+  "Event for tracker status": "Acara status tracker",
+  "Enrollments": "pendaftaran",
+  "System info": "Sistem Informasi",
+  "Synced": "disinkronisasikan",
+  "Not synced": "tidak disinkronkan",
+  "Discovering app information": "Menemukan informasi aplikasi",
+  "Discovering system information": "sistem informasi menemukan",
+  "Discovering data values storage status":
+    "Menemukan Data nilai Status penyimpanan",
+  "Discovering events storage status": "Menemukan peristiwa Status penyimpanan",
+  "Discovering enrollments storage status":
+    "Menemukan pendaftaran Status penyimpanan",
+  "Fail to discover user information":
+    "Gagal untuk menemukan informasi pengguna",
+  "Fail to discover system information":
+    "Gagal untuk menemukan sistem informasi",
+  "Fail to discover app information":
+    "Gagal untuk menemukan informasi aplikasi",
+  "Fail to discover data values storage status":
+    "Gagal untuk menemukan statusnya penyimpanan data nilai",
+  "Fail to discover enrollments storage status":
+    "Gagal untuk menemukan statusnya penyimpanan pendaftaran",
+  "Profile": "Profil",
+  "User information": "Informasi pengguna",
+  "Assigned organisation units": "unit organisasi yang ditugaskan",
+  "Assigned roles": "peran yang ditetapkan",
+  "Assigned programs": "program ditugaskan",
+  "Assigned entry forms": "formulir pendaftaran yang ditetapkan",
+  "Discovering profile information": "Menemukan informasi profil",
+  "Fail to discover profile information":
+    "Gagal untuk menemukan informasi profil",
+  "Help": "Membantu",
+  "Help search": "cari bantuan",
+  "Search help by title": "Cari bantuan dengan judul",
+  "Settings": "pengaturan",
+  "Applying changes": "menerapkan perubahan",
+  "Minutes": "Menit",
+  "Hours": "Jam",
+  "Auto synchronization": "sinkronisasi otomatis",
+  "Form layout": "tata letak bentuk",
+  "List layout": "tata letak daftar",
+  "Table layout": "tata letak meja",
+  "Form label": "label bentuk",
+  "Display name": "Nama tampilan",
+  "Form name": "nama Form",
+  "Data element per page": "elemen data per halaman",
+  "Current language": "bahasa saat ini",
+  "App settings": "Pengaturan aplikasi",
+  "Entry form": "Formulir pendaftaran",
+  "Synchronization": "Sinkronisasi",
+  "Discovering current user information": "Menemukan informasi pengguna saat",
+  "Discovering settings": "menemukan pengaturan",
+  "Settings have been updated successfully":
+    "Pengaturan telah diperbarui berhasil",
+  "Fail to discover settings": "Gagal untuk menemukan pengaturan",
+  "Fail to discover available local instances":
+    "Gagal untuk menemukan contoh lokal yang tersedia",
+  "Fail to discover current user information":
+    "Gagal untuk menemukan informasi pengguna saat ini",
+  "Fail to set translation": "Gagal untuk mengatur terjemahan",
+  "Fail to apply changes on  settings":
+    "Gagal menerapkan perubahan pada pengaturan",
+  "Reports": "laporan",
+  "Search": "Pencarian",
+  "Discovering reports": "menemukan laporan",
+  "Downloading reports from server": "Mengunduh laporan dari server",
+  "Preparing local storage for updates":
+    "Mempersiapkan penyimpanan lokal untuk update",
+  "Saving reports from server": "Menyimpan laporan dari server",
+  "there is no report to select": "tidak ada laporan untuk memilih",
+  "Fail  to discover reports": "Gagal untuk menemukan laporan",
+  "Fail to save reports": "Gagal untuk menyimpan laporan",
+  "Fail to prepare local storage for updates":
+    "Gagal untuk mempersiapkan penyimpanan lokal untuk update",
+  "Fail to download reports": "Gagal untuk men-download laporan",
+  "Data set report": "Laporan Data set",
+  "Standard report": "laporan Standard",
+  "Report name": "nama laporan",
+  "Organisation unit": "Unit organisasi",
+  "Period": "Periode",
+  "Generate report": "menghasilkan laporan",
+  "Touch to select organisation unit": "Sentuh untuk memilih satuan organisasi",
+  "Touch to select period": "Sentuh untuk memilih periode",
+  "Report view": "laporan pandangan",
+  "Discovering user information": "informasi pengguna menemukan",
+  "Discovering report metadata": "Menemukan laporan metadata",
+  "Fail to discover organisation units information":
+    "Gagal untuk menemukan informasi unit organisasi",
+  "Fail to discover report metadata": "Gagal untuk menemukan laporan metadata",
+  "Report type has not set,please contact system administrator":
+    "Jenis laporan belum menetapkan, hubungi administrator sistem",
+  "Discovering data set report information":
+    "Menemukan kumpulan data melaporkan informasi",
+  "Preparing data set report": "Menyiapkan laporan data set",
+  "Fail to prepare data set report":
+    "Gagal untuk mempersiapkan laporan kumpulan data",
+  "Fail to discover data set report information":
+    "Gagal menemukan informasi set data laporan",
+  "Program selection": "seleksi program",
+  "There is no program to select": "Tidak ada program untuk memilih",
+  "Period selection": "pemilihan periode",
+  "Previous": "Sebelumnya",
+  "Next": "Berikutnya",
+  "There is no period to select": "Tidak ada masa untuk memilih",
+  "Organisation unit selection": "Organisasi pemilihan satuan",
+  "Discovering assigned organisation units":
+    "Menemukan unit organisasi yang ditugaskan",
+  "Currently there is on assigned organisation unit on local storage, Please metadata on sync app":
+    "Saat ini ada pada unit organisasi ditugaskan pada penyimpanan lokal, Silakan metadata pada aplikasi sync",
+  "Fail to discover organisation units":
+    "Gagal untuk menemukan unit organisasi",
+  "Discovering organisation units": "Menemukan unit organisasi",
+  "Fail to discover organisation unit children":
+    "Gagal menemukan satuan organisasi anak-anak",
+  "Event capture": "capture acara",
+  "Columns": "kolom",
+  "Add": "Menambahkan",
+  "Discovering assigned programs": "Menemukan program yang ditugaskan",
+  "Discovering program stages": "Menemukan tahap Program",
+  "Discovering data": "menemukan Data",
+  "Preparing table for display": "Mempersiapkan meja untuk display",
+  "All of selected category disaggregation are restricted from entry in selcted organisation unit, choose a different form or contact your support desk":
+    "Semua yang dipilih kategori pemilahan dibatasi dari entri di unit organisasi selcted, memilih bentuk yang berbeda atau menghubungi meja dukungan Anda",
+  "There is no option for selected category that associated with selected organisation unit":
+    "Tidak ada pilihan untuk kategori dipilih yang terkait dengan satuan organisasi yang dipilih",
+  "There are no program to select": "Tidak ada program untuk memilih",
+  "Touch to select program": "Sentuh untuk memilih program yang",
+  "Touch to select option": "Sentuh untuk memilih opsi",
+  "There no data at the moment": "Ada data saat ini",
+  "Visible header": "sundulan terlihat",
+  "Select all": "Pilih Semua",
+  "Deselect all": "hapus semua",
+  "Save": "Menyimpan",
+  "Event register": "acara mendaftar",
+  "Program": "Program",
+  "Discovering data from local storage":
+    "Menemukan data dari penyimpanan lokal",
+  "Fail to discover program stages": "Gagal untuk menemukan tahap Program",
+  "Report date": "tanggal laporan",
+  "Touch to pick date": "Sentuh untuk memilih tanggal",
+  "Delete": "Menghapus",
+  "There are no data elements, please contact you help desk":
+    "Tidak ada unsur data, silahkan hubungi Anda membantu meja",
+  "You are about to delete this event, are you sure?":
+    "Anda akan menghapus acara ini, apakah Anda yakin?",
+  "Yes": "iya nih",
+  "No": "Tidak",
+  "Deleting event": "menghapus acara",
+  "Event has been deleted successfully": "Acara telah berhasil dihapus",
+  "Fail to delete event": "Gagal menghapus acara",
+  "Tracker capture": "Tracker capture",
+  "Discovering tracked entity list": "Menemukan dilacak daftar entitas",
+  "There are no program to select, please select another organisation unit":
+    "Tidak ada program untuk memilih, silahkan pilih satuan organisasi lain",
+  "Fail to discover registration form":
+    "Gagal untuk menemukan formulir pendaftaran",
+  "Fail to discover assigned programs":
+    "Gagal untuk menemukan program yang ditugaskan",
+  "Fail to discover tracked entity list":
+    "Gagal untuk menemukan daftar entitas dilacak",
+  "Fail to prepare table for display":
+    "Gagal untuk mempersiapkan meja untuk display",
+  "List of widgets": "Daftar widget",
+  "There is no widget to select": "Tidak ada widget untuk memilih",
+  "Registration": "Pendaftaran",
+  "Enrollment & Profile": "Pendaftaran & Profil",
+  "Enrolling organisation unit": "Mendaftarkan Unit organisasi",
+  "Enrolling program": "Program Mendaftarkan",
+  "Discovering registration form": "Menemukan formulir pendaftaran",
+  "You are about to delete all information related to this tracked entity instance, are you sure?":
+    "Anda akan menghapus semua informasi yang terkait dengan ini dilacak entitas Misalnya, apakah Anda yakin?",
+  "Deleting all information related to this tracked entity instance":
+    "Menghapus semua informasi yang terkait dengan ini dilacak contoh entitas",
+  "A tracked entity instance has not yet registered":
+    "Sebuah entitas dilacak misalnya belum terdaftar",
+  "A tracked entity instance has been deleted successfully":
+    "Sebuah entitas dilacak misalnya telah berhasil dihapus",
+  "A tracked entity instance has been saved successfully":
+    "Sebuah entitas dilacak misalnya telah berhasil disimpan",
+  "Fail to delete all information related to this tracked entity instance":
+    "Gagal untuk menghapus semua informasi yang terkait dengan ini dilacak contoh entitas",
+  "Fail to save a tracked entity instance":
+    "Gagal untuk menyimpan entitas dilacak contoh",
+  "New event": "Acara baru",
+  "Discovering events": "menemukan peristiwa",
+  "Fail to discover events": "Gagal untuk menemukan peristiwa",
+  "Due date": "Batas tanggal terakhir",
+  "Contact your help desk to add data elements on this stage":
+    "Hubungi meja bantuan Anda untuk menambahkan elemen data pada tahap ini",
+  "Tracked entity dashboard": "Dilacak entitas dashboard",
+  "Discovering tracked entity": "Menemukan entitas dilacak",
+  "Discovering registration fields": "Menemukan bidang pendaftaran",
+  "Tracked entity instance has been delete successfully":
+    "Dilacak contoh entitas telah menghapus berhasil",
+  "Fail to discover tracked entity": "Gagal untuk menemukan entitas dilacak",
+  "Fail to discover registration fields":
+    "Gagal untuk menemukan bidang pendaftaran",
+  "Data entry": "entri data",
+  "Touch to select entry form": "Sentuh untuk memilih bentuk entri",
+  "Form": "Bentuk",
+  "Enter data": "memasukkan data",
+  "There are no entry form to select on selected organisation unit":
+    "Tidak ada formulir pendaftaran untuk memilih pada unit organisasi yang dipilih",
+  "Please select entry form first": "Pilih bentuk entri pertama",
+  "There is no option for seleted category that associated with selected organisation unit":
+    "Tidak ada pilihan untuk kategori seleted yang terkait dengan satuan organisasi yang dipilih",
+  "All disaggregation are restricted from entry in selected organisation unit, please choose a different form or contact your support desk":
+    "Semua pemilahan dibatasi dari entri di unit organisasi yang dipilih, silahkan pilih bentuk yang berbeda atau hubungi meja dukungan Anda",
+  "Fail to discover entry form": "Gagal untuk menemukan bentuk entri",
+  "Data entry form selection": "seleksi data formulir pendaftaran",
+  "There is no data entry form to select":
+    "Tidak ada bentuk entri data untuk memilih",
+  "Data dimension selection": "pemilihan dimensi Data",
+  "There is no option to select": "Tidak ada pilihan untuk memilih",
+  "Data entry form sections": "bagian bentuk entri data",
+  "There is nothing to select": "Tidak ada yang memilih",
+  "Entry form's indicators": "Indikator bentuk entri",
+  "Name": "Nama",
+  "Numerator Description": "pembilang Deskripsi",
+  "Denominator Description": "denominator Deskripsi",
+  "Indicator value": "nilai indikator",
+  "Data entry form": "bentuk entri data",
+  "Available indicators": "indikator yang tersedia",
+  "Complete": "Lengkap",
+  "Undo complete": "Undo lengkap",
+  "Completed by": "Diselesaikan oleh",
+  "on": "di",
+  "Please wait ...": "Mohon tunggu ...",
+  "The is no field associated with this entry form, Please contact our help desk":
+    "Adalah tidak ada bidang yang terkait dengan bentuk entri ini, Silahkan hubungi help desk kami",
+  "Discovering entry form information":
+    "Menemukan informasi formulir pendaftaran",
+  "Discovering indicators": "menemukan indikator",
+  "Preparing entry form": "Mempersiapkan formulir pendaftaran",
+  "Discovering data from the server": "Menemukan data dari server",
+  "Saving data from server": "Menyimpan data dari server",
+  "Discovering available local data": "Menemukan data lokal tersedia",
+  "Discovering entry form completeness information":
+    "Menemukan entri informasi berupa kelengkapan",
+  "There are no indicators to view": "Tidak ada indikator untuk melihat",
+  "Uploading data": "upload data",
+  "Fail to discover indicators": "Gagal untuk menemukan indikator",
+  "Fail to discover entry form information":
+    "Gagal untuk menemukan informasi bentuk entri",
+  "Fail to save data from the server": "Gagal untuk menyimpan data dari server",
+  "Fail to discover data from the server":
+    "Gagal untuk menemukan data dari server",
+  "Fail to discover available local data":
+    "Gagal menemukan data lokal tersedia",
+  "Fail to discover entry form completeness information":
+    "Gagal menemukan informasi entri bentuk kelengkapan",
+  "Fail to un complete entry form": "Gagal formulir pendaftaran lengkap un",
+  "Fail to complete entry form": "Gagal untuk melengkapi formulir entri",
+  "Completeness information": "informasi kelengkapan",
+  "Discovering completeness information": "Menemukan informasi kelengkapan",
+  "Fail to discover completeness information":
+    "Gagal untuk menemukan informasi kelengkapan",
+  "Username": "Nama pengguna",
+  "Full name": "Nama lengkap",
+  "E-mial": "E-mial",
+  "Phone number": "Nomor telepon",
+  "Sync": "Sync",
+  "Clear local metadata": "metadata lokal yang jelas",
+  "Clear metaData": "jelas metadata",
+  "Clear local metadata confirmation": "Jelas konfirmasi metadata lokal",
+  "You are about to clear all selected items, Are you sure?":
+    "Kamu menghapus semua item yang dipilih, Apakah Anda yakin?",
+  "Clearing selected items": "Kliring item yang dipilih",
+  "Applying updates to local storage":
+    "Menerapkan update untuk penyimpanan lokal",
+  "Please select at least one item to clear":
+    "Pilih setidaknya satu item untuk menghapus",
+  "All selected metadata has been cleared successfully":
+    "Semua metadata yang dipilih telah dibersihkan berhasil",
+  "Fail to apply updates to local storage":
+    "Gagal menerapkan update untuk penyimpanan lokal",
+  "Clear local data": "data lokal yang jelas",
+  "Aggregate data": "Data agregat",
+  "Events": "Acara",
+  "Events for tracker": "Acara untuk tracker",
+  "Clear offline data confirmation": "Jelas secara offline konfirmasi Data",
+  "You are about to clear all selected items, are you sure?":
+    "Kamu menghapus semua item yang dipilih, apakah Anda yakin?",
+  "All selected items has been cleared successfully":
+    "Semua item yang dipilih telah dibersihkan berhasil",
+  "Fail to clear selected items": "Gagal untuk menghapus item yang dipilih",
+  "Download metadata": "Download metadata",
+  "Please select at least one item": "Pilih setidaknya satu item",
+  "Downloading updates": "download update",
+  "Applying updates": "menerapkan pembaruan",
+  "All updates has been applied successfully":
+    "Semua update telah berhasil diterapkan",
+  "Fail to apply updates": "Gagal menerapkan pembaruan",
+  "Fail to prepare local storage for update":
+    "Gagal untuk mempersiapkan penyimpanan lokal untuk pembaruan",
+  "Fail to download updates": "Gagal untuk men-download update",
+  "Upload data via internet": "Mengunggah data melalui internet",
+  "Upload data": "Data Upload",
+  "Uploading selected local data, please wait...":
+    "Meng-upload data lokal yang dipilih, harap tunggu ...",
+  "Import summaries": "ringkasan impor",
+  "Tracked entity instances": "contoh entitas Dilacak",
+  "Tracked entity enrollments": "pendaftaran badan Dilacak",
+  "Success": "Keberhasilan",
+  "Failed": "Gagal",
+  "Import conflicts or errors": "konflik impor atau kesalahan",
+  "Upload data via SMS": "Mengunggah data melalui SMS",
+  "Mobile Number": "Nomor handphone",
+  "Discovering SMS Configuration": "Konfigurasi SMS Discovering",
+  "Preparing entry form fields": "Mempersiapkan kolom formulir entri",
+  "Preparing data": "mempersiapkan Data",
+  "Preparing SMS": "mempersiapkan SMS",
+  "Sending SMS": "mengirim SMS",
+  "Sending SMSes": "mengirim SMS",
+  "SMS has been sent": "SMS telah dikirim",
+  "Fail to send some of SMS, Please go into your SMS inbox and resend them manually":
+    "Gagal untuk mengirim beberapa SMS, silahkan masuk ke inbox SMS Anda dan mengirim ulang secara manual",
+  "Fail to preparing SMS": "Gagal mempersiapkan SMS",
+  "There is no data to be sent via SMS":
+    "Tidak ada data yang akan dikirim melalui SMS",
+  "Fail to discover data values": "Gagal untuk menemukan nilai-nilai data",
+  "Selected entry form has no field set, please contact your help desk":
+    "bentuk entri yang dipilih tidak memiliki set bidang, silahkan hubungi meja bantuan Anda",
+  "Fail to discover SMS configurations":
+    "Gagal untuk menemukan konfigurasi SMS",
+  "Innovation in every dimension": "Inovasi dalam setiap dimensi",
+  "Establishing connection to server": "Membangun koneksi ke server",
+  "Aggregate metadata": "metadata agregat",
+  "Event and tracker metadata": "Acara dan tracker metadata",
+  "Reports metadata": "laporan metadata",
+  "Enter server address": "Masukkan alamat server",
+  "Enter username": "Masukkan nama pengguna",
+  "Enter password": "Masukkan kata kunci",
+  "Login": "Masuk",
+  "or": "atau",
+  "Offline instances": "contoh Offline",
+  "Powered by": "Dipersembahkan oleh",
+  "Discovering current user authorities": "Menemukan berwenang pengguna saat",
+  "Preparing local storage": "Mempersiapkan penyimpanan lokal",
+  "Fail to prepare local storage":
+    "Gagal untuk mempersiapkan penyimpanan lokal",
+  "Fail to discover user authorities":
+    "Gagal untuk menemukan otoritas pengguna",
+  "Fail to save current user information":
+    "Gagal untuk menyimpan informasi pengguna saat ini",
+  "Please check your network connectivity":
+    "Silakan periksa konektivitas jaringan Anda",
+  "You have enter wrong username or password or server address":
+    "Anda memiliki masukkan username yang salah atau password atau alamat server",
+  "Please check server address, or contact your help desk":
+    "Silakan periksa alamat server, atau hubungi meja bantuan Anda",
+  "Please enter server address, username and password":
+    "Masukkan alamat server, username dan password",
+  "Assigned organisation units have been discovered":
+    "unit organisasi ditugaskan telah ditemukan",
+  "Saving assigned organisation units":
+    "Menyimpan unit organisasi yang ditugaskan",
+  "Assigned organisation units have been saved":
+    "unit organisasi ditugaskan telah disimpan",
+  "Fail to save organisation data": "Gagal untuk menyimpan data organisasi",
+  "Fail to discover organisation data": "Gagal menemukan data organisasi",
+  "Discovering entry forms": "Menemukan bentuk entri",
+  "Entry forms have been discovered": "formulir pendaftaran telah ditemukan",
+  "Saving entry forms": "Menyimpan formulir pendaftaran",
+  "Entry form have been saved": "formulir pendaftaran telah disimpan",
+  "Fail to save entry form": "Gagal untuk menyimpan bentuk entri",
+  "Discovering entry form sections": "Menemukan entri bentuk bagian",
+  "Entry form sections have been discovered":
+    "formulir pendaftaran bagian telah ditemukan",
+  "Saving entry form sections": "Menyimpan entri bentuk bagian",
+  "Entry form sections have been saved":
+    "formulir pendaftaran bagian diselamatkan",
+  "Fail to save entry form sections":
+    "Gagal untuk menyimpan bagian bentuk entri",
+  "Fail to discover entry form sections":
+    "Gagal untuk menemukan bagian bentuk entri",
+  "Discovering entry form fields": "Menemukan kolom formulir entri",
+  "Entry form fields have been discovered":
+    "kolom formulir entri telah ditemukan",
+  "Saving entry form fields": "Menyimpan kolom formulir entri",
+  "Entry form fields have been saved": "kolom formulir entri diselamatkan",
+  "Fail to save entry form fields":
+    "Gagal untuk menyimpan kolom formulir entri",
+  "Fail to discover entry form fields":
+    "Gagal untuk menemukan kolom formulir entri",
+  "Discovering SMS commands": "Menemukan perintah SMS",
+  "SMS commands have been discovered": "perintah SMS telah ditemukan",
+  "Saving SMS commands": "Menyimpan perintah SMS",
+  "SMS commands have been saved": "perintah SMS telah disimpan",
+  "Fail to save SMS commands": "Gagal untuk menyimpan perintah SMS",
+  "Fail to discover SMS commands": "Gagal untuk menemukan perintah SMS",
+  "Discovering programs": "menemukan program",
+  "Programs have been discovered": "Program telah ditemukan",
+  "Saving programs": "menyimpan program",
+  "Programs have been saved": "Program telah disimpan",
+  "Fail to save programs": "Gagal untuk menyimpan program",
+  "Fail to discover programs": "Gagal menemukan program",
+  "Discovering program stage section": "Menemukan bagian panggung Program",
+  "Program stage section have been discovered":
+    "Bagian tahap Program telah ditemukan",
+  "Saving program stage section": "Menyimpan bagian panggung Program",
+  "Program stage section have been saved": "Bagian tahap Program diselamatkan",
+  "Fail to save program stage sections":
+    "Gagal untuk menyimpan bagian panggung Program",
+  "Fail to discover program stage sections":
+    "Gagal untuk menemukan bagian-bagian panggung Program",
+  "Indicators have been discovered": "Indikator telah ditemukan",
+  "Saving indicators": "menyimpan indikator",
+  "Indicators have been saved": "Indikator telah disimpan",
+  "Fail to save indicators": "Gagal untuk menyimpan indikator",
+  "Reports have been discovered": "Laporan telah ditemukan",
+  "Saving reports": "menyimpan laporan",
+  "Reports have been saved": "Laporan telah disimpan",
+  "Fail to discover reports": "Gagal untuk menemukan laporan",
+  "Discovering constants": "menemukan konstanta",
+  "Constants have been discovered": "Konstanta telah ditemukan",
+  "Saving constants": "menyimpan konstanta",
+  "Constants have been saved": "Konstanta telah disimpan",
+  "Fail to save constants": "Gagal untuk menyimpan konstanta",
+  "Fail to discover constants": "Gagal menemukan konstanta",
+  "There is no local instance to select":
+    "Tidak ada contoh lokal untuk memilih",
+  "Discovering available local instances":
+    "Menemukan contoh lokal yang tersedia",
+  "Fail to load available local instances":
+    "Gagal untuk memuat contoh lokal yang tersedia",
+  "Dashboard": "Dasbor",
+  "Discovering dashboards": "menemukan dashboard",
+  "There no dashboard item found": "Ada ada item dashboard ditemukan",
+  "Dashboard list": "daftar dashboard",
+  "Search dashboard by name": "Cari dashboard dengan nama",
+  "Layout": "tata ruang",
+  "Table / Chart Layout": "Tabel / Bagan Tata Letak",
+  "Filters": "filter",
+  "Column": "Kolom",
+  "Row": "Baris",
+  "Categories": "kategori",
+  "Series": "Seri",
+  "Update": "Memperbarui",
+  "Close": "Dekat",
+  "Data": "Data",
+  "Select": "Memilih",
+  "All": "Semua",
+  "Data elements": "elemen data",
+  "Indicators": "indikator",
+  "Data sets": "Data set",
+  "Program indicators": "indikator Program",
+  "Functions": "fungsi",
+  "Available": "Tersedia",
+  "Selected": "Terpilih",
+  "Discovering...": "Menemukan ...",
+  "No items": "Tidak ada barang",
+  "Select period type": "Pilih jenis periode",
+  "Previous year": "Tahun sebelumnya",
+  "Next year": "Tahun depan",
+  "Org-unit": "Org unit",
+  "Interpretation": "Interpretasi",
+  "Not found": "Tidak ditemukan",
+  "Search interpretation": "interpretasi pencarian",
+  "This interpretation will be deleted, are you sure?":
+    "Penafsiran ini akan dihapus, apakah Anda yakin?",
+  "Deleting interpretation": "menghapus interpretasi",
+  "Comment": "Komentar",
+  "Edit": "mengedit",
+  "Updating likes status": "Memperbarui suka Status",
+  "Unlike": "Tidak seperti",
+  "Like": "Seperti",
+  "Write new interpretation": "Menulis penafsiran baru",
+  "Cancel": "Membatalkan",
+  "Posting": "Posting",
+  "Post": "Pos",
+  "This comment will be deleted, are you sure?":
+    "Komentar ini akan dihapus, apakah Anda yakin?",
+  "Deleting comment": "menghapus komentar",
+  "Write your comment": "Tulis komentar anda"
+}

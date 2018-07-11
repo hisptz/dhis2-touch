@@ -1,0 +1,499 @@
+{
+  "Account": "account",
+  "Apps": "Apps",
+  "Log out": "Ka bax",
+  "About": "About",
+  "Aggregate status": "xaaladda wadar",
+  "Event status": "xaaladda Event",
+  "Event for tracker status": "Event xaaladda tracker",
+  "Enrollments": "Diwaangalinta",
+  "System info": "System info",
+  "Synced": "Synced",
+  "Not synced": "ma synced",
+  "Discovering app information": "La qabsashada macluumaad app",
+  "Discovering system information": "La qabsashada macluumaadka nidaamka",
+  "Discovering data values storage status":
+    "xogta ay ogaadeen waxa la qiimeeyo xaaladda kaydinta",
+  "Discovering events storage status":
+    "dhacdooyinka ay ogaadeen xaalada kaydinta",
+  "Discovering enrollments storage status":
+    "-qorid ay ogaadeen xaalada kaydinta",
+  "Fail to discover user information":
+    "Guul daraystaan ​​in ay ogaadaan macluumaadka user",
+  "Fail to discover system information":
+    "Guul daraystaan ​​in ay ogaadaan macluumaadka nidaamka",
+  "Fail to discover app information":
+    "Guul daraystaan ​​in ay ogaadaan macluumaadka app",
+  "Fail to discover data values storage status":
+    "Guul daraystaan ​​in ay ogaadaan xaaladda qiimaha xogta lagu keydiyo",
+  "Fail to discover enrollments storage status":
+    "Guul daraystaan ​​in ay ogaadaan xaaladda diiwaan kaydinta",
+  "Profile": "muuqaal",
+  "User information": "macluumaad user",
+  "Assigned organisation units": "unugyada ururka loo xilsaaray",
+  "Assigned roles": "doorar loo xilsaaray",
+  "Assigned programs": "barnaamijyada loo qoondeeyey",
+  "Assigned entry forms": "Foomamka soo galo loo xilsaaray",
+  "Discovering profile information": "La qabsashada macluumaad profile",
+  "Fail to discover profile information":
+    "Guul daraystaan ​​in ay ogaadaan macluumaadka profile",
+  "Help": "I caawi",
+  "Help search": "Help search",
+  "Search help by title": "caawimo Search by title",
+  "Settings": "Settings",
+  "Applying changes": "Dalbashada isbedel",
+  "Minutes": "Minutes",
+  "Hours": "Saacadaha",
+  "Auto synchronization": ".Wadashaqayntaas auto",
+  "Form layout": "Form khariidad",
+  "List layout": "List khariidad",
+  "Table layout": "Shaxda khariidad",
+  "Form label": "foomka qoraalka",
+  "Display name": "magaca Display",
+  "Form name": "Form magaca",
+  "Data element per page": "element Data per bogga",
+  "Current language": "luqadda hadda",
+  "App settings": "goobaha app",
+  "Entry form": "foomka Entry",
+  "Synchronization": ".Wadashaqayntaas",
+  "Discovering current user information": "La qabsashada macluumaad user hadda",
+  "Discovering settings": "La qabsashada goobaha",
+  "Settings have been updated successfully":
+    "Settings ayaa si guul leh updated",
+  "Fail to discover settings": "Ku guuldareysato inay ogaadaan goobaha",
+  "Fail to discover available local instances":
+    "Guul daraystaan ​​in ay ogaadaan xaaladaha deegaanka ee laga",
+  "Fail to discover current user information":
+    "Guul daraystaan ​​in ay ogaadaan macluumaadka user hadda",
+  "Fail to set translation": "Ku dhisan waayaan turjumaad",
+  "Fail to apply changes on  settings":
+    "Guul daraystaan ​​in ay codsan isbedel on goobaha",
+  "Reports": "Wararka",
+  "Search": "Search",
+  "Discovering reports": "La qabsashada wararka",
+  "Downloading reports from server": "wararka lagala soo server",
+  "Preparing local storage for updates":
+    "Diyaarinta kaydinta maxalliga ah updates",
+  "Saving reports from server": "warar lagu badbaadinayo ka server",
+  "there is no report to select": "ma jiraan wax warbixinta in ay doortaan",
+  "Fail  to discover reports": "Guul daraystaan ​​in ay ogaadaan wararka",
+  "Fail to save reports": "Guul daraystaan ​​in ay badbaadin wararka",
+  "Fail to prepare local storage for updates":
+    "Guul daraystaan ​​in ay diyaariyaan kaydinta maxalliga ah updates",
+  "Fail to download reports": "Guul daraystaan ​​in ay soo bixi wararka",
+  "Data set report": "Warbixin set Data",
+  "Standard report": "warbixin Standard",
+  "Report name": "magaca Report",
+  "Organisation unit": "unit Organization",
+  "Period": "Period",
+  "Generate report": "Abuuri karo warbixinta",
+  "Touch to select organisation unit": "Taabo si aad dooran unit ururka",
+  "Touch to select period": "Taabta in ay doortaan muddo",
+  "Report view": "Report view",
+  "Discovering user information": "macluumaad user ay ogaadeen",
+  "Discovering report metadata": "La qabsashada metadata warbixinta",
+  "Fail to discover organisation units information":
+    "Guul daraystaan ​​in ay ogaadaan macluumaadka unugyada ururka",
+  "Fail to discover report metadata":
+    "Guul daraystaan ​​in ay ogaadaan metadata warbixinta",
+  "Report type has not set,please contact system administrator":
+    "nooca Report ayaa qarka u saaran, fadlan la xiriir maamulaha",
+  "Discovering data set report information":
+    "xogta ay ogaadeen dhigay soo gudbiso macluumaadka",
+  "Preparing data set report": "Diyaarinta warbixinta xogta",
+  "Fail to prepare data set report":
+    "Guul daraystaan ​​in ay diyaarisaa warbixin xogta",
+  "Fail to discover data set report information":
+    "Guul daraystaan ​​in ay ogaadaan macluumaadka warbixinta xogta",
+  "Program selection": "xulashada Program",
+  "There is no program to select": "Waxaa jira barnaamij lahayn in ay doortaan",
+  "Period selection": "xulashada Period",
+  "Previous": "Hore",
+  "Next": "Next",
+  "There is no period to select": "Ma jiro xilliga in ay doortaan",
+  "Organisation unit selection": "Ururka xulashada unit",
+  "Discovering assigned organisation units":
+    "La qabsashada unugyada ururka loo xilsaaray",
+  "Currently there is on assigned organisation unit on local storage, Please metadata on sync app":
+    "Currently jiro on unit ururka loo xilsaaray on kaydinta maxaliga ah, Fadlan metadata on app u hagaagsan",
+  "Fail to discover organisation units":
+    "Guul daraystaan ​​in ay ogaadaan unugyada ururka",
+  "Discovering organisation units": "La qabsashada unugyada ururka",
+  "Fail to discover organisation unit children":
+    "Ku guuldareysato inay ogaadaan caruurta unit ururka",
+  "Event capture": "qabashada Event",
+  "Columns": "tiirar",
+  "Add": "Add",
+  "Discovering assigned programs": "La qabsashada barnaamijyada loo qoondeeyey",
+  "Discovering program stages": "La qabsashada marxaladaha barnaamijka",
+  "Discovering data": "xogta ay ogaadeen",
+  "Preparing table for display": "Diyaarinta miiska for bandhigay",
+  "All of selected category disaggregation are restricted from entry in selcted organisation unit, choose a different form or contact your support desk":
+    "All of disaggregation category xulay xaddidan yihiin ka galo in unit urur selcted, dooran qaab ka duwan ama la xiriir miiska taageero",
+  "There is no option for selected category that associated with selected organisation unit":
+    "Ma jirto doorasho, waayo category xulay in la xidhiidha qaybta urur la doortay",
+  "There are no program to select":
+    "Waxaa jira barnaamij lahayn in ay doortaan",
+  "Touch to select program": "Taabo si aad dooran barnaamij",
+  "Touch to select option": "Taabo si aad dooro ikhtiyaarka",
+  "There no data at the moment": "Waxaa ma xogta la joogo",
+  "Visible header": "madax Muuqata",
+  "Select all": "Dooro dhamaan",
+  "Deselect all": "Deselect oo dhan",
+  "Save": "Save",
+  "Event register": "diiwaanka Event",
+  "Program": "barnaamijka",
+  "Discovering data from local storage":
+    "xogta ay ogaadeen ka kaydinta degaanka",
+  "Fail to discover program stages":
+    "Guul daraystaan ​​in ay ogaadaan marxaladaha barnaamijka",
+  "Report date": "taariikhda Report",
+  "Touch to pick date": "Taabo si aad qaado taariikhda",
+  "Delete": "delete",
+  "There are no data elements, please contact you help desk":
+    "Ma jiraan xubno ka data, fadlan la xiriir kaa caawin miiska",
+  "You are about to delete this event, are you sure?":
+    "oo ku saabsan in ay tirtirto dhacdadan waxaad tahay, aad hubto?",
+  "Yes": "Haa",
+  "No": "No",
+  "Deleting event": "dhacdo takhalusid",
+  "Event has been deleted successfully": "Event ayaa si guul leh tirtiray",
+  "Fail to delete event": "Guul daraystaan ​​in ay tirtirto dhacdo",
+  "Tracker capture": "qabashada Tracker",
+  "Discovering tracked entity list": "La qabsashada liiska cidda dabagal",
+  "There are no program to select, please select another organisation unit":
+    "Waxaa jira barnaamij lahayn in ay doortaan, fadlan dooro unit kale ururka",
+  "Fail to discover registration form":
+    "Ku guuldareysato inay foomka diiwaangelinta ogaado",
+  "Fail to discover assigned programs":
+    "Guul daraystaan ​​in ay ogaadaan barnaamijyada loo qoondeeyey",
+  "Fail to discover tracked entity list":
+    "Guul daraystaan ​​in ay ogaadaan cidda liiska dabagal",
+  "Fail to prepare table for display":
+    "Guul daraystaan ​​in ay diyaarisaa miis, waayo bandhigay",
+  "List of widgets": "List of widgets",
+  "There is no widget to select": "Ma jiro widget in ay doortaan",
+  "Registration": "Diiwaangelinta",
+  "Enrollment & Profile": "Diiwaangelinta & Profile",
+  "Enrolling organisation unit": "Diiwaan gelinta unit ururka",
+  "Enrolling program": "barnaamijka qoraya",
+  "Discovering registration form": "La qabsashada foomka diiwaangelinta",
+  "You are about to delete all information related to this tracked entity instance, are you sure?":
+    "ku saabsan in aad tirtirto dhammaan macluumaadka la xiriira this tusaale ahaan cidda dabagal, aad hubto in aad tahay?",
+  "Deleting all information related to this tracked entity instance":
+    "Tirka dhammaan macluumaadka la xiriira this tusaale ahaan cidda dabagal",
+  "A tracked entity instance has not yet registered":
+    "A tusaale ahaan cidda dabagal ayaa weli ma diiwaan gashan",
+  "A tracked entity instance has been deleted successfully":
+    "A tusaale ahaan cidda dabagal ayaa si guul leh tirtiray",
+  "A tracked entity instance has been saved successfully":
+    "A tusaale ahaan cidda dabagal ayaa si guul leh ku badbaado",
+  "Fail to delete all information related to this tracked entity instance":
+    "Guul daraystaan ​​in ay tirtirto dhammaan macluumaadka la xiriira this tusaale ahaan cidda dabagal",
+  "Fail to save a tracked entity instance":
+    "Guul daraystaan ​​in ay badbaadin tusaale ah hay'ad dabagal",
+  "New event": "dhacdo New",
+  "Discovering events": "La qabsashada dhacdooyinka",
+  "Fail to discover events": "Guul daraystaan ​​in ay ogaadaan dhacdooyinka",
+  "Due date": "taariikhda",
+  "Contact your help desk to add data elements on this stage":
+    "La xiriir caawimaad miiska ku darto xubno xog ku saabsan marxaladan",
+  "Tracked entity dashboard": "dashboard hay'ad dabagal",
+  "Discovering tracked entity": "La qabsashada hay'ad dabagal",
+  "Discovering registration fields": "La qabsashada beeraha diiwaangelinta",
+  "Tracked entity instance has been delete successfully":
+    "Dabagal tusaale ahaan cidda uu ahaa mid si guul ah u tirtirto",
+  "Fail to discover tracked entity":
+    "Guul daraystaan ​​in ay ogaadaan cidda u xiiseeyaan",
+  "Fail to discover registration fields":
+    "Guul daraystaan ​​in ay ogaadaan beeraha diiwaangelinta",
+  "Data entry": "entry Data",
+  "Touch to select entry form": "Taabo si aad dooro foomka soo galo",
+  "Form": "Form",
+  "Enter data": "Ku qor macluumaadka",
+  "There are no entry form to select on selected organisation unit":
+    "Ma jiraan qaab entry in ay doortaan on unit urur la doortay",
+  "Please select entry form first": "Fadlan dooro foomka soo galo marka hore",
+  "There is no option for seleted category that associated with selected organisation unit":
+    "Ma jirto doorasho, waayo category seleted in la xidhiidha qaybta urur la doortay",
+  "All disaggregation are restricted from entry in selected organisation unit, please choose a different form or contact your support desk":
+    "disaggregation All xaddidan yihiin ka galo in unit urur la doortay, fadlan dooro foomka ka duwan ama la xiriir miiska taageero",
+  "Fail to discover entry form": "Ku guuldareysato inay foomka soo galo ogaado",
+  "Data entry form selection": "foomka soo galo Data xulashada",
+  "There is no data entry form to select":
+    "Ma jiro foomka xogta in ay doortaan",
+  "Data dimension selection": "xulashada aragti Data",
+  "There is no option to select": "Ma jiro ikhtiyaar in ay doortaan",
+  "Data entry form sections": "qaybaha foomka soo galo Data",
+  "There is nothing to select": "Ma jiraan wax in ay doortaan waa",
+  "Entry form's indicators": "Tilmaamayaasha foomka Entry ee",
+  "Name": "magaca",
+  "Numerator Description": "Sareeye Description",
+  "Denominator Description": "hooseeye Description",
+  "Indicator value": "qiimaha tusiyaha",
+  "Data entry form": "foomka soo galo Data",
+  "Available indicators": "tilmaamayaasha Available",
+  "Complete": "Buuxi",
+  "Undo complete": "Ka noqo dhameystiran",
+  "Completed by": "Waxaa buuxiya",
+  "on": "on",
+  "Please wait ...": "Fadlan sug ...",
+  "The is no field associated with this entry form, Please contact our help desk":
+    "Waa duurka ma la xidhiidha qaab entry this, Fadlan la soo xiriir caawimaad miiska",
+  "Discovering entry form information":
+    "La qabsashada macluumaadka foomka soo galo",
+  "Discovering indicators": "La qabsashada tilmaamayaasha",
+  "Preparing entry form": "Diyaarinta qaab entry",
+  "Discovering data from the server": "La qabsashada xogta ka server",
+  "Saving data from server": "Badbaadinta xogta ka server",
+  "Discovering available local data":
+    "La qabsashada macluumaad maxali ah la heli karo",
+  "Discovering entry form completeness information":
+    "La qabsashada macluumaad entry foomka dhamaystirmo",
+  "There are no indicators to view":
+    "Ma jiraan wax tilmaamayaasha si aad u aragto",
+  "Uploading data": "data-xammuulaya",
+  "Fail to discover indicators":
+    "Guul daraystaan ​​in ay ogaadaan tilmaamayaasha",
+  "Fail to discover entry form information":
+    "Guul daraystaan ​​in ay ogaadaan foomka soo galo macluumaadka",
+  "Fail to save data from the server":
+    "Guul daraystaan ​​in ay badbaadin xogta ka server",
+  "Fail to discover data from the server":
+    "Guul daraystaan ​​in ay ogaadaan xogta ka server",
+  "Fail to discover available local data":
+    "Guul daraystaan ​​in ay ogaadaan macluumaadka deegaanka ee laga",
+  "Fail to discover entry form completeness information":
+    "Guul daraystaan ​​in ay ogaadaan macluumaadka foomka soo galo dhammaystirka",
+  "Fail to un complete entry form":
+    "Ku guuldareysato inay foomka soo galo dhamaystiran un",
+  "Fail to complete entry form":
+    "Ku guuldareysato inay foomka soo galo buuxiso",
+  "Completeness information": "macluumaad dhameystiran",
+  "Discovering completeness information":
+    "La qabsashada macluumaad dhameystiran",
+  "Fail to discover completeness information":
+    "Guul daraystaan ​​in ay ogaadaan warbixin dhameystiran",
+  "Username": "username",
+  "Full name": "magaca oo buuxa",
+  "E-mial": "E-mial",
+  "Phone number": "Lambarka taleefanka",
+  "Sync": "nidaameed",
+  "Clear local metadata": "metadata maxaliga ah oo cad",
+  "Clear metaData": "metadata Clear",
+  "Clear local metadata confirmation": "Clear xaqiijin metadata degaanka",
+  "You are about to clear all selected items, Are you sure?":
+    "oo ku saabsan in ay nadiifiso dhammaan waxyaabaha soo xulay waxaad tahay, Ma hubtaa?",
+  "Clearing selected items": "Nadiifinta alaabta soo xulay",
+  "Applying updates to local storage":
+    "Dalbashada updates in kaydinta degaanka",
+  "Please select at least one item to clear":
+    "Fadlan xulo ugu yaraan hal shay in ay nadiifiso",
+  "All selected metadata has been cleared successfully":
+    "All metadata soo xulay ayaa si guul ah ka bariyeelay",
+  "Fail to apply updates to local storage":
+    "Ku guuldareysato inay ka codsan updates in kaydinta degaanka",
+  "Clear local data": "macluumaad maxali ah oo cad",
+  "Aggregate data": "data wadar",
+  "Events": "dhacdooyinka",
+  "Events for tracker": "Dhacdooyinka for tracker",
+  "Clear offline data confirmation": "xaqiijinta xogta offline Clear",
+  "You are about to clear all selected items, are you sure?":
+    "oo ku saabsan in ay nadiifiso dhammaan waxyaabaha soo xulay waxaad tahay, aad hubto?",
+  "All selected items has been cleared successfully":
+    "All items la doortay ayaa si guul ah ka bariyeelay",
+  "Fail to clear selected items":
+    "Guul daraystaan ​​in ay nadiifiso waxyaabaha soo xulay",
+  "Download metadata": "download metadata",
+  "Please select at least one item": "Fadlan xulo ugu yaraan hal shay",
+  "Downloading updates": "degsado updates",
+  "Applying updates": "Dalbashada updates",
+  "All updates has been applied successfully":
+    "All updates ayaa si guul leh u codsatay",
+  "Fail to apply updates": "Ku guuldareysato inay ka codsan updates",
+  "Fail to prepare local storage for update":
+    "Guul daraystaan ​​in ay diyaariyaan kaydinta maxaliga ah ee update",
+  "Fail to download updates": "Guul daraystaan ​​in ay soo bixi updates",
+  "Upload data via internet": "Geliyaan xogta internetka",
+  "Upload data": "data Upload",
+  "Uploading selected local data, please wait...":
+    "Uploading macluumaad maxali ah loo doortay, fadlan sug ...",
+  "Import summaries": "koobikaro Import",
+  "Tracked entity instances": "Mararka hay'ad dabagal",
+  "Tracked entity enrollments": "diiwaan hay'ad dabagal",
+  "Success": "Success",
+  "Failed": "guuldareystay",
+  "Import conflicts or errors": "colaadaha Import ama qalad",
+  "Upload data via SMS": "Geliyaan xogta via SMS",
+  "Mobile Number": "Nambarka taleefonka",
+  "Discovering SMS Configuration": "Discovering SMS-haggaajin",
+  "Preparing entry form fields": "Diyaarinta beeraha foomka soo galo",
+  "Preparing data": "data Diyaarinta",
+  "Preparing SMS": "SMS Diyaarinta",
+  "Sending SMS": "diraya SMS",
+  "Sending SMSes": "diraya Daashboodh",
+  "SMS has been sent": "SMS ayaa lagu soo diray",
+  "Fail to send some of SMS, Please go into your SMS inbox and resend them manually":
+    "Guul daraystaan ​​in ay soo diraan qaar ka mid ah SMS, Fadlan geli aad mailkooda SMS iyo iyaga gacanta resend",
+  "Fail to preparing SMS": "Guul daraystaan ​​in ay isku diyaarineysa SMS",
+  "There is no data to be sent via SMS": "Ma jirto xog in loo soo diro via SMS",
+  "Fail to discover data values":
+    "Guul daraystaan ​​in ay ogaadaan qiimaha xogta",
+  "Selected entry form has no field set, please contact your help desk":
+    "foomka soo galo oo la xushay ma laha set beerta, fadlan la xiriir caawimaad miiska",
+  "Fail to discover SMS configurations":
+    "Guul daraystaan ​​in ay ogaadaan gaadmada ah SMS",
+  "Innovation in every dimension": "Innovation in aragti kasta",
+  "Establishing connection to server": "Dhisidda xiriir si server",
+  "Aggregate metadata": "metadata wadar",
+  "Event and tracker metadata": "Event iyo tracker metadata",
+  "Reports metadata": "Wararka metadata",
+  "Enter server address": "Ku qor cinwaanka server",
+  "Enter username": "Ku qor username",
+  "Enter password": "Ku qor password",
+  "Login": "login",
+  "or": "ama",
+  "Offline instances": "mararka offline",
+  "Powered by": "Powered by",
+  "Discovering current user authorities": "La qabsashada maamulka user hadda",
+  "Preparing local storage": "Diyaarinta kaydinta degaanka",
+  "Fail to prepare local storage":
+    "Guul daraystaan ​​in ay diyaariyaan kaydinta degaanka",
+  "Fail to discover user authorities":
+    "Ku guuldareysato inay ogaadaan maamulka user",
+  "Fail to save current user information":
+    "Guul daraystaan ​​in ay badbaadin macluumaad user hadda",
+  "Please check your network connectivity":
+    "Fadlan hubi isku xirnaanta shabakad",
+  "You have enter wrong username or password or server address":
+    "Waxaad leedahay geli username qaldan ama password ama cinwaanka server",
+  "Please check server address, or contact your help desk":
+    "Fadlan hubi cinwaanka server, ama la xiriir caawimaad miiska",
+  "Please enter server address, username and password":
+    "Fadlan qor ciwaanka server, magacaaga iyo isgarad-",
+  "Assigned organisation units have been discovered":
+    "unugyada ururka loo xilsaaray ayaa laga helay",
+  "Saving assigned organisation units":
+    "Badbaadinta unugyada ururka loo xilsaaray",
+  "Assigned organisation units have been saved":
+    "unugyada ururka loo xilsaaray ayaa la badbaadiyey",
+  "Fail to save organisation data":
+    "Guul daraystaan ​​in ay badbaadin xogta ururka",
+  "Fail to discover organisation data":
+    "Guul daraystaan ​​in ay ogaadaan xogta ururka",
+  "Discovering entry forms": "La qabsashada foomamka soo galo",
+  "Entry forms have been discovered": "Foomamka Entry ayaa laga helay",
+  "Saving entry forms": "Badbaadinta foomamka soo galo",
+  "Entry form have been saved": "foomka Entry ku badbaaddeen",
+  "Fail to save entry form": "Ku guuldareysato inay foomka soo galo badbaadiyo",
+  "Discovering entry form sections": "La qabsashada qaybaha foomka soo galo",
+  "Entry form sections have been discovered":
+    "qaybaha foomka Entry ayaa laga helay",
+  "Saving entry form sections": "Badbaadinta qaybaha foomka soo galo",
+  "Entry form sections have been saved": "qaybaha foomka Entry ku badbaaddeen",
+  "Fail to save entry form sections":
+    "Guul daraystaan ​​in ay badbaadin qaybaha foomka soo galo",
+  "Fail to discover entry form sections":
+    "Guul daraystaan ​​in ay ogaadaan qaybaha foomka soo galo",
+  "Discovering entry form fields": "La qabsashada beeraha foomka soo galo",
+  "Entry form fields have been discovered":
+    "beeraha foomka Entry ayaa laga helay",
+  "Saving entry form fields": "Badbaadinta beeraha foomka soo galo",
+  "Entry form fields have been saved": "beeraha foomka Entry ku badbaaddeen",
+  "Fail to save entry form fields":
+    "Guul daraystaan ​​in ay badbaadin beeraha foomka soo galo",
+  "Fail to discover entry form fields":
+    "Guul daraystaan ​​in ay ogaadaan beeraha foomka soo galo",
+  "Discovering SMS commands": "La qabsashada amarrada SMS",
+  "SMS commands have been discovered": "amarrada SMS ayaa laga helay",
+  "Saving SMS commands": "Badbaadinta amarrada SMS",
+  "SMS commands have been saved": "amarrada SMS ayaa la badbaadiyey",
+  "Fail to save SMS commands": "Guul daraystaan ​​in ay badbaadin amarrada SMS",
+  "Fail to discover SMS commands":
+    "Guul daraystaan ​​in ay ogaadaan amarrada SMS",
+  "Discovering programs": "La qabsashada barnaamijyada",
+  "Programs have been discovered": "Barnaamijyada ayaa laga helay",
+  "Saving programs": "badbaadinta barnaamijyada",
+  "Programs have been saved": "Barnaamijyada ma uu badbaadeen",
+  "Fail to save programs": "Guul daraystaan ​​in ay badbaadin barnaamijyada",
+  "Fail to discover programs": "Guul daraystaan ​​in ay ogaadaan barnaamijyada",
+  "Discovering program stage section": "La qabsashada qaybta stage barnaamijka",
+  "Program stage section have been discovered":
+    "qaybta wareega Barnaamijka ayaa laga helay",
+  "Saving program stage section": "Badbaadinta qaybta stage barnaamijka",
+  "Program stage section have been saved":
+    "qaybta wareega Barnaamijka ayaa la badbaadiyey",
+  "Fail to save program stage sections":
+    "Guul daraystaan ​​in ay badbaadin qaybaha stage barnaamijka",
+  "Fail to discover program stage sections":
+    "Guul daraystaan ​​in ay ogaadaan qaybaha stage barnaamijka",
+  "Indicators have been discovered": "Muujiyeyaasha ayaa laga helay",
+  "Saving indicators": "badbaadinta tilmaamayaasha",
+  "Indicators have been saved": "Tilmaamayaashu waxa uu badbaadeen",
+  "Fail to save indicators": "Guul daraystaan ​​in ay badbaadin tilmaamayaasha",
+  "Reports have been discovered": "Wararka ayaa laga helay",
+  "Saving reports": "badbaadinta wararka",
+  "Reports have been saved": "Wararka ku badbaaddeen",
+  "Fail to discover reports": "Guul daraystaan ​​in ay ogaadaan wararka",
+  "Discovering constants": "La qabsashada geysid",
+  "Constants have been discovered": "Geysid ayaa laga helay",
+  "Saving constants": "Lacag u geysid",
+  "Constants have been saved": "Geysid ku badbaaddeen",
+  "Fail to save constants": "Guul daraystaan ​​in ay badbaadin geysid",
+  "Fail to discover constants": "Guul daraystaan ​​in ay ogaadaan geysid",
+  "There is no local instance to select":
+    "Ma jiro tusaale ahaan degaanka in ay doortaan",
+  "Discovering available local instances":
+    "La qabsashada xaaladaha deegaanka ee laga",
+  "Fail to load available local instances":
+    "Guul daraystaan ​​in ay ku shuban mararka deegaanka ee laga",
+  "Dashboard": "dashboard",
+  "Discovering dashboards": "La qabsashada dashboards",
+  "There no dashboard item found": "Waxaa jirin wax dashboard helay",
+  "Dashboard list": "liiska dashboard",
+  "Search dashboard by name": "Search dashboard by magaca",
+  "Layout": "Layout",
+  "Table / Chart Layout": "Shaxda / Layout Chart",
+  "Filters": "filtarrada",
+  "Column": "column",
+  "Row": "Row",
+  "Categories": "Categories",
+  "Series": "Taxanaha",
+  "Update": "update",
+  "Close": "Close",
+  "Data": "Data",
+  "Select": "Dooro",
+  "All": "All",
+  "Data elements": "xubno Data",
+  "Indicators": "Muujiyeyaasha",
+  "Data sets": "sets Data",
+  "Program indicators": "tilmaamayaasha Program",
+  "Functions": "Functions",
+  "Available": "Available",
+  "Selected": "soo xulay",
+  "Discovering...": "La qabsashada ...",
+  "No items": "No items",
+  "Select period type": "nooca muddo Select",
+  "Previous year": "sano Previous",
+  "Next year": "sannadka soo socda",
+  "Org-unit": "Tusmaynta-unit",
+  "Interpretation": "fasiraadda",
+  "Not found": "Lama helin",
+  "Search interpretation": "fasiraadda Search",
+  "This interpretation will be deleted, are you sure?":
+    "Fasiraadda Tani waa la tirtiri doonaa, aad hubto?",
+  "Deleting interpretation": "fasiraadda takhalusid",
+  "Comment": "Comment",
+  "Edit": "edit",
+  "Updating likes status": "Cusbooneysiinta jecel yahay xaaladda",
+  "Unlike": "Si ka duwan",
+  "Like": "Like",
+  "Write new interpretation": "Qor fasiraadda cusub",
+  "Cancel": "Jooji",
+  "Posting": "dhajiyay",
+  "Post": "Post",
+  "This comment will be deleted, are you sure?":
+    "comment Tani waxay la tirtiro doonaa, aad hubto?",
+  "Deleting comment": "takhalusid comment",
+  "Write your comment": "Ku qor comment"
+}

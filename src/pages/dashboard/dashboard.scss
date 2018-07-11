@@ -1,0 +1,32 @@
+page-dashboard {
+  .selected-dashboard-block {
+    position: fixed;
+    z-index: 1400;
+    width: 100%;
+    -webkit-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+    -moz-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+    border-radius: 2px;
+    background-color: #ffffff;
+    padding: 14px 12px 14px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .dashboard-name {
+      font-size: 1.4rem;
+    }
+    img {
+      height: 15px;
+    }
+  }
+
+  .visualization-card-list {
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 50px;
+  }
+
+  .visualization-card-container {
+    width: 100%;
+  }
+}

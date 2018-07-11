@@ -1,48 +1,55 @@
 <!--
-  Generated template for the Profile page.
+  Generated template for the ProfilePage page.
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
 <ion-header>
 
-  <ion-navbar color="primary" mode="md">
-    <ion-title>Profile</ion-title>
+  <ion-navbar color="primary">
+    <ion-title>
+      <span [translate]="'Profile'"></span>
+    </ion-title>
   </ion-navbar>
 
 </ion-header>
 
-<ion-content class="profile">
+
+<ion-content>
 
   <ion-grid>
     <div *ngIf="isLoading">
-      <page-loading [loadingSize]="'large'" [loadingMessage]="loadingMessage" ></page-loading>
+      <loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></loading>
     </div>
 
     <div *ngIf="!isLoading">
       <div class="item-card" *ngFor="let profileContent of profileContents">
         <ion-row (tap)="toggleProfileContents(profileContent)">
           <ion-col col-11>
-            <img  class="side-menu-icon" [src]="profileContent.icon"/>&nbsp;&nbsp;
+            <img class="side-menu-icon" [src]="profileContent.icon" />&nbsp;&nbsp;
             <span ion-text [color]="(isProfileContentOpen[profileContent.id]) ?'current' : 'font-color'">
-              {{ profileContent.name }}
+              <span [translate]="profileContent.name"></span>
             </span>
           </ion-col>
-          <ion-col col-1 item >
+          <ion-col col-1 item>
             <div style="text-align: center;">
-              <ion-icon [color]="(isProfileContentOpen[profileContent.id]) ?'current' : 'font-color'" *ngIf="!(isProfileContentOpen[profileContent.id])" name="ios-arrow-down" item-right></ion-icon>
-              <ion-icon [color]="(isProfileContentOpen[profileContent.id]) ?'current' : 'font-color'" *ngIf="(isProfileContentOpen[profileContent.id])" name="ios-arrow-up" item-right></ion-icon>
+              <ion-icon [color]="(isProfileContentOpen[profileContent.id]) ?'current' : 'font-color'" *ngIf="!(isProfileContentOpen[profileContent.id])"
+                name="ios-arrow-down" item-right></ion-icon>
+              <ion-icon [color]="(isProfileContentOpen[profileContent.id]) ?'current' : 'font-color'" *ngIf="(isProfileContentOpen[profileContent.id])"
+                name="ios-arrow-up" item-right></ion-icon>
             </div>
           </ion-col>
         </ion-row>
-        <div *ngIf="(isProfileContentOpen[profileContent.id])" >
+        <div *ngIf="(isProfileContentOpen[profileContent.id])">
           <hr>
           <ion-row>
             <ion-col>
-              <div *ngIf="userData && userData[profileContent.id]" >
+              <div *ngIf="userData && userData[profileContent.id]">
                 <div *ngIf="profileContent.id == 'userInfo'">
                   <div *ngFor="let userInfo of userData[profileContent.id]; ">
-                    <div class="content"><b>{{ userInfo.key }}</b><br>{{ userInfo.value }}</div>
+                    <div class="content">
+                      <b>{{ userInfo.key }}</b>
+                      <br>{{ userInfo.value }}</div>
                   </div>
                 </div>
                 <div *ngIf="profileContent.id != 'userInfo'">

@@ -1,0 +1,11 @@
+<div *ngIf="!(dataEntrySettings && dataEntrySettings.shouldDisplayAsRadio && (options && options.length <= maxOptionCountAsRadion))">
+  <div (click)="openOptionListModal()" padding-left>
+    <ion-item>
+      <span *ngIf="!(inputFieldValue && labelMapper && labelMapper[inputFieldValue]) || inputFieldValue ===''">Touch to select option</span>
+      <span *ngIf="(inputFieldValue && labelMapper && labelMapper[inputFieldValue])"> {{ labelMapper[inputFieldValue] }}</span>
+    </ion-item>
+  </div>
+</div>
+<div *ngIf="(dataEntrySettings && dataEntrySettings.shouldDisplayAsRadio && (options && options.length <= maxOptionCountAsRadion))">
+  <radio-button-input [options]="options" [fieldId]="fieldId" [(selectedValue)]="inputFieldValue" (updateValueAction)="updateValues($event)"></radio-button-input>
+</div>

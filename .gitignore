@@ -11,8 +11,9 @@ log.txt
 *.sublime-workspace
 .vscode/
 npm-debug.log*
-
+*.md5
 .idea/
+.sourcemaps/
 .sass-cache/
 .tmp/
 .versions/
@@ -32,7 +33,3 @@ $RECYCLE.BIN/
 .DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate
-ctshisptzdevelopmenttypescriptdhis2touch
-res
-run.sh
-helpers

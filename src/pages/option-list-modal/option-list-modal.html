@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title> {{ title }}</ion-title>
+    <ion-buttons end (click)="dismiss()">
+      <button ion-button clear color="danger" text-capitalize>
+        <ion-icon name='close'></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div *ngIf="isLoading">
+    <loading [loadingSize]="'large'"></loading>
+  </div>
+  <div *ngIf="!isLoading">
+    <ion-searchbar (ionInput)="getItems($event)" placeholder="{{'Search'|translate}}"></ion-searchbar>
+    <ion-grid>
+      <ion-row>
+        <div *ngIf="(arrayOfOptions.length > 0 && arrayOfOptions[currentPage - 1])">
+          <div class="animated fadeIn">
+            <ion-list>
+              <ion-item *ngFor="let option of arrayOfOptions[currentPage - 1];trackBy: trackByFn" (click)="selectOption(option)">
+                <span ion-text [color]="(currentValue && currentValue == option.code) ?'current' : 'font-color'">{{ option.name }}</span>
+              </ion-item>
+            </ion-list>
+          </div>
+        </div>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <button ion-button outline [disabled]="(currentPage == 1)" color="font-color" text-capitalize (click)="previousPage()">
+          <ion-icon name="skip-backward"></ion-icon>
+        </button>
+        <button ion-button clear color="font-color" text-capitalize>
+          {{ (arrayOfOptions.length > 0)? currentPage : 0 }}/{{ arrayOfOptions.length }}
+        </button>
+        <button ion-button outline [disabled]="!(currentPage < arrayOfOptions.length)" color="font-color" text-capitalize (click)="nextPage()">
+          <ion-icon name="skip-forward"></ion-icon>
+        </button>
+      </ion-col>
+      <ion-col col-auto>
+        <div float-right>
+          <button ion-button outline color="danger" text-capitalize (click)="clearValue()">
+            <ion-icon name='trash'></ion-icon>
+          </button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-footer>

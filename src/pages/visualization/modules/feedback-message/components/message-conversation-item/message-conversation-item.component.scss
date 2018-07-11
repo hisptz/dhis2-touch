@@ -1,0 +1,49 @@
+app-message-conversation-item {
+  .message-conversation-item {
+    display: flex;
+    border-bottom: solid thin #dddddd;
+    text-decoration: none;
+    color: #000000;
+  }
+
+  .message-conversation-item:hover {
+    background-color: #eeeeee;
+  }
+
+  .message-conversation-icon-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    height: auto;
+  }
+
+  .message-conversation-icon {
+    display: flex;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    border: solid 2px #dddddd;
+    color: #9e9e9e;
+  }
+
+  .message-conversation-body {
+    padding: 5px;
+  }
+
+  .unread-conversation {
+    font-weight: 600;
+  }
+
+  .message-conversation-names {
+    font-size: 13px;
+  }
+
+  .message-conversation-content {
+    font-size: 12px;
+  }
+
+}

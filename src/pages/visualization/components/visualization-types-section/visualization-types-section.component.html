@@ -1,0 +1,23 @@
+<div class="visualization-types-section">
+  <button class="visualization-type-btn" [ngClass]="{'active-visualization': currentVisualization === 'TABLE'}"
+    [disabled]="currentVisualization === 'TABLE'" title="View Table" (click)="onVisualizationSelect($event, 'TABLE')">
+    <img src="assets/icon/table.png" alt="">
+  </button>
+
+  <button class="visualization-type-btn" [ngClass]="{'active-visualization': currentVisualization === 'CHART'}"
+    [disabled]="currentVisualization === 'CHART'" title="View Chart" (click)="onVisualizationSelect($event, 'CHART')">
+    <img src="assets/icon/column.png" alt="">
+  </button>
+
+  <button class="visualization-type-btn" [ngClass]="{'active-visualization': currentVisualization === 'MAP'}"
+    [disabled]="currentVisualization === 'MAP'" title="View Map" (click)="onVisualizationSelect($event, 'MAP')">
+    <img src="assets/icon/map.png" alt="">
+  </button>
+  <button class="visualization-type-btn" [ngClass]="{'active-visualization': currentVisualization === 'INFO'}"
+    [disabled]="currentVisualization === 'INFO'" title="View Information" (click)="onVisualizationSelect($event, 'INFO')">
+    <img src="assets/icon/info.png" alt="">
+  </button>
+  <!--<button class="visualization-type-btn" (click)="toggleInterpretaion($event)">-->
+    <!--<img src="assets/icon/filled-chat.png" alt="">-->
+  <!--</button>-->
+</div>

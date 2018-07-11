@@ -1,75 +1,35 @@
 <!--
-  Generated template for the Apps page.
+  Generated template for the AppsPage page.
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
 <ion-header>
 
-  <ion-navbar color="primary" mode="md">
-    <ion-title>Apps</ion-title>
+  <ion-navbar color="primary">
+    <ion-title>
+      <span [translate]="'Apps'"></span>
+    </ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content class="apps">
-
+<ion-content>
   <ion-grid>
-    <ion-row >
-      <ion-col col-4 (tap)="goToView('dataEntry')" >
-        <div class="apps-contents" padding>
-          <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/img/dataEntry.png">
-          </ion-thumbnail>
-          <p class="menu-app" >Data Entry</p>
+    <ion-row class="animated fadeIn">
+      <ion-col col-xs-4 col-sm-3 col-md-2 col-lg-1 col-xl-1 *ngFor="let app of authorizedApps;trackBy: trackByFn">
+        <div class="app-item-container">
+          <div [ngClass]="animationEffect[app.id]" (tap)="goToView(app)">
+            <div class="apps-contents" padding>
+              <ion-thumbnail>
+                <img class="menu-app-icon-list" [src]="app.src">
+              </ion-thumbnail>
+              <p class="menu-app" [translate]="app.name"></p>
+            </div>
+          </div>
         </div>
       </ion-col>
-      <ion-col col-4 (tap)="goToView('eventCapture')" >
-        <div class="apps-contents" padding>
-          <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/img/eventCapture.png">
-          </ion-thumbnail>
-          <p class="menu-app" >Event Capture</p>
-        </div>
-      </ion-col>
-      <ion-col col-4 (tap)="goToView('report')"  >
-        <div class="apps-contents" padding>
-          <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/img/reports.png">
-          </ion-thumbnail>
-          <p class="menu-app">Reports</p>
-        </div>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col col-4 (tap)="goToView('dashboard')" >
-        <div class="apps-contents" padding>
-          <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/img/dashboard.png">
-          </ion-thumbnail>
-          <p class="menu-app">Dashboard</p>
-        </div>
-      </ion-col>
-
-      <ion-col col-4 (tap)="goToView('updateManager')" >
-        <div class="apps-contents" padding>
-          <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/img/updateManager.png">
-          </ion-thumbnail>
-          <p class="menu-app" >Sync</p>
-        </div>
-      </ion-col>
-      <ion-col col-4 (tap)="goToView('settings')" >
-        <div class="apps-contents" padding>
-          <ion-thumbnail >
-            <img class="menu-app-icon-list" src="assets/img/settings.png">
-          </ion-thumbnail>
-          <p class="menu-app" >Settings</p>
-        </div>
-      </ion-col>
-
     </ion-row>
   </ion-grid>
-
 </ion-content>

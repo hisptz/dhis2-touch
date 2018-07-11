@@ -1,0 +1,72 @@
+<!--
+  Generated template for the SettingsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>
+      <span [translate]="'Settings'"></span>
+    </ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+  <ion-grid>
+
+    <div *ngIf="isLoading">
+      <loading [loadingMessage]="loadingMessage" [loadingSize]="'large'"></loading>
+    </div>
+    <div *ngIf="!isLoading">
+      <div class="item-card" *ngFor="let settingContent of settingContents;trackBy: trackByFn">
+        <ion-row (tap)="toggleSettingContents(settingContent)">
+          <ion-col col-11>
+            <img class="side-menu-icon" [src]="settingContent.icon" />&nbsp;&nbsp;
+            <span ion-text [color]="(isSettingContentOpen[settingContent.id]) ?'current' : 'font-color'" [translate]="settingContent.name"></span>
+          </ion-col>
+          <ion-col col-1 item>
+            <div style="text-align: center;">
+              <ion-icon [color]="(isSettingContentOpen[settingContent.id]) ?'current' : 'font-color'" *ngIf="!(isSettingContentOpen[settingContent.id])"
+                name="ios-arrow-down" item-right></ion-icon>
+              <ion-icon [color]="(isSettingContentOpen[settingContent.id]) ?'current' : 'font-color'" *ngIf="(isSettingContentOpen[settingContent.id])"
+                name="ios-arrow-up" item-right></ion-icon>
+            </div>
+          </ion-col>
+        </ion-row>
+        <div class="updateManagerContents" *ngIf="(isSettingContentOpen[settingContent.id])">
+          <hr>
+
+          <div *ngIf=" settingContent.id == 'appSettings'">
+            <app-settings [currentLanguage]="currentLanguage" (onUpdateCurrentLanguage)="updateCurrentLanguage($event)" [translationCodes]="translationCodes"></app-settings>
+          </div>
+
+          <div *ngIf="settingContent.id == 'synchronization'">
+            <div *ngIf="settingObject.synchronization">
+              <synchronization-settings [(settingObject)]="settingObject" (onUpdateSyncSetting)="updateAutoSyncSetting($event,settingContent)"></synchronization-settings>
+            </div>
+          </div>
+
+          <div *ngIf="settingContent.id == 'entryForm'">
+            <div *ngIf="settingObject.entryForm">
+              <entry-form-settings [(settingObject)]="settingObject" (onUpdateDataEntrySettings)="applySettings(settingContent)"></entry-form-settings>
+            </div>
+          </div>
+
+          <div *ngIf="settingContent.id == 'barcode'">
+            <div *ngIf="settingObject.barcode">
+              <barcode-settings [(settingObject)]="settingObject" (onUpdateBarcodeSettings)="applySettings(settingContent)"></barcode-settings>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </ion-grid>
+
+</ion-content>

@@ -1,0 +1,7 @@
+<div class="visualization-title-section" (click)="onToggleVisualization($event)">
+  <div class="title-block">
+    <div class="title-icon"><img [src]="visualizationIcons[type]" alt=""></div>
+    <div>{{name}}</div>
+  </div>
+  <img *ngIf="!fullScreen" [src]="showBody ? 'assets/icon/arrow-up.png' : 'assets/icon/arrow-down.png'" alt="">
+</div>

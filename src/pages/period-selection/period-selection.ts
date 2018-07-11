@@ -1,105 +1,93 @@
-import { Component,OnInit } from '@angular/core';
-import { ViewController,NavParams ,ToastController} from 'ionic-angular';
-import {PeriodService} from "../../providers/period-service";
+import { Component, OnInit } from '@angular/core';
+import { IonicPage, NavParams, ViewController } from 'ionic-angular';
+import { PeriodSelectionProvider } from '../../providers/period-selection/period-selection';
+import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 
-declare var dhis2;
-/*
-  Generated class for the PeriodSelection page.
+/**
+ * Generated class for the PeriodSelectionPage page.
+ *
+ * See http://ionicframework.com/docs/components/#navigation for more info
+ * on Ionic pages and navigation.
+ */
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
+@IonicPage()
 @Component({
   selector: 'page-period-selection',
   templateUrl: 'period-selection.html'
 })
-export class PeriodSelection implements OnInit{
+export class PeriodSelectionPage implements OnInit {
+  periodType: string;
+  openFuturePeriods: number;
+  currentPeriodOffset: number;
+  currentPeriod: any;
+  translationMapper: any;
+  periods: Array<any>;
+  icon: string;
 
-  public periodList : any;
-  public selectedDataSet : any;
-  public periodType : any;
-  public openFuturePeriods : number;
-  public currentPeriodOffset : number;
-
-  constructor(public viewCtrl: ViewController,public params : NavParams,
-              public PeriodService : PeriodService,
-              public toastCtrl: ToastController) {
-
-  }
+  constructor(
+    private navParams: NavParams,
+    private viewCtrl: ViewController,
+    private periodSelection: PeriodSelectionProvider,
+    private appTranslation: AppTranslationProvider
+  ) {}
 
   ngOnInit() {
-    this.setModalData();
-  }
-
-
-  setModalData(){
-    this.periodList = [];
-    this.selectedDataSet = this.params.get('selectedDataSet');
-    this.currentPeriodOffset = parseInt(this.params.get('currentPeriodOffset'));
-    this.setPeriodSelections();
-  }
-
-  setPeriodSelections(){
-    let periods = this.PeriodService.getPeriods(this.selectedDataSet,this.currentPeriodOffset);
-    if(periods.length > 0){
-      this.setPeriodList(periods);
-    }else if(periods.length == 0 && this.currentPeriodOffset == 0){
-      this.currentPeriodOffset = this.currentPeriodOffset -1;
-      periods = this.PeriodService.getPeriods(this.selectedDataSet,this.currentPeriodOffset);
-      this.setPeriodList(periods);
-    }
-    else{
-      this.setToasterMessage('There is no further period selection for this form');
-      if(this.currentPeriodOffset != 0){
-        this.currentPeriodOffset --;
+    this.icon = 'assets/icon/period.png';
+    this.periodType = this.navParams.get('periodType');
+    this.openFuturePeriods = parseInt(this.navParams.get('openFuturePeriods'));
+    this.currentPeriodOffset = parseInt(
+      this.navParams.get('currentPeriodOffset')
+    );
+    this.currentPeriod = this.navParams.get('currentPeriod');
+    this.translationMapper = {};
+    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
+      (data: any) => {
+        this.translationMapper = data;
+        this.loadPeriodSelection();
+      },
+      error => {
+        this.loadPeriodSelection();
       }
+    );
+  }
+
+  loadPeriodSelection() {
+    this.periods = [];
+    let periods = this.periodSelection.getPeriods(
+      this.periodType,
+      this.openFuturePeriods,
+      this.currentPeriodOffset
+    );
+    if (periods.length > 0) {
+      this.periods = periods;
+    } else {
+      this.currentPeriodOffset = this.currentPeriodOffset - 1;
+      this.loadPeriodSelection();
     }
   }
 
-  setPeriodList(periods){
-    this.periodList = [];
-    periods.forEach((period:any)=>{
-      this.periodList.push({
-        endDate: period.endDate,
-        startDate: period.startDate,
-        iso: period.iso,
-        name: period.name
-      });
+  changePeriodSelection(currentPeriodOffset) {
+    this.currentPeriodOffset = currentPeriodOffset;
+    this.loadPeriodSelection();
+  }
+
+  setSelectedPeriod(selectedPeriod) {
+    this.periodSelection.setLastSelectedPeriod(selectedPeriod.name);
+    this.viewCtrl.dismiss({
+      selectedPeriod: selectedPeriod,
+      currentPeriodOffset: this.currentPeriodOffset
     });
-  }
-
-  previous(){
-    this.currentPeriodOffset --;
-    this.setPeriodSelections();
-  }
-
-  next(){
-    this.currentPeriodOffset ++;
-    this.setPeriodSelections();
-  }
-
-  setSelectedPeriod(selectedPeriod){
-    this.viewCtrl.dismiss({selectedPeriod: selectedPeriod,currentPeriodOffset : this.currentPeriodOffset});
   }
 
   dismiss() {
-    var parameter = {};
-    this.viewCtrl.dismiss(parameter);
+    this.viewCtrl.dismiss({});
   }
 
-  setToasterMessage(message){
-    let toast = this.toastCtrl.create({
-      message: message,
-      duration: 3500
-    });
-    toast.present();
+  trackByFn(index, item) {
+    return item && item.iso ? item.iso : index;
   }
 
-  setStickToasterMessage(message){
-    let toast = this.toastCtrl.create({
-      message: message,
-      showCloseButton : true
-    });
-    toast.present();
+  getValuesToTranslate() {
+    return ['There is no period to select'];
   }
 }

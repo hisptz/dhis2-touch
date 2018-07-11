@@ -1,0 +1,12 @@
+<div class="visualization-header-section-container">
+  <div class="visualization-filters" *ngIf="showFilters">
+    <selection-filters
+      [dataSelections]="visualizationLayer?.dataSelections"
+      (filterUpdate)="onFilterUpdateAction($event)"
+    ></selection-filters>
+  </div>
+  <div *ngIf="!showFilters"></div>
+  <div class="visualization-resize">
+    <app-visualization-resize-section [id]="id" [fullScreen]="fullScreen" (toggleFullScreen)="onFullScreenAction($event)"></app-visualization-resize-section>
+  </div>
+</div>

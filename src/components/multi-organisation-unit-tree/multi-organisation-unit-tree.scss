@@ -1,0 +1,15 @@
+multi-organisation-unit-tree {
+    .organisation-unit {
+        margin: 5px;
+        font-size: 1.5rem;
+    }
+    .organisation-unit-icon {
+        font-size: 1.7rem;
+    }
+    .organisation-unit-without-children {
+        padding-left: 10px;
+    }
+    .organisation-unit-children {
+        padding-left: 10px;
+    }
+}

@@ -1,51 +1,54 @@
-import { Component,OnInit } from '@angular/core';
-import { NavController } from 'ionic-angular';
-import {User} from "../../providers/user";
-import {TabsPage} from "../tabs/tabs";
-import {Synchronization} from "../../providers/synchronization";
-import {AppPermission} from "../../providers/app-permission";
-import {LoginPage} from "../login/login";
-import {NetworkAvailability} from "../../providers/network-availability";
+import { Component, OnInit } from "@angular/core";
+import { NavController } from "ionic-angular";
+import { LoginPage } from "../login/login";
+import { TabsPage } from "../tabs/tabs";
+import { UserProvider } from "../../providers/user/user";
+import { NetworkAvailabilityProvider } from "../../providers/network-availability/network-availability";
+import { AppTranslationProvider } from "../../providers/app-translation/app-translation";
+import { ApplicationState } from "../../store/reducers/index";
+import { Store } from "@ngrx/store";
+import { LoadedCurrentUser } from "../../store/actions/currentUser.actons";
 
-/*
-  Generated class for the Launcher page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
-
+/**
+ * Generated class for the LauncherPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
 
 @Component({
-  selector: 'page-launcher',
-  templateUrl: 'launcher.html'
+  selector: "page-launcher",
+  templateUrl: "launcher.html"
 })
-export class LauncherPage implements OnInit{
+export class LauncherPage implements OnInit {
+  logoUrl: string;
 
-  public logoUrl : string = "";
-
-  constructor(public navCtrl: NavController,
-              public AppPermission : AppPermission,
-              public synchronization:Synchronization,
-              public NetworkAvailability : NetworkAvailability,
-              public user : User) {}
+  constructor(
+    private navCtrl: NavController,
+    private UserProvider: UserProvider,
+    private store: Store<ApplicationState>,
+    private NetworkAvailabilityProvider: NetworkAvailabilityProvider,
+    private appTranslationProvider: AppTranslationProvider
+  ) {}
 
   ngOnInit() {
-    this.logoUrl = 'assets/img/app-logo.png';
-    this.AppPermission.checkAndRequestAppPermission();
-    this.NetworkAvailability.setNetworkStatusDetection();
-    this.user.getCurrentUser().then((user : any)=>{
-      if(user && user.isLogin){
-        this.synchronization.startSynchronization().then(()=>{
-        });
-        this.navCtrl.setRoot(TabsPage);
-      }else{
-        this.navCtrl.setRoot(LoginPage);
-      }
-    });
+    this.logoUrl = "assets/img/logo.png";
+    this.NetworkAvailabilityProvider.setNetworkStatusDetection();
+    this.UserProvider.getCurrentUser().subscribe(
+      (user: any) => {
+        let currentLanguage = "en";
+        if (user && user.currentLanguage) {
+          currentLanguage = user.currentLanguage;
+        }
+        this.appTranslationProvider.setAppTranslation(currentLanguage);
+        if (user && user.isLogin) {
+          this.store.dispatch(new LoadedCurrentUser(user));
+          this.navCtrl.setRoot(TabsPage);
+        } else {
+          this.navCtrl.setRoot(LoginPage);
+        }
+      },
+      error => {}
+    );
   }
-
-
-
-
-
 }

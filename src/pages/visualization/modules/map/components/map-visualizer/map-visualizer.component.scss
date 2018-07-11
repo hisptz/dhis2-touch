@@ -1,0 +1,122 @@
+app-map-visualizer {
+  .leaflet-container {
+    height: calc(100% - 14px);
+    border: 1px solid rgb(208, 208, 208);
+  }
+  img[title] {
+    display: none;
+  }
+
+  .map-container {
+    position: relative;
+    background: transparent;
+    height: 100%;
+  }
+
+  .map-block__left {
+    position: absolute;
+    left: 5px;
+    top: 45px;
+    z-index: 800;
+  }
+
+  .map-controls__list {
+    list-style-type: none;
+    display: flex;
+    padding: 0;
+    margin: 0 0 5px 0;
+  }
+
+  .map-controls__list > li {
+    padding: 0;
+    margin: 0;
+    height: 30px;
+  }
+
+  .map-layers__btn,
+  .map-controls__btn {
+    border-style: none;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.5);
+    height: 30px;
+    width: 30px;
+    /* border-radius: 50%; */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .map-layers__btn:hover,
+  .map-controls__btn:hover {
+    background-color: rgba(241, 241, 241, 0.6);
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+
+  .map-layers__btn img,
+  .map-controls__btn img {
+    display: block;
+    margin: auto;
+    height: 15px;
+  }
+
+  .map-layers__block {
+    position: relative;
+  }
+
+  .visualization-legend__container {
+    position: absolute;
+    top: 0;
+    z-index: 490 !important;
+    left: 0;
+  }
+
+  .warning-map, .no-scroll-block {
+    position: absolute;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    z-index: 650;
+  }
+
+  .warning-map h4 {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .no-scroll-block {
+    height: 100%;
+    z-index: 650;
+  }
+  .map-title {
+    background: transparent;
+    top: 3%;
+    position: absolute;
+    z-index: 800;
+    align-items: center;
+    width: 100%;
+    font-weight: 500;
+  }
+  .map-title .title-span {
+    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+
+  .map-data-table {
+    position: absolute;
+    bottom: 0;
+    height: 50%;
+    background: #fff;
+    z-index: 701;
+  }
+}

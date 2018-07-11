@@ -1,0 +1,30 @@
+visualization-title-section {
+  .visualization-title-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 5px;
+    img {
+      height: 17px;
+    }
+
+    .title-block {
+      display: flex;
+      align-items: center;
+
+      .title-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 30px;
+        width: 30px;
+        background-color: #FAFAFA;
+        border-radius: 15px;
+        margin-right: 2px;
+        img {
+          height: 18px;
+        }
+      }
+    }
+  }
+}

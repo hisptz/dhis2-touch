@@ -1,0 +1,12 @@
+<div class="resources-container">
+  <table class="list-table">
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+    </tr>
+    <tr *ngFor="let resource of resources; let i = index">
+      <td>{{i + 1}}</td>
+      <td><a [href]="resource.url" target="_blank">{{resource.displayName}}</a></td>
+    </tr>
+  </table>
+</div>

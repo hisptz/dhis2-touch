@@ -1,673 +1,1377 @@
-import { Component,OnInit } from '@angular/core';
-import { NavController,ToastController } from 'ionic-angular';
-import {User} from "../../providers/user";
-import {HttpClient} from "../../providers/http-client";
-import {SmsCommand} from "../../providers/sms-command";
-import {Synchronization} from "../../providers/synchronization";
-import {AppProvider} from "../../providers/app-provider";
-import {SqlLite} from "../../providers/sql-lite";
-import {TabsPage} from "../tabs/tabs";
-import {OrganisationUnit} from "../../providers/organisation-unit";
-import {NetworkAvailability} from "../../providers/network-availability";
-import {DataSets} from "../../providers/data-sets";
-import {DashboardService} from "../../providers/dashboard-service";
-import {Program} from "../../providers/program";
-import {PeriodService} from "../../providers/period-service";
+import { Component, OnInit } from '@angular/core';
+import { NavController } from 'ionic-angular';
+import { TabsPage } from '../tabs/tabs';
+import { UserProvider } from '../../providers/user/user';
+import { AppProvider } from '../../providers/app/app';
+import { SqlLiteProvider } from '../../providers/sql-lite/sql-lite';
+import { OrganisationUnitsProvider } from '../../providers/organisation-units/organisation-units';
+import { IndicatorsProvider } from '../../providers/indicators/indicators';
+import { SmsCommandProvider } from '../../providers/sms-command/sms-command';
+import { DataElementsProvider } from '../../providers/data-elements/data-elements';
+import { SectionsProvider } from '../../providers/sections/sections';
+import { DataSetsProvider } from '../../providers/data-sets/data-sets';
+import { StandardReportProvider } from '../../providers/standard-report/standard-report';
+import { SettingsProvider } from '../../providers/settings/settings';
+import { HttpClientProvider } from '../../providers/http-client/http-client';
+import { ProgramsProvider } from '../../providers/programs/programs';
+import { ProgramStageSectionsProvider } from '../../providers/program-stage-sections/program-stage-sections';
+import { BackgroundMode } from '@ionic-native/background-mode';
+import { LocalInstanceProvider } from '../../providers/local-instance/local-instance';
+import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
+import { CurrentUser } from '../../models/currentUser';
+import { QueueManager } from '../../models/queueManager';
+import { Store } from '@ngrx/store';
+import { ApplicationState } from '../../store';
+import { LoadedCurrentUser } from '../../store/actions/currentUser.actons';
+import { EncryptionProvider } from '../../providers/encryption/encryption';
+import { NetworkAvailabilityProvider } from '../../providers/network-availability/network-availability';
+import { ProgramRulesProvider } from '../../providers/program-rules/program-rules';
+import * as _ from 'lodash';
 
-/*
- Generated class for the Login page.
-
- See http://ionicframework.com/docs/v2/components/#navigation for more info on
- Ionic pages and navigation.
+/**
+ * Generated class for the LoginPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
  */
+
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
 })
-export class LoginPage implements OnInit{
+export class LoginPage implements OnInit {
+  logoUrl: string;
+  offlineIcon: string;
+  cancelIcon: string;
+  progressBar: string;
+  loggedInInInstance: string;
+  isLoginProcessActive: boolean;
+  currentUser: CurrentUser;
+  animationEffect: any = {};
+  cancelLoginProcessData: any = { isProcessActive: false };
+  progressTracker: any;
+  completedTrackedProcess: any;
+  hasUserAuthenticated: boolean;
+  currentResourceType: string;
+  localInstances: any;
+  currentLanguage: string;
+  topThreeTranslationCodes: Array<string> = [];
+  translationCodes: Array<any> = [];
+  isTranslationListOpen: boolean;
+  isLocalInstancesListOpen: boolean;
+  isNetworkAvailable: boolean;
+  downloadingQueueManager: QueueManager;
+  savingingQueueManager: QueueManager;
+  hasUserSuccessLogin: boolean;
 
-  public loginData : any ={};
-  public loadingData : boolean = false;
-  public isLoginProcessActive :boolean = false;
-  public loadingMessages : any = [];
-  public logoUrl : string;
-  public loggedInInInstance : string = "";
-  public isLoginProcessCancelled : boolean = false;
-
-  //progress tracker object
-  public progress : string = "0";
-  public progressTracker : any;
-  public completedTrackedProcess : any;
-  public currentResourceType : string = "";
-  //organisationUnit, entryForm,event
-  constructor(public navCtrl: NavController,
-              public synchronization:Synchronization,
-              public DataSets : DataSets,
-              public Program : Program,
-              public PeriodService : PeriodService,
-              public DashboardService: DashboardService,
-              public toastCtrl: ToastController,public app : AppProvider,
-              public SmsCommand : SmsCommand,public NetworkAvailability : NetworkAvailability,
-              public httpClient : HttpClient,public OrganisationUnit : OrganisationUnit,
-              public user : User,public sqlLite : SqlLite) {}
+  constructor(
+    public navCtrl: NavController,
+    private store: Store<ApplicationState>,
+    private encryption: EncryptionProvider,
+    private UserProvider: UserProvider,
+    private AppProvider: AppProvider,
+    private sqlLite: SqlLiteProvider,
+    private organisationUnitsProvider: OrganisationUnitsProvider,
+    private indicatorsProvider: IndicatorsProvider,
+    private smsCommandProvider: SmsCommandProvider,
+    private dataElementsProvider: DataElementsProvider,
+    private sectionsProvider: SectionsProvider,
+    private dataSetsProvider: DataSetsProvider,
+    private standardReports: StandardReportProvider,
+    private settingsProvider: SettingsProvider,
+    private HttpClientProvider: HttpClientProvider,
+    private programsProvider: ProgramsProvider,
+    private programStageSectionProvider: ProgramStageSectionsProvider,
+    private backgroundMode: BackgroundMode,
+    private localInstanceProvider: LocalInstanceProvider,
+    private appTranslationProvider: AppTranslationProvider,
+    private networkProvider: NetworkAvailabilityProvider,
+    private programRulesProvider: ProgramRulesProvider
+  ) {
+    this.resetQueueManager();
+    this.hasUserSuccessLogin = false;
+  }
 
   ngOnInit() {
-    this.logoUrl = 'assets/img/app-logo.png';
+    this.topThreeTranslationCodes = this.appTranslationProvider.getTopThreeSupportedTranslationCodes();
+    this.translationCodes = this.appTranslationProvider.getSupportedTranslationObjects();
+    this.isLocalInstancesListOpen = false;
+    this.isTranslationListOpen = false;
+    this.backgroundMode.disable();
+    this.animationEffect = {
+      loginForm: 'animated slideInUp',
+      progressBar: 'animated fadeIn'
+    };
+    this.logoUrl = 'assets/img/logo.png';
+    this.offlineIcon = 'assets/icon/offline.png';
+    this.cancelIcon = 'assets/icon/cancel.png';
+    this.cancelLoginProcess(this.cancelLoginProcessData);
+    this.progressTracker = {};
     this.completedTrackedProcess = [];
-    this.user.getCurrentUser().then((user: any)=>{
-      if(user){
-        delete user.password;
-        this.loginData = user
-      }else{
-        this.loginData.username = 'admin';
-        this.loginData.password = 'district';
-        this.loginData.serverUrl = 'play.dhis2.org/demo'
-      }
-      this.reInitiateProgressTrackerObject(this.loginData);
+    this.currentUser = {
+      serverUrl: '',
+      username: '',
+      password: '',
+      currentLanguage: 'en'
+    };
+    this.UserProvider.getCurrentUser().subscribe((currentUser: any) => {
+      this.localInstanceProvider
+        .getLocalInstances()
+        .subscribe((localInstances: any) => {
+          this.localInstances = localInstances;
+          this.setUpCurrentUser(currentUser);
+        });
     });
   }
 
+  setUpCurrentUser(currentUser) {
+    if (currentUser && currentUser.serverUrl) {
+      if (currentUser.password) {
+        delete currentUser.password;
+      }
+      if (!currentUser.currentLanguage) {
+        currentUser.currentLanguage = 'en';
+      }
+      this.currentUser = currentUser;
+    } else {
+      this.currentUser = {
+        serverUrl: 'play.dhis2.org/2.28',
+        username: 'admin',
+        password: 'district',
+        currentLanguage: 'en'
+      };
+    }
+    this.currentLanguage = this.currentUser.currentLanguage;
+    this.appTranslationProvider.setAppTranslation(
+      this.currentUser.currentLanguage
+    );
+  }
 
-  reInitiateProgressTrackerObject(user){
-    if(user.progressTracker && user.currentDatabase && user.progressTracker[user.currentDatabase]){
-      this.progressTracker = user.progressTracker[user.currentDatabase];
-      this.resetPassSteps();
-    }else if(user.currentDatabase && user.progressTracker){
-      this.loginData.progressTracker[user.currentDatabase] = this.getEmptyProgressTracker();
-      this.progressTracker = this.loginData.progressTracker[user.currentDatabase]
-    }else{
-      this.loginData["progressTracker"] = {};
-      this.progressTracker = {};
-      this.progressTracker = this.getEmptyProgressTracker();
+  changeCurrentUser(data) {
+    if (data && data.currentUser) {
+      this.setUpCurrentUser(data.currentUser);
+    }
+    this.toggleLocalInstancesList();
+  }
+
+  toggleLocalInstancesList() {
+    this.isLocalInstancesListOpen = !this.isLocalInstancesListOpen;
+  }
+
+  changeLanguageFromList(language: string) {
+    if (language) {
+      this.updateTranslationLanguage(language);
+    }
+    this.toggleTransalationCodesSelectionList();
+  }
+
+  toggleTransalationCodesSelectionList() {
+    if (!this.isLoginProcessActive) {
+      this.isTranslationListOpen = !this.isTranslationListOpen;
+      this.isLocalInstancesListOpen = false;
     }
   }
 
-  resetPassSteps(){
-    let dataBaseStructure =  this.sqlLite.getDataBaseStructure();
-    this.progressTracker["communication"].passStepCount = 0;
-    this.progressTracker["communication"].message = "";
-    Object.keys(dataBaseStructure).forEach(key=>{
-      let table = dataBaseStructure[key];
-      if(table.canBeUpdated && table.resourceType){
-        if(this.progressTracker[table.resourceType]){
-          this.progressTracker[table.resourceType].passStepCount = 0;
-          this.progressTracker[table.resourceType].message = "";
-          this.progressTracker[table.resourceType].passStep.forEach((passStep : any)=>{
-            passStep.hasPassed = false;
-          })
-        }
+  updateTranslationLanguage(language: string) {
+    try {
+      this.appTranslationProvider.setAppTranslation(language);
+      this.currentLanguage = language;
+      this.currentUser.currentLanguage = language;
+      this.UserProvider.setCurrentUser(this.currentUser).subscribe(() => {});
+    } catch (e) {
+      this.AppProvider.setNormalNotification('Failed to set translation');
+      console.log(JSON.stringify(e));
+    }
+  }
+
+  startLoginProcess() {
+    this.hasUserAuthenticated = false;
+    this.hasUserSuccessLogin = false;
+    this.backgroundMode.enable();
+    this.progressBar = '0';
+    this.loggedInInInstance = this.currentUser.serverUrl;
+    this.isLoginProcessActive = true;
+    this.animationEffect.loginForm = 'animated fadeOut';
+    this.animationEffect.progressBar = 'animated fadeIn';
+    if (
+      this.currentUser.serverUrl &&
+      this.currentUser.username &&
+      this.currentUser.password
+    ) {
+      this.currentUser['isPasswordEncode'] = false;
+      this.isNetworkAvailable = this.networkProvider.getNetWorkStatus().isAvailable;
+      let currentResourceType = 'communication';
+      this.progressTracker = {};
+      let resource = 'Authenticating user';
+      this.currentUser.serverUrl = this.AppProvider.getFormattedBaseUrl(
+        this.currentUser.serverUrl
+      );
+      this.loggedInInInstance = this.currentUser.serverUrl;
+      this.reInitiateProgressTrackerObject(this.currentUser);
+      this.progressTracker[currentResourceType].message =
+        'Establishing connection to server';
+      if (!this.isNetworkAvailable) {
+        this.UserProvider.offlineUserAuthentication(this.currentUser).subscribe(
+          (user: CurrentUser) => {
+            this.currentUser.authorizationKey = btoa(
+              this.currentUser.username + ':' + this.currentUser.password
+            );
+            this.setLandingPage(this.currentUser);
+          },
+          error => {
+            this.cancelLoginProcess(this.cancelLoginProcessData);
+            this.AppProvider.setNormalNotification(error.error);
+          }
+        );
+      } else {
+        delete this.currentUser.dhisVersion;
+        this.UserProvider.authenticateUser(this.currentUser).subscribe(
+          (response: any) => {
+            response = this.getResponseData(response);
+            this.currentUser = response.user;
+            this.loggedInInInstance = this.currentUser.serverUrl;
+            if (this.currentUser.serverUrl.split('://').length > 1) {
+              this.loggedInInInstance = this.currentUser.serverUrl.split(
+                '://'
+              )[1];
+            }
+            this.currentUser.authorizationKey = btoa(
+              this.currentUser.username + ':' + this.currentUser.password
+            );
+            this.currentUser.currentDatabase = this.AppProvider.getDataBaseName(
+              this.currentUser.serverUrl,
+              this.currentUser.username
+            );
+            this.reInitiateProgressTrackerObject(this.currentUser);
+            this.resetQueueManager();
+            this.updateProgressTracker(resource);
+            resource = 'Discovering system information';
+            if (this.isLoginProcessActive) {
+              this.progressTracker[currentResourceType].message =
+                'Discovering system information';
+              this.HttpClientProvider.get(
+                '/api/system/info',
+                false,
+                this.currentUser
+              ).subscribe(
+                (response: any) => {
+                  this.UserProvider.setCurrentUserSystemInformation(
+                    JSON.parse(response.data)
+                  ).subscribe(
+                    (dhisVersion: string) => {
+                      this.currentUser.dhisVersion = dhisVersion;
+                      this.updateProgressTracker(resource);
+                      if (this.isLoginProcessActive) {
+                        this.progressTracker[currentResourceType].message =
+                          'Discovering current user authorities';
+                        this.UserProvider.getUserAuthorities(
+                          this.currentUser
+                        ).subscribe(
+                          (response: any) => {
+                            this.currentUser.id = response.id;
+                            this.currentUser.name = response.name;
+                            this.currentUser.authorities = response.authorities;
+                            this.currentUser.dataViewOrganisationUnits =
+                              response.dataViewOrganisationUnits;
+                            resource = 'Preparing local storage';
+                            this.progressTracker[currentResourceType].message =
+                              'Preparing local storage';
+                            this.sqlLite
+                              .generateTables(this.currentUser.currentDatabase)
+                              .subscribe(
+                                () => {
+                                  this.UserProvider.getUserDataFromServer(
+                                    this.currentUser,
+                                    true
+                                  ).subscribe(
+                                    (response: any) => {
+                                      response = this.getResponseData(response);
+                                      this.UserProvider.setUserData(
+                                        JSON.parse(response.data)
+                                      ).subscribe(
+                                        userData => {
+                                          this.updateProgressTracker(resource);
+                                          this.hasUserAuthenticated = true;
+                                          this.currentUser[
+                                            'userOrgUnitIds'
+                                          ] = _.map(
+                                            userData.organisationUnits,
+                                            (organisationUnit: any) => {
+                                              return organisationUnit.id;
+                                            }
+                                          );
+                                          const metadataList = [
+                                            'organisationUnits',
+                                            'sections',
+                                            'dataElements',
+                                            'smsCommand',
+                                            'programs',
+                                            'programStageSections',
+                                            'programRules',
+                                            'indicators',
+                                            'programRuleActions',
+                                            'programRuleVariables',
+                                            'dataSets',
+                                            'reports',
+                                            'constants'
+                                          ];
+                                          metadataList.map(
+                                            (process: string) => {
+                                              this.addIntoQueue(
+                                                process,
+                                                'dowmloading'
+                                              );
+                                            }
+                                          );
+                                        },
+                                        error => {}
+                                      );
+                                    },
+                                    error => {
+                                      this.cancelLoginProcess(
+                                        this.cancelLoginProcessData
+                                      );
+                                      this.AppProvider.setNormalNotification(
+                                        'Failed to save current user information'
+                                      );
+                                      console.error(
+                                        'error : ' + JSON.stringify(error)
+                                      );
+                                    }
+                                  );
+                                },
+                                error => {
+                                  this.cancelLoginProcess(
+                                    this.cancelLoginProcessData
+                                  );
+                                  this.AppProvider.setNormalNotification(
+                                    'Failed to prepare local storage'
+                                  );
+                                  console.error(
+                                    'error : ' + JSON.stringify(error)
+                                  );
+                                }
+                              );
+                          },
+                          error => {
+                            this.cancelLoginProcess(
+                              this.cancelLoginProcessData
+                            );
+                            this.AppProvider.setNormalNotification(
+                              'Failed to discover user authorities'
+                            );
+                            console.error('error : ' + JSON.stringify(error));
+                          }
+                        );
+                      }
+                    },
+                    error => {
+                      this.cancelLoginProcess(this.cancelLoginProcessData);
+                      this.AppProvider.setNormalNotification(
+                        'Failed to discover user authorities'
+                      );
+                      console.error('error : ' + JSON.stringify(error));
+                    }
+                  );
+                },
+                error => {
+                  this.cancelLoginProcess(this.cancelLoginProcessData);
+                  this.AppProvider.setNormalNotification(
+                    'Failed to discover system information'
+                  );
+                  console.error('error : ' + JSON.stringify(error));
+                }
+              );
+            }
+          },
+          (error: any) => {
+            if (error.status == 0) {
+              this.AppProvider.setNormalNotification(
+                'Please check your network connectivity'
+              );
+            } else if (error.status == 401) {
+              this.AppProvider.setNormalNotification(
+                'You have enter wrong username or password or server address'
+              );
+            } else if (error.status == 404) {
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Please check server address, or contact your help desk'
+              );
+            } else if (error.error) {
+              this.AppProvider.setNormalNotification(error.error);
+            } else {
+              this.AppProvider.setNormalNotification(JSON.stringify(error));
+            }
+            this.cancelLoginProcess(this.cancelLoginProcessData);
+          }
+        );
       }
+    } else {
+      this.cancelLoginProcess(this.cancelLoginProcessData);
+      this.AppProvider.setNormalNotification(
+        'Please enter server address, username and password'
+      );
+    }
+  }
+
+  getResponseData(response) {
+    if (response.data.data) {
+      return this.getResponseData(response.data);
+    } else {
+      return response;
+    }
+  }
+
+  cancelLoginProcess(data) {
+    this.animationEffect.progressBar = 'animated fadeOut';
+    this.animationEffect.loginForm = 'animated fadeIn';
+    if (this.currentUser && this.currentUser.serverUrl) {
+      const url = this.currentUser.serverUrl.split('/dhis-web-')[0];
+      this.currentUser.serverUrl = url;
+    }
+    setTimeout(() => {
+      this.isLoginProcessActive = data.isProcessActive;
+    }, 300);
+    this.backgroundMode.disable();
+  }
+
+  setLandingPage(currentUser: CurrentUser) {
+    currentUser.isLogin = true;
+    this.hasUserSuccessLogin = true;
+    this.reCheckingAppSetting(currentUser);
+    this.smsCommandProvider
+      .checkAndGenerateSmsCommands(currentUser)
+      .subscribe(() => {}, error => {});
+    currentUser.hashedKeyForOfflineAuthentication = this.encryption.getHashedKeyForOfflineAuthentication(
+      currentUser
+    );
+    currentUser.password = this.encryption.encode(currentUser.password);
+    currentUser.isPasswordEncode = true;
+    this.store.dispatch(new LoadedCurrentUser(currentUser));
+    if (
+      this.currentUser &&
+      this.currentUser.serverUrl &&
+      this.currentUser.username
+    ) {
+      this.currentUser['currentDatabase'] = this.AppProvider.getDataBaseName(
+        this.currentUser.serverUrl,
+        this.currentUser.username
+      );
+      this.localInstanceProvider
+        .setLocalInstanceInstances(
+          this.localInstances,
+          currentUser,
+          this.loggedInInInstance
+        )
+        .subscribe(() => {});
+    }
+    this.UserProvider.setCurrentUser(currentUser).subscribe(() => {
+      this.backgroundMode.disable();
+      this.navCtrl.setRoot(TabsPage);
     });
   }
 
-  getEmptyProgressTracker(){
-    let dataBaseStructure =  this.sqlLite.getDataBaseStructure();
-    let progressTracker = {};
-    progressTracker["communication"] = {count : 3,passStep :[],passStepCount : 0, message : ""};
-    progressTracker["finalization"] = {count :0.5,passStep :[],passStepCount : 0, message : ""};
-    Object.keys(dataBaseStructure).forEach(key=>{
-      let table = dataBaseStructure[key];
-      if(table.canBeUpdated && table.resourceType){
-        if(!progressTracker[table.resourceType]){
-          progressTracker[table.resourceType] = {count : 1,passStep :[],passStepCount : 0,message :""};
-        }else{
-          progressTracker[table.resourceType].count += 1;
+  reCheckingAppSetting(currentUser) {
+    let defaultSetting = this.settingsProvider.getDefaultSettings();
+    this.settingsProvider
+      .getSettingsForTheApp(currentUser)
+      .subscribe((appSettings: any) => {
+        if (!appSettings) {
+          let time = defaultSetting.synchronization.time;
+          let timeType = defaultSetting.synchronization.timeType;
+          defaultSetting.synchronization.time = this.settingsProvider.getDisplaySynchronizationTime(
+            time,
+            timeType
+          );
+          this.settingsProvider
+            .setSettingsForTheApp(currentUser, defaultSetting)
+            .subscribe(() => {}, error => {});
         }
+      });
+  }
+
+  reInitiateProgressTrackerObject(user) {
+    const emptyProcessTracker = this.getEmptyProgressTracker();
+    if (
+      user.progressTracker &&
+      user.currentDatabase &&
+      user.progressTracker[user.currentDatabase]
+    ) {
+      this.progressTracker = user.progressTracker[user.currentDatabase];
+      this.resetPassSteps();
+    } else if (user.currentDatabase && user.progressTracker) {
+      this.currentUser.progressTracker[
+        user.currentDatabase
+      ] = emptyProcessTracker;
+      this.progressTracker = emptyProcessTracker;
+    } else {
+      this.currentUser['progressTracker'] = {};
+      this.progressTracker = emptyProcessTracker;
+    }
+  }
+
+  getEmptyProgressTracker() {
+    const dataBaseStructure = this.sqlLite.getDataBaseStructure();
+    let progressTracker = {};
+    progressTracker['communication'] = {
+      expectedProcesses: 3,
+      totalPassedProcesses: 0,
+      passedProcesses: [],
+      message: ''
+    };
+    Object.keys(dataBaseStructure).map(key => {
+      const tableObject = dataBaseStructure[key];
+      if (
+        tableObject.isMetadata &&
+        tableObject.resourceType &&
+        tableObject.resourceType != ''
+      ) {
+        if (!progressTracker[tableObject.resourceType]) {
+          progressTracker[tableObject.resourceType] = {
+            expectedProcesses: 0,
+            totalPassedProcesses: 0,
+            passedProcesses: [],
+            message: ''
+          };
+        }
+        progressTracker[tableObject.resourceType].expectedProcesses += 1;
       }
     });
     return progressTracker;
   }
 
-  updateProgressTracker(resourceName){
-    let dataBaseStructure =  this.sqlLite.getDataBaseStructure();
-    let resourceType = "communication";
-    if(dataBaseStructure[resourceName]){
-      let table = dataBaseStructure[resourceName];
-      if(table.canBeUpdated && table.resourceType){
-        resourceType = table.resourceType
+  resetPassSteps() {
+    const nonEmptyCommunicationStep = _.filter(
+      this.progressTracker.communication.passedProcesses,
+      process => {
+        return process.name == 'organisationUnits';
+      }
+    );
+    this.progressTracker.communication.passedProcesses = _.concat(
+      [],
+      nonEmptyCommunicationStep
+    );
+    Object.keys(this.progressTracker).map((resourceType: string) => {
+      this.progressTracker[resourceType].message = '';
+      this.progressTracker[resourceType].totalPassedProcesses = 0;
+      this.progressTracker[resourceType].passedProcesses.forEach(
+        (passedProcess: any) => {
+          passedProcess.hasBeenPassed = false;
+        }
+      );
+    });
+  }
+
+  updateProgressTracker(resourceName) {
+    const dataBaseStructure = this.sqlLite.getDataBaseStructure();
+    let resourceType = 'communication';
+    if (dataBaseStructure[resourceName]) {
+      const tableObject = dataBaseStructure[resourceName];
+      if (tableObject.isMetadata && tableObject.resourceType) {
+        resourceType = tableObject.resourceType;
       }
     }
-
-    if(this.progressTracker[resourceType].passStep.length == this.progressTracker[resourceType].count){
-      this.progressTracker[resourceType].passStep.forEach((passStep:any)=>{
-        if(passStep.name == resourceName && passStep.hasDownloaded){
-          passStep.hasPassed = true;
-        }
+    if (
+      this.progressTracker[resourceType].passedProcesses.length ==
+      this.progressTracker[resourceType].expectedProcesses
+    ) {
+      Object.keys(this.progressTracker).map((resourceType: string) => {
+        this.progressTracker[resourceType].passedProcesses.forEach(
+          (passedProcess: any) => {
+            passedProcess.hasBeenPassed = true;
+          }
+        );
       });
-    }else{
-      this.progressTracker[resourceType].passStep.push({name : resourceName,hasDownloaded : true,hasPassed : true});
+    } else {
+      const currentProcess = _.find(
+        this.progressTracker[resourceType].passedProcesses,
+        { name: resourceName }
+      );
+      if (currentProcess) {
+        _.remove(
+          this.progressTracker[resourceType].passedProcesses,
+          process => {
+            return process.name == resourceName;
+          }
+        );
+      }
+      this.progressTracker[resourceType].passedProcesses = _.concat(
+        this.progressTracker[resourceType].passedProcesses,
+        {
+          name: resourceName,
+          hasBeenSaved: true,
+          hasBeenPassed: true
+        }
+      );
     }
-    this.progressTracker[resourceType].passStepCount = this.progressTracker[resourceType].passStepCount + 1;
-    this.loginData["progressTracker"][this.loginData.currentDatabase] = this.progressTracker;
-    this.user.setCurrentUser(this.loginData).then(()=>{});
+    this.progressTracker[resourceType].totalPassedProcesses += 1;
+    this.currentUser['progressTracker'][
+      this.currentUser.currentDatabase
+    ] = this.progressTracker;
+    this.UserProvider.setCurrentUser(this.currentUser).subscribe(() => {});
     this.completedTrackedProcess = this.getCompletedTrackedProcess();
     this.updateProgressBarPercentage();
   }
 
-  updateProgressBarPercentage(){
-    let total = 0; let completed = 0;
-    Object.keys(this.progressTracker).forEach(key=>{
-      let process = this.progressTracker[key];
-      process.passStep.forEach((passStep : any)=>{
-        if(passStep.name && passStep.hasPassed){
-          completed = completed + 1;
-        }
-      });
-      total += process.count;
-    });
-    let value = (completed/total) * 100;
-    this.progress = value.toFixed(2);
-  }
-
-  getCompletedTrackedProcess(){
+  getCompletedTrackedProcess() {
     let completedTrackedProcess = [];
-    Object.keys(this.progressTracker).forEach(key=>{
-      let process = this.progressTracker[key];
-      process.passStep.forEach((passStep : any)=>{
-        if(passStep.name && passStep.hasDownloaded){
-          if(completedTrackedProcess.indexOf(passStep.name) == -1){
-            completedTrackedProcess.push(passStep.name);
+    Object.keys(this.progressTracker).map((resourceType: string) => {
+      this.progressTracker[resourceType].passedProcesses.map(
+        (passedProcess: any) => {
+          if (passedProcess.name && passedProcess.hasBeenSaved) {
+            completedTrackedProcess = _.concat(
+              completedTrackedProcess,
+              passedProcess.name
+            );
           }
         }
-      });
+      );
     });
     return completedTrackedProcess;
-  };
-
-  resetFirstStep(){
-    let hasOrgUnitProcessPass = false;
-    for(let step of this.progressTracker.communication.passStep){
-      if(step.name == "organisationUnits"){
-        hasOrgUnitProcessPass = true;
-      }
-    }
-    this.progressTracker.communication.passStep = [];
-    this.progressTracker.communication.passStepCount = 0;
-    if(hasOrgUnitProcessPass){
-      this.progressTracker.communication.passStep.push(
-        {name : "organisationUnits",hasDownloaded : true,hasPassed : true}
-      );
-      this.progressTracker.communication.passStepCount = 1;
-    }
-
   }
 
-  cancelLoginProcess(){
-    this.isLoginProcessCancelled = true;
-    this.loadingData = false;
-    this.isLoginProcessActive = false;
-  }
-
-  login() {
-    if (this.loginData.serverUrl) {
-      if (!this.loginData.username) {
-        this.setToasterMessage('Please Enter username');
-      } else if (!this.loginData.password) {
-        this.setToasterMessage('Please Enter password');
-      } else {
-        this.isLoginProcessCancelled = false;
-        this.loggedInInInstance = "";
-        let resource = "Authenticating user";
-        this.progress = "0";
-        //empty communication as well as organisation unit
-        this.resetFirstStep();
-        this.progressTracker.communication.message = "Establishing connection to server";
-        this.currentResourceType = "communication";
-        this.loadingData = true;
-        this.isLoginProcessActive = true;
-        this.app.getFormattedBaseUrl(this.loginData.serverUrl)
-          .then(formattedBaseUrl => {
-            this.loginData.serverUrl = formattedBaseUrl;
-            this.user.authenticateUser(this.loginData).then((response:any)=> {
-              response = this.getResponseData(response);
-              this.loginData = response.user;
-              let url = this.loginData.serverUrl;
-              this.loggedInInInstance = url.split("://")[1];
-              //set authorization key and reset password
-              this.loginData.authorizationKey = btoa(this.loginData.username + ':' + this.loginData.password);
-              if(!this.isLoginProcessCancelled){
-                this.user.setUserData(JSON.parse(response.data)).then(userData=>{
-                  this.app.getDataBaseName(this.loginData.serverUrl).then(databaseName=>{
-                    //update authenticate  process
-                    databaseName = databaseName + "_"+this.loginData.username;
-                    this.loginData.currentDatabase = databaseName;
-                    this.reInitiateProgressTrackerObject(this.loginData);
-                    this.currentResourceType = "communication";
-                    this.updateProgressTracker(resource);
-                    this.progressTracker[this.currentResourceType].message = "Establishing connection to server";
-                    resource = 'Opening database';
-                    this.sqlLite.generateTables(databaseName).then(()=>{
-                      //Establish connection to server
-                      this.updateProgressTracker(resource);
-                      resource = 'Loading system information';
-                      this.currentResourceType = "communication";
-                      this.progressTracker[this.currentResourceType].message = "Connection to server has been established";
-                      this.progressTracker[this.currentResourceType].message = "Preparing local storage";
-                      if(!this.isLoginProcessCancelled){
-                        this.httpClient.get('/api/system/info',this.loginData).subscribe(
-                          data => {
-                            data = data.json();
-                            this.updateProgressTracker(resource);
-                            this.progressTracker[this.currentResourceType].message = "Loading system information";
-                            if(!this.isLoginProcessCancelled){
-                              this.user.setCurrentUserSystemInformation(data).then((dhisVersion)=>{
-                                this.loginData.dhisVersion = dhisVersion;
-                                this.progressTracker[this.currentResourceType].message = "Loading user authorities";
-                                this.user.getUserAuthorities(this.loginData).then((response:any)=>{
-                                  this.loginData.authorities = response.authorities;
-                                  if(!this.isLoginProcessCancelled){
-                                    this.downloadingOrganisationUnits(userData);
-                                  }
-                                },error=>{
-                                  this.loadingData = false;
-                                  this.isLoginProcessActive = false;
-                                  console.log(JSON.stringify(error));
-                                  if(!this.isLoginProcessCancelled){
-                                    this.setLoadingMessages('Fail to load user authorites');
-                                  }
-                                })
-                              },error=>{
-                                this.loadingData = false;
-                                this.isLoginProcessActive = false;
-                                console.log(JSON.stringify(error));
-                                if(!this.isLoginProcessCancelled){
-                                  this.setLoadingMessages('Fail to set system information');
-                                }
-                              });
-                            }
-                          },error=>{
-                            this.loadingData = false;
-                            this.isLoginProcessActive = false;
-                            console.log(JSON.stringify(error));
-                            if(!this.isLoginProcessCancelled){
-                              this.setLoadingMessages('Fail to load system information');
-                            }
-                          });
-                      }
-                    },error=>{
-                      this.loadingData = false;
-                      this.isLoginProcessActive = false;
-                      console.log(JSON.stringify(error));
-                      this.setToasterMessage('Fail to prepare local storage.');
-                    })
-                  })
-                });
-              }
-            }, error=> {
-              this.loadingData = false;
-              this.isLoginProcessActive = false;
-              let networkAvailability = this.NetworkAvailability.getNetWorkStatus();
-              if(!networkAvailability.isAvailable){
-                this.setToasterMessage(networkAvailability.message);
-              }else if (error.status == 0) {
-                this.setToasterMessage('Please check server address');
-              } else if (error.status == 401) {
-                this.setToasterMessage('You have enter wrong username or password or server address');
-              } else {
-                console.log(JSON.stringify(error));
-                this.setToasterMessage('Please check server address');
-              }
-            });
-          });
-      }
-    } else {
-      this.setToasterMessage('Please Enter server url');
-    }
-  }
-
-  getResponseData(response){
-    if(response.data.data){
-      return this.getResponseData(response.data);
-    }else{
-      return response;
-    }
-  }
-
-  downloadingOrganisationUnits(userData){
-    if(!this.isLoginProcessCancelled){
-      let resource = 'organisationUnits';
-      this.currentResourceType = "communication";
-      //this.currentResourceType = "organisationUnit";
-      this.progressTracker[this.currentResourceType].message = "Loading assigned organisation unit";
-      let orgUnitIds = [];
-      userData.organisationUnits.forEach(organisationUnit=>{
-        if(organisationUnit.id){
-          orgUnitIds.push(organisationUnit.id);
+  updateProgressBarPercentage() {
+    let total = 0;
+    let completed = 0;
+    Object.keys(this.progressTracker).map(key => {
+      const trackedProcess = this.progressTracker[key];
+      const completedProcess = _.filter(
+        trackedProcess.passedProcesses,
+        process => {
+          return process && process.hasBeenPassed;
         }
-      });
-      this.loginData["userOrgUnitIds"] = orgUnitIds;
-      if(this.completedTrackedProcess.indexOf(resource) > -1){
-        this.progressTracker[this.currentResourceType].message = "Assigned organisation unit(s) have been loaded";
-        this.updateProgressTracker(resource);
-        this.downloadingDataSets();
-      }else{
-        this.OrganisationUnit.downloadingOrganisationUnitsFromServer(orgUnitIds,this.loginData).then((orgUnits:any)=>{
-          if(!this.isLoginProcessCancelled){
-            this.progressTracker[this.currentResourceType].message = "Saving assigned organisation unit(s)";
-            this.OrganisationUnit.savingOrganisationUnitsFromServer(orgUnits,this.loginData).then(()=>{
-              this.progressTracker[this.currentResourceType].message = "Assigned organisation unit(s) have been saved";
-              this.updateProgressTracker(resource);
-              this.downloadingDataSets();
-            },error=>{
-              this.loadingData = false;
-              this.isLoginProcessActive = false;
-              console.log(JSON.stringify(error));
-              if(!this.isLoginProcessCancelled){
-                this.setToasterMessage('Fail to save organisation data.');
-              }
-            });
-          }
-        },error=>{
-          this.loadingData = false;
-          this.isLoginProcessActive = false;
-          console.log(JSON.stringify(error));
-          if(!this.isLoginProcessCancelled){
-            this.setToasterMessage('Fail to load organisation data.');
-          }
-        });
-      }
-
-    }
-  }
-
-  downloadingDataSets(){
-    if(!this.isLoginProcessCancelled){
-      let resource = 'dataSets';
-      this.currentResourceType = "entryForm";
-      this.progressTracker[this.currentResourceType].message = "Loading entry forms";
-      if(this.completedTrackedProcess.indexOf(resource) > -1){
-        this.progressTracker[this.currentResourceType].message = "Entry forms have been loaded";
-        this.updateProgressTracker(resource);
-        this.downloadingSections();
-      }else{
-        this.DataSets.downloadDataSetsFromServer(this.loginData).then((dataSets : any)=>{
-          if(!this.isLoginProcessCancelled){
-            this.progressTracker[this.currentResourceType].message = "Saving  entry forms";
-            this.DataSets.saveDataSetsFromServer(dataSets,this.loginData).then(()=>{
-              this.progressTracker[this.currentResourceType].message = "Entry forms have been saved";
-              this.updateProgressTracker(resource);
-              this.downloadingSections();
-            },error=>{
-              this.loadingData = false;
-              this.isLoginProcessActive = false;
-              if(!this.isLoginProcessCancelled){
-                this.setToasterMessage('Fail to save data entry form.');
-              }
-            });
-          }
-        },error=>{
-          this.loadingData = false;
-          this.isLoginProcessActive = false;
-          console.log(resource);
-          console.log(JSON.stringify(error));
-          if(!this.isLoginProcessCancelled){
-            this.setToasterMessage('Fail to load data entry form.');
-          }
-        });
-      }
-    }
-  }
-
-  downloadingSections(){
-    if(!this.isLoginProcessCancelled){
-      let resource = 'sections';
-      this.currentResourceType = "entryForm";
-      this.progressTracker[this.currentResourceType].message = "Loading entry forms's sections";
-      if(this.completedTrackedProcess.indexOf(resource) > -1){
-        this.progressTracker[this.currentResourceType].message = "Entry forms's sections have been loaded";
-        this.updateProgressTracker(resource);
-        this.downloadingSmsCommand();
-      }else{
-        let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-        let fields = tableMetadata.fields;
-        this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-          if(!this.isLoginProcessCancelled){
-            this.progressTracker[this.currentResourceType].message = "Saving entry forms's sections";
-            this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-              this.progressTracker[this.currentResourceType].message = "Entry forms's sections have been saved";
-              this.updateProgressTracker(resource);
-              this.downloadingSmsCommand();
-            },error=>{
-              this.loadingData = false;
-              this.isLoginProcessActive = false;
-              if(!this.isLoginProcessCancelled){
-                this.setToasterMessage('Fail to save data entry form sections.');
-              }
-            });
-          }
-        },error=>{
-          this.loadingData = false;
-          this.isLoginProcessActive = false;
-          console.log(resource);
-          console.log(JSON.stringify(error));
-          if(!this.isLoginProcessCancelled){
-            this.setToasterMessage('Fail to load data entry form sections.');
-          }
-        });
-      }
-    }
-  }
-
-  downloadingSmsCommand(){
-    if(!this.isLoginProcessCancelled){
-      let resource = "smsCommand";
-      this.currentResourceType = "entryForm";
-      this.progressTracker[this.currentResourceType].message = "Loading SMS commands";
-      if(this.completedTrackedProcess.indexOf(resource) > -1){
-        this.progressTracker[this.currentResourceType].message = "SMS commands have been loaded";
-        this.updateProgressTracker(resource);
-        this.downloadingPrograms();
-      }else{
-        this.SmsCommand.getSmsCommandFromServer(this.loginData).then((response:any)=>{
-          if(!this.isLoginProcessCancelled){
-            this.progressTracker[this.currentResourceType].message = "Saving SMS commands";
-            this.SmsCommand.savingSmsCommand(response,this.loginData.currentDatabase).then(()=>{
-              this.progressTracker[this.currentResourceType].message = "SMS commands have been saved";
-              this.updateProgressTracker(resource);
-              this.downloadingPrograms();
-            },error=>{
-              this.loadingData = false;
-              this.isLoginProcessActive = false;
-              this.setToasterMessage('Fail to save metadata for send data via sms');
-            });
-          }
-        },(error:any)=>{
-          this.loadingData = false;
-          this.isLoginProcessActive = false;
-          console.log(resource);
-          console.log(JSON.stringify(error));
-          if(!this.isLoginProcessCancelled){
-            this.setToasterMessage('Fail to load metadata for send data via sms');
-          }
-        });
-      }
-    }
-  }
-
-  downloadingPrograms(){
-    if(!this.isLoginProcessCancelled){
-      let resource = 'programs';
-      this.currentResourceType = "event";
-      this.progressTracker[this.currentResourceType].message = "Loading programs";
-      if(this.completedTrackedProcess.indexOf(resource) > -1){
-        this.progressTracker[this.currentResourceType].message = "Programs have been loaded";
-        this.updateProgressTracker(resource);
-        this.downloadingProgramStageSections();
-      }else{
-        let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-        let fields = tableMetadata.fields;
-        this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-          if(!this.isLoginProcessCancelled){
-            this.progressTracker[this.currentResourceType].message = "Saving programs";
-            this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-              this.progressTracker[this.currentResourceType].message = "Programs have been saved";
-              this.updateProgressTracker(resource);
-              this.downloadingProgramStageSections();
-            },error=>{
-              this.loadingData = false;
-              this.isLoginProcessActive = false;
-              this.setToasterMessage('Fail to save programs.');
-            });
-          }
-        },error=>{
-          this.loadingData = false;
-          this.isLoginProcessActive = false;
-          console.log(resource);
-          console.log(JSON.stringify(error));
-          if(!this.isLoginProcessCancelled){
-            this.setToasterMessage('Fail to load programs.');
-          }
-        });
-      }
-    }
-  }
-
-  downloadingProgramStageSections(){
-    if(!this.isLoginProcessCancelled){
-      let resource = 'programStageSections';
-      this.currentResourceType = "event";
-      this.progressTracker[this.currentResourceType].message = "Loading program stage's sections";
-      if(this.completedTrackedProcess.indexOf(resource) > -1){
-        this.progressTracker[this.currentResourceType].message = "Program stage's sections have been loaded";
-        this.updateProgressTracker(resource);
-        this.downloadingReports();
-        //this.downloadingProgramStageDataElements();
-      }else{
-        let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-        let fields = tableMetadata.fields;
-        this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-          if(!this.isLoginProcessCancelled){
-            this.progressTracker[this.currentResourceType].message = "Saving program stage's sections";
-            this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-              this.progressTracker[this.currentResourceType].message = "Program stage's sections have been saved";
-              this.updateProgressTracker(resource);
-              this.downloadingReports();
-              //this.downloadingProgramStageDataElements();
-            },error=>{
-              this.loadingData = false;
-              this.isLoginProcessActive = false;
-              this.setToasterMessage('Fail to save program-stage sections.');
-            });
-          }
-        },error=>{
-          this.loadingData = false;
-          this.isLoginProcessActive = false;
-          console.log(resource);
-          console.log(JSON.stringify(error));
-          if(!this.isLoginProcessCancelled){
-            this.setToasterMessage('Fail to load program-stage sections.');
-          }
-        });
-      }
-    }
-  }
-
-  downloadingProgramStageDataElements(){
-    if(!this.isLoginProcessCancelled){
-      let resource = 'programStageDataElements';
-      this.currentResourceType = "event";
-      this.progressTracker[this.currentResourceType].message = "Loading programstage data elements";
-      if(this.completedTrackedProcess.indexOf(resource) > -1){
-        this.progressTracker[this.currentResourceType].message = "Programstage data elements have been loaded";
-        this.updateProgressTracker(resource);
-        this.downloadingReports();
-      }else{
-        let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-        let fields = tableMetadata.fields;
-        this.app.downloadMetadata(this.loginData,resource,null,fields,null).then(response=>{
-          if(!this.isLoginProcessCancelled){
-            this.progressTracker[this.currentResourceType].message = "Saving programstage data elements";
-            this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-              this.progressTracker[this.currentResourceType].message = "Programstage data elements have been saved";
-              this.updateProgressTracker(resource);
-              this.downloadingReports();
-            },error=>{
-              this.loadingData = false;
-              this.isLoginProcessActive = false;
-              this.setToasterMessage('Fail to save program-stage data-elements.');
-            });
-          }
-        },error=>{
-          this.loadingData = false;
-          this.isLoginProcessActive = false;
-          console.log(resource);
-          console.log(JSON.stringify(error));
-          if(!this.isLoginProcessCancelled){
-            this.setToasterMessage('Fail to load program-stage data-elements.');
-          }
-        });
-      }
-    }
-  }
-
-  downloadingReports(){
-    if(!this.isLoginProcessCancelled){
-      let resource = 'reports';
-      this.currentResourceType = "report";
-      this.progressTracker[this.currentResourceType].message = "Loading reports";
-      if(this.completedTrackedProcess.indexOf(resource) > -1){
-        this.progressTracker[this.currentResourceType].message = "Reports have been loaded";
-        this.updateProgressTracker(resource);
-        this.setLandingPage();
-      }else{
-        let tableMetadata = this.sqlLite.getDataBaseStructure()[resource];
-        let fields = tableMetadata.fields;
-        let filter = tableMetadata.filter;
-        this.app.downloadMetadata(this.loginData,resource,null,fields,filter).then(response=>{
-          if(!this.isLoginProcessCancelled){
-            this.progressTracker[this.currentResourceType].message = "Saving reports";
-            this.app.saveMetadata(resource,response[resource],this.loginData.currentDatabase).then(()=>{
-              this.progressTracker[this.currentResourceType].message = "Reports have been saved";
-              this.updateProgressTracker(resource);
-              this.setLandingPage();
-            },error=>{
-              this.loadingData = false;
-              this.isLoginProcessActive = false;
-              this.setToasterMessage('Fail to save reports.');
-            });
-          }
-        },error=>{
-          this.loadingData = false;
-          this.isLoginProcessActive = false;
-          console.log(resource);
-          console.log(JSON.stringify(error));
-          if(!this.isLoginProcessCancelled){
-            this.setToasterMessage('Fail to load reports.');
-          }
-        });
-      }
-    }
-  }
-
-  setLandingPage(){
-    if(!this.isLoginProcessCancelled) {
-      this.loginData.isLogin = true;
-      this.loginData.password = "";
-      this.user.setCurrentUser(this.loginData).then(()=> {
-        this.synchronization.startSynchronization().then(()=> {
-          this.OrganisationUnit.resetOrganisationUnit();
-          this.DashboardService.resetDashboards();
-          this.Program.resetPrograms();
-          this.DataSets.resetDataSets();
-          this.PeriodService.resetPeriod();
-          this.navCtrl.setRoot(TabsPage);
-          this.loadingData = false;
-          this.isLoginProcessActive = false;
-        });
-      });
-    }
-  }
-
-  setLoadingMessages(message){
-    this.loadingMessages.push(message);
-  }
-
-  setToasterMessage(message){
-    let toast = this.toastCtrl.create({
-      message: message,
-      duration: 4000
+      );
+      completed += completedProcess.length;
+      total += trackedProcess.expectedProcesses;
     });
-    toast.present();
+    let value = (completed / total) * 100;
+    this.progressBar = String(value);
+    if (completed == total) {
+      if (!this.hasUserSuccessLogin) {
+        this.setLandingPage(this.currentUser);
+      }
+    }
   }
 
+  resetQueueManager() {
+    this.savingingQueueManager = {
+      enqueuedProcess: [],
+      dequeuingLimit: 1,
+      denqueuedProcess: [],
+      data: {}
+    };
+    this.downloadingQueueManager = {
+      totalProcess: 13,
+      enqueuedProcess: [],
+      dequeuingLimit: 5,
+      denqueuedProcess: []
+    };
+  }
+
+  addIntoQueue(process: string, type?: string, data?: any) {
+    if (type && type == 'saving') {
+      if (data) {
+        this.savingingQueueManager.enqueuedProcess = _.concat(
+          this.savingingQueueManager.enqueuedProcess,
+          process
+        );
+        this.savingingQueueManager.data[process] = data;
+      }
+      this.checkingAndStartSavingProcess();
+    } else if (type && type == 'dowmloading') {
+      this.downloadingQueueManager.enqueuedProcess = _.concat(
+        this.downloadingQueueManager.enqueuedProcess,
+        process
+      );
+      this.checkingAndStartDownloadProcess();
+    }
+  }
+
+  removeFromQueue(process: string, type: string, data?: any) {
+    if (type && type == 'saving') {
+      _.remove(
+        this.savingingQueueManager.denqueuedProcess,
+        denqueuedProcess => {
+          return process == denqueuedProcess;
+        }
+      );
+      this.checkingAndStartSavingProcess();
+    } else if (type && type == 'dowmloading') {
+      _.remove(
+        this.downloadingQueueManager.denqueuedProcess,
+        denqueuedProcess => {
+          return process == denqueuedProcess;
+        }
+      );
+      if (data) {
+        this.addIntoQueue(process, 'saving', data);
+      }
+      this.checkingAndStartDownloadProcess();
+    }
+  }
+
+  startDownloadProcess(process: string) {
+    if (this.isLoginProcessActive) {
+      if (process == 'organisationUnits') {
+        const currentResourceType = 'communication';
+        this.progressTracker[currentResourceType].message =
+          'Discovering assigned organisation units';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Assigned organisation units have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.organisationUnitsProvider
+            .downloadingOrganisationUnitsFromServer(this.currentUser)
+            .subscribe(
+              (orgUnits: any) => {
+                this.removeFromQueue(process, 'dowmloading', orgUnits);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover organisation data'
+                );
+              }
+            );
+        }
+      } else if (process == 'dataSets') {
+        const currentResourceType = 'entryForm';
+        this.progressTracker[currentResourceType].message =
+          'Discovering entry forms';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Entry forms have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.dataSetsProvider
+            .downloadDataSetsFromServer(this.currentUser)
+            .subscribe(
+              (dataSets: any) => {
+                this.removeFromQueue(process, 'dowmloading', dataSets);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover entry form'
+                );
+              }
+            );
+        }
+      } else if (process == 'sections') {
+        const currentResourceType = 'entryForm';
+        this.progressTracker[currentResourceType].message =
+          'Discovering entry form sections';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Entry form sections have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.sectionsProvider
+            .downloadSectionsFromServer(this.currentUser)
+            .subscribe(
+              (response: any) => {
+                const { sections } = response;
+                this.removeFromQueue(process, 'dowmloading', sections);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover entry form sections'
+                );
+              }
+            );
+        }
+      } else if (process == 'dataElements') {
+        const currentResourceType = 'entryForm';
+        this.progressTracker[currentResourceType].message =
+          'Discovering entry form fields';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Entry form fields have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.dataElementsProvider
+            .downloadDataElementsFromServer(this.currentUser)
+            .subscribe(
+              (response: any) => {
+                const { dataElements } = response;
+                this.removeFromQueue(process, 'dowmloading', dataElements);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover entry form fields'
+                );
+              }
+            );
+        }
+      } else if (process == 'smsCommand') {
+        const currentResourceType = 'entryForm';
+        this.progressTracker[currentResourceType].message =
+          'Discovering SMS commands';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'SMS commands have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.smsCommandProvider
+            .getSmsCommandFromServer(this.currentUser)
+            .subscribe(
+              (smsCommands: any) => {
+                this.removeFromQueue(process, 'dowmloading', smsCommands);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover SMS commands'
+                );
+              }
+            );
+        }
+      } else if (process == 'programs') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Discovering programs';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Programs have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.programsProvider
+            .downloadProgramsFromServer(this.currentUser)
+            .subscribe(
+              response => {
+                const { programs } = response;
+                this.removeFromQueue(process, 'dowmloading', programs);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover programs'
+                );
+              }
+            );
+        }
+      } else if (process == 'programStageSections') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Discovering program stage section';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Program stage section have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.programStageSectionProvider
+            .downloadProgramsStageSectionsFromServer(this.currentUser)
+            .subscribe(
+              response => {
+                const { programStageSections } = response;
+                this.removeFromQueue(
+                  process,
+                  'dowmloading',
+                  programStageSections
+                );
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover program stage sections'
+                );
+              }
+            );
+        }
+      } else if (process == 'programRules') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Discovering program rules';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Program Rules have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          if (this.isLoginProcessActive) {
+            this.programRulesProvider
+              .downloadingProgramRules(this.currentUser)
+              .subscribe(
+                data => {
+                  this.removeFromQueue(process, 'dowmloading', data);
+                },
+                error => {
+                  this.cancelLoginProcess(this.cancelLoginProcessData);
+                  console.log(JSON.stringify(error));
+                  this.AppProvider.setNormalNotification(
+                    'Failed to discover program rules'
+                  );
+                }
+              );
+          }
+        }
+      } else if (process == 'programRuleActions') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Discovering program rules actions';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Program rules actions have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          if (this.isLoginProcessActive) {
+            this.programRulesProvider
+              .downloadingProgramRuleActions(this.currentUser)
+              .subscribe(
+                data => {
+                  this.removeFromQueue(process, 'dowmloading', data);
+                },
+                error => {
+                  this.cancelLoginProcess(this.cancelLoginProcessData);
+                  console.log(JSON.stringify(error));
+                  this.AppProvider.setNormalNotification(
+                    'Failed to discover program rules actions'
+                  );
+                }
+              );
+          }
+        }
+      } else if (process == 'programRuleVariables') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Discovering program rules variables';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Program rules variables have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          if (this.isLoginProcessActive) {
+            this.programRulesProvider
+              .downloadingProgramRuleVariables(this.currentUser)
+              .subscribe(
+                data => {
+                  this.removeFromQueue(process, 'dowmloading', data);
+                },
+                error => {
+                  this.cancelLoginProcess(this.cancelLoginProcessData);
+                  console.log(JSON.stringify(error));
+                  this.AppProvider.setNormalNotification(
+                    'Failed to discover program rules variables'
+                  );
+                }
+              );
+          }
+        }
+      } else if (process == 'indicators') {
+        const currentResourceType = 'report';
+        this.progressTracker[currentResourceType].message =
+          'Discovering indicators';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Indicators have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.indicatorsProvider
+            .downloadingIndicatorsFromServer(this.currentUser)
+            .subscribe(
+              (response: any) => {
+                const { indicators } = response;
+                this.removeFromQueue(process, 'dowmloading', indicators);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover indicators'
+                );
+              }
+            );
+        }
+      } else if (process == 'reports') {
+        const currentResourceType = 'report';
+        this.progressTracker[currentResourceType].message =
+          'Discovering reports';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Reports have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.standardReports
+            .downloadReportsFromServer(this.currentUser)
+            .subscribe(
+              (response: any) => {
+                const { reports } = response;
+                this.removeFromQueue(process, 'dowmloading', reports);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover reports'
+                );
+              }
+            );
+        }
+      } else if (process == 'constants') {
+        const currentResourceType = 'report';
+        this.progressTracker[currentResourceType].message =
+          'Discovering constants';
+        if (this.completedTrackedProcess.indexOf(process) > -1) {
+          this.progressTracker[currentResourceType].message =
+            'Constants have been discovered';
+          this.updateProgressTracker(process);
+          this.removeFromQueue(process, 'dowmloading');
+        } else {
+          this.standardReports
+            .downloadConstantsFromServer(this.currentUser)
+            .subscribe(
+              (constants: any) => {
+                this.removeFromQueue(process, 'dowmloading', constants);
+              },
+              error => {
+                this.cancelLoginProcess(this.cancelLoginProcessData);
+                console.log(JSON.stringify(error));
+                this.AppProvider.setNormalNotification(
+                  'Failed to discover constants'
+                );
+              }
+            );
+        }
+      }
+    }
+  }
+
+  startSavingProcess(process, data) {
+    if (this.isLoginProcessActive) {
+      if (process == 'organisationUnits') {
+        const currentResourceType = 'communication';
+        this.progressTracker[currentResourceType].message =
+          'Saving assigned organisation units';
+        this.organisationUnitsProvider
+          .savingOrganisationUnitsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Assigned organisation units have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save organisation data'
+              );
+            }
+          );
+      } else if (process == 'dataSets') {
+        const currentResourceType = 'entryForm';
+        this.progressTracker[currentResourceType].message =
+          'Saving entry forms';
+        this.dataSetsProvider
+          .saveDataSetsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Entry form have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save entry form'
+              );
+            }
+          );
+      } else if (process == 'sections') {
+        const currentResourceType = 'entryForm';
+        this.progressTracker[currentResourceType].message =
+          'Saving entry form sections';
+        this.sectionsProvider
+          .saveSectionsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Entry form sections have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save entry form sections'
+              );
+            }
+          );
+      } else if (process == 'dataElements') {
+        const currentResourceType = 'entryForm';
+        this.progressTracker[currentResourceType].message =
+          'Saving entry form fields';
+        this.dataElementsProvider
+          .saveDataElementsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Entry form fields have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save entry form fields'
+              );
+            }
+          );
+      } else if (process == 'smsCommand') {
+        const currentResourceType = 'entryForm';
+        this.progressTracker[currentResourceType].message =
+          'Saving SMS commands';
+        this.smsCommandProvider
+          .savingSmsCommand(data, this.currentUser.currentDatabase)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'SMS commands have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save SMS commands'
+              );
+            }
+          );
+      } else if (process == 'programs') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message = 'Saving programs';
+        this.programsProvider
+          .saveProgramsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Programs have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification('Failed to save programs');
+            }
+          );
+      } else if (process == 'programStageSections') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Saving program stage section';
+        this.programStageSectionProvider
+          .saveProgramsStageSectionsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Program stage section have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save program stage sections'
+              );
+            }
+          );
+      } else if (process == 'programRules') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Saving program rules';
+        this.programRulesProvider
+          .savingProgramRules(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Program rules have been saved successfully';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save program rules'
+              );
+            }
+          );
+      } else if (process == 'programRuleActions') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Saving program rules actions';
+        this.programRulesProvider
+          .savingProgramRuleActions(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Program rules actions have been saved successfully';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save program rules actions'
+              );
+            }
+          );
+      } else if (process == 'programRuleVariables') {
+        const currentResourceType = 'event';
+        this.progressTracker[currentResourceType].message =
+          'Saving program rules variables';
+        this.programRulesProvider
+          .savingProgramRuleVariables(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Program rules variables have been saved successfully';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save program rules variables'
+              );
+            }
+          );
+      } else if (process == 'indicators') {
+        const currentResourceType = 'report';
+        this.progressTracker[currentResourceType].message = 'Saving indicators';
+        this.indicatorsProvider
+          .savingIndicatorsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Indicators have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save indicators'
+              );
+            }
+          );
+      } else if (process == 'reports') {
+        const currentResourceType = 'report';
+        this.progressTracker[currentResourceType].message = 'Saving reports';
+        this.standardReports
+          .saveReportsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Reports have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification('Failed to save reports');
+            }
+          );
+      } else if (process == 'constants') {
+        const currentResourceType = 'report';
+        this.progressTracker[currentResourceType].message = 'Saving constants';
+        this.standardReports
+          .saveConstantsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.progressTracker[currentResourceType].message =
+                'Constants have been saved';
+              this.updateProgressTracker(process);
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.cancelLoginProcess(this.cancelLoginProcessData);
+              console.log(JSON.stringify(error));
+              this.AppProvider.setNormalNotification(
+                'Failed to save constants'
+              );
+            }
+          );
+      }
+    }
+  }
+
+  checkingAndStartSavingProcess() {
+    if (
+      this.savingingQueueManager.denqueuedProcess.length <
+      this.savingingQueueManager.dequeuingLimit
+    ) {
+      const process = _.head(this.savingingQueueManager.enqueuedProcess);
+      if (process) {
+        const data = this.savingingQueueManager.data[process];
+        delete this.savingingQueueManager.data[process];
+        this.savingingQueueManager.denqueuedProcess = _.concat(
+          this.savingingQueueManager.denqueuedProcess,
+          process
+        );
+        _.remove(
+          this.savingingQueueManager.enqueuedProcess,
+          enqueuedProcess => {
+            return process == enqueuedProcess;
+          }
+        );
+        this.startSavingProcess(process, data);
+      }
+    }
+  }
+
+  checkingAndStartDownloadProcess() {
+    if (
+      this.downloadingQueueManager.denqueuedProcess.length <
+      this.downloadingQueueManager.dequeuingLimit
+    ) {
+      const process = _.head(this.downloadingQueueManager.enqueuedProcess);
+      if (process) {
+        this.downloadingQueueManager.denqueuedProcess = _.concat(
+          this.downloadingQueueManager.denqueuedProcess,
+          process
+        );
+        _.remove(
+          this.downloadingQueueManager.enqueuedProcess,
+          enqueuedProcess => {
+            return process == enqueuedProcess;
+          }
+        );
+        this.startDownloadProcess(process);
+      }
+    }
+  }
 }

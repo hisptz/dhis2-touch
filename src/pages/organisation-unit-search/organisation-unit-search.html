@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>
+      <span [translate]="title"></span>
+    </ion-title>
+    <ion-buttons end (click)="dismiss()">
+      <button ion-button clear color="danger" text-capitalize>
+        <ion-icon name='close'></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div *ngIf="isLoading">
+    <loading [loadingSize]="'large'"></loading>
+  </div>
+  <div *ngIf="!isLoading">
+    <ion-searchbar (ionInput)="getItems($event)" placeholder="{{'Search'|translate}}"></ion-searchbar>
+    <ion-grid>
+      <ion-row>
+        <div *ngIf="(arrayOfOrganisationUnitsArray.length > 0 && arrayOfOrganisationUnitsArray[currentPage - 1])">
+          <div class="animated fadeIn">
+            <ion-list>
+              <ion-item *ngFor="let organisationUnit of arrayOfOrganisationUnitsArray[currentPage - 1];trackBy: trackByFn" (click)="selectOrganisationUnit(organisationUnit)">
+                <span ion-text [color]="(ouIdsWithAssigments && ouIdsWithAssigments.length > 0 && ouIdsWithAssigments.indexOf(organisationUnit.id)  == -1 )? 'ou-assigment-issues' : (currentSelectedOrgUnitName == organisationUnit.name) ?'current' : 'font-color'">{{ getOrganisationUnitLabel(organisationUnit) }}</span>
+              </ion-item>
+            </ion-list>
+          </div>
+        </div>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-10>
+        <button ion-button outline [disabled]="(currentPage == 1)" color="font-color" text-capitalize (click)="previousPage()">
+          <ion-icon name="skip-backward"></ion-icon>
+        </button>
+        <button ion-button clear color="font-color" text-capitalize>
+          {{ (arrayOfOrganisationUnitsArray.length > 0)? currentPage : 0 }}/ {{ arrayOfOrganisationUnitsArray.length }}
+        </button>
+        <button ion-button outline [disabled]="!(currentPage < arrayOfOrganisationUnitsArray.length)" color="font-color" text-capitalize
+          (click)="nextPage()">
+          <ion-icon name="skip-forward"></ion-icon>
+        </button>
+      </ion-col>
+      <ion-col>
+        <button ion-button outline color="danger" text-capitalize (click)="dismiss()">
+          <ion-icon name='close'></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-footer>

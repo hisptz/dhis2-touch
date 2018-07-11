@@ -1,0 +1,13 @@
+<div *ngIf="isLoading">
+  <loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></loading>
+</div>
+<div *ngIf="!isLoading">
+  <div *ngFor="let organisationUnit of organisationUnits;let currentIndex = index;trackBy: trackByFn">
+    <multi-organisation-unit-tree [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened" [organisationUnit]="organisationUnit"
+      (activate)="onActivateOu($event)" (deactivate)="onDeactivateOu($event)" [currentUser]="currentUser" [selectedOrgUnits]="selectedOrgUnits"
+      [toggledOuIds]="toggledOuIds"></multi-organisation-unit-tree>
+  </div>
+  <div *ngIf="organisationUnits.length == 0 && emptyMessage !=''">
+    <empty-list-notification [emptyListMessage]="emptyMessage"></empty-list-notification>
+  </div>
+</div>

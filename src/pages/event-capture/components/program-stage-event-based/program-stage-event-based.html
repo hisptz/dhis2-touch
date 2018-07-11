@@ -1,0 +1,56 @@
+<div *ngIf="isLoading">
+  <loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></loading>
+</div>
+<div *ngIf="!isLoading">
+  <div class="item-card">
+    <div>
+      <span *ngIf="!hasEventDatesLabel(programStage.executionDateLabel)">{{ translationMapper['Report date']}} </span>
+      <span *ngIf="hasEventDatesLabel(programStage.executionDateLabel)">{{ programStage.executionDateLabel }}</span>
+      <span class="required">*</span>
+    </div>
+    <div class="input-field-container">
+      <data-time-input [(inputValue)]="eventDate" (dateTimeUpdateAction)="updateEventDate($event)" [mode]="'date'"></data-time-input>
+    </div>
+
+    <div *ngIf="!(eventDate && eventDate != '')">
+      <event-date-notification [notification]="getEventDateNotification()"></event-date-notification>
+    </div>
+    <div *ngIf="eventDate && eventDate != ''">
+      <div *ngIf="programStage.captureCoordinates" class="item-card">
+        {{ translationMapper['Coordinate']}}
+        <event-coordinate-selector (onChangeEventCoordonate)="updateEventCoordonate($event)" [(coordinate)]="currentEvent.coordinate"></event-coordinate-selector>
+      </div>
+      <div *ngIf="(programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
+        <div *ngIf="formLayout === 'customLayout' && programStage && programStage.dataEntryForm && programStage.dataEntryForm !== '' ">
+          <custom-data-entry-form [entryFormType]="entryFormType" [dataEntryFormDesign]="programStage.dataEntryForm" [data]="dataObject"
+            [dataUpdateStatus]="dataUpdateStatus" [programStageDataElements]="programStage.programStageDataElements" [programStageId]="programStage.id"
+            (onCustomFormInputChange)="updateData($event)"></custom-data-entry-form>
+        </div>
+        <div *ngIf="!(formLayout === 'customLayout' && programStage && programStage.dataEntryForm && programStage.dataEntryForm !== '' )">
+          <default-event-entry-form [programStage]="programStage" [currentUser]="currentUser" [(dataObject)]="dataObject" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
+            (onChange)="updateData($event)"></default-event-entry-form>
+        </div>
+        <ion-row no-padding>
+          <ion-col>
+            <div class="item-card" color="font-color" ion-button clear text-justify (click)="goBack()">
+              <ion-icon name="Back" color="icon-color"></ion-icon>&nbsp; {{ translationMapper['Back']}}
+            </div>
+          </ion-col>
+          <ion-col col-auto>
+            <div *ngIf="canEventBeDeleted()" float-right>
+              <div class="item-card" color="font-color" ion-button clear text-justify (click)="AddNewEvent()">
+                <ion-icon name="add" color="icon-color"></ion-icon>&nbsp; {{ translationMapper['Add New']}}
+              </div>
+              <div class="item-card" color="danger" ion-button clear text-justify (click)="deleteEvent(currentEvent.id)">
+                <ion-icon name="trash"></ion-icon>&nbsp; {{ translationMapper['Delete']}}
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </div>
+      <div *ngIf="!(programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
+        <notification [message]="translationMapper['There are no data elements, please contact you help desk']"></notification>
+      </div>
+    </div>
+  </div>
+</div>

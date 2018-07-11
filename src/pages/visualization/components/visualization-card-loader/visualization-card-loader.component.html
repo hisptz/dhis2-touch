@@ -1,0 +1,29 @@
+<div class="visualization-card-loader-container" [style.height]="'calc(' + height + ' - 10px)'">
+  <div class="loader-block" >
+    <div class="chart-loader" *ngIf="visualizationType === 'CHART'" [style.height]="'calc(' + height + ' - 70px)'">
+      <div style="margin-top: 30%;"><div class="animated-background"></div></div>
+      <div style="margin-top: 20%;"><div class="animated-background"></div></div>
+      <div style="height: 100%;"><div class="animated-background"></div></div>
+      <div style="margin-top: 10%;"><div class="animated-background"></div></div>
+      <div style="margin-top: 25%;"><div class="animated-background"></div></div>
+      <div style="margin-top: 20%;"><div class="animated-background"></div></div>
+    </div>
+    <table class="table-loader" *ngIf="visualizationType === 'TABLE'" [style.height]="'calc(' + height + ' - 50px)'">
+      <tr *ngFor="let tableCell of tableCellCounts">
+        <td><div class="animated-background"></div></td>
+        <td><div class="animated-background"></div></td>
+        <td><div class="animated-background"></div></td>
+        <td><div class="animated-background"></div></td>
+      </tr>
+    </table>
+  </div>
+  <div class="map-loader" *ngIf="visualizationType === 'MAP'" [style.height]="'calc(' + height + ' - 50px)'">
+    <div class="map-image" [style.height]="'calc(' + height + ' - 80px)'">
+      <div class="animated-background"></div>
+    </div>
+  </div>
+  <div class="loading-text">
+    <img src="assets/img/balls-3.svg" alt="">
+    Loading data for {{name}}
+  </div>
+</div>

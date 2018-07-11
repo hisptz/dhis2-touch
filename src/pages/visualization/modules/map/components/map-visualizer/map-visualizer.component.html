@@ -1,0 +1,46 @@
+<div class="map-container">
+  <h6 class="text-center map-title">
+    <span class="title-span">{{visualizationObject.mapConfiguration.name}}</span>
+  </h6>
+  <div class="map-block__left">
+    <ul class="map-controls__list">
+      <li>
+        <button class="map-controls__btn" title="Zoom Out" (click)="zoomOut($event)">
+          <img src="assets/icon/minus.png">
+        </button>
+      </li>
+      <li>
+        <button class="map-controls__btn" title="Home" (click)="recenterMap($event)">
+          <img src="assets/icon/home.png">
+        </button>
+      </li>
+      <li>
+        <button class="map-controls__btn" title="Zoom In" (click)="zoomIn($event)">
+          <img src="assets/icon/plus.png">
+        </button>
+      </li>
+    </ul>
+    <div class="map-layers__block">
+      <button class="map-layers__btn" (mouseenter)="toggleLegendContainerView()">
+        <img src="assets/icon/layers.png">
+      </button>
+      <div class="visualization-legend__container" *ngIf="visualizationLegendIsOpen" [ngStyle]="{'max-height': 'calc(' + mapHeight + ' - 150px)'}"
+        (mouseleave)="toggleLegendContainerView()">
+        <app-visualization-legend [mapVisualizationObject]="visualizationObject"></app-visualization-legend>
+      </div>
+    </div>
+  </div>
+  <div id="map-view-port-{{visualizationObject.componentId}}" style="width:100%; height: 100%;"></div>
+  <div class="warning-map" *ngIf="!mapHasGeofeatures && mapHasDataAnalytics" [ngStyle]="{'height': displayConfigurations.itemHeight}">
+    <img src="assets/icon/map.png" alt="">
+    <h4>Sorry, this map has no associated geofeatures</h4>
+  </div>
+  <div class="warning-map" *ngIf="!mapHasDataAnalytics" [ngStyle]="{'height': displayConfigurations.itemHeight}">
+    <img src="assets/icon/map.png" alt="">
+    <h4>Sorry, this map has no data to visualize</h4>
+  </div>
+  <div class="no-scroll-block" *ngIf="!fullScreen">
+    &nbsp;
+  </div>
+</div>
+<app-data-table class="map-data-table" *ngIf="isDataTableOpen" [mapVisualizationObject]="visualizationObject"></app-data-table>

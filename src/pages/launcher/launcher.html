@@ -1,22 +1,14 @@
-<!--
-  Generated template for the Launcher page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
--->
-
 <ion-content class="login">
+
   <ion-grid>
     <ion-row>
-      <ion-col class="topSLogan">
+      <ion-col class="topSLogan animated slideInDown">
         <div class="logo">
-          <img [src]="logoUrl" >
+          <img [src]="logoUrl">
         </div>
-        <p >Innovation in every dimension</p>
+        <p [translate]="'Innovation in every dimension'"></p>
       </ion-col>
     </ion-row>
   </ion-grid>
-
-  <page-loading loadingSize="large"></page-loading>
-
+  <loading [loadingSize]="'large'" [loadingMessage]="''"></loading>
 </ion-content>

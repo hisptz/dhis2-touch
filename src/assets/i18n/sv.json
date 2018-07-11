@@ -1,0 +1,488 @@
+{
+  "Account": "konto",
+  "Apps": "Apps",
+  "Log out": "Logga ut",
+  "About": "Handla om",
+  "Aggregate status": "Aggregate status",
+  "Event status": "händelse status",
+  "Event for tracker status": "Händelse för tracker status",
+  "Enrollments": "inskrivningar",
+  "System info": "System information",
+  "Synced": "synkroniserad",
+  "Not synced": "inte synkroniserad",
+  "Discovering app information": "Upptäcka appinformation",
+  "Discovering system information": "Upptäcka systeminformation",
+  "Discovering data values storage status":
+    "Upptäcka uppgifter värden lagring status",
+  "Discovering events storage status": "Upptäcka evenemang lagring status",
+  "Discovering enrollments storage status":
+    "Upptäcka inskrivningar lagring status",
+  "Fail to discover user information":
+    "Misslyckas med att upptäcka användarinformation",
+  "Fail to discover system information":
+    "Misslyckas att upptäcka systeminformation",
+  "Fail to discover app information":
+    "Misslyckas med att upptäcka appinformation",
+  "Fail to discover data values storage status":
+    "Misslyckas med att upptäcka datavärden lagring status",
+  "Fail to discover enrollments storage status":
+    "Misslyckas med att upptäcka inskrivningar lagringsstatus",
+  "Profile": "Profil",
+  "User information": "Användar information",
+  "Assigned organisation units": "Tilldelade organisationsenheter",
+  "Assigned roles": "tilldelade roller",
+  "Assigned programs": "tilldelade program",
+  "Assigned entry forms": "Tilldelade anmälningsblanketter",
+  "Discovering profile information": "Upptäcka profilinformation",
+  "Fail to discover profile information":
+    "Misslyckas med att upptäcka profilinformation",
+  "Help": "Hjälp",
+  "Help search": "Hjälp Sök",
+  "Search help by title": "Sök hjälp efter titel",
+  "Settings": "inställningar",
+  "Applying changes": "tillämpa ändringar",
+  "Minutes": "Minuter",
+  "Hours": "timmar",
+  "Auto synchronization": "Auto synkronisering",
+  "Form layout": "formen layout",
+  "List layout": "lista layout",
+  "Table layout": "tabellayout",
+  "Form label": "formen etikett",
+  "Display name": "visningsnamn",
+  "Form name": "Form namn",
+  "Data element per page": "Dataelement per sida",
+  "Current language": "Aktuellt språk",
+  "App settings": "App inställningar",
+  "Entry form": "Anmälningsblankett",
+  "Synchronization": "Synkronisering",
+  "Discovering current user information":
+    "Upptäcka nuvarande användarinformation",
+  "Discovering settings": "upptäcka inställningar",
+  "Settings have been updated successfully": "Inställningar har uppdaterats",
+  "Fail to discover settings": "Misslyckas att upptäcka inställningar",
+  "Fail to discover available local instances":
+    "Misslyckas med att upptäcka tillgängliga lokala instanser",
+  "Fail to discover current user information":
+    "Misslyckas med att upptäcka aktuell användarinformation",
+  "Fail to set translation": "Misslyckas att ställa översättning",
+  "Fail to apply changes on  settings":
+    "Misslyckas med att tillämpa ändringar på inställningar",
+  "Reports": "rapporter",
+  "Search": "Sök",
+  "Discovering reports": "upptäcka rapporter",
+  "Downloading reports from server": "Hämta rapporter från servern",
+  "Preparing local storage for updates":
+    "Förbereda lokal lagring för uppdateringar",
+  "Saving reports from server": "Spara rapporter från servern",
+  "there is no report to select": "Det finns ingen rapport att välja",
+  "Fail  to discover reports": "Misslyckas att upptäcka rapporter",
+  "Fail to save reports": "Misslyckas att spara rapporter",
+  "Fail to prepare local storage for updates":
+    "Misslyckas med att förbereda lokal lagring för uppdateringar",
+  "Fail to download reports": "Misslyckas att hämta rapporter",
+  "Data set report": "Datamängd rapport",
+  "Standard report": "standard rapport",
+  "Report name": "Rapportnamn namn~~POS=HEADCOMP",
+  "Organisation unit": "organisationsenhet",
+  "Period": "Period",
+  "Generate report": "Generera rapport",
+  "Touch to select organisation unit": "Tryck för att välja organisationsenhet",
+  "Touch to select period": "Tryck för att välja tid",
+  "Report view": "rapportvy",
+  "Discovering user information": "Upptäcka användarinformation",
+  "Discovering report metadata": "Upptäcka rapport metadata",
+  "Fail to discover organisation units information":
+    "Misslyckas med att upptäcka organisationsenheter informations",
+  "Fail to discover report metadata":
+    "Misslyckas med att upptäcka rapport metadata",
+  "Report type has not set,please contact system administrator":
+    "Typ av rapport har inte satt, kontakta systemadministratör",
+  "Discovering data set report information":
+    "Upptäcka datamängd lämna uppgifter",
+  "Preparing data set report": "Förbereda datamängd rapport",
+  "Fail to prepare data set report":
+    "Misslyckas med att förbereda datamängd rapport",
+  "Fail to discover data set report information":
+    "Misslyckas med att upptäcka datamängd rapportinformation",
+  "Program selection": "programval",
+  "There is no program to select": "Det finns inget program för att välja",
+  "Period selection": "period val",
+  "Previous": "Tidigare",
+  "Next": "Nästa",
+  "There is no period to select": "Det finns ingen tid att välja",
+  "Organisation unit selection": "Organisationsenhet val",
+  "Discovering assigned organisation units":
+    "Upptäcka tilldelade organisationsenheter",
+  "Currently there is on assigned organisation unit on local storage, Please metadata on sync app":
+    "För närvarande finns det på tilldelade organisationsenhet på lokal lagring, god metadata synk app",
+  "Fail to discover organisation units":
+    "Misslyckas med att upptäcka organisationsenheter",
+  "Discovering organisation units": "Upptäcka organisationsenheter",
+  "Fail to discover organisation unit children":
+    "Misslyckas med att upptäcka organisationsenhet barn",
+  "Event capture": "händelse capture",
+  "Columns": "kolumner",
+  "Add": "Lägg till",
+  "Discovering assigned programs": "Upptäcka tilldelade program",
+  "Discovering program stages": "Upptäcka programstegen",
+  "Discovering data": "upptäcka data som",
+  "Preparing table for display": "Förberedelser bord för visning",
+  "All of selected category disaggregation are restricted from entry in selcted organisation unit, choose a different form or contact your support desk":
+    "Alla vald kategori uppdelning är begränsade från posten i selcted organisationsenhet, välj en annan form eller kontakta supportavdelning",
+  "There is no option for selected category that associated with selected organisation unit":
+    "Det finns inget alternativ för vald kategori som förknippas med utvalda organisationsenhet",
+  "There are no program to select": "Det finns inget program för att välja",
+  "Touch to select program": "Tryck för att välja program",
+  "Touch to select option": "Tryck för att välja alternativet",
+  "There no data at the moment": "Där inga uppgifter just nu",
+  "Visible header": "synlig header",
+  "Select all": "Välj alla",
+  "Deselect all": "Avmarkera alla",
+  "Save": "Spara",
+  "Event register": "Händelseregistret registret~~POS=HEADCOMP",
+  "Program": "Program",
+  "Discovering data from local storage": "Upptäcka data från lokal lagring",
+  "Fail to discover program stages":
+    "Misslyckas med att upptäcka programstegen",
+  "Report date": "Rapportdatum datum~~POS=HEADCOMP",
+  "Touch to pick date": "Tryck här för att plocka datum",
+  "Delete": "Radera",
+  "There are no data elements, please contact you help desk":
+    "Det finns inga dataelement, vänligen kontakta dig helpdesk",
+  "You are about to delete this event, are you sure?":
+    "Du håller på att ta bort denna händelse, är du säker?",
+  "Yes": "Ja",
+  "No": "Nej",
+  "Deleting event": "Radera händelse",
+  "Event has been deleted successfully": "Evenemanget har tagits bort",
+  "Fail to delete event": "Misslyckas ta bort händelse",
+  "Tracker capture": "tracker capture",
+  "Discovering tracked entity list": "Upptäcka spåras lista enhet",
+  "There are no program to select, please select another organisation unit":
+    "Det finns inget program för att välja, välj en annan organisationsenhet",
+  "Fail to discover registration form":
+    "Misslyckas med att upptäcka registreringsformuläret",
+  "Fail to discover assigned programs":
+    "Misslyckas med att upptäcka tilldelade program",
+  "Fail to discover tracked entity list":
+    "Misslyckas med att upptäcka band enhet listan",
+  "Fail to prepare table for display":
+    "Misslyckas med att förbereda tabellen för visning",
+  "List of widgets": "Lista över widgets",
+  "There is no widget to select": "Det finns ingen widget för att välja",
+  "Registration": "Registrering",
+  "Enrollment & Profile": "Inskrivning & Profile",
+  "Enrolling organisation unit": "Inlärning organisationsenhet",
+  "Enrolling program": "Inlärning program",
+  "Discovering registration form": "Upptäcka registreringsformulär",
+  "You are about to delete all information related to this tracked entity instance, are you sure?":
+    "Du håller på att radera all information i samband med detta spårade enhet exempel, är du säker?",
+  "Deleting all information related to this tracked entity instance":
+    "Radera all information i samband med detta spårade enhet instans",
+  "A tracked entity instance has not yet registered":
+    "En spårade enhet instans har ännu inte registrerad",
+  "A tracked entity instance has been deleted successfully":
+    "En spårade enhet instans har tagits bort",
+  "A tracked entity instance has been saved successfully":
+    "En spårade enhet instans har sparats",
+  "Fail to delete all information related to this tracked entity instance":
+    "Misslyckas att radera all information i samband med detta spårade enhet instans",
+  "Fail to save a tracked entity instance":
+    "Misslyckas med att spara en spårad enhet instans",
+  "New event": "Nytt event",
+  "Discovering events": "upptäcka händelser",
+  "Fail to discover events": "Misslyckas att upptäcka händelser",
+  "Due date": "Förfallodatum",
+  "Contact your help desk to add data elements on this stage":
+    "Kontakta helpdesk för att lägga till dataelement på det här stadiet",
+  "Tracked entity dashboard": "TRACKED enhet instrumentpanel",
+  "Discovering tracked entity": "Upptäcka spåras enhet",
+  "Discovering registration fields": "Upptäcka registreringsfält",
+  "Tracked entity instance has been delete successfully":
+    "Band enhet exempel har bort framgångsrikt",
+  "Fail to discover tracked entity": "Misslyckas med att upptäcka bandenhet",
+  "Fail to discover registration fields":
+    "Misslyckas med att upptäcka registreringsfält",
+  "Data entry": "Datainmatning",
+  "Touch to select entry form": "Tryck för att välja anmälningsblanketten",
+  "Form": "Form",
+  "Enter data": "Ange data",
+  "There are no entry form to select on selected organisation unit":
+    "Det finns ingen post formulär för att välja på utvalda organisationsenhet",
+  "Please select entry form first": "Välj anmälningsblanketten först",
+  "There is no option for seleted category that associated with selected organisation unit":
+    "Det finns inget alternativ för seleted kategori som förknippas med utvalda organisationsenhet",
+  "All disaggregation are restricted from entry in selected organisation unit, please choose a different form or contact your support desk":
+    "All uppdelning är begränsade från posten i valda organisationsenheten, välj en annan form eller kontakta supportavdelning",
+  "Fail to discover entry form":
+    "Misslyckas med att upptäcka anmälningsblanketten",
+  "Data entry form selection": "urval datainmatningsformuläret",
+  "There is no data entry form to select":
+    "Det finns inga uppgifter anmälningsblanketten att välja",
+  "Data dimension selection": "val Data dimension",
+  "There is no option to select": "Det finns ingen möjlighet att välja",
+  "Data entry form sections": "Datainmatningsformuläret sektioner",
+  "There is nothing to select": "Det finns inget att välja",
+  "Entry form's indicators": "Anmälningsblankett indikatorer",
+  "Name": "namn",
+  "Numerator Description": "täljare Beskrivning",
+  "Denominator Description": "nämnare Beskrivning",
+  "Indicator value": "indikatorvärde",
+  "Data entry form": "Datainmatningsformuläret",
+  "Available indicators": "tillgängliga indikatorer",
+  "Complete": "Komplett",
+  "Undo complete": "Ångra komplett",
+  "Completed by": "Fullgjord av",
+  "on": "på",
+  "Please wait ...": "Vänta ...",
+  "The is no field associated with this entry form, Please contact our help desk":
+    "Det är ingen fält i samband med denna anmälningsblankett, kontakta vår helpdesk",
+  "Discovering entry form information":
+    "Upptäcka anmälningsblankett informations",
+  "Discovering indicators": "upptäcka indikatorer",
+  "Preparing entry form": "Framställning anmälningsblankett",
+  "Discovering data from the server": "Upptäcka data från servern",
+  "Saving data from server": "Spara data från servern",
+  "Discovering available local data": "Upptäcka tillgängliga lokala data",
+  "Discovering entry form completeness information":
+    "Upptäcka anmälningsblankett fullständighet informations",
+  "There are no indicators to view": "Det finns inga indikatorer för att visa",
+  "Uploading data": "uppladdning uppgifter",
+  "Fail to discover indicators": "Misslyckas att upptäcka indikatorer",
+  "Fail to discover entry form information":
+    "Misslyckas med att upptäcka anmälningsblanketten informations",
+  "Fail to save data from the server":
+    "Misslyckas med att spara data från servern",
+  "Fail to discover data from the server":
+    "Misslyckas med att upptäcka data från servern",
+  "Fail to discover available local data":
+    "Misslyckas med att upptäcka tillgängliga lokala data",
+  "Fail to discover entry form completeness information":
+    "Misslyckas med att upptäcka anmälningsblanketten fullständighet informations",
+  "Fail to un complete entry form":
+    "Misslyckas med att un komplett anmälningsblankett",
+  "Fail to complete entry form":
+    "Misslyckas med att slutföra anmälningsblankett",
+  "Completeness information": "fullständighet uppgifter",
+  "Discovering completeness information": "Upptäcka fullständighet uppgifter",
+  "Fail to discover completeness information":
+    "Misslyckas med att upptäcka fullständig informations",
+  "Username": "Användarnamn",
+  "Full name": "Fullständiga namn",
+  "E-mial": "E-mial",
+  "Phone number": "Telefonnummer",
+  "Sync": "Synkronisera",
+  "Clear local metadata": "Rensa lokal metadata",
+  "Clear metaData": "tydliga metaData",
+  "Clear local metadata confirmation": "Rensa lokal metadata bekräftelse",
+  "You are about to clear all selected items, Are you sure?":
+    "Du håller på att ta bort alla markerade objekt, är du säker?",
+  "Clearing selected items": "Rensa markerade objekt",
+  "Applying updates to local storage": "Tillämpa uppdateringar lokal lagring",
+  "Please select at least one item to clear":
+    "Välj minst ett objekt för att rensa",
+  "All selected metadata has been cleared successfully":
+    "Alla valda metadata har rensats framgångsrikt",
+  "Fail to apply updates to local storage":
+    "Misslyckas med att tillämpa uppdateringar lokal lagring",
+  "Clear local data": "Rensa lokala data",
+  "Aggregate data": "aggregerade data som",
+  "Events": "evenemang",
+  "Events for tracker": "Händelser för tracker",
+  "Clear offline data confirmation": "Rensa offline bekräftelse uppgifter",
+  "You are about to clear all selected items, are you sure?":
+    "Du håller på att ta bort alla markerade objekt, är du säker?",
+  "All selected items has been cleared successfully":
+    "Alla markerade objekt har raderats framgångsrikt",
+  "Fail to clear selected items": "Misslyckas med att rensa markerade objekt",
+  "Download metadata": "Hämta metadata",
+  "Please select at least one item": "Välj minst ett objekt",
+  "Downloading updates": "nedladdning av uppdateringar",
+  "Applying updates": "tillämpa uppdateringar",
+  "All updates has been applied successfully":
+    "Alla uppdateringar har tillämpats med framgång",
+  "Fail to apply updates": "Misslyckas att installera uppdateringar",
+  "Fail to prepare local storage for update":
+    "Misslyckas med att förbereda lokal lagring för uppdatering",
+  "Fail to download updates": "Misslyckas att ladda ner uppdateringar",
+  "Upload data via internet": "Överföra data via internet",
+  "Upload data": "upload data som",
+  "Uploading selected local data, please wait...":
+    "Uppladdning utvalda lokala data, vänta ...",
+  "Import summaries": "Importera sammanfattningar",
+  "Tracked entity instances": "Band enhet instanser",
+  "Tracked entity enrollments": "Band enhet inskrivningar",
+  "Success": "Framgång",
+  "Failed": "misslyckades",
+  "Import conflicts or errors": "Importera konflikter eller fel",
+  "Upload data via SMS": "Överföra data via SMS",
+  "Mobile Number": "Mobilnummer",
+  "Discovering SMS Configuration": "Upptäcka SMS-konfiguration",
+  "Preparing entry form fields": "Förbereder inträde formulärfält",
+  "Preparing data": "framställning uppgifter",
+  "Preparing SMS": "förbereda SMS",
+  "Sending SMS": "skicka SMS",
+  "Sending SMSes": "Att skicka SMSes",
+  "SMS has been sent": "SMS har skickats",
+  "Fail to send some of SMS, Please go into your SMS inbox and resend them manually":
+    "Misslyckas med att skicka en del av SMS, gå in ditt SMS inkorgen och skicka dem manuellt",
+  "Fail to preparing SMS": "Misslyckas att förbereda SMS",
+  "There is no data to be sent via SMS":
+    "Det finns inga data som ska skickas via SMS",
+  "Fail to discover data values": "Misslyckas med att upptäcka datavärden",
+  "Selected entry form has no field set, please contact your help desk":
+    "Valda posten form har ingen fält set, kontakta helpdesk",
+  "Fail to discover SMS configurations":
+    "Misslyckas med att upptäcka SMS konfigurationer",
+  "Innovation in every dimension": "Innovation i varje dimension",
+  "Establishing connection to server": "Etablera anslutning till servern",
+  "Aggregate metadata": "Aggregate metadata",
+  "Event and tracker metadata": "Event och tracker metadata",
+  "Reports metadata": "rapporter metadata",
+  "Enter server address": "Ange serveradress",
+  "Enter username": "Skriv in ditt användarnamn",
+  "Enter password": "Skriv in lösenord",
+  "Login": "Logga in",
+  "or": "eller",
+  "Offline instances": "offline instanser",
+  "Powered by": "Powered by",
+  "Discovering current user authorities":
+    "Upptäcka nuvarande användar myndigheter",
+  "Preparing local storage": "Förbereda lokal lagring",
+  "Fail to prepare local storage": "Misslyckas med att förbereda lokal lagring",
+  "Fail to discover user authorities":
+    "Misslyckas med att upptäcka användar myndigheter",
+  "Fail to save current user information":
+    "Misslyckas med att spara aktuell användarinformation",
+  "Please check your network connectivity":
+    "Kontrollera din nätverksanslutning",
+  "You have enter wrong username or password or server address":
+    "Du har anger fel användarnamn eller lösenord eller serveradress",
+  "Please check server address, or contact your help desk":
+    "Kontrollera serveradress eller kontakta helpdesk",
+  "Please enter server address, username and password":
+    "Ange serveradress, användarnamn och lösenord",
+  "Assigned organisation units have been discovered":
+    "Tilldelade organisationsenheter har upptäckts",
+  "Saving assigned organisation units": "Spara tilldelade organisationsenheter",
+  "Assigned organisation units have been saved":
+    "Tilldelade organisationsenheter har sparats",
+  "Fail to save organisation data":
+    "Misslyckas med att spara organisation data",
+  "Fail to discover organisation data":
+    "Misslyckas med att upptäcka organisation data",
+  "Discovering entry forms": "Upptäcka anmälningsblanketter",
+  "Entry forms have been discovered": "Anmälningsblanketter har upptäckts",
+  "Saving entry forms": "Spara anmälningsblanketter",
+  "Entry form have been saved": "Anmälningsblankett har sparats",
+  "Fail to save entry form": "Misslyckas med att spara anmälningsblanketten",
+  "Discovering entry form sections": "Upptäcka inträdes bildar sektioner",
+  "Entry form sections have been discovered":
+    "Anmälningsblankett sektioner har upptäckts",
+  "Saving entry form sections": "Sparar inträdes bildar sektioner",
+  "Entry form sections have been saved":
+    "Anmälningsblankett sektioner har sparats",
+  "Fail to save entry form sections":
+    "Misslyckas med att spara anmälningsblanketten sektioner",
+  "Fail to discover entry form sections":
+    "Misslyckas med att upptäcka anmälningsblanketten sektioner",
+  "Discovering entry form fields": "Upptäcka inmatningsformulärfält",
+  "Entry form fields have been discovered": "Entry formulärfält har upptäckts",
+  "Saving entry form fields": "Sparar inträdesformulärfält",
+  "Entry form fields have been saved": "Entry formulärfält har sparats",
+  "Fail to save entry form fields":
+    "Misslyckas med att spara posten formulärfält",
+  "Fail to discover entry form fields":
+    "Misslyckas med att upptäcka inträde formulärfält",
+  "Discovering SMS commands": "Upptäcka SMS-kommandon",
+  "SMS commands have been discovered": "SMS-kommandon har upptäckts",
+  "Saving SMS commands": "Spara SMS-kommandon",
+  "SMS commands have been saved": "SMS-kommandon har sparats",
+  "Fail to save SMS commands": "Misslyckas med att spara SMS-kommandon",
+  "Fail to discover SMS commands": "Misslyckas med att upptäcka SMS-kommandon",
+  "Discovering programs": "upptäcka program",
+  "Programs have been discovered": "Program har upptäckts",
+  "Saving programs": "besparingsprogram",
+  "Programs have been saved": "Program har sparats",
+  "Fail to save programs": "Misslyckas att spara program",
+  "Fail to discover programs": "Misslyckas att upptäcka program",
+  "Discovering program stage section": "Upptäcka program skede avsnitt",
+  "Program stage section have been discovered":
+    "Program skede avsnitt har upptäckts",
+  "Saving program stage section": "Besparingsprogram skede avsnitt",
+  "Program stage section have been saved": "Program skede avsnitt har sparats",
+  "Fail to save program stage sections":
+    "Misslyckas med att spara program scensektioner",
+  "Fail to discover program stage sections":
+    "Misslyckas med att upptäcka program scensektioner",
+  "Indicators have been discovered": "Indikatorer har upptäckts",
+  "Saving indicators": "spara indikatorer",
+  "Indicators have been saved": "Indikatorer har sparats",
+  "Fail to save indicators": "Misslyckas att spara indikatorer",
+  "Reports have been discovered": "Rapporter har upptäckts",
+  "Saving reports": "spara rapporter",
+  "Reports have been saved": "Rapporter har sparats",
+  "Fail to discover reports": "Misslyckas att upptäcka rapporter",
+  "Discovering constants": "upptäcka konstanter",
+  "Constants have been discovered": "Konstanter har upptäckts",
+  "Saving constants": "spara konstanter",
+  "Constants have been saved": "Konstanter har sparats",
+  "Fail to save constants": "Misslyckas att spara konstanter",
+  "Fail to discover constants": "Misslyckas att upptäcka konstanter",
+  "There is no local instance to select":
+    "Det finns ingen lokal instans för att välja",
+  "Discovering available local instances":
+    "Upptäcka tillgängliga lokala instanser",
+  "Fail to load available local instances":
+    "Misslyckas att läsa tillgängliga lokala instanser",
+  "Dashboard": "instrumentbräda",
+  "Discovering dashboards": "upptäcka instrumentpaneler",
+  "There no dashboard item found":
+    "Det ingen instrumentbrädan artiklar hittade",
+  "Dashboard list": "Dashboard listan",
+  "Search dashboard by name": "Sök instrumentpanel med namn",
+  "Layout": "Layout",
+  "Table / Chart Layout": "Bord / Diagram Layout",
+  "Filters": "filter",
+  "Column": "Kolumn",
+  "Row": "Rad",
+  "Categories": "kategorier",
+  "Series": "Serier",
+  "Update": "Uppdatering",
+  "Close": "Stänga",
+  "Data": "Data",
+  "Select": "Välj",
+  "All": "Allt",
+  "Data elements": "dataelement",
+  "Indicators": "indikatorer",
+  "Data sets": "dataset",
+  "Program indicators": "program~~POS=TRUNC indikatorer~~POS=HEADCOMP",
+  "Functions": "funktioner",
+  "Available": "Tillgängliga",
+  "Selected": "Vald",
+  "Discovering...": "Upptäcka ...",
+  "No items": "Inga föremål",
+  "Select period type": "Välj period typ",
+  "Previous year": "Förra året",
+  "Next year": "Nästa år",
+  "Org-unit": "Org-enhet",
+  "Interpretation": "tolkning",
+  "Not found": "Hittades inte",
+  "Search interpretation": "Sök tolkning",
+  "This interpretation will be deleted, are you sure?":
+    "Denna tolkning kommer att tas bort, är du säker?",
+  "Deleting interpretation": "Radera tolkning",
+  "Comment": "Kommentar",
+  "Edit": "Redigera",
+  "Updating likes status": "Uppdatering gillar status",
+  "Unlike": "Till skillnad från",
+  "Like": "Tycka om",
+  "Write new interpretation": "Skriv ny tolkning",
+  "Cancel": "Annullera",
+  "Posting": "inlägg",
+  "Post": "Posta",
+  "This comment will be deleted, are you sure?":
+    "Denna kommentar kommer att tas bort, är du säker?",
+  "Deleting comment": "Radera kommentar",
+  "Write your comment": "Skriv din kommentar"
+}

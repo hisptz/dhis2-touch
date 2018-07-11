@@ -1,0 +1,25 @@
+<div class="dictionary-list-container">
+  <div
+    class="dictionary-item-container"
+    *ngFor="let dictionaryItem of dictionaryList$ | async; let i = index"
+  >
+    <div
+      class="dictionary-title"
+      (click)="setActiveItem(i, $event)"
+    >
+      <span>{{ dictionaryItem.name }}</span>
+      <div *ngIf="!dictionaryItem.name">
+        <app-dictionary-progress></app-dictionary-progress>
+      </div>
+    </div>
+    <div
+      class="dictionary-body"
+      *ngIf="activeItem === i"
+    >
+      <div class="dictionary-description" [innerHtml]="dictionaryItem.description"></div>
+      <div *ngIf="dictionaryItem.progress.loading">
+        <app-dictionary-progress></app-dictionary-progress>
+      </div>
+    </div>
+  </div>
+</div>

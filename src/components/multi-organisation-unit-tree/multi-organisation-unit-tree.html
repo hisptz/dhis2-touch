@@ -1,0 +1,37 @@
+<div class="organisation-unit">
+  <span class="organisation-unit-icon">
+    <ion-icon (click)="toggleTree(organisationUnit)" name="ios-add-circle-outline" *ngIf="(!hasOrgUnitChildrenOpened[organisationUnit.id]) && (organisationUnit.children && organisationUnit.children.length > 0)"
+      item-left></ion-icon>
+    <ion-icon (click)="toggleTree(organisationUnit)" name="ios-remove-circle-outline" *ngIf="(hasOrgUnitChildrenOpened[organisationUnit.id]) && (organisationUnit.children && organisationUnit.children.length > 0)"
+      item-left></ion-icon>
+  </span>
+  <span (click)="selectOrganisationUnit(organisationUnit)" [ngClass]="(organisationUnit.children && organisationUnit.children.length == 0)? 'organisation-unit-without-children':''">
+    &nbsp;
+    <span ion-text [color]="(seletectedOrganisationUnitIds.indexOf(organisationUnit.id) > -1) ?'current' : 'font-color'">{{ organisationUnit.name }}</span>
+  </span>
+</div>
+
+<div class="organisation-unit-children" *ngIf="hasOrgUnitChildrenOpened[organisationUnit.id]">
+  <div *ngIf="!(isOrganisationUnitsFetched && hasOrgUnitChildrenLoaded)">
+    <div>
+      <span style="text-align: center" item-left>
+        <loading loadingSize="small"></loading>
+      </span>
+      <span>
+        {{ translationMapper['Discovering organisation units'] }}
+      </span>
+    </div>
+  </div>
+  <div *ngIf="hasErrorOccurred">
+    <ion-item>
+      {{ translationMapper['Failed to discover organisation unit children'] }}
+    </ion-item>
+  </div>
+  <div *ngIf="isOrganisationUnitsFetched && hasOrgUnitChildrenLoaded && !hasErrorOccurred">
+    <div *ngFor="let organisationUnit of organisationUnit.children;trackBy: trackByFn">
+      <multi-organisation-unit-tree [selectedOrgUnits]="selectedOrgUnits" (activate)="onActivateOu($event)" (deactivate)="onDeactivateOu($event)"
+        [hasOrgUnitChildrenOpened]="hasOrgUnitChildrenOpened" [organisationUnit]="organisationUnit" [currentUser]="currentUser"
+        [toggledOuIds]="toggledOuIds"></multi-organisation-unit-tree>
+    </div>
+  </div>
+</div>

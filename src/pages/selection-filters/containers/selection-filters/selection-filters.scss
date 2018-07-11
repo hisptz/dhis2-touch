@@ -1,0 +1,61 @@
+selection-filters {
+  .selection-filter-container {
+    .selection-filter-header {
+      display: flex;
+      .selection-filter-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+        -webkit-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.12);
+        -moz-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.12);
+        box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.12);
+        background-color: rgba(255, 255, 255, 0.5);
+        img {
+          height: 11px;
+        }
+      }
+      .selection-filter-btn-list {
+        display: flex;
+        justify-content: space-around;
+        margin-left: 3px;
+        button {
+          margin-left: 3px;
+          img {
+            height: 13px;
+          }
+        }
+
+        button:first-child {
+          margin-left: 0;
+        }
+
+        .active-filter {
+          background-color: #f1f1f1;
+        }
+      }
+    }
+
+    .selection-filter-body {
+      position: absolute;
+      top: 35px;
+      background-color: rgba(255, 255, 255, 0.95);
+      -webkit-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.12);
+      -moz-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.12);
+      box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.12);
+      padding: 5px;
+      width: 400px;
+      height: 350px;
+      z-index: 2000;
+    }
+
+    @media (max-width: 500px) {
+      .selection-filter-body {
+        width: 95%;
+      }
+    }
+
+  }
+}

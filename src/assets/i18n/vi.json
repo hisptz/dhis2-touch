@@ -1,0 +1,493 @@
+{
+  "Account": "Tài khoản",
+  "Apps": "Apps",
+  "Log out": "Đăng xuất",
+  "About": "Trong khoảng",
+  "Aggregate status": "tình trạng tổng hợp",
+  "Event status": "tình trạng tổ chức sự kiện",
+  "Event for tracker status": "Tổ chức sự kiện cho tình trạng theo dõi",
+  "Enrollments": "tuyển sinh",
+  "System info": "Thông tin hệ thống",
+  "Synced": "đồng bộ hóa",
+  "Not synced": "không được đồng bộ hóa",
+  "Discovering app information": "Khám phá thông tin ứng dụng",
+  "Discovering system information": "Khám phá hệ thống thông tin",
+  "Discovering data values storage status":
+    "Khám phá dữ liệu đánh giá cao tình trạng lưu trữ",
+  "Discovering events storage status": "sự kiện khám phá ra tình trạng lưu trữ",
+  "Discovering enrollments storage status":
+    "Khám phá tuyển sinh tình trạng lưu trữ",
+  "Fail to discover user information":
+    "Thất bại trong việc phát hiện ra thông tin người dùng",
+  "Fail to discover system information":
+    "Thất bại trong việc khám phá thông tin hệ thống",
+  "Fail to discover app information":
+    "Thất bại trong việc khám phá thông tin ứng dụng",
+  "Fail to discover data values storage status":
+    "Thất bại trong việc phát hiện ra tình trạng giá trị dữ liệu lưu trữ",
+  "Fail to discover enrollments storage status":
+    "Thất bại trong việc khám phá tình trạng tuyển sinh lưu trữ",
+  "Profile": "Hồ sơ",
+  "User information": "Thông tin người dùng",
+  "Assigned organisation units": "đơn vị tổ chức giao",
+  "Assigned roles": "vai trò giao",
+  "Assigned programs": "chương trình giao",
+  "Assigned entry forms": "hình thức nhập giao",
+  "Discovering profile information": "Khám phá thông tin hồ sơ",
+  "Fail to discover profile information":
+    "Thất bại trong việc khám phá thông tin hồ sơ",
+  "Help": "Cứu giúp",
+  "Help search": "tìm kiếm sự giúp đỡ",
+  "Search help by title": "Tìm kiếm sự giúp đỡ theo tiêu đề",
+  "Settings": "Cài đặt",
+  "Applying changes": "Áp dụng những thay đổi",
+  "Minutes": "từ phút",
+  "Hours": "giờ",
+  "Auto synchronization": "đồng bộ hóa tự động",
+  "Form layout": "bố cục biểu mẫu",
+  "List layout": "danh sách bố trí",
+  "Table layout": "bố trí bảng",
+  "Form label": "nhãn Mẫu",
+  "Display name": "Tên hiển thị",
+  "Form name": "tên Form",
+  "Data element per page": "phần tử dữ liệu mỗi trang",
+  "Current language": "ngôn ngữ hiện tại",
+  "App settings": "cài đặt ứng dụng",
+  "Entry form": "mẫu đăng ký",
+  "Synchronization": "Đồng bộ hóa",
+  "Discovering current user information":
+    "Khám phá thông tin người dùng hiện tại",
+  "Discovering settings": "Khám phá các thiết lập",
+  "Settings have been updated successfully":
+    "Cài đặt đã được cập nhật thành công",
+  "Fail to discover settings": "Thất bại trong việc phát hiện ra các thiết lập",
+  "Fail to discover available local instances":
+    "Thất bại trong việc phát hiện ra các trường hợp địa phương có sẵn",
+  "Fail to discover current user information":
+    "Thất bại trong việc phát hiện ra thông tin người dùng hiện tại",
+  "Fail to set translation": "Thất bại trong việc thiết lập dịch",
+  "Fail to apply changes on  settings":
+    "Thất bại trong việc áp dụng những thay đổi trên các thiết lập",
+  "Reports": "Báo cáo",
+  "Search": "Tìm kiếm",
+  "Discovering reports": "Khám phá các báo cáo",
+  "Downloading reports from server": "Tải xuống báo cáo từ máy chủ",
+  "Preparing local storage for updates":
+    "Chuẩn bị lưu trữ địa phương để cập nhật",
+  "Saving reports from server": "báo cáo tiết kiệm từ máy chủ",
+  "there is no report to select": "không có báo cáo để chọn",
+  "Fail  to discover reports": "Thất bại trong việc phát hiện ra các báo cáo",
+  "Fail to save reports": "Thất bại trong việc lưu các báo cáo",
+  "Fail to prepare local storage for updates":
+    "Thất bại trong việc chuẩn bị lưu trữ địa phương để cập nhật",
+  "Fail to download reports": "Thất bại trong việc tải các báo cáo",
+  "Data set report": "Báo cáo tập hợp dữ liệu",
+  "Standard report": "báo cáo chuẩn",
+  "Report name": "tên báo cáo",
+  "Organisation unit": "đơn vị tổ chức",
+  "Period": "Giai đoạn",
+  "Generate report": "tạo báo cáo",
+  "Touch to select organisation unit": "Chạm để chọn đơn vị tổ chức",
+  "Touch to select period": "Chạm để chọn khoảng thời gian",
+  "Report view": "báo cáo xem",
+  "Discovering user information": "Khám phá thông tin người dùng",
+  "Discovering report metadata": "Khám phá siêu dữ liệu báo cáo",
+  "Fail to discover organisation units information":
+    "Thất bại trong việc khám phá thông tin đơn vị tổ chức",
+  "Fail to discover report metadata":
+    "Thất bại trong việc phát hiện ra siêu dữ liệu báo cáo",
+  "Report type has not set,please contact system administrator":
+    "Báo cáo loại chưa sửa, xin vui lòng liên hệ với quản trị hệ thống",
+  "Discovering data set report information":
+    "dữ liệu phát hiện thiết lập báo cáo thông tin",
+  "Preparing data set report": "Chuẩn bị báo cáo tập hợp dữ liệu",
+  "Fail to prepare data set report":
+    "Thất bại trong việc chuẩn bị báo cáo tập hợp dữ liệu",
+  "Fail to discover data set report information":
+    "Thất bại trong việc khám phá thông tin dữ liệu thiết lập báo cáo",
+  "Program selection": "lựa chọn chương trình",
+  "There is no program to select": "Không có chương trình để lựa chọn",
+  "Period selection": "lựa chọn khoảng thời gian",
+  "Previous": "Trước",
+  "Next": "Kế tiếp",
+  "There is no period to select": "Không có thời gian để lựa chọn",
+  "Organisation unit selection": "lựa chọn đơn vị tổ chức",
+  "Discovering assigned organisation units":
+    "Khám phá các đơn vị tổ chức được giao",
+  "Currently there is on assigned organisation unit on local storage, Please metadata on sync app":
+    "Hiện nay có trên đơn vị tổ chức được giao vào lưu trữ địa phương, hãy siêu dữ liệu trên ứng dụng đồng bộ hóa",
+  "Fail to discover organisation units":
+    "Thất bại trong việc phát hiện ra các đơn vị tổ chức",
+  "Discovering organisation units": "Khám phá các đơn vị tổ chức",
+  "Fail to discover organisation unit children":
+    "Thất bại trong việc phát hiện ra trẻ em đơn vị tổ chức",
+  "Event capture": "chụp sự kiện",
+  "Columns": "Cột",
+  "Add": "Thêm vào",
+  "Discovering assigned programs": "Khám phá chương trình giao",
+  "Discovering program stages": "Khám phá công đoạn chương trình",
+  "Discovering data": "dữ liệu Khám phá",
+  "Preparing table for display": "Chuẩn bị bảng để hiển thị",
+  "All of selected category disaggregation are restricted from entry in selcted organisation unit, choose a different form or contact your support desk":
+    "Tất cả các lựa chọn loại phân tách được hạn chế mục trong đơn vị tổ chức selcted, chọn một hình thức khác nhau hoặc liên hệ với bàn hỗ trợ của bạn",
+  "There is no option for selected category that associated with selected organisation unit":
+    "Không có tùy chọn cho danh mục được chọn mà kết hợp với đơn vị tổ chức đã chọn",
+  "There are no program to select":
+    "Hiện tại không có chương trình để lựa chọn",
+  "Touch to select program": "Chạm để chọn chương trình",
+  "Touch to select option": "Chạm để chọn tùy chọn",
+  "There no data at the moment": "Không có dữ liệu tại thời điểm này",
+  "Visible header": "tiêu đề có thể nhìn thấy",
+  "Select all": "Chọn tất cả",
+  "Deselect all": "Bỏ chọn tất cả",
+  "Save": "Tiết kiệm",
+  "Event register": "đăng ký tổ chức sự kiện",
+  "Program": "Chương trình",
+  "Discovering data from local storage":
+    "Khám phá dữ liệu từ lưu trữ địa phương",
+  "Fail to discover program stages":
+    "Thất bại trong việc khám phá các giai đoạn chương trình",
+  "Report date": "Ngày báo cáo",
+  "Touch to pick date": "Chạm đến nay chọn",
+  "Delete": "Xóa bỏ",
+  "There are no data elements, please contact you help desk":
+    "Không có yếu tố dữ liệu, xin vui lòng liên lạc với bạn giúp bàn",
+  "You are about to delete this event, are you sure?":
+    "Bạn muốn xóa sự kiện này, bạn có chắc?",
+  "Yes": "Vâng",
+  "No": "Không",
+  "Deleting event": "xóa sự kiện",
+  "Event has been deleted successfully": "Sự kiện này đã được xóa thành công",
+  "Fail to delete event": "Thất bại trong việc xóa sự kiện",
+  "Tracker capture": "chụp Tracker",
+  "Discovering tracked entity list": "Khám phá danh sách tổ chức theo dõi",
+  "There are no program to select, please select another organisation unit":
+    "Hiện tại không có chương trình để lựa chọn, xin vui lòng chọn một đơn vị tổ chức",
+  "Fail to discover registration form":
+    "Thất bại trong việc phát hiện ra mẫu đăng ký",
+  "Fail to discover assigned programs":
+    "Thất bại trong việc phát hiện ra các chương trình giao",
+  "Fail to discover tracked entity list":
+    "Thất bại trong việc phát hiện ra danh sách đối tượng được theo dõi",
+  "Fail to prepare table for display":
+    "Thất bại trong việc chuẩn bị bảng để hiển thị",
+  "List of widgets": "Danh sách các widget",
+  "There is no widget to select": "Không có phụ tùng để chọn",
+  "Registration": "Đăng ký",
+  "Enrollment & Profile": "Tuyển sinh & Hồ sơ",
+  "Enrolling organisation unit": "Ghi danh đơn vị tổ chức",
+  "Enrolling program": "chương trình tuyển sinh",
+  "Discovering registration form": "Khám phá mẫu đăng ký",
+  "You are about to delete all information related to this tracked entity instance, are you sure?":
+    "Bạn muốn xóa tất cả các thông tin liên quan đến thực thể theo dõi này, bạn có chắc?",
+  "Deleting all information related to this tracked entity instance":
+    "Xóa tất cả các thông tin liên quan đến thực thể theo dõi này",
+  "A tracked entity instance has not yet registered":
+    "Một ví dụ thực thể theo dõi đã không đăng ký được nêu ra",
+  "A tracked entity instance has been deleted successfully":
+    "Một ví dụ thực thể theo dõi đã được xóa thành công",
+  "A tracked entity instance has been saved successfully":
+    "Một ví dụ thực thể theo dõi đã được lưu thành công",
+  "Fail to delete all information related to this tracked entity instance":
+    "Thất bại trong việc xóa tất cả các thông tin liên quan đến thực thể theo dõi này",
+  "Fail to save a tracked entity instance":
+    "Thất bại trong việc cứu một trường hợp tổ chức theo dõi",
+  "New event": "Sự kiện mới",
+  "Discovering events": "Khám phá các sự kiện",
+  "Fail to discover events": "Thất bại trong việc khám phá các sự kiện",
+  "Due date": "Ngày đáo hạn",
+  "Contact your help desk to add data elements on this stage":
+    "Liên bàn giúp đỡ của bạn để thêm các yếu tố dữ liệu về giai đoạn này",
+  "Tracked entity dashboard": "bảng điều khiển thực thể được theo dõi",
+  "Discovering tracked entity": "Khám phá tổ chức theo dõi",
+  "Discovering registration fields": "Khám phá các lĩnh vực đăng ký",
+  "Tracked entity instance has been delete successfully":
+    "Theo dõi dụ thực thể đã được xóa thành công",
+  "Fail to discover tracked entity":
+    "Thất bại trong việc phát hiện ra thực thể được theo dõi",
+  "Fail to discover registration fields":
+    "Thất bại trong việc khám phá các lĩnh vực đăng ký",
+  "Data entry": "Nhập dư liệu",
+  "Touch to select entry form": "Chạm để chọn hình thức nhập",
+  "Form": "Hình thức",
+  "Enter data": "Nhập dữ liệu",
+  "There are no entry form to select on selected organisation unit":
+    "Không có mẫu đăng nhập để chọn vào đơn vị tổ chức đã chọn",
+  "Please select entry form first": "Vui lòng chọn mẫu đăng ký đầu tiên",
+  "There is no option for seleted category that associated with selected organisation unit":
+    "Không có tùy chọn cho loại seleted mà kết hợp với đơn vị tổ chức đã chọn",
+  "All disaggregation are restricted from entry in selected organisation unit, please choose a different form or contact your support desk":
+    "Tất cả các phân tách được hạn chế nhập trong đơn vị tổ chức đã chọn, hãy chọn một hình thức khác nhau hoặc liên hệ với bàn hỗ trợ của bạn",
+  "Fail to discover entry form": "Thất bại trong việc phát hiện ra mẫu đăng ký",
+  "Data entry form selection": "lựa chọn hình thức nhập dữ liệu",
+  "There is no data entry form to select":
+    "Không có hình thức nhập dữ liệu để chọn",
+  "Data dimension selection": "lựa chọn chiều dữ liệu",
+  "There is no option to select": "Không có tùy chọn để lựa chọn",
+  "Data entry form sections": "phần hình thức nhập dữ liệu",
+  "There is nothing to select": "Không có gì để chọn là",
+  "Entry form's indicators": "chỉ số mẫu đăng ký của",
+  "Name": "Tên",
+  "Numerator Description": "Tử số Mô tả",
+  "Denominator Description": "mẫu Mô tả",
+  "Indicator value": "chỉ số giá trị",
+  "Data entry form": "hình thức nhập dữ liệu",
+  "Available indicators": "chỉ số sẵn",
+  "Complete": "Hoàn thành",
+  "Undo complete": "hoàn tác hoàn chỉnh",
+  "Completed by": "Hoàn thành bởi",
+  "on": "trên",
+  "Please wait ...": "Xin vui lòng chờ ...",
+  "The is no field associated with this entry form, Please contact our help desk":
+    "Là không có lĩnh vực liên quan đến hình thức cụm từ này, Vui lòng liên hệ bộ phận hỗ trợ của chúng tôi",
+  "Discovering entry form information": "Khám phá thông tin mẫu đăng ký",
+  "Discovering indicators": "Khám phá các chỉ số",
+  "Preparing entry form": "Chuẩn bị mẫu đăng ký",
+  "Discovering data from the server": "Khám phá dữ liệu từ máy chủ",
+  "Saving data from server": "Lưu dữ liệu từ máy chủ",
+  "Discovering available local data": "Khám phá dữ liệu địa phương sẵn",
+  "Discovering entry form completeness information":
+    "Khám phá nhập thông tin hình thức đầy đủ",
+  "There are no indicators to view": "Không có chỉ số để xem",
+  "Uploading data": "dữ liệu tải lên",
+  "Fail to discover indicators": "Thất bại trong việc khám phá các chỉ số",
+  "Fail to discover entry form information":
+    "Thất bại trong việc khám phá thông tin mẫu đăng ký",
+  "Fail to save data from the server":
+    "Thất bại trong việc lưu dữ liệu từ máy chủ",
+  "Fail to discover data from the server":
+    "Thất bại trong việc khám phá dữ liệu từ máy chủ",
+  "Fail to discover available local data":
+    "Thất bại trong việc khám phá dữ liệu địa phương sẵn",
+  "Fail to discover entry form completeness information":
+    "Thất bại trong việc khám phá thông tin mục nhập biểu mẫu đầy đủ",
+  "Fail to un complete entry form":
+    "Không phù hợp với mẫu đăng ký hoàn chỉnh un",
+  "Fail to complete entry form": "Thất bại trong việc hoàn thành mẫu đăng ký",
+  "Completeness information": "thông tin đầy đủ",
+  "Discovering completeness information": "Khám phá thông tin đầy đủ",
+  "Fail to discover completeness information":
+    "Thất bại trong việc khám phá thông tin đầy đủ",
+  "Username": "Tên đăng nhập",
+  "Full name": "Họ và tên",
+  "E-mial": "E-mial",
+  "Phone number": "Số điện thoại",
+  "Sync": "Đồng bộ hóa",
+  "Clear local metadata": "siêu dữ liệu địa phương rõ ràng",
+  "Clear metaData": "rõ ràng siêu dữ liệu",
+  "Clear local metadata confirmation":
+    "Rõ ràng xác nhận siêu dữ liệu địa phương",
+  "You are about to clear all selected items, Are you sure?":
+    "Bạn muốn xóa tất cả các mục đã chọn, Bạn có chắc chắn?",
+  "Clearing selected items": "Xoá mục đã chọn",
+  "Applying updates to local storage": "Áp dụng cập nhật để lưu trữ địa phương",
+  "Please select at least one item to clear":
+    "Vui lòng chọn ít nhất một mục để xóa",
+  "All selected metadata has been cleared successfully":
+    "Tất cả các siêu dữ liệu được chọn đã được xóa thành công",
+  "Fail to apply updates to local storage":
+    "Thất bại trong việc áp dụng bản cập nhật để lưu trữ địa phương",
+  "Clear local data": "dữ liệu địa phương rõ ràng",
+  "Aggregate data": "dữ liệu tổng hợp",
+  "Events": "Sự kiện",
+  "Events for tracker": "Sự kiện cho tracker",
+  "Clear offline data confirmation": "Rõ ràng xác nhận dữ liệu ẩn",
+  "You are about to clear all selected items, are you sure?":
+    "Bạn muốn xóa tất cả các mục đã chọn, bạn có chắc?",
+  "All selected items has been cleared successfully":
+    "Tất cả các mục được chọn đã được xóa thành công",
+  "Fail to clear selected items": "Thất bại trong việc xóa các mục đã chọn",
+  "Download metadata": "Tải về siêu dữ liệu",
+  "Please select at least one item": "Vui lòng chọn ít nhất một mục",
+  "Downloading updates": "Tải bản cập nhật",
+  "Applying updates": "Áp dụng cập nhật",
+  "All updates has been applied successfully":
+    "Tất cả các bản cập nhật đã được áp dụng thành công",
+  "Fail to apply updates": "Thất bại trong việc áp dụng bản cập nhật",
+  "Fail to prepare local storage for update":
+    "Thất bại trong việc chuẩn bị lưu trữ địa phương để cập nhật",
+  "Fail to download updates": "Thất bại trong việc download các nâng cấp",
+  "Upload data via internet": "Tải lên dữ liệu qua internet",
+  "Upload data": "Tải dữ liệu lên",
+  "Uploading selected local data, please wait...":
+    "Tải dữ liệu địa phương được lựa chọn, xin vui lòng chờ ...",
+  "Import summaries": "tóm tắt nhập khẩu",
+  "Tracked entity instances": "trường hợp tổ chức theo dõi",
+  "Tracked entity enrollments": "tuyển sinh tổ chức theo dõi",
+  "Success": "Sự thành công",
+  "Failed": "Thất bại",
+  "Import conflicts or errors": "xung đột nhập hoặc lỗi",
+  "Upload data via SMS": "Tải lên dữ liệu qua tin nhắn SMS",
+  "Mobile Number": "Số điện thoại",
+  "Discovering SMS Configuration": "SMS Cấu hình Discovering",
+  "Preparing entry form fields": "Chuẩn bị ruộng mẫu đăng ký",
+  "Preparing data": "chuẩn bị dữ liệu",
+  "Preparing SMS": "chuẩn bị SMS",
+  "Sending SMS": "gửi tin nhắn SMS",
+  "Sending SMSes": "gửi SMS",
+  "SMS has been sent": "SMS đã được gửi đi",
+  "Fail to send some of SMS, Please go into your SMS inbox and resend them manually":
+    "Thất bại trong việc gửi một số tin nhắn SMS, hãy đi vào hộp thư SMS của bạn và gửi lại chúng bằng tay",
+  "Fail to preparing SMS": "Thất bại trong việc chuẩn bị tin nhắn SMS",
+  "There is no data to be sent via SMS":
+    "Không có dữ liệu được gửi qua tin nhắn SMS",
+  "Fail to discover data values":
+    "Thất bại trong việc khám phá các giá trị dữ liệu",
+  "Selected entry form has no field set, please contact your help desk":
+    "mẫu đăng ký được chọn không có bộ lĩnh vực, vui lòng liên hệ bộ phận hỗ trợ của bạn",
+  "Fail to discover SMS configurations":
+    "Thất bại trong việc khám phá cấu hình tin nhắn SMS",
+  "Innovation in every dimension": "Đổi mới trong mọi chiều kích",
+  "Establishing connection to server": "Thiết lập kết nối đến máy chủ",
+  "Aggregate metadata": "siêu dữ liệu tổng hợp",
+  "Event and tracker metadata": "Tổ chức sự kiện và theo dõi siêu dữ liệu",
+  "Reports metadata": "báo cáo siêu dữ liệu",
+  "Enter server address": "Nhập địa chỉ máy chủ",
+  "Enter username": "Điền tên đăng nhập",
+  "Enter password": "Nhập mật khẩu",
+  "Login": "Đăng nhập",
+  "or": "hoặc là",
+  "Offline instances": "trường hợp ẩn",
+  "Powered by": "Powered by",
+  "Discovering current user authorities":
+    "Khám phá chính quyền người dùng hiện hành",
+  "Preparing local storage": "Chuẩn bị lưu trữ địa phương",
+  "Fail to prepare local storage":
+    "Thất bại trong việc chuẩn bị lưu trữ địa phương",
+  "Fail to discover user authorities":
+    "Thất bại trong việc phát hiện ra các cơ quan người dùng",
+  "Fail to save current user information":
+    "Thất bại trong việc lưu thông tin người dùng hiện tại",
+  "Please check your network connectivity":
+    "Vui lòng kiểm tra kết nối mạng của bạn",
+  "You have enter wrong username or password or server address":
+    "Bạn phải nhập tên tài khoản sai hoặc mật khẩu hoặc địa chỉ máy chủ",
+  "Please check server address, or contact your help desk":
+    "Vui lòng kiểm tra địa chỉ máy chủ, hoặc liên hệ với bộ phận hỗ trợ của bạn",
+  "Please enter server address, username and password":
+    "Vui lòng nhập địa chỉ máy chủ, tên người dùng và mật khẩu",
+  "Assigned organisation units have been discovered":
+    "đơn vị tổ chức được giao đã được phát hiện",
+  "Saving assigned organisation units": "Tiết kiệm đơn vị tổ chức giao",
+  "Assigned organisation units have been saved":
+    "đơn vị tổ chức được giao đã được lưu",
+  "Fail to save organisation data": "Thất bại trong việc lưu dữ liệu tổ chức",
+  "Fail to discover organisation data":
+    "Thất bại trong việc khám phá dữ liệu tổ chức",
+  "Discovering entry forms": "Khám phá hình thức nhập",
+  "Entry forms have been discovered": "hình thức nhập đã được phát hiện",
+  "Saving entry forms": "Tiết kiệm hình thức nhập",
+  "Entry form have been saved": "mẫu đăng ký đã được lưu",
+  "Fail to save entry form": "Thất bại trong việc lưu mẫu đăng ký",
+  "Discovering entry form sections": "Khám phá phần mẫu đăng ký",
+  "Entry form sections have been discovered":
+    "phần mẫu đăng ký đã được phát hiện",
+  "Saving entry form sections": "Tiết kiệm phần mẫu đăng ký",
+  "Entry form sections have been saved": "phần mẫu đăng ký đã được lưu",
+  "Fail to save entry form sections":
+    "Thất bại trong việc tiết kiệm phần mẫu đăng ký",
+  "Fail to discover entry form sections":
+    "Thất bại trong việc khám phá phần mẫu đăng ký",
+  "Discovering entry form fields": "Khám phá lĩnh vực mẫu đăng ký",
+  "Entry form fields have been discovered":
+    "lĩnh vực mẫu đăng ký đã được phát hiện",
+  "Saving entry form fields": "Tiết kiệm lĩnh vực mẫu đăng ký",
+  "Entry form fields have been saved": "lĩnh vực mẫu đăng ký đã được lưu",
+  "Fail to save entry form fields":
+    "Thất bại trong việc tiết kiệm lĩnh vực mẫu đăng ký",
+  "Fail to discover entry form fields":
+    "Thất bại trong việc khám phá các lĩnh vực hình thức nhập",
+  "Discovering SMS commands": "Khám phá các lệnh SMS",
+  "SMS commands have been discovered": "lệnh SMS đã được phát hiện",
+  "Saving SMS commands": "Tiết kiệm các lệnh SMS",
+  "SMS commands have been saved": "lệnh SMS đã được lưu",
+  "Fail to save SMS commands": "Thất bại trong việc lưu các lệnh SMS",
+  "Fail to discover SMS commands":
+    "Thất bại trong việc phát hiện ra các lệnh SMS",
+  "Discovering programs": "Khám phá chương trình",
+  "Programs have been discovered": "Chương trình đã được phát hiện",
+  "Saving programs": "tiết kiệm các chương trình",
+  "Programs have been saved": "Chương trình đã được lưu",
+  "Fail to save programs": "Thất bại trong việc tiết kiệm các chương trình",
+  "Fail to discover programs":
+    "Thất bại trong việc phát hiện ra các chương trình",
+  "Discovering program stage section": "Khám phá phần sân khấu chương trình",
+  "Program stage section have been discovered":
+    "Phần sân khấu chương trình đã được phát hiện",
+  "Saving program stage section": "Bộ phận lưu trữ sân khấu chương trình",
+  "Program stage section have been saved":
+    "Phần sân khấu chương trình đã được lưu",
+  "Fail to save program stage sections":
+    "Thất bại trong việc tiết kiệm phần sân khấu chương trình",
+  "Fail to discover program stage sections":
+    "Thất bại trong việc khám phá phần sân khấu chương trình",
+  "Indicators have been discovered": "Các chỉ số đã được phát hiện",
+  "Saving indicators": "tiết kiệm chỉ số",
+  "Indicators have been saved": "Các chỉ số đã được lưu",
+  "Fail to save indicators": "Thất bại trong việc tiết kiệm các chỉ số",
+  "Reports have been discovered": "Báo cáo đã được phát hiện",
+  "Saving reports": "tiết kiệm báo cáo",
+  "Reports have been saved": "Báo cáo đã được lưu",
+  "Fail to discover reports": "Thất bại trong việc phát hiện ra các báo cáo",
+  "Discovering constants": "Khám phá hằng",
+  "Constants have been discovered": "Hằng số đã được phát hiện",
+  "Saving constants": "tiết kiệm hằng",
+  "Constants have been saved": "Hằng số đã được lưu",
+  "Fail to save constants": "Thất bại trong việc tiết kiệm hằng",
+  "Fail to discover constants": "Thất bại trong việc khám phá hằng",
+  "There is no local instance to select":
+    "Không có trường hợp địa phương để lựa chọn",
+  "Discovering available local instances":
+    "Khám phá các trường hợp địa phương có sẵn",
+  "Fail to load available local instances":
+    "Không thể tải trường hợp địa phương có sẵn",
+  "Dashboard": "bảng điều khiển",
+  "Discovering dashboards": "Khám phá biểu đồ",
+  "There no dashboard item found": "Không có mục bảng điều khiển tìm thấy",
+  "Dashboard list": "danh mục Bảng điều khiển",
+  "Search dashboard by name": "Tìm kiếm bảng điều khiển theo tên",
+  "Layout": "Bố trí",
+  "Table / Chart Layout": "Bảng / Chart Layout",
+  "Filters": "bộ lọc",
+  "Column": "Cột",
+  "Row": "Hàng",
+  "Categories": "Thể loại",
+  "Series": "Loạt",
+  "Update": "cập nhật",
+  "Close": "Gần",
+  "Data": "Dữ liệu",
+  "Select": "Lựa chọn",
+  "All": "Tất cả các",
+  "Data elements": "yếu tố dữ liệu",
+  "Indicators": "Các chỉ số",
+  "Data sets": "tập hợp dữ liệu",
+  "Program indicators": "chỉ số chương trình",
+  "Functions": "Chức năng",
+  "Available": "có sẵn",
+  "Selected": "Đã chọn",
+  "Discovering...": "Khám phá ...",
+  "No items": "Không có sản phẩm",
+  "Select period type": "Chọn loại thời gian",
+  "Previous year": "Năm trước",
+  "Next year": "Năm sau",
+  "Org-unit": "Org-đơn vị",
+  "Interpretation": "Diễn dịch",
+  "Not found": "Không tìm thấy",
+  "Search interpretation": "Tìm kiếm giải thích",
+  "This interpretation will be deleted, are you sure?":
+    "Giải thích này sẽ bị xóa, bạn có chắc?",
+  "Deleting interpretation": "xóa giải thích",
+  "Comment": "Bình luận",
+  "Edit": "Chỉnh sửa",
+  "Updating likes status": "Cập nhật tình trạng thích",
+  "Unlike": "không giống",
+  "Like": "Như",
+  "Write new interpretation": "Viết giải thích mới",
+  "Cancel": "hủy bỏ",
+  "Posting": "gửi bài",
+  "Post": "Bài đăng",
+  "This comment will be deleted, are you sure?":
+    "Nhận xét này sẽ bị xóa, bạn có chắc?",
+  "Deleting comment": "xóa bình luận",
+  "Write your comment": "Viết bình luận của bạn"
+}

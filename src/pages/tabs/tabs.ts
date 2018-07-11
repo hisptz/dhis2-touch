@@ -1,37 +1,48 @@
-import { Component,OnInit } from '@angular/core';
-import {AccountPage} from "../account/account";
-import {AppsPage} from "../apps/apps";
-import {User} from "../../providers/user";
+import { Component } from '@angular/core';
+import { BackgroundMode } from '@ionic-native/background-mode';
+import { UserProvider } from '../../providers/user/user';
+
+import { AppsPage } from '../apps/apps';
+import { AccountPage } from '../account/account';
+import { SynchronizationProvider } from '../../providers/synchronization/synchronization';
 
 @Component({
   templateUrl: 'tabs.html'
 })
-export class TabsPage implements OnInit{
-  // this tells the tabs component which Pages
-  // should be each tab's root Page
-  tab1Root: any = AppsPage;
-  tab2Root: any = AccountPage;
-  public accountName : string = 'Account';
+export class TabsPage {
+  tab1Root = AppsPage;
+  tab2Root = AccountPage;
+  accountName: string = 'account';
 
-  constructor(public user : User) {
-
-  }
+  constructor(
+    private user: UserProvider,
+    private backgroundMode: BackgroundMode,
+    private synchronizationProvider: SynchronizationProvider
+  ) {}
 
   ngOnInit() {
-    this.user.getUserData().then(userData=>{
+    this.backgroundMode
+      .disable()
+      .then(
+        () => {},
+        reason => console.log('here : ' + JSON.stringify(reason))
+      );
+    this.user.getUserData().subscribe(userData => {
       this.setUserAccountName(userData);
+    });
+    this.user.getCurrentUser().subscribe(currentUser => {
+      this.synchronizationProvider.startSynchronization(currentUser);
     });
   }
 
-  setUserAccountName(userData){
-    let newValue = "";
-    if(userData && userData.Name){
+  setUserAccountName(userData) {
+    let newValue = '';
+    if (userData && userData.Name) {
       let nameList = userData.Name.split(' ');
-      nameList.forEach(name=>{
+      nameList.forEach(name => {
         newValue += name.charAt(0).toUpperCase();
       });
       this.accountName = newValue;
     }
   }
-
 }

@@ -1,0 +1,42 @@
+selected-org-unit-section {
+  .selected-org-unit-section-container {
+    .selected-org-unit-container {
+      display: inline-block;
+      margin-right: 2px;
+      margin-top: 2px;
+      background-color: #eeeeee;
+      border-radius: 15px;
+      height: 25px;
+      padding: 3px;
+      align-items: center;
+      .selected-org-unit-block {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .selected-org-unit-name {
+          font-size: 1.2rem;
+          margin-left: 4px;
+          margin-right: 2px;
+        }
+        .selected-org-unit-btn {
+          border: none;
+          padding: 3px;
+          display: inline-block;
+          background-color: transparent;
+          img {
+            height: 8px;
+          }
+        }
+      }
+    }
+    .more-selected-org-unit {
+      background-color: transparent;
+      display: inline-block;
+      margin-right: 2px;
+      border-radius: 15px;
+      height: 25px;
+      padding: 3px;
+      align-items: center;
+    }
+  }
+}

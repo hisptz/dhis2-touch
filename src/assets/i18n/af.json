@@ -1,0 +1,481 @@
+{
+  "Account": "rekening",
+  "Apps": "programme",
+  "Log out": "Teken uit",
+  "About": "oor",
+  "Aggregate status": "totaal status",
+  "Event status": "status gebeurtenis",
+  "Event for tracker status": "Gebeurtenis vir tracker status",
+  "Enrollments": "inskrywings",
+  "System info": "stelsel info",
+  "Synced": "gesynchroniseerd",
+  "Not synced": "nie gesynchroniseerd",
+  "Discovering app information": "Ontdekking app inligting",
+  "Discovering system information": "Ontdekking stelsel inligting",
+  "Discovering data values storage status":
+    "Die ontdekking van data waardes stoor status",
+  "Discovering events storage status":
+    "Die ontdekking van gebeure stoor status",
+  "Discovering enrollments storage status":
+    "Die ontdekking van inskrywings stoor status",
+  "Fail to discover user information":
+    "Versuim om die gebruiker inligting te ontdek",
+  "Fail to discover system information":
+    "Versuim om stelsel inligting te ontdek",
+  "Fail to discover app information":
+    "Versuim om inligting inligting te ontdek",
+  "Fail to discover data values storage status":
+    "Versuim om data waardes stoor status ontdek",
+  "Fail to discover enrollments storage status":
+    "Versuim om inskrywings stoor status ontdek",
+  "Profile": "Profiel",
+  "User information": "gebruikerinligting",
+  "Assigned organisation units": "Opgedra organisasie-eenhede",
+  "Assigned roles": "opgedra rolle",
+  "Assigned programs": "opgedra programme",
+  "Assigned entry forms": "Opgedra inskrywingsvorms",
+  "Discovering profile information": "Ontdek profiel inligting",
+  "Fail to discover profile information":
+    "Versuim om profiel inligting te ontdek",
+  "Help": "help",
+  "Help search": "hulp soek",
+  "Search help by title": "Soek hulp deur titel",
+  "Settings": "instellings",
+  "Applying changes": "toepassing van veranderinge",
+  "Minutes": "Minute",
+  "Hours": "Ure",
+  "Auto synchronization": "Auto sinchronisasie",
+  "Form layout": "vorm uitleg",
+  "List layout": "lys uitleg",
+  "Table layout": "tafel uitleg",
+  "Form label": "vorm etiket",
+  "Display name": "vertoning naam",
+  "Form name": "vorm naam",
+  "Data element per page": "Data element per bladsy",
+  "Current language": "Huidige taal",
+  "App settings": "app instellings",
+  "Entry form": "inskrywingsvorm",
+  "Synchronization": "sinchronisasie",
+  "Discovering current user information":
+    "Die ontdekking van die huidige gebruiker inligting",
+  "Discovering settings": "ontdek instellings",
+  "Settings have been updated successfully":
+    "Instellings is suksesvol opgedateer",
+  "Fail to discover settings": "Versuim om instellings te ontdek",
+  "Fail to discover available local instances":
+    "Versuim om beskikbare plaaslike gevalle ontdek",
+  "Fail to discover current user information":
+    "Versuim om huidige gebruiker inligting te ontdek",
+  "Fail to set translation": "Versuim om vertaling te stel",
+  "Fail to apply changes on  settings":
+    "Versuim om veranderinge op instellings van toepassing",
+  "Reports": "Berigte",
+  "Search": "Soek",
+  "Discovering reports": "Die ontdekking van verslae",
+  "Downloading reports from server": "Aflaai verslae van bediener",
+  "Preparing local storage for updates":
+    "Voorbereiding plaaslike stoor vir updates",
+  "Saving reports from server": "verslae spaar van bediener",
+  "there is no report to select": "daar is geen verslag te kies",
+  "Fail  to discover reports": "Versuim om verslae te ontdek",
+  "Fail to save reports": "Versuim om verslae te red",
+  "Fail to prepare local storage for updates":
+    "Versuim om plaaslike stoor vir updates te berei",
+  "Fail to download reports": "Versuim om verslae af te laai",
+  "Data set report": "Datastel verslag",
+  "Standard report": "Standard verslag",
+  "Report name": "naam verslag",
+  "Organisation unit": "organisasie-eenheid",
+  "Period": "tydperk",
+  "Generate report": "genereer verslag",
+  "Touch to select organisation unit": "Raak om organisasie-eenheid te kies",
+  "Touch to select period": "Raak om tydperk kies",
+  "Report view": "verslag oog",
+  "Discovering user information": "Die ontdekking van gebruiker inligting",
+  "Discovering report metadata": "Ontdek verslag metadata",
+  "Fail to discover organisation units information":
+    "Versuim om organisasie-eenhede inligting te ontdek",
+  "Fail to discover report metadata": "Versuim om verslag metadata ontdek",
+  "Report type has not set,please contact system administrator":
+    "tipe verslag het nie stel, kontak stelsel administrateur",
+  "Discovering data set report information":
+    "Ontdek datastel rapporteer inligting",
+  "Preparing data set report": "Voorbereiding datastel verslag",
+  "Fail to prepare data set report":
+    "Versuim om datastel verslag voor te berei",
+  "Fail to discover data set report information":
+    "Versuim om datastel verslag inligting te ontdek",
+  "Program selection": "program seleksie",
+  "There is no program to select": "Daar is geen program om te kies",
+  "Period selection": "tydperk seleksie",
+  "Previous": "vorige",
+  "Next": "volgende",
+  "There is no period to select": "Daar is geen tydperk te kies",
+  "Organisation unit selection": "Organisasie seleksie eenheid",
+  "Discovering assigned organisation units":
+    "Ontdek opgedra organisasie-eenhede",
+  "Currently there is on assigned organisation unit on local storage, Please metadata on sync app":
+    "Tans is daar op opgedra organisasie-eenheid op plaaslike stoor, asseblief metadata op sync artikels",
+  "Fail to discover organisation units":
+    "Versuim om organisasie-eenhede te ontdek",
+  "Discovering organisation units": "Die ontdekking van organisasie-eenhede",
+  "Fail to discover organisation unit children":
+    "Versuim om organisasie-eenheid kinders ontdek",
+  "Event capture": "gebeurtenis vas te lê",
+  "Columns": "kolomme",
+  "Add": "Voeg",
+  "Discovering assigned programs": "Ontdek opgedra programme",
+  "Discovering program stages": "Ontdek program stadiums",
+  "Discovering data": "Die ontdekking van data",
+  "Preparing table for display": "Voorbereiding tafel vir mekaar",
+  "All of selected category disaggregation are restricted from entry in selcted organisation unit, choose a different form or contact your support desk":
+    "Al gekose kategorie disaggregation is beperk inskrywing in selcted organisasie-eenheid, kies 'n ander vorm of kontak u ondersteuning lessenaar",
+  "There is no option for selected category that associated with selected organisation unit":
+    "Daar is geen ander keuse vir geselekteerde kategorie wat verband hou met gekies organisasie-eenheid",
+  "There are no program to select": "Daar is geen program om te kies",
+  "Touch to select program": "Raak om program te kies",
+  "Touch to select option": "Raak om opsie kies",
+  "There no data at the moment": "Daar geen data op die oomblik",
+  "Visible header": "sigbaar kop",
+  "Select all": "Kies al",
+  "Deselect all": "Ontkies alle",
+  "Save": "Save",
+  "Event register": "gebeurtenis registreer",
+  "Program": "program",
+  "Discovering data from local storage":
+    "Die ontdekking van data van plaaslike berging",
+  "Fail to discover program stages": "Versuim om program stadiums ontdek",
+  "Report date": "verslag datum",
+  "Touch to pick date": "Raak tot op datum te kies",
+  "Delete": "verwyder",
+  "There are no data elements, please contact you help desk":
+    "Daar is geen data elemente, kontak jou lessenaar te help",
+  "You are about to delete this event, are you sure?":
+    "Jy is op die punt om hierdie gebeurtenis te verwyder, is jy seker?",
+  "Yes": "Ja",
+  "No": "Geen",
+  "Deleting event": "gebeurtenis te vee",
+  "Event has been deleted successfully": "Gebeurtenis is suksesvol verwyder",
+  "Fail to delete event": "Versuim om geleentheid te verwyder",
+  "Tracker capture": "Tracker vang",
+  "Discovering tracked entity list": "Ontdek nagespoor lys entiteit",
+  "There are no program to select, please select another organisation unit":
+    "Daar is geen program om te kies, kies asseblief 'n ander organisasie-eenheid",
+  "Fail to discover registration form": "Versuim om registrasievorm ontdek",
+  "Fail to discover assigned programs":
+    "Versuim om opgedra programme te ontdek",
+  "Fail to discover tracked entity list":
+    "Versuim na bewaakte entiteit lys ontdek",
+  "Fail to prepare table for display":
+    "Versuim om tafel te berei vir vertoning",
+  "List of widgets": "Lys van widgets",
+  "There is no widget to select": "Daar is geen widget te kies",
+  "Registration": "registrasie",
+  "Enrollment & Profile": "Inskrywing & Profile",
+  "Enrolling organisation unit": "Skryf organisasie-eenheid",
+  "Enrolling program": "AANSLUITING program",
+  "Discovering registration form": "Ontdek registrasievorm",
+  "You are about to delete all information related to this tracked entity instance, are you sure?":
+    "Jy is op die punt om alle inligting wat verband hou met hierdie nagespoor entiteit byvoorbeeld, is jy seker te verwyder?",
+  "Deleting all information related to this tracked entity instance":
+    "alle inligting wat verband hou met hierdie nagespoor entiteit byvoorbeeld die verwydering van",
+  "A tracked entity instance has not yet registered":
+    "A nagespoor entiteit byvoorbeeld het nog nie geregistreer",
+  "A tracked entity instance has been deleted successfully":
+    "A nagespoor entiteit byvoorbeeld is suksesvol verwyder",
+  "A tracked entity instance has been saved successfully":
+    "A nagespoor entiteit byvoorbeeld is suksesvol gestoor",
+  "Fail to delete all information related to this tracked entity instance":
+    "Versuim om alle inligting wat verband hou met hierdie nagespoor entiteit byvoorbeeld verwyder",
+  "Fail to save a tracked entity instance":
+    "Versuim om 'n nagespoor entiteit byvoorbeeld red",
+  "New event": "nuwe gebeurtenis",
+  "Discovering events": "Die ontdekking van gebeure",
+  "Fail to discover events": "Versuim om gebeure te ontdek",
+  "Due date": "sperdatum",
+  "Contact your help desk to add data elements on this stage":
+    "Kontak jou hulptoonbank om data elemente by te voeg op hierdie stadium",
+  "Tracked entity dashboard": "Nagespoorde paneelbord entiteit",
+  "Discovering tracked entity": "Ontdek nagespoor entiteit",
+  "Discovering registration fields": "Die ontdekking van registrasie velde",
+  "Tracked entity instance has been delete successfully":
+    "Nagespoor entiteit byvoorbeeld is verwyder suksesvol",
+  "Fail to discover tracked entity": "Versuim na bewaakte entiteit ontdek",
+  "Fail to discover registration fields": "Versuim om registrasie velde ontdek",
+  "Data entry": "Data invoer",
+  "Touch to select entry form": "Raak om inskrywingsvorm kies",
+  "Form": "vorm",
+  "Enter data": "Tik data",
+  "There are no entry form to select on selected organisation unit":
+    "Daar is geen inskrywingsvorm gekies organisasie-eenheid op te kies",
+  "Please select entry form first": "Kies eers inskrywingsvorm",
+  "There is no option for seleted category that associated with selected organisation unit":
+    "Daar is geen ander keuse vir seleted kategorie wat verband hou met gekies organisasie-eenheid",
+  "All disaggregation are restricted from entry in selected organisation unit, please choose a different form or contact your support desk":
+    "Alle disaggregation is beperk inskrywing in geselekteerde organisasie-eenheid, kies 'n ander vorm of kontak u ondersteuning lessenaar",
+  "Fail to discover entry form": "Versuim om inskrywingsvorm ontdek",
+  "Data entry form selection": "Data inskrywingsvorm seleksie",
+  "There is no data entry form to select":
+    "Daar is geen data inskrywingsvorm te kies",
+  "Data dimension selection": "Data dimensie seleksie",
+  "There is no option to select": "Daar is geen ander keuse om te kies",
+  "Data entry form sections": "Data inskrywingsvorm artikels",
+  "There is nothing to select": "Daar is niks om te kies",
+  "Entry form's indicators": "aanwysers inskrywingsvorm se",
+  "Name": "naam",
+  "Numerator Description": "teller beskrywing",
+  "Denominator Description": "deler beskrywing",
+  "Indicator value": "aanwyser waarde",
+  "Data entry form": "Data inskrywingsvorm",
+  "Available indicators": "beskikbaar aanwysers",
+  "Complete": "volledige",
+  "Undo complete": "ongedaan volledige",
+  "Completed by": "voltooi deur",
+  "on": "op",
+  "Please wait ...": "Wag asseblief ...",
+  "The is no field associated with this entry form, Please contact our help desk":
+    "Die is geen veld wat verband hou met hierdie inskrywingsvorm, asseblief kontak ons ​​hulptoonbank",
+  "Discovering entry form information": "Ontdek inskrywingsvorm inligting",
+  "Discovering indicators": "ontdek aanwysers",
+  "Preparing entry form": "Voorbereiding inskrywingsvorm",
+  "Discovering data from the server":
+    "Die ontdekking van data van die bediener",
+  "Saving data from server": "data vanaf bediener spaar",
+  "Discovering available local data": "Ontdek beskikbaar plaaslike data",
+  "Discovering entry form completeness information":
+    "Ontdek inskrywingsvorm volledigheid inligting",
+  "There are no indicators to view": "Daar is geen aanwysers om te sien",
+  "Uploading data": "oplaai data",
+  "Fail to discover indicators": "Versuim om aanwysers te ontdek",
+  "Fail to discover entry form information":
+    "Versuim om inskrywingsvorm inligting te ontdek",
+  "Fail to save data from the server":
+    "Versuim om data van die bediener te red",
+  "Fail to discover data from the server":
+    "Versuim om data van die bediener te ontdek",
+  "Fail to discover available local data":
+    "Versuim om beskikbare plaaslike data te ontdek",
+  "Fail to discover entry form completeness information":
+    "Versuim om inskrywingsvorm volledigheid inligting te ontdek",
+  "Fail to un complete entry form": "Versuim om un volledige inskrywingsvorm",
+  "Fail to complete entry form": "Versuim om inskrywingsvorm voltooi",
+  "Completeness information": "volledigheid inligting",
+  "Discovering completeness information":
+    "Die ontdekking van volledigheid inligting",
+  "Fail to discover completeness information":
+    "Versuim om volledigheid inligting te ontdek",
+  "Username": "Gebruikersnaam",
+  "Full name": "Volle naam",
+  "E-mial": "E-mial",
+  "Phone number": "Telefoon nommer",
+  "Sync": "Sync",
+  "Clear local metadata": "Duidelike plaaslike metadata",
+  "Clear metaData": "duidelik metadata",
+  "Clear local metadata confirmation":
+    "Duidelike plaaslike metadata bevestiging",
+  "You are about to clear all selected items, Are you sure?":
+    "Jy is op die punt om al die geselekteerde items te verwyder, Is jy seker?",
+  "Clearing selected items": "Skoonmaak van geselekteerde items",
+  "Applying updates to local storage":
+    "Toepassing van updates vir plaaslike stoor",
+  "Please select at least one item to clear":
+    "Kies ten minste een item skoon te maak",
+  "All selected metadata has been cleared successfully":
+    "Alle gekies metadata is suksesvol skoongemaak",
+  "Fail to apply updates to local storage":
+    "Versuim om updates vir plaaslike stoor van toepassing",
+  "Clear local data": "Duidelike plaaslike data",
+  "Aggregate data": "totaal data",
+  "Events": "gebeure",
+  "Events for tracker": "Gebeure vir tracker",
+  "Clear offline data confirmation":
+    "Duidelik op die regte pad bevestiging data",
+  "You are about to clear all selected items, are you sure?":
+    "Jy is op die punt om al die geselekteerde items te verwyder, is jy seker?",
+  "All selected items has been cleared successfully":
+    "Alle geselekteerde items is suksesvol skoongemaak",
+  "Fail to clear selected items": "Versuim om geselekteerde items te verwyder",
+  "Download metadata": "aflaai metadata",
+  "Please select at least one item": "Kies ten minste een item",
+  "Downloading updates": "aflaai updates",
+  "Applying updates": "toepassing van updates",
+  "All updates has been applied successfully":
+    "Alle updates is suksesvol toegepas",
+  "Fail to apply updates": "Versuim om updates van toepassing",
+  "Fail to prepare local storage for update":
+    "Versuim om plaaslike stoor vir werk voor te berei",
+  "Fail to download updates": "Versuim om updates te laai",
+  "Upload data via internet": "Laai data via die internet",
+  "Upload data": "oplaai data",
+  "Uploading selected local data, please wait...":
+    "Oplaai gekies plaaslike data, wag asseblief ...",
+  "Import summaries": "opsommings invoer",
+  "Tracked entity instances": "Nagespoor entiteit gevalle",
+  "Tracked entity enrollments": "Nagespoor entiteit inskrywings",
+  "Success": "sukses",
+  "Failed": "misluk",
+  "Import conflicts or errors": "Invoer konflikte of foute",
+  "Upload data via SMS": "Laai data via SMS",
+  "Mobile Number": "Selfoon nommer",
+  "Discovering SMS Configuration": "Discovering SMS Configuration",
+  "Preparing entry form fields": "Voorbereiding inskrywingsvorm velde",
+  "Preparing data": "voorbereiding data",
+  "Preparing SMS": "voorbereiding SMS",
+  "Sending SMS": "die stuur van SMS",
+  "Sending SMSes": "stuur SMS'e",
+  "SMS has been sent": "SMS gestuur",
+  "Fail to send some of SMS, Please go into your SMS inbox and resend them manually":
+    "Versuim om 'n paar van SMS stuur, asseblief gaan na jou SMS inbox en met die hand herstuur hulle",
+  "Fail to preparing SMS": "Versuim om voor te berei SMS",
+  "There is no data to be sent via SMS":
+    "Daar is geen data via SMS gestuur word",
+  "Fail to discover data values": "Versuim om data waardes te ontdek",
+  "Selected entry form has no field set, please contact your help desk":
+    "Gekies inskrywingsvorm het geen veld stel, kontak asseblief u hulptoonbank",
+  "Fail to discover SMS configurations": "Versuim om SMS konfigurasies ontdek",
+  "Innovation in every dimension": "Innovasie in elke dimensie",
+  "Establishing connection to server": "Stigting verbinding met bediener",
+  "Aggregate metadata": "totaal metadata",
+  "Event and tracker metadata": "Gebeurtenis en spoorsnyer metadata",
+  "Reports metadata": "verslae metadata",
+  "Enter server address": "Tik bediener adres",
+  "Enter username": "Tik gebruikersnaam",
+  "Enter password": "Sleutel wagwoord in",
+  "Login": "Teken aan",
+  "or": "of",
+  "Offline instances": "op die regte pad gevalle",
+  "Powered by": "Aangedryf deur",
+  "Discovering current user authorities":
+    "Die ontdekking van die huidige gebruiker owerhede",
+  "Preparing local storage": "Voorbereiding plaaslike stoor",
+  "Fail to prepare local storage": "Versuim om plaaslike stoor voor te berei",
+  "Fail to discover user authorities": "Versuim om gebruikers owerhede ontdek",
+  "Fail to save current user information":
+    "Versuim om huidige gebruiker inligting te red",
+  "Please check your network connectivity":
+    "Gaan asseblief jou netwerkverbinding",
+  "You have enter wrong username or password or server address":
+    "Jy het te gaan verkeerd gebruikersnaam of wagwoord of bediener adres",
+  "Please check server address, or contact your help desk":
+    "Gaan asseblief die bediener adres, of kontak jou hulptoonbank",
+  "Please enter server address, username and password":
+    "Voer die bediener adres, gebruikersnaam en wagwoord",
+  "Assigned organisation units have been discovered":
+    "Opgedra organisasie-eenhede is ontdek",
+  "Saving assigned organisation units": "Spaar opgedra organisasie-eenhede",
+  "Assigned organisation units have been saved":
+    "Opgedra organisasie-eenhede is gered",
+  "Fail to save organisation data": "Versuim om organisasie data red",
+  "Fail to discover organisation data": "Versuim om organisasie data te ontdek",
+  "Discovering entry forms": "Ontdek inskrywingsvorms",
+  "Entry forms have been discovered": "Inskrywingsvorms is ontdek",
+  "Saving entry forms": "Spaar inskrywingsvorms",
+  "Entry form have been saved": "Inskrywingsvorm gered",
+  "Fail to save entry form": "Versuim om inskrywingsvorm te red",
+  "Discovering entry form sections": "Ontdek inskrywingsvorm artikels",
+  "Entry form sections have been discovered":
+    "Inskrywingsvorm afdelings is ontdek",
+  "Saving entry form sections": "Spaar inskrywingsvorm artikels",
+  "Entry form sections have been saved": "Inskrywingsvorm afdelings is gered",
+  "Fail to save entry form sections":
+    "Versuim om inskrywingsvorm afdelings red",
+  "Fail to discover entry form sections":
+    "Versuim om inskrywingsvorm afdelings ontdek",
+  "Discovering entry form fields": "Ontdek inskrywingsvorm velde",
+  "Entry form fields have been discovered": "Inskrywingsvorm velde is ontdek",
+  "Saving entry form fields": "Spaar inskrywingsvorm velde",
+  "Entry form fields have been saved": "Inskrywingsvorm velde gered",
+  "Fail to save entry form fields": "Versuim om inskrywingsvorm velde red",
+  "Fail to discover entry form fields":
+    "Versuim om inskrywingsvorm velde ontdek",
+  "Discovering SMS commands": "Die ontdekking van SMS bevele",
+  "SMS commands have been discovered": "SMS bevele ontdek",
+  "Saving SMS commands": "Spaar SMS bevele",
+  "SMS commands have been saved": "SMS bevele gered",
+  "Fail to save SMS commands": "Versuim om SMS bevele te red",
+  "Fail to discover SMS commands": "Versuim om SMS bevele ontdek",
+  "Discovering programs": "Die ontdekking van programme",
+  "Programs have been discovered": "Programme ontdek",
+  "Saving programs": "programme spaar",
+  "Programs have been saved": "Programme gered",
+  "Fail to save programs": "Versuim om programme te red",
+  "Fail to discover programs": "Versuim om programme te ontdek",
+  "Discovering program stage section": "Ontdek program stadium artikel",
+  "Program stage section have been discovered":
+    "Program stadium artikel is ontdek",
+  "Saving program stage section": "Spaar program stadium artikel",
+  "Program stage section have been saved": "Program stadium artikel gered",
+  "Fail to save program stage sections":
+    "Versuim om program stadium afdelings red",
+  "Fail to discover program stage sections":
+    "Versuim om program stadium afdelings ontdek",
+  "Indicators have been discovered": "Aanwysers ontdek",
+  "Saving indicators": "aanwysers spaar",
+  "Indicators have been saved": "Aanwysers gered",
+  "Fail to save indicators": "Versuim om aanwysers te red",
+  "Reports have been discovered": "Verslae ontdek",
+  "Saving reports": "verslae spaar",
+  "Reports have been saved": "Verslae gered",
+  "Fail to discover reports": "Versuim om verslae te ontdek",
+  "Discovering constants": "Die ontdekking van konstantes",
+  "Constants have been discovered": "Konstantes ontdek",
+  "Saving constants": "konstantes spaar",
+  "Constants have been saved": "Konstantes gered",
+  "Fail to save constants": "Versuim om konstantes te red",
+  "Fail to discover constants": "Versuim om konstantes ontdek",
+  "There is no local instance to select":
+    "Daar is geen plaaslike instansie te kies",
+  "Discovering available local instances":
+    "Ontdek beskikbaar plaaslike gevalle",
+  "Fail to load available local instances":
+    "Versuim om beskikbare plaaslike gevalle laai",
+  "Dashboard": "Dashboard",
+  "Discovering dashboards": "ontdek dashboards",
+  "There no dashboard item found": "Daar is geen paneelbord item gevind",
+  "Dashboard list": "paneelbord lys",
+  "Search dashboard by name": "Soek paneelbord met die naam",
+  "Layout": "uitleg",
+  "Table / Chart Layout": "Table / Chart uitleg",
+  "Filters": "filters",
+  "Column": "kolom",
+  "Row": "ry",
+  "Categories": "kategorieë",
+  "Series": "reeks",
+  "Update": "Opdateer",
+  "Close": "Naby",
+  "Data": "data",
+  "Select": "Kies",
+  "All": "Almal",
+  "Data elements": "data-elemente",
+  "Indicators": "aanwysers",
+  "Data sets": "datastelle",
+  "Program indicators": "program aanwysers",
+  "Functions": "funksies",
+  "Available": "beskikbaar",
+  "Selected": "gekies",
+  "Discovering...": "Die ontdekking van ...",
+  "No items": "geen items",
+  "Select period type": "Kies soort tydperk",
+  "Previous year": "Vorige jaar",
+  "Next year": "Volgende jaar",
+  "Org-unit": "Org-eenheid",
+  "Interpretation": "interpretasie",
+  "Not found": "Nie gevind nie",
+  "Search interpretation": "Soek interpretasie",
+  "This interpretation will be deleted, are you sure?":
+    "Hierdie interpretasie sal uit gewis word, is jy seker?",
+  "Deleting interpretation": "interpretasie verwydering",
+  "Comment": "kommentaar",
+  "Edit": "wysig",
+  "Updating likes status": "Opdatering hou status",
+  "Unlike": "In teenstelling met",
+  "Like": "soos",
+  "Write new interpretation": "Skryf nuwe interpretasie",
+  "Cancel": "kanselleer",
+  "Posting": "plasing",
+  "Post": "Post",
+  "This comment will be deleted, are you sure?":
+    "Hierdie kommentaar sal verwyder word, is jy seker?",
+  "Deleting comment": "kommentaar verwydering",
+  "Write your comment": "Skryf jou kommentaar"
+}

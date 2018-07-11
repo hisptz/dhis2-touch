@@ -1,0 +1,18 @@
+<ion-row>
+  <ion-col>
+    <div class="item-card" padding color="font-color" text-justify (click)="openOrganisationUnitSelection()">
+      {{ seletectOrganisatioUnit.name }}
+    </div>
+  </ion-col>
+  <ion-col col-auto>
+    <div float-right>
+      <button color="danger" outline ion-button [disabled]="seletectOrganisatioUnit.name == ''" (tap)="clearValue()">
+        <ion-icon name="trash" color="danger"></ion-icon>
+      </button>
+      <div class="item-card" color="font-color" ion-button clear text-justify (click)="openOrganisationUnitSelection()">
+        <img class="side-menu-icon" [src]="icons.orgUnit" />
+        <br>
+      </div>
+    </div>
+  </ion-col>
+</ion-row>
