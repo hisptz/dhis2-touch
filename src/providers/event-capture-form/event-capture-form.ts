@@ -54,6 +54,9 @@ export class EventCaptureFormProvider {
             });
             let dueDate = moment(new Date()).format('YYYY-MM-DD');
             if (matchedEnrollment) {
+              console.log(
+                'is valid' + this.isValidDate(matchedEnrollment.incidentDate)
+              );
               let referenceDate = this.isValidDate(
                 matchedEnrollment.incidentDate
               )
@@ -90,10 +93,11 @@ export class EventCaptureFormProvider {
   }
 
   isValidDate(str) {
-    var d = moment(str, 'D/M/YYYY');
+    var d = moment(str, 'YYYY-MM-DD');
     if (d == null || !d.isValid()) return false;
 
     return (
+      str.indexOf(d.format('YYYY-MM-DD')) >= 0 ||
       str.indexOf(d.format('D/M/YYYY')) >= 0 ||
       str.indexOf(d.format('DD/MM/YYYY')) >= 0 ||
       str.indexOf(d.format('D/M/YY')) >= 0 ||
