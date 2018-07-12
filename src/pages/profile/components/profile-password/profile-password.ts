@@ -12,8 +12,16 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ProfilePasswordComponent implements OnInit {
   @Input() currentUser;
+  @Input() dataEntrySettings;
+  @Input() barcodeSettings;
 
-  constructor() {}
+  dataObject;
+
+  constructor() {
+    this.dataObject = {};
+  }
 
   ngOnInit() {}
+
+  updateValue(data) {}
 }
