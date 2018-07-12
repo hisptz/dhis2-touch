@@ -6,6 +6,7 @@ import { AppTranslationProvider } from '../../providers/app-translation/app-tran
 import { UserProvider } from '../../providers/user/user';
 import { CurrentUser } from '../../models/currentUser';
 import { SettingsProvider } from '../../providers/settings/settings';
+import { EncryptionProvider } from '../../providers/encryption/encryption';
 
 /**
  * Generated class for the ProfilePage page.
@@ -31,6 +32,8 @@ export class ProfilePage implements OnInit {
   loadingMessage: string;
   isLoading: boolean = true;
   dataValuesSavingStatusClass: any;
+  isPasswordFormValid: boolean;
+  isUserPasswordUpdateProcessActive: boolean;
 
   constructor(
     public navCtrl: NavController,
@@ -38,11 +41,14 @@ export class ProfilePage implements OnInit {
     private profileProvider: ProfileProvider,
     private appTranslation: AppTranslationProvider,
     private userProvider: UserProvider,
-    private settingProvider: SettingsProvider
+    private settingProvider: SettingsProvider,
+    private encryptionProvider: EncryptionProvider
   ) {
     this.dataValuesSavingStatusClass = {};
     this.isLoading = true;
     this.translationMapper = {};
+    this.isPasswordFormValid = false;
+    this.isUserPasswordUpdateProcessActive = false;
   }
 
   ngOnInit() {
@@ -65,7 +71,7 @@ export class ProfilePage implements OnInit {
     this.isProfileContentOpen = {};
     this.profileContents = this.profileProvider.getProfileContentDetails();
     if (this.profileContents.length > 0) {
-      this.toggleProfileContents(this.profileContents[0]);
+      this.toggleProfileContents(this.profileContents[1]);
     }
     this.userProvider.getCurrentUser().subscribe(
       currentUser => {
@@ -134,6 +140,17 @@ export class ProfilePage implements OnInit {
         this.dataValuesSavingStatusClass[id] = 'input-field-container-failed';
       }
     );
+  }
+
+  updateUserPassword(newPassword) {
+    console.log('updateUserPassword : ' + newPassword);
+  }
+
+  passwordFormFieldUpdate(data) {
+    const { id } = data;
+    const { value } = data;
+    console.log('id : ' + id);
+    console.log('value : ' + value);
   }
 
   trackByFn(index, item) {
