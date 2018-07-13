@@ -74,7 +74,7 @@ export class ProfilePage implements OnInit {
     this.isProfileContentOpen = {};
     this.profileContents = this.profileProvider.getProfileContentDetails();
     if (this.profileContents.length > 0) {
-      this.toggleProfileContents(this.profileContents[1]);
+      this.toggleProfileContents(this.profileContents[0]);
     }
     this.userProvider.getCurrentUser().subscribe(
       currentUser => {
