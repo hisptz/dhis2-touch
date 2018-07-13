@@ -94,7 +94,7 @@ import { BarcodeReaderProvider } from '../providers/barcode-reader/barcode-reade
     BrowserModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot(effects),
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, { scrollAssist: false, autoFocusAssist: false }),
     HttpModule,
     IonicStorageModule.forRoot(),
     TranslateModule.forRoot({

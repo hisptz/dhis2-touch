@@ -34,6 +34,7 @@ export class ProfilePage implements OnInit {
   dataValuesSavingStatusClass: any;
   isPasswordFormValid: boolean;
   isUserPasswordUpdateProcessActive: boolean;
+  passwordDataObject;
 
   constructor(
     public navCtrl: NavController,
@@ -45,6 +46,7 @@ export class ProfilePage implements OnInit {
     private encryptionProvider: EncryptionProvider
   ) {
     this.dataValuesSavingStatusClass = {};
+    this.passwordDataObject = {};
     this.isLoading = true;
     this.translationMapper = {};
     this.isPasswordFormValid = false;
@@ -144,13 +146,94 @@ export class ProfilePage implements OnInit {
 
   updateUserPassword(newPassword) {
     console.log('updateUserPassword : ' + newPassword);
+    // oldPassword newPassword newPasswordConfirmation
+    //currentUser.password = this.encryption.encode(currentUser.password);
+    // currentUser.hashedKeyForOfflineAuthentication = this.encryption.getHashedKeyForOfflineAuthentication(
+    //   currentUser
+    // );
+    // this.currentUser.authorizationKey = btoa(
+    //   this.currentUser.username + ':' + this.currentUser.password
+    // );
   }
 
   passwordFormFieldUpdate(data) {
     const { id } = data;
     const { value } = data;
-    console.log('id : ' + id);
-    console.log('value : ' + value);
+    this.passwordDataObject[id] = value;
+    const oldPassword = this.passwordDataObject['oldPassword'];
+    const newPassword = this.passwordDataObject['newPassword'];
+    const newPasswordConfirmation = this.passwordDataObject[
+      'newPasswordConfirmation'
+    ];
+    const regexCapital = /^(?=.*[A-Z]).+$/;
+    const regexSpecial = /^(?=.*[0-9_\W]).+$/;
+    const regexNumberical = /^(?=.*[0-9]).+$/;
+    let hasViolation = false;
+    Object.keys(this.passwordDataObject).map(key => {
+      if (!hasViolation) {
+        if (key == 'oldPassword') {
+          const encoddePassword = this.encryptionProvider.encode(oldPassword);
+          const { password } = this.currentUser;
+          if (encoddePassword !== password) {
+            hasViolation = true;
+            this.appProvider.setNormalNotification(
+              'Old password is not correct'
+            );
+          }
+        } else if (key == 'newPassword') {
+          if (oldPassword) {
+            if (newPassword && newPassword === oldPassword) {
+              hasViolation = true;
+              this.appProvider.setNormalNotification(
+                'New password and old password should not be equal'
+              );
+            } else if (newPassword && newPassword !== oldPassword) {
+              if (newPassword.length < 8) {
+                hasViolation = true;
+                this.appProvider.setNormalNotification(
+                  'New password should be at least 8 characters'
+                );
+              } else if (!regexNumberical.test(newPassword)) {
+                hasViolation = true;
+                this.appProvider.setNormalNotification(
+                  'New password should be at least with at least 1 digit '
+                );
+              } else if (!regexSpecial.test(newPassword)) {
+                hasViolation = true;
+                this.appProvider.setNormalNotification(
+                  'New password should be at  least 1 special character'
+                );
+              } else if (!regexCapital.test(newPassword)) {
+                hasViolation = true;
+                this.appProvider.setNormalNotification(
+                  'New password should be at least 1 uppercase letter'
+                );
+              }
+            }
+          }
+        } else if (key == 'newPasswordConfirmation') {
+          if (
+            newPassword &&
+            newPasswordConfirmation &&
+            newPassword !== newPasswordConfirmation
+          ) {
+            this.appProvider.setNormalNotification(
+              'New password and New password confirmation should match'
+            );
+          }
+        }
+      }
+    });
+
+    // isPasswordFormValid
+
+    //checking for form validity
+    console.log(
+      'passwordDataObject : ' +
+        JSON.stringify(this.passwordDataObject) +
+        ' hasViolation : ' +
+        hasViolation
+    );
   }
 
   trackByFn(index, item) {

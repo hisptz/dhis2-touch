@@ -199,6 +199,24 @@ export class ProfileProvider {
     );
   }
 
+  updateUserPassword(data): Observable<any> {
+    return new Observable(observer => {
+      const url = '/api/25/me';
+      this.httpProvider.put(url, data).subscribe(
+        () => {
+          observer.complete();
+        },
+        error => {
+          const { message } = error;
+          const resposne = message
+            ? message
+            : 'Fail to update user password ' + JSON.stringify(error);
+          observer.error(resposne);
+        }
+      );
+    });
+  }
+
   /**
    * get user info
    * @param userData
