@@ -2,22 +2,22 @@
   <ion-col>
     <div float-left>
       <div *ngIf="valueType == 'INTEGER' ||valueType == 'NUMBER'">
-        <ion-item>
+        <ion-item no-lines>
           <ion-input type="number" (ionBlur)="updateValues()" [(ngModel)]="inputFieldValue"></ion-input>
         </ion-item>
       </div>
       <div *ngIf="valueType == 'INTEGER_POSITIVE'">
-        <ion-item>
+        <ion-item no-lines>
           <ion-input type="number" min="1" (ionBlur)="updateValues()" [(ngModel)]="inputFieldValue"></ion-input>
         </ion-item>
       </div>
       <div *ngIf="valueType == 'INTEGER_NEGATIVE'">
-        <ion-item>
+        <ion-item no-lines>
           <ion-input type="number" max="-1" (ionBlur)="updateValues()" [(ngModel)]="inputFieldValue"></ion-input>
         </ion-item>
       </div>
       <div *ngIf="valueType == 'INTEGER_ZERO_OR_POSITIVE'">
-        <ion-item>
+        <ion-item no-lines>
           <ion-input type="number" min="0" (ionBlur)="updateValues()" [(ngModel)]="inputFieldValue"></ion-input>
         </ion-item>
       </div>

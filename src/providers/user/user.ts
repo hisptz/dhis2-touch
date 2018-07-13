@@ -324,13 +324,86 @@ export class UserProvider {
     return new Observable(observer => {
       this.storage.set('userData', JSON.stringify(userData)).then(
         () => {
-          observer.next(userData);
+          this.setProfileInformation(userDataResponse, true).subscribe(
+            () => {
+              observer.next(userData);
+              observer.complete();
+            },
+            error => {
+              observer.error();
+            }
+          );
+        },
+        error => {
+          observer.error(error);
+        }
+      );
+    });
+  }
+
+  setProfileInformation(userDataResponse, status?: boolean): Observable<any> {
+    return new Observable(observer => {
+      const ommittedKeys = [
+        'access',
+        'attributeValues',
+        'userAccesses',
+        'dataSets',
+        'programs',
+        'userGroups',
+        'userCredentials',
+        'userGroupAccesses',
+        'favorites',
+        'favorite',
+        'teiSearchOrganisationUnits',
+        'name',
+        'organisationUnits',
+        'translations',
+        'dataViewOrganisationUnits',
+        'lastCheckedInterpretations',
+        'created',
+        'id',
+        'lastUpdated',
+        'displayName',
+        'externalAccess',
+        'authorities',
+        'settings'
+      ];
+      status = status ? status : false;
+      const profileInfo = { status: status };
+      Object.keys(userDataResponse).map(key => {
+        if (ommittedKeys.indexOf(key) === -1) {
+          profileInfo[key] = userDataResponse[key];
+        }
+      });
+      this.storage.set('profileInfo', JSON.stringify(profileInfo)).then(
+        () => {
+          observer.next();
           observer.complete();
         },
         error => {
           observer.error(error);
         }
       );
+    });
+  }
+
+  getProfileInformation(): Observable<any> {
+    return new Observable(observer => {
+      this.storage
+        .get('profileInfo')
+        .then(
+          profileInfo => {
+            profileInfo = JSON.parse(profileInfo);
+            observer.next(profileInfo);
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        )
+        .catch(error => {
+          observer.error(error);
+        });
     });
   }
 

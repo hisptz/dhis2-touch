@@ -49,9 +49,16 @@ export class PhoneNumberInputComponent implements OnInit {
           });
         }
       }
-    } else {
+    } else if (this.inputFieldValue.trim() !== '') {
       this.dataValuesSavingStatusClass[fieldId] =
         'input-field-container-failed';
+    } else {
+      this.onChange.emit({
+        id: fieldId,
+        value: this.inputFieldValue.trim(),
+        status: 'not-synced'
+      });
+      this.dataValuesSavingStatusClass[fieldId] = 'input-field-container';
     }
   }
 

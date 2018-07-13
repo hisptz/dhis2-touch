@@ -458,7 +458,7 @@ export class TrackerEntityRegisterPage implements OnInit {
               .updateEnrollement(
                 this.trackedEntityInstance,
                 this.date.incidentDate,
-                this.date.enrollment,
+                this.date.enrollmentDate,
                 this.coordinate,
                 this.currentProgram.id,
                 this.currentOrganisationUnit.id,

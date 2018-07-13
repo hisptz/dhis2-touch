@@ -1,0 +1,60 @@
+<div *ngIf="!isLoading">
+  <form>
+    <div *ngFor="let field of profileInfoForm;trackBy: trackByFn">
+      <div class="inputLabel">
+        <span [translate]="field.displayName"></span>
+      </div>
+      <div *ngIf="field.optionSet" [ngClass]="(dataValuesSavingStatusClass[field.id +'-profile'])?dataValuesSavingStatusClass[field.id +'-profile']:'input-field-container'">
+        <option-set-input-field [dataEntrySettings]="dataEntrySettings" (onChange)="updateValue($event)" [optionListTitle]="'List of option to select'"
+          [dataElementId]="field.id" [categoryOptionComboId]="'profile'" [data]="dataObject" [options]="field.optionSet.options"></option-set-input-field>
+      </div>
+      <div *ngIf="!field.optionSet" [ngClass]="(dataValuesSavingStatusClass[field.id +'-profile'])?dataValuesSavingStatusClass[field.id +'-profile']:'input-field-container'">
+        <div *ngIf="textInputField.indexOf(field.valueType) > -1">
+          <text-input-field (onChange)="updateValue($event)" [dataElementId]="field.id" [categoryOptionComboId]="'profile'" [data]="dataObject"
+            [barcodeSettings]="barcodeSettings" [valueType]="field.valueType"></text-input-field>
+        </div>
+        <div *ngIf="numericalInputField.indexOf(field.valueType) > -1">
+          <numerical-input-field (onChange)="updateValue($event)" [dataElementId]="field.id" [categoryOptionComboId]="'profile'" [data]="dataObject"
+            [barcodeSettings]="barcodeSettings" [valueType]="field.valueType"></numerical-input-field>
+        </div>
+        <div *ngIf="field.valueType === 'DATE' || field.valueType === 'DATETIME' || field.valueType === 'TIME' ">
+          <date-input-field (onChange)="updateValue($event)" [valueType]="field.valueType" [dataElementId]="field.id" [categoryOptionComboId]="'profile'"
+            [data]="dataObject"></date-input-field>
+        </div>
+        <div *ngIf="field.valueType === 'TRUE_ONLY'">
+          <true-only-input-field (onChange)="updateValue($event)" [dataElementId]="field.id" [categoryOptionComboId]="'profile'" [data]="dataObject"></true-only-input-field>
+        </div>
+        <div *ngIf="field.valueType === 'BOOLEAN'">
+          <boolean-input-field (onChange)="updateValue($event)" [dataElementId]="field.id" [categoryOptionComboId]="'profile'" [data]="dataObject"></boolean-input-field>
+        </div>
+        <div *ngIf="field.valueType === 'AGE'">
+          <age-input (onChange)="updateValue($event)" [dataElementId]="field.id" [categoryOptionComboId]="'profile'" [data]="dataObject"></age-input>
+        </div>
+        <div *ngIf="field.valueType === 'COORDINATE'">
+          <coordinate-input (onChange)="updateValue($event)" [dataElementId]="field.id" [categoryOptionComboId]="'profile'" [data]="dataObject"></coordinate-input>
+        </div>
+        <div *ngIf="field.valueType === 'ORGANISATION_UNIT'">
+          <organisation-unit-input (onChange)="updateValue($event)" [dataElementId]="field.id" [categoryOptionComboId]="'profile'"
+            [data]="dataObject"></organisation-unit-input>
+        </div>
+        <div *ngIf="field.valueType === 'UNIT_INTERVAL'">
+          <unit-interval-input (onChange)="updateValue($event)" [dataElementId]="field.id" [categoryOptionComboId]="'profile'" [data]="dataObject">
+          </unit-interval-input>
+        </div>
+        <div *ngIf="field.valueType === 'PERCENTAGE'">
+          <percentage-input (onChange)="updateValue($event)" [dataElementId]="field.id" [categoryOptionComboId]="'profile'" [data]="dataObject"></percentage-input>
+        </div>
+        <div *ngIf="field.valueType === 'EMAIL'">
+          <email-input (onChange)="updateValue($event)" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [dataElementId]="field.id"
+            [categoryOptionComboId]="'profile'" [data]="dataObject">
+          </email-input>
+        </div>
+        <div *ngIf="field.valueType === 'PHONE_NUMBER'">
+          <phone-number-input (onChange)="updateValue($event)" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [dataElementId]="field.id"
+            [categoryOptionComboId]="'profile'" [data]="dataObject">
+          </phone-number-input>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
