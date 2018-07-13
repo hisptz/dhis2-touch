@@ -145,6 +145,7 @@ export class ProfilePage implements OnInit {
   }
 
   updateUserPassword(newPassword) {
+    this.isUserPasswordUpdateProcessActive = true;
     console.log('updateUserPassword : ' + newPassword);
     // oldPassword newPassword newPasswordConfirmation
     //currentUser.password = this.encryption.encode(currentUser.password);
@@ -154,6 +155,9 @@ export class ProfilePage implements OnInit {
     // this.currentUser.authorizationKey = btoa(
     //   this.currentUser.username + ':' + this.currentUser.password
     // );
+    this.userProvider
+      .setCurrentUser(this.currentUser)
+      .subscribe(() => {}, error => {});
   }
 
   passwordFormFieldUpdate(data) {
@@ -224,15 +228,13 @@ export class ProfilePage implements OnInit {
         }
       }
     });
-
-    // isPasswordFormValid
-
-    //checking for form validity
+    this.isPasswordFormValid =
+      Object.keys(this.passwordDataObject).length === 3 && !hasViolation;
     console.log(
-      'passwordDataObject : ' +
-        JSON.stringify(this.passwordDataObject) +
-        ' hasViolation : ' +
-        hasViolation
+      'isPasswordFormValid ' +
+        this.isPasswordFormValid +
+        ' : ' +
+        (Object.keys(this.passwordDataObject).length === 3 && !hasViolation)
     );
   }
 

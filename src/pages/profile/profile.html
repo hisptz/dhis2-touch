@@ -51,8 +51,8 @@
               </div>
               <div *ngIf="profileContent.id == 'accountSetting'">
                 <profile-password (onUpdateUserPassword)="updateUserPassword($event)" (onChangePasswordFormField)="passwordFormFieldUpdate($event)"
-                  [isPasswordFormValid]="isPasswordFormValid" [barcodeSettings]="barcodeSettings" [dataEntrySettings]="dataEntrySettings"
-                  [currentUser]="currentUser"></profile-password>
+                  [isPasswordFormValid]="isPasswordFormValid" [isUserPasswordUpdateProcessActive]="isUserPasswordUpdateProcessActive"
+                  [barcodeSettings]="barcodeSettings" [dataEntrySettings]="dataEntrySettings" [currentUser]="currentUser"></profile-password>
               </div>
               <div *ngIf="userData && userData[profileContent.id]">
                 <div *ngIf="profileContent.id == 'orgUnits' || profileContent.id == 'program' || profileContent.id == 'form'">
