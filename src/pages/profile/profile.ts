@@ -7,6 +7,7 @@ import { UserProvider } from '../../providers/user/user';
 import { CurrentUser } from '../../models/currentUser';
 import { SettingsProvider } from '../../providers/settings/settings';
 import { EncryptionProvider } from '../../providers/encryption/encryption';
+import * as _ from 'lodash';
 
 /**
  * Generated class for the ProfilePage page.
@@ -146,18 +147,38 @@ export class ProfilePage implements OnInit {
 
   updateUserPassword(newPassword) {
     this.isUserPasswordUpdateProcessActive = true;
-    console.log('updateUserPassword : ' + newPassword);
-    // oldPassword newPassword newPasswordConfirmation
-    //currentUser.password = this.encryption.encode(currentUser.password);
-    // currentUser.hashedKeyForOfflineAuthentication = this.encryption.getHashedKeyForOfflineAuthentication(
-    //   currentUser
-    // );
-    // this.currentUser.authorizationKey = btoa(
-    //   this.currentUser.username + ':' + this.currentUser.password
-    // );
-    this.userProvider
-      .setCurrentUser(this.currentUser)
-      .subscribe(() => {}, error => {});
+    const payLoad = { userCredentials: { password: newPassword } };
+    this.profileProvider.updateUserPassword(payLoad).subscribe(
+      () => {
+        this.currentUser.hashedKeyForOfflineAuthentication = this.encryptionProvider.getHashedKeyForOfflineAuthentication(
+          this.currentUser
+        );
+        this.currentUser.authorizationKey = btoa(
+          this.currentUser.username + ':' + this.currentUser.password
+        );
+        this.appProvider.setNormalNotification(
+          'New password has been updated successfully'
+        );
+        const matchContent = _.find(this.profileContents, {
+          id: 'accountSetting'
+        });
+        if (matchContent) {
+          this.toggleProfileContents(matchContent);
+        }
+        setTimeout(() => {
+          this.currentUser.password = this.encryptionProvider.encode(
+            newPassword
+          );
+          this.userProvider
+            .setCurrentUser(this.currentUser)
+            .subscribe(() => {}, () => {});
+        }, 100);
+      },
+      error => {
+        this.appProvider.setNormalNotification(error);
+        this.isUserPasswordUpdateProcessActive = false;
+      }
+    );
   }
 
   passwordFormFieldUpdate(data) {
@@ -230,12 +251,6 @@ export class ProfilePage implements OnInit {
     });
     this.isPasswordFormValid =
       Object.keys(this.passwordDataObject).length === 3 && !hasViolation;
-    console.log(
-      'isPasswordFormValid ' +
-        this.isPasswordFormValid +
-        ' : ' +
-        (Object.keys(this.passwordDataObject).length === 3 && !hasViolation)
-    );
   }
 
   trackByFn(index, item) {

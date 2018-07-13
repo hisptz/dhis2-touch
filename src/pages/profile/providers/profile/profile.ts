@@ -203,7 +203,8 @@ export class ProfileProvider {
     return new Observable(observer => {
       const url = '/api/25/me';
       this.httpProvider.put(url, data).subscribe(
-        () => {
+        res => {
+          observer.next();
           observer.complete();
         },
         error => {
