@@ -587,7 +587,10 @@ export const DATABASE_STRUCTURE = {
       { value: 'displayName', type: 'TEXT' },
       { value: 'programRuleVariableSourceType', type: 'TEXT' },
       { value: 'program', type: 'LONGTEXT' },
-      { value: 'dataElement', type: 'LONGTEXT' }
+      { value: 'dataElement', type: 'LONGTEXT' },
+      { value: 'trackedEntityAttribute', type: 'LONGTEXT' },
+      { value: 'programStageSection', type: 'LONGTEXT' },
+      { value: 'programStage', type: 'LONGTEXT' }
     ],
     isMetadata: true,
     batchSize: 200,

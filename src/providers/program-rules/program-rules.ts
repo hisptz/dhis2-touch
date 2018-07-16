@@ -4,6 +4,9 @@ import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { CurrentUser } from '../../models/currentUser';
+const HIDE_FIELD = 'HIDEFIELD';
+const SHOW_WARNING = 'SHOWWARNING';
+const ASSIGN = 'ASSIGN';
 
 /*
   Generated class for the ProgramRulesProvider provider.
@@ -25,7 +28,6 @@ export class ProgramRulesProvider {
       const dataValuesObject = this.getDeducedDataValuesForEvaluation(
         dataObject
       );
-      console.log('dataValuesObject : ' + JSON.stringify(dataValuesObject));
       programRules.map(programRule => {
         const { condition, programRuleActions } = programRule;
         programRuleActions.map(programRuleAction => {
@@ -44,31 +46,51 @@ export class ProgramRulesProvider {
               } = action;
               let evalCondition = condition;
               let evalData;
-              const actiondataElementAttributeId =
+              const actionDataElementAttributeId =
                 dataElement && dataElement.id
                   ? dataElement.id
                   : trackedEntityAttribute && trackedEntityAttribute.id
                     ? trackedEntityAttribute.id
                     : '';
-              console.log(
-                'actiondataElementAttributeId : ' + actiondataElementAttributeId
-              );
-              console.log(
-                'programRuleActionType : ' +
-                  JSON.stringify(programRuleActionType)
-              );
-              console.log('dataElement : ' + JSON.stringify(dataElement));
-              console.log(
-                'trackedEntityAttribute : ' +
-                  JSON.stringify(trackedEntityAttribute)
-              );
-              console.log('content : ' + JSON.stringify(content));
-              console.log('data : ' + JSON.stringify(data));
+              programRulesVariables.map(programRulesVariable => {
+                const ruleVariableDataElementAttributeId =
+                  programRulesVariable &&
+                  programRulesVariable.dataElement &&
+                  programRulesVariable.dataElement.id
+                    ? programRulesVariable.dataElement.id
+                    : programRulesVariable &&
+                      programRulesVariable.trackedEntityAttribute &&
+                      programRulesVariable.trackedEntityAttribute.id
+                      ? programRulesVariable.trackedEntityAttribute.id
+                      : '';
+
+                if (evalCondition.includes(programRulesVariable.name)) {
+                  const value =
+                    dataValuesObject &&
+                    dataValuesObject[ruleVariableDataElementAttributeId]
+                      ? dataValuesObject[ruleVariableDataElementAttributeId]
+                      : '';
+                  evalCondition = evalCondition
+                    .split('#{' + programRulesVariable.name + '}')
+                    .join(`${value}`);
+                }
+                if (data && data.includes(programRulesVariable.name)) {
+                  evalData = data.split('==')[1];
+                }
+              });
+              if (evalCondition !== condition) {
+                console.log('evalCondition : ' + evalCondition);
+                try {
+                  const evaluated = eval(`(${evalCondition})`);
+                  console.log(
+                    'condition : ' + condition + ' evaluated : ' + evaluated
+                  );
+                } catch (error) {}
+              }
             }
           }
         });
-        console.log('');
-        console.log('');
+        console.log('*****************************');
       });
       // console.log('programRules : ' + JSON.stringify(programRules));
       // console.log('programRuleActions : ' + JSON.stringify(programRuleActions));
