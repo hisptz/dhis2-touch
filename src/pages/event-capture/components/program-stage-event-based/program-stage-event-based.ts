@@ -13,6 +13,7 @@ import { AppProvider } from '../../../../providers/app/app';
 import { EventCaptureFormProvider } from '../../../../providers/event-capture-form/event-capture-form';
 import { ActionSheetController } from 'ionic-angular';
 import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
+import { ProgramRulesProvider } from '../../../../providers/program-rules/program-rules';
 
 /**
  * Generated class for the ProgramStageEventBasedComponent component.
@@ -30,6 +31,8 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   @Input() currentEvent;
   @Input() emptyEvent;
   @Input() formLayout: string;
+  @Input() programSkipLogicMetadata;
+
   @Output() onDeleteEvent = new EventEmitter();
   @Output() onCancelEvent = new EventEmitter();
 
@@ -48,6 +51,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
 
   constructor(
     private programsProvider: ProgramsProvider,
+    private ProgramRulesProvider: ProgramRulesProvider,
     private actionSheetCtrl: ActionSheetController,
     private eventCaptureFormProvider: EventCaptureFormProvider,
     private userProvider: UserProvider,
@@ -260,6 +264,21 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
               this.dataValuesSavingStatusClass[updatedData.id] =
                 'input-field-container-success';
               this.dataUpdateStatus = { [updatedData.domElementId]: 'OK' };
+              this.ProgramRulesProvider.evaluateProgramRules(
+                this.programSkipLogicMetadata,
+                this.dataObject
+              ).subscribe(
+                res => {
+                  console.log(
+                    'res evaluate program rules : ' + JSON.stringify(res)
+                  );
+                },
+                error => {
+                  console.log(
+                    'Error evaluate program rules : ' + JSON.stringify(error)
+                  );
+                }
+              );
             }
           },
           error => {

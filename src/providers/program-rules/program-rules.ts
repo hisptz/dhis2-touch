@@ -18,6 +18,79 @@ export class ProgramRulesProvider {
     private httpClientProvider: HttpClientProvider
   ) {}
 
+  evaluateProgramRules(programSkipLogicMetadata, dataObject): Observable<any> {
+    return new Observable(observer => {
+      const { programRules } = programSkipLogicMetadata;
+      const { programRulesVariables } = programSkipLogicMetadata;
+      const dataValuesObject = this.getDeducedDataValuesForEvaluation(
+        dataObject
+      );
+      console.log('dataValuesObject : ' + JSON.stringify(dataValuesObject));
+      programRules.map(programRule => {
+        const { condition, programRuleActions } = programRule;
+        programRuleActions.map(programRuleAction => {
+          if (programRuleAction && programRuleAction.id) {
+            const id = programRuleAction.id;
+            const action = _.find(programSkipLogicMetadata.programRuleActions, {
+              id: id
+            });
+            if (action && action.id) {
+              const {
+                programRuleActionType,
+                dataElement,
+                trackedEntityAttribute,
+                content,
+                data
+              } = action;
+              let evalCondition = condition;
+              let evalData;
+              const actiondataElementAttributeId =
+                dataElement && dataElement.id
+                  ? dataElement.id
+                  : trackedEntityAttribute && trackedEntityAttribute.id
+                    ? trackedEntityAttribute.id
+                    : '';
+              console.log(
+                'actiondataElementAttributeId : ' + actiondataElementAttributeId
+              );
+              console.log(
+                'programRuleActionType : ' +
+                  JSON.stringify(programRuleActionType)
+              );
+              console.log('dataElement : ' + JSON.stringify(dataElement));
+              console.log(
+                'trackedEntityAttribute : ' +
+                  JSON.stringify(trackedEntityAttribute)
+              );
+              console.log('content : ' + JSON.stringify(content));
+              console.log('data : ' + JSON.stringify(data));
+            }
+          }
+        });
+        console.log('');
+        console.log('');
+      });
+      // console.log('programRules : ' + JSON.stringify(programRules));
+      // console.log('programRuleActions : ' + JSON.stringify(programRuleActions));
+      // console.log(
+      //   'programRulesVariables : ' + JSON.stringify(programRulesVariables)
+      // );
+      // console.log('dataObject : ' + JSON.stringify(dataObject));
+      observer.next({ data: 'data' });
+      observer.complete();
+    });
+  }
+
+  getDeducedDataValuesForEvaluation(dataObject) {
+    let dataValuesObject = {};
+    Object.keys(dataObject).map(key => {
+      const id = key.split('-')[0];
+      const dataValue = dataObject[key];
+      dataValuesObject[id] = dataValue.value;
+    });
+    return dataValuesObject;
+  }
+
   downloadingProgramRules(currentUser: CurrentUser): Observable<any> {
     const resource = 'programRules';
     const fields =
@@ -57,7 +130,7 @@ export class ProgramRulesProvider {
   downloadingProgramRuleVariables(currentUser: CurrentUser): Observable<any> {
     const resource = 'programRuleVariables';
     const fields =
-      'id,name,displayName,programRuleVariableSourceType,program[id],dataElement[id]';
+      'id,name,displayName,programRuleVariableSourceType,program[id],dataElement[id],trackedEntityAttribute[id],programStageSection[id],programStage[id]';
     const url = '/api/' + resource + '.json?paging=false&fields=' + fields;
     return new Observable(observer => {
       this.httpClientProvider.get(url, true, currentUser).subscribe(
