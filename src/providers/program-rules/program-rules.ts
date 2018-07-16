@@ -5,8 +5,14 @@ import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { CurrentUser } from '../../models/currentUser';
 const HIDE_FIELD = 'HIDEFIELD';
+const SHOW_ERROR = 'SHOWERROR';
+const ERROR_ON_COMPLETE = 'ERRORONCOMPLETE';
 const SHOW_WARNING = 'SHOWWARNING';
+const WARNING_ON_COMPLETE = 'WARNINGONCOMPLETE';
 const ASSIGN = 'ASSIGN';
+const HIDE_SECTION = 'HIDESECTION';
+const SET_MANDATORY_FIELD = 'SETMANDATORYFIELD';
+const HIDE_PROGRAMSTAGE = 'HIDEPROGRAMSTAGE';
 
 /*
   Generated class for the ProgramRulesProvider provider.
@@ -41,17 +47,13 @@ export class ProgramRulesProvider {
                 programRuleActionType,
                 dataElement,
                 trackedEntityAttribute,
+                programStageSection,
+                programStage,
                 content,
                 data
               } = action;
               let evalCondition = condition;
               let evalData;
-              const actionDataElementAttributeId =
-                dataElement && dataElement.id
-                  ? dataElement.id
-                  : trackedEntityAttribute && trackedEntityAttribute.id
-                    ? trackedEntityAttribute.id
-                    : '';
               programRulesVariables.map(programRulesVariable => {
                 const ruleVariableDataElementAttributeId =
                   programRulesVariable &&
@@ -82,9 +84,14 @@ export class ProgramRulesProvider {
                 console.log('evalCondition : ' + evalCondition);
                 try {
                   const evaluated = eval(`(${evalCondition})`);
+                  console.log('condition :' + condition);
+                  console.log('evaluated :' + evaluated);
                   console.log(
-                    'condition : ' + condition + ' evaluated : ' + evaluated
+                    'programRuleActionType :' + programRuleActionType
                   );
+                  console.log('content :' + content);
+                  console.log('evalData : ' + evalData);
+                  console.log('*********************************');
                 } catch (error) {}
               }
             }
