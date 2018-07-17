@@ -51,7 +51,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
 
   constructor(
     private programsProvider: ProgramsProvider,
-    private ProgramRulesProvider: ProgramRulesProvider,
+    private programRulesProvider: ProgramRulesProvider,
     private actionSheetCtrl: ActionSheetController,
     private eventCaptureFormProvider: EventCaptureFormProvider,
     private userProvider: UserProvider,
@@ -264,7 +264,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
               this.dataValuesSavingStatusClass[updatedData.id] =
                 'input-field-container-success';
               this.dataUpdateStatus = { [updatedData.domElementId]: 'OK' };
-              this.ProgramRulesProvider.evaluateProgramRules(
+              this.programRulesProvider.evaluateProgramRules(
                 this.programSkipLogicMetadata,
                 this.dataObject
               ).subscribe(

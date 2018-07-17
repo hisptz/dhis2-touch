@@ -9,6 +9,7 @@ import {
 import { EventCaptureFormProvider } from '../../../../providers/event-capture-form/event-capture-form';
 import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
 import { CurrentUser } from '../../../../models/currentUser';
+import { ProgramRulesProvider } from '../../../../providers/program-rules/program-rules';
 
 /**
  * Generated class for the TrackerEventContainerComponent component.
@@ -28,8 +29,11 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
   @Input() isOpenRow: boolean;
   @Input() canEventBeDeleted: boolean;
   @Input() dataValuesSavingStatusClass;
+  @Input() programSkipLogicMetadata;
+
   @Output() onChange = new EventEmitter();
   @Output() onDeleteEvent = new EventEmitter();
+
   translationMapper: any;
   dataObject: any;
   entryFormType: string;
@@ -37,7 +41,8 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
 
   constructor(
     private eventCaptureFormProvider: EventCaptureFormProvider,
-    private appTranslation: AppTranslationProvider
+    private appTranslation: AppTranslationProvider,
+    private programRulesProvider: ProgramRulesProvider
   ) {}
 
   ngOnInit() {
@@ -136,6 +141,19 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
   }
 
   updateData(updatedData) {
+    //update evalutions of programing rules on tracker based events
+    this.programRulesProvider
+      .evaluateProgramRules(this.programSkipLogicMetadata, this.dataObject)
+      .subscribe(
+        res => {
+          console.log('res evaluate program rules : ' + JSON.stringify(res));
+        },
+        error => {
+          console.log(
+            'Error evaluate program rules : ' + JSON.stringify(error)
+          );
+        }
+      );
     let dataValues = [];
     if (updatedData && updatedData.id) {
       this.dataObject[updatedData.id] = updatedData;

@@ -19,6 +19,7 @@ import { AppTranslationProvider } from '../../../providers/app-translation/app-t
 import { SettingsProvider } from '../../../providers/settings/settings';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
+import { ProgramRulesProvider } from '../../../providers/program-rules/program-rules';
 
 /**
  * Generated class for the TrackedEntityDashboardPage page.
@@ -53,7 +54,7 @@ export class TrackedEntityDashboardPage implements OnInit {
   translationMapper: any;
   trackerRegistrationForm: string;
   formLayout: string;
-  programSkipLogicMetadata: any; // programRules, programRuleActions,programRulesVariables
+  programSkipLogicMetadata: any;
   private _dataUpdateStatus$: BehaviorSubject<{
     [elementId: string]: string;
   }> = new BehaviorSubject<{ [elementId: string]: string }>({});
@@ -74,7 +75,8 @@ export class TrackedEntityDashboardPage implements OnInit {
     private trackedEntityInstancesProvider: TrackedEntityInstancesProvider,
     private navParams: NavParams,
     private appTranslation: AppTranslationProvider,
-    private settingProvider: SettingsProvider
+    private settingProvider: SettingsProvider,
+    private programRulesProvider: ProgramRulesProvider
   ) {
     this.programSkipLogicMetadata = {};
     this.dataUpdateStatus$ = this._dataUpdateStatus$.asObservable();
@@ -307,12 +309,25 @@ export class TrackedEntityDashboardPage implements OnInit {
     let id = updateDataValue.id.split('-')[0];
     this.trackedEntityAttributeValuesObject[id] = updateDataValue.value;
     let trackedEntityAttributeValues = [];
-    Object.keys(this.trackedEntityAttributeValuesObject).forEach(key => {
+    Object.keys(this.trackedEntityAttributeValuesObject).map(key => {
       trackedEntityAttributeValues.push({
         value: this.trackedEntityAttributeValuesObject[key],
         attribute: key
       });
     });
+    //update evalutions of programing rules on register form
+    this.programRulesProvider
+      .evaluateProgramRules(this.programSkipLogicMetadata, this.dataObject)
+      .subscribe(
+        res => {
+          console.log('res evaluate program rules : ' + JSON.stringify(res));
+        },
+        error => {
+          console.log(
+            'Error evaluate program rules : ' + JSON.stringify(error)
+          );
+        }
+      );
     this.trackedEntityAttributeValuesProvider
       .savingTrackedEntityAttributeValues(
         this.trackedEntityInstance.id,

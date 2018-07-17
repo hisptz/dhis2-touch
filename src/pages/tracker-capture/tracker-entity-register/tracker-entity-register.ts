@@ -19,6 +19,7 @@ import { SettingsProvider } from '../../../providers/settings/settings';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { EnrollmentsProvider } from '../../../providers/enrollments/enrollments';
+import { ProgramRulesProvider } from '../../../providers/program-rules/program-rules';
 
 declare var dhis2: any;
 /**
@@ -62,7 +63,7 @@ export class TrackerEntityRegisterPage implements OnInit {
   formLayout: string;
   data;
   coordinate: any;
-  programSkipLogicMetadata: any; // programRules, programRuleActions,programRulesVariables
+  programSkipLogicMetadata: any;
   private _dataUpdateStatus$: BehaviorSubject<{
     [elementId: string]: string;
   }> = new BehaviorSubject<{ [elementId: string]: string }>({});
@@ -82,7 +83,8 @@ export class TrackerEntityRegisterPage implements OnInit {
     private trackerCaptureProvider: TrackerCaptureProvider,
     private appTranslation: AppTranslationProvider,
     private settingProvider: SettingsProvider,
-    private enrollmentsProvider: EnrollmentsProvider
+    private enrollmentsProvider: EnrollmentsProvider,
+    private programRulesProvider: ProgramRulesProvider
   ) {
     this.coordinate = {
       latitude: '0',
@@ -356,6 +358,19 @@ export class TrackerEntityRegisterPage implements OnInit {
     );
     if (isFormReady) {
       this.registerEntity();
+      //update evalutions of programing rules on register form
+      this.programRulesProvider
+        .evaluateProgramRules(this.programSkipLogicMetadata, this.dataObject)
+        .subscribe(
+          res => {
+            console.log('res evaluate program rules : ' + JSON.stringify(res));
+          },
+          error => {
+            console.log(
+              'Error evaluate program rules : ' + JSON.stringify(error)
+            );
+          }
+        );
     }
   }
 
@@ -429,7 +444,7 @@ export class TrackerEntityRegisterPage implements OnInit {
 
   registerEntity() {
     let trackedEntityAttributeValues = [];
-    Object.keys(this.trackedEntityAttributeValuesObject).forEach(key => {
+    Object.keys(this.trackedEntityAttributeValuesObject).map(key => {
       trackedEntityAttributeValues.push({
         value: this.trackedEntityAttributeValuesObject[key],
         attribute: key
