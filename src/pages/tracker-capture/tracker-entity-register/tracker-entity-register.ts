@@ -351,13 +351,6 @@ export class TrackerEntityRegisterPage implements OnInit {
       this.currentTrackedEntityId = updateDataValue.id;
       this.trackedEntityAttributeValuesObject[id] = updateDataValue.value;
       this.dataObject[updateDataValue.id] = updateDataValue;
-    }
-    const isFormReady = this.isALlRequiredFieldHasValue(
-      this.programTrackedEntityAttributes,
-      this.trackedEntityAttributeValuesObject
-    );
-    if (isFormReady) {
-      this.registerEntity();
       //update evalutions of programing rules on register form
       this.programRulesProvider
         .evaluateProgramRules(this.programSkipLogicMetadata, this.dataObject)
@@ -371,6 +364,13 @@ export class TrackerEntityRegisterPage implements OnInit {
             );
           }
         );
+    }
+    const isFormReady = this.isALlRequiredFieldHasValue(
+      this.programTrackedEntityAttributes,
+      this.trackedEntityAttributeValuesObject
+    );
+    if (isFormReady) {
+      this.registerEntity();
     }
   }
 

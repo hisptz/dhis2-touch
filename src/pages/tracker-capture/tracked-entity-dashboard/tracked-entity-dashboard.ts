@@ -315,19 +315,6 @@ export class TrackedEntityDashboardPage implements OnInit {
         attribute: key
       });
     });
-    //update evalutions of programing rules on register form
-    this.programRulesProvider
-      .evaluateProgramRules(this.programSkipLogicMetadata, this.dataObject)
-      .subscribe(
-        res => {
-          console.log('res evaluate program rules : ' + JSON.stringify(res));
-        },
-        error => {
-          console.log(
-            'Error evaluate program rules : ' + JSON.stringify(error)
-          );
-        }
-      );
     this.trackedEntityAttributeValuesProvider
       .savingTrackedEntityAttributeValues(
         this.trackedEntityInstance.id,
@@ -354,6 +341,25 @@ export class TrackedEntityDashboardPage implements OnInit {
                 this._dataUpdateStatus$.next({
                   [updateDataValue.id + '-val']: 'OK'
                 });
+                //update evalutions of programing rules on register form
+                this.programRulesProvider
+                  .evaluateProgramRules(
+                    this.programSkipLogicMetadata,
+                    this.dataObject
+                  )
+                  .subscribe(
+                    res => {
+                      console.log(
+                        'res evaluate program rules : ' + JSON.stringify(res)
+                      );
+                    },
+                    error => {
+                      console.log(
+                        'Error evaluate program rules : ' +
+                          JSON.stringify(error)
+                      );
+                    }
+                  );
               },
               error => {
                 this.trackedEntityAttributesSavingStatusClass[

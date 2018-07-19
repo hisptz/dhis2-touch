@@ -141,6 +141,17 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
   }
 
   updateData(updatedData) {
+    let dataValues = [];
+    if (updatedData && updatedData.id) {
+      this.dataObject[updatedData.id] = updatedData;
+    }
+    Object.keys(this.dataObject).forEach((key: any) => {
+      let dataElementId = key.split('-')[0];
+      dataValues.push({
+        dataElement: dataElementId,
+        value: this.dataObject[key].value
+      });
+    });
     //update evalutions of programing rules on tracker based events
     this.programRulesProvider
       .evaluateProgramRules(this.programSkipLogicMetadata, this.dataObject)
@@ -154,17 +165,6 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
           );
         }
       );
-    let dataValues = [];
-    if (updatedData && updatedData.id) {
-      this.dataObject[updatedData.id] = updatedData;
-    }
-    Object.keys(this.dataObject).forEach((key: any) => {
-      let dataElementId = key.split('-')[0];
-      dataValues.push({
-        dataElement: dataElementId,
-        value: this.dataObject[key].value
-      });
-    });
     if (dataValues.length > 0) {
       this.currentOpenEvent.dataValues = dataValues;
       this.currentOpenEvent.syncStatus = 'not-synced';

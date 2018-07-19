@@ -34,77 +34,108 @@ export class ProgramRulesProvider {
       const dataValuesObject = this.getDeducedDataValuesForEvaluation(
         dataObject
       );
-      programRules.map(programRule => {
-        const { condition, programRuleActions } = programRule;
-        programRuleActions.map(programRuleAction => {
-          if (programRuleAction && programRuleAction.id) {
-            const id = programRuleAction.id;
-            const action = _.find(programSkipLogicMetadata.programRuleActions, {
-              id: id
-            });
-            if (action && action.id) {
-              const {
-                programRuleActionType,
-                dataElement,
-                trackedEntityAttribute,
-                programStageSection,
-                programStage,
-                content,
-                data
-              } = action;
-              let evalCondition = condition;
-              let evalData;
-              programRulesVariables.map(programRulesVariable => {
-                const ruleVariableDataElementAttributeId =
-                  programRulesVariable &&
-                  programRulesVariable.dataElement &&
-                  programRulesVariable.dataElement.id
-                    ? programRulesVariable.dataElement.id
-                    : programRulesVariable &&
-                      programRulesVariable.trackedEntityAttribute &&
-                      programRulesVariable.trackedEntityAttribute.id
-                      ? programRulesVariable.trackedEntityAttribute.id
-                      : '';
+      if (programRules) {
+        programRules.map(programRule => {
+          const { condition, programRuleActions } = programRule;
+          programRuleActions.map(programRuleAction => {
+            if (programRuleAction && programRuleAction.id) {
+              const id = programRuleAction.id;
+              const action = _.find(
+                programSkipLogicMetadata.programRuleActions,
+                {
+                  id: id
+                }
+              );
+              if (action && action.id) {
+                const {
+                  programRuleActionType,
+                  dataElement,
+                  trackedEntityAttribute,
+                  programStageSection,
+                  programStage,
+                  content,
+                  data
+                } = action;
+                let evalCondition = condition;
+                let evalData;
+                if (programRulesVariables) {
+                  programRulesVariables.map(programRulesVariable => {
+                    const ruleVariableDataElementAttributeId =
+                      programRulesVariable &&
+                      programRulesVariable.dataElement &&
+                      programRulesVariable.dataElement.id
+                        ? programRulesVariable.dataElement.id
+                        : programRulesVariable &&
+                          programRulesVariable.trackedEntityAttribute &&
+                          programRulesVariable.trackedEntityAttribute.id
+                          ? programRulesVariable.trackedEntityAttribute.id
+                          : '';
 
-                if (evalCondition.includes(programRulesVariable.name)) {
-                  const value =
-                    dataValuesObject &&
-                    dataValuesObject[ruleVariableDataElementAttributeId]
-                      ? dataValuesObject[ruleVariableDataElementAttributeId]
-                      : '';
-                  evalCondition = evalCondition
-                    .split('#{' + programRulesVariable.name + '}')
-                    .join(`${value}`);
+                    if (evalCondition.includes(programRulesVariable.name)) {
+                      let value = "''";
+                      if (
+                        dataValuesObject &&
+                        dataValuesObject.hasOwnProperty(
+                          ruleVariableDataElementAttributeId
+                        )
+                      ) {
+                        if (
+                          isNaN(
+                            dataValuesObject[ruleVariableDataElementAttributeId]
+                          )
+                        ) {
+                          value =
+                            "'" +
+                            dataValuesObject[
+                              ruleVariableDataElementAttributeId
+                            ] +
+                            "'";
+                        } else {
+                          value =
+                            dataValuesObject[
+                              ruleVariableDataElementAttributeId
+                            ];
+                        }
+                      }
+                      console.log('value : ' + value);
+                      evalCondition = evalCondition
+                        .split('#{' + programRulesVariable.name + '}')
+                        .join(`${value}`);
+                    }
+                    if (data && data.includes(programRulesVariable.name)) {
+                      evalData = data.split('==')[1];
+                    }
+                  });
+                  console.log('evalCondition : ' + evalCondition);
+                  console.log('condition : ' + condition);
+                  if (evalCondition !== condition) {
+                    try {
+                      const evaluated = eval(`(${evalCondition})`);
+                      if (evaluated) {
+                        console.log(
+                          'programRuleActionType :' + programRuleActionType
+                        );
+                      }
+                    } catch (error) {
+                      console.log('*********************************');
+                      console.log('*********************************');
+                      console.log('error : ' + JSON.stringify(error));
+                    }
+                  }
                 }
-                if (data && data.includes(programRulesVariable.name)) {
-                  evalData = data.split('==')[1];
-                }
-              });
-              if (evalCondition !== condition) {
-                console.log('evalCondition : ' + evalCondition);
-                try {
-                  const evaluated = eval(`(${evalCondition})`);
-                  console.log('condition :' + condition);
-                  console.log('evaluated :' + evaluated);
-                  console.log(
-                    'programRuleActionType :' + programRuleActionType
-                  );
-                  console.log('content :' + content);
-                  console.log('evalData : ' + evalData);
-                  console.log('*********************************');
-                } catch (error) {}
               }
             }
-          }
+          });
+          console.log('*****************************');
         });
-        console.log('*****************************');
-      });
-      // console.log('programRules : ' + JSON.stringify(programRules));
-      // console.log('programRuleActions : ' + JSON.stringify(programRuleActions));
-      // console.log(
-      //   'programRulesVariables : ' + JSON.stringify(programRulesVariables)
-      // );
-      // console.log('dataObject : ' + JSON.stringify(dataObject));
+        // console.log('programRules : ' + JSON.stringify(programRules));
+        // console.log('programRuleActions : ' + JSON.stringify(programRuleActions));
+        // console.log(
+        //   'programRulesVariables : ' + JSON.stringify(programRulesVariables)
+        // );
+        // console.log('dataObject : ' + JSON.stringify(dataObject));
+      }
+
       observer.next({ data: 'data' });
       observer.complete();
     });
@@ -112,11 +143,13 @@ export class ProgramRulesProvider {
 
   getDeducedDataValuesForEvaluation(dataObject) {
     let dataValuesObject = {};
-    Object.keys(dataObject).map(key => {
-      const id = key.split('-')[0];
-      const dataValue = dataObject[key];
-      dataValuesObject[id] = dataValue.value;
-    });
+    if (dataObject) {
+      Object.keys(dataObject).map(key => {
+        const id = key.split('-')[0];
+        const dataValue = dataObject[key];
+        dataValuesObject[id] = dataValue.value;
+      });
+    }
     return dataValuesObject;
   }
 
