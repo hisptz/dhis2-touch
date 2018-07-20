@@ -267,6 +267,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
               this.hiddenFields = hiddenFields;
               Object.keys(hiddenFields).map(key => {
                 const id = key + '-dataElement';
+                this.dataValuesSavingStatusClass[id] = 'input-field-container';
                 this.updateData({ id: id, value: '' }, true);
               });
             }

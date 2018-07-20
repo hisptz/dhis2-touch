@@ -124,7 +124,7 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
       this.currentOpenEvent[eventDateType] = date;
       this.currentOpenEvent.syncStatus = 'not-synced';
       if (this.canEventBeDeleted) {
-        this.updateData({});
+        this.updateData({}, false);
       }
     } else {
       if (this.canEventBeDeleted) {
@@ -147,7 +147,7 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
 
   updateEventCoordonate(coordinate) {
     this.currentOpenEvent.coordinate = coordinate;
-    this.updateData({});
+    this.updateData({}, false);
   }
 
   evaluatingProgramRules() {
@@ -169,6 +169,11 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
             );
             if (hiddenFields) {
               this.hiddenFields = hiddenFields;
+              Object.keys(hiddenFields).map(key => {
+                const id = key + '-dataElement';
+                this.dataValuesSavingStatusClass[id] = 'input-field-container';
+                this.updateData({ id: id, value: '' }, true);
+              });
             }
             if (hiddenSections) {
               this.hiddenSections = hiddenSections;
@@ -186,7 +191,7 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
       );
   }
 
-  updateData(updatedData) {
+  updateData(updatedData, shouldSkipProgramRules) {
     let dataValues = [];
     if (updatedData && updatedData.id) {
       this.dataObject[updatedData.id] = updatedData;
@@ -199,7 +204,10 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
       });
     });
     //update evalutions of programing rules on tracker based events
-    this.evaluatingProgramRules();
+    if (!shouldSkipProgramRules) {
+      this.evaluatingProgramRules();
+    }
+
     if (dataValues.length > 0) {
       this.currentOpenEvent.dataValues = dataValues;
       this.currentOpenEvent.syncStatus = 'not-synced';

@@ -335,6 +335,8 @@ export class TrackedEntityDashboardPage implements OnInit {
               this.hiddenFields = hiddenFields;
               Object.keys(hiddenFields).map(key => {
                 const id = key + '-trackedEntityAttribute';
+                this.trackedEntityAttributesSavingStatusClass[id] =
+                  'input-field-container';
                 this.updateData({ id: id, value: '' }, true);
               });
             }
@@ -381,7 +383,6 @@ export class TrackedEntityDashboardPage implements OnInit {
             .subscribe(
               () => {
                 this.dataObject[updateDataValue.id] = updateDataValue;
-
                 // Update status for custom form
                 this._dataUpdateStatus$.next({
                   [updateDataValue.id + '-val']: 'OK'

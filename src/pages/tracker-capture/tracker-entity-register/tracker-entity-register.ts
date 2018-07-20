@@ -375,6 +375,8 @@ export class TrackerEntityRegisterPage implements OnInit {
               this.hiddenFields = hiddenFields;
               Object.keys(hiddenFields).map(key => {
                 const id = key + '-trackedEntityAttribute';
+                this.trackedEntityAttributesSavingStatusClass[id] =
+                  'input-field-container';
                 this.updateData({ id: id, value: '' }, true, false);
               });
             }
@@ -402,8 +404,6 @@ export class TrackerEntityRegisterPage implements OnInit {
       this.dataObject[updateDataValue.id] = updateDataValue;
     }
     //update evalutions of programing rules on register form
-    console.log('shouldSkipProgramRules : ' + shouldSkipProgramRules);
-    console.log('shoulOnlyCheckDates : ' + shoulOnlyCheckDates);
     if (!shouldSkipProgramRules) {
       this.evaluatingProgramRules();
     }
