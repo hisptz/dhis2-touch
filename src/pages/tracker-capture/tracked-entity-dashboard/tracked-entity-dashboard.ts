@@ -343,7 +343,7 @@ export class TrackedEntityDashboardPage implements OnInit {
                 });
                 //update evalutions of programing rules on register form
                 this.programRulesProvider
-                  .evaluateProgramRules(
+                  .getProgramRulesEvaluations(
                     this.programSkipLogicMetadata,
                     this.dataObject
                   )

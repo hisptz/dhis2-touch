@@ -4,15 +4,18 @@ import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { CurrentUser } from '../../models/currentUser';
-const HIDE_FIELD = 'HIDEFIELD';
-const SHOW_ERROR = 'SHOWERROR';
-const ERROR_ON_COMPLETE = 'ERRORONCOMPLETE';
-const SHOW_WARNING = 'SHOWWARNING';
-const WARNING_ON_COMPLETE = 'WARNINGONCOMPLETE';
+
 const ASSIGN = 'ASSIGN';
-const HIDE_SECTION = 'HIDESECTION';
-const SET_MANDATORY_FIELD = 'SETMANDATORYFIELD';
+const HIDE_FIELD = 'HIDEFIELD';
 const HIDE_PROGRAMSTAGE = 'HIDEPROGRAMSTAGE';
+const HIDE_SECTION = 'HIDESECTION';
+const SHOW_ERROR = 'SHOWERROR';
+const SHOW_WARNING = 'SHOWWARNING';
+const ERROR_ON_COMPLETE = 'ERRORONCOMPLETE';
+const WARNING_ON_COMPLETE = 'WARNINGONCOMPLETE';
+const SET_MANDATORY_FIELD = 'SETMANDATORYFIELD';
+const DISPLAY_KEY_VALUE_PAIR = 'DISPLAYKEYVALUEPAIR';
+const DISPLAY_TEXT = 'DISPLAYTEXT';
 
 /*
   Generated class for the ProgramRulesProvider provider.
@@ -27,8 +30,17 @@ export class ProgramRulesProvider {
     private httpClientProvider: HttpClientProvider
   ) {}
 
-  evaluateProgramRules(programSkipLogicMetadata, dataObject): Observable<any> {
+  getProgramRulesEvaluations(
+    programSkipLogicMetadata,
+    dataObject
+  ): Observable<any> {
     return new Observable(observer => {
+      let programRulesEvaluations = {
+        hiddenFields: {},
+        hiddenSections: {},
+        hiddenProgramStages: {}
+      };
+      let hasDataToAssign = false;
       const { programRules } = programSkipLogicMetadata;
       const { programRulesVariables } = programSkipLogicMetadata;
       const dataValuesObject = this.getDeducedDataValuesForEvaluation(
@@ -54,6 +66,7 @@ export class ProgramRulesProvider {
                   programStageSection,
                   programStage,
                   content,
+                  location,
                   data
                 } = action;
                 let evalCondition = condition;
@@ -97,7 +110,6 @@ export class ProgramRulesProvider {
                             ];
                         }
                       }
-                      console.log('value : ' + value);
                       evalCondition = evalCondition
                         .split('#{' + programRulesVariable.name + '}')
                         .join(`${value}`);
@@ -106,37 +118,60 @@ export class ProgramRulesProvider {
                       evalData = data.split('==')[1];
                     }
                   });
-                  console.log('evalCondition : ' + evalCondition);
-                  console.log('condition : ' + condition);
+
                   if (evalCondition !== condition) {
                     try {
                       const evaluated = eval(`(${evalCondition})`);
                       if (evaluated) {
-                        console.log(
-                          'programRuleActionType :' + programRuleActionType
-                        );
+                        if (programRuleActionType === HIDE_FIELD) {
+                          const actionDataElementAttributeId =
+                            dataElement && dataElement.id
+                              ? dataElement.id
+                              : trackedEntityAttribute &&
+                                trackedEntityAttribute.id
+                                ? trackedEntityAttribute.id
+                                : '';
+
+                          programRulesEvaluations.hiddenFields[
+                            actionDataElementAttributeId
+                          ] = true;
+                        } else if (programRuleActionType === HIDE_SECTION) {
+                          const sectionId =
+                            programStageSection && programStageSection.id
+                              ? programStageSection.id
+                              : '';
+                          programRulesEvaluations.hiddenSections[
+                            sectionId
+                          ] = true;
+                        } else if (
+                          programRuleActionType === HIDE_PROGRAMSTAGE
+                        ) {
+                          const programStageId =
+                            programStage && programStage.id
+                              ? programStage.id
+                              : '';
+                          programRulesEvaluations.hiddenProgramStages[
+                            programStageId
+                          ] = true;
+                        }
                       }
                     } catch (error) {
-                      console.log('*********************************');
-                      console.log('*********************************');
                       console.log('error : ' + JSON.stringify(error));
+                      console.log('evalCondition : ' + evalCondition);
+                      console.log('condition : ' + condition);
                     }
                   }
                 }
               }
             }
           });
-          console.log('*****************************');
         });
-        // console.log('programRules : ' + JSON.stringify(programRules));
-        // console.log('programRuleActions : ' + JSON.stringify(programRuleActions));
-        // console.log(
-        //   'programRulesVariables : ' + JSON.stringify(programRulesVariables)
-        // );
-        // console.log('dataObject : ' + JSON.stringify(dataObject));
       }
 
-      observer.next({ data: 'data' });
+      observer.next({
+        data: programRulesEvaluations,
+        hasDataToAssign: hasDataToAssign
+      });
       observer.complete();
     });
   }

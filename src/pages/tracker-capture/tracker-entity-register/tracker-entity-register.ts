@@ -353,7 +353,7 @@ export class TrackerEntityRegisterPage implements OnInit {
       this.dataObject[updateDataValue.id] = updateDataValue;
       //update evalutions of programing rules on register form
       this.programRulesProvider
-        .evaluateProgramRules(this.programSkipLogicMetadata, this.dataObject)
+        .getProgramRulesEvaluations(this.programSkipLogicMetadata, this.dataObject)
         .subscribe(
           res => {
             console.log('res evaluate program rules : ' + JSON.stringify(res));

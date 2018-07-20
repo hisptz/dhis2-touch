@@ -20,6 +20,11 @@
         {{ translationMapper['Coordinate']}}
         <event-coordinate-selector (onChangeEventCoordonate)="updateEventCoordonate($event)" [(coordinate)]="currentEvent.coordinate"></event-coordinate-selector>
       </div>
+
+      <div class="item-card"> hiddenFields : {{ hiddenFields|json }}</div>
+      <div class="item-card"> hiddenSections : {{ hiddenSections|json }}</div>
+      <div class="item-card"> hiddenProgramStages : {{ hiddenProgramStages|json }}</div>
+
       <div *ngIf="(programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
         <div *ngIf="formLayout === 'customLayout' && programStage && programStage.dataEntryForm && programStage.dataEntryForm !== '' ">
           <custom-data-entry-form [entryFormType]="entryFormType" [dataEntryFormDesign]="programStage.dataEntryForm" [data]="dataObject"

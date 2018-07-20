@@ -154,7 +154,7 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
     });
     //update evalutions of programing rules on tracker based events
     this.programRulesProvider
-      .evaluateProgramRules(this.programSkipLogicMetadata, this.dataObject)
+      .getProgramRulesEvaluations(this.programSkipLogicMetadata, this.dataObject)
       .subscribe(
         res => {
           console.log('res evaluate program rules : ' + JSON.stringify(res));

@@ -48,6 +48,9 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   entryFormType: string;
   hasEntryFormReSet: boolean;
   dataUpdateStatus: { [elementId: string]: string };
+  hiddenSections: any;
+  hiddenProgramStages: any;
+  hiddenFields: any;
 
   constructor(
     private programsProvider: ProgramsProvider,
@@ -67,6 +70,9 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     this.currentOrgUnit = this.organisationUnitProvider.lastSelectedOrgUnit;
     this.currentProgram = this.programsProvider.lastSelectedProgram;
     this.isLoading = true;
+    this.hiddenFields = {};
+    this.hiddenProgramStages = {};
+    this.hiddenSections = {};
   }
   ngOnInit() {
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
@@ -264,21 +270,35 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
               this.dataValuesSavingStatusClass[updatedData.id] =
                 'input-field-container-success';
               this.dataUpdateStatus = { [updatedData.domElementId]: 'OK' };
-              this.programRulesProvider.evaluateProgramRules(
-                this.programSkipLogicMetadata,
-                this.dataObject
-              ).subscribe(
-                res => {
-                  console.log(
-                    'res evaluate program rules : ' + JSON.stringify(res)
-                  );
-                },
-                error => {
-                  console.log(
-                    'Error evaluate program rules : ' + JSON.stringify(error)
-                  );
-                }
-              );
+              this.programRulesProvider
+                .getProgramRulesEvaluations(
+                  this.programSkipLogicMetadata,
+                  this.dataObject
+                )
+                .subscribe(
+                  res => {
+                    const { data } = res;
+                    if (data) {
+                      const { hiddenSections } = data;
+                      const { hiddenFields } = data;
+                      const { hiddenProgramStages } = data;
+                      if (hiddenFields) {
+                        this.hiddenFields = hiddenFields;
+                      }
+                      if (hiddenSections) {
+                        this.hiddenSections = hiddenSections;
+                      }
+                      if (hiddenProgramStages) {
+                        this.hiddenProgramStages = hiddenProgramStages;
+                      }
+                    }
+                  },
+                  error => {
+                    console.log(
+                      'Error evaluate program rules : ' + JSON.stringify(error)
+                    );
+                  }
+                );
             }
           },
           error => {
