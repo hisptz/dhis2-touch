@@ -38,16 +38,23 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
   dataObject: any;
   entryFormType: string;
   dataUpdateStatus: { [elementId: string]: string };
+  hiddenSections: any;
+  hiddenProgramStages: any;
+  hiddenFields: any;
 
   constructor(
     private eventCaptureFormProvider: EventCaptureFormProvider,
     private appTranslation: AppTranslationProvider,
     private programRulesProvider: ProgramRulesProvider
-  ) {}
-
-  ngOnInit() {
+  ) {
+    this.hiddenFields = {};
+    this.hiddenProgramStages = {};
+    this.hiddenSections = {};
     this.entryFormType = 'event';
     this.dataObject = {};
+  }
+
+  ngOnInit() {
     if (
       this.currentOpenEvent &&
       this.currentOpenEvent.dataValues &&
@@ -58,6 +65,9 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
         this.currentOpenEvent.dataValues,
         this.programStage.programStageDataElements
       );
+      setTimeout(() => {
+        this.evaluatingProgramRules();
+      }, 50);
     }
     this.translationMapper = {};
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
@@ -140,6 +150,38 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
     this.updateData({});
   }
 
+  evaluatingProgramRules() {
+    this.programRulesProvider
+      .getProgramRulesEvaluations(
+        this.programSkipLogicMetadata,
+        this.dataObject
+      )
+      .subscribe(
+        res => {
+          const { data } = res;
+          if (data) {
+            const { hiddenSections } = data;
+            const { hiddenFields } = data;
+            const { hiddenProgramStages } = data;
+            if (hiddenFields) {
+              this.hiddenFields = hiddenFields;
+            }
+            if (hiddenSections) {
+              this.hiddenSections = hiddenSections;
+            }
+            if (hiddenProgramStages) {
+              this.hiddenProgramStages = hiddenProgramStages;
+            }
+          }
+        },
+        error => {
+          console.log(
+            'Error evaluate program rules : ' + JSON.stringify(error)
+          );
+        }
+      );
+  }
+
   updateData(updatedData) {
     let dataValues = [];
     if (updatedData && updatedData.id) {
@@ -153,18 +195,7 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
       });
     });
     //update evalutions of programing rules on tracker based events
-    this.programRulesProvider
-      .getProgramRulesEvaluations(this.programSkipLogicMetadata, this.dataObject)
-      .subscribe(
-        res => {
-          console.log('res evaluate program rules : ' + JSON.stringify(res));
-        },
-        error => {
-          console.log(
-            'Error evaluate program rules : ' + JSON.stringify(error)
-          );
-        }
-      );
+    this.evaluatingProgramRules();
     if (dataValues.length > 0) {
       this.currentOpenEvent.dataValues = dataValues;
       this.currentOpenEvent.syncStatus = 'not-synced';
