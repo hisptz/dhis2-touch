@@ -55,6 +55,9 @@ export class TrackedEntityDashboardPage implements OnInit {
   trackerRegistrationForm: string;
   formLayout: string;
   programSkipLogicMetadata: any;
+  hiddenSections: any;
+  hiddenProgramStages: any;
+  hiddenFields: any;
   private _dataUpdateStatus$: BehaviorSubject<{
     [elementId: string]: string;
   }> = new BehaviorSubject<{ [elementId: string]: string }>({});
@@ -80,17 +83,20 @@ export class TrackedEntityDashboardPage implements OnInit {
   ) {
     this.programSkipLogicMetadata = {};
     this.dataUpdateStatus$ = this._dataUpdateStatus$.asObservable();
-  }
-
-  ngOnInit() {
     this.isDashboardWidgetOpen = {};
     this.trackedEntityAttributesSavingStatusClass = {};
     this.icons['menu'] = 'assets/icon/menu.png';
     this.isLoading = true;
+    this.translationMapper = {};
+    this.hiddenFields = {};
+    this.hiddenProgramStages = {};
+    this.hiddenSections = {};
+  }
+
+  ngOnInit() {
     this.currentProgram = this.programsProvider.lastSelectedProgram;
     this.currentOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
     this.dashboardWidgets = this.getDashboardWidgets();
-    this.translationMapper = {};
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
       (data: any) => {
         this.translationMapper = data;
@@ -212,6 +218,9 @@ export class TrackedEntityDashboardPage implements OnInit {
       .subscribe(
         metadata => {
           this.programSkipLogicMetadata = metadata;
+          setTimeout(() => {
+            this.evaluatingProgramRules();
+          }, 50);
         },
         error => {
           console.log(
@@ -305,6 +314,41 @@ export class TrackedEntityDashboardPage implements OnInit {
     actionSheet.present();
   }
 
+  evaluatingProgramRules() {
+    this.programRulesProvider
+      .getProgramRulesEvaluations(
+        this.programSkipLogicMetadata,
+        this.dataObject
+      )
+      .subscribe(
+        res => {
+          const { data } = res;
+          if (data) {
+            const { hiddenSections } = data;
+            const { hiddenFields } = data;
+            const { hiddenProgramStages } = data;
+            if (hiddenFields) {
+              this.hiddenFields = hiddenFields;
+            }
+            if (hiddenSections) {
+              this.hiddenSections = hiddenSections;
+            }
+            if (hiddenProgramStages) {
+              this.hiddenProgramStages = hiddenProgramStages;
+            }
+          }
+          //empty hidded fields value
+          // let id = attributeObject.attribute + '-trackedEntityAttribute';
+          //this.dataObject[id] = { id: id, value: attributeObject.value };
+        },
+        error => {
+          console.log(
+            'Error evaluate program rules : ' + JSON.stringify(error)
+          );
+        }
+      );
+  }
+
   updateData(updateDataValue) {
     let id = updateDataValue.id.split('-')[0];
     this.trackedEntityAttributeValuesObject[id] = updateDataValue.value;
@@ -342,24 +386,7 @@ export class TrackedEntityDashboardPage implements OnInit {
                   [updateDataValue.id + '-val']: 'OK'
                 });
                 //update evalutions of programing rules on register form
-                this.programRulesProvider
-                  .getProgramRulesEvaluations(
-                    this.programSkipLogicMetadata,
-                    this.dataObject
-                  )
-                  .subscribe(
-                    res => {
-                      console.log(
-                        'res evaluate program rules : ' + JSON.stringify(res)
-                      );
-                    },
-                    error => {
-                      console.log(
-                        'Error evaluate program rules : ' +
-                          JSON.stringify(error)
-                      );
-                    }
-                  );
+                this.evaluatingProgramRules();
               },
               error => {
                 this.trackedEntityAttributesSavingStatusClass[

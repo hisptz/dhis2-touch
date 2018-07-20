@@ -64,6 +64,9 @@ export class TrackerEntityRegisterPage implements OnInit {
   data;
   coordinate: any;
   programSkipLogicMetadata: any;
+  hiddenSections: any;
+  hiddenProgramStages: any;
+  hiddenFields: any;
   private _dataUpdateStatus$: BehaviorSubject<{
     [elementId: string]: string;
   }> = new BehaviorSubject<{ [elementId: string]: string }>({});
@@ -101,6 +104,9 @@ export class TrackerEntityRegisterPage implements OnInit {
       incidentDate: today,
       enrollmentDate: today
     };
+    this.hiddenFields = {};
+    this.hiddenProgramStages = {};
+    this.hiddenSections = {};
     this.dataUpdateStatus$ = this._dataUpdateStatus$.asObservable();
   }
 
@@ -227,6 +233,9 @@ export class TrackerEntityRegisterPage implements OnInit {
       .subscribe(
         metadata => {
           this.programSkipLogicMetadata = metadata;
+          setTimeout(() => {
+            this.evaluatingProgramRules();
+          }, 50);
         },
         error => {
           console.log(
@@ -345,6 +354,38 @@ export class TrackerEntityRegisterPage implements OnInit {
     this.updateData('', true);
   }
 
+  evaluatingProgramRules() {
+    this.programRulesProvider
+      .getProgramRulesEvaluations(
+        this.programSkipLogicMetadata,
+        this.dataObject
+      )
+      .subscribe(
+        res => {
+          const { data } = res;
+          if (data) {
+            const { hiddenSections } = data;
+            const { hiddenFields } = data;
+            const { hiddenProgramStages } = data;
+            if (hiddenFields) {
+              this.hiddenFields = hiddenFields;
+            }
+            if (hiddenSections) {
+              this.hiddenSections = hiddenSections;
+            }
+            if (hiddenProgramStages) {
+              this.hiddenProgramStages = hiddenProgramStages;
+            }
+          }
+        },
+        error => {
+          console.log(
+            'Error evaluate program rules : ' + JSON.stringify(error)
+          );
+        }
+      );
+  }
+
   updateData(updateDataValue, shoulOnlyCheckDates?) {
     if (!shoulOnlyCheckDates) {
       const id = updateDataValue.id.split('-')[0];
@@ -352,18 +393,7 @@ export class TrackerEntityRegisterPage implements OnInit {
       this.trackedEntityAttributeValuesObject[id] = updateDataValue.value;
       this.dataObject[updateDataValue.id] = updateDataValue;
       //update evalutions of programing rules on register form
-      this.programRulesProvider
-        .getProgramRulesEvaluations(this.programSkipLogicMetadata, this.dataObject)
-        .subscribe(
-          res => {
-            console.log('res evaluate program rules : ' + JSON.stringify(res));
-          },
-          error => {
-            console.log(
-              'Error evaluate program rules : ' + JSON.stringify(error)
-            );
-          }
-        );
+      this.evaluatingProgramRules();
     }
     const isFormReady = this.isALlRequiredFieldHasValue(
       this.programTrackedEntityAttributes,

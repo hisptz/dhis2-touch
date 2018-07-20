@@ -17,8 +17,12 @@ export class TrackerRegistrationFormComponent implements OnInit {
   @Input() trackedEntityAttributesSavingStatusClass;
   @Input() trackerRegistrationForm: string;
   @Input() programTrackedEntityAttributes;
+  @Input() hiddenFields;
+  @Input() hiddenSections;
   @Input() dataUpdateStatus: { [elementId: string]: string };
+
   @Output() onChange = new EventEmitter();
+
   entryFormType: string;
   constructor() {}
   ngOnInit() {

@@ -116,10 +116,10 @@
                     <loading [loadingMessage]="''" [loadingSize]="'large'"></loading>
                   </div>
                   <div *ngIf="isFormReady">
-                    <tracker-registration-form [formLayout]="formLayout" [dataObject]="dataObject" [dataUpdateStatus]="dataUpdateStatus$ | async"
-                      [currentUser]="currentUser" [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
-                      [trackerRegistrationForm]="trackerRegistrationForm" [programTrackedEntityAttributes]="programTrackedEntityAttributes"
-                      (onChange)="updateData($event,false)"></tracker-registration-form>
+                    <tracker-registration-form [(hiddenSections)]="hiddenSections" [(hiddenFields)]="hiddenFields" [formLayout]="formLayout"
+                      [dataObject]="dataObject" [dataUpdateStatus]="dataUpdateStatus$ | async" [currentUser]="currentUser"
+                      [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass" [trackerRegistrationForm]="trackerRegistrationForm"
+                      [programTrackedEntityAttributes]="programTrackedEntityAttributes" (onChange)="updateData($event,false)"></tracker-registration-form>
                     <ion-row no-padding no-margin>
                       <ion-col>
                         <div float-left>
