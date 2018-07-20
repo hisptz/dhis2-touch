@@ -125,6 +125,9 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
           );
         }
         this.isLoading = false;
+        setTimeout(() => {
+          this.evaluatingProgramRules();
+        }, 50);
       },
       error => {
         this.isLoading = false;
@@ -243,6 +246,38 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     this.updateData({});
   }
 
+  evaluatingProgramRules() {
+    this.programRulesProvider
+      .getProgramRulesEvaluations(
+        this.programSkipLogicMetadata,
+        this.dataObject
+      )
+      .subscribe(
+        res => {
+          const { data } = res;
+          if (data) {
+            const { hiddenSections } = data;
+            const { hiddenFields } = data;
+            const { hiddenProgramStages } = data;
+            if (hiddenFields) {
+              this.hiddenFields = hiddenFields;
+            }
+            if (hiddenSections) {
+              this.hiddenSections = hiddenSections;
+            }
+            if (hiddenProgramStages) {
+              this.hiddenProgramStages = hiddenProgramStages;
+            }
+          }
+        },
+        error => {
+          console.log(
+            'Error evaluate program rules : ' + JSON.stringify(error)
+          );
+        }
+      );
+  }
+
   updateData(updatedData) {
     this.currentEvent['eventDate'] = this.eventDate;
     this.currentEvent['dueDate'] = this.eventDate;
@@ -270,35 +305,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
               this.dataValuesSavingStatusClass[updatedData.id] =
                 'input-field-container-success';
               this.dataUpdateStatus = { [updatedData.domElementId]: 'OK' };
-              this.programRulesProvider
-                .getProgramRulesEvaluations(
-                  this.programSkipLogicMetadata,
-                  this.dataObject
-                )
-                .subscribe(
-                  res => {
-                    const { data } = res;
-                    if (data) {
-                      const { hiddenSections } = data;
-                      const { hiddenFields } = data;
-                      const { hiddenProgramStages } = data;
-                      if (hiddenFields) {
-                        this.hiddenFields = hiddenFields;
-                      }
-                      if (hiddenSections) {
-                        this.hiddenSections = hiddenSections;
-                      }
-                      if (hiddenProgramStages) {
-                        this.hiddenProgramStages = hiddenProgramStages;
-                      }
-                    }
-                  },
-                  error => {
-                    console.log(
-                      'Error evaluate program rules : ' + JSON.stringify(error)
-                    );
-                  }
-                );
+              this.evaluatingProgramRules();
             }
           },
           error => {

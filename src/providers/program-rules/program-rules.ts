@@ -103,7 +103,11 @@ export class ProgramRulesProvider {
                               ruleVariableDataElementAttributeId
                             ] +
                             "'";
-                        } else {
+                        } else if (
+                          dataValuesObject[
+                            ruleVariableDataElementAttributeId
+                          ] !== ''
+                        ) {
                           value =
                             dataValuesObject[
                               ruleVariableDataElementAttributeId

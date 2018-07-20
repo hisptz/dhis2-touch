@@ -15,6 +15,8 @@ export class DefaultEventEntryFormComponent implements OnInit {
   @Input() currentUser;
   @Input() dataObject;
   @Input() dataValuesSavingStatusClass;
+  @Input() hiddenFields;
+  @Input() hiddenSections;
 
   @Output() onChange = new EventEmitter();
 
