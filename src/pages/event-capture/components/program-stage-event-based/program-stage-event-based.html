@@ -28,8 +28,9 @@
               (onCustomFormInputChange)="updateData($event)"></custom-data-entry-form>
           </div>
           <div *ngIf="!(formLayout === 'customLayout' && programStage && programStage.dataEntryForm && programStage.dataEntryForm !== '' )">
-            <default-event-entry-form [(hiddenSections)]="hiddenSections" [(hiddenFields)]="hiddenFields" [programStage]="programStage" [currentUser]="currentUser"
-              [(dataObject)]="dataObject" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" (onChange)="updateData($event)"></default-event-entry-form>
+            <default-event-entry-form [(hiddenSections)]="hiddenSections" [(hiddenFields)]="hiddenFields" [programStage]="programStage"
+              [currentUser]="currentUser" [(dataObject)]="dataObject" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
+              (onChange)="updateData($event)"></default-event-entry-form>
           </div>
           <ion-row no-padding>
             <ion-col>

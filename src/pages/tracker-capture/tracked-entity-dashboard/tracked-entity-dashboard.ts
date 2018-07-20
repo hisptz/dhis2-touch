@@ -329,6 +329,10 @@ export class TrackedEntityDashboardPage implements OnInit {
             const { hiddenProgramStages } = data;
             if (hiddenFields) {
               this.hiddenFields = hiddenFields;
+              // Object.keys(hiddenFields).map(key => {
+              //   const id = key + '-trackedEntityAttribute';
+              //   this.updateData({ id: id, value: '' });
+              // });
             }
             if (hiddenSections) {
               this.hiddenSections = hiddenSections;
@@ -337,9 +341,6 @@ export class TrackedEntityDashboardPage implements OnInit {
               this.hiddenProgramStages = hiddenProgramStages;
             }
           }
-          //empty hidded fields value
-          // let id = attributeObject.attribute + '-trackedEntityAttribute';
-          //this.dataObject[id] = { id: id, value: attributeObject.value };
         },
         error => {
           console.log(
@@ -349,7 +350,7 @@ export class TrackedEntityDashboardPage implements OnInit {
       );
   }
 
-  updateData(updateDataValue) {
+  updateData(updateDataValue, shouldSkipProgramRules) {
     let id = updateDataValue.id.split('-')[0];
     this.trackedEntityAttributeValuesObject[id] = updateDataValue.value;
     let trackedEntityAttributeValues = [];
@@ -376,17 +377,18 @@ export class TrackedEntityDashboardPage implements OnInit {
             .subscribe(
               () => {
                 this.dataObject[updateDataValue.id] = updateDataValue;
-                this.trackedEntityAttributesSavingStatusClass[
-                  updateDataValue.id
-                ] =
-                  'input-field-container-success';
 
                 // Update status for custom form
                 this._dataUpdateStatus$.next({
                   [updateDataValue.id + '-val']: 'OK'
                 });
-                //update evalutions of programing rules on register form
-                this.evaluatingProgramRules();
+                if (!shouldSkipProgramRules) {
+                  this.evaluatingProgramRules();
+                  this.trackedEntityAttributesSavingStatusClass[
+                    updateDataValue.id
+                  ] =
+                    'input-field-container-success';
+                }
               },
               error => {
                 this.trackedEntityAttributesSavingStatusClass[

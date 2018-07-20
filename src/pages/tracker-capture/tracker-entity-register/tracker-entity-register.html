@@ -119,7 +119,7 @@
                     <tracker-registration-form [(hiddenSections)]="hiddenSections" [(hiddenFields)]="hiddenFields" [formLayout]="formLayout"
                       [dataObject]="dataObject" [dataUpdateStatus]="dataUpdateStatus$ | async" [currentUser]="currentUser"
                       [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass" [trackerRegistrationForm]="trackerRegistrationForm"
-                      [programTrackedEntityAttributes]="programTrackedEntityAttributes" (onChange)="updateData($event,false)"></tracker-registration-form>
+                      [programTrackedEntityAttributes]="programTrackedEntityAttributes" (onChange)="updateData($event)"></tracker-registration-form>
                     <ion-row no-padding no-margin>
                       <ion-col>
                         <div float-left>

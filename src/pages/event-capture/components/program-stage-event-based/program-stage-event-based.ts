@@ -228,7 +228,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
       this.eventDate = date;
       this.currentEvent.syncStatus = 'not-synced';
       if (this.canEventBeDeleted()) {
-        this.updateData({});
+        this.updateData({}, false);
       }
     } else {
       if (this.canEventBeDeleted()) {
@@ -243,7 +243,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
 
   updateEventCoordonate(coordinate) {
     this.currentEvent.coordinate = coordinate;
-    this.updateData({});
+    this.updateData({}, false);
   }
 
   evaluatingProgramRules() {
@@ -261,6 +261,10 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
             const { hiddenProgramStages } = data;
             if (hiddenFields) {
               this.hiddenFields = hiddenFields;
+              Object.keys(hiddenFields).map(key => {
+                const id = key + '-dataElement';
+                this.updateData({ id: id, value: '' }, true);
+              });
             }
             if (hiddenSections) {
               this.hiddenSections = hiddenSections;
@@ -278,7 +282,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
       );
   }
 
-  updateData(updatedData) {
+  updateData(updatedData, shouldSkipProgramRules) {
     this.currentEvent['eventDate'] = this.eventDate;
     this.currentEvent['dueDate'] = this.eventDate;
     this.currentEvent.syncStatus = 'not-synced';
@@ -302,10 +306,12 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
           () => {
             if (!this.hasEntryFormReSet) {
               this.dataObject[updatedData.id] = updatedData;
-              this.dataValuesSavingStatusClass[updatedData.id] =
-                'input-field-container-success';
               this.dataUpdateStatus = { [updatedData.domElementId]: 'OK' };
-              this.evaluatingProgramRules();
+              if (!shouldSkipProgramRules) {
+                this.dataValuesSavingStatusClass[updatedData.id] =
+                  'input-field-container-success';
+                this.evaluatingProgramRules();
+              }
             }
           },
           error => {

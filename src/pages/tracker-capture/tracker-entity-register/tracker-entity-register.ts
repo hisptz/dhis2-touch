@@ -337,7 +337,7 @@ export class TrackerEntityRegisterPage implements OnInit {
   updateDateSelection(date, dateType) {
     if (date && date !== '') {
       this.date[dateType] = date;
-      this.updateData('', true);
+      this.updateData('', false, true);
     } else {
       if (this.isTrackedEntityRegistered) {
         const title =
@@ -351,7 +351,7 @@ export class TrackerEntityRegisterPage implements OnInit {
 
   updateEventCoordonate(coordinate) {
     this.coordinate = coordinate;
-    this.updateData('', true);
+    this.updateData('', false, true);
   }
 
   evaluatingProgramRules() {
@@ -369,6 +369,10 @@ export class TrackerEntityRegisterPage implements OnInit {
             const { hiddenProgramStages } = data;
             if (hiddenFields) {
               this.hiddenFields = hiddenFields;
+              Object.keys(hiddenFields).map(key => {
+                const id = key + '-trackedEntityAttribute';
+                this.updateData({ id: id, value: '' }, true, false);
+              });
             }
             if (hiddenSections) {
               this.hiddenSections = hiddenSections;
@@ -386,13 +390,17 @@ export class TrackerEntityRegisterPage implements OnInit {
       );
   }
 
-  updateData(updateDataValue, shoulOnlyCheckDates?) {
+  updateData(updateDataValue, shouldSkipProgramRules, shoulOnlyCheckDates) {
     if (!shoulOnlyCheckDates) {
       const id = updateDataValue.id.split('-')[0];
       this.currentTrackedEntityId = updateDataValue.id;
       this.trackedEntityAttributeValuesObject[id] = updateDataValue.value;
       this.dataObject[updateDataValue.id] = updateDataValue;
-      //update evalutions of programing rules on register form
+    }
+    //update evalutions of programing rules on register form
+    console.log('shouldSkipProgramRules : ' + shouldSkipProgramRules);
+    console.log('shoulOnlyCheckDates : ' + shoulOnlyCheckDates);
+    if (!shouldSkipProgramRules) {
       this.evaluatingProgramRules();
     }
     const isFormReady = this.isALlRequiredFieldHasValue(
