@@ -210,6 +210,20 @@ export class ProgramRulesProvider {
                               messageType: messageType
                             };
                           }
+                        } else if (programRuleActionType === ASSIGN) {
+                          console.log('Handling for : ' + ASSIGN);
+                        } else if (
+                          programRuleActionType === SET_MANDATORY_FIELD
+                        ) {
+                          console.log('Handling for : ' + SET_MANDATORY_FIELD);
+                        } else if (
+                          programRuleActionType === DISPLAY_KEY_VALUE_PAIR
+                        ) {
+                          console.log(
+                            'Handling for : ' + DISPLAY_KEY_VALUE_PAIR
+                          );
+                        } else if (programRuleActionType === DISPLAY_TEXT) {
+                          console.log('Handling for : ' + DISPLAY_TEXT);
                         }
                       }
                     } catch (error) {
