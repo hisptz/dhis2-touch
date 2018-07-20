@@ -38,7 +38,8 @@ export class ProgramRulesProvider {
       let programRulesEvaluations = {
         hiddenFields: {},
         hiddenSections: {},
-        hiddenProgramStages: {}
+        hiddenProgramStages: {},
+        errorOrWarningMessage: {}
       };
       let hasDataToAssign = false;
       const { programRules } = programSkipLogicMetadata;
@@ -70,7 +71,8 @@ export class ProgramRulesProvider {
                   data
                 } = action;
                 let evalCondition = condition;
-                let evalData;
+                let evalDataCondition = data ? data : '';
+                let evalData = '';
                 if (programRulesVariables) {
                   programRulesVariables.map(programRulesVariable => {
                     const ruleVariableDataElementAttributeId =
@@ -83,62 +85,68 @@ export class ProgramRulesProvider {
                           programRulesVariable.trackedEntityAttribute.id
                           ? programRulesVariable.trackedEntityAttribute.id
                           : '';
-
-                    if (evalCondition.includes(programRulesVariable.name)) {
-                      let value = "''";
+                    let value = "''";
+                    if (
+                      dataValuesObject &&
+                      dataValuesObject.hasOwnProperty(
+                        ruleVariableDataElementAttributeId
+                      )
+                    ) {
                       if (
-                        dataValuesObject &&
-                        dataValuesObject.hasOwnProperty(
-                          ruleVariableDataElementAttributeId
+                        isNaN(
+                          dataValuesObject[ruleVariableDataElementAttributeId]
                         )
                       ) {
-                        if (
-                          isNaN(
-                            dataValuesObject[ruleVariableDataElementAttributeId]
-                          )
-                        ) {
-                          value =
-                            "'" +
-                            dataValuesObject[
-                              ruleVariableDataElementAttributeId
-                            ] +
-                            "'";
-                        } else if (
-                          dataValuesObject[
-                            ruleVariableDataElementAttributeId
-                          ] !== ''
-                        ) {
-                          value =
-                            dataValuesObject[
-                              ruleVariableDataElementAttributeId
-                            ];
-                        }
+                        value =
+                          "'" +
+                          dataValuesObject[ruleVariableDataElementAttributeId] +
+                          "'";
+                      } else if (
+                        dataValuesObject[ruleVariableDataElementAttributeId] !==
+                        ''
+                      ) {
+                        value =
+                          dataValuesObject[ruleVariableDataElementAttributeId];
                       }
+                    }
+
+                    if (evalCondition.includes(programRulesVariable.name)) {
                       evalCondition = evalCondition
                         .split('#{' + programRulesVariable.name + '}')
                         .join(`${value}`);
                     }
                     if (data && data.includes(programRulesVariable.name)) {
-                      evalData = data.split('==')[1];
+                      evalDataCondition = evalDataCondition
+                        .split('#{' + programRulesVariable.name + '}')
+                        .join(`${value}`);
                     }
                   });
+                  //evaluate content data
+                  try {
+                    evalData = eval(`(${evalDataCondition})`);
+                  } catch (error) {
+                  } finally {
+                    console.log('evalData : ' + evalData);
+                  }
 
                   if (evalCondition !== condition) {
                     try {
                       const evaluated = eval(`(${evalCondition})`);
                       if (evaluated) {
                         if (programRuleActionType === HIDE_FIELD) {
-                          const actionDataElementAttributeId =
-                            dataElement && dataElement.id
-                              ? dataElement.id
-                              : trackedEntityAttribute &&
-                                trackedEntityAttribute.id
-                                ? trackedEntityAttribute.id
-                                : '';
-
-                          programRulesEvaluations.hiddenFields[
-                            actionDataElementAttributeId
-                          ] = true;
+                          if (dataElement && dataElement.id) {
+                            programRulesEvaluations.hiddenFields[
+                              dataElement.id
+                            ] = true;
+                          }
+                          if (
+                            trackedEntityAttribute &&
+                            trackedEntityAttribute.id
+                          ) {
+                            programRulesEvaluations.hiddenFields[
+                              trackedEntityAttribute.id
+                            ] = true;
+                          }
                         } else if (programRuleActionType === HIDE_SECTION) {
                           const sectionId =
                             programStageSection && programStageSection.id
@@ -157,6 +165,51 @@ export class ProgramRulesProvider {
                           programRulesEvaluations.hiddenProgramStages[
                             programStageId
                           ] = true;
+                        } else if (
+                          programRuleActionType === SHOW_ERROR ||
+                          programRuleActionType === SHOW_WARNING ||
+                          programRuleActionType === WARNING_ON_COMPLETE ||
+                          programRuleActionType === ERROR_ON_COMPLETE
+                        ) {
+                          let message = '';
+                          const messageType =
+                            programRuleActionType === SHOW_ERROR ||
+                            programRuleActionType === ERROR_ON_COMPLETE
+                              ? 'error'
+                              : 'warning';
+                          const isOnComplete =
+                            programRuleActionType === WARNING_ON_COMPLETE ||
+                            programRuleActionType === ERROR_ON_COMPLETE
+                              ? true
+                              : false;
+                          if (content) {
+                            message += content;
+                          }
+                          if (data) {
+                            message += ' ' + evalData;
+                          }
+
+                          if (dataElement && dataElement.id) {
+                            programRulesEvaluations.errorOrWarningMessage[
+                              dataElement.id
+                            ] = {
+                              message: message,
+                              isOnComplete: isOnComplete,
+                              messageType: messageType
+                            };
+                          }
+                          if (
+                            trackedEntityAttribute &&
+                            trackedEntityAttribute.id
+                          ) {
+                            programRulesEvaluations.errorOrWarningMessage[
+                              trackedEntityAttribute.id
+                            ] = {
+                              message: message,
+                              isOnComplete: isOnComplete,
+                              messageType: messageType
+                            };
+                          }
                         }
                       }
                     } catch (error) {

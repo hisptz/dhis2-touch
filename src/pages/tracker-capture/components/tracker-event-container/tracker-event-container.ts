@@ -163,6 +163,10 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
             const { hiddenSections } = data;
             const { hiddenFields } = data;
             const { hiddenProgramStages } = data;
+            const { errorOrWarningMessage } = data;
+            console.log(
+              'errorOrWarningMessage : ' + JSON.stringify(errorOrWarningMessage)
+            );
             if (hiddenFields) {
               this.hiddenFields = hiddenFields;
             }

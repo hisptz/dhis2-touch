@@ -367,6 +367,10 @@ export class TrackerEntityRegisterPage implements OnInit {
             const { hiddenSections } = data;
             const { hiddenFields } = data;
             const { hiddenProgramStages } = data;
+            const { errorOrWarningMessage } = data;
+            console.log(
+              'errorOrWarningMessage : ' + JSON.stringify(errorOrWarningMessage)
+            );
             if (hiddenFields) {
               this.hiddenFields = hiddenFields;
               Object.keys(hiddenFields).map(key => {

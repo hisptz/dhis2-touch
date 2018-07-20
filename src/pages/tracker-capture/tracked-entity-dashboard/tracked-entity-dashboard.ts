@@ -327,12 +327,16 @@ export class TrackedEntityDashboardPage implements OnInit {
             const { hiddenSections } = data;
             const { hiddenFields } = data;
             const { hiddenProgramStages } = data;
+            const { errorOrWarningMessage } = data;
+            console.log(
+              'errorOrWarningMessage : ' + JSON.stringify(errorOrWarningMessage)
+            );
             if (hiddenFields) {
               this.hiddenFields = hiddenFields;
-              // Object.keys(hiddenFields).map(key => {
-              //   const id = key + '-trackedEntityAttribute';
-              //   this.updateData({ id: id, value: '' });
-              // });
+              Object.keys(hiddenFields).map(key => {
+                const id = key + '-trackedEntityAttribute';
+                this.updateData({ id: id, value: '' }, true);
+              });
             }
             if (hiddenSections) {
               this.hiddenSections = hiddenSections;
