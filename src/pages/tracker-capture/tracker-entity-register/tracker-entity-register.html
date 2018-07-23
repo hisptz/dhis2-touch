@@ -116,7 +116,7 @@
                     <loading [loadingMessage]="''" [loadingSize]="'large'"></loading>
                   </div>
                   <div *ngIf="isFormReady">
-                    <tracker-registration-form [(hiddenSections)]="hiddenSections" [(hiddenFields)]="hiddenFields" [formLayout]="formLayout"
+                    <tracker-registration-form [(errorOrWarningMessage)]="errorOrWarningMessage" [(hiddenSections)]="hiddenSections" [(hiddenFields)]="hiddenFields" [formLayout]="formLayout"
                       [dataObject]="dataObject" [dataUpdateStatus]="dataUpdateStatus$ | async" [currentUser]="currentUser"
                       [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass" [trackerRegistrationForm]="trackerRegistrationForm"
                       [programTrackedEntityAttributes]="programTrackedEntityAttributes" (onChange)="updateData($event)"></tracker-registration-form>

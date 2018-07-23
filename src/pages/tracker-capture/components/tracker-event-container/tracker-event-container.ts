@@ -41,6 +41,7 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
   hiddenSections: any;
   hiddenProgramStages: any;
   hiddenFields: any;
+  errorOrWarningMessage: any;
 
   constructor(
     private eventCaptureFormProvider: EventCaptureFormProvider,
@@ -50,6 +51,7 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
     this.hiddenFields = {};
     this.hiddenProgramStages = {};
     this.hiddenSections = {};
+    this.errorOrWarningMessage = {};
     this.entryFormType = 'event';
     this.dataObject = {};
   }
@@ -164,9 +166,9 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
             const { hiddenFields } = data;
             const { hiddenProgramStages } = data;
             const { errorOrWarningMessage } = data;
-            console.log(
-              'errorOrWarningMessage : ' + JSON.stringify(errorOrWarningMessage)
-            );
+            if (errorOrWarningMessage) {
+              this.errorOrWarningMessage = errorOrWarningMessage;
+            }
             if (hiddenFields) {
               this.hiddenFields = hiddenFields;
               Object.keys(hiddenFields).map(key => {

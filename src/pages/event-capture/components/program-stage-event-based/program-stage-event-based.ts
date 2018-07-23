@@ -50,6 +50,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   dataUpdateStatus: { [elementId: string]: string };
   hiddenSections: any;
   hiddenProgramStages: any;
+  errorOrWarningMessage: any;
   hiddenFields: any;
 
   constructor(
@@ -73,6 +74,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     this.hiddenFields = {};
     this.hiddenProgramStages = {};
     this.hiddenSections = {};
+    this.errorOrWarningMessage = {};
   }
   ngOnInit() {
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
@@ -260,9 +262,9 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
             const { hiddenFields } = data;
             const { hiddenProgramStages } = data;
             const { errorOrWarningMessage } = data;
-            console.log(
-              'errorOrWarningMessage : ' + JSON.stringify(errorOrWarningMessage)
-            );
+            if (errorOrWarningMessage) {
+              this.errorOrWarningMessage = errorOrWarningMessage;
+            }
             if (hiddenFields) {
               this.hiddenFields = hiddenFields;
               Object.keys(hiddenFields).map(key => {

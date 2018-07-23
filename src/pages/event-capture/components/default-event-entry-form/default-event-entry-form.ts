@@ -17,6 +17,7 @@ export class DefaultEventEntryFormComponent implements OnInit {
   @Input() dataValuesSavingStatusClass;
   @Input() hiddenFields;
   @Input() hiddenSections;
+  @Input() errorOrWarningMessage;
 
   @Output() onChange = new EventEmitter();
 
@@ -34,6 +35,9 @@ export class DefaultEventEntryFormComponent implements OnInit {
         this.toggleSection(id);
       }
     }
+    console.log(
+      'errorOrWarningMessage : ' + JSON.stringify(this.errorOrWarningMessage)
+    );
   }
 
   toggleSection(sectionId) {

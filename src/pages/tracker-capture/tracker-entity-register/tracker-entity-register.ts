@@ -67,6 +67,7 @@ export class TrackerEntityRegisterPage implements OnInit {
   hiddenSections: any;
   hiddenProgramStages: any;
   hiddenFields: any;
+  errorOrWarningMessage: any;
   private _dataUpdateStatus$: BehaviorSubject<{
     [elementId: string]: string;
   }> = new BehaviorSubject<{ [elementId: string]: string }>({});
@@ -107,6 +108,7 @@ export class TrackerEntityRegisterPage implements OnInit {
     this.hiddenFields = {};
     this.hiddenProgramStages = {};
     this.hiddenSections = {};
+    this.errorOrWarningMessage = {};
     this.dataUpdateStatus$ = this._dataUpdateStatus$.asObservable();
   }
 
@@ -368,9 +370,9 @@ export class TrackerEntityRegisterPage implements OnInit {
             const { hiddenFields } = data;
             const { hiddenProgramStages } = data;
             const { errorOrWarningMessage } = data;
-            console.log(
-              'errorOrWarningMessage : ' + JSON.stringify(errorOrWarningMessage)
-            );
+            if (errorOrWarningMessage) {
+              this.errorOrWarningMessage = errorOrWarningMessage;
+            }
             if (hiddenFields) {
               this.hiddenFields = hiddenFields;
               Object.keys(hiddenFields).map(key => {
