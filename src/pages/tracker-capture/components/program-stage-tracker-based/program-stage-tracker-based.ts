@@ -32,6 +32,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
   @Input() trackedEntityInstance;
   @Input() currentWidgetIndex;
   @Input() isLastStage;
+  @Input() programSkipLogicMetadata;
   @Output() onChange = new EventEmitter();
 
   currentOrgUnit: any;
@@ -99,6 +100,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
             .getSettingsForTheApp(this.currentUser)
             .subscribe((appSettings: any) => {
               this.dataEntrySettings = appSettings.entryForm;
+
               this.columnsToDisplay = {};
               if (this.programStage.programStageDataElements) {
                 this.programStage.programStageDataElements.forEach(
@@ -381,7 +383,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
   }
 
   trackByFn(index, item) {
-    return index;
+    return item && item.id ? item.id : index;
   }
 
   updateDataObjectModel(dataValues, programStageDataElements) {

@@ -162,13 +162,18 @@ export class AggregateConflictHandlerComponent implements OnInit {
         }
       }
     });
-    if (
-      this.summaryObject.conflicts.length > 0 ||
-      this.summaryObject.updates.length > 0
-    ) {
+    if (this.summaryObject.conflicts.length > 0) {
       this.appProvider.setTopNotification(
-        'New updates has been found form server'
+        'There are conflicts between offline and online data have been found, that needs your attention'
       );
+      this.conflictFoundAction.emit();
+    }
+    if (this.summaryObject.updates.length > 0) {
+      this.appProvider.setTopNotification(
+        'New updates has been found form server and have been applied success on offline storage'
+      );
+      const key = 'updates';
+      this.applyingDataToOffline(key);
       this.conflictFoundAction.emit();
     }
   }
@@ -176,14 +181,9 @@ export class AggregateConflictHandlerComponent implements OnInit {
   conflictHandlingAction(key, action) {
     if (action === 'accept') {
       const actionSheet = this.actionSheetCtrl.create({
-        title:
-          key === 'updates'
-            ? this.translationMapper[
-                'You are about to apply new updates to the from the server, are you sure?'
-              ]
-            : this.translationMapper[
-                'You are about to replace offline data with data from the server, are you sure?'
-              ],
+        title: this.translationMapper[
+          'You are about to replace offline data with data from the server, are you sure?'
+        ],
         buttons: [
           {
             text: this.translationMapper['Yes'],

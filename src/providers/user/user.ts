@@ -31,8 +31,7 @@ export class UserProvider {
     this.http.useBasicAuth(user.username, user.password);
     let fields =
       'fields=[:all],organisationUnits[id,name],dataViewOrganisationUnits[id,name],userCredentials[userRoles[name,dataSets[id],programs[id]],programs,dataSets';
-    let url = user.serverUrl.split('/dhis-web-commons')[0];
-    url = url.split('/dhis-web-dashboard')[0];
+    let url = user.serverUrl.split('/dhis-web-')[0];
     url = url.split('/api/apps')[0];
     user.serverUrl = url;
     url += '/api/me.json?' + fields;
@@ -49,8 +48,7 @@ export class UserProvider {
               user.serverUrl = user.serverUrl.replace('http://', 'https://');
               this.getUserDataFromServer(user).subscribe(
                 (data: any) => {
-                  let url = user.serverUrl.split('/dhis-web-commons')[0];
-                  url = url.split('/dhis-web-dashboard')[0];
+                  const url = user.serverUrl.split('/dhis-web-')[0];
                   user.serverUrl = url;
                   observer.next({ data: data.data, user: user });
                   observer.complete();
@@ -117,31 +115,51 @@ export class UserProvider {
         .get(user.serverUrl + '', {}, {})
         .then((data: any) => {
           if (data.status == 200) {
-            if (data.headers && data.headers['Set-Cookie']) {
-              let setCookieArray = data.headers['Set-Cookie'].split(';');
-              let path = '';
-              let url = '';
-              let serverUrlArray = user.serverUrl.split('/');
-              setCookieArray.forEach((value: any) => {
-                if (value.indexOf('Path=/') > -1) {
-                  let pathValues = value.split('Path=/');
-                  path = pathValues[pathValues.length - 1].split('/')[0];
-                }
-              });
-              if (serverUrlArray[serverUrlArray.length - 1] != path) {
-                url =
-                  serverUrlArray[serverUrlArray.length - 1] == ''
-                    ? user.serverUrl + path
-                    : user.serverUrl + '/' + path;
-              } else {
-                url = user.serverUrl;
+            const { url } = data;
+            const { headers } = data;
+            const { serverUrl } = user;
+            if (url) {
+              user.serverUrl = url.split('/dhis-web-')[0];
+            } else if (headers) {
+              if (headers['set-cookie']) {
+                headers['set-cookie']
+                  .replace(/\s/g, '')
+                  .split(';')
+                  .map(cookieValue => {
+                    if (cookieValue.indexOf('Path=/') > -1) {
+                      const path = cookieValue.split('Path=/').pop();
+                      const lastUrlPart = serverUrl.split('/').pop();
+                      if (lastUrlPart !== path) {
+                        if (lastUrlPart == '') {
+                          user.serverUrl = serverUrl + path;
+                        } else {
+                          user.serverUrl = serverUrl + '/' + path;
+                        }
+                      }
+                    }
+                  });
+              } else if (headers['Set-cookie']) {
+                headers['set-cookie']
+                  .replace(/\s/g, '')
+                  .split(';')
+                  .map(cookieValue => {
+                    if (cookieValue.indexOf('Path=/') > -1) {
+                      const path = cookieValue.split('Path=/').pop();
+                      const lastUrlPart = serverUrl.split('/').pop();
+                      if (lastUrlPart !== path) {
+                        if (lastUrlPart == '') {
+                          user.serverUrl = serverUrl + path;
+                        } else {
+                          user.serverUrl = serverUrl + '/' + path;
+                        }
+                      }
+                    }
+                  });
               }
-              user.serverUrl = url;
             }
             this.getUserDataFromServer(user).subscribe(
               (data: any) => {
-                let url = user.serverUrl.split('/dhis-web-commons')[0];
-                url = url.split('/dhis-web-dashboard')[0];
+                const url = user.serverUrl.split('/dhis-web-')[0];
                 user.serverUrl = url;
                 observer.next({ data: data.data, user: data.user });
                 observer.complete();
@@ -154,8 +172,7 @@ export class UserProvider {
                   user.serverUrl = serverUrl + '/dhis';
                   this.authenticateUser(user).subscribe(
                     (data: any) => {
-                      let url = user.serverUrl.split('/dhis-web-commons')[0];
-                      url = url.split('/dhis-web-dashboard')[0];
+                      const url = user.serverUrl.split('/dhis-web-')[0];
                       user.serverUrl = url;
                       observer.next({ data: data, user: user });
                       observer.complete();
@@ -179,8 +196,7 @@ export class UserProvider {
               user.serverUrl = error.headers.Location;
               this.authenticateUser(user).subscribe(
                 (data: any) => {
-                  let url = user.serverUrl.split('/dhis-web-commons')[0];
-                  url = url.split('/dhis-web-dashboard')[0];
+                  const url = user.serverUrl.split('/dhis-web-')[0];
                   user.serverUrl = url;
                   observer.next({ data: data, user: user });
                   observer.complete();
@@ -193,8 +209,7 @@ export class UserProvider {
               user.serverUrl = error.headers.location;
               this.authenticateUser(user).subscribe(
                 (data: any) => {
-                  let url = user.serverUrl.split('/dhis-web-commons')[0];
-                  url = url.split('/dhis-web-dashboard')[0];
+                  const url = user.serverUrl.split('/dhis-web-')[0];
                   user.serverUrl = url;
                   observer.next({ data: data, user: user });
                   observer.complete();
@@ -309,13 +324,86 @@ export class UserProvider {
     return new Observable(observer => {
       this.storage.set('userData', JSON.stringify(userData)).then(
         () => {
-          observer.next(userData);
+          this.setProfileInformation(userDataResponse, true).subscribe(
+            () => {
+              observer.next(userData);
+              observer.complete();
+            },
+            error => {
+              observer.error();
+            }
+          );
+        },
+        error => {
+          observer.error(error);
+        }
+      );
+    });
+  }
+
+  setProfileInformation(userDataResponse, status?: boolean): Observable<any> {
+    return new Observable(observer => {
+      const ommittedKeys = [
+        'access',
+        'attributeValues',
+        'userAccesses',
+        'dataSets',
+        'programs',
+        'userGroups',
+        'userCredentials',
+        'userGroupAccesses',
+        'favorites',
+        'favorite',
+        'teiSearchOrganisationUnits',
+        'name',
+        'organisationUnits',
+        'translations',
+        'dataViewOrganisationUnits',
+        'lastCheckedInterpretations',
+        'created',
+        'id',
+        'lastUpdated',
+        'displayName',
+        'externalAccess',
+        'authorities',
+        'settings'
+      ];
+      status = status ? status : false;
+      const profileInfo = { status: status };
+      Object.keys(userDataResponse).map(key => {
+        if (ommittedKeys.indexOf(key) === -1) {
+          profileInfo[key] = userDataResponse[key];
+        }
+      });
+      this.storage.set('profileInfo', JSON.stringify(profileInfo)).then(
+        () => {
+          observer.next();
           observer.complete();
         },
         error => {
           observer.error(error);
         }
       );
+    });
+  }
+
+  getProfileInformation(): Observable<any> {
+    return new Observable(observer => {
+      this.storage
+        .get('profileInfo')
+        .then(
+          profileInfo => {
+            profileInfo = JSON.parse(profileInfo);
+            observer.next(profileInfo);
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        )
+        .catch(error => {
+          observer.error(error);
+        });
     });
   }
 

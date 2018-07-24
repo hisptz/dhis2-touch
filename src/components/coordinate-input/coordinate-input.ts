@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ModalController, ModalOptions } from 'ionic-angular';
+import { ModalController } from 'ionic-angular';
 
 /**
  * Generated class for the CoordinateInputComponent component.
@@ -21,6 +21,7 @@ export class CoordinateInputComponent implements OnInit {
 
   ngOnInit() {
     const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
+    console.log(JSON.stringify(this.data));
     if (this.data && this.data[fieldId]) {
       const dataValue = eval(this.data[fieldId].value);
       if (dataValue && dataValue.length === 2) {
@@ -57,24 +58,10 @@ export class CoordinateInputComponent implements OnInit {
 
   updateValue(dataValue: string) {
     const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
-    if (
-      this.data &&
-      this.data[fieldId] &&
-      dataValue != this.data[fieldId].value
-    ) {
-      this.onChange.emit({
-        id: fieldId,
-        value: dataValue,
-        status: 'not-synced'
-      });
-    } else if (this.data && !this.data[fieldId]) {
-      if (dataValue) {
-        this.onChange.emit({
-          id: fieldId,
-          value: dataValue,
-          status: 'not-synced'
-        });
-      }
-    }
+    this.onChange.emit({
+      id: fieldId,
+      value: dataValue,
+      status: 'not-synced'
+    });
   }
 }

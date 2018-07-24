@@ -6,9 +6,15 @@
   <div *ngIf="programTrackedEntityAttributes && programTrackedEntityAttributes.length > 0">
     <form>
       <div *ngFor="let programTrackedEntityAttribute of programTrackedEntityAttributes;trackBy: trackByFn">
-        <tracked-entity-inputs [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute" [currentUser]="currentUser"
-          [data]="dataObject" [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass" [mandatory]="programTrackedEntityAttribute.mandatory"
-          (onChange)="updateData($event)"></tracked-entity-inputs>
+        <div *ngIf="programTrackedEntityAttribute && programTrackedEntityAttribute.trackedEntityAttribute && programTrackedEntityAttribute.trackedEntityAttribute.id && !hiddenFields[programTrackedEntityAttribute.trackedEntityAttribute.id]">
+          <tracked-entity-inputs [trackedEntityAttribute]="programTrackedEntityAttribute.trackedEntityAttribute" [currentUser]="currentUser"
+            [data]="dataObject" [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass" [mandatory]="programTrackedEntityAttribute.mandatory"
+            (onChange)="updateData($event)"></tracked-entity-inputs>
+          <div *ngIf="errorOrWarningMessage[programTrackedEntityAttribute.trackedEntityAttribute.id]">
+            <program-rule-action-message [programRuleActionMessage]="errorOrWarningMessage[programTrackedEntityAttribute.trackedEntityAttribute.id]"
+              [isEventCompleted]="isEventCompleted"></program-rule-action-message>
+          </div>
+        </div>
       </div>
     </form>
   </div>

@@ -42,133 +42,26 @@
           <hr>
 
           <div *ngIf=" settingContent.id == 'appSettings'">
-            <div *ngIf="settingContent.isLoading">
-              <loading [loadingMessage]="'Applying changes'" [loadingSize]="'large'"></loading>
-            </div>
-            <div *ngIf="!settingContent.isLoading">
-              <ion-row>
-                <ion-col>
-                  <ion-item>
-                    <ion-label>
-                      <span [translate]="'Current language'"></span>
-                    </ion-label>
-                    <ion-select (ionChange)="updateCurrentLanguage()" [(ngModel)]="currentLanguage" interface="action-sheet">
-                      <ion-option *ngFor="let translationCode of translationCodes" value="{{translationCode.code}}">{{translationCode.name}}</ion-option>
-                    </ion-select>
-                  </ion-item>
-                </ion-col>
-              </ion-row>
-            </div>
+            <app-settings [currentLanguage]="currentLanguage" (onUpdateCurrentLanguage)="updateCurrentLanguage($event)" [translationCodes]="translationCodes"></app-settings>
           </div>
 
           <div *ngIf="settingContent.id == 'synchronization'">
             <div *ngIf="settingObject.synchronization">
-              <div *ngIf="settingContent.isLoading">
-                <loading [loadingMessage]="'Applying changes'" [loadingSize]="'large'"></loading>
-              </div>
-              <div *ngIf="!settingContent.isLoading">
-                <ion-row>
-                  <ion-col col-5>
-                    <ion-item>
-                      <ion-input type="number" (ionBlur)="updateAutoSyncSetting(settingContent)" min="1" [(ngModel)]="settingObject.synchronization.time"></ion-input>
-                    </ion-item>
-                  </ion-col>
-                  <ion-col col-7>
-                    <ion-item>
-                      <ion-select (ionChange)="updateAutoSyncSetting(settingContent)" [(ngModel)]="settingObject.synchronization.timeType" interface="action-sheet">
-                        <ion-option value="minutes">{{'Minutes'|translate}}</ion-option>
-                        <ion-option value="hours">{{'Hours'|translate}}</ion-option>
-                      </ion-select>
-                    </ion-item>
-                  </ion-col>
-                </ion-row>
-                <ion-row>
-                  <ion-col>
-                    <ion-item no-lines>
-                      <ion-label>
-                        <span [translate]="'Auto synchronization'"></span>
-                      </ion-label>
-                      <ion-toggle (ionChange)="updateAutoSyncSetting(settingContent)" color="primary" [(ngModel)]="settingObject.synchronization.isAutoSync"></ion-toggle>
-                    </ion-item>
-                  </ion-col>
-                </ion-row>
-              </div>
+              <synchronization-settings [(settingObject)]="settingObject" (onUpdateSyncSetting)="updateAutoSyncSetting($event,settingContent)"></synchronization-settings>
             </div>
           </div>
 
           <div *ngIf="settingContent.id == 'entryForm'">
-            <div *ngIf="settingContent.isLoading">
-              <loading [loadingMessage]="'Applying changes'" [loadingSize]="'large'"></loading>
-            </div>
-            <div *ngIf="!settingContent.isLoading">
-              <div *ngIf="settingObject.entryForm">
-                <ion-row>
-                  <ion-col>
-                    <ion-item>
-                      <ion-label>
-                        <span [translate]="'Form label'"></span>
-                      </ion-label>
-                      <ion-select (ionChange)="applySettings(settingContent)" [(ngModel)]="settingObject.entryForm.label" interface="action-sheet">
-                        <ion-option value="displayName">
-                          <span [translate]="'Display name'"></span>
-                        </ion-option>
-                        <ion-option value="formName">
-                          <span [translate]="'Form name'"></span>
-                        </ion-option>
-                      </ion-select>
-                    </ion-item>
-                    <ion-item>
-                      <ion-label>
-                        <span [translate]="'Form layout'"></span>
-                      </ion-label>
-                      <ion-select (ionChange)="applySettings(settingContent)" [(ngModel)]="settingObject.entryForm.formLayout" interface="action-sheet">
-                        <ion-option value="tableLayout">
-                          <span [translate]="'Table layout'"></span>
-                        </ion-option>
-                        <ion-option value="listLayout">
-                          <span [translate]="'List layout'"></span>
-                        </ion-option>
-                        <ion-option value="customLayout">
-                          <span [translate]="'Custom layout'"></span>
-                        </ion-option>
-                      </ion-select>
-                    </ion-item>
-                    <ion-item>
-                      <ion-label floating>
-                        <span [translate]="'Data element per page'"></span>
-                      </ion-label>
-                      <ion-input (ionBlur)="applySettings(settingContent)" type="number" min="1" [(ngModel)]="settingObject.entryForm.maxDataElementOnDefaultForm"></ion-input>
-                    </ion-item>
-                    <ion-item no-lines>
-                      <ion-label>
-                        <span [translate]="'Render option less than six as radio'"></span>
-                      </ion-label>
-                      <ion-toggle (ionChange)="applySettings(settingContent)" color="primary" [(ngModel)]="settingObject.entryForm.shouldDisplayAsRadio"></ion-toggle>
-                    </ion-item>
-                    <ion-item no-lines>
-                      <ion-label>
-                        <span [translate]="'Show barcode reader on numerical fields'"></span>
-                      </ion-label>
-                      <ion-toggle (ionChange)="applySettings(settingContent)" color="primary" [(ngModel)]="settingObject.entryForm.allowBarcodeReaderOnNumerical"></ion-toggle>
-                    </ion-item>
-                    <ion-item no-lines>
-                      <ion-label>
-                        <span [translate]="'Show barcode reader on text fields'"></span>
-                      </ion-label>
-                      <ion-toggle (ionChange)="applySettings(settingContent)" color="primary" [(ngModel)]="settingObject.entryForm.allowBarcodeReaderOnText"></ion-toggle>
-                    </ion-item>
-                    <ion-item no-lines>
-                      <ion-label>
-                        <span [translate]="'Show alert on assignement issues'"></span>
-                      </ion-label>
-                      <ion-toggle (ionChange)="applySettings(settingContent)" color="primary" [(ngModel)]="settingObject.entryForm.showAlertOnFormAssignement"></ion-toggle>
-                    </ion-item>
-                  </ion-col>
-                </ion-row>
-              </div>
+            <div *ngIf="settingObject.entryForm">
+              <entry-form-settings [(settingObject)]="settingObject" (onUpdateDataEntrySettings)="applySettings(settingContent)"></entry-form-settings>
             </div>
           </div>
 
+          <div *ngIf="settingContent.id == 'barcode'">
+            <div *ngIf="settingObject.barcode">
+              <barcode-settings [(settingObject)]="settingObject" (onUpdateBarcodeSettings)="applySettings(settingContent)"></barcode-settings>
+            </div>
+          </div>
 
         </div>
       </div>

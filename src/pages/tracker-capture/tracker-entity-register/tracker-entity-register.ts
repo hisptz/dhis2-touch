@@ -18,6 +18,8 @@ import { AppTranslationProvider } from '../../../providers/app-translation/app-t
 import { SettingsProvider } from '../../../providers/settings/settings';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { EnrollmentsProvider } from '../../../providers/enrollments/enrollments';
+import { ProgramRulesProvider } from '../../../providers/program-rules/program-rules';
 
 declare var dhis2: any;
 /**
@@ -60,6 +62,12 @@ export class TrackerEntityRegisterPage implements OnInit {
   trackerRegistrationForm: string;
   formLayout: string;
   data;
+  coordinate: any;
+  programSkipLogicMetadata: any;
+  hiddenSections: any;
+  hiddenProgramStages: any;
+  hiddenFields: any;
+  errorOrWarningMessage: any;
   private _dataUpdateStatus$: BehaviorSubject<{
     [elementId: string]: string;
   }> = new BehaviorSubject<{ [elementId: string]: string }>({});
@@ -78,8 +86,17 @@ export class TrackerEntityRegisterPage implements OnInit {
     private organisationUnitsProvider: OrganisationUnitsProvider,
     private trackerCaptureProvider: TrackerCaptureProvider,
     private appTranslation: AppTranslationProvider,
-    private settingProvider: SettingsProvider
+    private settingProvider: SettingsProvider,
+    private enrollmentsProvider: EnrollmentsProvider,
+    private programRulesProvider: ProgramRulesProvider
   ) {
+    this.coordinate = {
+      latitude: '0',
+      longitude: '0'
+    };
+    this.programSkipLogicMetadata = {};
+    this.icons['addNewCase'] = 'assets/icon/add-new-case.png';
+    this.icons['menu'] = 'assets/icon/menu.png';
     this.isFormReady = false;
     this.currentProgramName = '';
     this.currentOrganisationUnitName = '';
@@ -88,12 +105,14 @@ export class TrackerEntityRegisterPage implements OnInit {
       incidentDate: today,
       enrollmentDate: today
     };
+    this.hiddenFields = {};
+    this.hiddenProgramStages = {};
+    this.hiddenSections = {};
+    this.errorOrWarningMessage = {};
     this.dataUpdateStatus$ = this._dataUpdateStatus$.asObservable();
   }
 
   ngOnInit() {
-    this.icons['addNewCase'] = 'assets/icon/add-new-case.png';
-    this.icons['menu'] = 'assets/icon/menu.png';
     this.isLoading = true;
     this.isRegistrationProcessingRunning = false;
     this.translationMapper = {};
@@ -160,6 +179,10 @@ export class TrackerEntityRegisterPage implements OnInit {
       incidentDate: '',
       enrollmentDate: ''
     };
+    this.coordinate = {
+      latitude: '0',
+      longitude: '0'
+    };
     this.dashboardWidgets = this.getDashboardWidgets();
     this.isTrackedEntityRegistered = false;
     if (this.dashboardWidgets.length > 0) {
@@ -168,6 +191,10 @@ export class TrackerEntityRegisterPage implements OnInit {
     this.trackedEntityInstance = dhis2.util.uid();
     this.isFormReady = true;
     this.loadingProgramStages(this.currentProgram.id, this.currentUser);
+    this.loadingProgramSkipLogicMetadata(
+      this.currentProgram.id,
+      this.currentUser
+    );
   }
 
   loadingProgramStages(programId, currentUser) {
@@ -182,7 +209,7 @@ export class TrackerEntityRegisterPage implements OnInit {
           this.programStages = programStages;
           if (programStages && programStages.length > 0) {
             let counter = 1;
-            programStages.forEach((programStage: any) => {
+            programStages.map((programStage: any) => {
               this.dashboardWidgets.push({
                 id: programStage.id,
                 name: programStage.name,
@@ -197,6 +224,25 @@ export class TrackerEntityRegisterPage implements OnInit {
           this.isLoading = false;
           this.appProvider.setNormalNotification(
             'Failed to discover program stages'
+          );
+        }
+      );
+  }
+
+  loadingProgramSkipLogicMetadata(programId, currentUser) {
+    this.eventCaptureFormProvider
+      .getProgramSkipLogicMetadata(programId, currentUser)
+      .subscribe(
+        metadata => {
+          this.programSkipLogicMetadata = metadata;
+          setTimeout(() => {
+            this.evaluatingProgramRules();
+          }, 50);
+        },
+        error => {
+          console.log(
+            'Error on getting program skip logic metadata ' +
+              JSON.stringify(error)
           );
         }
       );
@@ -293,7 +339,7 @@ export class TrackerEntityRegisterPage implements OnInit {
   updateDateSelection(date, dateType) {
     if (date && date !== '') {
       this.date[dateType] = date;
-      this.updateData('', true);
+      this.updateData('', false, true);
     } else {
       if (this.isTrackedEntityRegistered) {
         const title =
@@ -305,18 +351,67 @@ export class TrackerEntityRegisterPage implements OnInit {
     }
   }
 
-  //@todo changes of enrollments as well
-  updateData(updateDataValue, shoulOnlyCheckDates?) {
+  updateEventCoordonate(coordinate) {
+    this.coordinate = coordinate;
+    this.updateData('', false, true);
+  }
+
+  evaluatingProgramRules() {
+    this.programRulesProvider
+      .getProgramRulesEvaluations(
+        this.programSkipLogicMetadata,
+        this.dataObject
+      )
+      .subscribe(
+        res => {
+          const { data } = res;
+          if (data) {
+            const { hiddenSections } = data;
+            const { hiddenFields } = data;
+            const { hiddenProgramStages } = data;
+            const { errorOrWarningMessage } = data;
+            if (errorOrWarningMessage) {
+              this.errorOrWarningMessage = errorOrWarningMessage;
+            }
+            if (hiddenFields) {
+              this.hiddenFields = hiddenFields;
+              Object.keys(hiddenFields).map(key => {
+                const id = key + '-trackedEntityAttribute';
+                this.trackedEntityAttributesSavingStatusClass[id] =
+                  'input-field-container';
+                this.updateData({ id: id, value: '' }, true, false);
+              });
+            }
+            if (hiddenSections) {
+              this.hiddenSections = hiddenSections;
+            }
+            if (hiddenProgramStages) {
+              this.hiddenProgramStages = hiddenProgramStages;
+            }
+          }
+        },
+        error => {
+          console.log(
+            'Error evaluate program rules : ' + JSON.stringify(error)
+          );
+        }
+      );
+  }
+
+  updateData(updateDataValue, shouldSkipProgramRules, shoulOnlyCheckDates) {
     if (!shoulOnlyCheckDates) {
       const id = updateDataValue.id.split('-')[0];
       this.currentTrackedEntityId = updateDataValue.id;
       this.trackedEntityAttributeValuesObject[id] = updateDataValue.value;
       this.dataObject[updateDataValue.id] = updateDataValue;
     }
+    //update evalutions of programing rules on register form
+    if (!shouldSkipProgramRules) {
+      this.evaluatingProgramRules();
+    }
     const isFormReady = this.isALlRequiredFieldHasValue(
       this.programTrackedEntityAttributes,
-      this.trackedEntityAttributeValuesObject,
-      shoulOnlyCheckDates
+      this.trackedEntityAttributeValuesObject
     );
     if (isFormReady) {
       this.registerEntity();
@@ -393,7 +488,7 @@ export class TrackerEntityRegisterPage implements OnInit {
 
   registerEntity() {
     let trackedEntityAttributeValues = [];
-    Object.keys(this.trackedEntityAttributeValuesObject).forEach(key => {
+    Object.keys(this.trackedEntityAttributeValuesObject).map(key => {
       trackedEntityAttributeValues.push({
         value: this.trackedEntityAttributeValuesObject[key],
         attribute: key
@@ -412,13 +507,23 @@ export class TrackerEntityRegisterPage implements OnInit {
               this.currentTrackedEntityId
             ] =
               'input-field-container-success';
-
             // Update status for custom form
             const dataUpdateStatus = {};
             _.each(_.keys(this.dataObject), dataObjectId => {
               dataUpdateStatus[dataObjectId + '-val'] = 'OK';
             });
             this._dataUpdateStatus$.next(dataUpdateStatus);
+            this.enrollmentsProvider
+              .updateEnrollement(
+                this.trackedEntityInstance,
+                this.date.incidentDate,
+                this.date.enrollmentDate,
+                this.coordinate,
+                this.currentProgram.id,
+                this.currentOrganisationUnit.id,
+                this.currentUser
+              )
+              .subscribe(() => {}, () => {});
           },
           error => {
             this.trackedEntityAttributesSavingStatusClass[
@@ -426,7 +531,6 @@ export class TrackerEntityRegisterPage implements OnInit {
             ] =
               'input-field-container-failed';
             console.log(JSON.stringify(error));
-
             // Update status for custom form
             const dataUpdateStatus = {};
             _.each(_.keys(this.dataObject), dataObjectId => {
@@ -441,10 +545,11 @@ export class TrackerEntityRegisterPage implements OnInit {
           this.date.incidentDate,
           this.date.enrollmentDate,
           this.currentUser,
-          this.trackedEntityInstance
+          this.trackedEntityInstance,
+          this.coordinate
         )
         .subscribe(
-          (reseponse: any) => {
+          () => {
             this.appProvider.setNormalNotification(
               'A tracked entity instance has been saved successfully'
             );
@@ -478,7 +583,6 @@ export class TrackerEntityRegisterPage implements OnInit {
               'Failed to save a tracked entity instance'
             );
             console.log(JSON.stringify(error));
-
             // Update status for custom form
             const dataUpdateStatus = {};
             _.each(_.keys(this.dataObject), dataObjectId => {
@@ -492,8 +596,7 @@ export class TrackerEntityRegisterPage implements OnInit {
 
   isALlRequiredFieldHasValue(
     programTrackedEntityAttributes,
-    trackedEntityAttributeValuesObject,
-    shoulOnlyCheckDates
+    trackedEntityAttributeValuesObject
   ) {
     let result = Object.keys(trackedEntityAttributeValuesObject).length > 0;
     programTrackedEntityAttributes.forEach(
@@ -539,7 +642,7 @@ export class TrackerEntityRegisterPage implements OnInit {
   }
 
   trackByFn(index, item) {
-    return item.id;
+    return item && item.id ? item.id : index;
   }
 
   getValuesToTranslate() {

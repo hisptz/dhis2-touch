@@ -19,6 +19,7 @@ import { AppTranslationProvider } from '../../../providers/app-translation/app-t
 import { SettingsProvider } from '../../../providers/settings/settings';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
+import { ProgramRulesProvider } from '../../../providers/program-rules/program-rules';
 
 /**
  * Generated class for the TrackedEntityDashboardPage page.
@@ -53,12 +54,19 @@ export class TrackedEntityDashboardPage implements OnInit {
   translationMapper: any;
   trackerRegistrationForm: string;
   formLayout: string;
-  private _dataUpdateStatus$: BehaviorSubject<{[elementId: string]: string}> = new BehaviorSubject<{[elementId: string]: string}>(
-    {});
-  dataUpdateStatus$: Observable<{[elementId: string]: string}>;
+  programSkipLogicMetadata: any;
+  hiddenSections: any;
+  hiddenProgramStages: any;
+  hiddenFields: any;
+  errorOrWarningMessage: any;
+  private _dataUpdateStatus$: BehaviorSubject<{
+    [elementId: string]: string;
+  }> = new BehaviorSubject<{ [elementId: string]: string }>({});
+  dataUpdateStatus$: Observable<{ [elementId: string]: string }>;
   @ViewChild(Content) content: Content;
 
-  constructor(private navCtrl: NavController,
+  constructor(
+    private navCtrl: NavController,
     private modalCtrl: ModalController,
     private actionSheetCtrl: ActionSheetController,
     private eventCaptureFormProvider: EventCaptureFormProvider,
@@ -71,19 +79,26 @@ export class TrackedEntityDashboardPage implements OnInit {
     private trackedEntityInstancesProvider: TrackedEntityInstancesProvider,
     private navParams: NavParams,
     private appTranslation: AppTranslationProvider,
-    private settingProvider: SettingsProvider) {
+    private settingProvider: SettingsProvider,
+    private programRulesProvider: ProgramRulesProvider
+  ) {
+    this.programSkipLogicMetadata = {};
     this.dataUpdateStatus$ = this._dataUpdateStatus$.asObservable();
-  }
-
-  ngOnInit() {
     this.isDashboardWidgetOpen = {};
     this.trackedEntityAttributesSavingStatusClass = {};
     this.icons['menu'] = 'assets/icon/menu.png';
     this.isLoading = true;
+    this.translationMapper = {};
+    this.hiddenFields = {};
+    this.hiddenProgramStages = {};
+    this.hiddenSections = {};
+    this.errorOrWarningMessage = {};
+  }
+
+  ngOnInit() {
     this.currentProgram = this.programsProvider.lastSelectedProgram;
     this.currentOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
     this.dashboardWidgets = this.getDashboardWidgets();
-    this.translationMapper = {};
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
       (data: any) => {
         this.translationMapper = data;
@@ -132,29 +147,35 @@ export class TrackedEntityDashboardPage implements OnInit {
     this.loadingMessage = this.translationMapper[key]
       ? this.translationMapper[key]
       : key;
-    this.trackerCaptureProvider.getTrackedEntityInstance(trackedEntityInstanceId, this.currentUser).subscribe(
-      (response: any) => {
-        this.trackedEntityInstance = response;
-        if (response && response.attributes) {
-          response.attributes.forEach((attributeObject: any) => {
-            this.trackedEntityAttributeValuesObject[
-              attributeObject.attribute
+    this.trackerCaptureProvider
+      .getTrackedEntityInstance(trackedEntityInstanceId, this.currentUser)
+      .subscribe(
+        (response: any) => {
+          this.trackedEntityInstance = response;
+          if (response && response.attributes) {
+            response.attributes.forEach((attributeObject: any) => {
+              this.trackedEntityAttributeValuesObject[
+                attributeObject.attribute
               ] =
-              attributeObject.value;
-            let id = attributeObject.attribute + '-trackedEntityAttribute';
-            this.dataObject[id] = {id: id, value: attributeObject.value};
-          });
+                attributeObject.value;
+              let id = attributeObject.attribute + '-trackedEntityAttribute';
+              this.dataObject[id] = { id: id, value: attributeObject.value };
+            });
+          }
+          this.loadingProgramStages(this.currentProgram.id, this.currentUser);
+          this.loadingProgramSkipLogicMetadata(
+            this.currentProgram.id,
+            this.currentUser
+          );
+        },
+        error => {
+          console.log(JSON.stringify(error));
+          this.isLoading = false;
+          this.appProvider.setNormalNotification(
+            'Failed to discover tracked entity'
+          );
         }
-        this.loadingProgramStages(this.currentProgram.id, this.currentUser);
-      },
-      error => {
-        console.log(JSON.stringify(error));
-        this.isLoading = false;
-        this.appProvider.setNormalNotification(
-          'Failed to discover tracked entity'
-        );
-      }
-    );
+      );
   }
 
   loadingProgramStages(programId, currentUser) {
@@ -162,33 +183,54 @@ export class TrackedEntityDashboardPage implements OnInit {
     this.loadingMessage = this.translationMapper[key]
       ? this.translationMapper[key]
       : key;
-    this.eventCaptureFormProvider.getProgramStages(programId, currentUser).subscribe(
-      (programStages: any) => {
-        this.programStages = programStages;
-        if (programStages && programStages.length > 0) {
-          let counter = 1;
-          programStages.forEach((programStage: any) => {
-            this.dashboardWidgets.push({
-              id: programStage.id,
-              name: programStage.name,
-              iconName: counter
+    this.eventCaptureFormProvider
+      .getProgramStages(programId, currentUser)
+      .subscribe(
+        (programStages: any) => {
+          this.programStages = programStages;
+          if (programStages && programStages.length > 0) {
+            let counter = 1;
+            programStages.map((programStage: any) => {
+              this.dashboardWidgets.push({
+                id: programStage.id,
+                name: programStage.name,
+                iconName: counter
+              });
+              counter++;
             });
-            counter++;
-          });
+          }
+          if (this.dashboardWidgets.length > 0) {
+            this.changeDashboardWidget(this.dashboardWidgets[0]);
+          }
+          this.loadTrackedEntityRegistration(programId, currentUser);
+        },
+        error => {
+          console.log(JSON.stringify(error));
+          this.isLoading = false;
+          this.appProvider.setNormalNotification(
+            'Failed to discover program stages'
+          );
         }
-        if (this.dashboardWidgets.length > 0) {
-          this.changeDashboardWidget(this.dashboardWidgets[0]);
+      );
+  }
+
+  loadingProgramSkipLogicMetadata(programId, currentUser) {
+    this.eventCaptureFormProvider
+      .getProgramSkipLogicMetadata(programId, currentUser)
+      .subscribe(
+        metadata => {
+          this.programSkipLogicMetadata = metadata;
+          setTimeout(() => {
+            this.evaluatingProgramRules();
+          }, 50);
+        },
+        error => {
+          console.log(
+            'Error on getting program skip logic metadata ' +
+              JSON.stringify(error)
+          );
         }
-        this.loadTrackedEntityRegistration(programId, currentUser);
-      },
-      error => {
-        console.log(JSON.stringify(error));
-        this.isLoading = false;
-        this.appProvider.setNormalNotification(
-          'Failed to discover program stages'
-        );
-      }
-    );
+      );
   }
 
   loadTrackedEntityRegistration(programId, currentUser) {
@@ -197,39 +239,43 @@ export class TrackedEntityDashboardPage implements OnInit {
       ? this.translationMapper[key]
       : key;
     this.isLoading = true;
-    this.trackerCaptureProvider.getTrackedEntityRegistration(programId, currentUser).subscribe(
-      (programTrackedEntityAttributes: any) => {
-        this.programTrackedEntityAttributes = programTrackedEntityAttributes;
-        this.trackerCaptureProvider.getTrackedEntityRegistrationDesignForm(programId, currentUser).subscribe(
-          form => {
-            this.trackerRegistrationForm = form;
-            this.isLoading = false;
-          },
-          error => {
-            this.isLoading = false;
-            console.log(JSON.stringify(error));
-            this.appProvider.setNormalNotification(
-              'Failed to discover registration entry form'
+    this.trackerCaptureProvider
+      .getTrackedEntityRegistration(programId, currentUser)
+      .subscribe(
+        (programTrackedEntityAttributes: any) => {
+          this.programTrackedEntityAttributes = programTrackedEntityAttributes;
+          this.trackerCaptureProvider
+            .getTrackedEntityRegistrationDesignForm(programId, currentUser)
+            .subscribe(
+              form => {
+                this.trackerRegistrationForm = form;
+                this.isLoading = false;
+              },
+              error => {
+                this.isLoading = false;
+                console.log(JSON.stringify(error));
+                this.appProvider.setNormalNotification(
+                  'Failed to discover registration entry form'
+                );
+              }
             );
-          }
-        );
-        this.isLoading = false;
-      },
-      error => {
-        this.isLoading = false;
-        console.log(JSON.stringify(error));
-        this.appProvider.setNormalNotification(
-          'Failed to discover registration fields'
-        );
-      }
-    );
+          this.isLoading = false;
+        },
+        error => {
+          this.isLoading = false;
+          console.log(JSON.stringify(error));
+          this.appProvider.setNormalNotification(
+            'Failed to discover registration fields'
+          );
+        }
+      );
   }
 
   deleteTrackedEntity(trackedEntityInstanceId) {
     const actionSheet = this.actionSheetCtrl.create({
       title: this.translationMapper[
         'You are about to delete all information related to this tracked entity instance, are you sure?'
-        ],
+      ],
       buttons: [
         {
           text: this.translationMapper['Yes'],
@@ -239,88 +285,143 @@ export class TrackedEntityDashboardPage implements OnInit {
             this.loadingMessage = this.translationMapper[key]
               ? this.translationMapper[key]
               : key;
-            this.trackerCaptureProvider.deleteTrackedEntityInstance(
-              trackedEntityInstanceId,
-              this.currentUser
-            ).subscribe(
-              () => {
-                this.goBack();
-                this.appProvider.setNormalNotification(
-                  'Tracked entity instance has been delete successfully'
-                );
-              },
-              error => {
-                this.isLoading = false;
-                console.log(JSON.stringify(error));
-                this.appProvider.setNormalNotification(
-                  'Failed to delete all information related to this tracked entity instance'
-                );
-              }
-            );
+            this.trackerCaptureProvider
+              .deleteTrackedEntityInstance(
+                trackedEntityInstanceId,
+                this.currentUser
+              )
+              .subscribe(
+                () => {
+                  this.goBack();
+                  this.appProvider.setNormalNotification(
+                    'Tracked entity instance has been delete successfully'
+                  );
+                },
+                error => {
+                  this.isLoading = false;
+                  console.log(JSON.stringify(error));
+                  this.appProvider.setNormalNotification(
+                    'Failed to delete all information related to this tracked entity instance'
+                  );
+                }
+              );
           }
         },
         {
           text: this.translationMapper['No'],
-          handler: () => {
-          }
+          handler: () => {}
         }
       ]
     });
     actionSheet.present();
   }
 
-  updateData(updateDataValue) {
+  evaluatingProgramRules() {
+    this.programRulesProvider
+      .getProgramRulesEvaluations(
+        this.programSkipLogicMetadata,
+        this.dataObject
+      )
+      .subscribe(
+        res => {
+          const { data } = res;
+          if (data) {
+            const { hiddenSections } = data;
+            const { hiddenFields } = data;
+            const { hiddenProgramStages } = data;
+            const { errorOrWarningMessage } = data;
+            if (errorOrWarningMessage) {
+              this.errorOrWarningMessage = errorOrWarningMessage;
+            }
+            if (hiddenFields) {
+              this.hiddenFields = hiddenFields;
+              Object.keys(hiddenFields).map(key => {
+                const id = key + '-trackedEntityAttribute';
+                this.trackedEntityAttributesSavingStatusClass[id] =
+                  'input-field-container';
+                this.updateData({ id: id, value: '' }, true);
+              });
+            }
+            if (hiddenSections) {
+              this.hiddenSections = hiddenSections;
+            }
+            if (hiddenProgramStages) {
+              this.hiddenProgramStages = hiddenProgramStages;
+            }
+          }
+        },
+        error => {
+          console.log(
+            'Error evaluate program rules : ' + JSON.stringify(error)
+          );
+        }
+      );
+  }
+
+  updateData(updateDataValue, shouldSkipProgramRules) {
     let id = updateDataValue.id.split('-')[0];
     this.trackedEntityAttributeValuesObject[id] = updateDataValue.value;
     let trackedEntityAttributeValues = [];
-    Object.keys(this.trackedEntityAttributeValuesObject).forEach(key => {
+    Object.keys(this.trackedEntityAttributeValuesObject).map(key => {
       trackedEntityAttributeValues.push({
         value: this.trackedEntityAttributeValuesObject[key],
         attribute: key
       });
     });
-    this.trackedEntityAttributeValuesProvider.savingTrackedEntityAttributeValues(
-      this.trackedEntityInstance.id,
-      trackedEntityAttributeValues,
-      this.currentUser
-    ).subscribe(
-      () => {
-        this.trackedEntityInstancesProvider.updateSavedTrackedEntityInstancesByStatus(
-          [this.trackedEntityInstance],
-          this.currentUser,
-          'not-synced'
-        ).subscribe(
-          () => {
-            this.dataObject[updateDataValue.id] = updateDataValue;
-            this.trackedEntityAttributesSavingStatusClass[
-              updateDataValue.id
-              ] =
-              'input-field-container-success';
+    this.trackedEntityAttributeValuesProvider
+      .savingTrackedEntityAttributeValues(
+        this.trackedEntityInstance.id,
+        trackedEntityAttributeValues,
+        this.currentUser
+      )
+      .subscribe(
+        () => {
+          this.trackedEntityInstancesProvider
+            .updateSavedTrackedEntityInstancesByStatus(
+              [this.trackedEntityInstance],
+              this.currentUser,
+              'not-synced'
+            )
+            .subscribe(
+              () => {
+                this.dataObject[updateDataValue.id] = updateDataValue;
+                // Update status for custom form
+                this._dataUpdateStatus$.next({
+                  [updateDataValue.id + '-val']: 'OK'
+                });
+                if (!shouldSkipProgramRules) {
+                  this.evaluatingProgramRules();
+                  this.trackedEntityAttributesSavingStatusClass[
+                    updateDataValue.id
+                  ] =
+                    'input-field-container-success';
+                }
+              },
+              error => {
+                this.trackedEntityAttributesSavingStatusClass[
+                  updateDataValue.id
+                ] =
+                  'input-field-container-failed';
+                console.log(JSON.stringify(error));
 
-            // Update status for custom form
-            this._dataUpdateStatus$.next({[updateDataValue.id + '-val'] : 'OK'});
-          },
-          error => {
-            this.trackedEntityAttributesSavingStatusClass[
-              updateDataValue.id
-              ] =
-              'input-field-container-failed';
-            console.log(JSON.stringify(error));
+                // Update status for custom form
+                this._dataUpdateStatus$.next({
+                  [updateDataValue.id + '-val']: 'ERROR'
+                });
+              }
+            );
+        },
+        error => {
+          this.trackedEntityAttributesSavingStatusClass[updateDataValue.id] =
+            'input-field-container-failed';
+          console.log(JSON.stringify(error));
 
-            // Update status for custom form
-            this._dataUpdateStatus$.next({[updateDataValue.id + '-val'] : 'ERROR'});
-          }
-        );
-      },
-      error => {
-        this.trackedEntityAttributesSavingStatusClass[updateDataValue.id] =
-          'input-field-container-failed';
-        console.log(JSON.stringify(error));
-
-        // Update status for custom form
-        this._dataUpdateStatus$.next({[updateDataValue.id + '-val'] : 'ERROR'});
-      }
-    );
+          // Update status for custom form
+          this._dataUpdateStatus$.next({
+            [updateDataValue.id + '-val']: 'ERROR'
+          });
+        }
+      );
   }
 
   updateWidgetPagination(widgetIndex) {
@@ -368,7 +469,7 @@ export class TrackedEntityDashboardPage implements OnInit {
   }
 
   trackByFn(index, item) {
-    return item.id;
+    return item && item.id ? item.id : index;
   }
 
   getValuesToTranslate() {

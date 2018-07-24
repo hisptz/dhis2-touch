@@ -467,6 +467,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'incidentDate', type: 'TEXT' },
       { value: 'status', type: 'TEXT' },
       { value: 'attributes', type: 'LONGTEXT' },
+      { value: 'coordinate', type: 'LONGTEXT' },
       { value: 'events', type: 'LONGTEXT' },
       { value: 'syncStatus', type: 'TEXT' }
     ],
@@ -567,7 +568,11 @@ export const DATABASE_STRUCTURE = {
       { value: 'content', type: 'TEXT' },
       { value: 'programRuleActionType', type: 'TEXT' },
       { value: 'location', type: 'TEXT' },
-      { value: 'programRule', type: 'LONGTEXT' }
+      { value: 'programRule', type: 'LONGTEXT' },
+      { value: 'dataElement', type: 'LONGTEXT' },
+      { value: 'trackedEntityAttribute', type: 'LONGTEXT' },
+      { value: 'programStageSection', type: 'LONGTEXT' },
+      { value: 'programStage', type: 'LONGTEXT' }
     ],
     isMetadata: true,
     batchSize: 200,
@@ -582,7 +587,10 @@ export const DATABASE_STRUCTURE = {
       { value: 'displayName', type: 'TEXT' },
       { value: 'programRuleVariableSourceType', type: 'TEXT' },
       { value: 'program', type: 'LONGTEXT' },
-      { value: 'dataElement', type: 'LONGTEXT' }
+      { value: 'dataElement', type: 'LONGTEXT' },
+      { value: 'trackedEntityAttribute', type: 'LONGTEXT' },
+      { value: 'programStageSection', type: 'LONGTEXT' },
+      { value: 'programStage', type: 'LONGTEXT' }
     ],
     isMetadata: true,
     batchSize: 200,

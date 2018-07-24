@@ -20,6 +20,7 @@ import { AppProvider } from '../../providers/app/app';
   templateUrl: 'barcode-input.html'
 })
 export class BarcodeInputComponent implements OnInit, OnDestroy {
+  @Input() barcodeSettings;
   @Output() barcodeReaderChange = new EventEmitter();
   icon: string;
 
@@ -92,16 +93,18 @@ export class BarcodeInputComponent implements OnInit, OnDestroy {
   }
 
   scanBarcodeOrQrcode() {
-    this.barcodeReaderProvider.scanBarcodeOrQrCode().subscribe(
-      dataResponse => {
-        this.barcodeReaderChange.emit(dataResponse);
-      },
-      error => {
-        this.appProvider.setNormalNotification(
-          'Error on scanning ' + JSON.stringify(error)
-        );
-      }
-    );
+    this.barcodeReaderProvider
+      .scanBarcodeOrQrCode(this.barcodeSettings)
+      .subscribe(
+        dataResponse => {
+          this.barcodeReaderChange.emit(dataResponse);
+        },
+        error => {
+          this.appProvider.setNormalNotification(
+            'Error on scanning ' + JSON.stringify(error)
+          );
+        }
+      );
   }
 
   ngOnDestroy() {}

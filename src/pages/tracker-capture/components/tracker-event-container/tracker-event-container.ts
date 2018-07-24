@@ -9,6 +9,7 @@ import {
 import { EventCaptureFormProvider } from '../../../../providers/event-capture-form/event-capture-form';
 import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
 import { CurrentUser } from '../../../../models/currentUser';
+import { ProgramRulesProvider } from '../../../../providers/program-rules/program-rules';
 
 /**
  * Generated class for the TrackerEventContainerComponent component.
@@ -28,21 +29,34 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
   @Input() isOpenRow: boolean;
   @Input() canEventBeDeleted: boolean;
   @Input() dataValuesSavingStatusClass;
+  @Input() programSkipLogicMetadata;
+
   @Output() onChange = new EventEmitter();
   @Output() onDeleteEvent = new EventEmitter();
+
   translationMapper: any;
   dataObject: any;
   entryFormType: string;
   dataUpdateStatus: { [elementId: string]: string };
+  hiddenSections: any;
+  hiddenProgramStages: any;
+  hiddenFields: any;
+  errorOrWarningMessage: any;
 
   constructor(
     private eventCaptureFormProvider: EventCaptureFormProvider,
-    private appTranslation: AppTranslationProvider
-  ) {}
-
-  ngOnInit() {
+    private appTranslation: AppTranslationProvider,
+    private programRulesProvider: ProgramRulesProvider
+  ) {
+    this.hiddenFields = {};
+    this.hiddenProgramStages = {};
+    this.hiddenSections = {};
+    this.errorOrWarningMessage = {};
     this.entryFormType = 'event';
     this.dataObject = {};
+  }
+
+  ngOnInit() {
     if (
       this.currentOpenEvent &&
       this.currentOpenEvent.dataValues &&
@@ -53,6 +67,9 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
         this.currentOpenEvent.dataValues,
         this.programStage.programStageDataElements
       );
+      setTimeout(() => {
+        this.evaluatingProgramRules();
+      }, 50);
     }
     this.translationMapper = {};
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
@@ -109,7 +126,7 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
       this.currentOpenEvent[eventDateType] = date;
       this.currentOpenEvent.syncStatus = 'not-synced';
       if (this.canEventBeDeleted) {
-        this.updateData({});
+        this.updateData({}, false);
       }
     } else {
       if (this.canEventBeDeleted) {
@@ -130,7 +147,53 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateData(updatedData) {
+  updateEventCoordonate(coordinate) {
+    this.currentOpenEvent.coordinate = coordinate;
+    this.updateData({}, false);
+  }
+
+  evaluatingProgramRules() {
+    this.programRulesProvider
+      .getProgramRulesEvaluations(
+        this.programSkipLogicMetadata,
+        this.dataObject
+      )
+      .subscribe(
+        res => {
+          const { data } = res;
+          if (data) {
+            const { hiddenSections } = data;
+            const { hiddenFields } = data;
+            const { hiddenProgramStages } = data;
+            const { errorOrWarningMessage } = data;
+            if (errorOrWarningMessage) {
+              this.errorOrWarningMessage = errorOrWarningMessage;
+            }
+            if (hiddenFields) {
+              this.hiddenFields = hiddenFields;
+              Object.keys(hiddenFields).map(key => {
+                const id = key + '-dataElement';
+                this.dataValuesSavingStatusClass[id] = 'input-field-container';
+                this.updateData({ id: id, value: '' }, true);
+              });
+            }
+            if (hiddenSections) {
+              this.hiddenSections = hiddenSections;
+            }
+            if (hiddenProgramStages) {
+              this.hiddenProgramStages = hiddenProgramStages;
+            }
+          }
+        },
+        error => {
+          console.log(
+            'Error evaluate program rules : ' + JSON.stringify(error)
+          );
+        }
+      );
+  }
+
+  updateData(updatedData, shouldSkipProgramRules) {
     let dataValues = [];
     if (updatedData && updatedData.id) {
       this.dataObject[updatedData.id] = updatedData;
@@ -142,6 +205,11 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
         value: this.dataObject[key].value
       });
     });
+    //update evalutions of programing rules on tracker based events
+    if (!shouldSkipProgramRules) {
+      this.evaluatingProgramRules();
+    }
+
     if (dataValues.length > 0) {
       this.currentOpenEvent.dataValues = dataValues;
       this.currentOpenEvent.syncStatus = 'not-synced';
@@ -166,7 +234,7 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
   }
 
   trackByFn(index, item) {
-    return item.id;
+    return item && item.id ? item.id : index;
   }
 
   getValuesToTranslate() {

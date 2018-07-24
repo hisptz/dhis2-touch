@@ -80,13 +80,18 @@ export class BarcodeReaderProvider {
     });
   }
 
-  scanBarcodeOrQrCode(): Observable<any> {
+  scanBarcodeOrQrCode(barcodeSettings): Observable<any> {
     return new Observable(observer => {
       this.barcodeScanner
         .scan()
         .then((barcodeData: any) => {
           const { text } = barcodeData;
-          const dataResponse = this.getSanitizedData(text);
+          const { cancelled } = barcodeData;
+          const dataResponse = this.getSanitizedData(
+            text,
+            cancelled,
+            barcodeSettings
+          );
           observer.next(dataResponse);
           observer.complete();
         })
@@ -96,31 +101,44 @@ export class BarcodeReaderProvider {
     });
   }
 
-  // @todo revisit sanitizaation of possible values from scaned text
-  getSanitizedData(scanedText) {
+  getSanitizedData(scanedText, cancelled, barcodeSettings?) {
     let isMultlined = false;
     let isMultidata = false;
     let data;
-    if (!scanedText) {
+    if (!scanedText || cancelled) {
       data = '';
     } else {
-      if (scanedText.indexOf('\n') == -1) {
-        data = scanedText;
-      } else if (
-        scanedText.indexOf(':') == -1 &&
-        scanedText.indexOf('\n') > -1
-      ) {
-        data = scanedText;
-        isMultlined = true;
-      } else if (
-        scanedText.indexOf(':') > -1 &&
-        scanedText.indexOf('\n') > -1
-      ) {
-        data = scanedText.split('\n');
-        isMultlined = true;
-        isMultidata = true;
-      } else {
-        data = scanedText;
+      data = scanedText;
+      if (barcodeSettings) {
+        const { activateMultiline } = barcodeSettings;
+        const { multilineSeparator } = barcodeSettings;
+        const { keyPairSeparator } = barcodeSettings;
+        if (activateMultiline) {
+          if (scanedText.indexOf(multilineSeparator) == -1) {
+            data = scanedText;
+          } else if (
+            scanedText.indexOf(keyPairSeparator) == -1 &&
+            scanedText.indexOf(multilineSeparator) > -1
+          ) {
+            data = scanedText;
+            isMultlined = true;
+          } else if (
+            scanedText.indexOf(keyPairSeparator) > -1 &&
+            scanedText.indexOf(multilineSeparator) > -1
+          ) {
+            data = [];
+            scanedText.split(multilineSeparator).map(keyValuePair => {
+              const keyValuePairArray = keyValuePair.split(keyPairSeparator);
+              if (keyValuePairArray.length > 1) {
+                let object = {};
+                object[keyValuePairArray[0]] = keyValuePairArray[1];
+                data.push(object);
+              }
+            });
+            isMultlined = true;
+            isMultidata = true;
+          }
+        }
       }
     }
     return { isMultlined: isMultlined, isMultidata: isMultidata, data: data };

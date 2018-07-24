@@ -35,6 +35,7 @@ import { LauncherPage } from '../pages/launcher/launcher';
 
 import { SharedModule } from '../components/shared.module';
 import { PipesModule } from '../pipes/pipes.module';
+import * as profileProviders from '../pages/profile/providers';
 
 //store
 import { reducers, effects } from '../store';
@@ -47,7 +48,6 @@ import { UserProvider } from '../providers/user/user';
 import { NetworkAvailabilityProvider } from '../providers/network-availability/network-availability';
 import { AppProvider } from '../providers/app/app';
 import { AboutProvider } from '../providers/about/about';
-import { ProfileProvider } from '../providers/profile/profile';
 import { SettingsProvider } from '../providers/settings/settings';
 import { HelpContentsProvider } from '../providers/help-contents/help-contents';
 import { SqlLiteProvider } from '../providers/sql-lite/sql-lite';
@@ -93,7 +93,7 @@ import { BarcodeReaderProvider } from '../providers/barcode-reader/barcode-reade
     BrowserModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot(effects),
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, { scrollAssist: false, autoFocusAssist: false }),
     HttpModule,
     IonicStorageModule.forRoot(),
     TranslateModule.forRoot({
@@ -133,7 +133,6 @@ import { BarcodeReaderProvider } from '../providers/barcode-reader/barcode-reade
     NetworkAvailabilityProvider,
     AppProvider,
     AboutProvider,
-    ProfileProvider,
     SettingsProvider,
     HelpContentsProvider,
     SqlLiteProvider,
@@ -164,7 +163,8 @@ import { BarcodeReaderProvider } from '../providers/barcode-reader/barcode-reade
     ProgramRulesProvider,
     SynchronizationProvider,
     GeolocationProvider,
-    BarcodeReaderProvider
+    BarcodeReaderProvider,
+    ...profileProviders.providers
   ]
 })
 export class AppModule {}

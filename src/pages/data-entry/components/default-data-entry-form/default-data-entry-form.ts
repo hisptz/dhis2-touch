@@ -33,7 +33,7 @@ export class DefaultDataEntryFormComponent implements OnInit {
   ngOnInit() {}
 
   trackByFn(index, item) {
-    return item.id;
+    return item && item.id ? item.id : index;
   }
 
   updateDataSetCompleteness() {

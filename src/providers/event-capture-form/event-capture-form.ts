@@ -8,6 +8,8 @@ import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { EnrollmentsProvider } from '../enrollments/enrollments';
+import { CurrentUser } from '../../models/currentUser';
+import { ProgramRulesProvider } from '../program-rules/program-rules';
 
 declare var dhis2: any;
 
@@ -25,7 +27,8 @@ export class EventCaptureFormProvider {
     private httpClientProvider: HttpClientProvider,
     private programStageSectionsProvider: ProgramStageSectionsProvider,
     private dataElementProvider: DataElementsProvider,
-    private enrollmentsProvider: EnrollmentsProvider
+    private enrollmentsProvider: EnrollmentsProvider,
+    private programRulesProvider: ProgramRulesProvider
   ) {}
 
   getEventDueDate(
@@ -51,6 +54,9 @@ export class EventCaptureFormProvider {
             });
             let dueDate = moment(new Date()).format('YYYY-MM-DD');
             if (matchedEnrollment) {
+              console.log(
+                'is valid' + this.isValidDate(matchedEnrollment.incidentDate)
+              );
               let referenceDate = this.isValidDate(
                 matchedEnrollment.incidentDate
               )
@@ -87,15 +93,97 @@ export class EventCaptureFormProvider {
   }
 
   isValidDate(str) {
-    var d = moment(str, 'D/M/YYYY');
+    var d = moment(str, 'YYYY-MM-DD');
     if (d == null || !d.isValid()) return false;
 
     return (
+      str.indexOf(d.format('YYYY-MM-DD')) >= 0 ||
       str.indexOf(d.format('D/M/YYYY')) >= 0 ||
       str.indexOf(d.format('DD/MM/YYYY')) >= 0 ||
       str.indexOf(d.format('D/M/YY')) >= 0 ||
       str.indexOf(d.format('DD/MM/YY')) >= 0
     );
+  }
+
+  getProgramSkipLogicMetadata(
+    programId,
+    currentUser: CurrentUser
+  ): Observable<any> {
+    return new Observable(observer => {
+      let programRuleActionIds = [];
+      this.programsProvider
+        .getProgramRuleIds(programId, currentUser.currentDatabase)
+        .subscribe(
+          programRuleIds => {
+            this.programRulesProvider
+              .getgProgramRulesByIds(programRuleIds, currentUser)
+              .subscribe(
+                programRules => {
+                  _.map(programRules, programRule => {
+                    if (programRule && programRule.programRuleActions) {
+                      _.map(
+                        programRule.programRuleActions,
+                        programRuleAction => {
+                          if (programRuleAction && programRuleAction.id) {
+                            programRuleActionIds.push(programRuleAction.id);
+                          }
+                        }
+                      );
+                    }
+                  });
+                  this.programRulesProvider
+                    .getProgramRuleActionsByIds(
+                      programRuleActionIds,
+                      currentUser
+                    )
+                    .subscribe(
+                      programRuleActions => {
+                        this.programsProvider
+                          .getProgramRulesVariablesIds(
+                            programId,
+                            currentUser.currentDatabase
+                          )
+                          .subscribe(
+                            programRulesVariablesIds => {
+                              this.programRulesProvider
+                                .getProgramRuleVariableByIds(
+                                  programRulesVariablesIds,
+                                  currentUser
+                                )
+                                .subscribe(
+                                  programRulesVariables => {
+                                    observer.next({
+                                      programRules: programRules,
+                                      programRuleActions: programRuleActions,
+                                      programRulesVariables: programRulesVariables
+                                    });
+                                    observer.complete();
+                                  },
+                                  error => {
+                                    observer.error(error);
+                                  }
+                                );
+                            },
+                            error => {
+                              observer.error(error);
+                            }
+                          );
+                      },
+                      error => {
+                        observer.error(error);
+                      }
+                    );
+                },
+                error => {
+                  observer.error(error);
+                }
+              );
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+    });
   }
 
   /**
@@ -458,8 +546,8 @@ export class EventCaptureFormProvider {
       eventType: eventType,
       syncStatus: 'not-synced',
       coordinate: {
-        latitude: 0,
-        longitude: 0
+        latitude: '0',
+        longitude: '0'
       },
       dataValues: []
     };
@@ -592,8 +680,9 @@ export class EventCaptureFormProvider {
           eventResponse.map((event: any) => {
             if (
               event.orgUnit == orgUnitId &&
-              event.attributeCategoryOptions == dataDimension.attributeCos &&
-              event.attributeCc == dataDimension.attributeCc
+              event.attributeCc == dataDimension.attributeCc &&
+              (event.attributeCategoryOptions == dataDimension.attributeCos ||
+                dataDimension.attributeCos == '')
             ) {
               events.push(event);
             }

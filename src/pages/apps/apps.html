@@ -18,69 +18,18 @@
 <ion-content>
   <ion-grid>
     <ion-row class="animated fadeIn">
-      <ion-col col-4 [ngClass]="animationEffect.data_entry" (tap)="goToView('data_entry')">
-        <div class="apps-contents" padding>
-          <ion-thumbnail>
-            <img class="menu-app-icon-list" src="assets/icon/data-entry.png">
-          </ion-thumbnail>
-          <p class="menu-app" [translate]="'Data entry'"></p>
-        </div>
-      </ion-col>
-      <ion-col col-4 [ngClass]="animationEffect.event_capture" (tap)="goToView('event_capture')">
-        <div class="apps-contents" padding>
-          <ion-thumbnail>
-            <img class="menu-app-icon-list" src="assets/icon/event-capture.png">
-          </ion-thumbnail>
-          <p class="menu-app" [translate]="'Event capture'"></p>
-        </div>
-      </ion-col>
-      <ion-col col-4 [ngClass]="animationEffect.tracker_capture" (tap)="goToView('tracker_capture')">
-        <div class="apps-contents" padding>
-          <ion-thumbnail>
-            <img class="menu-app-icon-list" src="assets/icon/tracker-capture.png">
-          </ion-thumbnail>
-          <p class="menu-app" [translate]="'Tracker capture'"></p>
+      <ion-col col-xs-4 col-sm-3 col-md-2 col-lg-1 col-xl-1 *ngFor="let app of authorizedApps;trackBy: trackByFn">
+        <div class="app-item-container">
+          <div [ngClass]="animationEffect[app.id]" (tap)="goToView(app)">
+            <div class="apps-contents" padding>
+              <ion-thumbnail>
+                <img class="menu-app-icon-list" [src]="app.src">
+              </ion-thumbnail>
+              <p class="menu-app" [translate]="app.name"></p>
+            </div>
+          </div>
         </div>
       </ion-col>
     </ion-row>
-
-    <ion-row class="animated fadeIn">
-      <ion-col col-4 [ngClass]="animationEffect.dashboard" (tap)="goToView('dashboard')">
-        <div class="apps-contents" padding>
-          <ion-thumbnail>
-            <img class="menu-app-icon-list" src="assets/icon/dashboard.png">
-          </ion-thumbnail>
-          <p class="menu-app" [translate]="'Dashboard'"></p>
-        </div>
-      </ion-col>
-      <ion-col col-4 [ngClass]="animationEffect.reports" (tap)="goToView('reports')">
-        <div class="apps-contents" padding>
-          <ion-thumbnail>
-            <img class="menu-app-icon-list" src="assets/icon/reports.png">
-          </ion-thumbnail>
-          <p class="menu-app" [translate]="'Reports'"></p>
-        </div>
-      </ion-col>
-      <ion-col col-4 [ngClass]="animationEffect.sync" (tap)="goToView('sync')">
-        <div class="apps-contents" padding>
-          <ion-thumbnail>
-            <img class="menu-app-icon-list" src="assets/icon/sync.png">
-          </ion-thumbnail>
-          <p class="menu-app" [translate]="'Sync'"></p>
-        </div>
-      </ion-col>
-    </ion-row>
-
-    <ion-row class="animated fadeIn">
-      <ion-col col-4 [ngClass]="animationEffect.settings" (tap)="goToView('settings')">
-        <div class="apps-contents" padding>
-          <ion-thumbnail>
-            <img class="menu-app-icon-list" src="assets/icon/settings.png">
-          </ion-thumbnail>
-          <p class="menu-app" [translate]="'Settings'"></p>
-        </div>
-      </ion-col>
-    </ion-row>
-
   </ion-grid>
 </ion-content>

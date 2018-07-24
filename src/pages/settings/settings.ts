@@ -130,6 +130,11 @@ export class SettingsPage implements OnInit {
       } else {
         this.settingObject['entryForm'] = defaultSettings.entryForm;
       }
+      if (appSettings.barcode) {
+        this.settingObject['barcode'] = appSettings.barcode;
+      } else {
+        this.settingObject['barcode'] = defaultSettings.barcode;
+      }
     } else {
       this.settingObject = defaultSettings;
     }
@@ -142,12 +147,13 @@ export class SettingsPage implements OnInit {
     this.isLoading = false;
   }
 
-  updateCurrentLanguage() {
+  updateCurrentLanguage(currentLanguage) {
     try {
       let loggedInInInstance = this.currentUser.serverUrl;
       if (this.currentUser.serverUrl.split('://').length > 1) {
         loggedInInInstance = this.currentUser.serverUrl.split('://')[1];
       }
+      this.currentLanguage = currentLanguage;
       this.appTranslationProvider.setAppTranslation(this.currentLanguage);
       this.currentUser.currentLanguage = this.currentLanguage;
       this.userProvider.setCurrentUser(this.currentUser).subscribe(() => {});
@@ -164,7 +170,7 @@ export class SettingsPage implements OnInit {
     }
   }
 
-  updateAutoSyncSetting(settingContent) {
+  updateAutoSyncSetting(event, settingContent) {
     this.shouldRestartSynchronizationProcess = true;
     this.applySettings(settingContent);
   }
@@ -226,7 +232,7 @@ export class SettingsPage implements OnInit {
   }
 
   trackByFn(index, item) {
-    return item.id;
+    return item && item.id ? item.id : index;
   }
 
   getValuesToTranslate() {

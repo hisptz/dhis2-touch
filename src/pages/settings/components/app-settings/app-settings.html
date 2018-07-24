@@ -1,0 +1,12 @@
+<ion-row>
+  <ion-col>
+    <ion-item no-lines>
+      <ion-label text-wrap>
+        <span [translate]="'Current language'"></span>
+      </ion-label>
+      <ion-select (ionChange)="updateCurrentLanguage()" [(ngModel)]="currentLanguage" interface="action-sheet">
+        <ion-option *ngFor="let translationCode of translationCodes" value="{{translationCode.code}}">{{translationCode.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-col>
+</ion-row>

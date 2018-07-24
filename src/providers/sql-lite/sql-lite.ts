@@ -236,9 +236,15 @@ export class SqlLiteProvider {
       if (bulkData[startPoint]) {
         let row = [];
         for (let column of columns) {
-          let attribute = column.value;
-          let attributeValue = bulkData[startPoint][attribute];
-          if (column.type != 'LONGTEXT' && attributeValue == undefined) {
+          const attribute = column.value;
+          let attributeValue;
+          if (bulkData[startPoint]) {
+            const value = bulkData[startPoint][attribute];
+            if (value !== null || value !== undefined) {
+              attributeValue = value;
+            }
+          }
+          if (column.type != 'LONGTEXT' && attributeValue === '') {
             attributeValue = 0;
           } else if (column.type == 'LONGTEXT') {
             attributeValue = JSON.stringify(attributeValue);

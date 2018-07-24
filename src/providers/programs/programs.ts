@@ -742,6 +742,9 @@ export class ProgramsProvider {
                       program.withoutRegistration = JSON.parse(
                         program.withoutRegistration
                       );
+                      program.captureCoordinates = JSON.parse(
+                        program.captureCoordinates
+                      );
                       programs.push(program);
                       if (
                         this.lastSelectedProgram &&
@@ -921,7 +924,19 @@ export class ProgramsProvider {
         .subscribe(
           (programs: any) => {
             if (programs.length > 0) {
-              observer.next(programs[0]);
+              let program = programs[0];
+              if (program.displayIncidentDate) {
+                program.displayIncidentDate = JSON.parse(
+                  program.displayIncidentDate
+                );
+              }
+              program.withoutRegistration = JSON.parse(
+                program.withoutRegistration
+              );
+              program.captureCoordinates = JSON.parse(
+                program.captureCoordinates
+              );
+              observer.next(program);
             } else {
               observer.next({});
             }

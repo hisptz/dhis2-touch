@@ -12,7 +12,7 @@
             </th>
           </tr>
           <tr *ngIf="dataElement.categoryCombo.name !='default'">
-            <th *ngFor="let categoryOptionCombo of dataElement.categoryCombo.categoryOptionCombos" (click)="showTooltips(dataElement,categoryOptionCombo.name)"
+            <th *ngFor="let categoryOptionCombo of dataElement.categoryCombo.categoryOptionCombos;trackBy: trackByFn" (click)="showTooltips(dataElement,categoryOptionCombo.name)"
               class="inputLabel">
               {{ categoryOptionCombo.name }}
             </th>
@@ -20,7 +20,7 @@
         </thead>
         <tbody>
           <tr>
-            <th *ngFor="let categoryOptionCombo of dataElement.categoryCombo.categoryOptionCombos">
+            <th *ngFor="let categoryOptionCombo of dataElement.categoryCombo.categoryOptionCombos;trackBy: trackByFn">
               <div *ngIf="dataElement.optionSet" [ngClass]="(dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id])?dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id]:'input-field-container'">
                 <option-set-input-field [dataEntrySettings]="dataEntrySettings" (onChange)="updateValue($event)" [optionListTitle]="fieldLabelKey + ' ' + categoryOptionCombo.name"
                   [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data" [options]="dataElement.optionSet.options"></option-set-input-field>
@@ -28,11 +28,11 @@
               <div *ngIf="!dataElement.optionSet" [ngClass]="(dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id])?dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id]:'input-field-container'">
                 <div *ngIf="textInputField.indexOf(dataElement.valueType) > -1">
                   <text-input-field (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id"
-                    [data]="data" [dataEntrySettings]="dataEntrySettings" [valueType]="dataElement.valueType"></text-input-field>
+                    [data]="data" [barcodeSettings]="barcodeSettings" [valueType]="dataElement.valueType"></text-input-field>
                 </div>
                 <div *ngIf="numericalInputField.indexOf(dataElement.valueType) > -1">
                   <numerical-input-field (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id"
-                    [data]="data" [dataEntrySettings]="dataEntrySettings" [valueType]="dataElement.valueType"></numerical-input-field>
+                    [data]="data" [barcodeSettings]="barcodeSettings" [valueType]="dataElement.valueType"></numerical-input-field>
                 </div>
                 <div *ngIf="dataElement.valueType === 'DATE' || dataElement.valueType === 'DATETIME' || dataElement.valueType === 'TIME' ">
                   <date-input-field (onChange)="updateValue($event)" [valueType]="dataElement.valueType" [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id"
@@ -92,7 +92,7 @@
 
     </div>
     <div *ngIf="formLayout === 'listLayout'">
-      <div *ngFor="let categoryOptionCombo of dataElement.categoryCombo.categoryOptionCombos">
+      <div *ngFor="let categoryOptionCombo of dataElement.categoryCombo.categoryOptionCombos;trackBy: trackByFn">
         <div (click)="showTooltips(dataElement,categoryOptionCombo.name)" class="inputLabel">
           {{ getListLayoutLabel(dataElement.categoryCombo.name,categoryOptionCombo.name)}}
           <span *ngIf="dataElement.description">&nbsp;&nbsp;

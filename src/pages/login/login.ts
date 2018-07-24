@@ -423,8 +423,7 @@ export class LoginPage implements OnInit {
     this.animationEffect.progressBar = 'animated fadeOut';
     this.animationEffect.loginForm = 'animated fadeIn';
     if (this.currentUser && this.currentUser.serverUrl) {
-      let url = this.currentUser.serverUrl.split('/dhis-web-commons')[0];
-      url = url.split('/dhis-web-dashboard')[0];
+      const url = this.currentUser.serverUrl.split('/dhis-web-')[0];
       this.currentUser.serverUrl = url;
     }
     setTimeout(() => {
@@ -640,7 +639,7 @@ export class LoginPage implements OnInit {
       completed += completedProcess.length;
       total += trackedProcess.expectedProcesses;
     });
-    let value = completed / total * 100;
+    let value = (completed / total) * 100;
     this.progressBar = String(value);
     if (completed == total) {
       if (!this.hasUserSuccessLogin) {

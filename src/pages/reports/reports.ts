@@ -27,7 +27,7 @@ export class ReportsPage implements OnInit {
   currentValue: string;
   isLoading: boolean = true;
 
-  public numberItems : number = 10 ;
+  public numberItems: number = 10;
   public p: number = 1;
   icons: any = {};
   loadingMessage: string;
@@ -41,7 +41,6 @@ export class ReportsPage implements OnInit {
     public standardReportProvider: StandardReportProvider,
     private sqLite: SqlLiteProvider,
     private appTranslation: AppTranslationProvider
-
   ) {
     this.reportList = [];
     this.reportListCopy = [];
@@ -73,7 +72,6 @@ export class ReportsPage implements OnInit {
     });
   }
 
-
   selectReport(report) {
     let parameter = {
       id: report.id,
@@ -96,7 +94,7 @@ export class ReportsPage implements OnInit {
 
   doRefresh(refresher) {
     refresher.complete();
-    
+
     let key = 'Downloading reports from server';
     this.loadingMessage = this.translationMapper[key]
       ? this.translationMapper[key]
@@ -170,8 +168,8 @@ export class ReportsPage implements OnInit {
       : key;
     this.standardReportProvider.getReportList(user).subscribe(
       (reportList: any) => {
-        const { reports } = reportList ;
-        const {currentValue} = reportList ;
+        const { reports } = reportList;
+        const { currentValue } = reportList;
         this.reportList = reportList;
         this.reportListCopy = reportList;
         this.filteringReports('all');
@@ -201,7 +199,7 @@ export class ReportsPage implements OnInit {
   }
 
   trackByFn(index, item) {
-    return item.id;
+    return item && item.id ? item.id : index;
   }
 
   getValuesToTranslate() {
@@ -214,17 +212,16 @@ export class ReportsPage implements OnInit {
     ];
   }
 
-  filteringReports(reportType: any){
-    if(reportType == 'all'){
+  filteringReports(reportType: any) {
+    if (reportType == 'all') {
       const reports = this.reportListCopy;
       this.reportList = this.getReportsWithPaginations(reports);
       this.currentPage = 1;
-    } 
-    else{
-      const reports =  _.filter(this.reportListCopy,['type',reportType]);  
+    } else {
+      const reports = _.filter(this.reportListCopy, ['type', reportType]);
       this.reportList = this.getReportsWithPaginations(reports);
-      this.currentPage = 1;  
-      }
+      this.currentPage = 1;
+    }
   }
   previousPage() {
     this.currentPage--;
@@ -235,16 +232,19 @@ export class ReportsPage implements OnInit {
       this.currentPage++;
     }
   }
-  changenumberItems(Items:any){
+  changenumberItems(Items: any) {
     this.numberItems = Items;
-  this.reportList = this.getReportsPaginations(this.reportListCopy,this.numberItems);
-  this.currentPage = 1;  
+    this.reportList = this.getReportsPaginations(
+      this.reportListCopy,
+      this.numberItems
+    );
+    this.currentPage = 1;
   }
   getReportsWithPaginations(reports) {
     const pageSize = 10;
     return _.chunk(reports, pageSize);
   }
-  getReportsPaginations(reportListCopy,numberItems){
+  getReportsPaginations(reportListCopy, numberItems) {
     return _.chunk(reportListCopy, numberItems);
   }
   getSubArryByPagination(array, pageSize, pageNumber) {

@@ -16,7 +16,7 @@ export class TextInputFieldComponent implements OnInit {
   @Input() categoryOptionComboId;
   @Input() data;
   @Input() valueType;
-  @Input() dataEntrySettings;
+  @Input() barcodeSettings;
   @Output() onChange = new EventEmitter();
   inputFieldValue: any;
   showBarcodeScanner: boolean;
@@ -26,7 +26,7 @@ export class TextInputFieldComponent implements OnInit {
   }
 
   ngOnInit() {
-    const { allowBarcodeReaderOnText } = this.dataEntrySettings;
+    const { allowBarcodeReaderOnText } = this.barcodeSettings;
     if (allowBarcodeReaderOnText) {
       this.showBarcodeScanner = allowBarcodeReaderOnText;
     }
@@ -59,6 +59,7 @@ export class TextInputFieldComponent implements OnInit {
     }
   }
 
+  //handling of multi lines data or key values pair
   onChangeBarcodeReader(dataResponse) {
     const { isMultlined } = dataResponse;
     const { isMultidata } = dataResponse;

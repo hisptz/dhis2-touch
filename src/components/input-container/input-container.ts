@@ -25,6 +25,7 @@ export class InputContainerComponent implements OnInit {
   supportValueTypes: Array<string>;
   formLayout: string;
   dataEntrySettings: any;
+  barcodeSettings: any;
   isLoading: boolean;
 
   constructor(
@@ -32,9 +33,6 @@ export class InputContainerComponent implements OnInit {
     private actionSheetCtrl: ActionSheetController
   ) {
     this.isLoading = true;
-  }
-
-  ngOnInit() {
     this.numericalInputField = [
       'INTEGER_NEGATIVE',
       'INTEGER_POSITIVE',
@@ -64,10 +62,14 @@ export class InputContainerComponent implements OnInit {
       'PHONE_NUMBER',
       'AGE'
     ];
+  }
+
+  ngOnInit() {
     this.settingProvider
       .getSettingsForTheApp(this.currentUser)
       .subscribe((appSettings: any) => {
         const dataEntrySettings = appSettings.entryForm;
+        this.barcodeSettings = appSettings.barcode;
         this.dataEntrySettings = dataEntrySettings;
         this.fieldLabelKey = this.dataElement.displayName;
         if (dataEntrySettings.formLayout) {
@@ -123,5 +125,9 @@ export class InputContainerComponent implements OnInit {
     this.dataValuesSavingStatusClass[updatedValue.id] =
       'input-field-container-saving';
     this.onChange.emit(updatedValue);
+  }
+
+  trackByFn(index, item) {
+    return item && item.id ? item.id : index;
   }
 }
