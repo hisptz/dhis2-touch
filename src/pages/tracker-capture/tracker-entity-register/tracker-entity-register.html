@@ -116,10 +116,10 @@
                     <loading [loadingMessage]="''" [loadingSize]="'large'"></loading>
                   </div>
                   <div *ngIf="isFormReady">
-                    <tracker-registration-form [formLayout]="formLayout" [dataObject]="dataObject" [dataUpdateStatus]="dataUpdateStatus$ | async"
-                      [currentUser]="currentUser" [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
-                      [trackerRegistrationForm]="trackerRegistrationForm" [programTrackedEntityAttributes]="programTrackedEntityAttributes"
-                      (onChange)="updateData($event,false)"></tracker-registration-form>
+                    <tracker-registration-form [(errorOrWarningMessage)]="errorOrWarningMessage" [(hiddenSections)]="hiddenSections" [(hiddenFields)]="hiddenFields" [formLayout]="formLayout"
+                      [dataObject]="dataObject" [dataUpdateStatus]="dataUpdateStatus$ | async" [currentUser]="currentUser"
+                      [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass" [trackerRegistrationForm]="trackerRegistrationForm"
+                      [programTrackedEntityAttributes]="programTrackedEntityAttributes" (onChange)="updateData($event)"></tracker-registration-form>
                     <ion-row no-padding no-margin>
                       <ion-col>
                         <div float-left>
@@ -158,8 +158,8 @@
                 <div *ngIf="programStages && programStages.length > 0">
                   <div *ngFor="let programStage of programStages;trackBy: trackByFn">
                     <div *ngIf="widget.id == programStage.id">
-                      <program-stage-tracker-based [formLayout]="formLayout" [programStage]="programStage" [trackedEntityInstance]="trackedEntityInstance"
-                        [currentWidgetIndex]="currentWidgetIndex" [isLastStage]="(currentWidgetIndex == programStages.length)"
+                      <program-stage-tracker-based [programSkipLogicMetadata]="programSkipLogicMetadata" [formLayout]="formLayout" [programStage]="programStage"
+                        [trackedEntityInstance]="trackedEntityInstance" [currentWidgetIndex]="currentWidgetIndex" [isLastStage]="(currentWidgetIndex == programStages.length)"
                         (onChange)="updateWidgetPagination($event)"></program-stage-tracker-based>
                     </div>
                   </div>

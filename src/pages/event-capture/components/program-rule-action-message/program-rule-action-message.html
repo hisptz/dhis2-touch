@@ -1,0 +1,4 @@
+<div [ngClass]="programRuleActionMessage.messageType == 'error'? 'error' : 'warning'">
+  <ion-icon [color]="programRuleActionMessage.messageType == 'error'? 'danger' : 'current'" [name]="programRuleActionMessage.messageType == 'error'? 'alert' : 'warning'"></ion-icon>
+  {{ programRuleActionMessage.message }}
+</div>

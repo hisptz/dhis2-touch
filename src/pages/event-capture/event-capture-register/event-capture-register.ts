@@ -32,7 +32,7 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
   currentEvent: any;
   emptyEvent: any;
   formLayout: string;
-  programSkipLogicMetadata: any; // programRules, programRuleActions,programRulesVariables
+  programSkipLogicMetadata: any;
 
   constructor(
     private navCtr: NavController,

@@ -32,6 +32,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
   @Input() trackedEntityInstance;
   @Input() currentWidgetIndex;
   @Input() isLastStage;
+  @Input() programSkipLogicMetadata;
   @Output() onChange = new EventEmitter();
 
   currentOrgUnit: any;

@@ -13,6 +13,7 @@ import { AppProvider } from '../../../../providers/app/app';
 import { EventCaptureFormProvider } from '../../../../providers/event-capture-form/event-capture-form';
 import { ActionSheetController } from 'ionic-angular';
 import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
+import { ProgramRulesProvider } from '../../../../providers/program-rules/program-rules';
 
 /**
  * Generated class for the ProgramStageEventBasedComponent component.
@@ -30,6 +31,8 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   @Input() currentEvent;
   @Input() emptyEvent;
   @Input() formLayout: string;
+  @Input() programSkipLogicMetadata;
+
   @Output() onDeleteEvent = new EventEmitter();
   @Output() onCancelEvent = new EventEmitter();
 
@@ -45,9 +48,14 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   entryFormType: string;
   hasEntryFormReSet: boolean;
   dataUpdateStatus: { [elementId: string]: string };
+  hiddenSections: any;
+  hiddenProgramStages: any;
+  errorOrWarningMessage: any;
+  hiddenFields: any;
 
   constructor(
     private programsProvider: ProgramsProvider,
+    private programRulesProvider: ProgramRulesProvider,
     private actionSheetCtrl: ActionSheetController,
     private eventCaptureFormProvider: EventCaptureFormProvider,
     private userProvider: UserProvider,
@@ -63,6 +71,10 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     this.currentOrgUnit = this.organisationUnitProvider.lastSelectedOrgUnit;
     this.currentProgram = this.programsProvider.lastSelectedProgram;
     this.isLoading = true;
+    this.hiddenFields = {};
+    this.hiddenProgramStages = {};
+    this.hiddenSections = {};
+    this.errorOrWarningMessage = {};
   }
   ngOnInit() {
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
@@ -115,6 +127,9 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
           );
         }
         this.isLoading = false;
+        setTimeout(() => {
+          this.evaluatingProgramRules();
+        }, 50);
       },
       error => {
         this.isLoading = false;
@@ -215,7 +230,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
       this.eventDate = date;
       this.currentEvent.syncStatus = 'not-synced';
       if (this.canEventBeDeleted()) {
-        this.updateData({});
+        this.updateData({}, false);
       }
     } else {
       if (this.canEventBeDeleted()) {
@@ -230,10 +245,51 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
 
   updateEventCoordonate(coordinate) {
     this.currentEvent.coordinate = coordinate;
-    this.updateData({});
+    this.updateData({}, false);
   }
 
-  updateData(updatedData) {
+  evaluatingProgramRules() {
+    this.programRulesProvider
+      .getProgramRulesEvaluations(
+        this.programSkipLogicMetadata,
+        this.dataObject
+      )
+      .subscribe(
+        res => {
+          const { data } = res;
+          if (data) {
+            const { hiddenSections } = data;
+            const { hiddenFields } = data;
+            const { hiddenProgramStages } = data;
+            const { errorOrWarningMessage } = data;
+            if (errorOrWarningMessage) {
+              this.errorOrWarningMessage = errorOrWarningMessage;
+            }
+            if (hiddenFields) {
+              this.hiddenFields = hiddenFields;
+              Object.keys(hiddenFields).map(key => {
+                const id = key + '-dataElement';
+                this.dataValuesSavingStatusClass[id] = 'input-field-container';
+                this.updateData({ id: id, value: '' }, true);
+              });
+            }
+            if (hiddenSections) {
+              this.hiddenSections = hiddenSections;
+            }
+            if (hiddenProgramStages) {
+              this.hiddenProgramStages = hiddenProgramStages;
+            }
+          }
+        },
+        error => {
+          console.log(
+            'Error evaluate program rules : ' + JSON.stringify(error)
+          );
+        }
+      );
+  }
+
+  updateData(updatedData, shouldSkipProgramRules) {
     this.currentEvent['eventDate'] = this.eventDate;
     this.currentEvent['dueDate'] = this.eventDate;
     this.currentEvent.syncStatus = 'not-synced';
@@ -257,9 +313,12 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
           () => {
             if (!this.hasEntryFormReSet) {
               this.dataObject[updatedData.id] = updatedData;
-              this.dataValuesSavingStatusClass[updatedData.id] =
-                'input-field-container-success';
               this.dataUpdateStatus = { [updatedData.domElementId]: 'OK' };
+              if (!shouldSkipProgramRules) {
+                this.dataValuesSavingStatusClass[updatedData.id] =
+                  'input-field-container-success';
+                this.evaluatingProgramRules();
+              }
             }
           },
           error => {

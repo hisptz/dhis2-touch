@@ -19,6 +19,7 @@ import { SettingsProvider } from '../../../providers/settings/settings';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { EnrollmentsProvider } from '../../../providers/enrollments/enrollments';
+import { ProgramRulesProvider } from '../../../providers/program-rules/program-rules';
 
 declare var dhis2: any;
 /**
@@ -62,7 +63,11 @@ export class TrackerEntityRegisterPage implements OnInit {
   formLayout: string;
   data;
   coordinate: any;
-  programSkipLogicMetadata: any; // programRules, programRuleActions,programRulesVariables
+  programSkipLogicMetadata: any;
+  hiddenSections: any;
+  hiddenProgramStages: any;
+  hiddenFields: any;
+  errorOrWarningMessage: any;
   private _dataUpdateStatus$: BehaviorSubject<{
     [elementId: string]: string;
   }> = new BehaviorSubject<{ [elementId: string]: string }>({});
@@ -82,7 +87,8 @@ export class TrackerEntityRegisterPage implements OnInit {
     private trackerCaptureProvider: TrackerCaptureProvider,
     private appTranslation: AppTranslationProvider,
     private settingProvider: SettingsProvider,
-    private enrollmentsProvider: EnrollmentsProvider
+    private enrollmentsProvider: EnrollmentsProvider,
+    private programRulesProvider: ProgramRulesProvider
   ) {
     this.coordinate = {
       latitude: '0',
@@ -99,6 +105,10 @@ export class TrackerEntityRegisterPage implements OnInit {
       incidentDate: today,
       enrollmentDate: today
     };
+    this.hiddenFields = {};
+    this.hiddenProgramStages = {};
+    this.hiddenSections = {};
+    this.errorOrWarningMessage = {};
     this.dataUpdateStatus$ = this._dataUpdateStatus$.asObservable();
   }
 
@@ -225,6 +235,9 @@ export class TrackerEntityRegisterPage implements OnInit {
       .subscribe(
         metadata => {
           this.programSkipLogicMetadata = metadata;
+          setTimeout(() => {
+            this.evaluatingProgramRules();
+          }, 50);
         },
         error => {
           console.log(
@@ -326,7 +339,7 @@ export class TrackerEntityRegisterPage implements OnInit {
   updateDateSelection(date, dateType) {
     if (date && date !== '') {
       this.date[dateType] = date;
-      this.updateData('', true);
+      this.updateData('', false, true);
     } else {
       if (this.isTrackedEntityRegistered) {
         const title =
@@ -340,15 +353,61 @@ export class TrackerEntityRegisterPage implements OnInit {
 
   updateEventCoordonate(coordinate) {
     this.coordinate = coordinate;
-    this.updateData('', true);
+    this.updateData('', false, true);
   }
 
-  updateData(updateDataValue, shoulOnlyCheckDates?) {
+  evaluatingProgramRules() {
+    this.programRulesProvider
+      .getProgramRulesEvaluations(
+        this.programSkipLogicMetadata,
+        this.dataObject
+      )
+      .subscribe(
+        res => {
+          const { data } = res;
+          if (data) {
+            const { hiddenSections } = data;
+            const { hiddenFields } = data;
+            const { hiddenProgramStages } = data;
+            const { errorOrWarningMessage } = data;
+            if (errorOrWarningMessage) {
+              this.errorOrWarningMessage = errorOrWarningMessage;
+            }
+            if (hiddenFields) {
+              this.hiddenFields = hiddenFields;
+              Object.keys(hiddenFields).map(key => {
+                const id = key + '-trackedEntityAttribute';
+                this.trackedEntityAttributesSavingStatusClass[id] =
+                  'input-field-container';
+                this.updateData({ id: id, value: '' }, true, false);
+              });
+            }
+            if (hiddenSections) {
+              this.hiddenSections = hiddenSections;
+            }
+            if (hiddenProgramStages) {
+              this.hiddenProgramStages = hiddenProgramStages;
+            }
+          }
+        },
+        error => {
+          console.log(
+            'Error evaluate program rules : ' + JSON.stringify(error)
+          );
+        }
+      );
+  }
+
+  updateData(updateDataValue, shouldSkipProgramRules, shoulOnlyCheckDates) {
     if (!shoulOnlyCheckDates) {
       const id = updateDataValue.id.split('-')[0];
       this.currentTrackedEntityId = updateDataValue.id;
       this.trackedEntityAttributeValuesObject[id] = updateDataValue.value;
       this.dataObject[updateDataValue.id] = updateDataValue;
+    }
+    //update evalutions of programing rules on register form
+    if (!shouldSkipProgramRules) {
+      this.evaluatingProgramRules();
     }
     const isFormReady = this.isALlRequiredFieldHasValue(
       this.programTrackedEntityAttributes,
@@ -429,7 +488,7 @@ export class TrackerEntityRegisterPage implements OnInit {
 
   registerEntity() {
     let trackedEntityAttributeValues = [];
-    Object.keys(this.trackedEntityAttributeValuesObject).forEach(key => {
+    Object.keys(this.trackedEntityAttributeValuesObject).map(key => {
       trackedEntityAttributeValues.push({
         value: this.trackedEntityAttributeValuesObject[key],
         attribute: key

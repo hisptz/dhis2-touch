@@ -5,6 +5,18 @@ import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { CurrentUser } from '../../models/currentUser';
 
+const ASSIGN = 'ASSIGN';
+const HIDE_FIELD = 'HIDEFIELD';
+const HIDE_PROGRAMSTAGE = 'HIDEPROGRAMSTAGE';
+const HIDE_SECTION = 'HIDESECTION';
+const SHOW_ERROR = 'SHOWERROR';
+const SHOW_WARNING = 'SHOWWARNING';
+const ERROR_ON_COMPLETE = 'ERRORONCOMPLETE';
+const WARNING_ON_COMPLETE = 'WARNINGONCOMPLETE';
+const SET_MANDATORY_FIELD = 'SETMANDATORYFIELD';
+const DISPLAY_KEY_VALUE_PAIR = 'DISPLAYKEYVALUEPAIR';
+const DISPLAY_TEXT = 'DISPLAYTEXT';
+
 /*
   Generated class for the ProgramRulesProvider provider.
 
@@ -17,6 +29,235 @@ export class ProgramRulesProvider {
     private sqlLite: SqlLiteProvider,
     private httpClientProvider: HttpClientProvider
   ) {}
+
+  getProgramRulesEvaluations(
+    programSkipLogicMetadata,
+    dataObject
+  ): Observable<any> {
+    return new Observable(observer => {
+      let programRulesEvaluations = {
+        hiddenFields: {},
+        hiddenSections: {},
+        hiddenProgramStages: {},
+        errorOrWarningMessage: {}
+      };
+      let hasDataToAssign = false;
+      const { programRules } = programSkipLogicMetadata;
+      const { programRulesVariables } = programSkipLogicMetadata;
+      const dataValuesObject = this.getDeducedDataValuesForEvaluation(
+        dataObject
+      );
+      if (programRules) {
+        programRules.map(programRule => {
+          const { condition, programRuleActions } = programRule;
+          programRuleActions.map(programRuleAction => {
+            if (programRuleAction && programRuleAction.id) {
+              const id = programRuleAction.id;
+              const action = _.find(
+                programSkipLogicMetadata.programRuleActions,
+                {
+                  id: id
+                }
+              );
+              if (action && action.id) {
+                const {
+                  programRuleActionType,
+                  dataElement,
+                  trackedEntityAttribute,
+                  programStageSection,
+                  programStage,
+                  content,
+                  location,
+                  data
+                } = action;
+                let evalCondition = condition;
+                let evalDataCondition = data ? data : '';
+                let evalData = '';
+                if (programRulesVariables) {
+                  programRulesVariables.map(programRulesVariable => {
+                    const ruleVariableDataElementAttributeId =
+                      programRulesVariable &&
+                      programRulesVariable.dataElement &&
+                      programRulesVariable.dataElement.id
+                        ? programRulesVariable.dataElement.id
+                        : programRulesVariable &&
+                          programRulesVariable.trackedEntityAttribute &&
+                          programRulesVariable.trackedEntityAttribute.id
+                          ? programRulesVariable.trackedEntityAttribute.id
+                          : '';
+                    let value = "''";
+                    if (
+                      dataValuesObject &&
+                      dataValuesObject.hasOwnProperty(
+                        ruleVariableDataElementAttributeId
+                      )
+                    ) {
+                      if (
+                        isNaN(
+                          dataValuesObject[ruleVariableDataElementAttributeId]
+                        )
+                      ) {
+                        value =
+                          "'" +
+                          dataValuesObject[ruleVariableDataElementAttributeId] +
+                          "'";
+                      } else if (
+                        dataValuesObject[ruleVariableDataElementAttributeId] !==
+                        ''
+                      ) {
+                        value =
+                          dataValuesObject[ruleVariableDataElementAttributeId];
+                      }
+                    }
+
+                    if (evalCondition.includes(programRulesVariable.name)) {
+                      evalCondition = evalCondition
+                        .split('#{' + programRulesVariable.name + '}')
+                        .join(`${value}`);
+                    }
+                    if (data && data.includes(programRulesVariable.name)) {
+                      evalDataCondition = evalDataCondition
+                        .split('#{' + programRulesVariable.name + '}')
+                        .join(`${value}`);
+                    }
+                  });
+                  //evaluate content data
+                  try {
+                    evalData = eval(`(${evalDataCondition})`);
+                  } catch (error) {
+                  } finally {
+                    console.log('evalData : ' + evalData);
+                  }
+
+                  if (evalCondition !== condition) {
+                    try {
+                      const evaluated = eval(`(${evalCondition})`);
+                      if (evaluated) {
+                        if (programRuleActionType === HIDE_FIELD) {
+                          if (dataElement && dataElement.id) {
+                            programRulesEvaluations.hiddenFields[
+                              dataElement.id
+                            ] = true;
+                          }
+                          if (
+                            trackedEntityAttribute &&
+                            trackedEntityAttribute.id
+                          ) {
+                            programRulesEvaluations.hiddenFields[
+                              trackedEntityAttribute.id
+                            ] = true;
+                          }
+                        } else if (programRuleActionType === HIDE_SECTION) {
+                          const sectionId =
+                            programStageSection && programStageSection.id
+                              ? programStageSection.id
+                              : '';
+                          programRulesEvaluations.hiddenSections[
+                            sectionId
+                          ] = true;
+                        } else if (
+                          programRuleActionType === HIDE_PROGRAMSTAGE
+                        ) {
+                          const programStageId =
+                            programStage && programStage.id
+                              ? programStage.id
+                              : '';
+                          programRulesEvaluations.hiddenProgramStages[
+                            programStageId
+                          ] = true;
+                        } else if (
+                          programRuleActionType === SHOW_ERROR ||
+                          programRuleActionType === SHOW_WARNING ||
+                          programRuleActionType === WARNING_ON_COMPLETE ||
+                          programRuleActionType === ERROR_ON_COMPLETE
+                        ) {
+                          let message = '';
+                          const messageType =
+                            programRuleActionType === SHOW_ERROR ||
+                            programRuleActionType === ERROR_ON_COMPLETE
+                              ? 'error'
+                              : 'warning';
+                          const isOnComplete =
+                            programRuleActionType === WARNING_ON_COMPLETE ||
+                            programRuleActionType === ERROR_ON_COMPLETE
+                              ? true
+                              : false;
+                          if (content) {
+                            message += content;
+                          }
+                          if (data) {
+                            message += ' ' + evalData;
+                          }
+
+                          if (dataElement && dataElement.id) {
+                            programRulesEvaluations.errorOrWarningMessage[
+                              dataElement.id
+                            ] = {
+                              message: message,
+                              isOnComplete: isOnComplete,
+                              messageType: messageType
+                            };
+                          }
+                          if (
+                            trackedEntityAttribute &&
+                            trackedEntityAttribute.id
+                          ) {
+                            programRulesEvaluations.errorOrWarningMessage[
+                              trackedEntityAttribute.id
+                            ] = {
+                              message: message,
+                              isOnComplete: isOnComplete,
+                              messageType: messageType
+                            };
+                          }
+                        } else if (programRuleActionType === ASSIGN) {
+                          console.log('Handling for : ' + ASSIGN);
+                        } else if (
+                          programRuleActionType === SET_MANDATORY_FIELD
+                        ) {
+                          console.log('Handling for : ' + SET_MANDATORY_FIELD);
+                        } else if (
+                          programRuleActionType === DISPLAY_KEY_VALUE_PAIR
+                        ) {
+                          console.log(
+                            'Handling for : ' + DISPLAY_KEY_VALUE_PAIR
+                          );
+                        } else if (programRuleActionType === DISPLAY_TEXT) {
+                          console.log('Handling for : ' + DISPLAY_TEXT);
+                        }
+                      }
+                    } catch (error) {
+                      console.log('error : ' + JSON.stringify(error));
+                      console.log('evalCondition : ' + evalCondition);
+                      console.log('condition : ' + condition);
+                    }
+                  }
+                }
+              }
+            }
+          });
+        });
+      }
+
+      observer.next({
+        data: programRulesEvaluations,
+        hasDataToAssign: hasDataToAssign
+      });
+      observer.complete();
+    });
+  }
+
+  getDeducedDataValuesForEvaluation(dataObject) {
+    let dataValuesObject = {};
+    if (dataObject) {
+      Object.keys(dataObject).map(key => {
+        const id = key.split('-')[0];
+        const dataValue = dataObject[key];
+        dataValuesObject[id] = dataValue.value;
+      });
+    }
+    return dataValuesObject;
+  }
 
   downloadingProgramRules(currentUser: CurrentUser): Observable<any> {
     const resource = 'programRules';
@@ -57,7 +298,7 @@ export class ProgramRulesProvider {
   downloadingProgramRuleVariables(currentUser: CurrentUser): Observable<any> {
     const resource = 'programRuleVariables';
     const fields =
-      'id,name,displayName,programRuleVariableSourceType,program[id],dataElement[id]';
+      'id,name,displayName,programRuleVariableSourceType,program[id],dataElement[id],trackedEntityAttribute[id],programStageSection[id],programStage[id]';
     const url = '/api/' + resource + '.json?paging=false&fields=' + fields;
     return new Observable(observer => {
       this.httpClientProvider.get(url, true, currentUser).subscribe(
