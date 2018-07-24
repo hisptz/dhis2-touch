@@ -14,6 +14,9 @@
                 <div *ngFor="let dataElement of programStageSection.dataElements;trackBy: trackByFn">
                   <event-input-container [dataElement]="dataElement" [currentUser]="currentUser" [(data)]="dataObject" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
                     (onChange)="updateData($event)"></event-input-container>
+                  <div *ngIf="dataElement.id && errorOrWarningMessage[dataElement.id]">
+                    <program-rule-action-message [programRuleActionMessage]="errorOrWarningMessage[dataElement.id]" [isEventCompleted]="isEventCompleted"></program-rule-action-message>
+                  </div>
                 </div>
               </div>
             </td>
@@ -31,6 +34,9 @@
           <event-input-container [dataElement]="programStageDataElement.dataElement" [currentUser]="currentUser" [(data)]="dataObject"
             [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [mandatory]="programStageDataElement.compulsory"
             (onChange)="updateData($event)"></event-input-container>
+          <div *ngIf="errorOrWarningMessage[programStageDataElement.dataElement.id]">
+            <program-rule-action-message [programRuleActionMessage]="errorOrWarningMessage[programStageDataElement.dataElement.id]" [isEventCompleted]="isEventCompleted"></program-rule-action-message>
+          </div>
         </div>
       </div>
     </div>

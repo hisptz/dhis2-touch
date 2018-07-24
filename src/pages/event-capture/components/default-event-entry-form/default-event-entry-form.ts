@@ -22,9 +22,11 @@ export class DefaultEventEntryFormComponent implements OnInit {
   @Output() onChange = new EventEmitter();
 
   isSectionOpen: any;
+  isEventCompleted: boolean;
 
   constructor() {
     this.isSectionOpen = {};
+    this.isEventCompleted = false;
   }
 
   ngOnInit() {
@@ -35,9 +37,6 @@ export class DefaultEventEntryFormComponent implements OnInit {
         this.toggleSection(id);
       }
     }
-    console.log(
-      'errorOrWarningMessage : ' + JSON.stringify(this.errorOrWarningMessage)
-    );
   }
 
   toggleSection(sectionId) {

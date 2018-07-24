@@ -11,13 +11,24 @@ import { Component, OnInit, Input } from '@angular/core';
   templateUrl: 'program-rule-action-message.html'
 })
 export class ProgramRuleActionMessageComponent implements OnInit {
-  @Input() message: string;
-  @Input() isOnComplete: boolean;
-  @Input() messageType: string;
+  @Input() programRuleActionMessage: any;
+  @Input() isEventCompleted: boolean;
 
   icon: string;
+  message: string;
+  messageType: string;
+  isOnComplete: boolean;
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.programRuleActionMessage) {
+      const { message } = this.programRuleActionMessage;
+      const { isOnComplete } = this.programRuleActionMessage;
+      const { messageType } = this.programRuleActionMessage;
+      console.log('message ' + message);
+      console.log('messageType ' + messageType);
+      console.log('isOnComplete ' + isOnComplete);
+    }
+  }
 }
