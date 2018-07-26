@@ -10,7 +10,7 @@ export function getSanitizedAnalytics(analytics: any, dataSelections) {
   // Check header with option set
   const headersWithOptionSet = _.filter(headers, analyticsHeader => analyticsHeader.optionSet);
 
-  _.each(headersWithOptionSet, header => {
+  _.each(headersWithOptionSet, (header:any) => {
     const {optionSet} = _.find(dataSelections, ['dimension', header.name]);
 
     const headerOptions = optionSet ? optionSet.options : [];

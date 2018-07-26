@@ -7,8 +7,8 @@ import * as fromHelpers from '../../helpers';
 
 export const getMessageConversations = readStatus => createSelector(fromRoot.getAllMessageConversationsState,
   (messageConversationsResponse: MessageConversation[]) => {
-    const messageConversations = _.map(messageConversationsResponse, messageConversation => {
-      const sortedMessages = _.reverse(_.sortBy(messageConversation.messages, 'lastUpdated'));
+    const messageConversations:any = _.map(messageConversationsResponse, messageConversation => {
+      const sortedMessages:any= _.reverse(_.sortBy(messageConversation.messages, 'lastUpdated'));
       return {
         ...messageConversation,
         conversationNames: fromHelpers.mapNameToCommaSeparated(_.uniq(_.filter(

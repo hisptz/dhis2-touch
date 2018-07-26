@@ -24,7 +24,7 @@ import { SettingsProvider } from '../../providers/settings/settings';
 })
 export class OrganisationUnitSearchPage implements OnInit {
   title: string;
-  arrayOfOrganisationUnitsArray: Array<OrganisationUnitModel>;
+  arrayOfOrganisationUnitsArray: any;
   arrayOfOrganisationUnitsArrayBackup: Array<OrganisationUnitModel>;
   isLoading: boolean;
   currentPage: number;

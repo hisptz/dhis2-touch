@@ -21,7 +21,7 @@ export const getCurrentVisualizationObjectLayers = (visualizationId: string) => 
 
     const currentVisualizationUiConfiguration: VisualizationUiConfig = visualizationUiConfigurationEntities[currentVisualizationObject.uiConfigId];
     return currentVisualizationUiConfiguration.showBody ? _.map(_.filter(_.map(currentVisualizationObject.layers, (layerId: string) => visualizationLayerEntities[layerId]),
-      (layer: VisualizationLayer) => layer), visualizationLayer => {
+      (layer: VisualizationLayer) => layer), (visualizationLayer:any )=> {
       return {
         ...visualizationLayer,
         metadataIdentifiers: getVisualizationMetadataIdentifiers(visualizationLayer.dataSelections),

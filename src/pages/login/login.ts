@@ -592,7 +592,7 @@ export class LoginPage implements OnInit {
       if (currentProcess) {
         _.remove(
           this.progressTracker[resourceType].passedProcesses,
-          process => {
+         ( process:any) => {
             return process.name == resourceName;
           }
         );

@@ -47,7 +47,7 @@ export function boundary(options) {
     opacity
   };
 
-  features.forEach(feature => {
+  features.forEach((feature:any) => {
     feature.properties.style = levelStyle[feature.properties.level];
     feature.properties.labelStyle = {
       fontSize: displaySettings.labelFontSize,

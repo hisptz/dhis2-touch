@@ -46,7 +46,7 @@ export const thematic = options => {
   if (analyticsData && analyticsData.rows.length > 0) {
     const valueById = getValueById(analyticsData);
     const layerDx = getDx(analyticsData);
-    const valueFeatures = features.filter(({ id }) => valueById[id] !== undefined);
+    const valueFeatures:any = features.filter(({ id }) => valueById[id] !== undefined);
     const orderedValues = getOrderedValues(analyticsData);
     const minValue = orderedValues[0];
     const maxValue = orderedValues[orderedValues.length - 1];

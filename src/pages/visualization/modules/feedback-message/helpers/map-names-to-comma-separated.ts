@@ -1,4 +1,4 @@
-export function mapNameToCommaSeparated(nameArray: Array<string>, maxNamesToShow: number) {
+export function mapNameToCommaSeparated(nameArray: any, maxNamesToShow: number) {
   if (nameArray.length <= maxNamesToShow) {
     return nameArray.join(', ');
   }

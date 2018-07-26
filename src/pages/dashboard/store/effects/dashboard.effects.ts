@@ -46,7 +46,7 @@ export class DashboardEffects {
 
       // Set visualization objects
       const dashboardItems = _.flatten(
-        _.map(action.dashboards || [], dashboard => _.map(dashboard.dashboardItems, (dashboardItem, dashboardItemIndex) => {
+        _.map(action.dashboards || [], dashboard => _.map(dashboard.dashboardItems, (dashboardItem, dashboardItemIndex:any) => {
           return {
             ...dashboardItem,
             isOpen: dashboardItemIndex === 0,

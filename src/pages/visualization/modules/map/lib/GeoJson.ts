@@ -13,7 +13,7 @@ export const toGeoJson = organisationUnits =>
   _.sortBy(organisationUnits, 'le')
     .map(ou => {
       const coord = JSON.parse(ou.co);
-      let gpid = '';
+      let gpid :any = '';
       let gppg = '';
       let type = 'Point';
 

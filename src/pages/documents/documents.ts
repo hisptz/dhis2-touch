@@ -42,32 +42,10 @@ export class DocumentsPage {
       this.currentUser = user ;
 
     this.resourceProvider.downloadResourcesFromServer(user).subscribe(data => {
-       this.documents = data.documents;
+       this.documents = data;
          },error =>{
       this.appProvider.setNormalNotification('Failed to download files');
     });
     });
   }
-
-downloaddoc(document){
-   let headers = new Headers();
-         headers.append(
-           'Authorization',
-           'Basic ' + this.currentUser.authorizationKey
-         );
-     let url = this.currentUser.serverUrl + '/api/documents/' +  document.id + '/data' ;
-     const fileTransfer: FileTransferObject = this.transfer.create();
-     console.log(fileTransfer);
-    let contentType = document.contentType.substr(12);
-    console.log(contentType);
-    
-    fileTransfer.download(url, this.file.externalDataDirectory + document.name + '.' + contentType,true,{ headers: headers }).then((entry) => {
-      this.appProvider.setNormalNotification('files downloaded');
-          console.log('download complete: ' + entry.toURL());
-    }, (error) => {
-      this.appProvider.setNormalNotification('Failed to download files');
-      console.log(error);
-      
-    });  
-}
 }

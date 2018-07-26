@@ -32,29 +32,31 @@ export class ResourcesProvider {
    */
   downloadResourcesFromServer(currentUser): Observable<any> {
     //get resources list from the server
-    let  fields = 'id,name,displayName,contentType',
+    let  fields = 'id,name,displayName,contentType,url',
     url = '/api/' + this.resource + '.json?fields=' + fields;
     return new Observable(observer => {
       this.HttpClient.get(url, true, currentUser).subscribe((response: any) => {
        this.documentsList = response.documents ;
-        //check if resource if a link or file
+       this.saveDocumentsFromServer(this.documentsList,currentUser);
+   /*     //check if resource if a link or file
   for(var i=0; i < this.documentsList.length; i++){
-    if(this.documentsList[i].contentType == undefined){
-   console.log(this.documentsList[i].name); 
-    }
-    else {
+    if(this.documentsList[i].contentType !== undefined){
+   
       //download resources
 this.downloadResources(this.documentsList[i],currentUser);    
      }
+     
   }
-       observer.next(response);
-    observer.complete();   
+  */
+       observer.next(this.documentsList);
+       observer.complete();   
           
       }, error => {
         console.log(error);
       });
     }); 
   }
+
   downloadResources(document,currentUser){
     let headers = new Headers();
           headers.append(
@@ -66,11 +68,54 @@ this.downloadResources(this.documentsList[i],currentUser);
      let contentType = document.contentType.substr(12);
      console.log(contentType);
      
-     fileTransfer.download(url, this.file.externalDataDirectory + document.name + '.' + contentType,true,{ headers: headers }).then((entry) => {
+     fileTransfer.download(url, this.file.dataDirectory + document.name + '.' + contentType,true,{ headers: headers }).then((entry) => {
            console.log('download complete: ' + entry.toURL());
      }, (error) => {
        console.log(error);   
      });  
  }
+
+  /**
+   *
+   * @param documents
+   * @param currentUser
+   * @returns {Observable<any>}
+   */
+  saveDocumentsFromServer(documents, currentUser): Observable<any> {
+    return new Observable(observer => {
+      if (documents.length == 0) {
+        observer.next();
+        observer.complete();
+      } else {
+        this.SqlLite.insertBulkDataOnTable(this.resource, documents, currentUser.currentDatabase).subscribe(() => {
+      //      observer.next();
+       //     observer.complete();
+       console.log("data saved");
+          
+        }, error => {
+          observer.error(error);
+        });
+      }
+    });
+  }
+  
+  /**
+   *
+   * @param currentUser
+   * @returns {Promise<any>}
+   */
+  getdocumentList(currentUser): Observable<any> {
+    return new Observable(observer => {
+     
+      let documentList = [];
+      this.SqlLite.getAllDataFromTable(this.resource, currentUser.currentDatabase).subscribe((documentList: any) => {    
+        observer.next(documentList);
+          observer.complete(); 
+      }, error => {
+        observer.next(error);
+        observer.complete();
+      });
+    })
+  }
  
   }

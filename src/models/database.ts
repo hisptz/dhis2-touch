@@ -30,6 +30,22 @@ export const DATABASE_STRUCTURE = {
     displayName: 'Local instance',
     dependentTable: []
   },
+  
+  documents: {
+    columns: [
+      { value: 'id', type: 'TEXT' },
+      { value: 'displayName', type: 'TEXT' },
+      { value: 'contentType', type: 'TEXT' },
+      { value: 'url', type: 'TEXT' },
+      { value: 'file-path', type: 'TEXT' }
+
+    ],
+    isMetadata: true,
+    resourceType: '',
+    batchSize: 10,
+    displayName: 'Resources',
+    dependentTable: []
+  },
   dataSets: {
     columns: [
       { value: 'id', type: 'TEXT' },
