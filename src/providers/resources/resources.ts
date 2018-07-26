@@ -37,19 +37,18 @@ export class ResourcesProvider {
     return new Observable(observer => {
       this.HttpClient.get(url, true, currentUser).subscribe((response: any) => {
        this.documentsList = response.documents ;
-       this.saveDocumentsFromServer(this.documentsList,currentUser);
-   /*     //check if resource if a link or file
+      
+  //check if resource if a link or file
   for(var i=0; i < this.documentsList.length; i++){
     if(this.documentsList[i].contentType !== undefined){
-   
       //download resources
-this.downloadResources(this.documentsList[i],currentUser);    
+      this.downloadResources(this.documentsList[i],currentUser);    
      }
      
   }
-  */
+  
        observer.next(this.documentsList);
-       observer.complete();   
+       observer.complete();  
           
       }, error => {
         console.log(error);
@@ -68,7 +67,7 @@ this.downloadResources(this.documentsList[i],currentUser);
      let contentType = document.contentType.substr(12);
      console.log(contentType);
      
-     fileTransfer.download(url, this.file.dataDirectory + document.name + '.' + contentType,true,{ headers: headers }).then((entry) => {
+     fileTransfer.download(url, this.file.externalDataDirectory + document.name + '.' + contentType,true,{ headers: headers }).then((entry) => {
            console.log('download complete: ' + entry.toURL());
      }, (error) => {
        console.log(error);   
@@ -88,12 +87,13 @@ this.downloadResources(this.documentsList[i],currentUser);
         observer.complete();
       } else {
         this.SqlLite.insertBulkDataOnTable(this.resource, documents, currentUser.currentDatabase).subscribe(() => {
-      //      observer.next();
-       //     observer.complete();
-       console.log("data saved");
+          observer.next();
+          observer.complete();
+          console.log("data saved");
           
         }, error => {
           observer.error(error);
+          console.log("can not save data");
         });
       }
     });

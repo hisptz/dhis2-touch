@@ -95,7 +95,7 @@ export class ReportsPage implements OnInit {
   }
 
   filesList(){  
-    this.navCtrl.push('DocumentsPage');
+    this.navCtrl.push('ResourcesPage');
   }
 
   doRefresh(refresher) {
@@ -255,6 +255,6 @@ export class ReportsPage implements OnInit {
     return array.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
   }
   TOdocuments(){
-    this.navCtrl.push('DocumentsPage');
+    this.navCtrl.push('ResourcesPage');
    }
 }

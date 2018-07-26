@@ -1,0 +1,80 @@
+
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>
+      <span [translate]="'Resources'"></span>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+
+  
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingText="Pull to refresh">
+    </ion-refresher-content>
+  </ion-refresher>
+  <div *ngIf="isLoading">
+    <ion-row>
+      <ion-col>
+        <loading loadingSize="large" [loadingMessage]="loadingMessage"></loading>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <div *ngIf="!isLoading">
+      
+    <ion-searchbar animated="true" placeholder="{{'Search'|translate}}"></ion-searchbar>
+     
+    <ion-grid>
+       
+      <ion-row>
+        <ion-col>
+          <ion-list>
+           <ion-item *ngIf="(documents.length > 0)"> 
+                <div class="animated fadeIn">
+                  <ion-list>
+                    <ion-item *ngFor="let resource of documents;trackBy: trackByFn">
+                      <ion-icon name="ios-book" item-left></ion-icon> &nbsp;
+                       <span >{{ resource.displayName }}</span>
+                      <ion-icon name="ios-arrow-forward" item-right></ion-icon>
+                    </ion-item>
+                  </ion-list>
+                </div>
+              </ion-item>
+            <ion-item *ngIf="documents.length == 0">
+              <empty-list-notification [emptyListMessage]="translationMapper['there is no resource to select']"></empty-list-notification>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+<!--
+    <ion-grid *ngIf="documents.length !== 0">
+      <ion-row>
+      <ion-col col-9>
+       <button ion-button outline [disabled]="(currentPage == 1)" color="font-color" text-capitalize (click)="previousPage()">
+          <ion-icon name="skip-backward"></ion-icon>
+        </button>
+        <button ion-button clear color="font-color" text-capitalize>
+          {{ (documents.length > 0)? currentPage : 0 }}/{{ documents.length }}
+        </button>
+        <button ion-button outline [disabled]="!(currentPage < documents.length)" color="font-color" text-capitalize (click)="nextPage()">
+          <ion-icon name="skip-forward"></ion-icon>
+        </button>
+      </ion-col>
+       <ion-col col-3>
+     <ion-select #C (ionChange)="changenumberItems(C.value)" placeholder="Select number of content">
+          <ion-option value="10" selected>10</ion-option>
+          <ion-option value="25">25</ion-option>
+          <ion-option value="50">50</ion-option>
+          <ion-option value="100">100</ion-option>  
+        </ion-select> 
+    </ion-col> 
+      </ion-row>
+    </ion-grid> 
+    -->
+  </div>
+ 
+</ion-content>
