@@ -21,23 +21,10 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-export interface CurrentUser {
-  username: string;
-  name?: string;
-  id?: string;
-  dataViewOrganisationUnits?: any;
-  password: string; //encrypted string
-  serverUrl: string;
-  currentLanguage: string;
-  isLogin?: boolean;
-  isPasswordEncode?: boolean;
-  authorizationKey?: string;
-  hashedKeyForOfflineAuthentication?: string;
-  currentDatabase?: string;
-  dhisVersion?: string;
-  authorities?: string[];
-  progressTracker?: any;
-  userOrgUnitIds?: string[];
-  programs?: string[];
-  dataSets?: string[];
+export interface BarcodeSettings {
+  allowBarcodeReaderOnText: boolean;
+  allowBarcodeReaderOnNumerical: boolean;
+  activateMultiline: boolean;
+  keyPairSeparator: string;
+  multilineSeparator: string;
 }
