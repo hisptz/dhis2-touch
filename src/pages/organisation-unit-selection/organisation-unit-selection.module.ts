@@ -1,16 +1,14 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { OrganisationUnitSelectionPage } from './organisation-unit-selection';
-import {SharedModule} from "../../components/shared.module";
-import {DataEntryModule} from "../../components/data.entry.module";
-import { TranslateModule} from "@ngx-translate/core";
+import { sharedComponentsModule } from '../../components/sharedComponents.module';
+import { TranslateModule } from '@ngx-translate/core';
 @NgModule({
-  declarations: [
-    OrganisationUnitSelectionPage,
-  ],
+  declarations: [OrganisationUnitSelectionPage],
   imports: [
-    IonicPageModule.forChild(OrganisationUnitSelectionPage),DataEntryModule,SharedModule,
+    IonicPageModule.forChild(OrganisationUnitSelectionPage),
+    sharedComponentsModule,
     TranslateModule.forChild({})
-  ],
+  ]
 })
 export class OrganisationUnitSelectionPageModule {}

@@ -4,5 +4,5 @@ export interface Dashboard {
   created: string;
   lastUpdated: string;
   description?: string;
-  visualizationObjects: Array<string>;
+  visualizationObjects?: Array<string>;
 }

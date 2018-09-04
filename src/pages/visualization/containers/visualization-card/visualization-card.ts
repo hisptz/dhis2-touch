@@ -1,4 +1,7 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
+import {
+  AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit,
+  Output
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { VisualizationState } from '../../store/reducers';
 import { Observable } from 'rxjs/Observable';
@@ -42,6 +45,7 @@ export class VisualizationCard implements OnInit, OnChanges, AfterViewInit {
   // TODO find generic way for handling full screen
   @Input() fullScreen: boolean;
   @Input() visualizationLayers: VisualizationLayer[];
+  @Output() fullScreenLeave: EventEmitter<any> = new EventEmitter<any>();
   private _visualizationInputs$: Subject<VisualizationInputs> = new Subject();
   visualizationObject$: Observable<Visualization>;
   visualizationLayers$: Observable<VisualizationLayer[]>;
@@ -88,9 +92,14 @@ export class VisualizationCard implements OnInit, OnChanges, AfterViewInit {
         {currentType: visualizationTypeObject.type}));
   }
 
-  onFullScreenAction(event: {id: string, uiConfigId: string}) {
+  onFullScreenAction(event: {fullScreen: boolean, uiConfigId: string}) {
     this.store.dispatch(new ToggleFullScreenAction(event.uiConfigId));
-    this.navCtrl.push('VisualizationItemPage', {id: event.id, uiConfigId: event.uiConfigId});
+
+    if (event.fullScreen) {
+      this.fullScreenLeave.emit(null);
+    } else {
+      this.navCtrl.push('VisualizationItemPage', {id: this.id, uiConfigId: event.uiConfigId});
+    }
   }
 
   onVisualizationLayerUpdate(visualizationLayer: VisualizationLayer) {

@@ -1,176 +1,88 @@
+<!--
+*
+* Copyright 2015 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2015
+* @author Joseph Chingalo profschingalo@gmail.com>
+*
+*
+-->
 <ion-content class="login">
-
-  <ion-grid>
-    <ion-row>
-      <ion-col class="topSLogan animated bounceIn">
+  <div *ngIf="isLoginProcessActive" class="topSLogan logo" style="margin-bottom: 100px;" padding-bottom margin-bottom>
+    <login-spinner [keyFlag]="keyFlag" [serverUrl]="currentUser.serverUrl" [applicationTitle]="applicationTitle" [keyApplicationFooter]="keyApplicationFooter"
+      [keyApplicationIntro]="keyApplicationIntro" [keyApplicationNotification]="keyApplicationNotification"></login-spinner>
+  </div>
+  <div margin padding-top *ngIf="isLoginProcessActive">
+    <login-metadata-sync (systemSettingLoaded)="onSystemSettingLoaded($event)" (updateCurrentUser)="onUpdateCurrentUser($event)"
+      (failOnLogin)="onFailLogin($event)" (successOnLoginAndSyncMetadata)="onSuccessLogin($event)" [currentUser]="currentUser"
+      (cancelProgress)="onCancelLoginProcess()" [overAllMessage]="overAllLoginMessage" [showOverallProgressBar]="showOverallProgressBar"
+      [isOnLogin]="isOnLogin" [processes]="processes"></login-metadata-sync>
+  </div>
+  <ion-grid class="animated fadeIn">
+    <ion-row *ngIf="!isLoginProcessActive">
+      <ion-col class="topSLogan">
         <div class="logo">
           <img [src]="logoUrl">
         </div>
         <p [translate]="'Innovation in every dimension'"></p>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="isLoginProcessActive">
-      <ion-col [ngClass]="animationEffect.progressBar">
-        <progress-bar [progressBarTitle]="loggedInInInstance" [progressBar]="progressBar" (isProcessActive)="cancelLoginProcess($event)">
-        </progress-bar>
-      </ion-col>
-    </ion-row>
-    <ion-row *ngIf="isLoginProcessActive" [ngClass]="animationEffect.progressBar">
-      <ion-col>
-        <div *ngIf="!isNetworkAvailable">
-          <ion-list>
-            <ion-item>
-              <div style="text-align: center" item-left>
-                <div>
-                  <loading loadingSize="small"></loading>
-                </div>
-              </div>
-              <span text-wrap [translate]="'Authenticating current user offline'"></span>
-            </ion-item>
-          </ion-list>
-        </div>
-        <div *ngIf="isNetworkAvailable">
-          <ion-list>
-            <ion-item>
-              <div style="text-align: center" item-left>
-                <div *ngIf="progressTracker.communication.totalPassedProcesses == progressTracker.communication.expectedProcesses">
-                  <ion-icon name="done-all" color="favorite"></ion-icon>
-                </div>
-                <div *ngIf="progressTracker.communication.totalPassedProcesses != progressTracker.communication.expectedProcesses">
-                  <loading loadingSize="small"></loading>
-                </div>
-              </div>
-              <span text-wrap *ngIf="progressTracker.communication.message !=''" [translate]="progressTracker.communication.message"></span>
-              <span text-wrap *ngIf="progressTracker.communication.message ==''" [translate]="'Establishing connection to server'"></span>
-              <div style="text-align: center" item-right>
-                {{ progressTracker.communication.totalPassedProcesses}}/{{ progressTracker.communication.expectedProcesses}}
-              </div>
-            </ion-item>
-            <ion-item>
-              <div style="text-align: center" item-left>
-                <div *ngIf="progressTracker.entryForm.totalPassedProcesses == progressTracker.entryForm.expectedProcesses">
-                  <ion-icon name="done-all" color="favorite"></ion-icon>
-                </div>
-                <div *ngIf="hasUserAuthenticated && progressTracker.entryForm.totalPassedProcesses != progressTracker.entryForm.expectedProcesses ">
-                  <loading loadingSize="small"></loading>
-                </div>
-              </div>
-              <span text-wrap *ngIf="progressTracker.entryForm.message !=''" [translate]="progressTracker.entryForm.message"></span>
-              <span text-wrap *ngIf="progressTracker.entryForm.message ==''" [translate]="'Aggregate metadata'"></span>
-              <div style="text-align: center" item-right>
-                {{ progressTracker.entryForm.totalPassedProcesses}}/{{ progressTracker.entryForm.expectedProcesses}}
-              </div>
-            </ion-item>
-            <ion-item>
-              <div style="text-align: center" item-left>
-                <div *ngIf="progressTracker.event.totalPassedProcesses == progressTracker.event.expectedProcesses">
-                  <ion-icon name="done-all" color="favorite"></ion-icon>
-                </div>
-                <div *ngIf="hasUserAuthenticated && progressTracker.event.totalPassedProcesses != progressTracker.event.expectedProcesses">
-                  <loading loadingSize="small"></loading>
-                </div>
-              </div>
-              <span text-wrap *ngIf="progressTracker.event.message !=''" [translate]="progressTracker.event.message"></span>
-              <span text-wrap *ngIf="progressTracker.event.message ==''" [translate]="'Event and tracker metadata'">
-              </span>
-              <div style="text-align: center" item-right>
-                {{ progressTracker.event.totalPassedProcesses}}/{{ progressTracker.event.expectedProcesses}}
-              </div>
-            </ion-item>
-            <ion-item>
-              <div style="text-align: center" item-left>
-                <div *ngIf="progressTracker.report.totalPassedProcesses == progressTracker.report.expectedProcesses">
-                  <ion-icon name="done-all" color="favorite"></ion-icon>
-                </div>
-                <div *ngIf="hasUserAuthenticated && progressTracker.report.totalPassedProcesses != progressTracker.report.expectedProcesses">
-                  <loading loadingSize="small"></loading>
-                </div>
-              </div>
-              <span text-wrap *ngIf="progressTracker.report.message !=''" [translate]="progressTracker.report.message"></span>
-              <span text-wrap *ngIf="progressTracker.report.message ==''" [translate]="'Reports metadata'"></span>
-              <div style="text-align: center" item-right>
-                {{ progressTracker.report.totalPassedProcesses}}/{{ progressTracker.report.expectedProcesses}}
-              </div>
-            </ion-item>
-          </ion-list>
-        </div>
-      </ion-col>
-    </ion-row>
-
-
-    <div *ngIf="!isLoginProcessActive ">
-
-      <div *ngIf="isLocalInstancesListOpen && !isTranslationListOpen">
+    <ion-row *ngIf="!isLoginProcessActive">
+      <ion-col no-padding no-margin></ion-col>
+      <ion-col col-auto no-padding no-margin *ngIf="currentUser">
         <ion-row>
           <ion-col>
-            <div class="round-form-container">
-              <available-local-instance (onClose)="toggleLocalInstancesList()" (onSelectCurrentUser)="changeCurrentUser($event)"></available-local-instance>
-            </div>
+            <login-form [currentUser]="currentUser" (onLoginFormReady)="onFormFieldChange($event)"></login-form>
           </ion-col>
         </ion-row>
-      </div>
-      <div *ngIf="!isLocalInstancesListOpen && isTranslationListOpen">
-        <ion-row>
+        <ion-row *ngIf="!isLoginProcessActive">
           <ion-col>
-            <div class="round-form-container">
-              <language-translation-selection [currentLanguage]="currentLanguage" (onSelectLanguage)="changeLanguageFromList($event)" (onClose)="toggleTransalationCodesSelectionList()"
-                [translationCodes]="translationCodes"></language-translation-selection>
-            </div>
+            <button large [disabled]="!isLoginFormValid" ion-button full text-capitalize (click)="startLoginProcess()">
+              <span [translate]="'Login'"></span>
+            </button>
           </ion-col>
         </ion-row>
-      </div>
-      <div *ngIf="!isLocalInstancesListOpen && !isTranslationListOpen">
-        <form (ngSubmit)="startLoginProcess()" [ngClass]="animationEffect.loginForm">
-          <ion-row>
-            <ion-col>
-              <div class="round-form-container">
-                <ion-item>
-                  <ion-input [(ngModel)]="currentUser.serverUrl" type="text" name="serverUrl" placeholder="{{'Enter server address'|translate}}"></ion-input>
-                </ion-item>
-
-                <ion-item>
-                  <ion-input [(ngModel)]="currentUser.username" type="text" name="username" placeholder="{{'Enter username'|translate}}"></ion-input>
-                </ion-item>
-
-                <ion-item>
-                  <ion-input [(ngModel)]="currentUser.password" name="password" type="password" placeholder="{{'Enter password'|translate}}"></ion-input>
-                </ion-item>
-              </div>
-            </ion-col>
-          </ion-row>
-
-          <ion-row>
-            <ion-col>
-              <button type="submit" class="normalButton" ion-button full text-capitalize>
-                <span [translate]="'Login'"></span>
-              </button>
-            </ion-col>
-          </ion-row>
-        </form>
         <div *ngIf="localInstances && localInstances.length > 1">
           <div class="strike">
             <span [translate]="'or'"></span>
           </div>
-          <button ion-button block clear color="light" text-capitalize (click)="toggleLocalInstancesList()">
+          <button ion-button block clear color="light" text-capitalize (click)="openLocalInstancesSelection()">
             <img class="side-menu-icon" [src]="offlineIcon" />&nbsp;&nbsp;
             <span [translate]="'Offline instances'"></span>
           </button>
         </div>
-      </div>
-    </div>
+
+      </ion-col>
+      <ion-col no-padding no-margin></ion-col>
+    </ion-row>
     <ion-row>
       <ion-col class="bottomSLogan">
         <p>
-          <span class="translation-codes">
+          <span class="translation-codes" *ngIf="currentUser">
             <span *ngFor="let code of topThreeTranslationCodes; let currentIndex = index">
-              <span (click)="updateTranslationLanguage(code)" [ngClass]="(currentLanguage == code) ?'currentLang' : ''">{{ code }}</span>
+              <span (click)="updateTranslationLanguage(code)" [ngClass]="(currentUser.currentLanguage === code) ?'currentLang' : ''">{{ code }}</span>
               <span *ngIf="currentIndex < 2">&nbsp;|&nbsp;</span>
             </span>
-            <span *ngIf="topThreeTranslationCodes.indexOf(currentLanguage) == -1">
+            <span *ngIf="topThreeTranslationCodes.indexOf(currentUser.currentLanguage) === -1">
               &nbsp;|&nbsp;
-              <span (click)="updateTranslationLanguage(currentLanguage)" [ngClass]="'currentLang'">{{ currentLanguage }}</span>
+              <span (click)="updateTranslationLanguage(currentUser.currentLanguage)" [ngClass]="'currentLang'">{{ currentUser.currentLanguage }}</span>
             </span>
-            <span (click)="toggleTransalationCodesSelectionList()">
+            <span (click)="openTranslationCodeSelection()">
               &nbsp;
               <ion-icon name="ios-more"></ion-icon>
             </span>
@@ -183,7 +95,4 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-
-
-
 </ion-content>

@@ -13,7 +13,7 @@ export const toGeoJson = organisationUnits =>
   _.sortBy(organisationUnits, 'le')
     .map(ou => {
       const coord = JSON.parse(ou.co);
-      let gpid = '';
+      let gpid: any = '';
       let gppg = '';
       let type = 'Point';
 
@@ -60,7 +60,10 @@ export const toGeoJson = organisationUnits =>
         }
       };
     })
-    .filter(({ geometry }) => Array.isArray(geometry.coordinates) && geometry.coordinates.length);
+    .filter(
+      ({ geometry }) =>
+        Array.isArray(geometry.coordinates) && geometry.coordinates.length
+    );
 
 export const geoJsonOptions = (id, radiusLow, opacity, color?) => {
   const style = feature => {
