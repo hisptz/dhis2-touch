@@ -257,7 +257,7 @@ export class EventCaptureFormProvider {
                         ) {
                           const dataElementId =
                             programStageDataElement.dataElement.id;
-                          const matchedDataElement = _.find(dataElements, {
+                          const matchedDataElement: any = _.find(dataElements, {
                             id: dataElementId
                           });
                           if (
@@ -291,7 +291,7 @@ export class EventCaptureFormProvider {
                             programStageSection.dataElements.forEach(
                               (dataElement: any) => {
                                 const dataElementId = dataElement.id;
-                                const matchedDataElement = _.find(
+                                const matchedDataElement: any = _.find(
                                   dataElements,
                                   {
                                     id: dataElementId
@@ -327,7 +327,7 @@ export class EventCaptureFormProvider {
                           programsStage.programStageSections.forEach(
                             (programStageSection: any) => {
                               const sectionId = programStageSection.id;
-                              const matchedSection = _.find(
+                              const matchedSection: any = _.find(
                                 programStageSections,
                                 { id: sectionId }
                               );
@@ -590,7 +590,7 @@ export class EventCaptureFormProvider {
     attribute: string,
     attributeValues: Array<string>,
     currentUser
-  ): Observable<any> {
+  ): Observable<any[]> {
     let tableName = 'events';
     return new Observable(observer => {
       this.sqlLiteProvider

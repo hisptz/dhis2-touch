@@ -1,0 +1,71 @@
+<!--
+  Generated template for the HelpPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>
+      <span [translate]="'Help search'"></span>
+    </ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="help">
+
+  <ion-grid>
+    <div *ngIf="isLoading">
+      <ion-row>
+        <ion-col>
+          <loading loadingSize="large" [loadingMessage]="loadingMessage"></loading>
+        </ion-col>
+      </ion-row>
+    </div>
+    <div *ngIf="!isLoading">
+      <div>
+        <ion-searchbar animated="true" autocomplete="on" placeholder="{{'Search help by title'|translate}}" (ionInput)="getFilteredList($event)"></ion-searchbar>
+        <div *ngIf="helpContents && helpContents.length > 0">
+          <div class="help-card" *ngFor="let helpContent of helpContents;trackBy: trackByFn">
+            <div *ngIf="helpContent && helpContent.id">
+              <ion-row (tap)="toggleHelpContent(helpContent)">
+                <ion-col col-11>
+                  {{ helpContent.id }}&nbsp;{{ helpContent.name }}
+                </ion-col>
+                <ion-col col-1>
+                  <div style="text-align: center;">
+                    <ion-icon *ngIf="!isHelpContentOpened[helpContent.id]" name="ios-arrow-down" item-right></ion-icon>
+                    <ion-icon *ngIf="isHelpContentOpened[helpContent.id]" name="ios-arrow-up" item-right></ion-icon>
+                  </div>
+                </ion-col>
+              </ion-row>
+              <div *ngIf="isHelpContentOpened[helpContent.id]">
+                <hr>
+              </div>
+              <div *ngIf="isHelpContentOpened[helpContent.id]">
+                <ion-row>
+                  <ion-col col-12>
+                    {{ helpContent.contents }}
+                  </ion-col>
+                </ion-row>
+                <div *ngIf="helpContent.subMenu && helpContent.subMenu.length > 0">
+                  <ion-row>
+                    <ion-col col-12>
+                      <help-contents [helpContents]="helpContent.subMenu"></help-contents>
+                    </ion-col>
+                  </ion-row>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-grid>
+
+
+
+</ion-content>

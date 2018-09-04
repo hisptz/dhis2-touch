@@ -72,6 +72,8 @@ import { SynchronizationProvider } from './synchronization/synchronization';
 import { TrackedEntityAttributeValuesProvider } from './tracked-entity-attribute-values/tracked-entity-attribute-values';
 import { TrackedEntityInstancesProvider } from './tracked-entity-instances/tracked-entity-instances';
 import { TrackerCaptureProvider } from './tracker-capture/tracker-capture';
+import { DataEntryFormProvider } from './data-entry-form/data-entry-form';
+import { ProfileProvider } from '../pages/profile/providers/profile/profile';
 
 export const appProviders = [
   AppTranslationProvider,
@@ -110,7 +112,9 @@ export const appProviders = [
   SynchronizationProvider,
   TrackedEntityAttributeValuesProvider,
   TrackedEntityInstancesProvider,
-  TrackerCaptureProvider
+  TrackerCaptureProvider,
+  DataEntryFormProvider,
+  ProfileProvider
 ];
 
 export const nativePlugins = [

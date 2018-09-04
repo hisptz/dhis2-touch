@@ -47,6 +47,13 @@ import { TextInputFieldComponent } from './text-input-field/text-input-field';
 import { TrueOnlyInputFieldComponent } from './true-only-input-field/true-only-input-field';
 import { UnitIntervalInputComponent } from './unit-interval-input/unit-interval-input';
 import { ProgressBarComponent } from './progress-bar/progress-bar';
+import { WarningComponent } from './warning/warning';
+import { EmptyListNotificationComponent } from './empty-list-notification/empty-list-notification';
+import { HelpContentsComponent } from './help-contents/help-contents';
+import { InputContainerComponent } from './input-container/input-container';
+import { LanguageTranslationSelectionComponent } from './language-translation-selection/language-translation-selection';
+import { NotificationComponent } from './notification/notification';
+import { ProgressLoaderComponent } from './progress-loader/progress-loader.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +78,14 @@ import { ProgressBarComponent } from './progress-bar/progress-bar';
     TextInputFieldComponent,
     TrueOnlyInputFieldComponent,
     UnitIntervalInputComponent,
-    ProgressBarComponent
+    ProgressBarComponent,
+    WarningComponent,
+    EmptyListNotificationComponent,
+    HelpContentsComponent,
+    InputContainerComponent,
+    LanguageTranslationSelectionComponent,
+    NotificationComponent,
+    ProgressLoaderComponent
   ],
   imports: [IonicModule, TranslateModule.forChild({})],
   exports: [
@@ -96,7 +110,14 @@ import { ProgressBarComponent } from './progress-bar/progress-bar';
     TextInputFieldComponent,
     TrueOnlyInputFieldComponent,
     UnitIntervalInputComponent,
-    ProgressBarComponent
+    ProgressBarComponent,
+    WarningComponent,
+    EmptyListNotificationComponent,
+    HelpContentsComponent,
+    InputContainerComponent,
+    LanguageTranslationSelectionComponent,
+    NotificationComponent,
+    ProgressLoaderComponent
   ]
 })
 export class sharedComponentsModule {}

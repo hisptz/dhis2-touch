@@ -1,0 +1,16 @@
+program-rule-action-message {
+  .warning {
+    border: 1px solid #ffa500;
+    border-radius: 0.1rem;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  .error {
+    border: 1px solid #ff6767;
+    border-radius: 0.1rem;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+}
