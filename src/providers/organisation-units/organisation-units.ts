@@ -1,3 +1,26 @@
+/*
+ *
+ * Copyright 2015 HISP Tanzania
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ * @since 2015
+ * @author Joseph Chingalo <profschingalo@gmail.com>
+ *
+ */
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import { SqlLiteProvider } from '../sql-lite/sql-lite';
@@ -58,7 +81,6 @@ export class OrganisationUnitsProvider {
     currentUser: CurrentUser
   ): Observable<any> {
     let orgUnits = [];
-    let counts = 0;
     const { userOrgUnitIds } = currentUser;
     return new Observable(observer => {
       if (userOrgUnitIds && userOrgUnitIds.length == 0) {
@@ -66,13 +88,12 @@ export class OrganisationUnitsProvider {
         observer.complete();
       } else {
         const fields =
-          'fields=id,name,path,ancestors[id,name,children[id]],openingDate,closedDate,level,children[id,name,children[id],parent';
+          'fields=id,name,path,ancestors[id,name],openingDate,closedDate,level,children[id,name,children[id],parent';
         const filter =
           'filter=path:ilike:' +
           userOrgUnitIds.join('&filter=path:ilike:') +
           '&rootJunction=OR';
-        const url =
-          '/api/25/' + this.resource + '.json?' + fields + '&' + filter;
+        const url = '/api/' + this.resource + '.json?' + fields + '&' + filter;
         this.HttpClient.get(
           url,
           false,
