@@ -58,6 +58,20 @@ import { SectionsProvider } from './sections/sections';
 import { SmsCommandProvider } from './sms-command/sms-command';
 import { StandardReportProvider } from './standard-report/standard-report';
 import { DataElementsProvider } from './data-elements/data-elements';
+import { AboutProvider } from './about/about';
+import { DataSetCompletenessProvider } from './data-set-completeness/data-set-completeness';
+import { DataSetReportProvider } from './data-set-report/data-set-report';
+import { DataValuesProvider } from './data-values/data-values';
+import { EnrollmentsProvider } from './enrollments/enrollments';
+import { EventCaptureFormProvider } from './event-capture-form/event-capture-form';
+import { HelpContentsProvider } from './help-contents/help-contents';
+import { PeriodSelectionProvider } from './period-selection/period-selection';
+import { SmsGatewayProvider } from './sms-gateway/sms-gateway';
+import { SyncProvider } from './sync/sync';
+import { SynchronizationProvider } from './synchronization/synchronization';
+import { TrackedEntityAttributeValuesProvider } from './tracked-entity-attribute-values/tracked-entity-attribute-values';
+import { TrackedEntityInstancesProvider } from './tracked-entity-instances/tracked-entity-instances';
+import { TrackerCaptureProvider } from './tracker-capture/tracker-capture';
 
 export const appProviders = [
   AppTranslationProvider,
@@ -82,7 +96,21 @@ export const appProviders = [
   SystemSettingProvider,
   LocalStorageProvider,
   SqlLiteProvider,
-  DataElementsProvider
+  DataElementsProvider,
+  AboutProvider,
+  DataSetCompletenessProvider,
+  DataSetReportProvider,
+  DataValuesProvider,
+  EnrollmentsProvider,
+  EventCaptureFormProvider,
+  HelpContentsProvider,
+  PeriodSelectionProvider,
+  SmsGatewayProvider,
+  SyncProvider,
+  SynchronizationProvider,
+  TrackedEntityAttributeValuesProvider,
+  TrackedEntityInstancesProvider,
+  TrackerCaptureProvider
 ];
 
 export const nativePlugins = [
