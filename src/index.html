@@ -14,7 +14,7 @@
 
     <!-- add to homescreen for ios -->
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
     <script type="application/javascript" src="assets/library/jquery/jquery-2.1.1.min.js"></script>
     <script type="application/javascript" src="assets/library/jquery-ui/jquery-ui.min.js"></script>
@@ -22,15 +22,14 @@
     <!-- cordova.js required for cordova apps (remove if not needed) -->
     <script src="cordova.js"></script>
 
-    <!-- un-comment this code to enable service worker -->
-    <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js')
-          .then(() => console.log('service worker installed'))
-          .catch(err => console.error('Error' + JSON.stringify(err)));
-      }
-
-    </script>
+    <!-- un-comment this code to enable service worker
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('service worker installed'))
+        .catch(err => console.error('Error', err));
+    }
+  </script>-->
 
     <link href="build/main.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/library/animation/animate.min.css" rel="stylesheet">
@@ -62,7 +61,6 @@
     <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.picker.min.js"></script>
     <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.plus.min.js"></script>
     <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.picker.ext.js"></script>
-
     <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.coptic.min.js"></script>
     <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.ethiopian.min.js"></script>
     <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.islamic.min.js"></script>
