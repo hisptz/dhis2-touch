@@ -21,21 +21,33 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { State, getAccountTitle } from '../../store';
 import { Observable } from 'rxjs';
+import { SynchronizationProvider } from '../../providers/synchronization/synchronization';
+import { UserProvider } from '../../providers/user/user';
 
 @Component({
   templateUrl: 'tabs.html'
 })
-export class TabsPage {
+export class TabsPage implements OnInit {
   tab1Root = 'AppsPage';
   tab2Root = 'AccountPage';
 
   accountTitle$: Observable<string>;
 
-  constructor(private store: Store<State>) {
+  constructor(
+    private store: Store<State>,
+    private synchronizationProvider: SynchronizationProvider,
+    private userProvider: UserProvider
+  ) {
     this.accountTitle$ = this.store.pipe(select(getAccountTitle));
+  }
+
+  ngOnInit() {
+    this.userProvider.getCurrentUser().subscribe(currentUser => {
+      this.synchronizationProvider.startSynchronization(currentUser);
+    });
   }
 }

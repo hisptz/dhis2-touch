@@ -314,6 +314,14 @@ ion-modal.inset-modal {
   border-bottom: 0px solid #c8c7cc;
 }
 
+.item-md.item-block .item-inner {
+  border-bottom: 0.5px solid #dedede;
+}
+
+.item-ios.item-block .item-inner {
+  border-bottom: 0.5px solid #dedede;
+}
+
 .table .table-bordered>thead {
   background: #fbfbfb;
   overflow: auto;
