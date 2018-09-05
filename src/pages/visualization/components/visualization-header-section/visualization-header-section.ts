@@ -28,8 +28,8 @@ export class VisualizationHeaderSectionComponent {
 
   }
 
-  onFullScreenAction(id) {
-    this.fullScreenAction.emit({id, uiConfigId: this.uiConfigId});
+  onFullScreenAction(fullScreenState: boolean) {
+    this.fullScreenAction.emit({fullScreen: fullScreenState, uiConfigId: this.uiConfigId});
   }
 
   onFilterUpdateAction(dataSelections: VisualizationDataSelection[]) {

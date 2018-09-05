@@ -38,7 +38,7 @@ export class OrganisationUnitSelectionPage implements OnInit {
   lastSelectedOrgUnit: OrganisationUnitModel;
   organisationUnits: OrganisationUnitModel[];
   hasOrgUnitChildrenOpened: any = {};
-  ouIdsWithAssigments: Array<string>;
+  ouIdsWithAssigments: string[];
 
   constructor(
     private viewCtrl: ViewController,
@@ -124,7 +124,7 @@ export class OrganisationUnitSelectionPage implements OnInit {
           } else {
             this.isLoading = false;
             key =
-              'Currently there is on assigned organisation unit on local storage, Please metadata on sync app';
+              'Currently there is on assigned organisation unit on local storage, Please clear metadata on sync app';
             this.emptyMessage = this.translationMapper[key]
               ? this.translationMapper[key]
               : key;
@@ -271,7 +271,7 @@ export class OrganisationUnitSelectionPage implements OnInit {
     return [
       'Discovering current user information',
       'Discovering assigned organisation units',
-      'Currently there is on assigned organisation unit on local storage, Please metadata on sync app',
+      'Currently there is on assigned organisation unit on local storage, Please clear metadata on sync app',
       'Failed to discover organisation units'
     ];
   }

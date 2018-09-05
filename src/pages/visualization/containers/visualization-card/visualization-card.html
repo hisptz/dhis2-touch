@@ -1,6 +1,6 @@
 <div class="visualization-card">
   <!--visualization title block-->
-  <div class="visualization-title-block">
+  <div class="visualization-title-block" *ngIf="!(visualizationUiConfig$ | async)?.fullScreen">
     <visualization-title-section
       [id]="id"
       [uiConfigId]="(visualizationUiConfig$ | async)?.id"

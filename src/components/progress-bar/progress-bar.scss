@@ -1,37 +1,32 @@
 progress-bar {
-  .progress-outer {
-    width: 100%;
-    margin: auto;
-    text-align: center;
-    background-color: #F4F4F4;
-    border: 1px solid #dcdcdc;
-    color: #fff;
-    border-radius: 2px;
+  .container {
+    margin-bottom: 2px;
   }
-  .progress-inner {
-    min-width: 10px;
-    white-space: nowrap;
-    text-align: left;
-    overflow: visible;
-    color : map_get($colors,dark);
-    padding: 3px;
+  .bottom-layer {
+    z-index: 1;
+    height: 2px;
     border-radius: 3px;
     background-color: map-get($colors, primary);
     transition: width .4s ease-in-out;
+    margin-bottom: 8px;
+    margin-top: 5px;
   }
-
-  .cancel-progress-percentage{
-    display: inline-block;
-    width: 49.3%;
-    float: right
+  .top-layer {
+    z-index: 2;
+    width: 100%;
   }
-
-  .percentage{
-    color: #7A7A7A;
-    font-size: 1.2rem;
-    padding-top:1.2rem;
+  .process-message-percentage-container {
+    display: -webkit-flex;
+    display: flex;
   }
-  .cancel-button{
-    margin-top:0.65rem;
+  .progress-message {
+    -webkit-flex: 6;
+    -ms-flex: 6;
+    flex: 6;
+  }
+  .progress-percentage {
+    -webkit-flex: 2;
+    -ms-flex: 2;
+    flex: 2;
   }
 }

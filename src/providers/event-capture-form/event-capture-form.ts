@@ -48,7 +48,7 @@ export class EventCaptureFormProvider {
         )
         .subscribe(
           enrollments => {
-            const matchedEnrollment = _.find(enrollments, {
+            const matchedEnrollment: any = _.find(enrollments, {
               orgUnit: organisationUnitId,
               program: programId
             });
@@ -257,7 +257,7 @@ export class EventCaptureFormProvider {
                         ) {
                           const dataElementId =
                             programStageDataElement.dataElement.id;
-                          const matchedDataElement = _.find(dataElements, {
+                          const matchedDataElement: any = _.find(dataElements, {
                             id: dataElementId
                           });
                           if (
@@ -291,7 +291,7 @@ export class EventCaptureFormProvider {
                             programStageSection.dataElements.forEach(
                               (dataElement: any) => {
                                 const dataElementId = dataElement.id;
-                                const matchedDataElement = _.find(
+                                const matchedDataElement: any = _.find(
                                   dataElements,
                                   {
                                     id: dataElementId
@@ -327,7 +327,7 @@ export class EventCaptureFormProvider {
                           programsStage.programStageSections.forEach(
                             (programStageSection: any) => {
                               const sectionId = programStageSection.id;
-                              const matchedSection = _.find(
+                              const matchedSection: any = _.find(
                                 programStageSections,
                                 { id: sectionId }
                               );
@@ -362,7 +362,7 @@ export class EventCaptureFormProvider {
                         .subscribe(
                           (programStageEntryForms: any) => {
                             programsStages.forEach((programStage: any) => {
-                              const programStageEntryForm = _.find(
+                              const programStageEntryForm: any = _.find(
                                 programStageEntryForms,
                                 { id: programStage.id }
                               );
@@ -590,7 +590,7 @@ export class EventCaptureFormProvider {
     attribute: string,
     attributeValues: Array<string>,
     currentUser
-  ): Observable<any> {
+  ): Observable<any[]> {
     let tableName = 'events';
     return new Observable(observer => {
       this.sqlLiteProvider
@@ -728,7 +728,7 @@ export class EventCaptureFormProvider {
    */
   uploadEventsToSever(events, currentUser): Observable<any> {
     return new Observable(observer => {
-      let url = '/api/25/events';
+      let url = '/api/events';
       let success = 0,
         fail = 0;
       let updatedEventIds = [];
@@ -743,128 +743,125 @@ export class EventCaptureFormProvider {
         observer.complete();
       } else {
         events.map((event: any) => {
-          this.httpClientProvider
-            .defaultPost(url, event, currentUser)
-            .subscribe(
-              () => {
-                updatedEventIds.push(event.event);
-                success++;
-                if (success + fail == events.length) {
-                  this.updateEventStatus(
-                    updatedEventIds,
-                    'synced',
-                    currentUser
-                  ).subscribe(
-                    () => {
-                      observer.next({
-                        success: success,
-                        fail: fail,
-                        errorMessages: errorMessages
-                      });
-                      observer.complete();
-                    },
-                    error => {
-                      observer.error(error);
-                    }
-                  );
-                }
-              },
-              (error: any) => {
-                //try to update event
-                console.log('error posting : ' + JSON.stringify(error));
-                url = url + '/' + event.event;
-                this.httpClientProvider.put(url, event, currentUser).subscribe(
+          this.httpClientProvider.post(url, event, currentUser).subscribe(
+            () => {
+              updatedEventIds.push(event.event);
+              success++;
+              if (success + fail == events.length) {
+                this.updateEventStatus(
+                  updatedEventIds,
+                  'synced',
+                  currentUser
+                ).subscribe(
                   () => {
-                    updatedEventIds.push(event.event);
-                    success++;
-                    if (success + fail == events.length) {
-                      this.updateEventStatus(
-                        updatedEventIds,
-                        'synced',
-                        currentUser
-                      ).subscribe(
-                        () => {
-                          observer.next({
-                            success: success,
-                            fail: fail,
-                            errorMessages: errorMessages
-                          });
-                          observer.complete();
-                        },
-                        error => {
-                          observer.error(error);
-                        }
-                      );
-                    }
+                    observer.next({
+                      success: success,
+                      fail: fail,
+                      errorMessages: errorMessages
+                    });
+                    observer.complete();
                   },
-                  (error: any) => {
-                    fail++;
-                    if (
-                      error &&
-                      error.response &&
-                      error.response.importSummaries &&
-                      error.response.importSummaries.length > 0 &&
-                      error.response.importSummaries[0].description
-                    ) {
-                      let message =
-                        error.response.importSummaries[0].description;
-                      if (errorMessages.indexOf(message) == -1) {
-                        errorMessages.push(message);
-                      }
-                    } else if (
-                      error &&
-                      error.response &&
-                      error.response.conflicts
-                    ) {
-                      error.response.conflicts.map((conflict: any) => {
-                        let message = JSON.stringify(conflict);
-                        if (errorMessages.indexOf(message) == -1) {
-                          errorMessages.push(message);
-                        }
-                      });
-                    } else if (error && error.httpStatusCode == 500) {
-                      let message = error.message;
-                      if (errorMessages.indexOf(message) == -1) {
-                        errorMessages.push(message);
-                      }
-                    } else if (
-                      error &&
-                      error.response &&
-                      error.response.description
-                    ) {
-                      let message = error.response.description;
-                      if (errorMessages.indexOf(message) == -1) {
-                        errorMessages.push(message);
-                      }
-                    } else {
-                      let message = JSON.stringify(error);
-                      if (errorMessages.indexOf(message) == -1) {
-                        errorMessages.push(message);
-                      }
-                    }
-                    if (success + fail == events.length) {
-                      this.updateEventStatus(
-                        updatedEventIds,
-                        'synced',
-                        currentUser
-                      ).subscribe(
-                        () => {
-                          observer.next({
-                            success: success,
-                            fail: fail,
-                            errorMessages: errorMessages
-                          });
-                          observer.complete();
-                        },
-                        error => {
-                          observer.error(error);
-                        }
-                      );
-                    }
+                  error => {
+                    observer.error(error);
                   }
                 );
               }
-            );
+            },
+            (error: any) => {
+              //try to update event
+              console.log('error posting : ' + JSON.stringify(error));
+              url = url + '/' + event.event;
+              this.httpClientProvider.put(url, event, currentUser).subscribe(
+                () => {
+                  updatedEventIds.push(event.event);
+                  success++;
+                  if (success + fail == events.length) {
+                    this.updateEventStatus(
+                      updatedEventIds,
+                      'synced',
+                      currentUser
+                    ).subscribe(
+                      () => {
+                        observer.next({
+                          success: success,
+                          fail: fail,
+                          errorMessages: errorMessages
+                        });
+                        observer.complete();
+                      },
+                      error => {
+                        observer.error(error);
+                      }
+                    );
+                  }
+                },
+                (error: any) => {
+                  fail++;
+                  if (
+                    error &&
+                    error.response &&
+                    error.response.importSummaries &&
+                    error.response.importSummaries.length > 0 &&
+                    error.response.importSummaries[0].description
+                  ) {
+                    let message = error.response.importSummaries[0].description;
+                    if (errorMessages.indexOf(message) == -1) {
+                      errorMessages.push(message);
+                    }
+                  } else if (
+                    error &&
+                    error.response &&
+                    error.response.conflicts
+                  ) {
+                    error.response.conflicts.map((conflict: any) => {
+                      let message = JSON.stringify(conflict);
+                      if (errorMessages.indexOf(message) == -1) {
+                        errorMessages.push(message);
+                      }
+                    });
+                  } else if (error && error.httpStatusCode == 500) {
+                    let message = error.message;
+                    if (errorMessages.indexOf(message) == -1) {
+                      errorMessages.push(message);
+                    }
+                  } else if (
+                    error &&
+                    error.response &&
+                    error.response.description
+                  ) {
+                    let message = error.response.description;
+                    if (errorMessages.indexOf(message) == -1) {
+                      errorMessages.push(message);
+                    }
+                  } else {
+                    let message = JSON.stringify(error);
+                    if (errorMessages.indexOf(message) == -1) {
+                      errorMessages.push(message);
+                    }
+                  }
+                  if (success + fail == events.length) {
+                    this.updateEventStatus(
+                      updatedEventIds,
+                      'synced',
+                      currentUser
+                    ).subscribe(
+                      () => {
+                        observer.next({
+                          success: success,
+                          fail: fail,
+                          errorMessages: errorMessages
+                        });
+                        observer.complete();
+                      },
+                      error => {
+                        observer.error(error);
+                      }
+                    );
+                  }
+                }
+              );
+            }
+          );
         });
       }
     });

@@ -11,7 +11,7 @@ export class VisualizationResizeSectionComponent implements OnInit {
   @Input() fullScreen: boolean;
   @Input() visualizationShape: string;
 
-  @Output() toggleFullScreen: EventEmitter<string> = new EventEmitter<string>();
+  @Output() toggleFullScreen: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor() {
   }
@@ -21,7 +21,7 @@ export class VisualizationResizeSectionComponent implements OnInit {
 
   onToggleFullScreen(e) {
     e.stopPropagation();
-    this.toggleFullScreen.emit(this.id)
+    this.toggleFullScreen.emit(this.fullScreen)
     // this.store.dispatch(new visualizationActions.ToggleFullScreenAction(this.visualizationId));
   }
 

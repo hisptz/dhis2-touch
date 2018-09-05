@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
-import { SharedModule } from '../../../components/shared.module';
+import { sharedComponentsModule } from '../../../components/sharedComponents.module';
 import { DataEntryComponentsModule } from '../../data-entry/components/dataEntryComponents.module';
-import { DataEntryModule } from '../../../components/data.entry.module';
 import { ProgramStageEventBasedComponent } from './program-stage-event-based/program-stage-event-based';
 import { EventInputContainerComponent } from './event-input-container/event-input-container';
 import { EventDateNotificationComponent } from './event-date-notification/event-date-notification';
@@ -19,12 +18,7 @@ import { ProgramRuleActionMessageComponent } from './program-rule-action-message
     EventCoordinateSelectorComponent,
     ProgramRuleActionMessageComponent
   ],
-  imports: [
-    IonicModule,
-    SharedModule,
-    DataEntryComponentsModule,
-    DataEntryModule
-  ],
+  imports: [IonicModule, sharedComponentsModule, DataEntryComponentsModule],
   exports: [
     ProgramStageEventBasedComponent,
     EventDateNotificationComponent,

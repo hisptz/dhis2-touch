@@ -88,7 +88,7 @@ export class EnrollmentsProvider {
         currentUser
       ).subscribe(
         (enrollments: any) => {
-          let matchedEnrollments = _.filter(enrollments, {
+          let matchedEnrollments: any = _.filter(enrollments, {
             trackedEntityInstance: trackedEntityInstance
           });
           matchedEnrollments.forEach((matchedEnrollment: any) => {

@@ -310,12 +310,15 @@ export class SynchronizationProvider {
                     .getEventsByAttribute('syncStatus', [status], currentUser)
                     .subscribe(
                       (events: any) => {
-                        dataObject.events = _.filter(events, {
-                          eventType: 'event-capture'
+                        dataObject.events = _.filter(events, (event: any) => {
+                          return event.eventType === 'event-capture';
                         });
-                        dataObject.eventsForTracker = _.filter(events, {
-                          eventType: 'tracker-capture'
-                        });
+                        dataObject.eventsForTracker = _.filter(
+                          events,
+                          (event: any) => {
+                            return event.eventType === 'tracker-capture';
+                          }
+                        );
                         observer.next(dataObject);
                         observer.complete();
                       },

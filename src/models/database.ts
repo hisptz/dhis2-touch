@@ -1,3 +1,26 @@
+/*
+ *
+ * Copyright 2015 HISP Tanzania
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ * @since 2015
+ * @author Joseph Chingalo <profschingalo@gmail.com>
+ *
+ */
 export const DATABASE_STRUCTURE = {
   organisationUnits: {
     columns: [
@@ -12,6 +35,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'children', type: 'LONGTEXT' }
     ],
     isMetadata: true,
+    shouldIncludeOnLogin: true,
     resourceType: 'communication',
     batchSize: 500,
     displayName: 'Organisation Units',
@@ -25,6 +49,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'currentUser', type: 'LONGTEXT' }
     ],
     isMetadata: false,
+    shouldIncludeOnLogin: false,
     resourceType: '',
     batchSize: 500,
     displayName: 'Local instance',
@@ -43,6 +68,7 @@ export const DATABASE_STRUCTURE = {
     ],
     fields: '',
     isMetadata: true,
+    shouldIncludeOnLogin: true,
     resourceType: 'entryForm',
     batchSize: 20,
     displayName: 'Data Sets',
@@ -61,6 +87,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'dataSetDesign', type: 'TEXT' }
     ],
     isMetadata: false,
+    shouldIncludeOnLogin: false,
     resourceType: '',
     batchSize: 500,
     displayName: 'Data set entry form design',
@@ -72,6 +99,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'dataElementIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
+    shouldIncludeOnLogin: false,
     resourceType: '',
     batchSize: 500,
     displayName: 'Data Set Elements',
@@ -83,6 +111,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'indicatorIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
+    shouldIncludeOnLogin: false,
     resourceType: '',
     batchSize: 500,
     displayName: 'Data Set Indicators',
@@ -94,6 +123,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'organisationUnitIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
+    shouldIncludeOnLogin: false,
     resourceType: '',
     batchSize: 500,
     displayName: 'Data Set Source',
@@ -105,6 +135,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'sectionIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
+    shouldIncludeOnLogin: false,
     resourceType: '',
     batchSize: 500,
     displayName: 'Data Set Sections',
@@ -119,6 +150,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'dimensionItem', type: 'TEXT' }
     ],
     isMetadata: false,
+    shouldIncludeOnLogin: false,
     resourceType: '',
     batchSize: 500,
     displayName: 'Data Set Operands',
@@ -132,6 +164,7 @@ export const DATABASE_STRUCTURE = {
     ],
     fields: '',
     isMetadata: true,
+    shouldIncludeOnLogin: true,
     resourceType: 'entryForm',
     batchSize: 500,
     displayName: 'Sections',
@@ -143,6 +176,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'dataElementIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
+    shouldIncludeOnLogin: false,
     resourceType: '',
     batchSize: 500,
     displayName: 'Section data Elements',
@@ -154,6 +188,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'indicatorIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
+    shouldIncludeOnLogin: false,
     resourceType: '',
     batchSize: 500,
     displayName: 'Section Indicators',
@@ -173,6 +208,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'categoryCombo', type: 'LONGTEXT' }
     ],
     isMetadata: true,
+    shouldIncludeOnLogin: true,
     resourceType: 'entryForm',
     batchSize: 500,
     displayName: 'Data Elements',
@@ -187,6 +223,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'smsCode', type: 'LONGTEXT' }
     ],
     isMetadata: true,
+    shouldIncludeOnLogin: true,
     resourceType: 'entryForm',
     batchSize: 30,
     displayName: 'SMS Command',
@@ -205,6 +242,7 @@ export const DATABASE_STRUCTURE = {
     isMetadata: true,
     displayName: 'Indicators',
     batchSize: 500,
+    shouldIncludeOnLogin: true,
     resourceType: 'report',
     dependentTable: []
   },
@@ -219,6 +257,7 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: true,
     batchSize: 50,
+    shouldIncludeOnLogin: true,
     resourceType: 'report',
     displayName: 'Reports',
     dependentTable: []
@@ -229,6 +268,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'designContent', type: 'LONGTEXT' }
     ],
     isMetadata: false,
+    shouldIncludeOnLogin: false,
     resourceType: '',
     batchSize: 10,
     displayName: 'Report Design',
@@ -242,6 +282,7 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: true,
     batchSize: 500,
+    shouldIncludeOnLogin: true,
     resourceType: 'report',
     displayName: 'Constants',
     dependentTable: []
@@ -262,6 +303,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'dataSetId', type: 'TEXT' }
     ],
     isMetadata: false,
+    shouldIncludeOnLogin: false,
     resourceType: '',
     batchSize: 500,
     displayName: 'Data Values',
@@ -279,6 +321,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'dataDimension', type: 'LONGTEXT' }
     ],
     isMetadata: false,
+    shouldIncludeOnLogin: false,
     resourceType: '',
     batchSize: 500,
     displayName: 'Entry form completeness',
@@ -307,6 +350,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'dataValues', type: 'LONGTEXT' }
     ],
     isMetadata: false,
+    shouldIncludeOnLogin: false,
     resourceType: 'event',
     batchSize: 50,
     displayName: 'Events',
@@ -337,6 +381,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'translations', type: 'LONGTEXT' }
     ],
     isMetadata: true,
+    shouldIncludeOnLogin: true,
     resourceType: 'event',
     batchSize: 50,
     displayName: 'Programs',
@@ -358,6 +403,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'dataEntryForm', type: 'TEXT' }
     ],
     isMetadata: false,
+    shouldIncludeOnLogin: false,
     resourceType: '',
     batchSize: 50,
     displayName: 'Tracker registration entry form design',
@@ -369,6 +415,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'dataEntryForm', type: 'TEXT' }
     ],
     isMetadata: false,
+    shouldIncludeOnLogin: false,
     resourceType: '',
     batchSize: 50,
     displayName: 'Program stage entry form design',
@@ -380,6 +427,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'programRuleVariableIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
+    shouldIncludeOnLogin: false,
     resourceType: '',
     batchSize: 500,
     displayName: '',
@@ -391,6 +439,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'programRuleIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
+    shouldIncludeOnLogin: false,
     resourceType: '',
     batchSize: 500,
     displayName: '',
@@ -406,6 +455,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'displayInList', type: 'TEXT' }
     ],
     isMetadata: false,
+    shouldIncludeOnLogin: false,
     resourceType: '',
     batchSize: 200,
     displayName: '',
@@ -418,6 +468,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'trackedEntityAttribute', type: 'LONGTEXT' }
     ],
     isMetadata: false,
+    shouldIncludeOnLogin: false,
     resourceType: '',
     batchSize: 200,
     displayName: '',
@@ -437,6 +488,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'syncStatus', type: 'TEXT' }
     ],
     isMetadata: false,
+    shouldIncludeOnLogin: false,
     resourceType: '',
     batchSize: 100,
     displayName: '',
@@ -450,6 +502,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'value', type: 'TEXT' }
     ],
     isMetadata: false,
+    shouldIncludeOnLogin: false,
     resourceType: '',
     batchSize: 100,
     displayName: '',
@@ -472,6 +525,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'syncStatus', type: 'TEXT' }
     ],
     isMetadata: false,
+    shouldIncludeOnLogin: false,
     resourceType: '',
     batchSize: 100,
     displayName: '',
@@ -485,6 +539,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'expression', type: 'LONGTEXT' }
     ],
     isMetadata: false,
+    shouldIncludeOnLogin: false,
     resourceType: '',
     batchSize: 100,
     displayName: '',
@@ -512,6 +567,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'programStageSections', type: 'LONGTEXT' }
     ],
     isMetadata: false,
+    shouldIncludeOnLogin: false,
     resourceType: '',
     batchSize: 100,
     displayName: '',
@@ -523,6 +579,7 @@ export const DATABASE_STRUCTURE = {
       { value: 'orgUnitIds', type: 'LONGTEXT' }
     ],
     isMetadata: false,
+    shouldIncludeOnLogin: false,
     resourceType: '',
     batchSize: 500,
     displayName: '',
@@ -541,6 +598,7 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: true,
     batchSize: 100,
+    shouldIncludeOnLogin: true,
     resourceType: 'event',
     displayName: 'Program Stage Sections',
     dependentTable: []
@@ -557,6 +615,7 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: true,
     batchSize: 100,
+    shouldIncludeOnLogin: true,
     resourceType: 'event',
     displayName: 'Program Rules',
     dependentTable: []
@@ -576,6 +635,7 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: true,
     batchSize: 200,
+    shouldIncludeOnLogin: true,
     resourceType: 'event',
     displayName: 'Program Rule Actions',
     dependentTable: []
@@ -594,6 +654,7 @@ export const DATABASE_STRUCTURE = {
     ],
     isMetadata: true,
     batchSize: 200,
+    shouldIncludeOnLogin: true,
     resourceType: 'event',
     displayName: 'Program Rules Variables',
     dependentTable: []

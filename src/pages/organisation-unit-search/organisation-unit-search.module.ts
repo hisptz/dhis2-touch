@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { OrganisationUnitSearchPage } from './organisation-unit-search';
-import { SharedModule } from '../../components/shared.module';
+import { sharedComponentsModule } from '../../components/sharedComponents.module';
 import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [OrganisationUnitSearchPage],
   imports: [
     IonicPageModule.forChild(OrganisationUnitSearchPage),
-    SharedModule,
+    sharedComponentsModule,
     TranslateModule.forChild({})
   ]
 })

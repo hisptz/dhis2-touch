@@ -45,7 +45,7 @@ export class DataValuesProvider {
     return new Observable(observer => {
       if (networkStatus.isAvailable) {
         this.httpClient
-          .get('/api/25/dataValueSets.json?' + parameter, true, currentUser)
+          .get('/api/dataValueSets.json?' + parameter, true, currentUser)
           .subscribe(
             (response: any) => {
               observer.next(
@@ -137,7 +137,7 @@ export class DataValuesProvider {
     return new Observable(observer => {
       formattedDataValues.forEach((formattedDataValue: any, index: any) => {
         this.httpClient
-          .post('/api/25/dataValues?' + formattedDataValue, {}, currentUser)
+          .post('/api/dataValues?' + formattedDataValue, {}, currentUser)
           .subscribe(
             () => {
               let syncedDataValue = dataValues[index];
