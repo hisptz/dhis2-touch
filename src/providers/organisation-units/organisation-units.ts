@@ -88,7 +88,7 @@ export class OrganisationUnitsProvider {
         observer.complete();
       } else {
         const fields =
-          'fields=id,name,path,ancestors[id,name],openingDate,closedDate,level,children[id,name,children[id],parent';
+          'fields=id,name,path,ancestors[id,name,children[id]],openingDate,closedDate,level,children[id,name,children[id],parent';
         const filter =
           'filter=path:ilike:' +
           userOrgUnitIds.join('&filter=path:ilike:') +

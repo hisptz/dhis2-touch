@@ -37,12 +37,18 @@ import { AppTranslationProvider } from '../../providers/app-translation/app-tran
   templateUrl: 'organisation-unit-tree.html'
 })
 export class OrganisationUnitTreeComponent implements OnInit {
-  @Input() currentUser;
-  @Input() organisationUnit;
-  @Input() hasOrgUnitChildrenOpened;
-  @Input() currentSelectedOrgUnitName;
-  @Input() ouIdsWithAssigments;
-  @Output() selectedOrganisationUnit = new EventEmitter();
+  @Input()
+  currentUser;
+  @Input()
+  organisationUnit;
+  @Input()
+  hasOrgUnitChildrenOpened;
+  @Input()
+  currentSelectedOrgUnitName;
+  @Input()
+  ouIdsWithAssigments;
+  @Output()
+  selectedOrganisationUnit = new EventEmitter();
 
   isOrganisationUnitsFetched: boolean = true;
   hasErrorOccurred: boolean = false;
@@ -69,16 +75,19 @@ export class OrganisationUnitTreeComponent implements OnInit {
   }
 
   setMetadata() {
-    let lastSelectedOrgUnit = this.organisationUnitProvider.lastSelectedOrgUnit;
-    let parentCopy = lastSelectedOrgUnit.path
-      .substring(1, lastSelectedOrgUnit.path.length)
-      .split('/');
-    if (parentCopy.indexOf(this.organisationUnit.id) > -1) {
-      lastSelectedOrgUnit.ancestors.forEach((ancestor: any) => {
-        if (ancestor.id == this.organisationUnit.id) {
-          this.toggleOrganisationUnit(ancestor);
-        }
-      });
+    const lastSelectedOrgUnit = this.organisationUnitProvider
+      .lastSelectedOrgUnit;
+    const { path } = lastSelectedOrgUnit;
+    const { ancestors } = lastSelectedOrgUnit;
+    if (path && path.length > 0) {
+      const parentCopy = path.substring(1, path.length).split('/');
+      if (parentCopy.indexOf(this.organisationUnit.id) > -1) {
+        ancestors.map((ancestor: any) => {
+          if (ancestor.id == this.organisationUnit.id) {
+            this.toggleOrganisationUnit(ancestor);
+          }
+        });
+      }
     }
   }
 
