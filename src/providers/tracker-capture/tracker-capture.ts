@@ -291,7 +291,7 @@ export class TrackerCaptureProvider {
     currentUser
   ): Observable<any> {
     return new Observable(observer => {
-      let url = '/api/25/trackedEntityInstances';
+      let url = '/api/trackedEntityInstances';
       let trackedEntityInstanceIds = [];
       let success = 0,
         fail = 0;
@@ -445,7 +445,7 @@ export class TrackerCaptureProvider {
     return new Observable(observer => {
       let success = 0,
         fail = 0;
-      let url = '/api/25/enrollments';
+      let url = '/api/enrollments';
       let enrollmentIds = [];
       if (enrollments && enrollments.length == 0) {
         observer.next();

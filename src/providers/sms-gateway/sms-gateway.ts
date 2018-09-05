@@ -135,7 +135,7 @@ export class SmsGatewayProvider {
       smsConfigurations
     ).subscribe(
       (payload: any) => {
-        let url = '/api/25/dataValueSets';
+        let url = '/api/dataValueSets';
         this.http.post(url, payload).subscribe(
           response => {
             this.marksSyncedSMS(

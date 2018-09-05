@@ -728,7 +728,7 @@ export class EventCaptureFormProvider {
    */
   uploadEventsToSever(events, currentUser): Observable<any> {
     return new Observable(observer => {
-      let url = '/api/25/events';
+      let url = '/api/events';
       let success = 0,
         fail = 0;
       let updatedEventIds = [];

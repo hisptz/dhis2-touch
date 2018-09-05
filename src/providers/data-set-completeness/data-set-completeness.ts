@@ -37,7 +37,7 @@ export class DataSetCompletenessProvider {
     return new Observable(observer => {
       this.httpClient
         .post(
-          '/api/25/completeDataSetRegistrations?' + parameter,
+          '/api/completeDataSetRegistrations?' + parameter,
           {},
           currentUser
         )
@@ -78,7 +78,7 @@ export class DataSetCompletenessProvider {
     return new Observable(observer => {
       this.httpClient
         .delete(
-          '/api/25/completeDataSetRegistrations?' + parameter,
+          '/api/completeDataSetRegistrations?' + parameter,
           currentUser
         )
         .subscribe(
