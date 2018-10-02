@@ -19,6 +19,7 @@ import { AppTranslationProvider } from '../../../providers/app-translation/app-t
 import { SettingsProvider } from '../../../providers/settings/settings';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
+import { ProgramRulesProvider } from '../../../providers/program-rules/program-rules';
 
 /**
  * Generated class for the TrackedEntityDashboardPage page.
@@ -53,7 +54,11 @@ export class TrackedEntityDashboardPage implements OnInit {
   translationMapper: any;
   trackerRegistrationForm: string;
   formLayout: string;
-  programSkipLogicMetadata: any; // programRules, programRuleActions,programRulesVariables
+  programSkipLogicMetadata: any;
+  hiddenSections: any;
+  hiddenProgramStages: any;
+  hiddenFields: any;
+  errorOrWarningMessage: any;
   private _dataUpdateStatus$: BehaviorSubject<{
     [elementId: string]: string;
   }> = new BehaviorSubject<{ [elementId: string]: string }>({});
@@ -74,21 +79,26 @@ export class TrackedEntityDashboardPage implements OnInit {
     private trackedEntityInstancesProvider: TrackedEntityInstancesProvider,
     private navParams: NavParams,
     private appTranslation: AppTranslationProvider,
-    private settingProvider: SettingsProvider
+    private settingProvider: SettingsProvider,
+    private programRulesProvider: ProgramRulesProvider
   ) {
     this.programSkipLogicMetadata = {};
     this.dataUpdateStatus$ = this._dataUpdateStatus$.asObservable();
-  }
-
-  ngOnInit() {
     this.isDashboardWidgetOpen = {};
     this.trackedEntityAttributesSavingStatusClass = {};
     this.icons['menu'] = 'assets/icon/menu.png';
     this.isLoading = true;
+    this.translationMapper = {};
+    this.hiddenFields = {};
+    this.hiddenProgramStages = {};
+    this.hiddenSections = {};
+    this.errorOrWarningMessage = {};
+  }
+
+  ngOnInit() {
     this.currentProgram = this.programsProvider.lastSelectedProgram;
     this.currentOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
     this.dashboardWidgets = this.getDashboardWidgets();
-    this.translationMapper = {};
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
       (data: any) => {
         this.translationMapper = data;
@@ -210,6 +220,9 @@ export class TrackedEntityDashboardPage implements OnInit {
       .subscribe(
         metadata => {
           this.programSkipLogicMetadata = metadata;
+          setTimeout(() => {
+            this.evaluatingProgramRules();
+          }, 50);
         },
         error => {
           console.log(
@@ -303,11 +316,53 @@ export class TrackedEntityDashboardPage implements OnInit {
     actionSheet.present();
   }
 
-  updateData(updateDataValue) {
+  evaluatingProgramRules() {
+    this.programRulesProvider
+      .getProgramRulesEvaluations(
+        this.programSkipLogicMetadata,
+        this.dataObject
+      )
+      .subscribe(
+        res => {
+          const { data } = res;
+          if (data) {
+            const { hiddenSections } = data;
+            const { hiddenFields } = data;
+            const { hiddenProgramStages } = data;
+            const { errorOrWarningMessage } = data;
+            if (errorOrWarningMessage) {
+              this.errorOrWarningMessage = errorOrWarningMessage;
+            }
+            if (hiddenFields) {
+              this.hiddenFields = hiddenFields;
+              Object.keys(hiddenFields).map(key => {
+                const id = key + '-trackedEntityAttribute';
+                this.trackedEntityAttributesSavingStatusClass[id] =
+                  'input-field-container';
+                this.updateData({ id: id, value: '' }, true);
+              });
+            }
+            if (hiddenSections) {
+              this.hiddenSections = hiddenSections;
+            }
+            if (hiddenProgramStages) {
+              this.hiddenProgramStages = hiddenProgramStages;
+            }
+          }
+        },
+        error => {
+          console.log(
+            'Error evaluate program rules : ' + JSON.stringify(error)
+          );
+        }
+      );
+  }
+
+  updateData(updateDataValue, shouldSkipProgramRules) {
     let id = updateDataValue.id.split('-')[0];
     this.trackedEntityAttributeValuesObject[id] = updateDataValue.value;
     let trackedEntityAttributeValues = [];
-    Object.keys(this.trackedEntityAttributeValuesObject).forEach(key => {
+    Object.keys(this.trackedEntityAttributeValuesObject).map(key => {
       trackedEntityAttributeValues.push({
         value: this.trackedEntityAttributeValuesObject[key],
         attribute: key
@@ -330,15 +385,17 @@ export class TrackedEntityDashboardPage implements OnInit {
             .subscribe(
               () => {
                 this.dataObject[updateDataValue.id] = updateDataValue;
-                this.trackedEntityAttributesSavingStatusClass[
-                  updateDataValue.id
-                ] =
-                  'input-field-container-success';
-
                 // Update status for custom form
                 this._dataUpdateStatus$.next({
                   [updateDataValue.id + '-val']: 'OK'
                 });
+                if (!shouldSkipProgramRules) {
+                  this.evaluatingProgramRules();
+                  this.trackedEntityAttributesSavingStatusClass[
+                    updateDataValue.id
+                  ] =
+                    'input-field-container-success';
+                }
               },
               error => {
                 this.trackedEntityAttributesSavingStatusClass[

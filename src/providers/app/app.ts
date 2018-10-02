@@ -1,10 +1,30 @@
+/*
+ *
+ * Copyright 2015 HISP Tanzania
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ * @since 2015
+ * @author Joseph Chingalo <profschingalo@gmail.com>
+ *
+ */
 import { Injectable } from '@angular/core';
 import { AppVersion } from '@ionic-native/app-version';
 import { Observable } from 'rxjs/Rx';
-import 'rxjs/add/operator/map';
 import { ToastController } from 'ionic-angular';
-import { SqlLiteProvider } from '../sql-lite/sql-lite';
-import { Http } from '@angular/http';
 import { AppTranslationProvider } from '../app-translation/app-translation';
 
 /*
@@ -18,8 +38,6 @@ export class AppProvider {
   constructor(
     private appVersion: AppVersion,
     private toastController: ToastController,
-    private sqLite: SqlLiteProvider,
-    private http: Http,
     private transalationProvider: AppTranslationProvider
   ) {}
 
@@ -28,6 +46,7 @@ export class AppProvider {
    * @param {string} message
    */
   setTopNotification(message: string) {
+    message = this.getSanitizedMessage(message);
     this.transalationProvider
       .getTransalations([message])
       .subscribe((data: any) => {
@@ -35,7 +54,7 @@ export class AppProvider {
           .create({
             message: data[message],
             position: 'top',
-            duration: 4500
+            duration: 5000
           })
           .present();
       });
@@ -46,7 +65,8 @@ export class AppProvider {
    * @param {string} message
    * @param {number} time
    */
-  setNormalNotification(message: string, time: number = 5000) {
+  setNormalNotification(message: string, time: number = 6000) {
+    message = this.getSanitizedMessage(message);
     this.transalationProvider
       .getTransalations([message])
       .subscribe((data: any) => {
@@ -58,6 +78,28 @@ export class AppProvider {
           })
           .present();
       });
+  }
+
+  getSanitizedMessage(message) {
+    const { error } = message;
+    const { status } = message;
+    let customMessage = error
+      ? error
+      : typeof message === 'object'
+        ? ''
+        : message;
+    try {
+      const matchRegx = /<body[^>]*>([\w|\W]*)<\/body/im;
+      customMessage = customMessage
+        .match(matchRegx)[0]
+        .replace(/(<([^>]+)>)/gi, ':separator:')
+        .split(':separator:')
+        .filter(content => content.length > 0)[0];
+    } catch (e) {}
+    if (status) {
+      customMessage = 'Status ' + status + ' : ' + customMessage;
+    }
+    return customMessage;
   }
 
   /**

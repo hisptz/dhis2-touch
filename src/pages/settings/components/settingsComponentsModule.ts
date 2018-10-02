@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
 import { TranslateModule } from '@ngx-translate/core';
-import { SharedModule } from '../../../components/shared.module';
+import { sharedComponentsModule } from '../../../components/sharedComponents.module';
 import { AppSettingsComponent } from './app-settings/app-settings';
 import { SynchronizationSettingsComponent } from './synchronization-settings/synchronization-settings';
 import { EntryFormSettingsComponent } from './entry-form-settings/entry-form-settings';
@@ -14,7 +14,7 @@ import { BarcodeSettingsComponent } from './barcode-settings/barcode-settings';
     EntryFormSettingsComponent,
     BarcodeSettingsComponent
   ],
-  imports: [IonicModule, SharedModule, TranslateModule],
+  imports: [IonicModule, sharedComponentsModule, TranslateModule],
   exports: [
     AppSettingsComponent,
     SynchronizationSettingsComponent,

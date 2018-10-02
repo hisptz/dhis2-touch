@@ -4,7 +4,6 @@ import { DataElementsProvider } from '../data-elements/data-elements';
 import { IndicatorsProvider } from '../indicators/indicators';
 import { SectionsProvider } from '../sections/sections';
 import { Observable } from 'rxjs/Observable';
-import { CurrentUser } from '../../models/currentUser';
 
 /*
   Generated class for the DataEntryFormProvider provider.

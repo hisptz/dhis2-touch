@@ -61,7 +61,7 @@ export class SmsGatewayProvider {
         .set(key, configuration)
         .then(() => {
           observer.next();
-          //observer.complete();
+          observer.complete();
         })
         .catch(error => {
           observer.error(error);
@@ -135,8 +135,8 @@ export class SmsGatewayProvider {
       smsConfigurations
     ).subscribe(
       (payload: any) => {
-        let url = '/api/25/dataValueSets';
-        this.http.defaultPost(url, payload).subscribe(
+        let url = '/api/dataValueSets';
+        this.http.post(url, payload).subscribe(
           response => {
             this.marksSyncedSMS(
               smsResponse._id,

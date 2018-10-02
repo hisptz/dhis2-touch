@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 /*
   Generated class for the PeriodSelectionProvider provider.
@@ -10,11 +10,9 @@ declare var dhis2;
 
 @Injectable()
 export class PeriodSelectionProvider {
-
   lastSelectedPeriod: any;
 
-  constructor() {
-  }
+  constructor() {}
 
   /**
    *
@@ -48,19 +46,23 @@ export class PeriodSelectionProvider {
    */
   getPeriods(periodType, openFuturePeriods, currentPeriodOffset) {
     let periodSelection = [];
-
-    let periods = dhis2.period.generator.generateReversedPeriods(periodType, currentPeriodOffset);
-    periods = dhis2.period.generator.filterOpenPeriods(periodType, periods, openFuturePeriods);
-    periods.forEach((period: any) => {
+    let periods = dhis2.period.generator.generateReversedPeriods(
+      periodType,
+      currentPeriodOffset
+    );
+    periods = dhis2.period.generator.filterOpenPeriods(
+      periodType,
+      periods,
+      openFuturePeriods
+    );
+    periods.map((period: any) => {
       periodSelection.push({
         name: period.name,
         startDate: period.startDate,
         endDate: period.endDate,
         iso: period.iso
-      })
+      });
     });
     return periodSelection;
   }
-
-
 }

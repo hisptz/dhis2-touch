@@ -18,9 +18,9 @@
         <tr *ngIf="isTableRowOpened[currentIndex]">
           <td colspan="100%">
             <div text-left>
-              <tracker-event-container [formLayout]="formLayout" [programStage]="programStage" [currentUser]="currentUser" [(currentOpenEvent)]="currentEvents[currentIndex]"
-                [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [isOpenRow]="true" [canEventBeDeleted]="couldEventBeDeleted()"
-                (onChange)="updateData($event)" (onDeleteEvent)="deleteEventAction($event)"></tracker-event-container>
+              <tracker-event-container [programSkipLogicMetadata]="programSkipLogicMetadata" [formLayout]="formLayout" [programStage]="programStage"
+                [currentUser]="currentUser" [(currentOpenEvent)]="currentEvents[currentIndex]" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
+                [isOpenRow]="true" [canEventBeDeleted]="couldEventBeDeleted()" (onChange)="updateData($event)" (onDeleteEvent)="deleteEventAction($event)"></tracker-event-container>
               <div>
                 <ion-row no-padding no-margin>
                   <ion-col>
@@ -48,9 +48,9 @@
   </div>
   <div *ngIf="isNewEventFormOpened">
     <div class="item-card-with-no-margin" [ngStyle]="{'border-top':currentEvents.length > 0? '0px':''}">
-      <tracker-event-container [formLayout]="formLayout" [programStage]="programStage" [currentUser]="currentUser" [(currentOpenEvent)]="currentOpenEvent"
-        [isOpenRow]="false" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [canEventBeDeleted]="couldEventBeDeleted()"
-        (onChange)="updateData($event)" (onDeleteEvent)="deleteEventAction($event)"></tracker-event-container>
+      <tracker-event-container [programSkipLogicMetadata]="programSkipLogicMetadata" [formLayout]="formLayout" [programStage]="programStage"
+        [currentUser]="currentUser" [(currentOpenEvent)]="currentOpenEvent" [isOpenRow]="false" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
+        [canEventBeDeleted]="couldEventBeDeleted()" (onChange)="updateData($event)" (onDeleteEvent)="deleteEventAction($event)"></tracker-event-container>
       <ion-row no-padding no-margin>
         <ion-col>
           <div float-left>

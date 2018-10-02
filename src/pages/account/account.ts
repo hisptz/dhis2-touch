@@ -1,10 +1,35 @@
-import { Component, OnInit } from '@angular/core';
-import { App, NavController } from 'ionic-angular';
-import { LoginPage } from '../login/login';
+/*
+ *
+ * Copyright 2015 HISP Tanzania
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ * @since 2015
+ * @author Joseph Chingalo <profschingalo@gmail.com>
+ *
+ */
+import { Component } from '@angular/core';
+import { IonicPage, NavController, App } from 'ionic-angular';
+import { Store, select } from '@ngrx/store';
+import { State, getAthorizedApps } from '../../store';
 import { UserProvider } from '../../providers/user/user';
+import { CurrentUser } from '../../models/currentUser';
+import { AppItem } from '../../models';
+import { Observable } from 'rxjs';
 import { OrganisationUnitsProvider } from '../../providers/organisation-units/organisation-units';
-import { SynchronizationProvider } from '../../providers/synchronization/synchronization';
-import { AppProvider } from '../../providers/app/app';
 
 /**
  * Generated class for the AccountPage page.
@@ -13,76 +38,47 @@ import { AppProvider } from '../../providers/app/app';
  * Ionic pages and navigation.
  */
 
-interface AppItem {
-  id: string;
-  name: string;
-  src: string;
-  pageName: string;
-  authorites: Array<string>;
-}
-
+@IonicPage()
 @Component({
   selector: 'page-account',
   templateUrl: 'account.html'
 })
-export class AccountPage implements OnInit {
-  animationEffect: any;
-  authorizedApps: Array<AppItem>;
+export class AccountPage {
+  currentUserAccountApps$: Observable<AppItem[]>;
 
   constructor(
+    private App: App,
     private navCtrl: NavController,
-    private app: App,
-    private organisationUnitProvider: OrganisationUnitsProvider,
     private userProvider: UserProvider,
-    private synchronizationProvider: SynchronizationProvider,
-    private appProvider: AppProvider
+    private organisationUnitProvider: OrganisationUnitsProvider,
+    private store: Store<State>
   ) {
-    this.authorizedApps = [];
-    this.animationEffect = {
-      profile: '',
-      about: '',
-      help: '',
-      logout: ''
-    };
-  }
-
-  ngOnInit() {
-    this.userProvider.getCurrentUser().subscribe(
-      currentUser => {
-        const appItems = this.getAppItems();
-        this.setAuthorizedApps(appItems, currentUser);
-      },
-      error => {
-        this.appProvider.setNormalNotification('Fail to discover current user');
-      }
+    const apps = this.getAppItems();
+    this.currentUserAccountApps$ = this.store.pipe(
+      select(getAthorizedApps(apps))
     );
   }
 
-  setAuthorizedApps(appItems, currentUser) {
-    // @todo filter apps based on app authorites
-    this.authorizedApps = appItems;
+  onSelectApp(app: AppItem) {
+    if (app.id === 'logout') {
+      this.logOut();
+    } else {
+      this.navCtrl.push(app.pageName);
+    }
   }
 
-  goToView(appItem: AppItem) {
-    this.applyAnimation(appItem.id);
-    setTimeout(() => {
-      this.setView(appItem.pageName);
-    }, 50);
-  }
-
-  setView(viewName) {
-    this.navCtrl.push(viewName).then(() => {});
-  }
-
-  applyAnimation(key: any) {
-    this.animationEffect[key] = 'animated bounceIn';
-    setTimeout(() => {
-      this.animationEffect[key] = '';
-    }, 100);
-  }
-
-  trackByFn(index, item) {
-    return item.id;
+  logOut() {
+    this.userProvider.getCurrentUser().subscribe((currentUser: CurrentUser) => {
+      if (currentUser && currentUser.username) {
+        currentUser.isLogin = false;
+        this.userProvider.setCurrentUser(currentUser).subscribe(() => {
+          this.organisationUnitProvider.resetOrganisationUnit();
+          this.App.getRootNav().setRoot('LoginPage');
+        });
+      } else {
+        this.App.getRootNav().setRoot('LoginPage');
+      }
+    });
   }
 
   getAppItems(): Array<AppItem> {
@@ -107,23 +103,14 @@ export class AccountPage implements OnInit {
         authorites: [],
         pageName: 'HelpPage',
         src: 'assets/icon/help.png'
+      },
+      {
+        id: 'logout',
+        name: 'Log out',
+        authorites: [],
+        pageName: '',
+        src: 'assets/icon/logout.png'
       }
     ];
-  }
-
-  async logOut() {
-    try {
-      this.applyAnimation('logout');
-      this.userProvider.getCurrentUser().subscribe(user => {
-        user.isLogin = false;
-        this.userProvider.setCurrentUser(user).subscribe(() => {
-          this.organisationUnitProvider.resetOrganisationUnit();
-        });
-        this.app.getRootNav().setRoot(LoginPage);
-        this.synchronizationProvider.stopSynchronization();
-      });
-    } catch (e) {
-      console.log(JSON.stringify(e));
-    }
   }
 }

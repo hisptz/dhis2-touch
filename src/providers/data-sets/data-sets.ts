@@ -1,3 +1,25 @@
+/*
+ *
+ * Copyright 2015 HISP Tanzania
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ * @since 2015
+ * @author Joseph Chingalo <profschingalo@gmail.com>
+ */
 import { Injectable } from '@angular/core';
 import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { HttpClientProvider } from '../http-client/http-client';
@@ -45,7 +67,7 @@ export class DataSetsProvider {
    * @param currentUser
    * @returns {Observable<any>}
    */
-  getAllDataSetsSMSCodeGeneration(currentUser): Observable<any> {
+  getAllDataSetsSMSCodeGeneration(currentUser: CurrentUser): Observable<any> {
     let url =
       '/api/dataSets.json?fields=id,dataSetElements[dataElement[id,categoryCombo[categoryOptionCombos[id]]]],dataElements[id,categoryCombo[categoryOptionCombos[id]]]';
     return new Observable(observer => {
@@ -65,7 +87,7 @@ export class DataSetsProvider {
    *
    * @param currentUser
    */
-  getAllDataSets(currentUser): Observable<any> {
+  getAllDataSets(currentUser: CurrentUser): Observable<any> {
     return new Observable(observer => {
       this.SqlLite.getAllDataFromTable(
         this.resource,
@@ -79,7 +101,7 @@ export class DataSetsProvider {
                 let dataElemets = dataSetElementMapper[dataSet.id]
                   ? dataSetElementMapper[dataSet.id]
                   : [];
-                dataSets.push({
+                dataSets = _.concat(dataSet, {
                   id: dataSet.id,
                   name: dataSet.name,
                   dataElements: dataElemets
@@ -104,7 +126,7 @@ export class DataSetsProvider {
    *
    * @param currentUser
    */
-  getAllDataSetElementsMapper(currentUser): Observable<any> {
+  getAllDataSetElementsMapper(currentUser: CurrentUser): Observable<any> {
     return new Observable(observer => {
       this.SqlLite.getAllDataFromTable(
         'dataSetElements',
@@ -435,13 +457,12 @@ export class DataSetsProvider {
    * @param currentUser
    * @returns {Observable<any>}
    */
-  downloadDataSetsFromServer(currentUser): Observable<any> {
-    let dataSets = [];
-    let counts = 0;
+  downloadDataSetsFromServer(currentUser: CurrentUser): Observable<any> {
+    let dataSetSResponse = [];
     const { userOrgUnitIds } = currentUser;
     return new Observable(observer => {
       if (userOrgUnitIds && userOrgUnitIds.length == 0) {
-        observer.next(dataSets);
+        observer.next(dataSetSResponse);
         observer.complete();
       } else {
         const fields =
@@ -450,8 +471,7 @@ export class DataSetsProvider {
           'filter=organisationUnits.path:ilike:' +
           userOrgUnitIds.join('&filter=path:ilike:') +
           '&rootJunction=OR';
-        const url =
-          '/api/25/' + this.resource + '.json?' + fields + '&' + filter;
+        const url = '/api/' + this.resource + '.json?' + fields + '&' + filter;
         this.HttpClient.get(
           url,
           false,
@@ -461,8 +481,12 @@ export class DataSetsProvider {
         ).subscribe(
           (response: any) => {
             try {
-              dataSets = response[this.resource];
-              observer.next(dataSets);
+              const { dataSets } = response;
+              dataSetSResponse = this.getFitlteredListOfDataSets(
+                dataSets,
+                currentUser
+              );
+              observer.next(dataSetSResponse);
               observer.complete();
             } catch (e) {
               observer.error(e);
@@ -474,6 +498,30 @@ export class DataSetsProvider {
         );
       }
     });
+  }
+
+  getFitlteredListOfDataSets(
+    dataSetsResponse: any[],
+    currentUser: CurrentUser
+  ) {
+    let filteredDataSets = [];
+    const { dataSets } = currentUser;
+    const { authorities } = currentUser;
+    if (authorities && authorities.indexOf('ALL') > -1) {
+      filteredDataSets = _.concat(filteredDataSets, dataSetsResponse);
+    } else {
+      dataSetsResponse.map((dataSetObject: any) => {
+        if (
+          dataSets &&
+          dataSetObject &&
+          dataSetObject.id &&
+          dataSets.indexOf(dataSetObject.id) > -1
+        ) {
+          filteredDataSets = _.concat(filteredDataSets, dataSetObject);
+        }
+      });
+    }
+    return filteredDataSets;
   }
 
   /**
@@ -734,7 +782,6 @@ export class DataSetsProvider {
     orgUnitId,
     currentUser: CurrentUser
   ): Observable<any> {
-    const resource = 'dataSetSource';
     let dataSetIds = [];
     return new Observable(observer => {
       this.getAllDataSetSources(currentUser).subscribe(

@@ -24,7 +24,7 @@ export function visualizationUiConfigurationReducer(state: VisualizationUiConfig
       return visualizationUiConfig ? visualizationUiConfigurationAdapter.updateOne({
           id: action.id, changes: {
             fullScreen: !visualizationUiConfig.fullScreen,
-            height: visualizationUiConfig.fullScreen ? '450px' : '95vh'
+            height: visualizationUiConfig.fullScreen ? '450px' : '99vh'
           }
         }, state) :
         state;

@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {HttpClientProvider} from "../http-client/http-client";
-import {Observable} from "rxjs/Observable";
+import { Injectable } from '@angular/core';
+import { HttpClientProvider } from '../http-client/http-client';
+import { Observable } from 'rxjs/Observable';
 
 /*
   Generated class for the DataSetCompletenessProvider provider.
@@ -10,9 +10,7 @@ import {Observable} from "rxjs/Observable";
 */
 @Injectable()
 export class DataSetCompletenessProvider {
-
-  constructor(private httpClient: HttpClientProvider) {
-  }
+  constructor(private httpClient: HttpClientProvider) {}
 
   /**
    *
@@ -23,15 +21,44 @@ export class DataSetCompletenessProvider {
    * @param currentUser
    * @returns {Observable<any>}
    */
-  completeOnDataSetRegistrations(dataSetId: string, period: string, orgUnitId: string, dataDimension, currentUser): Observable<any> {
-    let parameter = this.getDataSetCompletenessParameter(dataSetId, period, orgUnitId, dataDimension);
+  completeOnDataSetRegistrations(
+    dataSetId: string,
+    period: string,
+    orgUnitId: string,
+    dataDimension,
+    currentUser
+  ): Observable<any> {
+    let parameter = this.getDataSetCompletenessParameter(
+      dataSetId,
+      period,
+      orgUnitId,
+      dataDimension
+    );
     return new Observable(observer => {
-      this.httpClient.defaultPost('/api/25/completeDataSetRegistrations?' + parameter, {}, currentUser).subscribe(() => {
-        observer.next();
-        observer.complete();
-      }, error => {
-        observer.error(error);
-      })
+      const data = {
+        cc: dataDimension.cc,
+        cp: dataDimension.cp,
+        dataSet: dataSetId,
+        period: period,
+        organisationUnit: orgUnitId
+      };
+      this.httpClient
+        .post(
+          '/api/completeDataSetRegistrations?' + parameter,
+          {
+            completeDataSetRegistrations: [data]
+          },
+          currentUser
+        )
+        .subscribe(
+          () => {
+            observer.next();
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
     });
   }
 
@@ -44,15 +71,31 @@ export class DataSetCompletenessProvider {
    * @param currentUser
    * @returns {Observable<any>}
    */
-  unDoCompleteOnDataSetRegistrations(dataSetId: string, period: string, orgUnitId: string, dataDimension, currentUser): Observable<any> {
-    let parameter = this.getDataSetCompletenessParameter(dataSetId, period, orgUnitId, dataDimension);
+  unDoCompleteOnDataSetRegistrations(
+    dataSetId: string,
+    period: string,
+    orgUnitId: string,
+    dataDimension,
+    currentUser
+  ): Observable<any> {
+    let parameter = this.getDataSetCompletenessParameter(
+      dataSetId,
+      period,
+      orgUnitId,
+      dataDimension
+    );
     return new Observable(observer => {
-      this.httpClient.delete('/api/25/completeDataSetRegistrations?' + parameter, currentUser).subscribe(() => {
-        observer.next();
-        observer.complete();
-      }, error => {
-        observer.error(error);
-      });
+      this.httpClient
+        .delete('/api/completeDataSetRegistrations?' + parameter, currentUser)
+        .subscribe(
+          () => {
+            observer.next();
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
     });
   }
 
@@ -65,21 +108,42 @@ export class DataSetCompletenessProvider {
    * @param currentUser
    * @returns {Observable<any>}
    */
-  getDataSetCompletenessInfo(dataSetId: string, period: string, orgUnitId: string, dataDimension, currentUser): Observable<any> {
-    let parameter = "dataSetId=" + dataSetId + "&periodId=" + period + "&organisationUnitId=" + orgUnitId;
-    if (dataDimension.cp != "") {
-      parameter += "&cc=" + dataDimension.cc + "&cp=" + dataDimension.cp;
+  getDataSetCompletenessInfo(
+    dataSetId: string,
+    period: string,
+    orgUnitId: string,
+    dataDimension,
+    currentUser
+  ): Observable<any> {
+    let parameter =
+      'dataSetId=' +
+      dataSetId +
+      '&periodId=' +
+      period +
+      '&organisationUnitId=' +
+      orgUnitId;
+    if (dataDimension.cp != '') {
+      parameter += '&cc=' + dataDimension.cc + '&cp=' + dataDimension.cp;
     }
     return new Observable(observer => {
-      this.httpClient.get('/dhis-web-dataentry/getDataValues.action?' + parameter, true, currentUser).subscribe((response: any) => {
-        if (response && response.dataValues) {
-          delete response.dataValues;
-        }
-        observer.next(response);
-        observer.complete();
-      }, error => {
-        observer.error(error);
-      });
+      this.httpClient
+        .get(
+          '/dhis-web-dataentry/getDataValues.action?' + parameter,
+          true,
+          currentUser
+        )
+        .subscribe(
+          (response: any) => {
+            if (response && response.dataValues) {
+              delete response.dataValues;
+            }
+            observer.next(response);
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
     });
   }
 
@@ -91,14 +155,22 @@ export class DataSetCompletenessProvider {
    */
   getUserCompletenessInformation(username, currentUser): Observable<any> {
     return new Observable(observer => {
-      this.httpClient.get('/dhis-web-commons-ajax-json/getUser.action?username=' + username, true, currentUser).subscribe((response: any) => {
-        observer.next(response);
-        observer.complete();
-      }, error => {
-        observer.error(error);
-      });
+      this.httpClient
+        .get(
+          '/dhis-web-commons-ajax-json/getUser.action?username=' + username,
+          true,
+          currentUser
+        )
+        .subscribe(
+          (response: any) => {
+            observer.next(response);
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
     });
-
   }
 
   /**
@@ -109,12 +181,16 @@ export class DataSetCompletenessProvider {
    * @param dataDimension
    * @returns {string}
    */
-  getDataSetCompletenessParameter(dataSetId: string, period: string, orgUnitId: string, dataDimension) {
-    let parameter = "ds=" + dataSetId + "&pe=" + period + "&ou=" + orgUnitId;
-    if (dataDimension.cp != "") {
-      parameter += "&cc=" + dataDimension.cc + "&cp=" + dataDimension.cp;
+  getDataSetCompletenessParameter(
+    dataSetId: string,
+    period: string,
+    orgUnitId: string,
+    dataDimension
+  ) {
+    let parameter = 'ds=' + dataSetId + '&pe=' + period + '&ou=' + orgUnitId;
+    if (dataDimension.cp != '') {
+      parameter += '&cc=' + dataDimension.cc + '&cp=' + dataDimension.cp;
     }
     return parameter;
   }
-
 }

@@ -291,7 +291,7 @@ export class TrackerCaptureProvider {
     currentUser
   ): Observable<any> {
     return new Observable(observer => {
-      let url = '/api/25/trackedEntityInstances';
+      let url = '/api/trackedEntityInstances';
       let trackedEntityInstanceIds = [];
       let success = 0,
         fail = 0;
@@ -306,7 +306,7 @@ export class TrackerCaptureProvider {
           delete attribute.id;
         });
         this.httpClientProvider
-          .defaultPost(url, trackedEntityInstance, currentUser)
+          .post(url, trackedEntityInstance, currentUser)
           .subscribe(
             (response: any) => {
               trackedEntityInstanceIds.push(
@@ -445,7 +445,7 @@ export class TrackerCaptureProvider {
     return new Observable(observer => {
       let success = 0,
         fail = 0;
-      let url = '/api/25/enrollments';
+      let url = '/api/enrollments';
       let enrollmentIds = [];
       if (enrollments && enrollments.length == 0) {
         observer.next();
@@ -456,76 +456,74 @@ export class TrackerCaptureProvider {
           delete enrollment.syncStatus;
           delete enrollment.id;
           delete enrollment.events;
-          this.httpClientProvider
-            .defaultPost(url, enrollment, currentUser)
-            .subscribe(
-              () => {
-                success++;
-                if (success + fail == enrollments.length) {
-                  this.enrollmentsProvider
-                    .getSavedEnrollmentsByAttribute(
-                      'id',
-                      enrollmentIds,
-                      currentUser
-                    )
-                    .subscribe(
-                      (enrollments: any) => {
-                        this.enrollmentsProvider
-                          .updateEnrollmentsByStatus(
-                            enrollments,
-                            currentUser,
-                            'synced'
-                          )
-                          .subscribe(
-                            () => {
-                              observer.next();
-                              observer.complete();
-                            },
-                            error => {
-                              observer.error(error);
-                            }
-                          );
-                      },
-                      error => {
-                        observer.error(error);
-                      }
-                    );
-                }
-              },
-              error => {
-                fail++;
-                if (success + fail == enrollments.length) {
-                  this.enrollmentsProvider
-                    .getSavedEnrollmentsByAttribute(
-                      'id',
-                      enrollmentIds,
-                      currentUser
-                    )
-                    .subscribe(
-                      (enrollments: any) => {
-                        this.enrollmentsProvider
-                          .updateEnrollmentsByStatus(
-                            enrollments,
-                            currentUser,
-                            'synced'
-                          )
-                          .subscribe(
-                            () => {
-                              observer.next();
-                              observer.complete();
-                            },
-                            error => {
-                              observer.error(error);
-                            }
-                          );
-                      },
-                      error => {
-                        observer.error(error);
-                      }
-                    );
-                }
+          this.httpClientProvider.post(url, enrollment, currentUser).subscribe(
+            () => {
+              success++;
+              if (success + fail == enrollments.length) {
+                this.enrollmentsProvider
+                  .getSavedEnrollmentsByAttribute(
+                    'id',
+                    enrollmentIds,
+                    currentUser
+                  )
+                  .subscribe(
+                    (enrollments: any) => {
+                      this.enrollmentsProvider
+                        .updateEnrollmentsByStatus(
+                          enrollments,
+                          currentUser,
+                          'synced'
+                        )
+                        .subscribe(
+                          () => {
+                            observer.next();
+                            observer.complete();
+                          },
+                          error => {
+                            observer.error(error);
+                          }
+                        );
+                    },
+                    error => {
+                      observer.error(error);
+                    }
+                  );
               }
-            );
+            },
+            error => {
+              fail++;
+              if (success + fail == enrollments.length) {
+                this.enrollmentsProvider
+                  .getSavedEnrollmentsByAttribute(
+                    'id',
+                    enrollmentIds,
+                    currentUser
+                  )
+                  .subscribe(
+                    (enrollments: any) => {
+                      this.enrollmentsProvider
+                        .updateEnrollmentsByStatus(
+                          enrollments,
+                          currentUser,
+                          'synced'
+                        )
+                        .subscribe(
+                          () => {
+                            observer.next();
+                            observer.complete();
+                          },
+                          error => {
+                            observer.error(error);
+                          }
+                        );
+                    },
+                    error => {
+                      observer.error(error);
+                    }
+                  );
+              }
+            }
+          );
         });
       }
     });

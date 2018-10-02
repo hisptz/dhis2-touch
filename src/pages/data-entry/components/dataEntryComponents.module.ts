@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
-import { SharedModule } from '../../../components/shared.module';
+import { sharedComponentsModule } from '../../../components/sharedComponents.module';
 import { CustomDataEntryFormComponent } from './custom-data-entry-form/custom-data-entry-form';
 import { AggregateConflictHandlerComponent } from './aggregate-conflict-handler/aggregate-conflict-handler';
 import { DataEntryPaginationComponent } from './data-entry-pagination/data-entry-pagination';
 import { DefaultDataEntryFormComponent } from './default-data-entry-form/default-data-entry-form';
-import { DataEntryModule } from '../../../components/data.entry.module';
+
 import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
@@ -15,12 +15,7 @@ import { TranslateModule } from '@ngx-translate/core';
     DataEntryPaginationComponent,
     DefaultDataEntryFormComponent
   ],
-  imports: [
-    IonicModule,
-    SharedModule,
-    DataEntryModule,
-    TranslateModule.forChild({})
-  ],
+  imports: [IonicModule, sharedComponentsModule, TranslateModule.forChild({})],
   exports: [
     CustomDataEntryFormComponent,
     AggregateConflictHandlerComponent,

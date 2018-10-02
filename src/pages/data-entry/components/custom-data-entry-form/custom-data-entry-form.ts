@@ -21,22 +21,45 @@ declare var dataEntry: any;
 export class CustomDataEntryFormComponent
   implements OnInit, AfterViewInit, OnChanges {
   entryFormStatusColors = {};
-  @Input() dataEntryFormDesign;
-  @Input() type: string;
-  @Input() data;
-  @Input() entryFormType: string; //aggregate event tracker
-  @Input() programTrackedEntityAttributes; // metadata for attribute
-  @Input() entryFormSections;
-  @Input() programStageId : string;
-  @Input() programStageDataElements; // metadata for events rendering
-  @Input() dataUpdateStatus: { elementId: string; status: string };
-  @Output() onCustomFormInputChange = new EventEmitter();
+  @Input()
+  dataEntryFormDesign;
+  @Input()
+  type: string;
+  @Input()
+  data;
+  @Input()
+  entryFormType: string; //aggregate event tracker
+  @Input()
+  programTrackedEntityAttributes; // metadata for attribute
+  @Input()
+  entryFormSections;
+  @Input()
+  programStageId: string;
+  @Input()
+  programStageDataElements; // metadata for events rendering
+  @Input()
+  dataUpdateStatus: { elementId: string; status: string };
+  @Output()
+  onCustomFormInputChange = new EventEmitter();
+
+  @Input()
+  dataSetsCompletenessInfo;
+  @Input()
+  isDataSetCompleted: boolean;
+  @Input()
+  isDataSetCompletenessProcessRunning: boolean;
+  @Output()
+  onViewUserCompletenessInformation = new EventEmitter();
+  @Output()
+  onUpdateDataSetCompleteness = new EventEmitter();
 
   _htmlMarkup: SafeHtml;
   hasScriptSet: boolean;
+  entryFormSectionsCount: number;
 
   constructor(private sanitizer: DomSanitizer, private elementRef: ElementRef) {
     this.hasScriptSet = false;
+    this.entryFormSectionsCount = 1;
     this.entryFormStatusColors = {
       OK: '#b9ffb9',
       WAIT: '#fffe8c',
@@ -67,8 +90,7 @@ export class CustomDataEntryFormComponent
           updateStatusKey,
           this.entryFormStatusColors[this.dataUpdateStatus[updateStatusKey]]
         );
-      })
-
+      });
     }
   }
 
@@ -88,13 +110,23 @@ export class CustomDataEntryFormComponent
     );
   }
 
+  updateDataSetCompleteness() {
+    this.onUpdateDataSetCompleteness.emit();
+  }
+
+  viewUserCompletenessInformation(dataSetsCompletenessInfo) {
+    this.onViewUserCompletenessInformation.emit(dataSetsCompletenessInfo);
+  }
+
   getScriptsContents(html) {
     const matchedScriptArray = html.match(
       /<script[^>]*>([\w|\W]*)<\/script>/im
     );
     return matchedScriptArray && matchedScriptArray.length > 0
-      ? matchedScriptArray[0].replace(/(<([^>]+)>)/gi, ':separator:').split(':separator:').
-        filter(content => content.length > 0)
+      ? matchedScriptArray[0]
+          .replace(/(<([^>]+)>)/gi, ':separator:')
+          .split(':separator:')
+          .filter(content => content.length > 0)
       : [];
   }
 
@@ -102,18 +134,33 @@ export class CustomDataEntryFormComponent
     if (!this.hasScriptSet) {
       const scriptsContents = `
     var data = ${JSON.stringify(this.data)};
-    var dataElements = ${this.entryFormSections ? JSON.stringify(
-        _.flatten(
-          _.map(this.entryFormSections, entrySection => entrySection.dataElements)
-        )
-      ) : this.programTrackedEntityAttributes ? JSON.stringify(
-        _.flatten(
-          _.map(this.programTrackedEntityAttributes,
-            programTrackedEntityAttribute => programTrackedEntityAttribute.trackedEntityAttribute)
-        )
-      ) : JSON.stringify(
-        _.map(this.programStageDataElements, programStage => programStage.dataElement)
-      )};
+    var dataElements = ${
+      this.entryFormSections
+        ? JSON.stringify(
+            _.flatten(
+              _.map(
+                this.entryFormSections,
+                entrySection => entrySection.dataElements
+              )
+            )
+          )
+        : this.programTrackedEntityAttributes
+          ? JSON.stringify(
+              _.flatten(
+                _.map(
+                  this.programTrackedEntityAttributes,
+                  programTrackedEntityAttribute =>
+                    programTrackedEntityAttribute.trackedEntityAttribute
+                )
+              )
+            )
+          : JSON.stringify(
+              _.map(
+                this.programStageDataElements,
+                programStage => programStage.dataElement
+              )
+            )
+    };
     var entryFormColors = ${JSON.stringify(this.entryFormStatusColors)};
     var entryFormType = ${JSON.stringify(this.entryFormType)};
     

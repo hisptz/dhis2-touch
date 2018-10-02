@@ -1,17 +1,16 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { ReportViewPage } from './report-view';
-import {SharedModule} from "../../../components/shared.module";
-import { TranslateModule} from "@ngx-translate/core";
-import {ReportModule} from "../../../components/report.module";
+import { sharedComponentsModule } from '../../../components/sharedComponents.module';
+import { TranslateModule } from '@ngx-translate/core';
+import { ReportModule } from '../../../components/report.module';
 @NgModule({
-  declarations: [
-    ReportViewPage,
-  ],
+  declarations: [ReportViewPage],
   imports: [
-    IonicPageModule.forChild(ReportViewPage),SharedModule,
+    IonicPageModule.forChild(ReportViewPage),
+    sharedComponentsModule,
     ReportModule,
     TranslateModule.forChild({})
-  ],
+  ]
 })
 export class ReportViewPageModule {}

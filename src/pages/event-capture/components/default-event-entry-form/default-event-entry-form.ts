@@ -15,13 +15,18 @@ export class DefaultEventEntryFormComponent implements OnInit {
   @Input() currentUser;
   @Input() dataObject;
   @Input() dataValuesSavingStatusClass;
+  @Input() hiddenFields;
+  @Input() hiddenSections;
+  @Input() errorOrWarningMessage;
 
   @Output() onChange = new EventEmitter();
 
   isSectionOpen: any;
+  isEventCompleted: boolean;
 
   constructor() {
     this.isSectionOpen = {};
+    this.isEventCompleted = false;
   }
 
   ngOnInit() {

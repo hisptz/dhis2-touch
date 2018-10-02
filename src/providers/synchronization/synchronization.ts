@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import { UserProvider } from '../user/user';
 import { DataValuesProvider } from '../data-values/data-values';
 import { TrackerCaptureProvider } from '../tracker-capture/tracker-capture';
 import { EnrollmentsProvider } from '../enrollments/enrollments';
 import { EventCaptureFormProvider } from '../event-capture-form/event-capture-form';
 import * as _ from 'lodash';
-import { AppTranslationProvider } from '../app-translation/app-translation';
 import { AppProvider } from '../app/app';
 import { SettingsProvider } from '../settings/settings';
 import { Observable } from 'rxjs/Observable';
+import { ProfileProvider } from '../../pages/profile/providers/profile/profile';
 
 /*
   Generated class for the SynchronizationProvider provider.
@@ -19,21 +18,24 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class SynchronizationProvider {
   subscription: any;
+  profileSubscription: any;
 
   constructor(
     private dataValuesProvider: DataValuesProvider,
     private trackerCaptureProvider: TrackerCaptureProvider,
     private enrollmentsProvider: EnrollmentsProvider,
     private eventCaptureFormProvider: EventCaptureFormProvider,
-    private user: UserProvider,
-    private appTranslation: AppTranslationProvider,
     private appProvider: AppProvider,
-    private settingsProvider: SettingsProvider
+    private settingsProvider: SettingsProvider,
+    private profileProvider: ProfileProvider
   ) {}
 
   stopSynchronization() {
     if (this.subscription) {
       clearInterval(this.subscription);
+    }
+    if (this.profileSubscription) {
+      clearInterval(this.profileSubscription);
     }
   }
 
@@ -46,6 +48,9 @@ export class SynchronizationProvider {
             ? appSettings.synchronization
             : defaultSettings.synchronization;
         this.stopSynchronization();
+        this.profileSubscription = setInterval(() => {
+          this.profileProvider.uploadingProfileInformation();
+        }, synchronizationSettings.time);
         if (synchronizationSettings.isAutoSync) {
           this.subscription = setInterval(() => {
             this.getDataForUpload(currentUser).subscribe(
@@ -57,7 +62,6 @@ export class SynchronizationProvider {
                   response => {
                     const { isCompleted } = response;
                     const { importSummaries } = response;
-                    const { percentage } = response;
                     if (isCompleted) {
                       let message = '';
                       Object.keys(importSummaries).map(key => {
@@ -306,12 +310,15 @@ export class SynchronizationProvider {
                     .getEventsByAttribute('syncStatus', [status], currentUser)
                     .subscribe(
                       (events: any) => {
-                        dataObject.events = _.filter(events, {
-                          eventType: 'event-capture'
+                        dataObject.events = _.filter(events, (event: any) => {
+                          return event.eventType === 'event-capture';
                         });
-                        dataObject.eventsForTracker = _.filter(events, {
-                          eventType: 'tracker-capture'
-                        });
+                        dataObject.eventsForTracker = _.filter(
+                          events,
+                          (event: any) => {
+                            return event.eventType === 'tracker-capture';
+                          }
+                        );
                         observer.next(dataObject);
                         observer.complete();
                       },
