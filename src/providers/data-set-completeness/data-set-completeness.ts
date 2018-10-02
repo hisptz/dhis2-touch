@@ -35,10 +35,19 @@ export class DataSetCompletenessProvider {
       dataDimension
     );
     return new Observable(observer => {
+      const data = {
+        cc: dataDimension.cc,
+        cp: dataDimension.cp,
+        dataSet: dataSetId,
+        period: period,
+        organisationUnit: orgUnitId
+      };
       this.httpClient
         .post(
           '/api/completeDataSetRegistrations?' + parameter,
-          {},
+          {
+            completeDataSetRegistrations: [data]
+          },
           currentUser
         )
         .subscribe(
@@ -77,10 +86,7 @@ export class DataSetCompletenessProvider {
     );
     return new Observable(observer => {
       this.httpClient
-        .delete(
-          '/api/completeDataSetRegistrations?' + parameter,
-          currentUser
-        )
+        .delete('/api/completeDataSetRegistrations?' + parameter, currentUser)
         .subscribe(
           () => {
             observer.next();

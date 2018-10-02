@@ -241,17 +241,13 @@ export class HttpClientProvider {
           this.http.setRequestTimeout(this.timeOutTime);
           apiUrl =
             user.serverUrl + this.getUrlBasedOnDhisVersion(url, sanitizedUser);
+          console.log('apiurl ' + apiUrl);
           this.http
             .post(apiUrl, data, {})
-            .then(
-              (response: any) => {
-                observer.next(response);
-                observer.complete();
-              },
-              error => {
-                observer.error(error);
-              }
-            )
+            .then((response: any) => {
+              observer.next(response);
+              observer.complete();
+            })
             .catch(error => {
               observer.error(error);
             });
