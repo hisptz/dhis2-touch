@@ -37,14 +37,14 @@ export class SyncProvider {
   getSyncContentDetails() {
     let syncContents = [
       {
-        id: 'dataViaSms',
-        name: 'Upload data via SMS',
-        icon: 'assets/icon/sms.png'
-      },
-      {
         id: 'dataViaInternet',
         name: 'Upload data via internet',
         icon: 'assets/icon/internet.png'
+      },
+      {
+        id: 'dataViaSms',
+        name: 'Upload data via SMS',
+        icon: 'assets/icon/sms.png'
       },
       {
         id: 'downloadMetadata',
