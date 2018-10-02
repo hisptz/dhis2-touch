@@ -29,6 +29,7 @@ import { UserProvider } from '../../providers/user/user';
 import { CurrentUser } from '../../models/currentUser';
 import { AppItem } from '../../models';
 import { Observable } from 'rxjs';
+import { OrganisationUnitsProvider } from '../../providers/organisation-units/organisation-units';
 
 /**
  * Generated class for the AccountPage page.
@@ -49,6 +50,7 @@ export class AccountPage {
     private App: App,
     private navCtrl: NavController,
     private userProvider: UserProvider,
+    private organisationUnitProvider: OrganisationUnitsProvider,
     private store: Store<State>
   ) {
     const apps = this.getAppItems();
@@ -70,6 +72,7 @@ export class AccountPage {
       if (currentUser && currentUser.username) {
         currentUser.isLogin = false;
         this.userProvider.setCurrentUser(currentUser).subscribe(() => {
+          this.organisationUnitProvider.resetOrganisationUnit();
           this.App.getRootNav().setRoot('LoginPage');
         });
       } else {
