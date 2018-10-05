@@ -30,6 +30,7 @@ import { CurrentUser } from '../../models/current-user';
 import { EncryptionProvider } from '../encryption/encryption';
 import { NetworkAvailabilityProvider } from '../network-availability/network-availability';
 import { Storage } from '@ionic/storage';
+import * as _ from 'lodash';
 /*
   Generated class for the HttpClientProvider provider.
 
@@ -62,12 +63,11 @@ export class HttpClientProvider {
       let pattern = '/api/' + user.dhisVersion;
       url = url.replace(pattern, '/api/');
     } else if (user.dhisVersion && parseInt(user.dhisVersion) >= 25) {
-      //removing hardcorded /api on all apps urls
       let pattern = '/api/' + user.dhisVersion;
       url = url.replace('/api', '/api');
       url = url.replace('/api', pattern);
     }
-    return url;
+    return encodeURI(url);
   }
 
   /**
@@ -80,10 +80,11 @@ export class HttpClientProvider {
       const { isAvailable } = this.networkProvider.getNetWorkStatus();
       if (isAvailable) {
         if (user) {
+          let sanitizedUser = _.assign({}, user);
           if (user.isPasswordEncode) {
-            user.password = this.encryption.decode(user.password);
+            sanitizedUser.password = this.encryption.decode(user.password);
           }
-          observer.next(user);
+          observer.next(sanitizedUser);
           observer.complete();
         } else {
           this.storage.get('user').then(
@@ -241,14 +242,17 @@ export class HttpClientProvider {
           this.http.setRequestTimeout(this.timeOutTime);
           apiUrl =
             user.serverUrl + this.getUrlBasedOnDhisVersion(url, sanitizedUser);
-          console.log(apiUrl);
-          console.log(JSON.stringify(data));
           this.http
             .post(apiUrl, data, {})
-            .then((response: any) => {
-              observer.next(response);
-              observer.complete();
-            })
+            .then(
+              (response: any) => {
+                observer.next(response);
+                observer.complete();
+              },
+              error => {
+                observer.error(error);
+              }
+            )
             .catch(error => {
               observer.error(error);
             });

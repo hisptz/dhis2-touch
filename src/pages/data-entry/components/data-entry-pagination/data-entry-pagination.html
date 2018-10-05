@@ -37,18 +37,18 @@
       <button color="danger" round ion-button full [disabled]="isDataSetCompletenessProcessRunning || !isDataSetCompleted"
         (tap)="updateDataSetCompleteness()">
         <span *ngIf="!isDataSetCompletenessProcessRunning" [translate]="'Undo complete'"></span>
-        <span *ngIf="isDataSetCompletenessProcessRunning && isDataSetCompleted [translate]="'Undo completing'"></span>
+        <span *ngIf="isDataSetCompletenessProcessRunning && isDataSetCompleted" [translate]="'Undo completing'"></span>
       </button>
     </ion-col>
   </ion-row>
   <div *ngIf="
           !isDataSetCompletenessProcessRunning">
-          <div *ngIf="dataSetsCompletenessInfo && dataSetsCompletenessInfo.complete">
-            <div class="item-card animated fadeIn" padding-bottom padding-top (click)="viewUserCompletenessInformation(dataSetsCompletenessInfo)">
-              <span [translate]="'Completed by'"></span>
-              <b>{{ dataSetsCompletenessInfo.storedBy }}</b> {{'on'|translate }}
-              <b>{{ dataSetsCompletenessInfo.date }}</b>
-            </div>
-          </div>
-</div>
+    <div *ngIf="dataSetsCompletenessInfo && dataSetsCompletenessInfo.complete">
+      <div class="item-card animated fadeIn" padding-bottom padding-top (click)="viewUserCompletenessInformation(dataSetsCompletenessInfo)">
+        <span [translate]="'Completed by'"></span>
+        <b>{{ dataSetsCompletenessInfo.storedBy }}</b> {{'on'|translate }}
+        <b>{{ dataSetsCompletenessInfo.date }}</b>
+      </div>
+    </div>
+  </div>
 </div>
