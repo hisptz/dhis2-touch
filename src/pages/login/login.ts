@@ -30,7 +30,7 @@ import {
 } from 'ionic-angular';
 import { TabsPage } from '../tabs/tabs';
 import { UserProvider } from '../../providers/user/user';
-import { CurrentUser } from '../../models/currentUser';
+import { CurrentUser } from '../../models/current-user';
 
 import { Store } from '@ngrx/store';
 import { State, AddCurrentUser } from '../../store';

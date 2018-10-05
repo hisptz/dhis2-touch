@@ -35,13 +35,18 @@ export class DataSetCompletenessProvider {
       dataDimension
     );
     return new Observable(observer => {
-      const data = {
-        cc: dataDimension.cc,
-        cp: dataDimension.cp,
+      let data: any = {
         dataSet: dataSetId,
         period: period,
         organisationUnit: orgUnitId
       };
+      if (dataDimension.cp != '') {
+        data = {
+          ...data,
+          cc: dataDimension.cc,
+          cp: dataDimension.cp
+        };
+      }
       this.httpClient
         .post(
           '/api/completeDataSetRegistrations?' + parameter,
@@ -125,25 +130,21 @@ export class DataSetCompletenessProvider {
     if (dataDimension.cp != '') {
       parameter += '&cc=' + dataDimension.cc + '&cp=' + dataDimension.cp;
     }
+    const url = '/dhis-web-dataentry/getDataValues.action?' + parameter;
     return new Observable(observer => {
-      this.httpClient
-        .get(
-          '/dhis-web-dataentry/getDataValues.action?' + parameter,
-          true,
-          currentUser
-        )
-        .subscribe(
-          (response: any) => {
-            if (response && response.dataValues) {
-              delete response.dataValues;
-            }
-            observer.next(response);
-            observer.complete();
-          },
-          error => {
-            observer.error(error);
+      this.httpClient.get(url, true, currentUser).subscribe(
+        (response: any) => {
+          if (response && response.dataValues) {
+            delete response.dataValues;
           }
-        );
+          console.log(JSON.stringify(response));
+          observer.next(response);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
 

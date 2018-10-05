@@ -23,7 +23,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
-import { CurrentUser } from '../../models/currentUser';
+import { CurrentUser } from '../../models/current-user';
 import { LocalStorageProvider } from '../local-storage/local-storage';
 
 /*

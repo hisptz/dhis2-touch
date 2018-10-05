@@ -11,7 +11,7 @@ import { StandardReportProvider } from '../standard-report/standard-report';
 import { ProgramsProvider } from '../programs/programs';
 import { ProgramStageSectionsProvider } from '../program-stage-sections/program-stage-sections';
 import * as _ from 'lodash';
-import { CurrentUser } from '../../models/currentUser';
+import { CurrentUser } from '../../models/current-user';
 
 /*
   Generated class for the SyncProvider provider.

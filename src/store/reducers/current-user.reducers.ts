@@ -22,7 +22,7 @@
  *
  */
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import { CurrentUser } from '../../models/currentUser';
+import { CurrentUser } from '../../models/current-user';
 import { CurrentUserActions, CurrentUserActionTypes } from '../actions';
 export interface currentUserState extends EntityState<CurrentUser> {
   currentUserId: string;

@@ -26,7 +26,7 @@ import { IonicPage, NavController, App } from 'ionic-angular';
 import { Store, select } from '@ngrx/store';
 import { State, getAthorizedApps } from '../../store';
 import { UserProvider } from '../../providers/user/user';
-import { CurrentUser } from '../../models/currentUser';
+import { CurrentUser } from '../../models/current-user';
 import { AppItem } from '../../models';
 import { Observable } from 'rxjs';
 import { OrganisationUnitsProvider } from '../../providers/organisation-units/organisation-units';

@@ -4,7 +4,7 @@ import { ProfileProvider } from './providers/profile/profile';
 import { AppProvider } from '../../providers/app/app';
 import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 import { UserProvider } from '../../providers/user/user';
-import { CurrentUser } from '../../models/currentUser';
+import { CurrentUser } from '../../models/current-user';
 import { SettingsProvider } from '../../providers/settings/settings';
 import { EncryptionProvider } from '../../providers/encryption/encryption';
 import * as _ from 'lodash';
@@ -159,9 +159,8 @@ export class ProfilePage implements OnInit {
         this.appProvider.setNormalNotification(
           'New password has been updated successfully'
         );
-        const matchContent = _.find(this.profileContents, {
-          id: 'accountSetting'
-        });
+        const id: any = 'accountSetting';
+        const matchContent: any = _.find(this.profileContents, { id: id });
         if (matchContent) {
           this.toggleProfileContents(matchContent);
         }

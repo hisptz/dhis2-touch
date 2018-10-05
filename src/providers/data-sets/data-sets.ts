@@ -25,8 +25,8 @@ import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
-import { DataSet } from '../../models/dataSet';
-import { CurrentUser } from '../../models/currentUser';
+import { DataSet } from '../../models/data-set';
+import { CurrentUser } from '../../models/current-user';
 
 /*
   Generated class for the DataSetsProvider provider.

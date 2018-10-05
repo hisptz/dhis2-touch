@@ -26,7 +26,7 @@ import { HTTP } from '@ionic-native/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/timeout';
 import { Observable } from 'rxjs/Observable';
-import { CurrentUser } from '../../models/currentUser';
+import { CurrentUser } from '../../models/current-user';
 import { EncryptionProvider } from '../encryption/encryption';
 import { NetworkAvailabilityProvider } from '../network-availability/network-availability';
 import { Storage } from '@ionic/storage';
@@ -241,7 +241,8 @@ export class HttpClientProvider {
           this.http.setRequestTimeout(this.timeOutTime);
           apiUrl =
             user.serverUrl + this.getUrlBasedOnDhisVersion(url, sanitizedUser);
-          console.log('apiurl ' + apiUrl);
+          console.log(apiUrl);
+          console.log(JSON.stringify(data));
           this.http
             .post(apiUrl, data, {})
             .then((response: any) => {

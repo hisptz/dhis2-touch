@@ -30,8 +30,8 @@ import {
   EventEmitter
 } from '@angular/core';
 
-import { CurrentUser } from '../../../../models/currentUser';
-import { QueueManager } from '../../../../models/queueManager';
+import { CurrentUser } from '../../../../models/current-user';
+import { QueueManager } from '../../../../models/queue-manager';
 
 import { Subscription } from 'rxjs/Subscription';
 import * as _ from 'lodash';

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
-import { SmsConfiguration } from '../../models/smsCommand';
+import { SmsConfiguration } from '../../models/sms-command';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { HttpClientProvider } from '../http-client/http-client';
 

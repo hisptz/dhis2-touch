@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { EnrollmentsProvider } from '../enrollments/enrollments';
-import { CurrentUser } from '../../models/currentUser';
+import { CurrentUser } from '../../models/current-user';
 import { ProgramRulesProvider } from '../program-rules/program-rules';
 
 declare var dhis2: any;
