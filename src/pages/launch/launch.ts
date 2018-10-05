@@ -30,7 +30,7 @@ import { State, AddCurrentUser } from '../../store';
 import { UserProvider } from '../../providers/user/user';
 import { NetworkAvailabilityProvider } from '../../providers/network-availability/network-availability';
 import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
-import { CurrentUser } from '../../models/currentUser';
+import { CurrentUser } from '../../models/current-user';
 import { TabsPage } from '../tabs/tabs';
 
 /**

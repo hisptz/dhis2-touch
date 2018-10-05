@@ -22,7 +22,7 @@
  *
  */
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { CurrentUser } from '../../../../models/currentUser';
+import { CurrentUser } from '../../../../models/current-user';
 
 /**
  * Generated class for the LoginFormComponent component.
@@ -35,9 +35,11 @@ import { CurrentUser } from '../../../../models/currentUser';
   templateUrl: 'login-form.html'
 })
 export class LoginFormComponent implements OnInit {
-  @Input() currentUser: CurrentUser;
+  @Input()
+  currentUser: CurrentUser;
 
-  @Output() onLoginFormReady = new EventEmitter();
+  @Output()
+  onLoginFormReady = new EventEmitter();
 
   loginFormFields: any;
   loginFormData: any;

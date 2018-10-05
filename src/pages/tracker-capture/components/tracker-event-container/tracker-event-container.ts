@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { EventCaptureFormProvider } from '../../../../providers/event-capture-form/event-capture-form';
 import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
-import { CurrentUser } from '../../../../models/currentUser';
+import { CurrentUser } from '../../../../models/current-user';
 import { ProgramRulesProvider } from '../../../../providers/program-rules/program-rules';
 
 /**
@@ -22,17 +22,27 @@ import { ProgramRulesProvider } from '../../../../providers/program-rules/progra
   templateUrl: 'tracker-event-container.html'
 })
 export class TrackerEventContainerComponent implements OnInit, OnDestroy {
-  @Input() programStage;
-  @Input() currentOpenEvent;
-  @Input() formLayout: string;
-  @Input() currentUser: CurrentUser;
-  @Input() isOpenRow: boolean;
-  @Input() canEventBeDeleted: boolean;
-  @Input() dataValuesSavingStatusClass;
-  @Input() programSkipLogicMetadata;
+  @Input()
+  programStage;
+  @Input()
+  currentOpenEvent;
+  @Input()
+  formLayout: string;
+  @Input()
+  currentUser: CurrentUser;
+  @Input()
+  isOpenRow: boolean;
+  @Input()
+  canEventBeDeleted: boolean;
+  @Input()
+  dataValuesSavingStatusClass;
+  @Input()
+  programSkipLogicMetadata;
 
-  @Output() onChange = new EventEmitter();
-  @Output() onDeleteEvent = new EventEmitter();
+  @Output()
+  onChange = new EventEmitter();
+  @Output()
+  onDeleteEvent = new EventEmitter();
 
   translationMapper: any;
   dataObject: any;

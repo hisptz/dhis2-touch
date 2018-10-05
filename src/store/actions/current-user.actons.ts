@@ -22,7 +22,7 @@
  *
  */
 import { Action } from '@ngrx/store';
-import { CurrentUser } from '../../models/currentUser';
+import { CurrentUser } from '../../models/current-user';
 
 export enum CurrentUserActionTypes {
   AddCurrentUser = '[Current user] Adding current user',
