@@ -25,7 +25,7 @@ import 'rxjs/add/operator/map';
 import { HTTP } from '@ionic-native/http';
 import { Observable } from 'rxjs/Observable';
 import { HttpClientProvider } from '../http-client/http-client';
-import { CurrentUser } from '../../models/currentUser';
+import { CurrentUser } from '../../models/current-user';
 import { EncryptionProvider } from '../encryption/encryption';
 import { LocalStorageProvider } from '../local-storage/local-storage';
 

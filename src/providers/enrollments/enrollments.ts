@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { Observable } from 'rxjs/Observable';
-import { CurrentUser } from '../../models/currentUser';
+import { CurrentUser } from '../../models/current-user';
 import * as _ from 'lodash';
 
 declare var dhis2: any;

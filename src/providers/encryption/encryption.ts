@@ -22,7 +22,7 @@
  *
  */
 import { Injectable } from '@angular/core';
-import { CurrentUser } from '../../models/currentUser';
+import { CurrentUser } from '../../models/current-user';
 import * as sha1 from 'js-sha1';
 /*
   Generated class for the EncryptionProvider provider.
