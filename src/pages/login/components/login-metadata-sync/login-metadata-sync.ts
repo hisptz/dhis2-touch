@@ -223,7 +223,10 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
                         );
                         //loading system settings
                         const subscription = this.systemSettingProvider
-                          .getSystemSettingsFromServer(currentUser)
+                          .getSystemSettingsFromServer({
+                            ...currentUser,
+                            dhisVersion
+                          })
                           .subscribe(
                             systemSettings => {
                               this.systemSettingLoaded.emit(systemSettings);
@@ -251,7 +254,10 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
                                     );
                                     const subscription = this.userProvider
                                       .getUserDataOnAuthenticatedServer(
-                                        currentUser,
+                                        {
+                                          ...currentUser,
+                                          dhisVersion
+                                        },
                                         serverUrl,
                                         true
                                       )
