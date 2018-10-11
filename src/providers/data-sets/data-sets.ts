@@ -101,7 +101,7 @@ export class DataSetsProvider {
                 let dataElemets = dataSetElementMapper[dataSet.id]
                   ? dataSetElementMapper[dataSet.id]
                   : [];
-                dataSets = _.concat(dataSet, {
+                dataSets = _.concat(dataSets, {
                   id: dataSet.id,
                   name: dataSet.name,
                   dataElements: dataElemets

@@ -298,6 +298,7 @@ export class ProfileProvider {
    */
   getAssignedForm(userData, dataSets) {
     let assignedDataSets = [];
+    console.log(dataSets.length);
     dataSets.map((dataSet: any) => {
       if (userData.dataSets && userData.dataSets.indexOf(dataSet.id) > -1) {
         assignedDataSets.push(dataSet.name);

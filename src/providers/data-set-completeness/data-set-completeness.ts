@@ -137,7 +137,6 @@ export class DataSetCompletenessProvider {
           if (response && response.dataValues) {
             delete response.dataValues;
           }
-          console.log(JSON.stringify(response));
           observer.next(response);
           observer.complete();
         },
