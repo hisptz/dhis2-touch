@@ -224,7 +224,6 @@ export class DataSetsProvider {
               }
             });
           }
-          console.log(JSON.stringify({ dataSetIds, dataSetSourceDataSetIds }));
           this.SqlLite.getDataFromTableByAttributes(
             this.resource,
             attributeKey,
