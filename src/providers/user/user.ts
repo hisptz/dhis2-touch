@@ -100,10 +100,12 @@ export class UserProvider {
       const apiurl = withBaseUrl
         ? this.httpProvider.getUrlBasedOnDhisVersion(url, currentUser)
         : url;
+      console.log(apiurl);
       this.http
         .get(apiurl, {}, {})
         .then(response => {
           const { data } = response;
+          console.log(data);
           if (data && data.indexOf('login.action') > -1) {
             serverUrl = serverUrl.replace('http://', 'https://');
             this.getUserDataOnAuthenticatedServer(
@@ -435,6 +437,7 @@ export class UserProvider {
         }
       });
     }
+    console.log(JSON.stringify({ dataSetsIds }));
     return dataSetsIds;
   }
 
@@ -457,6 +460,8 @@ export class UserProvider {
         }
       });
     }
+    console.log(JSON.stringify({ programIds }));
+
     return programIds;
   }
 
