@@ -23,6 +23,7 @@
 import { Injectable } from '@angular/core';
 import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { Observable } from 'rxjs/Observable';
+import * as _ from 'lodash';
 
 /*
   Generated class for the LocalInstanceProvider provider.
@@ -55,7 +56,12 @@ export class LocalInstanceProvider {
               )
               .subscribe(
                 (localInstances: any) => {
-                  observer.next(localInstances);
+                  const defaultInstances = this.getDefaultLocalInstances();
+                  const sanitizedLocalInstances = this.getSanitizedLocalInstances(
+                    localInstances,
+                    defaultInstances
+                  );
+                  observer.next(sanitizedLocalInstances);
                   observer.complete();
                 },
                 error => {
@@ -68,6 +74,92 @@ export class LocalInstanceProvider {
           }
         );
     });
+  }
+
+  getSanitizedLocalInstances(localInstances, defaultInstances) {
+    let sanitizedLocalInstances = [];
+    const omittedDefaultInstances = _.map(
+      localInstances,
+      localInstance => localInstance.name
+    );
+    if (localInstances.length === 0) {
+      sanitizedLocalInstances = _.flattenDepth([
+        ...sanitizedLocalInstances,
+        _.map(defaultInstances, defaultInstance => {
+          return {
+            ...defaultInstance,
+            name: defaultInstance.currentUser.serverUrl
+          };
+        })
+      ]);
+    } else {
+      sanitizedLocalInstances = _.flattenDeep([
+        ...localInstances,
+        _.filter(
+          _.map(defaultInstances, defaultInstance => {
+            return {
+              ...defaultInstance,
+              name: defaultInstance.currentUser.serverUrl
+            };
+          }),
+          defaultInstance => {
+            return (
+              _.indexOf(omittedDefaultInstances, defaultInstance.name) === -1
+            );
+          }
+        )
+      ]);
+    }
+    return sanitizedLocalInstances;
+  }
+
+  getDefaultLocalInstances() {
+    return [
+      {
+        id: 'default1',
+        currentLanguage: 'en',
+        currentUser: {
+          username: '',
+          serverUrl: 'dhis.moh.go.tz',
+          password: '',
+          currentLanguage: 'en',
+          progressTracker: {}
+        }
+      },
+      {
+        id: 'default2',
+        currentLanguage: 'en',
+        currentUser: {
+          username: '',
+          serverUrl: 'dhis.hisptz.org/dhis',
+          password: '',
+          currentLanguage: 'en',
+          progressTracker: {}
+        }
+      },
+      {
+        id: 'default3',
+        currentLanguage: 'en',
+        currentUser: {
+          username: 'admin',
+          serverUrl: 'play.dhis2.org/demo',
+          password: 'district',
+          currentLanguage: 'en',
+          progressTracker: {}
+        }
+      },
+      {
+        id: 'default4',
+        currentLanguage: 'en',
+        currentUser: {
+          username: 'admin',
+          serverUrl: 'play.dhis2.org/2.28',
+          password: 'district',
+          currentLanguage: 'en',
+          progressTracker: {}
+        }
+      }
+    ];
   }
 
   /**
@@ -83,6 +175,9 @@ export class LocalInstanceProvider {
     loggedInInInstance
   ): Observable<any> {
     return new Observable(observer => {
+      localInstances = _.filter(localInstances, (localInstance: any) => {
+        return _.indexOf(localInstance.id, 'default') > -1;
+      });
       let newInstances = [];
       if (!loggedInInInstance && (currentUser && currentUser.serverUrl)) {
         loggedInInInstance = currentUser.serverUrl;
@@ -90,27 +185,30 @@ export class LocalInstanceProvider {
           loggedInInInstance = currentUser.serverUrl.split('://')[1];
         }
       }
-      newInstances.push({
-        id: currentUser.currentDatabase,
-        name: loggedInInInstance,
-        currentUser: currentUser,
-        currentLanguage: currentUser.currentLanguage
-      });
-      if (localInstances && localInstances.length) {
-        localInstances.forEach((localInstance: any) => {
+      newInstances = [
+        ...newInstances,
+        {
+          id: currentUser.currentDatabase,
+          name: loggedInInInstance,
+          currentUser: currentUser,
+          currentLanguage: currentUser.currentLanguage
+        }
+      ];
+      if (localInstances && localInstances.length > 0) {
+        localInstances.map((localInstance: any) => {
           if (localInstance.id != currentUser.currentDatabase) {
             if (!localInstance.currentUser.currentLanguage) {
               localInstance.currentLanguage = 'en';
               localInstance.currentUser.currentLanguage = 'en';
             }
-            newInstances.push(localInstance);
+            newInstances = [...newInstances, localInstance];
           }
         });
       }
       this.sqlLiteProvider
         .insertBulkDataOnTable(
           this.LOCAL_INSTANCE_KEY,
-          newInstances,
+          _.flattenDeep(newInstances),
           this.LOCAL_INSTANCE_KEY
         )
         .subscribe(
