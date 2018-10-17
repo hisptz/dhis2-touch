@@ -6,7 +6,7 @@ import { UserProvider } from '../../../../providers/user/user';
 import { AppProvider } from '../../../../providers/app/app';
 import { DataSetsProvider } from '../../../../providers/data-sets/data-sets';
 import { SmsCommandProvider } from '../../../../providers/sms-command/sms-command';
-import { SmsCommand } from '../../../../models/smsCommand';
+import { SmsCommand } from '../../../../models/sms-command';
 import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
 
 /**

@@ -1,10 +1,33 @@
+/*
+ *
+ * Copyright 2015 HISP Tanzania
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ * @since 2015
+ * @author Joseph Chingalo <profschingalo@gmail.com>
+ *
+ */
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
-import { CurrentUser } from '../../models/currentUser';
+import { CurrentUser } from '../../models/current-user';
 
 /*
  Generated class for the ProgramsProvider provider.
@@ -45,12 +68,16 @@ export class ProgramsProvider {
       'filter=organisationUnits.path:ilike:' +
       userOrgUnitIds.join('&filter=path:ilike:') +
       '&rootJunction=OR';
-    let url = '/api/25/' + this.resource + '.json?paging=false&' + fields;
+    let url = '/api/' + this.resource + '.json?paging=false&' + fields;
     +'&' + filter;
     return new Observable(observer => {
       this.HttpClient.get(url, true, currentUser).subscribe(
         (response: any) => {
-          observer.next(response);
+          const programs = this.getFitlteredListOfPrograms(
+            response[this.resource],
+            currentUser
+          );
+          observer.next(programs);
           observer.complete();
         },
         error => {
@@ -58,6 +85,30 @@ export class ProgramsProvider {
         }
       );
     });
+  }
+
+  getFitlteredListOfPrograms(
+    programsResponse: any[],
+    currentUser: CurrentUser
+  ) {
+    let filteredPrograms = [];
+    const { programs } = currentUser;
+    const { authorities } = currentUser;
+    if (authorities && authorities.indexOf('ALL') > -1) {
+      filteredPrograms = _.concat(filteredPrograms, programsResponse);
+    } else {
+      programsResponse.map((programObject: any) => {
+        if (
+          programs &&
+          programObject &&
+          programObject.id &&
+          programs.indexOf(programObject.id) > -1
+        ) {
+          filteredPrograms = _.concat(filteredPrograms, programObject);
+        }
+      });
+    }
+    return filteredPrograms;
   }
 
   getSanitizedPrograms(programs) {

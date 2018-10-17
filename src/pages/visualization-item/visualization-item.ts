@@ -30,7 +30,11 @@ export class VisualizationItemPage {
   }
 
   ionViewWillLeave() {
-    this.store.dispatch(new ToggleFullScreenAction(this.uiConfigId))
+
+  }
+
+  onFullScreenLeave(e) {
+    this.navCtrl.pop()
   }
 
 }

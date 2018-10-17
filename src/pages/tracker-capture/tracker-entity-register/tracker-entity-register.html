@@ -177,7 +177,7 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          <button ion-button clear text-capitalize *ngFor="let widget of dashboardWidgets;trackBy: trackByFn" [disabled]="(!isTrackedEntityRegistered && widget.iconName) || (isDashboardWidgetOpen[widget.id])"
+          <button padding ion-button clear text-capitalize *ngFor="let widget of dashboardWidgets;trackBy: trackByFn" [disabled]="(!isTrackedEntityRegistered && widget.iconName) || (isDashboardWidgetOpen[widget.id])"
             (tap)="changeDashboardWidget(widget)">
             <div [ngClass]=" (isDashboardWidgetOpen[widget.id])?'program-stage-button-label':''">
               <div *ngIf="widget.icon">

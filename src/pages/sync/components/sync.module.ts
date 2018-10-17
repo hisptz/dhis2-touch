@@ -7,7 +7,7 @@ import { ClearLocalMetadataComponent } from './clear-local-metadata/clear-local-
 import { DownloadDataComponent } from './download-data/download-data';
 import { DownloadDataValuesComponent } from './download-data-values/download-data-values';
 import { UploadViaInternetComponent } from './upload-data-via-internet/upload-via-internet';
-import { SharedModule } from '../../../components/shared.module';
+import { sharedComponentsModule } from '../../../components/sharedComponents.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,7 @@ import { SharedModule } from '../../../components/shared.module';
     DownloadDataComponent,
     DownloadDataValuesComponent
   ],
-  imports: [IonicModule, SharedModule],
+  imports: [IonicModule, sharedComponentsModule],
   exports: [
     ClearLocalDataComponent,
     DownloadMetaDataComponent,

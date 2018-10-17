@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { SyncPage } from './sync';
-import { SharedModule } from '../../components/shared.module';
+import { sharedComponentsModule } from '../../components/sharedComponents.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { SyncModule } from './components/sync.module';
 @NgModule({
@@ -9,7 +9,7 @@ import { SyncModule } from './components/sync.module';
   imports: [
     IonicPageModule.forChild(SyncPage),
     SyncModule,
-    SharedModule,
+    sharedComponentsModule,
     TranslateModule.forChild({})
   ]
 })

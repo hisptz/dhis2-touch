@@ -1,16 +1,14 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { EventCaptureRegisterPage } from './event-capture-register';
-import { SharedModule } from '../../../components/shared.module';
-import { DataEntryModule } from '../../../components/data.entry.module';
+import { sharedComponentsModule } from '../../../components/sharedComponents.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { EventCaptureComponentsModule } from '../components/eventCaptureComponents.module';
 @NgModule({
   declarations: [EventCaptureRegisterPage],
   imports: [
     IonicPageModule.forChild(EventCaptureRegisterPage),
-    SharedModule,
-    DataEntryModule,
+    sharedComponentsModule,
     EventCaptureComponentsModule,
     TranslateModule.forChild({})
   ]

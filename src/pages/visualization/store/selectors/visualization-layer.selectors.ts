@@ -11,21 +11,47 @@ import { VisualizationLayer } from '../../models/visualization-layer.model';
 import { getVisualizationMetadataIdentifiers } from '../../helpers/get-visualization-metadata-identifier.helper';
 import { getVisualizationLayout } from '../../helpers/get-visualization-layout.helper';
 
-export const getCurrentVisualizationObjectLayers = (visualizationId: string) => createSelector(
-  getVisualizationObjectEntities, getVisualizationLayerEntities, getVisualizationUiConfigurationEntities,
-  (visualizationObjectEntities, visualizationLayerEntities, visualizationUiConfigurationEntities) => {
-    const currentVisualizationObject: Visualization = visualizationObjectEntities[visualizationId];
-    if (!currentVisualizationObject) {
-      return [];
-    }
-
-    const currentVisualizationUiConfiguration: VisualizationUiConfig = visualizationUiConfigurationEntities[currentVisualizationObject.uiConfigId];
-    return currentVisualizationUiConfiguration.showBody ? _.map(_.filter(_.map(currentVisualizationObject.layers, (layerId: string) => visualizationLayerEntities[layerId]),
-      (layer: VisualizationLayer) => layer), visualizationLayer => {
-      return {
-        ...visualizationLayer,
-        metadataIdentifiers: getVisualizationMetadataIdentifiers(visualizationLayer.dataSelections),
-        layout: getVisualizationLayout(visualizationLayer.dataSelections)
+export const getCurrentVisualizationObjectLayers = (visualizationId: string) =>
+  createSelector(
+    getVisualizationObjectEntities,
+    getVisualizationLayerEntities,
+    getVisualizationUiConfigurationEntities,
+    (
+      visualizationObjectEntities,
+      visualizationLayerEntities,
+      visualizationUiConfigurationEntities
+    ) => {
+      const currentVisualizationObject: Visualization =
+        visualizationObjectEntities[visualizationId];
+      if (!currentVisualizationObject) {
+        return [];
       }
-    }): [];
-  });
+
+      const currentVisualizationUiConfiguration: VisualizationUiConfig =
+        visualizationUiConfigurationEntities[
+          currentVisualizationObject.uiConfigId
+        ];
+      return currentVisualizationUiConfiguration.showBody
+        ? _.map(
+            _.filter(
+              _.map(
+                currentVisualizationObject.layers,
+                (layerId: string) => visualizationLayerEntities[layerId]
+              ),
+              (layer: VisualizationLayer) => layer
+            ),
+            (visualizationLayer: any) => {
+              return {
+                ...visualizationLayer,
+                metadataIdentifiers: getVisualizationMetadataIdentifiers(
+                  visualizationLayer.dataSelections
+                ),
+                layout: getVisualizationLayout(
+                  visualizationLayer.dataSelections
+                )
+              };
+            }
+          )
+        : [];
+    }
+  );

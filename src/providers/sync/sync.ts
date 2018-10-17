@@ -11,7 +11,7 @@ import { StandardReportProvider } from '../standard-report/standard-report';
 import { ProgramsProvider } from '../programs/programs';
 import { ProgramStageSectionsProvider } from '../program-stage-sections/program-stage-sections';
 import * as _ from 'lodash';
-import { CurrentUser } from '../../models/currentUser';
+import { CurrentUser } from '../../models/current-user';
 
 /*
   Generated class for the SyncProvider provider.
@@ -37,14 +37,14 @@ export class SyncProvider {
   getSyncContentDetails() {
     let syncContents = [
       {
-        id: 'dataViaSms',
-        name: 'Upload data via SMS',
-        icon: 'assets/icon/sms.png'
-      },
-      {
         id: 'dataViaInternet',
         name: 'Upload data via internet',
         icon: 'assets/icon/internet.png'
+      },
+      {
+        id: 'dataViaSms',
+        name: 'Upload data via SMS',
+        icon: 'assets/icon/sms.png'
       },
       {
         id: 'downloadMetadata',

@@ -10,17 +10,14 @@ import { reducers, effects } from './store';
 import { services } from './services';
 import { VisualizationPageModule } from '../visualization/visualization.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { SharedModule } from '../../components/shared.module';
+import { sharedComponentsModule } from '../../components/sharedComponents.module';
 
 @NgModule({
-  declarations: [
-    ...containers,
-    DashboardPage
-  ],
+  declarations: [...containers, DashboardPage],
   imports: [
     IonicPageModule.forChild(DashboardPage),
     VisualizationPageModule,
-    SharedModule,
+    sharedComponentsModule,
     StoreModule.forFeature('dashboard', reducers),
     EffectsModule.forFeature(effects),
     TranslateModule.forChild()

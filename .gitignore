@@ -11,9 +11,8 @@ log.txt
 *.sublime-workspace
 .vscode/
 npm-debug.log*
-package-lock.json
-*.md5
 .idea/
+.ionic/
 .sourcemaps/
 .sass-cache/
 .tmp/
@@ -23,7 +22,6 @@ dist/
 node_modules/
 tmp/
 temp/
-hooks/
 platforms/
 plugins/
 plugins/android.json

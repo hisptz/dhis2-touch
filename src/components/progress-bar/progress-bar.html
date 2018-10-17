@@ -1,25 +1,50 @@
-
-
-<div class="progress-outer" no-padding no-margin >
-  <ion-row no-padding no-margin (click)="cancelRunningProcess()">
-    <ion-col col-10 no-padding no-margin>
-      <div class="progress-inner" padding-bottom padding-top [style.width]="progressBar + '%'">
-        {{ progressBarTitle }}
+<!--
+*
+* Copyright 2015 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2015
+* @author Joseph Chingalo profschingalo@gmail.com>
+*
+*
+-->
+<div class='container'>
+  <div class='top-layer'>
+    <div class="process-message-percentage-container" (click)="onCancelProgress()">
+      <div class="progress-message">
+        <span *ngIf="showLoader">
+          <span *ngIf="progressPercentage !== '100'">
+            <loading [loadingSize]="'small'"></loading>
+          </span>
+          <span *ngIf="progressPercentage === '100'">
+            <ion-icon name="done-all" color="favorite"></ion-icon>
+          </span>
+        </span>
+        <span [translate]="processMessage"></span>
       </div>
-    </ion-col>
-
-    <ion-col col-2>
-      <div no-padding no-margin >
-        <div no-padding class="cancel-progress-percentage cancel-button">
-          <img  [src]="cancelIcon"/>
-        </div>
-        <div no-padding no-margin class="percentage cancel-progress-percentage">
-          <div >
-            {{ getPercentage(progressBar) + '%' }}
-          </div>
+      <div class="progress-percentage">
+        <div text-end>
+          {{ progressPercentage }} %
+          <ion-icon *ngIf="showCancelButton" name="close" color="danger"></ion-icon>
         </div>
       </div>
-
-    </ion-col>
-  </ion-row>
+    </div>
+  </div>
+  <div>
+    <div class='bottom-layer' [style.width]="progressPercentage + '%'"></div>
+  </div>
 </div>

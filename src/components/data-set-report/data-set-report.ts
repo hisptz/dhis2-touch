@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AppProvider } from '../../providers/app/app';
 import { DataSetReportProvider } from '../../providers/data-set-report/data-set-report';
-import { DataEntryFormProvider } from '../../providers/data-entry-form/data-entry-form';
+
 import { SettingsProvider } from '../../providers/settings/settings';
 import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
+import { DataEntryFormProvider } from '../../providers/data-entry-form/data-entry-form';
 
 /**
  * Generated class for the DataSetReportComponent component.
@@ -16,10 +17,14 @@ import { AppTranslationProvider } from '../../providers/app-translation/app-tran
   templateUrl: 'data-set-report.html'
 })
 export class DataSetReportComponent implements OnInit {
-  @Input() dataSetId;
-  @Input() selectedPeriod;
-  @Input() selectedOrganisationUnit;
-  @Input() currentUser;
+  @Input()
+  dataSetId;
+  @Input()
+  selectedPeriod;
+  @Input()
+  selectedOrganisationUnit;
+  @Input()
+  currentUser;
 
   isLoading: boolean;
   loadingMessage: string;

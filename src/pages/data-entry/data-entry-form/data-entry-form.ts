@@ -52,7 +52,8 @@ export class DataEntryFormPage implements OnInit {
   dataEntryFormDesign: string;
   entryFormType: string;
   dataUpdateStatus: { [elementId: string]: string };
-  @ViewChild(Content) content: Content;
+  @ViewChild(Content)
+  content: Content;
 
   constructor(
     private navCtrl: NavController,
@@ -75,6 +76,7 @@ export class DataEntryFormPage implements OnInit {
     };
     this.dataSetsCompletenessInfo = {};
     this.isDataSetCompleted = false;
+    this.isDataSetCompletenessProcessRunning = false;
     this.dataValuesObject = {};
     this.dataValuesSavingStatusClass = {};
     this.isLoading = true;

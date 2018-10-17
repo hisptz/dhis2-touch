@@ -1,12 +1,35 @@
+/*
+ *
+ * Copyright 2015 HISP Tanzania
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ * @since 2015
+ * @author Joseph Chingalo <profschingalo@gmail.com>
+ */
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { HttpClientProvider } from '../http-client/http-client';
 import { DataSetsProvider } from '../data-sets/data-sets';
-import { DataSet } from '../../models/dataSet';
-import { SmsCode, SmsCommand } from '../../models/smsCommand';
+import { DataSet } from '../../models/data-set';
+import { SmsCommand } from '../../models/sms-command';
 import { SMS } from '@ionic-native/sms';
 import { Observable } from 'rxjs/Observable';
+import * as _ from 'lodash';
 
 /*
   Generated class for the SmsCommandProvider provider.
@@ -34,7 +57,7 @@ export class SmsCommandProvider {
    */
   getSmsCommandFromServer(user): Observable<any> {
     return new Observable(observer => {
-      let smsCommandUrl = '/api/25/dataStore/sms/commands';
+      let smsCommandUrl = '/api/dataStore/sms/commands';
       this.HttpClient.get(smsCommandUrl, false, user).subscribe(
         (response: any) => {
           response = JSON.parse(response.data);
@@ -55,7 +78,7 @@ export class SmsCommandProvider {
    * @param databaseName
    * @returns {Observable<any>}
    */
-  savingSmsCommand(smsCommands, databaseName): Observable<any> {
+  savingSmsCommand(smsCommands, databaseName: string): Observable<any> {
     return new Observable(observer => {
       if (smsCommands.length == 0) {
         observer.next();
@@ -100,8 +123,8 @@ export class SmsCommandProvider {
               smsCommands,
               currentUser.currentDatabase
             ).subscribe(() => {});
-            let smsCommandUrl = '/api/25/dataStore/sms/commands';
-            this.HttpClient.defaultPost(
+            let smsCommandUrl = '/api/dataStore/sms/commands';
+            this.HttpClient.post(
               smsCommandUrl,
               smsCommands,
               currentUser
@@ -111,7 +134,6 @@ export class SmsCommandProvider {
                 observer.complete();
               },
               error => {
-                //update data store
                 this.HttpClient.put(
                   smsCommandUrl,
                   smsCommands,
@@ -188,7 +210,6 @@ export class SmsCommandProvider {
     let dataSetCounter = 0;
     dataSets.map((dataSet: DataSet) => {
       let smsCodeIndex = 0;
-      let dataElementCount = 0;
       let dataElements = [];
       let smsCodes = [];
       if (dataSet.dataElements) {
@@ -207,16 +228,15 @@ export class SmsCommandProvider {
         optionCombos = categoryCombo['categoryOptionCombos'];
         optionCombos.map((optionCombo: any) => {
           let smsCode = this.getCodeCharacter(smsCodeIndex, new_format);
-          smsCodes.push({
+          smsCodes = _.concat(smsCodes, {
             categoryOptionCombos: optionCombo.id,
             dataElement: dataElement,
             smsCode: smsCode
           });
           smsCodeIndex++;
         });
-        dataElementCount++;
       });
-      smsCommands.push({
+      smsCommands = _.concat(smsCommands, {
         dataSetId: dataSet.id,
         commandName: this.getCodeCharacter(dataSetCounter, new_format),
         separator: ':',
@@ -240,7 +260,7 @@ export class SmsCommandProvider {
     while (value > 0) {
       let remainder = value % new_base;
       new_value = valueToConvert.charAt(remainder) + new_value;
-      value = (value - value % new_base) / new_base;
+      value = (value - (value % new_base)) / new_base;
     }
     return new_value || valueToConvert.charAt(0);
   }
@@ -298,7 +318,8 @@ export class SmsCommandProvider {
     dataElements.forEach((dataElement: any) => {
       dataElement.categoryCombo.categoryOptionCombos.forEach(
         (categoryOptionCombo: any) => {
-          ids.push(
+          ids = _.concat(
+            ids,
             dataSetId +
               '-' +
               dataElement.id +
@@ -320,7 +341,7 @@ export class SmsCommandProvider {
         currentUser.currentDatabase
       ).subscribe(
         (dataValues: any) => {
-          dataValues.forEach((dataValue: any) => {
+          dataValues.map((dataValue: any) => {
             let id = dataValue.de + '-' + dataValue.co;
             entryFormDataValuesObjectFromStorage[id] = dataValue.value;
           });
@@ -369,7 +390,7 @@ export class SmsCommandProvider {
               value
             ).length > smsLimit
           ) {
-            sms.push(smsForReportingData);
+            sms = _.concat(sms, smsForReportingData);
             firstValuesFound = false;
             smsForReportingData =
               smsCommand.commandName + ' ' + selectedPeriod.iso + ' ';
@@ -459,8 +480,8 @@ export class SmsCommandProvider {
     if (dataSet.dataElements && dataSet.dataElements.length > 0) {
       dataElements = dataSet.dataElements;
     } else if (dataSet.dataSetElements && dataSet.dataSetElements.length > 0) {
-      dataSet.dataSetElements.forEach((dataSetElement: any) => {
-        dataElements.push(dataSetElement.dataElement);
+      dataSet.dataSetElements.map((dataSetElement: any) => {
+        dataElements = _.concat(dataElements, dataSetElement.dataElement);
       });
     }
     return dataElements;

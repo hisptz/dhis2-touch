@@ -39,14 +39,20 @@ export const thematic = options => {
   } = displaySettings;
   const features = toGeoJson(geofeature);
   const readyToRender = dataSelections.legendSet ? legendSet : true;
-  const otherOptions = thematicLayerOptions(options.id, opacity, displaySettings);
+  const otherOptions = thematicLayerOptions(
+    options.id,
+    opacity,
+    displaySettings
+  );
   let geoJsonLayer = L.geoJSON(features, otherOptions);
   let legend = null;
 
   if (analyticsData && analyticsData.rows.length > 0) {
     const valueById = getValueById(analyticsData);
     const layerDx = getDx(analyticsData);
-    const valueFeatures = features.filter(({ id }) => valueById[id] !== undefined);
+    const valueFeatures: any = features.filter(
+      ({ id }) => valueById[id] !== undefined
+    );
     const orderedValues = getOrderedValues(analyticsData);
     const minValue = orderedValues[0];
     const maxValue = orderedValues[orderedValues.length - 1];
@@ -55,11 +61,17 @@ export const thematic = options => {
     const name = options.name || dataItem.name;
     legend = legendSet
       ? createLegendFromLegendSet(legendSet, options.displayName, options.type)
-      : createLegendFromConfig(orderedValues, legendProperties, options.displayName, options.type);
+      : createLegendFromConfig(
+          orderedValues,
+          legendProperties,
+          options.displayName,
+          options.type
+        );
     legend.items.forEach(item => (item.count = 0));
     const getLegendItem = _.curry(getLegendItemForValue)(legend.items);
     legend['period'] =
-      (analyticsData.metaData.dimensions && analyticsData.metaData.dimensions.pe[0]) ||
+      (analyticsData.metaData.dimensions &&
+        analyticsData.metaData.dimensions.pe[0]) ||
       analyticsData.metaData.pe[0];
 
     valueFeatures.forEach(({ id, properties }) => {
@@ -67,7 +79,10 @@ export const thematic = options => {
       const item = getLegendItem(value);
       if (item) {
         item.count++;
-        properties.percentage = (item.count / orderedValues.length * 100).toFixed(1);
+        properties.percentage = (
+          (item.count / orderedValues.length) *
+          100
+        ).toFixed(1);
       }
       properties.value = value;
       properties.label = name;
@@ -80,7 +95,9 @@ export const thematic = options => {
         fontWeight: labelFontWeight
       };
       properties.radius =
-        (value - minValue) / (maxValue - minValue) * (radiusHigh - radiusLow) + radiusLow;
+        ((value - minValue) / (maxValue - minValue)) *
+          (radiusHigh - radiusLow) +
+        radiusLow;
     });
     const _options = {
       ...otherOptions,

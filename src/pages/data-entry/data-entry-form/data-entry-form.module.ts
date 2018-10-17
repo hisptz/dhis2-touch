@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { DataEntryFormPage } from './data-entry-form';
-import { SharedModule } from '../../../components/shared.module';
-import { DataEntryModule } from '../../../components/data.entry.module';
+import { sharedComponentsModule } from '../../../components/sharedComponents.module';
+
 import { TranslateModule } from '@ngx-translate/core';
 import { DataEntryComponentsModule } from '../components/dataEntryComponents.module';
 
@@ -10,8 +10,7 @@ import { DataEntryComponentsModule } from '../components/dataEntryComponents.mod
   declarations: [DataEntryFormPage],
   imports: [
     IonicPageModule.forChild(DataEntryFormPage),
-    SharedModule,
-    DataEntryModule,
+    sharedComponentsModule,
     DataEntryComponentsModule,
     TranslateModule.forChild({})
   ]

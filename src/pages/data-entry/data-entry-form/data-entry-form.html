@@ -58,8 +58,11 @@
         </div>
         <div *ngIf="!isLoading">
           <div *ngIf="entryFormType && entryFormType == 'CUSTOM'">
-            <custom-data-entry-form [dataEntryFormDesign]="dataEntryFormDesign" (onCustomFormInputChange)="updateData($event)" [data]="dataValuesObject"
-              [entryFormType]="'aggregate'" [entryFormSections]="entryFormSections" [dataUpdateStatus]="dataUpdateStatus"></custom-data-entry-form>
+            <custom-data-entry-form [dataEntryFormDesign]="dataEntryFormDesign" (onCustomFormInputChange)="updateData($event)"
+              (onUpdateDataSetCompleteness)="updateDataSetCompleteness()" (onViewUserCompletenessInformation)="viewUserCompletenessInformation($event)"
+              [data]="dataValuesObject" [entryFormType]="'aggregate'" [entryFormSections]="entryFormSections"
+              [dataUpdateStatus]="dataUpdateStatus" [isDataSetCompleted]="isDataSetCompleted"
+              [isDataSetCompletenessProcessRunning]="isDataSetCompletenessProcessRunning" [dataSetsCompletenessInfo]="dataSetsCompletenessInfo"></custom-data-entry-form>
           </div>
           <div *ngIf="entryFormType && entryFormType != 'CUSTOM'">
             <div *ngIf="entryFormSections && entryFormSections.length == 0">
@@ -67,8 +70,9 @@
             </div>
             <default-data-entry-form (onPaginationChange)="changePagination($event)" (onUpdateDataSetCompleteness)="updateDataSetCompleteness()"
               (onViewUserCompletenessInformation)="viewUserCompletenessInformation($event)" (onChange)="updateData($event)"
-              (onSectionListOpen)="openSectionList()" [entryFormType]="entryFormType" [isDataSetCompletenessProcessRunning]="isDataSetCompletenessProcessRunning"
-              [currentUser]="currentUser" [icons]="icons" [isDataSetCompleted]="isDataSetCompleted" [dataSetsCompletenessInfo]="dataSetsCompletenessInfo"
+              (onSectionListOpen)="openSectionList()" [entryFormType]="entryFormType"
+              [isDataSetCompletenessProcessRunning]="isDataSetCompletenessProcessRunning" [currentUser]="currentUser"
+              [icons]="icons" [isDataSetCompleted]="isDataSetCompleted" [dataSetsCompletenessInfo]="dataSetsCompletenessInfo"
               [dataValuesSavingStatusClass]="dataValuesSavingStatusClass" [dataValuesObject]="dataValuesObject" [pager]="pager"
               [entryFormSections]="entryFormSections"></default-data-entry-form>
           </div>

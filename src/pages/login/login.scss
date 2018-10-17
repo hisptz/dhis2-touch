@@ -27,7 +27,33 @@ page-login {
     left: 100%;
     margin-left: 15px;
   }
-  .currentLang{
-    color : #ffa500;
+  .currentLang {
+    color: #ffa500;
+  }
+  .topSLogan p {
+    color: #82b1ff;
+    text-align: center;
+    font-style: italic;
+  }
+  .bottomSLogan {
+    text-align: center;
+    margin-bottom: 2%;
+    margin-top: 0px;
+  }
+  .bottomSLogan p {
+    margin: 0px;
+  }
+  .bottom-sLogan-title {
+    font-style: italic;
+    color: #ffffff;
+    text-transform: lowercase;
+    font-size: 0.8rem;
+  }
+  .translation-codes {
+    color: #ffffff;
+    text-transform: lowercase;
+  }
+  .translation-codes span {
+    padding: 2px;
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { CurrentUser } from '../../../../models/currentUser';
+import { CurrentUser } from '../../../../models/current-user';
 import { UserProvider } from '../../../../providers/user/user';
 import { DataSetsProvider } from '../../../../providers/data-sets/data-sets';
 import { ProgramsProvider } from '../../../../providers/programs/programs';
@@ -131,7 +131,7 @@ export class ProfileProvider {
    * @returns {Observable<any>}
    */
   getSavedUserData(currentUser: CurrentUser): Observable<any> {
-    let userData = {};
+    const userData = {};
     return new Observable(observer => {
       this.userProvider.getUserData().subscribe(
         (savedUserData: any) => {
@@ -253,9 +253,7 @@ export class ProfileProvider {
     let userRoles = [];
     if (userData && userData.userRoles) {
       userData.userRoles.map((userRole: any) => {
-        if (userRoles.indexOf(userRole.name) == -1) {
-          userRoles.push(userRole.name);
-        }
+        userRoles = [...userRoles, userRole.name];
       });
     }
     return userRoles.sort();
@@ -300,6 +298,7 @@ export class ProfileProvider {
    */
   getAssignedForm(userData, dataSets) {
     let assignedDataSets = [];
+    console.log(dataSets.length);
     dataSets.map((dataSet: any) => {
       if (userData.dataSets && userData.dataSets.indexOf(dataSet.id) > -1) {
         assignedDataSets.push(dataSet.name);

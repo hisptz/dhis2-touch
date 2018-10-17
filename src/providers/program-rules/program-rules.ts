@@ -1,9 +1,31 @@
+/*
+ *
+ * Copyright 2015 HISP Tanzania
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ * @since 2015
+ * @author Joseph Chingalo <profschingalo@gmail.com>
+ */
 import { Injectable } from '@angular/core';
 import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
-import { CurrentUser } from '../../models/currentUser';
+import { CurrentUser } from '../../models/current-user';
 
 const ASSIGN = 'ASSIGN';
 const HIDE_FIELD = 'HIDEFIELD';
@@ -53,7 +75,7 @@ export class ProgramRulesProvider {
           programRuleActions.map(programRuleAction => {
             if (programRuleAction && programRuleAction.id) {
               const id = programRuleAction.id;
-              const action = _.find(
+              const action: any = _.find(
                 programSkipLogicMetadata.programRuleActions,
                 {
                   id: id
@@ -70,6 +92,7 @@ export class ProgramRulesProvider {
                   location,
                   data
                 } = action;
+                console.log(location);
                 let evalCondition = condition;
                 let evalDataCondition = data ? data : '';
                 let evalData = '';
@@ -313,11 +336,15 @@ export class ProgramRulesProvider {
     });
   }
 
-  savingProgramRules(data, currentUser: CurrentUser): Observable<any> {
+  savingProgramRules(programRules, currentUser: CurrentUser): Observable<any> {
     const resource = 'programRules';
     return new Observable(observer => {
       this.sqlLite
-        .insertBulkDataOnTable(resource, data, currentUser.currentDatabase)
+        .insertBulkDataOnTable(
+          resource,
+          programRules,
+          currentUser.currentDatabase
+        )
         .subscribe(
           () => {
             observer.next();
@@ -330,11 +357,18 @@ export class ProgramRulesProvider {
     });
   }
 
-  savingProgramRuleActions(data, currentUser: CurrentUser): Observable<any> {
+  savingProgramRuleActions(
+    programRuleActions,
+    currentUser: CurrentUser
+  ): Observable<any> {
     const resource = 'programRuleActions';
     return new Observable(observer => {
       this.sqlLite
-        .insertBulkDataOnTable(resource, data, currentUser.currentDatabase)
+        .insertBulkDataOnTable(
+          resource,
+          programRuleActions,
+          currentUser.currentDatabase
+        )
         .subscribe(
           () => {
             observer.next();
@@ -348,11 +382,18 @@ export class ProgramRulesProvider {
     });
   }
 
-  savingProgramRuleVariables(data, currentUser: CurrentUser): Observable<any> {
+  savingProgramRuleVariables(
+    programRuleVariables,
+    currentUser: CurrentUser
+  ): Observable<any> {
     const resource = 'programRuleVariables';
     return new Observable(observer => {
       this.sqlLite
-        .insertBulkDataOnTable(resource, data, currentUser.currentDatabase)
+        .insertBulkDataOnTable(
+          resource,
+          programRuleVariables,
+          currentUser.currentDatabase
+        )
         .subscribe(
           () => {
             observer.next();

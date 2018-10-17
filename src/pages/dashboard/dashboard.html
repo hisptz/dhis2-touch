@@ -1,6 +1,9 @@
 <ion-header>
 
   <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>
       <span [translate]="'Dashboard'"></span>
     </ion-title>
@@ -11,8 +14,7 @@
 
   <!--dashboard loading block-->
   <div class="dashboard-loading-block" *ngIf="loading$ | async">
-    Loading
-    <loading [loadingMessage]="'Discovering dashboards'"></loading>
+    <loading [loadingSize]="'large'" [loadingMessage]="'Discovering dashboards' | translate"></loading>
   </div>
   <!--end dashboard loading block-->
 
