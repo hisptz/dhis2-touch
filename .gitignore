@@ -15,6 +15,7 @@ npm-debug.log*
 .ionic/
 .sourcemaps/
 .sass-cache/
+*.md5
 .tmp/
 .versions/
 coverage/
