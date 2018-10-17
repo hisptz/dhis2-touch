@@ -225,7 +225,8 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
                         const subscription = this.systemSettingProvider
                           .getSystemSettingsFromServer({
                             ...currentUser,
-                            dhisVersion
+                            dhisVersion,
+                            serverUrl
                           })
                           .subscribe(
                             systemSettings => {
@@ -237,7 +238,11 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
                                 currentResouceType
                               );
                               const subscription = this.userProvider
-                                .getUserAuthorities(currentUser)
+                                .getUserAuthorities({
+                                  ...currentUser,
+                                  dhisVersion,
+                                  serverUrl
+                                })
                                 .subscribe(
                                   response => {
                                     this.currentUser.id = response.id;
@@ -256,7 +261,8 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
                                       .getUserDataOnAuthenticatedServer(
                                         {
                                           ...currentUser,
-                                          dhisVersion
+                                          dhisVersion,
+                                          serverUrl
                                         },
                                         serverUrl,
                                         true

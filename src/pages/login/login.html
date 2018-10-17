@@ -24,8 +24,9 @@
 -->
 <ion-content class="login">
   <div *ngIf="isLoginProcessActive" class="topSLogan logo" style="margin-bottom: 100px;" padding-bottom margin-bottom>
-    <login-spinner [keyFlag]="keyFlag" [serverUrl]="currentUser.serverUrl" [applicationTitle]="applicationTitle" [keyApplicationFooter]="keyApplicationFooter"
-      [keyApplicationIntro]="keyApplicationIntro" [keyApplicationNotification]="keyApplicationNotification"></login-spinner>
+    <login-spinner [keyFlag]="keyFlag" [serverUrl]="currentUser.serverUrl" [applicationTitle]="applicationTitle"
+      [keyApplicationFooter]="keyApplicationFooter" [keyApplicationIntro]="keyApplicationIntro"
+      [keyApplicationNotification]="keyApplicationNotification"></login-spinner>
   </div>
   <div margin padding-top *ngIf="isLoginProcessActive">
     <login-metadata-sync (systemSettingLoaded)="onSystemSettingLoaded($event)" (updateCurrentUser)="onUpdateCurrentUser($event)"
@@ -63,7 +64,7 @@
           </div>
           <button ion-button block clear color="light" text-capitalize (click)="openLocalInstancesSelection()">
             <img class="side-menu-icon" [src]="offlineIcon" />&nbsp;&nbsp;
-            <span [translate]="'Offline instances'"></span>
+            <span [translate]="'Available instances'"></span>
           </button>
         </div>
 
@@ -75,12 +76,14 @@
         <p>
           <span class="translation-codes" *ngIf="currentUser">
             <span *ngFor="let code of topThreeTranslationCodes; let currentIndex = index">
-              <span (click)="updateTranslationLanguage(code)" [ngClass]="(currentUser.currentLanguage === code) ?'currentLang' : ''">{{ code }}</span>
+              <span (click)="updateTranslationLanguage(code)" [ngClass]="(currentUser.currentLanguage === code) ?'currentLang' : ''">{{
+                code }}</span>
               <span *ngIf="currentIndex < 2">&nbsp;|&nbsp;</span>
             </span>
             <span *ngIf="topThreeTranslationCodes.indexOf(currentUser.currentLanguage) === -1">
               &nbsp;|&nbsp;
-              <span (click)="updateTranslationLanguage(currentUser.currentLanguage)" [ngClass]="'currentLang'">{{ currentUser.currentLanguage }}</span>
+              <span (click)="updateTranslationLanguage(currentUser.currentLanguage)" [ngClass]="'currentLang'">{{
+                currentUser.currentLanguage }}</span>
             </span>
             <span (click)="openTranslationCodeSelection()">
               &nbsp;
