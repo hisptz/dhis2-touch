@@ -13,11 +13,16 @@ import { ActionSheetController } from 'ionic-angular';
   templateUrl: 'input-container.html'
 })
 export class InputContainerComponent implements OnInit {
-  @Input() dataElement;
-  @Input() currentUser;
-  @Input() data;
-  @Input() dataValuesSavingStatusClass;
-  @Output() onChange = new EventEmitter();
+  @Input()
+  dataElement;
+  @Input()
+  currentUser;
+  @Input()
+  data;
+  @Input()
+  dataValuesSavingStatusClass;
+  @Output()
+  onChange = new EventEmitter();
 
   fieldLabelKey: any;
   textInputField: Array<string>;

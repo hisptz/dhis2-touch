@@ -133,11 +133,14 @@ export class DataSetsProvider {
         currentUser.currentDatabase
       ).subscribe(
         (dataSetElements: any) => {
-          const dataElementids = _.map(
-            dataSetElements,
-            (dataSetElement: any) => {
-              return dataSetElement.dataElementId;
-            }
+          dataSetElements = _.map(dataSetElements, dataSetElement => {
+            return { ...dataSetElement, dataSetId: dataSetElement.id };
+          });
+          const dataElementids = _.flattenDeep(
+            _.map(
+              dataSetElements,
+              (dataSetElement: any) => dataSetElement.dataElementIds
+            )
           );
           let dataSetElementMapper = {};
           this.getAllDataElementsMapper(currentUser, dataElementids).subscribe(
@@ -146,9 +149,11 @@ export class DataSetsProvider {
                 if (!dataSetElementMapper[dataSetElement.dataSetId]) {
                   dataSetElementMapper[dataSetElement.dataSetId] = [];
                 }
-                dataSetElementMapper[dataSetElement.dataSetId].push(
-                  dataElementMapper[dataSetElement.dataElementId]
-                );
+                for (const dataElementId of dataSetElement.dataElementIds) {
+                  dataSetElementMapper[dataSetElement.dataSetId].push(
+                    dataElementMapper[dataElementId]
+                  );
+                }
               });
               observer.next(dataSetElementMapper);
               observer.complete();
@@ -182,14 +187,13 @@ export class DataSetsProvider {
         currentUser.currentDatabase
       ).subscribe(
         (dataElements: any) => {
-          let dataElementsmapper = {};
-          dataElements.map((dataElement: any) => {
-            dataElementsmapper[dataElement.id] = {
+          const dataElementObjects = _.map(dataElements, dataElement => {
+            return {
               id: dataElement.id,
               categoryCombo: dataElement.categoryCombo
             };
           });
-          observer.next(dataElementsmapper);
+          observer.next(_.keyBy(dataElementObjects, 'id'));
           observer.complete();
         },
         error => {
