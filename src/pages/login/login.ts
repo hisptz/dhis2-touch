@@ -110,6 +110,7 @@ export class LoginPage implements OnInit, OnDestroy {
       'dataSets',
       'reports',
       'constants'
+      //'dataStore'
     ];
   }
 
