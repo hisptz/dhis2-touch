@@ -1,30 +1,37 @@
 <!-- Generated template for the DownloadMetaDataComponent component -->
 
 <ion-grid>
-  <ion-row *ngIf="!showLoadingMessage">
-    <ion-col>
-      <button ion-button block style="text-transform: none;" (tap)="autoSelect('selectAll')">{{ translationMapper['Select all'] }}</button>
-    </ion-col>
-    <ion-col>
-      <button ion-button block style="text-transform: none;" (tap)="autoSelect('unSelectAll')"> {{ translationMapper['Deselect all'] }} </button>
-    </ion-col>
-  </ion-row>
-  <ion-row *ngIf="!showLoadingMessage">
-    <ion-col>
-      <div *ngFor="let resourceObject of resources;trackBy: trackByFn">
-        <ion-item>
-          <ion-checkbox color="blue" [(ngModel)]="resourceObject.status"></ion-checkbox>
-          <ion-label> {{ resourceObject.displayName }} </ion-label>
-        </ion-item>
-      </div>
-    </ion-col>
-  </ion-row>
+  <div *ngIf="!isLoading">
+    <ion-row>
+      <ion-col>
+        <button ion-button block style="text-transform: none;" (tap)="autoSelect('selectAll')">
+          <span [translate]="'Select all'"></span></button>
+      </ion-col>
+      <ion-col>
+        <button ion-button block style="text-transform: none;" (tap)="autoSelect('unSelectAll')">
+          <span [translate]="'Deselect all'"></span> </button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div *ngFor="let resourceObject of resources;trackBy: trackByFn">
+          <ion-item>
+            <ion-checkbox color="blue" [(ngModel)]="resourceObject.status"></ion-checkbox>
+            <ion-label> {{ resourceObject.displayName }} </ion-label>
+          </ion-item>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <button ion-button style="text-transform: none;" (tap)="checkingForResourceUpdate()" block>
+        <span [translate]="'Download metadata'"></span> </button>
+    </ion-row>
+  </div>
 
-  <span *ngIf="showLoadingMessage">
-    <loading loadingSize="large" [loadingMessage]="loadingMessage"></loading>
-  </span>
+  <div *ngIf="isUpdateProcessOnProgress">
+    <login-metadata-sync (updateCurrentUser)="onUpdateCurrentUser($event)" (failOnLogin)="onFailLogin($event)"
+      (successOnLoginAndSyncMetadata)="onSuccessLogin($event)" [currentUser]="currentUser" (cancelProgress)="onCancelLoginProcess()"
+      [isOnLogin]="isOnLogin" [processes]="processes"></login-metadata-sync>
+  </div>
 
-  <ion-row *ngIf="!showLoadingMessage">
-    <button ion-button style="text-transform: none;" (tap)="checkingForResourceUpdate()" block> {{ translationMapper['Download metadata'] }}</button>
-  </ion-row>
 </ion-grid>

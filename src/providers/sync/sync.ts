@@ -114,7 +114,7 @@ export class SyncProvider {
             .downloadSectionsFromServer(currentUser)
             .subscribe(
               (response: any) => {
-                data[resource] = response[resource];
+                data[resource] = response;
                 completedProcess++;
                 if (completedProcess == resources.length) {
                   observer.next(data);
@@ -130,7 +130,7 @@ export class SyncProvider {
             .downloadDataElementsFromServer(currentUser)
             .subscribe(
               (response: any) => {
-                data[resource] = response[resource];
+                data[resource] = response;
                 completedProcess++;
                 if (completedProcess == resources.length) {
                   observer.next(data);
@@ -146,7 +146,7 @@ export class SyncProvider {
             .downloadingIndicatorsFromServer(currentUser)
             .subscribe(
               (response: any) => {
-                data[resource] = response[resource];
+                data[resource] = response;
                 completedProcess++;
                 if (completedProcess == resources.length) {
                   observer.next(data);
@@ -176,7 +176,7 @@ export class SyncProvider {
         } else if (resource == 'reports') {
           this.reportsProvider.downloadReportsFromServer(currentUser).subscribe(
             (response: any) => {
-              data[resource] = response[resource];
+              data[resource] = response;
               completedProcess++;
               if (completedProcess == resources.length) {
                 observer.next(data);
@@ -192,7 +192,7 @@ export class SyncProvider {
             .downloadConstantsFromServer(currentUser)
             .subscribe(
               (response: any) => {
-                data[resource] = response[resource];
+                data[resource] = response;
                 completedProcess++;
                 if (completedProcess == resources.length) {
                   observer.next(data);
@@ -208,7 +208,7 @@ export class SyncProvider {
             .downloadProgramsFromServer(currentUser)
             .subscribe(
               (response: any) => {
-                data[resource] = response[resource];
+                data[resource] = response;
                 completedProcess++;
                 if (completedProcess == resources.length) {
                   observer.next(data);
@@ -224,7 +224,7 @@ export class SyncProvider {
             .downloadProgramsStageSectionsFromServer(currentUser)
             .subscribe(
               (response: any) => {
-                data[resource] = response[resource];
+                data[resource] = response;
                 completedProcess++;
                 if (completedProcess == resources.length) {
                   observer.next(data);
