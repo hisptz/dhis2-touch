@@ -41,56 +41,76 @@ function getSelectInput(id, value, options) {
 }
 
 function getTextArea(id, value) {
-  return (
-    '<textarea id="' +
-    id +
-    '" name="entryform" class="entryfield">' +
-    (value ? value : '') +
-    '</textarea>'
-  );
+  const textarea = document.createElement('textarea');
+  textarea.setAttribute('id', id);
+  textarea.setAttribute('name', 'entryform');
+  textarea.setAttribute('class', 'entryfield');
+  textarea.value = value;
+  return textarea;
 }
 
 function getRadioInputs(id, savedValue) {
-  var inputs;
+  const radioContainer = document.createElement('div');
+  let inputs = [];
   if (savedValue == 'true') {
-    inputs =
-      '<input id="' +
-      id +
-      '" type="radio" name="' +
-      id +
-      '" value="true" class="entryfield" checked> Yes ' +
-      '<input id="' +
-      id +
-      '" type="radio" name="' +
-      id +
-      '" value="false" class="entryfield"> No';
+    const yesInput = document.createElement('input');
+    yesInput.setAttribute('type', 'radio');
+    yesInput.setAttribute('name', id);
+    yesInput.setAttribute('class', 'entryfield');
+    yesInput.checked = true;
+    yesInput.value = 'true';
+
+    const noInput = document.createElement('input');
+    noInput.setAttribute('type', 'radio');
+    noInput.setAttribute('name', id);
+    noInput.setAttribute('class', 'entryfield');
+    noInput.value = 'false';
+
+    radioContainer.appendChild(yesInput);
+    radioContainer.appendChild(document.createTextNode(' Yes'));
+
+    radioContainer.appendChild(noInput);
+    radioContainer.appendChild(document.createTextNode(' No'));
   } else if (savedValue == 'false') {
-    inputs =
-      '<input id="' +
-      id +
-      '" type="radio" name="' +
-      id +
-      '" value="true" class="entryfield"> Yes ' +
-      '<input id="' +
-      id +
-      '" type="radio" name="' +
-      id +
-      '" value="false" class="entryfield" checked> No';
+    const yesInput = document.createElement('input');
+    yesInput.setAttribute('type', 'radio');
+    yesInput.setAttribute('name', id);
+    yesInput.setAttribute('class', 'entryfield');
+    yesInput.value = 'true';
+
+    const noInput = document.createElement('input');
+    noInput.setAttribute('type', 'radio');
+    noInput.setAttribute('name', id);
+    noInput.setAttribute('class', 'entryfield');
+    noInput.checked = true;
+    noInput.value = 'false';
+
+    radioContainer.appendChild(yesInput);
+    radioContainer.appendChild(document.createTextNode(' Yes'));
+
+    radioContainer.appendChild(noInput);
+    radioContainer.appendChild(document.createTextNode(' No'));
   } else {
-    inputs =
-      '<input id="' +
-      id +
-      '" type="radio" name="' +
-      id +
-      '" value="true" class="entryfield"> Yes ' +
-      '<input id="' +
-      id +
-      '" type="radio"  name="' +
-      id +
-      '" value="false" class="entryfield"> No';
+    const yesInput = document.createElement('input');
+    yesInput.setAttribute('type', 'radio');
+    yesInput.setAttribute('name', id);
+    yesInput.setAttribute('class', 'entryfield');
+    yesInput.value = 'true';
+
+    const noInput = document.createElement('input');
+    noInput.setAttribute('type', 'radio');
+    noInput.setAttribute('name', id);
+    noInput.setAttribute('class', 'entryfield');
+    noInput.value = 'false';
+
+    radioContainer.appendChild(yesInput);
+    radioContainer.appendChild(document.createTextNode(' Yes'));
+
+    radioContainer.appendChild(noInput);
+    radioContainer.appendChild(document.createTextNode(' No'));
   }
 
-  return inputs;
+  return radioContainer;
 }
 
 export function updateFormFieldColor(elementId, statusColor) {
@@ -166,8 +186,8 @@ export function onFormReady(
         if (dataElementType === 'TRUE_ONLY') {
           inputElement.setAttribute('type', 'checkbox');
           inputElement.setAttribute('class', 'entrytrueonly');
-          inputElement.setAttribute('value', true);
-          inputElement.setAttribute('checked', dataElementValue);
+          // inputElement.setAttribute('value', true);
+          inputElement.checked = dataElementValue;
         } else if (dataElementType === 'LONG_TEXT') {
           inputElement.replaceWith(getTextArea(elementId, dataElementValue));
           inputElement.value = dataElementValue;
@@ -177,7 +197,6 @@ export function onFormReady(
           inputElement.value = dataElementValue;
         } else if (dataElementType === 'BOOLEAN') {
           inputElement.replaceWith(getRadioInputs(elementId, dataElementValue));
-          inputElement.setAttribute('class', 'entryfield');
         } else if (
           dataElementType === 'NUMBER' ||
           dataElementType.indexOf('INTEGER') > -1
@@ -198,6 +217,7 @@ export function onFormReady(
         }
       }
     } else {
+      console.log(dataElementType);
       // TODO Find ways to deal with input that
     }
   });
