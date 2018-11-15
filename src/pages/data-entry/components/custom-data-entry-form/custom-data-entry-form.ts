@@ -11,6 +11,11 @@ import {
 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import * as _ from 'lodash';
+import {
+  onDataValueChange,
+  onFormReady,
+  updateFormFieldColor
+} from '../../helpers/data-entry.helper';
 
 declare var dataEntry: any;
 
@@ -61,7 +66,7 @@ export class CustomDataEntryFormComponent
     this.hasScriptSet = false;
     this.entryFormSectionsCount = 1;
     this.entryFormStatusColors = {
-      OK: '#b9ffb9',
+      OK: '#32db64',
       WAIT: '#fffe8c',
       ERROR: '#ff8a8a',
       ACTIVE: '#488aff',
@@ -86,7 +91,7 @@ export class CustomDataEntryFormComponent
       !changes['dataUpdateStatus'].firstChange
     ) {
       _.each(_.keys(this.dataUpdateStatus), updateStatusKey => {
-        dataEntry.updateFormFieldColor(
+        updateFormFieldColor(
           updateStatusKey,
           this.entryFormStatusColors[this.dataUpdateStatus[updateStatusKey]]
         );
@@ -122,81 +127,78 @@ export class CustomDataEntryFormComponent
     const matchedScriptArray = html.match(
       /<script[^>]*>([\w|\W]*)<\/script>/im
     );
-    return matchedScriptArray && matchedScriptArray.length > 0
-      ? matchedScriptArray[0]
-          .replace(/(<([^>]+)>)/gi, ':separator:')
-          .split(':separator:')
-          .filter(content => content.length > 0)
-      : [];
+
+    const scripts =
+      matchedScriptArray && matchedScriptArray.length > 0
+        ? matchedScriptArray[0]
+            .replace(/(<([^>]+)>)/gi, ':separator:')
+            .split(':separator:')
+            .filter(content => content.length > 0)
+        : [];
+
+    return _.filter(scripts, (scriptContent: string) => scriptContent !== '');
   }
 
   setScriptsOnHtmlContent(scriptsContentsArray) {
-    if (!this.hasScriptSet) {
-      const scriptsContents = `
-    var data = ${JSON.stringify(this.data)};
-    var dataElements = ${
-      this.entryFormSections
-        ? JSON.stringify(
-            _.flatten(
-              _.map(
-                this.entryFormSections,
-                entrySection => entrySection.dataElements
-              )
-            )
+    const dataElements = this.entryFormSections
+      ? _.flatten(
+          _.map(
+            this.entryFormSections,
+            entrySection => entrySection.dataElements
           )
-        : this.programTrackedEntityAttributes
-          ? JSON.stringify(
-              _.flatten(
-                _.map(
-                  this.programTrackedEntityAttributes,
-                  programTrackedEntityAttribute =>
-                    programTrackedEntityAttribute.trackedEntityAttribute
+        )
+      : this.programTrackedEntityAttributes
+      ? _.flatten(
+          _.map(
+            this.programTrackedEntityAttributes,
+            programTrackedEntityAttribute =>
+              programTrackedEntityAttribute.trackedEntityAttribute
+          )
+        )
+      : _.map(
+          this.programStageDataElements,
+          programStage => programStage.dataElement
+        );
+    if (!this.hasScriptSet) {
+      onFormReady(
+        this.entryFormType,
+        dataElements,
+        this.data,
+        this.entryFormStatusColors,
+        scriptsContentsArray,
+        function(entryFormType, entryFormStatusColors) {
+          // Listen for change event
+          document.addEventListener(
+            'change',
+            function(event: any) {
+              // If the clicked element doesn't have the right selector, bail
+              if (
+                event.target.matches(
+                  '.entryfield, .entryselect, .entrytrueonly, .entryfileresource'
                 )
-              )
-            )
-          : JSON.stringify(
-              _.map(
-                this.programStageDataElements,
-                programStage => programStage.dataElement
-              )
-            )
-    };
-    var entryFormColors = ${JSON.stringify(this.entryFormStatusColors)};
-    var entryFormType = ${JSON.stringify(this.entryFormType)};
-    
-    dataEntry.onFormReady(entryFormType, dataElements, data, function () {
-    // listen to change events
-    $('.entryfield, .entryselect, .entrytrueonly, .entryfileresource').change(function() {
-      // find item id
-      var id = $( this ).attr( 'id' ).split('-');
-      var dataElementId = entryFormType === 'event' ? id[1] : id[0];
-      var optionComboId = entryFormType === 'event' ? 'dataElement' : entryFormType === 'tracker' ? 'trackedEntityAttribute' : id[1];
-  
-      // find item values
-      var value = $(this).val();
-      if ($( this ).attr( 'type' ) == 'checkbox' && !$( this ).is(':checked')) {
-        value = '';
-      }
-      
-      // Update item color
-      dataEntry.updateFormFieldColor($( this ).attr( 'id' ), entryFormColors['WAIT'])
-      
-      // create custom event for saving data values
-      var dataValueEvent = new CustomEvent("dataValueUpdate", {detail: {id: dataElementId + '-' + optionComboId, value: value, status: 'not-synced', domElementId: $( this ).attr( 'id' )}});
-      document.body.dispatchEvent(dataValueEvent);
-    }).focus(function() {
-      document.getElementById($( this ).attr( 'id' )).style.borderColor = entryFormColors['ACTIVE'];
-    }).focusout(function() {
-      document.getElementById($( this ).attr( 'id' )).style.borderColor = entryFormColors['NORMAL'];
-    })
-    ${scriptsContentsArray.join('')}
-    })
-    `;
-      let script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.innerHTML = scriptsContents;
-      this.elementRef.nativeElement.appendChild(script);
-      this.hasScriptSet = true;
+              ) {
+                onDataValueChange(
+                  event.target,
+                  entryFormType,
+                  entryFormStatusColors
+                );
+              }
+              event.preventDefault();
+            },
+            false
+          );
+
+          // Embed inline javascripts
+          const scriptsContents = `
+          try {${scriptsContentsArray.join('')}} catch(e) { console.log(e);}`;
+          const script = document.createElement('script');
+          script.type = 'text/javascript';
+          script.innerHTML = scriptsContents;
+          document
+            .getElementById(`_custom_entry_form_${entryFormType}`)
+            .appendChild(script);
+        }
+      );
     }
   }
 
