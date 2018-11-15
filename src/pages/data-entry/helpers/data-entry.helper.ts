@@ -18,26 +18,29 @@ function convertToBoolean(stringValue) {
 }
 
 function getSelectInput(id, value, options) {
-  let select =
-    '<select id="' +
-    id +
-    '" class="entryselect"><option value="" disabled selected>Select option</option>';
+  const selectElement = document.createElement('select');
+  selectElement.setAttribute('id', id);
+  selectElement.setAttribute('class', 'entryselect');
+
+  const defaultOption = document.createElement('option');
+  defaultOption.disabled = true;
+  defaultOption.selected = true;
+  defaultOption.value = '';
+  selectElement.appendChild(defaultOption);
 
   options.forEach(function(option) {
+    const optionElement = document.createElement('option');
+    optionElement.value = option.code;
+    optionElement.appendChild(document.createTextNode(option.name));
+    optionElement;
     if (option.code === value) {
-      select +=
-        '<option value="' +
-        option.code +
-        '" selected>' +
-        option.name +
-        '</option>';
-    } else {
-      select +=
-        '<option value="' + option.code + '">' + option.name + '</option>';
+      optionElement.selected = true;
     }
+
+    selectElement.appendChild(optionElement);
   });
-  select += '</select>';
-  return select;
+
+  return selectElement;
 }
 
 function getTextArea(id, value) {
@@ -51,7 +54,7 @@ function getTextArea(id, value) {
 
 function getRadioInputs(id, savedValue) {
   const radioContainer = document.createElement('div');
-  let inputs = [];
+
   if (savedValue == 'true') {
     const yesInput = document.createElement('input');
     yesInput.setAttribute('type', 'radio');
@@ -161,6 +164,7 @@ export function onFormReady(
     // Get data element details
 
     const dataElementDetails = _.find(dataElements, ['id', dataElementId]);
+
     // Get dataElement type
     const dataElementType = dataElementDetails
       ? dataElementDetails.valueType
@@ -186,7 +190,6 @@ export function onFormReady(
         if (dataElementType === 'TRUE_ONLY') {
           inputElement.setAttribute('type', 'checkbox');
           inputElement.setAttribute('class', 'entrytrueonly');
-          // inputElement.setAttribute('value', true);
           inputElement.checked = dataElementValue;
         } else if (dataElementType === 'LONG_TEXT') {
           inputElement.replaceWith(getTextArea(elementId, dataElementValue));
@@ -217,7 +220,6 @@ export function onFormReady(
         }
       }
     } else {
-      console.log(dataElementType);
       // TODO Find ways to deal with input that
     }
   });
