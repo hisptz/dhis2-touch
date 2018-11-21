@@ -2,30 +2,53 @@
 
 <ion-grid>
   <div *ngIf="!isLoading">
-    <ion-row>
+    <!-- <ion-row>
       <ion-col>
-        <button ion-button block style="text-transform: none;" (tap)="autoSelect('selectAll')">
-          <span [translate]="'Select all'"></span></button>
-      </ion-col>
-      <ion-col>
-        <button ion-button block style="text-transform: none;" (tap)="autoSelect('unSelectAll')">
-          <span [translate]="'Deselect all'"></span> </button>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <div *ngFor="let resourceObject of resources;trackBy: trackByFn">
-          <ion-item>
-            <ion-checkbox color="blue" [(ngModel)]="resourceObject.status"></ion-checkbox>
-            <ion-label> {{ resourceObject.displayName }} </ion-label>
-          </ion-item>
+        <div class="item-card">
+          
         </div>
       </ion-col>
-    </ion-row>
-    <ion-row>
-      <button ion-button style="text-transform: none;" (tap)="checkingForResourceUpdate()" block>
-        <span [translate]="'Download metadata'"></span> </button>
-    </ion-row>
+    </ion-row> -->
+    <div>
+      <div class="item-card" (click)="autoSelect('selectAll')" color="font-color" padding-top padding-bottom ion-button
+        clear text-center text-capitalize icon-start>
+        <img class="side-menu-icon" [src]="icons.all" />&nbsp;&nbsp;
+        <span [translate]="'All'"></span>
+      </div>
+      <div class="item-card" (click)="autoSelect('unSelectAll')" color="font-color" padding-top padding-bottom
+        ion-button clear text-center text-capitalize icon-start>
+        <img class="side-menu-icon" [src]="icons.none" />&nbsp;&nbsp;
+        <span [translate]="'None'"></span>
+      </div>
+      <div class="item-card" (click)="checkingForResourceUpdate()" color="font-color" padding-top padding-bottom
+        ion-button clear text-center text-capitalize icon-start>
+        <img class="side-menu-icon" [src]="icons.done" />&nbsp;&nbsp;
+        <span [translate]="'Done'"></span>
+      </div>
+    </div>
+    <div class="item-card">
+      <ion-item *ngFor="let resourceObject of resources;trackBy: trackByFn">
+        <ion-checkbox color="blue" [(ngModel)]="resourceObject.status"></ion-checkbox>
+        <ion-label> {{ resourceObject.displayName }} </ion-label>
+      </ion-item>
+    </div>
+    <div>
+      <div class="item-card" (click)="autoSelect('selectAll')" color="font-color" padding-top padding-bottom ion-button
+        clear text-center text-capitalize icon-start>
+        <img class="side-menu-icon" [src]="icons.all" />&nbsp;&nbsp;
+        <span [translate]="'All'"></span>
+      </div>
+      <div class="item-card" (click)="autoSelect('unSelectAll')" color="font-color" padding-top padding-bottom
+        ion-button clear text-center text-capitalize icon-start>
+        <img class="side-menu-icon" [src]="icons.none" />&nbsp;&nbsp;
+        <span [translate]="'None'"></span>
+      </div>
+      <div class="item-card" (click)="checkingForResourceUpdate()" color="font-color" padding-top padding-bottom
+        ion-button clear text-center text-capitalize icon-start>
+        <img class="side-menu-icon" [src]="icons.done" />&nbsp;&nbsp;
+        <span [translate]="'Done'"></span>
+      </div>
+    </div>
   </div>
 
   <div *ngIf="isUpdateProcessOnProgress">

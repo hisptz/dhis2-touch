@@ -23,12 +23,20 @@ export class DownloadMetaDataComponent implements OnInit {
   isUpdateProcessOnProgress: boolean;
   isOnLogin: boolean = false;
   processes: string[];
+  icons: any;
 
   constructor(
     private appProvider: AppProvider,
     private user: UserProvider,
     private encryptionProvider: EncryptionProvider
-  ) {}
+  ) {
+    this.icons = {
+      all: 'assets/icon/check-all.png',
+      none: 'assets/icon/uncheck-all.png',
+      reset: 'assets/icon/not-allowed.png',
+      done: 'assets/icon/circle-tick.png'
+    };
+  }
 
   ngOnInit() {
     this.hasAllSelected = false;
