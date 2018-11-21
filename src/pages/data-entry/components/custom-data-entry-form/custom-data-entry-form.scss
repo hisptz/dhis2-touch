@@ -3,11 +3,14 @@ custom-data-entry-form {
     overflow: auto;
   }
 
-  td, th {
+  td,
+  th {
     text-align: left;
     padding-left: 15px;
   }
-  input, textarea, select {
+  input,
+  textarea,
+  select {
     border: solid thin #dddddd;
     padding: 5px;
   }
@@ -22,5 +25,12 @@ custom-data-entry-form {
 
   input {
     text-align: center;
+  }
+
+  .entryfield:focus,
+  .entryselect:focus,
+  .entrytrueonly:focus,
+  .entryfileresource:focus {
+    border-color: #488aff;
   }
 }
