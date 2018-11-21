@@ -26,46 +26,119 @@ var dhis2 = dhis2 || {}
 dhis2['sqlLiteProvider'] = {}
 
 dhis2.sqlLiteProvider = {
-  getAllFromTable
-}
-
-
-
-function getAllFromTable(tableName) {
-  const currentDatabase = dhis2.currentDatabase;
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(({
-        tableName,
-        currentDatabase
-      }))
-    }, 1000)
-  })
+  insertOrReplaceOnTable,
+  getAllFromTable,
+  getFromTableByAttributes,
+  geFromTableByQuery,
+  deleteAllFromTable,
+  deleteFromTableByAttributes
 }
 
 function insertOrReplaceOnTable(tableName, bulkData) {
   const currentDatabase = dhis2.currentDatabase;
+  const db = window.sqlitePlugin.openDatabase({
+    name: `${currentDatabase}.db`,
+    location: 'default'
+  });
   return new Promise((resolve, reject) => {})
+}
+
+function getAllFromTable(tableName) {
+  const currentDatabase = dhis2.currentDatabase;
+  const db = window.sqlitePlugin.openDatabase({
+    name: `${currentDatabase}.db`,
+    location: 'default'
+  });
+  const query = `SELECT * FROM ${tableName};`;
+  return new Promise((resolve, reject) => {
+    db.transaction(transaction => {
+      transaction.executeSql(query, [], (tx, results) => {
+        const response = formatQueryReturnResult(results, tableName);
+        resolve(response);
+      }, (error) => {
+        reject(error);
+      });
+    });
+  })
 }
 
 function getFromTableByAttributes(tableName, attribute, attributesValuesArray) {
   const currentDatabase = dhis2.currentDatabase;
-  return new Promise((resolve, reject) => {})
+  const db = window.sqlitePlugin.openDatabase({
+    name: `${currentDatabase}.db`,
+    location: 'default'
+  });
+  attributesValuesArray = attributesValuesArray.join(`','`)
+  const query = `SELECT * FROM ${tableName} WHERE ${attribute} IN ('${attributesValuesArray}');`;
+  console.log(query)
+  return new Promise((resolve, reject) => {
+    db.transaction(transaction => {
+      transaction.executeSql(query, [], (tx, results) => {
+        const response = formatQueryReturnResult(results, tableName);
+        resolve(response);
+      }, (error) => {
+        reject(error);
+      });
+    });
+  })
 }
 
 function geFromTableByQuery(query, tableName) {
   const currentDatabase = dhis2.currentDatabase;
-  return new Promise((resolve, reject) => {})
+  const db = window.sqlitePlugin.openDatabase({
+    name: `${currentDatabase}.db`,
+    location: 'default'
+  });
+  return new Promise((resolve, reject) => {
+    db.transaction(transaction => {
+      transaction.executeSql(query, [], (tx, results) => {
+        const response = formatQueryReturnResult(results, tableName);
+        resolve(response);
+      }, (error) => {
+        reject(error);
+      });
+    });
+  })
 }
 
 function deleteAllFromTable(tableName) {
   const currentDatabase = dhis2.currentDatabase;
-  return new Promise((resolve, reject) => {})
+  const db = window.sqlitePlugin.openDatabase({
+    name: `${currentDatabase}.db`,
+    location: 'default'
+  });
+  const query = `DELETE FROM ${tableName};`;
+  return new Promise((resolve, reject) => {
+    db.transaction(transaction => {
+      transaction.executeSql(query, [], () => {
+        resolve();
+      }, (error) => {
+        console.log(JSON.stringify({
+          error
+        }))
+        reject(error);
+      });
+    });
+  })
 }
 
 function deleteFromTableByAttributes(tableName, attribute, attributesValuesArray) {
   const currentDatabase = dhis2.currentDatabase;
-  return new Promise((resolve, reject) => {})
+  const db = window.sqlitePlugin.openDatabase({
+    name: `${currentDatabase}.db`,
+    location: 'default'
+  });
+  attributesValuesArray = attributesValuesArray.join(`','`)
+  const query = `DELETE FROM ${tableName} WHERE ${attribute} IN ('${attributesValuesArray}');`;
+  return new Promise((resolve, reject) => {
+    db.transaction(transaction => {
+      transaction.executeSql(query, [], () => {
+        resolve();
+      }, (error) => {
+        reject(error);
+      });
+    });
+  })
 }
 
 function formatQueryReturnResult(results, tableName) {
