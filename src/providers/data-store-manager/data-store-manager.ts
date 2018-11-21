@@ -49,14 +49,35 @@ export class DataStoreManagerProvider {
       this.getDataStoreNameSpacesFromServer(currentUser).subscribe(
         nameSpacesKeysObject => {
           let nameSpaceKeys = [];
+          let dataStoreData: DataStore[] = [];
           Object.keys(nameSpacesKeysObject).map(nameSpace => {
             nameSpacesKeysObject[nameSpace].map(key => {
               nameSpaceKeys = [...nameSpaceKeys, { nameSpace, key }];
             });
           });
-          console.log(JSON.stringify(nameSpaceKeys));
-          observer.next([]);
-          observer.complete();
+          for (const nameSpaceKey of nameSpaceKeys) {
+            const { nameSpace, key } = nameSpaceKey;
+            const id = `${nameSpace}_${key}`;
+            this.getDataStoreByNameSpaceAndKeyFromServer(
+              nameSpace,
+              key,
+              currentUser
+            ).subscribe(
+              data => {
+                dataStoreData = [
+                  ...dataStoreData,
+                  { id, key, nameSpace, data }
+                ];
+                if (dataStoreData.length === nameSpaceKeys.length) {
+                  observer.next(dataStoreData);
+                  observer.complete();
+                }
+              },
+              error => {
+                observer.error(error);
+              }
+            );
+          }
         },
         error => {
           observer.error(error);
@@ -118,10 +139,21 @@ export class DataStoreManagerProvider {
 
   getDataStoreByNameSpaceAndKeyFromServer(
     nameSpace: string,
-    key: string
+    key: string,
+    currentUser: CurrentUser
   ): Observable<any> {
     const url = `/api/${this.resource}/${nameSpace}/${key}`;
-    return new Observable(observer => {});
+    return new Observable(observer => {
+      this.httpCLientProvider.get(url, true, currentUser).subscribe(
+        data => {
+          observer.next(data);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
+    });
   }
 
   saveDataStoreDataFromServer(
