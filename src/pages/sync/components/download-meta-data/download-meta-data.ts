@@ -86,12 +86,10 @@ export class DownloadMetaDataComponent implements OnInit {
   }
 
   checkingForResourceUpdate() {
-    let resourceUpdated = [];
-    this.resources.map((resource: any) => {
-      if (resource.status) {
-        resourceUpdated.push(resource.name);
-      }
-    });
+    const resources = _.flattenDeep([...[], this.resources]);
+    const resourceUpdated = resources
+      .filter((resource: any) => resource.status)
+      .map(resource => resource.name);
     if (resourceUpdated.length == 0) {
       this.appProvider.setNormalNotification('Please select at least one item');
     } else {
@@ -124,6 +122,17 @@ export class DownloadMetaDataComponent implements OnInit {
     this.isLoading = false;
     this.isUpdateProcessOnProgress = false;
     this.onUpdateCurrentUser(currentUser);
+    const resources = _.flattenDeep([...[], this.resources]);
+    const updatedResources = resources
+      .filter((resource: any) => resource.status)
+      .map(resource => resource.displayName)
+      .join(', ');
+    this.autoSelect('');
+    const message =
+      updatedResources.split(', ').length > 1
+        ? `${updatedResources} have been updated successfully`
+        : `${updatedResources} has been updated successfully`;
+    this.appProvider.setNormalNotification(message);
   }
 
   trackByFn(index, item) {

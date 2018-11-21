@@ -161,8 +161,6 @@ export class DataStoreManagerProvider {
     currentUser: CurrentUser
   ): Observable<any> {
     return new Observable(observer => {
-      console.log('on saving data store');
-      console.log(JSON.stringify(data));
       this.sqlLiteProvider
         .insertBulkDataOnTable(this.resource, data, currentUser.currentDatabase)
         .subscribe(
