@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { SyncProvider } from '../../../../providers/sync/sync';
 import { AppProvider } from '../../../../providers/app/app';
-import { SqlLiteProvider } from '../../../../providers/sql-lite/sql-lite';
 import { UserProvider } from '../../../../providers/user/user';
-import { SyncPage } from '../../../../pages/sync/sync';
-import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
 import { DATABASE_STRUCTURE } from '../../../../models';
 import * as _ from 'lodash';
 import { EncryptionProvider } from '../../../../providers/encryption/encryption';
@@ -99,7 +95,6 @@ export class DownloadMetaDataComponent implements OnInit {
     this.processes = resources;
     this.isLoading = true;
     this.isUpdateProcessOnProgress = true;
-    console.log(resources);
   }
 
   onUpdateCurrentUser(currentUser) {
@@ -120,78 +115,8 @@ export class DownloadMetaDataComponent implements OnInit {
     const { currentUser } = data;
     this.isLoading = false;
     this.isUpdateProcessOnProgress = false;
-    console.log(JSON.stringify(currentUser));
+    this.onUpdateCurrentUser(currentUser);
   }
-
-  // updateResourcesOlds(resources) {
-  //   let key = 'Downloading updates';
-  //   this.loadingMessage = this.translationMapper[key]
-  //     ? this.translationMapper[key]
-  //     : key;
-  //   this.syncProvider.downloadResources(resources, this.currentUser).subscribe(
-  //     resourcesData => {
-  //       this.syncProvider
-  //         .prepareTablesToApplyChanges(resources, this.currentUser)
-  //         .subscribe(
-  //           () => {
-  //             key = 'Preparing local storage for updates';
-  //             this.loadingMessage = this.translationMapper[key]
-  //               ? this.translationMapper[key]
-  //               : key;
-  //             this.sqLite
-  //               .generateTables(this.currentUser.currentDatabase)
-  //               .subscribe(
-  //                 () => {
-  //                   key = 'Applying updates';
-  //                   this.loadingMessage = this.translationMapper[key]
-  //                     ? this.translationMapper[key]
-  //                     : key;
-  //                   this.syncProvider
-  //                     .savingResources(
-  //                       resources,
-  //                       resourcesData,
-  //                       this.currentUser
-  //                     )
-  //                     .subscribe(
-  //                       () => {
-  //                         this.autoSelect('un-selectAll');
-  //                         this.appProvider.setNormalNotification(
-  //                           'All updates has been applied successfully'
-  //                         );
-  //                         this.showLoadingMessage = false;
-  //                       },
-  //                       error => {
-  //                         this.appProvider.setNormalNotification(
-  //                           'Failed to apply updates'
-  //                         );
-  //                         this.showLoadingMessage = false;
-  //                       }
-  //                     );
-  //                 },
-  //                 error => {
-  //                   this.showLoadingMessage = false;
-  //                   this.appProvider.setNormalNotification(
-  //                     'Failed to prepare local storage for update'
-  //                   );
-  //                 }
-  //               );
-  //           },
-  //           error => {
-  //             this.showLoadingMessage = false;
-  //             this.appProvider.setNormalNotification(
-  //               'Failed to prepare local storage for update'
-  //             );
-  //             console.log(JSON.stringify(error));
-  //           }
-  //         );
-  //     },
-  //     error => {
-  //       this.showLoadingMessage = false;
-  //       this.appProvider.setNormalNotification('Failed to download updates');
-  //       console.log(JSON.stringify(error));
-  //     }
-  //   );
-  // }
 
   trackByFn(index, item) {
     return item && item.id ? item.id : index;
