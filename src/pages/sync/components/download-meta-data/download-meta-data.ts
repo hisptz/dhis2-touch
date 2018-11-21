@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { SyncProvider } from '../../../../providers/sync/sync';
 import { AppProvider } from '../../../../providers/app/app';
-import { SqlLiteProvider } from '../../../../providers/sql-lite/sql-lite';
 import { UserProvider } from '../../../../providers/user/user';
-import { SyncPage } from '../../../../pages/sync/sync';
-import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
-
+import { DATABASE_STRUCTURE } from '../../../../models';
+import * as _ from 'lodash';
+import { EncryptionProvider } from '../../../../providers/encryption/encryption';
 /**
  * Generated class for the DownloadMetaDataComponent component.
  *
@@ -21,36 +19,56 @@ export class DownloadMetaDataComponent implements OnInit {
   dataBaseStructure: any;
   currentUser: any;
   hasAllSelected: boolean;
-  loadingData: boolean = false;
-  showLoadingMessage: boolean = false;
-  translationMapper: any;
-  loadingMessage: string = '';
+  isLoading: boolean = true;
+  isUpdateProcessOnProgress: boolean;
+  isOnLogin: boolean = false;
+  processes: string[];
+  icons: any;
 
   constructor(
-    private syncProvider: SyncProvider,
     private appProvider: AppProvider,
-    private sqLite: SqlLiteProvider,
     private user: UserProvider,
-    private syncPage: SyncPage,
-    private appTranslation: AppTranslationProvider
-  ) {}
+    private encryptionProvider: EncryptionProvider
+  ) {
+    this.icons = {
+      all: 'assets/icon/check-all.png',
+      none: 'assets/icon/uncheck-all.png',
+      reset: 'assets/icon/not-allowed.png',
+      done: 'assets/icon/circle-tick.png'
+    };
+  }
 
   ngOnInit() {
     this.hasAllSelected = false;
-    this.translationMapper = {};
-    this.loadingData = true;
     this.user.getCurrentUser().subscribe((user: any) => {
-      this.currentUser = user;
-      this.loadingData = false;
+      const { password } = user;
+      const { isPasswordEncode } = user;
+      const newPassord = isPasswordEncode
+        ? this.encryptionProvider.decode(password)
+        : password;
+      this.currentUser = { ...user, password: newPassord };
+      this.resources = this.getListOfResources();
+      this.autoSelect('');
+      this.isLoading = false;
     });
-    this.resources = this.syncPage.resources;
-    this.autoSelect('');
-    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
-      (data: any) => {
-        this.translationMapper = data;
-      },
-      error => {}
-    );
+  }
+
+  getListOfResources() {
+    const resources = [];
+    const dataBaseStructure = DATABASE_STRUCTURE;
+    Object.keys(dataBaseStructure).forEach((resource: any) => {
+      if (dataBaseStructure[resource].isMetadata) {
+        resources.push({
+          name: resource,
+          displayName: dataBaseStructure[resource].displayName
+            ? dataBaseStructure[resource].displayName
+            : resource,
+          status: false,
+          dependentTable: dataBaseStructure[resource].dependentTable
+        });
+      }
+    });
+    return resources;
   }
 
   autoSelect(selectType) {
@@ -68,13 +86,10 @@ export class DownloadMetaDataComponent implements OnInit {
   }
 
   checkingForResourceUpdate() {
-    let resourceUpdated = [];
-    this.resources.map((resource: any) => {
-      if (resource.status) {
-        resourceUpdated.push(resource.name);
-        this.showLoadingMessage = true;
-      }
-    });
+    const resources = _.flattenDeep([...[], this.resources]);
+    const resourceUpdated = resources
+      .filter((resource: any) => resource.status)
+      .map(resource => resource.name);
     if (resourceUpdated.length == 0) {
       this.appProvider.setNormalNotification('Please select at least one item');
     } else {
@@ -83,87 +98,44 @@ export class DownloadMetaDataComponent implements OnInit {
   }
 
   updateResources(resources) {
-    let key = 'Downloading updates';
-    this.loadingMessage = this.translationMapper[key]
-      ? this.translationMapper[key]
-      : key;
-    this.syncProvider.downloadResources(resources, this.currentUser).subscribe(
-      resourcesData => {
-        this.syncProvider
-          .prepareTablesToApplyChanges(resources, this.currentUser)
-          .subscribe(
-            () => {
-              key = 'Preparing local storage for updates';
-              this.loadingMessage = this.translationMapper[key]
-                ? this.translationMapper[key]
-                : key;
-              this.sqLite
-                .generateTables(this.currentUser.currentDatabase)
-                .subscribe(
-                  () => {
-                    key = 'Applying updates';
-                    this.loadingMessage = this.translationMapper[key]
-                      ? this.translationMapper[key]
-                      : key;
-                    this.syncProvider
-                      .savingResources(
-                        resources,
-                        resourcesData,
-                        this.currentUser
-                      )
-                      .subscribe(
-                        () => {
-                          this.autoSelect('un-selectAll');
-                          this.appProvider.setNormalNotification(
-                            'All updates has been applied successfully'
-                          );
-                          this.showLoadingMessage = false;
-                        },
-                        error => {
-                          this.appProvider.setNormalNotification(
-                            'Failed to apply updates'
-                          );
-                          this.showLoadingMessage = false;
-                        }
-                      );
-                  },
-                  error => {
-                    this.showLoadingMessage = false;
-                    this.appProvider.setNormalNotification(
-                      'Failed to prepare local storage for update'
-                    );
-                  }
-                );
-            },
-            error => {
-              this.showLoadingMessage = false;
-              this.appProvider.setNormalNotification(
-                'Failed to prepare local storage for update'
-              );
-              console.log(JSON.stringify(error));
-            }
-          );
-      },
-      error => {
-        this.showLoadingMessage = false;
-        this.appProvider.setNormalNotification('Failed to download updates');
-        console.log(JSON.stringify(error));
-      }
-    );
+    this.processes = resources;
+    this.isLoading = true;
+    this.isUpdateProcessOnProgress = true;
+  }
+
+  onUpdateCurrentUser(currentUser) {
+    this.currentUser = _.assign({}, this.currentUser, currentUser);
+  }
+
+  onCancelLoginProcess() {
+    this.isLoading = false;
+    this.isUpdateProcessOnProgress = false;
+  }
+
+  onFailLogin(errorReponse) {
+    this.appProvider.setNormalNotification(errorReponse);
+    this.onCancelLoginProcess();
+  }
+
+  onSuccessLogin(data) {
+    const { currentUser } = data;
+    this.isLoading = false;
+    this.isUpdateProcessOnProgress = false;
+    this.onUpdateCurrentUser(currentUser);
+    const resources = _.flattenDeep([...[], this.resources]);
+    const updatedResources = resources
+      .filter((resource: any) => resource.status)
+      .map(resource => resource.displayName)
+      .join(', ');
+    this.autoSelect('');
+    const message =
+      updatedResources.split(', ').length > 1
+        ? `${updatedResources} have been updated successfully`
+        : `${updatedResources} has been updated successfully`;
+    this.appProvider.setNormalNotification(message);
   }
 
   trackByFn(index, item) {
     return item && item.id ? item.id : index;
-  }
-
-  getValuesToTranslate() {
-    return [
-      'Select all',
-      'Deselect all',
-      'Download metadata',
-      'Downloading updates',
-      'Preparing local storage for updates',
-      'Applying updates'
-    ];
   }
 }

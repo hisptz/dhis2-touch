@@ -51,6 +51,7 @@ import { SectionsProvider } from '../../../../providers/sections/sections';
 import { SmsCommandProvider } from '../../../../providers/sms-command/sms-command';
 import { StandardReportProvider } from '../../../../providers/standard-report/standard-report';
 import { DataElementsProvider } from '../../../../providers/data-elements/data-elements';
+import { DataStoreManagerProvider } from '../../../../providers/data-store-manager/data-store-manager';
 
 /**
  * Generated class for the LoginMetadataSyncComponent component.
@@ -94,6 +95,7 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
   progressTrackerMessage: any;
   trackedProcessWithLoader: any;
   completedTrackedProcess: string[];
+  progressTrackerBackup: any;
 
   constructor(
     private networkAvailabilityProvider: NetworkAvailabilityProvider,
@@ -110,7 +112,8 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
     private programStageSectionsProvider: ProgramStageSectionsProvider,
     private sectionsProvider: SectionsProvider,
     private smsCommandProvider: SmsCommandProvider,
-    private standardReportProvider: StandardReportProvider
+    private standardReportProvider: StandardReportProvider,
+    private dataStoreManagerProvider: DataStoreManagerProvider
   ) {
     this.showCancelButton = true;
     this.subscriptions = new Subscription();
@@ -154,6 +157,10 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
     currentUser.serverUrl = this.appProvider.getFormattedBaseUrl(
       currentUser.serverUrl
     );
+    const { progressTracker } = currentUser;
+    if (progressTracker && !this.isOnLogin) {
+      this.progressTrackerBackup = progressTracker;
+    }
     const networkStatus = this.networkAvailabilityProvider.getNetWorkStatus();
     const { isAvailable } = networkStatus;
     if (!isAvailable && this.isOnLogin) {
@@ -398,24 +405,29 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
       currentUser.currentDatabase &&
       currentUser.progressTracker &&
       currentUser.progressTracker[currentUser.currentDatabase]
-        ? currentUser.progressTracker[currentUser.currentDatabase]
+        ? !this.isOnLogin
+          ? emptyProgressTracker
+          : currentUser.progressTracker[currentUser.currentDatabase]
         : emptyProgressTracker;
-    Object.keys(progressTrackerObject).map((key: string) => {
-      progressTrackerObject[key].expectedProcesses =
-        emptyProgressTracker[key].expectedProcesses;
-      progressTrackerObject[key].totalPassedProcesses = 0;
-      this.trackedProcessWithLoader[key] = false;
-      if (key === 'communication') {
-        this.progressTrackerMessage[key] = 'Establishing connection to server';
-        this.trackedProcessWithLoader[key] = true;
-      } else if (key === 'entryForm') {
-        this.progressTrackerMessage[key] = 'Aggregate metadata';
-      } else if (key === 'event') {
-        this.progressTrackerMessage[key] = 'Event and tracker metadata';
-      } else if (key === 'report') {
-        this.progressTrackerMessage[key] = 'Reports metadata';
-      }
-    });
+    try {
+      Object.keys(progressTrackerObject).map((key: string) => {
+        progressTrackerObject[key].expectedProcesses =
+          emptyProgressTracker[key].expectedProcesses;
+        progressTrackerObject[key].totalPassedProcesses = 0;
+        this.trackedProcessWithLoader[key] = false;
+        if (key === 'communication') {
+          this.progressTrackerMessage[key] =
+            'Establishing connection to server';
+          this.trackedProcessWithLoader[key] = true;
+        } else if (key === 'entryForm') {
+          this.progressTrackerMessage[key] = 'Aggregate metadata';
+        } else if (key === 'event') {
+          this.progressTrackerMessage[key] = 'Event and tracker metadata';
+        } else if (key === 'report') {
+          this.progressTrackerMessage[key] = 'Reports metadata';
+        }
+      });
+    } catch (e) {}
     return progressTrackerObject;
   }
 
@@ -515,6 +527,12 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
       this.updateCurrentUser.emit(this.currentUser);
     }
     if (totalProcesses === totalExpectedProcesses) {
+      if (this.progressTrackerBackup) {
+        this.currentUser = {
+          ...this.currentUser,
+          progressTracker: this.programsProvider
+        };
+      }
       this.successOnLoginAndSyncMetadata.emit({
         currentUser: this.currentUser
       });
@@ -554,11 +572,23 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
   }
 
   onFailToLogin(error) {
+    if (this.progressTrackerBackup) {
+      this.currentUser = {
+        ...this.currentUser,
+        progressTracker: this.programsProvider
+      };
+    }
     this.clearAllSubscriptions();
     this.failOnLogin.emit(error);
   }
 
   onCancelProgess() {
+    if (this.progressTrackerBackup) {
+      this.currentUser = {
+        ...this.currentUser,
+        progressTracker: this.programsProvider
+      };
+    }
     this.clearAllSubscriptions();
     this.cancelProgress.emit();
   }
@@ -672,6 +702,8 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
         progressMessage = 'Discovering standard reports';
       } else if (process === 'constants') {
         progressMessage = 'Discovering constants';
+      } else if (process === 'dataStore') {
+        progressMessage = 'Discovering data store';
       } else {
         progressMessage = 'Discovering ' + process;
       }
@@ -702,6 +734,8 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
         progressMessage = 'Saving standard reports';
       } else if (process === 'constants') {
         progressMessage = 'Saving constants';
+      } else if (process === 'dataStore') {
+        progressMessage = 'Saving data store';
       } else {
         progressMessage = 'Saving ' + process;
       }
@@ -732,6 +766,8 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
         progressMessage = 'Reports have been discovered';
       } else if (process === 'constants') {
         progressMessage = 'Constants have been discovered';
+      } else if (process === 'dataStore') {
+        progressMessage = 'Data store has been discovered';
       } else {
         progressMessage = process + ' have been discovered';
       }
@@ -972,6 +1008,20 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
               }
             )
         );
+      } else if (process === 'dataStore') {
+        this.subscriptions.add(
+          this.dataStoreManagerProvider
+            .getDataStoreFromServer(this.currentUser)
+            .subscribe(
+              response => {
+                this.removeFromQueue(process, 'dowmloading', response);
+              },
+              error => {
+                console.log(process + ' : ' + JSON.stringify(error));
+                this.onFailToLogin(error);
+              }
+            )
+        );
       }
     } else {
       this.removeFromQueue(process, 'dowmloading');
@@ -1151,6 +1201,19 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
             }
           )
       );
+    } else if (process === 'dataStore') {
+      this.subscriptions.add(
+        this.dataStoreManagerProvider
+          .saveDataStoreDataFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.onFailToLogin(error);
+            }
+          )
+      );
     }
   }
 
@@ -1166,6 +1229,7 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
   ngOnDestroy() {
     this.clearAllSubscriptions();
     this.processes = null;
+    this.progressTrackerBackup = null;
     this.isOnLogin = null;
     this.overAllMessage = null;
     this.savingingQueueManager = null;

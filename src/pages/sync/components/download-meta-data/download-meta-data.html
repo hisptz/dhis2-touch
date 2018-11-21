@@ -1,30 +1,60 @@
 <!-- Generated template for the DownloadMetaDataComponent component -->
 
 <ion-grid>
-  <ion-row *ngIf="!showLoadingMessage">
-    <ion-col>
-      <button ion-button block style="text-transform: none;" (tap)="autoSelect('selectAll')">{{ translationMapper['Select all'] }}</button>
-    </ion-col>
-    <ion-col>
-      <button ion-button block style="text-transform: none;" (tap)="autoSelect('unSelectAll')"> {{ translationMapper['Deselect all'] }} </button>
-    </ion-col>
-  </ion-row>
-  <ion-row *ngIf="!showLoadingMessage">
-    <ion-col>
-      <div *ngFor="let resourceObject of resources;trackBy: trackByFn">
-        <ion-item>
-          <ion-checkbox color="blue" [(ngModel)]="resourceObject.status"></ion-checkbox>
-          <ion-label> {{ resourceObject.displayName }} </ion-label>
-        </ion-item>
+  <div *ngIf="!isLoading">
+    <!-- <ion-row>
+      <ion-col>
+        <div class="item-card">
+          
+        </div>
+      </ion-col>
+    </ion-row> -->
+    <div>
+      <div class="item-card" (click)="autoSelect('selectAll')" color="font-color" padding-top padding-bottom ion-button
+        clear text-center text-capitalize icon-start>
+        <img class="side-menu-icon" [src]="icons.all" />&nbsp;&nbsp;
+        <span [translate]="'All'"></span>
       </div>
-    </ion-col>
-  </ion-row>
+      <div class="item-card" (click)="autoSelect('unSelectAll')" color="font-color" padding-top padding-bottom
+        ion-button clear text-center text-capitalize icon-start>
+        <img class="side-menu-icon" [src]="icons.none" />&nbsp;&nbsp;
+        <span [translate]="'None'"></span>
+      </div>
+      <div class="item-card" (click)="checkingForResourceUpdate()" color="font-color" padding-top padding-bottom
+        ion-button clear text-center text-capitalize icon-start>
+        <img class="side-menu-icon" [src]="icons.done" />&nbsp;&nbsp;
+        <span [translate]="'Done'"></span>
+      </div>
+    </div>
+    <div class="item-card">
+      <ion-item *ngFor="let resourceObject of resources;trackBy: trackByFn">
+        <ion-checkbox color="blue" [(ngModel)]="resourceObject.status"></ion-checkbox>
+        <ion-label> {{ resourceObject.displayName }} </ion-label>
+      </ion-item>
+    </div>
+    <div>
+      <div class="item-card" (click)="autoSelect('selectAll')" color="font-color" padding-top padding-bottom ion-button
+        clear text-center text-capitalize icon-start>
+        <img class="side-menu-icon" [src]="icons.all" />&nbsp;&nbsp;
+        <span [translate]="'All'"></span>
+      </div>
+      <div class="item-card" (click)="autoSelect('unSelectAll')" color="font-color" padding-top padding-bottom
+        ion-button clear text-center text-capitalize icon-start>
+        <img class="side-menu-icon" [src]="icons.none" />&nbsp;&nbsp;
+        <span [translate]="'None'"></span>
+      </div>
+      <div class="item-card" (click)="checkingForResourceUpdate()" color="font-color" padding-top padding-bottom
+        ion-button clear text-center text-capitalize icon-start>
+        <img class="side-menu-icon" [src]="icons.done" />&nbsp;&nbsp;
+        <span [translate]="'Done'"></span>
+      </div>
+    </div>
+  </div>
 
-  <span *ngIf="showLoadingMessage">
-    <loading loadingSize="large" [loadingMessage]="loadingMessage"></loading>
-  </span>
+  <div *ngIf="isUpdateProcessOnProgress">
+    <login-metadata-sync (updateCurrentUser)="onUpdateCurrentUser($event)" (failOnLogin)="onFailLogin($event)"
+      (successOnLoginAndSyncMetadata)="onSuccessLogin($event)" [currentUser]="currentUser" (cancelProgress)="onCancelLoginProcess()"
+      [isOnLogin]="isOnLogin" [processes]="processes"></login-metadata-sync>
+  </div>
 
-  <ion-row *ngIf="!showLoadingMessage">
-    <button ion-button style="text-transform: none;" (tap)="checkingForResourceUpdate()" block> {{ translationMapper['Download metadata'] }}</button>
-  </ion-row>
 </ion-grid>
