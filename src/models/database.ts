@@ -55,6 +55,20 @@ export const DATABASE_STRUCTURE = {
     displayName: 'Local instance',
     dependentTable: []
   },
+  dataStore: {
+    columns: [
+      { value: 'id', type: 'TEXT' },
+      { value: 'nameSpace', type: 'TEXT' },
+      { value: 'key', type: 'TEXT' },
+      { value: 'data', type: 'LONGTEXT' }
+    ],
+    isMetadata: true,
+    shouldIncludeOnLogin: true,
+    resourceType: 'report',
+    batchSize: 500,
+    displayName: 'Data Store',
+    dependentTable: []
+  },
   dataSets: {
     columns: [
       { value: 'id', type: 'TEXT' },

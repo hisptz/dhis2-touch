@@ -74,6 +74,7 @@ import { TrackedEntityInstancesProvider } from './tracked-entity-instances/track
 import { TrackerCaptureProvider } from './tracker-capture/tracker-capture';
 import { DataEntryFormProvider } from './data-entry-form/data-entry-form';
 import { ProfileProvider } from '../pages/profile/providers/profile/profile';
+import { DataStoreManagerProvider } from './data-store-manager/data-store-manager';
 
 export const appProviders = [
   AppTranslationProvider,
@@ -114,7 +115,8 @@ export const appProviders = [
   TrackedEntityInstancesProvider,
   TrackerCaptureProvider,
   DataEntryFormProvider,
-  ProfileProvider
+  ProfileProvider,
+  DataStoreManagerProvider
 ];
 
 export const nativePlugins = [
