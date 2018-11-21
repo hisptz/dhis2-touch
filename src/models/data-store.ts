@@ -25,5 +25,5 @@ export interface DataStore {
   id: string;
   nameSpace: string;
   key: string;
-  data: any;
+  data?: any;
 }

@@ -51,6 +51,7 @@ import { SectionsProvider } from '../../../../providers/sections/sections';
 import { SmsCommandProvider } from '../../../../providers/sms-command/sms-command';
 import { StandardReportProvider } from '../../../../providers/standard-report/standard-report';
 import { DataElementsProvider } from '../../../../providers/data-elements/data-elements';
+import { DataStoreManagerProvider } from '../../../../providers/data-store-manager/data-store-manager';
 
 /**
  * Generated class for the LoginMetadataSyncComponent component.
@@ -111,7 +112,8 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
     private programStageSectionsProvider: ProgramStageSectionsProvider,
     private sectionsProvider: SectionsProvider,
     private smsCommandProvider: SmsCommandProvider,
-    private standardReportProvider: StandardReportProvider
+    private standardReportProvider: StandardReportProvider,
+    private dataStoreManagerProvider: DataStoreManagerProvider
   ) {
     this.showCancelButton = true;
     this.subscriptions = new Subscription();
@@ -700,6 +702,8 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
         progressMessage = 'Discovering standard reports';
       } else if (process === 'constants') {
         progressMessage = 'Discovering constants';
+      } else if (process === 'dataStore') {
+        progressMessage = 'Discovering data store';
       } else {
         progressMessage = 'Discovering ' + process;
       }
@@ -730,6 +734,8 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
         progressMessage = 'Saving standard reports';
       } else if (process === 'constants') {
         progressMessage = 'Saving constants';
+      } else if (process === 'dataStore') {
+        progressMessage = 'Saving data store';
       } else {
         progressMessage = 'Saving ' + process;
       }
@@ -760,6 +766,8 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
         progressMessage = 'Reports have been discovered';
       } else if (process === 'constants') {
         progressMessage = 'Constants have been discovered';
+      } else if (process === 'dataStore') {
+        progressMessage = 'Data store has been discovered';
       } else {
         progressMessage = process + ' have been discovered';
       }
@@ -1000,6 +1008,20 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
               }
             )
         );
+      } else if (process === 'dataStore') {
+        this.subscriptions.add(
+          this.dataStoreManagerProvider
+            .getDataStoreFromServer(this.currentUser)
+            .subscribe(
+              response => {
+                this.removeFromQueue(process, 'dowmloading', response);
+              },
+              error => {
+                console.log(process + ' : ' + JSON.stringify(error));
+                this.onFailToLogin(error);
+              }
+            )
+        );
       }
     } else {
       this.removeFromQueue(process, 'dowmloading');
@@ -1170,6 +1192,19 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
       this.subscriptions.add(
         this.standardReportProvider
           .saveConstantsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.removeFromQueue(process, 'saving');
+            },
+            error => {
+              this.onFailToLogin(error);
+            }
+          )
+      );
+    } else if (process === 'dataStore') {
+      this.subscriptions.add(
+        this.dataStoreManagerProvider
+          .saveDataStoreDataFromServer(data, this.currentUser)
           .subscribe(
             () => {
               this.removeFromQueue(process, 'saving');

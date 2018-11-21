@@ -25,6 +25,7 @@ import { Injectable } from '@angular/core';
 import { HttpClientProvider } from '../http-client/http-client';
 import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { Observable } from 'rxjs';
+import { CurrentUser, DataStore } from '../../models';
 
 /*
   Generated class for the DataStoreManagerProvider provider.
@@ -35,6 +36,7 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class DataStoreManagerProvider {
   resource: string;
+
   constructor(
     private httpCLientProvider: HttpClientProvider,
     private sqlLiteProvider: SqlLiteProvider
@@ -42,18 +44,76 @@ export class DataStoreManagerProvider {
     this.resource = 'dataStore';
   }
 
-  getDataStoreFromServer(): Observable<any> {
-    return new Observable(observer => {});
+  getDataStoreFromServer(currentUser: CurrentUser): Observable<any> {
+    return new Observable(observer => {
+      this.getDataStoreNameSpacesFromServer(currentUser).subscribe(
+        nameSpacesKeysObject => {
+          let nameSpaceKeys = [];
+          Object.keys(nameSpacesKeysObject).map(nameSpace => {
+            nameSpacesKeysObject[nameSpace].map(key => {
+              nameSpaceKeys = [...nameSpaceKeys, { nameSpace, key }];
+            });
+          });
+          console.log(JSON.stringify(nameSpaceKeys));
+          observer.next([]);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
+    });
   }
 
-  getDataStoreNameSpacesFromServer(): Observable<any> {
+  getDataStoreNameSpacesFromServer(currentUser: CurrentUser): Observable<any> {
     const url = `/api/${this.resource}`;
-    return new Observable(observer => {});
+    return new Observable(observer => {
+      this.httpCLientProvider.get(url, true, currentUser).subscribe(
+        (nameSpaces: string[]) => {
+          const nameSpacesKeysObject = {};
+          for (const nameSpace of nameSpaces) {
+            this.getDataStoreNameSpaceKeysFromServer(
+              nameSpace,
+              currentUser
+            ).subscribe(
+              keys => {
+                nameSpacesKeysObject[nameSpace] = keys;
+                if (
+                  Object.keys(nameSpacesKeysObject).length === nameSpaces.length
+                ) {
+                  observer.next(nameSpacesKeysObject);
+                  observer.complete();
+                }
+              },
+              error => {
+                observer.error(error);
+              }
+            );
+          }
+        },
+        error => {
+          observer.error(error);
+        }
+      );
+    });
   }
 
-  getDataStoreNameSpaceKeysFromServer(nameSpace: string): Observable<any> {
+  getDataStoreNameSpaceKeysFromServer(
+    nameSpace: string,
+    currentUser: CurrentUser
+  ): Observable<any> {
     const url = `/api/${this.resource}/${nameSpace}`;
-    return new Observable(observer => {});
+    return new Observable(observer => {
+      this.httpCLientProvider.get(url, true, currentUser).subscribe(
+        (keys: string[]) => {
+          observer.next(keys);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
+    });
   }
 
   getDataStoreByNameSpaceAndKeyFromServer(
@@ -64,8 +124,25 @@ export class DataStoreManagerProvider {
     return new Observable(observer => {});
   }
 
-  saveDataStoreData(): Observable<any> {
-    return new Observable(observer => {});
+  saveDataStoreDataFromServer(
+    data: DataStore[],
+    currentUser: CurrentUser
+  ): Observable<any> {
+    return new Observable(observer => {
+      console.log('on saving data store');
+      console.log(JSON.stringify(data));
+      this.sqlLiteProvider
+        .insertBulkDataOnTable(this.resource, data, currentUser.currentDatabase)
+        .subscribe(
+          () => {
+            observer.next();
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+    });
   }
 
   getSavedDataStoreData(): Observable<any> {
