@@ -728,6 +728,7 @@ export class EventCaptureFormProvider {
    */
   saveEvents(events, currentUser): Observable<any> {
     let tableName = 'events';
+    console.log(JSON.stringify({ events }));
     return new Observable(observer => {
       this.sqlLiteProvider
         .insertBulkDataOnTable(tableName, events, currentUser.currentDatabase)
@@ -740,6 +741,31 @@ export class EventCaptureFormProvider {
             observer.error({ message: error });
           }
         );
+    });
+  }
+
+  discoveringEventsFromServer(
+    programId: string,
+    organisationUnitId: string,
+    dataDimension: any,
+    currentUser: CurrentUser
+  ): Observable<any> {
+    const { attributeCc, attributeCos } = dataDimension;
+    let url = `/api/events.json?program=${programId}&orgUnit=${organisationUnitId}&pageSize=100&order=lastUpdated:desc`;
+    if (attributeCc && attributeCos && attributeCos !== '') {
+      url += `&attributeCc=${attributeCc}&attributeCos=${attributeCos}`;
+    }
+    return new Observable(observer => {
+      this.httpClientProvider.get(url, true, currentUser).subscribe(
+        response => {
+          const { events } = response;
+          observer.next(events);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
 

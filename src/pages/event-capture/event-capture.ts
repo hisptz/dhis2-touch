@@ -225,8 +225,10 @@ export class EventCapturePage implements OnInit {
       category.categoryOptions &&
       category.categoryOptions.length > 0
     ) {
-      let currentIndex = this.programCategoryCombo.categories.indexOf(category);
-      let modal = this.modalCtrl.create('DataDimensionSelectionPage', {
+      const currentIndex = this.programCategoryCombo.categories.indexOf(
+        category
+      );
+      const modal = this.modalCtrl.create('DataDimensionSelectionPage', {
         categoryOptions: category.categoryOptions,
         title: category.name,
         currentSelection: this.selectedDataDimension[currentIndex]
@@ -241,7 +243,7 @@ export class EventCapturePage implements OnInit {
       });
       modal.present();
     } else {
-      let message =
+      const message =
         'There is no option for selected category that associated with selected organisation unit';
       this.appProvider.setNormalNotification(message);
     }
@@ -249,7 +251,7 @@ export class EventCapturePage implements OnInit {
 
   getDataDimensions() {
     if (this.selectedProgram && this.selectedProgram.categoryCombo) {
-      let attributeCc = this.selectedProgram.categoryCombo.id;
+      const attributeCc = this.selectedProgram.categoryCombo.id;
       let attributeCos = '';
       this.selectedDataDimension.forEach((dimension: any, index: any) => {
         if (index == 0) {
@@ -424,19 +426,50 @@ export class EventCapturePage implements OnInit {
       this.loadingMessage = this.translationMapper[key]
         ? this.translationMapper[key]
         : key;
-      let dataDimension = this.getDataDimensions();
+      const dataDimension = this.getDataDimensions();
+      const programId = this.selectedProgram.id;
+      const organisationUnitId = this.selectedOrgUnit.id;
       this.eventCaptureFormProvider
         .getEventsBasedOnEventsSelection(
           this.currentUser,
           dataDimension,
-          this.selectedProgram.id,
-          this.selectedOrgUnit.id
+          programId,
+          organisationUnitId
         )
         .subscribe((events: any) => {
           this.currentEvents = events;
+          this.loadingOnlineEvents(
+            events,
+            programId,
+            organisationUnitId,
+            dataDimension
+          );
           this.renderDataAsTable();
         });
     }
+  }
+
+  loadingOnlineEvents(
+    currentEvents,
+    programId,
+    organisationUnitId,
+    dataDimension
+  ) {
+    this.eventCaptureFormProvider
+      .discoveringEventsFromServer(
+        programId,
+        organisationUnitId,
+        dataDimension,
+        this.currentUser
+      )
+      .subscribe(
+        events => {
+          console.log(JSON.stringify({ events }));
+        },
+        error => {
+          console.log(JSON.stringify({ error }));
+        }
+      );
   }
 
   renderDataAsTable() {
@@ -445,12 +478,14 @@ export class EventCapturePage implements OnInit {
     this.loadingMessage = this.translationMapper[key]
       ? this.translationMapper[key]
       : key;
-    this.storageStatus.online = _.filter(this.currentEvents, {
-      syncStatus: 'synced'
-    }).length;
-    this.storageStatus.offline = _.filter(this.currentEvents, {
-      syncStatus: 'not-synced'
-    }).length;
+    this.storageStatus.online = _.filter(
+      this.currentEvents,
+      event => event.syncStatus === 'synced'
+    ).length;
+    this.storageStatus.offline = _.filter(
+      this.currentEvents,
+      event => event.syncStatus === 'not-synced'
+    ).length;
     this.eventCaptureFormProvider
       .getTableFormatResult(this.columnsToDisplay, this.currentEvents)
       .subscribe(
