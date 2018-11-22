@@ -21,10 +21,6 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-export interface DataStore {
-  id: string;
-  nameSpace: string;
-  key: string;
-  data?: any;
-  status?: string;
-}
+var dhis2 = dhis2 || {}
+
+dhis2['trackerCaptureProvider'] = {}

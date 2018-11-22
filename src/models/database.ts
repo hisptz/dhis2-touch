@@ -60,12 +60,13 @@ export const DATABASE_STRUCTURE = {
       { value: 'id', type: 'TEXT' },
       { value: 'nameSpace', type: 'TEXT' },
       { value: 'key', type: 'TEXT' },
+      { value: 'status', type: 'TEXT' },
       { value: 'data', type: 'LONGTEXT' }
     ],
     isMetadata: true,
     shouldIncludeOnLogin: true,
     resourceType: 'report',
-    batchSize: 500,
+    batchSize: 10,
     displayName: 'Data Store',
     dependentTable: []
   },

@@ -1,5 +1,25 @@
-/**
- * Created by chingalo on 8/3/16.
+/*
+ *
+ * Copyright 2015 HISP Tanzania
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ * @since 2015
+ * @author Joseph Chingalo <profschingalo@gmail.com>
+ *
  */
 var dhis2 = {
   database: null,
@@ -16,7 +36,10 @@ var dhis2 = {
       if (dhis2.database.indexOf(".db") == -1) {
         dhis2.database = dhis2.database + ".db";
       }
-      var db = window.sqlitePlugin.openDatabase({name: dhis2.database, location: 'default'});
+      var db = window.sqlitePlugin.openDatabase({
+        name: dhis2.database,
+        location: 'default'
+      });
       db.transaction(function (tx) {
         var query = "SELECT * FROM " + tableName + " WHERE " + attribute + " = ?";
         tx.executeSql(query, [id], function (tx, results) {
@@ -35,7 +58,10 @@ var dhis2 = {
       if (dhis2.database.indexOf(".db") == -1) {
         dhis2.database = dhis2.database + ".db";
       }
-      var db = window.sqlitePlugin.openDatabase({name: dhis2.database, location: 'default'});
+      var db = window.sqlitePlugin.openDatabase({
+        name: dhis2.database,
+        location: 'default'
+      });
       db.transaction(function (tx) {
         var query = "SELECT * FROM " + tableName + " WHERE " + attribute + " LIKE ?";
         tx.executeSql(query, [id], function (tx, results) {
@@ -84,7 +110,10 @@ var dhis2 = {
       if (dhis2.database.indexOf(".db") == -1) {
         dhis2.database = dhis2.database + ".db";
       }
-      var db = window.sqlitePlugin.openDatabase({name: dhis2.database, location: 'default'});
+      var db = window.sqlitePlugin.openDatabase({
+        name: dhis2.database,
+        location: 'default'
+      });
       db.transaction(function (tx) {
         tx.executeSql(query, currentIds, function (tx, results) {
           defer.resolve(results);
@@ -101,7 +130,10 @@ var dhis2 = {
       if (dhis2.database.indexOf(".db") == -1) {
         dhis2.database = dhis2.database + ".db";
       }
-      var db = window.sqlitePlugin.openDatabase({name: dhis2.database, location: 'default'});
+      var db = window.sqlitePlugin.openDatabase({
+        name: dhis2.database,
+        location: 'default'
+      });
       db.transaction(function (tx) {
         tx.executeSql(query, object).then(function (tx, results) {
           defer.resolve(results);
@@ -117,7 +149,10 @@ var dhis2 = {
       if (dhis2.database.indexOf(".db") == -1) {
         dhis2.database = dhis2.database + ".db";
       }
-      var db = window.sqlitePlugin.openDatabase({name: dhis2.database, location: 'default'});
+      var db = window.sqlitePlugin.openDatabase({
+        name: dhis2.database,
+        location: 'default'
+      });
       var questionMarks = "id LIKE '%" + ids[0] + "%'";
       for (var i = 1; i < ids.length; i++) {
         questionMarks += " OR id LIKE '%" + ids[i] + "%'";
@@ -137,7 +172,10 @@ var dhis2 = {
       if (dhis2.database.indexOf(".db") == -1) {
         dhis2.database = dhis2.database + ".db";
       }
-      var db = window.sqlitePlugin.openDatabase({name: dhis2.database, location: 'default'});
+      var db = window.sqlitePlugin.openDatabase({
+        name: dhis2.database,
+        location: 'default'
+      });
       db.transaction(function (tx) {
         var query = "SELECT * FROM " + tableName + ";";
         tx.executeSql(query, [], function (tx, results) {
@@ -219,8 +257,7 @@ dhis2.de = {
     dhis2.sqlLiteServices.getDataFromTableById('constants', constantId)
       .done(function (constant) {
         var testConstants = ["yIO2TSCXdO0", "E4VL9sMDC4S"];
-        if (testConstants.indexOf(constantId) > -1) {
-        }
+        if (testConstants.indexOf(constantId) > -1) {}
         if (constant) {
           var val = constant.value;
           if (val && dhis2.validation.isNumber(val)) {
@@ -244,14 +281,13 @@ dhis2.de = {
       var match = matcher[k];
       // Remove brackets from expression to simplify extraction of identifiers
       var operand = match.replace(/[#\{\}]/g, '');
-      var isTotal = !!( operand.indexOf(dhis2.de.cst.separator) == -1 );
+      var isTotal = !!(operand.indexOf(dhis2.de.cst.separator) == -1);
       if (isTotal) {
         deferreds.push(dhis2.de.getDataElementTotalValue(operand, dataSet, match).done(function (sum, matchRef) {
           expression = expression.replace(matchRef, sum);
 
         }));
-      }
-      else {
+      } else {
         var de = operand.substring(0, operand.indexOf(dhis2.de.cst.separator));
         var coc = operand.substring(operand.indexOf(dhis2.de.cst.separator) + 1, operand.length);
         deferreds.push(dhis2.de.getDataElementValue(de, coc, dataSet, match).done(function (sum, matchRef) {
@@ -296,7 +332,7 @@ dhis2.de = {
     });
     return defer.promise();
   },
-  analyticsQuery:function(query){
+  analyticsQuery: function (query) {
     var defer = $.Deferred();
     dhis2.sqlLiteServices.performQuery(query, {}).then(function (results) {
       defer.resolve(dhis2.formatQueryReturnResult(results, "dataValues"));
@@ -308,16 +344,16 @@ dhis2.de = {
   dataElementWithoutOptionsAnalytics: function (de, ou, pe) {
     var defer = $.Deferred();
     //sample testing on sqlLite services
-    if(de.length > 0){
+    if (de.length > 0) {
       var query = "SELECT de ,pe,ou,SUM(value) as value FROM 'dataValues' dv INNER JOIN organisationunits ou on(ou.id = dv.ou)" +
-        "WHERE (ou.path  like '%" +ou.join("%' OR ou.path  like '%")+ "%') AND pe IN ('" + pe.join("','") + "') AND de IN ('" + de.join("','") + "')" +
+        "WHERE (ou.path  like '%" + ou.join("%' OR ou.path  like '%") + "%') AND pe IN ('" + pe.join("','") + "') AND de IN ('" + de.join("','") + "')" +
         "GROUP BY de,pe,ou";
       this.analyticsQuery(query).then(function (results) {
         defer.resolve(results);
       }, function (error) {
         defer.reject(error);
       })
-    }else{
+    } else {
       defer.resolve([]);
     }
     return defer.promise();
@@ -325,16 +361,16 @@ dhis2.de = {
   dataElementWithOptionsAnalytics: function (de, ou, pe) {
     var defer = $.Deferred();
     //sample testing on sqlLite services
-    if(de.length > 0){
+    if (de.length > 0) {
       var query = "SELECT de || '.' || co  as de,pe,ou,SUM(value) as value FROM 'dataValues' dv INNER JOIN organisationunits ou on(ou.id = dv.ou)" +
-        "WHERE (ou.path  like '%" +ou.join("%' OR ou.path  like '%")+ "%') AND pe IN ('" + pe.join("','") + "') AND de || '.' || co IN ('" + de.join("','") + "')" +
+        "WHERE (ou.path  like '%" + ou.join("%' OR ou.path  like '%") + "%') AND pe IN ('" + pe.join("','") + "') AND de || '.' || co IN ('" + de.join("','") + "')" +
         "GROUP BY de,pe,ou";
       this.analyticsQuery(query).then(function (results) {
         defer.resolve(results);
       }, function (error) {
         defer.reject(error);
       })
-    }else{
+    } else {
       defer.resolve([]);
     }
     return defer.promise();
@@ -342,8 +378,7 @@ dhis2.de = {
   dataElementAnalytics: function (dx, ou, pe) {
     var defer = $.Deferred();
     var analytics = {
-      "headers": [
-        {
+      "headers": [{
           "name": "dx",
           "column": "Data",
           "type": "java.lang.String",
@@ -375,13 +410,13 @@ dhis2.de = {
       rows: []
     }
     //sample testing on sqlLite services
-    if(dx.length > 0){
+    if (dx.length > 0) {
       var deWithoutCategoryOptions = [];
       var deWithCategoryOptions = [];
-      dx.forEach(function(id){
-        if(id.indexOf(".") > -1){
+      dx.forEach(function (id) {
+        if (id.indexOf(".") > -1) {
           deWithCategoryOptions.push(id);
-        }else{
+        } else {
           deWithoutCategoryOptions.push(id);
         }
       })
@@ -401,7 +436,7 @@ dhis2.de = {
       }, function (error) {
         defer.reject(error);
       })
-    }else{
+    } else {
       defer.resolve(analytics);
     }
     return defer.promise();
@@ -410,7 +445,7 @@ dhis2.de = {
     var defer = $.Deferred();
     var that = this;
     this.dataElementAnalytics(dx, ou, pe).then(function (dataElementAnalyticsResults) {
-      that.indicatorAnalytics(dx, ou, pe).then(function(indicatorAnalyticsResults){
+      that.indicatorAnalytics(dx, ou, pe).then(function (indicatorAnalyticsResults) {
         dataElementAnalyticsResults.rows = dataElementAnalyticsResults.rows.concat(indicatorAnalyticsResults.rows);
         defer.resolve(dataElementAnalyticsResults);
       })
@@ -430,10 +465,10 @@ dhis2.de = {
       rows: []
     };
     dhis2.de.getIndicators(dx).done(function (indicators) {
-      var dataElementIds = that.getObjectsFromIndicators(indicators,dhis2.de.cst.formulaPattern,/[#\{\}]/g);
+      var dataElementIds = that.getObjectsFromIndicators(indicators, dhis2.de.cst.formulaPattern, /[#\{\}]/g);
       that.dataElementAnalytics(dataElementIds, ou, pe).then(function (analyticsResults) {
-        var constantIds = that.getObjectsFromIndicators(indicators,dhis2.de.cst.constantPattern,/[C\{\}]/g);
-        dhis2.sqlLiteServices.getDataFromTableByIds('constants',constantIds ).done(function (constants) {
+        var constantIds = that.getObjectsFromIndicators(indicators, dhis2.de.cst.constantPattern, /[C\{\}]/g);
+        dhis2.sqlLiteServices.getDataFromTableByIds('constants', constantIds).done(function (constants) {
           ou.forEach(function (ouId) {
             pe.forEach(function (peId) {
               indicators.forEach(function (indicator) {
@@ -441,16 +476,16 @@ dhis2.de = {
                 var denominator = indicator.denominator;
                 analyticsResults.rows.forEach(function (row) {
                   if (row[1] == peId && ouId == row[2]) {
-                    numerator = numerator.replace("#{" + row[0] + "}",row[3])
-                    denominator = denominator.replace("#{" + row[0] + "}",row[3])
+                    numerator = numerator.replace("#{" + row[0] + "}", row[3])
+                    denominator = denominator.replace("#{" + row[0] + "}", row[3])
                   }
                 })
-                constants.forEach(function(constant){
-                  numerator = numerator.replace("C{" + constant.id + "}",constant.value)
-                  denominator = denominator.replace("C{" + constant.id + "}",constant.value)
+                constants.forEach(function (constant) {
+                  numerator = numerator.replace("C{" + constant.id + "}", constant.value)
+                  denominator = denominator.replace("C{" + constant.id + "}", constant.value)
                 })
-                if(("(" +numerator + "/" + denominator+")").indexOf("{") ==-1){
-                  analytics.rows.push([indicator.id,peId,ouId,"" + eval("(" +numerator + "/" + denominator+")").toFixed(1)]);
+                if (("(" + numerator + "/" + denominator + ")").indexOf("{") == -1) {
+                  analytics.rows.push([indicator.id, peId, ouId, "" + eval("(" + numerator + "/" + denominator + ")").toFixed(1)]);
                 }
               })
             })
@@ -463,7 +498,7 @@ dhis2.de = {
     });
     return defer.promise();
   },
-  getObjectsFromIndicator: function (indicator,pattern,extracter) {
+  getObjectsFromIndicator: function (indicator, pattern, extracter) {
     var objects = [];
     var match = indicator.numerator.match(pattern);
     for (k in match) {
@@ -475,22 +510,22 @@ dhis2.de = {
     }
     return objects;
   },
-  getObjectsFromIndicators: function (indicators,pattern,extracter) {
+  getObjectsFromIndicators: function (indicators, pattern, extracter) {
     var dataElements = [];
     var that = this;
     indicators.forEach(function (indicator) {
-      dataElements = dataElements.concat(that.getObjectsFromIndicator(indicator,pattern,extracter));
+      dataElements = dataElements.concat(that.getObjectsFromIndicator(indicator, pattern, extracter));
     })
     return dataElements;
   },
   getDataElementsFromIndicator: function (indicator) {
     var dataElements = [];
     var match = indicator.numerator.match(dhis2.de.cst.formulaPattern);
-    if(match){
+    if (match) {
       dataElements = dataElements.concat(match);
     }
     match = indicator.denominator.match(dhis2.de.cst.formulaPattern);
-    if(match){
+    if (match) {
       dataElements = dataElements.concat(match);
     }
     return dataElements;
@@ -506,11 +541,11 @@ dhis2.de = {
   getConstantsFromIndicator: function (indicator) {
     var constants = [];
     var match = indicator.numerator.match(dhis2.de.cst.constantPattern);
-    if(match){
+    if (match) {
       constants = constants.concat(match);
     }
     match = indicator.denominator.match(dhis2.de.cst.constantPattern);
-    if(match){
+    if (match) {
       constants = constants.concat(match);
     }
     return constants;
@@ -589,7 +624,8 @@ dhis2.de = {
       }
     }));
     $.when.apply($, promises).then(function () {
-      if (numerator != undefined && denominator != undefined) {var returnValue = (parseFloat(numerator) / parseFloat(denominator)) * parseFloat(indicator.indicatorType.factor);
+      if (numerator != undefined && denominator != undefined) {
+        var returnValue = (parseFloat(numerator) / parseFloat(denominator)) * parseFloat(indicator.indicatorType.factor);
         defer.resolve(returnValue.toFixed(1));
       } else {
         defer.resolve(undefined);
@@ -608,4 +644,3 @@ var reportParams = {
   ou: "",
   pe: ""
 };
-

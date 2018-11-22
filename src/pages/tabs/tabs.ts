@@ -27,6 +27,9 @@ import { State, getAccountTitle } from '../../store';
 import { Observable } from 'rxjs';
 import { SynchronizationProvider } from '../../providers/synchronization/synchronization';
 import { UserProvider } from '../../providers/user/user';
+import { CurrentUser, DATABASE_STRUCTURE } from '../../models';
+
+declare var dhis2;
 
 @Component({
   templateUrl: 'tabs.html'
@@ -46,8 +49,16 @@ export class TabsPage implements OnInit {
   }
 
   ngOnInit() {
-    this.userProvider.getCurrentUser().subscribe(currentUser => {
+    this.userProvider.getCurrentUser().subscribe((currentUser: CurrentUser) => {
+      dhis2.currentDatabase = currentUser.currentDatabase;
+      dhis2.dataBaseStructure = DATABASE_STRUCTURE;
       this.synchronizationProvider.startSynchronization(currentUser);
+      setTimeout(() => {
+        const sqlLiteProvider = dhis2.sqlLiteProvider;
+        sqlLiteProvider.getAllFromTable('dataStore').then(data => {
+          console.log(data.length);
+        });
+      }, 1000);
     });
   }
 }
