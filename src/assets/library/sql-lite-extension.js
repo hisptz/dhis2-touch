@@ -23,9 +23,7 @@
  */
 var dhis2 = dhis2 || {}
 
-dhis2['sqlLiteProvider'] = {}
-
-dhis2.sqlLiteProvider = {
+dhis2['sqlLiteProvider'] = {
   insertOrReplaceOnTable,
   getAllFromTable,
   getFromTableByAttributes,
