@@ -78,7 +78,8 @@ export const getCurrentUserPrograms = createSelector(
 
 export const getCurrentUserAuthorities = createSelector(
   getCurrentUser,
-  (currentUser: CurrentUser) => currentUser.authorities
+  (currentUser: CurrentUser) =>
+    currentUser && currentUser.authorities ? currentUser.authorities : []
 );
 
 export const getAthorizedApps = (apps: AppItem[]) =>
