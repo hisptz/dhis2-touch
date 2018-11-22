@@ -66,7 +66,7 @@ export const DATABASE_STRUCTURE = {
     isMetadata: true,
     shouldIncludeOnLogin: true,
     resourceType: 'report',
-    batchSize: 3,
+    batchSize: 10,
     displayName: 'Data Store',
     dependentTable: []
   },
