@@ -34,13 +34,104 @@ dhis2.sqlLiteProvider = {
   deleteFromTableByAttributes
 }
 
-function insertOrReplaceOnTable(tableName, bulkData) {
+function insertOrReplaceOnTable(tableName, bulkData, startPoint, endPoint) {
+  const dataBaseStructure = dhis2.dataBaseStructure;
+  const insertBatchSize = dataBaseStructure[tableName].batchSize
+  var start = startPoint ? parseInt(startPoint) : 0;
+  var end = endPoint ? parseInt(endPoint) : insertBatchSize;
+  if (end < insertBatchSize) {
+    insertBatchSize = end;
+  }
+  return new Promise((resolve, reject) => {
+    var batchInsertQueryAndParameter = getBatchInsertQueryAndParameters(tableName, bulkData, start, end);
+    insertDataUsingQueryAndParameters(batchInsertQueryAndParameter.queries).then(() => {
+      start = batchInsertQueryAndParameter.startPoint - 1;
+      end = insertBatchSize + start;
+      if (bulkData[batchInsertQueryAndParameter.startPoint]) {
+        insertOrReplaceOnTable(tableName, bulkData, start, end).then(() => {
+          resolve()
+        }, error => {
+          reject(error)
+        })
+      } else {
+        resolve();
+      }
+    }, error => {
+      reject(error)
+    })
+  })
+}
+
+function insertDataUsingQueryAndParameters(queries) {
   const currentDatabase = dhis2.currentDatabase;
   const db = window.sqlitePlugin.openDatabase({
     name: `${currentDatabase}.db`,
     location: 'default'
   });
-  return new Promise((resolve, reject) => {})
+  return new Promise((resolve, reject) => {
+    db.sqlBatch(queries, () => {
+      resolve();
+    }, error => {
+      reject(error)
+    })
+  })
+}
+
+function getBatchInsertQueryAndParameters(
+  tableName,
+  bulkData,
+  startPoint,
+  limit
+) {
+  const dataBaseStructure = dhis2.dataBaseStructure;
+  const columns = dataBaseStructure[tableName].columns;
+  var columnNames = '';
+  var questionMarks = '(';
+  columns.forEach((column, index) => {
+    columnNames += column.value;
+    questionMarks += '?';
+    if (index + 1 < columns.length) {
+      columnNames += ',';
+      questionMarks += ',';
+    }
+  });
+  questionMarks += ')';
+  var queries = [];
+  for (startPoint; startPoint < limit; startPoint++) {
+    var query =
+      'INSERT OR REPLACE INTO ' +
+      tableName +
+      ' (' +
+      columnNames +
+      ') VALUES ';
+    var questionMarkParameter = [];
+    if (bulkData[startPoint]) {
+      var row = [];
+      for (var column of columns) {
+        const attribute = column.value;
+        var attributeValue;
+        if (bulkData[startPoint]) {
+          const value = bulkData[startPoint][attribute];
+          if (value !== null || value !== undefined) {
+            attributeValue = value;
+          }
+        }
+        if (column.type != 'LONGTEXT' && attributeValue === '') {
+          attributeValue = 0;
+        } else if (column.type == 'LONGTEXT') {
+          attributeValue = JSON.stringify(attributeValue);
+        }
+        row.push(attributeValue);
+      }
+      questionMarkParameter.push(questionMarks);
+      query += questionMarkParameter.join(',') + ';';
+      queries.push([query, row]);
+    }
+  }
+  return {
+    queries: queries,
+    startPoint: startPoint
+  };
 }
 
 function getAllFromTable(tableName) {

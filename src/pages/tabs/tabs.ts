@@ -53,11 +53,10 @@ export class TabsPage implements OnInit {
       dhis2.currentDatabase = currentUser.currentDatabase;
       dhis2.dataBaseStructure = DATABASE_STRUCTURE;
       this.synchronizationProvider.startSynchronization(currentUser);
-      // "nameSpace":"social-media-video"
       setTimeout(() => {
         const sqlLiteProvider = dhis2.sqlLiteProvider;
         sqlLiteProvider.getAllFromTable('dataStore').then(data => {
-          console.log(JSON.stringify(data));
+          console.log(data.length);
         });
       }, 1000);
     });

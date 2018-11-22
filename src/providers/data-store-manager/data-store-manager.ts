@@ -58,6 +58,7 @@ export class DataStoreManagerProvider {
           for (const nameSpaceKey of nameSpaceKeys) {
             const { nameSpace, key } = nameSpaceKey;
             const id = `${nameSpace}_${key}`;
+            const status = 'synced';
             this.getDataStoreByNameSpaceAndKeyFromServer(
               nameSpace,
               key,
@@ -66,7 +67,7 @@ export class DataStoreManagerProvider {
               data => {
                 dataStoreData = [
                   ...dataStoreData,
-                  { id, key, nameSpace, data }
+                  { id, key, nameSpace, data, status }
                 ];
                 if (dataStoreData.length === nameSpaceKeys.length) {
                   observer.next(dataStoreData);

@@ -26,4 +26,5 @@ export interface DataStore {
   nameSpace: string;
   key: string;
   data?: any;
+  status?: string;
 }
