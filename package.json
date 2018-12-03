@@ -21,6 +21,7 @@
     "@angular/platform-browser": "5.2.11",
     "@angular/platform-browser-dynamic": "5.2.11",
     "@ionic-native/app-version": "^4.10.1",
+    "@ionic-native/background-mode": "^4.12.0",
     "@ionic-native/barcode-scanner": "^4.10.1",
     "@ionic-native/core": "~4.10.0",
     "@ionic-native/date-picker": "^4.10.1",
@@ -50,6 +51,7 @@
     "cordova-android": "7.0.0",
     "cordova-plugin-advanced-http": "^1.11.1",
     "cordova-plugin-app-version": "^0.1.9",
+    "cordova-plugin-background-mode": "^0.7.2",
     "cordova-plugin-console": "^1.1.0",
     "cordova-plugin-datepicker": "^0.9.3",
     "cordova-plugin-device": "^2.0.2",
@@ -131,6 +133,7 @@
         "GEOLOCATION_USAGE_DESCRIPTION": "To locate location of phones for coordinate input"
       },
       "cordova-sms-plugin": {},
+      "cordova-plugin-background-mode": {},
       "cordova-plugin-console": {},
       "cordova-plugin-statusbar": {},
       "cordova-plugin-file-transfer": {},
