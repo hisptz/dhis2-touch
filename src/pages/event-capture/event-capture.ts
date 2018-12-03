@@ -210,6 +210,13 @@ export class EventCapturePage implements OnInit {
       });
       modal.onDidDismiss((selectedProgram: any) => {
         if (selectedProgram && selectedProgram.id) {
+          if (
+            this.selectedProgram &&
+            this.selectedProgram.id &&
+            this.selectedProgram.id !== selectedProgram.id
+          ) {
+            this.hasOnlineEventLoaded = false;
+          }
           this.selectedProgram = selectedProgram;
           this.programsProvider.setLastSelectedProgram(selectedProgram);
           this.updateEventCaptureSelections();
