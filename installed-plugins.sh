@@ -14,3 +14,5 @@ ionic cordova plugin add cordova.plugins.diagnostic
 ionic cordova plugin add cordova-plugin-geolocation --variable GEOLOCATION_USAGE_DESCRIPTION="To locate location of phones for coordinate input"
 ionic cordova plugin add phonegap-plugin-barcodescanner
 ionic cordova plugin add cordova-plugin-datepicker
+ionic cordova plugin add cordova-plugin-file-transfer
+ionic cordova plugin add cordova-plugin-file

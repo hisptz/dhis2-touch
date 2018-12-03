@@ -25,7 +25,6 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
 import { SmsConfiguration } from '../../models/sms-command';
-import { BackgroundMode } from '@ionic-native/background-mode';
 import { HttpClientProvider } from '../http-client/http-client';
 
 declare var SMS: any;
@@ -43,7 +42,6 @@ export class SmsGatewayProvider {
   constructor(
     private storage: Storage,
     private http: HttpClientProvider,
-    private backgroundMode: BackgroundMode
   ) {}
 
   /**
@@ -111,7 +109,7 @@ export class SmsGatewayProvider {
     currentUser
   ) {
     if (SMS) {
-      this.backgroundMode.enable();
+      //this.backgroundMode.enable();
       this.synchronizationWatcher = setInterval(() => {
         SMS.listSMS({}, (data: any) => {
           if (data && data.length > 0) {
