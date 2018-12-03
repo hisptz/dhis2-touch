@@ -746,19 +746,32 @@ export class EventCaptureFormProvider {
 
   discoveringEventsFromServer(
     programId: string,
+    programName: string,
     organisationUnitId: string,
     dataDimension: any,
+    eventType: string,
     currentUser: CurrentUser
   ): Observable<any> {
+    // @todo page size to be contolled
     const { attributeCc, attributeCos } = dataDimension;
-    let url = `/api/events.json?program=${programId}&orgUnit=${organisationUnitId}&pageSize=100&order=lastUpdated:desc`;
+    let url = `/api/events.json?program=${programId}&orgUnit=${organisationUnitId}&pageSize=50&order=lastUpdated:desc`;
     if (attributeCc && attributeCos && attributeCos !== '') {
       url += `&attributeCc=${attributeCc}&attributeCos=${attributeCos}`;
     }
     return new Observable(observer => {
       this.httpClientProvider.get(url, true, currentUser).subscribe(
         response => {
-          const { events } = response;
+          const events = _.map(response.events, event => {
+            return {
+              ...event,
+              eventType,
+              attributeCc,
+              programName,
+              attributeCategoryOptions: attributeCos,
+              id: event.event,
+              syncStatus: 'synced'
+            };
+          });
           observer.next(events);
           observer.complete();
         },

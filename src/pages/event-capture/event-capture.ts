@@ -428,7 +428,9 @@ export class EventCapturePage implements OnInit {
         : key;
       const dataDimension = this.getDataDimensions();
       const programId = this.selectedProgram.id;
+      const programName = this.selectedProgram.name;
       const organisationUnitId = this.selectedOrgUnit.id;
+      const eventType = 'event-capture';
       this.eventCaptureFormProvider
         .getEventsBasedOnEventsSelection(
           this.currentUser,
@@ -441,8 +443,10 @@ export class EventCapturePage implements OnInit {
           this.loadingOnlineEvents(
             events,
             programId,
+            programName,
             organisationUnitId,
-            dataDimension
+            dataDimension,
+            eventType
           );
           this.renderDataAsTable();
         });
@@ -452,19 +456,51 @@ export class EventCapturePage implements OnInit {
   loadingOnlineEvents(
     currentEvents,
     programId,
+    programName,
     organisationUnitId,
-    dataDimension
+    dataDimension,
+    eventType
   ) {
+    this.appProvider.setTopNotification(
+      'Discovering events from online server'
+    );
+    const eventIds = currentEvents.map(event => event.id);
     this.eventCaptureFormProvider
       .discoveringEventsFromServer(
         programId,
+        programName,
         organisationUnitId,
         dataDimension,
+        eventType,
         this.currentUser
       )
       .subscribe(
         events => {
-          console.log(JSON.stringify({ events }));
+          // @todo on adding events checking for conflicts
+          for (const event of events) {
+            if (eventIds.indexOf(event.id) === -1) {
+              this.currentEvents.push(event);
+            }
+          }
+          const eventsToBesaved = events.filter(
+            event => eventIds.indexOf(event.id) === -1
+          );
+          if (eventsToBesaved.length > 0) {
+            const count = eventsToBesaved.length;
+            this.appProvider.setTopNotification(
+              `${count} events have been discovered and saved from online servers`
+            );
+            this.eventCaptureFormProvider
+              .saveEvents(eventsToBesaved, this.currentUser)
+              .subscribe(
+                () => {
+                  this.renderDataAsTable();
+                },
+                error => {
+                  console.log(JSON.stringify(error));
+                }
+              );
+          }
         },
         error => {
           console.log(JSON.stringify({ error }));
