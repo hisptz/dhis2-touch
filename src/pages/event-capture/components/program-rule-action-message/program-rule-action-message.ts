@@ -26,9 +26,6 @@ export class ProgramRuleActionMessageComponent implements OnInit {
       const { message } = this.programRuleActionMessage;
       const { isOnComplete } = this.programRuleActionMessage;
       const { messageType } = this.programRuleActionMessage;
-      console.log('message ' + message);
-      console.log('messageType ' + messageType);
-      console.log('isOnComplete ' + isOnComplete);
     }
   }
 }

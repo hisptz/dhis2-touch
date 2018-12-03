@@ -45,6 +45,7 @@ export class EventCapturePage implements OnInit {
   translationMapper: any;
   dataEntrySettings: any;
   storageStatus: any;
+  hasOnlineEventLoaded: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -67,6 +68,7 @@ export class EventCapturePage implements OnInit {
     this.isFormReady = false;
     this.isProgramDimensionApplicable = false;
     this.translationMapper = {};
+    this.hasOnlineEventLoaded = false;
   }
 
   ngOnInit() {
@@ -116,6 +118,8 @@ export class EventCapturePage implements OnInit {
   ionViewDidEnter() {
     if (this.isFormReady) {
       this.loadingEvents();
+    } else {
+      this.hasOnlineEventLoaded = false;
     }
   }
 
@@ -206,6 +210,13 @@ export class EventCapturePage implements OnInit {
       });
       modal.onDidDismiss((selectedProgram: any) => {
         if (selectedProgram && selectedProgram.id) {
+          if (
+            this.selectedProgram &&
+            this.selectedProgram.id &&
+            this.selectedProgram.id !== selectedProgram.id
+          ) {
+            this.hasOnlineEventLoaded = false;
+          }
           this.selectedProgram = selectedProgram;
           this.programsProvider.setLastSelectedProgram(selectedProgram);
           this.updateEventCaptureSelections();
@@ -225,8 +236,10 @@ export class EventCapturePage implements OnInit {
       category.categoryOptions &&
       category.categoryOptions.length > 0
     ) {
-      let currentIndex = this.programCategoryCombo.categories.indexOf(category);
-      let modal = this.modalCtrl.create('DataDimensionSelectionPage', {
+      const currentIndex = this.programCategoryCombo.categories.indexOf(
+        category
+      );
+      const modal = this.modalCtrl.create('DataDimensionSelectionPage', {
         categoryOptions: category.categoryOptions,
         title: category.name,
         currentSelection: this.selectedDataDimension[currentIndex]
@@ -241,7 +254,7 @@ export class EventCapturePage implements OnInit {
       });
       modal.present();
     } else {
-      let message =
+      const message =
         'There is no option for selected category that associated with selected organisation unit';
       this.appProvider.setNormalNotification(message);
     }
@@ -249,7 +262,7 @@ export class EventCapturePage implements OnInit {
 
   getDataDimensions() {
     if (this.selectedProgram && this.selectedProgram.categoryCombo) {
-      let attributeCc = this.selectedProgram.categoryCombo.id;
+      const attributeCc = this.selectedProgram.categoryCombo.id;
       let attributeCos = '';
       this.selectedDataDimension.forEach((dimension: any, index: any) => {
         if (index == 0) {
@@ -340,7 +353,7 @@ export class EventCapturePage implements OnInit {
             this.programStage = programStages[0];
             const { executionDateLabel } = this.programStage;
             this.columnsToDisplay['eventDate'] =
-              executionDateLabel != 0 || executionDateLabel != 0.0
+              executionDateLabel && isNaN(executionDateLabel)
                 ? executionDateLabel
                 : 'Report date';
             if (this.programStage.programStageDataElements) {
@@ -424,33 +437,101 @@ export class EventCapturePage implements OnInit {
       this.loadingMessage = this.translationMapper[key]
         ? this.translationMapper[key]
         : key;
-      let dataDimension = this.getDataDimensions();
+      const dataDimension = this.getDataDimensions();
+      const programId = this.selectedProgram.id;
+      const programName = this.selectedProgram.name;
+      const organisationUnitId = this.selectedOrgUnit.id;
+      const eventType = 'event-capture';
       this.eventCaptureFormProvider
         .getEventsBasedOnEventsSelection(
           this.currentUser,
           dataDimension,
-          this.selectedProgram.id,
-          this.selectedOrgUnit.id
+          programId,
+          organisationUnitId
         )
         .subscribe((events: any) => {
           this.currentEvents = events;
+          if (!this.hasOnlineEventLoaded) {
+            this.loadingOnlineEvents(
+              programId,
+              programName,
+              organisationUnitId,
+              dataDimension,
+              eventType
+            );
+          }
           this.renderDataAsTable();
         });
     }
   }
 
+  loadingOnlineEvents(
+    programId,
+    programName,
+    organisationUnitId,
+    dataDimension,
+    eventType
+  ) {
+    this.hasOnlineEventLoaded = true;
+    const eventIds = this.currentEvents.map(event => event.id);
+    this.eventCaptureFormProvider
+      .discoveringEventsFromServer(
+        programId,
+        programName,
+        organisationUnitId,
+        dataDimension,
+        eventType,
+        this.currentUser
+      )
+      .subscribe(
+        events => {
+          // @todo on adding events checking for conflicts
+          for (const event of events) {
+            if (eventIds.indexOf(event.id) === -1) {
+              this.currentEvents.push(event);
+            }
+          }
+          const eventsToBesaved = events.filter(
+            event => eventIds.indexOf(event.id) === -1
+          );
+          if (eventsToBesaved.length > 0) {
+            const count = eventsToBesaved.length;
+            this.appProvider.setTopNotification(
+              `${count} events have been discovered and saved from online servers`
+            );
+            this.eventCaptureFormProvider
+              .saveEvents(eventsToBesaved, this.currentUser)
+              .subscribe(
+                () => {
+                  this.renderDataAsTable();
+                },
+                error => {
+                  console.log(JSON.stringify(error));
+                }
+              );
+          }
+        },
+        error => {
+          console.log(JSON.stringify({ error }));
+        }
+      );
+  }
+
   renderDataAsTable() {
     this.isLoading = true;
     let key = 'Preparing table';
+    this.currentEvents = _.uniqBy(this.currentEvents, 'id');
     this.loadingMessage = this.translationMapper[key]
       ? this.translationMapper[key]
       : key;
-    this.storageStatus.online = _.filter(this.currentEvents, {
-      syncStatus: 'synced'
-    }).length;
-    this.storageStatus.offline = _.filter(this.currentEvents, {
-      syncStatus: 'not-synced'
-    }).length;
+    this.storageStatus.online = _.filter(
+      this.currentEvents,
+      event => event.syncStatus === 'synced'
+    ).length;
+    this.storageStatus.offline = _.filter(
+      this.currentEvents,
+      event => event.syncStatus === 'not-synced'
+    ).length;
     this.eventCaptureFormProvider
       .getTableFormatResult(this.columnsToDisplay, this.currentEvents)
       .subscribe(
