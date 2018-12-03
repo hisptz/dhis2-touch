@@ -11,11 +11,11 @@ log.txt
 *.sublime-workspace
 .vscode/
 npm-debug.log*
-
 .idea/
 .ionic/
 .sourcemaps/
 .sass-cache/
+*.md5
 .tmp/
 .versions/
 coverage/

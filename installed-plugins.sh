@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 ionic cordova plugin add cordova-plugin-app-version
-ionic cordova plugin add cordova-plugin-background-mode
 ionic cordova plugin add cordova-plugin-console
 ionic cordova plugin add cordova-plugin-device
 ionic cordova plugin add cordova-plugin-advanced-http
