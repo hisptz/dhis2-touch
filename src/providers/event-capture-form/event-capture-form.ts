@@ -728,7 +728,6 @@ export class EventCaptureFormProvider {
    */
   saveEvents(events, currentUser): Observable<any> {
     let tableName = 'events';
-    console.log(JSON.stringify({ events }));
     return new Observable(observer => {
       this.sqlLiteProvider
         .insertBulkDataOnTable(tableName, events, currentUser.currentDatabase)

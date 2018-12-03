@@ -45,6 +45,7 @@ export class EventCapturePage implements OnInit {
   translationMapper: any;
   dataEntrySettings: any;
   storageStatus: any;
+  hasOnlineEventLoaded: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -67,6 +68,7 @@ export class EventCapturePage implements OnInit {
     this.isFormReady = false;
     this.isProgramDimensionApplicable = false;
     this.translationMapper = {};
+    this.hasOnlineEventLoaded = false;
   }
 
   ngOnInit() {
@@ -116,6 +118,8 @@ export class EventCapturePage implements OnInit {
   ionViewDidEnter() {
     if (this.isFormReady) {
       this.loadingEvents();
+    } else {
+      this.hasOnlineEventLoaded = false;
     }
   }
 
@@ -440,31 +444,29 @@ export class EventCapturePage implements OnInit {
         )
         .subscribe((events: any) => {
           this.currentEvents = events;
-          this.loadingOnlineEvents(
-            events,
-            programId,
-            programName,
-            organisationUnitId,
-            dataDimension,
-            eventType
-          );
+          if (!this.hasOnlineEventLoaded) {
+            this.loadingOnlineEvents(
+              programId,
+              programName,
+              organisationUnitId,
+              dataDimension,
+              eventType
+            );
+          }
           this.renderDataAsTable();
         });
     }
   }
 
   loadingOnlineEvents(
-    currentEvents,
     programId,
     programName,
     organisationUnitId,
     dataDimension,
     eventType
   ) {
-    this.appProvider.setTopNotification(
-      'Discovering events from online server'
-    );
-    const eventIds = currentEvents.map(event => event.id);
+    this.hasOnlineEventLoaded = true;
+    const eventIds = this.currentEvents.map(event => event.id);
     this.eventCaptureFormProvider
       .discoveringEventsFromServer(
         programId,
@@ -511,6 +513,7 @@ export class EventCapturePage implements OnInit {
   renderDataAsTable() {
     this.isLoading = true;
     let key = 'Preparing table';
+    this.currentEvents = _.uniqBy(this.currentEvents, 'id');
     this.loadingMessage = this.translationMapper[key]
       ? this.translationMapper[key]
       : key;
