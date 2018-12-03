@@ -93,7 +93,8 @@
     "shp-write": "^0.3.2",
     "sw-toolbox": "3.6.0",
     "web-animations-js": "^2.3.1",
-    "zone.js": "0.8.26"
+    "zone.js": "0.8.26",
+    "cordova-ios": "4.5.4"
   },
   "config": {
     "commitizen": {

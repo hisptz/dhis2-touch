@@ -55,29 +55,34 @@ export class DataStoreManagerProvider {
               nameSpaceKeys = [...nameSpaceKeys, { nameSpace, key }];
             });
           });
-          for (const nameSpaceKey of nameSpaceKeys) {
-            const { nameSpace, key } = nameSpaceKey;
-            const id = `${nameSpace}_${key}`;
-            const status = 'synced';
-            this.getDataStoreByNameSpaceAndKeyFromServer(
-              nameSpace,
-              key,
-              currentUser
-            ).subscribe(
-              data => {
-                dataStoreData = [
-                  ...dataStoreData,
-                  { id, key, nameSpace, data, status }
-                ];
-                if (dataStoreData.length === nameSpaceKeys.length) {
-                  observer.next(dataStoreData);
-                  observer.complete();
+          if (nameSpaceKeys.length == 0) {
+            observer.next(dataStoreData);
+            observer.complete();
+          } else {
+            for (const nameSpaceKey of nameSpaceKeys) {
+              const { nameSpace, key } = nameSpaceKey;
+              const id = `${nameSpace}_${key}`;
+              const status = 'synced';
+              this.getDataStoreByNameSpaceAndKeyFromServer(
+                nameSpace,
+                key,
+                currentUser
+              ).subscribe(
+                data => {
+                  dataStoreData = [
+                    ...dataStoreData,
+                    { id, key, nameSpace, data, status }
+                  ];
+                  if (dataStoreData.length === nameSpaceKeys.length) {
+                    observer.next(dataStoreData);
+                    observer.complete();
+                  }
+                },
+                error => {
+                  observer.error(error);
                 }
-              },
-              error => {
-                observer.error(error);
-              }
-            );
+              );
+            }
           }
         },
         error => {
@@ -93,24 +98,30 @@ export class DataStoreManagerProvider {
       this.httpCLientProvider.get(url, true, currentUser).subscribe(
         (nameSpaces: string[]) => {
           const nameSpacesKeysObject = {};
-          for (const nameSpace of nameSpaces) {
-            this.getDataStoreNameSpaceKeysFromServer(
-              nameSpace,
-              currentUser
-            ).subscribe(
-              keys => {
-                nameSpacesKeysObject[nameSpace] = keys;
-                if (
-                  Object.keys(nameSpacesKeysObject).length === nameSpaces.length
-                ) {
-                  observer.next(nameSpacesKeysObject);
-                  observer.complete();
+          if (nameSpaces.length === 0) {
+            observer.next(nameSpacesKeysObject);
+            observer.complete();
+          } else {
+            for (const nameSpace of nameSpaces) {
+              this.getDataStoreNameSpaceKeysFromServer(
+                nameSpace,
+                currentUser
+              ).subscribe(
+                keys => {
+                  nameSpacesKeysObject[nameSpace] = keys;
+                  if (
+                    Object.keys(nameSpacesKeysObject).length ===
+                    nameSpaces.length
+                  ) {
+                    observer.next(nameSpacesKeysObject);
+                    observer.complete();
+                  }
+                },
+                error => {
+                  observer.error(error);
                 }
-              },
-              error => {
-                observer.error(error);
-              }
-            );
+              );
+            }
           }
         },
         error => {
@@ -162,17 +173,26 @@ export class DataStoreManagerProvider {
     currentUser: CurrentUser
   ): Observable<any> {
     return new Observable(observer => {
-      this.sqlLiteProvider
-        .insertBulkDataOnTable(this.resource, data, currentUser.currentDatabase)
-        .subscribe(
-          () => {
-            observer.next();
-            observer.complete();
-          },
-          error => {
-            observer.error(error);
-          }
-        );
+      if (data.length == 0) {
+        observer.next();
+        observer.complete();
+      } else {
+        this.sqlLiteProvider
+          .insertBulkDataOnTable(
+            this.resource,
+            data,
+            currentUser.currentDatabase
+          )
+          .subscribe(
+            () => {
+              observer.next();
+              observer.complete();
+            },
+            error => {
+              observer.error(error);
+            }
+          );
+      }
     });
   }
 
