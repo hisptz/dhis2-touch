@@ -18,12 +18,14 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openOrganisationUnitTree()">
+        <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center
+          text-capitalize (tap)="openOrganisationUnitTree()">
           <img class="side-menu-icon" [src]="icons.orgUnit" />&nbsp;&nbsp;
           <span *ngIf="!selectedOrgUnit || !selectedOrgUnit.name" [translate]="organisationUnitLabel"></span>
           <span *ngIf="selectedOrgUnit && selectedOrgUnit.name"> {{ selectedOrgUnit.name }}</span>
         </div>
-        <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openProgramList()">
+        <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center
+          text-capitalize (tap)="openProgramList()">
           <img class="side-menu-icon" [src]="icons.program" />&nbsp;&nbsp;
           <span *ngIf="!selectedProgram || !selectedProgram.name " [translate]="programLabel"></span>
           <span *ngIf="selectedProgram && selectedProgram.name">{{ selectedProgram.name }}</span>
@@ -31,7 +33,8 @@
         <div *ngIf="programCategoryCombo && programCategoryCombo.id ">
           <div *ngIf="isProgramDimensionApplicable">
             <div *ngFor="let category of programCategoryCombo.categories;let categoryIndex = index">
-              <div (tap)="openDataDimensionSelection(category)" class="item-card-category" color="font-color" full text-center text-wrap>
+              <div (tap)="openDataDimensionSelection(category)" class="item-card-category" color="font-color" full
+                text-center text-wrap>
                 <div style="padding-bottom: 5px;">
                   <b>{{ category.name }}</b>
                 </div>
@@ -54,16 +57,22 @@
               </b> : {{ storageStatus.online }}
               <b>
                 <span [translate]="'Not synced'"></span>
-              </b> : {{storageStatus.offline }}</span>
+              </b> : {{storageStatus.offline }}
+              <span *ngIf="showEventConflictHandler" margin-left>&nbsp;&nbsp;
+                <event-conflict-handler (successEventConflictHandle)="onSuccessEventConflictHandle($event)"
+                  (successDiscovering)="onSuccessDiscoveringEvents($event)" [eventConflictHandler]="eventConflictHandler"></event-conflict-handler>
+              </span>
+            </span>
+
           </div>
 
-          <div class="item-card" (click)="hideAndShowColumns()" color="font-color" padding-top padding-bottom ion-button clear text-center
-            text-capitalize icon-start>
+          <div class="item-card" (click)="hideAndShowColumns()" color="font-color" padding-top padding-bottom
+            ion-button clear text-center text-capitalize icon-start>
             <ion-icon name="ios-eye" color="icon-color"></ion-icon>
             <span [translate]="'Columns'"></span>
           </div>
-          <div class="item-card" (click)="goToEventRegister()" color="font-color" padding-top padding-bottom ion-button clear text-center
-            text-capitalize icon-start>
+          <div class="item-card" (click)="goToEventRegister()" color="font-color" padding-top padding-bottom ion-button
+            clear text-center text-capitalize icon-start>
             <ion-icon name="add" color="icon-color"></ion-icon>
             <span [translate]="'Add'"></span>
           </div>
@@ -86,7 +95,8 @@
                   </tr>
                 </thead>
                 <tbody *ngIf="tableLayout.rows">
-                  <tr [ngStyle]="{'background-color': '#F4F4F4' }" *ngFor="let row of tableLayout.rows;let currentIndex = index" (click)="goToEventView(currentIndex)">
+                  <tr [ngStyle]="{'background-color': '#F4F4F4' }" *ngFor="let row of tableLayout.rows;let currentIndex = index"
+                    (click)="goToEventView(currentIndex)">
                     <td *ngFor="let data of row">
                       {{ data }}
                     </td>
