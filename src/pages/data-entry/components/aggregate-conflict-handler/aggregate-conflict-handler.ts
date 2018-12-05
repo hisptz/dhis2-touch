@@ -202,7 +202,7 @@ export class AggregateConflictHandlerComponent implements OnInit {
     if (action === 'decline') {
       const actionSheet = this.actionSheetCtrl.create({
         title: this.translationMapper[
-          'You are about to skip data from server, are you sure?'
+          'You are about to discard data from server, are you sure?'
         ],
         buttons: [
           {
@@ -235,7 +235,7 @@ export class AggregateConflictHandlerComponent implements OnInit {
       'Discovering data from the server',
       'You are about to apply new updates to the from the server, are you sure?',
       'You are about to replace offline data with data from the server, are you sure?',
-      'You are about to skip data from server, are you sure?',
+      'You are about to discard data from server, are you sure?',
       'Discovering entry form completeness information',
       'Yes',
       'No'

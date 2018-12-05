@@ -97,9 +97,9 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
             this.successDiscoveringEvents.emit({ status: true });
             const { events } = this.eventConflictHandler;
             const localEventIds = _.map(events, event => event.id);
-            this.eventsWithConflicts = _.filter(discoveredEvents, event => {
-              return _.indexOf(localEventIds, event.id) > -1;
-            });
+            this.eventsWithConflicts = this.getEventsWithConflicts(
+              discoveredEvents
+            );
             const eventWithOutConflicts = _.filter(discoveredEvents, event => {
               return _.indexOf(localEventIds, event.id) === -1;
             });
@@ -122,6 +122,24 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
         )
     );
   }
+
+  getEventsWithConflicts(discoveredEvents) {
+    const { events } = this.eventConflictHandler;
+    const eventsWithConflicts = [];
+    const localEventIds = _.map(events, event => event.id);
+    const sconstFilteredDiscoveredEvents = _.filter(discoveredEvents, event => {
+      return _.indexOf(localEventIds, event.id) > -1;
+    });
+    _.map(sconstFilteredDiscoveredEvents, event => {
+      const offlineEvent = _.find(events, offlineEventObject => {
+        return offlineEventObject.id === event.id;
+      });
+      console.log(JSON.stringify({ offlineEvent }));
+    });
+    return eventsWithConflicts;
+  }
+
+  hasSameDataValues(offlineDataValue, onlineDataValue) {}
 
   applyingChnagesToEvents(events) {
     this.successEventConflictHandle.emit(events);
@@ -150,7 +168,7 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
     }
     if (action === 'decline') {
       const actionSheet = this.actionSheetCtrl.create({
-        title: 'You are about to skip data from server, are you sure?',
+        title: 'You are about to discard data from server, are you sure?',
         buttons: [
           {
             text: 'Yes',
@@ -175,5 +193,8 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.clearAllSubscriptions();
+    this.eventConflictHandler = null;
+    this.isLoading = null;
+    this.icons = null;
   }
 }
