@@ -6,6 +6,8 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
+import { ActionSheetController } from 'ionic-angular';
+
 import { Subscription } from 'rxjs/Subscription';
 import * as _ from 'lodash';
 import { EventCaptureFormProvider } from '../../../../providers/event-capture-form/event-capture-form';
@@ -35,7 +37,8 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
   subscriptions: Subscription;
   constructor(
     private eventCaptureFormProvider: EventCaptureFormProvider,
-    private appProvider: AppProvider
+    private appProvider: AppProvider,
+    private actionSheetCtrl: ActionSheetController
   ) {
     this.isLoading = true;
     this.subscriptions = new Subscription();
@@ -125,8 +128,44 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
   }
 
   conflictHandlingAction(action) {
-    console.log(action);
-    this.successEventConflictHandle.emit([]);
+    if (action === 'accept') {
+      const actionSheet = this.actionSheetCtrl.create({
+        title:
+          'You are about to replace offline data with data from the server, are you sure?',
+        buttons: [
+          {
+            text: 'Yes',
+            handler: () => {
+              const { events } = this.eventConflictHandler;
+              // this.eventsWithConflicts
+            }
+          },
+          {
+            text: 'No',
+            handler: () => {}
+          }
+        ]
+      });
+      actionSheet.present();
+    }
+    if (action === 'decline') {
+      const actionSheet = this.actionSheetCtrl.create({
+        title: 'You are about to skip data from server, are you sure?',
+        buttons: [
+          {
+            text: 'Yes',
+            handler: () => {
+              this.eventsWithConflicts = [];
+            }
+          },
+          {
+            text: 'No',
+            handler: () => {}
+          }
+        ]
+      });
+      actionSheet.present();
+    }
   }
 
   clearAllSubscriptions() {

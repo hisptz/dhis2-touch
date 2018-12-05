@@ -1,12 +1,12 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { ActionSheetController } from 'ionic-angular';
+import * as _ from 'lodash';
 import { DataValuesProvider } from '../../../../providers/data-values/data-values';
 import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
 import { UserProvider } from '../../../../providers/user/user';
 import { DataEntryFormProvider } from '../../../../providers/data-entry-form/data-entry-form';
 import { DataSetCompletenessProvider } from '../../../../providers/data-set-completeness/data-set-completeness';
 import { AppProvider } from '../../../../providers/app/app';
-import * as _ from 'lodash';
-import { ActionSheetController } from 'ionic-angular';
 
 /**
  * Generated class for the AggregateConflictHandlerComponent component.

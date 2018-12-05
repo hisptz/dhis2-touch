@@ -485,11 +485,20 @@ export class EventCapturePage implements OnInit {
   }
 
   onSuccessEventConflictHandle(events) {
+    const eventIds = _.map(events, event => event.id);
+    const currentEvents = _.filter(this.currentEvents, event => {
+      return _.indexOf(eventIds, event.id) === -1;
+    });
+    const eventsToBeApplied = _.flatMapDeep([...currentEvents, events]);
     this.eventCaptureFormProvider
-      .saveEvents(events, this.currentUser)
+      .saveEvents(eventsToBeApplied, this.currentUser)
       .subscribe(
         () => {
-          this.currentEvents = events;
+          this.currentEvents = eventsToBeApplied;
+          this.eventConflictHandler = {
+            ...this.eventConflictHandler,
+            events: this.currentEvents
+          };
           this.renderDataAsTable();
         },
         error => {
