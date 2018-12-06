@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
+import { TranslateModule } from '@ngx-translate/core';
 import { sharedComponentsModule } from '../../../components/sharedComponents.module';
 import { DataEntryComponentsModule } from '../../data-entry/components/dataEntryComponents.module';
 import { ProgramStageEventBasedComponent } from './program-stage-event-based/program-stage-event-based';
@@ -17,16 +18,23 @@ import { EventConflictHandlerComponent } from './event-conflict-handler/event-co
     EventInputContainerComponent,
     DefaultEventEntryFormComponent,
     EventCoordinateSelectorComponent,
-    ProgramRuleActionMessageComponent,EventConflictHandlerComponent
+    ProgramRuleActionMessageComponent,
+    EventConflictHandlerComponent
   ],
-  imports: [IonicModule, sharedComponentsModule, DataEntryComponentsModule],
+  imports: [
+    IonicModule,
+    sharedComponentsModule,
+    DataEntryComponentsModule,
+    TranslateModule.forChild({})
+  ],
   exports: [
     ProgramStageEventBasedComponent,
     EventDateNotificationComponent,
     EventInputContainerComponent,
     DefaultEventEntryFormComponent,
     EventCoordinateSelectorComponent,
-    ProgramRuleActionMessageComponent,EventConflictHandlerComponent
+    ProgramRuleActionMessageComponent,
+    EventConflictHandlerComponent
   ]
 })
 export class EventCaptureComponentsModule {}

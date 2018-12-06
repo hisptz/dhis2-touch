@@ -132,6 +132,8 @@ export class ProfileProvider {
    */
   getSavedUserData(currentUser: CurrentUser): Observable<any> {
     const userData = {};
+    const { authorities } = currentUser;
+    console.log(JSON.stringify(authorities));
     return new Observable(observer => {
       this.userProvider.getUserData().subscribe(
         (savedUserData: any) => {
