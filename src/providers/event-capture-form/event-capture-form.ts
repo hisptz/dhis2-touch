@@ -333,6 +333,10 @@ export class EventCaptureFormProvider {
                               }
                             );
                             delete programStageSection.dataElements;
+                            programStageSection.sortOrder = parseInt(
+                              programStageSection.sortOrder,
+                              10
+                            );
                             programStageSection[
                               'dataElements'
                             ] = newDataElements;

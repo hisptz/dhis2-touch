@@ -8,6 +8,7 @@ import { EventDateNotificationComponent } from './event-date-notification/event-
 import { DefaultEventEntryFormComponent } from './default-event-entry-form/default-event-entry-form';
 import { EventCoordinateSelectorComponent } from './event-coordinate-selector/event-coordinate-selector';
 import { ProgramRuleActionMessageComponent } from './program-rule-action-message/program-rule-action-message';
+import { EventConflictHandlerComponent } from './event-conflict-handler/event-conflict-handler';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,7 @@ import { ProgramRuleActionMessageComponent } from './program-rule-action-message
     EventInputContainerComponent,
     DefaultEventEntryFormComponent,
     EventCoordinateSelectorComponent,
-    ProgramRuleActionMessageComponent
+    ProgramRuleActionMessageComponent,EventConflictHandlerComponent
   ],
   imports: [IonicModule, sharedComponentsModule, DataEntryComponentsModule],
   exports: [
@@ -25,7 +26,7 @@ import { ProgramRuleActionMessageComponent } from './program-rule-action-message
     EventInputContainerComponent,
     DefaultEventEntryFormComponent,
     EventCoordinateSelectorComponent,
-    ProgramRuleActionMessageComponent
+    ProgramRuleActionMessageComponent,EventConflictHandlerComponent
   ]
 })
 export class EventCaptureComponentsModule {}

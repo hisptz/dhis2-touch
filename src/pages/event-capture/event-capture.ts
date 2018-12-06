@@ -45,6 +45,8 @@ export class EventCapturePage implements OnInit {
   translationMapper: any;
   dataEntrySettings: any;
   storageStatus: any;
+  showEventConflictHandler: boolean;
+  eventConflictHandler: any;
   hasOnlineEventLoaded: boolean;
 
   constructor(
@@ -59,8 +61,12 @@ export class EventCapturePage implements OnInit {
     private appTranslation: AppTranslationProvider
   ) {
     this.storageStatus = { online: 0, offline: 0 };
-    this.icons.orgUnit = 'assets/icon/orgUnit.png';
-    this.icons.program = 'assets/icon/program.png';
+    this.icons = {
+      accept: 'assets/icon/tick.png',
+      decline: 'assets/icon/cancel.png',
+      orgUnit: 'assets/icon/orgUnit.png',
+      program: 'assets/icon/program.png'
+    };
     this.selectedDataDimension = [];
     this.programIdsByUserRoles = [];
     this.programs = [];
@@ -68,8 +74,12 @@ export class EventCapturePage implements OnInit {
     this.isFormReady = false;
     this.isProgramDimensionApplicable = false;
     this.translationMapper = {};
+    this.showEventConflictHandler = false;
+    this.eventConflictHandler = {};
     this.hasOnlineEventLoaded = false;
   }
+
+  conflictHandlingAction(key, action) {}
 
   ngOnInit() {
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
@@ -433,6 +443,7 @@ export class EventCapturePage implements OnInit {
       this.selectedProgram.id
     ) {
       this.isLoading = true;
+      this.showEventConflictHandler = false;
       let key = 'Discovering data';
       this.loadingMessage = this.translationMapper[key]
         ? this.translationMapper[key]
@@ -442,6 +453,18 @@ export class EventCapturePage implements OnInit {
       const programName = this.selectedProgram.name;
       const organisationUnitId = this.selectedOrgUnit.id;
       const eventType = 'event-capture';
+      setTimeout(() => {
+        this.eventConflictHandler = {
+          ...{},
+          organisationUnitId,
+          eventType,
+          dataDimension,
+          programId,
+          programName,
+          currentUser: this.currentUser
+        };
+        this.showEventConflictHandler = !this.hasOnlineEventLoaded;
+      }, 10);
       this.eventCaptureFormProvider
         .getEventsBasedOnEventsSelection(
           this.currentUser,
@@ -450,19 +473,38 @@ export class EventCapturePage implements OnInit {
           organisationUnitId
         )
         .subscribe((events: any) => {
+          this.eventConflictHandler = { ...this.eventConflictHandler, events };
           this.currentEvents = events;
-          if (!this.hasOnlineEventLoaded) {
-            this.loadingOnlineEvents(
-              programId,
-              programName,
-              organisationUnitId,
-              dataDimension,
-              eventType
-            );
-          }
           this.renderDataAsTable();
         });
     }
+  }
+
+  onSuccessDiscoveringEvents(statusData) {
+    this.hasOnlineEventLoaded = true;
+  }
+
+  onSuccessEventConflictHandle(events) {
+    const eventIds = _.map(events, event => event.id);
+    const currentEvents = _.filter(this.currentEvents, event => {
+      return _.indexOf(eventIds, event.id) === -1;
+    });
+    const eventsToBeApplied = _.flatMapDeep([...currentEvents, events]);
+    this.eventCaptureFormProvider
+      .saveEvents(eventsToBeApplied, this.currentUser)
+      .subscribe(
+        () => {
+          this.currentEvents = eventsToBeApplied;
+          this.eventConflictHandler = {
+            ...this.eventConflictHandler,
+            events: this.currentEvents
+          };
+          this.renderDataAsTable();
+        },
+        error => {
+          console.log(JSON.stringify(error));
+        }
+      );
   }
 
   loadingOnlineEvents(
@@ -472,7 +514,6 @@ export class EventCapturePage implements OnInit {
     dataDimension,
     eventType
   ) {
-    this.hasOnlineEventLoaded = true;
     const eventIds = this.currentEvents.map(event => event.id);
     this.eventCaptureFormProvider
       .discoveringEventsFromServer(
