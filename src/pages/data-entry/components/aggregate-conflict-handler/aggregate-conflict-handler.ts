@@ -1,12 +1,12 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { ActionSheetController } from 'ionic-angular';
+import * as _ from 'lodash';
 import { DataValuesProvider } from '../../../../providers/data-values/data-values';
 import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
 import { UserProvider } from '../../../../providers/user/user';
 import { DataEntryFormProvider } from '../../../../providers/data-entry-form/data-entry-form';
 import { DataSetCompletenessProvider } from '../../../../providers/data-set-completeness/data-set-completeness';
 import { AppProvider } from '../../../../providers/app/app';
-import * as _ from 'lodash';
-import { ActionSheetController } from 'ionic-angular';
 
 /**
  * Generated class for the AggregateConflictHandlerComponent component.
@@ -202,7 +202,7 @@ export class AggregateConflictHandlerComponent implements OnInit {
     if (action === 'decline') {
       const actionSheet = this.actionSheetCtrl.create({
         title: this.translationMapper[
-          'You are about to skip data from server, are you sure?'
+          'You are about to discard data from server, are you sure?'
         ],
         buttons: [
           {
@@ -235,7 +235,7 @@ export class AggregateConflictHandlerComponent implements OnInit {
       'Discovering data from the server',
       'You are about to apply new updates to the from the server, are you sure?',
       'You are about to replace offline data with data from the server, are you sure?',
-      'You are about to skip data from server, are you sure?',
+      'You are about to discard data from server, are you sure?',
       'Discovering entry form completeness information',
       'Yes',
       'No'

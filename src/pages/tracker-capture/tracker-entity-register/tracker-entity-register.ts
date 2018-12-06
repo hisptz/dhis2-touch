@@ -370,9 +370,7 @@ export class TrackerEntityRegisterPage implements OnInit {
             const { hiddenFields } = data;
             const { hiddenProgramStages } = data;
             const { errorOrWarningMessage } = data;
-            if (errorOrWarningMessage) {
-              this.errorOrWarningMessage = errorOrWarningMessage;
-            }
+            const { assignedFields } = data;
             if (hiddenFields) {
               this.hiddenFields = hiddenFields;
               Object.keys(hiddenFields).map(key => {
@@ -387,6 +385,36 @@ export class TrackerEntityRegisterPage implements OnInit {
             }
             if (hiddenProgramStages) {
               this.hiddenProgramStages = hiddenProgramStages;
+            }
+            if (errorOrWarningMessage) {
+              this.errorOrWarningMessage = errorOrWarningMessage;
+              Object.keys(errorOrWarningMessage).map(key => {
+                const id = key + '-trackedEntityAttribute';
+                const message = errorOrWarningMessage[key];
+                const { messageType } = message;
+                if (messageType === 'error') {
+                  this.hiddenFields[key] = true;
+                  this.trackedEntityAttributesSavingStatusClass[id] =
+                    'input-field-container';
+                  this.updateData({ id: id, value: '' }, true, false);
+                  setTimeout(() => {
+                    delete this.hiddenFields[key];
+                  }, 10);
+                }
+              });
+            }
+            if (assignedFields) {
+              Object.keys(assignedFields).map(key => {
+                const id = key + '-trackedEntityAttribute';
+                const value = assignedFields[key];
+                this.hiddenFields[key] = true;
+                this.trackedEntityAttributesSavingStatusClass[id] =
+                  'input-field-container';
+                this.updateData({ id: id, value }, true, false);
+                setTimeout(() => {
+                  delete this.hiddenFields[key];
+                }, 10);
+              });
             }
           }
         },
@@ -505,8 +533,7 @@ export class TrackerEntityRegisterPage implements OnInit {
           () => {
             this.trackedEntityAttributesSavingStatusClass[
               this.currentTrackedEntityId
-            ] =
-              'input-field-container-success';
+            ] = 'input-field-container-success';
             // Update status for custom form
             const dataUpdateStatus = {};
             _.each(_.keys(this.dataObject), dataObjectId => {
@@ -528,8 +555,7 @@ export class TrackerEntityRegisterPage implements OnInit {
           error => {
             this.trackedEntityAttributesSavingStatusClass[
               this.currentTrackedEntityId
-            ] =
-              'input-field-container-failed';
+            ] = 'input-field-container-failed';
             console.log(JSON.stringify(error));
             // Update status for custom form
             const dataUpdateStatus = {};
@@ -558,8 +584,7 @@ export class TrackerEntityRegisterPage implements OnInit {
               key => {
                 this.trackedEntityAttributesSavingStatusClass[
                   key + '-trackedEntityAttribute'
-                ] =
-                  'input-field-container-success';
+                ] = 'input-field-container-success';
               }
             );
             // Update status for custom form
@@ -575,8 +600,7 @@ export class TrackerEntityRegisterPage implements OnInit {
               key => {
                 this.trackedEntityAttributesSavingStatusClass[
                   key + '-trackedEntityAttribute'
-                ] =
-                  'input-field-container-failed';
+                ] = 'input-field-container-failed';
               }
             );
             this.appProvider.setNormalNotification(
