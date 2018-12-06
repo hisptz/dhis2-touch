@@ -362,6 +362,19 @@ export class TrackedEntityDashboardPage implements OnInit {
                 }
               });
             }
+            if (assignedFields) {
+              Object.keys(assignedFields).map(key => {
+                const id = key + '-trackedEntityAttribute';
+                const value = assignedFields[key];
+                this.hiddenFields[key] = true;
+                this.trackedEntityAttributesSavingStatusClass[id] =
+                  'input-field-container';
+                this.updateData({ id: id, value }, true);
+                setTimeout(() => {
+                  delete this.hiddenFields[key];
+                }, 10);
+              });
+            }
           }
         },
         error => {

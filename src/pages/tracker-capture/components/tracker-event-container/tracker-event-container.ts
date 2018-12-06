@@ -211,6 +211,18 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
                 }
               });
             }
+            if (assignedFields) {
+              Object.keys(assignedFields).map(key => {
+                const id = key + '-dataElement';
+                const value = assignedFields[key];
+                this.hiddenFields[key] = true;
+                this.dataValuesSavingStatusClass[id] = 'input-field-container';
+                this.updateData({ id: id, value }, true);
+                setTimeout(() => {
+                  delete this.hiddenFields[key];
+                }, 10);
+              });
+            }
           }
         },
         error => {
