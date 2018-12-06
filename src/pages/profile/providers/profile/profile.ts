@@ -5,7 +5,7 @@ import { UserProvider } from '../../../../providers/user/user';
 import { DataSetsProvider } from '../../../../providers/data-sets/data-sets';
 import { ProgramsProvider } from '../../../../providers/programs/programs';
 import { HttpClientProvider } from '../../../../providers/http-client/http-client';
-
+import * as _ from 'lodash';
 /*
   Generated class for the ProfileProvider provider.
 
@@ -22,7 +22,7 @@ export class ProfileProvider {
   ) {}
 
   getProfileContentDetails() {
-    let profileContents = [
+    const profileContents = [
       {
         id: 'userProfile',
         name: 'User Profile',
@@ -133,7 +133,6 @@ export class ProfileProvider {
   getSavedUserData(currentUser: CurrentUser): Observable<any> {
     const userData = {};
     const { authorities } = currentUser;
-    console.log(JSON.stringify(authorities.indexOf('ALL')));
     return new Observable(observer => {
       this.userProvider.getUserData().subscribe(
         (savedUserData: any) => {
@@ -150,11 +149,13 @@ export class ProfileProvider {
                       userData['roles'] = this.getUserRoles(savedUserData);
                       userData['program'] = this.getAssignedProgram(
                         savedUserData,
-                        programs
+                        programs,
+                        authorities
                       );
                       userData['form'] = this.getAssignedForm(
                         savedUserData,
-                        dataSets
+                        dataSets,
+                        authorities
                       );
                       observer.next(userData);
                       observer.complete();
@@ -283,13 +284,17 @@ export class ProfileProvider {
    * @param userData
    * @returns {Array}
    */
-  getAssignedProgram(userData, programs) {
+  getAssignedProgram(userData, programs, authorities) {
     let assignedPrograms = [];
-    programs.map((program: any) => {
-      if (userData.programs && userData.programs.indexOf(program.id) > -1) {
-        assignedPrograms.push(program.name);
-      }
-    });
+    if (authorities.indexOf('ALL') > -1) {
+      assignedPrograms = _.map(programs, program => program.name);
+    } else {
+      programs.map((program: any) => {
+        if (userData.programs && userData.programs.indexOf(program.id) > -1) {
+          assignedPrograms.push(program.name);
+        }
+      });
+    }
     return assignedPrograms.sort();
   }
 
@@ -298,14 +303,17 @@ export class ProfileProvider {
    * @param userData
    * @returns {Array}
    */
-  getAssignedForm(userData, dataSets) {
+  getAssignedForm(userData, dataSets, authorities) {
     let assignedDataSets = [];
-    console.log(dataSets.length);
-    dataSets.map((dataSet: any) => {
-      if (userData.dataSets && userData.dataSets.indexOf(dataSet.id) > -1) {
-        assignedDataSets.push(dataSet.name);
-      }
-    });
+    if (authorities.indexOf('ALL') > -1) {
+      assignedDataSets = _.map(dataSets, dataSet => dataSet.name);
+    } else {
+      dataSets.map((dataSet: any) => {
+        if (userData.dataSets && userData.dataSets.indexOf(dataSet.id) > -1) {
+          assignedDataSets.push(dataSet.name);
+        }
+      });
+    }
     return assignedDataSets.sort();
   }
 
