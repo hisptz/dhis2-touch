@@ -59,6 +59,7 @@ export class ProgramRulesProvider {
     return new Observable(observer => {
       let programRulesEvaluations = {
         hiddenFields: {},
+        assignedFields: {},
         hiddenSections: {},
         hiddenProgramStages: {},
         errorOrWarningMessage: {}
@@ -92,7 +93,7 @@ export class ProgramRulesProvider {
                   location,
                   data
                 } = action;
-                console.log(location);
+                // console.log(location);
                 let evalCondition = condition;
                 let evalDataCondition = data ? data : '';
                 let evalData = '';
@@ -106,8 +107,8 @@ export class ProgramRulesProvider {
                         : programRulesVariable &&
                           programRulesVariable.trackedEntityAttribute &&
                           programRulesVariable.trackedEntityAttribute.id
-                          ? programRulesVariable.trackedEntityAttribute.id
-                          : '';
+                        ? programRulesVariable.trackedEntityAttribute.id
+                        : '';
                     let value = "''";
                     if (
                       dataValuesObject &&
@@ -139,6 +140,7 @@ export class ProgramRulesProvider {
                         .join(`${value}`);
                     }
                     if (data && data.includes(programRulesVariable.name)) {
+                      console.log(JSON.stringify({ action }));
                       evalDataCondition = evalDataCondition
                         .split('#{' + programRulesVariable.name + '}')
                         .join(`${value}`);
@@ -149,7 +151,7 @@ export class ProgramRulesProvider {
                     evalData = eval(`(${evalDataCondition})`);
                   } catch (error) {
                   } finally {
-                    console.log('evalData : ' + evalData);
+                    // console.log('evalData : ' + evalData);
                   }
 
                   if (evalCondition !== condition) {
@@ -234,7 +236,19 @@ export class ProgramRulesProvider {
                             };
                           }
                         } else if (programRuleActionType === ASSIGN) {
-                          console.log('Handling for : ' + ASSIGN);
+                          if (dataElement && dataElement.id) {
+                            programRulesEvaluations.assignedFields[
+                              dataElement.id
+                            ] = evalData;
+                          }
+                          if (
+                            trackedEntityAttribute &&
+                            trackedEntityAttribute.id
+                          ) {
+                            programRulesEvaluations.assignedFields[
+                              trackedEntityAttribute.id
+                            ] = evalData;
+                          }
                         } else if (
                           programRuleActionType === SET_MANDATORY_FIELD
                         ) {
@@ -250,9 +264,7 @@ export class ProgramRulesProvider {
                         }
                       }
                     } catch (error) {
-                      console.log('error : ' + JSON.stringify(error));
-                      console.log('evalCondition : ' + evalCondition);
-                      console.log('condition : ' + condition);
+                      console.log(JSON.stringify({ error }));
                     }
                   }
                 }

@@ -329,6 +329,7 @@ export class TrackedEntityDashboardPage implements OnInit {
             const { hiddenFields } = data;
             const { hiddenProgramStages } = data;
             const { errorOrWarningMessage } = data;
+            const { assignedFields } = data;
             if (hiddenFields) {
               this.hiddenFields = hiddenFields;
               Object.keys(hiddenFields).map(key => {

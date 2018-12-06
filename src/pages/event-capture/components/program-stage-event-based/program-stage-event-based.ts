@@ -262,6 +262,8 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
             const { hiddenFields } = data;
             const { hiddenProgramStages } = data;
             const { errorOrWarningMessage } = data;
+            const { assignedFields } = data;
+            console.log(JSON.stringify({ assignedFields }));
             if (hiddenFields) {
               this.hiddenFields = hiddenFields;
               Object.keys(hiddenFields).map(key => {
