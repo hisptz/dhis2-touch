@@ -140,18 +140,15 @@ export class ProgramRulesProvider {
                         .join(`${value}`);
                     }
                     if (data && data.includes(programRulesVariable.name)) {
-                      console.log(JSON.stringify({ action }));
                       evalDataCondition = evalDataCondition
                         .split('#{' + programRulesVariable.name + '}')
                         .join(`${value}`);
                     }
                   });
-                  //evaluate content data
                   try {
                     evalData = eval(`(${evalDataCondition})`);
                   } catch (error) {
                   } finally {
-                    // console.log('evalData : ' + evalData);
                   }
 
                   if (evalCondition !== condition) {
@@ -239,7 +236,7 @@ export class ProgramRulesProvider {
                           if (dataElement && dataElement.id) {
                             programRulesEvaluations.assignedFields[
                               dataElement.id
-                            ] = evalData;
+                            ] = `${evalData}`;
                           }
                           if (
                             trackedEntityAttribute &&
@@ -247,7 +244,7 @@ export class ProgramRulesProvider {
                           ) {
                             programRulesEvaluations.assignedFields[
                               trackedEntityAttribute.id
-                            ] = evalData;
+                            ] = `${evalData}`;
                           }
                         } else if (
                           programRuleActionType === SET_MANDATORY_FIELD
