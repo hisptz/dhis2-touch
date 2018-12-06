@@ -193,6 +193,23 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
             if (hiddenProgramStages) {
               this.hiddenProgramStages = hiddenProgramStages;
             }
+            if (errorOrWarningMessage) {
+              this.errorOrWarningMessage = errorOrWarningMessage;
+              Object.keys(errorOrWarningMessage).map(key => {
+                const id = key + '-dataElement';
+                const message = errorOrWarningMessage[key];
+                const { messageType } = message;
+                if (messageType === 'error') {
+                  this.hiddenFields[key] = true;
+                  this.dataValuesSavingStatusClass[id] =
+                    'input-field-container';
+                  this.updateData({ id: id, value: '' }, true);
+                  setTimeout(() => {
+                    delete this.hiddenFields[key];
+                  }, 10);
+                }
+              });
+            }
           }
         },
         error => {

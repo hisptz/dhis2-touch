@@ -156,8 +156,7 @@ export class TrackedEntityDashboardPage implements OnInit {
             response.attributes.forEach((attributeObject: any) => {
               this.trackedEntityAttributeValuesObject[
                 attributeObject.attribute
-              ] =
-                attributeObject.value;
+              ] = attributeObject.value;
               let id = attributeObject.attribute + '-trackedEntityAttribute';
               this.dataObject[id] = { id: id, value: attributeObject.value };
             });
@@ -330,9 +329,6 @@ export class TrackedEntityDashboardPage implements OnInit {
             const { hiddenFields } = data;
             const { hiddenProgramStages } = data;
             const { errorOrWarningMessage } = data;
-            if (errorOrWarningMessage) {
-              this.errorOrWarningMessage = errorOrWarningMessage;
-            }
             if (hiddenFields) {
               this.hiddenFields = hiddenFields;
               Object.keys(hiddenFields).map(key => {
@@ -347,6 +343,23 @@ export class TrackedEntityDashboardPage implements OnInit {
             }
             if (hiddenProgramStages) {
               this.hiddenProgramStages = hiddenProgramStages;
+            }
+            if (errorOrWarningMessage) {
+              this.errorOrWarningMessage = errorOrWarningMessage;
+              Object.keys(errorOrWarningMessage).map(key => {
+                const id = key + '-trackedEntityAttribute';
+                const message = errorOrWarningMessage[key];
+                const { messageType } = message;
+                if (messageType === 'error') {
+                  this.hiddenFields[key] = true;
+                  this.trackedEntityAttributesSavingStatusClass[id] =
+                    'input-field-container';
+                  this.updateData({ id: id, value: '' }, true);
+                  setTimeout(() => {
+                    delete this.hiddenFields[key];
+                  }, 10);
+                }
+              });
             }
           }
         },
@@ -393,15 +406,13 @@ export class TrackedEntityDashboardPage implements OnInit {
                   this.evaluatingProgramRules();
                   this.trackedEntityAttributesSavingStatusClass[
                     updateDataValue.id
-                  ] =
-                    'input-field-container-success';
+                  ] = 'input-field-container-success';
                 }
               },
               error => {
                 this.trackedEntityAttributesSavingStatusClass[
                   updateDataValue.id
-                ] =
-                  'input-field-container-failed';
+                ] = 'input-field-container-failed';
                 console.log(JSON.stringify(error));
 
                 // Update status for custom form
