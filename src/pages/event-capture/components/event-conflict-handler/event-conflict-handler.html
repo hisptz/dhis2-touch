@@ -1,10 +1,10 @@
 <span>
   <span *ngIf="isLoading">
-    <loading loadingSize="small"></loading> Discovering events ...
+    <loading loadingSize="small"></loading> Discovering events from online server ...
   </span>
   <span *ngIf="!isLoading && eventsWithConflicts.length > 0">
     <span padding-top>
-      {{eventsWithConflicts.length }} Conflicts&nbsp;
+      {{eventsWithConflicts.length }}&nbsp;<span [translate]="'events with conflicts'"></span>&nbsp;
     </span>
     <span class="item-card" color="font-color" ion-button clear text-center text-capitalize (tap)="conflictHandlingAction('accept')">
       <img class="side-menu-icon" [src]="icons.accept" />

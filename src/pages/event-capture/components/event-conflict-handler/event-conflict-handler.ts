@@ -117,6 +117,7 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
             this.isLoading = false;
           },
           error => {
+            this.isLoading = false;
             console.log(JSON.stringify({ error }));
           }
         )
@@ -135,13 +136,11 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
         return offlineEventObject.id === event.id;
       });
       if (offlineEvent && offlineEvent.id) {
-        // if (offlineEvent.syncStatus !== event.syncStatus) {
-        //   eventsWithConflicts.push(event);
-        // } else
-        if (offlineEvent.dataValues.length !== event.dataValues.length) {
+        if (offlineEvent.syncStatus !== event.syncStatus) {
+          eventsWithConflicts.push(event);
+        } else if (offlineEvent.dataValues.length !== event.dataValues.length) {
           eventsWithConflicts.push(event);
         } else {
-          console.log('based on consistence of data values');
           const hasSameDataValues = this.getDataValuesConsistencyStatus(
             offlineEvent.dataValues,
             event.dataValues
@@ -151,18 +150,40 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
           }
         }
       }
-      //console.log(JSON.stringify({ offlineEvent }));
     });
     return eventsWithConflicts;
   }
 
-  getDataValuesConsistencyStatus(offlineDataValue, onlineDataValue) {
-    console.log(JSON.stringify(offlineDataValue));
-    return true;
+  getDataValuesConsistencyStatus(offlineDataValues, onlineDataValues) {
+    let hasSameDataValues = true;
+    _.map(offlineDataValues, offlineDataValue => {
+      if (
+        offlineDataValue &&
+        offlineDataValue.value &&
+        offlineDataValue.dataElement
+      ) {
+        const matchDataValue = _.find(onlineDataValues, onlineDataValue => {
+          return onlineDataValue.dataElement === offlineDataValue.dataElement;
+        });
+        if (!matchDataValue) {
+          hasSameDataValues = false;
+        }
+        if (
+          matchDataValue &&
+          matchDataValue.value &&
+          offlineDataValue.value &&
+          offlineDataValue.value !== matchDataValue.value
+        ) {
+          hasSameDataValues = false;
+        }
+      }
+    });
+    return hasSameDataValues;
   }
 
   applyingChnagesToEvents(events) {
     this.successEventConflictHandle.emit(events);
+    this.eventsWithConflicts = [];
   }
 
   conflictHandlingAction(action) {
@@ -174,8 +195,7 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
           {
             text: 'Yes',
             handler: () => {
-              const { events } = this.eventConflictHandler;
-              // this.eventsWithConflicts
+              this.applyingChnagesToEvents(this.eventsWithConflicts);
             }
           },
           {
@@ -193,7 +213,7 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
           {
             text: 'Yes',
             handler: () => {
-              this.eventsWithConflicts = [];
+              this.applyingChnagesToEvents([]);
             }
           },
           {
