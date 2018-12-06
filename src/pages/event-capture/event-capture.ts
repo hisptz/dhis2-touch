@@ -561,7 +561,9 @@ export class EventCapturePage implements OnInit {
   renderDataAsTable() {
     this.isLoading = true;
     let key = 'Preparing table';
-    this.currentEvents = _.uniqBy(this.currentEvents, 'id');
+    this.currentEvents = _.reverse(
+      _.sortBy(_.uniqBy(this.currentEvents, 'id'), ['eventDate'])
+    );
     this.loadingMessage = this.translationMapper[key]
       ? this.translationMapper[key]
       : key;
