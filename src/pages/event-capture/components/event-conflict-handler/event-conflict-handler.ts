@@ -134,12 +134,32 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
       const offlineEvent = _.find(events, offlineEventObject => {
         return offlineEventObject.id === event.id;
       });
-      console.log(JSON.stringify({ offlineEvent }));
+      if (offlineEvent && offlineEvent.id) {
+        // if (offlineEvent.syncStatus !== event.syncStatus) {
+        //   eventsWithConflicts.push(event);
+        // } else
+        if (offlineEvent.dataValues.length !== event.dataValues.length) {
+          eventsWithConflicts.push(event);
+        } else {
+          console.log('based on consistence of data values');
+          const hasSameDataValues = this.getDataValuesConsistencyStatus(
+            offlineEvent.dataValues,
+            event.dataValues
+          );
+          if (!hasSameDataValues) {
+            eventsWithConflicts.push(events);
+          }
+        }
+      }
+      //console.log(JSON.stringify({ offlineEvent }));
     });
     return eventsWithConflicts;
   }
 
-  hasSameDataValues(offlineDataValue, onlineDataValue) {}
+  getDataValuesConsistencyStatus(offlineDataValue, onlineDataValue) {
+    console.log(JSON.stringify(offlineDataValue));
+    return true;
+  }
 
   applyingChnagesToEvents(events) {
     this.successEventConflictHandle.emit(events);
