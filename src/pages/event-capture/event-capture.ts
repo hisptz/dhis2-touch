@@ -480,7 +480,7 @@ export class EventCapturePage implements OnInit {
     }
   }
 
-  onSuccessDiscoveringEvents(statusData) {
+  onSuccessDiscoveringEvents() {
     this.hasOnlineEventLoaded = true;
   }
 

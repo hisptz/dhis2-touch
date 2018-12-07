@@ -33,29 +33,96 @@ import { ActionSheetController } from 'ionic-angular';
 
 import { Subscription } from 'rxjs/Subscription';
 import * as _ from 'lodash';
-import { EventCaptureFormProvider } from '../../../../providers/event-capture-form/event-capture-form';
 import { AppProvider } from '../../../../providers/app/app';
+import { TrackerCaptureSyncProvider } from '../../../../providers/tracker-capture-sync/tracker-capture-sync';
 
 @Component({
   selector: 'tracker-conflict-handler',
   templateUrl: 'tracker-conflict-handler.html'
 })
 export class TrackerConflictHandlerComponent implements OnInit, OnDestroy {
+  @Input() trackerConflictHandler;
+
+  @Output() successDiscovering = new EventEmitter();
+  @Output() successTrackerConflictHandle = new EventEmitter();
+
   isLoading: boolean;
   icons: any = {
     accept: 'assets/icon/tick.png',
     decline: 'assets/icon/cancel.png'
   };
+  TrackerDataWithConflicts: any;
   subscriptions: Subscription;
   constructor(
-    private eventCaptureFormProvider: EventCaptureFormProvider,
+    private trackerCaptureSyncProvider: TrackerCaptureSyncProvider,
     private appProvider: AppProvider,
     private actionSheetCtrl: ActionSheetController
   ) {
     this.isLoading = true;
     this.subscriptions = new Subscription();
   }
-  ngOnInit() {}
+  ngOnInit() {
+    const {
+      eventType,
+      dataDimension,
+      organisationUnitId,
+      programId,
+      programName,
+      currentUser
+    } = this.trackerConflictHandler;
+    setTimeout(() => {
+      console.log(
+        JSON.stringify({
+          eventType,
+          dataDimension,
+          organisationUnitId,
+          programId,
+          programName
+        })
+      );
+      this.isLoading = false;
+    }, 1000);
+  }
+
+  conflictHandlingAction(action) {
+    if (action === 'accept') {
+      const actionSheet = this.actionSheetCtrl.create({
+        title:
+          'You are about to replace offline data with data from the server, are you sure?',
+        buttons: [
+          {
+            text: 'Yes',
+            handler: () => {
+              console.log('Apply new updates ');
+            }
+          },
+          {
+            text: 'No',
+            handler: () => {}
+          }
+        ]
+      });
+      actionSheet.present();
+    }
+    if (action === 'decline') {
+      const actionSheet = this.actionSheetCtrl.create({
+        title: 'You are about to discard data from server, are you sure?',
+        buttons: [
+          {
+            text: 'Yes',
+            handler: () => {
+              console.log('Discard changes or updates');
+            }
+          },
+          {
+            text: 'No',
+            handler: () => {}
+          }
+        ]
+      });
+      actionSheet.present();
+    }
+  }
 
   clearAllSubscriptions() {
     this.subscriptions.unsubscribe();

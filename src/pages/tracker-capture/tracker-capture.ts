@@ -41,6 +41,10 @@ export class TrackerCapturePage implements OnInit {
   tableLayout: any;
   translationMapper: any;
   dataEntrySettings: any;
+  storageStatus: any;
+  showTrackerConflictHandler: boolean;
+  trackerConflictHandler: any;
+  hasOnlineTrackerLoaded: boolean;
 
   constructor(
     public navCtrl: NavController,
@@ -52,18 +56,11 @@ export class TrackerCapturePage implements OnInit {
     private organisationUnitsProvider: OrganisationUnitsProvider,
     private appTranslation: AppTranslationProvider,
     private settingsProvider: SettingsProvider
-  ) {}
-
-  ionViewDidEnter() {
-    if (this.isFormReady) {
-      this.loadingSavedTrackedEntityInstances(
-        this.selectedProgram.id,
-        this.selectedOrgUnit.id
-      );
-    }
-  }
-
-  ngOnInit() {
+  ) {
+    this.storageStatus = {
+      online: 0,
+      offline: 0
+    };
     this.icons.orgUnit = 'assets/icon/orgUnit.png';
     this.icons.program = 'assets/icon/program.png';
     this.trackedEntityInstances = [];
@@ -71,6 +68,23 @@ export class TrackerCapturePage implements OnInit {
     this.isLoading = true;
     this.isFormReady = false;
     this.translationMapper = {};
+    this.showTrackerConflictHandler = true;
+    this.trackerConflictHandler = {};
+    this.hasOnlineTrackerLoaded = false;
+  }
+
+  ionViewDidEnter() {
+    if (this.isFormReady) {
+      this.loadingSavedTrackedEntityInstances(
+        this.selectedProgram.id,
+        this.selectedOrgUnit.id
+      );
+    } else {
+      this.hasOnlineTrackerLoaded = false;
+    }
+  }
+
+  ngOnInit() {
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
       (data: any) => {
         this.translationMapper = data;
@@ -252,6 +266,13 @@ export class TrackerCapturePage implements OnInit {
       });
       modal.onDidDismiss((selectedProgram: any) => {
         if (selectedProgram && selectedProgram.id) {
+          if (
+            this.selectedProgram &&
+            this.selectedProgram.id &&
+            this.selectedProgram.id !== selectedProgram.id
+          ) {
+            this.hasOnlineTrackerLoaded = false;
+          }
           this.selectedProgram = selectedProgram;
           this.programsProvider.setLastSelectedProgram(selectedProgram);
           this.trackerCaptureProvider
@@ -279,17 +300,40 @@ export class TrackerCapturePage implements OnInit {
     }
   }
 
-  loadingSavedTrackedEntityInstances(programId, orgUnitId) {
+  loadingSavedTrackedEntityInstances(programId, organisationUnitId) {
     this.isLoading = true;
+    this.showTrackerConflictHandler = false;
     let key = 'Discovering tracked entity list';
     this.loadingMessage = this.translationMapper[key]
       ? this.translationMapper[key]
       : key;
+    const programName = this.selectedProgram.name;
+    const dataDimension = { attributeCos: '', attributeCc: '' };
+    const eventType = 'tracker-capture';
+    setTimeout(() => {
+      this.trackerConflictHandler = {
+        ...{},
+        organisationUnitId,
+        eventType,
+        dataDimension,
+        programId,
+        programName,
+        currentUser: this.currentUser
+      };
+      this.showTrackerConflictHandler = !this.hasOnlineTrackerLoaded;
+    }, 10);
     this.trackerCaptureProvider
-      .loadTrackedEntityInstancesList(programId, orgUnitId, this.currentUser)
+      .loadTrackedEntityInstancesList(
+        programId,
+        organisationUnitId,
+        this.currentUser
+      )
       .subscribe(
         (trackedEntityInstances: any) => {
-          console.log(JSON.stringify(trackedEntityInstances));
+          this.trackerConflictHandler = {
+            ...this.trackerConflictHandler,
+            trackedEntityInstances
+          };
           this.trackedEntityInstances = trackedEntityInstances;
           this.renderDataAsTable();
         },
@@ -302,6 +346,12 @@ export class TrackerCapturePage implements OnInit {
         }
       );
   }
+
+  onSuccessDiscoveringTrackerData() {
+    this.hasOnlineTrackerLoaded = true;
+  }
+
+  onSuccessTrackerConflictHandle(data) {}
 
   isAllParameterSelected() {
     let result = false;
