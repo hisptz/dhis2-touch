@@ -61,8 +61,34 @@ export class TrackerCaptureSyncProvider {
         currentUser
       ).subscribe(
         trackedEntityInstances => {
-          observer.next({ trackedEntityInstances });
-          observer.complete();
+          this.discoveringEnrollmentsFromServer(
+            organisationUnitId,
+            programId,
+            currentUser
+          ).subscribe(
+            enrollments => {
+              this.discoveringEventsForTrackerFromServer(
+                organisationUnitId,
+                programId,
+                currentUser
+              ).subscribe(
+                events => {
+                  observer.next({
+                    trackedEntityInstances: [],
+                    enrollments,
+                    events
+                  });
+                  observer.complete();
+                },
+                error => {
+                  observer.error(error);
+                }
+              );
+            },
+            error => {
+              observer.error(error);
+            }
+          );
         },
         error => {
           console.log(JSON.stringify({ error }));
@@ -118,21 +144,24 @@ export class TrackerCaptureSyncProvider {
     programId: string,
     currentUser: CurrentUser
   ): Observable<any> {
-    const url = `api/enrollments.json?ou=${organisationUnitId}&program=${programId}&paging=falsse`;
+    const url = `/api/enrollments.json?ou=${organisationUnitId}&program=${programId}&paging=false`;
     return new Observable(observer => {
-      // this.httpClientProvider
-      //   .get(url, true, currentUser)
-      //   .subscribe(enrollmentResponse => {
-      //     const enrollments = _.map(
-      //       enrollmentResponse.enrollments,
-      //       enrollmentObj => {
-      //         const { enrollment } = enrollmentObj;
-      //         return { ...{}, enrollment };
-      //       }
-      //     );
-      //   });
-      observer.next([]);
-      observer.complete();
+      this.httpClientProvider.get(url, true, currentUser).subscribe(
+        enrollmentResponse => {
+          const enrollments = _.map(
+            enrollmentResponse.enrollments,
+            enrollmentObj => {
+              const { enrollment } = enrollmentObj;
+              return { ...{}, enrollment };
+            }
+          );
+          observer.next(enrollments);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
 
@@ -141,10 +170,21 @@ export class TrackerCaptureSyncProvider {
     programId: string,
     currentUser: CurrentUser
   ): Observable<any> {
-    const url = `events.json?program=${programId}&orgUnit=${organisationUnitId}&paging=false`;
+    const url = `/events.json?program=${programId}&orgUnit=${organisationUnitId}&paging=false`;
     return new Observable(observer => {
-      observer.next([]);
-      observer.complete();
+      this.httpClientProvider.get(url, true, currentUser).subscribe(
+        eventReponse => {
+          const events = _.map(eventReponse.events, eventObj => {
+            const { event } = eventObj;
+            return { ...{}, event };
+          });
+          observer.next(events);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
 }
