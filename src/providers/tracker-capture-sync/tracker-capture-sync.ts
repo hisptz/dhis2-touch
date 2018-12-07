@@ -28,6 +28,9 @@ import { TrackedEntityInstancesProvider } from '../tracked-entity-instances/trac
 import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
+import { CurrentUser } from '../../models';
+import { EventCaptureFormProvider } from '../event-capture-form/event-capture-form';
+import * as _ from 'lodash';
 
 @Injectable()
 export class TrackerCaptureSyncProvider {
@@ -36,6 +39,112 @@ export class TrackerCaptureSyncProvider {
     private sqlLite: SqlLiteProvider,
     private trackedEntityInstancesProvider: TrackedEntityInstancesProvider,
     private trackedEntityAttributeValuesProvider: TrackedEntityAttributeValuesProvider,
+    private eventCaptureFormProvider: EventCaptureFormProvider,
     private httpClientProvider: HttpClientProvider
   ) {}
+
+  discoveringTrackerDataFromServer(
+    eventType: string,
+    organisationUnitId: string,
+    orgUnitName: string,
+    programId: string,
+    programName: string,
+    currentUser: CurrentUser
+  ): Observable<any> {
+    return new Observable(observer => {
+      const syncStatus = 'synced';
+      this.discoveringTrackedEntityInstancesFromServer(
+        organisationUnitId,
+        orgUnitName,
+        programId,
+        syncStatus,
+        currentUser
+      ).subscribe(
+        trackedEntityInstances => {
+          observer.next({ trackedEntityInstances });
+          observer.complete();
+        },
+        error => {
+          console.log(JSON.stringify({ error }));
+        }
+      );
+    });
+  }
+
+  discoveringTrackedEntityInstancesFromServer(
+    organisationUnitId: string,
+    orgUnitName: string,
+    programId: string,
+    syncStatus: string,
+    currentUser: CurrentUser
+  ): Observable<any> {
+    const url = `/api/trackedEntityInstances.json?ou=${organisationUnitId}&program=${programId}&pageSize=50&order=lastUpdated:desc`;
+    return new Observable(observer => {
+      this.httpClientProvider.get(url, true, currentUser).subscribe(
+        trackedEntityInstancesResponse => {
+          const trackedEntityInstances = _.map(
+            trackedEntityInstancesResponse.trackedEntityInstances,
+            trackedEntityInstanceObj => {
+              const id = trackedEntityInstanceObj.trackedEntityInstance;
+              const attributes = _.map(
+                trackedEntityInstanceObj.attributes,
+                attributeObj => {
+                  const { value, attribute } = attributeObj;
+                  return { ...{}, trackedEntityInstance: id, value, attribute };
+                }
+              );
+              delete trackedEntityInstanceObj.attributes;
+              return {
+                ...trackedEntityInstanceObj,
+                orgUnitName,
+                syncStatus,
+                id,
+                attributes
+              };
+            }
+          );
+          observer.next(trackedEntityInstances);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
+    });
+  }
+
+  discoveringEnrollmentsFromServer(
+    organisationUnitId: string,
+    programId: string,
+    currentUser: CurrentUser
+  ): Observable<any> {
+    const url = `api/enrollments.json?ou=${organisationUnitId}&program=${programId}&paging=falsse`;
+    return new Observable(observer => {
+      // this.httpClientProvider
+      //   .get(url, true, currentUser)
+      //   .subscribe(enrollmentResponse => {
+      //     const enrollments = _.map(
+      //       enrollmentResponse.enrollments,
+      //       enrollmentObj => {
+      //         const { enrollment } = enrollmentObj;
+      //         return { ...{}, enrollment };
+      //       }
+      //     );
+      //   });
+      observer.next([]);
+      observer.complete();
+    });
+  }
+
+  discoveringEventsForTrackerFromServer(
+    organisationUnitId: string,
+    programId: string,
+    currentUser: CurrentUser
+  ): Observable<any> {
+    const url = `events.json?program=${programId}&orgUnit=${organisationUnitId}&paging=false`;
+    return new Observable(observer => {
+      observer.next([]);
+      observer.complete();
+    });
+  }
 }

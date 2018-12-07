@@ -308,14 +308,14 @@ export class TrackerCapturePage implements OnInit {
       ? this.translationMapper[key]
       : key;
     const programName = this.selectedProgram.name;
-    const dataDimension = { attributeCos: '', attributeCc: '' };
     const eventType = 'tracker-capture';
+    const orgUnitName = this.selectedOrgUnit.name;
     setTimeout(() => {
       this.trackerConflictHandler = {
         ...{},
         organisationUnitId,
+        orgUnitName,
         eventType,
-        dataDimension,
         programId,
         programName,
         currentUser: this.currentUser

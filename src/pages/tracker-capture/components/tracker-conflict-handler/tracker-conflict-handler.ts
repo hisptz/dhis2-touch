@@ -35,6 +35,7 @@ import { Subscription } from 'rxjs/Subscription';
 import * as _ from 'lodash';
 import { AppProvider } from '../../../../providers/app/app';
 import { TrackerCaptureSyncProvider } from '../../../../providers/tracker-capture-sync/tracker-capture-sync';
+import { CurrentUser } from '../../../../models';
 
 @Component({
   selector: 'tracker-conflict-handler',
@@ -58,30 +59,58 @@ export class TrackerConflictHandlerComponent implements OnInit, OnDestroy {
     private appProvider: AppProvider,
     private actionSheetCtrl: ActionSheetController
   ) {
+    this.TrackerDataWithConflicts = [];
     this.isLoading = true;
     this.subscriptions = new Subscription();
   }
   ngOnInit() {
     const {
       eventType,
-      dataDimension,
       organisationUnitId,
+      orgUnitName,
       programId,
       programName,
       currentUser
     } = this.trackerConflictHandler;
-    setTimeout(() => {
-      console.log(
-        JSON.stringify({
+    this.discoveringTrackerData(
+      eventType,
+      organisationUnitId,
+      orgUnitName,
+      programId,
+      programName,
+      currentUser
+    );
+  }
+
+  discoveringTrackerData(
+    eventType: string,
+    organisationUnitId: string,
+    orgUnitName: string,
+    programId: string,
+    programName: string,
+    currentUser: CurrentUser
+  ) {
+    this.subscriptions.add(
+      this.trackerCaptureSyncProvider
+        .discoveringTrackerDataFromServer(
           eventType,
-          dataDimension,
           organisationUnitId,
+          orgUnitName,
           programId,
-          programName
-        })
-      );
-      this.isLoading = false;
-    }, 1000);
+          programName,
+          currentUser
+        )
+        .subscribe(
+          discoveredTrackerData => {
+            console.log(JSON.stringify({ discoveredTrackerData }));
+            this.isLoading = false;
+          },
+          error => {
+            this.isLoading = false;
+            console.log(JSON.stringify({ error }));
+          }
+        )
+    );
   }
 
   conflictHandlingAction(action) {
