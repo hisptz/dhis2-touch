@@ -7,12 +7,14 @@ import { ProgramStageTrackerBasedComponent } from './program-stage-tracker-based
 import { TrackerEventContainerComponent } from './tracker-event-container/tracker-event-container';
 import { TrackedEntityInputsComponent } from './tracked-entity-inputs/tracked-entity-inputs';
 import { EventCaptureComponentsModule } from '../../event-capture/components/eventCaptureComponents.module';
+import { TrackerConflictHandlerComponent } from './tracker-conflict-handler/tracker-conflict-handler';
 @NgModule({
   declarations: [
     TrackerRegistrationFormComponent,
     ProgramStageTrackerBasedComponent,
     TrackerEventContainerComponent,
-    TrackedEntityInputsComponent
+    TrackedEntityInputsComponent,
+    TrackerConflictHandlerComponent
   ],
   imports: [
     IonicModule,
@@ -24,7 +26,8 @@ import { EventCaptureComponentsModule } from '../../event-capture/components/eve
     TrackerRegistrationFormComponent,
     ProgramStageTrackerBasedComponent,
     TrackerEventContainerComponent,
-    TrackedEntityInputsComponent
+    TrackedEntityInputsComponent,
+    TrackerConflictHandlerComponent
   ]
 })
 export class TrackerCaptureComponentsModule {}

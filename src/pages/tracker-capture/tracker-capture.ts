@@ -289,6 +289,7 @@ export class TrackerCapturePage implements OnInit {
       .loadTrackedEntityInstancesList(programId, orgUnitId, this.currentUser)
       .subscribe(
         (trackedEntityInstances: any) => {
+          console.log(JSON.stringify(trackedEntityInstances));
           this.trackedEntityInstances = trackedEntityInstances;
           this.renderDataAsTable();
         },

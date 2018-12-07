@@ -196,10 +196,8 @@ export class EnrollmentsProvider {
         .subscribe(
           (enrollmentResponse: any) => {
             if (enrollmentResponse && enrollmentResponse.length > 0) {
-              enrollmentResponse.map((enrollment: any) => {
-                if (enrollment.program == programId) {
-                  enrollments.push(enrollment);
-                }
+              enrollments = _.filter(enrollmentResponse, enrollment => {
+                return enrollment.program === programId;
               });
             }
             observer.next(enrollments);
