@@ -71,6 +71,9 @@ export class TrackerCaptureSyncProvider {
               this.discoveringEventsForTrackerFromServer(
                 organisationUnitId,
                 programId,
+                eventType,
+                syncStatus,
+                programName,
                 currentUser
               ).subscribe(
                 events => {
@@ -92,7 +95,7 @@ export class TrackerCaptureSyncProvider {
           );
         },
         error => {
-          console.log(JSON.stringify({ error }));
+          observer.error(error);
         }
       );
     });
@@ -179,7 +182,6 @@ export class TrackerCaptureSyncProvider {
               return enrollmentPayload;
             }
           );
-          console.log(JSON.stringify({ enrollments }));
           observer.next(enrollments);
           observer.complete();
         },
@@ -193,15 +195,28 @@ export class TrackerCaptureSyncProvider {
   discoveringEventsForTrackerFromServer(
     organisationUnitId: string,
     programId: string,
+    eventType: string,
+    syncStatus: string,
+    programName: string,
     currentUser: CurrentUser
   ): Observable<any> {
     const url = `/events.json?program=${programId}&orgUnit=${organisationUnitId}&paging=false`;
     return new Observable(observer => {
+      const attributeCc = '';
+      const attributeCos = '';
       this.httpClientProvider.get(url, true, currentUser).subscribe(
         eventReponse => {
           const events = _.map(eventReponse.events, eventObj => {
             const { event } = eventObj;
-            return { ...{}, event };
+            return {
+              ...eventObj,
+              id: event,
+              eventType,
+              attributeCc,
+              programName,
+              attributeCategoryOptions: attributeCos,
+              syncStatus
+            };
           });
           observer.next(events);
           observer.complete();
@@ -213,16 +228,3 @@ export class TrackerCaptureSyncProvider {
     });
   }
 }
-/**
- * const events = _.map(response.events, event => {
-            return {
-              ...event,
-              eventType,
-              attributeCc,
-              programName,
-              attributeCategoryOptions: attributeCos,
-              id: event.event,
-              syncStatus: 'synced'
-            };
-          });
- */

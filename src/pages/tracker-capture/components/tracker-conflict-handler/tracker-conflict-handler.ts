@@ -54,6 +54,10 @@ export class TrackerConflictHandlerComponent implements OnInit, OnDestroy {
   };
   TrackerDataWithConflicts: any;
   subscriptions: Subscription;
+  discoveredTrackerData: any;
+
+  trackerDataWithConflicts: any;
+
   constructor(
     private trackerCaptureSyncProvider: TrackerCaptureSyncProvider,
     private appProvider: AppProvider,
@@ -102,7 +106,20 @@ export class TrackerConflictHandlerComponent implements OnInit, OnDestroy {
         )
         .subscribe(
           discoveredTrackerData => {
-            console.log(JSON.stringify({ discoveredTrackerData }));
+            const {
+              trackedEntityInstances,
+              enrollments,
+              events
+            } = discoveredTrackerData;
+            const offlineTrackedEntityInstanceIds = _.map(
+              this.trackerConflictHandler.trackedEntityInstances,
+              trackedEntityInstance => trackedEntityInstance.id
+            );
+            console.log({ offlineTrackedEntityInstanceIds });
+            console.log(JSON.stringify({ enrollments }));
+            console.log(JSON.stringify({ events }));
+            console.log(JSON.stringify({ trackedEntityInstances }));
+            //trackedEntityInstances
             this.isLoading = false;
           },
           error => {

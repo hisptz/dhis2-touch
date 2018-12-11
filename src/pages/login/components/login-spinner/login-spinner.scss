@@ -48,9 +48,9 @@ login-spinner {
     from,
     to {
       /*face one*/
-      -moz-transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale3d(2, 2, 2);
-      -ms-transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale3d(2, 2, 2);
-      transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale3d(2, 2, 2);
+      -moz-transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale3d(1.5, 1.5, 1.5);
+      -ms-transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale3d(1.5, 1.5, 1.5);
+      transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale3d(1.5, 1.5, 1.5);
 
     }
 
@@ -63,9 +63,9 @@ login-spinner {
 
     33% {
       /*face three*/
-      -moz-transform: rotateY(-90deg) rotateZ(90deg) scale3d(2, 2, 2);
-      -ms-transform: rotateY(-90deg) rotateZ(90deg) scale3d(2, 2, 2);
-      transform: rotateY(-90deg) rotateZ(90deg) scale3d(2, 2, 2);
+      -moz-transform: rotateY(-90deg) rotateZ(90deg) scale3d(1.5, 1.5, 1.5);
+      -ms-transform: rotateY(-90deg) rotateZ(90deg) scale3d(1.5, 1.5, 1.5);
+      transform: rotateY(-90deg) rotateZ(90deg) scale3d(1.5, 1.5, 1.5);
     }
 
     50% {
@@ -77,9 +77,9 @@ login-spinner {
 
     66% {
       /*face five*/
-      -moz-transform: rotateY(-270deg) rotateX(90deg) scale3d(2, 2, 2);
-      -ms-transform: rotateY(-270deg) rotateX(90deg) scale3d(2, 2, 2);
-      transform: rotateY(-270deg) rotateX(90deg) scale3d(2, 2, 2);
+      -moz-transform: rotateY(-270deg) rotateX(90deg) scale3d(1.5, 1.5, 1.5);
+      -ms-transform: rotateY(-270deg) rotateX(90deg) scale3d(1.5, 1.5, 1.5);
+      transform: rotateY(-270deg) rotateX(90deg) scale3d(1.5, 1.5, 1.5);
     }
 
     83% {
