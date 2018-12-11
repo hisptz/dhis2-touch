@@ -23,13 +23,10 @@
  */
 import { Injectable } from '@angular/core';
 import { EnrollmentsProvider } from '../enrollments/enrollments';
-import { TrackedEntityAttributeValuesProvider } from '../tracked-entity-attribute-values/tracked-entity-attribute-values';
-import { TrackedEntityInstancesProvider } from '../tracked-entity-instances/tracked-entity-instances';
 import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
 import { CurrentUser } from '../../models';
-import { EventCaptureFormProvider } from '../event-capture-form/event-capture-form';
 import * as _ from 'lodash';
 
 @Injectable()
@@ -37,9 +34,6 @@ export class TrackerCaptureSyncProvider {
   constructor(
     private enrollmentsProvider: EnrollmentsProvider,
     private sqlLite: SqlLiteProvider,
-    private trackedEntityInstancesProvider: TrackedEntityInstancesProvider,
-    private trackedEntityAttributeValuesProvider: TrackedEntityAttributeValuesProvider,
-    private eventCaptureFormProvider: EventCaptureFormProvider,
     private httpClientProvider: HttpClientProvider
   ) {}
 
@@ -181,12 +175,20 @@ export class TrackerCaptureSyncProvider {
           const trackedEntityInstances = _.map(
             trackedEntityInstancesResponse.trackedEntityInstances,
             trackedEntityInstanceObj => {
-              const id = trackedEntityInstanceObj.trackedEntityInstance;
+              const trackedEntityInstanceId =
+                trackedEntityInstanceObj.trackedEntityInstance;
               const attributes = _.map(
                 trackedEntityInstanceObj.attributes,
                 attributeObj => {
                   const { value, attribute } = attributeObj;
-                  return { ...{}, trackedEntityInstance: id, value, attribute };
+                  const trackedEntityAttributeValueId = `${trackedEntityInstanceId}-${attribute}`;
+                  return {
+                    ...{},
+                    id: trackedEntityAttributeValueId,
+                    trackedEntityInstance: trackedEntityInstanceId,
+                    value,
+                    attribute
+                  };
                 }
               );
               delete trackedEntityInstanceObj.attributes;
@@ -194,7 +196,7 @@ export class TrackerCaptureSyncProvider {
                 ...trackedEntityInstanceObj,
                 orgUnitName,
                 syncStatus,
-                id,
+                id: trackedEntityInstanceId,
                 attributes
               };
             }
@@ -291,6 +293,76 @@ export class TrackerCaptureSyncProvider {
           observer.error(error);
         }
       );
+    });
+  }
+
+  savingTrackedEntityInstances(
+    trackedEntityInstances,
+    enrollments,
+    events,
+    currentUser: CurrentUser
+  ): Observable<any> {
+    return new Observable(observer => {
+      const trackedEntityAttributeValues = _.flatMapDeep(
+        _.map(
+          trackedEntityInstances,
+          trackedEntityInstance => trackedEntityInstance.attributes
+        )
+      );
+      this.sqlLite
+        .insertBulkDataOnTable(
+          'trackedEntityInstances',
+          trackedEntityInstances,
+          currentUser.currentDatabase
+        )
+        .subscribe(
+          () => {
+            this.sqlLite
+              .insertBulkDataOnTable(
+                'trackedEntityAttributeValues',
+                trackedEntityAttributeValues,
+                currentUser.currentDatabase
+              )
+              .subscribe(
+                () => {
+                  this.sqlLite
+                    .insertBulkDataOnTable(
+                      'enrollments',
+                      enrollments,
+                      currentUser.currentDatabase
+                    )
+                    .subscribe(
+                      () => {
+                        this.sqlLite
+                          .insertBulkDataOnTable(
+                            'events',
+                            events,
+                            currentUser.currentDatabase
+                          )
+                          .subscribe(
+                            () => {
+                              observer.next();
+                              observer.complete();
+                            },
+                            error => {
+                              observer.error(error);
+                            }
+                          );
+                      },
+                      error => {
+                        observer.error(error);
+                      }
+                    );
+                },
+                error => {
+                  observer.error(error);
+                }
+              );
+          },
+          error => {
+            observer.error(error);
+          }
+        );
     });
   }
 }

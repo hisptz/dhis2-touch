@@ -54,7 +54,7 @@ export class AppProvider {
           .create({
             message: data[message],
             position: 'top',
-            duration: 5000
+            duration: 6000
           })
           .present();
       });
@@ -86,8 +86,8 @@ export class AppProvider {
     let customMessage = error
       ? error
       : typeof message === 'object'
-        ? ''
-        : message;
+      ? ''
+      : message;
     try {
       const matchRegx = /<body[^>]*>([\w|\W]*)<\/body/im;
       customMessage = customMessage

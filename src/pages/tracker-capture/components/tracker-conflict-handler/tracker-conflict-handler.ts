@@ -191,13 +191,29 @@ export class TrackerConflictHandlerComponent implements OnInit, OnDestroy {
   }
 
   applyingChnagesToEvents(trackedEntityInstances, enrollments, events) {
-    console.log(
-      JSON.stringify({
-        trackedEntityInstances: trackedEntityInstances.length,
-        enrollments: enrollments.length,
-        events: events.length
-      })
+    const { currentUser } = this.trackerConflictHandler;
+    this.subscriptions.add(
+      this.trackerCaptureSyncProvider
+        .savingTrackedEntityInstances(
+          trackedEntityInstances,
+          enrollments,
+          events,
+          currentUser
+        )
+        .subscribe(
+          () => {
+            const trackedEntityInstancesCount = trackedEntityInstances.length;
+            const enrollmentsCount = enrollments.length;
+            const eventsCount = events.length;
+            const message = `${trackedEntityInstancesCount} tracked Entity Instances,${enrollmentsCount} enrollments and ${eventsCount} events have been dicovered and applied into local storage`;
+            this.appProvider.setTopNotification(message);
+          },
+          error => {
+            console.log(JSON.stringify({ error }));
+          }
+        )
     );
+    console.log(JSON.stringify({}));
   }
 
   clearAllSubscriptions() {
