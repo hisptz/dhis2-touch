@@ -64,6 +64,7 @@ export class TrackerCaptureSyncProvider {
           this.discoveringEnrollmentsFromServer(
             organisationUnitId,
             programId,
+            syncStatus,
             currentUser
           ).subscribe(
             enrollments => {
@@ -74,7 +75,7 @@ export class TrackerCaptureSyncProvider {
               ).subscribe(
                 events => {
                   observer.next({
-                    trackedEntityInstances: [],
+                    trackedEntityInstances,
                     enrollments,
                     events
                   });
@@ -142,6 +143,7 @@ export class TrackerCaptureSyncProvider {
   discoveringEnrollmentsFromServer(
     organisationUnitId: string,
     programId: string,
+    syncStatus: string,
     currentUser: CurrentUser
   ): Observable<any> {
     const url = `/api/enrollments.json?ou=${organisationUnitId}&program=${programId}&paging=false`;
@@ -151,10 +153,33 @@ export class TrackerCaptureSyncProvider {
           const enrollments = _.map(
             enrollmentResponse.enrollments,
             enrollmentObj => {
-              const { enrollment } = enrollmentObj;
-              return { ...{}, enrollment };
+              const {
+                trackedEntity,
+                orgUnit,
+                orgUnitName,
+                program,
+                enrollmentDate,
+                incidentDate,
+                trackedEntityInstance,
+                enrollment,
+                status
+              } = enrollmentObj;
+              const enrollmentPayload = this.enrollmentsProvider.getEnrollmentsPayLoad(
+                trackedEntity,
+                orgUnit,
+                orgUnitName,
+                program,
+                enrollmentDate,
+                incidentDate,
+                trackedEntityInstance,
+                syncStatus,
+                enrollment,
+                status
+              )[0];
+              return enrollmentPayload;
             }
           );
+          console.log(JSON.stringify({ enrollments }));
           observer.next(enrollments);
           observer.complete();
         },
@@ -188,3 +213,16 @@ export class TrackerCaptureSyncProvider {
     });
   }
 }
+/**
+ * const events = _.map(response.events, event => {
+            return {
+              ...event,
+              eventType,
+              attributeCc,
+              programName,
+              attributeCategoryOptions: attributeCos,
+              id: event.event,
+              syncStatus: 'synced'
+            };
+          });
+ */

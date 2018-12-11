@@ -65,7 +65,8 @@ export class EnrollmentsProvider {
     incidentDate,
     trackedEntityInstance,
     syncStatus,
-    enrollment?
+    enrollment?,
+    status?: string
   ) {
     if (!enrollment) {
       enrollment = dhis2.util.uid();
@@ -84,7 +85,7 @@ export class EnrollmentsProvider {
       orgUnitName: orgUnitName,
       enrollmentDate: enrollmentDate,
       incidentDate: incidentDate,
-      status: 'ACTIVE',
+      status: status ? status : 'ACTIVE',
       attributes: [],
       events: [],
       syncStatus: syncStatus

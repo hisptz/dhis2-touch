@@ -151,10 +151,11 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
     const { events } = this.eventConflictHandler;
     const eventsWithConflicts = [];
     const localEventIds = _.map(events, event => event.id);
-    const sconstFilteredDiscoveredEvents = _.filter(discoveredEvents, event => {
+    // @todo checking using checksum
+    const filteredDiscoveredEvents = _.filter(discoveredEvents, event => {
       return _.indexOf(localEventIds, event.id) > -1;
     });
-    _.map(sconstFilteredDiscoveredEvents, event => {
+    _.map(filteredDiscoveredEvents, event => {
       const offlineEvent = _.find(events, offlineEventObject => {
         return offlineEventObject.id === event.id;
       });
