@@ -2,9 +2,9 @@
   <span *ngIf="isLoading">
     <loading loadingSize="small"></loading> Discovering events from online server ...
   </span>
-  <span *ngIf="!isLoading && TrackerDataWithConflicts.length > 0">
+  <span *ngIf="!isLoading && trackedEntityInstanceWithConflicts.length > 0">
     <span padding-top>
-      {{TrackerDataWithConflicts.length }}&nbsp;<span [translate]="'events with conflicts'"></span>&nbsp;
+      {{trackedEntityInstanceWithConflicts.length }}&nbsp;<span [translate]="' data with conflicts'"></span>&nbsp;
     </span>
     <span class="item-card" color="font-color" ion-button clear text-center text-capitalize (tap)="conflictHandlingAction('accept')">
       <img class="side-menu-icon" [src]="icons.accept" />

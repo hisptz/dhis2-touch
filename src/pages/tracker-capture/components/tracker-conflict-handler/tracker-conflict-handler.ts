@@ -56,14 +56,14 @@ export class TrackerConflictHandlerComponent implements OnInit, OnDestroy {
   subscriptions: Subscription;
   discoveredTrackerData: any;
 
-  trackerDataWithConflicts: any;
+  trackedEntityInstanceWithConflicts: any;
 
   constructor(
     private trackerCaptureSyncProvider: TrackerCaptureSyncProvider,
     private appProvider: AppProvider,
     private actionSheetCtrl: ActionSheetController
   ) {
-    this.TrackerDataWithConflicts = [];
+    this.trackedEntityInstanceWithConflicts = [];
     this.isLoading = true;
     this.subscriptions = new Subscription();
   }
@@ -115,11 +115,31 @@ export class TrackerConflictHandlerComponent implements OnInit, OnDestroy {
               this.trackerConflictHandler.trackedEntityInstances,
               trackedEntityInstance => trackedEntityInstance.id
             );
-            console.log({ offlineTrackedEntityInstanceIds });
-            console.log(JSON.stringify({ enrollments }));
-            console.log(JSON.stringify({ events }));
-            console.log(JSON.stringify({ trackedEntityInstances }));
-            //trackedEntityInstances
+            const {
+              trackedEntityInstanceWithConflicts,
+              trackedEntityInstanceWithoutConflicts
+            } = this.trackerCaptureSyncProvider.getTrackedEntityInstancesByStatus(
+              discoveredTrackerData,
+              offlineTrackedEntityInstanceIds
+            );
+            //this.trackedEntityInstanceWithConflicts = trackedEntityInstanceWithConflicts;
+            if (
+              trackedEntityInstanceWithoutConflicts &&
+              trackedEntityInstanceWithoutConflicts.length > 0
+            ) {
+              const {
+                events,
+                enrollments
+              } = this.trackerCaptureSyncProvider.getSelectedEnrollementEventsByTrackedEntityInstances(
+                trackedEntityInstanceWithoutConflicts,
+                discoveredTrackerData
+              );
+              this.applyingChnagesToEvents(
+                trackedEntityInstanceWithoutConflicts,
+                enrollments,
+                events
+              );
+            }
             this.isLoading = false;
           },
           error => {
@@ -168,6 +188,16 @@ export class TrackerConflictHandlerComponent implements OnInit, OnDestroy {
       });
       actionSheet.present();
     }
+  }
+
+  applyingChnagesToEvents(trackedEntityInstances, enrollments, events) {
+    console.log(
+      JSON.stringify({
+        trackedEntityInstances: trackedEntityInstances.length,
+        enrollments: enrollments.length,
+        events: events.length
+      })
+    );
   }
 
   clearAllSubscriptions() {

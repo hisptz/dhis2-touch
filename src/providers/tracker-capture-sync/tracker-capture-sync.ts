@@ -43,6 +43,72 @@ export class TrackerCaptureSyncProvider {
     private httpClientProvider: HttpClientProvider
   ) {}
 
+  getSelectedEnrollementEventsByTrackedEntityInstances(
+    trackedEntityInstances,
+    discoveredTrackerData
+  ) {
+    const trackedEntityInstanceIds = _.map(
+      trackedEntityInstances,
+      trackedEntityInstanceObj => trackedEntityInstanceObj.trackedEntityInstance
+    );
+    const enrollments = _.filter(
+      discoveredTrackerData.enrollments,
+      enrollment => {
+        return (
+          _.indexOf(
+            trackedEntityInstanceIds,
+            enrollment.trackedEntityInstance
+          ) !== -1
+        );
+      }
+    );
+    const events = _.filter(discoveredTrackerData.events, event => {
+      return (
+        _.indexOf(trackedEntityInstanceIds, event.trackedEntityInstance) !== -1
+      );
+    });
+    return { events, enrollments };
+  }
+
+  getTrackedEntityInstancesByStatus(
+    discoveredTrackerData,
+    offlineTrackedEntityInstanceIds
+  ) {
+    const trackedEntityInstanceWithConflicts =
+      discoveredTrackerData && discoveredTrackerData.trackedEntityInstances
+        ? _.filter(
+            discoveredTrackerData.trackedEntityInstances,
+            trackedEntityInstanceObj => {
+              return (
+                _.indexOf(
+                  offlineTrackedEntityInstanceIds,
+                  trackedEntityInstanceObj.trackedEntityInstance
+                ) !== -1
+              );
+            }
+          )
+        : [];
+    const trackedEntityInstanceWithoutConflicts =
+      discoveredTrackerData && discoveredTrackerData.trackedEntityInstances
+        ? _.filter(
+            discoveredTrackerData.trackedEntityInstances,
+            trackedEntityInstanceObj => {
+              return (
+                _.indexOf(
+                  offlineTrackedEntityInstanceIds,
+                  trackedEntityInstanceObj.trackedEntityInstance
+                ) === -1
+              );
+            }
+          )
+        : [];
+
+    return {
+      trackedEntityInstanceWithConflicts,
+      trackedEntityInstanceWithoutConflicts
+    };
+  }
+
   discoveringTrackerDataFromServer(
     eventType: string,
     organisationUnitId: string,
