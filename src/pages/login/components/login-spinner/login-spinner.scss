@@ -1,8 +1,10 @@
 login-spinner {
+
   img {
     width: 100%;
     height: 100%;
   }
+
   .div-with-text {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -12,60 +14,82 @@ login-spinner {
     align-items: center;
     color: #82b1ff;
   }
+
   @-webkit-keyframes spincube {
+
     from,
     to {
       -webkit-transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
     }
+
     16% {
       -webkit-transform: rotateY(-90deg);
     }
+
     33% {
       -webkit-transform: rotateY(-90deg) rotateZ(90deg);
     }
+
     50% {
       -webkit-transform: rotateY(-180deg) rotateZ(90deg);
     }
+
     66% {
       -webkit-transform: rotateY(-270deg) rotateX(90deg);
     }
+
     83% {
       -webkit-transform: rotateX(90deg);
     }
   }
+
   @keyframes spincube {
+
     from,
     to {
-      -moz-transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-      -ms-transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-      transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+      /*face one*/
+      -moz-transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale3d(2, 2, 2);
+      -ms-transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale3d(2, 2, 2);
+      transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale3d(2, 2, 2);
+
     }
+
     16% {
-      -moz-transform: rotateY(-90deg);
-      -ms-transform: rotateY(-90deg);
-      transform: rotateY(-90deg);
+      /*face two */
+      -moz-transform: rotateY(-90deg) scale3d(1, 1, 1);
+      -ms-transform: rotateY(-90deg) scale3d(1, 1, 1);
+      transform: rotateY(-90deg) scale3d(1, 1, 1);
     }
+
     33% {
-      -moz-transform: rotateY(-90deg) rotateZ(90deg);
-      -ms-transform: rotateY(-90deg) rotateZ(90deg);
-      transform: rotateY(-90deg) rotateZ(90deg);
+      /*face three*/
+      -moz-transform: rotateY(-90deg) rotateZ(90deg) scale3d(2, 2, 2);
+      -ms-transform: rotateY(-90deg) rotateZ(90deg) scale3d(2, 2, 2);
+      transform: rotateY(-90deg) rotateZ(90deg) scale3d(2, 2, 2);
     }
+
     50% {
-      -moz-transform: rotateY(-180deg) rotateZ(90deg);
-      -ms-transform: rotateY(-180deg) rotateZ(90deg);
-      transform: rotateY(-180deg) rotateZ(90deg);
+      /*face four*/
+      -moz-transform: rotateY(-180deg) rotateZ(90deg) scale3d(1, 1, 1);
+      -ms-transform: rotateY(-180deg) rotateZ(90deg) scale3d(1, 1, 1);
+      transform: rotateY(-180deg) rotateZ(90deg) scale3d(1, 1, 1);
     }
+
     66% {
-      -moz-transform: rotateY(-270deg) rotateX(90deg);
-      -ms-transform: rotateY(-270deg) rotateX(90deg);
-      transform: rotateY(-270deg) rotateX(90deg);
+      /*face five*/
+      -moz-transform: rotateY(-270deg) rotateX(90deg) scale3d(2, 2, 2);
+      -ms-transform: rotateY(-270deg) rotateX(90deg) scale3d(2, 2, 2);
+      transform: rotateY(-270deg) rotateX(90deg) scale3d(2, 2, 2);
     }
+
     83% {
+      /*face six*/
       -moz-transform: rotateX(90deg);
       -ms-transform: rotateX(90deg);
       transform: rotateX(90deg);
     }
   }
+
   .cubespinner {
     -webkit-animation-name: spincube;
     -webkit-animation-timing-function: ease-in-out;
@@ -84,6 +108,7 @@ login-spinner {
     -ms-transform-origin: 60px 60px 0;
     transform-origin: 60px 60px 0
   }
+
   .cubespinner div {
     position: absolute;
     width: 120px;
@@ -92,40 +117,47 @@ login-spinner {
     background: rgba(255, 255, 255, .8);
     box-shadow: inset 0 0 20px rgba(0, 0, 0, .2);
   }
+
   .cubespinner .face1 {
     -webkit-transform: translateZ(60px);
     -moz-transform: translateZ(60px);
     -ms-transform: translateZ(60px);
     transform: translateZ(60px)
   }
+
   .cubespinner .face2 {
     -webkit-transform: rotateY(90deg) translateZ(60px);
     -moz-transform: rotateY(90deg) translateZ(60px);
     -ms-transform: rotateY(90deg) translateZ(60px);
     transform: rotateY(90deg) translateZ(60px)
   }
+
   .cubespinner .face3 {
     -webkit-transform: rotateY(90deg) rotateX(90deg) translateZ(60px);
     -moz-transform: rotateY(90deg) rotateX(90deg) translateZ(60px);
     -ms-transform: rotateY(90deg) rotateX(90deg) translateZ(60px);
     transform: rotateY(90deg) rotateX(90deg) translateZ(60px)
   }
+
   .cubespinner .face4 {
     -webkit-transform: rotateY(180deg) rotateZ(90deg) translateZ(60px);
     -moz-transform: rotateY(180deg) rotateZ(90deg) translateZ(60px);
     -ms-transform: rotateY(180deg) rotateZ(90deg) translateZ(60px);
     transform: rotateY(180deg) rotateZ(90deg) translateZ(60px)
   }
+
   .cubespinner .face5 {
     -webkit-transform: rotateY(-90deg) rotateZ(90deg) translateZ(60px);
     -moz-transform: rotateY(-90deg) rotateZ(90deg) translateZ(60px);
     -ms-transform: rotateY(-90deg) rotateZ(90deg) translateZ(60px);
     transform: rotateY(-90deg) rotateZ(90deg) translateZ(60px)
   }
+
   .cubespinner .face6 {
     -webkit-transform: rotateX(-90deg) translateZ(60px);
     -moz-transform: rotateX(-90deg) translateZ(60px);
     -ms-transform: rotateX(-90deg) translateZ(60px);
     transform: rotateX(-90deg) translateZ(60px)
   }
+
 }
