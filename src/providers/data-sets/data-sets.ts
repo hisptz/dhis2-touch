@@ -497,7 +497,8 @@ export class DataSetsProvider {
             }
           },
           error => {
-            observer.error(error);
+            observer.next([]);
+            observer.complete();
           }
         );
       }
