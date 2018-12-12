@@ -65,7 +65,8 @@ export class EnrollmentsProvider {
     incidentDate,
     trackedEntityInstance,
     syncStatus,
-    enrollment?
+    enrollment?,
+    status?: string
   ) {
     if (!enrollment) {
       enrollment = dhis2.util.uid();
@@ -84,7 +85,7 @@ export class EnrollmentsProvider {
       orgUnitName: orgUnitName,
       enrollmentDate: enrollmentDate,
       incidentDate: incidentDate,
-      status: 'ACTIVE',
+      status: status ? status : 'ACTIVE',
       attributes: [],
       events: [],
       syncStatus: syncStatus
@@ -196,10 +197,8 @@ export class EnrollmentsProvider {
         .subscribe(
           (enrollmentResponse: any) => {
             if (enrollmentResponse && enrollmentResponse.length > 0) {
-              enrollmentResponse.map((enrollment: any) => {
-                if (enrollment.program == programId) {
-                  enrollments.push(enrollment);
-                }
+              enrollments = _.filter(enrollmentResponse, enrollment => {
+                return enrollment.program === programId;
               });
             }
             observer.next(enrollments);
