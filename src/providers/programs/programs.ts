@@ -81,7 +81,8 @@ export class ProgramsProvider {
           observer.complete();
         },
         error => {
-          observer.error(error);
+          observer.next([]);
+          observer.complete();
         }
       );
     });
