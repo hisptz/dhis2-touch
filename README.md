@@ -1,7 +1,7 @@
 [![dependencies Status](https://david-dm.org/hisptz/hisptz-touch/status.svg)](https://david-dm.org/hisptz/hisptz-touch)
 [![devDependencies Status](https://david-dm.org/hisptz/hisptz-touch/dev-status.svg)](https://david-dm.org/hisptz/hisptz-touch?type=dev)
-##Prerequisites
-Make sure you have the following installed on your pc
+
+## Prerequisites Make sure you have the following installed on your pc
 
 1.  npm and node
 2.  git
