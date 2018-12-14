@@ -51,7 +51,8 @@ export class UserProvider {
    */
   getUserAuthorities(user): Observable<any> {
     this.http.useBasicAuth(user.username, user.password);
-    let fields = 'fields=authorities,id,name,dataViewOrganisationUnits';
+    let fields =
+      'fields=authorities,id,name,settings,dataViewOrganisationUnits';
     let url = user.serverUrl;
     url += '/api/me.json?' + fields;
     if (user.dhisVersion && parseInt(user.dhisVersion) > 25) {

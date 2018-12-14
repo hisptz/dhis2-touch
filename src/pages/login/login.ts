@@ -198,7 +198,7 @@ export class LoginPage implements OnInit, OnDestroy {
     }
   }
 
-  onUpdateCurrentUser(currentUser) {
+  onUpdateCurrentUser(currentUser: CurrentUser) {
     this.currentUser = _.assign({}, this.currentUser, currentUser);
   }
 

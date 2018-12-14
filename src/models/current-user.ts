@@ -40,4 +40,5 @@ export interface CurrentUser {
   userOrgUnitIds?: string[];
   programs?: string[];
   dataSets?: string[];
+  colorSettings?: any;
 }
