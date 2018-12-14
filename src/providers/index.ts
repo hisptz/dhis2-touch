@@ -76,6 +76,7 @@ import { DataEntryFormProvider } from './data-entry-form/data-entry-form';
 import { ProfileProvider } from '../pages/profile/providers/profile/profile';
 import { DataStoreManagerProvider } from './data-store-manager/data-store-manager';
 import { TrackerCaptureSyncProvider } from './tracker-capture-sync/tracker-capture-sync';
+import { AppColorProvider } from './app-color/app-color';
 
 export const appProviders = [
   AppTranslationProvider,
@@ -118,7 +119,8 @@ export const appProviders = [
   DataEntryFormProvider,
   ProfileProvider,
   DataStoreManagerProvider,
-  TrackerCaptureSyncProvider
+  TrackerCaptureSyncProvider,
+  AppColorProvider
 ];
 
 export const nativePlugins = [
