@@ -66,6 +66,11 @@ export const getAccountTitle = createSelector(
   }
 );
 
+export const getCurrentUserColorSettings = createSelector(
+  getUsersEntityState,
+  state => state.colorSettings
+);
+
 export const getCurrentUserDataSets = createSelector(
   getCurrentUser,
   (currentUser: CurrentUser) => currentUser.dataSets

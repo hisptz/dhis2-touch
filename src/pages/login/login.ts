@@ -251,6 +251,10 @@ export class LoginPage implements OnInit, OnDestroy {
           loggedInInInstance
         )
         .subscribe(() => {
+          const { colorSettings } = currentUser;
+          this.store.dispatch(
+            new SetCurrentUserColorSettings({ colorSettings })
+          );
           this.store.dispatch(
             new AddCurrentUser({ currentUser: this.currentUser })
           );
