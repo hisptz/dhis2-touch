@@ -33,7 +33,11 @@ import { UserProvider } from '../../providers/user/user';
 import { CurrentUser } from '../../models/current-user';
 
 import { Store } from '@ngrx/store';
-import { State, AddCurrentUser } from '../../store';
+import {
+  State,
+  AddCurrentUser,
+  SetCurrentUserColorSettings
+} from '../../store';
 
 import * as _ from 'lodash';
 import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
@@ -199,6 +203,8 @@ export class LoginPage implements OnInit, OnDestroy {
   }
 
   onUpdateCurrentUser(currentUser: CurrentUser) {
+    const { colorSettings } = currentUser;
+    this.store.dispatch(new SetCurrentUserColorSettings({ colorSettings }));
     this.currentUser = _.assign({}, this.currentUser, currentUser);
   }
 

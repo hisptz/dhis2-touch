@@ -26,6 +26,7 @@ import { CurrentUser } from '../../models/current-user';
 import { CurrentUserActions, CurrentUserActionTypes } from '../actions';
 export interface currentUserState extends EntityState<CurrentUser> {
   currentUserId: string;
+  colorSettings: any;
 }
 
 export const currentUserAdapter: EntityAdapter<
@@ -33,7 +34,14 @@ export const currentUserAdapter: EntityAdapter<
 > = createEntityAdapter<CurrentUser>();
 
 const initialState: currentUserState = currentUserAdapter.getInitialState({
-  currentUserId: null
+  currentUserId: null,
+  colorSettings: {
+    colorAttributes: {
+      main: 'light-blue-main',
+      secondary: 'light-blue-secondary'
+    },
+    colorCode: { main: '#1D5288', secondary: '#488AFF' }
+  }
 });
 
 export function currentUserReducer(
@@ -52,6 +60,9 @@ export function currentUserReducer(
     }
     case CurrentUserActionTypes.SetCurrentUser: {
       return { ...state, currentUserId: action.payload.id };
+    }
+    case CurrentUserActionTypes.SetCurrentUserColorSettings: {
+      return { ...state, colorSettings: action.payload.colorSettings };
     }
     case CurrentUserActionTypes.ClearCurrentUser: {
       return { ...state, currentUserId: null };

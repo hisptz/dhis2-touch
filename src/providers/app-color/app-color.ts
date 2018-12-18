@@ -55,7 +55,7 @@ export class AppColorProvider {
       : { main: '#1D5288', secondary: '#488AFF' };
   }
 
-  getCurrentUserColorObject(currentStyle: string, keyStyle?: string) {
+  getCurrentUserColorObject(currentStyle?: string, keyStyle?: string) {
     const userStyle = keyStyle
       ? keyStyle.split('/')[0]
       : currentStyle

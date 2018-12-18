@@ -25,7 +25,11 @@ import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 
 import { Store } from '@ngrx/store';
-import { State, AddCurrentUser } from '../../store';
+import {
+  State,
+  AddCurrentUser,
+  SetCurrentUserColorSettings
+} from '../../store';
 
 import { UserProvider } from '../../providers/user/user';
 import { NetworkAvailabilityProvider } from '../../providers/network-availability/network-availability';
@@ -67,6 +71,8 @@ export class LaunchPage implements OnInit {
       }
       this.appTranslationProvider.setAppTranslation(currentLanguage);
       if (currentUser && currentUser.isLogin) {
+        const { colorSettings } = currentUser;
+        this.store.dispatch(new SetCurrentUserColorSettings({ colorSettings }));
         this.store.dispatch(new AddCurrentUser({ currentUser }));
         this.navCtrl.setRoot(TabsPage);
       } else {
