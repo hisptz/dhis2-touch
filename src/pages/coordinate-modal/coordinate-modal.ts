@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavParams, ViewController } from 'ionic-angular';
+import { Store } from '@ngrx/store';
+import { State, getCurrentUserColorSettings } from '../../store';
+import { Observable } from 'rxjs';
 
 /**
  * Generated class for the CoordinateModalPage page.
@@ -15,7 +18,15 @@ import { IonicPage, NavParams, ViewController } from 'ionic-angular';
 })
 export class CoordinateModalPage implements OnInit {
   position: any;
-  constructor(private navParams: NavParams, private viewCtrl: ViewController) {}
+  colorSettings$: Observable<any>;
+
+  constructor(
+    private store: Store<State>,
+    private navParams: NavParams,
+    private viewCtrl: ViewController
+  ) {
+    this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
+  }
   ngOnInit() {
     const data = this.navParams.get('data');
     const { position } = data;

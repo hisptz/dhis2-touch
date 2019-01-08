@@ -1,6 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IonicPage, NavParams, ViewController } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Store } from '@ngrx/store';
+import { State, getCurrentUserColorSettings } from '../../store';
+import { Observable } from 'rxjs';
 
 /**
  * Generated class for the HideAndShowColumnsPage page.
@@ -22,8 +25,14 @@ export class HideAndShowColumnsPage implements OnInit, OnDestroy {
   loadingSize: string;
   typeOfList: string;
   icons: any;
+  colorSettings$: Observable<any>;
 
-  constructor(private navParams: NavParams, private viewCtrl: ViewController) {
+  constructor(
+    private store: Store<State>,
+    private navParams: NavParams,
+    private viewCtrl: ViewController
+  ) {
+    this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
     this.fieldsToDisplay = [];
     this.displayInLIst = [];
     this.selectedItemsModel = {};
