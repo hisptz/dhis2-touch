@@ -22,7 +22,7 @@
 *
 *
 -->
-<ion-tabs color="primary" tabsHighlight="true" tabsPlacement="top">
+<ion-tabs [color]="(colorSettings$ |async).colorAttributes.main" tabsHighlight="true" tabsPlacement="top">
   <ion-tab [root]="tab1Root" tabTitle="Apps" tabIcon="apps"></ion-tab>
   <ion-tab [root]="tab2Root" tabTitle="{{ accountTitle$ |async }}" tabIcon="options"></ion-tab>
 </ion-tabs>
