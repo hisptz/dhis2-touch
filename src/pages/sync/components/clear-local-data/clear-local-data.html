@@ -1,3 +1,27 @@
+<!--
+*
+* Copyright 2015 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2015
+* @author Joseph Chingalo profschingalo@gmail.com>
+*
+*
+-->
 <div *ngIf="isLoading">
   <loading loadingSize="large" [loadingMessage]="loadingMessage"></loading>
 </div>
@@ -7,33 +31,37 @@
       <ion-item>
         <ion-label>
           {{ translationMapper['Aggregate data'] }}&nbsp;
-          <ion-badge color="badge-color">{{ dataObject.dataValues }}</ion-badge>
+          <ion-badge [color]="colorSettings.colorAttributes.secondary">{{ dataObject.dataValues }}</ion-badge>
         </ion-label>
-        <ion-checkbox [(ngModel)]="selectedItems.dataValues" disabled="{{(dataObject.dataValues == 0)?'true':'false'}}" (ionChange)="updateItemsToBeDeleted()"></ion-checkbox>
-      </ion-item>
-      <ion-item>
-        <ion-label>
-          {{ translationMapper['Events'] }}&nbsp;
-          <ion-badge color="badge-color">{{ dataObject.events }}</ion-badge>
-        </ion-label>
-        <ion-checkbox [(ngModel)]="selectedItems.events" disabled="{{(dataObject.events == 0)?'true':'false'}}" (ionChange)="updateItemsToBeDeleted()"></ion-checkbox>
-      </ion-item>
-      <ion-item>
-        <ion-label>
-          {{ translationMapper['Events for tracker'] }}&nbsp;
-          <ion-badge color="badge-color">{{ dataObject.eventsForTracker }}</ion-badge>
-        </ion-label>
-        <ion-checkbox [(ngModel)]="selectedItems.eventsForTracker" disabled="{{(dataObject.eventsForTracker == 0)?'true':'false'}}"
+        <ion-checkbox [color]="colorSettings.colorAttributes.secondary" [(ngModel)]="selectedItems.dataValues" disabled="{{(dataObject.dataValues == 0)?'true':'false'}}"
           (ionChange)="updateItemsToBeDeleted()"></ion-checkbox>
       </ion-item>
       <ion-item>
         <ion-label>
-          {{ translationMapper['Enrollments'] }}&nbsp;
-          <ion-badge color="badge-color">{{ dataObject.enrollments }}</ion-badge>
+          {{ translationMapper['Events'] }}&nbsp;
+          <ion-badge [color]="colorSettings.colorAttributes.secondary">{{ dataObject.events }}</ion-badge>
         </ion-label>
-        <ion-checkbox [(ngModel)]="selectedItems.enrollments" disabled="{{(dataObject.enrollments == 0)?'true':'false'}}" (ionChange)="updateItemsToBeDeleted()"></ion-checkbox>
+        <ion-checkbox [color]="colorSettings.colorAttributes.secondary" [(ngModel)]="selectedItems.events" disabled="{{(dataObject.events == 0)?'true':'false'}}"
+          (ionChange)="updateItemsToBeDeleted()"></ion-checkbox>
       </ion-item>
-      <button [disabled]="( itemsToBeDeleted.length == 0)" ion-button full text-capitalize (tap)="deleteSelectedItems()">
+      <ion-item>
+        <ion-label>
+          {{ translationMapper['Events for tracker'] }}&nbsp;
+          <ion-badge [color]="colorSettings.colorAttributes.secondary">{{ dataObject.eventsForTracker }}</ion-badge>
+        </ion-label>
+        <ion-checkbox [color]="colorSettings.colorAttributes.secondary" [(ngModel)]="selectedItems.eventsForTracker"
+          disabled="{{(dataObject.eventsForTracker == 0)?'true':'false'}}" (ionChange)="updateItemsToBeDeleted()"></ion-checkbox>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          {{ translationMapper['Enrollments'] }}&nbsp;
+          <ion-badge [color]="colorSettings.colorAttributes.secondary">{{ dataObject.enrollments }}</ion-badge>
+        </ion-label>
+        <ion-checkbox [color]="colorSettings.colorAttributes.secondary" [(ngModel)]="selectedItems.enrollments"
+          disabled="{{(dataObject.enrollments == 0)?'true':'false'}}" (ionChange)="updateItemsToBeDeleted()"></ion-checkbox>
+      </ion-item>
+      <button [color]="colorSettings.colorAttributes.secondary" [disabled]="( itemsToBeDeleted.length == 0)" ion-button
+        full text-capitalize (tap)="deleteSelectedItems()">
         {{ translationMapper['Clear local data'] }}
       </button>
     </ion-col>
