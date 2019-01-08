@@ -25,7 +25,9 @@ import { Component, OnInit } from '@angular/core';
 import { IonicPage, ViewController, NavParams } from 'ionic-angular';
 import { AppTranslationProvider } from '../../../providers/app-translation/app-translation';
 import { Translation } from '../../../models/translation';
-
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { State, getCurrentUserColorSettings } from '../../../store';
 /**
  * Generated class for the TransalationSelectionPage page.
  *
@@ -42,12 +44,14 @@ export class TransalationSelectionPage implements OnInit {
   cancelIcon: string;
   translationCodes: Array<Translation>;
   currentLanguage: string;
-
+  colorSettings$: Observable<any>;
   constructor(
     private navParams: NavParams,
     private viewCtrl: ViewController,
-    private appTranslationProvider: AppTranslationProvider
+    private appTranslationProvider: AppTranslationProvider,
+    private store: Store<State>
   ) {
+    this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
     this.translationCodes = this.appTranslationProvider.getSupportedTranslationObjects();
   }
 
