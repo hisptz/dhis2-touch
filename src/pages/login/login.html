@@ -23,7 +23,6 @@
 *
 -->
 <ion-content class="login" [style.background-color]="(colorSettings$ |async).colorCode.main">
-  {{ colorSettings$ |async |json}}
   <div *ngIf="isLoginProcessActive" class="topSLogan logo" style="margin-bottom: 100px;" padding-bottom margin-bottom>
     <login-spinner [keyFlag]="keyFlag" [serverUrl]="currentUser.serverUrl" [applicationTitle]="applicationTitle"
       [keyApplicationFooter]="keyApplicationFooter" [keyApplicationIntro]="keyApplicationIntro"

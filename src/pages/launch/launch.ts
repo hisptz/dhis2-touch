@@ -70,9 +70,11 @@ export class LaunchPage implements OnInit {
         currentLanguage = currentUser.currentLanguage;
       }
       this.appTranslationProvider.setAppTranslation(currentLanguage);
-      if (currentUser && currentUser.isLogin) {
+      if (currentUser && currentUser.colorSettings) {
         const { colorSettings } = currentUser;
         this.store.dispatch(new SetCurrentUserColorSettings({ colorSettings }));
+      }
+      if (currentUser && currentUser.isLogin) {
         this.store.dispatch(new AddCurrentUser({ currentUser }));
         this.navCtrl.setRoot(TabsPage);
       } else {
