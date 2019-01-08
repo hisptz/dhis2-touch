@@ -79,12 +79,12 @@ export class SyncProvider {
         id: 'clearData',
         name: 'Clear local data',
         icon: 'assets/icon/clear-data.png'
-      },
-      {
-        id: 'clearMetadata',
-        name: 'Clear local metadata',
-        icon: 'assets/icon/clear-metadata.png'
       }
+      // {
+      //   id: 'clearMetadata',
+      //   name: 'Clear local metadata',
+      //   icon: 'assets/icon/clear-metadata.png'
+      // }
     ];
     return syncContents;
   }
