@@ -22,7 +22,8 @@
 *
 *
 -->
-<ion-content class="login">
+<ion-content class="login" [style.background-color]="(colorSettings$ |async).colorCode.main">
+  {{ colorSettings$ |async |json}}
   <div *ngIf="isLoginProcessActive" class="topSLogan logo" style="margin-bottom: 100px;" padding-bottom margin-bottom>
     <login-spinner [keyFlag]="keyFlag" [serverUrl]="currentUser.serverUrl" [applicationTitle]="applicationTitle"
       [keyApplicationFooter]="keyApplicationFooter" [keyApplicationIntro]="keyApplicationIntro"
@@ -53,7 +54,8 @@
         </ion-row>
         <ion-row *ngIf="!isLoginProcessActive">
           <ion-col>
-            <button large [disabled]="!isLoginFormValid" ion-button full text-capitalize (click)="startLoginProcess()">
+            <button large [disabled]="!isLoginFormValid" ion-button full text-capitalize (click)="startLoginProcess()"
+              [color]="(colorSettings$ |async).colorAttributes.secondary">
               <span [translate]="'Login'"></span>
             </button>
           </ion-col>

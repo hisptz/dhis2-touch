@@ -36,7 +36,8 @@ import { Store } from '@ngrx/store';
 import {
   State,
   AddCurrentUser,
-  SetCurrentUserColorSettings
+  SetCurrentUserColorSettings,
+  getCurrentUserColorSettings
 } from '../../store';
 
 import * as _ from 'lodash';
@@ -48,6 +49,7 @@ import { SmsCommandProvider } from '../../providers/sms-command/sms-command';
 import { LocalInstanceProvider } from '../../providers/local-instance/local-instance';
 import { EncryptionProvider } from '../../providers/encryption/encryption';
 import { BackgroundMode } from '@ionic-native/background-mode';
+import { Observable } from 'rxjs';
 
 /**
  * Generated class for the LoginPage page.
@@ -78,6 +80,7 @@ export class LoginPage implements OnInit, OnDestroy {
   applicationTitle: string;
   keyApplicationNotification: string;
   keyApplicationIntro: string;
+  colorSettings$: Observable<any>;
 
   constructor(
     private navCtrl: NavController,
@@ -93,6 +96,7 @@ export class LoginPage implements OnInit, OnDestroy {
     private backgroundMode: BackgroundMode,
     private store: Store<State>
   ) {
+    this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
     this.logoUrl = 'assets/img/logo.png';
     this.offlineIcon = 'assets/icon/offline.png';
     this.isLoginFormValid = false;
