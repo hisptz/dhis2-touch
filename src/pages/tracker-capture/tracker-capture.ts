@@ -1,3 +1,26 @@
+/*
+ *
+ * Copyright 2015 HISP Tanzania
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ * @since 2015
+ * @author Joseph Chingalo <profschingalo@gmail.com>
+ *
+ */
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, ModalController, NavController } from 'ionic-angular';
 import { UserProvider } from '../../providers/user/user';
@@ -8,6 +31,9 @@ import { TrackerCaptureProvider } from '../../providers/tracker-capture/tracker-
 import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 import * as _ from 'lodash';
 import { SettingsProvider } from '../../providers/settings/settings';
+import { Store } from '@ngrx/store';
+import { State, getCurrentUserColorSettings } from '../../store';
+import { Observable } from 'rxjs';
 
 /**
  * Generated class for the TrackerCapturePage page.
@@ -45,8 +71,10 @@ export class TrackerCapturePage implements OnInit {
   showTrackerConflictHandler: boolean;
   trackerConflictHandler: any;
   hasOnlineTrackerLoaded: boolean;
+  colorSettings$: Observable<any>;
 
   constructor(
+    private store: Store<State>,
     public navCtrl: NavController,
     private modalCtrl: ModalController,
     private userProvider: UserProvider,
@@ -57,6 +85,7 @@ export class TrackerCapturePage implements OnInit {
     private appTranslation: AppTranslationProvider,
     private settingsProvider: SettingsProvider
   ) {
+    this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
     this.storageStatus = {
       online: 0,
       offline: 0
@@ -79,8 +108,6 @@ export class TrackerCapturePage implements OnInit {
         this.selectedProgram.id,
         this.selectedOrgUnit.id
       );
-    } else {
-      this.hasOnlineTrackerLoaded = false;
     }
   }
 
@@ -335,6 +362,16 @@ export class TrackerCapturePage implements OnInit {
             trackedEntityInstances
           };
           this.trackedEntityInstances = trackedEntityInstances;
+          this.storageStatus.online = _.filter(
+            trackedEntityInstances,
+            trackedEntityInstance =>
+              trackedEntityInstance.syncStatus === 'synced'
+          ).length;
+          this.storageStatus.offline = _.filter(
+            trackedEntityInstances,
+            trackedEntityInstance =>
+              trackedEntityInstance.syncStatus === 'not-synced'
+          ).length;
           this.renderDataAsTable();
         },
         error => {
@@ -351,7 +388,11 @@ export class TrackerCapturePage implements OnInit {
     this.hasOnlineTrackerLoaded = true;
   }
 
-  onSuccessTrackerConflictHandle(data) {}
+  onSuccessTrackerConflictHandling() {
+    const programId = this.selectedProgram.id;
+    const organisationUnitId = this.selectedOrgUnit.id;
+    this.loadingSavedTrackedEntityInstances(programId, organisationUnitId);
+  }
 
   isAllParameterSelected() {
     let result = false;
