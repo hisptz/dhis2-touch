@@ -134,7 +134,7 @@ export class TrackerConflictHandlerComponent implements OnInit, OnDestroy {
                 trackedEntityInstanceWithoutConflicts,
                 discoveredTrackerData
               );
-              this.applyingChnagesToEvents(
+              this.applyingChangesToEvents(
                 trackedEntityInstanceWithoutConflicts,
                 enrollments,
                 events
@@ -190,7 +190,7 @@ export class TrackerConflictHandlerComponent implements OnInit, OnDestroy {
     }
   }
 
-  applyingChnagesToEvents(trackedEntityInstances, enrollments, events) {
+  applyingChangesToEvents(trackedEntityInstances, enrollments, events) {
     const { currentUser } = this.trackerConflictHandler;
     this.subscriptions.add(
       this.trackerCaptureSyncProvider
