@@ -175,6 +175,13 @@ export class TrackerCaptureSyncProvider {
           const trackedEntityInstances = _.map(
             trackedEntityInstancesResponse.trackedEntityInstances,
             trackedEntityInstanceObj => {
+              const {
+                trackedEntity,
+                trackedEntityType
+              } = trackedEntityInstanceObj;
+              const trackedEntityValue = trackedEntityType
+                ? trackedEntityType
+                : trackedEntity;
               const trackedEntityInstanceId =
                 trackedEntityInstanceObj.trackedEntityInstance;
               const attributes = _.map(
@@ -196,6 +203,7 @@ export class TrackerCaptureSyncProvider {
                 ...trackedEntityInstanceObj,
                 orgUnitName,
                 syncStatus,
+                trackedEntity: trackedEntityValue,
                 id: trackedEntityInstanceId,
                 attributes
               };
@@ -226,6 +234,7 @@ export class TrackerCaptureSyncProvider {
             enrollmentObj => {
               const {
                 trackedEntity,
+                trackedEntityType,
                 orgUnit,
                 orgUnitName,
                 program,
@@ -235,8 +244,11 @@ export class TrackerCaptureSyncProvider {
                 enrollment,
                 status
               } = enrollmentObj;
+              const trackedEntityValue = trackedEntityType
+                ? trackedEntityType
+                : trackedEntity;
               const enrollmentPayload = this.enrollmentsProvider.getEnrollmentsPayLoad(
-                trackedEntity,
+                trackedEntityValue,
                 orgUnit,
                 orgUnitName,
                 program,
