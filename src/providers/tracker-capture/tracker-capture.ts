@@ -30,6 +30,7 @@ import { TrackedEntityInstancesProvider } from '../tracked-entity-instances/trac
 import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
+import { CurrentUser } from '../../models';
 
 /*
   Generated class for the TrackerCaptureProvider provider.
@@ -324,6 +325,15 @@ export class TrackerCaptureProvider {
         delete trackedEntityInstance.orgUnitName;
         delete trackedEntityInstance.syncStatus;
         delete trackedEntityInstance.deleted;
+        const { dhisVersion } = currentUser;
+        if (dhisVersion && parseInt(dhisVersion) > 28) {
+          const { trackedEntity } = trackedEntityInstance;
+          delete trackedEntityInstance.trackedEntity;
+          trackedEntityInstance = {
+            ...trackedEntityInstance,
+            trackedEntityType: trackedEntity
+          };
+        }
         trackedEntityInstance.attributes.forEach((attribute: any) => {
           delete attribute.trackedEntityInstance;
           delete attribute.id;
@@ -464,7 +474,7 @@ export class TrackerCaptureProvider {
    * @param currentUser
    * @returns {Observable<any>}
    */
-  uploadEnrollments(enrollments, currentUser): Observable<any> {
+  uploadEnrollments(enrollments, currentUser: CurrentUser): Observable<any> {
     return new Observable(observer => {
       let success = 0,
         fail = 0;
@@ -479,6 +489,12 @@ export class TrackerCaptureProvider {
           delete enrollment.syncStatus;
           delete enrollment.id;
           delete enrollment.events;
+          const { dhisVersion } = currentUser;
+          if (dhisVersion && parseInt(dhisVersion) > 28) {
+            const { trackedEntity } = enrollment;
+            delete enrollment.trackedEntity;
+            enrollment = { ...enrollment, trackedEntityType: trackedEntity };
+          }
           this.httpClientProvider.post(url, enrollment, currentUser).subscribe(
             () => {
               success++;
