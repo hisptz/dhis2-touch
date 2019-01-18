@@ -23,7 +23,15 @@ export class LoginSpinnerComponent implements OnInit {
   @Input()
   keyApplicationNotification: string;
 
-  constructor() {}
+  icon: any = {
+    appLogo: '',
+    dhisLogo: ''
+  };
+
+  constructor() {
+    this.icon.appLogo = 'assets/img/logo.png';
+    this.icon.dhisLogo = 'assets/img/dhis_logo.png';
+  }
 
   ngOnInit() {}
 }

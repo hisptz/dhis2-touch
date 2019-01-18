@@ -1,13 +1,13 @@
 <div class="cubespinner animated zoomIn" padding-bottom padding-top margin-top margin-bottom>
   <div class="face1 div-with-text ">
-    <img src="assets/img/logo.png ">
+    <img [src]="icon.appLogo">
   </div>
   <div class="face2 div-with-text ">
     <span *ngIf="applicationTitle">
       {{ applicationTitle }}
     </span>
     <span *ngIf="!applicationTitle">
-      <img src="assets/img/dhis_log.png ">
+      <img [src]="icon.dhisLogo">
     </span>
   </div>
   <div class="face3 div-with-text ">
@@ -15,7 +15,7 @@
       {{ keyApplicationIntro }}
     </span>
     <span *ngIf="!keyApplicationIntro">
-      <img src="assets/img/logo.png ">
+      <img [src]="icon.appLogo">
     </span>
   </div>
   <div class="face4">
@@ -23,7 +23,7 @@
       <img src="{{ serverUrl+ '/dhis-web-commons/flags/'+keyFlag+ '.png'}}" alt="The flag from the server ">
     </span>
     <span *ngIf="!(keyFlag && serverUrl)">
-      <img src="assets/img/dhis_log.png ">
+      <img [src]="icon.dhisLogo">
     </span>
   </div>
   <div class="face5 div-with-text ">
@@ -31,7 +31,7 @@
       {{ keyApplicationNotification }}
     </span>
     <span *ngIf="!keyApplicationNotification">
-      <img src="assets/img/logo.png ">
+      <img [src]="icon.appLogo">
     </span>
   </div>
   <div class="face6 div-with-text ">
@@ -39,7 +39,7 @@
       {{ keyApplicationFooter }}
     </span>
     <span *ngIf="!keyApplicationFooter">
-      <img src="assets/img/dhis_log.png ">
+      <img [src]="icon.dhisLogo">
     </span>
   </div>
 </div>
