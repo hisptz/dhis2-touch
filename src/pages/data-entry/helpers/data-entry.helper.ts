@@ -162,6 +162,10 @@ export function onFormReady(
   // Find input items and set required properties to them
   const inputElements = document.getElementsByTagName('INPUT');
   _.each(inputElements, (inputElement: any) => {
+    //empty value set on design inputs
+    if (inputElement.hasAttribute('value')) {
+      inputElement.setAttribute('value', '');
+    }
     // Get attribute from the element
     const elementId = inputElement.getAttribute('id');
     const attributeId = inputElement.getAttribute('attributeid');
