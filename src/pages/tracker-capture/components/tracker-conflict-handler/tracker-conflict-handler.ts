@@ -45,7 +45,7 @@ export class TrackerConflictHandlerComponent implements OnInit, OnDestroy {
   @Input() trackerConflictHandler;
 
   @Output() successDiscovering = new EventEmitter();
-  @Output() successTrackerConflictHandle = new EventEmitter();
+  @Output() successTrackerConflictHandler = new EventEmitter();
 
   isLoading: boolean;
   icons: any = {
@@ -134,7 +134,7 @@ export class TrackerConflictHandlerComponent implements OnInit, OnDestroy {
                 trackedEntityInstanceWithoutConflicts,
                 discoveredTrackerData
               );
-              this.applyingChnagesToEvents(
+              this.applyingChangesToEvents(
                 trackedEntityInstanceWithoutConflicts,
                 enrollments,
                 events
@@ -190,7 +190,7 @@ export class TrackerConflictHandlerComponent implements OnInit, OnDestroy {
     }
   }
 
-  applyingChnagesToEvents(trackedEntityInstances, enrollments, events) {
+  applyingChangesToEvents(trackedEntityInstances, enrollments, events) {
     const { currentUser } = this.trackerConflictHandler;
     this.subscriptions.add(
       this.trackerCaptureSyncProvider
@@ -207,6 +207,7 @@ export class TrackerConflictHandlerComponent implements OnInit, OnDestroy {
             const eventsCount = events.length;
             const message = `${trackedEntityInstancesCount} tracked Entity Instances,${enrollmentsCount} enrollments and ${eventsCount} events have been dicovered and applied into local storage`;
             this.appProvider.setTopNotification(message);
+            this.successTrackerConflictHandler.emit();
           },
           error => {
             console.log(JSON.stringify({ error }));

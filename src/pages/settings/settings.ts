@@ -1,3 +1,26 @@
+/*
+ *
+ * Copyright 2015 HISP Tanzania
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ * @since 2015
+ * @author Joseph Chingalo <profschingalo@gmail.com>
+ *
+ */
 import { Component, OnInit } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
 import { SettingsProvider } from '../../providers/settings/settings';
@@ -6,6 +29,9 @@ import { AppProvider } from '../../providers/app/app';
 import { LocalInstanceProvider } from '../../providers/local-instance/local-instance';
 import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 import { SynchronizationProvider } from '../../providers/synchronization/synchronization';
+import { Store } from '@ngrx/store';
+import { State, getCurrentUserColorSettings } from '../../store';
+import { Observable } from 'rxjs';
 
 /**
  * Generated class for the SettingsPage page.
@@ -31,8 +57,10 @@ export class SettingsPage implements OnInit {
   localInstances: any;
   translationMapper: any;
   shouldRestartSynchronizationProcess: boolean;
+  colorSettings$: Observable<any>;
 
   constructor(
+    private store: Store<State>,
     private settingsProvider: SettingsProvider,
     private appProvider: AppProvider,
     private localInstanceProvider: LocalInstanceProvider,
@@ -40,15 +68,16 @@ export class SettingsPage implements OnInit {
     private userProvider: UserProvider,
     private synchronizationProvider: SynchronizationProvider
   ) {
+    this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
     this.shouldRestartSynchronizationProcess = false;
-  }
-
-  ngOnInit() {
     this.settingObject = {};
     this.translationCodes = this.appTranslationProvider.getSupportedTranslationObjects();
     this.isLoading = true;
     this.isSettingContentOpen = {};
     this.settingContents = this.settingsProvider.getSettingContentDetails();
+  }
+
+  ngOnInit() {
     if (this.settingContents.length > 0) {
       this.toggleSettingContents(this.settingContents[0]);
     }

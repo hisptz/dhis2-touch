@@ -66,7 +66,7 @@ export class ProgramsProvider {
       'fields=id,name,displayName,displayIncidentDate,programType,withoutRegistration,dataEntryForm[htmlCode],trackedEntityType[id,displayName],trackedEntity[id,displayName],ignoreOverdueEvents,skipOffline,captureCoordinates,enrollmentDateLabel,onlyEnrollOnce,selectIncidentDatesInFuture,incidentDateLabel,useFirstStageDuringRegistration,completeEventsExpiryDays,displayFrontPageList,categoryCombo[id,name,categories[id,name,categoryOptions[name,id,organisationUnits[id]]]],programStages[id,name,executionDateLabel,hideDueDate,dataEntryForm[htmlCode],allowGenerateNextVisit,blockEntryForm,repeatable,formType,sortOrder,standardInterval,minDaysFromStart,generatedByEnrollmentDate,autoGenerateEvent,captureCoordinates,dueDateLabel,programStageDataElements[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id]],programStageSections[id]],organisationUnits[id],programIndicators[id,name,description,expression],translations,attributeValues[value,attribute[name]],validationCriterias,programRuleVariables,programTrackedEntityAttributes[id,mandatory,externalAccess,allowFutureDate,displayInList,sortOrder,trackedEntityAttribute[id,name,code,name,formName,description,confidential,searchScope,translations,inherit,legendSets,optionSet[name,options[name,id,code]]unique,orgunitScope,programScope,displayInListNoProgramaggregationType,displayInListNoProgram,pattern,sortOrderInListNoProgram,generated,displayOnVisitSchedule,valueType,sortOrderInVisitSchedule]],programRules';
     const filter =
       'filter=organisationUnits.path:ilike:' +
-      userOrgUnitIds.join('&filter=path:ilike:') +
+      userOrgUnitIds.join('&filter=organisationUnits.path:ilike:') +
       '&rootJunction=OR';
     let url = '/api/' + this.resource + '.json?paging=false&' + fields;
     +'&' + filter;
@@ -81,8 +81,7 @@ export class ProgramsProvider {
           observer.complete();
         },
         error => {
-          observer.next([]);
-          observer.complete();
+          observer.error(error);
         }
       );
     });

@@ -1,3 +1,27 @@
+<!--
+*
+* Copyright 2015 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2015
+* @author Joseph Chingalo profschingalo@gmail.com>
+*
+*
+-->
 <div *ngIf="!isLoading">
   <div (click)="showTooltips()" class="inputLabel">
     {{ fieldLabelKey }}
@@ -13,8 +37,8 @@
   </div>
   <div *ngIf="!dataElement.optionSet" [ngClass]="(dataValuesSavingStatusClass[dataElement.id +'-dataElement'])?dataValuesSavingStatusClass[dataElement.id +'-dataElement']:'input-field-container'">
     <div *ngIf="textInputField.indexOf(dataElement.valueType) > -1">
-      <text-input-field [barcodeSettings]="barcodeSettings" (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="'dataElement'"
-        [data]="data" [valueType]="dataElement.valueType">
+      <text-input-field [barcodeSettings]="barcodeSettings" (onChange)="updateValue($event)" [dataElementId]="dataElement.id"
+        [categoryOptionComboId]="'dataElement'" [data]="data" [valueType]="dataElement.valueType">
       </text-input-field>
     </div>
     <div *ngIf="numericalInputField.indexOf(dataElement.valueType) > -1">
@@ -23,8 +47,8 @@
       </numerical-input-field>
     </div>
     <div *ngIf="dataElement.valueType === 'DATE' || dataElement.valueType === 'DATETIME' || dataElement.valueType === 'TIME' ">
-      <date-input-field (onChange)="updateValue($event)" [valueType]="dataElement.valueType" [dataElementId]="dataElement.id" [categoryOptionComboId]="'dataElement'"
-        [data]="data">
+      <date-input-field (onChange)="updateValue($event)" [valueType]="dataElement.valueType" [dataElementId]="dataElement.id"
+        [categoryOptionComboId]="'dataElement'" [data]="data">
       </date-input-field>
     </div>
     <div *ngIf="dataElement.valueType === 'TRUE_ONLY'">
@@ -33,7 +57,8 @@
       </true-only-input-field>
     </div>
     <div *ngIf="dataElement.valueType === 'AGE'">
-      <age-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="'dataElement'" [data]="data">
+      <age-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="'dataElement'"
+        [data]="data">
       </age-input>
     </div>
     <div *ngIf="dataElement.valueType === 'BOOLEAN'">
@@ -47,8 +72,8 @@
       </coordinate-input>
     </div>
     <div *ngIf="dataElement.valueType === 'ORGANISATION_UNIT'">
-      <organisation-unit-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="'dataElement'"
-        [data]="data">
+      <organisation-unit-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id"
+        [categoryOptionComboId]="'dataElement'" [data]="data">
       </organisation-unit-input>
     </div>
     <div *ngIf="dataElement.valueType === 'UNIT_INTERVAL'">
@@ -62,13 +87,13 @@
       </percentage-input>
     </div>
     <div *ngIf="dataElement.valueType === 'EMAIL'">
-      <email-input (onChange)="updateValue($event)" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [dataElementId]="dataElement.id"
-        [categoryOptionComboId]="'dataElement'" [data]="data">
+      <email-input (onChange)="updateValue($event)" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
+        [dataElementId]="dataElement.id" [categoryOptionComboId]="'dataElement'" [data]="data">
       </email-input>
     </div>
     <div *ngIf="dataElement.valueType === 'PHONE_NUMBER'">
-      <phone-number-input (onChange)="updateValue($event)" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [dataElementId]="dataElement.id"
-        [categoryOptionComboId]="'dataElement'" [data]="data">
+      <phone-number-input (onChange)="updateValue($event)" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
+        [dataElementId]="dataElement.id" [categoryOptionComboId]="'dataElement'" [data]="data">
       </phone-number-input>
     </div>
 

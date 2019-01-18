@@ -22,6 +22,9 @@
  *
  */
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { State, getCurrentUserColorSettings } from '../../store';
+import { Observable } from 'rxjs';
 
 /**
  * Generated class for the UnitIntervalInputComponent component.
@@ -42,7 +45,10 @@ export class UnitIntervalInputComponent implements OnInit {
   rangeValue: any;
   displayValue: any;
   maxCount: number;
-  constructor() {
+  colorSettings$: Observable<any>;
+
+  constructor(private store: Store<State>) {
+    this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
     this.maxCount = 100;
     this.rangeValue = 0;
   }

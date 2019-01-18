@@ -23,6 +23,9 @@
  */
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IonicPage, ViewController, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { State, getCurrentUserColorSettings } from '../../../store';
 
 /**
  * Generated class for the LocalInstancesSelectionPage page.
@@ -39,8 +42,13 @@ import { IonicPage, ViewController, NavParams } from 'ionic-angular';
 export class LocalInstancesSelectionPage implements OnInit, OnDestroy {
   cancelIcon: string;
   localInstances: Array<any>;
-
-  constructor(private viewCtrl: ViewController, private navParams: NavParams) {
+  colorSettings$: Observable<any>;
+  constructor(
+    private viewCtrl: ViewController,
+    private navParams: NavParams,
+    private store: Store<State>
+  ) {
+    this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
     this.localInstances = [];
   }
 

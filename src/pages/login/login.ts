@@ -33,7 +33,12 @@ import { UserProvider } from '../../providers/user/user';
 import { CurrentUser } from '../../models/current-user';
 
 import { Store } from '@ngrx/store';
-import { State, AddCurrentUser } from '../../store';
+import {
+  State,
+  AddCurrentUser,
+  SetCurrentUserColorSettings,
+  getCurrentUserColorSettings
+} from '../../store';
 
 import * as _ from 'lodash';
 import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
@@ -44,6 +49,7 @@ import { SmsCommandProvider } from '../../providers/sms-command/sms-command';
 import { LocalInstanceProvider } from '../../providers/local-instance/local-instance';
 import { EncryptionProvider } from '../../providers/encryption/encryption';
 import { BackgroundMode } from '@ionic-native/background-mode';
+import { Observable } from 'rxjs';
 
 /**
  * Generated class for the LoginPage page.
@@ -74,6 +80,7 @@ export class LoginPage implements OnInit, OnDestroy {
   applicationTitle: string;
   keyApplicationNotification: string;
   keyApplicationIntro: string;
+  colorSettings$: Observable<any>;
 
   constructor(
     private navCtrl: NavController,
@@ -89,6 +96,7 @@ export class LoginPage implements OnInit, OnDestroy {
     private backgroundMode: BackgroundMode,
     private store: Store<State>
   ) {
+    this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
     this.logoUrl = 'assets/img/logo.png';
     this.offlineIcon = 'assets/icon/offline.png';
     this.isLoginFormValid = false;
@@ -198,8 +206,11 @@ export class LoginPage implements OnInit, OnDestroy {
     }
   }
 
-  onUpdateCurrentUser(currentUser) {
+  onUpdateCurrentUser(currentUser: CurrentUser) {
+    const { colorSettings } = currentUser;
+    this.store.dispatch(new SetCurrentUserColorSettings({ colorSettings }));
     this.currentUser = _.assign({}, this.currentUser, currentUser);
+    this.userProvider.setCurrentUser(this.currentUser).subscribe(() => {});
   }
 
   onCancelLoginProcess() {
@@ -245,6 +256,10 @@ export class LoginPage implements OnInit, OnDestroy {
           loggedInInInstance
         )
         .subscribe(() => {
+          const { colorSettings } = currentUser;
+          this.store.dispatch(
+            new SetCurrentUserColorSettings({ colorSettings })
+          );
           this.store.dispatch(
             new AddCurrentUser({ currentUser: this.currentUser })
           );

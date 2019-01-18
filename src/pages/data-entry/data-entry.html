@@ -1,12 +1,30 @@
 <!--
-  Generated template for the DataEntryPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
+*
+* Copyright 2015 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2015
+* @author Joseph Chingalo profschingalo@gmail.com>
+*
+*
 -->
 <ion-header>
 
-  <ion-navbar color="primary">
+  <ion-navbar [color]="(colorSettings$ |async).colorAttributes.main">
     <ion-title>
       <span [translate]="'Data entry'"></span>
     </ion-title>
@@ -19,19 +37,22 @@
   <ion-grid>
     <ion-row>
       <ion-col class="animated fadeIn">
-        <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openOrganisationUnitTree()">
+        <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center
+          text-capitalize (tap)="openOrganisationUnitTree()">
           <img class="side-menu-icon" [src]="icons.orgUnit" />&nbsp;&nbsp;
           <span *ngIf="!selectedOrgUnit || !selectedOrgUnit.name" [translate]="organisationUnitLabel"></span>
           <span *ngIf="selectedOrgUnit && selectedOrgUnit.name" [translate]="organisationUnitLabel"></span>
         </div>
 
-        <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openEntryFormList()">
+        <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center
+          text-capitalize (tap)="openEntryFormList()">
           <img class="side-menu-icon" [src]="icons.dataSet" />&nbsp;&nbsp;
           <span *ngIf="!selectedDataSet || !selectedDataSet.name" [translate]="dataSetLabel"></span>
           <span *ngIf="selectedDataSet && selectedDataSet.name">{{ selectedDataSet.name }}</span>
         </div>
 
-        <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center text-capitalize (tap)="openPeriodList()">
+        <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center
+          text-capitalize (tap)="openPeriodList()">
           <img class="side-menu-icon" [src]="icons.period" />&nbsp;&nbsp;
           <span *ngIf="!selectedPeriod || !selectedPeriod.name" [translate]="periodLabel"></span>
           <span *ngIf="selectedPeriod && selectedPeriod.name "> {{ selectedPeriod.name }}</span>
@@ -40,8 +61,8 @@
         <div *ngIf="selectedPeriod && selectedPeriod.iso && dataSetCategoryCombo && dataSetCategoryCombo.id ">
           <div *ngIf="isDataSetDimensionApplicable">
             <div *ngFor="let category of dataSetCategoryCombo.categories;let categoryIndex = index">
-              <div (tap)="openDataDimensionSelection(category)" class="item-card-category animated fadeIn" color="font-color" full text-center
-                text-wrap>
+              <div (tap)="openDataDimensionSelection(category)" class="item-card-category animated fadeIn" color="font-color"
+                full text-center text-wrap>
                 <div style="padding-bottom: 5px;">
                   <b>{{ category.name }}</b>
                 </div>

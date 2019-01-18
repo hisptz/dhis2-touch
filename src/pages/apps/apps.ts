@@ -24,7 +24,11 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 import { Store, select } from '@ngrx/store';
-import { State, getAthorizedApps } from '../../store';
+import {
+  State,
+  getAthorizedApps,
+  getCurrentUserColorSettings
+} from '../../store';
 import { AppItem } from '../../models';
 import { Observable } from 'rxjs';
 /**
@@ -41,8 +45,11 @@ import { Observable } from 'rxjs';
 })
 export class AppsPage {
   currentUserApps$: Observable<any>;
+  colorSettings$: Observable<any>;
+
   constructor(public navCtrl: NavController, private store: Store<State>) {
     const apps = this.getAppItems();
+    this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
     this.currentUserApps$ = this.store.pipe(select(getAthorizedApps(apps)));
   }
 

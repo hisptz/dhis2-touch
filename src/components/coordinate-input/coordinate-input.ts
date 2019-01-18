@@ -23,6 +23,9 @@
  */
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ModalController } from 'ionic-angular';
+import { Store } from '@ngrx/store';
+import { State, getCurrentUserColorSettings } from '../../store';
+import { Observable } from 'rxjs';
 
 /**
  * Generated class for the CoordinateInputComponent component.
@@ -39,12 +42,16 @@ export class CoordinateInputComponent implements OnInit {
   @Input() categoryOptionComboId;
   @Input() data;
   @Output() onChange = new EventEmitter();
+
   position: { lat: string; lng: string } = { lat: '', lng: '' };
-  constructor(private modalCtrl: ModalController) {}
+  colorSettings$: Observable<any>;
+
+  constructor(private store: Store<State>, private modalCtrl: ModalController) {
+    this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
+  }
 
   ngOnInit() {
     const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;
-    console.log(JSON.stringify(this.data));
     if (this.data && this.data[fieldId]) {
       const dataValue = eval(this.data[fieldId].value);
       if (dataValue && dataValue.length === 2) {

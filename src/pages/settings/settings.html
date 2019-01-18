@@ -1,12 +1,30 @@
 <!--
-  Generated template for the SettingsPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
+*
+* Copyright 2015 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2015
+* @author Joseph Chingalo profschingalo@gmail.com>
+*
+*
 -->
 <ion-header>
 
-  <ion-navbar color="primary">
+  <ion-navbar [color]="(colorSettings$ |async).colorAttributes.main">
     <ion-title>
       <span [translate]="'Settings'"></span>
     </ion-title>
@@ -42,24 +60,28 @@
           <hr>
 
           <div *ngIf=" settingContent.id == 'appSettings'">
-            <app-settings [currentLanguage]="currentLanguage" (onUpdateCurrentLanguage)="updateCurrentLanguage($event)" [translationCodes]="translationCodes"></app-settings>
+            <app-settings [currentLanguage]="currentLanguage" (onUpdateCurrentLanguage)="updateCurrentLanguage($event)"
+              [translationCodes]="translationCodes"></app-settings>
           </div>
 
           <div *ngIf="settingContent.id == 'synchronization'">
             <div *ngIf="settingObject.synchronization">
-              <synchronization-settings [(settingObject)]="settingObject" (onUpdateSyncSetting)="updateAutoSyncSetting($event,settingContent)"></synchronization-settings>
+              <synchronization-settings [colorSettings]="colorSettings$ |async" [(settingObject)]="settingObject"
+                (onUpdateSyncSetting)="updateAutoSyncSetting($event,settingContent)"></synchronization-settings>
             </div>
           </div>
 
           <div *ngIf="settingContent.id == 'entryForm'">
             <div *ngIf="settingObject.entryForm">
-              <entry-form-settings [(settingObject)]="settingObject" (onUpdateDataEntrySettings)="applySettings(settingContent)"></entry-form-settings>
+              <entry-form-settings [colorSettings]="colorSettings$ |async" [(settingObject)]="settingObject"
+                (onUpdateDataEntrySettings)="applySettings(settingContent)"></entry-form-settings>
             </div>
           </div>
 
           <div *ngIf="settingContent.id == 'barcode'">
             <div *ngIf="settingObject.barcode">
-              <barcode-settings [(settingObject)]="settingObject" (onUpdateBarcodeSettings)="applySettings(settingContent)"></barcode-settings>
+              <barcode-settings [colorSettings]="colorSettings$ |async" [(settingObject)]="settingObject"
+                (onUpdateBarcodeSettings)="applySettings(settingContent)"></barcode-settings>
             </div>
           </div>
 

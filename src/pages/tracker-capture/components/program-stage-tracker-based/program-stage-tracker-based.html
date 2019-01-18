@@ -1,3 +1,27 @@
+<!--
+*
+* Copyright 2015 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2015
+* @author Joseph Chingalo profschingalo@gmail.com>
+*
+*
+-->
 <div *ngIf="isLoading">
   <loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></loading>
 </div>
@@ -18,21 +42,24 @@
         <tr *ngIf="isTableRowOpened[currentIndex]">
           <td colspan="100%">
             <div text-left>
-              <tracker-event-container [programSkipLogicMetadata]="programSkipLogicMetadata" [formLayout]="formLayout" [programStage]="programStage"
-                [currentUser]="currentUser" [(currentOpenEvent)]="currentEvents[currentIndex]" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
-                [isOpenRow]="true" [canEventBeDeleted]="couldEventBeDeleted()" (onChange)="updateData($event)" (onDeleteEvent)="deleteEventAction($event)"></tracker-event-container>
+              <tracker-event-container [programSkipLogicMetadata]="programSkipLogicMetadata" [formLayout]="formLayout"
+                [programStage]="programStage" [currentUser]="currentUser" [(currentOpenEvent)]="currentEvents[currentIndex]"
+                [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [isOpenRow]="true" [canEventBeDeleted]="couldEventBeDeleted()"
+                (onChange)="updateData($event)" (onDeleteEvent)="deleteEventAction($event)"></tracker-event-container>
               <div>
                 <ion-row no-padding no-margin>
                   <ion-col>
                     <div float-left>
-                      <button *ngIf="programStage.repeatable" [disabled]="isAddButtonDisabled" class="item-card" (click)="addRepeatableEvent(currentOpenEvent)"
-                        color="font-color" padding-top padding-bottom ion-button clear text-center text-capitalize icon-start>
-                        <ion-icon name="add" color="icon-color"></ion-icon>&nbsp;&nbsp; {{translationMapper['New event']}}
+                      <button *ngIf="programStage.repeatable" [disabled]="isAddButtonDisabled" class="item-card"
+                        (click)="addRepeatableEvent(currentOpenEvent)" color="font-color" padding-top padding-bottom
+                        ion-button clear text-center text-capitalize icon-start>
+                        <ion-icon name="add" color="icon-color"></ion-icon>&nbsp;&nbsp; {{translationMapper['New
+                        event']}}
                       </button>
                     </div>
                     <div float-right>
-                      <div class="item-card" float-left color="danger" (click)="deleteEvent(currentEventId)" *ngIf="couldEventBeDeleted()" padding
-                        ion-button clear text-center text-capitalize>
+                      <div class="item-card" float-left color="danger" (click)="deleteEvent(currentEventId)" *ngIf="couldEventBeDeleted()"
+                        padding ion-button clear text-center text-capitalize>
                         <ion-icon name="trash"></ion-icon>&nbsp;&nbsp; {{translationMapper['Delete']}}
                       </div>
                     </div>
@@ -48,9 +75,10 @@
   </div>
   <div *ngIf="isNewEventFormOpened">
     <div class="item-card-with-no-margin" [ngStyle]="{'border-top':currentEvents.length > 0? '0px':''}">
-      <tracker-event-container [programSkipLogicMetadata]="programSkipLogicMetadata" [formLayout]="formLayout" [programStage]="programStage"
-        [currentUser]="currentUser" [(currentOpenEvent)]="currentOpenEvent" [isOpenRow]="false" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
-        [canEventBeDeleted]="couldEventBeDeleted()" (onChange)="updateData($event)" (onDeleteEvent)="deleteEventAction($event)"></tracker-event-container>
+      <tracker-event-container [programSkipLogicMetadata]="programSkipLogicMetadata" [formLayout]="formLayout"
+        [programStage]="programStage" [currentUser]="currentUser" [(currentOpenEvent)]="currentOpenEvent" [isOpenRow]="false"
+        [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [canEventBeDeleted]="couldEventBeDeleted()"
+        (onChange)="updateData($event)" (onDeleteEvent)="deleteEventAction($event)"></tracker-event-container>
       <ion-row no-padding no-margin>
         <ion-col>
           <div float-left>
@@ -60,8 +88,8 @@
             </button>
           </div>
           <div float-right>
-            <div class="item-card" float-left color="danger" (click)="deleteEvent(currentEventId)" *ngIf="couldEventBeDeleted()" padding
-              ion-button clear text-center text-capitalize>
+            <div class="item-card" float-left color="danger" (click)="deleteEvent(currentEventId)" *ngIf="couldEventBeDeleted()"
+              padding ion-button clear text-center text-capitalize>
               <ion-icon name="trash"></ion-icon>&nbsp;&nbsp; {{translationMapper['Delete']}}
             </div>
           </div>
@@ -70,13 +98,13 @@
     </div>
   </div>
   <div class="item-card-program-stage-section">
-    <div class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex -1 )" padding ion-button clear
-      text-center text-capitalize>
+    <div class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex -1 )" padding
+      ion-button clear text-center text-capitalize>
       <ion-icon name="ios-arrow-back-outline"></ion-icon>&nbsp;&nbsp;
       <span>{{translationMapper['Prev']}}</span>
     </div>
-    <div class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex + 1)" *ngIf="!isLastStage" padding
-      ion-button clear text-center text-capitalize>
+    <div class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex + 1)" *ngIf="!isLastStage"
+      padding ion-button clear text-center text-capitalize>
       <span>{{translationMapper['Next']}}</span>&nbsp;&nbsp;
       <ion-icon name="ios-arrow-forward-outline"></ion-icon>
     </div>

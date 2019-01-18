@@ -21,7 +21,27 @@ $app-direction: ltr;
 // to match your app's branding. Ionic uses a Sass map of
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
-$colors: ( primary: #488aff, secondary: #32db64, danger: #f53d3d, light: #f4f4f4, dark: #222, font-color: #7a7a7a, whitecolor: #f4f4f4, icon-color: #97cbfd, favorite: #69bb7b, current: #ffa500, ou-assigment-issues: #ff6767);
+$colors: (green-main:#2E7D32,
+green-secondary:#00E676,
+light-blue-main:#1D5288,
+light-blue-secondary:#488AFF,
+india-main:#EF6C00,
+india-secondary:#FF9100,
+myanmar-main:#F9A825,
+myanmar-secondary:#FFEA00,
+vietnam-main:#D84315,
+vietnam-secondary:#FF3D00,
+primary: #488aff,
+secondary: #32db64,
+danger: #f53d3d,
+light: #f4f4f4,
+dark: #222,
+font-color: #7a7a7a,
+whitecolor: #f4f4f4,
+icon-color: #97cbfd,
+favorite: #69bb7b,
+current: #ffa500,
+ou-assigment-issues: #ff6767);
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here

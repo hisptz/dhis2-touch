@@ -1,6 +1,30 @@
+<!--
+*
+* Copyright 2015 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2015
+* @author Joseph Chingalo profschingalo@gmail.com>
+*
+*
+-->
 <ion-header>
 
-  <ion-toolbar color="primary">
+  <ion-toolbar [color]="(colorSettings$ |async).colorAttributes.main">
     <ion-title>
       <span [translate]="'Dashboard list'"></span>
     </ion-title>
@@ -18,25 +42,8 @@
   <ion-searchbar animated="true" autocomplete="on" placeholder="{{'Search dashboard by name'}}" (ionInput)="onDashboardSearch($event)"></ion-searchbar>
   <ion-list [virtualScroll]="dashboards$ | async | filterByName: searchTerm" [approxItemHeight]="'40px'">
     <ion-item *virtualItem="let dashboard" (tap)="onSetCurrentDashboard(dashboard)">
-      <span ion-text [color]="((currentDashboard$ | async).id === dashboard.id) ? 'current' : 'font-color'">{{ dashboard.name }}</span>
+      <span ion-text [color]="((currentDashboard$ | async).id === dashboard.id) ? 'current' : 'font-color'">{{
+        dashboard.name }}</span>
     </ion-item>
   </ion-list>
-  <!--<ion-grid>-->
-    <!--<ion-searchbar animated="true" autocomplete="on" placeholder="{{'Search dashboard by name'|translate}}" (ionInput)="getFilteredList($event)"></ion-searchbar>-->
-    <!--<ion-row>-->
-      <!--<ion-col>-->
-        <!--<ion-list>-->
-          <!--&lt;!&ndash;<ion-item *ngFor="let dashboard of dashboards$ | async | filterByName: searchTerm" (tap)="setCurrentDashboard(dashboard)"&ndash;&gt;-->
-                    <!--&lt;!&ndash;class="list-separator">&ndash;&gt;-->
-            <!--&lt;!&ndash;<span ion-text [color]="((currentDashboard$ | async).id === dashboard.id) ?'current' : 'font-color'">{{ dashboard.name }}</span>&ndash;&gt;-->
-          <!--&lt;!&ndash;</ion-item>&ndash;&gt;-->
-          <!--{{dashboards$ | async | json}}-->
-        <!--</ion-list>-->
-      <!--</ion-col>-->
-    <!--</ion-row>-->
-
-    <!--<div *ngIf="(dashboards$ | async).length == 0">-->
-      <!--&lt;!&ndash;<empty-list-notification [emptyListMessage]="translationMapper['There no dashboard item found']"></empty-list-notification>&ndash;&gt;-->
-    <!--</div>-->
-  <!--</ion-grid>-->
 </ion-content>

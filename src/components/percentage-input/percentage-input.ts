@@ -22,6 +22,9 @@
  *
  */
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { State, getCurrentUserColorSettings } from '../../store';
+import { Observable } from 'rxjs';
 
 /**
  * Generated class for the PercentageInputComponent component.
@@ -41,7 +44,11 @@ export class PercentageInputComponent implements OnInit {
 
   rangeValue: any;
   displayValue: any;
-  constructor() {}
+  colorSettings$: Observable<any>;
+
+  constructor(private store: Store<State>) {
+    this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
+  }
 
   ngOnInit() {
     const fieldId = this.dataElementId + '-' + this.categoryOptionComboId;

@@ -23,7 +23,7 @@
 *
 -->
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar [color]="(colorSettings$ |async).colorAttributes.main">
     <ion-searchbar animated="true" autocomplete="on" placeholder="{{ 'Search'|translate }}" (ionInput)="getFilteredList($event)"></ion-searchbar>
     <ion-buttons end (click)="dismiss()">
       <button ion-button clear color="danger" text-capitalize>
