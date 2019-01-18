@@ -39,15 +39,12 @@ import * as _ from 'lodash';
 */
 @Injectable()
 export class HttpClientProvider {
-  public timeOutTime: number;
   constructor(
     private http: HTTP,
     private encryption: EncryptionProvider,
     public storage: Storage,
     private networkProvider: NetworkAvailabilityProvider
-  ) {
-    this.timeOutTime = 4 * 60 * 1000;
-  }
+  ) {}
 
   /**
    *
@@ -136,7 +133,6 @@ export class HttpClientProvider {
             sanitizedUser.username,
             sanitizedUser.password
           );
-          this.http.setRequestTimeout(this.timeOutTime);
           if (resourceName && pageSize) {
             let promises = [];
             const testUrl =
@@ -239,7 +235,6 @@ export class HttpClientProvider {
             sanitizedUser.password
           );
           this.http.setDataSerializer('json');
-          this.http.setRequestTimeout(this.timeOutTime);
           apiUrl =
             user.serverUrl + this.getUrlBasedOnDhisVersion(url, sanitizedUser);
           this.http
@@ -274,7 +269,6 @@ export class HttpClientProvider {
             sanitizedUser.password
           );
           this.http.setDataSerializer('json');
-          this.http.setRequestTimeout(this.timeOutTime);
           apiUrl =
             user.serverUrl + this.getUrlBasedOnDhisVersion(url, sanitizedUser);
           this.http
@@ -315,7 +309,6 @@ export class HttpClientProvider {
             sanitizedUser.password
           );
           this.http.setDataSerializer('json');
-          this.http.setRequestTimeout(this.timeOutTime);
           apiUrl =
             user.serverUrl + this.getUrlBasedOnDhisVersion(url, sanitizedUser);
           this.http
