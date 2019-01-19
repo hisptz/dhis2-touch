@@ -52,6 +52,7 @@ import { SmsCommandProvider } from '../../../../providers/sms-command/sms-comman
 import { StandardReportProvider } from '../../../../providers/standard-report/standard-report';
 import { DataElementsProvider } from '../../../../providers/data-elements/data-elements';
 import { DataStoreManagerProvider } from '../../../../providers/data-store-manager/data-store-manager';
+import { AppColorProvider } from '../../../../providers/app-color/app-color';
 
 /**
  * Generated class for the LoginMetadataSyncComponent component.
@@ -113,7 +114,8 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
     private sectionsProvider: SectionsProvider,
     private smsCommandProvider: SmsCommandProvider,
     private standardReportProvider: StandardReportProvider,
-    private dataStoreManagerProvider: DataStoreManagerProvider
+    private dataStoreManagerProvider: DataStoreManagerProvider,
+    private appColorProvider: AppColorProvider
   ) {
     this.showCancelButton = true;
     this.subscriptions = new Subscription();
@@ -238,6 +240,7 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
                           .subscribe(
                             systemSettings => {
                               this.systemSettingLoaded.emit(systemSettings);
+                              const { currentStyle } = systemSettings;
                               //loading user authorities
                               this.updateProgressTrackerObject(
                                 'Discovering user authorities',
@@ -258,6 +261,16 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
                                       response.authorities;
                                     this.currentUser.dataViewOrganisationUnits =
                                       response.dataViewOrganisationUnits;
+                                    const { settings } = response;
+                                    const { keyStyle } = settings;
+                                    const colorSettings = this.appColorProvider.getCurrentUserColorObject(
+                                      currentStyle,
+                                      keyStyle
+                                    );
+                                    this.currentUser = {
+                                      ...this.currentUser,
+                                      colorSettings
+                                    };
                                     //loading user data
                                     this.updateProgressTrackerObject(
                                       'Discovering user data',

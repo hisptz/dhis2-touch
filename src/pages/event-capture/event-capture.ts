@@ -1,3 +1,26 @@
+/*
+ *
+ * Copyright 2015 HISP Tanzania
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ * @since 2015
+ * @author Joseph Chingalo <profschingalo@gmail.com>
+ *
+ */
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, ModalController, NavController } from 'ionic-angular';
 import { UserProvider } from '../../providers/user/user';
@@ -8,6 +31,9 @@ import { EventCaptureFormProvider } from '../../providers/event-capture-form/eve
 import { SettingsProvider } from '../../providers/settings/settings';
 import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 import * as _ from 'lodash';
+import { Store } from '@ngrx/store';
+import { State, getCurrentUserColorSettings } from '../../store';
+import { Observable } from 'rxjs';
 
 /**
  * Generated class for the EventCapturePage page.
@@ -48,8 +74,10 @@ export class EventCapturePage implements OnInit {
   showEventConflictHandler: boolean;
   eventConflictHandler: any;
   hasOnlineEventLoaded: boolean;
+  colorSettings$: Observable<any>;
 
   constructor(
+    private store: Store<State>,
     private navCtrl: NavController,
     private userProvider: UserProvider,
     private modalCtrl: ModalController,
@@ -60,6 +88,7 @@ export class EventCapturePage implements OnInit {
     private eventCaptureFormProvider: EventCaptureFormProvider,
     private appTranslation: AppTranslationProvider
   ) {
+    this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
     this.storageStatus = { online: 0, offline: 0 };
     this.icons = {
       accept: 'assets/icon/tick.png',
@@ -78,8 +107,6 @@ export class EventCapturePage implements OnInit {
     this.eventConflictHandler = {};
     this.hasOnlineEventLoaded = false;
   }
-
-  conflictHandlingAction(key, action) {}
 
   ngOnInit() {
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
@@ -480,7 +507,7 @@ export class EventCapturePage implements OnInit {
     }
   }
 
-  onSuccessDiscoveringEvents(statusData) {
+  onSuccessDiscoveringEvents() {
     this.hasOnlineEventLoaded = true;
   }
 
@@ -561,7 +588,9 @@ export class EventCapturePage implements OnInit {
   renderDataAsTable() {
     this.isLoading = true;
     let key = 'Preparing table';
-    this.currentEvents = _.uniqBy(this.currentEvents, 'id');
+    this.currentEvents = _.reverse(
+      _.sortBy(_.uniqBy(this.currentEvents, 'id'), ['eventDate'])
+    );
     this.loadingMessage = this.translationMapper[key]
       ? this.translationMapper[key]
       : key;

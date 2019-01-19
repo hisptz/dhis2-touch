@@ -1,3 +1,26 @@
+/*
+ *
+ * Copyright 2015 HISP Tanzania
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ * @since 2015
+ * @author Joseph Chingalo <profschingalo@gmail.com>
+ *
+ */
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, ModalController, NavController } from 'ionic-angular';
 import { OrganisationUnitsProvider } from '../../providers/organisation-units/organisation-units';
@@ -6,6 +29,9 @@ import { AppProvider } from '../../providers/app/app';
 import { DataSetsProvider } from '../../providers/data-sets/data-sets';
 import { PeriodSelectionProvider } from '../../providers/period-selection/period-selection';
 import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
+import { Store } from '@ngrx/store';
+import { State, getCurrentUserColorSettings } from '../../store';
+import { Observable } from 'rxjs';
 
 /**
  * Generated class for the DataEntryPage page.
@@ -24,7 +50,6 @@ export class DataEntryPage implements OnInit {
   selectedDataSet: any;
   selectedPeriod: any;
   currentUser: any;
-
   isLoading: boolean;
   loadingMessage: string;
   isFormReady: boolean;
@@ -40,8 +65,10 @@ export class DataEntryPage implements OnInit {
   currentPeriodOffset: number;
   icons: any = {};
   translationMapper: any;
+  colorSettings$: Observable<any>;
 
   constructor(
+    private store: Store<State>,
     private navCtrl: NavController,
     private modalCtrl: ModalController,
     private userProvider: UserProvider,
@@ -50,9 +77,7 @@ export class DataEntryPage implements OnInit {
     private periodSelection: PeriodSelectionProvider,
     private organisationUnitsProvider: OrganisationUnitsProvider,
     private appTranslation: AppTranslationProvider
-  ) {}
-
-  ngOnInit() {
+  ) {
     this.icons.orgUnit = 'assets/icon/orgUnit.png';
     this.icons.dataSet = 'assets/icon/form.png';
     this.icons.period = 'assets/icon/period.png';
@@ -61,6 +86,10 @@ export class DataEntryPage implements OnInit {
     this.currentPeriodOffset = 0;
     this.isDataSetDimensionApplicable = false;
     this.translationMapper = {};
+    this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
+  }
+
+  ngOnInit() {
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
       (data: any) => {
         this.translationMapper = data;

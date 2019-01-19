@@ -1,3 +1,26 @@
+/*
+ *
+ * Copyright 2015 HISP Tanzania
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ * @since 2015
+ * @author Joseph Chingalo <profschingalo@gmail.com>
+ *
+ */
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { UserProvider } from '../../providers/user/user';
@@ -6,6 +29,9 @@ import { StandardReportProvider } from '../../providers/standard-report/standard
 import { SqlLiteProvider } from '../../providers/sql-lite/sql-lite';
 import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 import * as _ from 'lodash';
+import { Store } from '@ngrx/store';
+import { State, getCurrentUserColorSettings } from '../../store';
+import { Observable } from 'rxjs';
 /**
  * Generated class for the ReportsPage page.
  *
@@ -19,21 +45,24 @@ import * as _ from 'lodash';
   templateUrl: 'reports.html'
 })
 export class ReportsPage implements OnInit {
-  public loadingMessages: any = [];
-  public currentUser: any;
+  loadingMessages: any = [];
+  currentUser: any;
   reportList: Array<any>;
   reportListCopy: Array<any>;
   currentPage: number;
   currentValue: string;
   isLoading: boolean = true;
+  search;
 
-  public numberItems: number = 10;
-  public p: number = 1;
+  numberItems: number = 10;
+  p: number = 1;
   icons: any = {};
   loadingMessage: string;
   translationMapper: any;
+  colorSettings$: Observable<any>;
 
   constructor(
+    private store: Store<State>,
     public navCtrl: NavController,
     public navParams: NavParams,
     public user: UserProvider,
@@ -47,6 +76,7 @@ export class ReportsPage implements OnInit {
     this.isLoading = false;
     this.currentPage = 1;
     this.currentValue = '';
+    this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
   }
 
   ngOnInit() {

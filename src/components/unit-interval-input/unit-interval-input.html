@@ -24,7 +24,8 @@
 -->
 <ion-row no-padding>
   <ion-col no-padding>
-    <ion-range [(ngModel)]="rangeValue" min="0" max="{{ maxCount }} " color="primary" (ionChange)="updateValue()"></ion-range>
+    <ion-range [(ngModel)]="rangeValue" min="0" max="{{ maxCount }} " [color]="(colorSettings$ |async).colorAttributes.secondary"
+      (ionChange)="updateValue()"></ion-range>
   </ion-col>
   <ion-col col-auto align-items-end>
     <div class="top-padding">

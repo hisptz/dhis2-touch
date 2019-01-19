@@ -23,7 +23,7 @@
 *
 -->
 <ion-header>
-  <ion-navbar color="primary">
+  <ion-navbar [color]="(colorSettings$ |async).colorAttributes.main">
     <ion-title>
       <span [translate]="'Account'"></span>
     </ion-title>

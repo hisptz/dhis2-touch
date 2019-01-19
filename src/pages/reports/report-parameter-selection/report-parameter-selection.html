@@ -1,11 +1,29 @@
 <!--
-  Generated template for the ReportParameterSelectionPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
+*
+* Copyright 2015 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2015
+* @author Joseph Chingalo profschingalo@gmail.com>
+*
+*
 -->
 <ion-header>
-  <ion-navbar color="primary">
+  <ion-navbar [color]="(colorSettings$ |async).colorAttributes.main">
     <ion-title>{{reportName}}</ion-title>
   </ion-navbar>
 </ion-header>
@@ -29,12 +47,13 @@
 
     <ion-row>
       <ion-col>
-        <div *ngIf="reportParams.paramOrganisationUnit" class="item-card" color="font-color" padding-top padding-bottom ion-button
-          clear full text-center text-capitalize (tap)="openOrganisationUnitTree()">
-          <img class="side-menu-icon" [src]="icons.orgUnit" />&nbsp;&nbsp; {{ selectedOrganisationUnitLabel|translate }}
+        <div *ngIf="reportParams.paramOrganisationUnit" class="item-card" color="font-color" padding-top padding-bottom
+          ion-button clear full text-center text-capitalize (tap)="openOrganisationUnitTree()">
+          <img class="side-menu-icon" [src]="icons.orgUnit" />&nbsp;&nbsp; {{ selectedOrganisationUnitLabel|translate
+          }}
         </div>
-        <div *ngIf="reportParams.paramReportingPeriod" class="item-card" color="font-color" padding-top padding-bottom ion-button
-          clear full text-center text-capitalize (tap)="openReportPeriodSelection()">
+        <div *ngIf="reportParams.paramReportingPeriod" class="item-card" color="font-color" padding-top padding-bottom
+          ion-button clear full text-center text-capitalize (tap)="openReportPeriodSelection()">
           <img class="side-menu-icon" [src]="icons.period" />&nbsp;&nbsp; {{ selectedPeriodLabel|translate }}
         </div>
         <div *ngIf="isAllReportParameterSet" class="item-card" padding-top padding-bottom full (tap)="goToView()">

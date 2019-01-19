@@ -1,3 +1,26 @@
+/*
+ *
+ * Copyright 2015 HISP Tanzania
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ * @since 2015
+ * @author Joseph Chingalo <profschingalo@gmail.com>
+ *
+ */
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   ActionSheetController,
@@ -18,8 +41,10 @@ import { TrackedEntityInstancesProvider } from '../../../providers/tracked-entit
 import { AppTranslationProvider } from '../../../providers/app-translation/app-translation';
 import { SettingsProvider } from '../../../providers/settings/settings';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
 import { ProgramRulesProvider } from '../../../providers/program-rules/program-rules';
+import { Store } from '@ngrx/store';
+import { State, getCurrentUserColorSettings } from '../../../store';
+import { Observable } from 'rxjs';
 
 /**
  * Generated class for the TrackedEntityDashboardPage page.
@@ -64,8 +89,10 @@ export class TrackedEntityDashboardPage implements OnInit {
   }> = new BehaviorSubject<{ [elementId: string]: string }>({});
   dataUpdateStatus$: Observable<{ [elementId: string]: string }>;
   @ViewChild(Content) content: Content;
+  colorSettings$: Observable<any>;
 
   constructor(
+    private store: Store<State>,
     private navCtrl: NavController,
     private modalCtrl: ModalController,
     private actionSheetCtrl: ActionSheetController,
@@ -82,6 +109,7 @@ export class TrackedEntityDashboardPage implements OnInit {
     private settingProvider: SettingsProvider,
     private programRulesProvider: ProgramRulesProvider
   ) {
+    this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
     this.programSkipLogicMetadata = {};
     this.dataUpdateStatus$ = this._dataUpdateStatus$.asObservable();
     this.isDashboardWidgetOpen = {};
@@ -93,12 +121,12 @@ export class TrackedEntityDashboardPage implements OnInit {
     this.hiddenProgramStages = {};
     this.hiddenSections = {};
     this.errorOrWarningMessage = {};
-  }
-
-  ngOnInit() {
     this.currentProgram = this.programsProvider.lastSelectedProgram;
     this.currentOrgUnit = this.organisationUnitsProvider.lastSelectedOrgUnit;
     this.dashboardWidgets = this.getDashboardWidgets();
+  }
+
+  ngOnInit() {
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
       (data: any) => {
         this.translationMapper = data;

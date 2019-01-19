@@ -1,3 +1,26 @@
+/*
+ *
+ * Copyright 2015 HISP Tanzania
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ * @since 2015
+ * @author Joseph Chingalo <profschingalo@gmail.com>
+ *
+ */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { UserProvider } from '../../../providers/user/user';
@@ -7,6 +30,9 @@ import { OrganisationUnitsProvider } from '../../../providers/organisation-units
 import { EventCaptureFormProvider } from '../../../providers/event-capture-form/event-capture-form';
 import { AppTranslationProvider } from '../../../providers/app-translation/app-translation';
 import { SettingsProvider } from '../../../providers/settings/settings';
+import { Store } from '@ngrx/store';
+import { State, getCurrentUserColorSettings } from '../../../store';
+import { Observable } from 'rxjs';
 
 /**
  * Generated class for the EventCaptureRegisterPage page.
@@ -33,8 +59,10 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
   emptyEvent: any;
   formLayout: string;
   programSkipLogicMetadata: any;
+  colorSettings$: Observable<any>;
 
   constructor(
+    private store: Store<State>,
     private navCtr: NavController,
     private userProvider: UserProvider,
     private params: NavParams,
@@ -45,14 +73,15 @@ export class EventCaptureRegisterPage implements OnDestroy, OnInit {
     private settingProvider: SettingsProvider,
     private appTranslation: AppTranslationProvider
   ) {
+    this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
     this.programSkipLogicMetadata = {};
     this.translationMapper = {};
     this.currentProgram = this.programsProvider.lastSelectedProgram;
     this.currentOrgUnit = this.organisationUnitProvider.lastSelectedOrgUnit;
+    this.isLoading = true;
   }
 
   ngOnInit() {
-    this.isLoading = true;
     this.dataDimension = this.params.get('dataDimension');
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
       (data: any) => {

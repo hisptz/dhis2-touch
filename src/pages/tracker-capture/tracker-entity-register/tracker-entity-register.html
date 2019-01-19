@@ -1,12 +1,30 @@
 <!--
-  Generated template for the TrackerEntityRegisterPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
+*
+* Copyright 2015 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2015
+* @author Joseph Chingalo profschingalo@gmail.com>
+*
+*
 -->
 <ion-header>
 
-  <ion-navbar color="primary">
+  <ion-navbar [color]="(colorSettings$ |async).colorAttributes.main">
     <ion-title>
       <span [translate]="'Registration'"></span>
     </ion-title>
@@ -97,7 +115,8 @@
                     <div *ngIf="currentProgram.captureCoordinates && isFormReady">
                       <span [translate]="'Coordinate'"></span>
                       <div [ngClass]="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container'">
-                        <event-coordinate-selector (onChangeEventCoordonate)="updateEventCoordonate($event)" [coordinate]="coordinate"></event-coordinate-selector>
+                        <event-coordinate-selector (onChangeEventCoordonate)="updateEventCoordonate($event)"
+                          [coordinate]="coordinate"></event-coordinate-selector>
                       </div>
                     </div>
                   </div>
@@ -116,25 +135,29 @@
                     <loading [loadingMessage]="''" [loadingSize]="'large'"></loading>
                   </div>
                   <div *ngIf="isFormReady">
-                    <tracker-registration-form [(errorOrWarningMessage)]="errorOrWarningMessage" [(hiddenSections)]="hiddenSections" [(hiddenFields)]="hiddenFields" [formLayout]="formLayout"
-                      [dataObject]="dataObject" [dataUpdateStatus]="dataUpdateStatus$ | async" [currentUser]="currentUser"
-                      [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass" [trackerRegistrationForm]="trackerRegistrationForm"
-                      [programTrackedEntityAttributes]="programTrackedEntityAttributes" (onChange)="updateData($event)"></tracker-registration-form>
+                    <tracker-registration-form [(errorOrWarningMessage)]="errorOrWarningMessage" [(hiddenSections)]="hiddenSections"
+                      [(hiddenFields)]="hiddenFields" [formLayout]="formLayout" [dataObject]="dataObject"
+                      [dataUpdateStatus]="dataUpdateStatus$ | async" [currentUser]="currentUser"
+                      [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
+                      [trackerRegistrationForm]="trackerRegistrationForm" [programTrackedEntityAttributes]="programTrackedEntityAttributes"
+                      (onChange)="updateData($event)"></tracker-registration-form>
                     <ion-row no-padding no-margin>
                       <ion-col>
                         <div float-left>
-                          <div class="item-card" color="font-color" (click)="goBack()" padding ion-button clear text-center text-capitalize>
+                          <div class="item-card" color="font-color" (click)="goBack()" padding ion-button clear
+                            text-center text-capitalize>
                             <ion-icon name="ios-arrow-back-outline"></ion-icon>&nbsp;&nbsp;
                             <span [translate]="'Back'"></span>
                           </div>
                         </div>
                         <div float-right>
-                          <div class="item-card" color="font-color" padding ion-button clear text-center text-capitalize (click)="addNewTrackedEntity()">
+                          <div class="item-card" color="font-color" padding ion-button clear text-center
+                            text-capitalize (click)="addNewTrackedEntity()">
                             <img class="footer-icon" [src]="icons.addNewCase" />&nbsp;&nbsp;
                             <span [translate]="'Add new'"></span>
                           </div>
-                          <div class="item-card" color="danger" (click)="deleteTrackedEntity(trackedEntityInstance)" padding ion-button clear text-center
-                            text-capitalize>
+                          <div class="item-card" color="danger" (click)="deleteTrackedEntity(trackedEntityInstance)"
+                            padding ion-button clear text-center text-capitalize>
                             <ion-icon name="trash"></ion-icon>&nbsp;&nbsp;
                             <span color="font-color" [translate]="'Delete'"></span>
                           </div>
@@ -146,8 +169,8 @@
                 </div>
 
                 <div *ngIf="isTrackedEntityRegistered" class="item-card-program-stage-section">
-                  <div class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex + 1)" padding-top padding-bottom
-                    ion-button clear text-center text-capitalize>
+                  <div class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex + 1)"
+                    padding-top padding-bottom ion-button clear text-center text-capitalize>
                     <span [translate]="'Next'"></span>&nbsp;&nbsp;
                     <ion-icon name="ios-arrow-forward-outline"></ion-icon>
                   </div>
@@ -158,8 +181,9 @@
                 <div *ngIf="programStages && programStages.length > 0">
                   <div *ngFor="let programStage of programStages;trackBy: trackByFn">
                     <div *ngIf="widget.id == programStage.id">
-                      <program-stage-tracker-based [programSkipLogicMetadata]="programSkipLogicMetadata" [formLayout]="formLayout" [programStage]="programStage"
-                        [trackedEntityInstance]="trackedEntityInstance" [currentWidgetIndex]="currentWidgetIndex" [isLastStage]="(currentWidgetIndex == programStages.length)"
+                      <program-stage-tracker-based [programSkipLogicMetadata]="programSkipLogicMetadata" [formLayout]="formLayout"
+                        [programStage]="programStage" [trackedEntityInstance]="trackedEntityInstance"
+                        [currentWidgetIndex]="currentWidgetIndex" [isLastStage]="(currentWidgetIndex == programStages.length)"
                         (onChange)="updateWidgetPagination($event)"></program-stage-tracker-based>
                     </div>
                   </div>
@@ -177,8 +201,8 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          <button padding ion-button clear text-capitalize *ngFor="let widget of dashboardWidgets;trackBy: trackByFn" [disabled]="(!isTrackedEntityRegistered && widget.iconName) || (isDashboardWidgetOpen[widget.id])"
-            (tap)="changeDashboardWidget(widget)">
+          <button padding ion-button clear text-capitalize *ngFor="let widget of dashboardWidgets;trackBy: trackByFn"
+            [disabled]="(!isTrackedEntityRegistered && widget.iconName) || (isDashboardWidgetOpen[widget.id])" (tap)="changeDashboardWidget(widget)">
             <div [ngClass]=" (isDashboardWidgetOpen[widget.id])?'program-stage-button-label':''">
               <div *ngIf="widget.icon">
                 <img class="footer-icon" [src]="widget.icon" />

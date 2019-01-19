@@ -28,6 +28,7 @@ export enum CurrentUserActionTypes {
   AddCurrentUser = '[Current user] Adding current user',
   ClearCurrentUser = '[Current user] Clear current users',
   SetCurrentUser = '[Current user] Set current user',
+  SetCurrentUserColorSettings = '[Current user] Set current user color Settings',
   UpdateCurrentUser = '[Current user] updating current user'
 }
 
@@ -38,6 +39,11 @@ export class ClearCurrentUser implements Action {
 export class SetCurrentUser implements Action {
   readonly type = CurrentUserActionTypes.SetCurrentUser;
   constructor(public payload: { id: string }) {}
+}
+
+export class SetCurrentUserColorSettings implements Action {
+  readonly type = CurrentUserActionTypes.SetCurrentUserColorSettings;
+  constructor(public payload: { colorSettings: any }) {}
 }
 
 export class AddCurrentUser implements Action {
@@ -54,4 +60,5 @@ export type CurrentUserActions =
   | AddCurrentUser
   | ClearCurrentUser
   | UpdateCurrentUser
-  | SetCurrentUser;
+  | SetCurrentUser
+  | SetCurrentUserColorSettings;

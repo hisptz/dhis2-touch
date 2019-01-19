@@ -473,7 +473,7 @@ export class DataSetsProvider {
           'fields=id,name,timelyDays,formType,dataEntryForm[htmlCode],compulsoryDataElementOperands[name,dimensionItemType,dimensionItem],version,periodType,openFuturePeriods,expiryDays,dataSetElements[dataElement[id]],dataElements[id],organisationUnits[id],sections[id],indicators[id],categoryCombo[id,name,categoryOptionCombos[id,name,categoryOptions[id]],categories[id,name,categoryOptions[id,name,organisationUnits[id]]]]';
         const filter =
           'filter=organisationUnits.path:ilike:' +
-          userOrgUnitIds.join('&filter=path:ilike:') +
+          userOrgUnitIds.join('&filter=organisationUnits.path:ilike:') +
           '&rootJunction=OR';
         const url = '/api/' + this.resource + '.json?' + fields + '&' + filter;
         this.HttpClient.get(

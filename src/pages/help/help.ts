@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
 import { HelpContentsProvider } from '../../providers/help-contents/help-contents';
 import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
+import { Store } from '@ngrx/store';
+import { State, getCurrentUserColorSettings } from '../../store';
+import { Observable } from 'rxjs';
 
 /**
  * Generated class for the HelpPage page.
@@ -22,15 +25,19 @@ export class HelpPage implements OnInit {
   isHelpContentOpened: any = {};
   helpContents: any;
   translationMapper: any;
+  colorSettings$: Observable<any>;
 
   constructor(
+    private store: Store<State>,
     private HelpContentsProvider: HelpContentsProvider,
     private appTranslation: AppTranslationProvider
-  ) {}
-
-  ngOnInit() {
+  ) {
+    this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
     this.isLoading = true;
     this.translationMapper = {};
+  }
+
+  ngOnInit() {
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
       (data: any) => {
         this.translationMapper = data;

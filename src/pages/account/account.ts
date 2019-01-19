@@ -24,7 +24,11 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, App } from 'ionic-angular';
 import { Store, select } from '@ngrx/store';
-import { State, getAthorizedApps } from '../../store';
+import {
+  State,
+  getAthorizedApps,
+  getCurrentUserColorSettings
+} from '../../store';
 import { UserProvider } from '../../providers/user/user';
 import { CurrentUser } from '../../models/current-user';
 import { AppItem } from '../../models';
@@ -45,6 +49,7 @@ import { OrganisationUnitsProvider } from '../../providers/organisation-units/or
 })
 export class AccountPage {
   currentUserAccountApps$: Observable<AppItem[]>;
+  colorSettings$: Observable<any>;
 
   constructor(
     private App: App,
@@ -54,6 +59,7 @@ export class AccountPage {
     private store: Store<State>
   ) {
     const apps = this.getAppItems();
+    this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
     this.currentUserAccountApps$ = this.store.pipe(
       select(getAthorizedApps(apps))
     );

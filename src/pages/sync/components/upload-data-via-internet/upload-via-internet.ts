@@ -1,10 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+/*
+ *
+ * Copyright 2015 HISP Tanzania
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ * @since 2015
+ * @author Joseph Chingalo <profschingalo@gmail.com>
+ *
+ */
+import { Component, OnInit, Input } from '@angular/core';
 import { UserProvider } from '../../../../providers/user/user';
 import { ModalController } from 'ionic-angular';
-import { DataValuesProvider } from '../../../../providers/data-values/data-values';
-import { TrackerCaptureProvider } from '../../../../providers/tracker-capture/tracker-capture';
-import { EnrollmentsProvider } from '../../../../providers/enrollments/enrollments';
-import { EventCaptureFormProvider } from '../../../../providers/event-capture-form/event-capture-form';
 import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
 import { SynchronizationProvider } from '../../../../providers/synchronization/synchronization';
 
@@ -19,6 +38,8 @@ import { SynchronizationProvider } from '../../../../providers/synchronization/s
   templateUrl: 'upload-via-internet.html'
 })
 export class UploadViaInternetComponent implements OnInit {
+  @Input() colorSettings: any;
+
   currentUser: any;
   selectedItems: any = {};
   isLoading: boolean;
@@ -27,15 +48,10 @@ export class UploadViaInternetComponent implements OnInit {
   importSummaries: any;
   dataObject: any;
   translationMapper: any;
-
   progress: string;
 
   constructor(
     private modalCtrl: ModalController,
-    private dataValuesProvider: DataValuesProvider,
-    private trackerCaptureProvider: TrackerCaptureProvider,
-    private enrollmentsProvider: EnrollmentsProvider,
-    private eventCaptureFormProvider: EventCaptureFormProvider,
     private user: UserProvider,
     private appTranslation: AppTranslationProvider,
     private synchronizationProvider: SynchronizationProvider
