@@ -86,7 +86,7 @@ export class AppProvider {
     let customMessage = error
       ? error
       : typeof message === 'object'
-      ? ''
+      ? this.getKeyValuePairMessage(message)
       : message;
     try {
       const matchRegx = /<body[^>]*>([\w|\W]*)<\/body/im;
@@ -100,6 +100,14 @@ export class AppProvider {
       customMessage = 'Status ' + status + ' : ' + customMessage;
     }
     return customMessage;
+  }
+
+  getKeyValuePairMessage(errorObject) {
+    let keyValueMessage = '';
+    Object.keys(errorObject).map(key => {
+      keyValueMessage = `${keyValueMessage} + ${key} : ${errorObject[key]}, `;
+    });
+    return keyValueMessage;
   }
 
   /**
