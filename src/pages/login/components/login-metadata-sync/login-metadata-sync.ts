@@ -588,7 +588,7 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
     if (this.progressTrackerBackup) {
       this.currentUser = {
         ...this.currentUser,
-        progressTracker: this.programsProvider
+        progressTracker: this.progressTrackerBackup
       };
     }
     this.clearAllSubscriptions();
@@ -599,7 +599,7 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
     if (this.progressTrackerBackup) {
       this.currentUser = {
         ...this.currentUser,
-        progressTracker: this.programsProvider
+        progressTracker: this.progressTrackerBackup
       };
     }
     this.clearAllSubscriptions();
