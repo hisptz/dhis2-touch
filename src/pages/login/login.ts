@@ -107,11 +107,11 @@ export class LoginPage implements OnInit, OnDestroy {
     this.processes = [
       'organisationUnits',
       'sections',
-      'dataElements',
       'smsCommand',
       'programs',
       'programStageSections',
       'programRules',
+      'dataElements',
       'indicators',
       'programRuleActions',
       'programRuleVariables',

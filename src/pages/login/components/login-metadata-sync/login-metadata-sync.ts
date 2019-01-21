@@ -616,7 +616,7 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
     this.downloadingQueueManager = {
       totalProcess: this.processes.length,
       enqueuedProcess: [],
-      dequeuingLimit: 5,
+      dequeuingLimit: 4,
       denqueuedProcess: []
     };
   }
@@ -648,6 +648,13 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
           return process === denqueuedProcess;
         }
       );
+      if (
+        this.savingingQueueManager &&
+        this.savingingQueueManager.data &&
+        this.savingingQueueManager.data[process]
+      ) {
+        this.savingingQueueManager.data[process] = [];
+      }
       const { currentDatabase } = this.currentUser;
       this.completedTrackedProcess = this.getCompletedTrackedProcess(
         this.currentUser.progressTracker[currentDatabase]
