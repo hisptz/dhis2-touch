@@ -97,7 +97,7 @@ export class AppProvider {
         .filter(content => content.length > 0)[0];
     } catch (e) {}
     if (status) {
-      customMessage = 'Status ' + status + ' : ' + customMessage;
+      customMessage = `Status ${status}, ${customMessage}`;
     }
     return customMessage;
   }

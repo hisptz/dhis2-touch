@@ -629,18 +629,16 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
         this.trackedResourceTypes,
         progressTracker
       );
-      this.failOnLogin.emit({
-        failedProcesses: this.failedProcesses,
-        failedProcessesErrors: this.failedProcessesErrors
-      });
-      console.log(
-        JSON.stringify({
-          totalExpectedProcesses,
-          totalProcesses,
-          failed: this.failedProcesses,
+      if (
+        totalExpectedProcesses ===
+        totalProcesses + this.failedProcesses.length
+      ) {
+        this.failOnLogin.emit({
+          failedProcesses: this.failedProcesses,
           failedProcessesErrors: this.failedProcessesErrors
-        })
-      );
+        });
+        this.clearAllSubscriptions();
+      }
     }
   }
 
