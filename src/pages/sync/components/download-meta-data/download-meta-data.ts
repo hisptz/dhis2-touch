@@ -140,7 +140,7 @@ export class DownloadMetaDataComponent implements OnInit {
   onFailLogin(errorReponse) {
     const { failedProcesses, error, failedProcessesErrors } = errorReponse;
     if (error) {
-      this.appProvider.setNormalNotification(errorReponse, 10000);
+      this.appProvider.setNormalNotification(error, 10000);
     } else if (failedProcesses && failedProcesses.length > 0) {
       let errorMessage = '';
       failedProcesses.map(process => {
