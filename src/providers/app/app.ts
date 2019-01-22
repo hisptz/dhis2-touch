@@ -105,7 +105,11 @@ export class AppProvider {
   getKeyValuePairMessage(errorObject) {
     let keyValueMessage = '';
     Object.keys(errorObject).map(key => {
-      keyValueMessage = `${keyValueMessage} + ${key} : ${errorObject[key]}, `;
+      let value = errorObject[key];
+      if (typeof errorObject[key] === 'object') {
+        value = this.getKeyValuePairMessage(errorObject[key]);
+      }
+      keyValueMessage = `${keyValueMessage} ${key} : ${value} `;
     });
     return keyValueMessage;
   }
