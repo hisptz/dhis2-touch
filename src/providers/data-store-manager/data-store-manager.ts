@@ -94,10 +94,10 @@ export class DataStoreManagerProvider {
 
   getDataStoreNameSpacesFromServer(currentUser: CurrentUser): Observable<any> {
     const url = `/api/${this.resource}`;
+    const nameSpacesKeysObject = {};
     return new Observable(observer => {
       this.httpCLientProvider.get(url, true, currentUser).subscribe(
         (nameSpaces: string[]) => {
-          const nameSpacesKeysObject = {};
           if (nameSpaces.length === 0) {
             observer.next(nameSpacesKeysObject);
             observer.complete();
@@ -124,8 +124,9 @@ export class DataStoreManagerProvider {
             }
           }
         },
-        error => {
-          observer.error(error);
+        () => {
+          observer.next(nameSpacesKeysObject);
+          observer.complete();
         }
       );
     });

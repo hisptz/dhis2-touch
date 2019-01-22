@@ -129,10 +129,9 @@ export class HttpClientProvider {
           apiUrl =
             sanitizedUser.serverUrl +
             this.getUrlBasedOnDhisVersion(url, sanitizedUser);
-          this.http.useBasicAuth(
-            sanitizedUser.username,
-            sanitizedUser.password
-          );
+          const { username, password } = sanitizedUser;
+          this.http.clearCookies();
+          const headers = this.http.getBasicAuthHeader(username, password);
           if (resourceName && pageSize) {
             let promises = [];
             const testUrl =
@@ -142,62 +141,57 @@ export class HttpClientProvider {
               '.json?fields=none&pageSize=' +
               pageSize;
             this.http
-              .get(testUrl, {}, {})
-              .then(
-                (initialResponse: any) => {
-                  initialResponse = JSON.parse(initialResponse.data);
-                  if (initialResponse.pager.pageCount) {
-                    initialResponse[resourceName] = [];
-                    for (let i = 1; i <= initialResponse.pager.pageCount; i++) {
-                      const paginatedUrl =
-                        apiUrl + '&pageSize=' + pageSize + '&page=' + i;
-                      promises.push(
-                        this.http
-                          .get(paginatedUrl, {}, {})
-                          .then((response: any) => {
-                            response = JSON.parse(response.data);
-                            initialResponse[resourceName] = initialResponse[
-                              resourceName
-                            ].concat(response[resourceName]);
-                          })
-                      );
+              .get(testUrl, {}, headers)
+              .then((initialResponse: any) => {
+                initialResponse = JSON.parse(initialResponse.data);
+                if (initialResponse.pager.pageCount) {
+                  initialResponse[resourceName] = [];
+                  for (let i = 1; i <= initialResponse.pager.pageCount; i++) {
+                    const paginatedUrl =
+                      apiUrl + '&pageSize=' + pageSize + '&page=' + i;
+                    promises.push(
+                      this.http
+                        .get(paginatedUrl, {}, headers)
+                        .then((response: any) => {
+                          response = JSON.parse(response.data);
+                          initialResponse[resourceName] = initialResponse[
+                            resourceName
+                          ].concat(response[resourceName]);
+                        })
+                    );
+                  }
+                  Observable.forkJoin(promises).subscribe(
+                    () => {
+                      observer.next(initialResponse);
+                      observer.complete();
+                    },
+                    error => {
+                      observer.error(error);
                     }
-                    Observable.forkJoin(promises).subscribe(
-                      () => {
-                        observer.next(initialResponse);
+                  );
+                } else {
+                  this.http
+                    .get(url, {}, headers)
+                    .then(
+                      (response: any) => {
+                        observer.next(response);
                         observer.complete();
                       },
                       error => {
                         observer.error(error);
                       }
-                    );
-                  } else {
-                    this.http
-                      .get(url, {}, {})
-                      .then(
-                        (response: any) => {
-                          observer.next(response);
-                          observer.complete();
-                        },
-                        error => {
-                          observer.error(error);
-                        }
-                      )
-                      .catch(error => {
-                        observer.error(error);
-                      });
-                  }
-                },
-                error => {
-                  observer.error(error);
+                    )
+                    .catch(error => {
+                      observer.error(error);
+                    });
                 }
-              )
+              })
               .catch(error => {
                 observer.error(error);
               });
           } else {
             this.http
-              .get(apiUrl, {}, {})
+              .get(apiUrl, {}, headers)
               .then((response: any) => {
                 if (dataOnly) {
                   observer.next(JSON.parse(response.data));
@@ -230,24 +224,18 @@ export class HttpClientProvider {
     return new Observable(observer => {
       this.getSanitizedUser(user).subscribe(
         (sanitizedUser: CurrentUser) => {
-          this.http.useBasicAuth(
-            sanitizedUser.username,
-            sanitizedUser.password
-          );
+          const { username, password } = sanitizedUser;
+          this.http.clearCookies();
+          const headers = this.http.getBasicAuthHeader(username, password);
           this.http.setDataSerializer('json');
           apiUrl =
             user.serverUrl + this.getUrlBasedOnDhisVersion(url, sanitizedUser);
           this.http
-            .post(apiUrl, data, {})
-            .then(
-              (response: any) => {
-                observer.next(response);
-                observer.complete();
-              },
-              error => {
-                observer.error(error);
-              }
-            )
+            .post(apiUrl, data, headers)
+            .then((response: any) => {
+              observer.next(response);
+              observer.complete();
+            })
             .catch(error => {
               observer.error(error);
             });
@@ -264,24 +252,18 @@ export class HttpClientProvider {
     return new Observable(observer => {
       this.getSanitizedUser(user).subscribe(
         (sanitizedUser: CurrentUser) => {
-          this.http.useBasicAuth(
-            sanitizedUser.username,
-            sanitizedUser.password
-          );
+          const { username, password } = sanitizedUser;
+          this.http.clearCookies();
+          const headers = this.http.getBasicAuthHeader(username, password);
           this.http.setDataSerializer('json');
           apiUrl =
             user.serverUrl + this.getUrlBasedOnDhisVersion(url, sanitizedUser);
           this.http
-            .put(apiUrl, data, {})
-            .then(
-              (response: any) => {
-                observer.next(response);
-                observer.complete();
-              },
-              error => {
-                observer.error(error);
-              }
-            )
+            .put(apiUrl, data, headers)
+            .then((response: any) => {
+              observer.next(response);
+              observer.complete();
+            })
             .catch(error => {
               observer.error(error);
             });
@@ -304,24 +286,18 @@ export class HttpClientProvider {
     return new Observable(observer => {
       this.getSanitizedUser(user).subscribe(
         (sanitizedUser: CurrentUser) => {
-          this.http.useBasicAuth(
-            sanitizedUser.username,
-            sanitizedUser.password
-          );
+          const { username, password } = sanitizedUser;
+          this.http.clearCookies();
+          const headers = this.http.getBasicAuthHeader(username, password);
           this.http.setDataSerializer('json');
           apiUrl =
             user.serverUrl + this.getUrlBasedOnDhisVersion(url, sanitizedUser);
           this.http
-            .delete(apiUrl, {}, {})
-            .then(
-              (response: any) => {
-                observer.next(response);
-                observer.complete();
-              },
-              error => {
-                observer.error(error);
-              }
-            )
+            .delete(apiUrl, {}, headers)
+            .then((response: any) => {
+              observer.next(response);
+              observer.complete();
+            })
             .catch(error => {
               observer.error(error);
             });
