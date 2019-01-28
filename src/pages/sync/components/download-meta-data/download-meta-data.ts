@@ -71,7 +71,11 @@ export class DownloadMetaDataComponent implements OnInit {
       const newPassord = isPasswordEncode
         ? this.encryptionProvider.decode(password)
         : password;
-      this.currentUser = { ...user, password: newPassord };
+      this.currentUser = {
+        ...user,
+        password: newPassord,
+        isPasswordEncode: false
+      };
       this.resources = this.getListOfResources();
       this.autoSelect('');
       this.isLoading = false;
@@ -135,6 +139,7 @@ export class DownloadMetaDataComponent implements OnInit {
   onCancelLoginProcess() {
     this.isLoading = false;
     this.isUpdateProcessOnProgress = false;
+    this.onUpdateCurrentUser({ ...this.currentUser, isPasswordEncode: true });
   }
 
   onFailLogin(errorReponse) {
@@ -162,7 +167,7 @@ export class DownloadMetaDataComponent implements OnInit {
     const { currentUser } = data;
     this.isLoading = false;
     this.isUpdateProcessOnProgress = false;
-    this.onUpdateCurrentUser(currentUser);
+    this.onUpdateCurrentUser({ ...currentUser, isPasswordEncode: true });
     const resources = _.flattenDeep([...[], this.resources]);
     const updatedResources = resources
       .filter((resource: any) => resource.status)
