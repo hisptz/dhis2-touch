@@ -105,18 +105,17 @@ export class LoginPage implements OnInit, OnDestroy {
     this.processes = [
       'organisationUnits',
       'sections',
-      'dataElements',
       'smsCommand',
       'programs',
       'programStageSections',
       'programRules',
+      'dataElements',
       'indicators',
       'programRuleActions',
       'programRuleVariables',
       'dataSets',
       'reports',
-      'constants',
-      'dataStore'
+      'constants'
     ];
   }
 
@@ -216,7 +215,23 @@ export class LoginPage implements OnInit, OnDestroy {
   }
 
   onFailLogin(errorReponse) {
-    this.appProvider.setNormalNotification(errorReponse);
+    const { failedProcesses, error, failedProcessesErrors } = errorReponse;
+    if (error) {
+      this.appProvider.setNormalNotification(error, 10000);
+    } else if (failedProcesses && failedProcesses.length > 0) {
+      let errorMessage = '';
+      failedProcesses.map(process => {
+        const error = failedProcessesErrors[failedProcesses.indexOf(process)];
+        errorMessage +=
+          (process.charAt(0).toUpperCase() + process.slice(1))
+            .replace(/([A-Z])/g, ' $1')
+            .trim() +
+          ' : ' +
+          this.appProvider.getSanitizedMessage(error) +
+          '; ';
+      });
+      this.appProvider.setNormalNotification(errorMessage, 10000);
+    }
     this.onCancelLoginProcess();
   }
 

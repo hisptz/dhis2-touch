@@ -71,7 +71,11 @@ export class DownloadMetaDataComponent implements OnInit {
       const newPassord = isPasswordEncode
         ? this.encryptionProvider.decode(password)
         : password;
-      this.currentUser = { ...user, password: newPassord };
+      this.currentUser = {
+        ...user,
+        password: newPassord,
+        isPasswordEncode: false
+      };
       this.resources = this.getListOfResources();
       this.autoSelect('');
       this.isLoading = false;
@@ -135,10 +139,27 @@ export class DownloadMetaDataComponent implements OnInit {
   onCancelLoginProcess() {
     this.isLoading = false;
     this.isUpdateProcessOnProgress = false;
+    this.onUpdateCurrentUser({ ...this.currentUser, isPasswordEncode: true });
   }
 
   onFailLogin(errorReponse) {
-    this.appProvider.setNormalNotification(errorReponse);
+    const { failedProcesses, error, failedProcessesErrors } = errorReponse;
+    if (error) {
+      this.appProvider.setNormalNotification(error, 10000);
+    } else if (failedProcesses && failedProcesses.length > 0) {
+      let errorMessage = '';
+      failedProcesses.map(process => {
+        const error = failedProcessesErrors[failedProcesses.indexOf(process)];
+        errorMessage +=
+          (process.charAt(0).toUpperCase() + process.slice(1))
+            .replace(/([A-Z])/g, ' $1')
+            .trim() +
+          ' : ' +
+          this.appProvider.getSanitizedMessage(error) +
+          '; ';
+      });
+      this.appProvider.setNormalNotification(errorMessage, 10000);
+    }
     this.onCancelLoginProcess();
   }
 
@@ -146,7 +167,7 @@ export class DownloadMetaDataComponent implements OnInit {
     const { currentUser } = data;
     this.isLoading = false;
     this.isUpdateProcessOnProgress = false;
-    this.onUpdateCurrentUser(currentUser);
+    this.onUpdateCurrentUser({ ...currentUser, isPasswordEncode: true });
     const resources = _.flattenDeep([...[], this.resources]);
     const updatedResources = resources
       .filter((resource: any) => resource.status)

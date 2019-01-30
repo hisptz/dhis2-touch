@@ -86,7 +86,7 @@ export class AppProvider {
     let customMessage = error
       ? error
       : typeof message === 'object'
-      ? ''
+      ? this.getKeyValuePairMessage(message)
       : message;
     try {
       const matchRegx = /<body[^>]*>([\w|\W]*)<\/body/im;
@@ -97,9 +97,21 @@ export class AppProvider {
         .filter(content => content.length > 0)[0];
     } catch (e) {}
     if (status) {
-      customMessage = 'Status ' + status + ' : ' + customMessage;
+      customMessage = `Status ${status}, ${customMessage}`;
     }
     return customMessage;
+  }
+
+  getKeyValuePairMessage(errorObject) {
+    let keyValueMessage = '';
+    Object.keys(errorObject).map(key => {
+      let value = errorObject[key];
+      if (typeof errorObject[key] === 'object') {
+        value = this.getKeyValuePairMessage(errorObject[key]);
+      }
+      keyValueMessage = `${keyValueMessage} ${key} : ${value} `;
+    });
+    return keyValueMessage;
   }
 
   /**

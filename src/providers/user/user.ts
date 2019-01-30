@@ -49,9 +49,11 @@ export class UserProvider {
    * @param user
    * @returns {Observable<any>}
    */
-  getUserAuthorities(user): Observable<any> {
-    this.http.useBasicAuth(user.username, user.password);
-    let fields =
+  getUserAuthorities(user: CurrentUser): Observable<any> {
+    const { username, password } = user;
+    this.http.clearCookies();
+    const headers = this.http.getBasicAuthHeader(username, password);
+    const fields =
       'fields=authorities,id,name,settings,dataViewOrganisationUnits';
     let url = user.serverUrl;
     url += '/api/me.json?' + fields;
@@ -60,7 +62,7 @@ export class UserProvider {
     }
     return new Observable(observer => {
       this.http
-        .get(url, {}, {})
+        .get(url, {}, headers)
         .then((response: any) => {
           let data = JSON.parse(response.data);
           const { authorities } = data;
@@ -92,7 +94,9 @@ export class UserProvider {
     serverUrl: string,
     withBaseUrl: boolean = false
   ): Observable<any> {
-    this.http.useBasicAuth(currentUser.username, currentUser.password);
+    const { username, password } = currentUser;
+    this.http.clearCookies();
+    const headers = this.http.getBasicAuthHeader(username, password);
     return new Observable(observer => {
       const fields =
         'fields=[:all],organisationUnits[id,name],dataViewOrganisationUnits[id,name],userCredentials[userRoles[name,dataSets[id],programs[id]],programs,dataSets';
@@ -102,9 +106,10 @@ export class UserProvider {
         ? this.httpProvider.getUrlBasedOnDhisVersion(url, currentUser)
         : url;
       this.http
-        .get(apiurl, {}, {})
+        .get(apiurl, {}, headers)
         .then(response => {
           const { data } = response;
+          console.log(data);
           if (data && data.indexOf('login.action') > -1) {
             serverUrl = serverUrl.replace('http://', 'https://');
             this.getUserDataOnAuthenticatedServer(
@@ -165,17 +170,19 @@ export class UserProvider {
     currentUser: CurrentUser,
     serverUrl: string
   ): Observable<any> {
-    this.http.useBasicAuth(currentUser.username, currentUser.password);
+    const { username, password } = currentUser;
+    this.http.clearCookies();
+    const headers = this.http.getBasicAuthHeader(username, password);
     return new Observable(observer => {
       this.http
-        .get(serverUrl, {}, {})
+        .get(serverUrl + '/api/me.json', {}, headers)
         .then(data => {
           const { status } = data;
           if (status == 200) {
             const newServerUrl = this.getServerUrlBasedOnResponseHeader(
               data,
               serverUrl
-            );
+            ).replace('/api/me.json', '');
             this.getUserDataOnAuthenticatedServer(
               currentUser,
               newServerUrl
@@ -195,8 +202,8 @@ export class UserProvider {
             observer.error(data);
           }
         })
-        .catch(er => {
-          observer.error(er);
+        .catch(error => {
+          observer.error(error);
         });
     });
   }

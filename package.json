@@ -47,6 +47,7 @@
     "@types/polylabel": "^1.0.5",
     "angular-tree-component": "^7.0.1",
     "angular2-virtual-scroll": "^0.3.2",
+    "async": "^2.6.1",
     "cordova-android": "7.0.0",
     "cordova-ios": "4.5.4",
     "cordova-plugin-advanced-http": "^1.11.1",
