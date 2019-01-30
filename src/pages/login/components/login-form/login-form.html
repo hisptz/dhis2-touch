@@ -27,8 +27,9 @@
     <div *ngFor="let field of loginFormFields;trackBy: trackByFn">
       <div class="input-field-container">
         <div *ngIf="field.type === 'TEXT'">
-          <text-input-field [dataElementId]="field.id" [data]="data" [categoryOptionComboId]="'login'" (onChange)="updateValue($event)"
-            [placeholder]="field.placehoder" [valueType]="field.type" [barcodeSettings]="field.barcodeSettings"></text-input-field>
+          <text-input-field [dataElementId]="field.id" [readonly]="field.readonly" [data]="data"
+            [categoryOptionComboId]="'login'" (onChange)="updateValue($event)" [placeholder]="field.placehoder"
+            [valueType]="field.type" [barcodeSettings]="field.barcodeSettings"></text-input-field>
         </div>
         <div *ngIf="field.type === 'PASSWORD'">
           <password-input [dataElementId]="field.id" [data]="data" [categoryOptionComboId]="'login'" (onChange)="updateValue($event)"
