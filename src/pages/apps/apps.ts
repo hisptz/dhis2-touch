@@ -59,13 +59,13 @@ export class AppsPage {
 
   getAppItems(): Array<AppItem> {
     return [
-      {
-        id: 'data_entry',
-        name: 'Data entry',
-        authorites: ['M_dhis-web-dataentry'],
-        pageName: 'DataEntryPage',
-        src: 'assets/icon/data-entry.png'
-      },
+      // {
+      //   id: 'data_entry',
+      //   name: 'Data entry',
+      //   authorites: ['M_dhis-web-dataentry'],
+      //   pageName: 'DataEntryPage',
+      //   src: 'assets/icon/data-entry.png'
+      // },
       {
         id: 'event_capture',
         name: 'Event capture',
@@ -73,13 +73,13 @@ export class AppsPage {
         pageName: 'EventCapturePage',
         src: 'assets/icon/event-capture.png'
       },
-      {
-        id: 'tracker_capture',
-        name: 'Tracker capture',
-        authorites: ['M_dhis-web-tracker-capture'],
-        pageName: 'TrackerCapturePage',
-        src: 'assets/icon/tracker-capture.png'
-      },
+      // {
+      //   id: 'tracker_capture',
+      //   name: 'Tracker capture',
+      //   authorites: ['M_dhis-web-tracker-capture'],
+      //   pageName: 'TrackerCapturePage',
+      //   src: 'assets/icon/tracker-capture.png'
+      // },
       {
         id: 'dashboard',
         name: 'Dashboard',
@@ -90,13 +90,13 @@ export class AppsPage {
         pageName: 'DashboardPage',
         src: 'assets/icon/dashboard.png'
       },
-      {
-        id: 'reports',
-        name: 'Reports',
-        authorites: ['M_dhis-web-reporting'],
-        pageName: 'ReportsPage',
-        src: 'assets/icon/reports.png'
-      },
+      // {
+      //   id: 'reports',
+      //   name: 'Reports',
+      //   authorites: ['M_dhis-web-reporting'],
+      //   pageName: 'ReportsPage',
+      //   src: 'assets/icon/reports.png'
+      // },
       {
         id: 'sync',
         name: 'Sync',
