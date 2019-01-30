@@ -31,6 +31,7 @@ import { EncryptionProvider } from '../encryption/encryption';
 import { NetworkAvailabilityProvider } from '../network-availability/network-availability';
 import { Storage } from '@ionic/storage';
 import * as _ from 'lodash';
+import * as async from 'async';
 /*
   Generated class for the HttpClientProvider provider.
 
@@ -146,27 +147,44 @@ export class HttpClientProvider {
                 initialResponse = JSON.parse(initialResponse.data);
                 if (initialResponse.pager.pageCount) {
                   initialResponse[resourceName] = [];
+                  const paginatedUrls = [];
                   for (let i = 1; i <= initialResponse.pager.pageCount; i++) {
                     const paginatedUrl =
                       apiUrl + '&pageSize=' + pageSize + '&page=' + i;
-                    promises.push(
-                      this.http
-                        .get(paginatedUrl, {}, headers)
-                        .then((response: any) => {
-                          response = JSON.parse(response.data);
-                          initialResponse[resourceName] = initialResponse[
-                            resourceName
-                          ].concat(response[resourceName]);
-                        })
-                    );
+                    paginatedUrls.push(paginatedUrl);
                   }
-                  Observable.forkJoin(promises).subscribe(
-                    () => {
-                      observer.next(initialResponse);
-                      observer.complete();
+                  const that = this;
+                  let completedStages = 0;
+                  async.mapLimit(
+                    paginatedUrls,
+                    paginatedUrls.length,
+                    async function(paginatedUrl) {
+                      try {
+                        let response = await that.http.get(
+                          paginatedUrl,
+                          {},
+                          headers
+                        );
+                        response = JSON.parse(response.data);
+                        initialResponse[resourceName] = initialResponse[
+                          resourceName
+                        ].concat(response[resourceName]);
+                        completedStages++;
+                        if (completedStages === paginatedUrls.length) {
+                          observer.next(initialResponse);
+                          observer.complete();
+                        }
+                      } catch (error) {
+                        observer.error(error);
+                      }
                     },
-                    error => {
-                      observer.error(error);
+                    (error, results) => {
+                      if (error) {
+                        observer.error(error);
+                      } else {
+                        observer.next(initialResponse);
+                        observer.complete();
+                      }
                     }
                   );
                 } else {
