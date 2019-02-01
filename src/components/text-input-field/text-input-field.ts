@@ -39,6 +39,7 @@ export class TextInputFieldComponent implements OnInit {
   @Input() categoryOptionComboId: string;
   @Input() data: any;
   @Input() valueType: string;
+  @Input() readonly: boolean;
   @Input() barcodeSettings: any;
   @Input() placeholder: string;
 
@@ -52,6 +53,7 @@ export class TextInputFieldComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.readonly = this.readonly || false;
     if (!this.placeholder) {
       this.placeholder = '';
     }

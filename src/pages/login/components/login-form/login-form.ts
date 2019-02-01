@@ -104,6 +104,7 @@ export class LoginFormComponent implements OnInit {
         id: 'serverUrl',
         placehoder: 'Enter server address',
         type: 'TEXT',
+        readonly: false,
         barcodeSettings: {
           allowBarcodeReaderOnText: true,
           allowBarcodeReaderOnNumerical: false,
@@ -116,6 +117,7 @@ export class LoginFormComponent implements OnInit {
         id: 'username',
         placehoder: 'Enter username',
         type: 'TEXT',
+        readonly: false,
         barcodeSettings: {
           allowBarcodeReaderOnText: false,
           allowBarcodeReaderOnNumerical: false,
@@ -128,6 +130,7 @@ export class LoginFormComponent implements OnInit {
         id: 'password',
         placehoder: 'Enter password',
         type: 'PASSWORD',
+        readonly: false,
         barcodeSettings: {
           allowBarcodeReaderOnText: false,
           allowBarcodeReaderOnNumerical: false,

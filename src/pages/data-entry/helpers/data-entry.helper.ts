@@ -162,92 +162,96 @@ export function onFormReady(
   // Find input items and set required properties to them
   const inputElements = document.getElementsByTagName('INPUT');
   _.each(inputElements, (inputElement: any) => {
-    //empty value set on design inputs
-    if (inputElement.hasAttribute('value')) {
-      inputElement.setAttribute('value', '');
-    }
-    // Get attribute from the element
-    const elementId = inputElement.getAttribute('id');
-    const attributeId = inputElement.getAttribute('attributeid');
-
-    // Get splitted ID to get data element and category combo ids
-    const splitedId =
-      formType === 'aggregate' || formType === 'event'
-        ? elementId
-          ? elementId.split('-')
-          : []
-        : attributeId
-        ? attributeId.split('-')
-        : [];
-
-    const dataElementId = formType === 'event' ? splitedId[1] : splitedId[0];
-    const optionComboId =
-      formType === 'event'
-        ? 'dataElement'
-        : formType === 'tracker'
-        ? 'trackedEntityAttribute'
-        : splitedId[1];
-
-    // Get data element details
-
-    const dataElementDetails = _.find(dataElements, ['id', dataElementId]);
-
-    // Get dataElement type
-    const dataElementType = dataElementDetails
-      ? dataElementDetails.valueType
-      : null;
-
-    // Get element value
-    const dataElementValue = getSanitizedValue(
-      getDataValue(dataValues, dataElementId + '-' + optionComboId),
-      dataElementType
-    );
-
-    // Update DOM based on data element type
-    if (dataElementType) {
-      if (dataElementDetails.optionSet) {
-        inputElement.replaceWith(
-          getSelectInput(
-            elementId,
-            dataElementValue,
-            dataElementDetails.optionSet.options
-          )
-        );
-      } else {
-        if (dataElementType === 'TRUE_ONLY') {
-          inputElement.setAttribute('type', 'checkbox');
-          inputElement.setAttribute('class', 'entrytrueonly');
-          inputElement.checked = dataElementValue;
-        } else if (dataElementType === 'LONG_TEXT') {
-          inputElement.replaceWith(getTextArea(elementId, dataElementValue));
-          inputElement.value = dataElementValue;
-        } else if (dataElementType === 'DATE') {
-          inputElement.setAttribute('type', 'date');
-          inputElement.setAttribute('class', 'entryfield');
-          inputElement.value = dataElementValue;
-        } else if (dataElementType === 'BOOLEAN') {
-          inputElement.replaceWith(getRadioInputs(elementId, dataElementValue));
-        } else if (
-          dataElementType === 'NUMBER' ||
-          dataElementType.indexOf('INTEGER') > -1
-        ) {
-          inputElement.setAttribute('type', 'number');
-          inputElement.setAttribute('class', 'entryfield');
-          if (dataElementType === 'INTEGER_POSITIVE') {
-            inputElement.setAttribute('min', 1);
-          } else if (dataElementType === 'INTEGER_NEGATIVE') {
-            inputElement.setAttribute('max', -1);
-          } else if (dataElementType === 'INTEGER_ZERO_OR_POSITIVE') {
-            inputElement.setAttribute('min', 0);
-          }
-          inputElement.value = dataElementValue;
-        } else {
-          inputElement.setAttribute('class', 'entryfield');
-          inputElement.value = dataElementValue;
-        }
+    if (inputElement) {
+      //empty value set on design inputs
+      if (inputElement && inputElement.hasAttribute('value')) {
+        inputElement.setAttribute('value', '');
       }
-    } else {
-      // TODO Find ways to deal with input that
+      // Get attribute from the element
+      const elementId = inputElement.getAttribute('id');
+      const attributeId = inputElement.getAttribute('attributeid');
+
+      // Get splitted ID to get data element and category combo ids
+      const splitedId =
+        formType === 'aggregate' || formType === 'event'
+          ? elementId
+            ? elementId.split('-')
+            : []
+          : attributeId
+          ? attributeId.split('-')
+          : [];
+
+      const dataElementId = formType === 'event' ? splitedId[1] : splitedId[0];
+      const optionComboId =
+        formType === 'event'
+          ? 'dataElement'
+          : formType === 'tracker'
+          ? 'trackedEntityAttribute'
+          : splitedId[1];
+
+      // Get data element details
+
+      const dataElementDetails = _.find(dataElements, ['id', dataElementId]);
+
+      // Get dataElement type
+      const dataElementType = dataElementDetails
+        ? dataElementDetails.valueType
+        : null;
+
+      // Get element value
+      const dataElementValue = getSanitizedValue(
+        getDataValue(dataValues, dataElementId + '-' + optionComboId),
+        dataElementType
+      );
+
+      // Update DOM based on data element type
+      if (dataElementType) {
+        if (dataElementDetails.optionSet) {
+          inputElement.replaceWith(
+            getSelectInput(
+              elementId,
+              dataElementValue,
+              dataElementDetails.optionSet.options
+            )
+          );
+        } else {
+          if (dataElementType === 'TRUE_ONLY') {
+            inputElement.setAttribute('type', 'checkbox');
+            inputElement.setAttribute('class', 'entrytrueonly');
+            inputElement.checked = dataElementValue;
+          } else if (dataElementType === 'LONG_TEXT') {
+            inputElement.replaceWith(getTextArea(elementId, dataElementValue));
+            inputElement.value = dataElementValue;
+          } else if (dataElementType === 'DATE') {
+            inputElement.setAttribute('type', 'date');
+            inputElement.setAttribute('class', 'entryfield');
+            inputElement.value = dataElementValue;
+          } else if (dataElementType === 'BOOLEAN') {
+            inputElement.replaceWith(
+              getRadioInputs(elementId, dataElementValue)
+            );
+          } else if (
+            dataElementType === 'NUMBER' ||
+            dataElementType.indexOf('INTEGER') > -1
+          ) {
+            inputElement.setAttribute('type', 'number');
+            inputElement.setAttribute('class', 'entryfield');
+            if (dataElementType === 'INTEGER_POSITIVE') {
+              inputElement.setAttribute('min', 1);
+            } else if (dataElementType === 'INTEGER_NEGATIVE') {
+              inputElement.setAttribute('max', -1);
+            } else if (dataElementType === 'INTEGER_ZERO_OR_POSITIVE') {
+              inputElement.setAttribute('min', 0);
+            }
+            inputElement.value = dataElementValue;
+          } else {
+            inputElement.setAttribute('class', 'entryfield');
+            inputElement.value = dataElementValue;
+          }
+        }
+      } else {
+        // TODO Find ways to deal with input that
+      }
     }
   });
 
