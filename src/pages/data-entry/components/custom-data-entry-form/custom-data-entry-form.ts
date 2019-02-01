@@ -133,9 +133,13 @@ export class CustomDataEntryFormComponent
   }
 
   ngAfterViewInit() {
-    this.setScriptsOnHtmlContent(
-      this.getScriptsContents(this.dataEntryFormDesign)
-    );
+    try {
+      this.setScriptsOnHtmlContent(
+        this.getScriptsContents(this.dataEntryFormDesign)
+      );
+    } catch (error) {
+      console.log(JSON.stringify(error));
+    }
   }
 
   updateDataSetCompleteness() {

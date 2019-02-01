@@ -123,7 +123,11 @@ export class LoginPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     const defaultCurrentUser: CurrentUser = {
+<<<<<<< HEAD
       serverUrl: 'hisptz.info/eds28', //'dhis.hisptz.org/eds', // 'ssudanhis.org', //'play.dhis2.org/2.28',
+=======
+      serverUrl: 'https://dhis.hisptz.org/edsmobile', //'dhis.hisptz.org/eds', // 'ssudanhis.org', //'play.dhis2.org/2.28',
+>>>>>>> stable-mobile-dev
       username: 'admin', // 'boma',
       password: 'district', // 'Boma_2018',
       currentLanguage: 'en',
@@ -336,6 +340,7 @@ export class LoginPage implements OnInit, OnDestroy {
   }
 
   startLoginProcess() {
+    this.currentUser = { ...this.currentUser, isPasswordEncode: false };
     this.overAllLoginMessage = this.currentUser.serverUrl;
     this.isLoginProcessActive = true;
     this.backgroundMode.enable();
