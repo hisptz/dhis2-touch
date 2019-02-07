@@ -203,7 +203,7 @@ export class CustomDataEntryFormComponent
               // If the clicked element doesn't have the right selector, bail
               if (
                 event.target.matches(
-                  '.entryfield, .entryselect, .entrytrueonly, .entryfileresource'
+                  '.entryfield, .entryselect, .entrytrueonly, .entryfileresource, .entryfield-radio'
                 )
               ) {
                 onDataValueChange(

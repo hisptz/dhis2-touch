@@ -77,6 +77,7 @@ function getRadioInputs(id, savedValue) {
   if (savedValue == 'true') {
     const yesInput = document.createElement('input');
     yesInput.setAttribute('type', 'radio');
+    yesInput.setAttribute('id', id);
     yesInput.setAttribute('name', id);
     yesInput.setAttribute('class', 'entryfield-radio');
     yesInput.checked = true;
@@ -84,6 +85,7 @@ function getRadioInputs(id, savedValue) {
 
     const noInput = document.createElement('input');
     noInput.setAttribute('type', 'radio');
+    noInput.setAttribute('id', id);
     noInput.setAttribute('name', id);
     noInput.setAttribute('class', 'entryfield-radio');
     noInput.value = 'false';
@@ -97,12 +99,14 @@ function getRadioInputs(id, savedValue) {
     const yesInput = document.createElement('input');
     yesInput.setAttribute('type', 'radio');
     yesInput.setAttribute('name', id);
+    yesInput.setAttribute('id', id);
     yesInput.setAttribute('class', 'entryfield-radio');
     yesInput.value = 'true';
 
     const noInput = document.createElement('input');
     noInput.setAttribute('type', 'radio');
     noInput.setAttribute('name', id);
+    noInput.setAttribute('id', id);
     noInput.setAttribute('class', 'entryfield-radio');
     noInput.checked = true;
     noInput.value = 'false';
@@ -115,12 +119,14 @@ function getRadioInputs(id, savedValue) {
   } else {
     const yesInput = document.createElement('input');
     yesInput.setAttribute('type', 'radio');
+    yesInput.setAttribute('id', id);
     yesInput.setAttribute('name', id);
     yesInput.setAttribute('class', 'entryfield-radio');
     yesInput.value = 'true';
 
     const noInput = document.createElement('input');
     noInput.setAttribute('type', 'radio');
+    noInput.setAttribute('id', id);
     noInput.setAttribute('name', id);
     noInput.setAttribute('class', 'entryfield-radio');
     noInput.value = 'false';
