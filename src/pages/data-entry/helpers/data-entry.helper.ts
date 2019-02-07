@@ -33,11 +33,7 @@ function getSanitizedValue(value, type) {
 }
 
 function convertToBoolean(stringValue) {
-  return stringValue === 'true'
-    ? Boolean(true)
-    : 'false'
-    ? Boolean(false)
-    : stringValue;
+  return stringValue === 'true' ? Boolean(true) : stringValue;
 }
 
 function getSelectInput(id, value, options) {
@@ -82,14 +78,14 @@ function getRadioInputs(id, savedValue) {
     const yesInput = document.createElement('input');
     yesInput.setAttribute('type', 'radio');
     yesInput.setAttribute('name', id);
-    yesInput.setAttribute('class', 'entryfield');
+    yesInput.setAttribute('class', 'entryfield-radio');
     yesInput.checked = true;
     yesInput.value = 'true';
 
     const noInput = document.createElement('input');
     noInput.setAttribute('type', 'radio');
     noInput.setAttribute('name', id);
-    noInput.setAttribute('class', 'entryfield');
+    noInput.setAttribute('class', 'entryfield-radio');
     noInput.value = 'false';
 
     radioContainer.appendChild(yesInput);
@@ -101,13 +97,13 @@ function getRadioInputs(id, savedValue) {
     const yesInput = document.createElement('input');
     yesInput.setAttribute('type', 'radio');
     yesInput.setAttribute('name', id);
-    yesInput.setAttribute('class', 'entryfield');
+    yesInput.setAttribute('class', 'entryfield-radio');
     yesInput.value = 'true';
 
     const noInput = document.createElement('input');
     noInput.setAttribute('type', 'radio');
     noInput.setAttribute('name', id);
-    noInput.setAttribute('class', 'entryfield');
+    noInput.setAttribute('class', 'entryfield-radio');
     noInput.checked = true;
     noInput.value = 'false';
 
@@ -120,13 +116,13 @@ function getRadioInputs(id, savedValue) {
     const yesInput = document.createElement('input');
     yesInput.setAttribute('type', 'radio');
     yesInput.setAttribute('name', id);
-    yesInput.setAttribute('class', 'entryfield');
+    yesInput.setAttribute('class', 'entryfield-radio');
     yesInput.value = 'true';
 
     const noInput = document.createElement('input');
     noInput.setAttribute('type', 'radio');
     noInput.setAttribute('name', id);
-    noInput.setAttribute('class', 'entryfield');
+    noInput.setAttribute('class', 'entryfield-radio');
     noInput.value = 'false';
 
     radioContainer.appendChild(yesInput);
@@ -148,7 +144,7 @@ export function updateFormFieldColor(elementId, statusColor) {
 
 function getDataValue(data, id) {
   var dataObject = data[id];
-  return dataObject ? dataObject.value : null;
+  return dataObject ? dataObject.value : '';
 }
 
 export function onFormReady(
@@ -160,7 +156,9 @@ export function onFormReady(
   formReady
 ) {
   // Find input items and set required properties to them
-  const inputElements = document.getElementsByTagName('INPUT');
+  const dataElementObjects = _.keyBy(dataElements, 'id');
+  const inputElements: any = document.getElementsByTagName('INPUT');
+  const elementsWithOptionSet = {};
   _.each(inputElements, (inputElement: any) => {
     if (inputElement) {
       //empty value set on design inputs
@@ -168,8 +166,9 @@ export function onFormReady(
         inputElement.setAttribute('value', '');
       }
       // Get attribute from the element
-      const elementId = inputElement.getAttribute('id');
-      const attributeId = inputElement.getAttribute('attributeid');
+      const elementId = inputElement.getAttribute('id')
+        ? inputElement.getAttribute('id')
+        : inputElement.getAttribute('attributeid');
 
       // Get splitted ID to get data element and category combo ids
       const splitedId =
@@ -177,8 +176,6 @@ export function onFormReady(
           ? elementId
             ? elementId.split('-')
             : []
-          : attributeId
-          ? attributeId.split('-')
           : [];
 
       const dataElementId = formType === 'event' ? splitedId[1] : splitedId[0];
@@ -189,31 +186,31 @@ export function onFormReady(
           ? 'trackedEntityAttribute'
           : splitedId[1];
 
-      // Get data element details
+      // // Get data element details
 
-      const dataElementDetails = _.find(dataElements, ['id', dataElementId]);
+      const dataElementDetails = dataElementObjects[dataElementId]
+        ? dataElementObjects[dataElementId]
+        : {};
 
-      // Get dataElement type
+      // // Get dataElement type
       const dataElementType = dataElementDetails
         ? dataElementDetails.valueType
         : null;
 
-      // Get element value
+      // // Get element value
       const dataElementValue = getSanitizedValue(
         getDataValue(dataValues, dataElementId + '-' + optionComboId),
         dataElementType
       );
-
-      // Update DOM based on data element type
+      // // Update DOM based on data element type
       if (dataElementType) {
         if (dataElementDetails.optionSet) {
-          inputElement.replaceWith(
-            getSelectInput(
-              elementId,
-              dataElementValue,
-              dataElementDetails.optionSet.options
-            )
+          const selectInput = getSelectInput(
+            elementId,
+            dataElementValue,
+            dataElementDetails.optionSet.options
           );
+          elementsWithOptionSet[elementId] = selectInput;
         } else {
           if (dataElementType === 'TRUE_ONLY') {
             inputElement.setAttribute('type', 'checkbox');
@@ -231,6 +228,7 @@ export function onFormReady(
               getRadioInputs(elementId, dataElementValue)
             );
           } else if (
+            dataElementType === 'PERCENTAGE' ||
             dataElementType === 'NUMBER' ||
             dataElementType.indexOf('INTEGER') > -1
           ) {
@@ -242,6 +240,9 @@ export function onFormReady(
               inputElement.setAttribute('max', -1);
             } else if (dataElementType === 'INTEGER_ZERO_OR_POSITIVE') {
               inputElement.setAttribute('min', 0);
+            } else if (dataElementType === 'PERCENTAGE') {
+              inputElement.setAttribute('min', 0);
+              inputElement.setAttribute('max', 100);
             }
             inputElement.value = dataElementValue;
           } else {
@@ -254,6 +255,17 @@ export function onFormReady(
       }
     }
   });
+
+  // update option sets
+  for (let elementId of Object.keys(elementsWithOptionSet)) {
+    const inputElement: any = document.getElementById(elementId);
+    const selectInput = elementsWithOptionSet[elementId];
+    try {
+      inputElement.replaceWith(selectInput);
+    } catch (error) {
+      console.log(JSON.stringify(error));
+    }
+  }
 
   formReady(formType, entryFormStatusColors, scriptsContentsArray);
 }

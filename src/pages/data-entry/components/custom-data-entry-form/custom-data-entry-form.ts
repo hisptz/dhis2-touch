@@ -168,23 +168,25 @@ export class CustomDataEntryFormComponent
 
   setScriptsOnHtmlContent(scriptsContentsArray) {
     const dataElements = this.entryFormSections
-      ? _.flatten(
+      ? _.flattenDeep(
           _.map(
             this.entryFormSections,
             entrySection => entrySection.dataElements
           )
         )
       : this.programTrackedEntityAttributes
-      ? _.flatten(
+      ? _.flattenDeep(
           _.map(
             this.programTrackedEntityAttributes,
             programTrackedEntityAttribute =>
               programTrackedEntityAttribute.trackedEntityAttribute
           )
         )
-      : _.map(
-          this.programStageDataElements,
-          programStage => programStage.dataElement
+      : _.flattenDeep(
+          _.map(
+            this.programStageDataElements,
+            programStage => programStage.dataElement
+          )
         );
     if (!this.hasScriptSet) {
       onFormReady(
