@@ -159,6 +159,8 @@ export function onFormReady(
   const dataElementObjects = _.keyBy(dataElements, 'id');
   const inputElements: any = document.getElementsByTagName('INPUT');
   const elementsWithOptionSet = {};
+  const elementsWithTextArea = {};
+  const elementsWithRadioInput = {};
   _.each(inputElements, (inputElement: any) => {
     if (inputElement) {
       //empty value set on design inputs
@@ -217,15 +219,20 @@ export function onFormReady(
             inputElement.setAttribute('class', 'entrytrueonly');
             inputElement.checked = dataElementValue;
           } else if (dataElementType === 'LONG_TEXT') {
-            inputElement.replaceWith(getTextArea(elementId, dataElementValue));
-            inputElement.value = dataElementValue;
+            elementsWithRadioInput[elementId] = {
+              textAreaInput: inputElement.replaceWith(
+                getTextArea(elementId, dataElementValue)
+              ),
+              dataElementValue
+            };
           } else if (dataElementType === 'DATE') {
             inputElement.setAttribute('type', 'date');
             inputElement.setAttribute('class', 'entryfield');
             inputElement.value = dataElementValue;
           } else if (dataElementType === 'BOOLEAN') {
-            inputElement.replaceWith(
-              getRadioInputs(elementId, dataElementValue)
+            elementsWithRadioInput[elementId] = getRadioInputs(
+              elementId,
+              dataElementValue
             );
           } else if (
             dataElementType === 'PERCENTAGE' ||
@@ -258,12 +265,36 @@ export function onFormReady(
 
   // update option sets
   for (let elementId of Object.keys(elementsWithOptionSet)) {
-    const inputElement: any = document.getElementById(elementId);
-    const selectInput = elementsWithOptionSet[elementId];
     try {
+      const inputElement: any = document.getElementById(elementId);
+      const selectInput = elementsWithOptionSet[elementId];
       inputElement.replaceWith(selectInput);
     } catch (error) {
-      console.log(JSON.stringify(error));
+      console.log(JSON.stringify({ type: 'Select input', error }));
+    }
+  }
+
+  // update option sets
+  for (let elementId of Object.keys(elementsWithRadioInput)) {
+    try {
+      const inputElement: any = document.getElementById(elementId);
+      const redioInput = elementsWithRadioInput[elementId];
+      inputElement.replaceWith(redioInput);
+    } catch (error) {
+      console.log(JSON.stringify({ type: 'Radio input', error }));
+    }
+  }
+
+  // update text area
+  for (let elementId of Object.keys(elementsWithTextArea)) {
+    try {
+      const inputElement: any = document.getElementById(elementId);
+      const textAreaInputObject = elementsWithTextArea[elementId];
+      const { textAreaInput, dataElementValue } = textAreaInputObject;
+      inputElement.replaceWith(textAreaInput);
+      inputElement.value = dataElementValue;
+    } catch (error) {
+      console.log(JSON.stringify({ type: 'Text area input', error }));
     }
   }
 
