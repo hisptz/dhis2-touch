@@ -305,7 +305,11 @@ export function onFormReady(
       console.log(JSON.stringify({ type: 'Text area input', error }));
     }
   }
-
+  if (formType === 'event') {
+    evaluateCustomFomProgramIndicators(programIndicators);
+  } else if (formType === 'aggregate') {
+    evaluateCustomFomAggregateIndicators(indicators);
+  }
   formReady(
     formType,
     entryFormStatusColors,
@@ -353,9 +357,71 @@ export function onDataValueChange(
 }
 
 export function evaluateCustomFomProgramIndicators(programIndicators: any[]) {
-  console.log(JSON.stringify(programIndicators));
+  for (let programIndicator of programIndicators) {
+    const { id, expression, filter, name } = programIndicator;
+    if (filter) {
+      console.log(JSON.stringify({ filter }));
+    }
+    const indicatorValue = getProgramIndicatorValueFromExpression(expression);
+    console.log(JSON.stringify({ name, value: indicatorValue, id }));
+  }
 }
 
 export function evaluateCustomFomAggregateIndicators(indicators: any[]) {
   console.log(JSON.stringify(indicators));
+}
+
+function getProgramIndicatorValueFromExpression(expression: string) {
+  let indicatorValue = '0';
+  const indictorUidValue = {};
+  const uids = getUidsFromExpression(expression);
+  for (const uid of uids) {
+    const elementId = uid.split('.').join('-');
+    const element: any = document.getElementById(`${elementId}-val`);
+    if (element && element.value) {
+      const value = element.value;
+      indictorUidValue[uid] = value;
+    }
+  }
+  indicatorValue = getEvaluatedIndicatorValueFromExpression(
+    expression,
+    indictorUidValue
+  );
+  return indicatorValue;
+}
+
+function getUidsFromExpression(expression) {
+  var uids = [];
+  var matchRegrex = /(\{.*?\})/gi;
+  expression.match(matchRegrex).forEach(function(value) {
+    uids = uids.concat(
+      value
+        .replace('{', ':separator:')
+        .replace('}', ':separator:')
+        .split(':separator:')
+        .filter(content => content.length > 0)
+    );
+  });
+  return uids;
+}
+function getEvaluatedIndicatorValueFromExpression(
+  expression,
+  indicatorIdToValueObject
+) {
+  var evaluatedValue = 0;
+  var formulaPattern = /#\{.+?\}/g;
+  var matcher = expression.match(formulaPattern);
+  matcher.forEach(function(match) {
+    var operand = match.replace(/[#\{\}]/g, '');
+    if (indicatorIdToValueObject[operand]) {
+      expression = expression.replace(match, indicatorIdToValueObject[operand]);
+    }
+  });
+  try {
+    if (!isNaN(eval(expression))) {
+      evaluatedValue = eval(expression);
+    }
+  } catch (e) {}
+  console.log(JSON.stringify({ expression }));
+  return evaluatedValue.toFixed(1);
 }
