@@ -516,7 +516,8 @@ export class ProgramsProvider {
               id: program.id + '-' + programIndicator.id,
               programId: program.id,
               name: programIndicator.name,
-              expression: programIndicator.expression
+              expression: programIndicator.expression,
+              filter: programIndicator.filter
             };
           })
         );
@@ -1167,8 +1168,10 @@ export class ProgramsProvider {
           dataBaseName
         )
         .subscribe(
-          (orgUnitsInProgram: any) => {
-            observer.next(orgUnitsInProgram);
+          (programIndicators: any) => {
+            observer.next(
+              this.getSanitizedProgramIndicators(programIndicators)
+            );
             observer.complete();
           },
           error => {
@@ -1176,6 +1179,17 @@ export class ProgramsProvider {
           }
         );
     });
+  }
+
+  getSanitizedProgramIndicators(programIndicators) {
+    return _.flatMapDeep(
+      _.map(programIndicators, programIndicator => {
+        const { id } = programIndicator;
+        delete programIndicator.programId;
+        const programIndicatorId = id.split('-').pop();
+        return { ...programIndicator, id: programIndicatorId };
+      })
+    );
   }
 
   /**

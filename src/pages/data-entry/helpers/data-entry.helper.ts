@@ -156,6 +156,8 @@ function getDataValue(data, id) {
 export function onFormReady(
   formType,
   dataElements,
+  programIndicators,
+  indicators,
   dataValues,
   entryFormStatusColors,
   scriptsContentsArray,
@@ -304,7 +306,13 @@ export function onFormReady(
     }
   }
 
-  formReady(formType, entryFormStatusColors, scriptsContentsArray);
+  formReady(
+    formType,
+    entryFormStatusColors,
+    programIndicators,
+    indicators,
+    scriptsContentsArray
+  );
 }
 
 export function onDataValueChange(
@@ -342,4 +350,12 @@ export function onDataValueChange(
     }
   });
   document.body.dispatchEvent(dataValueEvent);
+}
+
+export function evaluateCustomFomProgramIndicators(programIndicators: any[]) {
+  console.log(JSON.stringify(programIndicators));
+}
+
+export function evaluateCustomFomAggregateIndicators(indicators: any[]) {
+  console.log(JSON.stringify(indicators));
 }

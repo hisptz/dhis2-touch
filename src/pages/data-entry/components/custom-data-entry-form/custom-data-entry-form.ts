@@ -37,7 +37,9 @@ import * as _ from 'lodash';
 import {
   onDataValueChange,
   onFormReady,
-  updateFormFieldColor
+  updateFormFieldColor,
+  evaluateCustomFomProgramIndicators,
+  evaluateCustomFomAggregateIndicators
 } from '../../helpers/data-entry.helper';
 
 declare var dataEntry: any;
@@ -65,6 +67,8 @@ export class CustomDataEntryFormComponent
   programStageId: string;
   @Input()
   programStageDataElements; // metadata for events rendering
+  @Input() programIndicators; //program indicators for events
+  @Input() indicators; //indicators for aggregates data entry
   @Input()
   dataUpdateStatus: { elementId: string; status: string };
   @Output()
@@ -192,10 +196,17 @@ export class CustomDataEntryFormComponent
       onFormReady(
         this.entryFormType,
         dataElements,
+        this.programIndicators,
+        this.indicators,
         this.data,
         this.entryFormStatusColors,
         scriptsContentsArray,
-        function(entryFormType, entryFormStatusColors) {
+        function(
+          entryFormType,
+          entryFormStatusColors,
+          programIndicators,
+          indicators
+        ) {
           // Listen for change event
           document.addEventListener(
             'change',
@@ -211,6 +222,11 @@ export class CustomDataEntryFormComponent
                   entryFormType,
                   entryFormStatusColors
                 );
+              }
+              if (entryFormType === 'event') {
+                evaluateCustomFomProgramIndicators(programIndicators);
+              } else if (entryFormType === 'aggregate') {
+                evaluateCustomFomAggregateIndicators(indicators);
               }
               event.preventDefault();
             },
