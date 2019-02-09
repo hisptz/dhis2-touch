@@ -378,10 +378,8 @@ function getProgramIndicatorValueFromExpression(expression: string) {
   for (const uid of uids) {
     const elementId = uid.split('.').join('-');
     const element: any = document.getElementById(`${elementId}-val`);
-    if (element && element.value) {
-      const value = element.value;
-      indictorUidValue[uid] = value;
-    }
+    const value = element && element.value ? element.value : '0';
+    indictorUidValue[uid] = value;
   }
   indicatorValue = getEvaluatedIndicatorValueFromExpression(
     expression,
@@ -391,8 +389,8 @@ function getProgramIndicatorValueFromExpression(expression: string) {
 }
 
 function getUidsFromExpression(expression) {
-  var uids = [];
-  var matchRegrex = /(\{.*?\})/gi;
+  let uids = [];
+  const matchRegrex = /(\{.*?\})/gi;
   expression.match(matchRegrex).forEach(function(value) {
     uids = uids.concat(
       value
@@ -408,14 +406,16 @@ function getEvaluatedIndicatorValueFromExpression(
   expression,
   indicatorIdToValueObject
 ) {
-  var evaluatedValue = 0;
-  var formulaPattern = /#\{.+?\}/g;
-  var matcher = expression.match(formulaPattern);
-  matcher.forEach(function(match) {
+  let evaluatedValue = 0;
+  const formulaPattern = /#\{.+?\}/g;
+  const matcher = expression.match(formulaPattern);
+  matcher.map(function(match) {
     var operand = match.replace(/[#\{\}]/g, '');
-    if (indicatorIdToValueObject[operand]) {
-      expression = expression.replace(match, indicatorIdToValueObject[operand]);
-    }
+    const value =
+      indicatorIdToValueObject && indicatorIdToValueObject[operand]
+        ? indicatorIdToValueObject[operand]
+        : 0;
+    expression = expression.replace(match, value);
   });
   try {
     if (!isNaN(eval(expression))) {
