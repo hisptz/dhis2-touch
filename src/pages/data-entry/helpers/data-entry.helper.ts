@@ -267,6 +267,16 @@ export function onFormReady(
         }
       } else {
         // TODO Find ways to deal with input that
+        if (
+          inputElement &&
+          inputElement.hasAttribute('name') &&
+          inputElement.getAttribute('name') === 'indicator'
+        ) {
+          inputElement.setAttribute('value', '0');
+          inputElement.setAttribute('class', 'entryfield');
+          inputElement.setAttribute('readonly', 'readonly');
+          inputElement.setAttribute('disabled', 'disabled');
+        }
       }
     }
   });
@@ -363,7 +373,10 @@ export function evaluateCustomFomProgramIndicators(programIndicators: any[]) {
       console.log(JSON.stringify({ filter }));
     }
     const indicatorValue = getProgramIndicatorValueFromExpression(expression);
-    console.log(JSON.stringify({ name, value: indicatorValue, id }));
+    const element: any = document.getElementById(`indicator${id}`);
+    if (element) {
+      element.value = indicatorValue;
+    }
   }
 }
 
@@ -422,6 +435,5 @@ function getEvaluatedIndicatorValueFromExpression(
       evaluatedValue = eval(expression);
     }
   } catch (e) {}
-  console.log(JSON.stringify({ expression }));
   return evaluatedValue.toFixed(1);
 }
