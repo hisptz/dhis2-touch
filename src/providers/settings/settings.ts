@@ -168,7 +168,7 @@ export class SettingsProvider {
       entryForm: {
         label: 'formName',
         maxDataElementOnDefaultForm: 10,
-        formLayout: 'tableLayout',
+        formLayout: 'customLayout',
         showAlertOnFormAssignement: true,
         shouldDisplayAsRadio: true
       },
