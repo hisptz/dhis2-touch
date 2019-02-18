@@ -86,7 +86,6 @@
     <content src="index.html" />
     <allow-navigation href="http://192.168.100.3:8100" sessionid="968afc1f" />
     <plugin name="cordova-plugin-app-version" spec="0.1.9" />
-    <plugin name="cordova-plugin-background-mode" spec="0.7.2" />
     <plugin name="cordova-plugin-console" spec="1.1.0" />
     <plugin name="cordova-plugin-device" spec="2.0.2" />
     <plugin name="cordova-plugin-advanced-http" spec="1.11.1" />

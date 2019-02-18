@@ -48,7 +48,6 @@ import { SettingsProvider } from '../../providers/settings/settings';
 import { SmsCommandProvider } from '../../providers/sms-command/sms-command';
 import { LocalInstanceProvider } from '../../providers/local-instance/local-instance';
 import { EncryptionProvider } from '../../providers/encryption/encryption';
-import { BackgroundMode } from '@ionic-native/background-mode';
 import { Observable } from 'rxjs';
 
 /**
@@ -93,7 +92,6 @@ export class LoginPage implements OnInit, OnDestroy {
     private localInstanceProvider: LocalInstanceProvider,
     private encryptionProvider: EncryptionProvider,
     private modalCtrl: ModalController,
-    private backgroundMode: BackgroundMode,
     private store: Store<State>
   ) {
     this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
@@ -214,10 +212,6 @@ export class LoginPage implements OnInit, OnDestroy {
 
   onCancelLoginProcess() {
     this.isLoginProcessActive = false;
-    this.backgroundMode
-      .disable()
-      .then(() => {})
-      .catch(e => {});
   }
 
   onFailLogin(errorReponse) {
@@ -279,10 +273,6 @@ export class LoginPage implements OnInit, OnDestroy {
             new AddCurrentUser({ currentUser: this.currentUser })
           );
           this.userProvider.setCurrentUser(this.currentUser).subscribe(() => {
-            this.backgroundMode
-              .disable()
-              .then(() => {})
-              .catch(e => {});
             this.smsCommandProvider
               .checkAndGenerateSmsCommands(this.currentUser)
               .subscribe(() => {}, error => {});
@@ -339,7 +329,6 @@ export class LoginPage implements OnInit, OnDestroy {
     this.currentUser = { ...this.currentUser, isPasswordEncode: false };
     this.overAllLoginMessage = this.currentUser.serverUrl;
     this.isLoginProcessActive = true;
-    this.backgroundMode.enable();
     this.resetLoginSpinnerValues();
   }
 
