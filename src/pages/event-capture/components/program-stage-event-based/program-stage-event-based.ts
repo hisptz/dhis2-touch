@@ -37,6 +37,7 @@ import { EventCaptureFormProvider } from '../../../../providers/event-capture-fo
 import { ActionSheetController } from 'ionic-angular';
 import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
 import { ProgramRulesProvider } from '../../../../providers/program-rules/program-rules';
+import { CurrentUser } from '../../../../models';
 
 /**
  * Generated class for the ProgramStageEventBasedComponent component.
@@ -75,6 +76,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   hiddenProgramStages: any;
   errorOrWarningMessage: any;
   hiddenFields: any;
+  programIndicators: any;
 
   constructor(
     private programsProvider: ProgramsProvider,
@@ -98,6 +100,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     this.hiddenProgramStages = {};
     this.hiddenSections = {};
     this.errorOrWarningMessage = {};
+    this.programIndicators = [];
   }
   ngOnInit() {
     this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
@@ -137,7 +140,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
       ? this.translationMapper[key]
       : key;
     this.userProvider.getCurrentUser().subscribe(
-      (user: any) => {
+      (user: CurrentUser) => {
         this.currentUser = user;
         if (
           this.currentEvent &&
@@ -149,10 +152,25 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
             this.programStage.programStageDataElements
           );
         }
-        this.isLoading = false;
-        setTimeout(() => {
-          this.evaluatingProgramRules();
-        }, 50);
+        const { id } = this.currentProgram;
+        this.programsProvider
+          .getProgramIndicators(id, user.currentDatabase)
+          .subscribe(
+            programIndicators => {
+              this.programIndicators = programIndicators;
+              this.isLoading = false;
+              setTimeout(() => {
+                this.evaluatingProgramRules();
+              }, 50);
+            },
+            error => {
+              this.isLoading = false;
+              console.log(JSON.stringify(error));
+              this.appProvider.setNormalNotification(
+                'Failed to dicover program indicators'
+              );
+            }
+          );
       },
       error => {
         this.isLoading = false;

@@ -63,7 +63,7 @@ export class ProgramsProvider {
   downloadProgramsFromServer(currentUser: CurrentUser): Observable<any> {
     const { userOrgUnitIds } = currentUser;
     const fields =
-      'fields=id,name,displayName,displayIncidentDate,programType,withoutRegistration,dataEntryForm[htmlCode],trackedEntityType[id,displayName],trackedEntity[id,displayName],ignoreOverdueEvents,skipOffline,captureCoordinates,enrollmentDateLabel,onlyEnrollOnce,selectIncidentDatesInFuture,incidentDateLabel,useFirstStageDuringRegistration,completeEventsExpiryDays,displayFrontPageList,categoryCombo[id,name,categories[id,name,categoryOptions[name,id,organisationUnits[id]]]],programStages[id,name,executionDateLabel,hideDueDate,dataEntryForm[htmlCode],allowGenerateNextVisit,blockEntryForm,repeatable,formType,sortOrder,standardInterval,minDaysFromStart,generatedByEnrollmentDate,autoGenerateEvent,captureCoordinates,dueDateLabel,programStageDataElements[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id]],programStageSections[id]],organisationUnits[id],programIndicators[id,name,description,expression],translations,attributeValues[value,attribute[name]],validationCriterias,programRuleVariables,programTrackedEntityAttributes[id,mandatory,externalAccess,allowFutureDate,displayInList,sortOrder,trackedEntityAttribute[id,name,code,name,formName,description,confidential,searchScope,translations,inherit,legendSets,optionSet[name,options[name,id,code]]unique,orgunitScope,programScope,displayInListNoProgramaggregationType,displayInListNoProgram,pattern,sortOrderInListNoProgram,generated,displayOnVisitSchedule,valueType,sortOrderInVisitSchedule]],programRules';
+      'fields=id,name,displayName,displayIncidentDate,programType,withoutRegistration,dataEntryForm[htmlCode],trackedEntityType[id,displayName],trackedEntity[id,displayName],ignoreOverdueEvents,skipOffline,captureCoordinates,enrollmentDateLabel,onlyEnrollOnce,selectIncidentDatesInFuture,incidentDateLabel,useFirstStageDuringRegistration,completeEventsExpiryDays,displayFrontPageList,categoryCombo[id,name,categories[id,name,categoryOptions[name,id,organisationUnits[id]]]],programStages[id,name,executionDateLabel,hideDueDate,dataEntryForm[htmlCode],allowGenerateNextVisit,blockEntryForm,repeatable,formType,sortOrder,standardInterval,minDaysFromStart,generatedByEnrollmentDate,autoGenerateEvent,captureCoordinates,dueDateLabel,programStageDataElements[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id]],programStageSections[id]],organisationUnits[id],programIndicators[id,name,description,filter,expression],translations,attributeValues[value,attribute[name]],validationCriterias,programRuleVariables,programTrackedEntityAttributes[id,mandatory,externalAccess,allowFutureDate,displayInList,sortOrder,trackedEntityAttribute[id,name,code,name,formName,description,confidential,searchScope,translations,inherit,legendSets,optionSet[name,options[name,id,code]]unique,orgunitScope,programScope,displayInListNoProgramaggregationType,displayInListNoProgram,pattern,sortOrderInListNoProgram,generated,displayOnVisitSchedule,valueType,sortOrderInVisitSchedule]],programRules';
     const filter =
       'filter=organisationUnits.path:ilike:' +
       userOrgUnitIds.join('&filter=organisationUnits.path:ilike:') +
@@ -516,7 +516,8 @@ export class ProgramsProvider {
               id: program.id + '-' + programIndicator.id,
               programId: program.id,
               name: programIndicator.name,
-              expression: programIndicator.expression
+              expression: programIndicator.expression,
+              filter: programIndicator.filter
             };
           })
         );
@@ -1167,8 +1168,10 @@ export class ProgramsProvider {
           dataBaseName
         )
         .subscribe(
-          (orgUnitsInProgram: any) => {
-            observer.next(orgUnitsInProgram);
+          (programIndicators: any) => {
+            observer.next(
+              this.getSanitizedProgramIndicators(programIndicators)
+            );
             observer.complete();
           },
           error => {
@@ -1176,6 +1179,17 @@ export class ProgramsProvider {
           }
         );
     });
+  }
+
+  getSanitizedProgramIndicators(programIndicators) {
+    return _.flatMapDeep(
+      _.map(programIndicators, programIndicator => {
+        const { id } = programIndicator;
+        delete programIndicator.programId;
+        const programIndicatorId = id.split('-').pop();
+        return { ...programIndicator, id: programIndicatorId };
+      })
+    );
   }
 
   /**

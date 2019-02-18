@@ -507,10 +507,12 @@ export class SqlLiteProvider {
       let currentRow = result.rows.item(i);
       columns.forEach(column => {
         let columnName = column.value;
-        if (column.type != 'LONGTEXT') {
-          row[columnName] = currentRow[columnName];
-        } else {
-          row[columnName] = JSON.parse(currentRow[columnName]);
+        if (currentRow[columnName]) {
+          if (column.type != 'LONGTEXT') {
+            row[columnName] = currentRow[columnName];
+          } else {
+            row[columnName] = JSON.parse(currentRow[columnName]);
+          }
         }
       });
       data.push(row);

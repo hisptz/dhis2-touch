@@ -37,7 +37,9 @@ import * as _ from 'lodash';
 import {
   onDataValueChange,
   onFormReady,
-  updateFormFieldColor
+  updateFormFieldColor,
+  evaluateCustomFomProgramIndicators,
+  evaluateCustomFomAggregateIndicators
 } from '../../helpers/data-entry.helper';
 
 declare var dataEntry: any;
@@ -65,6 +67,8 @@ export class CustomDataEntryFormComponent
   programStageId: string;
   @Input()
   programStageDataElements; // metadata for events rendering
+  @Input() programIndicators; //program indicators for events
+  @Input() indicators; //indicators for aggregates data entry
   @Input()
   dataUpdateStatus: { elementId: string; status: string };
   @Output()
@@ -133,9 +137,13 @@ export class CustomDataEntryFormComponent
   }
 
   ngAfterViewInit() {
-    this.setScriptsOnHtmlContent(
-      this.getScriptsContents(this.dataEntryFormDesign)
-    );
+    try {
+      this.setScriptsOnHtmlContent(
+        this.getScriptsContents(this.dataEntryFormDesign)
+      );
+    } catch (error) {
+      console.log(JSON.stringify(error));
+    }
   }
 
   updateDataSetCompleteness() {
@@ -164,32 +172,41 @@ export class CustomDataEntryFormComponent
 
   setScriptsOnHtmlContent(scriptsContentsArray) {
     const dataElements = this.entryFormSections
-      ? _.flatten(
+      ? _.flattenDeep(
           _.map(
             this.entryFormSections,
             entrySection => entrySection.dataElements
           )
         )
       : this.programTrackedEntityAttributes
-      ? _.flatten(
+      ? _.flattenDeep(
           _.map(
             this.programTrackedEntityAttributes,
             programTrackedEntityAttribute =>
               programTrackedEntityAttribute.trackedEntityAttribute
           )
         )
-      : _.map(
-          this.programStageDataElements,
-          programStage => programStage.dataElement
+      : _.flattenDeep(
+          _.map(
+            this.programStageDataElements,
+            programStage => programStage.dataElement
+          )
         );
     if (!this.hasScriptSet) {
       onFormReady(
         this.entryFormType,
         dataElements,
+        this.programIndicators,
+        this.indicators,
         this.data,
         this.entryFormStatusColors,
         scriptsContentsArray,
-        function(entryFormType, entryFormStatusColors) {
+        function(
+          entryFormType,
+          entryFormStatusColors,
+          programIndicators,
+          indicators
+        ) {
           // Listen for change event
           document.addEventListener(
             'change',
@@ -197,7 +214,7 @@ export class CustomDataEntryFormComponent
               // If the clicked element doesn't have the right selector, bail
               if (
                 event.target.matches(
-                  '.entryfield, .entryselect, .entrytrueonly, .entryfileresource'
+                  '.entryfield, .entryselect, .entrytrueonly, .entryfileresource, .entryfield-radio'
                 )
               ) {
                 onDataValueChange(
@@ -205,6 +222,11 @@ export class CustomDataEntryFormComponent
                   entryFormType,
                   entryFormStatusColors
                 );
+              }
+              if (entryFormType === 'event') {
+                evaluateCustomFomProgramIndicators(programIndicators);
+              } else if (entryFormType === 'aggregate') {
+                evaluateCustomFomAggregateIndicators(indicators);
               }
               event.preventDefault();
             },
