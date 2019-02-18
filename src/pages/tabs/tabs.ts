@@ -58,6 +58,9 @@ export class TabsPage implements OnInit {
     this.userProvider.getCurrentUser().subscribe((currentUser: CurrentUser) => {
       dhis2.currentDatabase = currentUser.currentDatabase;
       dhis2.dataBaseStructure = DATABASE_STRUCTURE;
+      this.userProvider.getProfileInformation().subscribe(userProfile => {
+        dhis2.userProfile = userProfile;
+      })
       this.synchronizationProvider.startSynchronization(currentUser);
     });
   }
