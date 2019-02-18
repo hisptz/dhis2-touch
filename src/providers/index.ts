@@ -32,7 +32,7 @@ import { DatePicker } from '@ionic-native/date-picker';
 import { Geolocation } from '@ionic-native/geolocation';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { SMS } from '@ionic-native/sms';
+// import { SMS } from '@ionic-native/sms';
 import { BackgroundMode } from '@ionic-native/background-mode';
 
 import { AppTranslationProvider } from '../providers/app-translation/app-translation';
@@ -131,7 +131,7 @@ export const nativePlugins = [
   SQLite,
   Diagnostic,
   BarcodeScanner,
-  SMS,
+  //SMS,
   DatePicker,
   Geolocation,
   SplashScreen,
