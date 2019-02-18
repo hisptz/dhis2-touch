@@ -48,8 +48,9 @@
         <div *ngIf="!hiddenProgramStages[programStage.id]">
           <div *ngIf="formLayout === 'customLayout' && programStage && programStage.dataEntryForm && programStage.dataEntryForm !== '' ">
             <custom-data-entry-form [entryFormType]="entryFormType" [dataEntryFormDesign]="programStage.dataEntryForm"
-              [data]="dataObject" [dataUpdateStatus]="dataUpdateStatus" [programStageDataElements]="programStage.programStageDataElements"
-              [programStageId]="programStage.id" (onCustomFormInputChange)="updateData($event)"></custom-data-entry-form>
+              [data]="dataObject" [programIndicators]="programIndicators" [dataUpdateStatus]="dataUpdateStatus"
+              [programStageDataElements]="programStage.programStageDataElements" [programStageId]="programStage.id"
+              (onCustomFormInputChange)="updateData($event)"></custom-data-entry-form>
           </div>
           <div *ngIf="!(formLayout === 'customLayout' && programStage && programStage.dataEntryForm && programStage.dataEntryForm !== '' )">
             <default-event-entry-form [(errorOrWarningMessage)]="errorOrWarningMessage" [(hiddenSections)]="hiddenSections"
