@@ -132,7 +132,7 @@ export class CustomDataEntryFormComponent
         this.dataEntryFormDesign
       );
     } catch (e) {
-      console.log(JSON.stringify(e));
+      console.log('ng on init ' + JSON.stringify(e));
     }
   }
 
@@ -142,7 +142,7 @@ export class CustomDataEntryFormComponent
         this.getScriptsContents(this.dataEntryFormDesign)
       );
     } catch (error) {
-      console.log(JSON.stringify(error));
+      console.log('ng after view int ' + JSON.stringify(error));
     }
   }
 

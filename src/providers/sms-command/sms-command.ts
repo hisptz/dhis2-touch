@@ -27,7 +27,7 @@ import { HttpClientProvider } from '../http-client/http-client';
 import { DataSetsProvider } from '../data-sets/data-sets';
 import { DataSet } from '../../models/data-set';
 import { SmsCommand } from '../../models/sms-command';
-import { SMS } from '@ionic-native/sms';
+// import { SMS } from '@ionic-native/sms';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 
@@ -44,7 +44,7 @@ export class SmsCommandProvider {
   constructor(
     private SqlLite: SqlLiteProvider,
     private dataSetProvider: DataSetsProvider,
-    private sms: SMS,
+    //private sms: SMS,
     private HttpClient: HttpClientProvider
   ) {
     this.resourceName = 'smsCommand';
@@ -445,28 +445,30 @@ export class SmsCommandProvider {
       }
     };
     return new Observable(observer => {
-      this.sms.send(phoneNumber, messages[messageIndex], options).then(
-        success => {
-          messageIndex = messageIndex + 1;
-          if (messageIndex < messages.length) {
-            this.sendSms(phoneNumber, messages, messageIndex).subscribe(
-              () => {
-                observer.next();
-                observer.complete();
-              },
-              error => {
-                observer.error(error);
-              }
-            );
-          } else {
-            observer.next(success);
-            observer.complete();
-          }
-        },
-        error => {
-          observer.error(error);
-        }
-      );
+      observer.next();
+      observer.complete();
+      // this.sms.send(phoneNumber, messages[messageIndex], options).then(
+      //   success => {
+      //     messageIndex = messageIndex + 1;
+      //     if (messageIndex < messages.length) {
+      //       this.sendSms(phoneNumber, messages, messageIndex).subscribe(
+      //         () => {
+      //           observer.next();
+      //           observer.complete();
+      //         },
+      //         error => {
+      //           observer.error(error);
+      //         }
+      //       );
+      //     } else {
+      //       observer.next(success);
+      //       observer.complete();
+      //     }
+      //   },
+      //   error => {
+      //     observer.error(error);
+      //   }
+      // );
     });
   }
 
