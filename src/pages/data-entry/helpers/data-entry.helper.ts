@@ -286,7 +286,6 @@ export function onFormReady(
       const inputElement: any = document.getElementById(elementId);
       const selectInput = elementsWithOptionSet[elementId];
       inputElement.replaceWith(selectInput);
-      inputElement.parentNode.removeChild(inputElement);
     } catch (error) {
       console.log(JSON.stringify({ type: 'Select input', error }));
     }
@@ -298,7 +297,6 @@ export function onFormReady(
       const inputElement: any = document.getElementById(elementId);
       const redioInput = elementsWithRadioInput[elementId];
       inputElement.replaceWith(redioInput);
-      inputElement.parentNode.removeChild(inputElement);
     } catch (error) {
       console.log(JSON.stringify({ type: 'Radio input', error }));
     }

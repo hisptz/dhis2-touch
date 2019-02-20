@@ -105,6 +105,7 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
     eventType,
     currentUser
   ) {
+    const action = 'accept';
     this.subscriptions.add(
       this.eventCaptureFormProvider
         .discoveringEventsFromServer(
@@ -135,7 +136,7 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
               this.appProvider.setTopNotification(
                 `${count} events have been dicovered and applied into local storage`
               );
-              this.applyingChnagesToEvents(eventsToBeSaved);
+              this.applyingChnagesToEvents(eventsToBeSaved, action);
             }
             this.isLoading = false;
           },
@@ -205,8 +206,8 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
     return hasSameDataValues;
   }
 
-  applyingChnagesToEvents(events) {
-    this.successEventConflictHandle.emit(events);
+  applyingChnagesToEvents(events, action) {
+    this.successEventConflictHandle.emit({ events, action });
     this.eventsWithConflicts = [];
   }
 
@@ -219,7 +220,7 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
           {
             text: 'Yes',
             handler: () => {
-              this.applyingChnagesToEvents(this.eventsWithConflicts);
+              this.applyingChnagesToEvents(this.eventsWithConflicts, action);
             }
           },
           {
@@ -237,7 +238,7 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
           {
             text: 'Yes',
             handler: () => {
-              this.applyingChnagesToEvents([]);
+              this.applyingChnagesToEvents([], action);
             }
           },
           {
