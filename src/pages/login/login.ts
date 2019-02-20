@@ -112,6 +112,7 @@ export class LoginPage implements OnInit, OnDestroy {
       'programStageSections',
       'programRules',
       'dataElements',
+      'categoryCombos',
       //'indicators',
       'programRuleActions',
       'programRuleVariables'

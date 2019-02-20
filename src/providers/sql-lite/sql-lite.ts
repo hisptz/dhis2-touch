@@ -58,7 +58,7 @@ export class SqlLiteProvider {
       let tableNames = Object.keys(this.getDataBaseStructure());
       let success = 0;
       let fail = 0;
-      tableNames.forEach((tableName: any) => {
+      tableNames.map((tableName: any) => {
         this.createTable(tableName, databaseName).subscribe(
           () => {
             success++;
@@ -67,7 +67,7 @@ export class SqlLiteProvider {
               observer.complete();
             }
           },
-          error => {
+          () => {
             success++;
             if (success + fail == tableNames.length) {
               observer.error({ success: success, fail: fail });
