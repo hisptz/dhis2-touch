@@ -303,6 +303,10 @@ export class DataEntryFormPage implements OnInit {
   onMergingWithOnlineData(data) {
     const { dataValues, action } = data;
     if (action === 'decline') {
+      Object.keys(this.dataValuesObject).map(id => {
+        const dataValue = this.dataValuesObject[id];
+        dataValues.push({ ...dataValue, status: 'synced' });
+      });
       this.synchronizationProvider
         .syncAllOfflineDataToServer(this.currentUser)
         .subscribe(
@@ -313,62 +317,61 @@ export class DataEntryFormPage implements OnInit {
             console.log(JSON.stringify({ error }));
           }
         );
-    } else {
-      this.isLoading = true;
-      this.loadingMessage = '';
-      let newDataValue = [];
-      const dataSetId = this.dataSet.id;
-      const period = this.entryFormParameter.period.iso;
-      const orgUnitId = this.entryFormParameter.orgUnit.id;
-      const orgUnitName = this.entryFormParameter.orgUnit.name;
-      const dataDimension = this.entryFormParameter.dataDimension;
-      const status = dataValues[0].status;
-      _.map(dataValues, dataValue => {
-        const dataValueId = dataValue.id;
-        const fieldIdArray = dataValueId.split('-');
-        newDataValue.push({
-          orgUnit: orgUnitName,
-          dataElement: fieldIdArray[0],
-          categoryOptionCombo: fieldIdArray[1],
-          value: dataValue.value,
-          period: this.entryFormParameter.period.name
-        });
-        this.dataValuesObject[dataValueId] = dataValue;
-      });
-      this.dataValuesProvider
-        .saveDataValues(
-          newDataValue,
-          dataSetId,
-          period,
-          orgUnitId,
-          dataDimension,
-          status,
-          this.currentUser
-        )
-        .subscribe(
-          () => {
-            _.map(dataValues, dataValue => {
-              this.dataValuesSavingStatusClass[dataValue.id] =
-                'input-field-container-success';
-              this.dataValuesObject[dataValue.id] = dataValue;
-            });
-            this.storageStatus.offline = 0;
-            this.storageStatus.online = 0;
-            _.map(_.keys(this.dataValuesObject), key => {
-              const dataValue = this.dataValuesObject[key];
-              if (dataValue.status === 'synced') {
-                this.storageStatus.online += 1;
-              } else {
-                this.storageStatus.offline += 1;
-              }
-            });
-            this.isLoading = false;
-          },
-          error => {
-            this.isLoading = false;
-          }
-        );
     }
+    this.isLoading = true;
+    this.loadingMessage = '';
+    let newDataValue = [];
+    const dataSetId = this.dataSet.id;
+    const period = this.entryFormParameter.period.iso;
+    const orgUnitId = this.entryFormParameter.orgUnit.id;
+    const orgUnitName = this.entryFormParameter.orgUnit.name;
+    const dataDimension = this.entryFormParameter.dataDimension;
+    const status = 'synced';
+    _.map(dataValues, dataValue => {
+      const dataValueId = dataValue.id;
+      const fieldIdArray = dataValueId.split('-');
+      newDataValue.push({
+        orgUnit: orgUnitName,
+        dataElement: fieldIdArray[0],
+        categoryOptionCombo: fieldIdArray[1],
+        value: dataValue.value,
+        period: this.entryFormParameter.period.name
+      });
+      this.dataValuesObject[dataValueId] = dataValue;
+    });
+    this.dataValuesProvider
+      .saveDataValues(
+        newDataValue,
+        dataSetId,
+        period,
+        orgUnitId,
+        dataDimension,
+        status,
+        this.currentUser
+      )
+      .subscribe(
+        () => {
+          _.map(dataValues, dataValue => {
+            this.dataValuesSavingStatusClass[dataValue.id] =
+              'input-field-container-success';
+            this.dataValuesObject[dataValue.id] = dataValue;
+          });
+          this.storageStatus.offline = 0;
+          this.storageStatus.online = 0;
+          _.map(_.keys(this.dataValuesObject), key => {
+            const dataValue = this.dataValuesObject[key];
+            if (dataValue.status === 'synced') {
+              this.storageStatus.online += 1;
+            } else {
+              this.storageStatus.offline += 1;
+            }
+          });
+          this.isLoading = false;
+        },
+        error => {
+          this.isLoading = false;
+        }
+      );
   }
 
   scrollEntryFormUp() {

@@ -373,6 +373,7 @@ export class SynchronizationProvider {
     return new Observable(observer => {
       this.getDataForUpload(currentUser).subscribe(
         dataObject => {
+          console.log(JSON.stringify(dataObject));
           this.uploadingDataToTheServer(dataObject, currentUser).subscribe(
             response => {
               observer.next(response);
