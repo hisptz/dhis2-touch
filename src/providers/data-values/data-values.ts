@@ -127,12 +127,17 @@ export class DataValuesProvider {
   getFormattedDataValueForUpload(dataValues) {
     let formattedDataValues = [];
     dataValues.map((dataValue: any) => {
-      //const value = isNaN(dataValue.value) ? dataValue.value : parseInt(dataValue.value) === 0? "" :
       const { de, pe, ou, co, value, cp, cc } = dataValue;
       let formParameter = `de=${de}&pe=${pe}&ou=${ou}&co=${co}`;
       if (isNaN(cp) && cp != '') {
         formParameter += `&cc=${cc}&cp=${cp}`;
       }
+      const sanitizedValue = isNaN(value)
+        ? value
+        : parseInt(value) === 0
+        ? ''
+        : value;
+      formParameter += `&value=${sanitizedValue}`;
       formattedDataValues.push(formParameter);
     });
     return formattedDataValues;

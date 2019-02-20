@@ -519,8 +519,15 @@ export class EventCapturePage implements OnInit {
       this.synchronizationProvider
         .syncAllOfflineDataToServer(this.currentUser)
         .subscribe(
-          response => {
-            console.log(JSON.stringify({ response }));
+          () => {
+            this.currentEvents.forEach((event: any) => {
+              event.syncStatus = 'synced';
+            });
+            this.eventConflictHandler = {
+              ...this.eventConflictHandler,
+              events: this.currentEvents
+            };
+            this.renderDataAsTable();
           },
           error => {
             console.log(JSON.stringify({ error }));
