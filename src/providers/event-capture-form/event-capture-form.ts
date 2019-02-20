@@ -733,8 +733,20 @@ export class EventCaptureFormProvider {
   saveEvents(events, currentUser): Observable<any> {
     let tableName = 'events';
     return new Observable(observer => {
+      const sanitizedEvents = _.flatMapDeep(
+        _.map(events, event => {
+          const dataValues = _.filter(event.dataValues, dataValue => {
+            return dataValue.dataElement !== undefined;
+          });
+          return { ...event, dataValues };
+        })
+      );
       this.sqlLiteProvider
-        .insertBulkDataOnTable(tableName, events, currentUser.currentDatabase)
+        .insertBulkDataOnTable(
+          tableName,
+          sanitizedEvents,
+          currentUser.currentDatabase
+        )
         .subscribe(
           () => {
             observer.next();
@@ -976,7 +988,15 @@ export class EventCaptureFormProvider {
    * @returns {any}
    */
   getFormattedEventsForUpload(events) {
-    events.map((event: any) => {
+    let sanitizedEvents = _.flatMapDeep(
+      _.map(events, event => {
+        const dataValues = _.filter(event.dataValues, dataValue => {
+          return dataValue.dataElement !== undefined;
+        });
+        return { ...event, dataValues };
+      })
+    );
+    sanitizedEvents.map((event: any) => {
       event.event = event.id;
       delete event.id;
       delete event.programName;
@@ -997,7 +1017,7 @@ export class EventCaptureFormProvider {
         delete event.attributeCategoryOptions;
       }
     });
-    return events;
+    return sanitizedEvents;
   }
 
   /**
