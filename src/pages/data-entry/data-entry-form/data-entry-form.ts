@@ -40,6 +40,7 @@ import * as _ from 'lodash';
 import { Store } from '@ngrx/store';
 import { State, getCurrentUserColorSettings } from '../../../store';
 import { Observable } from 'rxjs';
+import { SynchronizationProvider } from '../../../providers/synchronization/synchronization';
 
 /**
  * Generated class for the DataEntryFormPage page.
@@ -93,7 +94,8 @@ export class DataEntryFormPage implements OnInit {
     private settingsProvider: SettingsProvider,
     private dataValuesProvider: DataValuesProvider,
     private navParams: NavParams,
-    private appTranslation: AppTranslationProvider
+    private appTranslation: AppTranslationProvider,
+    private synchronizationProvider: SynchronizationProvider
   ) {
     this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
     this.dataEntryFormDesign = '';
@@ -298,61 +300,75 @@ export class DataEntryFormPage implements OnInit {
     }
   }
 
-  onMergingWithOnlineData(dataValues) {
-    this.isLoading = true;
-    this.loadingMessage = '';
-    let newDataValue = [];
-    const dataSetId = this.dataSet.id;
-    const period = this.entryFormParameter.period.iso;
-    const orgUnitId = this.entryFormParameter.orgUnit.id;
-    const orgUnitName = this.entryFormParameter.orgUnit.name;
-    const dataDimension = this.entryFormParameter.dataDimension;
-    const status = dataValues[0].status;
-    _.map(dataValues, dataValue => {
-      const dataValueId = dataValue.id;
-      const fieldIdArray = dataValueId.split('-');
-      newDataValue.push({
-        orgUnit: orgUnitName,
-        dataElement: fieldIdArray[0],
-        categoryOptionCombo: fieldIdArray[1],
-        value: dataValue.value,
-        period: this.entryFormParameter.period.name
+  onMergingWithOnlineData(data) {
+    const { dataValues, action } = data;
+    if (action === 'decline') {
+      this.synchronizationProvider
+        .syncAllOfflineDataToServer(this.currentUser)
+        .subscribe(
+          response => {
+            console.log(JSON.stringify({ response }));
+          },
+          error => {
+            console.log(JSON.stringify({ error }));
+          }
+        );
+    } else {
+      this.isLoading = true;
+      this.loadingMessage = '';
+      let newDataValue = [];
+      const dataSetId = this.dataSet.id;
+      const period = this.entryFormParameter.period.iso;
+      const orgUnitId = this.entryFormParameter.orgUnit.id;
+      const orgUnitName = this.entryFormParameter.orgUnit.name;
+      const dataDimension = this.entryFormParameter.dataDimension;
+      const status = dataValues[0].status;
+      _.map(dataValues, dataValue => {
+        const dataValueId = dataValue.id;
+        const fieldIdArray = dataValueId.split('-');
+        newDataValue.push({
+          orgUnit: orgUnitName,
+          dataElement: fieldIdArray[0],
+          categoryOptionCombo: fieldIdArray[1],
+          value: dataValue.value,
+          period: this.entryFormParameter.period.name
+        });
+        this.dataValuesObject[dataValueId] = dataValue;
       });
-      this.dataValuesObject[dataValueId] = dataValue;
-    });
-    this.dataValuesProvider
-      .saveDataValues(
-        newDataValue,
-        dataSetId,
-        period,
-        orgUnitId,
-        dataDimension,
-        status,
-        this.currentUser
-      )
-      .subscribe(
-        () => {
-          _.map(dataValues, dataValue => {
-            this.dataValuesSavingStatusClass[dataValue.id] =
-              'input-field-container-success';
-            this.dataValuesObject[dataValue.id] = dataValue;
-          });
-          this.storageStatus.offline = 0;
-          this.storageStatus.online = 0;
-          _.map(_.keys(this.dataValuesObject), key => {
-            const dataValue = this.dataValuesObject[key];
-            if (dataValue.status === 'synced') {
-              this.storageStatus.online += 1;
-            } else {
-              this.storageStatus.offline += 1;
-            }
-          });
-          this.isLoading = false;
-        },
-        error => {
-          this.isLoading = false;
-        }
-      );
+      this.dataValuesProvider
+        .saveDataValues(
+          newDataValue,
+          dataSetId,
+          period,
+          orgUnitId,
+          dataDimension,
+          status,
+          this.currentUser
+        )
+        .subscribe(
+          () => {
+            _.map(dataValues, dataValue => {
+              this.dataValuesSavingStatusClass[dataValue.id] =
+                'input-field-container-success';
+              this.dataValuesObject[dataValue.id] = dataValue;
+            });
+            this.storageStatus.offline = 0;
+            this.storageStatus.online = 0;
+            _.map(_.keys(this.dataValuesObject), key => {
+              const dataValue = this.dataValuesObject[key];
+              if (dataValue.status === 'synced') {
+                this.storageStatus.online += 1;
+              } else {
+                this.storageStatus.offline += 1;
+              }
+            });
+            this.isLoading = false;
+          },
+          error => {
+            this.isLoading = false;
+          }
+        );
+    }
   }
 
   scrollEntryFormUp() {

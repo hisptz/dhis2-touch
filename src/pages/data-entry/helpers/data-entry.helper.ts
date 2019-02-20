@@ -189,6 +189,7 @@ export function onFormReady(
           : [];
 
       const dataElementId = formType === 'event' ? splitedId[1] : splitedId[0];
+
       const optionComboId =
         formType === 'event'
           ? 'dataElement'
@@ -227,12 +228,10 @@ export function onFormReady(
             inputElement.setAttribute('class', 'entrytrueonly');
             inputElement.checked = dataElementValue;
           } else if (dataElementType === 'LONG_TEXT') {
-            elementsWithRadioInput[elementId] = {
-              textAreaInput: inputElement.replaceWith(
-                getTextArea(elementId, dataElementValue)
-              ),
+            elementsWithTextArea[elementId] = getTextArea(
+              elementId,
               dataElementValue
-            };
+            );
           } else if (dataElementType === 'DATE') {
             inputElement.setAttribute('type', 'date');
             inputElement.setAttribute('class', 'entryfield');
@@ -307,10 +306,9 @@ export function onFormReady(
   for (let elementId of Object.keys(elementsWithTextArea)) {
     try {
       const inputElement: any = document.getElementById(elementId);
-      const textAreaInputObject = elementsWithTextArea[elementId];
-      const { textAreaInput, dataElementValue } = textAreaInputObject;
-      inputElement.replaceWith(textAreaInput);
-      inputElement.value = dataElementValue;
+      const textAreaInput = elementsWithTextArea[elementId];
+      inputElement.replaceWith(textAreaInput, inputElement);
+      inputElement.parentNode.removeChild(inputElement);
     } catch (error) {
       console.log(JSON.stringify({ type: 'Text area input', error }));
     }
