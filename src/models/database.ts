@@ -229,6 +229,19 @@ export const DATABASE_STRUCTURE = {
     displayName: 'Data Elements',
     dependentTable: []
   },
+  categoryCombos: {
+    columns: [
+      { value: 'id', type: 'TEXT' },
+      { value: 'name', type: 'TEXT' },
+      { value: 'categoryOptionCombos', type: 'LONGTEXT' }
+    ],
+    isMetadata: true,
+    shouldIncludeOnLogin: true,
+    resourceType: 'entryForm',
+    batchSize: 50,
+    displayName: 'Category combos',
+    dependentTable: []
+  },
   smsCommand: {
     columns: [
       { value: 'id', type: 'TEXT' },
