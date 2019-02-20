@@ -34,6 +34,7 @@ import * as _ from 'lodash';
 import { Store } from '@ngrx/store';
 import { State, getCurrentUserColorSettings } from '../../store';
 import { Observable } from 'rxjs';
+import { SynchronizationProvider } from '../../providers/synchronization/synchronization';
 
 /**
  * Generated class for the EventCapturePage page.
@@ -86,6 +87,7 @@ export class EventCapturePage implements OnInit {
     private programsProvider: ProgramsProvider,
     private appProvider: AppProvider,
     private eventCaptureFormProvider: EventCaptureFormProvider,
+    private synchronizationProvider: SynchronizationProvider,
     private appTranslation: AppTranslationProvider
   ) {
     this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
@@ -511,27 +513,41 @@ export class EventCapturePage implements OnInit {
     this.hasOnlineEventLoaded = true;
   }
 
-  onSuccessEventConflictHandle(events) {
-    const eventIds = _.map(events, event => event.id);
-    const currentEvents = _.filter(this.currentEvents, event => {
-      return _.indexOf(eventIds, event.id) === -1;
-    });
-    const eventsToBeApplied = _.flatMapDeep([...currentEvents, events]);
-    this.eventCaptureFormProvider
-      .saveEvents(eventsToBeApplied, this.currentUser)
-      .subscribe(
-        () => {
-          this.currentEvents = eventsToBeApplied;
-          this.eventConflictHandler = {
-            ...this.eventConflictHandler,
-            events: this.currentEvents
-          };
-          this.renderDataAsTable();
-        },
-        error => {
-          console.log(JSON.stringify(error));
-        }
-      );
+  onSuccessEventConflictHandle(data) {
+    const { action, events } = data;
+    if (action && action === 'decline') {
+      this.synchronizationProvider
+        .syncAllOfflineDataToServer(this.currentUser)
+        .subscribe(
+          response => {
+            console.log(JSON.stringify({ response }));
+          },
+          error => {
+            console.log(JSON.stringify({ error }));
+          }
+        );
+    } else {
+      const eventIds = _.map(events, event => event.id);
+      const currentEvents = _.filter(this.currentEvents, event => {
+        return _.indexOf(eventIds, event.id) === -1;
+      });
+      const eventsToBeApplied = _.flatMapDeep([...currentEvents, events]);
+      this.eventCaptureFormProvider
+        .saveEvents(eventsToBeApplied, this.currentUser)
+        .subscribe(
+          () => {
+            this.currentEvents = eventsToBeApplied;
+            this.eventConflictHandler = {
+              ...this.eventConflictHandler,
+              events: this.currentEvents
+            };
+            this.renderDataAsTable();
+          },
+          error => {
+            console.log(JSON.stringify(error));
+          }
+        );
+    }
   }
 
   loadingOnlineEvents(

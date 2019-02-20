@@ -765,8 +765,10 @@ export class EventCaptureFormProvider {
       this.httpClientProvider.get(url, true, currentUser).subscribe(
         response => {
           const events = _.map(response.events, event => {
+            const eventDate = event.eventDate.split('T')[0];
             return {
               ...event,
+              eventDate,
               eventType,
               attributeCc,
               programName,

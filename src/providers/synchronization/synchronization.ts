@@ -31,6 +31,7 @@ import { AppProvider } from '../app/app';
 import { SettingsProvider } from '../settings/settings';
 import { Observable } from 'rxjs/Observable';
 import { ProfileProvider } from '../../pages/profile/providers/profile/profile';
+import { CurrentUser } from '../../models';
 
 /*
   Generated class for the SynchronizationProvider provider.
@@ -365,6 +366,27 @@ export class SynchronizationProvider {
             observer.error(error);
           }
         );
+    });
+  }
+
+  syncAllOfflineDataToServer(currentUser: CurrentUser): Observable<any> {
+    return new Observable(observer => {
+      this.getDataForUpload(currentUser).subscribe(
+        dataObject => {
+          this.uploadingDataToTheServer(dataObject, currentUser).subscribe(
+            response => {
+              observer.next(response);
+              observer.complete();
+            },
+            error => {
+              observer.error(error);
+            }
+          );
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
 }
