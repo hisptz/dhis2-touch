@@ -996,7 +996,10 @@ export class EventCaptureFormProvider {
         return { ...event, dataValues };
       })
     );
-    sanitizedEvents.map((event: any) => {
+    sanitizedEvents.forEach((event: any) => {
+      const dataValues = _.filter(event.dataValues, dataValue => {
+        return dataValue && dataValue.dataElement !== undefined;
+      });
       event.event = event.id;
       delete event.id;
       delete event.programName;
@@ -1006,16 +1009,19 @@ export class EventCaptureFormProvider {
       delete event.notes;
       delete event.syncStatus;
       //it depends on dhis versions
-      delete event.deleted;
-      if (event.completedDate == '0') {
-        delete event.completedDate;
-      }
-      if (event.trackedEntityInstance == '0') {
+      if (event.trackedEntityInstance && !isNaN(event.trackedEntityInstance)) {
         delete event.trackedEntityInstance;
       }
-      if (event.attributeCategoryOptions == '0') {
+      if (event.completedDate && !isNaN(event.completedDate)) {
+        delete event.completedDate;
+      }
+      if (
+        event.attributeCategoryOptions &&
+        !isNaN(event.attributeCategoryOptions)
+      ) {
         delete event.attributeCategoryOptions;
       }
+      event = { ...event, dataValues };
     });
     return sanitizedEvents;
   }
