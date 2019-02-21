@@ -1,7 +1,8 @@
 .entryfield {
   text-align: center;
-  width: 12rem;
+  min-width: 12rem;
 }
+
 
 select {
   text-align: center;

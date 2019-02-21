@@ -127,13 +127,17 @@ export class DataValuesProvider {
   getFormattedDataValueForUpload(dataValues) {
     let formattedDataValues = [];
     dataValues.map((dataValue: any) => {
-      let formParameter = 'de=' + dataValue.de + '&pe=' + dataValue.pe + '&ou=';
-      formParameter +=
-        dataValue.ou + '&co=' + dataValue.co + '&value=' + dataValue.value;
-      if (isNaN(dataValue.cp) && dataValue.cp != '') {
-        formParameter =
-          formParameter + '&cc=' + dataValue.cc + '&cp=' + dataValue.cp;
+      const { de, pe, ou, co, value, cp, cc } = dataValue;
+      let formParameter = `de=${de}&pe=${pe}&ou=${ou}&co=${co}`;
+      if (isNaN(cp) && cp != '') {
+        formParameter += `&cc=${cc}&cp=${cp}`;
       }
+      const sanitizedValue = isNaN(value)
+        ? value
+        : parseInt(value) === 0
+        ? ''
+        : value;
+      formParameter += `&value=${sanitizedValue}`;
       formattedDataValues.push(formParameter);
     });
     return formattedDataValues;

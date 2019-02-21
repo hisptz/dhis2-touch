@@ -36,6 +36,7 @@ import { NetworkAvailabilityProvider } from '../../providers/network-availabilit
 import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 import { CurrentUser } from '../../models/current-user';
 import { TabsPage } from '../tabs/tabs';
+import { SqlLiteProvider } from '../../providers/sql-lite/sql-lite';
 
 /**
  * Generated class for the LaunchPage page.
@@ -57,6 +58,7 @@ export class LaunchPage implements OnInit {
     private UserProvider: UserProvider,
     private NetworkAvailabilityProvider: NetworkAvailabilityProvider,
     private appTranslationProvider: AppTranslationProvider,
+    private sqlLiteProvider: SqlLiteProvider,
     private store: Store<State>
   ) {
     this.logoUrl = 'assets/img/logo.png';
@@ -73,6 +75,11 @@ export class LaunchPage implements OnInit {
       if (currentUser && currentUser.colorSettings) {
         const { colorSettings } = currentUser;
         this.store.dispatch(new SetCurrentUserColorSettings({ colorSettings }));
+      }
+      if (currentUser && currentUser.currentDatabase) {
+        this.sqlLiteProvider
+          .generateTables(currentUser.currentDatabase)
+          .subscribe(() => {}, error => {});
       }
       if (currentUser && currentUser.isLogin) {
         this.store.dispatch(new AddCurrentUser({ currentUser }));

@@ -733,8 +733,20 @@ export class EventCaptureFormProvider {
   saveEvents(events, currentUser): Observable<any> {
     let tableName = 'events';
     return new Observable(observer => {
+      const sanitizedEvents = _.flatMapDeep(
+        _.map(events, event => {
+          const dataValues = _.filter(event.dataValues, dataValue => {
+            return dataValue.dataElement !== undefined;
+          });
+          return { ...event, dataValues };
+        })
+      );
       this.sqlLiteProvider
-        .insertBulkDataOnTable(tableName, events, currentUser.currentDatabase)
+        .insertBulkDataOnTable(
+          tableName,
+          sanitizedEvents,
+          currentUser.currentDatabase
+        )
         .subscribe(
           () => {
             observer.next();
@@ -765,8 +777,10 @@ export class EventCaptureFormProvider {
       this.httpClientProvider.get(url, true, currentUser).subscribe(
         response => {
           const events = _.map(response.events, event => {
+            const eventDate = event.eventDate.split('T')[0];
             return {
               ...event,
+              eventDate,
               eventType,
               attributeCc,
               programName,
@@ -974,7 +988,18 @@ export class EventCaptureFormProvider {
    * @returns {any}
    */
   getFormattedEventsForUpload(events) {
-    events.map((event: any) => {
+    let sanitizedEvents = _.flatMapDeep(
+      _.map(events, event => {
+        const dataValues = _.filter(event.dataValues, dataValue => {
+          return dataValue.dataElement !== undefined;
+        });
+        return { ...event, dataValues };
+      })
+    );
+    sanitizedEvents.forEach((event: any) => {
+      const dataValues = _.filter(event.dataValues, dataValue => {
+        return dataValue && dataValue.dataElement !== undefined;
+      });
       event.event = event.id;
       delete event.id;
       delete event.programName;
@@ -984,18 +1009,21 @@ export class EventCaptureFormProvider {
       delete event.notes;
       delete event.syncStatus;
       //it depends on dhis versions
-      delete event.deleted;
-      if (event.completedDate == '0') {
-        delete event.completedDate;
-      }
-      if (event.trackedEntityInstance == '0') {
+      if (event.trackedEntityInstance && !isNaN(event.trackedEntityInstance)) {
         delete event.trackedEntityInstance;
       }
-      if (event.attributeCategoryOptions == '0') {
+      if (event.completedDate && !isNaN(event.completedDate)) {
+        delete event.completedDate;
+      }
+      if (
+        event.attributeCategoryOptions &&
+        !isNaN(event.attributeCategoryOptions)
+      ) {
         delete event.attributeCategoryOptions;
       }
+      event = { ...event, dataValues };
     });
-    return events;
+    return sanitizedEvents;
   }
 
   /**

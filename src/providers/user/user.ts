@@ -109,7 +109,6 @@ export class UserProvider {
         .get(apiurl, {}, headers)
         .then(response => {
           const { data } = response;
-          console.log(data);
           if (data && data.indexOf('login.action') > -1) {
             serverUrl = serverUrl.replace('http://', 'https://');
             this.getUserDataOnAuthenticatedServer(

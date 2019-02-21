@@ -24,6 +24,8 @@ import { Injectable } from '@angular/core';
 import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
+import { CurrentUser } from '../../models';
+import * as _ from 'lodash';
 
 /*
   Generated class for the DataElementsProvider provider.
@@ -49,7 +51,7 @@ export class DataElementsProvider {
    */
   downloadDataElementsFromServer(currentUser): Observable<any> {
     let fields =
-      'id,name,formName,aggregationType,categoryCombo[id,name,categoryOptionCombos[id,name]],displayName,description,valueType,optionSet[name,options[name,id,code]]';
+      'id,name,formName,aggregationType,categoryCombo[id],displayName,description,valueType,optionSet[name,options[name,id,code]]';
     let url = '/api/' + this.resource + '.json?fields=' + fields;
     return new Observable(observer => {
       this.HttpClient.get(
@@ -62,9 +64,74 @@ export class DataElementsProvider {
         (response: any) => {
           const { dataElements } = response;
           observer.next(dataElements);
+          observer.complete();
         },
         error => {
           observer.error(error);
+        }
+      );
+    });
+  }
+
+  downloadDataElementCatogoryCombos(currentUser: CurrentUser): Observable<any> {
+    const resource = 'categoryCombos';
+    const fields = 'id,name,categoryOptionCombos[id,name]';
+    const url = `/api/${resource}.json?paging=false&fields=${fields}`;
+    return new Observable(observer => {
+      this.HttpClient.get(url, true, currentUser).subscribe(
+        (response: any) => {
+          const { categoryCombos } = response;
+          observer.next(categoryCombos);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
+    });
+  }
+
+  saveDataElementCatogoryCombos(
+    categoryCombos,
+    currentUser: CurrentUser
+  ): Observable<any> {
+    const resource = 'categoryCombos';
+    return new Observable(observer => {
+      if (categoryCombos.length == 0) {
+        observer.next();
+        observer.complete();
+      } else {
+        this.SqlLite.insertBulkDataOnTable(
+          resource,
+          categoryCombos,
+          currentUser.currentDatabase
+        ).subscribe(
+          () => {
+            observer.next();
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+      }
+    });
+  }
+
+  getDataElementCatogoryCombos(currentUser: CurrentUser): Observable<any> {
+    const resource = 'categoryCombos';
+    return new Observable(observer => {
+      this.SqlLite.getAllDataFromTable(
+        resource,
+        currentUser.currentDatabase
+      ).subscribe(
+        categoryCombos => {
+          observer.next(categoryCombos);
+          observer.complete();
+        },
+        () => {
+          observer.next([]);
+          observer.complete();
         }
       );
     });
@@ -121,11 +188,16 @@ export class DataElementsProvider {
         dataElementIds,
         currentUser.currentDatabase
       ).subscribe(
-        (dataElements: any) => {
-          observer.next(
-            this.getSortedListOfDataElements(dataSetDatElements, dataElements)
-          );
-          observer.complete();
+        (dataElementsResponse: any) => {
+          this.getDataElementsWithCategoryCombos(
+            dataElementsResponse,
+            currentUser
+          ).subscribe(dataElements => {
+            observer.next(
+              this.getSortedListOfDataElements(dataSetDatElements, dataElements)
+            );
+            observer.complete();
+          });
         },
         error => {
           observer.error(error);
@@ -149,12 +221,59 @@ export class DataElementsProvider {
         dataElementIds,
         currentUser.currentDatabase
       ).subscribe(
-        (dataElements: any) => {
-          observer.next(dataElements);
-          observer.complete();
+        (dataElementsResponse: any) => {
+          this.getDataElementsWithCategoryCombos(
+            dataElementsResponse,
+            currentUser
+          ).subscribe(dataElements => {
+            observer.next(dataElements);
+            observer.complete();
+          });
         },
         error => {
           observer.error(error);
+        }
+      );
+    });
+  }
+
+  getDataElementsWithCategoryCombos(
+    dataElements,
+    currentUser: CurrentUser
+  ): Observable<any> {
+    let formattedDataElements = [];
+    return new Observable(observer => {
+      this.getDataElementCatogoryCombos(currentUser).subscribe(
+        (categoryCombosResponse: any) => {
+          if (categoryCombosResponse && categoryCombosResponse.length > 0) {
+            const categoryCombosObject = _.keyBy(categoryCombosResponse, 'id');
+            formattedDataElements = _.flatMapDeep(
+              _.map(dataElements, dataElement => {
+                if (
+                  dataElement &&
+                  dataElement.categoryCombo &&
+                  dataElement.categoryCombo.id
+                ) {
+                  const id = dataElement.categoryCombo.id;
+                  if (categoryCombosObject && categoryCombosObject[id]) {
+                    const categoryCombo = categoryCombosObject[id];
+                    return { ...dataElement, categoryCombo };
+                  } else {
+                    return dataElement;
+                  }
+                } else {
+                  return dataElement;
+                }
+              })
+            );
+          } else {
+            formattedDataElements = _.flatMapDeep([
+              ...formattedDataElements,
+              dataElements
+            ]);
+          }
+          observer.next(formattedDataElements);
+          observer.complete();
         }
       );
     });
