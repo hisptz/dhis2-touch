@@ -149,13 +149,17 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
   }
 
   getEventsWithConflicts(discoveredEvents) {
-    const { events } = this.eventConflictHandler;
+    let { events } = this.eventConflictHandler;
+    events = this.getSanitizedOfflineEvents(events);
     const eventsWithConflicts = [];
     const localEventIds = _.map(events, event => event.id);
     // @todo checking using checksum
-    const filteredDiscoveredEvents = _.filter(discoveredEvents, event => {
+    let filteredDiscoveredEvents = _.filter(discoveredEvents, event => {
       return _.indexOf(localEventIds, event.id) > -1;
     });
+    filteredDiscoveredEvents = this.getSanitizedOfflineEvents(
+      filteredDiscoveredEvents
+    );
     _.map(filteredDiscoveredEvents, event => {
       const offlineEvent = _.find(events, offlineEventObject => {
         return offlineEventObject.id === event.id;
@@ -177,6 +181,16 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
       }
     });
     return eventsWithConflicts;
+  }
+
+  getSanitizedOfflineEvents(events) {
+    events.forEach(event => {
+      const dataValues = _.filter(event.dataValues, dataValue => {
+        return dataValue && dataValue.value !== '';
+      });
+      event = { ...event, dataValues };
+    });
+    return events;
   }
 
   getDataValuesConsistencyStatus(offlineDataValues, onlineDataValues) {
