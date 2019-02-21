@@ -105,6 +105,7 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
     eventType,
     currentUser
   ) {
+    const action = 'accept';
     this.subscriptions.add(
       this.eventCaptureFormProvider
         .discoveringEventsFromServer(
@@ -135,7 +136,7 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
               this.appProvider.setTopNotification(
                 `${count} events have been dicovered and applied into local storage`
               );
-              this.applyingChnagesToEvents(eventsToBeSaved);
+              this.applyingChnagesToEvents(eventsToBeSaved, action);
             }
             this.isLoading = false;
           },
@@ -148,13 +149,17 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
   }
 
   getEventsWithConflicts(discoveredEvents) {
-    const { events } = this.eventConflictHandler;
+    let { events } = this.eventConflictHandler;
+    events = this.getSanitizedOfflineEvents(events);
     const eventsWithConflicts = [];
     const localEventIds = _.map(events, event => event.id);
     // @todo checking using checksum
-    const filteredDiscoveredEvents = _.filter(discoveredEvents, event => {
+    let filteredDiscoveredEvents = _.filter(discoveredEvents, event => {
       return _.indexOf(localEventIds, event.id) > -1;
     });
+    filteredDiscoveredEvents = this.getSanitizedOfflineEvents(
+      filteredDiscoveredEvents
+    );
     _.map(filteredDiscoveredEvents, event => {
       const offlineEvent = _.find(events, offlineEventObject => {
         return offlineEventObject.id === event.id;
@@ -176,6 +181,16 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
       }
     });
     return eventsWithConflicts;
+  }
+
+  getSanitizedOfflineEvents(events) {
+    events.forEach(event => {
+      const dataValues = _.filter(event.dataValues, dataValue => {
+        return dataValue && dataValue.value !== '';
+      });
+      event = { ...event, dataValues };
+    });
+    return events;
   }
 
   getDataValuesConsistencyStatus(offlineDataValues, onlineDataValues) {
@@ -205,8 +220,8 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
     return hasSameDataValues;
   }
 
-  applyingChnagesToEvents(events) {
-    this.successEventConflictHandle.emit(events);
+  applyingChnagesToEvents(events, action) {
+    this.successEventConflictHandle.emit({ events, action });
     this.eventsWithConflicts = [];
   }
 
@@ -219,7 +234,7 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
           {
             text: 'Yes',
             handler: () => {
-              this.applyingChnagesToEvents(this.eventsWithConflicts);
+              this.applyingChnagesToEvents(this.eventsWithConflicts, action);
             }
           },
           {
@@ -237,7 +252,7 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
           {
             text: 'Yes',
             handler: () => {
-              this.applyingChnagesToEvents([]);
+              this.applyingChnagesToEvents([], action);
             }
           },
           {

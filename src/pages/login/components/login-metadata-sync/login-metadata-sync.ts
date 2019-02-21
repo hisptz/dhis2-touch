@@ -758,6 +758,8 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
         progressMessage = 'Discovering entry form sections';
       } else if (process === 'dataElements') {
         progressMessage = 'Discovering entry form fields';
+      } else if (process === 'categoryCombos') {
+        progressMessage = 'Discovering entry form fields categories';
       } else if (process === 'smsCommand') {
         progressMessage = 'Discovering SMS commands';
       } else if (process === 'programs') {
@@ -790,6 +792,8 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
         progressMessage = 'Saving entry form sections';
       } else if (process === 'dataElements') {
         progressMessage = 'Saving entry form fields';
+      } else if (process === 'categoryCombos') {
+        progressMessage = 'Saving entry form fields categories';
       } else if (process === 'smsCommand') {
         progressMessage = 'Saving SMS commands';
       } else if (process === 'programs') {
@@ -822,6 +826,8 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
         progressMessage = 'Entry form sections have been discovered';
       } else if (process === 'dataElements') {
         progressMessage = 'Entry form fields have been discovered';
+      } else if (process === 'categoryCombos') {
+        progressMessage = 'Entry form fields categories have been discovered';
       } else if (process === 'smsCommand') {
         progressMessage = 'SMS commands have been discovered';
       } else if (process === 'programs') {
@@ -946,6 +952,20 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
         this.subscriptions.add(
           this.dataElementsProvider
             .downloadDataElementsFromServer(this.currentUser)
+            .subscribe(
+              response => {
+                this.removeFromQueue(process, 'dowmloading', false, response);
+              },
+              error => {
+                console.log(process + ' : ' + JSON.stringify(error));
+                this.onFailToLogin(error, process);
+              }
+            )
+        );
+      } else if (process === 'categoryCombos') {
+        this.subscriptions.add(
+          this.dataElementsProvider
+            .downloadDataElementCatogoryCombos(this.currentUser)
             .subscribe(
               response => {
                 this.removeFromQueue(process, 'dowmloading', false, response);
@@ -1149,6 +1169,19 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
       this.subscriptions.add(
         this.dataElementsProvider
           .saveDataElementsFromServer(data, this.currentUser)
+          .subscribe(
+            () => {
+              this.removeFromQueue(process, 'saving', false);
+            },
+            error => {
+              this.onFailToLogin(error, process);
+            }
+          )
+      );
+    } else if (process === 'categoryCombos') {
+      this.subscriptions.add(
+        this.dataElementsProvider
+          .saveDataElementCatogoryCombos(data, this.currentUser)
           .subscribe(
             () => {
               this.removeFromQueue(process, 'saving', false);

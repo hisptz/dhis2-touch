@@ -40,6 +40,7 @@ import * as _ from 'lodash';
 import { Store } from '@ngrx/store';
 import { State, getCurrentUserColorSettings } from '../../../store';
 import { Observable } from 'rxjs';
+import { SynchronizationProvider } from '../../../providers/synchronization/synchronization';
 
 /**
  * Generated class for the DataEntryFormPage page.
@@ -93,7 +94,8 @@ export class DataEntryFormPage implements OnInit {
     private settingsProvider: SettingsProvider,
     private dataValuesProvider: DataValuesProvider,
     private navParams: NavParams,
-    private appTranslation: AppTranslationProvider
+    private appTranslation: AppTranslationProvider,
+    private synchronizationProvider: SynchronizationProvider
   ) {
     this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
     this.dataEntryFormDesign = '';
@@ -298,7 +300,24 @@ export class DataEntryFormPage implements OnInit {
     }
   }
 
-  onMergingWithOnlineData(dataValues) {
+  onMergingWithOnlineData(data) {
+    const { dataValues, action } = data;
+    if (action === 'decline') {
+      Object.keys(this.dataValuesObject).map(id => {
+        const dataValue = this.dataValuesObject[id];
+        dataValues.push({ ...dataValue, status: 'synced' });
+      });
+      this.synchronizationProvider
+        .syncAllOfflineDataToServer(this.currentUser)
+        .subscribe(
+          response => {
+            console.log(JSON.stringify({ response }));
+          },
+          error => {
+            console.log(JSON.stringify({ error }));
+          }
+        );
+    }
     this.isLoading = true;
     this.loadingMessage = '';
     let newDataValue = [];
@@ -307,7 +326,7 @@ export class DataEntryFormPage implements OnInit {
     const orgUnitId = this.entryFormParameter.orgUnit.id;
     const orgUnitName = this.entryFormParameter.orgUnit.name;
     const dataDimension = this.entryFormParameter.dataDimension;
-    const status = dataValues[0].status;
+    const status = 'synced';
     _.map(dataValues, dataValue => {
       const dataValueId = dataValue.id;
       const fieldIdArray = dataValueId.split('-');

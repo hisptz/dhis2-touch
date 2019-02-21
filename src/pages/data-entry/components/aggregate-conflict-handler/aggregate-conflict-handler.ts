@@ -211,7 +211,7 @@ export class AggregateConflictHandlerComponent implements OnInit {
           {
             text: this.translationMapper['Yes'],
             handler: () => {
-              this.applyingDataToOffline(key);
+              this.applyingDataToOffline(key, action);
             }
           },
           {
@@ -233,6 +233,7 @@ export class AggregateConflictHandlerComponent implements OnInit {
             handler: () => {
               if (this.summaryObject[key]) {
                 this.summaryObject[key] = [];
+                this.applyingDataToOffline(key, action);
               }
             }
           },
@@ -246,9 +247,12 @@ export class AggregateConflictHandlerComponent implements OnInit {
     }
   }
 
-  applyingDataToOffline(key) {
+  applyingDataToOffline(key, action?: string) {
     if (this.summaryObject[key]) {
-      this.mergeDataAction.emit(this.summaryObject[key]);
+      this.mergeDataAction.emit({
+        dataValues: this.summaryObject[key],
+        action
+      });
       this.summaryObject[key] = [];
     }
   }
