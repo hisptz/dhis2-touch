@@ -159,7 +159,6 @@ function getFromTableByAttributes(tableName, attribute, attributesValuesArray) {
   });
   attributesValuesArray = attributesValuesArray.join(`','`)
   const query = `SELECT * FROM ${tableName} WHERE ${attribute} IN ('${attributesValuesArray}');`;
-  console.log(query)
   return new Promise((resolve, reject) => {
     db.transaction(transaction => {
       transaction.executeSql(query, [], (tx, results) => {
