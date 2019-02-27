@@ -29,6 +29,8 @@ import { Observable } from 'rxjs/Observable';
 import { CurrentUser } from '../../models/current-user';
 import * as _ from 'lodash';
 
+declare var dhis2;
+
 /*
   Generated class for the OrganisationUnitsProvider provider.
 
@@ -149,6 +151,7 @@ export class OrganisationUnitsProvider {
    * @param lastSelectedOrgUnit
    */
   setLastSelectedOrganisationUnitUnit(lastSelectedOrgUnit) {
+    dhis2['currentOrganisanUnitId'] = lastSelectedOrgUnit.id || '';
     this.lastSelectedOrgUnit = lastSelectedOrgUnit;
   }
 
