@@ -43,7 +43,6 @@ function getDataElementsByIds(dataElementIds) {
 function getDataValues(dataSetId, orgunitId, period) {
   const tableName = "dataValues";
   const query = `SELECT * FROM ${tableName} WHERE pe = '${period}' AND ou = '${orgunitId}' AND dataSetId = '${dataSetId}'`;
-  console.log(query);
   return new Promise((resolve, reject) => {
     dhis2.sqlLiteProvider.geFromTableByQuery(query, tableName).then((dataValues) => {
       resolve(dataValues);
