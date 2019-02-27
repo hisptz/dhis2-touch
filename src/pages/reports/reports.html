@@ -91,14 +91,14 @@
     <ion-grid *ngIf="reportList.length !== 0">
       <ion-row>
         <ion-col col-9>
-          <button ion-button outline [disabled]="(currentPage == 1)" color="font-color" text-capitalize (click)="previousPage()">
+          <button ion-button padding outline [disabled]="(currentPage == 1)" color="font-color" text-capitalize (click)="previousPage()">
             <ion-icon name="skip-backward"></ion-icon>
           </button>
           <button ion-button clear color="font-color" text-capitalize>
             {{ (reportList.length > 0)? currentPage : 0 }}/{{ reportList.length }}
           </button>
-          <button ion-button outline [disabled]="!(currentPage < reportList.length)" color="font-color" text-capitalize
-            (click)="nextPage()">
+          <button ion-button padding outline [disabled]="!(currentPage < reportList.length)" color="font-color"
+            text-capitalize (click)="nextPage()">
             <ion-icon name="skip-forward"></ion-icon>
           </button>
         </ion-col>
