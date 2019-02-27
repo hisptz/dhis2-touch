@@ -152,10 +152,7 @@ export class ReportsPage implements OnInit {
                         ? this.translationMapper[key]
                         : key;
                       this.standardReportProvider
-                        .saveReportsFromServer(
-                          response[resource],
-                          this.currentUser
-                        )
+                        .saveReportsFromServer(response, this.currentUser)
                         .subscribe(
                           () => {
                             this.loadReportsList(this.currentUser);

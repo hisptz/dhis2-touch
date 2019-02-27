@@ -28,6 +28,7 @@ import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { CurrentUser } from '../../models/current-user';
+declare var dhis2;
 
 /*
  Generated class for the ProgramsProvider provider.
@@ -48,6 +49,7 @@ export class ProgramsProvider {
   }
 
   setLastSelectedProgram(program) {
+    dhis2['currentProgramId'] = program.id || '';
     this.lastSelectedProgram = program;
   }
 

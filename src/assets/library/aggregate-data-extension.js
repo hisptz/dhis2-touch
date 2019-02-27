@@ -23,13 +23,26 @@
  */
 var dhis2 = dhis2 || {}
 
-dhis2['trackerCaptureProvider'] = {
-  getEventsByProgramAndOrganisationUnit
+dhis2['aggregateMetadataProvider'] = {
+  getDataElementsByIds,
+  getDataValues
 }
 
-function getEventsByProgramAndOrganisationUnit(programId, orgunitId) {
-  const tableName = "events";
-  const query = `SELECT * FROM ${tableName} WHERE  orgUnit = '${orgunitId}' AND program = '${programId}'`;
+function getDataElementsByIds(dataElementIds) {
+  const tableName = "dataElements";
+  const attribute = "id";
+  return new Promise((resolve, reject) => {
+    dhis2.sqlLiteProvider.getFromTableByAttributes(tableName, attribute, dataElementIds).then((dataElements) => {
+      resolve(dataElements);
+    }).catch(error => {
+      reject(error);
+    });
+  })
+}
+
+function getDataValues(dataSetId, orgunitId, period) {
+  const tableName = "dataValues";
+  const query = `SELECT * FROM ${tableName} WHERE pe = '${period}' AND ou = '${orgunitId}' AND dataSetId = '${dataSetId}'`;
   return new Promise((resolve, reject) => {
     dhis2.sqlLiteProvider.geFromTableByQuery(query, tableName).then((dataValues) => {
       resolve(dataValues);
