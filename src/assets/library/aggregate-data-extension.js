@@ -24,7 +24,7 @@
 var dhis2 = dhis2 || {}
 
 dhis2['aggregateMetadataProvider'] = {
-  getDatElementsByIds,
+  getDataElementsByIds,
   getDataValues
 }
 
