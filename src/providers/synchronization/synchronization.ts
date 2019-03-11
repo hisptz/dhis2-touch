@@ -120,7 +120,9 @@ export class SynchronizationProvider {
   uploadingDataToTheServer(dataObject, currentUser): Observable<any> {
     return new Observable(observer => {
       let completedProcess = 0;
-      const dataItems = Object.keys(dataObject);
+      const dataItems = _.filter(Object.keys(dataObject), key => {
+        return dataObject && dataObject[key] && dataObject[key].length > 0;
+      });
       const response = {
         percentage: '',
         importSummaries: {},
