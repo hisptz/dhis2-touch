@@ -269,9 +269,9 @@ export class EventCaptureFormProvider {
                     programsStage.generatedByEnrollmentDate = JSON.parse(
                       programsStage.generatedByEnrollmentDate
                     );
-                    programsStage.captureCoordinates = JSON.parse(
-                      programsStage.captureCoordinates
-                    );
+                    programsStage.captureCoordinates = programsStage.captureCoordinates
+                      ? JSON.parse(programsStage.captureCoordinates)
+                      : false;
                     programsStage.programStageDataElements.forEach(
                       programStageDataElement => {
                         if (
