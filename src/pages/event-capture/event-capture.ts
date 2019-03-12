@@ -176,7 +176,7 @@ export class EventCapturePage implements OnInit {
     this.loadingMessage = this.translationMapper[key]
       ? this.translationMapper[key]
       : key;
-    let programType = 'WITHOUT_REGISTRATION';
+    const programType = 'WITHOUT_REGISTRATION';
     this.programsProvider
       .getProgramsAssignedOnOrgUnitAndUserRoles(
         this.selectedOrgUnit.id,
