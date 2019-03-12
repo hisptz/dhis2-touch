@@ -121,8 +121,9 @@ export class EventInputContainerComponent implements OnInit, OnDestroy {
       title += '. Description : ' + this.dataElement.description;
     }
     subTitle +=
-      'Value Type : ' +
-      this.dataElement.valueType.toLocaleLowerCase().replace(/_/g, ' ');
+      'Value Type : ' + this.dataElement && this.dataElement.valueType
+        ? this.dataElement.valueType.toLocaleLowerCase().replace(/_/g, ' ')
+        : 'Unknown';
     if (this.dataElement.optionSet) {
       title +=
         '. It has ' +
