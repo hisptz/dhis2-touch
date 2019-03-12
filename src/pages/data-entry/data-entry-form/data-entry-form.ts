@@ -311,13 +311,28 @@ export class DataEntryFormPage implements OnInit {
         .syncAllOfflineDataToServer(this.currentUser)
         .subscribe(
           response => {
-            console.log(JSON.stringify({ response }));
+            const percentage =
+              response && response.percentage
+                ? parseInt(response.percentage)
+                : 0;
+            const { importSummaries } = response;
+            if (importSummaries && importSummaries.dataValues) {
+              const { fail } = importSummaries.dataValues;
+              if (fail == 0 && percentage === 100) {
+                this.savingDataValuesAfterResolvingConflicts(dataValues);
+              }
+            }
           },
           error => {
             console.log(JSON.stringify({ error }));
           }
         );
+    } else {
+      this.savingDataValuesAfterResolvingConflicts(dataValues);
     }
+  }
+
+  savingDataValuesAfterResolvingConflicts(dataValues) {
     this.isLoading = true;
     this.loadingMessage = '';
     let newDataValue = [];
