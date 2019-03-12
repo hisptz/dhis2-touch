@@ -176,7 +176,7 @@ export class EventCapturePage implements OnInit {
     this.loadingMessage = this.translationMapper[key]
       ? this.translationMapper[key]
       : key;
-    let programType = 'WITHOUT_REGISTRATION';
+    const programType = 'WITHOUT_REGISTRATION';
     this.programsProvider
       .getProgramsAssignedOnOrgUnitAndUserRoles(
         this.selectedOrgUnit.id,
@@ -516,18 +516,37 @@ export class EventCapturePage implements OnInit {
   onSuccessEventConflictHandle(data) {
     const { action, events } = data;
     if (action && action === 'decline') {
+      this.appProvider.setTopNotification('Uploading offline data');
       this.synchronizationProvider
         .syncAllOfflineDataToServer(this.currentUser)
         .subscribe(
-          () => {
-            this.currentEvents.forEach((event: any) => {
-              event.syncStatus = 'synced';
-            });
-            this.eventConflictHandler = {
-              ...this.eventConflictHandler,
-              events: this.currentEvents
-            };
-            this.renderDataAsTable();
+          response => {
+            const percentage =
+              response && response.percentage
+                ? parseInt(response.percentage)
+                : 0;
+            const { importSummaries } = response;
+            if (importSummaries && importSummaries.events) {
+              const { fail } = importSummaries.events;
+              if (fail == 0 && percentage === 100) {
+                this.appProvider.setTopNotification(
+                  'Offline data has been uploaded successfully'
+                );
+                this.currentEvents.forEach((event: any) => {
+                  event.syncStatus = 'synced';
+                });
+                this.eventConflictHandler = {
+                  ...this.eventConflictHandler,
+                  events: this.currentEvents
+                };
+                this.renderDataAsTable();
+              } else {
+                this.appProvider.setTopNotification(
+                  'Failed to upload offline data'
+                );
+              }
+            }
+            console.log(JSON.stringify({ importSummaries, percentage }));
           },
           error => {
             console.log(JSON.stringify({ error }));

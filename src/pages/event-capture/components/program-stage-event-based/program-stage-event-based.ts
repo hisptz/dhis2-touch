@@ -131,7 +131,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   }
 
   hasEventDatesLabel(value) {
-    return isNaN(value);
+    return value && isNaN(value);
   }
 
   loadingCurrentUserInformation() {
@@ -358,12 +358,25 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   }
 
   updateData(updatedData, shouldSkipProgramRules) {
+    const oldEventDate = this.currentEvent['eventDate'];
     this.currentEvent['eventDate'] = this.eventDate;
     this.currentEvent['dueDate'] = this.eventDate;
-    this.currentEvent.syncStatus = 'not-synced';
+    if (oldEventDate !== this.eventDate) {
+      this.currentEvent.syncStatus = 'not-synced';
+    }
     let dataValues = [];
-    if (updatedData && updatedData.id) {
-      this.dataObject[updatedData.id] = updatedData;
+    const { id } = updatedData;
+    if (id) {
+      const newValue = updatedData.value;
+      const hasNoOldValue =
+        this.dataObject && this.dataObject[id] && this.dataObject[id].value
+          ? false
+          : true;
+      const oldValue = !hasNoOldValue ? this.dataObject[id].value : newValue;
+      if (oldValue !== newValue || hasNoOldValue) {
+        this.currentEvent.syncStatus = 'not-synced';
+        this.dataObject[updatedData.id] = updatedData;
+      }
     }
     Object.keys(this.dataObject).forEach((key: any) => {
       let dataElementId = key.split('-')[0];
@@ -374,7 +387,6 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     });
     if (dataValues && dataValues.length > 0) {
       this.currentEvent.dataValues = dataValues;
-      this.currentEvent.syncStatus = 'not-synced';
       this.eventCaptureFormProvider
         .saveEvents([this.currentEvent], this.currentUser)
         .subscribe(

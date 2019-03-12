@@ -307,17 +307,40 @@ export class DataEntryFormPage implements OnInit {
         const dataValue = this.dataValuesObject[id];
         dataValues.push({ ...dataValue, status: 'synced' });
       });
+      this.appProvider.setTopNotification('Uploading offline data');
       this.synchronizationProvider
         .syncAllOfflineDataToServer(this.currentUser)
         .subscribe(
           response => {
-            console.log(JSON.stringify({ response }));
+            const percentage =
+              response && response.percentage
+                ? parseInt(response.percentage)
+                : 0;
+            const { importSummaries } = response;
+            if (importSummaries && importSummaries.dataValues) {
+              const { fail } = importSummaries.dataValues;
+              if (fail == 0 && percentage === 100) {
+                this.appProvider.setTopNotification(
+                  'Offline data has been uploaded successfully'
+                );
+                this.savingDataValuesAfterResolvingConflicts(dataValues);
+              } else {
+                this.appProvider.setTopNotification(
+                  'Failed to upload offline data'
+                );
+              }
+            }
           },
           error => {
             console.log(JSON.stringify({ error }));
           }
         );
+    } else {
+      this.savingDataValuesAfterResolvingConflicts(dataValues);
     }
+  }
+
+  savingDataValuesAfterResolvingConflicts(dataValues) {
     this.isLoading = true;
     this.loadingMessage = '';
     let newDataValue = [];
