@@ -22,13 +22,9 @@
  *
  */
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, ModalController, NavController } from 'ionic-angular';
-import { OrganisationUnitsProvider } from '../../providers/organisation-units/organisation-units';
+import { IonicPage, NavController } from 'ionic-angular';
 import { UserProvider } from '../../providers/user/user';
 import { AppProvider } from '../../providers/app/app';
-import { DataSetsProvider } from '../../providers/data-sets/data-sets';
-import { PeriodSelectionProvider } from '../../providers/period-selection/period-selection';
-import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
 import { Store } from '@ngrx/store';
 import { State, getCurrentUserColorSettings } from '../../store';
 import { Observable } from 'rxjs';
@@ -53,6 +49,16 @@ export class DataEntryPage implements OnInit {
   dataSetIdsByUserRoles: Array<any>;
   colorSettings$: Observable<any>;
 
+  organisationUnitLabel: string;
+  dataSetLabel: string;
+  periodLabel: string;
+
+  selectedOrgUnit: any;
+  selectedDataSet: any;
+  selectedPeriod: any;
+  dataDimension: any;
+  icons: any = {};
+
   constructor(
     private store: Store<State>,
     private navCtrl: NavController,
@@ -61,6 +67,7 @@ export class DataEntryPage implements OnInit {
   ) {
     this.isLoading = true;
     this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
+    this.icons['goToDataEntryForm'] = 'assets/icon/enterDataPen.png';
   }
 
   ngOnInit() {
@@ -73,7 +80,7 @@ export class DataEntryPage implements OnInit {
           this.isLoading = false;
         });
       },
-      error => {
+      () => {
         this.isLoading = false;
         this.loadingMessage = '';
         this.appProvider.setNormalNotification(
@@ -83,12 +90,35 @@ export class DataEntryPage implements OnInit {
     );
   }
 
+  onAggregateParameterSelection(data) {
+    const {
+      selectedOrgUnit,
+      selectedDataSet,
+      selectedPeriod,
+      dataDimension,
+      isFormReady
+    } = data;
+    this.isFormReady = isFormReady;
+    this.selectedDataSet = selectedDataSet;
+    this.selectedOrgUnit = selectedOrgUnit;
+    this.selectedPeriod = selectedPeriod;
+    this.dataDimension = dataDimension;
+    if (isFormReady) {
+      this.organisationUnitLabel =
+        selectedOrgUnit && selectedOrgUnit.name ? selectedOrgUnit.name : '';
+      this.dataSetLabel =
+        selectedDataSet && selectedDataSet.name ? selectedDataSet.name : '';
+      this.periodLabel =
+        selectedPeriod && selectedPeriod.name ? selectedPeriod.name : '';
+    }
+  }
+
   openDataEntryForm() {
     let parameter = {
       orgUnit: { id: this.selectedOrgUnit.id, name: this.selectedOrgUnit.name },
       dataSet: { id: this.selectedDataSet.id, name: this.selectedDataSet.name },
-      period: { iso: this.selectedPeriod.iso, name: this.selectedPeriod.name }
-      // dataDimension: this.getDataDimensions()
+      period: { iso: this.selectedPeriod.iso, name: this.selectedPeriod.name },
+      dataDimension: this.dataDimension
     };
     this.navCtrl.push('DataEntryFormPage', { parameter: parameter });
   }

@@ -38,21 +38,22 @@
     <ion-row>
       <ion-col>
         <div *ngIf="!isLoading">
-          <aggregate-parameter-selection [currentUser]="currentUser" [dataSetIdsByUserRoles]="dataSetIdsByUserRoles"></aggregate-parameter-selection>
+          <aggregate-parameter-selection (aggregateParameterSelection)="onAggregateParameterSelection($event)"
+            [currentUser]="currentUser" [dataSetIdsByUserRoles]="dataSetIdsByUserRoles"></aggregate-parameter-selection>
           <div *ngIf="isFormReady" class="item-card animated fadeIn" padding-top padding-bottom full (tap)="openDataEntryForm()">
-            <!-- <div>
-                <b>
-                  <span [translate]="'Organisation unit'"></span>
-                </b> : {{ organisationUnitLabel }}
-                <br>
-                <b>
-                  <span [translate]="'Form'"></span>
-                </b> : {{ dataSetLabel }}
-                <br>
-                <b>
-                  <span [translate]="'Period'"></span>
-                </b> : {{ periodLabel}}
-              </div> -->
+            <div>
+              <b>
+                <span [translate]="'Organisation unit'"></span>
+              </b> : {{ organisationUnitLabel }}
+              <br>
+              <b>
+                <span [translate]="'Form'"></span>
+              </b> : {{ dataSetLabel }}
+              <br>
+              <b>
+                <span [translate]="'Period'"></span>
+              </b> : {{ periodLabel}}
+            </div>
             <div class="item-card" color="font-color" ion-button clear full text-center text-capitalize>
               <img class="side-menu-icon" [src]="icons.goToDataEntryForm" />&nbsp;&nbsp;
               <span [translate]="'Enter data'"></span>

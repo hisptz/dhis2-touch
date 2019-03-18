@@ -35,6 +35,7 @@ import { CurrentUser } from '../../../../models';
 export class AggregateParameterSelectionComponent implements OnInit {
   @Input() currentUser: CurrentUser;
   @Input() dataSetIdsByUserRoles: Array<any>;
+  @Output() aggregateParameterSelection = new EventEmitter();
 
   selectedOrgUnit: any;
   selectedDataSet: any;
@@ -179,13 +180,32 @@ export class AggregateParameterSelectionComponent implements OnInit {
     this.isLoading = false;
     this.loadingMessage = '';
     const isFormReady = this.isAllFormParameterSelected();
-    console.log(this.organisationUnitLabel);
-    console.log(this.dataSetLabel);
-    console.log(this.periodLabel);
-    console.log(isFormReady);
+    let parameter = {
+      selectedOrgUnit: null,
+      selectedDataSet: null,
+      selectedPeriod: null,
+      dataDimension: null,
+      isFormReady
+    };
     if (isFormReady) {
-      console.log('Form is ready');
+      parameter = {
+        selectedOrgUnit: {
+          id: this.selectedOrgUnit.id,
+          name: this.selectedOrgUnit.name
+        },
+        selectedDataSet: {
+          id: this.selectedDataSet.id,
+          name: this.selectedDataSet.name
+        },
+        selectedPeriod: {
+          iso: this.selectedPeriod.iso,
+          name: this.selectedPeriod.name
+        },
+        dataDimension: this.getDataDimensions(),
+        isFormReady
+      };
     }
+    this.aggregateParameterSelection.emit(parameter);
   }
 
   isAllFormParameterSelected() {
