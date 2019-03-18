@@ -21,13 +21,15 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, Input } from '@angular/core';
+import { AppProvider } from '../../../../providers/app/app';
+import { CurrentUser } from '../../../../models';
 @Component({
   selector: 'tracker-data-downloader',
   templateUrl: 'tracker-data-downloader.html'
 })
 export class TrackerDataDownloaderComponent implements OnInit {
-  constructor() {}
+  @Input() currentUser: CurrentUser;
+  constructor(private appProvider: AppProvider) {}
   ngOnInit() {}
 }

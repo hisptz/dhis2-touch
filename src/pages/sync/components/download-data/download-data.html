@@ -38,7 +38,7 @@
 
 <div [ngSwitch]="donwnloadingTab">
   <div *ngSwitchCase="'aggregate'">
-    aggregate
+    <aggregate-data-downloader [colorSettings]="colorSettings"></aggregate-data-downloader>
   </div>
   <div *ngSwitchCase="'events'">
     events

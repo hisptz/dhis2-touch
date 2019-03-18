@@ -21,13 +21,15 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, Input } from '@angular/core';
+import { AppProvider } from '../../../../providers/app/app';
+import { CurrentUser } from '../../../../models';
 @Component({
   selector: 'event-data-downloader',
   templateUrl: 'event-data-downloader.html'
 })
 export class EventDataDownloaderComponent implements OnInit {
-  constructor() {}
+  @Input() currentUser: CurrentUser;
+  constructor(private appProvider: AppProvider) {}
   ngOnInit() {}
 }

@@ -21,14 +21,67 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { AppProvider } from '../../../../providers/app/app';
+import { UserProvider } from '../../../../providers/user/user';
+import { CurrentUser } from '../../../../models';
 
 @Component({
   selector: 'aggregate-data-downloader',
   templateUrl: 'aggregate-data-downloader.html'
 })
 export class AggregateDataDownloaderComponent implements OnInit {
-  constructor() {}
+  @Input() colorSettings;
 
-  ngOnInit() {}
+  isFormReady: boolean;
+  isLoading: boolean;
+  dataSetIdsByUserRoles: Array<any>;
+  currentUser: CurrentUser;
+
+  selectedOrgUnit: any;
+  selectedDataSet: any;
+  selectedPeriod: any;
+  dataDimension: any;
+  constructor(
+    private userProvider: UserProvider,
+    private appProvider: AppProvider
+  ) {
+    this.isLoading = true;
+  }
+
+  ngOnInit() {
+    this.userProvider.getCurrentUser().subscribe(
+      (currentUser: any) => {
+        this.currentUser = currentUser;
+        this.userProvider.getUserData().subscribe((userData: any) => {
+          this.dataSetIdsByUserRoles = userData.dataSets;
+          this.isLoading = false;
+        });
+      },
+      () => {
+        this.isLoading = false;
+        this.appProvider.setNormalNotification(
+          'Failed to discover current user information'
+        );
+      }
+    );
+  }
+  onAggregateParameterSelection(data) {
+    const {
+      selectedOrgUnit,
+      selectedDataSet,
+      selectedPeriod,
+      dataDimension,
+      isFormReady
+    } = data;
+    this.isFormReady = isFormReady;
+    this.selectedDataSet = selectedDataSet;
+    this.selectedOrgUnit = selectedOrgUnit;
+    this.selectedPeriod = selectedPeriod;
+    this.dataDimension = dataDimension;
+  }
+
+  downloadingAggegateData() {
+    alert('here');
+  }
 }

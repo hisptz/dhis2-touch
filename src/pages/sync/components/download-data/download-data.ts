@@ -30,11 +30,9 @@ import { Component, OnInit, Input } from '@angular/core';
 export class DownloadDataComponent implements OnInit {
   @Input() colorSettings: any;
 
-  donwnloadingTab: string;
+  donwnloadingTab = 'aggregate';
 
-  constructor() {
-    this.donwnloadingTab = 'aggregate';
-  }
+  constructor() {}
 
   ngOnInit() {}
 }
