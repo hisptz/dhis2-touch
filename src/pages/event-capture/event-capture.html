@@ -36,7 +36,7 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <div *ngIf="!isLoading">
+        <div *ngIf="isMetadataLoaded">
           <program-parameter-selection (programParameterSelection)="onProgramParameterSelection($event)" [currentUser]="currentUser"
             [programIdsByUserRoles]="programIdsByUserRoles" [selectedDataDimension]="selectedDataDimension"
             [programType]="programType"></program-parameter-selection>

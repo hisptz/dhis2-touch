@@ -54,6 +54,7 @@ export class EventCapturePage implements OnInit {
   selectedDataDimension: any;
   programIdsByUserRoles: Array<string>;
   isLoading: boolean;
+  isMetadataLoaded: boolean;
   loadingMessage: string;
   isFormReady: boolean = false;
   programStage: any;
@@ -89,7 +90,7 @@ export class EventCapturePage implements OnInit {
     };
 
     this.programIdsByUserRoles = [];
-
+    this.isMetadataLoaded = false;
     this.isLoading = true;
     this.isFormReady = false;
     this.showEventConflictHandler = false;
@@ -106,6 +107,7 @@ export class EventCapturePage implements OnInit {
           this.programIdsByUserRoles = userData.programs;
           this.loadingAppSetting();
           this.isLoading = false;
+          this.isMetadataLoaded = true;
         });
       },
       error => {
@@ -139,8 +141,7 @@ export class EventCapturePage implements OnInit {
       this.selectedOrgUnit = selectedOrgUnit;
       this.dataDimension = dataDimension;
       this.selectedProgram = selectedProgram;
-      this.loadProgramStages(selectedProgram.id);
-      // this.loadingEvents();
+      this.loadProgramStages(selectedProgram.id, true);
     }
   }
 
