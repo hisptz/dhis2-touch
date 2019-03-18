@@ -33,13 +33,6 @@ import { State, getCurrentUserColorSettings } from '../../store';
 import { Observable } from 'rxjs';
 import { SynchronizationProvider } from '../../providers/synchronization/synchronization';
 
-/**
- * Generated class for the EventCapturePage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-event-capture',
