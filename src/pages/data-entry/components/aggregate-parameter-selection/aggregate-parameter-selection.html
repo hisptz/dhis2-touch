@@ -22,3 +22,42 @@
 *
 *
 -->
+<div class="animated fadeIn">
+  <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center
+    text-capitalize (tap)="openOrganisationUnitTree()">
+    <img class="side-menu-icon" [src]="icons.orgUnit" />&nbsp;&nbsp;
+    <span [translate]="organisationUnitLabel"></span>
+  </div>
+
+  <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center
+    text-capitalize (tap)="openEntryFormList()">
+    <img class="side-menu-icon" [src]="icons.dataSet" />&nbsp;&nbsp;
+    <span [translate]="dataSetLabel"></span>
+  </div>
+
+  <div class="item-card" color="font-color" padding-top padding-bottom ion-button clear full text-center
+    text-capitalize (tap)="openPeriodList()">
+    <img class="side-menu-icon" [src]="icons.period" />&nbsp;&nbsp;
+    <span [translate]="periodLabel"></span>
+  </div>
+
+  <div *ngIf="selectedPeriod && selectedPeriod.iso && dataSetCategoryCombo && dataSetCategoryCombo.id ">
+    <div *ngIf="isDataSetDimensionApplicable">
+      <div *ngFor="let category of dataSetCategoryCombo.categories;let categoryIndex = index">
+        <div (tap)="openDataDimensionSelection(category)" class="item-card-category animated fadeIn" color="font-color"
+          full text-center text-wrap>
+          <div style="padding-bottom: 5px;">
+            <b>{{ category.name }}</b>
+          </div>
+          <div *ngIf="selectedDataDimension[categoryIndex]">{{ selectedDataDimension[categoryIndex].name }}</div>
+          <div *ngIf="!selectedDataDimension[categoryIndex]">
+            <span [translate]="'Touch to select option'"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="item-card animated fadeIn" *ngIf="!isDataSetDimensionApplicable">
+      <warning [warningMessage]="isDataSetDimensionApplicableCategoriesMessage"></warning>
+    </div>
+  </div>
+</div>
