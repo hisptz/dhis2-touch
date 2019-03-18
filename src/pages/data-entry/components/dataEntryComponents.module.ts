@@ -28,6 +28,7 @@ import { CustomDataEntryFormComponent } from './custom-data-entry-form/custom-da
 import { AggregateConflictHandlerComponent } from './aggregate-conflict-handler/aggregate-conflict-handler';
 import { DataEntryPaginationComponent } from './data-entry-pagination/data-entry-pagination';
 import { DefaultDataEntryFormComponent } from './default-data-entry-form/default-data-entry-form';
+import { AggregateParameterSelectionComponent } from './aggregate-parameter-selection/aggregate-parameter-selection';
 
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -36,14 +37,16 @@ import { TranslateModule } from '@ngx-translate/core';
     CustomDataEntryFormComponent,
     AggregateConflictHandlerComponent,
     DataEntryPaginationComponent,
-    DefaultDataEntryFormComponent
+    DefaultDataEntryFormComponent,
+    AggregateParameterSelectionComponent
   ],
   imports: [IonicModule, sharedComponentsModule, TranslateModule.forChild({})],
   exports: [
     CustomDataEntryFormComponent,
     AggregateConflictHandlerComponent,
     DataEntryPaginationComponent,
-    DefaultDataEntryFormComponent
+    DefaultDataEntryFormComponent,
+    AggregateParameterSelectionComponent
   ]
 })
 export class DataEntryComponentsModule {}
