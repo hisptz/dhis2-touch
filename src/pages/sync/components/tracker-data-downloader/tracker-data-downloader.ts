@@ -21,20 +21,13 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'download-data',
-  templateUrl: 'download-data.html'
+  selector: 'tracker-data-downloader',
+  templateUrl: 'tracker-data-downloader.html'
 })
-export class DownloadDataComponent implements OnInit {
-  @Input() colorSettings: any;
-
-  donwnloadingTab: string;
-
-  constructor() {
-    this.donwnloadingTab = 'aggregate';
-  }
-
+export class TrackerDataDownloaderComponent implements OnInit {
+  constructor() {}
   ngOnInit() {}
 }

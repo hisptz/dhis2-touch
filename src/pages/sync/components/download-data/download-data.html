@@ -22,4 +22,28 @@
 *
 *
 -->
-<empty-list-notification [emptyListMessage]="'Coming soon'"></empty-list-notification>
+<div>
+  <ion-segment [(ngModel)]="donwnloadingTab">
+    <ion-segment-button value="aggregate">
+      Aggregate
+    </ion-segment-button>
+    <ion-segment-button value="events">
+      Events
+    </ion-segment-button>
+    <ion-segment-button value="tracker">
+      Tracker
+    </ion-segment-button>
+  </ion-segment>
+</div>
+
+<div [ngSwitch]="donwnloadingTab">
+  <div *ngSwitchCase="'aggregate'">
+    aggregate
+  </div>
+  <div *ngSwitchCase="'events'">
+    events
+  </div>
+  <div *ngSwitchCase="'tracker'">
+    Tracker
+  </div>
+</div>
