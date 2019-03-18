@@ -41,9 +41,9 @@
     <aggregate-data-downloader [colorSettings]="colorSettings"></aggregate-data-downloader>
   </div>
   <div *ngSwitchCase="'events'">
-    events
+    <event-data-downloader [colorSettings]="colorSettings"></event-data-downloader>
   </div>
   <div *ngSwitchCase="'tracker'">
-    Tracker
+    <tracker-data-downloader [colorSettings]="colorSettings"></tracker-data-downloader>
   </div>
 </div>

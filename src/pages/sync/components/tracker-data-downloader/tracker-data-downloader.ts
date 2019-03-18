@@ -24,12 +24,71 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AppProvider } from '../../../../providers/app/app';
 import { CurrentUser } from '../../../../models';
+import { UserProvider } from '../../../../providers/user/user';
 @Component({
   selector: 'tracker-data-downloader',
   templateUrl: 'tracker-data-downloader.html'
 })
 export class TrackerDataDownloaderComponent implements OnInit {
-  @Input() currentUser: CurrentUser;
-  constructor(private appProvider: AppProvider) {}
-  ngOnInit() {}
+  @Input() colorSettings;
+
+  selectedOrgUnit: any;
+  selectedProgram: any;
+  currentUser: CurrentUser;
+  programType: string;
+  dataDimension: any;
+  selectedDataDimension: any;
+  programIdsByUserRoles: Array<string>;
+  isLoading: boolean;
+  isMetadataLoaded: boolean;
+  isFormReady: boolean = false;
+
+  constructor(
+    private appProvider: AppProvider,
+    private userProvider: UserProvider
+  ) {
+    this.programType = 'WITH_REGISTRATION';
+    this.selectedDataDimension = [];
+    this.programIdsByUserRoles = [];
+    this.isMetadataLoaded = false;
+    this.isLoading = true;
+    this.isFormReady = false;
+  }
+  ngOnInit() {
+    this.userProvider.getCurrentUser().subscribe(
+      (currentUser: any) => {
+        this.currentUser = currentUser;
+        this.userProvider.getUserData().subscribe((userData: any) => {
+          this.programIdsByUserRoles = userData.programs;
+          this.isLoading = false;
+          this.isMetadataLoaded = true;
+        });
+      },
+      () => {
+        this.isLoading = false;
+        this.appProvider.setNormalNotification(
+          'Failed to discover user information'
+        );
+      }
+    );
+  }
+
+  onProgramParameterSelection(data) {
+    const {
+      selectedOrgUnit,
+      selectedProgram,
+      dataDimension,
+      selectedDataDimension,
+      isFormReady
+    } = data;
+    this.isFormReady = isFormReady;
+    this.selectedDataDimension = selectedDataDimension;
+    this.selectedOrgUnit = selectedOrgUnit;
+    this.dataDimension = dataDimension;
+    this.selectedProgram = selectedProgram;
+  }
+
+  downloadingAggegateData() {
+    alert('here');
+  }
 }
