@@ -197,9 +197,7 @@ export class ProgramParameterSelectionComponent implements OnInit {
         this.programDimensionNotApplicableMessage =
           'All of selected category disaggregation are restricted from entry in selcted organisation unit, choose a different form or contact your support desk';
       }
-      this.selectedDataDimension = this.selectedDataDimension
-        ? this.selectedDataDimension
-        : [];
+      this.selectedDataDimension = [];
       this.programCategoryCombo = programCategoryCombo;
       this.updateProgramParameterSelections();
     }

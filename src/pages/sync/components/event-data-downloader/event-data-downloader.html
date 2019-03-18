@@ -26,7 +26,7 @@
   <program-parameter-selection (programParameterSelection)="onProgramParameterSelection($event)" [currentUser]="currentUser"
     [programIdsByUserRoles]="programIdsByUserRoles" [selectedDataDimension]="selectedDataDimension" [programType]="programType"></program-parameter-selection>
   <button [color]="colorSettings.colorAttributes.secondary" [disabled]="!isFormReady" ion-button full text-capitalize
-    (tap)="downloadingAggegateData()">
+    (tap)="downloadingEventData()">
     <span [translate]="'Download data'"></span>
   </button>
 </div>
