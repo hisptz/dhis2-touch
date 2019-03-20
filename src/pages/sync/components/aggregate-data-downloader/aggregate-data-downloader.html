@@ -26,9 +26,14 @@
   <aggregate-parameter-selection (aggregateParameterSelection)="onAggregateParameterSelection($event)" [currentUser]="currentUser"
     [dataSetIdsByUserRoles]="dataSetIdsByUserRoles"></aggregate-parameter-selection>
   <div>
-    <button [color]="colorSettings.colorAttributes.secondary" [disabled]="!isFormReady" ion-button full text-capitalize
-      (tap)="downloadingAggegateData()">
+    <button [color]="colorSettings.colorAttributes.secondary" [disabled]="!isFormReady || showLoader" ion-button full
+      text-capitalize (tap)="downloadingAggegateData()">
       <span [translate]="'Download data'"></span>
     </button>
+    <div *ngIf="showLoader">
+      <div class="item-card">
+        <progress-bar [showLoader]="showLoader" [progressPercentage]="progressTrackerPacentage" [processMessage]="progressTrackerMessage"></progress-bar>
+      </div>
+    </div>
   </div>
 </div>

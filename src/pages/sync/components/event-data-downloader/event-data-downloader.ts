@@ -44,6 +44,10 @@ export class EventDataDownloaderComponent implements OnInit {
   isMetadataLoaded: boolean;
   isFormReady: boolean = false;
 
+  showLoader: boolean;
+  progressTrackerPacentage: number;
+  progressTrackerMessage: string;
+
   constructor(
     private appProvider: AppProvider,
     private userProvider: UserProvider,
@@ -55,6 +59,9 @@ export class EventDataDownloaderComponent implements OnInit {
     this.isMetadataLoaded = false;
     this.isLoading = true;
     this.isFormReady = false;
+    this.showLoader = false;
+    this.progressTrackerPacentage = 0;
+    this.progressTrackerMessage = '';
   }
   ngOnInit() {
     this.userProvider.getCurrentUser().subscribe(
@@ -96,6 +103,9 @@ export class EventDataDownloaderComponent implements OnInit {
     const programName = this.selectedProgram.name;
     const organisationUnitId = this.selectedOrgUnit.id;
     const eventType = 'event-capture';
+    this.showLoader = true;
+    this.progressTrackerPacentage = 0;
+    this.progressTrackerMessage = 'Discovering data';
     this.appProvider.setTopNotification(`Discovering online events`);
     this.eventCaptureFormProvider
       .discoveringEventsFromServer(
@@ -112,24 +122,34 @@ export class EventDataDownloaderComponent implements OnInit {
             `${discoveredEvents.length} events has been discovered`
           );
           if (discoveredEvents.length > 0) {
+            this.progressTrackerPacentage = 50;
+            this.progressTrackerMessage = 'Saving data';
             this.eventCaptureFormProvider
               .saveEvents(discoveredEvents, this.currentUser)
               .subscribe(
                 () => {
+                  this.progressTrackerPacentage = 100;
+                  setTimeout(() => {
+                    this.showLoader = false;
+                  }, 50);
                   this.appProvider.setTopNotification(
                     `Discovered events data has been saved successfully`
                   );
                 },
                 error => {
+                  this.showLoader = false;
                   console.log(JSON.stringify(error));
                   this.appProvider.setNormalNotification(
                     `Failed to save events data`
                   );
                 }
               );
+          } else {
+            this.showLoader = false;
           }
         },
         error => {
+          this.showLoader = false;
           console.log(JSON.stringify(error));
           this.appProvider.setNormalNotification(
             `Failed to discover events data`

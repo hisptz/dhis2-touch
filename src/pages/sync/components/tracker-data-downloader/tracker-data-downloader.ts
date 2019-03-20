@@ -44,6 +44,10 @@ export class TrackerDataDownloaderComponent implements OnInit {
   isMetadataLoaded: boolean;
   isFormReady: boolean = false;
 
+  showLoader: boolean;
+  progressTrackerPacentage: number;
+  progressTrackerMessage: string;
+
   constructor(
     private appProvider: AppProvider,
     private userProvider: UserProvider,
@@ -55,6 +59,9 @@ export class TrackerDataDownloaderComponent implements OnInit {
     this.isMetadataLoaded = false;
     this.isLoading = true;
     this.isFormReady = false;
+    this.showLoader = false;
+    this.progressTrackerPacentage = 0;
+    this.progressTrackerMessage = '';
   }
   ngOnInit() {
     this.userProvider.getCurrentUser().subscribe(
@@ -90,12 +97,15 @@ export class TrackerDataDownloaderComponent implements OnInit {
     this.selectedProgram = selectedProgram;
   }
 
-  downloadingAggegateData() {
+  downloadingTrackerData() {
     const eventType = 'tracker-capture';
     const orgUnitName = this.selectedOrgUnit.name;
     const programId = this.selectedProgram.id;
     const programName = this.selectedProgram.name;
     const organisationUnitId = this.selectedOrgUnit.id;
+    this.showLoader = true;
+    this.progressTrackerPacentage = 0;
+    this.progressTrackerMessage = 'Discovering data';
     this.appProvider.setTopNotification(`Discovering tracker data`);
     this.trackerCaptureSyncProvider
       .discoveringTrackerDataFromServer(
@@ -118,28 +128,40 @@ export class TrackerDataDownloaderComponent implements OnInit {
               trackedEntityInstances.length
             } tracked entity instances has been discovered`
           );
-          this.trackerCaptureSyncProvider
-            .savingTrackedEntityInstances(
-              trackedEntityInstances,
-              enrollments,
-              events,
-              this.currentUser
-            )
-            .subscribe(
-              () => {
-                this.appProvider.setTopNotification(
-                  `Discovered tracker data has been saved successfully`
-                );
-              },
-              error => {
-                console.log(JSON.stringify(error));
-                this.appProvider.setNormalNotification(
-                  `Failed to save tracker data`
-                );
-              }
-            );
+          if (trackedEntityInstances.length > 0) {
+            this.progressTrackerPacentage = 50;
+            this.progressTrackerMessage = 'Saving data';
+            this.trackerCaptureSyncProvider
+              .savingTrackedEntityInstances(
+                trackedEntityInstances,
+                enrollments,
+                events,
+                this.currentUser
+              )
+              .subscribe(
+                () => {
+                  this.progressTrackerPacentage = 100;
+                  setTimeout(() => {
+                    this.showLoader = false;
+                  }, 50);
+                  this.appProvider.setTopNotification(
+                    `Discovered tracker data has been saved successfully`
+                  );
+                },
+                error => {
+                  this.showLoader = false;
+                  console.log(JSON.stringify(error));
+                  this.appProvider.setNormalNotification(
+                    `Failed to save tracker data`
+                  );
+                }
+              );
+          } else {
+            this.showLoader = false;
+          }
         },
         error => {
+          this.showLoader = false;
           console.log(JSON.stringify(error));
           this.appProvider.setNormalNotification(
             `Fail to discover tracker data`

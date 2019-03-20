@@ -45,6 +45,10 @@ export class AggregateDataDownloaderComponent implements OnInit {
   selectedDataSet: any;
   selectedPeriod: any;
   dataDimension: any;
+
+  showLoader: boolean;
+  progressTrackerPacentage: number;
+  progressTrackerMessage: string;
   constructor(
     private userProvider: UserProvider,
     private appProvider: AppProvider,
@@ -52,6 +56,9 @@ export class AggregateDataDownloaderComponent implements OnInit {
     private dataValuesProvider: DataValuesProvider
   ) {
     this.isLoading = true;
+    this.showLoader = false;
+    this.progressTrackerPacentage = 0;
+    this.progressTrackerMessage = '';
   }
 
   ngOnInit() {
@@ -91,41 +98,68 @@ export class AggregateDataDownloaderComponent implements OnInit {
     const period = this.selectedPeriod.iso;
     const orgUnitId = this.selectedOrgUnit.id;
     const orgUnitName = this.selectedOrgUnit.name;
+    this.showLoader = true;
+    this.progressTrackerPacentage = 0;
+    this.progressTrackerMessage = 'Discovering data';
     this.appProvider.setTopNotification(`Discovering aggregate data`);
     this.dataEntryFormProvider
       .loadingDataSetInformation(dataSetId, this.currentUser)
-      .subscribe(dataSetInformation => {
-        const { dataSet } = dataSetInformation;
-        if (dataSet && dataSet.id) {
-          const dataSetAttributeOptionCombo = this.dataValuesProvider.getDataValuesSetAttributeOptionCombo(
-            this.dataDimension,
-            dataSet.categoryCombo.categoryOptionCombos
-          );
-          this.dataValuesProvider
-            .getDataValueSetFromServer(
-              dataSetId,
-              period,
-              orgUnitId,
-              dataSetAttributeOptionCombo,
-              this.currentUser
-            )
-            .subscribe(dataValues => {
-              this.appProvider.setTopNotification(
-                `${dataValues.length} aggregate data has been discovered`
+      .subscribe(
+        dataSetInformation => {
+          const { dataSet } = dataSetInformation;
+          if (dataSet && dataSet.id) {
+            const dataSetAttributeOptionCombo = this.dataValuesProvider.getDataValuesSetAttributeOptionCombo(
+              this.dataDimension,
+              dataSet.categoryCombo.categoryOptionCombos
+            );
+            this.dataValuesProvider
+              .getDataValueSetFromServer(
+                dataSetId,
+                period,
+                orgUnitId,
+                dataSetAttributeOptionCombo,
+                this.currentUser
+              )
+              .subscribe(
+                dataValues => {
+                  this.appProvider.setTopNotification(
+                    `${dataValues.length} aggregate data has been discovered`
+                  );
+                  if (dataValues.length > 0) {
+                    this.progressTrackerPacentage = 50;
+                    this.progressTrackerMessage = 'Saving data';
+                    const formattedDataValues = _.map(dataValues, dataValue => {
+                      return {
+                        orgUnit: orgUnitName,
+                        dataElement: dataValue.dataElement,
+                        categoryOptionCombo: dataValue.categoryOptionCombo,
+                        value: dataValue.value,
+                        period: this.selectedPeriod.name
+                      };
+                    });
+                    this.savingDataValues(formattedDataValues);
+                  } else {
+                    this.showLoader = false;
+                  }
+                },
+                error => {
+                  this.showLoader = false;
+                  console.log(JSON.stringify(error));
+                  this.appProvider.setNormalNotification(
+                    `Failed to discover aggregate data data`
+                  );
+                }
               );
-              const formattedDataValues = _.map(dataValues, dataValue => {
-                return {
-                  orgUnit: orgUnitName,
-                  dataElement: dataValue.dataElement,
-                  categoryOptionCombo: dataValue.categoryOptionCombo,
-                  value: dataValue.value,
-                  period: this.selectedPeriod.name
-                };
-              });
-              console.log(JSON.stringify(formattedDataValues));
-            });
+          }
+        },
+        error => {
+          this.showLoader = false;
+          console.log(JSON.stringify(error));
+          this.appProvider.setNormalNotification(
+            `Failed to discover aggregate data data`
+          );
         }
-      });
+      );
   }
 
   savingDataValues(dataValues) {
@@ -145,11 +179,16 @@ export class AggregateDataDownloaderComponent implements OnInit {
       )
       .subscribe(
         () => {
+          this.progressTrackerPacentage = 100;
+          setTimeout(() => {
+            this.showLoader = false;
+          }, 50);
           this.appProvider.setTopNotification(
             `Discovered aggregate data has been saved successfully`
           );
         },
         error => {
+          this.showLoader = false;
           console.log(JSON.stringify(error));
           this.appProvider.setNormalNotification(
             `Failed to save aggregate data data`
