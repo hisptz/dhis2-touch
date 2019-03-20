@@ -25,6 +25,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { AppProvider } from '../../../../providers/app/app';
 import { UserProvider } from '../../../../providers/user/user';
 import { CurrentUser } from '../../../../models';
+import { DataEntryFormProvider } from '../../../../providers/data-entry-form/data-entry-form';
+import { DataValuesProvider } from '../../../../providers/data-values/data-values';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'aggregate-data-downloader',
@@ -44,7 +47,9 @@ export class AggregateDataDownloaderComponent implements OnInit {
   dataDimension: any;
   constructor(
     private userProvider: UserProvider,
-    private appProvider: AppProvider
+    private appProvider: AppProvider,
+    private dataEntryFormProvider: DataEntryFormProvider,
+    private dataValuesProvider: DataValuesProvider
   ) {
     this.isLoading = true;
   }
@@ -82,6 +87,74 @@ export class AggregateDataDownloaderComponent implements OnInit {
   }
 
   downloadingAggegateData() {
-    alert('here');
+    const dataSetId = this.selectedDataSet.id;
+    const period = this.selectedPeriod.iso;
+    const orgUnitId = this.selectedOrgUnit.id;
+    const orgUnitName = this.selectedOrgUnit.name;
+    this.appProvider.setTopNotification(`Discovering aggregate data`);
+    this.dataEntryFormProvider
+      .loadingDataSetInformation(dataSetId, this.currentUser)
+      .subscribe(dataSetInformation => {
+        const { dataSet } = dataSetInformation;
+        if (dataSet && dataSet.id) {
+          const dataSetAttributeOptionCombo = this.dataValuesProvider.getDataValuesSetAttributeOptionCombo(
+            this.dataDimension,
+            dataSet.categoryCombo.categoryOptionCombos
+          );
+          this.dataValuesProvider
+            .getDataValueSetFromServer(
+              dataSetId,
+              period,
+              orgUnitId,
+              dataSetAttributeOptionCombo,
+              this.currentUser
+            )
+            .subscribe(dataValues => {
+              this.appProvider.setTopNotification(
+                `${dataValues.length} aggregate data has been discovered`
+              );
+              const formattedDataValues = _.map(dataValues, dataValue => {
+                return {
+                  orgUnit: orgUnitName,
+                  dataElement: dataValue.dataElement,
+                  categoryOptionCombo: dataValue.categoryOptionCombo,
+                  value: dataValue.value,
+                  period: this.selectedPeriod.name
+                };
+              });
+              console.log(JSON.stringify(formattedDataValues));
+            });
+        }
+      });
+  }
+
+  savingDataValues(dataValues) {
+    const dataSetId = this.selectedDataSet.id;
+    const period = this.selectedPeriod.iso;
+    const orgUnitId = this.selectedOrgUnit.id;
+    const status = 'synced';
+    this.dataValuesProvider
+      .saveDataValues(
+        dataValues,
+        dataSetId,
+        period,
+        orgUnitId,
+        this.dataDimension,
+        status,
+        this.currentUser
+      )
+      .subscribe(
+        () => {
+          this.appProvider.setTopNotification(
+            `Discovered aggregate data has been saved successfully`
+          );
+        },
+        error => {
+          console.log(JSON.stringify(error));
+          this.appProvider.setNormalNotification(
+            `Failed to save aggregate data data`
+          );
+        }
+      );
   }
 }

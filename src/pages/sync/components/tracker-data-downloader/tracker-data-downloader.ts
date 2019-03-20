@@ -25,6 +25,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { AppProvider } from '../../../../providers/app/app';
 import { CurrentUser } from '../../../../models';
 import { UserProvider } from '../../../../providers/user/user';
+import { TrackerCaptureSyncProvider } from '../../../../providers/tracker-capture-sync/tracker-capture-sync';
 @Component({
   selector: 'tracker-data-downloader',
   templateUrl: 'tracker-data-downloader.html'
@@ -45,7 +46,8 @@ export class TrackerDataDownloaderComponent implements OnInit {
 
   constructor(
     private appProvider: AppProvider,
-    private userProvider: UserProvider
+    private userProvider: UserProvider,
+    private trackerCaptureSyncProvider: TrackerCaptureSyncProvider
   ) {
     this.programType = 'WITH_REGISTRATION';
     this.selectedDataDimension = [];
@@ -89,6 +91,60 @@ export class TrackerDataDownloaderComponent implements OnInit {
   }
 
   downloadingAggegateData() {
-    alert('here');
+    const eventType = 'tracker-capture';
+    const orgUnitName = this.selectedOrgUnit.name;
+    const programId = this.selectedProgram.id;
+    const programName = this.selectedProgram.name;
+    const organisationUnitId = this.selectedOrgUnit.id;
+    this.appProvider.setTopNotification(`Discovering tracker data`);
+    this.trackerCaptureSyncProvider
+      .discoveringTrackerDataFromServer(
+        eventType,
+        organisationUnitId,
+        orgUnitName,
+        programId,
+        programName,
+        this.currentUser
+      )
+      .subscribe(
+        discoveredTrackerData => {
+          const {
+            trackedEntityInstances,
+            enrollments,
+            events
+          } = discoveredTrackerData;
+          this.appProvider.setTopNotification(
+            `${events.length} events, ${enrollments.length} enrollments and ${
+              trackedEntityInstances.length
+            } tracked entity instances has been discovered`
+          );
+          this.trackerCaptureSyncProvider
+            .savingTrackedEntityInstances(
+              trackedEntityInstances,
+              enrollments,
+              events,
+              this.currentUser
+            )
+            .subscribe(
+              () => {
+                this.appProvider.setTopNotification(
+                  `Discovered tracker data has been saved successfully`
+                );
+              },
+              error => {
+                console.log(JSON.stringify(error));
+                this.appProvider.setNormalNotification(
+                  `Failed to save tracker data`
+                );
+              }
+            );
+        },
+        error => {
+          console.log(JSON.stringify(error));
+          this.appProvider.setNormalNotification(
+            `Fail to discover tracker data`
+          );
+        }
+      );
   }
 }

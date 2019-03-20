@@ -111,21 +111,23 @@ export class EventDataDownloaderComponent implements OnInit {
           this.appProvider.setTopNotification(
             `${discoveredEvents.length} events has been discovered`
           );
-          this.eventCaptureFormProvider
-            .saveEvents(discoveredEvents, this.currentUser)
-            .subscribe(
-              () => {
-                this.appProvider.setTopNotification(
-                  `Discovered events data has been saved successfully`
-                );
-              },
-              error => {
-                console.log(JSON.stringify(error));
-                this.appProvider.setNormalNotification(
-                  `Failed to discover events data`
-                );
-              }
-            );
+          if (discoveredEvents.length > 0) {
+            this.eventCaptureFormProvider
+              .saveEvents(discoveredEvents, this.currentUser)
+              .subscribe(
+                () => {
+                  this.appProvider.setTopNotification(
+                    `Discovered events data has been saved successfully`
+                  );
+                },
+                error => {
+                  console.log(JSON.stringify(error));
+                  this.appProvider.setNormalNotification(
+                    `Failed to save events data`
+                  );
+                }
+              );
+          }
         },
         error => {
           console.log(JSON.stringify(error));
