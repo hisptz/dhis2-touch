@@ -6,7 +6,7 @@
     <div *ngIf="!isLoading">
       <div *ngIf="entryFormType && entryFormType == 'CUSTOM'">
         <custom-data-entry-form [dataEntryFormDesign]="dataEntryFormDesign" [data]="{}" [entryFormType]="'aggregate'"
-          [entryFormSections]="entryFormSections"></custom-data-entry-form>
+          [entryFormSections]="entryFormSections" [dataSetReportAggregateValues]="dataSetReportAggregateValues"></custom-data-entry-form>
       </div>
       <div *ngIf="entryFormType && entryFormType != 'CUSTOM'">
         <div *ngIf="entryFormSections && entryFormSections.length > 0">
