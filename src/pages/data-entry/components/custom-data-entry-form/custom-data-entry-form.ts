@@ -73,7 +73,6 @@ export class CustomDataEntryFormComponent
   dataUpdateStatus: { elementId: string; status: string };
   @Output()
   onCustomFormInputChange = new EventEmitter();
-
   @Input()
   dataSetsCompletenessInfo;
   @Input()

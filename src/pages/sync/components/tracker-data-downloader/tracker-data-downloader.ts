@@ -143,7 +143,7 @@ export class TrackerDataDownloaderComponent implements OnInit {
                   this.progressTrackerPacentage = 100;
                   setTimeout(() => {
                     this.showLoader = false;
-                  }, 50);
+                  }, 100);
                   this.appProvider.setTopNotification(
                     `Discovered tracker data has been saved successfully`
                   );
