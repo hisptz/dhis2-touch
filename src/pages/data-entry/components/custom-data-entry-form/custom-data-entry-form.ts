@@ -51,6 +51,7 @@ declare var dataEntry: any;
 export class CustomDataEntryFormComponent
   implements OnInit, AfterViewInit, OnChanges {
   entryFormStatusColors = {};
+  @Input() dataSetReportAggregateValues: any;
   @Input()
   dataEntryFormDesign;
   @Input()
@@ -73,7 +74,6 @@ export class CustomDataEntryFormComponent
   dataUpdateStatus: { elementId: string; status: string };
   @Output()
   onCustomFormInputChange = new EventEmitter();
-
   @Input()
   dataSetsCompletenessInfo;
   @Input()
@@ -199,6 +199,7 @@ export class CustomDataEntryFormComponent
         this.programIndicators,
         this.indicators,
         this.data,
+        this.dataSetReportAggregateValues,
         this.entryFormStatusColors,
         scriptsContentsArray,
         function(

@@ -27,11 +27,13 @@ import { TrackerCapturePage } from './tracker-capture';
 import { sharedComponentsModule } from '../../components/sharedComponents.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { TrackerCaptureComponentsModule } from './components/trackerCaptureComponents.module';
+import { EventCaptureComponentsModule } from '../event-capture/components/eventCaptureComponents.module';
 @NgModule({
   declarations: [TrackerCapturePage],
   imports: [
     IonicPageModule.forChild(TrackerCapturePage),
     TrackerCaptureComponentsModule,
+    EventCaptureComponentsModule,
     sharedComponentsModule,
     TranslateModule.forChild({})
   ]

@@ -22,28 +22,16 @@
 *
 *
 -->
-<div>
-  <ion-segment [(ngModel)]="donwnloadingTab">
-    <ion-segment-button value="aggregate">
-      Aggregate
-    </ion-segment-button>
-    <ion-segment-button value="events">
-      Events
-    </ion-segment-button>
-    <ion-segment-button value="tracker">
-      Tracker
-    </ion-segment-button>
-  </ion-segment>
-</div>
-
-<div [ngSwitch]="donwnloadingTab">
-  <div *ngSwitchCase="'aggregate'">
-    <aggregate-data-downloader [colorSettings]="colorSettings"></aggregate-data-downloader>
-  </div>
-  <div *ngSwitchCase="'events'">
-    <event-data-downloader [colorSettings]="colorSettings"></event-data-downloader>
-  </div>
-  <div *ngSwitchCase="'tracker'">
-    <tracker-data-downloader [colorSettings]="colorSettings"></tracker-data-downloader>
+<div *ngIf="isMetadataLoaded">
+  <program-parameter-selection (programParameterSelection)="onProgramParameterSelection($event)" [currentUser]="currentUser"
+    [programIdsByUserRoles]="programIdsByUserRoles" [selectedDataDimension]="selectedDataDimension" [programType]="programType"></program-parameter-selection>
+  <button [color]="colorSettings.colorAttributes.secondary" [disabled]="!isFormReady || showLoader" ion-button full
+    text-capitalize (tap)="downloadingTrackerData()">
+    <span [translate]="'Download data'"></span>
+  </button>
+  <div *ngIf="showLoader">
+    <div class="item-card">
+      <progress-bar [showLoader]="showLoader" [progressPercentage]="progressTrackerPacentage" [processMessage]="progressTrackerMessage"></progress-bar>
+    </div>
   </div>
 </div>
