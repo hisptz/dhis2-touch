@@ -74,7 +74,11 @@ export class SyncProvider {
         name: 'Download metadata',
         icon: 'assets/icon/download-metadata.png'
       },
-      //{id : 'downloadData',name : 'Download data',icon: 'assets/icon/download-data.png'},
+      {
+        id: 'downloadData',
+        name: 'Download data',
+        icon: 'assets/icon/download-data.png'
+      },
       {
         id: 'clearData',
         name: 'Clear local data',
