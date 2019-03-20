@@ -26,7 +26,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { ReportViewPage } from './report-view';
 import { sharedComponentsModule } from '../../../components/sharedComponents.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { ReportModule } from '../../../components/report.module';
+import { ReportModule } from '../components/report.module';
 @NgModule({
   declarations: [ReportViewPage],
   imports: [

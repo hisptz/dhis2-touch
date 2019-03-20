@@ -33,6 +33,7 @@ import { DefaultEventEntryFormComponent } from './default-event-entry-form/defau
 import { EventCoordinateSelectorComponent } from './event-coordinate-selector/event-coordinate-selector';
 import { ProgramRuleActionMessageComponent } from './program-rule-action-message/program-rule-action-message';
 import { EventConflictHandlerComponent } from './event-conflict-handler/event-conflict-handler';
+import { ProgramParameterSelectionComponent } from './program-parameter-selection/program-parameter-selection';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { EventConflictHandlerComponent } from './event-conflict-handler/event-co
     DefaultEventEntryFormComponent,
     EventCoordinateSelectorComponent,
     ProgramRuleActionMessageComponent,
-    EventConflictHandlerComponent
+    EventConflictHandlerComponent,
+    ProgramParameterSelectionComponent
   ],
   imports: [
     IonicModule,
@@ -57,6 +59,7 @@ import { EventConflictHandlerComponent } from './event-conflict-handler/event-co
     DefaultEventEntryFormComponent,
     EventCoordinateSelectorComponent,
     ProgramRuleActionMessageComponent,
+    ProgramParameterSelectionComponent,
     EventConflictHandlerComponent
   ]
 })

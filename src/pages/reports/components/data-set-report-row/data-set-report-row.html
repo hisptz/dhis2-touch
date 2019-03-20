@@ -14,7 +14,7 @@
   <tbody>
     <tr>
       <th *ngFor="let categoryOptionCombo of dataElement.categoryCombo.categoryOptionCombos;trackBy: trackByFn">
-        {{ dataObject[dataElement.id + "-" + categoryOptionCombo.id] }}
+        {{ dataSetReportAggregateValues[dataElement.id + "-" + categoryOptionCombo.id] }}
       </th>
     </tr>
   </tbody>

@@ -151,43 +151,48 @@ export class SqlLiteProvider {
       end
     );
     return new Observable(observer => {
-      this.insertDataUsingQueryAndParameters(
-        databaseName,
-        batchInsertQueryAndParameter.queries
-      ).subscribe(
-        () => {
-          start = batchInsertQueryAndParameter.startPoint - 1;
-          end = insertBatchSize + start;
-          if (bulkData[batchInsertQueryAndParameter.startPoint]) {
-            this.insertBulkDataOnTable(
-              tableName,
-              bulkData,
-              databaseName,
-              start,
-              end
-            ).subscribe(
-              () => {
-                observer.next();
-                observer.complete();
-              },
-              error => {
-                observer.error(error);
-                //@todo resolving batch size issues
-                console.log('Error on insert on table ' + tableName);
-                console.log(JSON.stringify(error));
-              }
-            );
-          } else {
-            observer.next();
-            observer.complete();
+      if (bulkData.length === 0) {
+        observer.next();
+        observer.complete();
+      } else {
+        this.insertDataUsingQueryAndParameters(
+          databaseName,
+          batchInsertQueryAndParameter.queries
+        ).subscribe(
+          () => {
+            start = batchInsertQueryAndParameter.startPoint - 1;
+            end = insertBatchSize + start;
+            if (bulkData[batchInsertQueryAndParameter.startPoint]) {
+              this.insertBulkDataOnTable(
+                tableName,
+                bulkData,
+                databaseName,
+                start,
+                end
+              ).subscribe(
+                () => {
+                  observer.next();
+                  observer.complete();
+                },
+                error => {
+                  observer.error(error);
+                  //@todo resolving batch size issues
+                  console.log('Error on insert on table ' + tableName);
+                  console.log(JSON.stringify(error));
+                }
+              );
+            } else {
+              observer.next();
+              observer.complete();
+            }
+          },
+          error => {
+            console.log('Error on insert on table ' + tableName);
+            console.log(JSON.stringify(error));
+            observer.error(error);
           }
-        },
-        error => {
-          console.log('Error on insert on table ' + tableName);
-          console.log(JSON.stringify(error));
-          observer.error(error);
-        }
-      );
+        );
+      }
     });
   }
 
