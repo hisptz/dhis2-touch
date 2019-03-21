@@ -59,17 +59,20 @@ export class DefaultDataEntryFormComponent implements OnInit, OnChanges {
   @Output() onViewUserCompletenessInformation = new EventEmitter();
   @Output() onPaginationChange = new EventEmitter();
   @Output() onUpdateDataSetCompleteness = new EventEmitter();
+  lockingFieldStatus: boolean;
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.lockingFieldStatus = this.isDataSetCompleted || this.isPeriodLocked;
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (
       changes['isDataSetCompleted'] &&
       !changes['isDataSetCompleted'].firstChange
     ) {
-      console.log('changes of completeness status');
+      this.lockingFieldStatus = this.isDataSetCompleted || this.isPeriodLocked;
     }
   }
 
@@ -94,6 +97,8 @@ export class DefaultDataEntryFormComponent implements OnInit, OnChanges {
   }
 
   updateData(event) {
-    this.onChange.emit(event);
+    if (!this.lockingFieldStatus) {
+      this.onChange.emit(event);
+    }
   }
 }

@@ -41,6 +41,7 @@ export class OptionSetInputFieldComponent implements OnInit {
   @Input() dataEntrySettings;
   @Input() data;
   @Input() options;
+  @Input() lockingFieldStatus;
   @Output() onChange = new EventEmitter();
   inputFieldValue: string;
   labelMapper: any;
@@ -67,27 +68,31 @@ export class OptionSetInputFieldComponent implements OnInit {
   }
 
   openOptionListModal() {
-    let options: ModalOptions = {
-      cssClass: 'inset-modal',
-      enableBackdropDismiss: true
-    };
-    let data = {
-      options: this.options,
-      currentValue: this.inputFieldValue,
-      title: this.optionListTitle ? this.optionListTitle : 'Options selections'
-    };
-    const modal = this.modalCtrl.create(
-      'OptionListModalPage',
-      { data: data },
-      options
-    );
-    modal.onDidDismiss((selectedOption: any) => {
-      if (selectedOption && selectedOption.id) {
-        this.inputFieldValue = selectedOption.code;
-        this.updateValues(this.inputFieldValue);
-      }
-    });
-    modal.present();
+    if (!this.lockingFieldStatus) {
+      let options: ModalOptions = {
+        cssClass: 'inset-modal',
+        enableBackdropDismiss: true
+      };
+      let data = {
+        options: this.options,
+        currentValue: this.inputFieldValue,
+        title: this.optionListTitle
+          ? this.optionListTitle
+          : 'Options selections'
+      };
+      const modal = this.modalCtrl.create(
+        'OptionListModalPage',
+        { data: data },
+        options
+      );
+      modal.onDidDismiss((selectedOption: any) => {
+        if (selectedOption && selectedOption.id) {
+          this.inputFieldValue = selectedOption.code;
+          this.updateValues(this.inputFieldValue);
+        }
+      });
+      modal.present();
+    }
   }
 
   updateValues(value) {

@@ -40,6 +40,7 @@ export class UnitIntervalInputComponent implements OnInit {
   @Input() dataElementId;
   @Input() categoryOptionComboId;
   @Input() data;
+  @Input() lockingFieldStatus;
   @Output() onChange = new EventEmitter();
 
   rangeValue: any;

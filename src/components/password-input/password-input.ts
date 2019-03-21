@@ -36,6 +36,7 @@ import { AppProvider } from '../../providers/app/app';
 export class PasswordInputComponent implements OnInit {
   @Input() dataElementId: string;
   @Input() categoryOptionComboId: string;
+  @Input() lockingFieldStatus;
   @Input() data: any;
   @Input() barcodeSettings: any;
   @Input() placeholder: string;

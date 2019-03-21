@@ -36,6 +36,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class DateInputFieldComponent implements OnInit {
   @Input() dataElementId: string;
   @Input() categoryOptionComboId: string;
+  @Input() lockingFieldStatus;
   @Input() data;
   @Input() valueType: string;
   @Output() onChange = new EventEmitter();

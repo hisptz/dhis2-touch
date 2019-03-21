@@ -44,6 +44,7 @@ import { AppProvider } from '../../providers/app/app';
 })
 export class BarcodeInputComponent implements OnInit, OnDestroy {
   @Input() barcodeSettings;
+  @Input() lockingFieldStatus;
   @Output() barcodeReaderChange = new EventEmitter();
   icon: string;
 
@@ -57,62 +58,65 @@ export class BarcodeInputComponent implements OnInit, OnDestroy {
   ngOnInit() {}
 
   intiateBarcodeOrQRcode() {
-    this.barcodeReaderProvider.isCameraAvailable().subscribe(
-      isCameraAvailable => {
-        if (isCameraAvailable) {
-          this.barcodeReaderProvider.isCameraAuthorized().subscribe(
-            isCameraAuthorized => {
-              if (isCameraAuthorized) {
-                this.scanBarcodeOrQrcode();
-              } else {
-                this.barcodeReaderProvider
-                  .requestCameraAuthorization()
-                  .subscribe(
-                    requestStatus => {
-                      if (requestStatus === 'RESTRICTED') {
+    if (!this.lockingFieldStatus) {
+      this.barcodeReaderProvider.isCameraAvailable().subscribe(
+        isCameraAvailable => {
+          if (isCameraAvailable) {
+            this.barcodeReaderProvider.isCameraAuthorized().subscribe(
+              isCameraAuthorized => {
+                if (isCameraAuthorized) {
+                  this.scanBarcodeOrQrcode();
+                } else {
+                  this.barcodeReaderProvider
+                    .requestCameraAuthorization()
+                    .subscribe(
+                      requestStatus => {
+                        if (requestStatus === 'RESTRICTED') {
+                          this.appProvider.setNormalNotification(
+                            'Camera services has been restricted on this phone'
+                          );
+                        } else if (requestStatus === 'DENIED_ALWAYS') {
+                          this.appProvider.setNormalNotification(
+                            'Please enable camera manually on the app permissions settings page'
+                          );
+                        } else if (requestStatus === 'DENIED') {
+                          this.appProvider.setNormalNotification(
+                            'You have denied usage of camera, this feature can not be available'
+                          );
+                        } else {
+                          this.scanBarcodeOrQrcode();
+                        }
+                      },
+                      error => {
                         this.appProvider.setNormalNotification(
-                          'Camera services has been restricted on this phone'
+                          'Error on request camera permission ' +
+                            JSON.stringify(error)
                         );
-                      } else if (requestStatus === 'DENIED_ALWAYS') {
-                        this.appProvider.setNormalNotification(
-                          'Please enable camera manually on the app permissions settings page'
-                        );
-                      } else if (requestStatus === 'DENIED') {
-                        this.appProvider.setNormalNotification(
-                          'You have denied usage of camera, this feature can not be available'
-                        );
-                      } else {
-                        this.scanBarcodeOrQrcode();
                       }
-                    },
-                    error => {
-                      this.appProvider.setNormalNotification(
-                        'Error on request camera permission ' +
-                          JSON.stringify(error)
-                      );
-                    }
-                  );
+                    );
+                }
+              },
+              error => {
+                this.appProvider.setNormalNotification(
+                  'Error on getting camera authorization status ' +
+                    JSON.stringify(error)
+                );
               }
-            },
-            error => {
-              this.appProvider.setNormalNotification(
-                'Error on getting camera authorization status ' +
-                  JSON.stringify(error)
-              );
-            }
-          );
-        } else {
+            );
+          } else {
+            this.appProvider.setNormalNotification(
+              'Camera is not available for scanning'
+            );
+          }
+        },
+        error => {
           this.appProvider.setNormalNotification(
-            'Camera is not available for scanning'
+            'Error on getting camera availability status ' +
+              JSON.stringify(error)
           );
         }
-      },
-      error => {
-        this.appProvider.setNormalNotification(
-          'Error on getting camera availability status ' + JSON.stringify(error)
-        );
-      }
-    );
+      );
+    }
   }
 
   scanBarcodeOrQrcode() {

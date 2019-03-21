@@ -35,6 +35,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class BooleanInputFieldComponent implements OnInit {
   @Input() dataElementId;
+  @Input() lockingFieldStatus;
   @Input() categoryOptionComboId;
   @Input() data;
   @Output() onChange = new EventEmitter();
