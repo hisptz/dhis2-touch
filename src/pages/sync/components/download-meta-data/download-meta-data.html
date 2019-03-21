@@ -43,7 +43,8 @@
     </div>
     <div class="item-card">
       <ion-item *ngFor="let resourceObject of resources;trackBy: trackByFn">
-        <ion-checkbox [color]="colorSettings.colorAttributes.secondary" [(ngModel)]="resourceObject.status"></ion-checkbox>
+        <ion-checkbox [color]="colorSettings.colorAttributes.secondary" [(ngModel)]="resourceObject.status">
+        </ion-checkbox>
         <ion-label> {{ resourceObject.displayName }} </ion-label>
       </ion-item>
     </div>
@@ -67,9 +68,9 @@
   </div>
 
   <div *ngIf="isUpdateProcessOnProgress">
-    <login-metadata-sync (updateCurrentUser)="onUpdateCurrentUser($event)" (failOnLogin)="onFailLogin($event)"
-      (successOnLoginAndSyncMetadata)="onSuccessLogin($event)" [currentUser]="currentUser" (cancelProgress)="onCancelLoginProcess()"
-      [isOnLogin]="isOnLogin" [processes]="processes"></login-metadata-sync>
+    <login-metadata-sync (failOnLogin)="onFailLogin($event)" (successOnLoginAndSyncMetadata)="onSuccessLogin($event)"
+      [currentUser]="currentUser" (cancelProgress)="onCancelLoginProcess()" [isOnLogin]="isOnLogin"
+      [processes]="processes"></login-metadata-sync>
   </div>
 
 </ion-grid>
