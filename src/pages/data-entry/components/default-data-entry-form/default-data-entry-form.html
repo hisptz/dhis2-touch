@@ -53,7 +53,7 @@
 </div>
 
 
-<data-entry-pagination (onUpdateDataSetCompleteness)="updateDataSetCompleteness()"
+<data-entry-pagination [isPeriodLocked]="isPeriodLocked" (onUpdateDataSetCompleteness)="updateDataSetCompleteness()"
   (onSectionListOpen)="openSectionList()" (onPaginationChange)="changePagination($event)"
   (onViewUserCompletenessInformation)="viewUserCompletenessInformation($event)" [pager]="pager"
   [entryFormType]="entryFormType" [entryFormSectionsCount]="entryFormSections.length"
