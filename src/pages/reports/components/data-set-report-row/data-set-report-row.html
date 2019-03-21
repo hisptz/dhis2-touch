@@ -6,7 +6,8 @@
       </th>
     </tr>
     <tr *ngIf="dataElement.categoryCombo.name !='default'">
-      <th *ngFor="let categoryOptionCombo of dataElement.categoryCombo.categoryOptionCombos;trackBy: trackByFn" class="inputLabel">
+      <th *ngFor="let categoryOptionCombo of dataElement.categoryCombo.categoryOptionCombos;trackBy: trackByFn"
+        class="inputLabel">
         {{ categoryOptionCombo.name }}
       </th>
     </tr>
@@ -14,7 +15,11 @@
   <tbody>
     <tr>
       <th *ngFor="let categoryOptionCombo of dataElement.categoryCombo.categoryOptionCombos;trackBy: trackByFn">
-        {{ dataSetReportAggregateValues[dataElement.id + "-" + categoryOptionCombo.id] }}
+        {{ dataSetReportAggregateValues[dataElement.id + "-" + categoryOptionCombo.id].value }}
+        <b><i>
+            {{ dataSetReportAggregateValues[dataElement.id + "-" + categoryOptionCombo.id].optionCodeName }}
+          </i>
+        </b>
       </th>
     </tr>
   </tbody>
