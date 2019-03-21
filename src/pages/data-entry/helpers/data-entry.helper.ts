@@ -182,9 +182,20 @@ export function onFormReady(
     for (const elementIdObject of elementIdObjects) {
       try {
         const { id, elementId } = elementIdObject;
+        const { value, optionCodeName } = dataSetReportAggregateValues[id];
         const inputElement: any = document.getElementById(elementId);
-        const value = dataSetReportAggregateValues[id];
-        inputElement.replaceWith(value);
+        var labelElement = document.createElement('label');
+        var optionCodeNameElement = document.createElement('span');
+        optionCodeNameElement.setAttribute(
+          'style',
+          'font-weight: bold;font-style: italic;'
+        );
+        labelElement.appendChild(document.createTextNode(value));
+        optionCodeNameElement.appendChild(
+          document.createTextNode(optionCodeName)
+        );
+        labelElement.appendChild(optionCodeNameElement);
+        inputElement.replaceWith(labelElement);
       } catch (error) {
         console.log(JSON.stringify({ type: ' input', error }));
       }
