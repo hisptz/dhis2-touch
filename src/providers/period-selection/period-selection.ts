@@ -60,6 +60,21 @@ export class PeriodSelectionProvider {
     return this.lastSelectedPeriod;
   }
 
+  isSelectedPeriodLockedForDataEntry(expiryDays, endDate) {
+    let isLocked = false;
+    if (expiryDays && endDate && parseInt(expiryDays) > 0) {
+      const currentDate = new Date(new Date().toISOString().split('T')[0]);
+      let allowedDateForDataEntry = new Date(endDate);
+      allowedDateForDataEntry.setDate(
+        allowedDateForDataEntry.getDate() + expiryDays
+      );
+      if (currentDate > allowedDateForDataEntry) {
+        isLocked = true;
+      }
+    }
+    return isLocked;
+  }
+
   /**
    *
    * @param periodType

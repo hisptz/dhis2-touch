@@ -21,7 +21,15 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
 
 /**
  * Generated class for the DefaultDataEntryFormComponent component.
@@ -33,7 +41,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   selector: 'default-data-entry-form',
   templateUrl: 'default-data-entry-form.html'
 })
-export class DefaultDataEntryFormComponent implements OnInit {
+export class DefaultDataEntryFormComponent implements OnInit, OnChanges {
   @Input() entryFormSections;
   @Input() entryFormType: string;
   @Input() pager;
@@ -44,16 +52,29 @@ export class DefaultDataEntryFormComponent implements OnInit {
   @Input() isDataSetCompleted: boolean;
   @Input() isDataSetCompletenessProcessRunning: boolean;
   @Input() icons;
+  @Input() isPeriodLocked: boolean;
 
   @Output() onChange = new EventEmitter();
   @Output() onSectionListOpen = new EventEmitter();
   @Output() onViewUserCompletenessInformation = new EventEmitter();
   @Output() onPaginationChange = new EventEmitter();
   @Output() onUpdateDataSetCompleteness = new EventEmitter();
+  lockingFieldStatus: boolean;
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.lockingFieldStatus = this.isDataSetCompleted || this.isPeriodLocked;
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (
+      changes['isDataSetCompleted'] &&
+      !changes['isDataSetCompleted'].firstChange
+    ) {
+      this.lockingFieldStatus = this.isDataSetCompleted || this.isPeriodLocked;
+    }
+  }
 
   trackByFn(index, item) {
     return item && item.id ? item.id : index;
@@ -76,6 +97,8 @@ export class DefaultDataEntryFormComponent implements OnInit {
   }
 
   updateData(event) {
-    this.onChange.emit(event);
+    if (!this.lockingFieldStatus) {
+      this.onChange.emit(event);
+    }
   }
 }

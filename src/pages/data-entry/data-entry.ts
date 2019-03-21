@@ -57,6 +57,7 @@ export class DataEntryPage implements OnInit {
   selectedDataSet: any;
   selectedPeriod: any;
   dataDimension: any;
+  isPeriodLocked: boolean;
   icons: any = {};
 
   constructor(
@@ -96,13 +97,15 @@ export class DataEntryPage implements OnInit {
       selectedDataSet,
       selectedPeriod,
       dataDimension,
-      isFormReady
+      isFormReady,
+      isPeriodLocked
     } = data;
     this.isFormReady = isFormReady;
     this.selectedDataSet = selectedDataSet;
     this.selectedOrgUnit = selectedOrgUnit;
     this.selectedPeriod = selectedPeriod;
     this.dataDimension = dataDimension;
+    this.isPeriodLocked = isPeriodLocked;
     if (isFormReady) {
       this.organisationUnitLabel =
         selectedOrgUnit && selectedOrgUnit.name ? selectedOrgUnit.name : '';
@@ -118,6 +121,7 @@ export class DataEntryPage implements OnInit {
       orgUnit: { id: this.selectedOrgUnit.id, name: this.selectedOrgUnit.name },
       dataSet: { id: this.selectedDataSet.id, name: this.selectedDataSet.name },
       period: { iso: this.selectedPeriod.iso, name: this.selectedPeriod.name },
+      isPeriodLocked: this.isPeriodLocked,
       dataDimension: this.dataDimension
     };
     this.navCtrl.push('DataEntryFormPage', { parameter: parameter });

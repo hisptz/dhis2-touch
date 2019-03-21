@@ -82,6 +82,7 @@ export class DataEntryFormPage implements OnInit {
   @ViewChild(Content)
   content: Content;
   colorSettings$: Observable<any>;
+  isPeriodLocked: boolean;
 
   constructor(
     private store: Store<State>,
@@ -132,6 +133,7 @@ export class DataEntryFormPage implements OnInit {
       ? this.translationMapper[key]
       : key;
     this.entryFormParameter = this.navParams.get('parameter');
+    this.isPeriodLocked = this.entryFormParameter.isPeriodLocked;
     this.userProvider.getCurrentUser().subscribe(
       user => {
         this.currentUser = user;

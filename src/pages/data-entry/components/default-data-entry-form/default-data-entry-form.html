@@ -42,7 +42,8 @@
       <div class="entry-form-container">
         <form>
           <div *ngFor="let dataElement of section.dataElements;trackBy: trackByFn">
-            <input-container [dataElement]="dataElement" [currentUser]="currentUser" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
+            <input-container [lockingFieldStatus]="lockingFieldStatus" [dataElement]="dataElement"
+              [currentUser]="currentUser" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
               [(data)]="dataValuesObject" (onChange)="updateData($event)"></input-container>
           </div>
         </form>
@@ -52,8 +53,10 @@
 </div>
 
 
-<data-entry-pagination (onUpdateDataSetCompleteness)="updateDataSetCompleteness()" (onSectionListOpen)="openSectionList()"
-  (onPaginationChange)="changePagination($event)" (onViewUserCompletenessInformation)="viewUserCompletenessInformation($event)"
-  [pager]="pager" [entryFormType]="entryFormType" [entryFormSectionsCount]="entryFormSections.length"
-  [dataSetsCompletenessInfo]="dataSetsCompletenessInfo" [isDataSetCompletenessProcessRunning]="isDataSetCompletenessProcessRunning"
-  [isDataSetCompleted]="isDataSetCompleted"></data-entry-pagination>
+<data-entry-pagination (onUpdateDataSetCompleteness)="updateDataSetCompleteness()"
+  (onSectionListOpen)="openSectionList()" (onPaginationChange)="changePagination($event)"
+  (onViewUserCompletenessInformation)="viewUserCompletenessInformation($event)" [pager]="pager"
+  [entryFormType]="entryFormType" [entryFormSectionsCount]="entryFormSections.length"
+  [dataSetsCompletenessInfo]="dataSetsCompletenessInfo"
+  [isDataSetCompletenessProcessRunning]="isDataSetCompletenessProcessRunning" [isDataSetCompleted]="isDataSetCompleted">
+</data-entry-pagination>

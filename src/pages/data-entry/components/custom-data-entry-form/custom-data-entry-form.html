@@ -29,14 +29,14 @@
   <div *ngIf="entryFormType && entryFormType === 'aggregate'">
     <ion-row>
       <ion-col col-6 col-sm-6>
-        <button color="favorite" round ion-button full [disabled]="isDataSetCompletenessProcessRunning || isDataSetCompleted"
+        <button color="favorite" round ion-button full [disabled]="isDataSetCompletenessProcessRunning || isDataSetCompleted || isPeriodLocked"
           (tap)="updateDataSetCompleteness()">
           <span *ngIf="!isDataSetCompletenessProcessRunning" [translate]="'Complete'"></span>
           <span *ngIf="isDataSetCompletenessProcessRunning && !isDataSetCompleted" [translate]="'Completing'"></span>
         </button>
       </ion-col>
       <ion-col col-6 col-sm-6>
-        <button color="danger" round ion-button full [disabled]="isDataSetCompletenessProcessRunning || !isDataSetCompleted"
+        <button color="danger" round ion-button full [disabled]="isDataSetCompletenessProcessRunning || !isDataSetCompleted || isPeriodLocked"
           (tap)="updateDataSetCompleteness()">
           <span *ngIf="!isDataSetCompletenessProcessRunning" [translate]="'Undo complete'"></span>
           <span *ngIf="isDataSetCompletenessProcessRunning && isDataSetCompleted" [translate]="'Undo completing'"></span>

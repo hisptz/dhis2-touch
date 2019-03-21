@@ -41,6 +41,7 @@ export class OrganisationUnitInputComponent implements OnInit {
   @Input() dataElementId;
   @Input() categoryOptionComboId;
   @Input() data;
+  @Input() lockingFieldStatus;
   @Output() onChange = new EventEmitter();
   icons: any = {};
   organisatiounitMapper: any;
@@ -82,18 +83,20 @@ export class OrganisationUnitInputComponent implements OnInit {
   }
 
   openOrganisationUnitSelection() {
-    const modal = this.modalCtrl.create('OrganisationUnitSelectionPage', {});
-    modal.onDidDismiss((selectedOrgUnit: any) => {
-      if (selectedOrgUnit && selectedOrgUnit.id) {
-        this.seletectOrganisatioUnit = {
-          id: selectedOrgUnit.id,
-          name: selectedOrgUnit.name
-        };
-        const dataValue = selectedOrgUnit.id;
-        this.updateValue(dataValue);
-      }
-    });
-    modal.present();
+    if (!this.lockingFieldStatus) {
+      const modal = this.modalCtrl.create('OrganisationUnitSelectionPage', {});
+      modal.onDidDismiss((selectedOrgUnit: any) => {
+        if (selectedOrgUnit && selectedOrgUnit.id) {
+          this.seletectOrganisatioUnit = {
+            id: selectedOrgUnit.id,
+            name: selectedOrgUnit.name
+          };
+          const dataValue = selectedOrgUnit.id;
+          this.updateValue(dataValue);
+        }
+      });
+      modal.present();
+    }
   }
 
   clearValue() {

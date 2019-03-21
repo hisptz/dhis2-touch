@@ -41,6 +41,7 @@ export class CoordinateInputComponent implements OnInit {
   @Input() dataElementId;
   @Input() categoryOptionComboId;
   @Input() data;
+  @Input() lockingFieldStatus;
   @Output() onChange = new EventEmitter();
 
   position: { lat: string; lng: string } = { lat: '', lng: '' };
@@ -70,20 +71,24 @@ export class CoordinateInputComponent implements OnInit {
   }
 
   openMap() {
-    const data = {
-      position: this.position
-    };
-    const modal = this.modalCtrl.create('CoordinateModalPage', { data: data });
-    modal.onDidDismiss((response: any) => {
-      if (response && response.lat && response.lng) {
-        this.position.lat = response.lat.toFixed(6);
-        this.position.lng = response.lng.toFixed(6);
-        const dataValue =
-          '[' + this.position.lat + ',' + this.position.lng + ']';
-        this.updateValue(dataValue);
-      }
-    });
-    modal.present();
+    if (!this.lockingFieldStatus) {
+      const data = {
+        position: this.position
+      };
+      const modal = this.modalCtrl.create('CoordinateModalPage', {
+        data: data
+      });
+      modal.onDidDismiss((response: any) => {
+        if (response && response.lat && response.lng) {
+          this.position.lat = response.lat.toFixed(6);
+          this.position.lng = response.lng.toFixed(6);
+          const dataValue =
+            '[' + this.position.lat + ',' + this.position.lng + ']';
+          this.updateValue(dataValue);
+        }
+      });
+      modal.present();
+    }
   }
 
   updateValue(dataValue: string) {
