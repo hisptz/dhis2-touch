@@ -22,7 +22,7 @@
 *
 *
 -->
-<div no-margin no-padding>
+<div no-padding>
   <div *ngIf="isLoading">
     <ion-item no-lines>
       <div style="text-align: center" item-left>
@@ -38,10 +38,12 @@
           <span padding-top>
             {{ summaryObject.conflicts.length }} Conflicts&nbsp;
           </span>
-          <span class="item-card" color="font-color" ion-button clear text-center text-capitalize (tap)="conflictHandlingAction('conflicts','accept')">
+          <span class="item-card" color="font-color" ion-button clear text-center text-capitalize
+            (tap)="conflictHandlingAction('conflicts','accept')">
             <img class="side-menu-icon" [src]="icons.accept" />
           </span>
-          <span class="item-card" color="font-color" ion-button clear text-center text-capitalize (tap)="conflictHandlingAction('conflicts','decline')">
+          <span class="item-card" color="font-color" ion-button clear text-center text-capitalize
+            (tap)="conflictHandlingAction('conflicts','decline')">
             <img class="side-menu-icon" [src]="icons.decline" />
           </span>
         </span>

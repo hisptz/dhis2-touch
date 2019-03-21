@@ -47,6 +47,7 @@ export class EventDataDownloaderComponent implements OnInit {
   showLoader: boolean;
   progressTrackerPacentage: number;
   progressTrackerMessage: string;
+  downloadStatus: string;
 
   constructor(
     private appProvider: AppProvider,
@@ -62,7 +63,9 @@ export class EventDataDownloaderComponent implements OnInit {
     this.showLoader = false;
     this.progressTrackerPacentage = 0;
     this.progressTrackerMessage = '';
+    this.downloadStatus = '';
   }
+
   ngOnInit() {
     this.userProvider.getCurrentUser().subscribe(
       (currentUser: any) => {
@@ -98,13 +101,14 @@ export class EventDataDownloaderComponent implements OnInit {
   }
 
   downloadingEventData() {
+    this.progressTrackerPacentage = 0;
+    this.showLoader = true;
+    this.downloadStatus = '';
     const dataDimension = this.dataDimension;
     const programId = this.selectedProgram.id;
     const programName = this.selectedProgram.name;
     const organisationUnitId = this.selectedOrgUnit.id;
     const eventType = 'event-capture';
-    this.showLoader = true;
-    this.progressTrackerPacentage = 0;
     this.progressTrackerMessage = 'Discovering data';
     this.appProvider.setTopNotification(`Discovering online events`);
     this.eventCaptureFormProvider
@@ -118,9 +122,10 @@ export class EventDataDownloaderComponent implements OnInit {
       )
       .subscribe(
         discoveredEvents => {
-          this.appProvider.setTopNotification(
-            `${discoveredEvents.length} events has been discovered`
-          );
+          this.downloadStatus = `${
+            discoveredEvents.length
+          } events has been discovered`;
+          this.appProvider.setTopNotification(this.downloadStatus);
           if (discoveredEvents.length > 0) {
             this.progressTrackerPacentage = 50;
             this.progressTrackerMessage = 'Saving data';
