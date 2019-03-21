@@ -36,6 +36,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class RadioButtonInputComponent implements OnInit {
   @Input() options;
   @Input() selectedValue: string;
+  @Input() lockingFieldStatus;
   @Input() fieldId: string;
   @Output() updateValueAction = new EventEmitter();
   dataModal: any = {};
@@ -46,8 +47,10 @@ export class RadioButtonInputComponent implements OnInit {
   }
 
   clearInput() {
-    this.dataModal[this.fieldId] = '';
-    this.saveValue();
+    if (!this.lockingFieldStatus) {
+      this.dataModal[this.fieldId] = '';
+      this.saveValue();
+    }
   }
 
   saveValue() {

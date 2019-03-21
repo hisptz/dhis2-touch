@@ -22,4 +22,5 @@
 *
 *
 -->
-<data-time-input [(inputValue)]="inputFieldValue" (dateTimeUpdateAction)="updateValue($event)" [mode]="mode"></data-time-input>
+<data-time-input [lockingFieldStatus]="lockingFieldStatus" [(inputValue)]="inputFieldValue"
+  (dateTimeUpdateAction)="updateValue($event)" [mode]="mode"></data-time-input>

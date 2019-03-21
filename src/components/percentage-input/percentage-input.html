@@ -24,15 +24,16 @@
 -->
 <ion-row no-padding>
   <ion-col no-padding>
-    <ion-range [(ngModel)]="rangeValue" [color]="(colorSettings$ |async).colorAttributes.secondary" (ionChange)="updateValue()"
-      pin="true"></ion-range>
+    <ion-range [(ngModel)]="rangeValue" [disabled]="lockingFieldStatus"
+      [color]="(colorSettings$ |async).colorAttributes.secondary" (ionChange)="updateValue()" pin="true"></ion-range>
   </ion-col>
   <ion-col col-auto>
     <div class="top-padding">
       <button color="font-color" outline ion-button>
         {{ displayValue }}
       </button>
-      <button color="danger" padding outline ion-button [disabled]="displayValue == ''" (tap)="clearValue()">
+      <button color="danger" padding outline ion-button [disabled]="displayValue == '' || lockingFieldStatus"
+        (tap)="clearValue()">
         <ion-icon name="trash" color="danger"></ion-icon>
       </button>
     </div>

@@ -26,7 +26,8 @@
   <ion-row>
     <ion-col>
       <ion-item no-lines>
-        <ion-input (ionBlur)="updateValue()" [(ngModel)]="inputFieldValue" type="email"></ion-input>
+        <ion-input [disabled]="lockingFieldStatus" (ionBlur)="updateValue()" [(ngModel)]="inputFieldValue" type="email">
+        </ion-input>
       </ion-item>
     </ion-col>
   </ion-row>

@@ -27,29 +27,34 @@
     <div>
       <div *ngIf="valueType == 'INTEGER' ||valueType == 'NUMBER'">
         <ion-item no-lines>
-          <ion-input type="number" (ionBlur)="updateValues()" [(ngModel)]="inputFieldValue"></ion-input>
+          <ion-input [readonly]="lockingFieldStatus" type="number" (ionBlur)="updateValues()"
+            [(ngModel)]="inputFieldValue"></ion-input>
         </ion-item>
       </div>
       <div *ngIf="valueType == 'INTEGER_POSITIVE'">
         <ion-item no-lines>
-          <ion-input type="number" min="1" (ionBlur)="updateValues()" [(ngModel)]="inputFieldValue"></ion-input>
+          <ion-input [readonly]="lockingFieldStatus" type="number" min="1" (ionBlur)="updateValues()"
+            [(ngModel)]="inputFieldValue"></ion-input>
         </ion-item>
       </div>
       <div *ngIf="valueType == 'INTEGER_NEGATIVE'">
         <ion-item no-lines>
-          <ion-input type="number" max="-1" (ionBlur)="updateValues()" [(ngModel)]="inputFieldValue"></ion-input>
+          <ion-input [readonly]="lockingFieldStatus" type="number" max="-1" (ionBlur)="updateValues()"
+            [(ngModel)]="inputFieldValue"></ion-input>
         </ion-item>
       </div>
       <div *ngIf="valueType == 'INTEGER_ZERO_OR_POSITIVE'">
         <ion-item no-lines>
-          <ion-input type="number" min="0" (ionBlur)="updateValues()" [(ngModel)]="inputFieldValue"></ion-input>
+          <ion-input [readonly]="lockingFieldStatus" type="number" min="0" (ionBlur)="updateValues()"
+            [(ngModel)]="inputFieldValue"></ion-input>
         </ion-item>
       </div>
     </div>
   </ion-col>
   <ion-col col-auto *ngIf="showBarcodeScanner">
     <div float-right>
-      <barcode-input [barcodeSettings]="barcodeSettings" (barcodeReaderChange)="onChangeBarcodeReader($event)"></barcode-input>
+      <barcode-input [lockingFieldStatus]="lockingFieldStatus" [barcodeSettings]="barcodeSettings"
+        (barcodeReaderChange)="onChangeBarcodeReader($event)"></barcode-input>
     </div>
   </ion-col>
 </ion-row>

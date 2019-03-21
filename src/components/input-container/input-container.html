@@ -4,7 +4,8 @@
       <table class="table table-bordered" width="100%">
         <thead>
           <tr>
-            <th [attr.colspan]="dataElement.categoryCombo.categoryOptionCombos.length" (click)="showTooltips(dataElement,'')">
+            <th [attr.colspan]="dataElement.categoryCombo.categoryOptionCombos.length"
+              (click)="showTooltips(dataElement,'')">
               {{fieldLabelKey}}
               <span *ngIf="dataElement.description">&nbsp;&nbsp;
                 <ion-icon color="icon-color" name="help-circle"></ion-icon>
@@ -21,63 +22,77 @@
         <tbody>
           <tr>
             <th *ngFor="let categoryOptionCombo of dataElement.categoryCombo.categoryOptionCombos;trackBy: trackByFn">
-              <div *ngIf="dataElement.optionSet" [ngClass]="(dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id])?dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id]:'input-field-container'">
-                <option-set-input-field [dataEntrySettings]="dataEntrySettings" (onChange)="updateValue($event)"
+              <div *ngIf="dataElement.optionSet"
+                [ngClass]="(dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id])?dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id]:'input-field-container'">
+                <option-set-input-field [lockingFieldStatus]="lockingFieldStatus"
+                  [dataEntrySettings]="dataEntrySettings" (onChange)="updateValue($event)"
                   [optionListTitle]="fieldLabelKey + ' ' + categoryOptionCombo.name" [dataElementId]="dataElement.id"
-                  [categoryOptionComboId]="categoryOptionCombo.id" [data]="data" [options]="dataElement.optionSet.options"></option-set-input-field>
+                  [categoryOptionComboId]="categoryOptionCombo.id" [data]="data"
+                  [options]="dataElement.optionSet.options"></option-set-input-field>
               </div>
-              <div *ngIf="!dataElement.optionSet" [ngClass]="(dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id])?dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id]:'input-field-container'">
+              <div *ngIf="!dataElement.optionSet"
+                [ngClass]="(dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id])?dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id]:'input-field-container'">
                 <div *ngIf="textInputField.indexOf(dataElement.valueType) > -1">
-                  <text-input-field (onChange)="updateValue($event)" [dataElementId]="dataElement.id"
-                    [categoryOptionComboId]="categoryOptionCombo.id" [data]="data" [barcodeSettings]="barcodeSettings"
-                    [valueType]="dataElement.valueType"></text-input-field>
+                  <text-input-field [lockingFieldStatus]="lockingFieldStatus" (onChange)="updateValue($event)"
+                    [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data"
+                    [barcodeSettings]="barcodeSettings" [valueType]="dataElement.valueType"></text-input-field>
                 </div>
                 <div *ngIf="numericalInputField.indexOf(dataElement.valueType) > -1">
-                  <numerical-input-field (onChange)="updateValue($event)" [dataElementId]="dataElement.id"
-                    [categoryOptionComboId]="categoryOptionCombo.id" [data]="data" [barcodeSettings]="barcodeSettings"
-                    [valueType]="dataElement.valueType"></numerical-input-field>
+                  <numerical-input-field [lockingFieldStatus]="lockingFieldStatus" (onChange)="updateValue($event)"
+                    [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data"
+                    [barcodeSettings]="barcodeSettings" [valueType]="dataElement.valueType"></numerical-input-field>
                 </div>
-                <div *ngIf="dataElement.valueType === 'DATE' || dataElement.valueType === 'DATETIME' || dataElement.valueType === 'TIME' ">
-                  <date-input-field (onChange)="updateValue($event)" [valueType]="dataElement.valueType"
-                    [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data"></date-input-field>
+                <div
+                  *ngIf="dataElement.valueType === 'DATE' || dataElement.valueType === 'DATETIME' || dataElement.valueType === 'TIME' ">
+                  <date-input-field [lockingFieldStatus]="lockingFieldStatus" (onChange)="updateValue($event)"
+                    [valueType]="dataElement.valueType" [dataElementId]="dataElement.id"
+                    [categoryOptionComboId]="categoryOptionCombo.id" [data]="data"></date-input-field>
                 </div>
                 <div *ngIf="dataElement.valueType === 'TRUE_ONLY'">
-                  <true-only-input-field (onChange)="updateValue($event)" [dataElementId]="dataElement.id"
-                    [categoryOptionComboId]="categoryOptionCombo.id" [data]="data"></true-only-input-field>
+                  <true-only-input-field [lockingFieldStatus]="lockingFieldStatus" (onChange)="updateValue($event)"
+                    [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
+                  </true-only-input-field>
                 </div>
                 <div *ngIf="dataElement.valueType === 'BOOLEAN'">
-                  <boolean-input-field (onChange)="updateValue($event)" [dataElementId]="dataElement.id"
-                    [categoryOptionComboId]="categoryOptionCombo.id" [data]="data"></boolean-input-field>
+                  <boolean-input-field [lockingFieldStatus]="lockingFieldStatus" (onChange)="updateValue($event)"
+                    [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
+                  </boolean-input-field>
                 </div>
                 <div *ngIf="dataElement.valueType === 'AGE'">
-                  <age-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id"
-                    [data]="data"></age-input>
+                  <age-input [lockingFieldStatus]="lockingFieldStatus" (onChange)="updateValue($event)"
+                    [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
+                  </age-input>
                 </div>
                 <div *ngIf="dataElement.valueType === 'COORDINATE'">
-                  <coordinate-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id"
-                    [categoryOptionComboId]="categoryOptionCombo.id" [data]="data"></coordinate-input>
+                  <coordinate-input [lockingFieldStatus]="lockingFieldStatus" (onChange)="updateValue($event)"
+                    [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
+                  </coordinate-input>
                 </div>
                 <div *ngIf="dataElement.valueType === 'ORGANISATION_UNIT'">
-                  <organisation-unit-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id"
-                    [categoryOptionComboId]="categoryOptionCombo.id" [data]="data"></organisation-unit-input>
+                  <organisation-unit-input [lockingFieldStatus]="lockingFieldStatus" (onChange)="updateValue($event)"
+                    [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
+                  </organisation-unit-input>
                 </div>
                 <div *ngIf="dataElement.valueType === 'UNIT_INTERVAL'">
-                  <unit-interval-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id"
-                    [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
+                  <unit-interval-input [lockingFieldStatus]="lockingFieldStatus" (onChange)="updateValue($event)"
+                    [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
                   </unit-interval-input>
                 </div>
                 <div *ngIf="dataElement.valueType === 'PERCENTAGE'">
-                  <percentage-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id"
-                    [categoryOptionComboId]="categoryOptionCombo.id" [data]="data"></percentage-input>
+                  <percentage-input [lockingFieldStatus]="lockingFieldStatus" (onChange)="updateValue($event)"
+                    [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
+                  </percentage-input>
                 </div>
                 <div *ngIf="dataElement.valueType === 'EMAIL'">
-                  <email-input (onChange)="updateValue($event)" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
-                    [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
+                  <email-input [lockingFieldStatus]="lockingFieldStatus" (onChange)="updateValue($event)"
+                    [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [dataElementId]="dataElement.id"
+                    [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
                   </email-input>
                 </div>
                 <div *ngIf="dataElement.valueType === 'PHONE_NUMBER'">
-                  <phone-number-input (onChange)="updateValue($event)" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
-                    [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
+                  <phone-number-input [lockingFieldStatus]="lockingFieldStatus" (onChange)="updateValue($event)"
+                    [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [dataElementId]="dataElement.id"
+                    [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
                   </phone-number-input>
                 </div>
 
@@ -104,59 +119,71 @@
           </span>
         </div>
 
-        <div *ngIf="dataElement.optionSet" [ngClass]="(dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id])?dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id]:'input-field-container'">
-          <option-set-input-field [dataEntrySettings]="dataEntrySettings" (onChange)="updateValue($event)"
-            [optionListTitle]="fieldLabelKey + ' ' + categoryOptionCombo.name" [dataElementId]="dataElement.id"
-            [categoryOptionComboId]="categoryOptionCombo.id" [data]="data" [options]="dataElement.optionSet.options"></option-set-input-field>
+        <div *ngIf="dataElement.optionSet"
+          [ngClass]="(dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id])?dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id]:'input-field-container'">
+          <option-set-input-field [lockingFieldStatus]="lockingFieldStatus" [dataEntrySettings]="dataEntrySettings"
+            (onChange)="updateValue($event)" [optionListTitle]="fieldLabelKey + ' ' + categoryOptionCombo.name"
+            [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data"
+            [options]="dataElement.optionSet.options"></option-set-input-field>
         </div>
-        <div *ngIf="!dataElement.optionSet" [ngClass]="(dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id])?dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id]:'input-field-container'">
+        <div *ngIf="!dataElement.optionSet"
+          [ngClass]="(dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id])?dataValuesSavingStatusClass[dataElement.id +'-'+categoryOptionCombo.id]:'input-field-container'">
           <div *ngIf="textInputField.indexOf(dataElement.valueType) > -1">
-            <text-input-field (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id"
-              [data]="data" [barcodeSettings]="barcodeSettings" [valueType]="dataElement.valueType"></text-input-field>
+            <text-input-field [lockingFieldStatus]="lockingFieldStatus" (onChange)="updateValue($event)"
+              [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data"
+              [barcodeSettings]="barcodeSettings" [valueType]="dataElement.valueType"></text-input-field>
           </div>
           <div *ngIf="numericalInputField.indexOf(dataElement.valueType) > -1">
-            <numerical-input-field (onChange)="updateValue($event)" [dataElementId]="dataElement.id"
-              [categoryOptionComboId]="categoryOptionCombo.id" [data]="data" [barcodeSettings]="barcodeSettings"
-              [valueType]="dataElement.valueType"></numerical-input-field>
+            <numerical-input-field [lockingFieldStatus]="lockingFieldStatus" (onChange)="updateValue($event)"
+              [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data"
+              [barcodeSettings]="barcodeSettings" [valueType]="dataElement.valueType"></numerical-input-field>
           </div>
 
           <div *ngIf="dataElement.valueType === 'DATE'">
-            <date-input-field (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id"
-              [data]="data"></date-input-field>
+            <date-input-field [lockingFieldStatus]="lockingFieldStatus" (onChange)="updateValue($event)"
+              [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
+            </date-input-field>
           </div>
           <div *ngIf="dataElement.valueType === 'TRUE_ONLY'">
-            <true-only-input-field (onChange)="updateValue($event)" [dataElementId]="dataElement.id"
-              [categoryOptionComboId]="categoryOptionCombo.id" [data]="data"></true-only-input-field>
+            <true-only-input-field [lockingFieldStatus]="lockingFieldStatus" (onChange)="updateValue($event)"
+              [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
+            </true-only-input-field>
           </div>
           <div *ngIf="dataElement.valueType === 'BOOLEAN'">
-            <boolean-input-field (onChange)="updateValue($event)" [dataElementId]="dataElement.id"
-              [categoryOptionComboId]="categoryOptionCombo.id" [data]="data"></boolean-input-field>
+            <boolean-input-field [lockingFieldStatus]="lockingFieldStatus" (onChange)="updateValue($event)"
+              [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
+            </boolean-input-field>
           </div>
           <div *ngIf="dataElement.valueType === 'COORDINATE'">
-            <coordinate-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id"
-              [data]="data"></coordinate-input>
+            <coordinate-input [lockingFieldStatus]="lockingFieldStatus" (onChange)="updateValue($event)"
+              [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
+            </coordinate-input>
           </div>
           <div *ngIf="dataElement.valueType === 'ORGANISATION_UNIT'">
-            <organisation-unit-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id"
-              [categoryOptionComboId]="categoryOptionCombo.id" [data]="data"></organisation-unit-input>
+            <organisation-unit-input [lockingFieldStatus]="lockingFieldStatus" (onChange)="updateValue($event)"
+              [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
+            </organisation-unit-input>
           </div>
           <div *ngIf="dataElement.valueType === 'UNIT_INTERVAL'">
-            <unit-interval-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id"
-              [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
+            <unit-interval-input [lockingFieldStatus]="lockingFieldStatus" (onChange)="updateValue($event)"
+              [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
             </unit-interval-input>
           </div>
           <div *ngIf="dataElement.valueType === 'PERCENTAGE'">
-            <percentage-input (onChange)="updateValue($event)" [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id"
-              [data]="data"></percentage-input>
+            <percentage-input [lockingFieldStatus]="lockingFieldStatus" (onChange)="updateValue($event)"
+              [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
+            </percentage-input>
           </div>
           <div *ngIf="dataElement.valueType === 'EMAIL'">
-            <email-input (onChange)="updateValue($event)" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
-              [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
+            <email-input [lockingFieldStatus]="lockingFieldStatus" (onChange)="updateValue($event)"
+              [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [dataElementId]="dataElement.id"
+              [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
             </email-input>
           </div>
           <div *ngIf="dataElement.valueType === 'PHONE_NUMBER'">
-            <phone-number-input (onChange)="updateValue($event)" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
-              [dataElementId]="dataElement.id" [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
+            <phone-number-input [lockingFieldStatus]="lockingFieldStatus" (onChange)="updateValue($event)"
+              [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" [dataElementId]="dataElement.id"
+              [categoryOptionComboId]="categoryOptionCombo.id" [data]="data">
             </phone-number-input>
           </div>
 

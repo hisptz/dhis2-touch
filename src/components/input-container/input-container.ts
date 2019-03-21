@@ -21,6 +21,7 @@ export class InputContainerComponent implements OnInit {
   data;
   @Input()
   dataValuesSavingStatusClass;
+  @Input() lockingFieldStatus: boolean;
   @Output()
   onChange = new EventEmitter();
 

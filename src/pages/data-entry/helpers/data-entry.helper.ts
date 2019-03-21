@@ -200,7 +200,6 @@ export function onFormReady(
         const elementId = inputElement.getAttribute('id')
           ? inputElement.getAttribute('id')
           : inputElement.getAttribute('attributeid');
-        console.log(elementId);
 
         // Get splitted ID to get data element and category combo ids
         const splitedId =
@@ -387,6 +386,66 @@ export function onDataValueChange(
     }
   });
   document.body.dispatchEvent(dataValueEvent);
+}
+
+export function lockingEntryFormFields(shouldLockFields) {
+  _.each(document.getElementsByClassName('entryfield'), (inputElement: any) => {
+    if (shouldLockFields) {
+      inputElement.setAttribute('readonly', 'readonly');
+      inputElement.setAttribute('disabled', 'disabled');
+    } else {
+      inputElement.removeAttribute('disabled');
+      inputElement.removeAttribute('readonly');
+    }
+  });
+  _.each(
+    document.getElementsByClassName('entryselect'),
+    (inputElement: any) => {
+      if (shouldLockFields) {
+        inputElement.setAttribute('readonly', 'readonly');
+        inputElement.setAttribute('disabled', 'disabled');
+      } else {
+        inputElement.removeAttribute('disabled');
+        inputElement.removeAttribute('readonly');
+      }
+    }
+  );
+  _.each(
+    document.getElementsByClassName('entrytrueonly'),
+    (inputElement: any) => {
+      if (shouldLockFields) {
+        inputElement.setAttribute('readonly', 'readonly');
+        inputElement.setAttribute('disabled', 'disabled');
+      } else {
+        inputElement.removeAttribute('disabled');
+        inputElement.removeAttribute('readonly');
+      }
+    }
+  );
+  _.each(
+    document.getElementsByClassName('entryfileresource'),
+    (inputElement: any) => {
+      if (shouldLockFields) {
+        inputElement.setAttribute('readonly', 'readonly');
+        inputElement.setAttribute('disabled', 'disabled');
+      } else {
+        inputElement.removeAttribute('disabled');
+        inputElement.removeAttribute('readonly');
+      }
+    }
+  );
+  _.each(
+    document.getElementsByClassName('entryfield-radio'),
+    (inputElement: any) => {
+      if (shouldLockFields) {
+        inputElement.setAttribute('readonly', 'readonly');
+        inputElement.setAttribute('disabled', 'disabled');
+      } else {
+        inputElement.removeAttribute('disabled');
+        inputElement.removeAttribute('readonly');
+      }
+    }
+  );
 }
 
 export function evaluateCustomFomProgramIndicators(programIndicators: any[]) {

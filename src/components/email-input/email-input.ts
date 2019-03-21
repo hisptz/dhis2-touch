@@ -36,6 +36,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 export class EmailInputComponent implements OnInit {
   @Input() dataElementId;
   @Input() categoryOptionComboId;
+  @Input() lockingFieldStatus;
   @Input() data;
   @Input() valueType;
   @Output() onChange = new EventEmitter();
