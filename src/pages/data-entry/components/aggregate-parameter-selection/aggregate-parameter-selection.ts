@@ -185,9 +185,16 @@ export class AggregateParameterSelectionComponent implements OnInit {
       selectedDataSet: null,
       selectedPeriod: null,
       dataDimension: null,
+      isPeriodLocked: false,
       isFormReady
     };
     if (isFormReady) {
+      const expiryDays = parseInt(this.selectedDataSet.expiryDays);
+      const endDate = this.selectedPeriod.endDate;
+      const isPeriodLocked = this.periodSelection.isSelectedPeriodLockedForDataEntry(
+        expiryDays,
+        endDate
+      );
       parameter = {
         selectedOrgUnit: {
           id: this.selectedOrgUnit.id,
@@ -202,7 +209,8 @@ export class AggregateParameterSelectionComponent implements OnInit {
           name: this.selectedPeriod.name
         },
         dataDimension: this.getDataDimensions(),
-        isFormReady
+        isFormReady,
+        isPeriodLocked
       };
     }
     this.aggregateParameterSelection.emit(parameter);
