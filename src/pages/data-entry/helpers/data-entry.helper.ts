@@ -42,7 +42,7 @@ function getSelectInput(id, value, options) {
   selectElement.setAttribute('class', 'entryselect');
 
   const defaultOption = document.createElement('option');
-  defaultOption.disabled = true;
+  defaultOption.disabled = false;
   defaultOption.selected = true;
   defaultOption.value = '';
   selectElement.appendChild(defaultOption);
@@ -90,11 +90,21 @@ function getRadioInputs(id, savedValue) {
     noInput.setAttribute('class', 'entryfield-radio');
     noInput.value = 'false';
 
+    const noValueInput = document.createElement('input');
+    noValueInput.setAttribute('type', 'radio');
+    noValueInput.setAttribute('id', id);
+    noValueInput.setAttribute('name', id);
+    noValueInput.setAttribute('class', 'entryfield-radio');
+    noValueInput.value = '';
+
     radioContainer.appendChild(yesInput);
     radioContainer.appendChild(document.createTextNode(' Yes'));
 
     radioContainer.appendChild(noInput);
     radioContainer.appendChild(document.createTextNode(' No'));
+
+    radioContainer.appendChild(noValueInput);
+    radioContainer.appendChild(document.createTextNode(' No value'));
   } else if (savedValue == 'false') {
     const yesInput = document.createElement('input');
     yesInput.setAttribute('type', 'radio');
@@ -111,11 +121,21 @@ function getRadioInputs(id, savedValue) {
     noInput.checked = true;
     noInput.value = 'false';
 
+    const noValueInput = document.createElement('input');
+    noValueInput.setAttribute('type', 'radio');
+    noValueInput.setAttribute('id', id);
+    noValueInput.setAttribute('name', id);
+    noValueInput.setAttribute('class', 'entryfield-radio');
+    noValueInput.value = '';
+
     radioContainer.appendChild(yesInput);
     radioContainer.appendChild(document.createTextNode(' Yes'));
 
     radioContainer.appendChild(noInput);
     radioContainer.appendChild(document.createTextNode(' No'));
+
+    radioContainer.appendChild(noValueInput);
+    radioContainer.appendChild(document.createTextNode(' No value'));
   } else {
     const yesInput = document.createElement('input');
     yesInput.setAttribute('type', 'radio');
@@ -131,11 +151,21 @@ function getRadioInputs(id, savedValue) {
     noInput.setAttribute('class', 'entryfield-radio');
     noInput.value = 'false';
 
+    const noValueInput = document.createElement('input');
+    noValueInput.setAttribute('type', 'radio');
+    noValueInput.setAttribute('id', id);
+    noValueInput.setAttribute('name', id);
+    noValueInput.setAttribute('class', 'entryfield-radio');
+    noValueInput.value = '';
+
     radioContainer.appendChild(yesInput);
     radioContainer.appendChild(document.createTextNode(' Yes'));
 
     radioContainer.appendChild(noInput);
     radioContainer.appendChild(document.createTextNode(' No'));
+
+    radioContainer.appendChild(noValueInput);
+    radioContainer.appendChild(document.createTextNode(' No value'));
   }
 
   return radioContainer;
