@@ -57,10 +57,15 @@
               <b>
                 <span [translate]="'Not synced'"></span>
               </b> : {{storageStatus.offline }}</span>
+            <br><br><span class="item-card lock-form" *ngIf="isPeriodLocked">
+              <span [translate]="'Entry form has been locked for this period'"></span>
+            </span>
           </div>
-          <aggregate-conflict-handler (conflictFoundAction)="scrollEntryFormUp()" (mergeDataAction)="onMergingWithOnlineData($event)"
-            (dataSetCompletenessInfoAction)="onDataSetCompletenessInformattionLoaded($event)" [(dataValuesObject)]="dataValuesObject"
-            [orgUnitId]="entryFormParameter.orgUnit.id" [dataSetId]="entryFormParameter.dataSet.id" [period]="entryFormParameter.period.iso"
+          <aggregate-conflict-handler [isPeriodLocked]="isPeriodLocked" (conflictFoundAction)="scrollEntryFormUp()"
+            (mergeDataAction)="onMergingWithOnlineData($event)"
+            (dataSetCompletenessInfoAction)="onDataSetCompletenessInformattionLoaded($event)"
+            [(dataValuesObject)]="dataValuesObject" [orgUnitId]="entryFormParameter.orgUnit.id"
+            [dataSetId]="entryFormParameter.dataSet.id" [period]="entryFormParameter.period.iso"
             [dataDimension]="this.entryFormParameter.dataDimension"></aggregate-conflict-handler>
           <div *ngIf="!isLoading && indicators && indicators.length > 0">
             <div (click)="viewEntryFormIndicators(indicators)" class="item-card" color="font-color">
@@ -76,23 +81,29 @@
         </div>
         <div *ngIf="!isLoading">
           <div *ngIf="entryFormType && entryFormType == 'CUSTOM'">
-            <custom-data-entry-form [dataEntryFormDesign]="dataEntryFormDesign" (onCustomFormInputChange)="updateData($event)"
-              (onUpdateDataSetCompleteness)="updateDataSetCompleteness()" (onViewUserCompletenessInformation)="viewUserCompletenessInformation($event)"
-              [data]="dataValuesObject" [entryFormType]="'aggregate'" [entryFormSections]="entryFormSections"
+            <custom-data-entry-form [isPeriodLocked]="isPeriodLocked" [dataEntryFormDesign]="dataEntryFormDesign"
+              (onCustomFormInputChange)="updateData($event)" (onUpdateDataSetCompleteness)="updateDataSetCompleteness()"
+              (onViewUserCompletenessInformation)="viewUserCompletenessInformation($event)" [data]="dataValuesObject"
+              [entryFormType]="'aggregate'" [entryFormSections]="entryFormSections"
               [dataUpdateStatus]="dataUpdateStatus" [isDataSetCompleted]="isDataSetCompleted"
-              [isDataSetCompletenessProcessRunning]="isDataSetCompletenessProcessRunning" [dataSetsCompletenessInfo]="dataSetsCompletenessInfo"></custom-data-entry-form>
+              [isDataSetCompletenessProcessRunning]="isDataSetCompletenessProcessRunning"
+              [dataSetsCompletenessInfo]="dataSetsCompletenessInfo"></custom-data-entry-form>
           </div>
           <div *ngIf="entryFormType && entryFormType != 'CUSTOM'">
             <div *ngIf="entryFormSections && entryFormSections.length == 0">
-              <empty-list-notification [emptyListMessage]="translationMapper['The is no field associated with this entry form, Please contact our help desk'] "></empty-list-notification>
+              <empty-list-notification
+                [emptyListMessage]="translationMapper['The is no field associated with this entry form, Please contact our help desk'] ">
+              </empty-list-notification>
             </div>
-            <default-data-entry-form (onPaginationChange)="changePagination($event)" (onUpdateDataSetCompleteness)="updateDataSetCompleteness()"
-              (onViewUserCompletenessInformation)="viewUserCompletenessInformation($event)" (onChange)="updateData($event)"
-              (onSectionListOpen)="openSectionList()" [entryFormType]="entryFormType"
+            <default-data-entry-form [isPeriodLocked]="isPeriodLocked" (onPaginationChange)="changePagination($event)"
+              (onUpdateDataSetCompleteness)="updateDataSetCompleteness()"
+              (onViewUserCompletenessInformation)="viewUserCompletenessInformation($event)"
+              (onChange)="updateData($event)" (onSectionListOpen)="openSectionList()" [entryFormType]="entryFormType"
               [isDataSetCompletenessProcessRunning]="isDataSetCompletenessProcessRunning" [currentUser]="currentUser"
-              [icons]="icons" [isDataSetCompleted]="isDataSetCompleted" [dataSetsCompletenessInfo]="dataSetsCompletenessInfo"
-              [dataValuesSavingStatusClass]="dataValuesSavingStatusClass" [dataValuesObject]="dataValuesObject" [pager]="pager"
-              [entryFormSections]="entryFormSections"></default-data-entry-form>
+              [icons]="icons" [isDataSetCompleted]="isDataSetCompleted"
+              [dataSetsCompletenessInfo]="dataSetsCompletenessInfo"
+              [dataValuesSavingStatusClass]="dataValuesSavingStatusClass" [dataValuesObject]="dataValuesObject"
+              [pager]="pager" [entryFormSections]="entryFormSections"></default-data-entry-form>
           </div>
         </div>
       </ion-col>

@@ -21,7 +21,15 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
 
 /**
  * Generated class for the DefaultDataEntryFormComponent component.
@@ -33,7 +41,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   selector: 'default-data-entry-form',
   templateUrl: 'default-data-entry-form.html'
 })
-export class DefaultDataEntryFormComponent implements OnInit {
+export class DefaultDataEntryFormComponent implements OnInit, OnChanges {
   @Input() entryFormSections;
   @Input() entryFormType: string;
   @Input() pager;
@@ -44,6 +52,7 @@ export class DefaultDataEntryFormComponent implements OnInit {
   @Input() isDataSetCompleted: boolean;
   @Input() isDataSetCompletenessProcessRunning: boolean;
   @Input() icons;
+  @Input() isPeriodLocked: boolean;
 
   @Output() onChange = new EventEmitter();
   @Output() onSectionListOpen = new EventEmitter();
@@ -54,6 +63,15 @@ export class DefaultDataEntryFormComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (
+      changes['isDataSetCompleted'] &&
+      !changes['isDataSetCompleted'].firstChange
+    ) {
+      console.log('changes of completeness status');
+    }
+  }
 
   trackByFn(index, item) {
     return item && item.id ? item.id : index;

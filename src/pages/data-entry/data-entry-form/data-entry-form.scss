@@ -1,6 +1,6 @@
 page-data-entry-form {
-  .entry-form-container{
-    overflow:auto;
+  .entry-form-container {
+    overflow: auto;
     max-height: 450px;
     min-height: 300px;
   }
@@ -13,5 +13,9 @@ page-data-entry-form {
   .item-ios.item-block .item-inner {
     padding-right: 0px;
     border-bottom: 0px solid #E6E6E7;
+  }
+
+  .lock-form {
+    background-color: #FFEA00
   }
 }
