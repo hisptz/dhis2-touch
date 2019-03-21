@@ -23,15 +23,22 @@
 *
 -->
 <div *ngIf="isMetadataLoaded">
-  <program-parameter-selection (programParameterSelection)="onProgramParameterSelection($event)" [currentUser]="currentUser"
-    [programIdsByUserRoles]="programIdsByUserRoles" [selectedDataDimension]="selectedDataDimension" [programType]="programType"></program-parameter-selection>
+  <program-parameter-selection (programParameterSelection)="onProgramParameterSelection($event)"
+    [currentUser]="currentUser" [programIdsByUserRoles]="programIdsByUserRoles"
+    [selectedDataDimension]="selectedDataDimension" [programType]="programType"></program-parameter-selection>
   <button [color]="colorSettings.colorAttributes.secondary" [disabled]="!isFormReady || showLoader" ion-button full
     text-capitalize (tap)="downloadingTrackerData()">
     <span [translate]="'Download data'"></span>
   </button>
   <div *ngIf="showLoader">
     <div class="item-card">
-      <progress-bar [showLoader]="showLoader" [progressPercentage]="progressTrackerPacentage" [processMessage]="progressTrackerMessage"></progress-bar>
+      <progress-bar [showLoader]="showLoader" [progressPercentage]="progressTrackerPacentage"
+        [processMessage]="progressTrackerMessage"></progress-bar>
+    </div>
+  </div>
+  <div *ngIf="!showLoader && downloadStatus !==''">
+    <div class="item-card download-data-status" padding-top padding-bottom>
+      {{ downloadStatus}}
     </div>
   </div>
 </div>
