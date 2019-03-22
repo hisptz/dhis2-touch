@@ -611,21 +611,19 @@ export class DataEntryFormPage implements OnInit {
   uploadDataValuesOnComplete(period, orgUnitId, dataDimension) {
     let dataValues = [];
     if (this.dataValuesObject) {
-      Object.keys(this.dataValuesObject).forEach((fieldId: any) => {
+      Object.keys(this.dataValuesObject).map((fieldId: any) => {
         let fieldIdArray = fieldId.split('-');
         if (this.dataValuesObject[fieldId]) {
           let dataValue = this.dataValuesObject[fieldId];
-          if (dataValue.status != 'synced') {
-            dataValues.push({
-              de: fieldIdArray[0],
-              co: fieldIdArray[1],
-              pe: period,
-              ou: orgUnitId,
-              cc: dataDimension.cc,
-              cp: dataDimension.cp,
-              value: dataValue.value
-            });
-          }
+          dataValues.push({
+            de: fieldIdArray[0],
+            co: fieldIdArray[1],
+            pe: period,
+            ou: orgUnitId,
+            cc: dataDimension.cc,
+            cp: dataDimension.cp,
+            value: dataValue.value
+          });
         }
       });
     }
