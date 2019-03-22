@@ -127,19 +127,26 @@ export class DownloadMetaDataComponent implements OnInit {
   }
 
   updateResources(resources) {
-    this.processes = resources;
-    this.isLoading = true;
-    this.isUpdateProcessOnProgress = true;
-  }
-
-  onUpdateCurrentUser(currentUser) {
-    this.currentUser = _.assign({}, this.currentUser, currentUser);
+    this.user.getCurrentUser().subscribe((user: any) => {
+      const { password } = user;
+      const { isPasswordEncode } = user;
+      const newPassord = isPasswordEncode
+        ? this.encryptionProvider.decode(password)
+        : password;
+      this.currentUser = {
+        ...user,
+        password: newPassord,
+        isPasswordEncode: false
+      };
+      this.processes = resources;
+      this.isLoading = true;
+      this.isUpdateProcessOnProgress = true;
+    });
   }
 
   onCancelLoginProcess() {
     this.isLoading = false;
     this.isUpdateProcessOnProgress = false;
-    this.onUpdateCurrentUser({ ...this.currentUser, isPasswordEncode: true });
   }
 
   onFailLogin(errorReponse) {
@@ -163,11 +170,9 @@ export class DownloadMetaDataComponent implements OnInit {
     this.onCancelLoginProcess();
   }
 
-  onSuccessLogin(data) {
-    const { currentUser } = data;
+  onSuccessLogin() {
     this.isLoading = false;
     this.isUpdateProcessOnProgress = false;
-    this.onUpdateCurrentUser({ ...currentUser, isPasswordEncode: true });
     const resources = _.flattenDeep([...[], this.resources]);
     const updatedResources = resources
       .filter((resource: any) => resource.status)

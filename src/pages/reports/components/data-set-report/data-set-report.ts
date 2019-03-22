@@ -185,6 +185,11 @@ export class DataSetReportComponent implements OnInit {
       }
       categoryComboValues[dataValue.co].push(dataValue.value);
     });
+    let options = [];
+    if (dataElement && dataElement.optionSet && dataElement.optionSet.options) {
+      options = dataElement.optionSet.options;
+    }
+    const optionsObject = this.arrayToObject(options, 'code');
     if (
       dataElement &&
       dataElement.categoryCombo &&
@@ -197,18 +202,31 @@ export class DataSetReportComponent implements OnInit {
           if (validAggregatedTypes.indexOf(dataElement.valueType) > -1) {
             this.dataSetReportAggregateValues[id] = this.getAggregatedValue(
               values,
-              dataElement.aggregationType
+              dataElement.aggregationType,
+              optionsObject
             );
           } else {
-            this.dataSetReportAggregateValues[id] =
-              values && values.length > 0 ? values[0] : '';
+            const value = values && values.length > 0 ? values[0] : '';
+            let optionCodeName = '';
+            if (optionsObject && optionsObject[value]) {
+              optionCodeName = optionsObject[value].name;
+              optionCodeName = ` (${optionCodeName})`;
+            }
+            this.dataSetReportAggregateValues[id] = { value, optionCodeName };
           }
         }
       );
     }
   }
 
-  getAggregatedValue(values, aggregationType) {
+  arrayToObject(array, keyField) {
+    return array.reduce((obj, item) => {
+      obj[item[keyField]] = item;
+      return obj;
+    }, {});
+  }
+
+  getAggregatedValue(values, aggregationType, optionsObject) {
     let aggregatedValue = 0;
     if (values && values.length > 0) {
       if (aggregationType == 'SUM') {
@@ -230,7 +248,12 @@ export class DataSetReportComponent implements OnInit {
         });
       }
     }
-    return aggregatedValue;
+    let optionCodeName = '';
+    if (optionsObject && optionsObject[aggregatedValue]) {
+      optionCodeName = optionsObject[aggregatedValue].name;
+      optionCodeName = ` (${optionCodeName})`;
+    }
+    return { value: aggregatedValue, optionCodeName };
   }
 
   trackByFn(index, item) {

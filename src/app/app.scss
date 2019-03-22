@@ -12,6 +12,12 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+.download-data-status {
+  color: #155724;
+  background-color: #69bb7b;
+  border-color: #69bb7b;
+}
+
 .logo {
   padding-top: 5%;
   max-width: 95px;

@@ -49,6 +49,8 @@ export class AggregateDataDownloaderComponent implements OnInit {
   showLoader: boolean;
   progressTrackerPacentage: number;
   progressTrackerMessage: string;
+  downloadStatus: string;
+
   constructor(
     private userProvider: UserProvider,
     private appProvider: AppProvider,
@@ -59,6 +61,7 @@ export class AggregateDataDownloaderComponent implements OnInit {
     this.showLoader = false;
     this.progressTrackerPacentage = 0;
     this.progressTrackerMessage = '';
+    this.downloadStatus = '';
   }
 
   ngOnInit() {
@@ -94,12 +97,13 @@ export class AggregateDataDownloaderComponent implements OnInit {
   }
 
   downloadingAggegateData() {
+    this.progressTrackerPacentage = 0;
+    this.showLoader = true;
+    this.downloadStatus = '';
     const dataSetId = this.selectedDataSet.id;
     const period = this.selectedPeriod.iso;
     const orgUnitId = this.selectedOrgUnit.id;
     const orgUnitName = this.selectedOrgUnit.name;
-    this.showLoader = true;
-    this.progressTrackerPacentage = 0;
     this.progressTrackerMessage = 'Discovering data';
     this.appProvider.setTopNotification(`Discovering aggregate data`);
     this.dataEntryFormProvider
@@ -122,9 +126,10 @@ export class AggregateDataDownloaderComponent implements OnInit {
               )
               .subscribe(
                 dataValues => {
-                  this.appProvider.setTopNotification(
-                    `${dataValues.length} aggregate data has been discovered`
-                  );
+                  this.downloadStatus = `${
+                    dataValues.length
+                  } aggregate data has been discovered`;
+                  this.appProvider.setTopNotification(this.downloadStatus);
                   if (dataValues.length > 0) {
                     this.progressTrackerPacentage = 50;
                     this.progressTrackerMessage = 'Saving data';

@@ -51,7 +51,7 @@
     </ion-col>
   </ion-row>
 
-  <ion-row *ngIf="entryFormSectionsCount == 1 || (entryFormType && entryFormType == 'CUSTOM') ">
+  <ion-row *ngIf="entryFormSectionsCount == 1">
     <ion-col col-6 col-sm-6>
       <button color="favorite" round ion-button full
         [disabled]="isDataSetCompletenessProcessRunning || isDataSetCompleted|| isPeriodLocked"

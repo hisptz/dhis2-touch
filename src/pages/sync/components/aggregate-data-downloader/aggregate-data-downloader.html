@@ -23,8 +23,8 @@
 *
 -->
 <div *ngIf="!isLoading">
-  <aggregate-parameter-selection (aggregateParameterSelection)="onAggregateParameterSelection($event)" [currentUser]="currentUser"
-    [dataSetIdsByUserRoles]="dataSetIdsByUserRoles"></aggregate-parameter-selection>
+  <aggregate-parameter-selection (aggregateParameterSelection)="onAggregateParameterSelection($event)"
+    [currentUser]="currentUser" [dataSetIdsByUserRoles]="dataSetIdsByUserRoles"></aggregate-parameter-selection>
   <div>
     <button [color]="colorSettings.colorAttributes.secondary" [disabled]="!isFormReady || showLoader" ion-button full
       text-capitalize (tap)="downloadingAggegateData()">
@@ -32,7 +32,13 @@
     </button>
     <div *ngIf="showLoader">
       <div class="item-card">
-        <progress-bar [showLoader]="showLoader" [progressPercentage]="progressTrackerPacentage" [processMessage]="progressTrackerMessage"></progress-bar>
+        <progress-bar [showLoader]="showLoader" [progressPercentage]="progressTrackerPacentage"
+          [processMessage]="progressTrackerMessage"></progress-bar>
+      </div>
+    </div>
+    <div *ngIf="!showLoader && downloadStatus !==''">
+      <div class="item-card download-data-status" padding-top padding-bottom>
+        {{ downloadStatus}}
       </div>
     </div>
   </div>

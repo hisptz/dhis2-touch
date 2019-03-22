@@ -47,6 +47,7 @@ export class TrackerDataDownloaderComponent implements OnInit {
   showLoader: boolean;
   progressTrackerPacentage: number;
   progressTrackerMessage: string;
+  downloadStatus: string;
 
   constructor(
     private appProvider: AppProvider,
@@ -62,7 +63,9 @@ export class TrackerDataDownloaderComponent implements OnInit {
     this.showLoader = false;
     this.progressTrackerPacentage = 0;
     this.progressTrackerMessage = '';
+    this.downloadStatus = '';
   }
+
   ngOnInit() {
     this.userProvider.getCurrentUser().subscribe(
       (currentUser: any) => {
@@ -98,13 +101,14 @@ export class TrackerDataDownloaderComponent implements OnInit {
   }
 
   downloadingTrackerData() {
+    this.progressTrackerPacentage = 0;
+    this.showLoader = true;
+    this.downloadStatus = '';
     const eventType = 'tracker-capture';
     const orgUnitName = this.selectedOrgUnit.name;
     const programId = this.selectedProgram.id;
     const programName = this.selectedProgram.name;
     const organisationUnitId = this.selectedOrgUnit.id;
-    this.showLoader = true;
-    this.progressTrackerPacentage = 0;
     this.progressTrackerMessage = 'Discovering data';
     this.appProvider.setTopNotification(`Discovering tracker data`);
     this.trackerCaptureSyncProvider
@@ -123,11 +127,12 @@ export class TrackerDataDownloaderComponent implements OnInit {
             enrollments,
             events
           } = discoveredTrackerData;
-          this.appProvider.setTopNotification(
-            `${events.length} events, ${enrollments.length} enrollments and ${
-              trackedEntityInstances.length
-            } tracked entity instances has been discovered`
-          );
+          this.downloadStatus = `${events.length} events, ${
+            enrollments.length
+          } enrollments and ${
+            trackedEntityInstances.length
+          } tracked entity instances has been discovered`;
+          this.appProvider.setTopNotification(this.downloadStatus);
           if (trackedEntityInstances.length > 0) {
             this.progressTrackerPacentage = 50;
             this.progressTrackerMessage = 'Saving data';
