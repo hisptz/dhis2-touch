@@ -58,7 +58,6 @@ export class ReportsPage implements OnInit {
   p: number = 1;
   icons: any = {};
   loadingMessage: string;
-  translationMapper: any;
   colorSettings$: Observable<any>;
 
   constructor(
@@ -68,8 +67,7 @@ export class ReportsPage implements OnInit {
     public user: UserProvider,
     public appProvider: AppProvider,
     public standardReportProvider: StandardReportProvider,
-    private sqLite: SqlLiteProvider,
-    private appTranslation: AppTranslationProvider
+    private sqLite: SqlLiteProvider
   ) {
     this.reportList = [];
     this.reportListCopy = [];
@@ -85,25 +83,14 @@ export class ReportsPage implements OnInit {
     this.loadingMessages = [];
     this.isLoading = true;
     this.reportList = [];
-    this.translationMapper = {};
     this.user.getCurrentUser().subscribe((user: any) => {
       this.currentUser = user;
-      this.appTranslation
-        .getTransalations(this.getValuesToTranslate())
-        .subscribe(
-          (data: any) => {
-            this.translationMapper = data;
-            this.loadReportsList(user);
-          },
-          error => {
-            this.loadReportsList(user);
-          }
-        );
+      this.loadReportsList(user);
     });
   }
 
   selectReport(report) {
-    let parameter = {
+    const parameter = {
       id: report.id,
       reportType: report.type,
       name: report.name,
@@ -125,20 +112,15 @@ export class ReportsPage implements OnInit {
   doRefresh(refresher) {
     refresher.complete();
 
-    let key = 'Downloading reports from server';
-    this.loadingMessage = this.translationMapper[key]
-      ? this.translationMapper[key]
-      : key;
+    this.loadingMessage = 'Downloading reports from server';
+
     this.isLoading = true;
     let resource = 'reports';
     this.standardReportProvider
       .downloadReportsFromServer(this.currentUser)
       .subscribe(
         (response: any) => {
-          key = 'Preparing local storage for updates';
-          this.loadingMessage = this.translationMapper[key]
-            ? this.translationMapper[key]
-            : key;
+          this.loadingMessage = 'Preparing local storage for updates';
           this.sqLite
             .dropTable(resource, this.currentUser.currentDatabase)
             .subscribe(
@@ -147,10 +129,8 @@ export class ReportsPage implements OnInit {
                   .createTable(resource, this.currentUser.currentDatabase)
                   .subscribe(
                     () => {
-                      key = 'Saving reports from server';
-                      this.loadingMessage = this.translationMapper[key]
-                        ? this.translationMapper[key]
-                        : key;
+                      this.loadingMessage = 'Saving reports from server';
+
                       this.standardReportProvider
                         .saveReportsFromServer(response, this.currentUser)
                         .subscribe(
@@ -189,10 +169,8 @@ export class ReportsPage implements OnInit {
   }
 
   loadReportsList(user) {
-    let key = 'Discovering reports';
-    this.loadingMessage = this.translationMapper[key]
-      ? this.translationMapper[key]
-      : key;
+    this.loadingMessage = 'Discovering reports';
+
     this.standardReportProvider.getReportList(user).subscribe(
       (reportList: any) => {
         const { reports } = reportList;
@@ -227,16 +205,6 @@ export class ReportsPage implements OnInit {
 
   trackByFn(index, item) {
     return item && item.id ? item.id : index;
-  }
-
-  getValuesToTranslate() {
-    return [
-      'Discovering reports',
-      'Downloading reports from server',
-      'Preparing local storage for updates',
-      'Saving reports from server',
-      'there is no report to select'
-    ];
   }
 
   filteringReports(reportType: any) {
