@@ -24,6 +24,7 @@ import { Injectable } from '@angular/core';
 import { HttpClientProvider } from '../http-client/http-client';
 import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { Observable } from 'rxjs/Observable';
+import * as _ from 'lodash';
 
 /*
   Generated class for the StandardReportProvider provider.
@@ -48,11 +49,11 @@ export class StandardReportProvider {
    * @returns {Observable<any>}
    */
   downloadReportsFromServer(currentUser): Observable<any> {
-    let fields =
+    const fields =
       'id,name,created,type,relativePeriods,reportParams,designContent';
-    let filter = 'type:eq:HTML&filter=designContent:ilike:cordova';
-    let url = '/api/' + this.resource + '.json?paging=false&fields=' + fields;
-    url += '&filter=' + filter;
+    const filter = 'type:eq:HTML&filter=designContent:ilike:cordova';
+    const resource = 'reports';
+    const url = `/api/${resource}.json?paging=false&fields=${fields}&filter=${filter}`;
     return new Observable(observer => {
       this.HttpClient.get(url, true, currentUser).subscribe(
         (response: any) => {
@@ -73,9 +74,9 @@ export class StandardReportProvider {
    * @returns {Observable<any>}
    */
   downloadConstantsFromServer(currentUser): Observable<any> {
-    let fields = 'id,name,value';
-    let resource = 'constants';
-    let url = '/api/' + resource + '.json?paging=false&fields=' + fields;
+    const fields = 'id,name,value';
+    const resource = 'constants';
+    const url = `/api/${resource}.json?paging=false&fields=${fields}`;
     return new Observable(observer => {
       this.HttpClient.get(url, true, currentUser).subscribe(
         (response: any) => {
@@ -97,7 +98,7 @@ export class StandardReportProvider {
    * @returns {Observable<any>}
    */
   saveConstantsFromServer(constants, currentUser): Observable<any> {
-    let resource = 'constants';
+    const resource = 'constants';
     return new Observable(observer => {
       if (constants.length == 0) {
         observer.next();
@@ -163,8 +164,8 @@ export class StandardReportProvider {
    * @returns {Observable<any>}
    */
   savingReportDesign(reports, currentUser): Observable<any> {
-    let resource = 'reportDesign';
-    let reportDesigns = [];
+    const resource = 'reportDesign';
+    const reportDesigns = [];
     reports.forEach((report: any) => {
       reportDesigns.push({
         id: report.id,
