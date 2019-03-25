@@ -99,7 +99,8 @@
 
     <div *ngIf="supportValueTypes.indexOf(dataElement.valueType) === -1">
       <div padding>
-        Currently '{{ dataElement.valueType.toLocaleLowerCase().replace('/_/g',' ')}}' as value type is not supported
+        Currently '{{ dataElement && dataElement.valueType? dataElement.valueType.toLocaleLowerCase().replace('/_/g','
+        ') : "Unknown"}}' as value type is not supported
       </div>
     </div>
   </div>

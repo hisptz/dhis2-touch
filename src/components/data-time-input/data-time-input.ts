@@ -36,6 +36,7 @@ import * as moment from 'moment';
 })
 export class DataTimeInputComponent implements OnInit {
   @Input() mode: string;
+  @Input() lockingFieldStatus;
   @Input() inputValue: string;
   @Input() withoutHorizontalPadding: boolean;
   @Output() dateTimeUpdateAction = new EventEmitter();
@@ -48,37 +49,45 @@ export class DataTimeInputComponent implements OnInit {
       this.mode === 'date'
         ? 'Touch to pick date'
         : this.mode === 'datetime'
-          ? 'Touch to pick date and time'
-          : this.mode === 'time'
-            ? 'Touch to pick time'
-            : '';
+        ? 'Touch to pick date and time'
+        : this.mode === 'time'
+        ? 'Touch to pick time'
+        : '';
   }
 
   showTime() {
-    const date = this.getDatePickerValue(this.inputValue, this.mode);
-    this.datePicker
-      .show({
-        date: date,
-        mode: this.mode,
-        okText: 'Done',
-        cancelText: 'Back',
-        todayText: 'Today',
-        nowText: 'Now',
-        allowFutureDates: true,
-        is24Hour: false,
-        androidTheme: this.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT
-      })
-      .then(
-        date => {
-          const displayValue = this.getDisplayValue(new Date(date), this.mode);
-          this.dateTimeUpdateAction.emit(displayValue);
-        },
-        error => {}
-      );
+    if (!this.lockingFieldStatus) {
+      const date = this.getDatePickerValue(this.inputValue, this.mode);
+      this.datePicker
+        .show({
+          date: date,
+          mode: this.mode,
+          okText: 'Done',
+          cancelText: 'Back',
+          todayText: 'Today',
+          nowText: 'Now',
+          allowFutureDates: true,
+          is24Hour: false,
+          androidTheme: this.datePicker.ANDROID_THEMES
+            .THEME_DEVICE_DEFAULT_LIGHT
+        })
+        .then(
+          date => {
+            const displayValue = this.getDisplayValue(
+              new Date(date),
+              this.mode
+            );
+            this.dateTimeUpdateAction.emit(displayValue);
+          },
+          error => {}
+        );
+    }
   }
 
   clearInput() {
-    this.dateTimeUpdateAction.emit('');
+    if (!this.lockingFieldStatus) {
+      this.dateTimeUpdateAction.emit('');
+    }
   }
 
   getDatePickerValue(inputValue, mode) {

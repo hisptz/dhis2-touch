@@ -39,6 +39,7 @@ import { Observable } from 'rxjs';
 export class TrueOnlyInputFieldComponent implements OnInit {
   @Input() dataElementId;
   @Input() categoryOptionComboId;
+  @Input() lockingFieldStatus;
   @Input() data;
   @Output() onChange = new EventEmitter();
 

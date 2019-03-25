@@ -39,7 +39,8 @@ import {
   onFormReady,
   updateFormFieldColor,
   evaluateCustomFomProgramIndicators,
-  evaluateCustomFomAggregateIndicators
+  evaluateCustomFomAggregateIndicators,
+  lockingEntryFormFields
 } from '../../helpers/data-entry.helper';
 
 declare var dataEntry: any;
@@ -51,6 +52,8 @@ declare var dataEntry: any;
 export class CustomDataEntryFormComponent
   implements OnInit, AfterViewInit, OnChanges {
   entryFormStatusColors = {};
+  @Input() dataSetReportAggregateValues: any;
+  @Input() isPeriodLocked: boolean;
   @Input()
   dataEntryFormDesign;
   @Input()
@@ -73,7 +76,6 @@ export class CustomDataEntryFormComponent
   dataUpdateStatus: { elementId: string; status: string };
   @Output()
   onCustomFormInputChange = new EventEmitter();
-
   @Input()
   dataSetsCompletenessInfo;
   @Input()
@@ -88,6 +90,7 @@ export class CustomDataEntryFormComponent
   _htmlMarkup: SafeHtml;
   hasScriptSet: boolean;
   entryFormSectionsCount: number;
+  elementIds: any;
 
   constructor(private sanitizer: DomSanitizer, private elementRef: ElementRef) {
     this.hasScriptSet = false;
@@ -124,6 +127,17 @@ export class CustomDataEntryFormComponent
         );
       });
     }
+    if (
+      changes['isDataSetCompleted'] &&
+      !changes['isDataSetCompleted'].firstChange
+    ) {
+      this.setFieldLockingStatus();
+    }
+  }
+
+  setFieldLockingStatus() {
+    const shouldLockFields = this.isDataSetCompleted || this.isPeriodLocked;
+    lockingEntryFormFields(shouldLockFields);
   }
 
   ngOnInit() {
@@ -141,6 +155,7 @@ export class CustomDataEntryFormComponent
       this.setScriptsOnHtmlContent(
         this.getScriptsContents(this.dataEntryFormDesign)
       );
+      this.setFieldLockingStatus();
     } catch (error) {
       console.log('ng after view int ' + JSON.stringify(error));
     }
@@ -199,6 +214,7 @@ export class CustomDataEntryFormComponent
         this.programIndicators,
         this.indicators,
         this.data,
+        this.dataSetReportAggregateValues,
         this.entryFormStatusColors,
         scriptsContentsArray,
         function(

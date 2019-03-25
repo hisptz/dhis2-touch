@@ -42,7 +42,7 @@ function getSelectInput(id, value, options) {
   selectElement.setAttribute('class', 'entryselect');
 
   const defaultOption = document.createElement('option');
-  defaultOption.disabled = true;
+  defaultOption.disabled = false;
   defaultOption.selected = true;
   defaultOption.value = '';
   selectElement.appendChild(defaultOption);
@@ -90,11 +90,21 @@ function getRadioInputs(id, savedValue) {
     noInput.setAttribute('class', 'entryfield-radio');
     noInput.value = 'false';
 
+    const noValueInput = document.createElement('input');
+    noValueInput.setAttribute('type', 'radio');
+    noValueInput.setAttribute('id', id);
+    noValueInput.setAttribute('name', id);
+    noValueInput.setAttribute('class', 'entryfield-radio');
+    noValueInput.value = '';
+
     radioContainer.appendChild(yesInput);
     radioContainer.appendChild(document.createTextNode(' Yes'));
 
     radioContainer.appendChild(noInput);
     radioContainer.appendChild(document.createTextNode(' No'));
+
+    radioContainer.appendChild(noValueInput);
+    radioContainer.appendChild(document.createTextNode(' No value'));
   } else if (savedValue == 'false') {
     const yesInput = document.createElement('input');
     yesInput.setAttribute('type', 'radio');
@@ -111,11 +121,21 @@ function getRadioInputs(id, savedValue) {
     noInput.checked = true;
     noInput.value = 'false';
 
+    const noValueInput = document.createElement('input');
+    noValueInput.setAttribute('type', 'radio');
+    noValueInput.setAttribute('id', id);
+    noValueInput.setAttribute('name', id);
+    noValueInput.setAttribute('class', 'entryfield-radio');
+    noValueInput.value = '';
+
     radioContainer.appendChild(yesInput);
     radioContainer.appendChild(document.createTextNode(' Yes'));
 
     radioContainer.appendChild(noInput);
     radioContainer.appendChild(document.createTextNode(' No'));
+
+    radioContainer.appendChild(noValueInput);
+    radioContainer.appendChild(document.createTextNode(' No value'));
   } else {
     const yesInput = document.createElement('input');
     yesInput.setAttribute('type', 'radio');
@@ -131,11 +151,21 @@ function getRadioInputs(id, savedValue) {
     noInput.setAttribute('class', 'entryfield-radio');
     noInput.value = 'false';
 
+    const noValueInput = document.createElement('input');
+    noValueInput.setAttribute('type', 'radio');
+    noValueInput.setAttribute('id', id);
+    noValueInput.setAttribute('name', id);
+    noValueInput.setAttribute('class', 'entryfield-radio');
+    noValueInput.value = '';
+
     radioContainer.appendChild(yesInput);
     radioContainer.appendChild(document.createTextNode(' Yes'));
 
     radioContainer.appendChild(noInput);
     radioContainer.appendChild(document.createTextNode(' No'));
+
+    radioContainer.appendChild(noValueInput);
+    radioContainer.appendChild(document.createTextNode(' No value'));
   }
 
   return radioContainer;
@@ -159,6 +189,7 @@ export function onFormReady(
   programIndicators,
   indicators,
   dataValues,
+  dataSetReportAggregateValues,
   entryFormStatusColors,
   scriptsContentsArray,
   formReady
@@ -169,155 +200,191 @@ export function onFormReady(
   const elementsWithOptionSet = {};
   const elementsWithTextArea = {};
   const elementsWithRadioInput = {};
-  _.each(inputElements, (inputElement: any) => {
-    if (inputElement) {
-      //empty value set on design inputs
-      if (inputElement && inputElement.hasAttribute('value')) {
-        inputElement.setAttribute('value', '');
+  if (dataSetReportAggregateValues) {
+    const elementIdObjects = Object.keys(dataSetReportAggregateValues).map(
+      key => {
+        return {
+          id: key,
+          elementId: `${key}-val`
+        };
       }
-      // Get attribute from the element
-      const elementId = inputElement.getAttribute('id')
-        ? inputElement.getAttribute('id')
-        : inputElement.getAttribute('attributeid');
+    );
+    for (const elementIdObject of elementIdObjects) {
+      try {
+        const { id, elementId } = elementIdObject;
+        const { value, optionCodeName } = dataSetReportAggregateValues[id];
+        const inputElement: any = document.getElementById(elementId);
+        const inputElementParent = inputElement.parentNode;
+        var labelElement = document.createElement('label');
+        var optionCodeNameElement = document.createElement('span');
+        optionCodeNameElement.setAttribute(
+          'style',
+          'font-weight: bold;font-style: italic;'
+        );
+        labelElement.appendChild(document.createTextNode(value));
+        optionCodeNameElement.appendChild(
+          document.createTextNode(optionCodeName)
+        );
+        labelElement.appendChild(optionCodeNameElement);
+        inputElementParent.insertBefore(labelElement, inputElement.nextSibling);
+        inputElement.setAttribute('style', 'display:none');
+      } catch (error) {
+        console.log(JSON.stringify({ type: ' input', error }));
+      }
+    }
+  } else {
+    _.each(inputElements, (inputElement: any) => {
+      if (inputElement) {
+        //empty value set on design inputs
+        if (inputElement && inputElement.hasAttribute('value')) {
+          inputElement.setAttribute('value', '');
+        }
+        // Get attribute from the element
+        const elementId = inputElement.getAttribute('id')
+          ? inputElement.getAttribute('id')
+          : inputElement.getAttribute('attributeid');
 
-      // Get splitted ID to get data element and category combo ids
-      const splitedId =
-        formType === 'aggregate' || formType === 'event'
-          ? elementId
-            ? elementId.split('-')
-            : []
-          : [];
+        // Get splitted ID to get data element and category combo ids
+        const splitedId =
+          formType === 'aggregate' || formType === 'event'
+            ? elementId
+              ? elementId.split('-')
+              : []
+            : [];
 
-      const dataElementId = formType === 'event' ? splitedId[1] : splitedId[0];
+        const dataElementId =
+          formType === 'event' ? splitedId[1] : splitedId[0];
 
-      const optionComboId =
-        formType === 'event'
-          ? 'dataElement'
-          : formType === 'tracker'
-          ? 'trackedEntityAttribute'
-          : splitedId[1];
+        const optionComboId =
+          formType === 'event'
+            ? 'dataElement'
+            : formType === 'tracker'
+            ? 'trackedEntityAttribute'
+            : splitedId[1];
 
-      // // Get data element details
+        // // Get data element details
 
-      const dataElementDetails = dataElementObjects[dataElementId]
-        ? dataElementObjects[dataElementId]
-        : {};
+        const dataElementDetails = dataElementObjects[dataElementId]
+          ? dataElementObjects[dataElementId]
+          : {};
 
-      // // Get dataElement type
-      const dataElementType = dataElementDetails
-        ? dataElementDetails.valueType
-        : null;
+        // // Get dataElement type
+        const dataElementType = dataElementDetails
+          ? dataElementDetails.valueType
+          : null;
 
-      // // Get element value
-      const dataElementValue = getSanitizedValue(
-        getDataValue(dataValues, dataElementId + '-' + optionComboId),
-        dataElementType
-      );
-      // // Update DOM based on data element type
-      if (dataElementType) {
-        if (dataElementDetails.optionSet) {
-          const selectInput = getSelectInput(
-            elementId,
-            dataElementValue,
-            dataElementDetails.optionSet.options
-          );
-          elementsWithOptionSet[elementId] = selectInput;
-        } else {
-          if (dataElementType === 'TRUE_ONLY') {
-            inputElement.setAttribute('type', 'checkbox');
-            inputElement.setAttribute('class', 'entrytrueonly');
-            inputElement.checked = dataElementValue;
-          } else if (dataElementType === 'LONG_TEXT') {
-            elementsWithTextArea[elementId] = getTextArea(
+        // // Get element value
+        const dataElementValue = getSanitizedValue(
+          getDataValue(dataValues, dataElementId + '-' + optionComboId),
+          dataElementType
+        );
+        // // Update DOM based on data element type
+        if (dataElementType) {
+          if (dataElementDetails.optionSet) {
+            const selectInput = getSelectInput(
               elementId,
-              dataElementValue
+              dataElementValue,
+              dataElementDetails.optionSet.options
             );
-          } else if (dataElementType === 'DATE') {
-            inputElement.setAttribute('type', 'date');
-            inputElement.setAttribute('class', 'entryfield');
-            inputElement.value = dataElementValue;
-          } else if (dataElementType === 'BOOLEAN') {
-            elementsWithRadioInput[elementId] = getRadioInputs(
-              elementId,
-              dataElementValue
-            );
-          } else if (
-            dataElementType === 'PERCENTAGE' ||
-            dataElementType === 'NUMBER' ||
-            dataElementType.indexOf('INTEGER') > -1
-          ) {
-            inputElement.setAttribute('type', 'number');
-            inputElement.setAttribute('class', 'entryfield');
-            if (dataElementType === 'INTEGER_POSITIVE') {
-              inputElement.setAttribute('min', 1);
-            } else if (dataElementType === 'INTEGER_NEGATIVE') {
-              inputElement.setAttribute('max', -1);
-            } else if (dataElementType === 'INTEGER_ZERO_OR_POSITIVE') {
-              inputElement.setAttribute('min', 0);
-            } else if (dataElementType === 'PERCENTAGE') {
-              inputElement.setAttribute('min', 0);
-              inputElement.setAttribute('max', 100);
-            }
-            inputElement.value = dataElementValue;
+            elementsWithOptionSet[elementId] = selectInput;
           } else {
+            if (dataElementType === 'TRUE_ONLY') {
+              inputElement.setAttribute('type', 'checkbox');
+              inputElement.setAttribute('class', 'entrytrueonly');
+              inputElement.checked = dataElementValue;
+            } else if (dataElementType === 'LONG_TEXT') {
+              elementsWithTextArea[elementId] = getTextArea(
+                elementId,
+                dataElementValue
+              );
+            } else if (dataElementType === 'DATE') {
+              inputElement.setAttribute('type', 'date');
+              inputElement.setAttribute('class', 'entryfield');
+              inputElement.value = dataElementValue;
+            } else if (dataElementType === 'BOOLEAN') {
+              elementsWithRadioInput[elementId] = getRadioInputs(
+                elementId,
+                dataElementValue
+              );
+            } else if (
+              dataElementType === 'PERCENTAGE' ||
+              dataElementType === 'NUMBER' ||
+              dataElementType.indexOf('INTEGER') > -1
+            ) {
+              inputElement.setAttribute('type', 'number');
+              inputElement.setAttribute('class', 'entryfield');
+              if (dataElementType === 'INTEGER_POSITIVE') {
+                inputElement.setAttribute('min', 1);
+              } else if (dataElementType === 'INTEGER_NEGATIVE') {
+                inputElement.setAttribute('max', -1);
+              } else if (dataElementType === 'INTEGER_ZERO_OR_POSITIVE') {
+                inputElement.setAttribute('min', 0);
+              } else if (dataElementType === 'PERCENTAGE') {
+                inputElement.setAttribute('min', 0);
+                inputElement.setAttribute('max', 100);
+              }
+              inputElement.value = dataElementValue;
+            } else {
+              inputElement.setAttribute('class', 'entryfield');
+              inputElement.value = dataElementValue;
+            }
+          }
+        } else {
+          // TODO Find ways to deal with input that
+          if (
+            inputElement &&
+            inputElement.hasAttribute('name') &&
+            inputElement.getAttribute('name') === 'indicator'
+          ) {
+            inputElement.setAttribute('value', '0');
             inputElement.setAttribute('class', 'entryfield');
-            inputElement.value = dataElementValue;
+            inputElement.setAttribute('readonly', 'readonly');
+            inputElement.setAttribute('disabled', 'disabled');
           }
         }
-      } else {
-        // TODO Find ways to deal with input that
-        if (
-          inputElement &&
-          inputElement.hasAttribute('name') &&
-          inputElement.getAttribute('name') === 'indicator'
-        ) {
-          inputElement.setAttribute('value', '0');
-          inputElement.setAttribute('class', 'entryfield');
-          inputElement.setAttribute('readonly', 'readonly');
-          inputElement.setAttribute('disabled', 'disabled');
-        }
+      }
+    });
+
+    // update option sets
+    for (let elementId of Object.keys(elementsWithOptionSet)) {
+      try {
+        const inputElement: any = document.getElementById(elementId);
+        const selectInput = elementsWithOptionSet[elementId];
+        inputElement.replaceWith(selectInput);
+      } catch (error) {
+        console.log(JSON.stringify({ type: 'Select input', error }));
       }
     }
-  });
 
-  // update option sets
-  for (let elementId of Object.keys(elementsWithOptionSet)) {
-    try {
-      const inputElement: any = document.getElementById(elementId);
-      const selectInput = elementsWithOptionSet[elementId];
-      inputElement.replaceWith(selectInput);
-    } catch (error) {
-      console.log(JSON.stringify({ type: 'Select input', error }));
+    // update option sets
+    for (let elementId of Object.keys(elementsWithRadioInput)) {
+      try {
+        const inputElement: any = document.getElementById(elementId);
+        const redioInput = elementsWithRadioInput[elementId];
+        inputElement.replaceWith(redioInput);
+      } catch (error) {
+        console.log(JSON.stringify({ type: 'Radio input', error }));
+      }
+    }
+
+    // update text area
+    for (let elementId of Object.keys(elementsWithTextArea)) {
+      try {
+        const inputElement: any = document.getElementById(elementId);
+        const textAreaInput = elementsWithTextArea[elementId];
+        inputElement.replaceWith(textAreaInput, inputElement);
+        inputElement.parentNode.removeChild(inputElement);
+      } catch (error) {
+        console.log(JSON.stringify({ type: 'Text area input', error }));
+      }
+    }
+    if (formType === 'event') {
+      evaluateCustomFomProgramIndicators(programIndicators);
+    } else if (formType === 'aggregate') {
+      evaluateCustomFomAggregateIndicators(indicators);
     }
   }
 
-  // update option sets
-  for (let elementId of Object.keys(elementsWithRadioInput)) {
-    try {
-      const inputElement: any = document.getElementById(elementId);
-      const redioInput = elementsWithRadioInput[elementId];
-      inputElement.replaceWith(redioInput);
-    } catch (error) {
-      console.log(JSON.stringify({ type: 'Radio input', error }));
-    }
-  }
-
-  // update text area
-  for (let elementId of Object.keys(elementsWithTextArea)) {
-    try {
-      const inputElement: any = document.getElementById(elementId);
-      const textAreaInput = elementsWithTextArea[elementId];
-      inputElement.replaceWith(textAreaInput, inputElement);
-      inputElement.parentNode.removeChild(inputElement);
-    } catch (error) {
-      console.log(JSON.stringify({ type: 'Text area input', error }));
-    }
-  }
-  if (formType === 'event') {
-    evaluateCustomFomProgramIndicators(programIndicators);
-  } else if (formType === 'aggregate') {
-    evaluateCustomFomAggregateIndicators(indicators);
-  }
   formReady(
     formType,
     entryFormStatusColors,
@@ -362,6 +429,66 @@ export function onDataValueChange(
     }
   });
   document.body.dispatchEvent(dataValueEvent);
+}
+
+export function lockingEntryFormFields(shouldLockFields) {
+  _.each(document.getElementsByClassName('entryfield'), (inputElement: any) => {
+    if (shouldLockFields) {
+      inputElement.setAttribute('readonly', 'readonly');
+      inputElement.setAttribute('disabled', 'disabled');
+    } else {
+      inputElement.removeAttribute('disabled');
+      inputElement.removeAttribute('readonly');
+    }
+  });
+  _.each(
+    document.getElementsByClassName('entryselect'),
+    (inputElement: any) => {
+      if (shouldLockFields) {
+        inputElement.setAttribute('readonly', 'readonly');
+        inputElement.setAttribute('disabled', 'disabled');
+      } else {
+        inputElement.removeAttribute('disabled');
+        inputElement.removeAttribute('readonly');
+      }
+    }
+  );
+  _.each(
+    document.getElementsByClassName('entrytrueonly'),
+    (inputElement: any) => {
+      if (shouldLockFields) {
+        inputElement.setAttribute('readonly', 'readonly');
+        inputElement.setAttribute('disabled', 'disabled');
+      } else {
+        inputElement.removeAttribute('disabled');
+        inputElement.removeAttribute('readonly');
+      }
+    }
+  );
+  _.each(
+    document.getElementsByClassName('entryfileresource'),
+    (inputElement: any) => {
+      if (shouldLockFields) {
+        inputElement.setAttribute('readonly', 'readonly');
+        inputElement.setAttribute('disabled', 'disabled');
+      } else {
+        inputElement.removeAttribute('disabled');
+        inputElement.removeAttribute('readonly');
+      }
+    }
+  );
+  _.each(
+    document.getElementsByClassName('entryfield-radio'),
+    (inputElement: any) => {
+      if (shouldLockFields) {
+        inputElement.setAttribute('readonly', 'readonly');
+        inputElement.setAttribute('disabled', 'disabled');
+      } else {
+        inputElement.removeAttribute('disabled');
+        inputElement.removeAttribute('readonly');
+      }
+    }
+  );
 }
 
 export function evaluateCustomFomProgramIndicators(programIndicators: any[]) {

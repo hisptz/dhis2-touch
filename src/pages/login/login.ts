@@ -337,7 +337,14 @@ export class LoginPage implements OnInit, OnDestroy {
   }
 
   startLoginProcess() {
-    this.currentUser = { ...this.currentUser, isPasswordEncode: false };
+    const { username, password, serverUrl } = this.currentUser;
+    this.currentUser = {
+      ...this.currentUser,
+      username: username.trim(),
+      password: password.trim(),
+      serverUrl: serverUrl.trim(),
+      isPasswordEncode: false
+    };
     this.overAllLoginMessage = this.currentUser.serverUrl;
     this.isLoginProcessActive = true;
     this.backgroundMode.enable();

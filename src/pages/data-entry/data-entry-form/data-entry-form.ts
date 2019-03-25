@@ -82,6 +82,7 @@ export class DataEntryFormPage implements OnInit {
   @ViewChild(Content)
   content: Content;
   colorSettings$: Observable<any>;
+  isPeriodLocked: boolean;
 
   constructor(
     private store: Store<State>,
@@ -132,6 +133,7 @@ export class DataEntryFormPage implements OnInit {
       ? this.translationMapper[key]
       : key;
     this.entryFormParameter = this.navParams.get('parameter');
+    this.isPeriodLocked = this.entryFormParameter.isPeriodLocked;
     this.userProvider.getCurrentUser().subscribe(
       user => {
         this.currentUser = user;
@@ -307,17 +309,40 @@ export class DataEntryFormPage implements OnInit {
         const dataValue = this.dataValuesObject[id];
         dataValues.push({ ...dataValue, status: 'synced' });
       });
+      this.appProvider.setTopNotification('Uploading offline data');
       this.synchronizationProvider
         .syncAllOfflineDataToServer(this.currentUser)
         .subscribe(
           response => {
-            console.log(JSON.stringify({ response }));
+            const percentage =
+              response && response.percentage
+                ? parseInt(response.percentage)
+                : 0;
+            const { importSummaries } = response;
+            if (importSummaries && importSummaries.dataValues) {
+              const { fail } = importSummaries.dataValues;
+              if (fail == 0 && percentage === 100) {
+                this.appProvider.setTopNotification(
+                  'Offline data has been uploaded successfully'
+                );
+                this.savingDataValuesAfterResolvingConflicts(dataValues);
+              } else {
+                this.appProvider.setTopNotification(
+                  'Failed to upload offline data'
+                );
+              }
+            }
           },
           error => {
             console.log(JSON.stringify({ error }));
           }
         );
+    } else {
+      this.savingDataValuesAfterResolvingConflicts(dataValues);
     }
+  }
+
+  savingDataValuesAfterResolvingConflicts(dataValues) {
     this.isLoading = true;
     this.loadingMessage = '';
     let newDataValue = [];
@@ -586,21 +611,19 @@ export class DataEntryFormPage implements OnInit {
   uploadDataValuesOnComplete(period, orgUnitId, dataDimension) {
     let dataValues = [];
     if (this.dataValuesObject) {
-      Object.keys(this.dataValuesObject).forEach((fieldId: any) => {
+      Object.keys(this.dataValuesObject).map((fieldId: any) => {
         let fieldIdArray = fieldId.split('-');
         if (this.dataValuesObject[fieldId]) {
           let dataValue = this.dataValuesObject[fieldId];
-          if (dataValue.status != 'synced') {
-            dataValues.push({
-              de: fieldIdArray[0],
-              co: fieldIdArray[1],
-              pe: period,
-              ou: orgUnitId,
-              cc: dataDimension.cc,
-              cp: dataDimension.cp,
-              value: dataValue.value
-            });
-          }
+          dataValues.push({
+            de: fieldIdArray[0],
+            co: fieldIdArray[1],
+            pe: period,
+            ou: orgUnitId,
+            cc: dataDimension.cc,
+            cp: dataDimension.cp,
+            value: dataValue.value
+          });
         }
       });
     }

@@ -23,20 +23,14 @@
 *
 -->
 <ion-header>
-
-  <ion-navbar [color]="(colorSettings$ |async).colorAttributes.main">
+  <ion-navbar [color]="(colorSettings$ | async).colorAttributes.main">
     <ion-title>
       <span [translate]="'Reports'"></span>
     </ion-title>
   </ion-navbar>
-
 </ion-header>
-
-
 <ion-content>
-
-
-  <ion-refresher (ionRefresh)="doRefresh($event)">
+  <ion-refresher (ionRefresh)="reloadReports($event)">
     <ion-refresher-content pullingText="Pull to refresh">
     </ion-refresher-content>
   </ion-refresher>
@@ -47,32 +41,33 @@
       </ion-col>
     </ion-row>
   </div>
-
   <div *ngIf="!isLoading">
-
-    <ion-searchbar animated="true" [(ngModel)]="search" placeholder="{{'Search'|translate}}"></ion-searchbar>
-
+    <ion-searchbar animated="true" (ionInput)="getFilteredReportList($event)" placeholder="{{'Search'|translate}}">
+    </ion-searchbar>
     <ion-grid>
       <ion-row>
         <ion-col>
           <span class="item-card" color="font-color" ion-button clear text-capitalize (tap)="filteringReports('all')">
-            <ion-icon class="side-menu-icon" name="list"></ion-icon>&nbsp;&nbsp; all
+            <ion-icon class="side-menu-icon" name="list"></ion-icon>&nbsp;&nbsp;
+            all
           </span>
-          <span class="item-card" color="font-color" ion-button clear text-capitalize (tap)="filteringReports('standardReport')"><img
-              class="side-menu-icon" [src]="icons.standardReport" />&nbsp;&nbsp; standard</span>
-          <span class="item-card" color="font-color" ion-button clear text-capitalize (tap)="filteringReports('dataSetReport')"><img
-              class="side-menu-icon" [src]="icons.dataSetReport" />&nbsp;&nbsp;Dataset</span>
+          <span class="item-card" color="font-color" ion-button clear text-capitalize
+            (tap)="filteringReports('standardReport')"><img class="side-menu-icon"
+              [src]="icons.standardReport" />&nbsp;&nbsp; standard</span>
+          <span class="item-card" color="font-color" ion-button clear text-capitalize
+            (tap)="filteringReports('dataSetReport')"><img class="side-menu-icon"
+              [src]="icons.dataSetReport" />&nbsp;&nbsp;Dataset</span>
         </ion-col>
       </ion-row>
 
       <ion-row>
         <ion-col>
           <ion-list>
-            <ion-item *ngIf="(reportList.length > 0 && reportList[currentPage - 1])">
+            <ion-item *ngIf="reportList.length > 0 && reportList[currentPage - 1]">
               <div class="animated fadeIn">
                 <ion-list>
-                  <ion-item *ngFor="let report of reportList[currentPage - 1] | searchReportListPipe : search ;trackBy: trackByFn"
-                    (tap)="selectReport(report)">
+                  <ion-item *ngFor="let report of reportList[currentPage - 1]; trackBy: trackByFn
+                    " (tap)="selectReport(report)">
                     <img *ngIf="report && report.type" class="side-menu-icon" [src]="icons[report.type]" />&nbsp;
                     <span>{{ report.name }}</span>
                     <ion-icon name="ios-arrow-forward" item-right></ion-icon>
@@ -81,7 +76,7 @@
               </div>
             </ion-item>
             <ion-item *ngIf="reportList.length == 0">
-              <empty-list-notification [emptyListMessage]="translationMapper['there is no report to select']"></empty-list-notification>
+              <empty-list-notification [emptyListMessage]="'there is no report to select'"></empty-list-notification>
             </ion-item>
           </ion-list>
         </ion-col>
@@ -90,28 +85,22 @@
 
     <ion-grid *ngIf="reportList.length !== 0">
       <ion-row>
-        <ion-col col-9>
-          <button ion-button outline [disabled]="(currentPage == 1)" color="font-color" text-capitalize (click)="previousPage()">
+        <ion-col col-auto>
+          <button ion-button padding outline [disabled]="currentPage == 1" color="font-color" text-capitalize
+            (click)="previousPage()">
             <ion-icon name="skip-backward"></ion-icon>
           </button>
           <button ion-button clear color="font-color" text-capitalize>
-            {{ (reportList.length > 0)? currentPage : 0 }}/{{ reportList.length }}
+            {{ reportList.length > 0 ? currentPage : 0 }}/{{
+              reportList.length
+            }}
           </button>
-          <button ion-button outline [disabled]="!(currentPage < reportList.length)" color="font-color" text-capitalize
-            (click)="nextPage()">
+          <button ion-button padding outline [disabled]="!(currentPage < reportList.length)" color="font-color"
+            text-capitalize (click)="nextPage()">
             <ion-icon name="skip-forward"></ion-icon>
           </button>
-        </ion-col>
-        <ion-col col-3>
-          <ion-select #C (ionChange)="changenumberItems(C.value)" placeholder="Select number of content">
-            <ion-option value="10" selected>10</ion-option>
-            <ion-option value="25">25</ion-option>
-            <ion-option value="50">50</ion-option>
-            <ion-option value="100">100</ion-option>
-          </ion-select>
         </ion-col>
       </ion-row>
     </ion-grid>
   </div>
-
 </ion-content>

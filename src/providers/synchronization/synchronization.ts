@@ -120,7 +120,9 @@ export class SynchronizationProvider {
   uploadingDataToTheServer(dataObject, currentUser): Observable<any> {
     return new Observable(observer => {
       let completedProcess = 0;
-      const dataItems = Object.keys(dataObject);
+      const dataItems = _.filter(Object.keys(dataObject), key => {
+        return dataObject && dataObject[key] && dataObject[key].length > 0;
+      });
       const response = {
         percentage: '',
         importSummaries: {},
@@ -128,7 +130,7 @@ export class SynchronizationProvider {
       };
       for (let item of dataItems) {
         if (dataObject[item].length > 0) {
-          if (item == 'dataValues') {
+          if (item === 'dataValues') {
             let formattedDataValues = this.dataValuesProvider.getFormattedDataValueForUpload(
               dataObject[item]
             );
@@ -146,7 +148,7 @@ export class SynchronizationProvider {
                     (completedProcess / dataItems.length) * 100;
                   response.percentage = percentage.toFixed(1);
                   observer.next(response);
-                  if (dataItems.length == completedProcess) {
+                  if (dataItems.length === completedProcess) {
                     response.isCompleted = true;
                     observer.next(response);
                     observer.complete();
@@ -159,7 +161,7 @@ export class SynchronizationProvider {
                   );
                 }
               );
-          } else if (item == 'events') {
+          } else if (item === 'events') {
             this.eventCaptureFormProvider
               .uploadEventsToSever(dataObject[item], currentUser)
               .subscribe(
@@ -170,7 +172,7 @@ export class SynchronizationProvider {
                     (completedProcess / dataItems.length) * 100;
                   response.percentage = percentage.toFixed(1);
                   observer.next(response);
-                  if (dataItems.length == completedProcess) {
+                  if (dataItems.length === completedProcess) {
                     response.isCompleted = true;
                     observer.next(response);
                     observer.complete();
@@ -184,7 +186,7 @@ export class SynchronizationProvider {
                 }
               );
           } else if (
-            item == 'eventsForTracker' &&
+            item === 'eventsForTracker' &&
             dataObject['Enrollments'] &&
             dataObject['Enrollments'].length === 0
           ) {
@@ -198,7 +200,7 @@ export class SynchronizationProvider {
                     (completedProcess / dataItems.length) * 100;
                   response.percentage = percentage.toFixed(1);
                   observer.next(response);
-                  if (dataItems.length == completedProcess) {
+                  if (dataItems.length === completedProcess) {
                     response.isCompleted = true;
                     observer.next(response);
                     observer.complete();
@@ -211,7 +213,7 @@ export class SynchronizationProvider {
                   );
                 }
               );
-          } else if (item == 'Enrollments') {
+          } else if (item === 'Enrollments') {
             this.trackerCaptureProvider
               .uploadTrackedEntityInstancesToServer(
                 dataObject[item],
@@ -254,7 +256,7 @@ export class SynchronizationProvider {
                                       'eventsForTracker'
                                     ] = importSummaries;
                                     observer.next(response);
-                                    if (dataItems.length == completedProcess) {
+                                    if (dataItems.length === completedProcess) {
                                       response.isCompleted = true;
                                       observer.next(response);
                                       observer.complete();
@@ -301,7 +303,7 @@ export class SynchronizationProvider {
           const percentage = (completedProcess / dataItems.length) * 100;
           response.percentage = percentage.toFixed(1);
           observer.next(response);
-          if (dataItems.length == completedProcess) {
+          if (dataItems.length === completedProcess) {
             response.isCompleted = true;
             observer.next(response);
             observer.complete();
@@ -375,8 +377,14 @@ export class SynchronizationProvider {
         dataObject => {
           this.uploadingDataToTheServer(dataObject, currentUser).subscribe(
             response => {
-              observer.next(response);
-              observer.complete();
+              const percentage =
+                response && response.percentage
+                  ? parseInt(response.percentage)
+                  : 0;
+              if (percentage >= 100) {
+                observer.next(response);
+                observer.complete();
+              }
             },
             error => {
               observer.error(error);

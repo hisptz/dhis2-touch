@@ -29,10 +29,14 @@ import { DownloadMetaDataComponent } from './download-meta-data/download-meta-da
 import { UploadDataViaSmsComponent } from './upload-data-via-sms/upload-data-via-sms';
 import { ClearLocalMetadataComponent } from './clear-local-metadata/clear-local-metadata';
 import { DownloadDataComponent } from './download-data/download-data';
-import { DownloadDataValuesComponent } from './download-data-values/download-data-values';
 import { UploadViaInternetComponent } from './upload-data-via-internet/upload-via-internet';
 import { sharedComponentsModule } from '../../../components/sharedComponents.module';
 import { loginComponentsModule } from '../../login/components/loginComponents.module';
+import { AggregateDataDownloaderComponent } from './aggregate-data-downloader/aggregate-data-downloader';
+import { EventDataDownloaderComponent } from './event-data-downloader/event-data-downloader';
+import { TrackerDataDownloaderComponent } from './tracker-data-downloader/tracker-data-downloader';
+import { EventCaptureComponentsModule } from '../../event-capture/components/eventCaptureComponents.module';
+import { DataEntryComponentsModule } from '../../data-entry/components/dataEntryComponents.module';
 
 @NgModule({
   declarations: [
@@ -42,12 +46,16 @@ import { loginComponentsModule } from '../../login/components/loginComponents.mo
     UploadViaInternetComponent,
     ClearLocalMetadataComponent,
     DownloadDataComponent,
-    DownloadDataValuesComponent
+    AggregateDataDownloaderComponent,
+    EventDataDownloaderComponent,
+    TrackerDataDownloaderComponent
   ],
   imports: [
     IonicModule,
     TranslateModule.forChild({}),
     sharedComponentsModule,
+    EventCaptureComponentsModule,
+    DataEntryComponentsModule,
     loginComponentsModule
   ],
   exports: [
@@ -57,7 +65,9 @@ import { loginComponentsModule } from '../../login/components/loginComponents.mo
     UploadViaInternetComponent,
     ClearLocalMetadataComponent,
     DownloadDataComponent,
-    DownloadDataValuesComponent
+    AggregateDataDownloaderComponent,
+    EventDataDownloaderComponent,
+    TrackerDataDownloaderComponent
   ]
 })
 export class SyncModule {}

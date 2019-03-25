@@ -37,6 +37,7 @@ import { AppProvider } from '../../providers/app/app';
 export class NumericalInputFieldComponent implements OnInit {
   @Input() dataElementId;
   @Input() categoryOptionComboId;
+  @Input() lockingFieldStatus;
   @Input() data;
   @Input() valueType;
   @Input() barcodeSettings;

@@ -36,29 +36,33 @@
       <ion-icon name="ios-arrow-forward-outline"></ion-icon>
     </ion-col>
     <ion-col col-5 col-sm-8 *ngIf="!isDataSetCompleted">
-      <button color="favorite" round ion-button full [disabled]="isDataSetCompletenessProcessRunning" (tap)="updateDataSetCompleteness()">
+      <button color="favorite" round ion-button full [disabled]="isDataSetCompletenessProcessRunning || isPeriodLocked"
+        (tap)="updateDataSetCompleteness()">
         <span *ngIf="!isDataSetCompletenessProcessRunning" [translate]="'Complete'"></span>
         <span *ngIf="isDataSetCompletenessProcessRunning && !isDataSetCompleted" [translate]="'Completing'"></span>
       </button>
     </ion-col>
     <ion-col col-5 col-sm-8 *ngIf="isDataSetCompleted">
-      <button color="danger" round ion-button full [disabled]="isDataSetCompletenessProcessRunning" (tap)="updateDataSetCompleteness()">
+      <button color="danger" round ion-button full [disabled]="isDataSetCompletenessProcessRunning || isPeriodLocked"
+        (tap)="updateDataSetCompleteness()">
         <span *ngIf="!isDataSetCompletenessProcessRunning" [translate]="'Undo complete'"></span>
         <span *ngIf="isDataSetCompletenessProcessRunning && isDataSetCompleted" [translate]="'Undo completing'"></span>
       </button>
     </ion-col>
   </ion-row>
 
-  <ion-row *ngIf="entryFormSectionsCount == 1 || (entryFormType && entryFormType == 'CUSTOM') ">
+  <ion-row *ngIf="entryFormSectionsCount == 1">
     <ion-col col-6 col-sm-6>
-      <button color="favorite" round ion-button full [disabled]="isDataSetCompletenessProcessRunning || isDataSetCompleted"
+      <button color="favorite" round ion-button full
+        [disabled]="isDataSetCompletenessProcessRunning || isDataSetCompleted|| isPeriodLocked"
         (tap)="updateDataSetCompleteness()">
         <span *ngIf="!isDataSetCompletenessProcessRunning" [translate]="'Complete'"></span>
         <span *ngIf="isDataSetCompletenessProcessRunning && !isDataSetCompleted" [translate]="'Completing'"></span>
       </button>
     </ion-col>
     <ion-col col-6 col-sm-6>
-      <button color="danger" round ion-button full [disabled]="isDataSetCompletenessProcessRunning || !isDataSetCompleted"
+      <button color="danger" round ion-button full
+        [disabled]="isDataSetCompletenessProcessRunning || !isDataSetCompleted|| isPeriodLocked"
         (tap)="updateDataSetCompleteness()">
         <span *ngIf="!isDataSetCompletenessProcessRunning" [translate]="'Undo complete'"></span>
         <span *ngIf="isDataSetCompletenessProcessRunning && isDataSetCompleted" [translate]="'Undo completing'"></span>
@@ -68,7 +72,8 @@
   <div *ngIf="
           !isDataSetCompletenessProcessRunning">
     <div *ngIf="dataSetsCompletenessInfo && dataSetsCompletenessInfo.complete">
-      <div class="item-card animated fadeIn" padding-bottom padding-top (click)="viewUserCompletenessInformation(dataSetsCompletenessInfo)">
+      <div class="item-card animated fadeIn" padding-bottom padding-top
+        (click)="viewUserCompletenessInformation(dataSetsCompletenessInfo)">
         <span [translate]="'Completed by'"></span>
         <b>{{ dataSetsCompletenessInfo.storedBy }}</b> {{'on'|translate }}
         <b>{{ dataSetsCompletenessInfo.date }}</b>

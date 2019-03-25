@@ -132,12 +132,7 @@ export class DataValuesProvider {
       if (isNaN(cp) && cp != '') {
         formParameter += `&cc=${cc}&cp=${cp}`;
       }
-      const sanitizedValue = isNaN(value)
-        ? value
-        : parseInt(value) === 0
-        ? ''
-        : value;
-      formParameter += `&value=${sanitizedValue}`;
+      formParameter += `&value=${value}`;
       formattedDataValues.push(formParameter);
     });
     return formattedDataValues;
@@ -163,72 +158,71 @@ export class DataValuesProvider {
     };
     return new Observable(observer => {
       formattedDataValues.forEach((formattedDataValue: any, index: any) => {
-        this.httpClient
-          .post('/api/dataValues?' + formattedDataValue, {}, currentUser)
-          .subscribe(
-            () => {
-              let syncedDataValue = dataValues[index];
-              importSummaries.success++;
-              syncedDataValue['syncStatus'] = 'synced';
-              syncedDataValues.push(syncedDataValue);
-              if (
-                formattedDataValues.length ==
-                importSummaries.success + importSummaries.fail
-              ) {
-                if (syncedDataValues.length > 0) {
-                  this.sqlLite
-                    .insertBulkDataOnTable(
-                      this.resourceName,
-                      syncedDataValues,
-                      currentUser.currentDatabase
-                    )
-                    .subscribe(
-                      () => {
-                        observer.next(importSummaries);
-                        observer.complete();
-                      },
-                      error => {
-                        observer.error(error);
-                      }
-                    );
-                } else {
-                  observer.next(importSummaries);
-                  observer.complete();
-                }
-              }
-            },
-            error => {
-              importSummaries.fail++;
-              if (importSummaries.errorMessages.indexOf(error) == -1) {
-                importSummaries.errorMessages.push(error.error);
-              }
-              if (
-                formattedDataValues.length ==
-                importSummaries.success + importSummaries.fail
-              ) {
-                if (syncedDataValues.length > 0) {
-                  this.sqlLite
-                    .insertBulkDataOnTable(
-                      this.resourceName,
-                      syncedDataValues,
-                      currentUser.currentDatabase
-                    )
-                    .subscribe(
-                      () => {
-                        observer.next(importSummaries);
-                        observer.complete();
-                      },
-                      error => {
-                        observer.error(error);
-                      }
-                    );
-                } else {
-                  observer.next(importSummaries);
-                  observer.complete();
-                }
+        const url = `/api/dataValues?${formattedDataValue}`;
+        this.httpClient.post(url, {}, currentUser).subscribe(
+          () => {
+            let syncedDataValue = dataValues[index];
+            importSummaries.success++;
+            syncedDataValue['syncStatus'] = 'synced';
+            syncedDataValues.push(syncedDataValue);
+            if (
+              formattedDataValues.length ==
+              importSummaries.success + importSummaries.fail
+            ) {
+              if (syncedDataValues.length > 0) {
+                this.sqlLite
+                  .insertBulkDataOnTable(
+                    this.resourceName,
+                    syncedDataValues,
+                    currentUser.currentDatabase
+                  )
+                  .subscribe(
+                    () => {
+                      observer.next(importSummaries);
+                      observer.complete();
+                    },
+                    error => {
+                      observer.error(error);
+                    }
+                  );
+              } else {
+                observer.next(importSummaries);
+                observer.complete();
               }
             }
-          );
+          },
+          error => {
+            importSummaries.fail++;
+            if (importSummaries.errorMessages.indexOf(error) == -1) {
+              importSummaries.errorMessages.push(error.error);
+            }
+            if (
+              formattedDataValues.length ==
+              importSummaries.success + importSummaries.fail
+            ) {
+              if (syncedDataValues.length > 0) {
+                this.sqlLite
+                  .insertBulkDataOnTable(
+                    this.resourceName,
+                    syncedDataValues,
+                    currentUser.currentDatabase
+                  )
+                  .subscribe(
+                    () => {
+                      observer.next(importSummaries);
+                      observer.complete();
+                    },
+                    error => {
+                      observer.error(error);
+                    }
+                  );
+              } else {
+                observer.next(importSummaries);
+                observer.complete();
+              }
+            }
+          }
+        );
       });
     });
   }

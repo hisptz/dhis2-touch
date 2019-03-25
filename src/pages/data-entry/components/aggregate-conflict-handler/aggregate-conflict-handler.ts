@@ -47,6 +47,8 @@ export class AggregateConflictHandlerComponent implements OnInit {
   @Input() period;
   @Input() dataDimension;
   @Input() dataValuesObject;
+  @Input() isPeriodLocked: boolean;
+
   @Output() dataSetCompletenessInfoAction = new EventEmitter();
   @Output() mergeDataAction = new EventEmitter();
   @Output() conflictFoundAction = new EventEmitter();

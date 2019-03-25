@@ -26,11 +26,13 @@ import { IonicPageModule } from 'ionic-angular';
 import { DataEntryPage } from './data-entry';
 import { sharedComponentsModule } from '../../components/sharedComponents.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { DataEntryComponentsModule } from './components/dataEntryComponents.module';
 
 @NgModule({
   declarations: [DataEntryPage],
   imports: [
     IonicPageModule.forChild(DataEntryPage),
+    DataEntryComponentsModule,
     sharedComponentsModule,
     TranslateModule.forChild({})
   ]

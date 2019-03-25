@@ -24,6 +24,7 @@ import { Injectable } from '@angular/core';
 import { HttpClientProvider } from '../http-client/http-client';
 import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { Observable } from 'rxjs/Observable';
+import * as _ from 'lodash';
 
 /*
   Generated class for the StandardReportProvider provider.
@@ -48,11 +49,11 @@ export class StandardReportProvider {
    * @returns {Observable<any>}
    */
   downloadReportsFromServer(currentUser): Observable<any> {
-    let fields =
+    const fields =
       'id,name,created,type,relativePeriods,reportParams,designContent';
-    let filter = 'type:eq:HTML&filter=designContent:ilike:cordova';
-    let url = '/api/' + this.resource + '.json?paging=false&fields=' + fields;
-    url += '&filter=' + filter;
+    const filter = 'type:eq:HTML&filter=designContent:ilike:cordova';
+    const resource = 'reports';
+    const url = `/api/${resource}.json?paging=false&fields=${fields}&filter=${filter}`;
     return new Observable(observer => {
       this.HttpClient.get(url, true, currentUser).subscribe(
         (response: any) => {
@@ -73,9 +74,9 @@ export class StandardReportProvider {
    * @returns {Observable<any>}
    */
   downloadConstantsFromServer(currentUser): Observable<any> {
-    let fields = 'id,name,value';
-    let resource = 'constants';
-    let url = '/api/' + resource + '.json?paging=false&fields=' + fields;
+    const fields = 'id,name,value';
+    const resource = 'constants';
+    const url = `/api/${resource}.json?paging=false&fields=${fields}`;
     return new Observable(observer => {
       this.HttpClient.get(url, true, currentUser).subscribe(
         (response: any) => {
@@ -97,7 +98,7 @@ export class StandardReportProvider {
    * @returns {Observable<any>}
    */
   saveConstantsFromServer(constants, currentUser): Observable<any> {
-    let resource = 'constants';
+    const resource = 'constants';
     return new Observable(observer => {
       if (constants.length == 0) {
         observer.next();
@@ -163,8 +164,8 @@ export class StandardReportProvider {
    * @returns {Observable<any>}
    */
   savingReportDesign(reports, currentUser): Observable<any> {
-    let resource = 'reportDesign';
-    let reportDesigns = [];
+    const resource = 'reportDesign';
+    const reportDesigns = [];
     reports.forEach((report: any) => {
       reportDesigns.push({
         id: report.id,
@@ -195,8 +196,8 @@ export class StandardReportProvider {
    */
   getReportList(currentUser): Observable<any> {
     return new Observable(observer => {
-      let dataSetsReportResourceName = 'dataSets';
-      let reportParams = {
+      const dataSetsReportResourceName = 'dataSets';
+      const reportParams = {
         paramGrandParentOrganisationUnit: false,
         paramReportingPeriod: true,
         paramOrganisationUnit: true,
@@ -208,39 +209,52 @@ export class StandardReportProvider {
         currentUser.currentDatabase
       ).subscribe(
         (reports: any) => {
-          reports.forEach((report: any) => {
-            report.type = 'standardReport';
-            report.openFuturePeriods = 1;
-            reportList.push(report);
-          });
+          reportList = _.flatMapDeep(
+            _.concat(
+              reportList,
+              _.map(reports, report => {
+                return {
+                  ...report,
+                  type: 'standardReport',
+                  openFuturePeriods: 1
+                };
+              })
+            )
+          );
           this.SqlLite.getAllDataFromTable(
             dataSetsReportResourceName,
             currentUser.currentDatabase
           ).subscribe(
             (dataSets: any) => {
-              dataSets.forEach((dataSet: any) => {
-                reportList.push({
-                  id: dataSet.id,
-                  name: dataSet.name,
-                  reportParams: reportParams,
-                  type: 'dataSetReport',
-                  openFuturePeriods: dataSet.openFuturePeriods,
-                  relativePeriods: { dataSetPeriodType: dataSet.periodType }
-                });
-              });
+              reportList = _.flatMapDeep(
+                _.concat(
+                  reportList,
+                  _.map(dataSets, dataSet => {
+                    return {
+                      id: dataSet.id,
+                      name: dataSet.name,
+                      reportParams: reportParams,
+                      type: 'dataSetReport',
+                      openFuturePeriods: dataSet.openFuturePeriods,
+                      relativePeriods: { dataSetPeriodType: dataSet.periodType }
+                    };
+                  })
+                )
+              );
               reportList = this.getSortedReports(reportList);
               observer.next(reportList);
               observer.complete();
             },
-            error => {
+            () => {
               reportList = this.getSortedReports(reportList);
               observer.next(reportList);
               observer.complete();
             }
           );
         },
-        error => {
-          observer.next(error);
+        () => {
+          reportList = this.getSortedReports(reportList);
+          observer.next(reportList);
           observer.complete();
         }
       );
@@ -288,14 +302,12 @@ export class StandardReportProvider {
    * @returns {Observable<any>}
    */
   getReportId(reportId, currentUser): Observable<any> {
-    let attribute = 'id';
-    let attributeArray = [];
-    attributeArray.push(reportId);
+    const attribute = 'id';
     return new Observable(observer => {
       this.SqlLite.getDataFromTableByAttributes(
         this.resource,
         attribute,
-        attributeArray,
+        [reportId],
         currentUser.currentDatabase
       ).subscribe(
         (reports: any) => {
@@ -316,15 +328,13 @@ export class StandardReportProvider {
    * @returns {Observable<any>}
    */
   getReportDesign(reportId, currentUser): Observable<any> {
-    let attribute = 'id';
-    let resource = 'reportDesign';
-    let attributeArray = [];
-    attributeArray.push(reportId);
+    const attribute = 'id';
+    const resource = 'reportDesign';
     return new Observable(observer => {
       this.SqlLite.getDataFromTableByAttributes(
         resource,
         attribute,
-        attributeArray,
+        [reportId],
         currentUser.currentDatabase
       ).subscribe(
         (response: any) => {
@@ -346,11 +356,9 @@ export class StandardReportProvider {
   getReportPeriodType(relativePeriods) {
     let reportPeriodType = 'Yearly';
     let reportPeriods = [];
-
     if (relativePeriods.dataSetPeriodType) {
       reportPeriods.push(relativePeriods.dataSetPeriodType);
     }
-
     if (
       relativePeriods.last14Days ||
       relativePeriods.yesterday ||
