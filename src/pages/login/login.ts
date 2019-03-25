@@ -106,17 +106,17 @@ export class LoginPage implements OnInit, OnDestroy {
     this.topThreeTranslationCodes = this.appTranslationProvider.getTopThreeSupportedTranslationCodes();
     this.processes = [
       'organisationUnits',
-      //'sections',
+      'sections',
       //'smsCommand',
       'programs',
       'programStageSections',
       'programRules',
       'dataElements',
       'categoryCombos',
-      //'indicators',
+      'indicators',
       'programRuleActions',
-      'programRuleVariables'
-      //'dataSets',
+      'programRuleVariables',
+      'dataSets'
       //'reports',
       //'constants'
     ];

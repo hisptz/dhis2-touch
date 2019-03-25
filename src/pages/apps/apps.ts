@@ -59,13 +59,13 @@ export class AppsPage {
 
   getAppItems(): Array<AppItem> {
     return [
-      // {
-      //   id: 'data_entry',
-      //   name: 'Data entry',
-      //   authorites: ['M_dhis-web-dataentry'],
-      //   pageName: 'DataEntryPage',
-      //   src: 'assets/icon/data-entry.png'
-      // },
+      {
+        id: 'data_entry',
+        name: 'Data entry',
+        authorites: ['M_dhis-web-dataentry'],
+        pageName: 'DataEntryPage',
+        src: 'assets/icon/data-entry.png'
+      },
       {
         id: 'event_capture',
         name: 'Event capture',

@@ -87,16 +87,16 @@ export class DownloadMetaDataComponent implements OnInit {
     const dataBaseStructure = DATABASE_STRUCTURE;
     const processes = [
       'organisationUnits',
-      //'sections',
+      'sections',
       //'smsCommand',
       'programs',
       'programStageSections',
       'programRules',
       'dataElements',
-      //'indicators',
+      'indicators',
       'programRuleActions',
-      'programRuleVariables'
-      //'dataSets',
+      'programRuleVariables',
+      'dataSets'
       //'reports',
       //'constants'
     ];
