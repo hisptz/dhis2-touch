@@ -3,6 +3,12 @@
   min-width: 12rem;
 }
 
+.entryfield-total {
+  text-align: center;
+  min-width: 12rem;
+
+}
+
 
 select {
   text-align: center;
