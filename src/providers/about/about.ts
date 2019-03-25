@@ -56,16 +56,16 @@ export class AboutProvider {
         name: 'Event status',
         icon: 'assets/icon/event-status.png'
       },
-      {
-        id: 'eventForTrackerStatus',
-        name: 'Event for tracker status',
-        icon: 'assets/icon/event-status.png'
-      },
-      {
-        id: 'enrollment',
-        name: 'Enrollments',
-        icon: 'assets/icon/profile-tracker.png'
-      },
+      // {
+      //   id: 'eventForTrackerStatus',
+      //   name: 'Event for tracker status',
+      //   icon: 'assets/icon/event-status.png'
+      // },
+      // {
+      //   id: 'enrollment',
+      //   name: 'Enrollments',
+      //   icon: 'assets/icon/profile-tracker.png'
+      // },
       {
         id: 'systemInfo',
         name: 'System info',
