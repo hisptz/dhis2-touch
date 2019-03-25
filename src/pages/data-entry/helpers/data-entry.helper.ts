@@ -214,6 +214,7 @@ export function onFormReady(
         const { id, elementId } = elementIdObject;
         const { value, optionCodeName } = dataSetReportAggregateValues[id];
         const inputElement: any = document.getElementById(elementId);
+        const inputElementParent = inputElement.parentNode;
         var labelElement = document.createElement('label');
         var optionCodeNameElement = document.createElement('span');
         optionCodeNameElement.setAttribute(
@@ -225,7 +226,8 @@ export function onFormReady(
           document.createTextNode(optionCodeName)
         );
         labelElement.appendChild(optionCodeNameElement);
-        inputElement.replaceWith(labelElement);
+        inputElementParent.insertBefore(labelElement, inputElement.nextSibling);
+        inputElement.setAttribute('style', 'display:none');
       } catch (error) {
         console.log(JSON.stringify({ type: ' input', error }));
       }
