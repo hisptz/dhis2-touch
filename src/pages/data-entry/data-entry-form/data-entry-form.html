@@ -84,8 +84,9 @@
         </div>
         <div *ngIf="!isLoading">
           <div *ngIf="entryFormType && entryFormType === 'CUSTOM'">
-            <custom-data-entry-form [isPeriodLocked]="isPeriodLocked" [dataEntryFormDesign]="dataEntryFormDesign"
-              (onCustomFormInputChange)="updateData($event)" (onUpdateDataSetCompleteness)="updateDataSetCompleteness()"
+            <custom-data-entry-form [indicators]="indicators" [isPeriodLocked]="isPeriodLocked"
+              [dataEntryFormDesign]="dataEntryFormDesign" (onCustomFormInputChange)="updateData($event)"
+              (onUpdateDataSetCompleteness)="updateDataSetCompleteness()"
               (onViewUserCompletenessInformation)="viewUserCompletenessInformation($event)" [data]="dataValuesObject"
               [entryFormType]="'aggregate'" [entryFormSections]="entryFormSections"
               [dataUpdateStatus]="dataUpdateStatus" [isDataSetCompleted]="isDataSetCompleted"

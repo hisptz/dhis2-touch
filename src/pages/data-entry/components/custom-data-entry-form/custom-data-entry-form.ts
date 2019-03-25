@@ -40,6 +40,7 @@ import {
   updateFormFieldColor,
   evaluateCustomFomProgramIndicators,
   evaluateCustomFomAggregateIndicators,
+  evaluateDataElementTotals,
   lockingEntryFormFields
 } from '../../helpers/data-entry.helper';
 
@@ -243,6 +244,7 @@ export class CustomDataEntryFormComponent
                 evaluateCustomFomProgramIndicators(programIndicators);
               } else if (entryFormType === 'aggregate') {
                 evaluateCustomFomAggregateIndicators(indicators);
+                evaluateDataElementTotals();
               }
               event.preventDefault();
             },

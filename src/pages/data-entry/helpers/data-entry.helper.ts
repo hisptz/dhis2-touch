@@ -382,6 +382,7 @@ export function onFormReady(
       evaluateCustomFomProgramIndicators(programIndicators);
     } else if (formType === 'aggregate') {
       evaluateCustomFomAggregateIndicators(indicators);
+      evaluateDataElementTotals();
     }
   }
 
@@ -493,7 +494,7 @@ export function lockingEntryFormFields(shouldLockFields) {
 
 export function evaluateCustomFomProgramIndicators(programIndicators: any[]) {
   for (let programIndicator of programIndicators) {
-    const { id, expression, filter, name } = programIndicator;
+    const { id, expression, filter } = programIndicator;
     if (filter) {
       console.log(JSON.stringify({ filter }));
     }
@@ -505,8 +506,28 @@ export function evaluateCustomFomProgramIndicators(programIndicators: any[]) {
   }
 }
 
+export function evaluateDataElementTotals() {
+  try {
+    _.each(
+      document.querySelectorAll('[name="total"]'),
+      (dataElementTotal: any) => {
+        const dataelementid = dataElementTotal.getAttribute('dataelementid');
+        const selector = `[id^="${dataelementid}-"]`;
+        let value = 0;
+        _.each(document.querySelectorAll(selector), (element: any) => {
+          const elementValue = element.value;
+          if (elementValue && elementValue !== '' && !isNaN(elementValue)) {
+            value += parseFloat(elementValue);
+          }
+        });
+        dataElementTotal.value = value;
+      }
+    );
+  } catch (error) {}
+}
+
 export function evaluateCustomFomAggregateIndicators(indicators: any[]) {
-  console.log(JSON.stringify(indicators));
+  console.log('indicators ' + JSON.stringify(indicators));
 }
 
 function getProgramIndicatorValueFromExpression(expression: string) {
