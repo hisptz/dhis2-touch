@@ -65,8 +65,7 @@ export class ProgramRulesProvider {
         errorOrWarningMessage: {}
       };
       let hasDataToAssign = false;
-      const { programRules } = programSkipLogicMetadata;
-      const { programRulesVariables } = programSkipLogicMetadata;
+      const { programRules, programRulesVariables } = programSkipLogicMetadata;
       const dataValuesObject = this.getDeducedDataValuesForEvaluation(
         dataObject
       );

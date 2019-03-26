@@ -54,6 +54,7 @@ export class CustomDataEntryFormComponent
   implements OnInit, AfterViewInit, OnChanges {
   entryFormStatusColors = {};
   @Input() dataSetReportAggregateValues: any;
+  @Input() customFormProgramRules: any;
   @Input() isPeriodLocked: boolean;
   @Input()
   dataEntryFormDesign;
@@ -133,6 +134,9 @@ export class CustomDataEntryFormComponent
       !changes['isDataSetCompleted'].firstChange
     ) {
       this.setFieldLockingStatus();
+    }
+    if (changes['customFormProgramRules']) {
+      console.log(JSON.stringify(this.customFormProgramRules));
     }
   }
 
