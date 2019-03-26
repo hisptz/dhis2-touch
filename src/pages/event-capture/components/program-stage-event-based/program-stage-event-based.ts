@@ -77,6 +77,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   errorOrWarningMessage: any;
   hiddenFields: any;
   programIndicators: any;
+  customFormProgramRules: any;
 
   constructor(
     private programsProvider: ProgramsProvider,
@@ -100,6 +101,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     this.hiddenProgramStages = {};
     this.hiddenSections = {};
     this.errorOrWarningMessage = {};
+    this.customFormProgramRules = {};
     this.programIndicators = [];
   }
   ngOnInit() {
@@ -299,11 +301,23 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
         res => {
           const { data } = res;
           if (data) {
-            const { hiddenSections } = data;
-            const { hiddenFields } = data;
-            const { hiddenProgramStages } = data;
-            const { errorOrWarningMessage } = data;
-            const { assignedFields } = data;
+            const {
+              hiddenSections,
+              hiddenFields,
+              hiddenProgramStages,
+              errorOrWarningMessage,
+              assignedFields
+            } = data;
+            const programStageId =
+              this.programStage && this.programStage.id
+                ? this.programStage.id
+                : '';
+            this.customFormProgramRules = {
+              ...{},
+              assignedFields,
+              hiddenFields,
+              programStageId
+            };
             if (hiddenFields) {
               this.hiddenFields = hiddenFields;
               Object.keys(hiddenFields).map(key => {
