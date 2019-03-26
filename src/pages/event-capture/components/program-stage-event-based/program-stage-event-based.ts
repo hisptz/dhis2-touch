@@ -114,7 +114,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
         this.loadingCurrentUserInformation();
       }
     );
-    this.eventDate = '';
+    this.eventDate = new Date().toISOString().split('T')[0];
     if (this.currentEvent && this.currentEvent.eventDate) {
       this.eventDate = this.currentEvent.eventDate;
     }
