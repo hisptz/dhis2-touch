@@ -38,11 +38,17 @@ import {
   onDataValueChange,
   onFormReady,
   updateFormFieldColor,
-  evaluateCustomFomProgramIndicators,
-  evaluateCustomFomAggregateIndicators,
-  evaluateDataElementTotals,
   lockingEntryFormFields
 } from '../../helpers/data-entry.helper';
+import {
+  evaluateCustomFomProgramIndicators,
+  evaluateCustomFomAggregateIndicators,
+  evaluateDataElementTotals
+} from '../../helpers/custom-form-indicators-helper';
+import {
+  assignedValuesBasedOnProgramRules,
+  disableHiddenFiledsBasedOnProgramRules
+} from '../../helpers/program-rules-helper';
 
 declare var dataEntry: any;
 
@@ -135,9 +141,27 @@ export class CustomDataEntryFormComponent
     ) {
       this.setFieldLockingStatus();
     }
-    if (changes['customFormProgramRules']) {
-      console.log(JSON.stringify(this.customFormProgramRules));
+    if (
+      changes['customFormProgramRules'] &&
+      !changes['customFormProgramRules'].firstChange
+    ) {
+      this.applyProgramRules();
     }
+  }
+
+  applyProgramRules() {
+    const shouldLockFields = this.isDataSetCompleted || this.isPeriodLocked;
+    const {
+      assignedFields,
+      hiddenFields,
+      programStageId
+    } = this.customFormProgramRules;
+    assignedValuesBasedOnProgramRules(programStageId, assignedFields);
+    disableHiddenFiledsBasedOnProgramRules(
+      programStageId,
+      hiddenFields,
+      shouldLockFields
+    );
   }
 
   setFieldLockingStatus() {
@@ -161,6 +185,7 @@ export class CustomDataEntryFormComponent
         this.getScriptsContents(this.dataEntryFormDesign)
       );
       this.setFieldLockingStatus();
+      this.applyProgramRules();
     } catch (error) {
       console.log('ng after view int ' + JSON.stringify(error));
     }
