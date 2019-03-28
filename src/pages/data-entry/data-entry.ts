@@ -109,15 +109,15 @@ export class DataEntryPage implements OnInit {
     this.isPeriodLocked = isPeriodLocked;
     if (isFormReady) {
       dhis2['data-entry-selection'] = {
-        orgUnit: {
+        selectedOrgUnit: {
           id: this.selectedOrgUnit.id,
           name: this.selectedOrgUnit.name
         },
-        dataSet: {
+        selectedDataSet: {
           id: this.selectedDataSet.id,
           name: this.selectedDataSet.name
         },
-        period: {
+        selectedPeriod: {
           iso: this.selectedPeriod.iso,
           name: this.selectedPeriod.name
         },
