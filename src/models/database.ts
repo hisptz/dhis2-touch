@@ -564,6 +564,8 @@ export const DATABASE_STRUCTURE = {
       { value: 'id', type: 'TEXT' },
       { value: 'programId', type: 'TEXT' },
       { value: 'name', type: 'TEXT' },
+      { value: 'filter', type: 'TEXT' },
+      { value: 'description', type: 'LONGTEXT' },
       { value: 'expression', type: 'LONGTEXT' }
     ],
     isMetadata: false,
