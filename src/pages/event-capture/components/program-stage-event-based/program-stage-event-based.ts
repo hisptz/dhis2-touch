@@ -38,6 +38,7 @@ import { ActionSheetController } from 'ionic-angular';
 import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
 import { ProgramRulesProvider } from '../../../../providers/program-rules/program-rules';
 import { CurrentUser } from '../../../../models';
+declare var dhis2;
 
 /**
  * Generated class for the ProgramStageEventBasedComponent component.
@@ -182,6 +183,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   }
 
   updateCurrentEventDateForRegistration(currentUser) {
+    dhis2['currentEventId'] = this.currentEvent.id;
     const eventDate = new Date().toISOString().split('T')[0];
     if (this.currentEvent && this.currentEvent.eventDate) {
       this.eventDate = this.currentEvent.eventDate;
@@ -201,7 +203,9 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     this.eventDate = '';
     this.hasEntryFormReSet = true;
     this.currentEvent = Object.assign({}, this.emptyEvent);
-    this.currentEvent.id = this.eventCaptureFormProvider.getEventUid();
+    const currentEventId = this.eventCaptureFormProvider.getEventUid();
+    dhis2['currentEventId'] = currentEventId;
+    this.currentEvent.id = currentEventId;
     setTimeout(() => {
       this.dataObject = {};
       this.dataValuesSavingStatusClass = {};

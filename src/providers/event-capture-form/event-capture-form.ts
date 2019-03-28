@@ -736,7 +736,7 @@ export class EventCaptureFormProvider {
       const sanitizedEvents = _.flatMapDeep(
         _.map(events, event => {
           const dataValues = _.filter(event.dataValues, dataValue => {
-            return dataValue.dataElement !== undefined;
+            return dataValue && dataValue.dataElement !== undefined;
           });
           return { ...event, dataValues };
         })
