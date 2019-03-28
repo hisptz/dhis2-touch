@@ -28,6 +28,7 @@ import { AppProvider } from '../../providers/app/app';
 import { Store } from '@ngrx/store';
 import { State, getCurrentUserColorSettings } from '../../store';
 import { Observable } from 'rxjs';
+declare var dhis2;
 
 /**
  * Generated class for the DataEntryPage page.
@@ -107,6 +108,22 @@ export class DataEntryPage implements OnInit {
     this.dataDimension = dataDimension;
     this.isPeriodLocked = isPeriodLocked;
     if (isFormReady) {
+      dhis2['data-entry-selection'] = {
+        orgUnit: {
+          id: this.selectedOrgUnit.id,
+          name: this.selectedOrgUnit.name
+        },
+        dataSet: {
+          id: this.selectedDataSet.id,
+          name: this.selectedDataSet.name
+        },
+        period: {
+          iso: this.selectedPeriod.iso,
+          name: this.selectedPeriod.name
+        },
+        isPeriodLocked: this.isPeriodLocked,
+        dataDimension: this.dataDimension
+      };
       this.organisationUnitLabel =
         selectedOrgUnit && selectedOrgUnit.name ? selectedOrgUnit.name : '';
       this.dataSetLabel =
