@@ -193,14 +193,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
       this.currentEvent['dataValues'] = [];
       this.eventCaptureFormProvider
         .saveEvents([this.currentEvent], currentUser)
-        .subscribe(
-          () => {
-            alert('success');
-          },
-          error => {
-            alert('failed');
-          }
-        );
+        .subscribe(() => {}, () => {});
     }
   }
 
