@@ -114,10 +114,6 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
         this.loadingCurrentUserInformation();
       }
     );
-    this.eventDate = new Date().toISOString().split('T')[0];
-    if (this.currentEvent && this.currentEvent.eventDate) {
-      this.eventDate = this.currentEvent.eventDate;
-    }
   }
 
   getEventDateNotification() {
@@ -143,6 +139,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
       : key;
     this.userProvider.getCurrentUser().subscribe(
       (user: CurrentUser) => {
+        this.updateCurrentEventDateForRegistration(user);
         this.currentUser = user;
         if (
           this.currentEvent &&
@@ -182,6 +179,29 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
         );
       }
     );
+  }
+
+  updateCurrentEventDateForRegistration(currentUser) {
+    const eventDate = new Date().toISOString().split('T')[0];
+    if (this.currentEvent && this.currentEvent.eventDate) {
+      this.eventDate = this.currentEvent.eventDate;
+    } else {
+      this.eventDate = eventDate;
+      this.currentEvent.syncStatus = 'not-synced';
+      this.currentEvent['eventDate'] = eventDate;
+      this.currentEvent['dueDate'] = eventDate;
+      this.currentEvent['dataValues'] = [];
+      this.eventCaptureFormProvider
+        .saveEvents([this.currentEvent], currentUser)
+        .subscribe(
+          () => {
+            alert('success');
+          },
+          error => {
+            alert('failed');
+          }
+        );
+    }
   }
 
   AddNewEvent() {
