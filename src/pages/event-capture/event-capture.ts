@@ -32,7 +32,7 @@ import { Store } from '@ngrx/store';
 import { State, getCurrentUserColorSettings } from '../../store';
 import { Observable } from 'rxjs';
 import { SynchronizationProvider } from '../../providers/synchronization/synchronization';
-
+declare var dhis2;
 @IonicPage()
 @Component({
   selector: 'page-event-capture',
@@ -134,6 +134,11 @@ export class EventCapturePage implements OnInit {
       this.selectedOrgUnit = selectedOrgUnit;
       this.dataDimension = dataDimension;
       this.selectedProgram = selectedProgram;
+      dhis2['event-capture-selection'] = {
+        selectedOrgUnit: { id: selectedOrgUnit.id, name: selectedOrgUnit.name },
+        selectedProgram: { id: selectedProgram.id, name: selectedProgram.name },
+        dataDimension
+      };
       this.loadProgramStages(selectedProgram.id, true);
     }
   }
