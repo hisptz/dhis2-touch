@@ -108,7 +108,7 @@ export class DataEntryPage implements OnInit {
     this.dataDimension = dataDimension;
     this.isPeriodLocked = isPeriodLocked;
     if (isFormReady) {
-      dhis2['data-entry-selection'] = {
+      dhis2['dataEntrySelection'] = {
         selectedOrgUnit: {
           id: this.selectedOrgUnit.id,
           name: this.selectedOrgUnit.name

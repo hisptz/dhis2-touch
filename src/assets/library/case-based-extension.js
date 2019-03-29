@@ -29,7 +29,7 @@ dhis2['trackerCaptureProvider'] = {
 
 function getEventsByProgramAndOrganisationUnit(programId, orgunitId) {
   const tableName = "events";
-  const query = `SELECT * FROM ${tableName} WHERE  orgUnit = '${orgunitId}' AND program = '${programId}'`;
+  const query = `SELECT * FROM ${tableName} WHERE  orgUnit = '${orgunitId}' AND program = '${programId}' ORDER BY eventDate DESC;`;
   return new Promise((resolve, reject) => {
     dhis2.sqlLiteProvider.geFromTableByQuery(query, tableName).then((dataValues) => {
       resolve(dataValues);

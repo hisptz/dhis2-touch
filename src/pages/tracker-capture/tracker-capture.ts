@@ -137,7 +137,7 @@ export class TrackerCapturePage implements OnInit {
       ) {
         this.hasOnlineTrackerLoaded = false;
       }
-      dhis2['tacker-capture-selection'] = {
+      dhis2['tackerCaptureSelection'] = {
         selectedOrgUnit: { id: selectedOrgUnit.id, name: selectedOrgUnit.name },
         selectedProgram: { id: selectedProgram.id, name: selectedProgram.name },
         dataDimension
