@@ -405,36 +405,39 @@ export function onDataValueChange(
   entryFormType: string,
   entryFormColors: any
 ) {
-  // Get attribute from the element
-  const elementId = element.getAttribute('id');
+  if (element && element.value) {
+    // Get attribute from the element
+    const elementId = element.getAttribute('id');
 
-  // Get splitted ID to get data element and category combo ids
-  const splitedId = elementId ? elementId.split('-') : [];
+    // Get splitted ID to get data element and category combo ids
+    const splitedId = elementId ? elementId.split('-') : [];
 
-  const dataElementId = entryFormType === 'event' ? splitedId[1] : splitedId[0];
-  const optionComboId =
-    entryFormType === 'event'
-      ? 'dataElement'
-      : entryFormType === 'tracker'
-      ? 'trackedEntityAttribute'
-      : splitedId[1];
+    const dataElementId =
+      entryFormType === 'event' ? splitedId[1] : splitedId[0];
+    const optionComboId =
+      entryFormType === 'event'
+        ? 'dataElement'
+        : entryFormType === 'tracker'
+        ? 'trackedEntityAttribute'
+        : splitedId[1];
 
-  // find element value
-  const elementValue = element.value;
+    // find element value
+    const elementValue = element.value;
 
-  // Update item color
-  updateFormFieldColor(elementId, entryFormColors['WAIT']);
+    // Update item color
+    updateFormFieldColor(elementId, entryFormColors['WAIT']);
 
-  // create custom event for saving data values
-  const dataValueEvent = new CustomEvent('dataValueUpdate', {
-    detail: {
-      id: `${dataElementId}-${optionComboId}`,
-      value: elementValue,
-      status: 'not-synced',
-      domElementId: elementId
-    }
-  });
-  document.body.dispatchEvent(dataValueEvent);
+    // create custom event for saving data values
+    const dataValueEvent = new CustomEvent('dataValueUpdate', {
+      detail: {
+        id: `${dataElementId}-${optionComboId}`,
+        value: elementValue,
+        status: 'not-synced',
+        domElementId: elementId
+      }
+    });
+    document.body.dispatchEvent(dataValueEvent);
+  }
 }
 
 export function lockingEntryFormFields(shouldLockFields) {
