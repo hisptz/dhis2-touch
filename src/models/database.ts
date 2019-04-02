@@ -425,6 +425,23 @@ export const DATABASE_STRUCTURE = {
       'programStageEntryForm'
     ]
   },
+  programProgramTrackedEntityAttributes: {
+    columns: [
+      { value: 'id', type: 'TEXT' },
+      { value: 'programId', type: 'TEXT' },
+      { value: 'sortOrder', type: 'TEXT' },
+      { value: 'mandatory', type: 'TEXT' },
+      { value: 'displayInList', type: 'TEXT' },
+      { value: 'externalAccess', type: 'TEXT' }
+    ],
+    isMetadata: false,
+    shouldIncludeOnLogin: false,
+    resourceType: '',
+    batchSize: 50,
+    displayName: '',
+    dependentTable: []
+  },
+
   trackerRegistrationForm: {
     columns: [
       { value: 'id', type: 'TEXT' },

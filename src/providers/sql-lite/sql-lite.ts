@@ -48,6 +48,58 @@ export class SqlLiteProvider {
     return DATABASE_STRUCTURE;
   }
 
+  dropAndRecreateTable(
+    tableName: string,
+    databaseName: string
+  ): Observable<any> {
+    const tableNames = [];
+    tableNames.push(tableName);
+    const tableObject = this.getDataBaseStructure()[tableName];
+    const { dependentTable } = tableObject;
+    if (dependentTable && dependentTable.length > 0) {
+      dependentTable.map(tableName => {
+        tableNames.push(`${tableName}`);
+      });
+    }
+    return new Observable(observer => {
+      let success = 0;
+      for (const table of tableNames) {
+        this.dropTable(table, databaseName).subscribe(
+          () => {
+            success++;
+            if (success === tableNames.length) {
+              this.generateTables(databaseName).subscribe(
+                () => {
+                  observer.next();
+                  observer.complete();
+                },
+                () => {
+                  observer.next();
+                  observer.complete();
+                }
+              );
+            }
+          },
+          error => {
+            success++;
+            if (success === tableNames.length) {
+              this.generateTables(databaseName).subscribe(
+                () => {
+                  observer.next();
+                  observer.complete();
+                },
+                () => {
+                  observer.next();
+                  observer.complete();
+                }
+              );
+            }
+          }
+        );
+      }
+    });
+  }
+
   /**
    *
    * @param databaseName
@@ -55,7 +107,7 @@ export class SqlLiteProvider {
    */
   generateTables(databaseName): Observable<any> {
     return new Observable(observer => {
-      let tableNames = Object.keys(this.getDataBaseStructure());
+      const tableNames = Object.keys(this.getDataBaseStructure());
       let success = 0;
       let fail = 0;
       tableNames.map((tableName: any) => {
@@ -88,8 +140,8 @@ export class SqlLiteProvider {
     databaseName = databaseName + '.db';
     return new Observable(observer => {
       let query = 'CREATE TABLE IF NOT EXISTS ' + tableName + ' (';
-      let columns = this.getDataBaseStructure()[tableName].columns;
-      columns.forEach((column: any, index: any) => {
+      const columns = this.getDataBaseStructure()[tableName].columns;
+      columns.map((column: any, index: any) => {
         if (column.value == 'id') {
           query += column.value + ' ' + column.type + ' primary key';
         } else {
