@@ -23,6 +23,15 @@
  */
 import * as _ from 'lodash';
 
+export function applyErrorOrWarningActions(keyValuePairObject) {
+  _.map(Object.keys(keyValuePairObject), key => {
+    const { message } = keyValuePairObject[key];
+    if (message && message.trim() !== '') {
+      alert(message);
+    }
+  });
+}
+
 export function assignedValuesBasedOnProgramRules(
   programStageId,
   keyValuePairObject

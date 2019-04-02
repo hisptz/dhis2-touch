@@ -154,12 +154,16 @@ export class ProgramRulesProvider {
                       if (evaluated) {
                         if (programRuleActionType === HIDE_FIELD) {
                           if (dataElement && dataElement.id) {
-                            // if (dataElement.id === 'U7ddtqs6Dzw') {
+                            // if (
+                            //   dataElement.id === 'gH0Be2lq90i' ||
+                            //   dataElement.id === 'U7ddtqs6Dzw'
+                            // ) {
                             //   console.log(
                             //     JSON.stringify({ programRule, action })
                             //   );
-                            //   // console.log(JSON.stringify({ condition }));
-                            //   // console.log(JSON.stringify({ evalCondition }));
+                            //   console.log(JSON.stringify({ condition }));
+                            //   console.log(JSON.stringify({ evalCondition }));
+                            //   console.log(' ');
                             // }
                             programRulesEvaluations.hiddenFields[
                               dataElement.id

@@ -315,6 +315,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
             this.customFormProgramRules = {
               ...{},
               assignedFields,
+              errorOrWarningMessage,
               hiddenFields,
               programStageId
             };

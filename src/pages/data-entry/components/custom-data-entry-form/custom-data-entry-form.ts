@@ -154,8 +154,10 @@ export class CustomDataEntryFormComponent
     const {
       assignedFields,
       hiddenFields,
-      programStageId
+      programStageId,
+      errorOrWarningMessage
     } = this.customFormProgramRules;
+    console.log(JSON.stringify({ errorOrWarningMessage }));
     assignedValuesBasedOnProgramRules(programStageId, assignedFields);
     disableHiddenFiledsBasedOnProgramRules(
       programStageId,
