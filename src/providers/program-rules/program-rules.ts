@@ -89,10 +89,8 @@ export class ProgramRulesProvider {
                   programStageSection,
                   programStage,
                   content,
-                  location,
                   data
                 } = action;
-                // console.log(location);
                 let evalCondition = condition;
                 let evalDataCondition = data ? data : '';
                 let evalData = '';
@@ -156,6 +154,13 @@ export class ProgramRulesProvider {
                       if (evaluated) {
                         if (programRuleActionType === HIDE_FIELD) {
                           if (dataElement && dataElement.id) {
+                            // if (dataElement.id === 'U7ddtqs6Dzw') {
+                            //   console.log(
+                            //     JSON.stringify({ programRule, action })
+                            //   );
+                            //   // console.log(JSON.stringify({ condition }));
+                            //   // console.log(JSON.stringify({ evalCondition }));
+                            // }
                             programRulesEvaluations.hiddenFields[
                               dataElement.id
                             ] = true;

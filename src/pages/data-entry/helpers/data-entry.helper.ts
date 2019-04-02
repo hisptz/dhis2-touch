@@ -405,7 +405,7 @@ export function onDataValueChange(
   entryFormType: string,
   entryFormColors: any
 ) {
-  if (element && element.value) {
+  if (element) {
     // Get attribute from the element
     const elementId = element.getAttribute('id');
 

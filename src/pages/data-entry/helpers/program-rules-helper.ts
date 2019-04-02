@@ -38,7 +38,7 @@ export function assignedValuesBasedOnProgramRules(
       inputElement.value = value;
     } catch (error) {
       error = JSON.stringify(error);
-      console.log(`Error on hide element ${key} : ${error}`);
+      console.log(`Error on assign values ${key} : ${error}`);
     }
   });
 }
