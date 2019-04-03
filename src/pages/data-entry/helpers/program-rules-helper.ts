@@ -45,6 +45,8 @@ export function assignedValuesBasedOnProgramRules(
       const value = keyValuePairObject[key];
       const inputElement: any = document.getElementById(`${elementId}`);
       inputElement.value = value;
+      inputElement.setAttribute('readonly', 'readonly');
+      inputElement.setAttribute('disabled', 'disabled');
     } catch (error) {
       error = JSON.stringify(error);
       console.log(`Error on assign values ${key} : ${error}`);

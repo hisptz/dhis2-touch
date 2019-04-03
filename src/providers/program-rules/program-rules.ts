@@ -147,24 +147,12 @@ export class ProgramRulesProvider {
                   } catch (error) {
                   } finally {
                   }
-
                   if (evalCondition !== condition) {
                     try {
                       const evaluated = eval(`(${evalCondition})`);
                       if (evaluated) {
                         if (programRuleActionType === HIDE_FIELD) {
                           if (dataElement && dataElement.id) {
-                            // if (
-                            //   dataElement.id === 'gH0Be2lq90i' ||
-                            //   dataElement.id === 'U7ddtqs6Dzw'
-                            // ) {
-                            //   console.log(
-                            //     JSON.stringify({ programRule, action })
-                            //   );
-                            //   console.log(JSON.stringify({ condition }));
-                            //   console.log(JSON.stringify({ evalCondition }));
-                            //   console.log(' ');
-                            // }
                             programRulesEvaluations.hiddenFields[
                               dataElement.id
                             ] = true;
@@ -266,6 +254,22 @@ export class ProgramRulesProvider {
                           );
                         } else if (programRuleActionType === DISPLAY_TEXT) {
                           console.log('Handling for : ' + DISPLAY_TEXT);
+                        }
+                      } else {
+                        if (programRuleActionType === ASSIGN) {
+                          if (dataElement && dataElement.id) {
+                            programRulesEvaluations.assignedFields[
+                              dataElement.id
+                            ] = '';
+                          }
+                          if (
+                            trackedEntityAttribute &&
+                            trackedEntityAttribute.id
+                          ) {
+                            programRulesEvaluations.assignedFields[
+                              trackedEntityAttribute.id
+                            ] = '';
+                          }
                         }
                       }
                     } catch (error) {

@@ -158,14 +158,14 @@ export class CustomDataEntryFormComponent
       programStageId,
       errorOrWarningMessage
     } = this.customFormProgramRules;
-    applyErrorOrWarningActions(errorOrWarningMessage);
-    assignedValuesBasedOnProgramRules(programStageId, assignedFields);
     disableHiddenFiledsBasedOnProgramRules(
       programStageId,
       hiddenFields,
       shouldLockFields
     );
+    assignedValuesBasedOnProgramRules(programStageId, assignedFields);
     evaluateCustomFomProgramIndicators(this.programIndicators);
+    applyErrorOrWarningActions(errorOrWarningMessage);
   }
 
   setFieldLockingStatus() {
