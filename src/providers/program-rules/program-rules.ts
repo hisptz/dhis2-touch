@@ -255,22 +255,6 @@ export class ProgramRulesProvider {
                         } else if (programRuleActionType === DISPLAY_TEXT) {
                           console.log('Handling for : ' + DISPLAY_TEXT);
                         }
-                      } else {
-                        if (programRuleActionType === ASSIGN) {
-                          if (dataElement && dataElement.id) {
-                            programRulesEvaluations.assignedFields[
-                              dataElement.id
-                            ] = '';
-                          }
-                          if (
-                            trackedEntityAttribute &&
-                            trackedEntityAttribute.id
-                          ) {
-                            programRulesEvaluations.assignedFields[
-                              trackedEntityAttribute.id
-                            ] = '';
-                          }
-                        }
                       }
                     } catch (error) {
                       console.log(JSON.stringify({ error }));
