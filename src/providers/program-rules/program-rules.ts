@@ -89,10 +89,8 @@ export class ProgramRulesProvider {
                   programStageSection,
                   programStage,
                   content,
-                  location,
                   data
                 } = action;
-                // console.log(location);
                 let evalCondition = condition;
                 let evalDataCondition = data ? data : '';
                 let evalData = '';
@@ -149,7 +147,6 @@ export class ProgramRulesProvider {
                   } catch (error) {
                   } finally {
                   }
-
                   if (evalCondition !== condition) {
                     try {
                       const evaluated = eval(`(${evalCondition})`);

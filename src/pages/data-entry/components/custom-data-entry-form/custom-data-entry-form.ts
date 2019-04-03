@@ -47,7 +47,8 @@ import {
 } from '../../helpers/custom-form-indicators-helper';
 import {
   assignedValuesBasedOnProgramRules,
-  disableHiddenFiledsBasedOnProgramRules
+  disableHiddenFiledsBasedOnProgramRules,
+  applyErrorOrWarningActions
 } from '../../helpers/program-rules-helper';
 
 declare var dataEntry: any;
@@ -154,14 +155,17 @@ export class CustomDataEntryFormComponent
     const {
       assignedFields,
       hiddenFields,
-      programStageId
+      programStageId,
+      errorOrWarningMessage
     } = this.customFormProgramRules;
-    assignedValuesBasedOnProgramRules(programStageId, assignedFields);
     disableHiddenFiledsBasedOnProgramRules(
       programStageId,
       hiddenFields,
       shouldLockFields
     );
+    assignedValuesBasedOnProgramRules(programStageId, assignedFields);
+    evaluateCustomFomProgramIndicators(this.programIndicators);
+    applyErrorOrWarningActions(errorOrWarningMessage);
   }
 
   setFieldLockingStatus() {

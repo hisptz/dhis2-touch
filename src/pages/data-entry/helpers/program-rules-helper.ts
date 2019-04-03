@@ -23,6 +23,15 @@
  */
 import * as _ from 'lodash';
 
+export function applyErrorOrWarningActions(keyValuePairObject) {
+  _.map(Object.keys(keyValuePairObject), key => {
+    const { message } = keyValuePairObject[key];
+    if (message && message.trim() !== '') {
+      alert(message);
+    }
+  });
+}
+
 export function assignedValuesBasedOnProgramRules(
   programStageId,
   keyValuePairObject
@@ -36,9 +45,11 @@ export function assignedValuesBasedOnProgramRules(
       const value = keyValuePairObject[key];
       const inputElement: any = document.getElementById(`${elementId}`);
       inputElement.value = value;
+      inputElement.setAttribute('readonly', 'readonly');
+      inputElement.setAttribute('disabled', 'disabled');
     } catch (error) {
       error = JSON.stringify(error);
-      console.log(`Error on hide element ${key} : ${error}`);
+      console.log(`Error on assign values ${key} : ${error}`);
     }
   });
 }
