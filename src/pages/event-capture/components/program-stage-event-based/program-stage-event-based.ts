@@ -76,6 +76,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   hiddenProgramStages: any;
   errorOrWarningMessage: any;
   hiddenFields: any;
+  assignedFields: any;
   programIndicators: any;
   customFormProgramRules: any;
 
@@ -101,6 +102,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     this.hiddenProgramStages = {};
     this.hiddenSections = {};
     this.errorOrWarningMessage = {};
+    this.assignedFields = {};
     this.customFormProgramRules = {};
     this.programIndicators = [];
   }
@@ -308,16 +310,13 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
               errorOrWarningMessage,
               assignedFields
             } = data;
-            const programStageId =
-              this.programStage && this.programStage.id
-                ? this.programStage.id
-                : '';
-            this.customFormProgramRules = {
-              ...{},
-              assignedFields,
-              hiddenFields,
-              programStageId
-            };
+            const assignedFieldIds = Object.keys(this.assignedFields);
+            assignedFieldIds.map(key => {
+              this.assignedFields[key] = '';
+            });
+            Object.keys(assignedFields).map(key => {
+              this.assignedFields[key] = assignedFieldIds[key];
+            });
             if (hiddenFields) {
               this.hiddenFields = hiddenFields;
               Object.keys(hiddenFields).map(key => {
@@ -353,6 +352,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
               Object.keys(assignedFields).map(key => {
                 const id = key + '-dataElement';
                 const value = assignedFields[key];
+                this.assignedFields[key] = value;
                 this.hiddenFields[key] = true;
                 this.dataValuesSavingStatusClass[id] = 'input-field-container';
                 this.updateData({ id: id, value }, true);
@@ -361,6 +361,17 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
                 }, 10);
               });
             }
+            const programStageId =
+              this.programStage && this.programStage.id
+                ? this.programStage.id
+                : '';
+            this.customFormProgramRules = {
+              ...{},
+              assignedFields: this.assignedFields,
+              errorOrWarningMessage,
+              hiddenFields: this.hiddenFields,
+              programStageId
+            };
           }
         },
         error => {
