@@ -1094,6 +1094,7 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
             .downloadConstantsFromServer(this.currentUser)
             .subscribe(
               response => {
+                console.log(JSON.stringify({ response }));
                 this.removeFromQueue(process, 'dowmloading', false, response);
               },
               error => {
@@ -1560,19 +1561,20 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
         this.subscriptions.add(
           this.sqlLiteProvider
             .dropAndRecreateTable(process, this.currentUser.currentDatabase)
-            .subscribe(() => {})
-        );
-        this.subscriptions.add(
-          this.standardReportProvider
-            .saveConstantsFromServer(data, this.currentUser)
-            .subscribe(
-              () => {
-                this.removeFromQueue(process, 'saving', false);
-              },
-              error => {
-                this.onFailToLogin(error, process);
-              }
-            )
+            .subscribe(() => {
+              this.subscriptions.add(
+                this.standardReportProvider
+                  .saveConstantsFromServer(data, this.currentUser)
+                  .subscribe(
+                    () => {
+                      this.removeFromQueue(process, 'saving', false);
+                    },
+                    error => {
+                      this.onFailToLogin(error, process);
+                    }
+                  )
+              );
+            })
         );
       }
     } else if (process === 'dataStore') {
