@@ -129,68 +129,38 @@ export class EventCaptureFormProvider {
   }
 
   getProgramSkipLogicMetadata(
-    programId,
+    programId: string,
     currentUser: CurrentUser
   ): Observable<any> {
     return new Observable(observer => {
       let programRuleActionIds = [];
-      this.programsProvider
-        .getProgramRuleIds(programId, currentUser.currentDatabase)
+      this.programRulesProvider
+        .getgProgramRulesByProgramId(programId, currentUser)
         .subscribe(
-          programRuleIds => {
+          programRules => {
+            _.map(programRules, programRule => {
+              if (programRule && programRule.programRuleActions) {
+                _.map(programRule.programRuleActions, programRuleAction => {
+                  if (programRuleAction && programRuleAction.id) {
+                    programRuleActionIds.push(programRuleAction.id);
+                  }
+                });
+              }
+            });
             this.programRulesProvider
-              .getgProgramRulesByIds(programRuleIds, currentUser)
+              .getProgramRuleActionsByIds(programRuleActionIds, currentUser)
               .subscribe(
-                programRules => {
-                  _.map(programRules, programRule => {
-                    if (programRule && programRule.programRuleActions) {
-                      _.map(
-                        programRule.programRuleActions,
-                        programRuleAction => {
-                          if (programRuleAction && programRuleAction.id) {
-                            programRuleActionIds.push(programRuleAction.id);
-                          }
-                        }
-                      );
-                    }
-                  });
+                programRuleActions => {
                   this.programRulesProvider
-                    .getProgramRuleActionsByIds(
-                      programRuleActionIds,
-                      currentUser
-                    )
+                    .getProgramRuleVariableByProgramId(programId, currentUser)
                     .subscribe(
-                      programRuleActions => {
-                        this.programsProvider
-                          .getProgramRulesVariablesIds(
-                            programId,
-                            currentUser.currentDatabase
-                          )
-                          .subscribe(
-                            programRulesVariablesIds => {
-                              this.programRulesProvider
-                                .getProgramRuleVariableByIds(
-                                  programRulesVariablesIds,
-                                  currentUser
-                                )
-                                .subscribe(
-                                  programRulesVariables => {
-                                    observer.next({
-                                      programRules: programRules,
-                                      programRuleActions: programRuleActions,
-                                      programRulesVariables: programRulesVariables
-                                    });
-                                    observer.complete();
-                                  },
-                                  error => {
-                                    observer.error(error);
-                                  }
-                                );
-                            },
-                            error => {
-                              observer.error(error);
-                            }
-                          );
+                      programRulesVariables => {
+                        observer.next({
+                          programRules: programRules,
+                          programRuleActions: programRuleActions,
+                          programRulesVariables: programRulesVariables
+                        });
+                        observer.complete();
                       },
                       error => {
                         observer.error(error);

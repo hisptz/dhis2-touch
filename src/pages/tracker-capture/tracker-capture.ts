@@ -31,6 +31,7 @@ import { SettingsProvider } from '../../providers/settings/settings';
 import { Store } from '@ngrx/store';
 import { State, getCurrentUserColorSettings } from '../../store';
 import { Observable } from 'rxjs';
+declare var dhis2;
 
 @IonicPage()
 @Component({
@@ -136,6 +137,11 @@ export class TrackerCapturePage implements OnInit {
       ) {
         this.hasOnlineTrackerLoaded = false;
       }
+      dhis2['tackerCaptureSelection'] = {
+        selectedOrgUnit: { id: selectedOrgUnit.id, name: selectedOrgUnit.name },
+        selectedProgram: { id: selectedProgram.id, name: selectedProgram.name },
+        dataDimension
+      };
       this.selectedDataDimension = selectedDataDimension;
       this.selectedOrgUnit = selectedOrgUnit;
       this.dataDimension = dataDimension;

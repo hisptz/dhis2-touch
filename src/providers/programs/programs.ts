@@ -65,7 +65,7 @@ export class ProgramsProvider {
   downloadProgramsFromServer(currentUser: CurrentUser): Observable<any> {
     const { userOrgUnitIds } = currentUser;
     const fields =
-      'fields=id,name,displayName,displayIncidentDate,programType,withoutRegistration,dataEntryForm[htmlCode],trackedEntityType[id,displayName],trackedEntity[id,displayName],ignoreOverdueEvents,skipOffline,captureCoordinates,enrollmentDateLabel,onlyEnrollOnce,selectIncidentDatesInFuture,incidentDateLabel,useFirstStageDuringRegistration,completeEventsExpiryDays,displayFrontPageList,categoryCombo[id,name,categories[id,name,categoryOptions[name,id,organisationUnits[id]]]],programStages[id,name,executionDateLabel,hideDueDate,dataEntryForm[htmlCode],allowGenerateNextVisit,blockEntryForm,repeatable,formType,sortOrder,standardInterval,minDaysFromStart,generatedByEnrollmentDate,autoGenerateEvent,captureCoordinates,dueDateLabel,programStageDataElements[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id]],programStageSections[id]],organisationUnits[id],programIndicators[id,name,description,filter,expression],translations,attributeValues[value,attribute[name]],validationCriterias,programRuleVariables,programTrackedEntityAttributes[id,mandatory,externalAccess,allowFutureDate,displayInList,sortOrder,trackedEntityAttribute[id,name,code,name,formName,description,confidential,searchScope,translations,inherit,legendSets,optionSet[name,options[name,id,code]]unique,orgunitScope,programScope,displayInListNoProgramaggregationType,displayInListNoProgram,pattern,sortOrderInListNoProgram,generated,displayOnVisitSchedule,valueType,sortOrderInVisitSchedule]],programRules';
+      'fields=id,name,displayName,displayIncidentDate,programType,withoutRegistration,dataEntryForm[htmlCode],trackedEntityType[id,displayName],trackedEntity[id,displayName],ignoreOverdueEvents,skipOffline,captureCoordinates,enrollmentDateLabel,onlyEnrollOnce,selectIncidentDatesInFuture,incidentDateLabel,useFirstStageDuringRegistration,completeEventsExpiryDays,displayFrontPageList,categoryCombo[id,name,categories[id,name,categoryOptions[name,id,organisationUnits[id]]]],programStages[id,name,executionDateLabel,hideDueDate,dataEntryForm[htmlCode],allowGenerateNextVisit,blockEntryForm,repeatable,formType,sortOrder,standardInterval,minDaysFromStart,generatedByEnrollmentDate,autoGenerateEvent,captureCoordinates,dueDateLabel,programStageDataElements[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id]],programStageSections[id]],organisationUnits[id],programIndicators[id,name,description,filter,expression],translations,attributeValues[value,attribute[name]],validationCriterias,programRuleVariables,programTrackedEntityAttributes[id,mandatory,externalAccess,allowFutureDate,displayInList,sortOrder,trackedEntityAttribute[id,name,code,name,formName,description,confidential,searchScope,translations,inherit,legendSets,optionSet[name,options[name,id,code]]unique,orgunitScope,programScope,displayInListNoProgramaggregationType,displayInListNoProgram,pattern,sortOrderInListNoProgram,generated,displayOnVisitSchedule,valueType,sortOrderInVisitSchedule]]';
     const filter =
       'filter=organisationUnits.path:ilike:' +
       userOrgUnitIds.join('&filter=organisationUnits.path:ilike:') +
@@ -138,7 +138,7 @@ export class ProgramsProvider {
         observer.next();
         observer.complete();
       } else {
-        const totalProcess = 9;
+        const totalProcess = 7;
         let completedStage = 0;
         this.sqlLite
           .insertBulkDataOnTable(
@@ -158,36 +158,6 @@ export class ProgramsProvider {
               observer.error(error);
             }
           );
-        this.savingProgramProgramRuleVariables(
-          sanitizedPrograms,
-          currentUser
-        ).subscribe(
-          () => {
-            completedStage++;
-            if (completedStage == totalProcess) {
-              observer.next();
-              observer.complete();
-            }
-          },
-          error => {
-            observer.error(error);
-          }
-        );
-        this.savingProgramProgramRules(
-          sanitizedPrograms,
-          currentUser
-        ).subscribe(
-          () => {
-            completedStage++;
-            if (completedStage == totalProcess) {
-              observer.next();
-              observer.complete();
-            }
-          },
-          error => {
-            observer.error(error);
-          }
-        );
         this.savingProgramOrganisationUnits(
           sanitizedPrograms,
           currentUser
@@ -347,98 +317,6 @@ export class ProgramsProvider {
           .insertBulkDataOnTable(
             resource,
             programStageEntryForms,
-            currentUser.currentDatabase
-          )
-          .subscribe(
-            () => {
-              observer.next();
-              observer.complete();
-            },
-            error => {
-              observer.error(error);
-            }
-          );
-      }
-    });
-  }
-
-  /**
-   *
-   * @param programs
-   * @param currentUser
-   * @returns {Observable<any>}
-   */
-  savingProgramProgramRuleVariables(programs, currentUser): Observable<any> {
-    let programProgramRuleVariables = [];
-    const resource = 'programProgramRuleVariables';
-    programs.map((program: any) => {
-      if (
-        program.programRuleVariables &&
-        program.programRuleVariables.length > 0
-      ) {
-        programProgramRuleVariables = _.concat(programProgramRuleVariables, {
-          id: program.id,
-          programRuleVariableIds: _.map(
-            program.programRuleVariables,
-            (programRuleVariable: any) => {
-              return programRuleVariable.id;
-            }
-          )
-        });
-      }
-    });
-    return new Observable(observer => {
-      if (programProgramRuleVariables.length == 0) {
-        observer.next();
-        observer.complete();
-      } else {
-        this.sqlLite
-          .insertBulkDataOnTable(
-            resource,
-            programProgramRuleVariables,
-            currentUser.currentDatabase
-          )
-          .subscribe(
-            () => {
-              observer.next();
-              observer.complete();
-            },
-            error => {
-              observer.error(error);
-            }
-          );
-      }
-    });
-  }
-
-  /**
-   *
-   * @param programs
-   * @param currentUser
-   * @returns {Observable<any>}
-   */
-  savingProgramProgramRules(programs, currentUser): Observable<any> {
-    let programProgramRules = [];
-    const resource = 'programProgramRules';
-    programs.map((program: any) => {
-      if (program.programRules && program.programRules.length > 0) {
-        programProgramRules = _.concat(programProgramRules, {
-          id: program.id,
-          programRuleIds: _.map(program.programRules, (programRule: any) => {
-            return programRule.id;
-          })
-        });
-      }
-    });
-    return new Observable(observer => {
-      if (programProgramRules.length == 0) {
-        observer.next();
-        observer.complete();
-      } else {
-        this.sqlLite
-          .insertBulkDataOnTable(
-            resource,
-            programProgramRules,
             currentUser.currentDatabase
           )
           .subscribe(
@@ -1070,40 +948,6 @@ export class ProgramsProvider {
         .subscribe(
           (orgUnitsInProgram: any) => {
             observer.next(orgUnitsInProgram);
-            observer.complete();
-          },
-          error => {
-            observer.error(error);
-          }
-        );
-    });
-  }
-
-  /**
-   *
-   * @param programId
-   * @param dataBaseName
-   * @returns {Observable<any>}
-   */
-  getProgramRuleIds(programId, dataBaseName): Observable<any> {
-    const resource = 'programProgramRules';
-    const attributeValue = [programId];
-    const attributeKey = 'id';
-    let programRuleIds = [];
-    return new Observable(observer => {
-      this.sqlLite
-        .getDataFromTableByAttributes(
-          resource,
-          attributeKey,
-          attributeValue,
-          dataBaseName
-        )
-        .subscribe(
-          (programRuleIdsResponse: any) => {
-            if (programRuleIdsResponse && programRuleIdsResponse.length > 0) {
-              programRuleIds = programRuleIdsResponse[0].programRuleIds;
-            }
-            observer.next(programRuleIds);
             observer.complete();
           },
           error => {

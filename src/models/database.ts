@@ -414,8 +414,6 @@ export const DATABASE_STRUCTURE = {
     batchSize: 50,
     displayName: 'Programs',
     dependentTable: [
-      'programProgramRuleVariables',
-      'programProgramRules',
       'programProgramTrackedEntityAttributes',
       'trackedEntityAttribute',
       'programIndicators',
@@ -425,6 +423,23 @@ export const DATABASE_STRUCTURE = {
       'programStageEntryForm'
     ]
   },
+  programProgramTrackedEntityAttributes: {
+    columns: [
+      { value: 'id', type: 'TEXT' },
+      { value: 'programId', type: 'TEXT' },
+      { value: 'sortOrder', type: 'TEXT' },
+      { value: 'mandatory', type: 'TEXT' },
+      { value: 'displayInList', type: 'TEXT' },
+      { value: 'externalAccess', type: 'TEXT' }
+    ],
+    isMetadata: false,
+    shouldIncludeOnLogin: false,
+    resourceType: '',
+    batchSize: 50,
+    displayName: '',
+    dependentTable: []
+  },
+
   trackerRegistrationForm: {
     columns: [
       { value: 'id', type: 'TEXT' },
@@ -447,30 +462,6 @@ export const DATABASE_STRUCTURE = {
     resourceType: '',
     batchSize: 50,
     displayName: 'Program stage entry form design',
-    dependentTable: []
-  },
-  programProgramRuleVariables: {
-    columns: [
-      { value: 'id', type: 'TEXT' },
-      { value: 'programRuleVariableIds', type: 'LONGTEXT' }
-    ],
-    isMetadata: false,
-    shouldIncludeOnLogin: false,
-    resourceType: '',
-    batchSize: 500,
-    displayName: '',
-    dependentTable: []
-  },
-  programProgramRules: {
-    columns: [
-      { value: 'id', type: 'TEXT' },
-      { value: 'programRuleIds', type: 'LONGTEXT' }
-    ],
-    isMetadata: false,
-    shouldIncludeOnLogin: false,
-    resourceType: '',
-    batchSize: 500,
-    displayName: '',
     dependentTable: []
   },
   programTrackedEntityAttributes: {
@@ -564,6 +555,8 @@ export const DATABASE_STRUCTURE = {
       { value: 'id', type: 'TEXT' },
       { value: 'programId', type: 'TEXT' },
       { value: 'name', type: 'TEXT' },
+      { value: 'filter', type: 'TEXT' },
+      { value: 'description', type: 'LONGTEXT' },
       { value: 'expression', type: 'LONGTEXT' }
     ],
     isMetadata: false,
