@@ -414,8 +414,6 @@ export const DATABASE_STRUCTURE = {
     batchSize: 50,
     displayName: 'Programs',
     dependentTable: [
-      'programProgramRuleVariables',
-      'programProgramRules',
       'programProgramTrackedEntityAttributes',
       'trackedEntityAttribute',
       'programIndicators',
@@ -464,30 +462,6 @@ export const DATABASE_STRUCTURE = {
     resourceType: '',
     batchSize: 50,
     displayName: 'Program stage entry form design',
-    dependentTable: []
-  },
-  programProgramRuleVariables: {
-    columns: [
-      { value: 'id', type: 'TEXT' },
-      { value: 'programRuleVariableIds', type: 'LONGTEXT' }
-    ],
-    isMetadata: false,
-    shouldIncludeOnLogin: false,
-    resourceType: '',
-    batchSize: 500,
-    displayName: '',
-    dependentTable: []
-  },
-  programProgramRules: {
-    columns: [
-      { value: 'id', type: 'TEXT' },
-      { value: 'programRuleIds', type: 'LONGTEXT' }
-    ],
-    isMetadata: false,
-    shouldIncludeOnLogin: false,
-    resourceType: '',
-    batchSize: 500,
-    displayName: '',
     dependentTable: []
   },
   programTrackedEntityAttributes: {
