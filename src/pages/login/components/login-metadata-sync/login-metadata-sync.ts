@@ -1094,7 +1094,6 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
             .downloadConstantsFromServer(this.currentUser)
             .subscribe(
               response => {
-                console.log(JSON.stringify({ response }));
                 this.removeFromQueue(process, 'dowmloading', false, response);
               },
               error => {
