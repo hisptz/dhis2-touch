@@ -58,14 +58,11 @@ async function getDataSetById(dataSetId) {
       const sectionIds = await dhis2.aggregateMetadataProvider.getDataSetSectionsByDataSetId(dataSetId);
       const dataElements = await dhis2.aggregateMetadataProvider.getDataElementsByIds(dataElementIds);
       const dataElementsObject = arrayToObject(dataElements, 'id');
-      console.log(JSON.stringify({
-        dataElementsObject
-      }))
+      const dataSetElements = getDataSetElements(dataElementIds, dataElementsObject)
       const sections = await dhis2.aggregateMetadataProvider.getSectionsByIds(sectionIds);
-
       dataSetObject = {
         ...dataSetObject,
-        dataElementIds,
+        dataSetElements,
         sections
       }
     }
@@ -96,6 +93,7 @@ async function getDataSetSectionsByDataSetId(dataSetId) {
 async function getDataElementsByIds(dataElementIds) {
   const resource = "dataElements";
   const attribute = "id";
+  await dhis2.sqlLiteProvider.getFromTableByAttributes(resource, attribute, dataElementIds);
 }
 
 async function getSectionsByIds(sectionIds) {
@@ -115,6 +113,8 @@ async function getSectionsByIds(sectionIds) {
     return parseInt(a.sortOrder) - parseInt(b.sortOrder);
   });
 }
+
+
 
 
 function getDataElementsByIds(dataElementIds) {
@@ -138,6 +138,14 @@ function getDataValues(dataSetId, orgunitId, period) {
     }).catch(error => {
       reject(error);
     });
+  })
+}
+
+function getDataSetElements(dataElementIds, dataElementsObject) {
+  return dataElementIds.map(function (dataElementId) {
+    return dataElementsObject[dataElementId]
+  }).filter(function (dataElement) {
+    return dataElement && dataElement.id;
   })
 }
 
