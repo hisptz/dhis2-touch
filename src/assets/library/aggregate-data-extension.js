@@ -59,7 +59,7 @@ async function getDataSetById(dataSetId) {
       const dataElements = await dhis2.aggregateMetadataProvider.getDataElementsByIds(dataElementIds);
       const dataElementsObject = arrayToObject(dataElements, 'id');
       const dataSetElements = getDataSetElements(dataElementIds, dataElementsObject)
-      const sections = await dhis2.aggregateMetadataProvider.getSectionsByIds(sectionIds);
+      const sections = await dhis2.aggregateMetadataProvider.getSectionsByIds(sectionIds, dataElementsObject);
       dataSetObject = {
         ...dataSetObject,
         dataSetElements,
@@ -96,7 +96,7 @@ async function getDataElementsByIds(dataElementIds) {
   await dhis2.sqlLiteProvider.getFromTableByAttributes(resource, attribute, dataElementIds);
 }
 
-async function getSectionsByIds(sectionIds) {
+async function getSectionsByIds(sectionIds, dataElementsObject) {
   const resource = "sections";
   const attribute = "id";
   var sections = await dhis2.sqlLiteProvider.getFromTableByAttributes(resource, attribute, sectionIds);
@@ -104,9 +104,11 @@ async function getSectionsByIds(sectionIds) {
   const sectionDataElementObject = arrayToObject(sectionDataElements, 'id');
   return sections.map(function (section) {
     const sectionDataElement = section && section.id && sectionDataElementObject[section.id] ? sectionDataElementObject[section.id] : {};
+    const dataElementIds = sectionDataElement.dataElementIds || [];
+    const dataElements = getDataSetElements(dataElementIds, dataElementsObject)
     section = {
       ...section,
-      dataElementIds: sectionDataElement.dataElementIds || []
+      dataElements
     }
     return section;
   }).sort(function (a, b) {
