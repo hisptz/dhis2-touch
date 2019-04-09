@@ -314,13 +314,13 @@ export class TrackerCapturePage implements OnInit {
   }
 
   registerNewTrackedEntity() {
-    this.navCtrl.push('TrackerEntityRegisterPage', {});
+    // this.navCtrl.push('TrackerEntityRegisterPage', {});
   }
 
   openTrackedEntityDashboard(currentIndex) {
-    let trackedEntityInstancesId = this.trackedEntityInstancesIds[currentIndex];
-    this.navCtrl.push('TrackedEntityDashboardPage', {
-      trackedEntityInstancesId: trackedEntityInstancesId
-    });
+    // let trackedEntityInstancesId = this.trackedEntityInstancesIds[currentIndex];
+    // this.navCtrl.push('TrackedEntityDashboardPage', {
+    //   trackedEntityInstancesId: trackedEntityInstancesId
+    // });
   }
 }
