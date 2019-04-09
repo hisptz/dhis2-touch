@@ -666,17 +666,19 @@ export class ProgramsProvider {
                       program.programType &&
                       program.programType == programType
                     ) {
-                      if (program.displayIncidentDate) {
-                        program.displayIncidentDate = JSON.parse(
-                          program.displayIncidentDate
+                      try {
+                        if (program.displayIncidentDate) {
+                          program.displayIncidentDate = JSON.parse(
+                            program.displayIncidentDate
+                          );
+                        }
+                        program.withoutRegistration = JSON.parse(
+                          program.withoutRegistration
                         );
-                      }
-                      program.withoutRegistration = JSON.parse(
-                        program.withoutRegistration
-                      );
-                      program.captureCoordinates = JSON.parse(
-                        program.captureCoordinates
-                      );
+                        program.captureCoordinates = JSON.parse(
+                          program.captureCoordinates
+                        );
+                      } catch (error) {}
                       programs.push(program);
                       if (
                         this.lastSelectedProgram &&
@@ -842,7 +844,7 @@ export class ProgramsProvider {
    * @returns {Observable<any>}
    */
   getProgramById(programId, currentUser): Observable<any> {
-    let attribute = 'id';
+    const attribute = 'id';
     let attributeValue = [];
     attributeValue.push(programId);
     return new Observable(observer => {
@@ -857,17 +859,19 @@ export class ProgramsProvider {
           (programs: any) => {
             if (programs.length > 0) {
               let program = programs[0];
-              if (program.displayIncidentDate) {
-                program.displayIncidentDate = JSON.parse(
-                  program.displayIncidentDate
+              try {
+                if (program.displayIncidentDate) {
+                  program.displayIncidentDate = JSON.parse(
+                    program.displayIncidentDate
+                  );
+                }
+                program.withoutRegistration = JSON.parse(
+                  program.withoutRegistration
                 );
-              }
-              program.withoutRegistration = JSON.parse(
-                program.withoutRegistration
-              );
-              program.captureCoordinates = JSON.parse(
-                program.captureCoordinates
-              );
+                program.captureCoordinates = JSON.parse(
+                  program.captureCoordinates
+                );
+              } catch (error) {}
               observer.next(program);
             } else {
               observer.next({});
