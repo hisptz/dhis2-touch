@@ -135,7 +135,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   }
 
   hasEventDatesLabel(value) {
-    return value && isNaN(value);
+    return value && isNaN(value) && value.trim() !== '';
   }
 
   loadingCurrentUserInformation() {
