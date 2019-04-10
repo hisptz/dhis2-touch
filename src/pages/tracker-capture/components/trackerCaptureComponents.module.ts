@@ -25,10 +25,23 @@ import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
 import { sharedComponentsModule } from '../../../components/sharedComponents.module';
 import { EventCaptureComponentsModule } from '../../event-capture/components/eventCaptureComponents.module';
+import { ProfileEnrollmentFormComponent } from './profile-enrollment-form/profile-enrollment-form';
+import { ProfileFormComponent } from './profile-form/profile-form';
+import { EnrollmentFormComponent } from './enrollment-form/enrollment-form';
 import { TrackerConflictHandlerComponent } from './tracker-conflict-handler/tracker-conflict-handler';
 @NgModule({
-  declarations: [TrackerConflictHandlerComponent],
+  declarations: [
+    TrackerConflictHandlerComponent,
+    ProfileEnrollmentFormComponent,
+    ProfileFormComponent,
+    EnrollmentFormComponent
+  ],
   imports: [IonicModule, sharedComponentsModule, EventCaptureComponentsModule],
-  exports: [TrackerConflictHandlerComponent]
+  exports: [
+    TrackerConflictHandlerComponent,
+    ProfileEnrollmentFormComponent,
+    ProfileFormComponent,
+    EnrollmentFormComponent
+  ]
 })
 export class TrackerCaptureComponentsModule {}

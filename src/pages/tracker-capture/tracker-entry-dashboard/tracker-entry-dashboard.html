@@ -77,7 +77,15 @@
           <ion-row>
             <ion-col>
               <div *ngIf="currentWidget.id == 'enrollment'">
-                widget: {{ widget|json}}
+                <profile-enrollment-form [(coordinate)]="coordinate" [(incidentDate)]="incidentDate"
+                  [(enrollmentDate)]="enrollmentDate" [(isTrackedEntityRegistered)]="isTrackedEntityRegistered"
+                  [currentProgram]="currentProgram" [currentUser]="currentUser"
+                  [(errorOrWarningMessage)]="errorOrWarningMessage" [(hiddenSections)]="hiddenSections"
+                  [(hiddenFields)]="hiddenFields" [formLayout]="formLayout" [dataObject]="dataObject"
+                  [dataUpdateStatus]="dataUpdateStatus$ | async" [currentUser]="currentUser"
+                  [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
+                  [trackerRegistrationForm]="trackerRegistrationForm"
+                  [programTrackedEntityAttributes]="programTrackedEntityAttributes"></profile-enrollment-form>
               </div>
               <div *ngIf="currentWidget.id != 'enrollment'">
                 <div *ngIf="programStages && programStages.length > 0">

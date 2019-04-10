@@ -21,20 +21,25 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { TranslateModule } from '@ngx-translate/core';
-import { TrackerEntryDashboardPage } from './tracker-entry-dashboard';
-import { sharedComponentsModule } from '../../../components/sharedComponents.module';
-import { TrackerCaptureComponentsModule } from '../components/trackerCaptureComponents.module';
 
-@NgModule({
-  declarations: [TrackerEntryDashboardPage],
-  imports: [
-    IonicPageModule.forChild(TrackerEntryDashboardPage),
-    sharedComponentsModule,
-    TrackerCaptureComponentsModule,
-    TranslateModule.forChild({})
-  ]
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+@Component({
+  selector: 'profile-form',
+  templateUrl: 'profile-form.html'
 })
-export class TrackerEntryDashboardPageModule {}
+export class ProfileFormComponent implements OnInit {
+  @Input() formLayout: string;
+  @Input() dataObject;
+  @Input() currentUser;
+  @Input() trackedEntityAttributesSavingStatusClass;
+  @Input() trackerRegistrationForm: string;
+  @Input() programTrackedEntityAttributes;
+  @Input() hiddenFields;
+  @Input() hiddenSections;
+  @Input() errorOrWarningMessage;
+  @Input() dataUpdateStatus: { [elementId: string]: string };
+
+  constructor() {}
+
+  ngOnInit() {}
+}

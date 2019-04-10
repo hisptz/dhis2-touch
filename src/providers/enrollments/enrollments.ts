@@ -95,6 +95,38 @@ export class EnrollmentsProvider {
     return payLoads;
   }
 
+  getActiveEnrollment(
+    trackedEntityInstance: string,
+    currentProgramId: string,
+    currentUser: CurrentUser
+  ) {
+    return new Observable(observer => {
+      this.sqlLite
+        .getDataFromTableByAttributes(
+          this.resource,
+          'trackedEntityInstance',
+          [trackedEntityInstance],
+          currentUser.currentDatabase
+        )
+        .subscribe(
+          (enrollments: any) => {
+            let matchedEnrollments: any = _.filter(enrollments, {
+              program: currentProgramId
+            });
+            const matchedEnrollment =
+              matchedEnrollments && matchedEnrollments.length > 0
+                ? matchedEnrollments[0]
+                : {};
+            observer.next(matchedEnrollment);
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+    });
+  }
+
   updateEnrollement(
     trackedEntityInstance,
     incidentDate,

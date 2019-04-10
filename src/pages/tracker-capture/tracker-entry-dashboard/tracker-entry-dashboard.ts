@@ -91,6 +91,10 @@ export class TrackerEntryDashboardPage implements OnInit {
   }> = new BehaviorSubject<{ [elementId: string]: string }>({});
   dataUpdateStatus$: Observable<{ [elementId: string]: string }>;
 
+  enrollmentDate: any;
+  incidentDate: any;
+  coordinate: any;
+
   constructor(
     private store: Store<State>,
     private navCtrl: NavController,
@@ -120,6 +124,12 @@ export class TrackerEntryDashboardPage implements OnInit {
     this.loadingMessage = '';
     this.trackerRegistrationForm = '';
     this.isTrackedEntityRegistered = false;
+    this.incidentDate = '';
+    this.enrollmentDate = '';
+    this.coordinate = {
+      latitude: '0',
+      longitude: '0'
+    };
   }
 
   goBack() {
@@ -267,7 +277,33 @@ export class TrackerEntryDashboardPage implements OnInit {
               ] = attributeObject.value;
             });
           }
-          this.isLoading = false;
+          this.loadingMessage = 'Discovering the active enrollment';
+          this.enrollmentsProvider
+            .getActiveEnrollment(
+              trackedEntityInstanceId,
+              this.currentProgram.id,
+              this.currentUser
+            )
+            .subscribe(
+              (activeEnrollment: any) => {
+                const {
+                  incidentDate,
+                  enrollmentDate,
+                  coordinate
+                } = activeEnrollment;
+                this.coordinate = coordinate;
+                this.enrollmentDate = enrollmentDate.split('T')[0];
+                this.incidentDate = incidentDate.split('T')[0];
+                this.isLoading = false;
+              },
+              error => {
+                console.log(JSON.stringify(error));
+                this.isLoading = false;
+                this.appProvider.setNormalNotification(
+                  'Failed to discover active enrollment'
+                );
+              }
+            );
         },
         error => {
           console.log(JSON.stringify(error));
