@@ -1,0 +1,62 @@
+<!--
+*
+* Copyright 2015 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2015
+* @author Joseph Chingalo profschingalo@gmail.com>
+*
+*
+-->
+<ion-header>
+  <ion-navbar [color]="(colorSettings$ |async).colorAttributes.main">
+    <ion-title> <span [translate]="'Tracker capture Dashboard'"></span> </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <div *ngIf="isLoading">
+      <loading [loadingMessage]="loadingMessage" [loadingSize]="'large'"></loading>
+    </div>
+    <div *ngIf="!isLoading">
+      <ion-row>
+        <ion-col>
+          <div (tap)="goBack()" padding-bottom class="item-card">
+            <b>
+              <span [translate]="'Organisation unit'"></span>
+            </b> : {{ currentOrganisationUnit.name }}
+            <br>
+            <b>
+              <span [translate]="'Program'"></span>
+            </b> : {{ currentProgram.name }}
+            <br>
+          </div>
+        </ion-col>
+      </ion-row>
+      formLayout : {{ formLayout|json}}<br><br>
+      programTrackedEntityAttributes : {{ programTrackedEntityAttributes|json}}<br><br>
+      trackedEntityAttributeValuesObject : {{ trackedEntityAttributeValuesObject|json}}<br><br>
+      dataObject : {{ dataObject|json}}<br><br>
+      trackerRegistrationForm : {{ trackerRegistrationForm }}<br><br>
+      programStages : {{ programStages |json}}<br><br>
+
+
+    </div>
+
+  </ion-grid>
+</ion-content>

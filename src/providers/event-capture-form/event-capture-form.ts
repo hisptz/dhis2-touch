@@ -221,27 +221,29 @@ export class EventCaptureFormProvider {
               .subscribe(
                 (dataElements: any) => {
                   programsStages.forEach((programsStage: any) => {
-                    programsStage.hideDueDate = JSON.parse(
-                      programsStage.hideDueDate
-                    );
-                    programsStage.repeatable = JSON.parse(
-                      programsStage.repeatable
-                    );
-                    programsStage.allowGenerateNextVisit = JSON.parse(
-                      programsStage.allowGenerateNextVisit
-                    );
-                    programsStage.autoGenerateEvent = JSON.parse(
-                      programsStage.autoGenerateEvent
-                    );
-                    programsStage.blockEntryForm = JSON.parse(
-                      programsStage.blockEntryForm
-                    );
-                    programsStage.generatedByEnrollmentDate = JSON.parse(
-                      programsStage.generatedByEnrollmentDate
-                    );
-                    programsStage.captureCoordinates = programsStage.captureCoordinates
-                      ? JSON.parse(programsStage.captureCoordinates)
-                      : false;
+                    try {
+                      programsStage.hideDueDate = JSON.parse(
+                        programsStage.hideDueDate
+                      );
+                      programsStage.repeatable = JSON.parse(
+                        programsStage.repeatable
+                      );
+                      programsStage.allowGenerateNextVisit = JSON.parse(
+                        programsStage.allowGenerateNextVisit
+                      );
+                      programsStage.autoGenerateEvent = JSON.parse(
+                        programsStage.autoGenerateEvent
+                      );
+                      programsStage.blockEntryForm = JSON.parse(
+                        programsStage.blockEntryForm
+                      );
+                      programsStage.generatedByEnrollmentDate = JSON.parse(
+                        programsStage.generatedByEnrollmentDate
+                      );
+                      programsStage.captureCoordinates = programsStage.captureCoordinates
+                        ? JSON.parse(programsStage.captureCoordinates)
+                        : false;
+                    } catch (e) {}
                     programsStage.programStageDataElements.forEach(
                       programStageDataElement => {
                         if (
