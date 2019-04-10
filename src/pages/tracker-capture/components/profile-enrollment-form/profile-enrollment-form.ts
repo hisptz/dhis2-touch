@@ -48,13 +48,23 @@ export class ProfileEnrollmentFormComponent implements OnInit {
   @Output() deleteTrackedEntityInstance = new EventEmitter();
   @Output() updateEnrollment = new EventEmitter();
 
-  constructor() {}
+  isFormReady: boolean;
+  constructor() {
+    this.isFormReady = false;
+  }
 
   ngOnInit() {}
 
   onUpdateEnrollmentDeatils(data) {
-    const { enrollmentDate, incidentDate, coordinate } = data;
-    console.log({ enrollmentDate, incidentDate, coordinate });
+    const { enrollmentDate, incidentDate, coordinate, isFormReady } = data;
+    this.isFormReady = isFormReady;
+    console.log(
+      JSON.stringify({ isFormReady, enrollmentDate, incidentDate, coordinate })
+    );
+  }
+
+  onUpdateAttributesValue(data) {
+    console.log(JSON.stringify({ data }));
   }
 
   onDeleteTrackedEntityInstance() {

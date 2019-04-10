@@ -27,9 +27,9 @@
   (deleteTrackedEntityInstance)="onDeleteTrackedEntityInstance()"
   (updateEnrollment)="onUpdateEnrollmentDeatils($event)"></enrollment-form>
 
-<profile-form [(errorOrWarningMessage)]="errorOrWarningMessage" [(hiddenSections)]="hiddenSections"
-  [(hiddenFields)]="hiddenFields" [formLayout]="formLayout" [dataObject]="dataObject"
-  [dataUpdateStatus]="dataUpdateStatus"
+<profile-form (attributeUpdate)="onUpdateAttributesValue($event)" [(errorOrWarningMessage)]="errorOrWarningMessage"
+  [(hiddenSections)]="hiddenSections" [(hiddenFields)]="hiddenFields" [formLayout]="formLayout"
+  [dataObject]="dataObject" [dataUpdateStatus]="dataUpdateStatus" [currentUser]="currentUser"
   [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
   [trackerRegistrationForm]="trackerRegistrationForm" [programTrackedEntityAttributes]="programTrackedEntityAttributes">
 </profile-form>

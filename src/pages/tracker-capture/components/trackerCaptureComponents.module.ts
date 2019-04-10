@@ -29,19 +29,28 @@ import { ProfileEnrollmentFormComponent } from './profile-enrollment-form/profil
 import { ProfileFormComponent } from './profile-form/profile-form';
 import { EnrollmentFormComponent } from './enrollment-form/enrollment-form';
 import { TrackerConflictHandlerComponent } from './tracker-conflict-handler/tracker-conflict-handler';
+import { TrackedEntityInputsComponent } from './tracked-entity-inputs/tracked-entity-inputs';
+import { DataEntryComponentsModule } from '../../data-entry/components/dataEntryComponents.module';
 @NgModule({
   declarations: [
     TrackerConflictHandlerComponent,
     ProfileEnrollmentFormComponent,
     ProfileFormComponent,
-    EnrollmentFormComponent
+    EnrollmentFormComponent,
+    TrackedEntityInputsComponent
   ],
-  imports: [IonicModule, sharedComponentsModule, EventCaptureComponentsModule],
+  imports: [
+    IonicModule,
+    sharedComponentsModule,
+    DataEntryComponentsModule,
+    EventCaptureComponentsModule
+  ],
   exports: [
     TrackerConflictHandlerComponent,
     ProfileEnrollmentFormComponent,
     ProfileFormComponent,
-    EnrollmentFormComponent
+    EnrollmentFormComponent,
+    TrackedEntityInputsComponent
   ]
 })
 export class TrackerCaptureComponentsModule {}

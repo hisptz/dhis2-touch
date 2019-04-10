@@ -54,6 +54,7 @@ export interface DashboardWidget {
   iconName?: string;
 }
 
+declare var dhis2: any;
 @IonicPage()
 @Component({
   selector: 'page-tracker-entry-dashboard',
@@ -130,6 +131,9 @@ export class TrackerEntryDashboardPage implements OnInit {
       latitude: '0',
       longitude: '0'
     };
+    this.dataObject = {};
+    this.trackedEntityAttributesSavingStatusClass = {};
+    this.trackedEntityAttributeValuesObject = {};
   }
 
   goBack() {

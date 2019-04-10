@@ -29,8 +29,9 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class ProfileFormComponent implements OnInit {
   @Input() formLayout: string;
-  @Input() dataObject;
   @Input() currentUser;
+
+  @Input() dataObject;
   @Input() trackedEntityAttributesSavingStatusClass;
   @Input() trackerRegistrationForm: string;
   @Input() programTrackedEntityAttributes;
@@ -39,7 +40,23 @@ export class ProfileFormComponent implements OnInit {
   @Input() errorOrWarningMessage;
   @Input() dataUpdateStatus: { [elementId: string]: string };
 
-  constructor() {}
+  @Output() attributeUpdate = new EventEmitter();
+
+  isEventCompleted: boolean;
+  entryFormType: string;
+
+  constructor() {
+    this.entryFormType = 'tracker';
+    this.isEventCompleted = false;
+  }
 
   ngOnInit() {}
+
+  updateData(data) {
+    this.attributeUpdate.emit(data);
+  }
+
+  trackByFn(index, item) {
+    return item && item.id ? item.id : index;
+  }
 }

@@ -1,0 +1,108 @@
+<!--
+*
+* Copyright 2015 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2015
+* @author Joseph Chingalo profschingalo@gmail.com>
+*
+*
+-->
+<div *ngIf="!isLoading">
+  <div (click)="showTooltips()" class="inputLabel">
+    {{ fieldLabelKey }}
+    <span *ngIf="mandatory" class="required">&nbsp;*</span>
+    <span *ngIf="trackedEntityAttribute.description">&nbsp;&nbsp;
+      <ion-icon color="icon-color" name="help-circle"></ion-icon>
+    </span>
+  </div>
+  <div *ngIf="trackedEntityAttribute.optionSet" [ngClass]="(trackedEntityAttributesSavingStatusClass[trackedEntityAttribute.id +'-trackedEntityAttribute'])?trackedEntityAttributesSavingStatusClass[trackedEntityAttribute.id +'-trackedEntityAttribute']:'input-field-container'">
+    <option-set-input-field [dataEntrySettings]="dataEntrySettings" (onChange)="updateValue($event)" [dataElementId]="trackedEntityAttribute.id"
+      [categoryOptionComboId]="'trackedEntityAttribute'" [data]="data" [options]="trackedEntityAttribute.optionSet.options">
+    </option-set-input-field>
+  </div>
+  <div *ngIf="!trackedEntityAttribute.optionSet" [ngClass]="(trackedEntityAttributesSavingStatusClass[trackedEntityAttribute.id +'-trackedEntityAttribute'])?trackedEntityAttributesSavingStatusClass[trackedEntityAttribute.id +'-trackedEntityAttribute']:'input-field-container'">
+    <div *ngIf="textInputField.indexOf(trackedEntityAttribute.valueType) > -1">
+      <text-input-field (onChange)="updateValue($event)" [dataElementId]="trackedEntityAttribute.id"
+        [categoryOptionComboId]="'trackedEntityAttribute'" [data]="data" [barcodeSettings]="barcodeSettings"
+        [valueType]="trackedEntityAttribute.valueType">
+      </text-input-field>
+    </div>
+    <div *ngIf="numericalInputField.indexOf(trackedEntityAttribute.valueType) > -1">
+      <numerical-input-field (onChange)="updateValue($event)" [dataElementId]="trackedEntityAttribute.id"
+        [categoryOptionComboId]="'trackedEntityAttribute'" [data]="data" [barcodeSettings]="barcodeSettings"
+        [valueType]="trackedEntityAttribute.valueType">
+      </numerical-input-field>
+    </div>
+    <div *ngIf="trackedEntityAttribute.valueType === 'DATE' || trackedEntityAttribute.valueType === 'DATETIME' || trackedEntityAttribute.valueType === 'TIME' ">
+      <date-input-field (onChange)="updateValue($event)" [valueType]="trackedEntityAttribute.valueType" [dataElementId]="trackedEntityAttribute.id"
+        [categoryOptionComboId]="'trackedEntityAttribute'" [data]="data"></date-input-field>
+    </div>
+    <div *ngIf="trackedEntityAttribute.valueType === 'TRUE_ONLY'">
+      <true-only-input-field (onChange)="updateValue($event)" [dataElementId]="trackedEntityAttribute.id"
+        [categoryOptionComboId]="'trackedEntityAttribute'" [data]="data">
+      </true-only-input-field>
+    </div>
+    <div *ngIf="trackedEntityAttribute.valueType === 'AGE'">
+      <age-input (onChange)="updateValue($event)" [dataElementId]="trackedEntityAttribute.id" [categoryOptionComboId]="'trackedEntityAttribute'"
+        [data]="data">
+      </age-input>
+    </div>
+    <div *ngIf="trackedEntityAttribute.valueType === 'BOOLEAN'">
+      <boolean-input-field (onChange)="updateValue($event)" [dataElementId]="trackedEntityAttribute.id"
+        [categoryOptionComboId]="'trackedEntityAttribute'" [data]="data">
+      </boolean-input-field>
+    </div>
+    <div *ngIf="trackedEntityAttribute.valueType === 'COORDINATE'">
+      <coordinate-input (onChange)="updateValue($event)" [dataElementId]="trackedEntityAttribute.id"
+        [categoryOptionComboId]="'trackedEntityAttribute'" [data]="data">
+      </coordinate-input>
+    </div>
+    <div *ngIf="trackedEntityAttribute.valueType === 'ORGANISATION_UNIT'">
+      <organisation-unit-input (onChange)="updateValue($event)" [dataElementId]="trackedEntityAttribute.id"
+        [categoryOptionComboId]="'trackedEntityAttribute'" [data]="data">
+      </organisation-unit-input>
+    </div>
+    <div *ngIf="trackedEntityAttribute.valueType === 'UNIT_INTERVAL'">
+      <unit-interval-input (onChange)="updateValue($event)" [dataElementId]="trackedEntityAttribute.id"
+        [categoryOptionComboId]="'trackedEntityAttribute'" [data]="data">
+      </unit-interval-input>
+    </div>
+    <div *ngIf="trackedEntityAttribute.valueType === 'PERCENTAGE'">
+      <percentage-input (onChange)="updateValue($event)" [dataElementId]="trackedEntityAttribute.id"
+        [categoryOptionComboId]="'trackedEntityAttribute'" [data]="data">
+      </percentage-input>
+    </div>
+    <div *ngIf="trackedEntityAttribute.valueType === 'EMAIL'">
+      <email-input (onChange)="updateValue($event)" [(dataValuesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
+        [dataElementId]="trackedEntityAttribute.id" [categoryOptionComboId]="'trackedEntityAttribute'" [data]="data">
+      </email-input>
+    </div>
+    <div *ngIf="trackedEntityAttribute.valueType === 'PHONE_NUMBER'">
+      <phone-number-input (onChange)="updateValue($event)" [(dataValuesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
+        [dataElementId]="trackedEntityAttribute.id" [categoryOptionComboId]="'trackedEntityAttribute'" [data]="data">
+      </phone-number-input>
+    </div>
+
+    <div *ngIf="supportValueTypes.indexOf(trackedEntityAttribute.valueType) === -1">
+      <div padding>
+        Currently '{{ trackedEntityAttribute.valueType.toLocaleLowerCase().replace('/_/g',' ')}}' as value type is not
+        supported
+      </div>
+    </div>
+  </div>
+</div>

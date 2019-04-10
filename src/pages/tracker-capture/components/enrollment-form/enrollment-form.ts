@@ -82,12 +82,11 @@ export class EnrollmentFormComponent implements OnInit {
     ) {
       isFormReady = false;
     }
-    if (isFormReady) {
-      this.updateEnrollment.emit({
-        enrollmentDate: this.enrollmentDate,
-        incidentDate: this.enrollmentDate,
-        coordinate: this.enrollmentDate
-      });
-    }
+    this.updateEnrollment.emit({
+      isFormReady,
+      enrollmentDate: this.enrollmentDate,
+      incidentDate: this.enrollmentDate,
+      coordinate: this.coordinate
+    });
   }
 }
