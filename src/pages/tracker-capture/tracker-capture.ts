@@ -204,25 +204,32 @@ export class TrackerCapturePage implements OnInit {
       });
   }
 
-  loadingSavedTrackedEntityInstances(programId, organisationUnitId) {
+  loadingSavedTrackedEntityInstances(
+    programId,
+    organisationUnitId,
+    shouldSkipLoadOnline?: boolean
+  ) {
     this.isLoading = true;
-    this.showTrackerConflictHandler = false;
+
     this.loadingMessage = 'Discovering tracked entity list';
     const programName = this.selectedProgram.name;
     const eventType = 'tracker-capture';
     const orgUnitName = this.selectedOrgUnit.name;
-    setTimeout(() => {
-      this.trackerConflictHandler = {
-        ...{},
-        organisationUnitId,
-        orgUnitName,
-        eventType,
-        programId,
-        programName,
-        currentUser: this.currentUser
-      };
-      this.showTrackerConflictHandler = !this.hasOnlineTrackerLoaded;
-    }, 10);
+    if (!shouldSkipLoadOnline) {
+      this.showTrackerConflictHandler = false;
+      setTimeout(() => {
+        this.trackerConflictHandler = {
+          ...{},
+          organisationUnitId,
+          orgUnitName,
+          eventType,
+          programId,
+          programName,
+          currentUser: this.currentUser
+        };
+        this.showTrackerConflictHandler = !this.hasOnlineTrackerLoaded;
+      }, 10);
+    }
     this.trackerCaptureProvider
       .loadTrackedEntityInstancesList(
         programId,
@@ -265,7 +272,11 @@ export class TrackerCapturePage implements OnInit {
   onSuccessTrackerConflictHandling() {
     const programId = this.selectedProgram.id;
     const organisationUnitId = this.selectedOrgUnit.id;
-    this.loadingSavedTrackedEntityInstances(programId, organisationUnitId);
+    this.loadingSavedTrackedEntityInstances(
+      programId,
+      organisationUnitId,
+      true
+    );
   }
 
   isAllParameterSelected() {
