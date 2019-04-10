@@ -46,17 +46,75 @@
             </b> : {{ currentProgram.name }}
             <br>
           </div>
+          <div class="item-car-tracker-details-sections" no-padding (click)="openWidgetList()">
+            <ion-item no-padding>
+              <div ion-text color="font-color" align="center">
+                <div style="padding:6px 0px;">
+                  <span>
+                    <span class="program-stage-button-label">
+                      <span *ngIf="currentWidget.icon">
+                        <img class="tracker-pagination-icon" [src]="currentWidget.icon" />
+                      </span>
+                      <span *ngIf="currentWidget.iconName" class="tracker-pagination-icon icon-color">
+                        <b>{{ currentWidget.iconName }}</b>
+                      </span>
+                    </span>
+                  </span>
+                  &nbsp; {{ currentWidget.name|translate }}
+                </div>
+              </div>
+              <div style="text-align: center" item-right float-right>
+                <span float-end class="side-menu-icon">
+                  <img [src]="icons.menu">
+                </span>
+              </div>
+            </ion-item>
+          </div>
         </ion-col>
       </ion-row>
-      formLayout : {{ formLayout|json}}<br><br>
-      programTrackedEntityAttributes : {{ programTrackedEntityAttributes|json}}<br><br>
-      trackedEntityAttributeValuesObject : {{ trackedEntityAttributeValuesObject|json}}<br><br>
-      dataObject : {{ dataObject|json}}<br><br>
-      trackerRegistrationForm : {{ trackerRegistrationForm }}<br><br>
-      programStages : {{ programStages |json}}<br><br>
-
-
+      <div *ngFor="let widget of dashboardWidgets;trackBy: trackByFn">
+        <div *ngIf="(currentWidget && widget &&  widget.id &&currentWidget.id === widget.id)">
+          <ion-row>
+            <ion-col>
+              <div *ngIf="currentWidget.id == 'enrollment'">
+                widget: {{ widget|json}}
+              </div>
+              <div *ngIf="currentWidget.id != 'enrollment'">
+                <div *ngIf="programStages && programStages.length > 0">
+                  <div *ngFor="let programStage of programStages;trackBy: trackByFn">
+                    <div *ngIf="widget.id == programStage.id">
+                      programStage : {{ programStage |json}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
     </div>
-
   </ion-grid>
 </ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <button padding ion-button clear text-capitalize *ngFor="let widget of dashboardWidgets;trackBy: trackByFn"
+            [disabled]="(!isTrackedEntityRegistered && widget.iconName) || (currentWidget && widget &&  widget.id &&currentWidget.id === widget.id)"
+            (tap)="changeDashboardWidget(widget)">
+            <div
+              [ngClass]=" (currentWidget && widget &&  widget.id &&currentWidget.id === widget.id)?'program-stage-button-label':''">
+              <div *ngIf="widget.icon">
+                <img class="footer-icon" [src]="widget.icon" />
+              </div>
+              <div *ngIf="widget.iconName">
+                <b>{{ widget.iconName }}</b>
+              </div>
+            </div>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>

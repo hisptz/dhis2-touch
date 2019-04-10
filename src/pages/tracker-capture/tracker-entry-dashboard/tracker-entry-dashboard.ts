@@ -47,6 +47,13 @@ import { EnrollmentsProvider } from '../../../providers/enrollments/enrollments'
 import { ProgramRulesProvider } from '../../../providers/program-rules/program-rules';
 import { CurrentUser } from '../../../models';
 
+export interface DashboardWidget {
+  id: string;
+  name: string;
+  icon?: string;
+  iconName?: string;
+}
+
 @IonicPage()
 @Component({
   selector: 'page-tracker-entry-dashboard',
@@ -65,6 +72,10 @@ export class TrackerEntryDashboardPage implements OnInit {
   trackedEntityAttributeValuesObject: any = {};
   isLoading: boolean;
   loadingMessage: string;
+  isTrackedEntityRegistered: boolean;
+  dashboardWidgets: DashboardWidget[];
+  currentWidget: DashboardWidget;
+  currentWidgetIndex: any;
   icons: any = {};
   trackerRegistrationForm: string;
   formLayout: string;
@@ -108,6 +119,7 @@ export class TrackerEntryDashboardPage implements OnInit {
     this.isLoading = true;
     this.loadingMessage = '';
     this.trackerRegistrationForm = '';
+    this.isTrackedEntityRegistered = false;
   }
 
   goBack() {
@@ -217,8 +229,13 @@ export class TrackerEntryDashboardPage implements OnInit {
       .subscribe(
         (programStages: any) => {
           this.programStages = programStages;
+          this.dashboardWidgets = this.getDashboardWidgets(programStages);
+          if (this.dashboardWidgets.length > 0) {
+            this.changeDashboardWidget(this.dashboardWidgets[0]);
+          }
           this.discoveringProgramSkipLogicMetadata(programId, currentUser);
           if (!isNewRegistrationForm) {
+            this.isTrackedEntityRegistered = true;
             this.discoveringTrackedEntityInstanceData(trackedEntityInstancesId);
           } else {
             this.isLoading = false;
@@ -307,5 +324,61 @@ export class TrackerEntryDashboardPage implements OnInit {
           );
         }
       );
+  }
+
+  openWidgetList() {
+    if (this.isTrackedEntityRegistered) {
+      let modal = this.modalCtrl.create('TrackedEntityWidgetSelectionPage', {
+        dashboardWidgets: this.dashboardWidgets,
+        currentWidget: this.currentWidget
+      });
+      modal.onDidDismiss((currentWidget: any) => {
+        this.changeDashboardWidget(currentWidget);
+        setTimeout(() => {
+          this.content.scrollToTop(1300);
+        }, 200);
+      });
+      modal.present();
+    } else {
+      this.appProvider.setNormalNotification(
+        'A tracked entity instance has not yet registered'
+      );
+    }
+  }
+
+  updateWidgetPagination(widgetIndex) {
+    let widget = this.dashboardWidgets[widgetIndex];
+    if (widget && widget.id) {
+      this.changeDashboardWidget(widget);
+    }
+  }
+
+  changeDashboardWidget(content) {
+    if (content && content.id) {
+      this.currentWidgetIndex = this.dashboardWidgets.indexOf(content);
+      this.currentWidget = content;
+    }
+  }
+
+  getDashboardWidgets(programStages: any[]) {
+    let counter = 0;
+    const defaultWidget: DashboardWidget = {
+      id: 'enrollment',
+      name: 'Enrollment & Profile',
+      icon: 'assets/icon/profile.png'
+    };
+    const stageWidgets: any[] = _.map(programStages, (programStage: any) => {
+      counter++;
+      const { id, name } = programStage;
+      return { id, name, iconName: counter };
+    });
+    const widgets: DashboardWidget[] = _.flatMapDeep(
+      _.concat([...[defaultWidget], stageWidgets])
+    );
+    return widgets;
+  }
+
+  trackByFn(index, item) {
+    return item && item.id ? item.id : index;
   }
 }
