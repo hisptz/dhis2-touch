@@ -23,6 +23,7 @@
  */
 import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
+import { TranslateModule } from '@ngx-translate/core';
 import { sharedComponentsModule } from '../../../components/sharedComponents.module';
 import { EventCaptureComponentsModule } from '../../event-capture/components/eventCaptureComponents.module';
 import { ProfileEnrollmentFormComponent } from './profile-enrollment-form/profile-enrollment-form';
@@ -41,6 +42,7 @@ import { DataEntryComponentsModule } from '../../data-entry/components/dataEntry
   ],
   imports: [
     IonicModule,
+    TranslateModule.forChild({}),
     sharedComponentsModule,
     DataEntryComponentsModule,
     EventCaptureComponentsModule

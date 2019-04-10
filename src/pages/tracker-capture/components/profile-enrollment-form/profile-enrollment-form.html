@@ -33,3 +33,26 @@
   [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
   [trackerRegistrationForm]="trackerRegistrationForm" [programTrackedEntityAttributes]="programTrackedEntityAttributes">
 </profile-form>
+
+<ion-row no-padding no-margin>
+  <ion-col>
+    <div float-left>
+      <div class="item-card" color="font-color" (click)="goBack()" padding ion-button clear text-center text-capitalize>
+        <ion-icon name="ios-arrow-back-outline"></ion-icon>&nbsp;&nbsp;
+        <span [translate]="'Back'"></span>
+      </div>
+    </div>
+    <div float-right>
+      <div class="item-card" color="font-color" padding ion-button clear text-center text-capitalize
+        (click)="addNewTrackedEntity()">
+        <img class="footer-icon" [src]="addNewIcon" />&nbsp;&nbsp;
+        <span [translate]="'Add new'"></span>
+      </div>
+      <div class="item-card" color="danger" (click)="onDeleteTrackedEntityInstance()" padding ion-button clear
+        text-center text-capitalize>
+        <ion-icon name="trash"></ion-icon>&nbsp;&nbsp;
+        <span color="font-color" [translate]="'Delete'"></span>
+      </div>
+    </div>
+  </ion-col>
+</ion-row>

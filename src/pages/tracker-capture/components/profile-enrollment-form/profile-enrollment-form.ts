@@ -47,13 +47,24 @@ export class ProfileEnrollmentFormComponent implements OnInit {
 
   @Output() deleteTrackedEntityInstance = new EventEmitter();
   @Output() updateEnrollment = new EventEmitter();
+  @Output() goBackEvent = new EventEmitter();
 
+  addNewIcon: string;
   isFormReady: boolean;
   constructor() {
     this.isFormReady = false;
+    this.addNewIcon = 'assets/icon/add-new-case.png';
   }
 
   ngOnInit() {}
+
+  goBack() {
+    this.goBackEvent.emit({ status: true });
+  }
+
+  addNewTrackedEntity() {
+    console.log('Add new tracked entity');
+  }
 
   onUpdateEnrollmentDeatils(data) {
     const { enrollmentDate, incidentDate, coordinate, isFormReady } = data;
@@ -68,6 +79,6 @@ export class ProfileEnrollmentFormComponent implements OnInit {
   }
 
   onDeleteTrackedEntityInstance() {
-    console.log('On delete');
+    console.log('On deleting tracked entity');
   }
 }
