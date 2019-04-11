@@ -150,6 +150,7 @@ export class TrackerEntryDashboardPage implements OnInit {
         'trackedEntityInstancesId'
       );
       const isNewRegistrationForm = trackedEntityInstancesId ? false : true;
+      this.trackedEntityInstance = trackedEntityInstancesId;
       this.discoveringTrackedEntityRegistration(
         id,
         currentUser,
@@ -271,9 +272,10 @@ export class TrackerEntryDashboardPage implements OnInit {
       .getTrackedEntityInstance(trackedEntityInstanceId, this.currentUser)
       .subscribe(
         (response: any) => {
-          this.trackedEntityInstance = response;
-          if (response && response.attributes) {
-            response.attributes.map((attributeObject: any) => {
+          const { id, attributes } = response;
+          this.trackedEntityInstance = id;
+          if (attributes) {
+            attributes.map((attributeObject: any) => {
               const id = `${attributeObject.attribute}-trackedEntityAttribute`;
               this.dataObject[id] = { id: id, value: attributeObject.value };
               this.trackedEntityAttributeValuesObject[

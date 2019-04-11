@@ -115,7 +115,11 @@ export class EventCaptureFormProvider {
     });
   }
 
-  isValidDate(str) {
+  /*
+   * @param  {string} str
+   * @returns boolean
+   */
+  isValidDate(str: string): boolean {
     var d = moment(str, 'YYYY-MM-DD');
     if (d == null || !d.isValid()) return false;
 
@@ -127,7 +131,11 @@ export class EventCaptureFormProvider {
       str.indexOf(d.format('DD/MM/YY')) >= 0
     );
   }
-
+  /**
+   * @param  {string} programId
+   * @param  {CurrentUser} currentUser
+   * @returns Observable
+   */
   getProgramSkipLogicMetadata(
     programId: string,
     currentUser: CurrentUser
@@ -425,13 +433,11 @@ export class EventCaptureFormProvider {
         );
     });
   }
-
   /**
    *
    * @param currentUser
-   * @returns {Observable<any>}
    */
-  deleteALLEvents(currentUser): Observable<any> {
+  deleteALLEvents(currentUser: CurrentUser): Observable<any> {
     return new Observable(observer => {
       this.sqlLiteProvider
         .dropTable('events', currentUser.currentDatabase)
@@ -452,18 +458,20 @@ export class EventCaptureFormProvider {
    * @param columnsToDisplay
    * @param events
    * @param eventType
-   * @returns {Observable<any>}
    */
-  getTableFormatResult(columnsToDisplay, events, eventType?): Observable<any> {
+  getTableFormatResult(
+    columnsToDisplay,
+    events,
+    eventType?: string
+  ): Observable<any> {
     let table = { headers: [], rows: [] };
-    let eventIds = this.getMapperObjectForDisplay(events).eventIds;
-    let eventDataValuesArrays = this.getMapperObjectForDisplay(events)
-      .eventsMapper;
+    const { eventIds, eventsMapper } = this.getMapperObjectForDisplay(events);
     if (events && events.length > 0) {
-      Object.keys(columnsToDisplay).map(key => {
-        table.headers.push(columnsToDisplay[key]);
-      });
-      eventDataValuesArrays.map((eventDataValues: any) => {
+      table.headers = _.map(
+        Object.keys(columnsToDisplay),
+        key => columnsToDisplay[key]
+      );
+      eventsMapper.map((eventDataValues: any) => {
         let row = [];
         Object.keys(columnsToDisplay).map(key => {
           if (!this.isEmpty(eventDataValues[key])) {
@@ -484,8 +492,12 @@ export class EventCaptureFormProvider {
       observer.complete();
     });
   }
+  /**
+   * @param  {string} value
+   * @returns boolean
+   */
 
-  isEmpty(value) {
+  isEmpty(value: string): boolean {
     return value === undefined || value === null;
   }
 
@@ -500,9 +512,9 @@ export class EventCaptureFormProvider {
     events.map((event: any) => {
       let mapper = {};
       if (event && event.dataValues) {
-        const { eventDate } = event;
+        const { eventDate, dataValues } = event;
         mapper['eventDate'] = eventDate;
-        event.dataValues.map((dataValue: any) => {
+        dataValues.map((dataValue: any) => {
           mapper[dataValue.dataElement] = dataValue.value;
         });
       }
@@ -955,11 +967,10 @@ export class EventCaptureFormProvider {
   }
 
   /**
-   *
-   * @param events
-   * @returns {any}
+   * @param  {any[]} events
+   * @returns any
    */
-  getFormattedEventsForUpload(events) {
+  getFormattedEventsForUpload(events: any[]): any[] {
     let sanitizedEvents = _.flatMapDeep(
       _.map(events, event => {
         const dataValues = _.filter(event.dataValues, dataValue => {

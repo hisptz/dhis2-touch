@@ -31,6 +31,9 @@ import { ProfileFormComponent } from './profile-form/profile-form';
 import { EnrollmentFormComponent } from './enrollment-form/enrollment-form';
 import { TrackerConflictHandlerComponent } from './tracker-conflict-handler/tracker-conflict-handler';
 import { TrackedEntityInputsComponent } from './tracked-entity-inputs/tracked-entity-inputs';
+import { ProgramStageTrackerBasedComponent } from './program-stage-tracker-based/program-stage-tracker-based';
+import { TrackerEventContainerComponent } from './tracker-event-container/tracker-event-container';
+import { TrackerEventActionComponent } from './tracker-event-action/tracker-event-action';
 import { DataEntryComponentsModule } from '../../data-entry/components/dataEntryComponents.module';
 @NgModule({
   declarations: [
@@ -38,7 +41,10 @@ import { DataEntryComponentsModule } from '../../data-entry/components/dataEntry
     ProfileEnrollmentFormComponent,
     ProfileFormComponent,
     EnrollmentFormComponent,
-    TrackedEntityInputsComponent
+    TrackedEntityInputsComponent,
+    ProgramStageTrackerBasedComponent,
+    TrackerEventContainerComponent,
+    TrackerEventActionComponent
   ],
   imports: [
     IonicModule,
@@ -52,7 +58,10 @@ import { DataEntryComponentsModule } from '../../data-entry/components/dataEntry
     ProfileEnrollmentFormComponent,
     ProfileFormComponent,
     EnrollmentFormComponent,
-    TrackedEntityInputsComponent
+    TrackedEntityInputsComponent,
+    ProgramStageTrackerBasedComponent,
+    TrackerEventContainerComponent,
+    TrackerEventActionComponent
   ]
 })
 export class TrackerCaptureComponentsModule {}
