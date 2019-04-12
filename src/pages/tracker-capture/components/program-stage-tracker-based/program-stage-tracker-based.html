@@ -34,14 +34,13 @@
         </tr>
       </thead>
       <tbody *ngFor="let row of tableLayout.rows;let currentIndex = index;trackBy: trackByFn">
-        <tr
-          [ngStyle]="{'background-color': currentEvents[currentIndex].id === currentOpenEvent.id ? '#B9FFB9' :'#F4F4F4' }"
+        <tr [ngStyle]="{'background-color': isTableRowActive(currentIndex) ? '#B9FFB9' :'#F4F4F4' }"
           (click)="activateRowProgramStageDataEntry(currentIndex)">
           <td *ngFor="let data of row;trackBy: trackByFn">
             {{ data }}
           </td>
         </tr>
-        <tr *ngIf="currentEvents[currentIndex].id === currentOpenEvent.id">
+        <tr *ngIf="isTableRowActive(currentIndex)">
           <td colspan="100%">
             <div text-left>
               <tracker-event-container (updateDeleteStatus)="onUpdateDeleteStatus($event)"
@@ -56,6 +55,18 @@
               </tracker-event-action>
             </div>
         </tr>
+      </tbody>
+      <tbody>
+        <tr *ngIf="!isTableRowActivated && !isNewEventFormOpened">
+          <td colspan="100%">
+            <div text-left>
+              <tracker-event-action (deleteEvent)="onDeleteEvent($event)"
+                (addRepeatableEvent)="onAddRepeatableEvent($event)" [isAddButtonDisabled]="isAddButtonDisabled"
+                [isRepeatableStage]="programStage.repeatable" [isDeletable]="isDeletable">
+              </tracker-event-action>
+            </div>
+        </tr>
+      </tbody>
     </table>
   </div>
   <div *ngIf="isNewEventFormOpened || currentEvents.length === 0">

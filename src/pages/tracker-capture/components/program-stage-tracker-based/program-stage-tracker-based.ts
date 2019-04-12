@@ -54,6 +54,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
   dataValuesSavingStatusClass: any;
   dataObject: any;
   isDeletable: boolean;
+  isTableRowActivated: boolean;
 
   constructor(
     private settingsProvider: SettingsProvider,
@@ -62,6 +63,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
     private eventCaptureFormProvider: EventCaptureFormProvider
   ) {
     this.isAddButtonDisabled = true;
+    this.isTableRowActivated = false;
     this.isLoading = true;
     this.loadingMessage = '';
     this.currentEvents = [];
@@ -124,11 +126,18 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
     }
   }
 
-  discoveringProgramStageEvents(programStageId, programStageDataElements) {
+  discoveringProgramStageEvents(
+    programStageId: string,
+    programStageDataElements,
+    shouldCreateEvent: boolean = false,
+    eventId?: any
+  ) {
+    this.isLoading = true;
     this.loadingMessage = 'Discovering program stage events';
     this.isNewEventFormOpened = false;
     this.isAddButtonDisabled = false;
     this.isDeletable = false;
+    this.isTableRowActivated = false;
     this.currentEvents = [];
     this.eventCaptureFormProvider
       .getEventsForProgramStage(
@@ -138,7 +147,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
       )
       .subscribe(
         (events: any) => {
-          const sanitizedEvents = _.map(events, (event: any) => {
+          let sanitizedEvents = _.map(events, (event: any) => {
             let { eventDate, dueDate } = event;
             dueDate = dueDate ? dueDate : eventDate;
             dueDate = dueDate ? dueDate.split('T')[0] : dueDate;
@@ -150,11 +159,28 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
             };
           });
           if (sanitizedEvents.length > 0) {
-            this.currentOpenEvent = sanitizedEvents.pop();
+            if (shouldCreateEvent) {
+              this.createEmptyEvent();
+            } else {
+              if (eventId) {
+                const currentOpenEvent = _.find(sanitizedEvents, {
+                  id: eventId
+                });
+                if (currentOpenEvent) {
+                  this.currentOpenEvent = currentOpenEvent;
+                }
+              } else {
+                this.currentOpenEvent =
+                  sanitizedEvents[sanitizedEvents.length - 1];
+              }
+              const { dataValues } = this.currentOpenEvent;
+              this.updateDataObjectModel(dataValues, programStageDataElements);
+              this.isTableRowActivated = true;
+              setTimeout(() => {
+                this.isLoading = false;
+              }, 50);
+            }
             this.currentEvents = sanitizedEvents;
-            const { dataValues } = this.currentOpenEvent;
-            this.updateDataObjectModel(dataValues, programStageDataElements);
-            this.isLoading = false;
           } else {
             this.createEmptyEvent();
           }
@@ -245,17 +271,37 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
       );
   }
 
-  activateRowProgramStageDataEntry(rowIndex) {
-    console.log('Activate row');
+  isTableRowActive(rowIndex: any) {
+    const status =
+      this.currentEvents &&
+      this.currentEvents[rowIndex] &&
+      this.currentOpenEvent &&
+      this.currentEvents[rowIndex].id === this.currentOpenEvent.id;
+    return status;
+  }
+
+  activateRowProgramStageDataEntry(rowIndex: number) {
+    const { id, programStageDataElements } = this.programStage;
+    const currentOpenEvent = this.currentEvents[rowIndex];
+    const eventId = currentOpenEvent.id;
+    this.isNewEventFormOpened = false;
+    this.discoveringProgramStageEvents(
+      id,
+      programStageDataElements,
+      false,
+      eventId
+    );
   }
 
   onAddRepeatableEvent() {
-    console.log('Add new event for repeatable stages');
+    const { id, programStageDataElements } = this.programStage;
+    this.discoveringProgramStageEvents(id, programStageDataElements, true);
   }
 
   onUpdateDeleteStatus(data: any) {
     const { status } = data;
     this.isDeletable = status;
+    this.isAddButtonDisabled = !status;
   }
 
   onDeleteEvent(dataResponse) {
