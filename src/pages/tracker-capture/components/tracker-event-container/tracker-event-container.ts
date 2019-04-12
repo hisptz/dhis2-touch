@@ -49,6 +49,7 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
 
   @Output() deleteEvent = new EventEmitter();
   @Output() updateDeleteStatus = new EventEmitter();
+  @Output() dataValueChange = new EventEmitter();
 
   entryFormType: string;
   dataUpdateStatus: { [elementId: string]: string };
@@ -247,6 +248,7 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
           .saveEvents([this.currentOpenEvent], this.currentUser)
           .subscribe(
             () => {
+              this.dataValueChange.emit({ status: true });
               this.dataObject[updatedData.id] = updatedData;
               this.dataUpdateStatus = { [updatedData.domElementId]: 'OK' };
               if (!shouldSkipProgramRules) {

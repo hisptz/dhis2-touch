@@ -130,15 +130,18 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
     programStageId: string,
     programStageDataElements,
     shouldCreateEvent: boolean = false,
-    eventId?: any
+    eventId?: any,
+    shouldSkipLoader?: boolean
   ) {
-    this.isLoading = true;
+    if (!shouldSkipLoader) {
+      this.isLoading = true;
+      this.currentEvents = [];
+    }
     this.loadingMessage = 'Discovering program stage events';
     this.isNewEventFormOpened = false;
     this.isAddButtonDisabled = false;
     this.isDeletable = false;
     this.isTableRowActivated = false;
-    this.currentEvents = [];
     this.eventCaptureFormProvider
       .getEventsForProgramStage(
         this.currentUser,
@@ -174,7 +177,11 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
                   sanitizedEvents[sanitizedEvents.length - 1];
               }
               const { dataValues } = this.currentOpenEvent;
-              this.updateDataObjectModel(dataValues, programStageDataElements);
+              this.updateDataObjectModel(
+                dataValues,
+                programStageDataElements,
+                shouldSkipLoader
+              );
               this.isTableRowActivated = true;
               setTimeout(() => {
                 this.isLoading = false;
@@ -235,9 +242,15 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
       );
   }
 
-  updateDataObjectModel(dataValues, programStageDataElements) {
+  updateDataObjectModel(
+    dataValues,
+    programStageDataElements,
+    shouldSkipLoader
+  ) {
     const dataValuesMapper = _.keyBy(dataValues, 'dataElement');
-    this.dataObject = {};
+    if (!shouldSkipLoader) {
+      this.dataObject = {};
+    }
     _.map(programStageDataElements, (programStageDataElement: any) => {
       const { dataElement } = programStageDataElement;
       if (dataElement && dataElement.id) {
@@ -285,12 +298,38 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
     const currentOpenEvent = this.currentEvents[rowIndex];
     const eventId = currentOpenEvent.id;
     this.isNewEventFormOpened = false;
-    this.discoveringProgramStageEvents(
-      id,
-      programStageDataElements,
-      false,
-      eventId
-    );
+    if (
+      this.currentOpenEvent &&
+      this.currentOpenEvent.id &&
+      this.currentOpenEvent.id === eventId
+    ) {
+      this.currentOpenEvent = null;
+      this.isTableRowActivated = false;
+      this.isDeletable = false;
+    } else {
+      this.discoveringProgramStageEvents(
+        id,
+        programStageDataElements,
+        false,
+        eventId
+      );
+    }
+  }
+
+  onDataValueChange(response: any) {
+    const { status } = response;
+    if (status) {
+      const { id, programStageDataElements } = this.programStage;
+      const eventId = this.currentOpenEvent.id;
+      this.isNewEventFormOpened = false;
+      this.discoveringProgramStageEvents(
+        id,
+        programStageDataElements,
+        false,
+        eventId,
+        true
+      );
+    }
   }
 
   onAddRepeatableEvent() {

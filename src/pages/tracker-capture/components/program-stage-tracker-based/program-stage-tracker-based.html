@@ -43,9 +43,10 @@
         <tr *ngIf="isTableRowActive(currentIndex)">
           <td colspan="100%">
             <div text-left>
-              <tracker-event-container (updateDeleteStatus)="onUpdateDeleteStatus($event)"
-                (deleteEvent)="onDeleteEvent($event)" [(isDeletable)]="isDeletable" [formLayout]="formLayout"
-                [(dataObject)]="dataObject" [programSkipLogicMetadata]="programSkipLogicMetadata"
+              <tracker-event-container (dataValueChange)="onDataValueChange($event)"
+                (updateDeleteStatus)="onUpdateDeleteStatus($event)" (deleteEvent)="onDeleteEvent($event)"
+                [(isDeletable)]="isDeletable" [formLayout]="formLayout" [(dataObject)]="dataObject"
+                [programSkipLogicMetadata]="programSkipLogicMetadata"
                 [dataValuesSavingStatusClass]="dataValuesSavingStatusClass" [programStage]="programStage"
                 [(currentOpenEvent)]="currentOpenEvent" [currentUser]="currentUser">
               </tracker-event-container>
@@ -60,7 +61,7 @@
         <tr *ngIf="!isTableRowActivated && !isNewEventFormOpened">
           <td colspan="100%">
             <div text-left>
-              <tracker-event-action (deleteEvent)="onDeleteEvent($event)"
+              <tracker-event-action (dataValueChange)="onDataValueChange($event)" (deleteEvent)="onDeleteEvent($event)"
                 (addRepeatableEvent)="onAddRepeatableEvent($event)" [isAddButtonDisabled]="isAddButtonDisabled"
                 [isRepeatableStage]="programStage.repeatable" [isDeletable]="isDeletable">
               </tracker-event-action>
