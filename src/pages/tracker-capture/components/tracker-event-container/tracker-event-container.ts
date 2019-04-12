@@ -113,7 +113,7 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
         this.dataObject
       )
       .subscribe(
-        res => {
+        (res: any) => {
           const { data } = res;
           if (data) {
             const {
@@ -123,7 +123,6 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
               hiddenProgramStages,
               errorOrWarningMessage
             } = data;
-            console.log(JSON.stringify(data));
             if (errorOrWarningMessage) {
               this.errorOrWarningMessage = errorOrWarningMessage;
             }

@@ -77,9 +77,6 @@ export class EventCaptureFormProvider {
             });
             let dueDate = moment(new Date()).format('YYYY-MM-DD');
             if (matchedEnrollment) {
-              console.log(
-                'is valid' + this.isValidDate(matchedEnrollment.incidentDate)
-              );
               let referenceDate = this.isValidDate(
                 matchedEnrollment.incidentDate
               )
@@ -477,7 +474,7 @@ export class EventCaptureFormProvider {
           if (!this.isEmpty(eventDataValues[key])) {
             row.push(eventDataValues[key]);
           } else {
-            row.push('');
+            row.push('  ');
           }
         });
         table.rows.push(row);
@@ -507,13 +504,13 @@ export class EventCaptureFormProvider {
    * @returns {{eventsMapper: Array; eventIds: Array}}
    */
   getMapperObjectForDisplay(events) {
-    let eventIds = [];
-    let eventsMapper = [];
+    const eventIds = [];
+    const eventsMapper = [];
     events.map((event: any) => {
       let mapper = {};
       if (event && event.dataValues) {
         const { eventDate, dataValues } = event;
-        mapper['eventDate'] = eventDate;
+        mapper = { ...mapper, eventDate };
         dataValues.map((dataValue: any) => {
           mapper[dataValue.dataElement] = dataValue.value;
         });

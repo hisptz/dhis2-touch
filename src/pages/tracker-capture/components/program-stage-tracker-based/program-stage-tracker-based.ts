@@ -148,14 +148,20 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
           });
           if (sanitizedEvents.length > 0) {
             this.currentOpenEvent = sanitizedEvents.pop();
-            this.currentEvents = sanitizedEvents;
+            this.currentEvents = _.map(
+              sanitizedEvents.concat(this.currentOpenEvent),
+              (event: any) => {
+                const { id } = event;
+                return { ...event, id: `${id}` };
+              }
+            );
             const { dataValues } = this.currentOpenEvent;
             this.updateDataObjectModel(dataValues, programStageDataElements);
+            this.isLoading = false;
           } else {
             this.createEmptyEvent();
           }
           this.renderDataAsTable();
-          this.isLoading = false;
         },
         error => {
           this.isLoading = false;
@@ -196,6 +202,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
           this.dataObject = {};
           this.isNewEventFormOpened = true;
           this.isAddButtonDisabled = true;
+          this.isLoading = false;
         },
         error => {
           console.log(
@@ -207,6 +214,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
 
   updateDataObjectModel(dataValues, programStageDataElements) {
     const dataValuesMapper = _.keyBy(dataValues, 'dataElement');
+    this.dataObject = {};
     _.map(programStageDataElements, (programStageDataElement: any) => {
       const { dataElement } = programStageDataElement;
       if (dataElement && dataElement.id) {
@@ -230,7 +238,6 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
       .subscribe(
         (response: any) => {
           const { eventIds, table } = response;
-          console.log();
           this.tableLayout = table;
         },
         error => {
@@ -240,6 +247,8 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
         }
       );
   }
+
+  activateRowProgramStageDataEntry(rowIndex) {}
 
   couldEventBeDeleted() {
     return true;
