@@ -53,6 +53,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
   tableLayout: any;
   dataValuesSavingStatusClass: any;
   dataObject: any;
+  isDeletable: boolean;
 
   constructor(
     private settingsProvider: SettingsProvider,
@@ -66,6 +67,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
     this.currentEvents = [];
     this.dataValuesSavingStatusClass = {};
     this.dataObject = {};
+    this.isDeletable = false;
   }
 
   ngOnInit() {
@@ -126,6 +128,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
     this.loadingMessage = 'Discovering program stage events';
     this.isNewEventFormOpened = false;
     this.isAddButtonDisabled = false;
+    this.isDeletable = false;
     this.currentEvents = [];
     this.eventCaptureFormProvider
       .getEventsForProgramStage(
@@ -148,13 +151,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
           });
           if (sanitizedEvents.length > 0) {
             this.currentOpenEvent = sanitizedEvents.pop();
-            this.currentEvents = _.map(
-              sanitizedEvents.concat(this.currentOpenEvent),
-              (event: any) => {
-                const { id } = event;
-                return { ...event, id: `${id}` };
-              }
-            );
+            this.currentEvents = sanitizedEvents;
             const { dataValues } = this.currentOpenEvent;
             this.updateDataObjectModel(dataValues, programStageDataElements);
             this.isLoading = false;
@@ -248,14 +245,60 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
       );
   }
 
-  activateRowProgramStageDataEntry(rowIndex) {}
-
-  couldEventBeDeleted() {
-    return true;
+  activateRowProgramStageDataEntry(rowIndex) {
+    console.log('Activate row');
   }
-  onAddRepeatableEvent() {}
 
-  onDeleteEvent() {}
+  onAddRepeatableEvent() {
+    console.log('Add new event for repeatable stages');
+  }
+
+  onUpdateDeleteStatus(data: any) {
+    const { status } = data;
+    this.isDeletable = status;
+  }
+
+  onDeleteEvent(dataResponse) {
+    const { title } = dataResponse;
+    const { id } = this.currentOpenEvent;
+    const actionSheet = this.actionSheetCtrl.create({
+      title: title,
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+            this.eventCaptureFormProvider
+              .deleteEventByAttribute('id', id, this.currentUser)
+              .subscribe(
+                () => {
+                  this.isLoading = true;
+                  const { id, programStageDataElements } = this.programStage;
+                  this.discoveringProgramStageEvents(
+                    id,
+                    programStageDataElements
+                  );
+                  this.appProvider.setNormalNotification(
+                    'Event has been deleted successfully'
+                  );
+                },
+                error => {
+                  console.log(JSON.stringify(error));
+                  this.isLoading = false;
+                  this.appProvider.setNormalNotification(
+                    'Failed to delete event'
+                  );
+                }
+              );
+          }
+        },
+        {
+          text: 'No',
+          handler: () => {}
+        }
+      ]
+    });
+    actionSheet.present();
+  }
 
   getDataDimensions() {
     if (this.currentProgram && this.currentProgram.categoryCombo) {

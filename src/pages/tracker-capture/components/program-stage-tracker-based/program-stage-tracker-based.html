@@ -44,24 +44,28 @@
         <tr *ngIf="currentEvents[currentIndex].id === currentOpenEvent.id">
           <td colspan="100%">
             <div text-left>
-              <tracker-event-container [formLayout]="formLayout" [(dataObject)]="dataObject"
-                [programSkipLogicMetadata]="programSkipLogicMetadata"
+              <tracker-event-container (updateDeleteStatus)="onUpdateDeleteStatus($event)"
+                (deleteEvent)="onDeleteEvent($event)" [(isDeletable)]="isDeletable" [formLayout]="formLayout"
+                [(dataObject)]="dataObject" [programSkipLogicMetadata]="programSkipLogicMetadata"
                 [dataValuesSavingStatusClass]="dataValuesSavingStatusClass" [programStage]="programStage"
                 [(currentOpenEvent)]="currentOpenEvent" [currentUser]="currentUser">
               </tracker-event-container>
-              <tracker-event-action [isAddButtonDisabled]="isAddButtonDisabled"
-                [isRepeatableStage]="programStage.repeatable" [isDeletable]="couldEventBeDeleted()">
+              <tracker-event-action (deleteEvent)="onDeleteEvent($event)"
+                (addRepeatableEvent)="onAddRepeatableEvent($event)" [isAddButtonDisabled]="isAddButtonDisabled"
+                [isRepeatableStage]="programStage.repeatable" [isDeletable]="isDeletable">
               </tracker-event-action>
             </div>
         </tr>
     </table>
   </div>
   <div *ngIf="isNewEventFormOpened || currentEvents.length === 0">
-    <tracker-event-container [formLayout]="formLayout" [(dataObject)]="dataObject"
+    <tracker-event-container (updateDeleteStatus)="onUpdateDeleteStatus($event)" (deleteEvent)="onDeleteEvent($event)"
+      [(isDeletable)]="isDeletable" [formLayout]="formLayout" [(dataObject)]="dataObject"
       [programSkipLogicMetadata]="programSkipLogicMetadata" [dataValuesSavingStatusClass]="dataValuesSavingStatusClass"
       [programStage]="programStage" [(currentOpenEvent)]="currentOpenEvent" [currentUser]="currentUser">
     </tracker-event-container>
-    <tracker-event-action [isAddButtonDisabled]="isAddButtonDisabled" [isRepeatableStage]="programStage.repeatable"
-      [isDeletable]="couldEventBeDeleted()"></tracker-event-action>
+    <tracker-event-action (deleteEvent)="onDeleteEvent($event)" (addRepeatableEvent)="onAddRepeatableEvent($event)"
+      [isAddButtonDisabled]="isAddButtonDisabled" [isRepeatableStage]="programStage.repeatable"
+      [isDeletable]="isDeletable"></tracker-event-action>
   </div>
 </div>

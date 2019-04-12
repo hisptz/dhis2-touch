@@ -45,6 +45,10 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
   @Input() programStage;
   @Input() currentOpenEvent;
   @Input() currentUser: CurrentUser;
+  @Input() isDeletable: boolean;
+
+  @Output() deleteEvent = new EventEmitter();
+  @Output() updateDeleteStatus = new EventEmitter();
 
   entryFormType: string;
   dataUpdateStatus: { [elementId: string]: string };
@@ -91,9 +95,13 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
         executionDateLabel !== ''
           ? executionDateLabel
           : this.executionDateLabel;
-      setTimeout(() => {
-        this.evaluatingProgramRules();
-      }, 50);
+      const { dataValues } = this.currentOpenEvent;
+      if (dataValues && dataValues.length > 0) {
+        this.updateDeleteStatus.emit({ status: true });
+        setTimeout(() => {
+          this.evaluatingProgramRules();
+        }, 50);
+      }
     }
   }
 
@@ -179,7 +187,30 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
       );
   }
 
-  updateEventDate(date: string, eventDateType: string) {}
+  updateEventDate(date: string, eventDateType: string) {
+    if (date && date !== '') {
+      this.currentOpenEvent[eventDateType] = date;
+      this.currentOpenEvent.syncStatus = 'not-synced';
+      if (this.isDeletable) {
+        this.updateData({}, false);
+      }
+    } else {
+      if (this.isDeletable) {
+        const data = {
+          title: `Clearing of ${
+            this.executionDateLabel
+          } lead to deletion of this event, Are you sure?`
+        };
+        if (eventDateType === 'eventDate') {
+          this.deleteEvent.emit(data);
+        } else {
+          this.currentOpenEvent[eventDateType] = date;
+        }
+      } else {
+        this.currentOpenEvent[eventDateType] = date;
+      }
+    }
+  }
 
   updateEventCoordonate(coordinate: any) {
     this.currentOpenEvent.coordinate = coordinate;
@@ -187,6 +218,54 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
   }
 
   updateData(updatedData: any, shouldSkipProgramRules: boolean) {
+    const dataValues = [];
+    const { id } = updatedData;
+    if (id) {
+      const newValue = updatedData.value;
+      const hasNoOldValue =
+        this.dataObject && this.dataObject[id] && this.dataObject[id].value
+          ? false
+          : true;
+      const oldValue = !hasNoOldValue ? this.dataObject[id].value : newValue;
+      if (oldValue !== newValue || hasNoOldValue) {
+        this.currentOpenEvent = {
+          ...this.currentOpenEvent,
+          syncStatus: 'not-synced'
+        };
+        this.dataObject[updatedData.id] = updatedData;
+      }
+      Object.keys(this.dataObject).forEach((key: any) => {
+        const dataElementId = key.split('-')[0];
+        dataValues.push({
+          dataElement: dataElementId,
+          value: this.dataObject[key].value
+        });
+      });
+      if (dataValues && dataValues.length > 0) {
+        this.currentOpenEvent = { ...this.currentOpenEvent, dataValues };
+        this.eventCaptureFormProvider
+          .saveEvents([this.currentOpenEvent], this.currentUser)
+          .subscribe(
+            () => {
+              this.dataObject[updatedData.id] = updatedData;
+              this.dataUpdateStatus = { [updatedData.domElementId]: 'OK' };
+              if (!shouldSkipProgramRules) {
+                this.dataValuesSavingStatusClass[updatedData.id] =
+                  'input-field-container-success';
+                this.updateDeleteStatus.emit({ status: true });
+                this.evaluatingProgramRules();
+              }
+            },
+            error => {
+              this.dataValuesSavingStatusClass[updatedData.id] =
+                'input-field-container-failed';
+              console.log(JSON.stringify(error));
+              this.dataUpdateStatus = { [updatedData.domElementId]: 'ERROR' };
+            }
+          );
+      }
+    }
+
     if (!shouldSkipProgramRules) {
       this.evaluatingProgramRules();
     }

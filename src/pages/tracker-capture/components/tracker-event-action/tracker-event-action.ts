@@ -44,6 +44,8 @@ export class TrackerEventActionComponent implements OnInit {
   }
 
   onDeleteEvent() {
-    this.deleteEvent.emit({ status: true });
+    this.deleteEvent.emit({
+      title: `Are you sure you want to delete this event`
+    });
   }
 }
