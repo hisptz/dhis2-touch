@@ -265,9 +265,5 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
           );
       }
     }
-
-    if (!shouldSkipProgramRules) {
-      this.evaluatingProgramRules();
-    }
   }
 }
