@@ -60,7 +60,7 @@ export class TabsPage implements OnInit {
       dhis2.dataBaseStructure = DATABASE_STRUCTURE;
       this.userProvider.getProfileInformation().subscribe(userProfile => {
         dhis2.userProfile = userProfile;
-      })
+      });
       this.synchronizationProvider.startSynchronization(currentUser);
     });
   }

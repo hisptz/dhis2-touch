@@ -170,7 +170,9 @@ export class EventCapturePage implements OnInit {
             this.programStage = programStages[0];
             const { executionDateLabel } = this.programStage;
             this.columnsToDisplay['eventDate'] =
-              executionDateLabel && isNaN(executionDateLabel)
+              executionDateLabel &&
+              isNaN(executionDateLabel) &&
+              executionDateLabel.trim() !== ''
                 ? executionDateLabel
                 : 'Report date';
             if (this.programStage.programStageDataElements) {

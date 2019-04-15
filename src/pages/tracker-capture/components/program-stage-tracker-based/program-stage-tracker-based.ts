@@ -21,177 +21,127 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output
-} from '@angular/core';
-import { ProgramsProvider } from '../../../../providers/programs/programs';
-import { OrganisationUnitsProvider } from '../../../../providers/organisation-units/organisation-units';
-import { UserProvider } from '../../../../providers/user/user';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { AppProvider } from '../../../../providers/app/app';
 import { EventCaptureFormProvider } from '../../../../providers/event-capture-form/event-capture-form';
 import { SettingsProvider } from '../../../../providers/settings/settings';
 import { ActionSheetController } from 'ionic-angular';
-import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
 import * as _ from 'lodash';
+import { CurrentUser } from '../../../../models';
 
-/**
- * Generated class for the ProgramStageTrackerBasedComponent component.
- *
- * See https://angular.io/docs/ts/latest/api/core/index/ComponentMetadata-class.html
- * for more info on Angular Components.
- */
 @Component({
   selector: 'program-stage-tracker-based',
   templateUrl: 'program-stage-tracker-based.html'
 })
-export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
+export class ProgramStageTrackerBasedComponent implements OnInit {
   @Input() programStage;
   @Input() formLayout: string;
   @Input() trackedEntityInstance;
-  @Input() currentWidgetIndex;
-  @Input() isLastStage;
   @Input() programSkipLogicMetadata;
-  @Output() onChange = new EventEmitter();
+  @Input() currentOrganisationUnit;
+  @Input() currentProgram;
+  @Input() currentUser: CurrentUser;
 
-  currentOrgUnit: any;
-  currentProgram: any;
-  currentUser: any;
+  isAddButtonDisabled: boolean;
   isLoading: boolean;
   loadingMessage: string;
-  selectedDataDimension: any;
-  dataObjectModel: any;
-  currentEvents: Array<any> = [];
-  isNewEventFormOpened: boolean = false;
+  currentEvents: any[];
   currentOpenEvent: any;
-
+  isNewEventFormOpened: boolean;
   dataEntrySettings: any;
   columnsToDisplay: any;
   tableLayout: any;
-
-  isTableRowOpened: any = {};
-  canEventBeDeleted: boolean = false;
-  isAddButtonDisabled: boolean = true;
-  translationMapper: any;
-  currentEventId: string;
   dataValuesSavingStatusClass: any;
+  dataObject: any;
+  isDeletable: boolean;
+  isTableRowActivated: boolean;
 
   constructor(
-    private programsProvider: ProgramsProvider,
     private settingsProvider: SettingsProvider,
     private actionSheetCtrl: ActionSheetController,
-    private userProvider: UserProvider,
     private appProvider: AppProvider,
-    private eventCaptureFormProvider: EventCaptureFormProvider,
-    private appTranslation: AppTranslationProvider,
-    private organisationUnitProvider: OrganisationUnitsProvider
-  ) {}
+    private eventCaptureFormProvider: EventCaptureFormProvider
+  ) {
+    this.isAddButtonDisabled = true;
+    this.isTableRowActivated = false;
+    this.isLoading = true;
+    this.loadingMessage = '';
+    this.currentEvents = [];
+    this.dataValuesSavingStatusClass = {};
+    this.dataObject = {};
+    this.isDeletable = false;
+  }
 
   ngOnInit() {
-    this.dataObjectModel = {};
-    this.dataValuesSavingStatusClass = {};
-    this.currentEvents = [];
-    //@todo add support of data dimensions
-    this.selectedDataDimension = [];
-    this.currentOrgUnit = this.organisationUnitProvider.lastSelectedOrgUnit;
-    this.currentProgram = this.programsProvider.lastSelectedProgram;
-    this.translationMapper = {};
-    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
-      (data: any) => {
-        this.translationMapper = data;
-        this.loadingCurrentUserInformation();
+    this.loadingMessage = 'Discovering data entry settings';
+    this.settingsProvider.getSettingsForTheApp(this.currentUser).subscribe(
+      (appSettings: any) => {
+        this.dataEntrySettings = appSettings.entryForm;
+        this.columnsToDisplay = {};
+        const { id, programStageDataElements } = this.programStage;
+        const { label } = this.dataEntrySettings;
+        this.discoverAndSetColumnsToDisplay(programStageDataElements, label);
+        this.discoveringProgramStageEvents(id, programStageDataElements);
       },
       error => {
-        this.loadingCurrentUserInformation();
+        this.isLoading = false;
+        this.appProvider.setNormalNotification(
+          'Failed to discover data entry settings'
+        );
+        console.log(JSON.stringify({ error }));
       }
     );
-
-    this.isLoading = true;
   }
 
-  loadingCurrentUserInformation() {
-    this.loadingMessage = 'Discovering current user information';
-    this.userProvider.getCurrentUser().subscribe(
-      user => {
-        this.currentUser = user;
-        if (this.programStage && this.programStage.id) {
-          this.settingsProvider
-            .getSettingsForTheApp(this.currentUser)
-            .subscribe((appSettings: any) => {
-              this.dataEntrySettings = appSettings.entryForm;
-
-              this.columnsToDisplay = {};
-              if (this.programStage.programStageDataElements) {
-                this.programStage.programStageDataElements.forEach(
-                  (programStageDataElement: any) => {
-                    if (
-                      programStageDataElement.dataElement &&
-                      programStageDataElement.dataElement.id
-                    ) {
-                      let dataElement = programStageDataElement.dataElement;
-                      let fieldLabelKey = dataElement.displayName;
-                      if (
-                        this.dataEntrySettings &&
-                        this.dataEntrySettings.label &&
-                        dataElement[this.dataEntrySettings.label]
-                      ) {
-                        if (isNaN(dataElement[this.dataEntrySettings.label])) {
-                          fieldLabelKey =
-                            dataElement[this.dataEntrySettings.label];
-                        }
-                      }
-                      if (programStageDataElement.displayInReports) {
-                        this.columnsToDisplay[
-                          programStageDataElement.dataElement.id
-                        ] = fieldLabelKey;
-                      }
-                    }
-                  }
-                );
-                if (
-                  Object.keys(this.columnsToDisplay).length == 0 &&
-                  this.programStage.programStageDataElements.length > 0
-                ) {
-                  let counter = 0;
-                  this.programStage.programStageDataElements.forEach(
-                    (programStageDataElement: any) => {
-                      if (
-                        programStageDataElement.dataElement &&
-                        programStageDataElement.dataElement.id &&
-                        counter < 3
-                      ) {
-                        let dataElement = programStageDataElement.dataElement;
-                        let fieldLabelKey = dataElement.displayName;
-                        this.columnsToDisplay[
-                          programStageDataElement.dataElement.id
-                        ] = fieldLabelKey;
-                        counter++;
-                      }
-                    }
-                  );
-                }
-              }
-              this.loadEventsBasedOnProgramStage(this.programStage.id);
-            });
+  discoverAndSetColumnsToDisplay(programStageDataElements, label) {
+    if (programStageDataElements && label) {
+      _.map(programStageDataElements, (programStageDataElement: any) => {
+        const { dataElement, displayInReports } = programStageDataElement;
+        if (dataElement && dataElement.id && displayInReports) {
+          const fieldLabel =
+            dataElement[label] && isNaN(dataElement[label])
+              ? dataElement[label]
+              : dataElement.displayName;
+          this.columnsToDisplay[dataElement.id] = fieldLabel;
         }
-      },
-      error => {
-        this.appProvider.setNormalNotification(
-          'Failed to discover current user information'
+      });
+      if (
+        Object.keys(this.columnsToDisplay).length === 0 &&
+        programStageDataElements.length > 0
+      ) {
+        _.map(
+          _.chunk(programStageDataElements, 3)[0],
+          (programStageDataElement: any) => {
+            const { dataElement } = programStageDataElement;
+            if (dataElement && dataElement.id) {
+              const fieldLabel =
+                dataElement[label] && isNaN(dataElement[label])
+                  ? dataElement[label]
+                  : dataElement.displayName;
+              this.columnsToDisplay[dataElement.id] = fieldLabel;
+            }
+          }
         );
       }
-    );
+    }
   }
 
-  loadEventsBasedOnProgramStage(programStageId) {
-    this.loadingMessage = 'Discovering events';
+  discoveringProgramStageEvents(
+    programStageId: string,
+    programStageDataElements,
+    shouldCreateEvent: boolean = false,
+    eventId?: any,
+    shouldSkipLoader?: boolean
+  ) {
+    if (!shouldSkipLoader) {
+      this.isLoading = true;
+      this.currentEvents = [];
+    }
+    this.loadingMessage = 'Discovering program stage events';
     this.isNewEventFormOpened = false;
     this.isAddButtonDisabled = false;
-    this.currentEvents = [];
+    this.isDeletable = false;
+    this.isTableRowActivated = false;
     this.eventCaptureFormProvider
       .getEventsForProgramStage(
         this.currentUser,
@@ -200,74 +150,57 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         (events: any) => {
-          events.forEach((event: any) => {
-            if (!event.dueDate) {
-              event.dueDate = event.eventDate;
-            }
+          let sanitizedEvents = _.map(events, (event: any) => {
+            let { eventDate, dueDate } = event;
+            dueDate = dueDate ? dueDate : eventDate;
+            dueDate = dueDate ? dueDate.split('T')[0] : dueDate;
+            eventDate = eventDate ? eventDate.split('T')[0] : eventDate;
+            return {
+              ...event,
+              eventDate,
+              dueDate
+            };
           });
-          if (events && events.length > 0) {
-            this.eventCaptureFormProvider
-              .saveEvents(events, this.currentUser)
-              .subscribe(() => {});
-          }
-          this.isLoading = false;
-          if (events && events.length == 0) {
+          if (sanitizedEvents.length > 0) {
+            if (shouldCreateEvent) {
+              this.createEmptyEvent();
+            } else {
+              if (eventId) {
+                const currentOpenEvent = _.find(sanitizedEvents, {
+                  id: eventId
+                });
+                if (currentOpenEvent) {
+                  this.currentOpenEvent = currentOpenEvent;
+                }
+              } else {
+                this.currentOpenEvent =
+                  sanitizedEvents[sanitizedEvents.length - 1];
+              }
+              const { dataValues } = this.currentOpenEvent;
+              this.updateDataObjectModel(
+                dataValues,
+                programStageDataElements,
+                shouldSkipLoader
+              );
+              this.isTableRowActivated = true;
+              setTimeout(() => {
+                this.isLoading = false;
+              }, 50);
+            }
+            this.currentEvents = sanitizedEvents;
+          } else {
             this.createEmptyEvent();
-          } else if (events && events.length == 1) {
-            this.currentOpenEvent = events[0];
-            this.currentEventId = events[0].id;
-            this.updateDataObjectModel(
-              this.currentOpenEvent.dataValues,
-              this.programStage.programStageDataElements
-            );
-            this.isNewEventFormOpened = true;
-          } else if (events && events.length > 1) {
-            this.currentOpenEvent = events.pop();
-            this.currentEvents = events;
-            this.currentEventId = this.currentOpenEvent.id;
-            this.updateDataObjectModel(
-              this.currentOpenEvent.dataValues,
-              this.programStage.programStageDataElements
-            );
-            this.isNewEventFormOpened = true;
           }
           this.renderDataAsTable();
         },
         error => {
-          console.log(JSON.stringify(error));
           this.isLoading = false;
-          this.appProvider.setNormalNotification('Failed to discover events');
+          this.appProvider.setNormalNotification(
+            'Failed to discover program stage events'
+          );
+          console.log(JSON.stringify({ error }));
         }
       );
-  }
-
-  openProgramStageEventEntryForm(currentIndex) {
-    this.canEventBeDeleted = false;
-    this.isAddButtonDisabled = false;
-    if (this.isTableRowOpened[currentIndex]) {
-      this.isTableRowOpened[currentIndex] = false;
-    } else {
-      this.resetOpenRowOnRepeatableEvents();
-      this.isTableRowOpened[currentIndex] = true;
-      if (
-        this.currentEvents[currentIndex] &&
-        this.currentEvents[currentIndex].id
-      ) {
-        this.currentEventId = this.currentEvents[currentIndex].id;
-      }
-      this.canEventBeDeleted = true;
-    }
-    if (
-      this.currentOpenEvent &&
-      this.currentOpenEvent.dataValues &&
-      this.currentOpenEvent.dataValues.length > 0 &&
-      this.isNewEventFormOpened
-    ) {
-      this.currentEvents.push(this.currentOpenEvent);
-      this.renderDataAsTable();
-    }
-    this.currentOpenEvent = null;
-    this.isNewEventFormOpened = false;
   }
 
   createEmptyEvent() {
@@ -276,7 +209,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
         this.currentEvents,
         this.programStage,
         this.trackedEntityInstance,
-        this.currentOrgUnit.id,
+        this.currentOrganisationUnit.id,
         this.currentProgram.id,
         this.currentUser
       )
@@ -285,7 +218,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
           const dataDimension: any = this.getDataDimensions();
           this.currentOpenEvent = this.eventCaptureFormProvider.getEmptyEvent(
             this.currentProgram,
-            this.currentOrgUnit,
+            this.currentOrganisationUnit,
             this.programStage.id,
             dataDimension.attributeCos,
             dataDimension.attributeCc,
@@ -296,11 +229,10 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
           this.currentOpenEvent[
             'trackedEntityInstance'
           ] = this.trackedEntityInstance;
-          this.dataObjectModel = {};
-          this.currentEventId = this.currentOpenEvent.id;
+          this.dataObject = {};
           this.isNewEventFormOpened = true;
           this.isAddButtonDisabled = true;
-          this.canEventBeDeleted = false;
+          this.isLoading = false;
         },
         error => {
           console.log(
@@ -310,57 +242,126 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
       );
   }
 
-  addRepeatableEvent(currentOpenEvent) {
-    if (
-      currentOpenEvent &&
-      currentOpenEvent.dataValues &&
-      currentOpenEvent.dataValues.length > 0 &&
-      this.isNewEventFormOpened
-    ) {
-      this.currentEvents.push(currentOpenEvent);
-      this.renderDataAsTable();
+  updateDataObjectModel(
+    dataValues,
+    programStageDataElements,
+    shouldSkipLoader
+  ) {
+    const dataValuesMapper = _.keyBy(dataValues, 'dataElement');
+    if (!shouldSkipLoader) {
+      this.dataObject = {};
     }
+    _.map(programStageDataElements, (programStageDataElement: any) => {
+      const { dataElement } = programStageDataElement;
+      if (dataElement && dataElement.id) {
+        const { id } = dataElement;
+        if (dataValuesMapper[id]) {
+          const fieldId = `${id}-dataElement`;
+          this.dataObject[fieldId] = dataValuesMapper[id];
+        }
+      }
+    });
+  }
+
+  renderDataAsTable() {
+    this.currentEvents = _.sortBy(this.currentEvents, ['eventDate']);
+    this.eventCaptureFormProvider
+      .getTableFormatResult(
+        this.columnsToDisplay,
+        this.currentEvents,
+        'tracker-capture'
+      )
+      .subscribe(
+        (response: any) => {
+          const { eventIds, table } = response;
+          this.tableLayout = table;
+        },
+        error => {
+          this.appProvider.setNormalNotification(
+            'Failed to prepare table for display'
+          );
+        }
+      );
+  }
+
+  isTableRowActive(rowIndex: any) {
+    const status =
+      this.currentEvents &&
+      this.currentEvents[rowIndex] &&
+      this.currentOpenEvent &&
+      this.currentEvents[rowIndex].id === this.currentOpenEvent.id;
+    return status;
+  }
+
+  activateRowProgramStageDataEntry(rowIndex: number) {
+    const { id, programStageDataElements } = this.programStage;
+    const currentOpenEvent = this.currentEvents[rowIndex];
+    const eventId = currentOpenEvent.id;
     this.isNewEventFormOpened = false;
-    this.currentOpenEvent = {};
-    setTimeout(() => {
-      this.resetOpenRowOnRepeatableEvents();
-      this.createEmptyEvent();
-    }, 100);
+    if (
+      this.currentOpenEvent &&
+      this.currentOpenEvent.id &&
+      this.currentOpenEvent.id === eventId
+    ) {
+      this.currentOpenEvent = null;
+      this.isTableRowActivated = false;
+      this.isDeletable = false;
+    } else {
+      this.discoveringProgramStageEvents(
+        id,
+        programStageDataElements,
+        false,
+        eventId
+      );
+    }
   }
 
-  couldEventBeDeleted() {
-    return (
-      this.canEventBeDeleted ||
-      (this.currentOpenEvent &&
-        this.currentOpenEvent.dataValues &&
-        this.currentOpenEvent.dataValues.length > 0)
-    );
+  onDataValueChange(response: any) {
+    const { status } = response;
+    if (status) {
+      const { id, programStageDataElements } = this.programStage;
+      const eventId = this.currentOpenEvent.id;
+      this.isNewEventFormOpened = false;
+      this.discoveringProgramStageEvents(
+        id,
+        programStageDataElements,
+        false,
+        eventId,
+        true
+      );
+    }
   }
 
-  deleteEventAction(data) {
-    const { id } = data;
-    const { title } = data;
-    this.deleteEvent(id, title);
+  onAddRepeatableEvent() {
+    const { id, programStageDataElements } = this.programStage;
+    this.discoveringProgramStageEvents(id, programStageDataElements, true);
   }
 
-  deleteEvent(currentEventId, title?) {
+  onUpdateDeleteStatus(data: any) {
+    const { status } = data;
+    this.isDeletable = status;
+    this.isAddButtonDisabled = !status;
+  }
+
+  onDeleteEvent(dataResponse) {
+    const { title } = dataResponse;
+    const { id } = this.currentOpenEvent;
     const actionSheet = this.actionSheetCtrl.create({
-      title:
-        title && title !== ''
-          ? this.translationMapper[title]
-          : this.translationMapper[
-              'You are about to delete this event, are you sure?'
-            ],
+      title: title,
       buttons: [
         {
           text: 'Yes',
           handler: () => {
             this.eventCaptureFormProvider
-              .deleteEventByAttribute('id', currentEventId, this.currentUser)
+              .deleteEventByAttribute('id', id, this.currentUser)
               .subscribe(
                 () => {
                   this.isLoading = true;
-                  this.loadEventsBasedOnProgramStage(this.programStage.id);
+                  const { id, programStageDataElements } = this.programStage;
+                  this.discoveringProgramStageEvents(
+                    id,
+                    programStageDataElements
+                  );
                   this.appProvider.setNormalNotification(
                     'Event has been deleted successfully'
                   );
@@ -384,111 +385,16 @@ export class ProgramStageTrackerBasedComponent implements OnInit, OnDestroy {
     actionSheet.present();
   }
 
-  renderDataAsTable() {
-    this.currentEvents = _.sortBy(this.currentEvents, ['eventDate']);
-    this.eventCaptureFormProvider
-      .getTableFormatResult(
-        this.columnsToDisplay,
-        this.currentEvents,
-        'tracker-capture'
-      )
-      .subscribe(
-        (response: any) => {
-          this.tableLayout = response.table;
-          this.resetOpenRowOnRepeatableEvents();
-        },
-        error => {
-          this.appProvider.setNormalNotification(
-            'Failed to prepare table for display'
-          );
-        }
-      );
-  }
-
-  trackByFn(index, item) {
-    return item && item.id ? item.id : index;
-  }
-
-  updateDataObjectModel(dataValues, programStageDataElements) {
-    let dataValuesMapper = {};
-    dataValues.forEach((dataValue: any) => {
-      dataValuesMapper[dataValue.dataElement] = dataValue;
-    });
-    programStageDataElements.forEach((programStageDataElement: any) => {
-      if (
-        programStageDataElement.dataElement &&
-        programStageDataElement.dataElement.id
-      ) {
-        let dataElementId = programStageDataElement.dataElement.id;
-        let fieldId = programStageDataElement.dataElement.id + '-dataElement';
-        if (dataValuesMapper[dataElementId]) {
-          this.dataObjectModel[fieldId] = dataValuesMapper[dataElementId];
-        }
-      }
-    });
-  }
-
-  updateData(shouldUpdateTable) {
-    this.isAddButtonDisabled = false;
-    if (shouldUpdateTable) {
-      this.eventCaptureFormProvider
-        .getTableFormatResult(this.columnsToDisplay, this.currentEvents)
-        .subscribe(
-          (response: any) => {
-            this.tableLayout = response.table;
-          },
-          error => {
-            this.appProvider.setNormalNotification(
-              'Failed to prepare table for display'
-            );
-          }
-        );
-    }
-  }
-
   getDataDimensions() {
     if (this.currentProgram && this.currentProgram.categoryCombo) {
-      let attributeCc = this.currentProgram.categoryCombo.id;
-      let attributeCos = '';
-      this.selectedDataDimension.forEach((dimension: any, index: any) => {
-        if (index == 0) {
-          attributeCos += dimension.id;
-        } else {
-          attributeCos += ';' + dimension.id;
-        }
-      });
-      return { attributeCc: attributeCc, attributeCos: attributeCos };
+      const { id } = this.currentProgram.categoryCombo;
+      return { attributeCc: id, attributeCos: '' };
     } else {
       return {};
     }
   }
 
-  updateWidgetPagination(pageIndex) {
-    this.onChange.emit(pageIndex);
-  }
-
-  resetOpenRowOnRepeatableEvents() {
-    Object.keys(this.isTableRowOpened).forEach(key => {
-      this.isTableRowOpened[key] = false;
-    });
-  }
-  ngOnDestroy() {
-    this.currentProgram = null;
-    this.currentOrgUnit = null;
-  }
-
-  getValuesToTranslate() {
-    return [
-      'New event',
-      'Delete',
-      'Discovering current user information',
-      'Discovering events',
-      'You are about to delete this event, are you sure?',
-      'Clearing this value results to deletion of this event, are you sure?',
-      'Yes',
-      'No',
-      'Prev',
-      'Next'
-    ];
+  trackByFn(index, item) {
+    return item && item.id ? item.id : index;
   }
 }
