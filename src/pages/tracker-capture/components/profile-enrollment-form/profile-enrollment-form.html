@@ -24,7 +24,7 @@
 -->
 <enrollment-form [isTrackedEntityRegistered]="isTrackedEntityRegistered" [coordinate]="coordinate"
   [currentProgram]="currentProgram" [enrollmentDate]="enrollmentDate" [incidentDate]="incidentDate"
-  (deleteTrackedEntityInstance)="onDeleteTrackedEntityInstance()"
+  (deleteTrackedEntityInstance)="onDeleteTrackedEntityInstance($event)"
   (updateEnrollment)="onUpdateEnrollmentDeatils($event)"></enrollment-form>
 
 <profile-form (attributeUpdate)="onUpdateAttributesValue($event)" [(errorOrWarningMessage)]="errorOrWarningMessage"
@@ -48,7 +48,7 @@
         <img class="footer-icon" [src]="addNewIcon" />&nbsp;&nbsp;
         <span [translate]="'Add new'"></span>
       </div>
-      <div class="item-card" color="danger" (click)="onDeleteTrackedEntityInstance()" padding ion-button clear
+      <div class="item-card" color="danger" (click)="onDeleteTrackedEntityInstance($event)" padding ion-button clear
         text-center text-capitalize>
         <ion-icon name="trash"></ion-icon>&nbsp;&nbsp;
         <span color="font-color" [translate]="'Delete'"></span>

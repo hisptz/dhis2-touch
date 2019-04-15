@@ -77,8 +77,9 @@
           <ion-row>
             <ion-col>
               <div *ngIf="currentWidget.id == 'enrollment'">
-                <profile-enrollment-form (goBackEvent)="goBack()" [(coordinate)]="coordinate"
-                  [(incidentDate)]="incidentDate" [(enrollmentDate)]="enrollmentDate"
+                <profile-enrollment-form (addNewTrackedEntityInstance)="addNewTrackedEntity($event)"
+                  (deleteTrackedEntityInstance)="onDeleteTrackedEntityInstance($event)" (goBackEvent)="goBack()"
+                  [(coordinate)]="coordinate" [(incidentDate)]="incidentDate" [(enrollmentDate)]="enrollmentDate"
                   [(isTrackedEntityRegistered)]="isTrackedEntityRegistered"
                   [trackedEntityInstance]="trackedEntityInstance" [currentOrganisationUnit]="currentOrganisationUnit"
                   [currentProgram]="currentProgram" [currentUser]="currentUser" [formLayout]="formLayout"

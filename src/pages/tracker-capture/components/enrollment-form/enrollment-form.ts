@@ -49,8 +49,12 @@ export class EnrollmentFormComponent implements OnInit {
       this.updateEnrollmentDeatils();
     } else {
       if (this.isTrackedEntityRegistered) {
-        const title =
-          'Clearing this value results to deletion of all information related to this instance, are you sure?';
+        const { enrollmentDateLabel, incidentDateLabel } = this.currentProgram;
+        const label =
+          dateType === 'enrollmentDate'
+            ? enrollmentDateLabel
+            : incidentDateLabel;
+        const title = `Clearing of ${label} results to deletion of all information related to this instance, are you sure?`;
         this.deleteTrackedEntityInstance.emit({ status: true, title });
       } else {
         dateType === 'enrollmentDate'

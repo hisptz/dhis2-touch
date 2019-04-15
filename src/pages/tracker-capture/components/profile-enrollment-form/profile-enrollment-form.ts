@@ -55,6 +55,7 @@ export class ProfileEnrollmentFormComponent implements OnInit {
   @Input() isTrackedEntityRegistered: boolean;
 
   @Output() deleteTrackedEntityInstance = new EventEmitter();
+  @Output() addNewTrackedEntityInstance = new EventEmitter();
   @Output() updateEnrollment = new EventEmitter();
   @Output() goBackEvent = new EventEmitter();
 
@@ -177,7 +178,7 @@ export class ProfileEnrollmentFormComponent implements OnInit {
   }
 
   addNewTrackedEntity() {
-    console.log('Add new tracked entity');
+    this.addNewTrackedEntityInstance.emit({ status: true });
   }
 
   onUpdateEnrollmentDeatils(data) {
@@ -235,8 +236,21 @@ export class ProfileEnrollmentFormComponent implements OnInit {
     }
   }
 
-  onDeleteTrackedEntityInstance() {
-    console.log('On deleting tracked entity');
+  onDeleteTrackedEntityInstance(data: any) {
+    const { status } = data;
+    if (!status) {
+      data = {
+        ...{},
+        status: true,
+        title: `Are you sure you wan to delete this tracked entity instance`
+      };
+    }
+    data = {
+      ...data,
+      trackedEntityInstance: this.trackedEntityInstance,
+      isTrackedEntityRegistered: this.isTrackedEntityRegistered
+    };
+    this.deleteTrackedEntityInstance.emit(data);
   }
 
   updateOrRegisterTrackedEntity(

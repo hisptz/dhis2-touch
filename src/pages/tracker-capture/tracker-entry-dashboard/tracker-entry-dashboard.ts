@@ -390,6 +390,58 @@ export class TrackerEntryDashboardPage implements OnInit {
     return widgets;
   }
 
+  addNewTrackedEntity(data: any) {
+    console.log(JSON.stringify({ data }));
+  }
+
+  onDeleteTrackedEntityInstance(data: any) {
+    const { isTrackedEntityRegistered, trackedEntityInstance, title } = data;
+    if (isTrackedEntityRegistered) {
+      const actionSheet = this.actionSheetCtrl.create({
+        title,
+        buttons: [
+          {
+            text: 'Yes',
+            handler: () => {
+              this.isLoading = true;
+              this.loadingMessage =
+                'Deleting all information related to this tracked entity instance';
+              this.trackerCaptureProvider
+                .deleteTrackedEntityInstance(
+                  trackedEntityInstance,
+                  this.currentUser
+                )
+                .subscribe(
+                  () => {
+                    this.goBack();
+                    this.appProvider.setNormalNotification(
+                      'A tracked entity instance has been deleted successfully'
+                    );
+                  },
+                  error => {
+                    this.isLoading = false;
+                    console.log(JSON.stringify(error));
+                    this.appProvider.setNormalNotification(
+                      'Failed to delete all information related to this tracked entity instance'
+                    );
+                  }
+                );
+            }
+          },
+          {
+            text: 'No',
+            handler: () => {}
+          }
+        ]
+      });
+      actionSheet.present();
+    } else {
+      this.appProvider.setNormalNotification(
+        'A tracked entity instance has not yet registered'
+      );
+    }
+  }
+
   trackByFn(index, item) {
     return item && item.id ? item.id : index;
   }
