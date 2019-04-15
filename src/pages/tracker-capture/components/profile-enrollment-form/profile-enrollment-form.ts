@@ -178,7 +178,10 @@ export class ProfileEnrollmentFormComponent implements OnInit {
   }
 
   addNewTrackedEntity() {
-    this.addNewTrackedEntityInstance.emit({ status: true });
+    this.addNewTrackedEntityInstance.emit({
+      status: true,
+      isTrackedEntityRegistered: this.isTrackedEntityRegistered
+    });
   }
 
   onUpdateEnrollmentDeatils(data) {

@@ -391,7 +391,35 @@ export class TrackerEntryDashboardPage implements OnInit {
   }
 
   addNewTrackedEntity(data: any) {
-    console.log(JSON.stringify({ data }));
+    const { isTrackedEntityRegistered } = data;
+    if (isTrackedEntityRegistered) {
+      this.isLoading = true;
+      this.loadingMessage = '';
+      this.trackerRegistrationForm = '';
+      this.isTrackedEntityRegistered = false;
+      this.incidentDate = '';
+      this.enrollmentDate = '';
+      this.coordinate = {
+        latitude: '0',
+        longitude: '0'
+      };
+      this.dataObject = {};
+      this.trackedEntityAttributesSavingStatusClass = {};
+      const isNewRegistrationForm = true;
+      const trackedEntityInstancesId = dhis2.util.uid();
+      this.trackedEntityInstance = trackedEntityInstancesId;
+      const { id } = this.currentProgram;
+      this.discoveringTrackedEntityRegistration(
+        id,
+        this.currentUser,
+        trackedEntityInstancesId,
+        isNewRegistrationForm
+      );
+    } else {
+      this.appProvider.setNormalNotification(
+        'A tracked entity instance has not yet registered'
+      );
+    }
   }
 
   onDeleteTrackedEntityInstance(data: any) {

@@ -31,6 +31,7 @@ import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
 import { CurrentUser } from '../../models';
+import * as _ from 'lodash';
 
 /*
   Generated class for the TrackerCaptureProvider provider.
@@ -764,7 +765,7 @@ export class TrackerCaptureProvider {
         .getSavedEnrollments(orgUnitId, programId, currentUser)
         .subscribe(
           (enrollments: any) => {
-            let trackedEntityInstanceIds = [];
+            const trackedEntityInstanceIds = [];
             enrollments.forEach((enrollment: any) => {
               trackedEntityInstanceIds.push(enrollment.trackedEntityInstance);
             });
