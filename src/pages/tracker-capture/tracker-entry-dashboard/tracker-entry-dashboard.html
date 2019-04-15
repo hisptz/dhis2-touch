@@ -24,11 +24,10 @@
 -->
 <ion-header>
   <ion-navbar [color]="(colorSettings$ |async).colorAttributes.main">
-    <ion-title>
-      <span [translate]="'Tracked entity dashboard'"></span>
-    </ion-title>
+    <ion-title> <span [translate]="'Tracker capture Dashboard'"></span> </ion-title>
   </ion-navbar>
 </ion-header>
+
 <ion-content>
   <ion-grid>
     <div *ngIf="isLoading">
@@ -40,7 +39,7 @@
           <div (tap)="goBack()" padding-bottom class="item-card">
             <b>
               <span [translate]="'Organisation unit'"></span>
-            </b> : {{ currentOrgUnit.name }}
+            </b> : {{ currentOrganisationUnit.name }}
             <br>
             <b>
               <span [translate]="'Program'"></span>
@@ -73,67 +72,32 @@
           </div>
         </ion-col>
       </ion-row>
-
       <div *ngFor="let widget of dashboardWidgets;trackBy: trackByFn">
-        <div *ngIf="(isDashboardWidgetOpen[widget.id])">
+        <div *ngIf="(currentWidget && widget &&  widget.id &&currentWidget.id === widget.id)">
           <ion-row>
             <ion-col>
               <div *ngIf="currentWidget.id == 'enrollment'">
-                <div class="item-card">
-                  <div class="inputLabel">
-                    <b>
-                      <div class="inputLabel">
-                        <span [translate]="'Profile'"></span>
-                      </div>
-                    </b>
-                    <hr>
-                  </div>
-                  <tracker-registration-form [(errorOrWarningMessage)]="errorOrWarningMessage" [(hiddenSections)]="hiddenSections"
-                    [(hiddenFields)]="hiddenFields" [formLayout]="formLayout" [dataObject]="dataObject"
-                    [dataUpdateStatus]="dataUpdateStatus$ | async" [currentUser]="currentUser"
-                    [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
-                    [trackerRegistrationForm]="trackerRegistrationForm" [programTrackedEntityAttributes]="programTrackedEntityAttributes"
-                    (onChange)="updateData($event,false)"></tracker-registration-form>
-                  <div no-padding>
-                    <ion-row no-padding no-margin>
-                      <ion-col>
-                        <div float-left>
-                          <div class="item-card" color="font-color" (click)="goBack()" padding ion-button clear
-                            text-center text-capitalize>
-                            <ion-icon name="ios-arrow-back-outline"></ion-icon>&nbsp;&nbsp;
-                            <span [translate]="'Back'"></span>
-                          </div>
-                        </div>
-                        <div float-right>
-                          <div class="item-card" color="danger" (click)="deleteTrackedEntity(trackedEntityInstance.id)"
-                            padding ion-button clear text-center text-capitalize>
-                            <span [translate]="'Delete'"></span>&nbsp;&nbsp;
-                            <ion-icon name="trash"></ion-icon>
-                          </div>
-                        </div>
-                      </ion-col>
-                    </ion-row>
-                  </div>
-                </div>
-                <div class="item-card-program-stage-section">
-                  <div class="item-card" color="font-color" (click)="updateWidgetPagination(currentWidgetIndex +1)"
-                    padding ion-button clear text-center text-capitalize>
-                    <span [translate]="'Next'"></span>&nbsp;&nbsp;
-                    <ion-icon name="ios-arrow-forward-outline"></ion-icon>
-                  </div>
-                </div>
-
+                <profile-enrollment-form (addNewTrackedEntityInstance)="addNewTrackedEntity($event)"
+                  (deleteTrackedEntityInstance)="onDeleteTrackedEntityInstance($event)" (goBackEvent)="goBack()"
+                  [(coordinate)]="coordinate" [(incidentDate)]="incidentDate" [(enrollmentDate)]="enrollmentDate"
+                  [(isTrackedEntityRegistered)]="isTrackedEntityRegistered"
+                  [trackedEntityInstance]="trackedEntityInstance" [currentOrganisationUnit]="currentOrganisationUnit"
+                  [currentProgram]="currentProgram" [currentUser]="currentUser" [formLayout]="formLayout"
+                  [dataObject]="dataObject" [dataUpdateStatus]="dataUpdateStatus$ | async" [currentUser]="currentUser"
+                  [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
+                  [trackerRegistrationForm]="trackerRegistrationForm"
+                  [programSkipLogicMetadata]="programSkipLogicMetadata"
+                  [programTrackedEntityAttributes]="programTrackedEntityAttributes"></profile-enrollment-form>
               </div>
               <div *ngIf="currentWidget.id != 'enrollment'">
                 <div *ngIf="programStages && programStages.length > 0">
                   <div *ngFor="let programStage of programStages;trackBy: trackByFn">
                     <div *ngIf="widget.id == programStage.id">
-                      <form>
-                        <program-stage-tracker-based [programSkipLogicMetadata]="programSkipLogicMetadata" [formLayout]="formLayout"
-                          [programStage]="programStage" [trackedEntityInstance]="trackedEntityInstance.id"
-                          [currentWidgetIndex]="currentWidgetIndex" [isLastStage]="(currentWidgetIndex == programStages.length)"
-                          (onChange)="updateWidgetPagination($event)"></program-stage-tracker-based>
-                      </form>
+                      <program-stage-tracker-based [currentUser]="currentUser" [currentProgram]="currentProgram"
+                        [currentOrganisationUnit]="currentOrganisationUnit"
+                        [programSkipLogicMetadata]="programSkipLogicMetadata" [formLayout]="formLayout"
+                        [programStage]="programStage" [trackedEntityInstance]="trackedEntityInstance">
+                      </program-stage-tracker-based>
                     </div>
                   </div>
                 </div>
@@ -151,8 +115,10 @@
       <ion-row>
         <ion-col>
           <button padding ion-button clear text-capitalize *ngFor="let widget of dashboardWidgets;trackBy: trackByFn"
-            [disabled]="(isDashboardWidgetOpen[widget.id])" (tap)="changeDashboardWidget(widget)">
-            <div [ngClass]=" (isDashboardWidgetOpen[widget.id])?'program-stage-button-label':''">
+            [disabled]="(!isTrackedEntityRegistered && widget.iconName) || (currentWidget && widget &&  widget.id &&currentWidget.id === widget.id)"
+            (tap)="changeDashboardWidget(widget)">
+            <div
+              [ngClass]=" (currentWidget && widget &&  widget.id &&currentWidget.id === widget.id)?'program-stage-button-label':''">
               <div *ngIf="widget.icon">
                 <img class="footer-icon" [src]="widget.icon" />
               </div>

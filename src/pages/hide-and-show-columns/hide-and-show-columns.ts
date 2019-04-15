@@ -63,9 +63,12 @@ export class HideAndShowColumnsPage implements OnInit, OnDestroy {
     if (programStage && programStage.programStageDataElements) {
       this.displayInLIst = _.concat(this.displayInLIst, 'eventDate');
       const { executionDateLabel } = programStage;
-      const reportDateLabel = isNaN(executionDateLabel)
-        ? executionDateLabel
-        : 'Report date';
+      const reportDateLabel =
+        executionDateLabel &&
+        isNaN(executionDateLabel) &&
+        executionDateLabel.trim() !== ''
+          ? executionDateLabel
+          : 'Report date';
       this.fieldsToDisplay.push({
         id: 'eventDate',
         name: reportDateLabel
@@ -145,7 +148,7 @@ export class HideAndShowColumnsPage implements OnInit, OnDestroy {
   }
 
   trackByFn(index, item) {
-    return item.id;
+    return item && item.id ? item.id : index;
   }
 
   dismiss() {

@@ -24,6 +24,7 @@
 import { Injectable } from '@angular/core';
 import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { Observable } from 'rxjs/Observable';
+import * as _ from 'lodash';
 
 /*
   Generated class for the TrackedEntityAttributeValuesProvider provider.
@@ -51,15 +52,18 @@ export class TrackedEntityAttributeValuesProvider {
     trackedEntityAttributeValues,
     currentUser
   ): Observable<any> {
-    let payLoad = [];
-    trackedEntityAttributeValues.forEach((trackedEntityAttributeValue: any) => {
-      payLoad.push({
-        id: trackedEntityInstance + '-' + trackedEntityAttributeValue.attribute,
-        trackedEntityInstance: trackedEntityInstance,
-        attribute: trackedEntityAttributeValue.attribute,
-        value: trackedEntityAttributeValue.value
-      });
-    });
+    const payLoad = _.map(
+      trackedEntityAttributeValues,
+      (trackedEntityAttributeValue: any) => {
+        let { attribute, value } = trackedEntityAttributeValue;
+        return {
+          id: `${trackedEntityInstance}-${attribute}`,
+          trackedEntityInstance,
+          attribute,
+          value
+        };
+      }
+    );
     return new Observable(observer => {
       this.sqlLite
         .insertBulkDataOnTable(

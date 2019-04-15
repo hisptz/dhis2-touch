@@ -43,7 +43,6 @@ import { CurrentUser } from '../../../../models';
 })
 export class TrackerConflictHandlerComponent implements OnInit, OnDestroy {
   @Input() trackerConflictHandler;
-
   @Output() successDiscovering = new EventEmitter();
   @Output() successTrackerConflictHandler = new EventEmitter();
 
