@@ -79,11 +79,13 @@
               <div *ngIf="currentWidget.id == 'enrollment'">
                 <profile-enrollment-form (goBackEvent)="goBack()" [(coordinate)]="coordinate"
                   [(incidentDate)]="incidentDate" [(enrollmentDate)]="enrollmentDate"
-                  [(isTrackedEntityRegistered)]="isTrackedEntityRegistered" [currentProgram]="currentProgram"
-                  [currentUser]="currentUser" [formLayout]="formLayout" [dataObject]="dataObject"
-                  [dataUpdateStatus]="dataUpdateStatus$ | async" [currentUser]="currentUser"
+                  [(isTrackedEntityRegistered)]="isTrackedEntityRegistered"
+                  [trackedEntityInstance]="trackedEntityInstance" [currentOrganisationUnit]="currentOrganisationUnit"
+                  [currentProgram]="currentProgram" [currentUser]="currentUser" [formLayout]="formLayout"
+                  [dataObject]="dataObject" [dataUpdateStatus]="dataUpdateStatus$ | async" [currentUser]="currentUser"
                   [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
                   [trackerRegistrationForm]="trackerRegistrationForm"
+                  [programSkipLogicMetadata]="programSkipLogicMetadata"
                   [programTrackedEntityAttributes]="programTrackedEntityAttributes"></profile-enrollment-form>
               </div>
               <div *ngIf="currentWidget.id != 'enrollment'">

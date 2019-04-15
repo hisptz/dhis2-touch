@@ -51,7 +51,7 @@ export class EnrollmentFormComponent implements OnInit {
       if (this.isTrackedEntityRegistered) {
         const title =
           'Clearing this value results to deletion of all information related to this instance, are you sure?';
-        this.deleteTrackedEntityInstance.emit({ status: true });
+        this.deleteTrackedEntityInstance.emit({ status: true, title });
       } else {
         dateType === 'enrollmentDate'
           ? (this.enrollmentDate = date)
@@ -67,25 +67,25 @@ export class EnrollmentFormComponent implements OnInit {
   }
 
   updateEnrollmentDeatils() {
-    let isFormReady = true;
+    let isEnrollmentDetailsReady = true;
     if (
       this.currentProgram &&
       this.currentProgram.displayIncidentDate &&
       (!this.incidentDate || this.incidentDate.trim() === '')
     ) {
-      isFormReady = false;
+      isEnrollmentDetailsReady = false;
     }
     if (
       this.currentProgram &&
       this.currentProgram.captureCoordinates &&
       !this.coordinate
     ) {
-      isFormReady = false;
+      isEnrollmentDetailsReady = false;
     }
     this.updateEnrollment.emit({
-      isFormReady,
+      isEnrollmentDetailsReady,
       enrollmentDate: this.enrollmentDate,
-      incidentDate: this.enrollmentDate,
+      incidentDate: this.incidentDate,
       coordinate: this.coordinate
     });
   }

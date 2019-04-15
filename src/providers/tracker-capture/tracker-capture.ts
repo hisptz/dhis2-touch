@@ -785,7 +785,7 @@ export class TrackerCaptureProvider {
                       (attributeValues: any) => {
                         let attributeValuesObject = {};
                         if (attributeValues && attributeValues.length > 0) {
-                          attributeValues.forEach((attributeValue: any) => {
+                          attributeValues.map((attributeValue: any) => {
                             delete attributeValue.id;
                             if (
                               !attributeValuesObject[

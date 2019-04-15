@@ -52,7 +52,8 @@ export interface DashboardWidget {
   iconName?: string;
 }
 
-declare var dhis2: any;
+declare var dhis2;
+
 @IonicPage()
 @Component({
   selector: 'page-tracker-entry-dashboard',
@@ -68,7 +69,6 @@ export class TrackerEntryDashboardPage implements OnInit {
   programTrackedEntityAttributes: Array<any>;
   dataObject: any = {};
   trackedEntityAttributesSavingStatusClass: any;
-  trackedEntityAttributeValuesObject: any = {};
   isLoading: boolean;
   loadingMessage: string;
   isTrackedEntityRegistered: boolean;
@@ -121,7 +121,6 @@ export class TrackerEntryDashboardPage implements OnInit {
     };
     this.dataObject = {};
     this.trackedEntityAttributesSavingStatusClass = {};
-    this.trackedEntityAttributeValuesObject = {};
   }
 
   goBack() {
@@ -138,7 +137,9 @@ export class TrackerEntryDashboardPage implements OnInit {
         'trackedEntityInstancesId'
       );
       const isNewRegistrationForm = trackedEntityInstancesId ? false : true;
-      this.trackedEntityInstance = trackedEntityInstancesId;
+      this.trackedEntityInstance = trackedEntityInstancesId
+        ? trackedEntityInstancesId
+        : dhis2.util.uid();
       this.discoveringTrackedEntityRegistration(
         id,
         currentUser,
@@ -255,6 +256,7 @@ export class TrackerEntryDashboardPage implements OnInit {
 
   discoveringTrackedEntityInstanceData(trackedEntityInstanceId: string) {
     this.loadingMessage = 'Discovering tracked entity';
+    this.dataObject = {};
     this.trackerCaptureProvider
       .getTrackedEntityInstance(trackedEntityInstanceId, this.currentUser)
       .subscribe(
@@ -263,11 +265,12 @@ export class TrackerEntryDashboardPage implements OnInit {
           this.trackedEntityInstance = id;
           if (attributes) {
             attributes.map((attributeObject: any) => {
-              const id = `${attributeObject.attribute}-trackedEntityAttribute`;
+              const { attribute } = attributeObject;
+              const id =
+                attribute && attribute.indexOf('-trackedEntityAttribute') === -1
+                  ? `${attributeObject.attribute}-trackedEntityAttribute`
+                  : `${attributeObject.attribute}`;
               this.dataObject[id] = { id: id, value: attributeObject.value };
-              this.trackedEntityAttributeValuesObject[
-                attributeObject.attribute
-              ] = attributeObject.value;
             });
           }
           this.loadingMessage = 'Discovering the active enrollment';

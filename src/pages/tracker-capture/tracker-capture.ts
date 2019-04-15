@@ -329,7 +329,9 @@ export class TrackerCapturePage implements OnInit {
   }
 
   openTrackedEntityDashboard(currentIndex) {
-    let trackedEntityInstancesId = this.trackedEntityInstancesIds[currentIndex];
+    const trackedEntityInstancesId = this.trackedEntityInstancesIds[
+      currentIndex
+    ];
     this.navCtrl.push('TrackerEntryDashboardPage', {
       trackedEntityInstancesId: trackedEntityInstancesId
     });

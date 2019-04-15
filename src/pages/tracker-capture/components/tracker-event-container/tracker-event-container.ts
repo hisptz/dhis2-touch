@@ -224,9 +224,7 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
     if (id) {
       const newValue = updatedData.value;
       const hasNoOldValue =
-        this.dataObject && this.dataObject[id] && this.dataObject[id].value
-          ? false
-          : true;
+        this.dataObject && this.dataObject[id] ? false : true;
       const oldValue = !hasNoOldValue ? this.dataObject[id].value : newValue;
       if (oldValue !== newValue || hasNoOldValue) {
         this.currentOpenEvent = {

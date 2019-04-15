@@ -133,11 +133,11 @@ export class TrackerConflictHandlerComponent implements OnInit, OnDestroy {
                 trackedEntityInstanceWithoutConflicts,
                 discoveredTrackerData
               );
-              this.applyingChangesToEvents(
-                trackedEntityInstanceWithoutConflicts,
-                enrollments,
-                events
-              );
+              // this.applyingChangesToEvents(
+              //   trackedEntityInstanceWithoutConflicts,
+              //   enrollments,
+              //   events
+              // );
             }
             this.isLoading = false;
           },
