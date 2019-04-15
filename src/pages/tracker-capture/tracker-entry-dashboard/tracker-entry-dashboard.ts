@@ -39,12 +39,10 @@ import { UserProvider } from '../../../providers/user/user';
 import { AppProvider } from '../../../providers/app/app';
 import { ProgramsProvider } from '../../../providers/programs/programs';
 import { OrganisationUnitsProvider } from '../../../providers/organisation-units/organisation-units';
-import { TrackedEntityAttributeValuesProvider } from '../../../providers/tracked-entity-attribute-values/tracked-entity-attribute-values';
 import { EventCaptureFormProvider } from '../../../providers/event-capture-form/event-capture-form';
 import { SettingsProvider } from '../../../providers/settings/settings';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { EnrollmentsProvider } from '../../../providers/enrollments/enrollments';
-import { ProgramRulesProvider } from '../../../providers/program-rules/program-rules';
 import { CurrentUser } from '../../../models';
 
 export interface DashboardWidget {
@@ -81,10 +79,6 @@ export class TrackerEntryDashboardPage implements OnInit {
   trackerRegistrationForm: string;
   formLayout: string;
   programSkipLogicMetadata: any;
-  hiddenSections: any;
-  hiddenProgramStages: any;
-  hiddenFields: any;
-  errorOrWarningMessage: any;
   colorSettings$: Observable<any>;
   @ViewChild(Content) content: Content;
   private _dataUpdateStatus$: BehaviorSubject<{
@@ -106,20 +100,14 @@ export class TrackerEntryDashboardPage implements OnInit {
     private userProvider: UserProvider,
     private appProvider: AppProvider,
     private programsProvider: ProgramsProvider,
-    private trackedEntityAttributeValuesProvider: TrackedEntityAttributeValuesProvider,
     private organisationUnitsProvider: OrganisationUnitsProvider,
     private trackerCaptureProvider: TrackerCaptureProvider,
     private settingProvider: SettingsProvider,
-    private enrollmentsProvider: EnrollmentsProvider,
-    private programRulesProvider: ProgramRulesProvider
+    private enrollmentsProvider: EnrollmentsProvider
   ) {
     this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
     this.icons['addNewCase'] = 'assets/icon/add-new-case.png';
     this.icons['menu'] = 'assets/icon/menu.png';
-    this.hiddenFields = {};
-    this.hiddenProgramStages = {};
-    this.hiddenSections = {};
-    this.errorOrWarningMessage = {};
     this.dataUpdateStatus$ = this._dataUpdateStatus$.asObservable();
     this.isLoading = true;
     this.loadingMessage = '';
@@ -248,13 +236,12 @@ export class TrackerEntryDashboardPage implements OnInit {
           if (this.dashboardWidgets.length > 0) {
             this.changeDashboardWidget(this.dashboardWidgets[0]);
           }
-          this.discoveringProgramSkipLogicMetadata(programId, currentUser);
-          if (!isNewRegistrationForm) {
-            this.isTrackedEntityRegistered = true;
-            this.discoveringTrackedEntityInstanceData(trackedEntityInstancesId);
-          } else {
-            this.isLoading = false;
-          }
+          this.discoveringProgramSkipLogicMetadata(
+            programId,
+            trackedEntityInstancesId,
+            isNewRegistrationForm,
+            currentUser
+          );
         },
         error => {
           console.log(JSON.stringify(error));
@@ -323,6 +310,8 @@ export class TrackerEntryDashboardPage implements OnInit {
 
   discoveringProgramSkipLogicMetadata(
     programId: string,
+    trackedEntityInstancesId: string,
+    isNewRegistrationForm: boolean,
     currentUser: CurrentUser
   ) {
     this.eventCaptureFormProvider
@@ -330,39 +319,17 @@ export class TrackerEntryDashboardPage implements OnInit {
       .subscribe(
         metadata => {
           this.programSkipLogicMetadata = metadata;
-          setTimeout(() => {
-            this.evaluatingProgramRules();
-          }, 50);
+          if (!isNewRegistrationForm) {
+            this.isTrackedEntityRegistered = true;
+            this.discoveringTrackedEntityInstanceData(trackedEntityInstancesId);
+          } else {
+            this.isLoading = false;
+          }
         },
         error => {
           console.log(
             'Error on getting program skip logic metadata ' +
               JSON.stringify(error)
-          );
-        }
-      );
-  }
-
-  evaluatingProgramRules() {
-    this.programRulesProvider
-      .getProgramRulesEvaluations(
-        this.programSkipLogicMetadata,
-        this.dataObject
-      )
-      .subscribe(
-        res => {
-          const { data } = res;
-          if (data) {
-            const { hiddenSections } = data;
-            const { hiddenFields } = data;
-            const { hiddenProgramStages } = data;
-            const { errorOrWarningMessage } = data;
-            const { assignedFields } = data;
-          }
-        },
-        error => {
-          console.log(
-            'Error evaluate program rules : ' + JSON.stringify(error)
           );
         }
       );

@@ -80,9 +80,8 @@
                 <profile-enrollment-form (goBackEvent)="goBack()" [(coordinate)]="coordinate"
                   [(incidentDate)]="incidentDate" [(enrollmentDate)]="enrollmentDate"
                   [(isTrackedEntityRegistered)]="isTrackedEntityRegistered" [currentProgram]="currentProgram"
-                  [currentUser]="currentUser" [(errorOrWarningMessage)]="errorOrWarningMessage"
-                  [(hiddenSections)]="hiddenSections" [(hiddenFields)]="hiddenFields" [formLayout]="formLayout"
-                  [dataObject]="dataObject" [dataUpdateStatus]="dataUpdateStatus$ | async" [currentUser]="currentUser"
+                  [currentUser]="currentUser" [formLayout]="formLayout" [dataObject]="dataObject"
+                  [dataUpdateStatus]="dataUpdateStatus$ | async" [currentUser]="currentUser"
                   [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
                   [trackerRegistrationForm]="trackerRegistrationForm"
                   [programTrackedEntityAttributes]="programTrackedEntityAttributes"></profile-enrollment-form>
