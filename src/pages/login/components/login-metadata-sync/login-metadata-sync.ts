@@ -1631,11 +1631,11 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
             })
         );
       }
-    } else if (process === 'dataStore') {
+    } else if (process === 'validationRules') {
       if (this.isOnLogin) {
         this.subscriptions.add(
-          this.dataStoreManagerProvider
-            .saveDataStoreDataFromServer(data, this.currentUser)
+          this.validationRulesProvider
+            .savingValidationRules(data, this.currentUser)
             .subscribe(
               () => {
                 this.removeFromQueue(process, 'saving', false);
@@ -1650,8 +1650,8 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
           this.sqlLiteProvider
             .dropAndRecreateTable(process, this.currentUser.currentDatabase)
             .subscribe(() => {
-              this.dataStoreManagerProvider
-                .saveDataStoreDataFromServer(data, this.currentUser)
+              this.validationRulesProvider
+                .savingValidationRules(data, this.currentUser)
                 .subscribe(
                   () => {
                     this.removeFromQueue(process, 'saving', false);

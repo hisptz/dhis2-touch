@@ -31,15 +31,55 @@ import { CurrentUser, ValidationRule } from '../../models';
 export class ValidationRulesProvider {
   constructor(
     private sqlLite: SqlLiteProvider,
-    private HttpClient: HttpClientProvider
+    private httpClientProvider: HttpClientProvider
   ) {}
 
   discoveringValidationRules(
     currentUser: CurrentUser
   ): Observable<ValidationRule[]> {
+    const fields = `id,displayName,importance,description,periodType,operator,skipFormValidation,leftSide[*],rightSide[*]`;
+    const resource = `validationRules`;
+    const url = `/api/${resource}.json?paging=false&fields=${fields}`;
+    const validOperators = [
+      'equal_to',
+      'not_equal_to',
+      'greater_than',
+      'greater_than_or_equal_to',
+      'less_than',
+      'less_than_or_equal_to'
+    ];
+    const validationOperatorMapper = {
+      equal_to: '',
+      not_equal_to: '',
+      greater_than: '',
+      greater_than_or_equal_to: '',
+      less_than: '',
+      less_than_or_equal_to: ''
+    };
+    console.log(JSON.stringify({ url }));
     return new Observable(observer => {
-      observer.next([]);
-      observer.complete();
+      this.httpClientProvider.get(url, true, currentUser).subscribe(
+        (response: any) => {
+          const { validationRules } = response;
+          const sanitizedValidationRules = _.map(
+            _.filter(validationRules, (validationRule: ValidationRule) => {
+              return _.indexOf(validOperators, validationRule.operator) > -1;
+            }),
+            (validationRule: ValidationRule) => {
+              const { operator } = validationRule;
+              const expressionOperator =
+                validationOperatorMapper && validationOperatorMapper[operator]
+                  ? validationOperatorMapper[operator]
+                  : operator;
+              return { ...validationRule, operator: expressionOperator };
+            }
+          );
+          observer.next(sanitizedValidationRules);
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
 
@@ -54,8 +94,21 @@ export class ValidationRulesProvider {
         observer.next();
         observer.complete();
       } else {
-        observer.next();
-        observer.complete();
+        this.sqlLite
+          .insertBulkDataOnTable(
+            resource,
+            validationRules,
+            currentUser.currentDatabase
+          )
+          .subscribe(
+            () => {
+              observer.next();
+              observer.complete();
+            },
+            error => {
+              observer.error(error);
+            }
+          );
       }
     });
   }
