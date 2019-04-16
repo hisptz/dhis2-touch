@@ -320,7 +320,8 @@ export class SynchronizationProvider {
         events: [],
         dataValues: [],
         eventsForTracker: [],
-        Enrollments: []
+        Enrollments: [],
+        dataStores: []
       };
       this.dataValuesProvider
         .getDataValuesByStatus(status, currentUser)
