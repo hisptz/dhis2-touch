@@ -23,7 +23,6 @@
 *
 -->
 <ion-header>
-
   <ion-toolbar [color]="(colorSettings$ |async).colorAttributes.main">
     <ion-title>
       <span [translate]="'Import summaries'"></span>
@@ -42,10 +41,14 @@
         <div *ngIf="keys && keys.length > 0">
           <div *ngFor="let key of keys" padding-bottom class="over-flow-container">
             <div *ngIf="importSummaries[key]">
-              <table class="table table-bordered" width="100%" *ngIf="(importSummaries[key].success + importSummaries[key].fail) > 0">
+              <table class="table table-bordered" width="100%"
+                *ngIf="(importSummaries[key].success + importSummaries[key].fail) > 0">
                 <thead>
                   <tr>
                     <th [attr.colspan]="'2'">
+                      <div *ngIf="key == 'dataStore'">
+                        <span [translate]="'Datastore'"></span>
+                      </div>
                       <div *ngIf="key == 'dataValues'">
                         <span [translate]="'Aggregate data'"></span>
                       </div>
