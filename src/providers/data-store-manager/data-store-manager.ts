@@ -202,8 +202,8 @@ export class DataStoreManagerProvider {
     const unSyncedData = _.filter(data, (dataStore: DataStore) => {
       return dataStore.status === 'not-synced';
     });
-    let failed = 0;
-    let succeess = 0;
+    let fail = 0;
+    let success = 0;
     const errorMessages = [];
     const successIds = [];
     const status = 'synced';
@@ -218,9 +218,9 @@ export class DataStoreManagerProvider {
               console.log(JSON.stringify({ error }));
               this.httpCLientProvider.put(url, data, currentUser).subscribe(
                 () => {
-                  succeess++;
+                  success++;
                   successIds.push(id);
-                  if (succeess + failed === unSyncedData.length) {
+                  if (success + fail === unSyncedData.length) {
                     this.updateDataStoreByStatus(
                       successIds,
                       status,
@@ -229,10 +229,9 @@ export class DataStoreManagerProvider {
                     ).subscribe(
                       () => {
                         observer.next({
-                          succeess,
-                          failed,
-                          errorMessages,
-                          successIds
+                          success,
+                          fail,
+                          errorMessages
                         });
                       },
                       error => {
@@ -242,7 +241,7 @@ export class DataStoreManagerProvider {
                   }
                 },
                 error => {
-                  failed++;
+                  fail++;
                   if (
                     error &&
                     error.response &&
@@ -285,7 +284,7 @@ export class DataStoreManagerProvider {
                       errorMessages.push(message);
                     }
                   }
-                  if (succeess + failed === unSyncedData.length) {
+                  if (success + fail === unSyncedData.length) {
                     this.updateDataStoreByStatus(
                       successIds,
                       status,
@@ -294,10 +293,9 @@ export class DataStoreManagerProvider {
                     ).subscribe(
                       () => {
                         observer.next({
-                          succeess,
-                          failed,
-                          errorMessages,
-                          successIds
+                          success,
+                          fail,
+                          errorMessages
                         });
                       },
                       error => {
@@ -311,7 +309,7 @@ export class DataStoreManagerProvider {
           );
         });
       } else {
-        observer.next({ failed, succeess, errorMessages });
+        observer.next({ fail, success, errorMessages });
         observer.complete();
       }
     });
