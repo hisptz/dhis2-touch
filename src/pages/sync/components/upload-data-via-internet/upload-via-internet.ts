@@ -63,7 +63,8 @@ export class UploadViaInternetComponent implements OnInit {
       events: [],
       dataValues: [],
       eventsForTracker: [],
-      Enrollments: []
+      Enrollments: [],
+      dataStore: []
     };
     this.importSummaries = null;
     this.translationMapper = {};

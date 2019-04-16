@@ -1,0 +1,58 @@
+<!--
+*
+* Copyright 2015 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2015
+* @author Joseph Chingalo profschingalo@gmail.com>
+*
+*
+-->
+<enrollment-form [isTrackedEntityRegistered]="isTrackedEntityRegistered" [coordinate]="coordinate"
+  [currentProgram]="currentProgram" [enrollmentDate]="enrollmentDate" [incidentDate]="incidentDate"
+  (deleteTrackedEntityInstance)="onDeleteTrackedEntityInstance($event)"
+  (updateEnrollment)="onUpdateEnrollmentDeatils($event)"></enrollment-form>
+
+<profile-form (attributeUpdate)="onUpdateAttributesValue($event)" [(errorOrWarningMessage)]="errorOrWarningMessage"
+  [(hiddenSections)]="hiddenSections" [(hiddenFields)]="hiddenFields" [formLayout]="formLayout"
+  [dataObject]="dataObject" [dataUpdateStatus]="dataUpdateStatus" [currentUser]="currentUser"
+  [(trackedEntityAttributesSavingStatusClass)]="trackedEntityAttributesSavingStatusClass"
+  [trackerRegistrationForm]="trackerRegistrationForm" [programTrackedEntityAttributes]="programTrackedEntityAttributes">
+</profile-form>
+
+<ion-row no-padding no-margin>
+  <ion-col>
+    <div float-left>
+      <div class="item-card" color="font-color" (click)="goBack()" padding ion-button clear text-center text-capitalize>
+        <ion-icon name="ios-arrow-back-outline"></ion-icon>&nbsp;&nbsp;
+        <span [translate]="'Back'"></span>
+      </div>
+    </div>
+    <div float-right>
+      <div class="item-card" color="font-color" padding ion-button clear text-center text-capitalize
+        (click)="addNewTrackedEntity()">
+        <img class="footer-icon" [src]="addNewIcon" />&nbsp;&nbsp;
+        <span [translate]="'Add new'"></span>
+      </div>
+      <div class="item-card" color="danger" (click)="onDeleteTrackedEntityInstance($event)" padding ion-button clear
+        text-center text-capitalize>
+        <ion-icon name="trash"></ion-icon>&nbsp;&nbsp;
+        <span color="font-color" [translate]="'Delete'"></span>
+      </div>
+    </div>
+  </ion-col>
+</ion-row>

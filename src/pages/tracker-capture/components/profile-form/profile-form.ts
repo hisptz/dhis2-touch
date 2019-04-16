@@ -21,22 +21,17 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-/**
- * Generated class for the TrackerRegistrationFormComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 @Component({
-  selector: 'tracker-registration-form',
-  templateUrl: 'tracker-registration-form.html'
+  selector: 'profile-form',
+  templateUrl: 'profile-form.html'
 })
-export class TrackerRegistrationFormComponent implements OnInit {
+export class ProfileFormComponent implements OnInit {
   @Input() formLayout: string;
-  @Input() dataObject;
   @Input() currentUser;
+
+  @Input() dataObject;
   @Input() trackedEntityAttributesSavingStatusClass;
   @Input() trackerRegistrationForm: string;
   @Input() programTrackedEntityAttributes;
@@ -45,27 +40,23 @@ export class TrackerRegistrationFormComponent implements OnInit {
   @Input() errorOrWarningMessage;
   @Input() dataUpdateStatus: { [elementId: string]: string };
 
-  @Output() onChange = new EventEmitter();
+  @Output() attributeUpdate = new EventEmitter();
 
-  entryFormType: string;
   isEventCompleted: boolean;
+  entryFormType: string;
 
   constructor() {
+    this.entryFormType = 'tracker';
     this.isEventCompleted = false;
   }
 
-  ngOnInit() {
-    this.entryFormType = 'tracker';
-    console.log(
-      'errorOrWarningMessage : ' + JSON.stringify(this.errorOrWarningMessage)
-    );
+  ngOnInit() {}
+
+  updateData(data) {
+    this.attributeUpdate.emit(data);
   }
 
   trackByFn(index, item) {
     return item && item.id ? item.id : index;
-  }
-
-  updateData(event) {
-    this.onChange.emit(event);
   }
 }

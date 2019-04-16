@@ -37,15 +37,15 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content>
-  <ion-searchbar animated="true" autocomplete="on" placeholder="{{'Search'|translate}}" (ionInput)="getFilteredList($event)"></ion-searchbar>
+  <ion-searchbar animated="true" autocomplete="on" placeholder="{{'Search'|translate}}"
+    (ionInput)="getFilteredList($event)"></ion-searchbar>
   <ion-grid>
     <ion-row>
       <ion-col>
         <ion-list>
-          <ion-item *ngFor="let dashboardWidget of dashboardWidgets;trackBy: trackByFn" (tap)="setSelectedWidget(dashboardWidget)"
-            no-padding>
+          <ion-item *ngFor="let dashboardWidget of dashboardWidgets;trackBy: trackByFn"
+            (tap)="setSelectedWidget(dashboardWidget)" no-padding>
             <div style="padding:6px 0px;">
               <span>
                 <span class="program-stage-button-label">
@@ -63,7 +63,8 @@
             </div>
           </ion-item>
           <ion-item *ngIf="dashboardWidgets.length == 0">
-            <empty-list-notification [emptyListMessage]="translationMapper['There is no widget to select']"></empty-list-notification>
+            <empty-list-notification [emptyListMessage]="translationMapper['There is no widget to select']">
+            </empty-list-notification>
           </ion-item>
         </ion-list>
       </ion-col>

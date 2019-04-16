@@ -132,7 +132,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   }
 
   hasEventDatesLabel(value) {
-    return value && isNaN(value);
+    return value && isNaN(value) && value.trim() !== '';
   }
 
   loadingCurrentUserInformation() {
@@ -406,7 +406,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     if (oldEventDate !== this.eventDate) {
       this.currentEvent.syncStatus = 'not-synced';
     }
-    let dataValues = [];
+    const dataValues = [];
     const { id } = updatedData;
     if (id) {
       const newValue = updatedData.value;

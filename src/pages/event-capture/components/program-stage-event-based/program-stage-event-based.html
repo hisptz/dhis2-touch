@@ -68,17 +68,17 @@
           <ion-row no-padding>
             <ion-col>
               <div class="item-card" color="font-color" ion-button clear text-justify (click)="goBack()">
-                <ion-icon name="Back" color="icon-color"></ion-icon>&nbsp; {{ translationMapper['Back']}}
+                <ion-icon name="Back" color="icon-color"></ion-icon>&nbsp; <span translate="'Back'"></span>
               </div>
             </ion-col>
             <ion-col col-auto>
               <div *ngIf="canEventBeDeleted()" float-right>
                 <div class="item-card" color="font-color" ion-button clear text-justify (click)="AddNewEvent()">
-                  <ion-icon name="add" color="icon-color"></ion-icon>&nbsp; {{ translationMapper['Add New']}}
+                  <ion-icon name="add" color="icon-color"></ion-icon>&nbsp; <span translate="'Add New'"></span>
                 </div>
                 <div class="item-card" color="danger" ion-button clear text-justify
                   (click)="deleteEvent(currentEvent.id)">
-                  <ion-icon name="trash"></ion-icon>&nbsp; {{ translationMapper['Delete']}}
+                  <ion-icon name="trash"></ion-icon>&nbsp; <span translate="'Delete'"></span>
                 </div>
               </div>
             </ion-col>

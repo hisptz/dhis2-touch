@@ -32,6 +32,7 @@ import { SettingsProvider } from '../settings/settings';
 import { Observable } from 'rxjs/Observable';
 import { ProfileProvider } from '../../pages/profile/providers/profile/profile';
 import { CurrentUser } from '../../models';
+import { DataStoreManagerProvider } from '../data-store-manager/data-store-manager';
 
 /*
   Generated class for the SynchronizationProvider provider.
@@ -49,6 +50,7 @@ export class SynchronizationProvider {
     private trackerCaptureProvider: TrackerCaptureProvider,
     private enrollmentsProvider: EnrollmentsProvider,
     private eventCaptureFormProvider: EventCaptureFormProvider,
+    private dataStoreManger: DataStoreManagerProvider,
     private appProvider: AppProvider,
     private settingsProvider: SettingsProvider,
     private profileProvider: ProfileProvider
@@ -158,6 +160,30 @@ export class SynchronizationProvider {
                   observer.error(error);
                   console.log(
                     'Error on uploading dataValues ' + JSON.stringify(error)
+                  );
+                }
+              );
+          } else if (item === 'dataStore') {
+            this.dataStoreManger
+              .uploadDataStoreToTheServer(dataObject[item], currentUser)
+              .subscribe(
+                importSummaries => {
+                  completedProcess++;
+                  response.importSummaries[item] = importSummaries;
+                  const percentage =
+                    (completedProcess / dataItems.length) * 100;
+                  response.percentage = percentage.toFixed(1);
+                  observer.next(response);
+                  if (dataItems.length === completedProcess) {
+                    response.isCompleted = true;
+                    observer.next(response);
+                    observer.complete();
+                  }
+                },
+                error => {
+                  observer.error(error);
+                  console.log(
+                    'Error on uploading events ' + JSON.stringify(error)
                   );
                 }
               );
@@ -320,18 +346,22 @@ export class SynchronizationProvider {
         events: [],
         dataValues: [],
         eventsForTracker: [],
-        Enrollments: []
+        Enrollments: [],
+        dataStore: []
       };
       this.dataValuesProvider
         .getDataValuesByStatus(status, currentUser)
         .subscribe(
           (dataValues: any) => {
-            dataObject.dataValues = dataValues;
+            dataObject = { ...dataObject, dataValues };
             this.trackerCaptureProvider
               .getTrackedEntityInstanceByStatus(status, currentUser)
               .subscribe(
                 (trackedEntityInstances: any) => {
-                  dataObject.Enrollments = trackedEntityInstances;
+                  dataObject = {
+                    ...dataObject,
+                    Enrollments: trackedEntityInstances
+                  };
                   this.eventCaptureFormProvider
                     .getEventsByAttribute('syncStatus', [status], currentUser)
                     .subscribe(
@@ -345,8 +375,29 @@ export class SynchronizationProvider {
                             return event.eventType === 'tracker-capture';
                           }
                         );
-                        observer.next(dataObject);
-                        observer.complete();
+                        this.dataStoreManger
+                          .getAllSavedDataStoreData(currentUser)
+                          .subscribe(
+                            (data: any) => {
+                              const dataStores = _.filter(
+                                data,
+                                (dataStore: any) => {
+                                  return dataStore.status === status;
+                                }
+                              );
+                              dataObject = {
+                                ...dataObject,
+                                dataStore: dataStores
+                              };
+                              observer.next(dataObject);
+                              observer.complete();
+                            },
+                            error => {
+                              console.log('error : dataStore');
+                              console.log(JSON.stringify(error));
+                              observer.error(error);
+                            }
+                          );
                       },
                       error => {
                         console.log('error : events');

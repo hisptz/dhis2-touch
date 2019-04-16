@@ -65,6 +65,10 @@ export class OrganisationUnitsProvider {
     this.resource = 'organisationUnits';
   }
 
+  getLastSelectedOrganisationUnit() {
+    return this.lastSelectedOrgUnit;
+  }
+
   /**
    * reset organisation unit
    */

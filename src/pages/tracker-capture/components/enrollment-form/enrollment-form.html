@@ -1,0 +1,63 @@
+<!--
+*
+* Copyright 2015 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2015
+* @author Joseph Chingalo profschingalo@gmail.com>
+*
+*
+-->
+<form>
+  <div class="item-card">
+    <div class="inputLabel">
+      <b>
+        <div class="inputLabel" padding>
+          <span [translate]="'Enrollments'"></span>
+        </div>
+      </b>
+      <hr>
+    </div>
+    <div>
+      <div class="inputLabel">
+        {{ currentProgram.enrollmentDateLabel}}
+        <span class="required">&nbsp;*</span>
+      </div>
+      <div [ngClass]="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container'">
+        <data-time-input [(inputValue)]="enrollmentDate"
+          (dateTimeUpdateAction)="updateDateSelection($event,'enrollmentDate')" [mode]="'date'"></data-time-input>
+      </div>
+      <div *ngIf="currentProgram && currentProgram.displayIncidentDate">
+        <div class="inputLabel">
+          {{ currentProgram.incidentDateLabel}}
+          <span class="required">&nbsp;*</span>
+        </div>
+        <div [ngClass]="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container'">
+          <data-time-input [(inputValue)]="incidentDate"
+            (dateTimeUpdateAction)="updateDateSelection($event,'incidentDate')" [mode]="'date'"></data-time-input>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="currentProgram.captureCoordinates">
+      <span [translate]="'Coordinate'"></span>
+      <div [ngClass]="(isTrackedEntityRegistered)? 'input-field-container-success' : 'input-field-container'">
+        <event-coordinate-selector (onChangeEventCoordonate)="updateEventCoordonate($event)" [coordinate]="coordinate">
+        </event-coordinate-selector>
+      </div>
+    </div>
+  </div>
+</form>
