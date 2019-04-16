@@ -55,6 +55,9 @@ export class ImportSummariesPage implements OnInit {
   ngOnInit() {
     this.importSummaries = this.navParams.get('importSummaries');
     this.keys = this.navParams.get('keys');
+    console.log(
+      JSON.stringify({ keys: this.keys, importSummaries: this.importSummaries })
+    );
   }
 
   dismiss() {
