@@ -49,6 +49,7 @@ export class ValidationRulesProvider {
   ): Observable<any> {
     const resource = 'validationRules';
     return new Observable(observer => {
+      console.log(`validation rules ${validationRules.length}`);
       if (validationRules.length === 0) {
         observer.next();
         observer.complete();

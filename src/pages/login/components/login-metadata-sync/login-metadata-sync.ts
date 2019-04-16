@@ -782,6 +782,8 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
         progressMessage = 'Discovering constants';
       } else if (process === 'dataStore') {
         progressMessage = 'Discovering data store';
+      } else if (process === 'validationRules') {
+        progressMessage = 'Discovering validation rules';
       } else {
         progressMessage = 'Discovering ' + process;
       }
@@ -816,6 +818,8 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
         progressMessage = 'Saving constants';
       } else if (process === 'dataStore') {
         progressMessage = 'Saving data store';
+      } else if (process === 'validationRules') {
+        progressMessage = 'Saving validation rules';
       } else {
         progressMessage = 'Saving ' + process;
       }
@@ -850,6 +854,8 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
         progressMessage = 'Constants have been discovered';
       } else if (process === 'dataStore') {
         progressMessage = 'Data store has been discovered';
+      } else if (process === 'validationRules') {
+        progressMessage = 'Validation rules has been discovered';
       } else {
         progressMessage = process + ' have been discovered';
       }
@@ -1109,6 +1115,20 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
         this.subscriptions.add(
           this.dataStoreManagerProvider
             .getDataStoreFromServer(this.currentUser)
+            .subscribe(
+              response => {
+                this.removeFromQueue(process, 'dowmloading', false, response);
+              },
+              error => {
+                console.log(process + ' : ' + JSON.stringify(error));
+                this.onFailToLogin(error, process);
+              }
+            )
+        );
+      } else if (process === 'validationRules') {
+        this.subscriptions.add(
+          this.validationRulesProvider
+            .discoveringValidationRules(this.currentUser)
             .subscribe(
               response => {
                 this.removeFromQueue(process, 'dowmloading', false, response);
@@ -1576,6 +1596,38 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
                     }
                   )
               );
+            })
+        );
+      }
+    } else if (process === 'dataStore') {
+      if (this.isOnLogin) {
+        this.subscriptions.add(
+          this.dataStoreManagerProvider
+            .saveDataStoreDataFromServer(data, this.currentUser)
+            .subscribe(
+              () => {
+                this.removeFromQueue(process, 'saving', false);
+              },
+              error => {
+                this.onFailToLogin(error, process);
+              }
+            )
+        );
+      } else {
+        this.subscriptions.add(
+          this.sqlLiteProvider
+            .dropAndRecreateTable(process, this.currentUser.currentDatabase)
+            .subscribe(() => {
+              this.dataStoreManagerProvider
+                .saveDataStoreDataFromServer(data, this.currentUser)
+                .subscribe(
+                  () => {
+                    this.removeFromQueue(process, 'saving', false);
+                  },
+                  error => {
+                    this.onFailToLogin(error, process);
+                  }
+                );
             })
         );
       }
