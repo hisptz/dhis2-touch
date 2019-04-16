@@ -53,6 +53,7 @@ import { StandardReportProvider } from '../../../../providers/standard-report/st
 import { DataElementsProvider } from '../../../../providers/data-elements/data-elements';
 import { DataStoreManagerProvider } from '../../../../providers/data-store-manager/data-store-manager';
 import { AppColorProvider } from '../../../../providers/app-color/app-color';
+import { ValidationRulesProvider } from '../../../../providers/validation-rules/validation-rules';
 
 /**
  * Generated class for the LoginMetadataSyncComponent component.
@@ -117,7 +118,8 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
     private smsCommandProvider: SmsCommandProvider,
     private standardReportProvider: StandardReportProvider,
     private dataStoreManagerProvider: DataStoreManagerProvider,
-    private appColorProvider: AppColorProvider
+    private appColorProvider: AppColorProvider,
+    private validationRulesProvider: ValidationRulesProvider
   ) {
     this.showCancelButton = true;
     this.subscriptions = new Subscription();
