@@ -116,19 +116,23 @@ export class ValidationRulesProvider {
     currentUser: CurrentUser
   ): Observable<ValidationRule[]> {
     const resource = 'validationRules';
-    const dataElementIds = _.flattenDeep(
-      _.map(
-        _.map(entryFormSections, entrySection => entrySection.dataElements),
-        (dataElement: any) => dataElement.id
-      )
+    const dataElements = _.flattenDeep(
+      _.map(entryFormSections, (entrySection: any) => entrySection.dataElements)
     );
-    console.log(JSON.stringify({ dataElementIds }));
+    const dataElementIds = _.map(
+      dataElements,
+      (dataElement: any) => dataElement.id
+    );
     return new Observable(observer => {
       this.sqlLite
         .getAllDataFromTable(resource, currentUser.currentDatabase)
         .subscribe(
           (validationRules: ValidationRule[]) => {
-            observer.next(validationRules);
+            const sanitizedValidationRules = this.getSanitizedValidationRules(
+              validationRules,
+              dataElementIds
+            );
+            observer.next(sanitizedValidationRules);
             observer.complete();
           },
           error => {
@@ -136,5 +140,57 @@ export class ValidationRulesProvider {
           }
         );
     });
+  }
+
+  getSanitizedValidationRules(
+    validationRules: ValidationRule[],
+    dataElementIds: string[]
+  ) {
+    return _.filter(validationRules, (validationRule: ValidationRule) => {
+      const { leftSide, rightSide } = validationRule;
+      const isLeftSideExpressionValid = this.isDataElementIdsPresentOnExpression(
+        leftSide.expression,
+        dataElementIds
+      );
+      const isRightSideExpressionValid = this.isDataElementIdsPresentOnExpression(
+        rightSide.expression,
+        dataElementIds
+      );
+      return isLeftSideExpressionValid && isRightSideExpressionValid;
+    });
+  }
+
+  isDataElementIdsPresentOnExpression(
+    expression: string,
+    dataElementIds: string[]
+  ): boolean {
+    let isAllDataElementPresent: boolean = true;
+    const expressionIds = this.getUidsFromExpression(expression);
+    _.map(
+      _.uniq(_.map(expressionIds, expressionId => expressionId.split('.')[0])),
+      id => {
+        if (_.indexOf(dataElementIds, id) === -1) {
+          isAllDataElementPresent = false;
+        }
+      }
+    );
+    return isAllDataElementPresent;
+  }
+
+  getUidsFromExpression(expression) {
+    let uids = [];
+    const matchRegrex = /(\{.*?\})/gi;
+    if (expression.match(matchRegrex)) {
+      expression.match(matchRegrex).forEach(function(value) {
+        uids = uids.concat(
+          value
+            .replace('{', ':separator:')
+            .replace('}', ':separator:')
+            .split(':separator:')
+            .filter(content => content.length > 0)
+        );
+      });
+    }
+    return uids;
   }
 }
