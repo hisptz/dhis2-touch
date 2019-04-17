@@ -34,7 +34,7 @@ export class ValidationRulesProvider {
     private httpClientProvider: HttpClientProvider
   ) {}
 
-  discoveringValidationRules(
+  discoveringValidationRulesFromServer(
     currentUser: CurrentUser
   ): Observable<ValidationRule[]> {
     const fields = `id,displayName,importance,description,periodType,operator,skipFormValidation,leftSide[*],rightSide[*]`;
@@ -49,14 +49,13 @@ export class ValidationRulesProvider {
       'less_than_or_equal_to'
     ];
     const validationOperatorMapper = {
-      equal_to: '',
-      not_equal_to: '',
-      greater_than: '',
-      greater_than_or_equal_to: '',
-      less_than: '',
-      less_than_or_equal_to: ''
+      equal_to: '==',
+      not_equal_to: '!=',
+      greater_than: '>',
+      greater_than_or_equal_to: '>=',
+      less_than: '<',
+      less_than_or_equal_to: '<='
     };
-    console.log(JSON.stringify({ url }));
     return new Observable(observer => {
       this.httpClientProvider.get(url, true, currentUser).subscribe(
         (response: any) => {
@@ -89,7 +88,6 @@ export class ValidationRulesProvider {
   ): Observable<any> {
     const resource = 'validationRules';
     return new Observable(observer => {
-      console.log(`validation rules ${validationRules.length}`);
       if (validationRules.length === 0) {
         observer.next();
         observer.complete();
@@ -110,6 +108,33 @@ export class ValidationRulesProvider {
             }
           );
       }
+    });
+  }
+
+  discoveringValidationRulesByEntryFormFields(
+    entryFormSections: any[],
+    currentUser: CurrentUser
+  ): Observable<ValidationRule[]> {
+    const resource = 'validationRules';
+    const dataElementIds = _.flattenDeep(
+      _.map(
+        _.map(entryFormSections, entrySection => entrySection.dataElements),
+        (dataElement: any) => dataElement.id
+      )
+    );
+    console.log(JSON.stringify({ dataElementIds }));
+    return new Observable(observer => {
+      this.sqlLite
+        .getAllDataFromTable(resource, currentUser.currentDatabase)
+        .subscribe(
+          (validationRules: ValidationRule[]) => {
+            observer.next(validationRules);
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
     });
   }
 }

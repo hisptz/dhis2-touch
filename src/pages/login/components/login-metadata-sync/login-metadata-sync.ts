@@ -1102,7 +1102,6 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
             .downloadConstantsFromServer(this.currentUser)
             .subscribe(
               response => {
-                console.log(JSON.stringify({ response }));
                 this.removeFromQueue(process, 'dowmloading', false, response);
               },
               error => {
@@ -1128,7 +1127,7 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
       } else if (process === 'validationRules') {
         this.subscriptions.add(
           this.validationRulesProvider
-            .discoveringValidationRules(this.currentUser)
+            .discoveringValidationRulesFromServer(this.currentUser)
             .subscribe(
               response => {
                 this.removeFromQueue(process, 'dowmloading', false, response);

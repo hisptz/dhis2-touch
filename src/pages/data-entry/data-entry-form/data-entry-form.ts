@@ -41,6 +41,8 @@ import { Store } from '@ngrx/store';
 import { State, getCurrentUserColorSettings } from '../../../store';
 import { Observable } from 'rxjs';
 import { SynchronizationProvider } from '../../../providers/synchronization/synchronization';
+import { ValidationRule, CurrentUser } from '../../../models';
+import { ValidationRulesProvider } from '../../../providers/validation-rules/validation-rules';
 
 /**
  * Generated class for the DataEntryFormPage page.
@@ -77,6 +79,7 @@ export class DataEntryFormPage implements OnInit {
   isDataSetCompletenessProcessRunning: boolean;
   translationMapper: any;
   dataEntryFormDesign: string;
+  validationRules: ValidationRule[];
   entryFormType: string;
   dataUpdateStatus: { [elementId: string]: string };
   @ViewChild(Content)
@@ -96,7 +99,8 @@ export class DataEntryFormPage implements OnInit {
     private dataValuesProvider: DataValuesProvider,
     private navParams: NavParams,
     private appTranslation: AppTranslationProvider,
-    private synchronizationProvider: SynchronizationProvider
+    private synchronizationProvider: SynchronizationProvider,
+    private validationRulesProvider: ValidationRulesProvider
   ) {
     this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
     this.dataEntryFormDesign = '';
@@ -113,6 +117,7 @@ export class DataEntryFormPage implements OnInit {
     this.dataValuesSavingStatusClass = {};
     this.isLoading = true;
     this.translationMapper = {};
+    this.validationRules = [];
   }
 
   ngOnInit() {
@@ -283,7 +288,32 @@ export class DataEntryFormPage implements OnInit {
               ? this.storageStatus.online++
               : this.storageStatus.offline++;
           });
-          //this.loadingDataSetCompleteness();
+          this.discoveringValidationRulesByEntryFormFields(
+            this.entryFormSections,
+            this.currentUser
+          );
+        },
+        error => {
+          this.isLoading = false;
+          this.appProvider.setNormalNotification(
+            'Failed to discover available local data'
+          );
+        }
+      );
+  }
+
+  discoveringValidationRulesByEntryFormFields(
+    entryFormSections: any[],
+    currentUser: CurrentUser
+  ) {
+    this.validationRulesProvider
+      .discoveringValidationRulesByEntryFormFields(
+        entryFormSections,
+        currentUser
+      )
+      .subscribe(
+        (validationRules: ValidationRule[]) => {
+          this.validationRules = validationRules;
           this.isLoading = false;
         },
         error => {
