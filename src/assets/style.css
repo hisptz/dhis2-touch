@@ -1,13 +1,13 @@
-.entryfield {
+.entryfield,
+.entryfield-total,
+select {
   text-align: center;
-  min-width: 12rem;
+  width: 15rem !important;
 }
 
 
 select {
-  text-align: center;
   text-align-last: center;
-  min-width: 12rem;
 }
 
 .entryfield,

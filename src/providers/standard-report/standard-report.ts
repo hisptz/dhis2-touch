@@ -196,8 +196,8 @@ export class StandardReportProvider {
    */
   getReportList(currentUser): Observable<any> {
     return new Observable(observer => {
-      let dataSetsReportResourceName = 'dataSets';
-      let reportParams = {
+      const dataSetsReportResourceName = 'dataSets';
+      const reportParams = {
         paramGrandParentOrganisationUnit: false,
         paramReportingPeriod: true,
         paramOrganisationUnit: true,
@@ -209,39 +209,52 @@ export class StandardReportProvider {
         currentUser.currentDatabase
       ).subscribe(
         (reports: any) => {
-          reports.forEach((report: any) => {
-            report.type = 'standardReport';
-            report.openFuturePeriods = 1;
-            reportList.push(report);
-          });
+          reportList = _.flatMapDeep(
+            _.concat(
+              reportList,
+              _.map(reports, report => {
+                return {
+                  ...report,
+                  type: 'standardReport',
+                  openFuturePeriods: 1
+                };
+              })
+            )
+          );
           this.SqlLite.getAllDataFromTable(
             dataSetsReportResourceName,
             currentUser.currentDatabase
           ).subscribe(
             (dataSets: any) => {
-              dataSets.forEach((dataSet: any) => {
-                reportList.push({
-                  id: dataSet.id,
-                  name: dataSet.name,
-                  reportParams: reportParams,
-                  type: 'dataSetReport',
-                  openFuturePeriods: dataSet.openFuturePeriods,
-                  relativePeriods: { dataSetPeriodType: dataSet.periodType }
-                });
-              });
+              reportList = _.flatMapDeep(
+                _.concat(
+                  reportList,
+                  _.map(dataSets, dataSet => {
+                    return {
+                      id: dataSet.id,
+                      name: dataSet.name,
+                      reportParams: reportParams,
+                      type: 'dataSetReport',
+                      openFuturePeriods: dataSet.openFuturePeriods,
+                      relativePeriods: { dataSetPeriodType: dataSet.periodType }
+                    };
+                  })
+                )
+              );
               reportList = this.getSortedReports(reportList);
               observer.next(reportList);
               observer.complete();
             },
-            error => {
+            () => {
               reportList = this.getSortedReports(reportList);
               observer.next(reportList);
               observer.complete();
             }
           );
         },
-        error => {
-          observer.next(error);
+        () => {
+          reportList = this.getSortedReports(reportList);
+          observer.next(reportList);
           observer.complete();
         }
       );
@@ -289,14 +302,12 @@ export class StandardReportProvider {
    * @returns {Observable<any>}
    */
   getReportId(reportId, currentUser): Observable<any> {
-    let attribute = 'id';
-    let attributeArray = [];
-    attributeArray.push(reportId);
+    const attribute = 'id';
     return new Observable(observer => {
       this.SqlLite.getDataFromTableByAttributes(
         this.resource,
         attribute,
-        attributeArray,
+        [reportId],
         currentUser.currentDatabase
       ).subscribe(
         (reports: any) => {
@@ -317,15 +328,13 @@ export class StandardReportProvider {
    * @returns {Observable<any>}
    */
   getReportDesign(reportId, currentUser): Observable<any> {
-    let attribute = 'id';
-    let resource = 'reportDesign';
-    let attributeArray = [];
-    attributeArray.push(reportId);
+    const attribute = 'id';
+    const resource = 'reportDesign';
     return new Observable(observer => {
       this.SqlLite.getDataFromTableByAttributes(
         resource,
         attribute,
-        attributeArray,
+        [reportId],
         currentUser.currentDatabase
       ).subscribe(
         (response: any) => {
@@ -347,11 +356,9 @@ export class StandardReportProvider {
   getReportPeriodType(relativePeriods) {
     let reportPeriodType = 'Yearly';
     let reportPeriods = [];
-
     if (relativePeriods.dataSetPeriodType) {
       reportPeriods.push(relativePeriods.dataSetPeriodType);
     }
-
     if (
       relativePeriods.last14Days ||
       relativePeriods.yesterday ||

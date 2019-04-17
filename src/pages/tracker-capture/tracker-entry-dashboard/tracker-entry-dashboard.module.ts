@@ -21,20 +21,20 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-var dhis2 = dhis2 || {}
+import { NgModule } from '@angular/core';
+import { IonicPageModule } from 'ionic-angular';
+import { TranslateModule } from '@ngx-translate/core';
+import { TrackerEntryDashboardPage } from './tracker-entry-dashboard';
+import { sharedComponentsModule } from '../../../components/sharedComponents.module';
+import { TrackerCaptureComponentsModule } from '../components/trackerCaptureComponents.module';
 
-dhis2['trackerCaptureProvider'] = {
-  getEventsByProgramAndOrganisationUnit
-}
-
-function getEventsByProgramAndOrganisationUnit(programId, orgunitId) {
-  const tableName = "events";
-  const query = `SELECT * FROM ${tableName} WHERE  orgUnit = '${orgunitId}' AND program = '${programId}' ORDER BY eventDate DESC;`;
-  return new Promise((resolve, reject) => {
-    dhis2.sqlLiteProvider.geFromTableByQuery(query, tableName).then((dataValues) => {
-      resolve(dataValues);
-    }).catch(error => {
-      reject(error);
-    });
-  })
-}
+@NgModule({
+  declarations: [TrackerEntryDashboardPage],
+  imports: [
+    IonicPageModule.forChild(TrackerEntryDashboardPage),
+    sharedComponentsModule,
+    TrackerCaptureComponentsModule,
+    TranslateModule.forChild({})
+  ]
+})
+export class TrackerEntryDashboardPageModule {}

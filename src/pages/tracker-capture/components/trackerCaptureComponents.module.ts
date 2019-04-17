@@ -23,34 +23,45 @@
  */
 import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
+import { TranslateModule } from '@ngx-translate/core';
 import { sharedComponentsModule } from '../../../components/sharedComponents.module';
-import { TrackerRegistrationFormComponent } from './tracker-registration-form/tracker-registration-form';
-import { DataEntryComponentsModule } from '../../data-entry/components/dataEntryComponents.module';
+import { EventCaptureComponentsModule } from '../../event-capture/components/eventCaptureComponents.module';
+import { ProfileEnrollmentFormComponent } from './profile-enrollment-form/profile-enrollment-form';
+import { ProfileFormComponent } from './profile-form/profile-form';
+import { EnrollmentFormComponent } from './enrollment-form/enrollment-form';
+import { TrackerConflictHandlerComponent } from './tracker-conflict-handler/tracker-conflict-handler';
+import { TrackedEntityInputsComponent } from './tracked-entity-inputs/tracked-entity-inputs';
 import { ProgramStageTrackerBasedComponent } from './program-stage-tracker-based/program-stage-tracker-based';
 import { TrackerEventContainerComponent } from './tracker-event-container/tracker-event-container';
-import { TrackedEntityInputsComponent } from './tracked-entity-inputs/tracked-entity-inputs';
-import { EventCaptureComponentsModule } from '../../event-capture/components/eventCaptureComponents.module';
-import { TrackerConflictHandlerComponent } from './tracker-conflict-handler/tracker-conflict-handler';
+import { TrackerEventActionComponent } from './tracker-event-action/tracker-event-action';
+import { DataEntryComponentsModule } from '../../data-entry/components/dataEntryComponents.module';
 @NgModule({
   declarations: [
-    TrackerRegistrationFormComponent,
+    TrackerConflictHandlerComponent,
+    ProfileEnrollmentFormComponent,
+    ProfileFormComponent,
+    EnrollmentFormComponent,
+    TrackedEntityInputsComponent,
     ProgramStageTrackerBasedComponent,
     TrackerEventContainerComponent,
-    TrackedEntityInputsComponent,
-    TrackerConflictHandlerComponent
+    TrackerEventActionComponent
   ],
   imports: [
     IonicModule,
+    TranslateModule.forChild({}),
     sharedComponentsModule,
     DataEntryComponentsModule,
     EventCaptureComponentsModule
   ],
   exports: [
-    TrackerRegistrationFormComponent,
+    TrackerConflictHandlerComponent,
+    ProfileEnrollmentFormComponent,
+    ProfileFormComponent,
+    EnrollmentFormComponent,
+    TrackedEntityInputsComponent,
     ProgramStageTrackerBasedComponent,
     TrackerEventContainerComponent,
-    TrackedEntityInputsComponent,
-    TrackerConflictHandlerComponent
+    TrackerEventActionComponent
   ]
 })
 export class TrackerCaptureComponentsModule {}

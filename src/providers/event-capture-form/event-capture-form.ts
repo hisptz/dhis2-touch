@@ -77,9 +77,6 @@ export class EventCaptureFormProvider {
             });
             let dueDate = moment(new Date()).format('YYYY-MM-DD');
             if (matchedEnrollment) {
-              console.log(
-                'is valid' + this.isValidDate(matchedEnrollment.incidentDate)
-              );
               let referenceDate = this.isValidDate(
                 matchedEnrollment.incidentDate
               )
@@ -115,7 +112,11 @@ export class EventCaptureFormProvider {
     });
   }
 
-  isValidDate(str) {
+  /*
+   * @param  {string} str
+   * @returns boolean
+   */
+  isValidDate(str: string): boolean {
     var d = moment(str, 'YYYY-MM-DD');
     if (d == null || !d.isValid()) return false;
 
@@ -127,70 +128,44 @@ export class EventCaptureFormProvider {
       str.indexOf(d.format('DD/MM/YY')) >= 0
     );
   }
-
+  /**
+   * @param  {string} programId
+   * @param  {CurrentUser} currentUser
+   * @returns Observable
+   */
   getProgramSkipLogicMetadata(
-    programId,
+    programId: string,
     currentUser: CurrentUser
   ): Observable<any> {
     return new Observable(observer => {
       let programRuleActionIds = [];
-      this.programsProvider
-        .getProgramRuleIds(programId, currentUser.currentDatabase)
+      this.programRulesProvider
+        .getgProgramRulesByProgramId(programId, currentUser)
         .subscribe(
-          programRuleIds => {
+          programRules => {
+            _.map(programRules, programRule => {
+              if (programRule && programRule.programRuleActions) {
+                _.map(programRule.programRuleActions, programRuleAction => {
+                  if (programRuleAction && programRuleAction.id) {
+                    programRuleActionIds.push(programRuleAction.id);
+                  }
+                });
+              }
+            });
             this.programRulesProvider
-              .getgProgramRulesByIds(programRuleIds, currentUser)
+              .getProgramRuleActionsByIds(programRuleActionIds, currentUser)
               .subscribe(
-                programRules => {
-                  _.map(programRules, programRule => {
-                    if (programRule && programRule.programRuleActions) {
-                      _.map(
-                        programRule.programRuleActions,
-                        programRuleAction => {
-                          if (programRuleAction && programRuleAction.id) {
-                            programRuleActionIds.push(programRuleAction.id);
-                          }
-                        }
-                      );
-                    }
-                  });
+                programRuleActions => {
                   this.programRulesProvider
-                    .getProgramRuleActionsByIds(
-                      programRuleActionIds,
-                      currentUser
-                    )
+                    .getProgramRuleVariableByProgramId(programId, currentUser)
                     .subscribe(
-                      programRuleActions => {
-                        this.programsProvider
-                          .getProgramRulesVariablesIds(
-                            programId,
-                            currentUser.currentDatabase
-                          )
-                          .subscribe(
-                            programRulesVariablesIds => {
-                              this.programRulesProvider
-                                .getProgramRuleVariableByIds(
-                                  programRulesVariablesIds,
-                                  currentUser
-                                )
-                                .subscribe(
-                                  programRulesVariables => {
-                                    observer.next({
-                                      programRules: programRules,
-                                      programRuleActions: programRuleActions,
-                                      programRulesVariables: programRulesVariables
-                                    });
-                                    observer.complete();
-                                  },
-                                  error => {
-                                    observer.error(error);
-                                  }
-                                );
-                            },
-                            error => {
-                              observer.error(error);
-                            }
-                          );
+                      programRulesVariables => {
+                        observer.next({
+                          programRules: programRules,
+                          programRuleActions: programRuleActions,
+                          programRulesVariables: programRulesVariables
+                        });
+                        observer.complete();
                       },
                       error => {
                         observer.error(error);
@@ -251,27 +226,29 @@ export class EventCaptureFormProvider {
               .subscribe(
                 (dataElements: any) => {
                   programsStages.forEach((programsStage: any) => {
-                    programsStage.hideDueDate = JSON.parse(
-                      programsStage.hideDueDate
-                    );
-                    programsStage.repeatable = JSON.parse(
-                      programsStage.repeatable
-                    );
-                    programsStage.allowGenerateNextVisit = JSON.parse(
-                      programsStage.allowGenerateNextVisit
-                    );
-                    programsStage.autoGenerateEvent = JSON.parse(
-                      programsStage.autoGenerateEvent
-                    );
-                    programsStage.blockEntryForm = JSON.parse(
-                      programsStage.blockEntryForm
-                    );
-                    programsStage.generatedByEnrollmentDate = JSON.parse(
-                      programsStage.generatedByEnrollmentDate
-                    );
-                    programsStage.captureCoordinates = programsStage.captureCoordinates
-                      ? JSON.parse(programsStage.captureCoordinates)
-                      : false;
+                    try {
+                      programsStage.hideDueDate = JSON.parse(
+                        programsStage.hideDueDate
+                      );
+                      programsStage.repeatable = JSON.parse(
+                        programsStage.repeatable
+                      );
+                      programsStage.allowGenerateNextVisit = JSON.parse(
+                        programsStage.allowGenerateNextVisit
+                      );
+                      programsStage.autoGenerateEvent = JSON.parse(
+                        programsStage.autoGenerateEvent
+                      );
+                      programsStage.blockEntryForm = JSON.parse(
+                        programsStage.blockEntryForm
+                      );
+                      programsStage.generatedByEnrollmentDate = JSON.parse(
+                        programsStage.generatedByEnrollmentDate
+                      );
+                      programsStage.captureCoordinates = programsStage.captureCoordinates
+                        ? JSON.parse(programsStage.captureCoordinates)
+                        : false;
+                    } catch (e) {}
                     programsStage.programStageDataElements.forEach(
                       programStageDataElement => {
                         if (
@@ -453,13 +430,11 @@ export class EventCaptureFormProvider {
         );
     });
   }
-
   /**
    *
    * @param currentUser
-   * @returns {Observable<any>}
    */
-  deleteALLEvents(currentUser): Observable<any> {
+  deleteALLEvents(currentUser: CurrentUser): Observable<any> {
     return new Observable(observer => {
       this.sqlLiteProvider
         .dropTable('events', currentUser.currentDatabase)
@@ -480,24 +455,26 @@ export class EventCaptureFormProvider {
    * @param columnsToDisplay
    * @param events
    * @param eventType
-   * @returns {Observable<any>}
    */
-  getTableFormatResult(columnsToDisplay, events, eventType?): Observable<any> {
+  getTableFormatResult(
+    columnsToDisplay,
+    events,
+    eventType?: string
+  ): Observable<any> {
     let table = { headers: [], rows: [] };
-    let eventIds = this.getMapperObjectForDisplay(events).eventIds;
-    let eventDataValuesArrays = this.getMapperObjectForDisplay(events)
-      .eventsMapper;
+    const { eventIds, eventsMapper } = this.getMapperObjectForDisplay(events);
     if (events && events.length > 0) {
-      Object.keys(columnsToDisplay).map(key => {
-        table.headers.push(columnsToDisplay[key]);
-      });
-      eventDataValuesArrays.map((eventDataValues: any) => {
+      table.headers = _.map(
+        Object.keys(columnsToDisplay),
+        key => columnsToDisplay[key]
+      );
+      eventsMapper.map((eventDataValues: any) => {
         let row = [];
         Object.keys(columnsToDisplay).map(key => {
           if (!this.isEmpty(eventDataValues[key])) {
             row.push(eventDataValues[key]);
           } else {
-            row.push('');
+            row.push('  ');
           }
         });
         table.rows.push(row);
@@ -512,8 +489,12 @@ export class EventCaptureFormProvider {
       observer.complete();
     });
   }
+  /**
+   * @param  {string} value
+   * @returns boolean
+   */
 
-  isEmpty(value) {
+  isEmpty(value: string): boolean {
     return value === undefined || value === null;
   }
 
@@ -523,14 +504,14 @@ export class EventCaptureFormProvider {
    * @returns {{eventsMapper: Array; eventIds: Array}}
    */
   getMapperObjectForDisplay(events) {
-    let eventIds = [];
-    let eventsMapper = [];
+    const eventIds = [];
+    const eventsMapper = [];
     events.map((event: any) => {
       let mapper = {};
       if (event && event.dataValues) {
-        const { eventDate } = event;
-        mapper['eventDate'] = eventDate;
-        event.dataValues.map((dataValue: any) => {
+        const { eventDate, dataValues } = event;
+        mapper = { ...mapper, eventDate };
+        dataValues.map((dataValue: any) => {
           mapper[dataValue.dataElement] = dataValue.value;
         });
       }
@@ -983,11 +964,10 @@ export class EventCaptureFormProvider {
   }
 
   /**
-   *
-   * @param events
-   * @returns {any}
+   * @param  {any[]} events
+   * @returns any
    */
-  getFormattedEventsForUpload(events) {
+  getFormattedEventsForUpload(events: any[]): any[] {
     let sanitizedEvents = _.flatMapDeep(
       _.map(events, event => {
         const dataValues = _.filter(event.dataValues, dataValue => {

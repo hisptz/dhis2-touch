@@ -21,20 +21,31 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-var dhis2 = dhis2 || {}
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
-dhis2['trackerCaptureProvider'] = {
-  getEventsByProgramAndOrganisationUnit
-}
+@Component({
+  selector: 'tracker-event-action',
+  templateUrl: 'tracker-event-action.html'
+})
+export class TrackerEventActionComponent implements OnInit {
+  @Input() isAddButtonDisabled: boolean;
+  @Input() isRepeatableStage: boolean;
+  @Input() isDeletable: boolean;
 
-function getEventsByProgramAndOrganisationUnit(programId, orgunitId) {
-  const tableName = "events";
-  const query = `SELECT * FROM ${tableName} WHERE  orgUnit = '${orgunitId}' AND program = '${programId}' ORDER BY eventDate DESC;`;
-  return new Promise((resolve, reject) => {
-    dhis2.sqlLiteProvider.geFromTableByQuery(query, tableName).then((dataValues) => {
-      resolve(dataValues);
-    }).catch(error => {
-      reject(error);
+  @Output() deleteEvent = new EventEmitter();
+  @Output() addRepeatableEvent = new EventEmitter();
+
+  constructor() {}
+
+  ngOnInit() {}
+
+  onAddRepeatableEvent() {
+    this.addRepeatableEvent.emit({ status: true });
+  }
+
+  onDeleteEvent() {
+    this.deleteEvent.emit({
+      title: `Are you sure you want to delete this event`
     });
-  })
+  }
 }

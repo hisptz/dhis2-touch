@@ -22,6 +22,11 @@
  *
  */
 import * as _ from 'lodash';
+import {
+  evaluateCustomFomProgramIndicators,
+  evaluateCustomFomAggregateIndicators,
+  evaluateDataElementTotals
+} from './custom-form-indicators-helper';
 
 function getSanitizedValue(value, type) {
   switch (type) {
@@ -214,6 +219,7 @@ export function onFormReady(
         const { id, elementId } = elementIdObject;
         const { value, optionCodeName } = dataSetReportAggregateValues[id];
         const inputElement: any = document.getElementById(elementId);
+        const inputElementParent = inputElement.parentNode;
         var labelElement = document.createElement('label');
         var optionCodeNameElement = document.createElement('span');
         optionCodeNameElement.setAttribute(
@@ -225,7 +231,8 @@ export function onFormReady(
           document.createTextNode(optionCodeName)
         );
         labelElement.appendChild(optionCodeNameElement);
-        inputElement.replaceWith(labelElement);
+        inputElementParent.insertBefore(labelElement, inputElement.nextSibling);
+        inputElement.setAttribute('style', 'display:none');
       } catch (error) {
         console.log(JSON.stringify({ type: ' input', error }));
       }
@@ -238,10 +245,9 @@ export function onFormReady(
           inputElement.setAttribute('value', '');
         }
         // Get attribute from the element
-        const elementId = inputElement.getAttribute('id')
+        let elementId = inputElement.getAttribute('id')
           ? inputElement.getAttribute('id')
           : inputElement.getAttribute('attributeid');
-
         // Get splitted ID to get data element and category combo ids
         const splitedId =
           formType === 'aggregate' || formType === 'event'
@@ -330,12 +336,13 @@ export function onFormReady(
         } else {
           // TODO Find ways to deal with input that
           if (
-            inputElement &&
-            inputElement.hasAttribute('name') &&
-            inputElement.getAttribute('name') === 'indicator'
+            (inputElement &&
+              inputElement.hasAttribute('name') &&
+              inputElement.getAttribute('name') === 'indicator') ||
+            inputElement.getAttribute('name') === 'total'
           ) {
             inputElement.setAttribute('value', '0');
-            inputElement.setAttribute('class', 'entryfield');
+            inputElement.setAttribute('class', 'entryfield-total');
             inputElement.setAttribute('readonly', 'readonly');
             inputElement.setAttribute('disabled', 'disabled');
           }
@@ -380,6 +387,7 @@ export function onFormReady(
       evaluateCustomFomProgramIndicators(programIndicators);
     } else if (formType === 'aggregate') {
       evaluateCustomFomAggregateIndicators(indicators);
+      evaluateDataElementTotals();
     }
   }
 
@@ -397,36 +405,39 @@ export function onDataValueChange(
   entryFormType: string,
   entryFormColors: any
 ) {
-  // Get attribute from the element
-  const elementId = element.getAttribute('id');
+  if (element) {
+    // Get attribute from the element
+    const elementId = element.getAttribute('id');
 
-  // Get splitted ID to get data element and category combo ids
-  const splitedId = elementId ? elementId.split('-') : [];
+    // Get splitted ID to get data element and category combo ids
+    const splitedId = elementId ? elementId.split('-') : [];
 
-  const dataElementId = entryFormType === 'event' ? splitedId[1] : splitedId[0];
-  const optionComboId =
-    entryFormType === 'event'
-      ? 'dataElement'
-      : entryFormType === 'tracker'
-      ? 'trackedEntityAttribute'
-      : splitedId[1];
+    const dataElementId =
+      entryFormType === 'event' ? splitedId[1] : splitedId[0];
+    const optionComboId =
+      entryFormType === 'event'
+        ? 'dataElement'
+        : entryFormType === 'tracker'
+        ? 'trackedEntityAttribute'
+        : splitedId[1];
 
-  // find element value
-  const elementValue = element.value;
+    // find element value
+    const elementValue = element.value;
 
-  // Update item color
-  updateFormFieldColor(elementId, entryFormColors['WAIT']);
+    // Update item color
+    updateFormFieldColor(elementId, entryFormColors['WAIT']);
 
-  // create custom event for saving data values
-  const dataValueEvent = new CustomEvent('dataValueUpdate', {
-    detail: {
-      id: `${dataElementId}-${optionComboId}`,
-      value: elementValue,
-      status: 'not-synced',
-      domElementId: elementId
-    }
-  });
-  document.body.dispatchEvent(dataValueEvent);
+    // create custom event for saving data values
+    const dataValueEvent = new CustomEvent('dataValueUpdate', {
+      detail: {
+        id: `${dataElementId}-${optionComboId}`,
+        value: elementValue,
+        status: 'not-synced',
+        domElementId: elementId
+      }
+    });
+    document.body.dispatchEvent(dataValueEvent);
+  }
 }
 
 export function lockingEntryFormFields(shouldLockFields) {
@@ -487,76 +498,4 @@ export function lockingEntryFormFields(shouldLockFields) {
       }
     }
   );
-}
-
-export function evaluateCustomFomProgramIndicators(programIndicators: any[]) {
-  for (let programIndicator of programIndicators) {
-    const { id, expression, filter, name } = programIndicator;
-    if (filter) {
-      console.log(JSON.stringify({ filter }));
-    }
-    const indicatorValue = getProgramIndicatorValueFromExpression(expression);
-    const element: any = document.getElementById(`indicator${id}`);
-    if (element) {
-      element.value = indicatorValue;
-    }
-  }
-}
-
-export function evaluateCustomFomAggregateIndicators(indicators: any[]) {
-  console.log(JSON.stringify(indicators));
-}
-
-function getProgramIndicatorValueFromExpression(expression: string) {
-  let indicatorValue = '0';
-  const indictorUidValue = {};
-  const uids = getUidsFromExpression(expression);
-  for (const uid of uids) {
-    const elementId = uid.split('.').join('-');
-    const element: any = document.getElementById(`${elementId}-val`);
-    const value = element && element.value ? element.value : '0';
-    indictorUidValue[uid] = value;
-  }
-  indicatorValue = getEvaluatedIndicatorValueFromExpression(
-    expression,
-    indictorUidValue
-  );
-  return indicatorValue;
-}
-
-function getUidsFromExpression(expression) {
-  let uids = [];
-  const matchRegrex = /(\{.*?\})/gi;
-  expression.match(matchRegrex).forEach(function(value) {
-    uids = uids.concat(
-      value
-        .replace('{', ':separator:')
-        .replace('}', ':separator:')
-        .split(':separator:')
-        .filter(content => content.length > 0)
-    );
-  });
-  return uids;
-}
-function getEvaluatedIndicatorValueFromExpression(
-  expression,
-  indicatorIdToValueObject
-) {
-  let evaluatedValue = 0;
-  const formulaPattern = /#\{.+?\}/g;
-  const matcher = expression.match(formulaPattern);
-  matcher.map(function(match) {
-    var operand = match.replace(/[#\{\}]/g, '');
-    const value =
-      indicatorIdToValueObject && indicatorIdToValueObject[operand]
-        ? indicatorIdToValueObject[operand]
-        : 0;
-    expression = expression.replace(match, value);
-  });
-  try {
-    if (!isNaN(eval(expression))) {
-      evaluatedValue = eval(expression);
-    }
-  } catch (e) {}
-  return evaluatedValue.toFixed(1);
 }

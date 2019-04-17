@@ -1094,6 +1094,7 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
             .downloadConstantsFromServer(this.currentUser)
             .subscribe(
               response => {
+                console.log(JSON.stringify({ response }));
                 this.removeFromQueue(process, 'dowmloading', false, response);
               },
               error => {
@@ -1127,200 +1128,487 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
     const progressMessage = this.getProgressMessage(process, type);
     this.updateProgressTrackerObject(process + '-' + type, progressMessage);
     if (process === 'organisationUnits') {
-      this.subscriptions.add(
-        this.organisationUnitsProvider
-          .savingOrganisationUnitsFromServer(data, this.currentUser)
-          .subscribe(
-            () => {
-              this.removeFromQueue(process, 'saving', false);
-            },
-            error => {
-              this.onFailToLogin(error, process);
-            }
-          )
-      );
+      if (this.isOnLogin) {
+        this.subscriptions.add(
+          this.organisationUnitsProvider
+            .savingOrganisationUnitsFromServer(data, this.currentUser)
+            .subscribe(
+              () => {
+                this.removeFromQueue(process, 'saving', false);
+              },
+              error => {
+                this.onFailToLogin(error, process);
+              }
+            )
+        );
+      } else {
+        this.subscriptions.add(
+          this.sqlLiteProvider
+            .dropAndRecreateTable(process, this.currentUser.currentDatabase)
+            .subscribe(() => {
+              this.organisationUnitsProvider
+                .savingOrganisationUnitsFromServer(data, this.currentUser)
+                .subscribe(
+                  () => {
+                    this.removeFromQueue(process, 'saving', false);
+                  },
+                  error => {
+                    this.onFailToLogin(error, process);
+                  }
+                );
+            })
+        );
+      }
     } else if (process === 'dataSets') {
-      this.subscriptions.add(
-        this.dataSetsProvider
-          .saveDataSetsFromServer(data, this.currentUser)
-          .subscribe(
-            () => {
-              this.removeFromQueue(process, 'saving', false);
-            },
-            errror => {
-              this.onFailToLogin(errror);
-            }
-          )
-      );
+      if (this.isOnLogin) {
+        this.subscriptions.add(
+          this.dataSetsProvider
+            .saveDataSetsFromServer(data, this.currentUser)
+            .subscribe(
+              () => {
+                this.removeFromQueue(process, 'saving', false);
+              },
+              errror => {
+                this.onFailToLogin(errror);
+              }
+            )
+        );
+      } else {
+        this.subscriptions.add(
+          this.sqlLiteProvider
+            .dropAndRecreateTable(process, this.currentUser.currentDatabase)
+            .subscribe(() => {
+              this.dataSetsProvider
+                .saveDataSetsFromServer(data, this.currentUser)
+                .subscribe(
+                  () => {
+                    this.removeFromQueue(process, 'saving', false);
+                  },
+                  errror => {
+                    this.onFailToLogin(errror);
+                  }
+                );
+            })
+        );
+      }
     } else if (process === 'sections') {
-      this.subscriptions.add(
-        this.sectionsProvider
-          .saveSectionsFromServer(data, this.currentUser)
-          .subscribe(
-            () => {
-              this.removeFromQueue(process, 'saving', false);
-            },
-            error => {
-              this.onFailToLogin(error, process);
-            }
-          )
-      );
+      if (this.isOnLogin) {
+        this.subscriptions.add(
+          this.sectionsProvider
+            .saveSectionsFromServer(data, this.currentUser)
+            .subscribe(
+              () => {
+                this.removeFromQueue(process, 'saving', false);
+              },
+              error => {
+                this.onFailToLogin(error, process);
+              }
+            )
+        );
+      } else {
+        this.subscriptions.add(
+          this.sqlLiteProvider
+            .dropAndRecreateTable(process, this.currentUser.currentDatabase)
+            .subscribe(() => {
+              this.sectionsProvider
+                .saveSectionsFromServer(data, this.currentUser)
+                .subscribe(
+                  () => {
+                    this.removeFromQueue(process, 'saving', false);
+                  },
+                  error => {
+                    this.onFailToLogin(error, process);
+                  }
+                );
+            })
+        );
+      }
     } else if (process === 'dataElements') {
-      this.subscriptions.add(
-        this.dataElementsProvider
-          .saveDataElementsFromServer(data, this.currentUser)
-          .subscribe(
-            () => {
-              this.removeFromQueue(process, 'saving', false);
-            },
-            error => {
-              this.onFailToLogin(error, process);
-            }
-          )
-      );
+      if (this.isOnLogin) {
+        this.subscriptions.add(
+          this.dataElementsProvider
+            .saveDataElementsFromServer(data, this.currentUser)
+            .subscribe(
+              () => {
+                this.removeFromQueue(process, 'saving', false);
+              },
+              error => {
+                this.onFailToLogin(error, process);
+              }
+            )
+        );
+      } else {
+        this.subscriptions.add(
+          this.sqlLiteProvider
+            .dropAndRecreateTable(process, this.currentUser.currentDatabase)
+            .subscribe(() => {
+              this.dataElementsProvider
+                .saveDataElementsFromServer(data, this.currentUser)
+                .subscribe(
+                  () => {
+                    this.removeFromQueue(process, 'saving', false);
+                  },
+                  error => {
+                    this.onFailToLogin(error, process);
+                  }
+                );
+            })
+        );
+      }
     } else if (process === 'categoryCombos') {
-      this.subscriptions.add(
-        this.dataElementsProvider
-          .saveDataElementCatogoryCombos(data, this.currentUser)
-          .subscribe(
-            () => {
-              this.removeFromQueue(process, 'saving', false);
-            },
-            error => {
-              this.onFailToLogin(error, process);
-            }
-          )
-      );
+      if (this.isOnLogin) {
+        this.subscriptions.add(
+          this.dataElementsProvider
+            .saveDataElementCatogoryCombos(data, this.currentUser)
+            .subscribe(
+              () => {
+                this.removeFromQueue(process, 'saving', false);
+              },
+              error => {
+                this.onFailToLogin(error, process);
+              }
+            )
+        );
+      } else {
+        this.subscriptions.add(
+          this.sqlLiteProvider
+            .dropAndRecreateTable(process, this.currentUser.currentDatabase)
+            .subscribe(() => {
+              this.dataElementsProvider
+                .saveDataElementCatogoryCombos(data, this.currentUser)
+                .subscribe(
+                  () => {
+                    this.removeFromQueue(process, 'saving', false);
+                  },
+                  error => {
+                    this.onFailToLogin(error, process);
+                  }
+                );
+            })
+        );
+      }
     } else if (process === 'smsCommand') {
-      this.subscriptions.add(
-        this.smsCommandProvider
-          .savingSmsCommand(data, this.currentUser.currentDatabase)
-          .subscribe(
-            () => {
-              this.removeFromQueue(process, 'saving', false);
-            },
-            error => {
-              this.onFailToLogin(error, process);
-            }
-          )
-      );
+      if (this.isOnLogin) {
+        this.subscriptions.add(
+          this.smsCommandProvider
+            .savingSmsCommand(data, this.currentUser.currentDatabase)
+            .subscribe(
+              () => {
+                this.removeFromQueue(process, 'saving', false);
+              },
+              error => {
+                this.onFailToLogin(error, process);
+              }
+            )
+        );
+      } else {
+        this.subscriptions.add(
+          this.sqlLiteProvider
+            .dropAndRecreateTable(process, this.currentUser.currentDatabase)
+            .subscribe(() => {
+              this.smsCommandProvider
+                .savingSmsCommand(data, this.currentUser.currentDatabase)
+                .subscribe(
+                  () => {
+                    this.removeFromQueue(process, 'saving', false);
+                  },
+                  error => {
+                    this.onFailToLogin(error, process);
+                  }
+                );
+            })
+        );
+      }
     } else if (process === 'programs') {
-      this.subscriptions.add(
-        this.programsProvider
-          .saveProgramsFromServer(data, this.currentUser)
-          .subscribe(
-            () => {
-              this.removeFromQueue(process, 'saving', false);
-            },
-            error => {
-              this.onFailToLogin(error, process);
-            }
-          )
-      );
+      if (this.isOnLogin) {
+        this.subscriptions.add(
+          this.programsProvider
+            .saveProgramsFromServer(data, this.currentUser)
+            .subscribe(
+              () => {
+                this.removeFromQueue(process, 'saving', false);
+              },
+              error => {
+                this.onFailToLogin(error, process);
+              }
+            )
+        );
+      } else {
+        this.subscriptions.add(
+          this.sqlLiteProvider
+            .dropAndRecreateTable(process, this.currentUser.currentDatabase)
+            .subscribe(() => {
+              this.programsProvider
+                .saveProgramsFromServer(data, this.currentUser)
+                .subscribe(
+                  () => {
+                    this.removeFromQueue(process, 'saving', false);
+                  },
+                  error => {
+                    this.onFailToLogin(error, process);
+                  }
+                );
+            })
+        );
+      }
     } else if (process === 'programStageSections') {
-      this.subscriptions.add(
-        this.programStageSectionsProvider
-          .saveProgramsStageSectionsFromServer(data, this.currentUser)
-          .subscribe(
-            () => {
-              this.removeFromQueue(process, 'saving', false);
-            },
-            error => {
-              this.onFailToLogin(error, process);
-            }
-          )
-      );
+      if (this.isOnLogin) {
+        this.subscriptions.add(
+          this.programStageSectionsProvider
+            .saveProgramsStageSectionsFromServer(data, this.currentUser)
+            .subscribe(
+              () => {
+                this.removeFromQueue(process, 'saving', false);
+              },
+              error => {
+                this.onFailToLogin(error, process);
+              }
+            )
+        );
+      } else {
+        this.subscriptions.add(
+          this.sqlLiteProvider
+            .dropAndRecreateTable(process, this.currentUser.currentDatabase)
+            .subscribe(() => {
+              this.programStageSectionsProvider
+                .saveProgramsStageSectionsFromServer(data, this.currentUser)
+                .subscribe(
+                  () => {
+                    this.removeFromQueue(process, 'saving', false);
+                  },
+                  error => {
+                    this.onFailToLogin(error, process);
+                  }
+                );
+            })
+        );
+      }
     } else if (process === 'programRules') {
-      this.subscriptions.add(
-        this.programRulesProvider
-          .savingProgramRules(data, this.currentUser)
-          .subscribe(
-            () => {
-              this.removeFromQueue(process, 'saving', false);
-            },
-            error => {
-              this.onFailToLogin(error, process);
-            }
-          )
-      );
+      if (this.isOnLogin) {
+        this.subscriptions.add(
+          this.programRulesProvider
+            .savingProgramRules(data, this.currentUser)
+            .subscribe(
+              () => {
+                this.removeFromQueue(process, 'saving', false);
+              },
+              error => {
+                this.onFailToLogin(error, process);
+              }
+            )
+        );
+      } else {
+        this.subscriptions.add(
+          this.sqlLiteProvider
+            .dropAndRecreateTable(process, this.currentUser.currentDatabase)
+            .subscribe(() => {
+              this.programRulesProvider
+                .savingProgramRules(data, this.currentUser)
+                .subscribe(
+                  () => {
+                    this.removeFromQueue(process, 'saving', false);
+                  },
+                  error => {
+                    this.onFailToLogin(error, process);
+                  }
+                );
+            })
+        );
+      }
     } else if (process === 'programRuleActions') {
-      this.subscriptions.add(
-        this.programRulesProvider
-          .savingProgramRuleActions(data, this.currentUser)
-          .subscribe(
-            () => {
-              this.removeFromQueue(process, 'saving', false);
-            },
-            error => {
-              this.onFailToLogin(error, process);
-            }
-          )
-      );
+      if (this.isOnLogin) {
+        this.subscriptions.add(
+          this.programRulesProvider
+            .savingProgramRuleActions(data, this.currentUser)
+            .subscribe(
+              () => {
+                this.removeFromQueue(process, 'saving', false);
+              },
+              error => {
+                this.onFailToLogin(error, process);
+              }
+            )
+        );
+      } else {
+        this.subscriptions.add(
+          this.sqlLiteProvider
+            .dropAndRecreateTable(process, this.currentUser.currentDatabase)
+            .subscribe(() => {
+              this.programRulesProvider
+                .savingProgramRuleActions(data, this.currentUser)
+                .subscribe(
+                  () => {
+                    this.removeFromQueue(process, 'saving', false);
+                  },
+                  error => {
+                    this.onFailToLogin(error, process);
+                  }
+                );
+            })
+        );
+      }
     } else if (process === 'programRuleVariables') {
-      this.subscriptions.add(
-        this.programRulesProvider
-          .savingProgramRuleVariables(data, this.currentUser)
-          .subscribe(
-            () => {
-              this.removeFromQueue(process, 'saving', false);
-            },
-            error => {
-              this.onFailToLogin(error, process);
-            }
-          )
-      );
+      if (this.isOnLogin) {
+        this.subscriptions.add(
+          this.programRulesProvider
+            .savingProgramRuleVariables(data, this.currentUser)
+            .subscribe(
+              () => {
+                this.removeFromQueue(process, 'saving', false);
+              },
+              error => {
+                this.onFailToLogin(error, process);
+              }
+            )
+        );
+      } else {
+        this.subscriptions.add(
+          this.sqlLiteProvider
+            .dropAndRecreateTable(process, this.currentUser.currentDatabase)
+            .subscribe(() => {
+              this.programRulesProvider
+                .savingProgramRuleVariables(data, this.currentUser)
+                .subscribe(
+                  () => {
+                    this.removeFromQueue(process, 'saving', false);
+                  },
+                  error => {
+                    this.onFailToLogin(error, process);
+                  }
+                );
+            })
+        );
+      }
     } else if (process === 'indicators') {
-      this.subscriptions.add(
-        this.indicatorsProvider
-          .savingIndicatorsFromServer(data, this.currentUser)
-          .subscribe(
-            () => {
-              this.removeFromQueue(process, 'saving', false);
-            },
-            error => {
-              this.onFailToLogin(error, process);
-            }
-          )
-      );
+      if (this.isOnLogin) {
+        this.subscriptions.add(
+          this.indicatorsProvider
+            .savingIndicatorsFromServer(data, this.currentUser)
+            .subscribe(
+              () => {
+                this.removeFromQueue(process, 'saving', false);
+              },
+              error => {
+                this.onFailToLogin(error, process);
+              }
+            )
+        );
+      } else {
+        this.subscriptions.add(
+          this.sqlLiteProvider
+            .dropAndRecreateTable(process, this.currentUser.currentDatabase)
+            .subscribe(() => {
+              this.indicatorsProvider
+                .savingIndicatorsFromServer(data, this.currentUser)
+                .subscribe(
+                  () => {
+                    this.removeFromQueue(process, 'saving', false);
+                  },
+                  error => {
+                    this.onFailToLogin(error, process);
+                  }
+                );
+            })
+        );
+      }
     } else if (process === 'reports') {
-      this.subscriptions.add(
-        this.standardReportProvider
-          .saveReportsFromServer(data, this.currentUser)
-          .subscribe(
-            () => {
-              this.removeFromQueue(process, 'saving', false);
-            },
-            error => {
-              this.onFailToLogin(error, process);
-            }
-          )
-      );
+      if (this.isOnLogin) {
+        this.subscriptions.add(
+          this.standardReportProvider
+            .saveReportsFromServer(data, this.currentUser)
+            .subscribe(
+              () => {
+                this.removeFromQueue(process, 'saving', false);
+              },
+              error => {
+                this.onFailToLogin(error, process);
+              }
+            )
+        );
+      } else {
+        this.subscriptions.add(
+          this.sqlLiteProvider
+            .dropAndRecreateTable(process, this.currentUser.currentDatabase)
+            .subscribe(() => {
+              this.standardReportProvider
+                .saveReportsFromServer(data, this.currentUser)
+                .subscribe(
+                  () => {
+                    this.removeFromQueue(process, 'saving', false);
+                  },
+                  error => {
+                    this.onFailToLogin(error, process);
+                  }
+                );
+            })
+        );
+      }
     } else if (process === 'constants') {
-      this.subscriptions.add(
-        this.standardReportProvider
-          .saveConstantsFromServer(data, this.currentUser)
-          .subscribe(
-            () => {
-              this.removeFromQueue(process, 'saving', false);
-            },
-            error => {
-              this.onFailToLogin(error, process);
-            }
-          )
-      );
+      if (this.isOnLogin) {
+        this.subscriptions.add(
+          this.standardReportProvider
+            .saveConstantsFromServer(data, this.currentUser)
+            .subscribe(
+              () => {
+                this.removeFromQueue(process, 'saving', false);
+              },
+              error => {
+                this.onFailToLogin(error, process);
+              }
+            )
+        );
+      } else {
+        this.subscriptions.add(
+          this.sqlLiteProvider
+            .dropAndRecreateTable(process, this.currentUser.currentDatabase)
+            .subscribe(() => {
+              this.subscriptions.add(
+                this.standardReportProvider
+                  .saveConstantsFromServer(data, this.currentUser)
+                  .subscribe(
+                    () => {
+                      this.removeFromQueue(process, 'saving', false);
+                    },
+                    error => {
+                      this.onFailToLogin(error, process);
+                    }
+                  )
+              );
+            })
+        );
+      }
     } else if (process === 'dataStore') {
-      this.subscriptions.add(
-        this.dataStoreManagerProvider
-          .saveDataStoreDataFromServer(data, this.currentUser)
-          .subscribe(
-            () => {
-              this.removeFromQueue(process, 'saving', false);
-            },
-            error => {
-              this.onFailToLogin(error, process);
-            }
-          )
-      );
+      if (this.isOnLogin) {
+        this.subscriptions.add(
+          this.dataStoreManagerProvider
+            .saveDataStoreDataFromServer(data, this.currentUser)
+            .subscribe(
+              () => {
+                this.removeFromQueue(process, 'saving', false);
+              },
+              error => {
+                this.onFailToLogin(error, process);
+              }
+            )
+        );
+      } else {
+        this.subscriptions.add(
+          this.sqlLiteProvider
+            .dropAndRecreateTable(process, this.currentUser.currentDatabase)
+            .subscribe(() => {
+              this.dataStoreManagerProvider
+                .saveDataStoreDataFromServer(data, this.currentUser)
+                .subscribe(
+                  () => {
+                    this.removeFromQueue(process, 'saving', false);
+                  },
+                  error => {
+                    this.onFailToLogin(error, process);
+                  }
+                );
+            })
+        );
+      }
     }
   }
 

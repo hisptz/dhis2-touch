@@ -31,6 +31,7 @@ import { SettingsProvider } from '../../providers/settings/settings';
 import { Store } from '@ngrx/store';
 import { State, getCurrentUserColorSettings } from '../../store';
 import { Observable } from 'rxjs';
+declare var dhis2;
 
 @IonicPage()
 @Component({
@@ -136,6 +137,11 @@ export class TrackerCapturePage implements OnInit {
       ) {
         this.hasOnlineTrackerLoaded = false;
       }
+      dhis2['tackerCaptureSelection'] = {
+        selectedOrgUnit: { id: selectedOrgUnit.id, name: selectedOrgUnit.name },
+        selectedProgram: { id: selectedProgram.id, name: selectedProgram.name },
+        dataDimension
+      };
       this.selectedDataDimension = selectedDataDimension;
       this.selectedOrgUnit = selectedOrgUnit;
       this.dataDimension = dataDimension;
@@ -198,25 +204,32 @@ export class TrackerCapturePage implements OnInit {
       });
   }
 
-  loadingSavedTrackedEntityInstances(programId, organisationUnitId) {
+  loadingSavedTrackedEntityInstances(
+    programId,
+    organisationUnitId,
+    shouldSkipLoadOnline?: boolean
+  ) {
     this.isLoading = true;
-    this.showTrackerConflictHandler = false;
+
     this.loadingMessage = 'Discovering tracked entity list';
     const programName = this.selectedProgram.name;
     const eventType = 'tracker-capture';
     const orgUnitName = this.selectedOrgUnit.name;
-    setTimeout(() => {
-      this.trackerConflictHandler = {
-        ...{},
-        organisationUnitId,
-        orgUnitName,
-        eventType,
-        programId,
-        programName,
-        currentUser: this.currentUser
-      };
-      this.showTrackerConflictHandler = !this.hasOnlineTrackerLoaded;
-    }, 10);
+    if (!shouldSkipLoadOnline) {
+      this.showTrackerConflictHandler = false;
+      setTimeout(() => {
+        this.trackerConflictHandler = {
+          ...{},
+          organisationUnitId,
+          orgUnitName,
+          eventType,
+          programId,
+          programName,
+          currentUser: this.currentUser
+        };
+        this.showTrackerConflictHandler = !this.hasOnlineTrackerLoaded;
+      }, 10);
+    }
     this.trackerCaptureProvider
       .loadTrackedEntityInstancesList(
         programId,
@@ -259,7 +272,11 @@ export class TrackerCapturePage implements OnInit {
   onSuccessTrackerConflictHandling() {
     const programId = this.selectedProgram.id;
     const organisationUnitId = this.selectedOrgUnit.id;
-    this.loadingSavedTrackedEntityInstances(programId, organisationUnitId);
+    this.loadingSavedTrackedEntityInstances(
+      programId,
+      organisationUnitId,
+      true
+    );
   }
 
   isAllParameterSelected() {
@@ -308,12 +325,14 @@ export class TrackerCapturePage implements OnInit {
   }
 
   registerNewTrackedEntity() {
-    this.navCtrl.push('TrackerEntityRegisterPage', {});
+    this.navCtrl.push('TrackerEntryDashboardPage', {});
   }
 
   openTrackedEntityDashboard(currentIndex) {
-    let trackedEntityInstancesId = this.trackedEntityInstancesIds[currentIndex];
-    this.navCtrl.push('TrackedEntityDashboardPage', {
+    const trackedEntityInstancesId = this.trackedEntityInstancesIds[
+      currentIndex
+    ];
+    this.navCtrl.push('TrackerEntryDashboardPage', {
       trackedEntityInstancesId: trackedEntityInstancesId
     });
   }

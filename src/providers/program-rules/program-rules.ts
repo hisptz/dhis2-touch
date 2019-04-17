@@ -65,8 +65,7 @@ export class ProgramRulesProvider {
         errorOrWarningMessage: {}
       };
       let hasDataToAssign = false;
-      const { programRules } = programSkipLogicMetadata;
-      const { programRulesVariables } = programSkipLogicMetadata;
+      const { programRules, programRulesVariables } = programSkipLogicMetadata;
       const dataValuesObject = this.getDeducedDataValuesForEvaluation(
         dataObject
       );
@@ -90,10 +89,8 @@ export class ProgramRulesProvider {
                   programStageSection,
                   programStage,
                   content,
-                  location,
                   data
                 } = action;
-                // console.log(location);
                 let evalCondition = condition;
                 let evalDataCondition = data ? data : '';
                 let evalData = '';
@@ -150,7 +147,6 @@ export class ProgramRulesProvider {
                   } catch (error) {
                   } finally {
                   }
-
                   if (evalCondition !== condition) {
                     try {
                       const evaluated = eval(`(${evalCondition})`);
@@ -415,33 +411,32 @@ export class ProgramRulesProvider {
     });
   }
 
-  getgProgramRulesByIds(
-    programRulesIds: Array<String>,
+  getgProgramRulesByProgramId(
+    programId: string,
     currentUser: CurrentUser
   ): Observable<any> {
     const resource = 'programRules';
+    const { currentDatabase } = currentUser;
     return new Observable(observer => {
-      if (programRulesIds.length == 0) {
-        observer.next([]);
-        observer.complete();
-      } else {
-        this.sqlLite
-          .getDataFromTableByAttributes(
-            resource,
-            'id',
-            programRulesIds,
-            currentUser.currentDatabase
-          )
-          .subscribe(
-            programRules => {
-              observer.next(programRules);
-              observer.complete();
-            },
-            error => {
-              observer.error(error);
-            }
+      this.sqlLite.getAllDataFromTable(resource, currentDatabase).subscribe(
+        (programRules: any) => {
+          const sanitizedProgramRules = _.flatMapDeep(
+            _.filter(programRules, programRule => {
+              return (
+                programRule &&
+                programRule.program &&
+                programRule.program.id &&
+                programRule.program.id === programId
+              );
+            })
           );
-      }
+          observer.next(sanitizedProgramRules);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
 
@@ -475,31 +470,32 @@ export class ProgramRulesProvider {
     });
   }
 
-  getProgramRuleVariableByIds(
-    programRuleVariableIds: Array<string>,
+  getProgramRuleVariableByProgramId(
+    programId: string,
     currentUser: CurrentUser
   ): Observable<any> {
     const resource = 'programRuleVariables';
+    const { currentDatabase } = currentUser;
     return new Observable(observer => {
-      if (programRuleVariableIds.length == 0) {
-      } else {
-        this.sqlLite
-          .getDataFromTableByAttributes(
-            resource,
-            'id',
-            programRuleVariableIds,
-            currentUser.currentDatabase
-          )
-          .subscribe(
-            programRuleVariables => {
-              observer.next(programRuleVariables);
-              observer.complete();
-            },
-            error => {
-              observer.error(error);
-            }
+      this.sqlLite.getAllDataFromTable(resource, currentDatabase).subscribe(
+        (programRuleVariables: any) => {
+          const sanitizedProgramRuleVariables = _.flatMapDeep(
+            _.filter(programRuleVariables, programRuleVariable => {
+              return (
+                programRuleVariable &&
+                programRuleVariable.program &&
+                programRuleVariable.program.id &&
+                programRuleVariable.program.id === programId
+              );
+            })
           );
-      }
+          observer.next(sanitizedProgramRuleVariables);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
 }

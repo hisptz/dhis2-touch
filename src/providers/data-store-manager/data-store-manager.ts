@@ -25,6 +25,7 @@ import { Injectable } from '@angular/core';
 import { HttpClientProvider } from '../http-client/http-client';
 import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { Observable } from 'rxjs';
+import * as _ from 'lodash';
 import { CurrentUser, DataStore } from '../../models';
 
 /*
@@ -197,7 +198,169 @@ export class DataStoreManagerProvider {
     });
   }
 
-  getSavedDataStoreData(): Observable<any> {
-    return new Observable(observer => {});
+  uploadDataStoreToTheServer(data: DataStore[], currentUser: CurrentUser) {
+    const unSyncedData = _.filter(data, (dataStore: DataStore) => {
+      return dataStore.status === 'not-synced';
+    });
+    let fail = 0;
+    let success = 0;
+    const errorMessages = [];
+    const successIds = [];
+    const status = 'synced';
+    return new Observable(observer => {
+      if (unSyncedData && unSyncedData.length > 0) {
+        _.map(unSyncedData, (dataStore: DataStore) => {
+          const { id, data, key, nameSpace } = dataStore;
+          const url = `/api/${this.resource}/${nameSpace}/${key}`;
+          this.httpCLientProvider.post(url, data, currentUser).subscribe(
+            () => {},
+            error => {
+              console.log(JSON.stringify({ error }));
+              this.httpCLientProvider.put(url, data, currentUser).subscribe(
+                () => {
+                  success++;
+                  successIds.push(id);
+                  if (success + fail === unSyncedData.length) {
+                    this.updateDataStoreByStatus(
+                      successIds,
+                      status,
+                      unSyncedData,
+                      currentUser
+                    ).subscribe(
+                      () => {
+                        observer.next({
+                          success,
+                          fail,
+                          errorMessages
+                        });
+                      },
+                      error => {
+                        observer.error(error);
+                      }
+                    );
+                  }
+                },
+                error => {
+                  fail++;
+                  if (
+                    error &&
+                    error.response &&
+                    error.response.importSummaries &&
+                    error.response.importSummaries.length > 0 &&
+                    error.response.importSummaries[0].description
+                  ) {
+                    let message = error.response.importSummaries[0].description;
+                    if (errorMessages.indexOf(message) == -1) {
+                      errorMessages.push(message);
+                    }
+                  } else if (
+                    error &&
+                    error.response &&
+                    error.response.conflicts
+                  ) {
+                    error.response.conflicts.map((conflict: any) => {
+                      let message = JSON.stringify(conflict);
+                      if (errorMessages.indexOf(message) == -1) {
+                        errorMessages.push(message);
+                      }
+                    });
+                  } else if (error && error.httpStatusCode == 500) {
+                    let message = error.message;
+                    if (errorMessages.indexOf(message) == -1) {
+                      errorMessages.push(message);
+                    }
+                  } else if (
+                    error &&
+                    error.response &&
+                    error.response.description
+                  ) {
+                    let message = error.response.description;
+                    if (errorMessages.indexOf(message) == -1) {
+                      errorMessages.push(message);
+                    }
+                  } else {
+                    let message = JSON.stringify(error);
+                    if (errorMessages.indexOf(message) == -1) {
+                      errorMessages.push(message);
+                    }
+                  }
+                  if (success + fail === unSyncedData.length) {
+                    this.updateDataStoreByStatus(
+                      successIds,
+                      status,
+                      unSyncedData,
+                      currentUser
+                    ).subscribe(
+                      () => {
+                        observer.next({
+                          success,
+                          fail,
+                          errorMessages
+                        });
+                      },
+                      error => {
+                        observer.error(error);
+                      }
+                    );
+                  }
+                }
+              );
+            }
+          );
+        });
+      } else {
+        observer.next({ fail, success, errorMessages });
+        observer.complete();
+      }
+    });
+  }
+
+  updateDataStoreByStatus(
+    dataStoreIds: string[],
+    status: string,
+    dataStores: DataStore[],
+    currentUser: CurrentUser
+  ): Observable<any> {
+    const data = _.map(
+      _.filter(dataStores, (dataStore: DataStore) => {
+        const { id } = dataStore;
+        return _.indexOf(dataStoreIds, id) > -1;
+      }),
+      (dataStore: DataStore) => {
+        return { ...dataStore, status: status };
+      }
+    );
+    return new Observable(observer => {
+      if (data && data.length > 0) {
+        this.saveDataStoreDataFromServer(data, currentUser).subscribe(
+          () => {
+            observer.next();
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+      } else {
+        observer.next();
+        observer.complete();
+      }
+    });
+  }
+
+  getAllSavedDataStoreData(currentUser: CurrentUser): Observable<DataStore[]> {
+    return new Observable(observer => {
+      this.sqlLiteProvider
+        .getAllDataFromTable(this.resource, currentUser.currentDatabase)
+        .subscribe(
+          (data: DataStore[]) => {
+            observer.next(data);
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+    });
   }
 }
