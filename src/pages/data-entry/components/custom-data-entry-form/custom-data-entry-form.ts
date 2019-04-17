@@ -91,6 +91,7 @@ export class CustomDataEntryFormComponent
   isDataSetCompleted: boolean;
   @Input()
   isDataSetCompletenessProcessRunning: boolean;
+  @Input() isValidationProcessRunning: boolean;
   @Output()
   onViewUserCompletenessInformation = new EventEmitter();
   @Output()

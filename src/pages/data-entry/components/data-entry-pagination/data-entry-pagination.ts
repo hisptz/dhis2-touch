@@ -40,6 +40,7 @@ export class DataEntryPaginationComponent implements OnInit {
   @Input() entryFormSectionsCount;
   @Input() isDataSetCompleted;
   @Input() dataSetsCompletenessInfo;
+  @Input() isValidationProcessRunning: boolean;
   @Input() isPeriodLocked: boolean;
 
   @Output() onViewUserCompletenessInformation = new EventEmitter();
