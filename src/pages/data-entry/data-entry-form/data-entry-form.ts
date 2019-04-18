@@ -77,6 +77,7 @@ export class DataEntryFormPage implements OnInit {
   dataSetsCompletenessInfo: any;
   isDataSetCompleted: boolean;
   isDataSetCompletenessProcessRunning: boolean;
+  isValidationProcessRunning: boolean;
   translationMapper: any;
   dataEntryFormDesign: string;
   validationRules: ValidationRule[];
@@ -118,6 +119,7 @@ export class DataEntryFormPage implements OnInit {
     this.isLoading = true;
     this.translationMapper = {};
     this.validationRules = [];
+    this.isValidationProcessRunning = false;
   }
 
   ngOnInit() {
@@ -323,6 +325,15 @@ export class DataEntryFormPage implements OnInit {
           );
         }
       );
+  }
+
+  onValidatingDateEntry() {
+    console.log('On validate ');
+    console.log(JSON.stringify({ validationRules: this.validationRules }));
+    this.isValidationProcessRunning = true;
+    setTimeout(() => {
+      this.isValidationProcessRunning = false;
+    }, 2000);
   }
 
   onDataSetCompletenessInformattionLoaded(dataSetCompletenessInfo) {

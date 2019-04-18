@@ -84,9 +84,10 @@
         </div>
         <div *ngIf="!isLoading">
           <div *ngIf="entryFormType && entryFormType === 'CUSTOM'">
-            <custom-data-entry-form [indicators]="indicators" [isPeriodLocked]="isPeriodLocked"
-              [dataEntryFormDesign]="dataEntryFormDesign" (onCustomFormInputChange)="updateData($event)"
-              (onUpdateDataSetCompleteness)="updateDataSetCompleteness()"
+            <custom-data-entry-form [isValidationProcessRunning]="isValidationProcessRunning"
+              (validatingEntryForm)="onValidatingDateEntry($event)" [indicators]="indicators"
+              [isPeriodLocked]="isPeriodLocked" [dataEntryFormDesign]="dataEntryFormDesign"
+              (onCustomFormInputChange)="updateData($event)" (onUpdateDataSetCompleteness)="updateDataSetCompleteness()"
               (onViewUserCompletenessInformation)="viewUserCompletenessInformation($event)" [data]="dataValuesObject"
               [entryFormType]="'aggregate'" [entryFormSections]="entryFormSections"
               [dataUpdateStatus]="dataUpdateStatus" [isDataSetCompleted]="isDataSetCompleted"
@@ -99,7 +100,9 @@
                 [emptyListMessage]="translationMapper['The is no field associated with this entry form, Please contact our help desk'] ">
               </empty-list-notification>
             </div>
-            <default-data-entry-form [isPeriodLocked]="isPeriodLocked" (onPaginationChange)="changePagination($event)"
+            <default-data-entry-form [isValidationProcessRunning]="isValidationProcessRunning"
+              (validatingEntryForm)="onValidatingDateEntry($event)" [isPeriodLocked]="isPeriodLocked"
+              (onPaginationChange)="changePagination($event)"
               (onUpdateDataSetCompleteness)="updateDataSetCompleteness()"
               (onViewUserCompletenessInformation)="viewUserCompletenessInformation($event)"
               (onChange)="updateData($event)" (onSectionListOpen)="openSectionList()" [entryFormType]="entryFormType"

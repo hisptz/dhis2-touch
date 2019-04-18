@@ -53,12 +53,15 @@ export class DefaultDataEntryFormComponent implements OnInit, OnChanges {
   @Input() isDataSetCompletenessProcessRunning: boolean;
   @Input() icons;
   @Input() isPeriodLocked: boolean;
+  @Input() isValidationProcessRunning: boolean;
 
   @Output() onChange = new EventEmitter();
   @Output() onSectionListOpen = new EventEmitter();
   @Output() onViewUserCompletenessInformation = new EventEmitter();
   @Output() onPaginationChange = new EventEmitter();
   @Output() onUpdateDataSetCompleteness = new EventEmitter();
+  @Output() validatingEntryForm = new EventEmitter();
+
   lockingFieldStatus: boolean;
 
   constructor() {}
@@ -90,6 +93,10 @@ export class DefaultDataEntryFormComponent implements OnInit, OnChanges {
 
   viewUserCompletenessInformation(dataSetsCompletenessInfo) {
     this.onViewUserCompletenessInformation.emit(dataSetsCompletenessInfo);
+  }
+
+  onValidatingDateEntry() {
+    this.validatingEntryForm.emit();
   }
 
   changePagination(page) {
