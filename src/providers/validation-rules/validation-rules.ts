@@ -26,12 +26,14 @@ import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { CurrentUser, ValidationRule } from '../../models';
+import { IndicatorsProvider } from '../indicators/indicators';
 
 @Injectable()
 export class ValidationRulesProvider {
   constructor(
     private sqlLite: SqlLiteProvider,
-    private httpClientProvider: HttpClientProvider
+    private httpClientProvider: HttpClientProvider,
+    private indicatorProvider: IndicatorsProvider
   ) {}
 
   discoveringValidationRulesFromServer(
@@ -175,6 +177,59 @@ export class ValidationRulesProvider {
       }
     );
     return isAllDataElementPresent;
+  }
+
+  evaluateAndGetValidationResults(
+    validationRules: ValidationRule[],
+    dataValuesObject: any
+  ): Observable<any> {
+    return new Observable(observer => {
+      const violatedRules = [];
+      validationRules.map((validationRule: ValidationRule) => {
+        const {
+          id,
+          leftSide,
+          rightSide,
+          operator,
+          description,
+          displayName
+        } = validationRule;
+        const generatedLeftSideExpression = this.indicatorProvider.generateExpresion(
+          leftSide.expression,
+          dataValuesObject
+        );
+        const generatedRightSideExpression = this.indicatorProvider.generateExpresion(
+          rightSide.expression,
+          dataValuesObject
+        );
+        try {
+          const rightSideValue = eval(generatedRightSideExpression);
+          const leftSideValuue = eval(generatedLeftSideExpression);
+          const result = eval(
+            `${leftSideValuue} ${operator} ${rightSideValue}`
+          );
+          if (!result) {
+            violatedRules.push({
+              id,
+              displayName,
+              left: {
+                value: leftSideValuue,
+                description: leftSide.description
+              },
+              operator,
+              right: {
+                value: rightSideValue,
+                description: rightSide.description
+              }
+            });
+          }
+        } catch (e) {
+          console.log(JSON.stringify(e));
+        }
+      });
+      observer.next(violatedRules);
+      observer.complete();
+    });
   }
 
   getUidsFromExpression(expression) {

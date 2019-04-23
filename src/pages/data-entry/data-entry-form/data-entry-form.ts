@@ -35,7 +35,6 @@ import { DataEntryFormProvider } from '../../../providers/data-entry-form/data-e
 import { SettingsProvider } from '../../../providers/settings/settings';
 import { DataValuesProvider } from '../../../providers/data-values/data-values';
 import { DataSetCompletenessProvider } from '../../../providers/data-set-completeness/data-set-completeness';
-import { AppTranslationProvider } from '../../../providers/app-translation/app-translation';
 import * as _ from 'lodash';
 import { Store } from '@ngrx/store';
 import { State, getCurrentUserColorSettings } from '../../../store';
@@ -78,7 +77,6 @@ export class DataEntryFormPage implements OnInit {
   isDataSetCompleted: boolean;
   isDataSetCompletenessProcessRunning: boolean;
   isValidationProcessRunning: boolean;
-  translationMapper: any;
   dataEntryFormDesign: string;
   validationRules: ValidationRule[];
   entryFormType: string;
@@ -99,7 +97,6 @@ export class DataEntryFormPage implements OnInit {
     private settingsProvider: SettingsProvider,
     private dataValuesProvider: DataValuesProvider,
     private navParams: NavParams,
-    private appTranslation: AppTranslationProvider,
     private synchronizationProvider: SynchronizationProvider,
     private validationRulesProvider: ValidationRulesProvider
   ) {
@@ -117,28 +114,12 @@ export class DataEntryFormPage implements OnInit {
     this.dataValuesObject = {};
     this.dataValuesSavingStatusClass = {};
     this.isLoading = true;
-    this.translationMapper = {};
     this.validationRules = [];
     this.isValidationProcessRunning = false;
   }
 
   ngOnInit() {
-    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
-      (data: any) => {
-        this.translationMapper = data;
-        this.loadingCurrentUserInformation();
-      },
-      error => {
-        this.loadingCurrentUserInformation();
-      }
-    );
-  }
-
-  loadingCurrentUserInformation() {
-    let key = 'Discovering current user information';
-    this.loadingMessage = this.translationMapper[key]
-      ? this.translationMapper[key]
-      : key;
+    this.loadingMessage = 'Discovering current user information';
     this.entryFormParameter = this.navParams.get('parameter');
     this.isPeriodLocked = this.entryFormParameter.isPeriodLocked;
     this.userProvider.getCurrentUser().subscribe(
@@ -157,7 +138,9 @@ export class DataEntryFormPage implements OnInit {
             } else {
               this.entryFormLayout = 'listLayout';
             }
-            this.loadingDataSetInformation(this.entryFormParameter.dataSet.id);
+            this.discoveringDataSetInformation(
+              this.entryFormParameter.dataSet.id
+            );
           });
       },
       error => {
@@ -174,21 +157,15 @@ export class DataEntryFormPage implements OnInit {
     this.navCtrl.pop();
   }
 
-  loadingDataSetInformation(dataSetId) {
-    let key = 'Discovering entry form information';
-    this.loadingMessage = this.translationMapper[key]
-      ? this.translationMapper[key]
-      : key;
+  discoveringDataSetInformation(dataSetId) {
+    this.loadingMessage = 'Discovering entry form information';
     this.dataEntryFormProvider
       .loadingDataSetInformation(dataSetId, this.currentUser)
       .subscribe(
         (dataSetInformation: any) => {
           this.dataSet = dataSetInformation.dataSet;
           this.sectionIds = dataSetInformation.sectionIds;
-          key = 'Discovering indicators';
-          this.loadingMessage = this.translationMapper[key]
-            ? this.translationMapper[key]
-            : key;
+          this.loadingMessage = 'Discovering indicators';
           this.dataEntryFormProvider
             .getEntryFormIndicators(
               dataSetInformation.indicatorIds,
@@ -197,7 +174,7 @@ export class DataEntryFormPage implements OnInit {
             .subscribe(
               (indicators: any) => {
                 this.indicators = indicators;
-                this.loadingEntryForm(this.dataSet, this.sectionIds);
+                this.discoveringEntryForm(this.dataSet, this.sectionIds);
               },
               error => {
                 this.isLoading = false;
@@ -218,11 +195,8 @@ export class DataEntryFormPage implements OnInit {
       );
   }
 
-  loadingEntryForm(dataSet, sectionIds) {
-    let key = 'Preparing entry form';
-    this.loadingMessage = this.translationMapper[key]
-      ? this.translationMapper[key]
-      : key;
+  discoveringEntryForm(dataSet, sectionIds) {
+    this.loadingMessage = 'Preparing entry form';
     this.dataEntryFormProvider
       .getEntryForm(
         sectionIds,
@@ -257,7 +231,7 @@ export class DataEntryFormPage implements OnInit {
             dataDimension,
             this.dataSet.categoryCombo.categoryOptionCombos
           );
-          this.loadingLocalData(dataSetId, period, orgUnitId, dataDimension);
+          this.discoveringData(dataSetId, period, orgUnitId, dataDimension);
         },
         error => {
           console.log(JSON.stringify(error));
@@ -268,11 +242,8 @@ export class DataEntryFormPage implements OnInit {
       );
   }
 
-  loadingLocalData(dataSetId, period, orgUnitId, dataDimension) {
-    let key = 'Discovering available local data';
-    this.loadingMessage = this.translationMapper[key]
-      ? this.translationMapper[key]
-      : key;
+  discoveringData(dataSetId, period, orgUnitId, dataDimension) {
+    this.loadingMessage = 'Discovering available local data';
     this.dataValuesProvider
       .getAllEntryFormDataValuesFromStorage(
         dataSetId,
@@ -328,12 +299,27 @@ export class DataEntryFormPage implements OnInit {
   }
 
   onValidatingDateEntry() {
-    console.log('On validate ');
-    console.log(JSON.stringify({ validationRules: this.validationRules }));
     this.isValidationProcessRunning = true;
-    setTimeout(() => {
-      this.isValidationProcessRunning = false;
-    }, 2000);
+    this.validationRulesProvider
+      .evaluateAndGetValidationResults(
+        this.validationRules,
+        this.dataValuesObject
+      )
+      .subscribe(
+        (violatedValidationRule: any) => {
+          let modal = this.modalCtrl.create('ValidationRulesResultsPage', {
+            violatedValidationRule
+          });
+          modal.present();
+          this.isValidationProcessRunning = false;
+        },
+        error => {
+          this.isValidationProcessRunning = false;
+          this.appProvider.setNormalNotification(
+            'Failed to evaluate validation rules'
+          );
+        }
+      );
   }
 
   onDataSetCompletenessInformattionLoaded(dataSetCompletenessInfo) {
@@ -694,21 +680,5 @@ export class DataEntryFormPage implements OnInit {
 
   trackByFn(index, item) {
     return item && item.id ? item.id : index;
-  }
-
-  getValuesToTranslate() {
-    return [
-      'The is no field associated with this entry form, Please contact our help desk',
-      'Discovering current user information',
-      'Discovering entry form information',
-      'Discovering indicators',
-      'Preparing entry form',
-      'Discovering data from the server',
-      'Saving data from server',
-      'Discovering available local data',
-      'Discovering entry form completeness information',
-      'There are no indicators to view',
-      'Uploading data'
-    ];
   }
 }
