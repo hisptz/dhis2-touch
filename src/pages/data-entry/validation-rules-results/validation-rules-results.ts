@@ -44,8 +44,8 @@ export class ValidationRulesResultsPage implements OnInit {
   ) {
     this.violatedValidationRules = [];
     this.icons = {
-      success: '',
-      warning: ''
+      success: 'assets/icon/circle-tick.png',
+      warning: 'assets/icon/error.png'
     };
     this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
   }
