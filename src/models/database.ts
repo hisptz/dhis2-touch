@@ -55,6 +55,25 @@ export const DATABASE_STRUCTURE = {
     displayName: 'Local instance',
     dependentTable: []
   },
+  validationRules: {
+    columns: [
+      { value: 'id', type: 'TEXT' },
+      { value: 'displayName', type: 'TEXT' },
+      { value: 'periodType', type: 'TEXT' },
+      { value: 'importance', type: 'TEXT' },
+      { value: 'skipFormValidation', type: 'TEXT' },
+      { value: 'operator', type: 'TEXT' },
+      { value: 'description', type: 'LONGTEXT' },
+      { value: 'leftSide', type: 'LONGTEXT' },
+      { value: 'rightSide', type: 'LONGTEXT' }
+    ],
+    isMetadata: true,
+    shouldIncludeOnLogin: true,
+    resourceType: 'entryForm',
+    batchSize: 100,
+    displayName: 'Validation Rules',
+    dependentTable: []
+  },
   dataStore: {
     columns: [
       { value: 'id', type: 'TEXT' },
@@ -81,7 +100,6 @@ export const DATABASE_STRUCTURE = {
       { value: 'expiryDays', type: 'TEXT' },
       { value: 'categoryCombo', type: 'LONGTEXT' }
     ],
-    fields: '',
     isMetadata: true,
     shouldIncludeOnLogin: true,
     resourceType: 'entryForm',
