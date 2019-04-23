@@ -53,6 +53,7 @@ import { StandardReportProvider } from '../../../../providers/standard-report/st
 import { DataElementsProvider } from '../../../../providers/data-elements/data-elements';
 import { DataStoreManagerProvider } from '../../../../providers/data-store-manager/data-store-manager';
 import { AppColorProvider } from '../../../../providers/app-color/app-color';
+import { ValidationRulesProvider } from '../../../../providers/validation-rules/validation-rules';
 
 /**
  * Generated class for the LoginMetadataSyncComponent component.
@@ -117,7 +118,8 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
     private smsCommandProvider: SmsCommandProvider,
     private standardReportProvider: StandardReportProvider,
     private dataStoreManagerProvider: DataStoreManagerProvider,
-    private appColorProvider: AppColorProvider
+    private appColorProvider: AppColorProvider,
+    private validationRulesProvider: ValidationRulesProvider
   ) {
     this.showCancelButton = true;
     this.subscriptions = new Subscription();
@@ -780,6 +782,8 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
         progressMessage = 'Discovering constants';
       } else if (process === 'dataStore') {
         progressMessage = 'Discovering data store';
+      } else if (process === 'validationRules') {
+        progressMessage = 'Discovering validation rules';
       } else {
         progressMessage = 'Discovering ' + process;
       }
@@ -814,6 +818,8 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
         progressMessage = 'Saving constants';
       } else if (process === 'dataStore') {
         progressMessage = 'Saving data store';
+      } else if (process === 'validationRules') {
+        progressMessage = 'Saving validation rules';
       } else {
         progressMessage = 'Saving ' + process;
       }
@@ -848,6 +854,8 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
         progressMessage = 'Constants have been discovered';
       } else if (process === 'dataStore') {
         progressMessage = 'Data store has been discovered';
+      } else if (process === 'validationRules') {
+        progressMessage = 'Validation rules has been discovered';
       } else {
         progressMessage = process + ' have been discovered';
       }
@@ -1094,7 +1102,6 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
             .downloadConstantsFromServer(this.currentUser)
             .subscribe(
               response => {
-                console.log(JSON.stringify({ response }));
                 this.removeFromQueue(process, 'dowmloading', false, response);
               },
               error => {
@@ -1107,6 +1114,20 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
         this.subscriptions.add(
           this.dataStoreManagerProvider
             .getDataStoreFromServer(this.currentUser)
+            .subscribe(
+              response => {
+                this.removeFromQueue(process, 'dowmloading', false, response);
+              },
+              error => {
+                console.log(process + ' : ' + JSON.stringify(error));
+                this.onFailToLogin(error, process);
+              }
+            )
+        );
+      } else if (process === 'validationRules') {
+        this.subscriptions.add(
+          this.validationRulesProvider
+            .discoveringValidationRulesFromServer(this.currentUser)
             .subscribe(
               response => {
                 this.removeFromQueue(process, 'dowmloading', false, response);
@@ -1598,6 +1619,38 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
             .subscribe(() => {
               this.dataStoreManagerProvider
                 .saveDataStoreDataFromServer(data, this.currentUser)
+                .subscribe(
+                  () => {
+                    this.removeFromQueue(process, 'saving', false);
+                  },
+                  error => {
+                    this.onFailToLogin(error, process);
+                  }
+                );
+            })
+        );
+      }
+    } else if (process === 'validationRules') {
+      if (this.isOnLogin) {
+        this.subscriptions.add(
+          this.validationRulesProvider
+            .savingValidationRules(data, this.currentUser)
+            .subscribe(
+              () => {
+                this.removeFromQueue(process, 'saving', false);
+              },
+              error => {
+                this.onFailToLogin(error, process);
+              }
+            )
+        );
+      } else {
+        this.subscriptions.add(
+          this.sqlLiteProvider
+            .dropAndRecreateTable(process, this.currentUser.currentDatabase)
+            .subscribe(() => {
+              this.validationRulesProvider
+                .savingValidationRules(data, this.currentUser)
                 .subscribe(
                   () => {
                     this.removeFromQueue(process, 'saving', false);
