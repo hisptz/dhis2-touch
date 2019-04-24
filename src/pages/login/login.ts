@@ -116,9 +116,10 @@ export class LoginPage implements OnInit, OnDestroy {
       'indicators',
       'programRuleActions',
       'programRuleVariables',
-      'dataSets'
-      //'reports',
-      //'constants'
+      'dataSets',
+      // 'reports',
+      // 'constants',
+      'validationRules'
     ];
   }
 

@@ -91,10 +91,12 @@ export class CustomDataEntryFormComponent
   isDataSetCompleted: boolean;
   @Input()
   isDataSetCompletenessProcessRunning: boolean;
+  @Input() isValidationProcessRunning: boolean;
   @Output()
   onViewUserCompletenessInformation = new EventEmitter();
   @Output()
   onUpdateDataSetCompleteness = new EventEmitter();
+  @Output() validatingEntryForm = new EventEmitter();
 
   _htmlMarkup: SafeHtml;
   hasScriptSet: boolean;
@@ -201,6 +203,10 @@ export class CustomDataEntryFormComponent
 
   viewUserCompletenessInformation(dataSetsCompletenessInfo) {
     this.onViewUserCompletenessInformation.emit(dataSetsCompletenessInfo);
+  }
+
+  onValidatingDateEntry() {
+    this.validatingEntryForm.emit();
   }
 
   getScriptsContents(html) {

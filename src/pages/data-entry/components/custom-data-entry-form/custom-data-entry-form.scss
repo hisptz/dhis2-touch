@@ -8,6 +8,7 @@ custom-data-entry-form {
     text-align: left;
     padding-left: 15px;
   }
+
   input,
   textarea,
   select {
@@ -32,5 +33,28 @@ custom-data-entry-form {
   .entrytrueonly:focus,
   .entryfileresource:focus {
     border-color: #488aff;
+  }
+
+  .flex-container-start {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+
+  }
+
+  .paginations {
+    margin-top: 5px;
+  }
+
+  .flex-item {
+    text-align: center;
+  }
+
+  .flex-item-start {
+    padding: 3px;
+  }
+
+  .pagination-button {
+    padding: 5px;
   }
 }

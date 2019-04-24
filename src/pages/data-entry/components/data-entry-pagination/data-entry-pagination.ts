@@ -40,12 +40,14 @@ export class DataEntryPaginationComponent implements OnInit {
   @Input() entryFormSectionsCount;
   @Input() isDataSetCompleted;
   @Input() dataSetsCompletenessInfo;
+  @Input() isValidationProcessRunning: boolean;
   @Input() isPeriodLocked: boolean;
 
   @Output() onViewUserCompletenessInformation = new EventEmitter();
   @Output() onSectionListOpen = new EventEmitter();
   @Output() onPaginationChange = new EventEmitter();
   @Output() onUpdateDataSetCompleteness = new EventEmitter();
+  @Output() validatingEntryForm = new EventEmitter();
 
   constructor() {}
   ngOnInit() {}
@@ -64,5 +66,9 @@ export class DataEntryPaginationComponent implements OnInit {
 
   openSectionList() {
     this.onSectionListOpen.emit();
+  }
+
+  onValidatingDateEntry() {
+    this.validatingEntryForm.emit();
   }
 }
