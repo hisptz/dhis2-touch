@@ -39,18 +39,24 @@ export class LoginFormComponent implements OnInit {
   currentUser: CurrentUser;
 
   @Output()
-  onLoginFormReady = new EventEmitter();
+  loginFormReady = new EventEmitter();
+  @Output() startLoginProcess = new EventEmitter();
+
+  @Input() buttonColor: string;
 
   loginFormFields: any;
   loginFormData: any;
   data: any;
   isLoading: boolean;
+  isLoginFormValid: boolean;
+  updateOnChangeValue: boolean;
 
   constructor() {
     this.loginFormFields = this.getLoginForm();
     this.loginFormData = {};
     this.data = {};
     this.isLoading = true;
+    this.updateOnChangeValue = true;
   }
 
   ngOnInit() {
@@ -79,19 +85,17 @@ export class LoginFormComponent implements OnInit {
   }
 
   checkingForFormValidity() {
-    if (
-      Object.keys(this.loginFormData).length === this.loginFormFields.length
-    ) {
-      this.onLoginFormReady.emit({
-        status: true,
-        currentUser: this.loginFormData
-      });
-    } else {
-      this.onLoginFormReady.emit({
-        status: false,
-        currentUser: this.loginFormData
-      });
-    }
+    const data = {
+      status:
+        Object.keys(this.loginFormData).length === this.loginFormFields.length,
+      currentUser: this.loginFormData
+    };
+    this.isLoginFormValid = data.status;
+    this.loginFormReady.emit(data);
+  }
+
+  onStartLoginProcess() {
+    this.startLoginProcess.emit({ status: true });
   }
 
   trackByFn(index, item) {

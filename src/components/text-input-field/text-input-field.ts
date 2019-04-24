@@ -43,6 +43,7 @@ export class TextInputFieldComponent implements OnInit {
   @Input() barcodeSettings: any;
   @Input() placeholder: string;
   @Input() lockingFieldStatus;
+  @Input() updateOnChangeValue: boolean;
 
   @Output() onChange = new EventEmitter();
 

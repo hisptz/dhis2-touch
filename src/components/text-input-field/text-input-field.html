@@ -24,18 +24,38 @@
 -->
 <ion-row>
   <ion-col>
-    <div *ngIf="valueType === 'LONG_TEXT'">
-      <ion-item no-lines>
-        <ion-textarea [readonly]="lockingFieldStatus" (ionBlur)="updateValues()" [(ngModel)]="inputFieldValue">
-        </ion-textarea>
-      </ion-item>
+    <div *ngIf="updateOnChangeValue">
+      <div *ngIf="valueType === 'LONG_TEXT'">
+        <ion-item no-lines>
+          <ion-textarea [readonly]="lockingFieldStatus" (ionChange)="updateValues()" [(ngModel)]="inputFieldValue">
+          </ion-textarea>
+        </ion-item>
+      </div>
+      <div *ngIf="valueType === 'TEXT'">
+        <ion-item no-lines>
+          <ion-input [readonly]="lockingFieldStatus" type="text" placeholder="{{placeholder|translate}}"
+            (ionChange)="updateValues()" [(ngModel)]="inputFieldValue"></ion-input>
+        </ion-item>
+      </div>
     </div>
-    <div *ngIf="valueType === 'TEXT'">
-      <ion-item no-lines>
-        <ion-input [readonly]="lockingFieldStatus" type="text" placeholder="{{placeholder|translate}}"
-          (ionBlur)="updateValues()" [(ngModel)]="inputFieldValue"></ion-input>
-      </ion-item>
+    <div *ngIf="!updateOnChangeValue">
+      <div *ngIf="valueType === 'LONG_TEXT'">
+        <ion-item no-lines>
+          <ion-textarea [readonly]="lockingFieldStatus" (ionBlur)="updateValues()" [(ngModel)]="inputFieldValue">
+          </ion-textarea>
+        </ion-item>
+      </div>
+      <div *ngIf="valueType === 'TEXT'">
+        <ion-item no-lines>
+          <ion-input [readonly]="lockingFieldStatus" type="text" placeholder="{{placeholder|translate}}"
+            (ionBlur)="updateValues()" [(ngModel)]="inputFieldValue"></ion-input>
+        </ion-item>
+      </div>
     </div>
+
+
+
+
   </ion-col>
   <ion-col col-auto *ngIf="showBarcodeScanner">
     <div float-right>

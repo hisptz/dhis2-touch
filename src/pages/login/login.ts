@@ -337,7 +337,7 @@ export class LoginPage implements OnInit, OnDestroy {
     }
   }
 
-  startLoginProcess() {
+  onStartLoginProcess() {
     const { username, password, serverUrl } = this.currentUser;
     this.currentUser = {
       ...this.currentUser,
