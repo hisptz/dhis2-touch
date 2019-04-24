@@ -79,6 +79,7 @@ export class DataEntryFormPage implements OnInit {
   isValidationProcessRunning: boolean;
   dataEntryFormDesign: string;
   validationRules: ValidationRule[];
+  compulsoryDataElementOperands: any[];
   entryFormType: string;
   dataUpdateStatus: { [elementId: string]: string };
   @ViewChild(Content)
@@ -115,6 +116,7 @@ export class DataEntryFormPage implements OnInit {
     this.dataValuesSavingStatusClass = {};
     this.isLoading = true;
     this.validationRules = [];
+    this.compulsoryDataElementOperands = [];
     this.isValidationProcessRunning = false;
   }
 
@@ -231,13 +233,37 @@ export class DataEntryFormPage implements OnInit {
             dataDimension,
             this.dataSet.categoryCombo.categoryOptionCombos
           );
-          this.discoveringData(dataSetId, period, orgUnitId, dataDimension);
+          this.loadingMessage = 'Discovering mandatory fields';
+          this.dataEntryFormProvider
+            .getCompulsoryDataElementOperandsByDataSetId(
+              dataSetId,
+              this.currentUser
+            )
+            .subscribe(
+              compulsoryDataElementOperands => {
+                this.compulsoryDataElementOperands = compulsoryDataElementOperands;
+                this.discoveringData(
+                  dataSetId,
+                  period,
+                  orgUnitId,
+                  dataDimension
+                );
+              },
+              error => {
+                console.log(JSON.stringify(error));
+                this.isLoading = false;
+                this.loadingMessage = '';
+                this.appProvider.setNormalNotification(
+                  'Fail to dicover mandatory fields'
+                );
+              }
+            );
         },
         error => {
           console.log(JSON.stringify(error));
           this.isLoading = false;
           this.loadingMessage = '';
-          this.appProvider.setNormalNotification('');
+          this.appProvider.setNormalNotification('Fail to prepare entry form');
         }
       );
   }
@@ -580,58 +606,84 @@ export class DataEntryFormPage implements OnInit {
           }
         );
     } else {
-      this.dataSetCompletenessProvider
-        .completeOnDataSetRegistrations(
-          dataSetId,
-          period,
-          orgUnitId,
-          dataDimension,
-          this.currentUser
-        )
-        .subscribe(
-          () => {
-            this.dataSetCompletenessProvider
-              .getDataSetCompletenessInfo(
-                dataSetId,
-                period,
-                orgUnitId,
-                dataDimension,
-                this.currentUser
-              )
-              .subscribe(
-                (dataSetCompletenessInfo: any) => {
-                  this.dataSetsCompletenessInfo = dataSetCompletenessInfo;
-                  if (
-                    dataSetCompletenessInfo &&
-                    dataSetCompletenessInfo.complete
-                  ) {
-                    this.isDataSetCompleted = true;
-                    this.content.scrollToBottom(1000);
-                  }
-                  this.isDataSetCompletenessProcessRunning = false;
-                  this.uploadDataValuesOnComplete(
-                    period,
-                    orgUnitId,
-                    dataDimension
-                  );
-                },
-                error => {
-                  console.log(JSON.stringify(error));
-                  this.isDataSetCompletenessProcessRunning = false;
-                  this.appProvider.setNormalNotification(
-                    'Failed to discover entry form completeness information'
-                  );
-                }
-              );
-          },
-          error => {
-            this.isDataSetCompletenessProcessRunning = false;
-            console.log(JSON.stringify(error));
-            this.appProvider.setNormalNotification(
-              'Failed to complete entry form'
-            );
+      const {
+        status,
+        violatedMandatoryFields
+      } = this.dataEntryFormProvider.getViolatedCompulsoryDataElementOperands(
+        this.compulsoryDataElementOperands,
+        this.dataValuesObject
+      );
+      setTimeout(() => {
+        this.isDataSetCompletenessProcessRunning = false;
+      }, 1000);
+      if (status) {
+        const fieldNames = _.map(
+          violatedMandatoryFields,
+          (violatedMandatoryField: any) => {
+            const { dimensionItem, name } = violatedMandatoryField;
+            this.dataValuesSavingStatusClass[dimensionItem] =
+              'input-field-container-failed';
+            return name;
           }
         );
+        const message = `${fieldNames.join(
+          ','
+        )} are mandatory fields, plaese enter data before complete this form`;
+        console.log(message);
+      } else {
+        // this.dataSetCompletenessProvider
+        //   .completeOnDataSetRegistrations(
+        //     dataSetId,
+        //     period,
+        //     orgUnitId,
+        //     dataDimension,
+        //     this.currentUser
+        //   )
+        //   .subscribe(
+        //     () => {
+        //       this.dataSetCompletenessProvider
+        //         .getDataSetCompletenessInfo(
+        //           dataSetId,
+        //           period,
+        //           orgUnitId,
+        //           dataDimension,
+        //           this.currentUser
+        //         )
+        //         .subscribe(
+        //           (dataSetCompletenessInfo: any) => {
+        //             this.dataSetsCompletenessInfo = dataSetCompletenessInfo;
+        //             if (
+        //               dataSetCompletenessInfo &&
+        //               dataSetCompletenessInfo.complete
+        //             ) {
+        //               this.isDataSetCompleted = true;
+        //               this.content.scrollToBottom(1000);
+        //             }
+        //             this.isDataSetCompletenessProcessRunning = false;
+        //             this.uploadDataValuesOnComplete(
+        //               period,
+        //               orgUnitId,
+        //               dataDimension
+        //             );
+        //           },
+        //           error => {
+        //             console.log(JSON.stringify(error));
+        //             this.isDataSetCompletenessProcessRunning = false;
+        //             this.appProvider.setNormalNotification(
+        //               'Failed to discover entry form completeness information'
+        //             );
+        //           }
+        //         );
+        //     },
+        //     error => {
+        //       this.isDataSetCompletenessProcessRunning = false;
+        //       console.log(JSON.stringify(error));
+        //       this.appProvider.setNormalNotification(
+        //         'Failed to complete entry form'
+        //       );
+        //     }
+        //   );
+      }
     }
   }
 
