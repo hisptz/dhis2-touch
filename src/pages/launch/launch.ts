@@ -30,6 +30,7 @@ import {
   AddCurrentUser,
   SetCurrentUserColorSettings
 } from '../../store';
+import { appConfig } from '../../config/app-config';
 
 import { UserProvider } from '../../providers/user/user';
 import { NetworkAvailabilityProvider } from '../../providers/network-availability/network-availability';
@@ -55,7 +56,7 @@ export class LaunchPage implements OnInit {
 
   constructor(
     private navCtrl: NavController,
-    private UserProvider: UserProvider,
+    private userProvider: UserProvider,
     private NetworkAvailabilityProvider: NetworkAvailabilityProvider,
     private appTranslationProvider: AppTranslationProvider,
     private sqlLiteProvider: SqlLiteProvider,
@@ -66,11 +67,12 @@ export class LaunchPage implements OnInit {
 
   ngOnInit() {
     this.NetworkAvailabilityProvider.setNetworkStatusDetection();
-    this.UserProvider.getCurrentUser().subscribe((currentUser: CurrentUser) => {
+    this.userProvider.getCurrentUser().subscribe((currentUser: CurrentUser) => {
       let currentLanguage = 'en';
       if (currentUser && currentUser.currentLanguage) {
         currentLanguage = currentUser.currentLanguage;
       }
+      const { baseUrl } = appConfig;
       this.appTranslationProvider.setAppTranslation(currentLanguage);
       if (currentUser && currentUser.colorSettings) {
         const { colorSettings } = currentUser;
@@ -79,11 +81,24 @@ export class LaunchPage implements OnInit {
       if (currentUser && currentUser.currentDatabase) {
         this.sqlLiteProvider
           .generateTables(currentUser.currentDatabase)
-          .subscribe(() => {}, error => {});
+          .subscribe(() => {}, () => {});
       }
       if (currentUser && currentUser.isLogin) {
-        this.store.dispatch(new AddCurrentUser({ currentUser }));
-        this.navCtrl.setRoot(TabsPage);
+        const { serverUrl } = currentUser;
+        if (serverUrl.indexOf(baseUrl) > -1) {
+          this.store.dispatch(new AddCurrentUser({ currentUser }));
+          this.navCtrl.setRoot(TabsPage);
+        } else {
+          currentUser = { ...currentUser, serverUrl: baseUrl };
+          this.userProvider.setCurrentUser(currentUser).subscribe(
+            () => {
+              this.navCtrl.setRoot('LoginPage');
+            },
+            () => {
+              this.navCtrl.setRoot('LoginPage');
+            }
+          );
+        }
       } else {
         this.navCtrl.setRoot('LoginPage');
       }
