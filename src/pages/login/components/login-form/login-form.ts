@@ -79,19 +79,12 @@ export class LoginFormComponent implements OnInit {
   }
 
   checkingForFormValidity() {
-    if (
-      Object.keys(this.loginFormData).length === this.loginFormFields.length
-    ) {
-      this.onLoginFormReady.emit({
-        status: true,
-        currentUser: this.loginFormData
-      });
-    } else {
-      this.onLoginFormReady.emit({
-        status: false,
-        currentUser: this.loginFormData
-      });
-    }
+    const data = {
+      status:
+        Object.keys(this.loginFormData).length === this.loginFormFields.length,
+      currentUser: this.loginFormData
+    };
+    this.onLoginFormReady.emit(data);
   }
 
   trackByFn(index, item) {
