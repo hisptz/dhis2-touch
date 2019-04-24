@@ -40,6 +40,7 @@ export class PasswordInputComponent implements OnInit {
   @Input() data: any;
   @Input() barcodeSettings: any;
   @Input() placeholder: string;
+  @Input() updateOnChangeValue: boolean;
 
   @Output() onChange = new EventEmitter();
 

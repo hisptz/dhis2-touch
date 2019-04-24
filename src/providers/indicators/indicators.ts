@@ -129,13 +129,9 @@ export class IndicatorsProvider {
       const { numerator } = indicator;
       const { denominator } = indicator;
       const { indicatorType } = indicator;
-      const expresion =
-        '(' +
-        numerator +
-        '/' +
-        denominator +
-        ')*' +
-        (indicatorType && indicatorType.factor ? indicatorType.factor : 1);
+      const factor =
+        indicatorType && indicatorType.factor ? indicatorType.factor : 1;
+      const expresion = `(${numerator}/${denominator})* ${factor}`;
       let value = 0;
       const generatedExpresion = this.generateExpresion(expresion, dataObject);
       try {

@@ -7,3 +7,4 @@ export * from './queue-manager';
 export * from './sms-command';
 export * from './translation';
 export * from './data-store';
+export * from './validation-rule';
