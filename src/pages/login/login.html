@@ -29,10 +29,12 @@
       [keyApplicationNotification]="keyApplicationNotification"></login-spinner>
   </div>
   <div margin padding-top *ngIf="isLoginProcessActive">
-    <login-metadata-sync (systemSettingLoaded)="onSystemSettingLoaded($event)" (updateCurrentUser)="onUpdateCurrentUser($event)"
-      (failOnLogin)="onFailLogin($event)" (successOnLoginAndSyncMetadata)="onSuccessLogin($event)" [currentUser]="currentUser"
-      (cancelProgress)="onCancelLoginProcess()" [overAllMessage]="overAllLoginMessage" [showOverallProgressBar]="showOverallProgressBar"
-      [isOnLogin]="isOnLogin" [processes]="processes"></login-metadata-sync>
+    <login-metadata-sync (systemSettingLoaded)="onSystemSettingLoaded($event)"
+      (updateCurrentUser)="onUpdateCurrentUser($event)" (failOnLogin)="onFailLogin($event)"
+      (successOnLoginAndSyncMetadata)="onSuccessLogin($event)" [currentUser]="currentUser"
+      (cancelProgress)="onCancelLoginProcess()" [overAllMessage]="overAllLoginMessage"
+      [showOverallProgressBar]="showOverallProgressBar" [isOnLogin]="isOnLogin" [processes]="processes">
+    </login-metadata-sync>
   </div>
   <ion-grid class="animated fadeIn">
     <ion-row *ngIf="!isLoginProcessActive">
@@ -48,15 +50,9 @@
       <ion-col col-auto no-padding no-margin *ngIf="currentUser">
         <ion-row>
           <ion-col>
-            <login-form [currentUser]="currentUser" (onLoginFormReady)="onFormFieldChange($event)"></login-form>
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="!isLoginProcessActive">
-          <ion-col>
-            <button large [disabled]="!isLoginFormValid" ion-button full text-capitalize (click)="startLoginProcess()"
-              [color]="(colorSettings$ |async).colorAttributes.secondary">
-              <span [translate]="'Login'"></span>
-            </button>
+            <login-form [currentUser]="currentUser" [buttonColor]="(colorSettings$ |async).colorAttributes.secondary"
+              (loginFormReady)="onFormFieldChange($event)" (startLoginProcess)="onStartLoginProcess($event)">
+            </login-form>
           </ion-col>
         </ion-row>
         <div *ngIf="localInstances && localInstances.length > 1">
@@ -77,7 +73,8 @@
         <p>
           <span class="translation-codes" *ngIf="currentUser">
             <span *ngFor="let code of topThreeTranslationCodes; let currentIndex = index">
-              <span (click)="updateTranslationLanguage(code)" [ngClass]="(currentUser.currentLanguage === code) ?'currentLang' : ''">{{
+              <span (click)="updateTranslationLanguage(code)"
+                [ngClass]="(currentUser.currentLanguage === code) ?'currentLang' : ''">{{
                 code }}</span>
               <span *ngIf="currentIndex < 2">&nbsp;|&nbsp;</span>
             </span>
