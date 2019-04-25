@@ -97,7 +97,7 @@ export class DownloadMetaDataComponent implements OnInit {
         });
       }
     });
-    return resources;
+    return _.orderBy(resources, 'name', 'asc');
   }
 
   autoSelect(selectType) {
