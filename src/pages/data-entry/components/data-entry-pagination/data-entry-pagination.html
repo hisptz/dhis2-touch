@@ -69,16 +69,16 @@
   <ion-row *ngIf="entryFormSectionsCount == 1">
     <ion-col>
       <div class="flex-container-start">
-        <div class="flex-item flex-item-start">
-          <button color="favorite" ion-button class="pagination-button"
+        <div class="flex-item flex-item-start" *ngIf="!isDataSetCompleted">
+          <button color="favorite" padding-left padding-right ion-button class="pagination-button"
             [disabled]="isDataSetCompleted || isDataSetCompletenessProcessRunning || isPeriodLocked || isValidationProcessRunning"
             (tap)="updateDataSetCompleteness()">
             <span
               [translate]="isDataSetCompletenessProcessRunning && !isDataSetCompleted? 'Completing' : 'Complete'"></span>
           </button>
         </div>
-        <div class="flex-item flex-item-start">
-          <button color="danger" ion-button class="pagination-button"
+        <div class="flex-item flex-item-start" *ngIf="isDataSetCompleted">
+          <button color="danger" padding-left padding-right ion-button class="pagination-button"
             [disabled]="!isDataSetCompleted || isDataSetCompletenessProcessRunning || isPeriodLocked || isValidationProcessRunning"
             (tap)="updateDataSetCompleteness()">
             <span
@@ -86,7 +86,7 @@
           </button>
         </div>
         <div class="flex-item flex-item-start">
-          <button color="light" ion-button class="pagination-button"
+          <button color="light" padding-left padding-right ion-button class="pagination-button"
             [disabled]="isDataSetCompletenessProcessRunning || isPeriodLocked || isValidationProcessRunning"
             (tap)="onValidatingDateEntry()">
             <span [translate]="isValidationProcessRunning ? 'Validating' : 'Validate'"></span>
