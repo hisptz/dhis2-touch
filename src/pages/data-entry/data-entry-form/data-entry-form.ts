@@ -613,9 +613,7 @@ export class DataEntryFormPage implements OnInit {
         this.compulsoryDataElementOperands,
         this.dataValuesObject
       );
-      setTimeout(() => {
-        this.isDataSetCompletenessProcessRunning = false;
-      }, 1000);
+      // @todo also checking default settings
       if (status) {
         const fieldNames = _.map(
           violatedMandatoryFields,
@@ -626,63 +624,66 @@ export class DataEntryFormPage implements OnInit {
             return name;
           }
         );
-        const message = `${fieldNames.join(
-          ','
-        )} are mandatory fields, plaese enter data before complete this form`;
-        console.log(message);
+        this.isDataSetCompletenessProcessRunning = false;
+        const message = `${fieldNames.join(',')} ${
+          fieldNames.length > 1 ? 'are' : 'is'
+        }  mandatory field${
+          fieldNames.length > 1 ? 's' : ''
+        }, plaese enter data before complete this form`;
+        this.appProvider.setTopNotification(message);
       } else {
-        // this.dataSetCompletenessProvider
-        //   .completeOnDataSetRegistrations(
-        //     dataSetId,
-        //     period,
-        //     orgUnitId,
-        //     dataDimension,
-        //     this.currentUser
-        //   )
-        //   .subscribe(
-        //     () => {
-        //       this.dataSetCompletenessProvider
-        //         .getDataSetCompletenessInfo(
-        //           dataSetId,
-        //           period,
-        //           orgUnitId,
-        //           dataDimension,
-        //           this.currentUser
-        //         )
-        //         .subscribe(
-        //           (dataSetCompletenessInfo: any) => {
-        //             this.dataSetsCompletenessInfo = dataSetCompletenessInfo;
-        //             if (
-        //               dataSetCompletenessInfo &&
-        //               dataSetCompletenessInfo.complete
-        //             ) {
-        //               this.isDataSetCompleted = true;
-        //               this.content.scrollToBottom(1000);
-        //             }
-        //             this.isDataSetCompletenessProcessRunning = false;
-        //             this.uploadDataValuesOnComplete(
-        //               period,
-        //               orgUnitId,
-        //               dataDimension
-        //             );
-        //           },
-        //           error => {
-        //             console.log(JSON.stringify(error));
-        //             this.isDataSetCompletenessProcessRunning = false;
-        //             this.appProvider.setNormalNotification(
-        //               'Failed to discover entry form completeness information'
-        //             );
-        //           }
-        //         );
-        //     },
-        //     error => {
-        //       this.isDataSetCompletenessProcessRunning = false;
-        //       console.log(JSON.stringify(error));
-        //       this.appProvider.setNormalNotification(
-        //         'Failed to complete entry form'
-        //       );
-        //     }
-        //   );
+        this.dataSetCompletenessProvider
+          .completeOnDataSetRegistrations(
+            dataSetId,
+            period,
+            orgUnitId,
+            dataDimension,
+            this.currentUser
+          )
+          .subscribe(
+            () => {
+              this.dataSetCompletenessProvider
+                .getDataSetCompletenessInfo(
+                  dataSetId,
+                  period,
+                  orgUnitId,
+                  dataDimension,
+                  this.currentUser
+                )
+                .subscribe(
+                  (dataSetCompletenessInfo: any) => {
+                    this.dataSetsCompletenessInfo = dataSetCompletenessInfo;
+                    if (
+                      dataSetCompletenessInfo &&
+                      dataSetCompletenessInfo.complete
+                    ) {
+                      this.isDataSetCompleted = true;
+                      this.content.scrollToBottom(1000);
+                    }
+                    this.isDataSetCompletenessProcessRunning = false;
+                    this.uploadDataValuesOnComplete(
+                      period,
+                      orgUnitId,
+                      dataDimension
+                    );
+                  },
+                  error => {
+                    console.log(JSON.stringify(error));
+                    this.isDataSetCompletenessProcessRunning = false;
+                    this.appProvider.setNormalNotification(
+                      'Failed to discover entry form completeness information'
+                    );
+                  }
+                );
+            },
+            error => {
+              this.isDataSetCompletenessProcessRunning = false;
+              console.log(JSON.stringify(error));
+              this.appProvider.setNormalNotification(
+                'Failed to complete entry form'
+              );
+            }
+          );
       }
     }
   }
