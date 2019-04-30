@@ -4,6 +4,7 @@ branches:
     - master
     - develop
     - stable-mobile-dev
+    - /^greenkeeper/.*$/
 language: node_js
 node_js:
   - '8'
