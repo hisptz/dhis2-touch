@@ -470,7 +470,7 @@ export class DataSetsProvider {
         observer.complete();
       } else {
         const fields =
-          'fields=id,name,timelyDays,formType,dataEntryForm[htmlCode],compulsoryDataElementOperands[name,dimensionItemType,dimensionItem],version,periodType,openFuturePeriods,expiryDays,dataSetElements[dataElement[id]],dataElements[id],organisationUnits[id],sections[id],indicators[id],categoryCombo[id,name,categoryOptionCombos[id,name,categoryOptions[id]],categories[id,name,categoryOptions[id,name,organisationUnits[id]]]]';
+          'fields=id,name,timelyDays,formType,dataEntryForm[htmlCode],compulsoryDataElementOperands[id,name,dimensionItemType,dimensionItem],version,periodType,openFuturePeriods,expiryDays,dataSetElements[dataElement[id]],dataElements[id],organisationUnits[id],sections[id],indicators[id],categoryCombo[id,name,categoryOptionCombos[id,name,categoryOptions[id]],categories[id,name,categoryOptions[id,name,organisationUnits[id]]]]';
         const filter =
           'filter=organisationUnits.path:ilike:' +
           userOrgUnitIds.join('&filter=organisationUnits.path:ilike:') +
@@ -884,20 +884,13 @@ export class DataSetsProvider {
         dataSet.compulsoryDataElementOperands &&
         dataSet.compulsoryDataElementOperands.length > 0
       ) {
+        const { id } = dataSet;
         dataSetOperands = _.concat(
           dataSetOperands,
           _.map(
             dataSet.compulsoryDataElementOperands,
             (compulsoryDataElementOperand: any) => {
-              return {
-                id:
-                  dataSet.id + '-' + compulsoryDataElementOperand.dimensionItem,
-                dataSetId: dataSet.id,
-                name: compulsoryDataElementOperand.name,
-                dimensionItemType:
-                  compulsoryDataElementOperand.dimensionItemType,
-                dimensionItem: compulsoryDataElementOperand.dimensionItem
-              };
+              return { ...compulsoryDataElementOperand, dataSetId: id };
             }
           )
         );
@@ -922,6 +915,29 @@ export class DataSetsProvider {
           }
         );
       }
+    });
+  }
+
+  getCompulsoryDataElementOperandsByDataSetId(
+    dataSetId: string,
+    currentUser: CurrentUser
+  ): Observable<any> {
+    const resource = 'dataSetOperands';
+    return new Observable(observer => {
+      this.SqlLite.getDataFromTableByAttributes(
+        resource,
+        'dataSetId',
+        [dataSetId],
+        currentUser.currentDatabase
+      ).subscribe(
+        (response: any) => {
+          observer.next(response);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
 

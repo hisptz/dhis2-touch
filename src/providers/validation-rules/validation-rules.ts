@@ -191,7 +191,6 @@ export class ValidationRulesProvider {
           leftSide,
           rightSide,
           operator,
-          description,
           displayName
         } = validationRule;
         const generatedLeftSideExpression = this.indicatorProvider.generateExpresion(
