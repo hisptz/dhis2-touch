@@ -53,7 +53,7 @@ export class SectionsProvider {
     let url =
       '/api/' +
       this.resource +
-      '.json?paging=false&fields=id,name,sortOrder,indicators[id],dataElements[id]';
+      '.json?paging=false&fields=id,name,code,description,sortOrder,indicators[id],dataElements[id]';
     return new Observable(observer => {
       this.HttpClient.get(url, true, currentUser).subscribe(
         (response: any) => {
