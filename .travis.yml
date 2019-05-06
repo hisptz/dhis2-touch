@@ -1,0 +1,31 @@
+sudo: false
+branches:
+  only:
+    - master
+    - develop
+    - stable-mobile-dev
+language: node_js
+node_js:
+  - '8'
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+
+install:
+  - npm install -g bower cordova ionic
+  - npm install
+  - bower update
+
+script:
+  - npm run lint
+  - npm run ionic:build
+
+notifications:
+  email:
+    recipients:
+      - profschingalo@gmail.com
+    on_failure: always
+    on_success: always
+  slack: hisptz:2UQgrRwNrI14ohefnnPyzms7
