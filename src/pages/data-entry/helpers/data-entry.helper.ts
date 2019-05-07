@@ -328,7 +328,17 @@ export function onFormReady(
                 inputElement.setAttribute('max', 100);
               }
               inputElement.value = dataElementValue;
+            } else if (dataElementType === 'EMAIL') {
+              inputElement.setAttribute('type', 'email');
+              inputElement.setAttribute('class', 'entryfield');
+              inputElement.value = dataElementValue;
+            } else if (dataElementType === '_PHONE_NUMBER') {
+            } else if (dataElementType === 'TIME') {
+              inputElement.setAttribute('type', 'time');
+              inputElement.setAttribute('class', 'entryfield');
+              inputElement.value = dataElementValue;
             } else {
+              console.log(JSON.stringify({ dataElementType }));
               inputElement.setAttribute('class', 'entryfield');
               inputElement.value = dataElementValue;
             }
