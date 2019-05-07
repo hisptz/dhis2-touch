@@ -329,10 +329,15 @@ export function onFormReady(
               }
               inputElement.value = dataElementValue;
             } else if (dataElementType === 'EMAIL') {
+              inputElement.setAttribute('dataElementType', dataElementType);
               inputElement.setAttribute('type', 'email');
               inputElement.setAttribute('class', 'entryfield');
               inputElement.value = dataElementValue;
-            } else if (dataElementType === '_PHONE_NUMBER') {
+            } else if (dataElementType === 'PHONE_NUMBER') {
+              inputElement.setAttribute('dataElementType', dataElementType);
+              inputElement.setAttribute('type', 'tel');
+              inputElement.setAttribute('class', 'entryfield');
+              inputElement.value = dataElementValue;
             } else if (dataElementType === 'TIME') {
               inputElement.setAttribute('type', 'time');
               inputElement.setAttribute('class', 'entryfield');
@@ -437,6 +442,12 @@ export function onDataValueChange(
     // Update item color
     updateFormFieldColor(elementId, entryFormColors['WAIT']);
 
+    // get dataElementType if set
+    const dataElementType = element.getAttribute('dataElementType');
+    if (dataElementType) {
+      // ERROR
+    }
+
     // create custom event for saving data values
     const dataValueEvent = new CustomEvent('dataValueUpdate', {
       detail: {
@@ -448,6 +459,17 @@ export function onDataValueChange(
     });
     document.body.dispatchEvent(dataValueEvent);
   }
+}
+
+function isPhoneNumberValid(phoneNumber: string) {
+  // +24-0455-9034, +21.3789.4512 or +23 1256 4587
+  const phoneNumberValidator = /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g;
+  return phoneNumberValidator.test(phoneNumber);
+}
+
+function isEmailValid(emial: string) {
+  const emailvalidator = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  return emailvalidator.test(emial);
 }
 
 export function lockingEntryFormFields(shouldLockFields) {
