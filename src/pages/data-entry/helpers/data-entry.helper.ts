@@ -445,9 +445,24 @@ export function onDataValueChange(
     // get dataElementType if set
     const dataElementType = element.getAttribute('dataElementType');
     if (dataElementType) {
-      // ERROR
+      if (dataElementType === 'EMAIL' && !isEmailValid(elementValue)) {
+        updateFormFieldColor(elementId, entryFormColors['ERROR']);
+        element.value = '';
+        alert(`${elementValue} is not valid email`);
+        element.focus();
+        return;
+      }
+      if (
+        dataElementType === 'PHONE_NUMBER' &&
+        !isPhoneNumberValid(elementValue)
+      ) {
+        updateFormFieldColor(elementId, entryFormColors['ERROR']);
+        element.value = '';
+        alert(`${elementValue} is not valid phone number`);
+        element.focus();
+        return;
+      }
     }
-
     // create custom event for saving data values
     const dataValueEvent = new CustomEvent('dataValueUpdate', {
       detail: {
@@ -461,15 +476,14 @@ export function onDataValueChange(
   }
 }
 
-function isPhoneNumberValid(phoneNumber: string) {
-  // +24-0455-9034, +21.3789.4512 or +23 1256 4587
+function isPhoneNumberValid(phoneNumber) {
   const phoneNumberValidator = /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g;
-  return phoneNumberValidator.test(phoneNumber);
+  return phoneNumberValidator.test(phoneNumber) || phoneNumber === '';
 }
 
-function isEmailValid(emial: string) {
+function isEmailValid(emial) {
   const emailvalidator = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  return emailvalidator.test(emial);
+  return emailvalidator.test(emial) || emial === '';
 }
 
 export function lockingEntryFormFields(shouldLockFields) {
