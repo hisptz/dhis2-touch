@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/interactive-apps/dhis2-touch.svg?branch=master)](https://travis-ci.org/interactive-apps/dhis2-touch)
 [![dependencies Status](https://david-dm.org/hisptz/hisptz-touch/status.svg)](https://david-dm.org/hisptz/hisptz-touch)
 [![devDependencies Status](https://david-dm.org/hisptz/hisptz-touch/dev-status.svg)](https://david-dm.org/hisptz/hisptz-touch?type=dev)
 
