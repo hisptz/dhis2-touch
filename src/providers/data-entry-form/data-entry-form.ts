@@ -27,7 +27,8 @@ import { DataElementsProvider } from '../data-elements/data-elements';
 import { IndicatorsProvider } from '../indicators/indicators';
 import { SectionsProvider } from '../sections/sections';
 import { Observable } from 'rxjs/Observable';
-
+import { CurrentUser } from '../../models';
+import * as _ from 'lodash';
 /*
   Generated class for the DataEntryFormProvider provider.
 
@@ -42,6 +43,62 @@ export class DataEntryFormProvider {
     private sectionProvider: SectionsProvider,
     private dataElementProvider: DataElementsProvider
   ) {}
+
+  getViolatedCompulsoryDataElementOperands(
+    compulsoryDataElementOperands: any[],
+    dataValuesObject: any
+  ) {
+    const dataObject = {};
+    Object.keys(dataValuesObject).map(key => {
+      const dataValue = dataValuesObject[key];
+      const { value } = dataValue;
+      if (value && value !== '') {
+        dataObject[key] = dataValue;
+      }
+    });
+    const fieldsWithData = Object.keys(dataObject);
+    const violatedMandatoryFields = _.filter(
+      compulsoryDataElementOperands,
+      compulsoryDataElementOperand => {
+        const { dimensionItem, name } = compulsoryDataElementOperand;
+        const status = _.indexOf(fieldsWithData, dimensionItem) === -1;
+        return status;
+      }
+    );
+    return {
+      status: violatedMandatoryFields.length > 0,
+      violatedMandatoryFields
+    };
+  }
+
+  getCompulsoryDataElementOperandsByDataSetId(
+    dataSetId: string,
+    currentUser: CurrentUser
+  ): Observable<any> {
+    return new Observable(observer => {
+      this.dataSetProvider
+        .getCompulsoryDataElementOperandsByDataSetId(dataSetId, currentUser)
+        .subscribe(
+          (response: any[]) => {
+            const compulsoryDataElementOperands = _.map(
+              response,
+              (compulsoryDataElementOperand: any) => {
+                const { name, dimensionItem } = compulsoryDataElementOperand;
+                return {
+                  name,
+                  dimensionItem: dimensionItem.split('.').join('-')
+                };
+              }
+            );
+            observer.next(compulsoryDataElementOperands);
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+    });
+  }
 
   /**
    *

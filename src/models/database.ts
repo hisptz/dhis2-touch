@@ -193,6 +193,8 @@ export const DATABASE_STRUCTURE = {
     columns: [
       { value: 'id', type: 'TEXT' },
       { value: 'sortOrder', type: 'TEXT' },
+      { value: 'code', type: 'TEXT' },
+      { value: 'description', type: 'TEXT' },
       { value: 'name', type: 'TEXT' }
     ],
     fields: '',

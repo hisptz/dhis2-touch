@@ -22,14 +22,12 @@
 *
 *
 -->
-<ion-grid>
-  <ion-row class="animated fadeIn">
-    <ion-col col-xs-4 col-sm-3 col-md-2 col-lg-1 col-xl-1 *ngFor="let app of authorizedApps;trackBy: trackByFn">
-      <div class="app-item-container">
-        <div [ngClass]="animationEffect[app.id]" (tap)="selectView(app)">
-          <app-item [appItem]="app"></app-item>
-        </div>
+<div padding>
+  <div class="flex-container">
+    <div class="flex-item" *ngFor="let app of authorizedApps;trackBy: trackByFn" padding margin-botton>
+      <div [ngClass]="animationEffect[app.id]" (tap)="selectView(app)">
+        <app-item [appItem]="app"></app-item>
       </div>
-    </ion-col>
-  </ion-row>
-</ion-grid>
+    </div>
+  </div>
+</div>
