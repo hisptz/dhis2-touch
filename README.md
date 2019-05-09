@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/interactive-apps/dhis2-touch.svg?branch=master)](https://travis-ci.org/interactive-apps/dhis2-touch)
-[![dependencies Status](https://david-dm.org/hisptz/hisptz-touch/status.svg)](https://david-dm.org/hisptz/hisptz-touch)
-[![devDependencies Status](https://david-dm.org/hisptz/hisptz-touch/dev-status.svg)](https://david-dm.org/hisptz/hisptz-touch?type=dev)
+[![dependencies Status](https://david-dm.org/interactive-apps/dhis2-touch/status.svg)](https://david-dm.org/interactive-apps/dhis2-touch)
+[![devDependencies Status](https://david-dm.org/interactive-apps/dhis2-touch/dev-status.svg)](https://david-dm.org/interactive-apps/dhis2-touch?type=dev)
 
 ## Prerequisites Make sure you have the following installed on your pc
 
@@ -15,8 +15,8 @@
 
 ```bash
 $ sudo npm install -g ionic cordova
-$ git clone https://github.com/hisptz/hisptz-touch.git
-$ cd hisptz-touch
+$ git clone https://github.com/interactive-apps/dhis2-touch.git
+$ cd dhis2-touch
 ```
 
 To install all dependencies for android while inside project directory
