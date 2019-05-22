@@ -51,7 +51,7 @@ import {
   applyErrorOrWarningActions
 } from '../../helpers/program-rules-helper';
 
-declare var dataEntry: any;
+declare var dhis2;
 
 @Component({
   selector: 'custom-data-entry-form',
@@ -100,12 +100,14 @@ export class CustomDataEntryFormComponent
 
   _htmlMarkup: SafeHtml;
   hasScriptSet: boolean;
+  scriptsContents: string[];
   entryFormSectionsCount: number;
   elementIds: any;
 
   constructor(private sanitizer: DomSanitizer, private elementRef: ElementRef) {
     this.hasScriptSet = false;
     this.entryFormSectionsCount = 1;
+    this.scriptsContents = [];
     this.entryFormStatusColors = {
       OK: '#32db64',
       WAIT: '#fffe8c',
@@ -153,30 +155,43 @@ export class CustomDataEntryFormComponent
   }
 
   applyProgramRules() {
-    const shouldLockFields = this.isDataSetCompleted || this.isPeriodLocked;
-    const {
-      assignedFields,
-      hiddenFields,
-      programStageId,
-      errorOrWarningMessage
-    } = this.customFormProgramRules;
-    disableHiddenFiledsBasedOnProgramRules(
-      programStageId,
-      hiddenFields,
-      shouldLockFields
-    );
-    assignedValuesBasedOnProgramRules(programStageId, assignedFields);
-    evaluateCustomFomProgramIndicators(this.programIndicators);
-    applyErrorOrWarningActions(errorOrWarningMessage);
+    try {
+      const shouldLockFields = this.isDataSetCompleted || this.isPeriodLocked;
+      const {
+        assignedFields,
+        hiddenFields,
+        programStageId,
+        errorOrWarningMessage
+      } = this.customFormProgramRules;
+      disableHiddenFiledsBasedOnProgramRules(
+        programStageId,
+        hiddenFields,
+        shouldLockFields
+      );
+      assignedValuesBasedOnProgramRules(programStageId, assignedFields);
+      evaluateCustomFomProgramIndicators(this.programIndicators);
+      applyErrorOrWarningActions(errorOrWarningMessage);
+    } catch (error) {
+      console.log(JSON.stringify({ applyProgramRules: error }));
+    }
   }
 
   setFieldLockingStatus() {
-    const shouldLockFields = this.isDataSetCompleted || this.isPeriodLocked;
-    lockingEntryFormFields(shouldLockFields);
+    try {
+      const shouldLockFields = this.isDataSetCompleted || this.isPeriodLocked;
+      lockingEntryFormFields(shouldLockFields);
+    } catch (error) {
+      console.log(JSON.stringify({ setFieldLockingStatus: error }));
+    }
   }
 
   ngOnInit() {
     try {
+      this.scriptsContents = this.getScriptsContents(this.dataEntryFormDesign);
+      this.dataEntryFormDesign = this.dataEntryFormDesign.replace(
+        /<script[^>]*>([\w|\W]*)<\/script>/gi,
+        ''
+      );
       this._htmlMarkup = this.sanitizer.bypassSecurityTrustHtml(
         this.dataEntryFormDesign
       );
@@ -187,13 +202,12 @@ export class CustomDataEntryFormComponent
 
   ngAfterViewInit() {
     try {
-      this.setScriptsOnHtmlContent(
-        this.getScriptsContents(this.dataEntryFormDesign)
-      );
-      this.setFieldLockingStatus();
-      this.applyProgramRules();
+      this.setScriptsOnHtmlContent(this.scriptsContents);
     } catch (error) {
       console.log('ng after view int ' + JSON.stringify(error));
+    } finally {
+      this.setFieldLockingStatus();
+      this.applyProgramRules();
     }
   }
 
@@ -213,15 +227,14 @@ export class CustomDataEntryFormComponent
     const matchedScriptArray = html.match(
       /<script[^>]*>([\w|\W]*)<\/script>/im
     );
-
     const scripts =
       matchedScriptArray && matchedScriptArray.length > 0
         ? matchedScriptArray[0]
-            .replace(/(<([^>]+)>)/gi, ':separator:')
+            .replace(/<script[^>]*>/gi, ':separator:')
+            .replace(/<\/script>/gi, ':separator:')
             .split(':separator:')
             .filter(content => content.length > 0)
         : [];
-
     return _.filter(scripts, (scriptContent: string) => scriptContent !== '');
   }
 
