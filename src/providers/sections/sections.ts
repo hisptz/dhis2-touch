@@ -26,6 +26,7 @@ import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { HttpClientProvider } from '../http-client/http-client';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
+import { DEFAULT_APP_METADATA } from '../../constants';
 
 /*
   Generated class for the SectionsProvider provider.
@@ -50,12 +51,24 @@ export class SectionsProvider {
    * @returns {Observable<any>}
    */
   downloadSectionsFromServer(currentUser): Observable<any> {
-    let url =
-      '/api/' +
-      this.resource +
-      '.json?paging=false&fields=id,name,code,description,sortOrder,indicators[id],dataElements[id]';
+    const fields =
+      'fields=id,name,code,description,sortOrder,indicators[id],dataElements[id]';
+    const dataSetMetadata = DEFAULT_APP_METADATA.dataSets;
+    const { defaultIds } = dataSetMetadata;
+    const filter =
+      defaultIds && defaultIds.length > 0
+        ? `filter=dataSet.id:in:[${defaultIds.join(',')}]`
+        : ``;
+    const url = `/api/${this.resource}.json?paging=false&${fields}&${filter}`;
+    const pageSize = defaultIds && defaultIds.length > 0 ? 10 : 15;
     return new Observable(observer => {
-      this.HttpClient.get(url, true, currentUser).subscribe(
+      this.HttpClient.get(
+        url,
+        true,
+        currentUser,
+        this.resource,
+        pageSize
+      ).subscribe(
         (response: any) => {
           const sections = response[this.resource];
           observer.next(sections);
