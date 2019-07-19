@@ -67,7 +67,7 @@ export const DEFAULT_APP_METADATA = {
   smsCommand: {
     resourceType: 'entryForm',
     displayName: 'SMS Command',
-    isOnLogin: true,
+    isOnLogin: false,
     defaultIds: []
   },
   indicators: {
