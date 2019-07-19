@@ -25,13 +25,13 @@ export const DEFAULT_APP_METADATA = {
   organisationUnits: {
     resourceType: 'communication',
     displayName: 'Organisation Units',
-    isOnLogin: true,
+    isOnLogin: false,
     defaultIds: []
   },
   validationRules: {
     resourceType: 'entryForm',
     displayName: 'Validation Rules',
-    isOnLogin: true,
+    isOnLogin: false,
     defaultIds: []
   },
   dataStore: {
@@ -43,7 +43,7 @@ export const DEFAULT_APP_METADATA = {
   sections: {
     resourceType: 'entryForm',
     displayName: 'Sections',
-    isOnLogin: true,
+    isOnLogin: false,
     defaultIds: []
   },
   dataElements: {
@@ -55,67 +55,67 @@ export const DEFAULT_APP_METADATA = {
   categoryCombos: {
     resourceType: 'entryForm',
     displayName: 'Category combos',
-    isOnLogin: true,
+    isOnLogin: false,
     defaultIds: []
   },
   dataSets: {
     resourceType: 'entryForm',
     displayName: 'Data Sets',
     isOnLogin: true,
-    defaultIds: []
+    defaultIds: ['lyLU2wR22tC']
   },
   smsCommand: {
     resourceType: 'entryForm',
     displayName: 'SMS Command',
-    isOnLogin: true,
+    isOnLogin: false,
     defaultIds: []
   },
   indicators: {
     displayName: 'Indicators',
     resourceType: 'report',
-    isOnLogin: true,
+    isOnLogin: false,
     defaultIds: []
   },
   reports: {
     resourceType: 'report',
     displayName: 'Reports',
-    isOnLogin: true,
+    isOnLogin: false,
     defaultIds: []
   },
   constants: {
     resourceType: 'report',
     displayName: 'Constants',
-    isOnLogin: true,
+    isOnLogin: false,
     defaultIds: []
   },
   programs: {
     resourceType: 'event',
     displayName: 'Programs',
-    isOnLogin: true,
-    defaultIds: ['josep']
+    isOnLogin: false,
+    defaultIds: ['eBAyeGv0exc', 'IpHINAT79UW']
   },
   programStageSections: {
     resourceType: 'event',
     displayName: 'Program Stage Sections',
-    isOnLogin: true,
+    isOnLogin: false,
     defaultIds: []
   },
   programRules: {
     resourceType: 'event',
     displayName: 'Program Rules',
-    isOnLogin: true,
+    isOnLogin: false,
     defaultIds: []
   },
   programRuleActions: {
     resourceType: 'event',
     displayName: 'Program Rule Actions',
-    isOnLogin: true,
+    isOnLogin: false,
     defaultIds: []
   },
   programRuleVariables: {
     resourceType: 'event',
     displayName: 'Program Rules Variables',
-    isOnLogin: true,
+    isOnLogin: false,
     defaultIds: []
   }
 };
