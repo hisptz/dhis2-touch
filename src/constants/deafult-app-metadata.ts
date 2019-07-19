@@ -62,7 +62,7 @@ export const DEFAULT_APP_METADATA = {
     resourceType: 'entryForm',
     displayName: 'Data Sets',
     isOnLogin: true,
-    defaultIds: ['lyLU2wR22tC']
+    defaultIds: []
   },
   smsCommand: {
     resourceType: 'entryForm',
@@ -92,7 +92,7 @@ export const DEFAULT_APP_METADATA = {
     resourceType: 'event',
     displayName: 'Programs',
     isOnLogin: true,
-    defaultIds: ['eBAyeGv0exc', 'IpHINAT79UW']
+    defaultIds: []
   },
   programStageSections: {
     resourceType: 'event',

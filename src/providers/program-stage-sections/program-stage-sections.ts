@@ -26,6 +26,7 @@ import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
+import { DEFAULT_APP_METADATA } from '../../constants';
 
 /*
   Generated class for the ProgramStageSectionsProvider provider.
@@ -50,9 +51,16 @@ export class ProgramStageSectionsProvider {
    * @returns {Observable<any>}
    */
   downloadProgramsStageSectionsFromServer(currentUser): Observable<any> {
-    let fields =
+    const resource = 'programStageSections';
+    const programMetadata = DEFAULT_APP_METADATA.programs;
+    const { defaultIds } = programMetadata;
+    const filter =
+      defaultIds && defaultIds.length > 0
+        ? `filter=programStage.program.id:in:[${defaultIds.join(',')}]`
+        : ``;
+    const fields =
       'id,name,displayName,sortOrder,programStage[id],attributeValues[value,attribute[name]],translations[*],programStageDataElements[dataElement[id]],dataElements[id]';
-    let url = '/api/' + this.resource + '.json?paging=false&fields=' + fields;
+    const url = `/api/${resource}.json?paging=false&fields=${fields}&${filter}`;
     return new Observable(observer => {
       this.HttpClient.get(url, true, currentUser).subscribe(
         (response: any) => {
