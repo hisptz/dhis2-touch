@@ -40,12 +40,6 @@ export const DEFAULT_APP_METADATA = {
     isOnLogin: false,
     defaultIds: []
   },
-  dataSets: {
-    resourceType: 'entryForm',
-    displayName: 'Data Sets',
-    isOnLogin: true,
-    defaultIds: []
-  },
   sections: {
     resourceType: 'entryForm',
     displayName: 'Sections',
@@ -61,6 +55,12 @@ export const DEFAULT_APP_METADATA = {
   categoryCombos: {
     resourceType: 'entryForm',
     displayName: 'Category combos',
+    isOnLogin: true,
+    defaultIds: []
+  },
+  dataSets: {
+    resourceType: 'entryForm',
+    displayName: 'Data Sets',
     isOnLogin: true,
     defaultIds: []
   },
@@ -92,7 +92,7 @@ export const DEFAULT_APP_METADATA = {
     resourceType: 'event',
     displayName: 'Programs',
     isOnLogin: true,
-    defaultIds: []
+    defaultIds: ['josep']
   },
   programStageSections: {
     resourceType: 'event',
