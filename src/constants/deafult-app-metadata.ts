@@ -31,7 +31,7 @@ export const DEFAULT_APP_METADATA = {
   validationRules: {
     resourceType: 'entryForm',
     displayName: 'Validation Rules',
-    isOnLogin: true,
+    isOnLogin: false,
     defaultIds: []
   },
   dataStore: {
@@ -43,7 +43,7 @@ export const DEFAULT_APP_METADATA = {
   sections: {
     resourceType: 'entryForm',
     displayName: 'Sections',
-    isOnLogin: true,
+    isOnLogin: false,
     defaultIds: []
   },
   dataElements: {
@@ -73,26 +73,33 @@ export const DEFAULT_APP_METADATA = {
   indicators: {
     displayName: 'Indicators',
     resourceType: 'report',
-    isOnLogin: true,
+    isOnLogin: false,
     defaultIds: []
   },
   reports: {
     resourceType: 'report',
     displayName: 'Reports',
-    isOnLogin: true,
+    isOnLogin: false,
     defaultIds: []
   },
   constants: {
     resourceType: 'report',
     displayName: 'Constants',
-    isOnLogin: true,
+    isOnLogin: false,
     defaultIds: []
   },
   programs: {
     resourceType: 'event',
     displayName: 'Programs',
     isOnLogin: true,
-    defaultIds: []
+    defaultIds: [
+      'RwVrL1Y8RTH',
+      'CT0TNl30rld',
+      'Z4szHfJebFL',
+      'jYsHdmTJNVh',
+      'go4MncVomkQ',
+      'R8APevjOH0o'
+    ]
   },
   programStageSections: {
     resourceType: 'event',
