@@ -50,6 +50,7 @@ import { LocalInstanceProvider } from '../../providers/local-instance/local-inst
 import { EncryptionProvider } from '../../providers/encryption/encryption';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { Observable } from 'rxjs';
+import { getAppMetadata } from '../../helpers';
 
 /**
  * Generated class for the LoginPage page.
@@ -104,23 +105,7 @@ export class LoginPage implements OnInit, OnDestroy {
     this.isOnLogin = true;
     this.showOverallProgressBar = true;
     this.topThreeTranslationCodes = this.appTranslationProvider.getTopThreeSupportedTranslationCodes();
-    this.processes = [
-      'organisationUnits',
-      'sections',
-      //'smsCommand',
-      'programs',
-      'programStageSections',
-      'programRules',
-      'dataElements',
-      'categoryCombos',
-      'indicators',
-      'programRuleActions',
-      'programRuleVariables',
-      'dataSets',
-      // 'reports',
-      // 'constants',
-      'validationRules'
-    ];
+    this.processes = getAppMetadata();
   }
 
   ngOnInit() {

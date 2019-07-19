@@ -28,6 +28,7 @@ import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { CurrentUser } from '../../models/current-user';
+import { DEFAULT_APP_METADATA } from '../../constants';
 declare var dhis2;
 
 /*
@@ -64,28 +65,43 @@ export class ProgramsProvider {
    */
   downloadProgramsFromServer(currentUser: CurrentUser): Observable<any> {
     const { userOrgUnitIds } = currentUser;
-    const fields =
-      'fields=id,name,displayName,displayIncidentDate,programType,withoutRegistration,dataEntryForm[htmlCode],trackedEntityType[id,displayName],trackedEntity[id,displayName],ignoreOverdueEvents,skipOffline,captureCoordinates,enrollmentDateLabel,onlyEnrollOnce,selectIncidentDatesInFuture,incidentDateLabel,useFirstStageDuringRegistration,completeEventsExpiryDays,displayFrontPageList,categoryCombo[id,name,categories[id,name,categoryOptions[name,id,organisationUnits[id]]]],programStages[id,name,executionDateLabel,hideDueDate,dataEntryForm[htmlCode],allowGenerateNextVisit,blockEntryForm,repeatable,formType,sortOrder,standardInterval,minDaysFromStart,generatedByEnrollmentDate,autoGenerateEvent,captureCoordinates,dueDateLabel,programStageDataElements[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id]],programStageSections[id]],organisationUnits[id],programIndicators[id,name,description,filter,expression],translations,attributeValues[value,attribute[name]],validationCriterias,programRuleVariables,programTrackedEntityAttributes[id,mandatory,externalAccess,allowFutureDate,displayInList,sortOrder,trackedEntityAttribute[id,name,code,name,formName,description,confidential,searchScope,translations,inherit,legendSets,optionSet[name,options[name,id,code]]unique,orgunitScope,programScope,displayInListNoProgramaggregationType,displayInListNoProgram,pattern,sortOrderInListNoProgram,generated,displayOnVisitSchedule,valueType,sortOrderInVisitSchedule]]';
-    const filter =
-      'filter=organisationUnits.path:ilike:' +
-      userOrgUnitIds.join('&filter=organisationUnits.path:ilike:') +
-      '&rootJunction=OR';
-    let url = '/api/' + this.resource + '.json?paging=false&' + fields;
-    +'&' + filter;
+    let programResponse = [];
+    const programMetadata = DEFAULT_APP_METADATA.programs;
+    const { defaultIds } = programMetadata;
     return new Observable(observer => {
-      this.HttpClient.get(url, true, currentUser).subscribe(
-        (response: any) => {
-          const programs = this.getFitlteredListOfPrograms(
-            response[this.resource],
-            currentUser
-          );
-          observer.next(programs);
-          observer.complete();
-        },
-        error => {
-          observer.error(error);
-        }
-      );
+      if (userOrgUnitIds && userOrgUnitIds.length === 0) {
+        observer.next(programResponse);
+        observer.complete();
+      } else {
+        const fields = `fields=id,name,displayName,displayIncidentDate,programType,withoutRegistration,dataEntryForm[htmlCode],trackedEntityType[id,displayName],trackedEntity[id,displayName],ignoreOverdueEvents,skipOffline,captureCoordinates,enrollmentDateLabel,onlyEnrollOnce,selectIncidentDatesInFuture,incidentDateLabel,useFirstStageDuringRegistration,completeEventsExpiryDays,displayFrontPageList,categoryCombo[id,name,categories[id,name,categoryOptions[name,id,organisationUnits[id]]]],programStages[id,name,executionDateLabel,hideDueDate,dataEntryForm[htmlCode],allowGenerateNextVisit,blockEntryForm,repeatable,formType,sortOrder,standardInterval,minDaysFromStart,generatedByEnrollmentDate,autoGenerateEvent,captureCoordinates,dueDateLabel,programStageDataElements[id,displayInReports,compulsory,allowProvidedElsewhere,allowFutureDate,dataElement[id]],programStageSections[id]],organisationUnits[id],programIndicators[id,name,description,filter,expression],translations,attributeValues[value,attribute[name]],validationCriterias,programRuleVariables,programTrackedEntityAttributes[id,mandatory,externalAccess,allowFutureDate,displayInList,sortOrder,trackedEntityAttribute[id,name,code,name,formName,description,confidential,searchScope,translations,inherit,legendSets,optionSet[name,options[name,id,code]]unique,orgunitScope,programScope,displayInListNoProgramaggregationType,displayInListNoProgram,pattern,sortOrderInListNoProgram,generated,displayOnVisitSchedule,valueType,sortOrderInVisitSchedule]]`;
+        const filter =
+          defaultIds && defaultIds.length > 0
+            ? `filter=id:in:[${defaultIds.join(',')}]`
+            : `filter=organisationUnits.path:ilike:${userOrgUnitIds.join(
+                '&filter=organisationUnits.path:ilike:'
+              )}&rootJunction=OR`;
+        const url = `/api/${this.resource}.json?${fields}&${filter}`;
+        const pageSize = defaultIds && defaultIds.length > 0 ? 10 : 15;
+        this.HttpClient.get(
+          url,
+          true,
+          currentUser,
+          this.resource,
+          pageSize
+        ).subscribe(
+          (response: any) => {
+            programResponse = this.getFitlteredListOfPrograms(
+              response[this.resource],
+              currentUser
+            );
+            observer.next(_.unionBy(programResponse, 'id'));
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+      }
     });
   }
 

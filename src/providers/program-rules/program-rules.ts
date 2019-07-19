@@ -26,6 +26,7 @@ import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { CurrentUser } from '../../models/current-user';
+import { DEFAULT_APP_METADATA } from '../../constants';
 
 const ASSIGN = 'ASSIGN';
 const HIDE_FIELD = 'HIDEFIELD';
@@ -288,10 +289,16 @@ export class ProgramRulesProvider {
   }
 
   downloadingProgramRules(currentUser: CurrentUser): Observable<any> {
+    const programMetadata = DEFAULT_APP_METADATA.programs;
+    const { defaultIds } = programMetadata;
     const resource = 'programRules';
     const fields =
       'id,name,displayName,description,condition,program[id],programRuleActions[id]';
-    const url = '/api/' + resource + '.json?paging=false&fields=' + fields;
+    const filter =
+      defaultIds && defaultIds.length > 0
+        ? `filter=program.id:in:[${defaultIds.join(',')}]`
+        : ``;
+    const url = `/api/${resource}.json?paging=false&fields=${fields}&${filter}`;
     return new Observable(observer => {
       this.httpClientProvider.get(url, true, currentUser).subscribe(
         (response: any) => {
@@ -306,10 +313,16 @@ export class ProgramRulesProvider {
   }
 
   downloadingProgramRuleActions(currentUser: CurrentUser): Observable<any> {
+    const programMetadata = DEFAULT_APP_METADATA.programs;
+    const { defaultIds } = programMetadata;
     const resource = 'programRuleActions';
     const fields =
       'id,data,content,programRuleActionType,location,programRule[id],dataElement[id],trackedEntityAttribute[id],programStageSection[id],programStage[id]';
-    const url = '/api/' + resource + '.json?paging=false&fields=' + fields;
+    const filter =
+      defaultIds && defaultIds.length > 0
+        ? `filter=programRule.program.id:in:[${defaultIds.join(',')}]`
+        : ``;
+    const url = `/api/${resource}.json?paging=false&fields=${fields}&${filter}`;
     return new Observable(observer => {
       this.httpClientProvider.get(url, true, currentUser).subscribe(
         (response: any) => {
@@ -324,10 +337,16 @@ export class ProgramRulesProvider {
   }
 
   downloadingProgramRuleVariables(currentUser: CurrentUser): Observable<any> {
+    const programMetadata = DEFAULT_APP_METADATA.programs;
+    const { defaultIds } = programMetadata;
     const resource = 'programRuleVariables';
     const fields =
       'id,name,displayName,programRuleVariableSourceType,program[id],dataElement[id],trackedEntityAttribute[id],programStageSection[id],programStage[id]';
-    const url = '/api/' + resource + '.json?paging=false&fields=' + fields;
+    const filter =
+      defaultIds && defaultIds.length > 0
+        ? `filter=program.id:in:[${defaultIds.join(',')}]`
+        : ``;
+    const url = `/api/${resource}.json?paging=false&fields=${fields}&${filter}`;
     return new Observable(observer => {
       this.httpClientProvider.get(url, true, currentUser).subscribe(
         (response: any) => {
