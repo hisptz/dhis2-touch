@@ -26,8 +26,22 @@ const _ = require('lodash');
 import { DEFAULT_APP_METADATA } from '../constants';
 
 export function getAppMetadata() {
+  const programMetadata = DEFAULT_APP_METADATA.programs;
+  const dataSetMetadata = DEFAULT_APP_METADATA.dataSets;
+  const omittedKey = [];
+  if (
+    (programMetadata && programMetadata.defaultIds.length > 0) ||
+    (dataSetMetadata && dataSetMetadata.defaultIds.length > 0)
+  ) {
+    if (programMetadata && programMetadata.defaultIds.length === 0) {
+      omittedKey.push('programs');
+    }
+    if (dataSetMetadata && dataSetMetadata.defaultIds.length === 0) {
+      omittedKey.push('dataSets');
+    }
+  }
   const appMetadata = _.filter(
-    Object.keys(DEFAULT_APP_METADATA),
+    Object.keys(_.omit(DEFAULT_APP_METADATA, omittedKey)),
     (key: string) => {
       const metadata = DEFAULT_APP_METADATA[key];
       return metadata && metadata.isOnLogin;

@@ -49,6 +49,7 @@ import { SmsCommandProvider } from '../../providers/sms-command/sms-command';
 import { LocalInstanceProvider } from '../../providers/local-instance/local-instance';
 import { EncryptionProvider } from '../../providers/encryption/encryption';
 import { Observable } from 'rxjs';
+import { getAppMetadata } from '../../helpers';
 
 /**
  * Generated class for the LoginPage page.
@@ -102,23 +103,7 @@ export class LoginPage implements OnInit, OnDestroy {
     this.isOnLogin = true;
     this.showOverallProgressBar = true;
     this.topThreeTranslationCodes = this.appTranslationProvider.getTopThreeSupportedTranslationCodes();
-    this.processes = [
-      'organisationUnits',
-      'sections',
-      'smsCommand',
-      'programs',
-      'programStageSections',
-      'programRules',
-      'dataElements',
-      'categoryCombos',
-      'indicators',
-      'programRuleActions',
-      'programRuleVariables',
-      'dataSets',
-      'reports',
-      'constants',
-      'validationRules'
-    ];
+    this.processes = getAppMetadata();
   }
 
   ngOnInit() {
