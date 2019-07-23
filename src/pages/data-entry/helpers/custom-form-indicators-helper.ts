@@ -35,6 +35,7 @@ export function evaluateCustomFomProgramIndicators(programIndicators: any[]) {
       element.value = indicatorValue;
     }
   }
+  document.dispatchEvent(new Event('change'));
 }
 
 export function evaluateCustomFomAggregateIndicators(indicators: any[]) {
