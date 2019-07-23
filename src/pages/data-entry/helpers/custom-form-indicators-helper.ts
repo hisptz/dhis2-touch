@@ -111,18 +111,22 @@ function getDataElementTotalValue(dataElementId) {
 
 function getProgramIndicatorValueFromExpression(expression: string) {
   let indicatorValue = '0';
-  const indictorUidValue = {};
-  const uids = getUidsFromExpression(expression);
-  for (const uid of uids) {
-    const elementId = uid.split('.').join('-');
-    const element: any = document.getElementById(`${elementId}-val`);
-    const value = element && element.value ? element.value : '0';
-    indictorUidValue[uid] = value;
+  try {
+    const indictorUidValue = {};
+    const uids = getUidsFromExpression(expression);
+    for (const uid of uids) {
+      const elementId = uid.split('.').join('-');
+      const element: any = document.getElementById(`${elementId}-val`);
+      const value = element && element.value ? element.value : '0';
+      indictorUidValue[uid] = value;
+    }
+    indicatorValue = getEvaluatedIndicatorValueFromExpression(
+      expression,
+      indictorUidValue
+    );
+  } catch (error) {
+    console.log({ error, type: 'evaluation of program indicators' });
   }
-  indicatorValue = getEvaluatedIndicatorValueFromExpression(
-    expression,
-    indictorUidValue
-  );
   return indicatorValue;
 }
 
