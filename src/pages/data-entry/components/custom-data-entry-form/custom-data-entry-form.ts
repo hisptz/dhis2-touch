@@ -281,16 +281,23 @@ export class CustomDataEntryFormComponent
             'change',
             function(event: any) {
               // If the clicked element doesn't have the right selector, bail
-              if (
-                event.target.matches(
-                  '.entryfield, .entryselect, .entrytrueonly, .entryfileresource, .entryfield-radio'
-                )
-              ) {
-                onDataValueChange(
-                  event.target,
-                  entryFormType,
-                  entryFormStatusColors
-                );
+              try {
+                if (
+                  event &&
+                  event.target &&
+                  event.target.matches &&
+                  event.target.matches(
+                    '.entryfield, .entryselect, .entrytrueonly, .entryfileresource, .entryfield-radio'
+                  )
+                ) {
+                  onDataValueChange(
+                    event.target,
+                    entryFormType,
+                    entryFormStatusColors
+                  );
+                }
+              } catch (error) {
+                console.log({ error, type: 'Event on change' });
               }
               if (entryFormType === 'event') {
                 evaluateCustomFomProgramIndicators(programIndicators);
