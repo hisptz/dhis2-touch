@@ -32,12 +32,9 @@ export function evaluateCustomFomProgramIndicators(programIndicators: any[]) {
     const indicatorValue = getProgramIndicatorValueFromExpression(expression);
     const element: any = document.getElementById(`indicator${id}`);
     if (element) {
-      element.value = indicatorValue;
+      element.value = `${indicatorValue} `;
     }
   }
-  try {
-    document.dispatchEvent(new Event('change'));
-  } catch (error) {}
 }
 
 export function evaluateCustomFomAggregateIndicators(indicators: any[]) {

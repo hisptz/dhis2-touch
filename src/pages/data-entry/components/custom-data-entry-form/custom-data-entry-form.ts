@@ -306,7 +306,6 @@ export class CustomDataEntryFormComponent
                 evaluateCustomFomAggregateIndicators(indicators);
                 evaluateDataElementTotals();
               }
-              event.preventDefault();
             },
             false
           );
