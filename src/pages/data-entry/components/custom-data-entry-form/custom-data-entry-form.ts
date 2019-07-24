@@ -166,6 +166,7 @@ export class CustomDataEntryFormComponent
       disableHiddenFiledsBasedOnProgramRules(
         programStageId,
         hiddenFields,
+        errorOrWarningMessage,
         shouldLockFields
       );
       assignedValuesBasedOnProgramRules(programStageId, assignedFields);

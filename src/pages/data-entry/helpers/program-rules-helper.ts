@@ -57,8 +57,10 @@ export function assignedValuesBasedOnProgramRules(
 export function disableHiddenFiledsBasedOnProgramRules(
   programStageId,
   keyValuePairObject,
+  errorOrWarningMessage,
   shouldLockFields
 ) {
+  const ommittedKeys = Object.keys(errorOrWarningMessage);
   if (!shouldLockFields) {
     _.each(
       document.getElementsByClassName('entryfield'),
@@ -105,8 +107,10 @@ export function disableHiddenFiledsBasedOnProgramRules(
             : `${key}-val`;
         const inputElement: any = document.getElementById(`${elementId}`);
         inputElement.value = '';
-        inputElement.setAttribute('readonly', 'readonly');
-        inputElement.setAttribute('disabled', 'disabled');
+        if (_.indexOf(ommittedKeys, key) === -1) {
+          inputElement.setAttribute('readonly', 'readonly');
+          inputElement.setAttribute('disabled', 'disabled');
+        }
       } catch (error) {
         error = JSON.stringify(error);
         console.log(`Error on hide element ${key} : ${error}`);
