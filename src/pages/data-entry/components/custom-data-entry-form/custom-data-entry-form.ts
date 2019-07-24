@@ -166,6 +166,7 @@ export class CustomDataEntryFormComponent
       disableHiddenFiledsBasedOnProgramRules(
         programStageId,
         hiddenFields,
+        errorOrWarningMessage,
         shouldLockFields
       );
       assignedValuesBasedOnProgramRules(programStageId, assignedFields);
@@ -305,7 +306,6 @@ export class CustomDataEntryFormComponent
                 evaluateCustomFomAggregateIndicators(indicators);
                 evaluateDataElementTotals();
               }
-              event.preventDefault();
             },
             false
           );
