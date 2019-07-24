@@ -107,6 +107,11 @@ export function disableHiddenFiledsBasedOnProgramRules(
             : `${key}-val`;
         const inputElement: any = document.getElementById(`${elementId}`);
         inputElement.value = '';
+        try {
+          inputElement.checked = '';
+        } catch (error) {
+          console.log({ error, type: 'try to clear value on checkbox' });
+        }
         if (_.indexOf(ommittedKeys, key) === -1) {
           inputElement.setAttribute('readonly', 'readonly');
           inputElement.setAttribute('disabled', 'disabled');
