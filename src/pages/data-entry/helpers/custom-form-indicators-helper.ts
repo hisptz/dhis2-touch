@@ -32,7 +32,7 @@ export function evaluateCustomFomProgramIndicators(programIndicators: any[]) {
     const indicatorValue = getProgramIndicatorValueFromExpression(expression);
     const element: any = document.getElementById(`indicator${id}`);
     if (element) {
-      element.value = indicatorValue;
+      element.value = `${indicatorValue} `;
     }
   }
 }
