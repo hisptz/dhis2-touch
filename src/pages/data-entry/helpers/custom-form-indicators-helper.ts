@@ -22,7 +22,7 @@
  *
  */
 import * as _ from 'lodash';
-
+declare const dhis2;
 export function evaluateCustomFomProgramIndicators(programIndicators: any[]) {
   for (let programIndicator of programIndicators) {
     const { id, expression, filter } = programIndicator;
@@ -35,7 +35,13 @@ export function evaluateCustomFomProgramIndicators(programIndicators: any[]) {
       element.value = `${indicatorValue} `;
     }
   }
-  document.dispatchEvent(new CustomEvent('change'));
+  if (
+    dhis2 &&
+    dhis2.customFomProgramIndicators &&
+    dhis2.customFomProgramIndicators.updateColorLableForApp
+  ) {
+    dhis2.customFomProgramIndicators.updateColorLableForApp();
+  }
 }
 
 export function evaluateCustomFomAggregateIndicators(indicators: any[]) {
