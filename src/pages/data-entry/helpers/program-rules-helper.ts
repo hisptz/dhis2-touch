@@ -55,10 +55,11 @@ export function assignedValuesBasedOnProgramRules(
 }
 
 export function disableHiddenFiledsBasedOnProgramRules(
-  programStageId,
-  keyValuePairObject,
-  errorOrWarningMessage,
-  shouldLockFields
+  programStageId: string,
+  keyValuePairObject: any,
+  errorOrWarningMessage: any,
+  shouldLockFields: boolean,
+  previousDisabledFields: string[]
 ) {
   const ommittedKeys = Object.keys(errorOrWarningMessage);
   if (!shouldLockFields) {
@@ -121,5 +122,14 @@ export function disableHiddenFiledsBasedOnProgramRules(
         console.log(`Error on hide element ${key} : ${error}`);
       }
     }
+  });
+
+  // restore all disabled fields from design
+  _.map(previousDisabledFields, elementId => {
+    try {
+      const inputElement: any = document.getElementById(`${elementId}`);
+      inputElement.setAttribute('readonly', 'readonly');
+      inputElement.setAttribute('disabled', 'disabled');
+    } catch (error) {}
   });
 }
