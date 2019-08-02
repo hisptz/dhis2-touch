@@ -27,7 +27,7 @@ export function evaluateCustomFomProgramIndicators(programIndicators: any[]) {
   for (let programIndicator of programIndicators) {
     const { id, expression, filter } = programIndicator;
     if (filter) {
-      console.log(JSON.stringify({ filter }));
+      // console.log(JSON.stringify({ filter }));
     }
     const indicatorValue = getProgramIndicatorValueFromExpression(expression);
     const element: any = document.getElementById(`indicator${id}`);
