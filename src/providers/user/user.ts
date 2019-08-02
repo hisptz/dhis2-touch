@@ -60,6 +60,7 @@ export class UserProvider {
     if (user.dhisVersion && parseInt(user.dhisVersion) > 25) {
       url = url.replace('/api', '/api/' + user.dhisVersion);
     }
+    url = encodeURI(url);
     return new Observable(observer => {
       this.http
         .get(url, {}, headers)

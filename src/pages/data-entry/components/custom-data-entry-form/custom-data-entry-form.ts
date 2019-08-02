@@ -156,6 +156,10 @@ export class CustomDataEntryFormComponent
 
   applyProgramRules() {
     try {
+      const previousDisabledFields =
+        dhis2 && dhis2.previousDisabledFields
+          ? dhis2.previousDisabledFields
+          : [];
       const shouldLockFields = this.isDataSetCompleted || this.isPeriodLocked;
       const {
         assignedFields,
@@ -167,7 +171,8 @@ export class CustomDataEntryFormComponent
         programStageId,
         hiddenFields,
         errorOrWarningMessage,
-        shouldLockFields
+        shouldLockFields,
+        previousDisabledFields
       );
       assignedValuesBasedOnProgramRules(programStageId, assignedFields);
       evaluateCustomFomProgramIndicators(this.programIndicators);
@@ -208,7 +213,6 @@ export class CustomDataEntryFormComponent
       console.log('ng after view int ' + JSON.stringify(error));
     } finally {
       this.setFieldLockingStatus();
-      this.applyProgramRules();
     }
   }
 
@@ -262,6 +266,7 @@ export class CustomDataEntryFormComponent
           )
         );
     if (!this.hasScriptSet) {
+      const that = this;
       onFormReady(
         this.entryFormType,
         dataElements,
@@ -306,6 +311,7 @@ export class CustomDataEntryFormComponent
                 evaluateCustomFomAggregateIndicators(indicators);
                 evaluateDataElementTotals();
               }
+              that.applyProgramRules();
             },
             false
           );

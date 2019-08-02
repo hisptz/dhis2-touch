@@ -22,6 +22,7 @@
  *
  */
 import * as _ from 'lodash';
+declare var dhis2;
 import {
   evaluateCustomFomProgramIndicators,
   evaluateCustomFomAggregateIndicators,
@@ -205,6 +206,7 @@ export function onFormReady(
   const elementsWithOptionSet = {};
   const elementsWithTextArea = {};
   const elementsWithRadioInput = {};
+  const previousDisabledFields = [];
   if (dataSetReportAggregateValues) {
     const elementIdObjects = Object.keys(dataSetReportAggregateValues).map(
       key => {
@@ -248,6 +250,7 @@ export function onFormReady(
         let elementId = inputElement.getAttribute('id')
           ? inputElement.getAttribute('id')
           : inputElement.getAttribute('attributeid');
+        inputElement.setAttribute('id', elementId);
         // Get splitted ID to get data element and category combo ids
         const splitedId =
           formType === 'aggregate' || formType === 'event'
@@ -282,6 +285,16 @@ export function onFormReady(
           getDataValue(dataValues, dataElementId + '-' + optionComboId),
           dataElementType
         );
+
+        //Get all previous diabled fields
+        if (
+          inputElement &&
+          (inputElement.hasAttribute('disabled') ||
+            inputElement.hasAttribute('readonly'))
+        ) {
+          previousDisabledFields.push(elementId);
+        }
+
         // // Update DOM based on data element type
         if (dataElementType) {
           if (dataElementDetails.optionSet) {
@@ -343,7 +356,7 @@ export function onFormReady(
               inputElement.setAttribute('class', 'entryfield');
               inputElement.value = dataElementValue;
             } else {
-              console.log(JSON.stringify({ dataElementType }));
+              // console.log(JSON.stringify({ dataElementType }));
               inputElement.setAttribute('class', 'entryfield');
               inputElement.value = dataElementValue;
             }
@@ -364,6 +377,9 @@ export function onFormReady(
         }
       }
     });
+
+    //set previousDisabledFields on global variables
+    dhis2['previousDisabledFields'] = previousDisabledFields;
 
     // update option sets
     for (let elementId of Object.keys(elementsWithOptionSet)) {
