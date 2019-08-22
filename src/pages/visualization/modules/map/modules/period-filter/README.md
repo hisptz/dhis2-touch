@@ -1,1 +1,0 @@
-# Period filter module
