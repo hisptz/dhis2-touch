@@ -19,6 +19,7 @@
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
+    <preference name="AndroidPersistentFileLocation" value="Compatibility" />
     <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
         <string>We use your location for full functionality of certain app features.</string>
     </edit-config>
@@ -97,5 +98,5 @@
     <plugin name="cordova.plugins.diagnostic" spec="^4.0.12">
         <variable name="ANDROID_SUPPORT_VERSION" value="27.+" />
     </plugin>
-    <engine name="android" spec="^7.1.4" />
+    <engine name="android" spec="7.1.4" />
 </widget>

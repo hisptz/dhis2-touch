@@ -45,7 +45,7 @@
     "@ngx-translate/http-loader": "^4.0.0",
     "async": "^2.6.2",
     "commitizen": "^2.10.1",
-    "cordova-android": "^7.1.4",
+    "cordova-android": "7.1.4",
     "cordova-plugin-advanced-http": "^2.1.1",
     "cordova-plugin-background-mode": "^0.7.3",
     "cordova-plugin-datepicker": "^0.9.3",
