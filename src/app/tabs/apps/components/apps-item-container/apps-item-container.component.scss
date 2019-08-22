@@ -1,0 +1,15 @@
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+}
+
+.flex-item {
+    border: 0.5px solid #e6e6e7;
+    padding: 5px;
+    border-radius: 1rem;
+    width: 120px;
+    margin-top: 5px;
+    text-align: center;
+}

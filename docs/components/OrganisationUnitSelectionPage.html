@@ -1,0 +1,1308 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>DHIS 2 Touch</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/material.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">DHIS 2 Touch</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>OrganisationUnitSelectionPage</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/modals/organisation-unit-selection/organisation-unit-selection.page.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-organisation-unit-selection</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./organisation-unit-selection.page.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./organisation-unit-selection.page.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#allowMultipleSelection">allowMultipleSelection</a>
+                            </li>
+                            <li>
+                                <a href="#cancelIcon">cancelIcon</a>
+                            </li>
+                            <li>
+                                <a href="#colorSettings$">colorSettings$</a>
+                            </li>
+                            <li>
+                                <a href="#isLoading">isLoading</a>
+                            </li>
+                            <li>
+                                <a href="#isOrganisationUnitToggled">isOrganisationUnitToggled</a>
+                            </li>
+                            <li>
+                                <a href="#organisationUnitList">organisationUnitList</a>
+                            </li>
+                            <li>
+                                <a href="#organisationUnits">organisationUnits</a>
+                            </li>
+                            <li>
+                                <a href="#selectedOrganisayionUnitIds">selectedOrganisayionUnitIds</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#closeModal">closeModal</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#discoveringAndSetHierarchy">discoveringAndSetHierarchy</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit">ngOnInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#onSelectOrganisationUnit">onSelectOrganisationUnit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#openOrganisationUnitSetSearchModal">openOrganisationUnitSetSearchModal</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setOrganisationUnitHierarchy">setOrganisationUnitHierarchy</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setToggledOrganisationUnit">setToggledOrganisationUnit</a>
+                            </li>
+                            <li>
+                                <a href="#trackByFn">trackByFn</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(modalController: ModalController, navParms: NavParams, store: <a href="../interfaces/State.html">Store<State></a>, userService: <a href="../injectables/UserService.html">UserService</a>, organisationUnitService: <a href="../injectables/OrganisationUnitService.html">OrganisationUnitService</a>, toasterMessagesService: <a href="../injectables/ToasterMessagesService.html">ToasterMessagesService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/modals/organisation-unit-selection/organisation-unit-selection.page.ts:49</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>modalController</td>
+                                                  
+                                                        <td>
+                                                                    <code>ModalController</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>navParms</td>
+                                                  
+                                                        <td>
+                                                                    <code>NavParams</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>store</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/State.html" target="_self" >Store&lt;State&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>userService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/UserService.html" target="_self" >UserService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>organisationUnitService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/OrganisationUnitService.html" target="_self" >OrganisationUnitService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>toasterMessagesService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ToasterMessagesService.html" target="_self" >ToasterMessagesService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="closeModal"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            closeModal
+                        </b>
+                        <a href="#closeModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>closeModal(data?: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="120"
+                            class="link-to-prism">src/app/modals/organisation-unit-selection/organisation-unit-selection.page.ts:120</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="discoveringAndSetHierarchy"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            discoveringAndSetHierarchy
+                        </b>
+                        <a href="#discoveringAndSetHierarchy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>discoveringAndSetHierarchy()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="76"
+                            class="link-to-prism">src/app/modals/organisation-unit-selection/organisation-unit-selection.page.ts:76</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <b>
+                            ngOnInit
+                        </b>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="66"
+                            class="link-to-prism">src/app/modals/organisation-unit-selection/organisation-unit-selection.page.ts:66</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSelectOrganisationUnit"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            onSelectOrganisationUnit
+                        </b>
+                        <a href="#onSelectOrganisationUnit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onSelectOrganisationUnit(organisationUnit: <a href="../interfaces/OrganisationUnit.html">OrganisationUnit</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="125"
+                            class="link-to-prism">src/app/modals/organisation-unit-selection/organisation-unit-selection.page.ts:125</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>organisationUnit</td>
+                                    <td>
+                                                <code><a href="../interfaces/OrganisationUnit.html" target="_self" >OrganisationUnit</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openOrganisationUnitSetSearchModal"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            openOrganisationUnitSetSearchModal
+                        </b>
+                        <a href="#openOrganisationUnitSetSearchModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>openOrganisationUnitSetSearchModal()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="133"
+                            class="link-to-prism">src/app/modals/organisation-unit-selection/organisation-unit-selection.page.ts:133</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setOrganisationUnitHierarchy"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            setOrganisationUnitHierarchy
+                        </b>
+                        <a href="#setOrganisationUnitHierarchy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setOrganisationUnitHierarchy()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="89"
+                            class="link-to-prism">src/app/modals/organisation-unit-selection/organisation-unit-selection.page.ts:89</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setToggledOrganisationUnit"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            setToggledOrganisationUnit
+                        </b>
+                        <a href="#setToggledOrganisationUnit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setToggledOrganisationUnit(organisationUnitIds: string[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="105"
+                            class="link-to-prism">src/app/modals/organisation-unit-selection/organisation-unit-selection.page.ts:105</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>organisationUnitIds</td>
+                                    <td>
+                                            <code>string[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="trackByFn"></a>
+                    <span class="name">
+                        <b>
+                            trackByFn
+                        </b>
+                        <a href="#trackByFn"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>trackByFn(index: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, organisationUnit: <a href="../interfaces/OrganisationUnit.html">OrganisationUnit</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="150"
+                            class="link-to-prism">src/app/modals/organisation-unit-selection/organisation-unit-selection.page.ts:150</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>index</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>organisationUnit</td>
+                                    <td>
+                                                <code><a href="../interfaces/OrganisationUnit.html" target="_self" >OrganisationUnit</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="allowMultipleSelection"></a>
+                        <span class="name">
+                            <b>
+                            allowMultipleSelection</b>
+                            <a href="#allowMultipleSelection"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/modals/organisation-unit-selection/organisation-unit-selection.page.ts:47</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="cancelIcon"></a>
+                        <span class="name">
+                            <b>
+                            cancelIcon</b>
+                            <a href="#cancelIcon"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/modals/organisation-unit-selection/organisation-unit-selection.page.ts:42</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="colorSettings$"></a>
+                        <span class="name">
+                            <b>
+                            colorSettings$</b>
+                            <a href="#colorSettings$"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>Observable&lt;AppColorObject&gt;</code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/modals/organisation-unit-selection/organisation-unit-selection.page.ts:43</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isLoading"></a>
+                        <span class="name">
+                            <b>
+                            isLoading</b>
+                            <a href="#isLoading"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/app/modals/organisation-unit-selection/organisation-unit-selection.page.ts:48</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isOrganisationUnitToggled"></a>
+                        <span class="name">
+                            <b>
+                            isOrganisationUnitToggled</b>
+                            <a href="#isOrganisationUnitToggled"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/modals/organisation-unit-selection/organisation-unit-selection.page.ts:49</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="organisationUnitList"></a>
+                        <span class="name">
+                            <b>
+                            organisationUnitList</b>
+                            <a href="#organisationUnitList"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../interfaces/OrganisationUnit.html" target="_self" >OrganisationUnit[]</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/modals/organisation-unit-selection/organisation-unit-selection.page.ts:45</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="organisationUnits"></a>
+                        <span class="name">
+                            <b>
+                            organisationUnits</b>
+                            <a href="#organisationUnits"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../interfaces/OrganisationUnit.html" target="_self" >OrganisationUnit[]</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/modals/organisation-unit-selection/organisation-unit-selection.page.ts:46</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectedOrganisayionUnitIds"></a>
+                        <span class="name">
+                            <b>
+                            selectedOrganisayionUnitIds</b>
+                            <a href="#selectedOrganisayionUnitIds"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>string[]</code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/app/modals/organisation-unit-selection/organisation-unit-selection.page.ts:44</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+import { ModalController, NavParams } from &#x27;@ionic/angular&#x27;;
+import * as _ from &#x27;lodash&#x27;;
+import { Observable } from &#x27;rxjs&#x27;;
+import { Store } from &#x27;@ngrx/store&#x27;;
+import { State, getCurrentUserColorSettings } from &#x27;../../store&#x27;;
+import { AppColorObject, CurrentUser, OrganisationUnit } from &#x27;src/models&#x27;;
+import { OrganisationUnitSearchPage } from &#x27;../organisation-unit-search/organisation-unit-search.page&#x27;;
+import { UserService } from &#x27;src/app/services/user.service&#x27;;
+import { OrganisationUnitService } from &#x27;src/app/services/organisation-unit.service&#x27;;
+import { ToasterMessagesService } from &#x27;src/app/services/toaster-messages.service&#x27;;
+
+@Component({
+  selector: &#x27;app-organisation-unit-selection&#x27;,
+  templateUrl: &#x27;./organisation-unit-selection.page.html&#x27;,
+  styleUrls: [&#x27;./organisation-unit-selection.page.scss&#x27;]
+})
+export class OrganisationUnitSelectionPage implements OnInit {
+  cancelIcon: string;
+  colorSettings$: Observable&lt;AppColorObject&gt;;
+  selectedOrganisayionUnitIds: string[];
+  organisationUnitList: OrganisationUnit[];
+  organisationUnits: OrganisationUnit[];
+  allowMultipleSelection: boolean;
+  isLoading: boolean;
+  isOrganisationUnitToggled: any;
+
+  constructor(
+    private modalController: ModalController,
+    private navParms: NavParams,
+    private store: Store&lt;State&gt;,
+    private userService: UserService,
+    private organisationUnitService: OrganisationUnitService,
+    private toasterMessagesService: ToasterMessagesService
+  ) {
+    this.colorSettings$ &#x3D; this.store.select(getCurrentUserColorSettings);
+    this.cancelIcon &#x3D; &#x27;assets/icon/cancel.png&#x27;;
+    this.allowMultipleSelection &#x3D; false;
+    this.isLoading &#x3D; true;
+    this.isOrganisationUnitToggled &#x3D; {};
+  }
+
+  ngOnInit() {
+    this.selectedOrganisayionUnitIds &#x3D; this.navParms.get(
+      &#x27;selectedOrganisayionUnitIds&#x27;
+    );
+    const allowMultipleSelection &#x3D; this.navParms.get(&#x27;allowMultipleSelection&#x27;);
+    this.allowMultipleSelection &#x3D;
+      allowMultipleSelection || this.allowMultipleSelection;
+    this.discoveringAndSetHierarchy();
+  }
+
+  async discoveringAndSetHierarchy() {
+    try {
+      await this.setOrganisationUnitHierarchy();
+      await this.setToggledOrganisationUnit(this.selectedOrganisayionUnitIds);
+    } catch (error) {
+      const message &#x3D; &#x60;Error ${JSON.stringify(error)}&#x60;;
+      console.log({ message });
+      this.toasterMessagesService.showToasterMessage(message);
+    } finally {
+      this.isLoading &#x3D; false;
+    }
+  }
+
+  async setOrganisationUnitHierarchy() {
+    const currentUser: CurrentUser &#x3D; await this.userService.getCurrentUser();
+    const organisationUnitIds &#x3D;
+      currentUser &amp;&amp; currentUser.userOrgUnitIds
+        ? currentUser.userOrgUnitIds
+        : [];
+    if (organisationUnitIds &amp;&amp; organisationUnitIds.length &gt; 0) {
+      const organisationUnitList &#x3D; await this.organisationUnitService.getAllOrganisationUnits();
+      this.organisationUnitList &#x3D; _.map(organisationUnitList, _.cloneDeep);
+    }
+    const organisationUnits &#x3D; await this.organisationUnitService.getOrganiisationUnitByIds(
+      organisationUnitIds
+    );
+    this.organisationUnits &#x3D; _.map(organisationUnits, _.cloneDeep);
+  }
+
+  async setToggledOrganisationUnit(organisationUnitIds: string[]) {
+    const selectedOrganisayionUnits &#x3D; await this.organisationUnitService.getOrganiisationUnitByIds(
+      organisationUnitIds
+    );
+    const toggledIds &#x3D; _.flattenDeep(
+      _.map(selectedOrganisayionUnits, (organisationUnit: OrganisationUnit) &#x3D;&gt; {
+        const { ancestors } &#x3D; organisationUnit;
+        return _.map(ancestors, (ancestor: OrganisationUnit) &#x3D;&gt; ancestor.id);
+      })
+    );
+    for (const id of toggledIds) {
+      this.isOrganisationUnitToggled[id] &#x3D; true;
+    }
+  }
+
+  async closeModal(data?: any) {
+    await this.modalController.dismiss(data);
+  }
+
+  // @TODO handling multiple selections
+  async onSelectOrganisationUnit(organisationUnit: OrganisationUnit) {
+    console.log({
+      organisationUnit,
+      allowMultipleSelection: this.allowMultipleSelection
+    });
+    await this.closeModal(organisationUnit);
+  }
+
+  async openOrganisationUnitSetSearchModal() {
+    const modal &#x3D; await this.modalController.create({
+      component: OrganisationUnitSearchPage,
+      componentProps: {
+        selectedOrganisayionUnitIds: this.selectedOrganisayionUnitIds,
+        organisationUnitList: this.organisationUnitList
+      },
+      cssClass: &#x27;inset-modal&#x27;
+    });
+    modal.present();
+    const response &#x3D; await modal.onDidDismiss();
+    if (response &amp;&amp; response.data) {
+      const { data } &#x3D; response;
+      this.onSelectOrganisationUnit(data);
+    }
+  }
+
+  trackByFn(index: any, organisationUnit: OrganisationUnit) {
+    return organisationUnit &amp;&amp; organisationUnit.id
+      ? organisationUnit.id
+      : index;
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;!--
+*
+* Copyright 2019 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2019
+* @author Joseph Chingalo profschingalo@gmail.com&gt;
+*
+*
+--&gt;
+&lt;ion-header&gt;
+    &lt;ion-toolbar [color]&#x3D;&quot;(colorSettings$ | async).colorAttributes.main&quot; mode&#x3D;&quot;md&quot;&gt;
+        &lt;div class&#x3D;&quot;organisation-unit-deatils animated fadeIn&quot;&gt;
+            &lt;span [translate]&#x3D;&quot;&#x27;Organisation unit selection&#x27;&quot;&gt;&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;ion-buttons slot&#x3D;&quot;end&quot;&gt;
+            &lt;ion-button (click)&#x3D;&quot;openOrganisationUnitSetSearchModal()&quot;&gt;
+                &lt;ion-icon name&#x3D;&quot;search&quot;&gt;&lt;/ion-icon&gt;
+            &lt;/ion-button&gt;
+            &lt;ion-button (click)&#x3D;&quot;closeModal()&quot;&gt;
+                &lt;ion-icon name&#x3D;&quot;close&quot;&gt;&lt;/ion-icon&gt;
+            &lt;/ion-button&gt;
+        &lt;/ion-buttons&gt;
+    &lt;/ion-toolbar&gt;
+&lt;/ion-header&gt;
+
+&lt;ion-content&gt;
+    &lt;div *ngIf&#x3D;&quot;isLoading&quot;&gt;
+        &lt;app-progress-bar [color]&#x3D;&quot;(colorSettings$ | async).colorAttributes.secondary&quot; [isIndeterminateProcess]&#x3D;&quot;true&quot; [processMessage]&#x3D;&quot;&#x27;&#x27;&quot;&gt;
+        &lt;/app-progress-bar&gt;
+    &lt;/div&gt;
+    &lt;div *ngIf&#x3D;&quot;!isLoading&quot;&gt;
+        &lt;div *ngFor&#x3D;&quot;let organisationUnit of organisationUnits; trackBy: trackByFn&quot;&gt;
+            &lt;app-organisation-unit-tree (selectOrganisationUnit)&#x3D;&quot;onSelectOrganisationUnit($event)&quot; [selectedOrganisayionUnitIds]&#x3D;&quot;selectedOrganisayionUnitIds&quot; [isOrganisationUnitToggled]&#x3D;&quot;isOrganisationUnitToggled&quot; [organisationUnit]&#x3D;&quot;organisationUnit&quot;&gt;&lt;/app-organisation-unit-tree&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/ion-content&gt;</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./organisation-unit-selection.page.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">.organisation-unit-deatils {
+    padding-left: 10px;
+}</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><!--** Copyright 2019 HISP Tanzania** This program is free software; you can redistribute it and/or modify* it under the terms of the GNU General Public License as published by* the Free Software Foundation; either version 2 of the License, or* (at your option) any later version.** This program is distributed in the hope that it will be useful,* but WITHOUT ANY WARRANTY; without even the implied warranty of* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the* GNU General Public License for more details.** You should have received a copy of the GNU General Public License* along with this program; if not, write to the Free Software* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,* MA 02110-1301, USA.** @since 2019* @author Joseph Chingalo profschingalo@gmail.com>**--><ion-header>    <ion-toolbar [color]="(colorSettings$ | async).colorAttributes.main" mode="md">        <div class="organisation-unit-deatils animated fadeIn">            <span [translate]="\'Organisation unit selection\'"></span>        </div>        <ion-buttons slot="end">            <ion-button (click)="openOrganisationUnitSetSearchModal()">                <ion-icon name="search"></ion-icon>            </ion-button>            <ion-button (click)="closeModal()">                <ion-icon name="close"></ion-icon>            </ion-button>        </ion-buttons>    </ion-toolbar></ion-header><ion-content>    <div *ngIf="isLoading">        <app-progress-bar [color]="(colorSettings$ | async).colorAttributes.secondary" [isIndeterminateProcess]="true" [processMessage]="\'\'">        </app-progress-bar>    </div>    <div *ngIf="!isLoading">        <div *ngFor="let organisationUnit of organisationUnits; trackBy: trackByFn">            <app-organisation-unit-tree (selectOrganisationUnit)="onSelectOrganisationUnit($event)" [selectedOrganisayionUnitIds]="selectedOrganisayionUnitIds" [isOrganisationUnitToggled]="isOrganisationUnitToggled" [organisationUnit]="organisationUnit"></app-organisation-unit-tree>        </div>    </div></ion-content></div>'
+    var COMPONENTS = [{'name': 'AccountsPage', 'selector': 'app-accounts'},{'name': 'AgeInputComponent', 'selector': 'app-age-input'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AppItemComponent', 'selector': 'app-app-item'},{'name': 'AppsItemContainerComponent', 'selector': 'app-apps-item-container'},{'name': 'AppsPage', 'selector': 'app-apps'},{'name': 'BarcodeInputComponent', 'selector': 'app-barcode-input'},{'name': 'BooleanInputComponent', 'selector': 'app-boolean-input'},{'name': 'CoordinateComponent', 'selector': 'app-coordinate'},{'name': 'CoordinateInputComponent', 'selector': 'app-coordinate-input'},{'name': 'CoordinateSelectionPage', 'selector': 'app-coordinate-selection'},{'name': 'DateInputComponent', 'selector': 'app-date-input'},{'name': 'DateTimeComponent', 'selector': 'app-date-time'},{'name': 'EmailInputComponent', 'selector': 'app-email-input'},{'name': 'LaunchPage', 'selector': 'app-launch'},{'name': 'LocalInstanceSelectionPage', 'selector': 'app-local-instance-selection'},{'name': 'LoginFormComponent', 'selector': 'app-login-form'},{'name': 'LoginMetadataSyncComponent', 'selector': 'app-login-metadata-sync'},{'name': 'LoginPage', 'selector': 'app-login'},{'name': 'LoginSpinnerComponent', 'selector': 'app-login-spinner'},{'name': 'NumericalInputComponent', 'selector': 'app-numerical-input'},{'name': 'OptionSetInputComponent', 'selector': 'app-option-set-input'},{'name': 'OptionSetSelectionPage', 'selector': 'app-option-set-selection'},{'name': 'OrganisationUnitInputComponent', 'selector': 'app-organisation-unit-input'},{'name': 'OrganisationUnitSearchPage', 'selector': 'app-organisation-unit-search'},{'name': 'OrganisationUnitSelectionPage', 'selector': 'app-organisation-unit-selection'},{'name': 'OrganisationUnitTreeComponent', 'selector': 'app-organisation-unit-tree'},{'name': 'PasswordInputComponent', 'selector': 'app-password-input'},{'name': 'PercentageInputComponent', 'selector': 'app-percentage-input'},{'name': 'PhoneNumberInputComponent', 'selector': 'app-phone-number-input'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'RadioButtonComponent', 'selector': 'app-radio-button'},{'name': 'SloganComponent', 'selector': 'app-slogan'},{'name': 'TabsPage', 'selector': 'app-tabs'},{'name': 'TextInputComponent', 'selector': 'app-text-input'},{'name': 'TranslationSelectionPage', 'selector': 'app-translation-selection'},{'name': 'TrueOnlyInputComponent', 'selector': 'app-true-only-input'},{'name': 'UnitIntervalInputComponent', 'selector': 'app-unit-interval-input'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'OrganisationUnitSelectionPage'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'OrganisationUnitSelectionPage.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

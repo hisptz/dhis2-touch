@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2015 HISP Tanzania
+ * Copyright 2019 HISP Tanzania
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,32 +17,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  *
- * @since 2015
+ * @since 2019
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
+
 import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
+
+import { Platform } from '@ionic/angular';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 @Component({
-  templateUrl: 'app.html'
+  selector: 'app-root',
+  templateUrl: 'app.component.html'
 })
-export class MyApp {
-  rootPage: any;
-
+export class AppComponent {
   constructor(
     platform: Platform,
-    statusBar: StatusBar,
-    splashScreen: SplashScreen
+    splashScreen: SplashScreen,
+    statusBar: StatusBar
   ) {
-    platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      statusBar.styleBlackTranslucent();
+    platform.ready().then(async () => {
+      statusBar.styleLightContent();
       splashScreen.hide();
-      this.rootPage = 'LaunchPage';
     });
   }
 }

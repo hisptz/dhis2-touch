@@ -1,0 +1,60 @@
+.login-spinner-container {
+    padding-top: 5%;
+    max-width: 95px;
+    margin: auto;
+    margin-bottom: 100px;
+    text-align: center
+}
+
+.strike {
+    display: block;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    color: white;
+}
+
+.strike>span {
+    position: relative;
+    display: inline-block;
+}
+
+.strike>span:before,
+.strike>span:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 9999px;
+    height: 1px;
+}
+
+.strike>span:before {
+    right: 100%;
+    margin-right: 15px;
+}
+
+.strike>span:after {
+    left: 100%;
+    margin-left: 15px;
+}
+
+.offline-instances-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.currentLang {
+    color: #ffa500;
+}
+
+.translation-container {
+    text-align: center
+}
+
+.translation-codes {
+    text-transform: lowercase;
+}
+
+.translation-codes span {
+    padding: 2px;
+}

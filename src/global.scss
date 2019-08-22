@@ -1,0 +1,157 @@
+// http://ionicframework.com/docs/theming/
+@import '~@ionic/angular/css/core.css';
+@import '~@ionic/angular/css/normalize.css';
+@import '~@ionic/angular/css/structure.css';
+@import '~@ionic/angular/css/typography.css';
+@import '~@ionic/angular/css/padding.css';
+@import '~@ionic/angular/css/float-elements.css';
+@import '~@ionic/angular/css/text-alignment.css';
+@import '~@ionic/angular/css/text-transformation.css';
+@import '~@ionic/angular/css/flex-utils.css';
+ion-modal.inset-modal {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    transition: opacity 0.25s ease-in-out;
+    padding: 20vh 7vw;
+}
+
+.side-menu-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.logo {
+    padding-top: 5%;
+    max-width: 95px;
+    margin: auto;
+}
+
+.topSLogan {
+    margin-top: 0%;
+    text-align: center;
+    margin-bottom: 0%;
+}
+
+.topSLogan p {
+    color: #82b1ff;
+    text-align: center;
+    font-style: italic;
+}
+
+.bottomSLogan {
+    text-align: center;
+    margin-bottom: 2%;
+    margin-top: 0px;
+}
+
+.bottomSLogan p {
+    margin: 0px;
+}
+
+.item-card {
+    border-radius: 0.2rem;
+    padding: 5px 10px 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.grey-field {
+    background-color: #f4f4f4;
+}
+
+.input-field-container {
+    border: 1px solid #e6e6e7;
+    background-color: #ffffff;
+    border-radius: 0.2rem;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 3px;
+}
+
+.input-field-container-success {
+    border: 1px solid #73ad72;
+    background-color: #ffffff;
+    border-radius: 0.2rem;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 3px;
+}
+
+.input-field-container-saving {
+    border: 1px solid #fffe8c;
+    background-color: #ffffff;
+    border-radius: 0.2rem;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 3px;
+}
+
+.input-field-container-failed {
+    border: 1px solid #ff8a8a;
+    background-color: #ffffff;
+    border-radius: 0.2rem;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 3px;
+}
+
+.input-field-container-warning {
+    border: 1px solid #ff6600;
+    background-color: #ffffff;
+    border-radius: 0.2rem;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 3px;
+}
+
+.input-field-container-disabled {
+    border: 1px solid #e6e6e7;
+    background-color: #ccc;
+    border-radius: 0.2rem;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 3px;
+}
+
+.list-ios>.item-block:first-child {
+    border-top: 0px solid #c8c7cc;
+}
+
+.list-ios>.item-block:last-child,
+.list-ios>.item-wrapper:last-child .item-block {
+    border-bottom: 0px solid #c8c7cc;
+}
+
+.item-md.item-block .item-inner {
+    border-bottom: 0.5px solid #dedede;
+}
+
+.item-ios.item-block .item-inner {
+    border-bottom: 0.5px solid #dedede;
+}
+
+.table .table-bordered>thead {
+    background: #fbfbfb;
+    overflow: auto;
+}
+
+th {
+    font-weight: bold;
+}
+
+td,
+th {
+    padding: 6px;
+    border: 1px solid #e6e6e7;
+    text-align: center;
+    min-height: 2.1rem;
+}
+
+.chart-icon {
+    width: 30px;
+    height: 30px;
+    margin: 1px;
+}
+
+.chart-icon-container {
+    padding: 4px; //border-radius: 20px;
+}

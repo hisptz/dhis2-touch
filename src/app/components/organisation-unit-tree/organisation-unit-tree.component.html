@@ -1,0 +1,53 @@
+<!--
+*
+* Copyright 2019 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2019
+* @author Joseph Chingalo profschingalo@gmail.com>
+*
+*
+-->
+<div *ngIf="isLoading">
+    <app-progress-bar [color]="(colorSettings$ | async).colorAttributes.secondary" [isIndeterminateProcess]="true" [processMessage]="''">
+    </app-progress-bar>
+</div>
+<div *ngIf="!isLoading && organisationUnit && organisationUnit.children">
+    <ion-item lines="none" [ngClass]="organisationUnit && organisationUnit.children && organisationUnit.children.length === 0?'organisation-unit-without-children' : ''">
+        <ion-button *ngIf="organisationUnit && organisationUnit.children.length > 0" no-margin slot="start" color="dark" (click)="onToogledOrganisationUnit()" fill="clear">
+            <ion-icon slot="icon-only" [name]="isOrganisationUnitToggled && isOrganisationUnitToggled[organisationUnit.id]?'remove-circle-outline':'add-circle-outline'"></ion-icon>
+        </ion-button>
+        <ion-label (click)="onSelectOrganisationUnit(organisationUnit)">
+            <div *ngIf="!(organisationUnit && organisationUnit.name)">
+                <app-progress-bar [color]="(colorSettings$ | async).colorAttributes.secondary" [isIndeterminateProcess]="true" [processMessage]="''">
+                </app-progress-bar>
+            </div>
+            <div *ngIf="organisationUnit && organisationUnit.name">
+                <ion-text [color]="
+                          selectedOrganisayionUnitIds.indexOf(organisationUnit.id ) > -1 ? 'current-selection' : ''
+                        ">
+                    {{ organisationUnit.name }}
+                </ion-text>
+            </div>
+        </ion-label>
+    </ion-item>
+    <div *ngIf="isOrganisationUnitToggled && isOrganisationUnitToggled[organisationUnit.id]" class="organisation-unit-children">
+        <div *ngFor="let childOrgananisationUnit of organisationUnit.children; trackBy: trackByFn">
+            <app-organisation-unit-tree (selectOrganisationUnit)="onSelectOrganisationUnit($event)" [selectedOrganisayionUnitIds]="selectedOrganisayionUnitIds" [isOrganisationUnitToggled]="isOrganisationUnitToggled" [organisationUnit]="childOrgananisationUnit"></app-organisation-unit-tree>
+        </div>
+    </div>
+</div>

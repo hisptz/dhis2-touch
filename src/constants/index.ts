@@ -21,4 +21,11 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
+export * from './login-form-fields';
+export * from './default-user';
+export * from './local-instance';
+export * from './default-settings';
+export * from './default-color-setting';
 export * from './deafult-app-metadata';
+export * from './utilities-app-list';
+export * from './apps-list';

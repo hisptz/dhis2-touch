@@ -1,0 +1,75 @@
+/*
+ *
+ * Copyright 2019 HISP Tanzania
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ * @since 2019
+ * @author Joseph Chingalo <profschingalo@gmail.com>
+ *
+ */
+import { Entity, PrimaryColumn, Column } from 'typeorm';
+
+@Entity()
+export class DataSetEntity {
+  @PrimaryColumn() id: string;
+  @Column() name: string;
+  @Column() timelyDays: number;
+  @Column() formType: string;
+  @Column() periodType: string;
+  @Column() openFuturePeriods: number;
+  @Column() expiryDays: number;
+  @Column('simple-json') categoryCombo: string;
+}
+
+@Entity()
+export class DataSetElementEntity {
+  @PrimaryColumn() id: string;
+  @Column('simple-json') dataElementIds: string;
+}
+
+@Entity()
+export class DataSetIndicatorEntity {
+  @PrimaryColumn() id: string;
+  @Column('simple-json') indicatorIds: string;
+}
+
+@Entity()
+export class DataSetDesignEntity {
+  @PrimaryColumn() id: string;
+  @Column('simple-json') dataSetDesign: string;
+}
+
+@Entity()
+export class DataSetSourceEntity {
+  @PrimaryColumn() id: string;
+  @Column('simple-json') organisationUnitIds: string;
+}
+
+@Entity()
+export class DataSetSectionEntity {
+  @PrimaryColumn() id: string;
+  @Column('simple-json') sectionIds: string;
+}
+
+@Entity()
+export class DataSetOperandEntity {
+  @PrimaryColumn() id: string;
+  @Column() dataSetId: string;
+  @Column() name: string;
+  @Column() dimensionItemType: string;
+  @Column() dimensionItem: string;
+}

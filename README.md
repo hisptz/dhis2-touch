@@ -1,42 +1,7 @@
-[![Build Status](https://travis-ci.org/interactive-apps/dhis2-touch.svg?branch=master)](https://travis-ci.org/interactive-apps/dhis2-touch)
-[![dependencies Status](https://david-dm.org/interactive-apps/dhis2-touch/status.svg)](https://david-dm.org/interactive-apps/dhis2-touch)
-[![devDependencies Status](https://david-dm.org/interactive-apps/dhis2-touch/dev-status.svg)](https://david-dm.org/interactive-apps/dhis2-touch?type=dev)
+# DHIS2 Touch
 
-## Prerequisites Make sure you have the following installed on your pc
+[![Build Status](https://travis-ci.com/chingalo/dhis-2-touch-v3.svg?token=WACwPiJygBvggCVVju7H&branch=master)](https://travis-ci.com/chingalo/dhis-2-touch-v3) [![Build Status](https://travis-ci.com/chingalo/dhis-2-touch-v3.svg?token=WACwPiJygBvggCVVju7H&branch=develop)](https://travis-ci.com/chingalo/dhis-2-touch-v3) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![Maintainability](https://api.codeclimate.com/v1/badges/a17a5862e23b5ed6f609/maintainability)](https://codeclimate.com/github/chingalo/dhis-2-touch-v3/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/a17a5862e23b5ed6f609/test_coverage)](https://codeclimate.com/github/chingalo/dhis-2-touch-v3/test_coverage)
 
-1.  npm and node
-2.  git
-3.  Ionic CLI
-4.  Cordova CLI
-5.  Emulator (android studio etc.) or android phone for testing
-6.  Android in your environment path
+### Add new component
 
-## How to get stated with installation
-
-```bash
-$ sudo npm install -g ionic cordova
-$ git clone https://github.com/interactive-apps/dhis2-touch.git
-$ cd dhis2-touch
-```
-
-To install all dependencies for android while inside project directory
-
-```bash
-$ sh install-android.sh
-```
-
-To install all dependencies for iOS while inside project directory
-
-```bash
-$ sh install-iso.sh
-```
-
-## To run on emulator
-
-For android
-
-```bash
-$ ionic cordova run android
-```
-
-# dhis 2 touch
+`ionic g component home/components/todo-list --export`

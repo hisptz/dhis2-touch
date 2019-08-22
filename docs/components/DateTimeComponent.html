@@ -1,0 +1,968 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>DHIS 2 Touch</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/material.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">DHIS 2 Touch</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>DateTimeComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/components/date-time/date-time.component.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-date-time</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./date-time.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./date-time.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#defaultLabel">defaultLabel</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#clearInput">clearInput</a>
+                            </li>
+                            <li>
+                                <a href="#getDatePickerValue">getDatePickerValue</a>
+                            </li>
+                            <li>
+                                <a href="#getDisplayValue">getDisplayValue</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit">ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#showDateTimePicker">showDateTimePicker</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#inputValue">inputValue</a>
+                            </li>
+                            <li>
+                                <a href="#lockingFieldStatus">lockingFieldStatus</a>
+                            </li>
+                            <li>
+                                <a href="#mode">mode</a>
+                            </li>
+                            <li>
+                                <a href="#withoutHorizontalPadding">withoutHorizontalPadding</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#dateTimeChange">dateTimeChange</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(datePicker: DatePicker)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/components/date-time/date-time.component.ts:41</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>datePicker</td>
+                                                  
+                                                        <td>
+                                                                    <code>DatePicker</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section>
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="inputValue"></a>
+                        <b>inputValue</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/components/date-time/date-time.component.ts:36</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="lockingFieldStatus"></a>
+                        <b>lockingFieldStatus</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/components/date-time/date-time.component.ts:35</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="mode"></a>
+                        <b>mode</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/components/date-time/date-time.component.ts:34</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="withoutHorizontalPadding"></a>
+                        <b>withoutHorizontalPadding</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/components/date-time/date-time.component.ts:37</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+    <section>
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="dateTimeChange"></a>
+                        <b>dateTimeChange</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/components/date-time/date-time.component.ts:39</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="clearInput"></a>
+                    <span class="name">
+                        <b>
+                            clearInput
+                        </b>
+                        <a href="#clearInput"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>clearInput()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="85"
+                            class="link-to-prism">src/app/components/date-time/date-time.component.ts:85</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDatePickerValue"></a>
+                    <span class="name">
+                        <b>
+                            getDatePickerValue
+                        </b>
+                        <a href="#getDatePickerValue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getDatePickerValue(inputValue: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, mode: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="91"
+                            class="link-to-prism">src/app/components/date-time/date-time.component.ts:91</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>inputValue</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>mode</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDisplayValue"></a>
+                    <span class="name">
+                        <b>
+                            getDisplayValue
+                        </b>
+                        <a href="#getDisplayValue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getDisplayValue(date: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank">Date</a>, mode: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="106"
+                            class="link-to-prism">src/app/components/date-time/date-time.component.ts:106</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>date</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>mode</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <b>
+                            ngOnInit
+                        </b>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="45"
+                            class="link-to-prism">src/app/components/date-time/date-time.component.ts:45</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showDateTimePicker"></a>
+                    <span class="name">
+                        <b>
+                            showDateTimePicker
+                        </b>
+                        <a href="#showDateTimePicker"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>showDateTimePicker()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="56"
+                            class="link-to-prism">src/app/components/date-time/date-time.component.ts:56</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="defaultLabel"></a>
+                        <span class="name">
+                            <b>
+                            defaultLabel</b>
+                            <a href="#defaultLabel"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/components/date-time/date-time.component.ts:41</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, Input, OnInit, Output, EventEmitter } from &#x27;@angular/core&#x27;;
+import * as moment from &#x27;moment&#x27;;
+import { DatePicker } from &#x27;@ionic-native/date-picker/ngx&#x27;;
+
+@Component({
+  selector: &#x27;app-date-time&#x27;,
+  templateUrl: &#x27;./date-time.component.html&#x27;,
+  styleUrls: [&#x27;./date-time.component.scss&#x27;]
+})
+export class DateTimeComponent implements OnInit {
+  @Input() mode: string;
+  @Input() lockingFieldStatus: boolean;
+  @Input() inputValue: string;
+  @Input() withoutHorizontalPadding: boolean;
+
+  @Output() dateTimeChange &#x3D; new EventEmitter();
+
+  defaultLabel: string;
+
+  constructor(private datePicker: DatePicker) {}
+
+  ngOnInit() {
+    this.defaultLabel &#x3D;
+      this.mode &#x3D;&#x3D;&#x3D; &#x27;date&#x27;
+        ? &#x27;Touch to pick date&#x27;
+        : this.mode &#x3D;&#x3D;&#x3D; &#x27;datetime&#x27;
+        ? &#x27;Touch to pick date and time&#x27;
+        : this.mode &#x3D;&#x3D;&#x3D; &#x27;time&#x27;
+        ? &#x27;Touch to pick time&#x27;
+        : &#x27;&#x27;;
+  }
+
+  showDateTimePicker() {
+    if (!this.lockingFieldStatus) {
+      const date &#x3D; this.getDatePickerValue(this.inputValue, this.mode);
+      this.datePicker
+        .show({
+          date: date,
+          mode: this.mode,
+          okText: &#x27;Done&#x27;,
+          cancelText: &#x27;Back&#x27;,
+          todayText: &#x27;Today&#x27;,
+          nowText: &#x27;Now&#x27;,
+          allowFutureDates: true,
+          is24Hour: false,
+          androidTheme: this.datePicker.ANDROID_THEMES
+            .THEME_DEVICE_DEFAULT_LIGHT
+        })
+        .then(
+          dateResponse &#x3D;&gt; {
+            const displayValue &#x3D; this.getDisplayValue(
+              new Date(dateResponse),
+              this.mode
+            );
+            this.dateTimeChange.emit(displayValue);
+          },
+          error &#x3D;&gt; {}
+        );
+    }
+  }
+
+  clearInput() {
+    if (!this.lockingFieldStatus) {
+      this.dateTimeChange.emit(&#x27;&#x27;);
+    }
+  }
+
+  getDatePickerValue(inputValue: string, mode: string) {
+    let value &#x3D; moment(new Date());
+    if (inputValue) {
+      value &#x3D;
+        mode &#x3D;&#x3D;&#x3D; &#x27;time&#x27;
+          ? moment(inputValue, &#x27;HH:mm&#x27;)
+          : mode &#x3D;&#x3D;&#x3D; &#x27;date&#x27;
+          ? moment(inputValue, &#x27;YYYY-MM-DD&#x27;)
+          : mode &#x3D;&#x3D;&#x3D; &#x27;datetime&#x27;
+          ? moment(inputValue, &#x27;YYYY-MM-DD HH:mm&#x27;)
+          : value;
+    }
+    return value.toDate();
+  }
+
+  getDisplayValue(date: Date, mode: string) {
+    return mode &#x3D;&#x3D;&#x3D; &#x27;time&#x27;
+      ? moment(date).format(&#x27;HH:mm&#x27;)
+      : mode &#x3D;&#x3D;&#x3D; &#x27;date&#x27;
+      ? moment(date).format(&#x27;YYYY-MM-DD&#x27;)
+      : mode &#x3D;&#x3D;&#x3D; &#x27;datetime&#x27;
+      ? moment(date).format(&#x27;YYYY-MM-DD HH:mm&#x27;)
+      : &#x27;&#x27;;
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;!--
+*
+* Copyright 2019 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2019
+* @author Joseph Chingalo profschingalo@gmail.com&gt;
+*
+*
+--&gt;
+&lt;ion-row&gt;
+    &lt;ion-col&gt;
+        &lt;div (click)&#x3D;&quot;showDateTimePicker()&quot; [ngClass]&#x3D;&quot;
+        !withoutHorizontalPadding
+          ? &#x27;item-card-input&#x27;
+          : &#x27;item-card-without-horizontal-padding&#x27;
+      &quot;&gt;
+            &lt;span *ngIf&#x3D;&quot;inputValue &amp;&amp; inputValue !&#x3D; &#x27;&#x27;&quot; padding-left&gt;
+        {{ inputValue }}
+      &lt;/span&gt;
+            &lt;span *ngIf&#x3D;&quot;!(inputValue &amp;&amp; inputValue !&#x3D; &#x27;&#x27;)&quot;&gt;
+        {{ defaultLabel }}
+      &lt;/span&gt;
+        &lt;/div&gt;
+    &lt;/ion-col&gt;
+    &lt;ion-col size&#x3D;&quot;auto&quot; no-padding&gt;
+        &lt;div float-right&gt;
+            &lt;ion-button class&#x3D;&quot;clear-button&quot; no-padding fill&#x3D;&quot;clear&quot; (click)&#x3D;&quot;clearInput()&quot;&gt;
+                &lt;ion-icon slot&#x3D;&quot;icon-only&quot; name&#x3D;&quot;trash&quot; color&#x3D;&quot;danger&quot;&gt;&lt;/ion-icon&gt;
+            &lt;/ion-button&gt;
+        &lt;/div&gt;
+    &lt;/ion-col&gt;
+&lt;/ion-row&gt;</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./date-time.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">.item-card-input {
+    border: 1px solid #e6e6e7;
+    border-radius: 0.1rem;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 5px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+
+.item-card-without-horizontal-padding {
+    border: 1px solid #e6e6e7;
+    border-radius: 0.1rem;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 5px;
+    margin-left: 5px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.clear-button {
+    padding-top: 5px;
+}</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><!--** Copyright 2019 HISP Tanzania** This program is free software; you can redistribute it and/or modify* it under the terms of the GNU General Public License as published by* the Free Software Foundation; either version 2 of the License, or* (at your option) any later version.** This program is distributed in the hope that it will be useful,* but WITHOUT ANY WARRANTY; without even the implied warranty of* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the* GNU General Public License for more details.** You should have received a copy of the GNU General Public License* along with this program; if not, write to the Free Software* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,* MA 02110-1301, USA.** @since 2019* @author Joseph Chingalo profschingalo@gmail.com>**--><ion-row>    <ion-col>        <div (click)="showDateTimePicker()" [ngClass]="        !withoutHorizontalPadding          ? \'item-card-input\'          : \'item-card-without-horizontal-padding\'      ">            <span *ngIf="inputValue && inputValue != \'\'" padding-left>        {{ inputValue }}      </span>            <span *ngIf="!(inputValue && inputValue != \'\')">        {{ defaultLabel }}      </span>        </div>    </ion-col>    <ion-col size="auto" no-padding>        <div float-right>            <ion-button class="clear-button" no-padding fill="clear" (click)="clearInput()">                <ion-icon slot="icon-only" name="trash" color="danger"></ion-icon>            </ion-button>        </div>    </ion-col></ion-row></div>'
+    var COMPONENTS = [{'name': 'AccountsPage', 'selector': 'app-accounts'},{'name': 'AgeInputComponent', 'selector': 'app-age-input'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AppItemComponent', 'selector': 'app-app-item'},{'name': 'AppsItemContainerComponent', 'selector': 'app-apps-item-container'},{'name': 'AppsPage', 'selector': 'app-apps'},{'name': 'BarcodeInputComponent', 'selector': 'app-barcode-input'},{'name': 'BooleanInputComponent', 'selector': 'app-boolean-input'},{'name': 'CoordinateComponent', 'selector': 'app-coordinate'},{'name': 'CoordinateInputComponent', 'selector': 'app-coordinate-input'},{'name': 'CoordinateSelectionPage', 'selector': 'app-coordinate-selection'},{'name': 'DateInputComponent', 'selector': 'app-date-input'},{'name': 'DateTimeComponent', 'selector': 'app-date-time'},{'name': 'EmailInputComponent', 'selector': 'app-email-input'},{'name': 'LaunchPage', 'selector': 'app-launch'},{'name': 'LocalInstanceSelectionPage', 'selector': 'app-local-instance-selection'},{'name': 'LoginFormComponent', 'selector': 'app-login-form'},{'name': 'LoginMetadataSyncComponent', 'selector': 'app-login-metadata-sync'},{'name': 'LoginPage', 'selector': 'app-login'},{'name': 'LoginSpinnerComponent', 'selector': 'app-login-spinner'},{'name': 'NumericalInputComponent', 'selector': 'app-numerical-input'},{'name': 'OptionSetInputComponent', 'selector': 'app-option-set-input'},{'name': 'OptionSetSelectionPage', 'selector': 'app-option-set-selection'},{'name': 'OrganisationUnitInputComponent', 'selector': 'app-organisation-unit-input'},{'name': 'OrganisationUnitSearchPage', 'selector': 'app-organisation-unit-search'},{'name': 'OrganisationUnitSelectionPage', 'selector': 'app-organisation-unit-selection'},{'name': 'OrganisationUnitTreeComponent', 'selector': 'app-organisation-unit-tree'},{'name': 'PasswordInputComponent', 'selector': 'app-password-input'},{'name': 'PercentageInputComponent', 'selector': 'app-percentage-input'},{'name': 'PhoneNumberInputComponent', 'selector': 'app-phone-number-input'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'RadioButtonComponent', 'selector': 'app-radio-button'},{'name': 'SloganComponent', 'selector': 'app-slogan'},{'name': 'TabsPage', 'selector': 'app-tabs'},{'name': 'TextInputComponent', 'selector': 'app-text-input'},{'name': 'TranslationSelectionPage', 'selector': 'app-translation-selection'},{'name': 'TrueOnlyInputComponent', 'selector': 'app-true-only-input'},{'name': 'UnitIntervalInputComponent', 'selector': 'app-unit-interval-input'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'DateTimeComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'DateTimeComponent.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

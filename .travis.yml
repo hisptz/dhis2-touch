@@ -2,9 +2,10 @@ sudo: false
 branches:
   only:
     - master
-    - develop
+    - develop-v3
     - stable-mobile-dev
 language: node_js
+
 node_js:
   - '8'
 
@@ -20,7 +21,7 @@ install:
 
 script:
   - npm run lint
-  - npm run ionic:build
+  - npm run build
 
 notifications:
   email:
@@ -28,4 +29,3 @@ notifications:
       - profschingalo@gmail.com
     on_failure: always
     on_success: always
-  slack: hisptz:2UQgrRwNrI14ohefnnPyzms7

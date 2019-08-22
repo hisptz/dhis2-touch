@@ -1,0 +1,808 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>DHIS 2 Touch</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/material.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">DHIS 2 Touch</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Injectables</li>
+  <li>ProgramRuleEngineService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/services/program-rule-engine.service.ts</code>
+        </p>
+
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#discoveringProgramRuleActionsFromServer">discoveringProgramRuleActionsFromServer</a>
+                            </li>
+                            <li>
+                                <a href="#discoveringProgramRulesFromServer">discoveringProgramRulesFromServer</a>
+                            </li>
+                            <li>
+                                <a href="#discoveringProgramRuleVariablesFromServer">discoveringProgramRuleVariablesFromServer</a>
+                            </li>
+                            <li>
+                                <a href="#savingProgramRuleActionsToLocalStorage">savingProgramRuleActionsToLocalStorage</a>
+                            </li>
+                            <li>
+                                <a href="#savingProgramRulesToLocalStorage">savingProgramRulesToLocalStorage</a>
+                            </li>
+                            <li>
+                                <a href="#savingProgramRuleVariablesToLocalStorage">savingProgramRuleVariablesToLocalStorage</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(httpCLientService: <a href="../injectables/HttpClientService.html">HttpClientService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/services/program-rule-engine.service.ts:39</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>httpCLientService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/HttpClientService.html" target="_self" >HttpClientService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="discoveringProgramRuleActionsFromServer"></a>
+                    <span class="name">
+                        <b>
+                            discoveringProgramRuleActionsFromServer
+                        </b>
+                        <a href="#discoveringProgramRuleActionsFromServer"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>discoveringProgramRuleActionsFromServer(currentUser: <a href="../interfaces/CurrentUser.html">CurrentUser</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="67"
+                            class="link-to-prism">src/app/services/program-rule-engine.service.ts:67</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>currentUser</td>
+                                    <td>
+                                                <code><a href="../interfaces/CurrentUser.html" target="_self" >CurrentUser</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="discoveringProgramRulesFromServer"></a>
+                    <span class="name">
+                        <b>
+                            discoveringProgramRulesFromServer
+                        </b>
+                        <a href="#discoveringProgramRulesFromServer"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>discoveringProgramRulesFromServer(currentUser: <a href="../interfaces/CurrentUser.html">CurrentUser</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="42"
+                            class="link-to-prism">src/app/services/program-rule-engine.service.ts:42</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>currentUser</td>
+                                    <td>
+                                                <code><a href="../interfaces/CurrentUser.html" target="_self" >CurrentUser</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="discoveringProgramRuleVariablesFromServer"></a>
+                    <span class="name">
+                        <b>
+                            discoveringProgramRuleVariablesFromServer
+                        </b>
+                        <a href="#discoveringProgramRuleVariablesFromServer"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>discoveringProgramRuleVariablesFromServer(currentUser: <a href="../interfaces/CurrentUser.html">CurrentUser</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="94"
+                            class="link-to-prism">src/app/services/program-rule-engine.service.ts:94</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>currentUser</td>
+                                    <td>
+                                                <code><a href="../interfaces/CurrentUser.html" target="_self" >CurrentUser</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="savingProgramRuleActionsToLocalStorage"></a>
+                    <span class="name">
+                        <b>
+                            savingProgramRuleActionsToLocalStorage
+                        </b>
+                        <a href="#savingProgramRuleActionsToLocalStorage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>savingProgramRuleActionsToLocalStorage(programRuleActions: any[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="139"
+                            class="link-to-prism">src/app/services/program-rule-engine.service.ts:139</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>programRuleActions</td>
+                                    <td>
+                                            <code>any[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="savingProgramRulesToLocalStorage"></a>
+                    <span class="name">
+                        <b>
+                            savingProgramRulesToLocalStorage
+                        </b>
+                        <a href="#savingProgramRulesToLocalStorage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>savingProgramRulesToLocalStorage(programRules: any[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="121"
+                            class="link-to-prism">src/app/services/program-rule-engine.service.ts:121</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>programRules</td>
+                                    <td>
+                                            <code>any[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="savingProgramRuleVariablesToLocalStorage"></a>
+                    <span class="name">
+                        <b>
+                            savingProgramRuleVariablesToLocalStorage
+                        </b>
+                        <a href="#savingProgramRuleVariablesToLocalStorage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>savingProgramRuleVariablesToLocalStorage(programRuleVariables: any[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="159"
+                            class="link-to-prism">src/app/services/program-rule-engine.service.ts:159</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>programRuleVariables</td>
+                                    <td>
+                                            <code>any[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@angular/core&#x27;;
+import { Observable } from &#x27;rxjs&#x27;;
+import * as _ from &#x27;lodash&#x27;;
+import { getRepository, Repository } from &#x27;typeorm&#x27;;
+import { HttpClientService } from &#x27;./http-client.service&#x27;;
+import { CurrentUser } from &#x27;src/models&#x27;;
+import { DEFAULT_APP_METADATA } from &#x27;src/constants&#x27;;
+import {
+  ProgramRuleEntity,
+  ProgramRuleActionEntity,
+  ProgramRuleVariableEntity
+} from &#x27;src/entites&#x27;;
+
+@Injectable({
+  providedIn: &#x27;root&#x27;
+})
+export class ProgramRuleEngineService {
+  constructor(private httpCLientService: HttpClientService) {}
+
+  discoveringProgramRulesFromServer(currentUser: CurrentUser): Observable&lt;any&gt; {
+    const programMetadata &#x3D; DEFAULT_APP_METADATA.programs;
+    const { defaultIds } &#x3D; programMetadata;
+    const resource &#x3D; &#x27;programRules&#x27;;
+    const fields &#x3D;
+      &#x27;id,name,displayName,description,condition,program[id],programRuleActions[id]&#x27;;
+    const filter &#x3D;
+      defaultIds &amp;&amp; defaultIds.length &gt; 0
+        ? &#x60;filter&#x3D;program.id:in:[${defaultIds.join(&#x27;,&#x27;)}]&#x60;
+        : &#x60;&#x60;;
+    const url &#x3D; &#x60;/api/${resource}.json?paging&#x3D;false&amp;fields&#x3D;${fields}&amp;${filter}&#x60;;
+    return new Observable(observer &#x3D;&gt; {
+      this.httpCLientService
+        .get(url, true, currentUser)
+        .then((response: any) &#x3D;&gt; {
+          const { programRules } &#x3D; response;
+          observer.next(programRules);
+          observer.complete();
+        })
+        .catch((error: any) &#x3D;&gt; {
+          observer.error(error);
+        });
+    });
+  }
+
+  discoveringProgramRuleActionsFromServer(
+    currentUser: CurrentUser
+  ): Observable&lt;any&gt; {
+    const programMetadata &#x3D; DEFAULT_APP_METADATA.programs;
+    const { defaultIds } &#x3D; programMetadata;
+    const resource &#x3D; &#x27;programRuleActions&#x27;;
+    const fields &#x3D;
+      &#x27;id,data,content,programRuleActionType,location,programRule[id],dataElement[id],trackedEntityAttribute[id],programStageSection[id],programStage[id]&#x27;;
+    const filter &#x3D;
+      defaultIds &amp;&amp; defaultIds.length &gt; 0
+        ? &#x60;filter&#x3D;programRule.program.id:in:[${defaultIds.join(&#x27;,&#x27;)}]&#x60;
+        : &#x60;&#x60;;
+    const url &#x3D; &#x60;/api/${resource}.json?paging&#x3D;false&amp;fields&#x3D;${fields}&amp;${filter}&#x60;;
+    return new Observable(observer &#x3D;&gt; {
+      this.httpCLientService
+        .get(url, true, currentUser)
+        .then((response: any) &#x3D;&gt; {
+          const { programRuleActions } &#x3D; response;
+          observer.next(programRuleActions);
+          observer.complete();
+        })
+        .catch((error: any) &#x3D;&gt; {
+          observer.error(error);
+        });
+    });
+  }
+
+  discoveringProgramRuleVariablesFromServer(
+    currentUser: CurrentUser
+  ): Observable&lt;any&gt; {
+    const programMetadata &#x3D; DEFAULT_APP_METADATA.programs;
+    const { defaultIds } &#x3D; programMetadata;
+    const resource &#x3D; &#x27;programRuleVariables&#x27;;
+    const fields &#x3D;
+      &#x27;id,name,displayName,programRuleVariableSourceType,program[id],dataElement[id],trackedEntityAttribute[id],programStageSection[id],programStage[id]&#x27;;
+    const filter &#x3D;
+      defaultIds &amp;&amp; defaultIds.length &gt; 0
+        ? &#x60;filter&#x3D;program.id:in:[${defaultIds.join(&#x27;,&#x27;)}]&#x60;
+        : &#x60;&#x60;;
+    const url &#x3D; &#x60;/api/${resource}.json?paging&#x3D;false&amp;fields&#x3D;${fields}&amp;${filter}&#x60;;
+    return new Observable(observer &#x3D;&gt; {
+      this.httpCLientService
+        .get(url, true, currentUser)
+        .then((response: any) &#x3D;&gt; {
+          const { programRuleVariables } &#x3D; response;
+          observer.next(programRuleVariables);
+          observer.complete();
+        })
+        .catch((error: any) &#x3D;&gt; {
+          observer.error(error);
+        });
+    });
+  }
+
+  savingProgramRulesToLocalStorage(programRules: any[]): Observable&lt;any&gt; {
+    return new Observable(observer &#x3D;&gt; {
+      const repository &#x3D; getRepository(&#x27;ProgramRuleEntity&#x27;) as Repository&lt;
+        ProgramRuleEntity
+      &gt;;
+      const chunk &#x3D; 50;
+      repository
+        .save(programRules, { chunk })
+        .then(() &#x3D;&gt; {
+          observer.next();
+          observer.complete();
+        })
+        .catch((error: any) &#x3D;&gt; {
+          observer.error(error);
+        });
+    });
+  }
+
+  savingProgramRuleActionsToLocalStorage(
+    programRuleActions: any[]
+  ): Observable&lt;any&gt; {
+    return new Observable(observer &#x3D;&gt; {
+      const repository &#x3D; getRepository(&#x27;ProgramRuleActionEntity&#x27;) as Repository&lt;
+        ProgramRuleActionEntity
+      &gt;;
+      const chunk &#x3D; 50;
+      repository
+        .save(programRuleActions, { chunk })
+        .then(() &#x3D;&gt; {
+          observer.next();
+          observer.complete();
+        })
+        .catch((error: any) &#x3D;&gt; {
+          observer.error(error);
+        });
+    });
+  }
+
+  savingProgramRuleVariablesToLocalStorage(
+    programRuleVariables: any[]
+  ): Observable&lt;any&gt; {
+    return new Observable(observer &#x3D;&gt; {
+      const repository &#x3D; getRepository(
+        &#x27;ProgramRuleVariableEntity&#x27;
+      ) as Repository&lt;ProgramRuleVariableEntity&gt;;
+      const chunk &#x3D; 50;
+      repository
+        .save(programRuleVariables, { chunk })
+        .then(() &#x3D;&gt; {
+          observer.next();
+          observer.complete();
+        })
+        .catch((error: any) &#x3D;&gt; {
+          observer.error(error);
+        });
+    });
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'ProgramRuleEngineService.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

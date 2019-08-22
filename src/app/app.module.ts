@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2015 HISP Tanzania
+ * Copyright 2019 HISP Tanzania
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,55 +17,73 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  *
- * @since 2015
+ * @since 2019
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-import { NgModule, ErrorHandler } from '@angular/core';
+
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { RouteReuseStrategy } from '@angular/router';
+
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+
+import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage';
 
-import { MyApp } from './app.component';
-import { TabsPage } from '../pages/tabs/tabs';
-
-//store
-import { reducers, effects, metaReducers } from '../store';
+// store
+import { reducers, metaReducers, effects } from './store';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
-// Multi-language
-import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+import { nativePlugins, appProviders } from './services';
+import { SharedComponentsModule } from './components/sharedComponents.module';
+import { TranslationSelectionPageModule } from './modals/translation-selection/translation-selection.module';
+import { LocalInstanceSelectionPageModule } from './modals/local-instance-selection/local-instance-selection.module';
+import { CoordinateSelectionPageModule } from './modals/coordinate-selection/coordinate-selection.module';
+import { OptionSetSelectionPageModule } from './modals/option-set-selection/option-set-selection.module';
+import { OrganisationUnitSearchPageModule } from './modals/organisation-unit-search/organisation-unit-search.module';
+import { OrganisationUnitSelectionPageModule } from './modals/organisation-unit-selection/organisation-unit-selection.module';
 
-// core services and native plugins
-import { appProviders, nativePlugins } from '../providers';
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
-  declarations: [MyApp, TabsPage],
+  declarations: [AppComponent],
+  entryComponents: [],
   imports: [
     BrowserModule,
+    IonicModule.forRoot(),
     IonicStorageModule.forRoot(),
     StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot(effects),
-    IonicModule.forRoot(MyApp, { scrollAssist: false, autoFocusAssist: false }),
     HttpClientModule,
-    TranslateModule.forRoot()
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: createTranslateLoader,
+        deps: [HttpClient]
+      }
+    }),
+    AppRoutingModule,
+    TranslationSelectionPageModule,
+    LocalInstanceSelectionPageModule,
+    CoordinateSelectionPageModule,
+    OptionSetSelectionPageModule,
+    OrganisationUnitSearchPageModule,
+    OrganisationUnitSelectionPageModule,
+    SharedComponentsModule
   ],
-  bootstrap: [IonicApp],
-  entryComponents: [MyApp, TabsPage],
   providers: [
-    HttpClient,
-    {
-      provide: TranslateLoader,
-      useFactory: (http: HttpClient) =>
-        new TranslateHttpLoader(http, '/assets/i18n/', '.json'),
-      deps: [HttpClient]
-    },
-    { provide: ErrorHandler, useClass: IonicErrorHandler },
-    ...appProviders,
-    ...nativePlugins
-  ]
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    ...nativePlugins,
+    ...appProviders
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

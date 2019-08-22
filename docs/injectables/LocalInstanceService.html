@@ -1,0 +1,677 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>DHIS 2 Touch</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/material.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">DHIS 2 Touch</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Injectables</li>
+  <li>LocalInstanceService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/services/local-instance.service.ts</code>
+        </p>
+
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getLocalInstances">getLocalInstances</a>
+                            </li>
+                            <li>
+                                <a href="#getSanitizedLocalInstances">getSanitizedLocalInstances</a>
+                            </li>
+                            <li>
+                                <a href="#getSanitizedLocalInstancesForSaving">getSanitizedLocalInstancesForSaving</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setLocalInstanceInstances">setLocalInstanceInstances</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(localStorageService: <a href="../injectables/LocalStorageService.html">LocalStorageService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/services/local-instance.service.ts:34</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>localStorageService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LocalStorageService.html" target="_self" >LocalStorageService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getLocalInstances"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getLocalInstances
+                        </b>
+                        <a href="#getLocalInstances"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getLocalInstances()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="37"
+                            class="link-to-prism">src/app/services/local-instance.service.ts:37</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getSanitizedLocalInstances"></a>
+                    <span class="name">
+                        <b>
+                            getSanitizedLocalInstances
+                        </b>
+                        <a href="#getSanitizedLocalInstances"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getSanitizedLocalInstances(localInstances: <a href="../interfaces/LocalInstance.html">LocalInstance[]</a>, defaultInstances: <a href="../interfaces/LocalInstance.html">LocalInstance[]</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="107"
+                            class="link-to-prism">src/app/services/local-instance.service.ts:107</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>localInstances</td>
+                                    <td>
+                                                <code><a href="../interfaces/LocalInstance.html" target="_self" >LocalInstance[]</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>defaultInstances</td>
+                                    <td>
+                                                <code><a href="../interfaces/LocalInstance.html" target="_self" >LocalInstance[]</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/LocalInstance.html" target="_self" >LocalInstance[]</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getSanitizedLocalInstancesForSaving"></a>
+                    <span class="name">
+                        <b>
+                            getSanitizedLocalInstancesForSaving
+                        </b>
+                        <a href="#getSanitizedLocalInstancesForSaving"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getSanitizedLocalInstancesForSaving(localInstances: <a href="../interfaces/LocalInstance.html">LocalInstance[]</a>, loggedInInInstance: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, currentUser: <a href="../interfaces/CurrentUser.html">CurrentUser</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="68"
+                            class="link-to-prism">src/app/services/local-instance.service.ts:68</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>localInstances</td>
+                                    <td>
+                                                <code><a href="../interfaces/LocalInstance.html" target="_self" >LocalInstance[]</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>loggedInInInstance</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>currentUser</td>
+                                    <td>
+                                                <code><a href="../interfaces/CurrentUser.html" target="_self" >CurrentUser</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/LocalInstance.html" target="_self" >LocalInstance[]</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setLocalInstanceInstances"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            setLocalInstanceInstances
+                        </b>
+                        <a href="#setLocalInstanceInstances"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setLocalInstanceInstances(localInstances: <a href="../interfaces/LocalInstance.html">LocalInstance[]</a>, loggedInInInstance: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, currentUser: <a href="../interfaces/CurrentUser.html">CurrentUser</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="51"
+                            class="link-to-prism">src/app/services/local-instance.service.ts:51</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>localInstances</td>
+                                    <td>
+                                                <code><a href="../interfaces/LocalInstance.html" target="_self" >LocalInstance[]</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>loggedInInInstance</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>currentUser</td>
+                                    <td>
+                                                <code><a href="../interfaces/CurrentUser.html" target="_self" >CurrentUser</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@angular/core&#x27;;
+import * as _ from &#x27;lodash&#x27;;
+
+import { LocalInstance, CurrentUser } from &#x27;src/models&#x27;;
+import { DEFAULT_LOCAL_INSTANCES } from &#x27;src/constants&#x27;;
+import { LocalStorageService } from &#x27;./local-storage.service&#x27;;
+
+@Injectable({
+  providedIn: &#x27;root&#x27;
+})
+export class LocalInstanceService {
+  constructor(private localStorageService: LocalStorageService) {}
+
+  async getLocalInstances() {
+    const defaultLocalInstances: LocalInstance[] &#x3D; DEFAULT_LOCAL_INSTANCES;
+    const key &#x3D; &#x27;LOCAL_INSTANCE_KEY&#x27;;
+    let localInstances &#x3D; await this.localStorageService.getDataFromLocalStorage(
+      key
+    );
+    localInstances &#x3D; localInstances ? localInstances : [];
+    const sanitizedLocalInstances &#x3D; this.getSanitizedLocalInstances(
+      localInstances,
+      defaultLocalInstances
+    );
+    return sanitizedLocalInstances;
+  }
+
+  async setLocalInstanceInstances(
+    localInstances: LocalInstance[],
+    loggedInInInstance: string,
+    currentUser: CurrentUser
+  ) {
+    const key &#x3D; &#x27;LOCAL_INSTANCE_KEY&#x27;;
+    const sanitizedLocalInstances &#x3D; this.getSanitizedLocalInstancesForSaving(
+      localInstances,
+      loggedInInInstance,
+      currentUser
+    );
+    return this.localStorageService.setDataOnLocalStorage(
+      sanitizedLocalInstances,
+      key
+    );
+  }
+
+  getSanitizedLocalInstancesForSaving(
+    localInstances: LocalInstance[],
+    loggedInInInstance: string,
+    currentUser: CurrentUser
+  ): LocalInstance[] {
+    localInstances &#x3D; _.filter(localInstances, (localInstance: any) &#x3D;&gt; {
+      return _.indexOf(localInstance.id, &#x27;default&#x27;) &gt; -1;
+    });
+    const { serverUrl, currentDatabase, currentLanguage } &#x3D; currentUser;
+    let newInstances: LocalInstance[] &#x3D; [];
+    if (!loggedInInInstance &amp;&amp; serverUrl) {
+      loggedInInInstance &#x3D; serverUrl;
+      if (serverUrl.split(&#x27;://&#x27;).length &gt; 1) {
+        loggedInInInstance &#x3D; serverUrl.split(&#x27;://&#x27;)[1];
+      }
+    }
+    newInstances &#x3D; [
+      ...newInstances,
+      {
+        id: currentDatabase,
+        name: loggedInInInstance,
+        currentUser: currentUser,
+        currentLanguage
+      }
+    ];
+    if (localInstances &amp;&amp; localInstances.length &gt; 0) {
+      localInstances.map((localInstance: any) &#x3D;&gt; {
+        if (localInstance.id !&#x3D;&#x3D; currentDatabase) {
+          if (!localInstance.currentUser.currentLanguage) {
+            localInstance.currentLanguage &#x3D; &#x27;en&#x27;;
+            localInstance.currentUser.currentLanguage &#x3D; &#x27;en&#x27;;
+          }
+          newInstances &#x3D; [...newInstances, localInstance];
+        }
+      });
+    }
+    return _.flattenDeep(newInstances);
+  }
+
+  getSanitizedLocalInstances(
+    localInstances: LocalInstance[],
+    defaultInstances: LocalInstance[]
+  ): LocalInstance[] {
+    let sanitizedLocalInstances: LocalInstance[] &#x3D; [];
+    const omittedDefaultInstances &#x3D; _.map(
+      localInstances,
+      (localInstance: LocalInstance) &#x3D;&gt; localInstance.name
+    );
+    if (localInstances.length &#x3D;&#x3D;&#x3D; 0) {
+      sanitizedLocalInstances &#x3D; _.flattenDepth([
+        ...sanitizedLocalInstances,
+        _.map(defaultInstances, (defaultInstance: LocalInstance) &#x3D;&gt; {
+          return {
+            ...defaultInstance,
+            name: defaultInstance.currentUser.serverUrl
+          };
+        })
+      ]);
+    } else {
+      sanitizedLocalInstances &#x3D; _.uniqBy(
+        _.flattenDeep(
+          _.map(
+            [
+              ...localInstances,
+              _.filter(
+                _.map(defaultInstances, (defaultInstance: LocalInstance) &#x3D;&gt; {
+                  return {
+                    ...defaultInstance,
+                    name: defaultInstance.currentUser.serverUrl
+                  };
+                }),
+                (defaultInstance: LocalInstance) &#x3D;&gt; {
+                  return (
+                    _.indexOf(omittedDefaultInstances, defaultInstance.name) &#x3D;&#x3D;&#x3D;
+                    -1
+                  );
+                }
+              )
+            ],
+            (localInstance: LocalInstance) &#x3D;&gt; {
+              const { name, currentUser } &#x3D; localInstance;
+              const { serverUrl } &#x3D; currentUser;
+              return { ...localInstance, name: name ? name : serverUrl };
+            }
+          )
+        ),
+        &#x27;id&#x27;
+      );
+    }
+    return sanitizedLocalInstances;
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'LocalInstanceService.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

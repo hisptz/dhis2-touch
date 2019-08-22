@@ -1,0 +1,11 @@
+version: '2'
+exclude_patterns:
+  - 'src/app/**/*.spec.ts'
+  - 'src/assets/library'
+  - 'src/assets/*.css'
+  - 'plugins'
+  - 'platforms'
+  - 'e2e'
+  - 'www'
+  - 'config'
+  - 'docs'

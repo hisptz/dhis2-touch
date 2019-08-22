@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2015 HISP Tanzania
+ * Copyright 2019 HISP Tanzania
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,25 +17,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  *
- * @since 2015
+ * @since 2019
  * @author Joseph Chingalo <profschingalo@gmail.com>
+ *
  */
 export interface SmsCommand {
-  dataSetId: string;
+  id: string;
   commandName: string;
-  separator: string;
   parserType: string;
-  smsCode: Array<SmsCode>;
+  separator: string;
+  smsCodes: SmsCode[];
 }
 
 export interface SmsCode {
-  smsCode?: string;
-  dataElements?: any;
-  categoryOptionCombos?: string;
-}
-
-export interface SmsConfiguration {
-  dataSetIds: Array<any>;
-  isStarted: boolean;
-  syncedSMSIds: Array<any>;
+  categoryOptionCombos: string;
+  dataElement: any;
+  smsCode: string;
 }

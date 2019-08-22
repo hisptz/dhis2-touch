@@ -1,0 +1,4 @@
+<ion-item no-lines>
+    <ion-label>Yes</ion-label>
+    <ion-checkbox slot="start" [disabled]="lockingFieldStatus" [color]="(colorSettings$ | async).colorAttributes.secondary" [(ngModel)]="inputFieldValue" (ionChange)="updateValues()"></ion-checkbox>
+</ion-item>

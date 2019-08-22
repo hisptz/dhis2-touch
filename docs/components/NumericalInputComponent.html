@@ -1,0 +1,870 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>DHIS 2 Touch</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/material.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">DHIS 2 Touch</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>NumericalInputComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/components/numerical-input/numerical-input.component.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-numerical-input</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./numerical-input.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./numerical-input.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#inputFieldValue">inputFieldValue</a>
+                            </li>
+                            <li>
+                                <a href="#showBarcodeScanner">showBarcodeScanner</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#ngOnInit">ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onChangeBarcodeReader">onChangeBarcodeReader</a>
+                            </li>
+                            <li>
+                                <a href="#updateValues">updateValues</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#barcodeSettings">barcodeSettings</a>
+                            </li>
+                            <li>
+                                <a href="#categoryOptionComboId">categoryOptionComboId</a>
+                            </li>
+                            <li>
+                                <a href="#data">data</a>
+                            </li>
+                            <li>
+                                <a href="#dataElementId">dataElementId</a>
+                            </li>
+                            <li>
+                                <a href="#lockingFieldStatus">lockingFieldStatus</a>
+                            </li>
+                            <li>
+                                <a href="#valueType">valueType</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#numericalValueChange">numericalValueChange</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(toasterMessage: <a href="../injectables/ToasterMessagesService.html">ToasterMessagesService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/app/components/numerical-input/numerical-input.component.ts:44</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>toasterMessage</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ToasterMessagesService.html" target="_self" >ToasterMessagesService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section>
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="barcodeSettings"></a>
+                        <b>barcodeSettings</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/BarcodeSetting.html" target="_self" >BarcodeSetting</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/components/numerical-input/numerical-input.component.ts:39</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="categoryOptionComboId"></a>
+                        <b>categoryOptionComboId</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/components/numerical-input/numerical-input.component.ts:35</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="data"></a>
+                        <b>data</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/components/numerical-input/numerical-input.component.ts:37</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="dataElementId"></a>
+                        <b>dataElementId</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/components/numerical-input/numerical-input.component.ts:34</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="lockingFieldStatus"></a>
+                        <b>lockingFieldStatus</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/components/numerical-input/numerical-input.component.ts:36</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="valueType"></a>
+                        <b>valueType</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/components/numerical-input/numerical-input.component.ts:38</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+    <section>
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="numericalValueChange"></a>
+                        <b>numericalValueChange</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/components/numerical-input/numerical-input.component.ts:41</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <b>
+                            ngOnInit
+                        </b>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="51"
+                            class="link-to-prism">src/app/components/numerical-input/numerical-input.component.ts:51</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onChangeBarcodeReader"></a>
+                    <span class="name">
+                        <b>
+                            onChangeBarcodeReader
+                        </b>
+                        <a href="#onChangeBarcodeReader"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onChangeBarcodeReader(dataResponse)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="79"
+                            class="link-to-prism">src/app/components/numerical-input/numerical-input.component.ts:79</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>dataResponse</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateValues"></a>
+                    <span class="name">
+                        <b>
+                            updateValues
+                        </b>
+                        <a href="#updateValues"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateValues()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="66"
+                            class="link-to-prism">src/app/components/numerical-input/numerical-input.component.ts:66</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="inputFieldValue"></a>
+                        <span class="name">
+                            <b>
+                            inputFieldValue</b>
+                            <a href="#inputFieldValue"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/components/numerical-input/numerical-input.component.ts:43</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="showBarcodeScanner"></a>
+                        <span class="name">
+                            <b>
+                            showBarcodeScanner</b>
+                            <a href="#showBarcodeScanner"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/app/components/numerical-input/numerical-input.component.ts:44</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, Input, OnInit, Output, EventEmitter } from &#x27;@angular/core&#x27;;
+import { ToasterMessagesService } from &#x27;src/app/services/toaster-messages.service&#x27;;
+import { BarcodeSetting } from &#x27;src/models&#x27;;
+
+@Component({
+  selector: &#x27;app-numerical-input&#x27;,
+  templateUrl: &#x27;./numerical-input.component.html&#x27;,
+  styleUrls: [&#x27;./numerical-input.component.scss&#x27;]
+})
+export class NumericalInputComponent implements OnInit {
+  @Input() dataElementId: string;
+  @Input() categoryOptionComboId: string;
+  @Input() lockingFieldStatus: boolean;
+  @Input() data: any;
+  @Input() valueType: string;
+  @Input() barcodeSettings: BarcodeSetting;
+
+  @Output() numericalValueChange &#x3D; new EventEmitter();
+
+  inputFieldValue: string;
+  showBarcodeScanner: boolean;
+
+  constructor(private toasterMessage: ToasterMessagesService) {
+    this.showBarcodeScanner &#x3D; false;
+    this.inputFieldValue &#x3D; &#x27;&#x27;;
+  }
+
+  ngOnInit() {
+    this.valueType &#x3D; this.valueType || &#x27;INTEGER&#x27;;
+    this.data &#x3D; this.data || {};
+    if (this.barcodeSettings) {
+      const { allowBarcodeReaderOnNumerical } &#x3D; this.barcodeSettings;
+      if (allowBarcodeReaderOnNumerical) {
+        this.showBarcodeScanner &#x3D; allowBarcodeReaderOnNumerical;
+      }
+    }
+    const id &#x3D; &#x60;${this.dataElementId}-${this.categoryOptionComboId}&#x60;;
+    if (this.data &amp;&amp; this.data[id]) {
+      this.inputFieldValue &#x3D; this.data[id].value;
+    }
+  }
+
+  updateValues() {
+    const id &#x3D; &#x60;${this.dataElementId}-${this.categoryOptionComboId}&#x60;;
+    const value &#x3D; this.inputFieldValue;
+    const status &#x3D; &#x27;not-synced&#x27;;
+    if (
+      this.data &amp;&amp;
+      ((this.data[id] &amp;&amp; value !&#x3D;&#x3D; this.data[id].value) || !this.data[id])
+    ) {
+      this.numericalValueChange.emit({ id, value, status });
+    }
+  }
+
+  // handling of multi lines data or key values pair
+  onChangeBarcodeReader(dataResponse) {
+    const { isMultlined } &#x3D; dataResponse;
+    const { data } &#x3D; dataResponse;
+    if (!isMultlined &amp;&amp; data) {
+      if (isNaN(data)) {
+        this.toasterMessage.showToasterMessage(
+          &#x27;Scanned value is not numerical value&#x27;
+        );
+      } else {
+        this.inputFieldValue &#x3D; data;
+        this.updateValues();
+      }
+    } else {
+      this.toasterMessage.showToasterMessage(
+        &#x27;Scanned value for multi line for numerical values is not yet supported&#x27;
+      );
+    }
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;!--
+*
+* Copyright 2019 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2019
+* @author Joseph Chingalo profschingalo@gmail.com&gt;
+*
+*
+--&gt;
+&lt;ion-row&gt;
+    &lt;ion-col&gt;
+        &lt;div&gt;
+            &lt;div *ngIf&#x3D;&quot;valueType &#x3D;&#x3D; &#x27;INTEGER&#x27; ||valueType &#x3D;&#x3D; &#x27;NUMBER&#x27;&quot;&gt;
+                &lt;ion-item no-lines&gt;
+                    &lt;ion-input [readonly]&#x3D;&quot;lockingFieldStatus&quot; type&#x3D;&quot;number&quot; (ionBlur)&#x3D;&quot;updateValues()&quot; [(ngModel)]&#x3D;&quot;inputFieldValue&quot;&gt;&lt;/ion-input&gt;
+                &lt;/ion-item&gt;
+            &lt;/div&gt;
+            &lt;div *ngIf&#x3D;&quot;valueType &#x3D;&#x3D; &#x27;INTEGER_POSITIVE&#x27;&quot;&gt;
+                &lt;ion-item no-lines&gt;
+                    &lt;ion-input [readonly]&#x3D;&quot;lockingFieldStatus&quot; type&#x3D;&quot;number&quot; min&#x3D;&quot;1&quot; (ionBlur)&#x3D;&quot;updateValues()&quot; [(ngModel)]&#x3D;&quot;inputFieldValue&quot;&gt;&lt;/ion-input&gt;
+                &lt;/ion-item&gt;
+            &lt;/div&gt;
+            &lt;div *ngIf&#x3D;&quot;valueType &#x3D;&#x3D; &#x27;INTEGER_NEGATIVE&#x27;&quot;&gt;
+                &lt;ion-item no-lines&gt;
+                    &lt;ion-input [readonly]&#x3D;&quot;lockingFieldStatus&quot; type&#x3D;&quot;number&quot; max&#x3D;&quot;-1&quot; (ionBlur)&#x3D;&quot;updateValues()&quot; [(ngModel)]&#x3D;&quot;inputFieldValue&quot;&gt;&lt;/ion-input&gt;
+                &lt;/ion-item&gt;
+            &lt;/div&gt;
+            &lt;div *ngIf&#x3D;&quot;valueType &#x3D;&#x3D; &#x27;INTEGER_ZERO_OR_POSITIVE&#x27;&quot;&gt;
+                &lt;ion-item no-lines&gt;
+                    &lt;ion-input [readonly]&#x3D;&quot;lockingFieldStatus&quot; type&#x3D;&quot;number&quot; min&#x3D;&quot;0&quot; (ionBlur)&#x3D;&quot;updateValues()&quot; [(ngModel)]&#x3D;&quot;inputFieldValue&quot;&gt;&lt;/ion-input&gt;
+                &lt;/ion-item&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/ion-col&gt;
+    &lt;ion-col size&#x3D;&quot;auto&quot; *ngIf&#x3D;&quot;showBarcodeScanner&quot;&gt;
+        &lt;div float-right&gt;
+            &lt;app-barcode-input [lockingFieldStatus]&#x3D;&quot;lockingFieldStatus&quot; [barcodeSettings]&#x3D;&quot;barcodeSettings&quot; (barcodeReaderChange)&#x3D;&quot;onChangeBarcodeReader($event)&quot;&gt;
+            &lt;/app-barcode-input&gt;
+        &lt;/div&gt;
+    &lt;/ion-col&gt;
+&lt;/ion-row&gt;</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./numerical-input.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss"></code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><!--** Copyright 2019 HISP Tanzania** This program is free software; you can redistribute it and/or modify* it under the terms of the GNU General Public License as published by* the Free Software Foundation; either version 2 of the License, or* (at your option) any later version.** This program is distributed in the hope that it will be useful,* but WITHOUT ANY WARRANTY; without even the implied warranty of* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the* GNU General Public License for more details.** You should have received a copy of the GNU General Public License* along with this program; if not, write to the Free Software* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,* MA 02110-1301, USA.** @since 2019* @author Joseph Chingalo profschingalo@gmail.com>**--><ion-row>    <ion-col>        <div>            <div *ngIf="valueType == \'INTEGER\' ||valueType == \'NUMBER\'">                <ion-item no-lines>                    <ion-input [readonly]="lockingFieldStatus" type="number" (ionBlur)="updateValues()" [(ngModel)]="inputFieldValue"></ion-input>                </ion-item>            </div>            <div *ngIf="valueType == \'INTEGER_POSITIVE\'">                <ion-item no-lines>                    <ion-input [readonly]="lockingFieldStatus" type="number" min="1" (ionBlur)="updateValues()" [(ngModel)]="inputFieldValue"></ion-input>                </ion-item>            </div>            <div *ngIf="valueType == \'INTEGER_NEGATIVE\'">                <ion-item no-lines>                    <ion-input [readonly]="lockingFieldStatus" type="number" max="-1" (ionBlur)="updateValues()" [(ngModel)]="inputFieldValue"></ion-input>                </ion-item>            </div>            <div *ngIf="valueType == \'INTEGER_ZERO_OR_POSITIVE\'">                <ion-item no-lines>                    <ion-input [readonly]="lockingFieldStatus" type="number" min="0" (ionBlur)="updateValues()" [(ngModel)]="inputFieldValue"></ion-input>                </ion-item>            </div>        </div>    </ion-col>    <ion-col size="auto" *ngIf="showBarcodeScanner">        <div float-right>            <app-barcode-input [lockingFieldStatus]="lockingFieldStatus" [barcodeSettings]="barcodeSettings" (barcodeReaderChange)="onChangeBarcodeReader($event)">            </app-barcode-input>        </div>    </ion-col></ion-row></div>'
+    var COMPONENTS = [{'name': 'AccountsPage', 'selector': 'app-accounts'},{'name': 'AgeInputComponent', 'selector': 'app-age-input'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AppItemComponent', 'selector': 'app-app-item'},{'name': 'AppsItemContainerComponent', 'selector': 'app-apps-item-container'},{'name': 'AppsPage', 'selector': 'app-apps'},{'name': 'BarcodeInputComponent', 'selector': 'app-barcode-input'},{'name': 'BooleanInputComponent', 'selector': 'app-boolean-input'},{'name': 'CoordinateComponent', 'selector': 'app-coordinate'},{'name': 'CoordinateInputComponent', 'selector': 'app-coordinate-input'},{'name': 'CoordinateSelectionPage', 'selector': 'app-coordinate-selection'},{'name': 'DateInputComponent', 'selector': 'app-date-input'},{'name': 'DateTimeComponent', 'selector': 'app-date-time'},{'name': 'EmailInputComponent', 'selector': 'app-email-input'},{'name': 'LaunchPage', 'selector': 'app-launch'},{'name': 'LocalInstanceSelectionPage', 'selector': 'app-local-instance-selection'},{'name': 'LoginFormComponent', 'selector': 'app-login-form'},{'name': 'LoginMetadataSyncComponent', 'selector': 'app-login-metadata-sync'},{'name': 'LoginPage', 'selector': 'app-login'},{'name': 'LoginSpinnerComponent', 'selector': 'app-login-spinner'},{'name': 'NumericalInputComponent', 'selector': 'app-numerical-input'},{'name': 'OptionSetInputComponent', 'selector': 'app-option-set-input'},{'name': 'OptionSetSelectionPage', 'selector': 'app-option-set-selection'},{'name': 'OrganisationUnitInputComponent', 'selector': 'app-organisation-unit-input'},{'name': 'OrganisationUnitSearchPage', 'selector': 'app-organisation-unit-search'},{'name': 'OrganisationUnitSelectionPage', 'selector': 'app-organisation-unit-selection'},{'name': 'OrganisationUnitTreeComponent', 'selector': 'app-organisation-unit-tree'},{'name': 'PasswordInputComponent', 'selector': 'app-password-input'},{'name': 'PercentageInputComponent', 'selector': 'app-percentage-input'},{'name': 'PhoneNumberInputComponent', 'selector': 'app-phone-number-input'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'RadioButtonComponent', 'selector': 'app-radio-button'},{'name': 'SloganComponent', 'selector': 'app-slogan'},{'name': 'TabsPage', 'selector': 'app-tabs'},{'name': 'TextInputComponent', 'selector': 'app-text-input'},{'name': 'TranslationSelectionPage', 'selector': 'app-translation-selection'},{'name': 'TrueOnlyInputComponent', 'selector': 'app-true-only-input'},{'name': 'UnitIntervalInputComponent', 'selector': 'app-unit-interval-input'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'NumericalInputComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'NumericalInputComponent.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

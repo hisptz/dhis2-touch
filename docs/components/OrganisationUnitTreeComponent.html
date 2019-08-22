@@ -1,0 +1,905 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>DHIS 2 Touch</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/material.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">DHIS 2 Touch</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>OrganisationUnitTreeComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/components/organisation-unit-tree/organisation-unit-tree.component.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-organisation-unit-tree</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./organisation-unit-tree.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./organisation-unit-tree.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#colorSettings$">colorSettings$</a>
+                            </li>
+                            <li>
+                                <a href="#isLoading">isLoading</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#ngOnInit">ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onSelectOrganisationUnit">onSelectOrganisationUnit</a>
+                            </li>
+                            <li>
+                                <a href="#onToogledOrganisationUnit">onToogledOrganisationUnit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setOrganisationUnitChildren">setOrganisationUnitChildren</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#isOrganisationUnitToggled">isOrganisationUnitToggled</a>
+                            </li>
+                            <li>
+                                <a href="#organisationUnit">organisationUnit</a>
+                            </li>
+                            <li>
+                                <a href="#selectedOrganisayionUnitIds">selectedOrganisayionUnitIds</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#selectOrganisationUnit">selectOrganisationUnit</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(store: <a href="../interfaces/State.html">Store<State></a>, organisationUnitService: <a href="../injectables/OrganisationUnitService.html">OrganisationUnitService</a>, toasterMessagesService: <a href="../injectables/ToasterMessagesService.html">ToasterMessagesService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/components/organisation-unit-tree/organisation-unit-tree.component.ts:46</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>store</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/State.html" target="_self" >Store&lt;State&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>organisationUnitService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/OrganisationUnitService.html" target="_self" >OrganisationUnitService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>toasterMessagesService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ToasterMessagesService.html" target="_self" >ToasterMessagesService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section>
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isOrganisationUnitToggled"></a>
+                        <b>isOrganisationUnitToggled</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/components/organisation-unit-tree/organisation-unit-tree.component.ts:40</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="organisationUnit"></a>
+                        <b>organisationUnit</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/OrganisationUnit.html" target="_self" >OrganisationUnit</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/components/organisation-unit-tree/organisation-unit-tree.component.ts:39</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectedOrganisayionUnitIds"></a>
+                        <b>selectedOrganisayionUnitIds</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string[]</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/components/organisation-unit-tree/organisation-unit-tree.component.ts:41</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+    <section>
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectOrganisationUnit"></a>
+                        <b>selectOrganisationUnit</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/components/organisation-unit-tree/organisation-unit-tree.component.ts:43</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <b>
+                            ngOnInit
+                        </b>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="57"
+                            class="link-to-prism">src/app/components/organisation-unit-tree/organisation-unit-tree.component.ts:57</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSelectOrganisationUnit"></a>
+                    <span class="name">
+                        <b>
+                            onSelectOrganisationUnit
+                        </b>
+                        <a href="#onSelectOrganisationUnit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSelectOrganisationUnit(organisationUnit: <a href="../interfaces/OrganisationUnit.html">OrganisationUnit</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="94"
+                            class="link-to-prism">src/app/components/organisation-unit-tree/organisation-unit-tree.component.ts:94</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>organisationUnit</td>
+                                    <td>
+                                                <code><a href="../interfaces/OrganisationUnit.html" target="_self" >OrganisationUnit</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onToogledOrganisationUnit"></a>
+                    <span class="name">
+                        <b>
+                            onToogledOrganisationUnit
+                        </b>
+                        <a href="#onToogledOrganisationUnit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onToogledOrganisationUnit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="86"
+                            class="link-to-prism">src/app/components/organisation-unit-tree/organisation-unit-tree.component.ts:86</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setOrganisationUnitChildren"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            setOrganisationUnitChildren
+                        </b>
+                        <a href="#setOrganisationUnitChildren"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setOrganisationUnitChildren(children: <a href="../interfaces/OrganisationUnit.html">OrganisationUnit[]</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="65"
+                            class="link-to-prism">src/app/components/organisation-unit-tree/organisation-unit-tree.component.ts:65</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>children</td>
+                                    <td>
+                                                <code><a href="../interfaces/OrganisationUnit.html" target="_self" >OrganisationUnit[]</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="colorSettings$"></a>
+                        <span class="name">
+                            <b>
+                            colorSettings$</b>
+                            <a href="#colorSettings$"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>Observable&lt;AppColorObject&gt;</code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/components/organisation-unit-tree/organisation-unit-tree.component.ts:46</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isLoading"></a>
+                        <span class="name">
+                            <b>
+                            isLoading</b>
+                            <a href="#isLoading"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/components/organisation-unit-tree/organisation-unit-tree.component.ts:45</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, Input, Output, EventEmitter } from &#x27;@angular/core&#x27;;
+import { Observable } from &#x27;rxjs&#x27;;
+import { Store } from &#x27;@ngrx/store&#x27;;
+import { State, getCurrentUserColorSettings } from &#x27;src/app/store&#x27;;
+import * as _ from &#x27;lodash&#x27;;
+import { OrganisationUnit, AppColorObject } from &#x27;src/models&#x27;;
+import { OrganisationUnitService } from &#x27;src/app/services/organisation-unit.service&#x27;;
+import { ToasterMessagesService } from &#x27;src/app/services/toaster-messages.service&#x27;;
+
+@Component({
+  selector: &#x27;app-organisation-unit-tree&#x27;,
+  templateUrl: &#x27;./organisation-unit-tree.component.html&#x27;,
+  styleUrls: [&#x27;./organisation-unit-tree.component.scss&#x27;]
+})
+export class OrganisationUnitTreeComponent implements OnInit {
+  @Input() organisationUnit: OrganisationUnit;
+  @Input() isOrganisationUnitToggled: any;
+  @Input() selectedOrganisayionUnitIds: string[];
+
+  @Output() selectOrganisationUnit &#x3D; new EventEmitter();
+
+  isLoading: boolean;
+  colorSettings$: Observable&lt;AppColorObject&gt;;
+
+  constructor(
+    private store: Store&lt;State&gt;,
+    private organisationUnitService: OrganisationUnitService,
+    private toasterMessagesService: ToasterMessagesService
+  ) {
+    this.colorSettings$ &#x3D; this.store.select(getCurrentUserColorSettings);
+    this.isLoading &#x3D; false;
+  }
+
+  ngOnInit() {
+    this.isOrganisationUnitToggled &#x3D; this.isOrganisationUnitToggled || {};
+    if (this.organisationUnit &amp;&amp; this.organisationUnit) {
+      const { children } &#x3D; this.organisationUnit;
+      this.setOrganisationUnitChildren(children);
+    }
+  }
+
+  async setOrganisationUnitChildren(children: OrganisationUnit[]) {
+    const ids &#x3D; _.map(children, (child: OrganisationUnit) &#x3D;&gt; child.id);
+    let organisationunits: OrganisationUnit[] &#x3D; [];
+    try {
+      const ouChildren &#x3D; await this.organisationUnitService.getOrganiisationUnitByIds(
+        ids
+      );
+      organisationunits &#x3D; _.orderBy(_.map(ouChildren, _.cloneDeep), &#x27;name&#x27;);
+    } catch (error) {
+      const message &#x3D; &#x60;Error ${JSON.stringify(error)}&#x60;;
+      console.log({ message });
+      this.toasterMessagesService.showToasterMessage(message);
+    } finally {
+      this.organisationUnit &#x3D; {
+        ...this.organisationUnit,
+        children: organisationunits
+      };
+      this.isLoading &#x3D; false;
+    }
+  }
+
+  onToogledOrganisationUnit() {
+    const { id } &#x3D; this.organisationUnit;
+    if (Object.keys(this.isOrganisationUnitToggled).indexOf(id) &#x3D;&#x3D;&#x3D; -1) {
+      this.isOrganisationUnitToggled[id] &#x3D; false;
+    }
+    this.isOrganisationUnitToggled[id] &#x3D; !this.isOrganisationUnitToggled[id];
+  }
+
+  onSelectOrganisationUnit(organisationUnit: OrganisationUnit) {
+    this.selectOrganisationUnit.emit(organisationUnit);
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;!--
+*
+* Copyright 2019 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2019
+* @author Joseph Chingalo profschingalo@gmail.com&gt;
+*
+*
+--&gt;
+&lt;div *ngIf&#x3D;&quot;isLoading&quot;&gt;
+    &lt;app-progress-bar [color]&#x3D;&quot;(colorSettings$ | async).colorAttributes.secondary&quot; [isIndeterminateProcess]&#x3D;&quot;true&quot; [processMessage]&#x3D;&quot;&#x27;&#x27;&quot;&gt;
+    &lt;/app-progress-bar&gt;
+&lt;/div&gt;
+&lt;div *ngIf&#x3D;&quot;!isLoading &amp;&amp; organisationUnit &amp;&amp; organisationUnit.children&quot;&gt;
+    &lt;ion-item lines&#x3D;&quot;none&quot; [ngClass]&#x3D;&quot;organisationUnit &amp;&amp; organisationUnit.children &amp;&amp; organisationUnit.children.length &#x3D;&#x3D;&#x3D; 0?&#x27;organisation-unit-without-children&#x27; : &#x27;&#x27;&quot;&gt;
+        &lt;ion-button *ngIf&#x3D;&quot;organisationUnit &amp;&amp; organisationUnit.children.length &gt; 0&quot; no-margin slot&#x3D;&quot;start&quot; color&#x3D;&quot;dark&quot; (click)&#x3D;&quot;onToogledOrganisationUnit()&quot; fill&#x3D;&quot;clear&quot;&gt;
+            &lt;ion-icon slot&#x3D;&quot;icon-only&quot; [name]&#x3D;&quot;isOrganisationUnitToggled &amp;&amp; isOrganisationUnitToggled[organisationUnit.id]?&#x27;remove-circle-outline&#x27;:&#x27;add-circle-outline&#x27;&quot;&gt;&lt;/ion-icon&gt;
+        &lt;/ion-button&gt;
+        &lt;ion-label (click)&#x3D;&quot;onSelectOrganisationUnit(organisationUnit)&quot;&gt;
+            &lt;div *ngIf&#x3D;&quot;!(organisationUnit &amp;&amp; organisationUnit.name)&quot;&gt;
+                &lt;app-progress-bar [color]&#x3D;&quot;(colorSettings$ | async).colorAttributes.secondary&quot; [isIndeterminateProcess]&#x3D;&quot;true&quot; [processMessage]&#x3D;&quot;&#x27;&#x27;&quot;&gt;
+                &lt;/app-progress-bar&gt;
+            &lt;/div&gt;
+            &lt;div *ngIf&#x3D;&quot;organisationUnit &amp;&amp; organisationUnit.name&quot;&gt;
+                &lt;ion-text [color]&#x3D;&quot;
+                          selectedOrganisayionUnitIds.indexOf(organisationUnit.id ) &gt; -1 ? &#x27;current-selection&#x27; : &#x27;&#x27;
+                        &quot;&gt;
+                    {{ organisationUnit.name }}
+                &lt;/ion-text&gt;
+            &lt;/div&gt;
+        &lt;/ion-label&gt;
+    &lt;/ion-item&gt;
+    &lt;div *ngIf&#x3D;&quot;isOrganisationUnitToggled &amp;&amp; isOrganisationUnitToggled[organisationUnit.id]&quot; class&#x3D;&quot;organisation-unit-children&quot;&gt;
+        &lt;div *ngFor&#x3D;&quot;let childOrgananisationUnit of organisationUnit.children; trackBy: trackByFn&quot;&gt;
+            &lt;app-organisation-unit-tree (selectOrganisationUnit)&#x3D;&quot;onSelectOrganisationUnit($event)&quot; [selectedOrganisayionUnitIds]&#x3D;&quot;selectedOrganisayionUnitIds&quot; [isOrganisationUnitToggled]&#x3D;&quot;isOrganisationUnitToggled&quot; [organisationUnit]&#x3D;&quot;childOrgananisationUnit&quot;&gt;&lt;/app-organisation-unit-tree&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./organisation-unit-tree.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">.organisation-unit-children {
+    margin-left: 10px;
+}
+
+.organisation-unit-without-children {
+    margin-left: 15px;
+}</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><!--** Copyright 2019 HISP Tanzania** This program is free software; you can redistribute it and/or modify* it under the terms of the GNU General Public License as published by* the Free Software Foundation; either version 2 of the License, or* (at your option) any later version.** This program is distributed in the hope that it will be useful,* but WITHOUT ANY WARRANTY; without even the implied warranty of* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the* GNU General Public License for more details.** You should have received a copy of the GNU General Public License* along with this program; if not, write to the Free Software* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,* MA 02110-1301, USA.** @since 2019* @author Joseph Chingalo profschingalo@gmail.com>**--><div *ngIf="isLoading">    <app-progress-bar [color]="(colorSettings$ | async).colorAttributes.secondary" [isIndeterminateProcess]="true" [processMessage]="\'\'">    </app-progress-bar></div><div *ngIf="!isLoading && organisationUnit && organisationUnit.children">    <ion-item lines="none" [ngClass]="organisationUnit && organisationUnit.children && organisationUnit.children.length === 0?\'organisation-unit-without-children\' : \'\'">        <ion-button *ngIf="organisationUnit && organisationUnit.children.length > 0" no-margin slot="start" color="dark" (click)="onToogledOrganisationUnit()" fill="clear">            <ion-icon slot="icon-only" [name]="isOrganisationUnitToggled && isOrganisationUnitToggled[organisationUnit.id]?\'remove-circle-outline\':\'add-circle-outline\'"></ion-icon>        </ion-button>        <ion-label (click)="onSelectOrganisationUnit(organisationUnit)">            <div *ngIf="!(organisationUnit && organisationUnit.name)">                <app-progress-bar [color]="(colorSettings$ | async).colorAttributes.secondary" [isIndeterminateProcess]="true" [processMessage]="\'\'">                </app-progress-bar>            </div>            <div *ngIf="organisationUnit && organisationUnit.name">                <ion-text [color]="                          selectedOrganisayionUnitIds.indexOf(organisationUnit.id ) > -1 ? \'current-selection\' : \'\'                        ">                    {{ organisationUnit.name }}                </ion-text>            </div>        </ion-label>    </ion-item>    <div *ngIf="isOrganisationUnitToggled && isOrganisationUnitToggled[organisationUnit.id]" class="organisation-unit-children">        <div *ngFor="let childOrgananisationUnit of organisationUnit.children; trackBy: trackByFn">            <app-organisation-unit-tree (selectOrganisationUnit)="onSelectOrganisationUnit($event)" [selectedOrganisayionUnitIds]="selectedOrganisayionUnitIds" [isOrganisationUnitToggled]="isOrganisationUnitToggled" [organisationUnit]="childOrgananisationUnit"></app-organisation-unit-tree>        </div>    </div></div></div>'
+    var COMPONENTS = [{'name': 'AccountsPage', 'selector': 'app-accounts'},{'name': 'AgeInputComponent', 'selector': 'app-age-input'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AppItemComponent', 'selector': 'app-app-item'},{'name': 'AppsItemContainerComponent', 'selector': 'app-apps-item-container'},{'name': 'AppsPage', 'selector': 'app-apps'},{'name': 'BarcodeInputComponent', 'selector': 'app-barcode-input'},{'name': 'BooleanInputComponent', 'selector': 'app-boolean-input'},{'name': 'CoordinateComponent', 'selector': 'app-coordinate'},{'name': 'CoordinateInputComponent', 'selector': 'app-coordinate-input'},{'name': 'CoordinateSelectionPage', 'selector': 'app-coordinate-selection'},{'name': 'DateInputComponent', 'selector': 'app-date-input'},{'name': 'DateTimeComponent', 'selector': 'app-date-time'},{'name': 'EmailInputComponent', 'selector': 'app-email-input'},{'name': 'LaunchPage', 'selector': 'app-launch'},{'name': 'LocalInstanceSelectionPage', 'selector': 'app-local-instance-selection'},{'name': 'LoginFormComponent', 'selector': 'app-login-form'},{'name': 'LoginMetadataSyncComponent', 'selector': 'app-login-metadata-sync'},{'name': 'LoginPage', 'selector': 'app-login'},{'name': 'LoginSpinnerComponent', 'selector': 'app-login-spinner'},{'name': 'NumericalInputComponent', 'selector': 'app-numerical-input'},{'name': 'OptionSetInputComponent', 'selector': 'app-option-set-input'},{'name': 'OptionSetSelectionPage', 'selector': 'app-option-set-selection'},{'name': 'OrganisationUnitInputComponent', 'selector': 'app-organisation-unit-input'},{'name': 'OrganisationUnitSearchPage', 'selector': 'app-organisation-unit-search'},{'name': 'OrganisationUnitSelectionPage', 'selector': 'app-organisation-unit-selection'},{'name': 'OrganisationUnitTreeComponent', 'selector': 'app-organisation-unit-tree'},{'name': 'PasswordInputComponent', 'selector': 'app-password-input'},{'name': 'PercentageInputComponent', 'selector': 'app-percentage-input'},{'name': 'PhoneNumberInputComponent', 'selector': 'app-phone-number-input'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'RadioButtonComponent', 'selector': 'app-radio-button'},{'name': 'SloganComponent', 'selector': 'app-slogan'},{'name': 'TabsPage', 'selector': 'app-tabs'},{'name': 'TextInputComponent', 'selector': 'app-text-input'},{'name': 'TranslationSelectionPage', 'selector': 'app-translation-selection'},{'name': 'TrueOnlyInputComponent', 'selector': 'app-true-only-input'},{'name': 'UnitIntervalInputComponent', 'selector': 'app-unit-interval-input'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'OrganisationUnitTreeComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'OrganisationUnitTreeComponent.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

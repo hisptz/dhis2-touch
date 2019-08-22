@@ -1,87 +1,146 @@
+<!--
+*
+* Copyright 2019 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2019
+* @author Joseph Chingalo profschingalo@gmail.com>
+*
+*
+-->
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-
+<html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <title>Ionic App</title>
-    <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="msapplication-tap-highlight" content="no">
+    <meta charset="utf-8" />
+    <title>dhis-2-touch</title>
 
-    <link rel="icon" type="image/x-icon" href="assets/icon/favicon.ico">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#4e8ef7">
+    <base href="/" />
 
-    <!-- add to homescreen for ios -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta
+      name="viewport"
+      content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
 
-    <script type="application/javascript" src="assets/library/jquery/jquery-2.1.1.min.js"></script>
-    <script type="application/javascript" src="assets/library/jquery-ui/jquery-ui.min.js"></script>
+    <!--Jquery files-->
+    <script
+      type="application/javascript"
+      src="assets/library/jquery/jquery-2.1.1.min.js"
+    ></script>
+    <script
+      type="application/javascript"
+      src="assets/library/jquery-ui/jquery-ui.min.js"
+    ></script>
 
-    <!-- cordova.js required for cordova apps (remove if not needed) -->
-    <script src="cordova.js"></script>
-
-    <!-- un-comment this code to enable service worker
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('service worker installed'))
-        .catch(err => console.error('Error', err));
-    }
-  </script>-->
-
-    <link href="build/main.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/library/animation/animate.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
+    <link
+      rel="stylesheet"
+      href="assets/library/animation/animate.min.css"
+      rel="stylesheet"
+    />
 
     <!-- add leaflet css from copied assets -->
-    <link href="assets/leaflet.css" rel="stylesheet">
-    <link href="assets/style.css" rel="stylesheet">
+    <link href="assets/leaflet.css" rel="stylesheet" />
+    <link href="assets/style.css" rel="stylesheet" />
 
     <!--add css for jquery ui-->
-    <link href="assets/library/jquery-ui/jquery-ui.min.css" rel="stylesheet">
-    <link href="assets/library/jquery-ui/jquery-ui.structure.min.css" rel="stylesheet">
+    <link href="assets/library/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+    <link
+      href="assets/library/jquery-ui/jquery-ui.structure.min.css"
+      rel="stylesheet"
+    />
 
+    <!-- add to homescreen for ios -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   </head>
 
   <body>
+    <app-root></app-root>
+    <!-- jquery calendar files-->
+    <script
+      type="text/javascript"
+      src="assets/library/dhis2/jQuery/calendars/jquery.calendars.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="assets/library/dhis2/jQuery/calendars/jquery.calendars.picker.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="assets/library/dhis2/jQuery/calendars/jquery.calendars.plus.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="assets/library/dhis2/jQuery/calendars/jquery.calendars.picker.ext.js"
+    ></script>
 
-    <!-- Ionic's root component and where the app will load -->
-    <ion-app></ion-app>
+    <script
+      type="text/javascript"
+      src="assets/library/dhis2/jQuery/calendars/jquery.calendars.coptic.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="assets/library/dhis2/jQuery/calendars/jquery.calendars.ethiopian.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="assets/library/dhis2/jQuery/calendars/jquery.calendars.islamic.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="assets/library/dhis2/jQuery/calendars/jquery.calendars.julian.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="assets/library/dhis2/jQuery/calendars/jquery.calendars.nepali.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="assets/library/dhis2/jQuery/calendars/jquery.calendars.thai.min.js"
+    ></script>
 
-    <!-- The polyfills js is generated during the build process -->
-    <script src="build/polyfills.js"></script>
+    <!-- Periods files-->
 
-    <!-- The vendor js is generated during the build process
-       It contains all of the dependencies in node_modules -->
-    <script src="build/vendor.js"></script>
-
-    <!-- The main bundle js is generated during the build process -->
-    <script src="build/main.js"></script>
-    <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.min.js"></script>
-    <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.picker.min.js"></script>
-    <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.plus.min.js"></script>
-    <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.picker.ext.js"></script>
-
-    <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.coptic.min.js"></script>
-    <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.ethiopian.min.js"></script>
-    <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.islamic.min.js"></script>
-    <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.julian.min.js"></script>
-    <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.nepali.min.js"></script>
-    <script type="text/javascript" src="assets/library/dhis2/jQuery/calendars/jquery.calendars.thai.min.js"></script>
-
-    <script src="assets/library/reportModule.js"></script>
     <script src="assets/library/dhis2/dhis2.util.js"></script>
     <script src="assets/library/dhis2/dhis2.period.js"></script>
     <script>
-      dhis2.period.calendar = $.calendars.instance('gregorian');
-      dhis2.period.generator = new dhis2.period.PeriodGenerator(dhis2.period.calendar, dhis2.period.DEFAULT_DATE_FORMAT);
       dhis2.network = {};
-
+      dhis2.period['initiateCalendar'] = function(calender) {
+        calender = calender ? calender : 'gregorian';
+        dhis2.period.calendar = $.calendars.instance(calender);
+        dhis2.period.generator = new dhis2.period.PeriodGenerator(
+          dhis2.period.calendar,
+          dhis2.period.DEFAULT_DATE_FORMAT
+        );
+      };
     </script>
-    <script type="text/javascript" src="assets/library/sql-lite-extension.js"></script>
-    <script type="text/javascript" src="assets/library/aggregate-data-extension.js"></script>
-    <script type="text/javascript" src="assets/library/case-based-extension.js"></script>
+    <script
+      type="text/javascript"
+      src="assets/library/sql-lite-extension.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="assets/library/aggregate-data-extension.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="assets/library/case-based-extension.js"
+    ></script>
   </body>
-
 </html>

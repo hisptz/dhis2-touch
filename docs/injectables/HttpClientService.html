@@ -1,0 +1,1211 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>DHIS 2 Touch</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/material.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">DHIS 2 Touch</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Injectables</li>
+  <li>HttpClientService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/services/http-client.service.ts</code>
+        </p>
+
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#delete">delete</a>
+                            </li>
+                            <li>
+                                <a href="#get">get</a>
+                            </li>
+                            <li>
+                                <a href="#getResponseWithoutPaginations">getResponseWithoutPaginations</a>
+                            </li>
+                            <li>
+                                <a href="#getResponseWithPaginations">getResponseWithPaginations</a>
+                            </li>
+                            <li>
+                                <a href="#getUrlBasedOnDhisVersion">getUrlBasedOnDhisVersion</a>
+                            </li>
+                            <li>
+                                <a href="#post">post</a>
+                            </li>
+                            <li>
+                                <a href="#put">put</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(http: HTTP, userServices: <a href="../injectables/UserService.html">UserService</a>, networkService: <a href="../injectables/NetworkService.html">NetworkService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/services/http-client.service.ts:12</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>http</td>
+                                                  
+                                                        <td>
+                                                                    <code>HTTP</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>userServices</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/UserService.html" target="_self" >UserService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>networkService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/NetworkService.html" target="_self" >NetworkService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="delete"></a>
+                    <span class="name">
+                        <b>
+                            delete
+                        </b>
+                        <a href="#delete"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>delete(url: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, user?: <a href="../interfaces/CurrentUser.html">CurrentUser</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="226"
+                            class="link-to-prism">src/app/services/http-client.service.ts:226</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>url</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>user</td>
+                                    <td>
+                                                <code><a href="../interfaces/CurrentUser.html" target="_self" >CurrentUser</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="get"></a>
+                    <span class="name">
+                        <b>
+                            get
+                        </b>
+                        <a href="#get"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>get(url: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, dataOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>, user?: <a href="../interfaces/CurrentUser.html">CurrentUser</a>, resourceName?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, pageSize?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="35"
+                            class="link-to-prism">src/app/services/http-client.service.ts:35</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Default value</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>url</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>dataOnly</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                        <code>false</code>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>user</td>
+                                    <td>
+                                                <code><a href="../interfaces/CurrentUser.html" target="_self" >CurrentUser</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+                                    <td>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>resourceName</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+                                    <td>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>pageSize</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+                                    <td>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getResponseWithoutPaginations"></a>
+                    <span class="name">
+                        <b>
+                            getResponseWithoutPaginations
+                        </b>
+                        <a href="#getResponseWithoutPaginations"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getResponseWithoutPaginations(apiUrl: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, headers: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, dataOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="144"
+                            class="link-to-prism">src/app/services/http-client.service.ts:144</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>apiUrl</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>headers</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>dataOnly</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getResponseWithPaginations"></a>
+                    <span class="name">
+                        <b>
+                            getResponseWithPaginations
+                        </b>
+                        <a href="#getResponseWithPaginations"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getResponseWithPaginations(apiUrl: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, testUrl: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, resourceName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, pageSize: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, headers: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="91"
+                            class="link-to-prism">src/app/services/http-client.service.ts:91</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>apiUrl</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>testUrl</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>resourceName</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>pageSize</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>headers</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUrlBasedOnDhisVersion"></a>
+                    <span class="name">
+                        <b>
+                            getUrlBasedOnDhisVersion
+                        </b>
+                        <a href="#getUrlBasedOnDhisVersion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getUrlBasedOnDhisVersion(url: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, currentUser: <a href="../interfaces/CurrentUser.html">CurrentUser</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="19"
+                            class="link-to-prism">src/app/services/http-client.service.ts:19</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>url</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>currentUser</td>
+                                    <td>
+                                                <code><a href="../interfaces/CurrentUser.html" target="_self" >CurrentUser</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="post"></a>
+                    <span class="name">
+                        <b>
+                            post
+                        </b>
+                        <a href="#post"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>post(url: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, data: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, user?: <a href="../interfaces/CurrentUser.html">CurrentUser</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="162"
+                            class="link-to-prism">src/app/services/http-client.service.ts:162</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>url</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>user</td>
+                                    <td>
+                                                <code><a href="../interfaces/CurrentUser.html" target="_self" >CurrentUser</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="put"></a>
+                    <span class="name">
+                        <b>
+                            put
+                        </b>
+                        <a href="#put"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>put(url: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, data: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, user?: <a href="../interfaces/CurrentUser.html">CurrentUser</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="194"
+                            class="link-to-prism">src/app/services/http-client.service.ts:194</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>url</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>user</td>
+                                    <td>
+                                                <code><a href="../interfaces/CurrentUser.html" target="_self" >CurrentUser</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@angular/core&#x27;;
+import { HTTP } from &#x27;@ionic-native/http/ngx&#x27;;
+import * as async from &#x27;async&#x27;;
+
+import { CurrentUser } from &#x27;src/models&#x27;;
+import { UserService } from &#x27;./user.service&#x27;;
+import { NetworkService } from &#x27;./network.service&#x27;;
+
+@Injectable({
+  providedIn: &#x27;root&#x27;
+})
+export class HttpClientService {
+  constructor(
+    private http: HTTP,
+    private userServices: UserService,
+    private networkService: NetworkService
+  ) {}
+
+  getUrlBasedOnDhisVersion(url: string, currentUser: CurrentUser) {
+    if (url.indexOf(&#x27;/api/&#x27;) &#x3D;&#x3D;&#x3D; -1 &amp;&amp; url.indexOf(&#x27;.json&#x27;) &gt; 0) {
+      url &#x3D; &#x27;/api/&#x27; + url;
+    }
+    const { dhisVersion } &#x3D; currentUser;
+    if (dhisVersion &amp;&amp; parseInt(dhisVersion, 10) &lt; 25) {
+      const pattern &#x3D; &#x27;/api/&#x27; + dhisVersion;
+      url &#x3D; url.replace(pattern, &#x27;/api/&#x27;);
+    } else if (dhisVersion &amp;&amp; parseInt(dhisVersion, 10) &gt;&#x3D; 25) {
+      const pattern &#x3D; &#x27;/api/&#x27; + dhisVersion;
+      url &#x3D; url.replace(&#x27;/api&#x27;, &#x27;/api&#x27;);
+      url &#x3D; url.replace(&#x27;/api&#x27;, pattern);
+    }
+    return encodeURI(url);
+  }
+
+  get(
+    url: string,
+    dataOnly: boolean &#x3D; false,
+    user?: CurrentUser,
+    resourceName?: string,
+    pageSize?: number
+  ) {
+    let apiUrl &#x3D; &#x27;&#x27;;
+    const { isAvailable, message } &#x3D; this.networkService.getNetWorkStatus();
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      if (isAvailable) {
+        this.userServices
+          .getSanizitizedUser(user)
+          .then((sanitizedUser: CurrentUser) &#x3D;&gt; {
+            const { username, password, serverUrl } &#x3D; sanitizedUser;
+            this.http.clearCookies();
+            const headers &#x3D; this.http.getBasicAuthHeader(username, password);
+            this.http.setDataSerializer(&#x27;json&#x27;);
+            apiUrl &#x3D;
+              serverUrl + this.getUrlBasedOnDhisVersion(url, sanitizedUser);
+            if (resourceName &amp;&amp; pageSize) {
+              const testUrl &#x3D;
+                serverUrl +
+                &#x60;/api/${resourceName}.json?fields&#x3D;none&amp;pageSize&#x3D;${pageSize}&#x60;;
+              this.getResponseWithPaginations(
+                apiUrl,
+                testUrl,
+                resourceName,
+                pageSize,
+                headers
+              )
+                .then(response &#x3D;&gt; {
+                  resolve(response);
+                })
+                .catch((error: any) &#x3D;&gt; {
+                  reject(error);
+                });
+            } else {
+              this.getResponseWithoutPaginations(apiUrl, headers, dataOnly)
+                .then(response &#x3D;&gt; {
+                  resolve(response);
+                })
+                .catch((error: any) &#x3D;&gt; {
+                  reject(error);
+                });
+            }
+          })
+          .catch((error: any) &#x3D;&gt; {
+            reject(error);
+          });
+      } else {
+        reject({ error: message });
+      }
+    });
+  }
+
+  getResponseWithPaginations(
+    apiUrl: string,
+    testUrl: string,
+    resourceName: string,
+    pageSize: number,
+    headers: any
+  ): Promise&lt;any&gt; {
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      this.http
+        .get(testUrl, {}, headers)
+        .then((initialResponse: any) &#x3D;&gt; {
+          initialResponse &#x3D; JSON.parse(initialResponse.data);
+          initialResponse[resourceName] &#x3D; [];
+          const paginatedUrls &#x3D; [];
+          for (let i &#x3D; 1; i &lt;&#x3D; initialResponse.pager.pageCount; i++) {
+            const paginatedUrl &#x3D;
+              apiUrl + &#x27;&amp;pageSize&#x3D;&#x27; + pageSize + &#x27;&amp;page&#x3D;&#x27; + i;
+            paginatedUrls.push(paginatedUrl);
+          }
+          const that &#x3D; this;
+          let completedStages &#x3D; 0;
+          async.mapLimit(
+            paginatedUrls,
+            paginatedUrls.length,
+            async function(paginatedUrl) {
+              try {
+                let response &#x3D; await that.http.get(paginatedUrl, {}, headers);
+                response &#x3D; JSON.parse(response.data);
+                initialResponse[resourceName] &#x3D; initialResponse[
+                  resourceName
+                ].concat(response[resourceName]);
+                completedStages++;
+                if (completedStages &#x3D;&#x3D;&#x3D; paginatedUrls.length) {
+                  resolve(initialResponse);
+                }
+              } catch (error) {
+                reject(error);
+              }
+            },
+            (error, results) &#x3D;&gt; {
+              if (error) {
+                reject(error);
+              } else {
+                resolve(initialResponse);
+              }
+            }
+          );
+        })
+        .catch((error: any) &#x3D;&gt; {
+          reject(error);
+        });
+    });
+  }
+  getResponseWithoutPaginations(
+    apiUrl: string,
+    headers: any,
+    dataOnly: boolean
+  ): Promise&lt;any&gt; {
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      this.http
+        .get(apiUrl, {}, headers)
+        .then((response: any) &#x3D;&gt; {
+          const responseData &#x3D; dataOnly ? JSON.parse(response.data) : response;
+          resolve(responseData);
+        })
+        .catch((error: any) &#x3D;&gt; {
+          reject(error);
+        });
+    });
+  }
+
+  post(url: string, data: any, user?: CurrentUser): Promise&lt;any&gt; {
+    let apiUrl &#x3D; &#x27;&#x27;;
+    const { isAvailable, message } &#x3D; this.networkService.getNetWorkStatus();
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      if (isAvailable) {
+        this.userServices
+          .getSanizitizedUser(user)
+          .then((sanitizedUser: CurrentUser) &#x3D;&gt; {
+            const { username, password } &#x3D; sanitizedUser;
+            this.http.clearCookies();
+            const headers &#x3D; this.http.getBasicAuthHeader(username, password);
+            this.http.setDataSerializer(&#x27;json&#x27;);
+            apiUrl &#x3D;
+              user.serverUrl +
+              this.getUrlBasedOnDhisVersion(url, sanitizedUser);
+            this.http
+              .post(apiUrl, data, headers)
+              .then(response &#x3D;&gt; {
+                resolve(response);
+              })
+              .catch((error: any) &#x3D;&gt; {
+                reject(error);
+              });
+          })
+          .catch((error: any) &#x3D;&gt; {
+            reject(error);
+          });
+      } else {
+        reject({ error: message });
+      }
+    });
+  }
+  put(url: string, data: any, user?: CurrentUser): Promise&lt;any&gt; {
+    let apiUrl &#x3D; &#x27;&#x27;;
+    const { isAvailable, message } &#x3D; this.networkService.getNetWorkStatus();
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      if (isAvailable) {
+        this.userServices
+          .getSanizitizedUser(user)
+          .then((sanitizedUser: CurrentUser) &#x3D;&gt; {
+            const { username, password } &#x3D; sanitizedUser;
+            this.http.clearCookies();
+            const headers &#x3D; this.http.getBasicAuthHeader(username, password);
+            this.http.setDataSerializer(&#x27;json&#x27;);
+            apiUrl &#x3D;
+              user.serverUrl +
+              this.getUrlBasedOnDhisVersion(url, sanitizedUser);
+            this.http
+              .put(apiUrl, data, headers)
+              .then(response &#x3D;&gt; {
+                resolve(response);
+              })
+              .catch((error: any) &#x3D;&gt; {
+                reject(error);
+              });
+          })
+          .catch((error: any) &#x3D;&gt; {
+            reject(error);
+          });
+      } else {
+        reject({ error: message });
+      }
+    });
+  }
+  delete(url: string, user?: CurrentUser): Promise&lt;any&gt; {
+    let apiUrl &#x3D; &#x27;&#x27;;
+    const { isAvailable, message } &#x3D; this.networkService.getNetWorkStatus();
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      if (isAvailable) {
+        this.userServices
+          .getSanizitizedUser(user)
+          .then((sanitizedUser: CurrentUser) &#x3D;&gt; {
+            const { username, password } &#x3D; sanitizedUser;
+            this.http.clearCookies();
+            const headers &#x3D; this.http.getBasicAuthHeader(username, password);
+            this.http.setDataSerializer(&#x27;json&#x27;);
+            apiUrl &#x3D;
+              user.serverUrl +
+              this.getUrlBasedOnDhisVersion(url, sanitizedUser);
+            this.http
+              .delete(apiUrl, {}, headers)
+              .then(response &#x3D;&gt; {
+                resolve(response);
+              })
+              .catch((error: any) &#x3D;&gt; {
+                reject(error);
+              });
+          })
+          .catch((error: any) &#x3D;&gt; {
+            reject(error);
+          });
+      } else {
+        reject({ error: message });
+      }
+    });
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'HttpClientService.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

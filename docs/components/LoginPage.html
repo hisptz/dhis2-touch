@@ -1,0 +1,2388 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>DHIS 2 Touch</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/material.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">DHIS 2 Touch</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>LoginPage</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/login/login.page.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-login</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./login.page.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./login.page.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#appIcon">appIcon</a>
+                            </li>
+                            <li>
+                                <a href="#applicationTitle">applicationTitle</a>
+                            </li>
+                            <li>
+                                <a href="#buttonSlogan">buttonSlogan</a>
+                            </li>
+                            <li>
+                                <a href="#colorSettings$">colorSettings$</a>
+                            </li>
+                            <li>
+                                <a href="#currentUser">currentUser</a>
+                            </li>
+                            <li>
+                                <a href="#isLoginFormValid">isLoginFormValid</a>
+                            </li>
+                            <li>
+                                <a href="#isLoginProcessActive">isLoginProcessActive</a>
+                            </li>
+                            <li>
+                                <a href="#isOnLogin">isOnLogin</a>
+                            </li>
+                            <li>
+                                <a href="#keyApplicationFooter">keyApplicationFooter</a>
+                            </li>
+                            <li>
+                                <a href="#keyApplicationIntro">keyApplicationIntro</a>
+                            </li>
+                            <li>
+                                <a href="#keyApplicationNotification">keyApplicationNotification</a>
+                            </li>
+                            <li>
+                                <a href="#keyFlag">keyFlag</a>
+                            </li>
+                            <li>
+                                <a href="#localInstances">localInstances</a>
+                            </li>
+                            <li>
+                                <a href="#offlineIcon">offlineIcon</a>
+                            </li>
+                            <li>
+                                <a href="#overAllLoginMessage">overAllLoginMessage</a>
+                            </li>
+                            <li>
+                                <a href="#processes">processes</a>
+                            </li>
+                            <li>
+                                <a href="#showOverallProgressBar">showOverallProgressBar</a>
+                            </li>
+                            <li>
+                                <a href="#topSlogan">topSlogan</a>
+                            </li>
+                            <li>
+                                <a href="#topThreeTranslationCodes">topThreeTranslationCodes</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#fetchAndSetCurrentUser">fetchAndSetCurrentUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getAndSetLocalInstance">getAndSetLocalInstance</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit">ngOnInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#onCancelLoginProcess">onCancelLoginProcess</a>
+                            </li>
+                            <li>
+                                <a href="#onFailLogin">onFailLogin</a>
+                            </li>
+                            <li>
+                                <a href="#onFormFieldChange">onFormFieldChange</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#onStartLoginProcess">onStartLoginProcess</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#onSuccessLogin">onSuccessLogin</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#onSystemSettingLoaded">onSystemSettingLoaded</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#onUpdateCurrentUser">onUpdateCurrentUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#openLocalInstancesSelection">openLocalInstancesSelection</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#openTranslationCodeSelection">openTranslationCodeSelection</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#reCheckingAppSetting">reCheckingAppSetting</a>
+                            </li>
+                            <li>
+                                <a href="#resetLoginSpinnerValues">resetLoginSpinnerValues</a>
+                            </li>
+                            <li>
+                                <a href="#updateTranslationLanguage">updateTranslationLanguage</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(backgroundMode: BackgroundMode, toasterMessageService: <a href="../injectables/ToasterMessagesService.html">ToasterMessagesService</a>, encryptionService: <a href="../injectables/EncryptionService.html">EncryptionService</a>, translationService: <a href="../injectables/AppTransalationsService.html">AppTransalationsService</a>, localInstanceServices: <a href="../injectables/LocalInstanceService.html">LocalInstanceService</a>, userService: <a href="../injectables/UserService.html">UserService</a>, systemSettingService: <a href="../injectables/SystemSettingService.html">SystemSettingService</a>, settingService: <a href="../injectables/SettingService.html">SettingService</a>, navCtrl: NavController, modalController: ModalController, store: <a href="../interfaces/State.html">Store<State></a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="84" class="link-to-prism">src/app/login/login.page.ts:84</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>backgroundMode</td>
+                                                  
+                                                        <td>
+                                                                    <code>BackgroundMode</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>toasterMessageService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ToasterMessagesService.html" target="_self" >ToasterMessagesService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>encryptionService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/EncryptionService.html" target="_self" >EncryptionService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>translationService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AppTransalationsService.html" target="_self" >AppTransalationsService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>localInstanceServices</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LocalInstanceService.html" target="_self" >LocalInstanceService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>userService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/UserService.html" target="_self" >UserService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>systemSettingService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/SystemSettingService.html" target="_self" >SystemSettingService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>settingService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/SettingService.html" target="_self" >SettingService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>navCtrl</td>
+                                                  
+                                                        <td>
+                                                                    <code>NavController</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>modalController</td>
+                                                  
+                                                        <td>
+                                                                    <code>ModalController</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>store</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/State.html" target="_self" >Store&lt;State&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fetchAndSetCurrentUser"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            fetchAndSetCurrentUser
+                        </b>
+                        <a href="#fetchAndSetCurrentUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>fetchAndSetCurrentUser()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="117"
+                            class="link-to-prism">src/app/login/login.page.ts:117</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAndSetLocalInstance"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getAndSetLocalInstance
+                        </b>
+                        <a href="#getAndSetLocalInstance"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAndSetLocalInstance()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="127"
+                            class="link-to-prism">src/app/login/login.page.ts:127</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <b>
+                            ngOnInit
+                        </b>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="112"
+                            class="link-to-prism">src/app/login/login.page.ts:112</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onCancelLoginProcess"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            onCancelLoginProcess
+                        </b>
+                        <a href="#onCancelLoginProcess"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onCancelLoginProcess()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="209"
+                            class="link-to-prism">src/app/login/login.page.ts:209</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onFailLogin"></a>
+                    <span class="name">
+                        <b>
+                            onFailLogin
+                        </b>
+                        <a href="#onFailLogin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onFailLogin(errorResponseObject: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="214"
+                            class="link-to-prism">src/app/login/login.page.ts:214</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>errorResponseObject</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onFormFieldChange"></a>
+                    <span class="name">
+                        <b>
+                            onFormFieldChange
+                        </b>
+                        <a href="#onFormFieldChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onFormFieldChange(data: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="174"
+                            class="link-to-prism">src/app/login/login.page.ts:174</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onStartLoginProcess"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            onStartLoginProcess
+                        </b>
+                        <a href="#onStartLoginProcess"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onStartLoginProcess()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="185"
+                            class="link-to-prism">src/app/login/login.page.ts:185</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSuccessLogin"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            onSuccessLogin
+                        </b>
+                        <a href="#onSuccessLogin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onSuccessLogin(data)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="240"
+                            class="link-to-prism">src/app/login/login.page.ts:240</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>data</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSystemSettingLoaded"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            onSystemSettingLoaded
+                        </b>
+                        <a href="#onSystemSettingLoaded"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onSystemSettingLoaded(systemSettings: <a href="../interfaces/SystemSettings.html">SystemSettings</a>, skipSaving?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="301"
+                            class="link-to-prism">src/app/login/login.page.ts:301</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>systemSettings</td>
+                                    <td>
+                                                <code><a href="../interfaces/SystemSettings.html" target="_self" >SystemSettings</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>skipSaving</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onUpdateCurrentUser"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            onUpdateCurrentUser
+                        </b>
+                        <a href="#onUpdateCurrentUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onUpdateCurrentUser(currentUser: <a href="../interfaces/CurrentUser.html">CurrentUser</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="200"
+                            class="link-to-prism">src/app/login/login.page.ts:200</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>currentUser</td>
+                                    <td>
+                                                <code><a href="../interfaces/CurrentUser.html" target="_self" >CurrentUser</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openLocalInstancesSelection"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            openLocalInstancesSelection
+                        </b>
+                        <a href="#openLocalInstancesSelection"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>openLocalInstancesSelection()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="131"
+                            class="link-to-prism">src/app/login/login.page.ts:131</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openTranslationCodeSelection"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            openTranslationCodeSelection
+                        </b>
+                        <a href="#openTranslationCodeSelection"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>openTranslationCodeSelection()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="152"
+                            class="link-to-prism">src/app/login/login.page.ts:152</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="reCheckingAppSetting"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            reCheckingAppSetting
+                        </b>
+                        <a href="#reCheckingAppSetting"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>reCheckingAppSetting(currentUser: <a href="../interfaces/CurrentUser.html">CurrentUser</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="285"
+                            class="link-to-prism">src/app/login/login.page.ts:285</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>currentUser</td>
+                                    <td>
+                                                <code><a href="../interfaces/CurrentUser.html" target="_self" >CurrentUser</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetLoginSpinnerValues"></a>
+                    <span class="name">
+                        <b>
+                            resetLoginSpinnerValues
+                        </b>
+                        <a href="#resetLoginSpinnerValues"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>resetLoginSpinnerValues()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="329"
+                            class="link-to-prism">src/app/login/login.page.ts:329</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateTranslationLanguage"></a>
+                    <span class="name">
+                        <b>
+                            updateTranslationLanguage
+                        </b>
+                        <a href="#updateTranslationLanguage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateTranslationLanguage(currentLanguage: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="169"
+                            class="link-to-prism">src/app/login/login.page.ts:169</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>currentLanguage</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="appIcon"></a>
+                        <span class="name">
+                            <b>
+                            appIcon</b>
+                            <a href="#appIcon"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/app/login/login.page.ts:67</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="applicationTitle"></a>
+                        <span class="name">
+                            <b>
+                            applicationTitle</b>
+                            <a href="#applicationTitle"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="77" class="link-to-prism">src/app/login/login.page.ts:77</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="buttonSlogan"></a>
+                        <span class="name">
+                            <b>
+                            buttonSlogan</b>
+                            <a href="#buttonSlogan"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/app/login/login.page.ts:66</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="colorSettings$"></a>
+                        <span class="name">
+                            <b>
+                            colorSettings$</b>
+                            <a href="#colorSettings$"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>Observable&lt;AppColorObject&gt;</code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="84" class="link-to-prism">src/app/login/login.page.ts:84</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="currentUser"></a>
+                        <span class="name">
+                            <b>
+                            currentUser</b>
+                            <a href="#currentUser"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../interfaces/CurrentUser.html" target="_self" >CurrentUser</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="81" class="link-to-prism">src/app/login/login.page.ts:81</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isLoginFormValid"></a>
+                        <span class="name">
+                            <b>
+                            isLoginFormValid</b>
+                            <a href="#isLoginFormValid"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">src/app/login/login.page.ts:69</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isLoginProcessActive"></a>
+                        <span class="name">
+                            <b>
+                            isLoginProcessActive</b>
+                            <a href="#isLoginProcessActive"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/app/login/login.page.ts:68</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isOnLogin"></a>
+                        <span class="name">
+                            <b>
+                            isOnLogin</b>
+                            <a href="#isOnLogin"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">src/app/login/login.page.ts:70</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="keyApplicationFooter"></a>
+                        <span class="name">
+                            <b>
+                            keyApplicationFooter</b>
+                            <a href="#keyApplicationFooter"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="76" class="link-to-prism">src/app/login/login.page.ts:76</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="keyApplicationIntro"></a>
+                        <span class="name">
+                            <b>
+                            keyApplicationIntro</b>
+                            <a href="#keyApplicationIntro"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">src/app/login/login.page.ts:79</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="keyApplicationNotification"></a>
+                        <span class="name">
+                            <b>
+                            keyApplicationNotification</b>
+                            <a href="#keyApplicationNotification"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">src/app/login/login.page.ts:78</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="keyFlag"></a>
+                        <span class="name">
+                            <b>
+                            keyFlag</b>
+                            <a href="#keyFlag"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">src/app/login/login.page.ts:75</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="localInstances"></a>
+                        <span class="name">
+                            <b>
+                            localInstances</b>
+                            <a href="#localInstances"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../interfaces/LocalInstance.html" target="_self" >LocalInstance[]</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/app/login/login.page.ts:73</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="offlineIcon"></a>
+                        <span class="name">
+                            <b>
+                            offlineIcon</b>
+                            <a href="#offlineIcon"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">src/app/login/login.page.ts:82</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="overAllLoginMessage"></a>
+                        <span class="name">
+                            <b>
+                            overAllLoginMessage</b>
+                            <a href="#overAllLoginMessage"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="80" class="link-to-prism">src/app/login/login.page.ts:80</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="processes"></a>
+                        <span class="name">
+                            <b>
+                            processes</b>
+                            <a href="#processes"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>string[]</code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">src/app/login/login.page.ts:74</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="showOverallProgressBar"></a>
+                        <span class="name">
+                            <b>
+                            showOverallProgressBar</b>
+                            <a href="#showOverallProgressBar"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">src/app/login/login.page.ts:71</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="topSlogan"></a>
+                        <span class="name">
+                            <b>
+                            topSlogan</b>
+                            <a href="#topSlogan"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/app/login/login.page.ts:65</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="topThreeTranslationCodes"></a>
+                        <span class="name">
+                            <b>
+                            topThreeTranslationCodes</b>
+                            <a href="#topThreeTranslationCodes"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>string[]</code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">src/app/login/login.page.ts:72</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+import * as _ from &#x27;lodash&#x27;;
+import { BackgroundMode } from &#x27;@ionic-native/background-mode/ngx&#x27;;
+import { NavController, ModalController } from &#x27;@ionic/angular&#x27;;
+import { Store } from &#x27;@ngrx/store&#x27;;
+import { Observable } from &#x27;rxjs&#x27;;
+import {
+  State,
+  AddCurrentUser,
+  SetCurrentUserColorSettings,
+  getCurrentUserColorSettings
+} from &#x27;../store&#x27;;
+import {
+  CurrentUser,
+  LocalInstance,
+  SystemSettings,
+  AppSetting,
+  AppColorObject,
+  Translation
+} from &#x27;src/models&#x27;;
+import { DEFAULT_USER, DEFAULT_SETTINGS } from &#x27;src/constants&#x27;;
+
+import { TranslationSelectionPage } from &#x27;../modals/translation-selection/translation-selection.page&#x27;;
+import { LocalInstanceSelectionPage } from &#x27;../modals/local-instance-selection/local-instance-selection.page&#x27;;
+
+import { ToasterMessagesService } from &#x27;../services/toaster-messages.service&#x27;;
+import { EncryptionService } from &#x27;../services/encryption.service&#x27;;
+import { AppTransalationsService } from &#x27;../services/app-transalations.service&#x27;;
+import { LocalInstanceService } from &#x27;../services/local-instance.service&#x27;;
+import { UserService } from &#x27;../services/user.service&#x27;;
+import { SystemSettingService } from &#x27;../services/system-setting.service&#x27;;
+import { SettingService } from &#x27;../services/setting.service&#x27;;
+import { getAppMetadata } from &#x27;src/helpers&#x27;;
+
+@Component({
+  selector: &#x27;app-login&#x27;,
+  templateUrl: &#x27;./login.page.html&#x27;,
+  styleUrls: [&#x27;./login.page.scss&#x27;]
+})
+export class LoginPage implements OnInit {
+  topSlogan: string;
+  buttonSlogan: string;
+  appIcon: string;
+  isLoginProcessActive: boolean;
+  isLoginFormValid: boolean;
+  isOnLogin: boolean;
+  showOverallProgressBar: boolean;
+  topThreeTranslationCodes: string[];
+  localInstances: LocalInstance[];
+  processes: string[];
+  keyFlag: string;
+  keyApplicationFooter: string;
+  applicationTitle: string;
+  keyApplicationNotification: string;
+  keyApplicationIntro: string;
+  overAllLoginMessage: string;
+  currentUser: CurrentUser;
+  offlineIcon: string;
+
+  colorSettings$: Observable&lt;AppColorObject&gt;;
+
+  constructor(
+    private backgroundMode: BackgroundMode,
+    private toasterMessageService: ToasterMessagesService,
+    private encryptionService: EncryptionService,
+    private translationService: AppTransalationsService,
+    private localInstanceServices: LocalInstanceService,
+    private userService: UserService,
+    private systemSettingService: SystemSettingService,
+    private settingService: SettingService,
+    private navCtrl: NavController,
+    private modalController: ModalController,
+    private store: Store&lt;State&gt;
+  ) {
+    this.colorSettings$ &#x3D; this.store.select(getCurrentUserColorSettings);
+    this.appIcon &#x3D; &#x27;assets/img/logo.png&#x27;;
+    this.offlineIcon &#x3D; &#x27;assets/icon/offline.png&#x27;;
+    this.topSlogan &#x3D; &#x27;Innovation in every dimension&#x27;;
+    this.buttonSlogan &#x3D; &#x27;powered by iApps&#x27;;
+    this.isLoginProcessActive &#x3D; false;
+    this.isOnLogin &#x3D; true;
+    this.showOverallProgressBar &#x3D; true;
+    this.localInstances &#x3D; [];
+    this.topThreeTranslationCodes &#x3D; this.translationService.getTopThreeSupportedTranslationCodes();
+    this.processes &#x3D; getAppMetadata();
+  }
+
+  ngOnInit() {
+    this.getAndSetLocalInstance();
+    this.fetchAndSetCurrentUser();
+  }
+
+  async fetchAndSetCurrentUser() {
+    let currentUser &#x3D; null;
+    try {
+      currentUser &#x3D; await this.userService.getCurrentUser();
+    } catch (error) {
+    } finally {
+      this.currentUser &#x3D; currentUser ? currentUser : DEFAULT_USER;
+    }
+  }
+
+  async getAndSetLocalInstance() {
+    this.localInstances &#x3D; await this.localInstanceServices.getLocalInstances();
+  }
+
+  async openLocalInstancesSelection() {
+    const modal &#x3D; await this.modalController.create({
+      component: LocalInstanceSelectionPage,
+      componentProps: { localInstances: this.localInstances },
+      cssClass: &#x27;inset-modal&#x27;
+    });
+    modal.present();
+    const response &#x3D; await modal.onDidDismiss();
+    if (response &amp;&amp; response.data) {
+      const currentUser &#x3D; response.data;
+      this.currentUser &#x3D; null;
+      setTimeout(() &#x3D;&gt; {
+        this.currentUser &#x3D; _.assign({}, this.currentUser, {
+          ...currentUser,
+          password: &#x27;&#x27;
+        });
+        this.onCancelLoginProcess();
+      }, 20);
+    }
+  }
+
+  async openTranslationCodeSelection() {
+    const translationCodes &#x3D; this.translationService.getSupportedTranslations();
+    const { currentLanguage } &#x3D; this.currentUser;
+    const modal &#x3D; await this.modalController.create({
+      component: TranslationSelectionPage,
+      componentProps: { currentLanguage, translationCodes },
+      cssClass: &#x27;inset-modal&#x27;
+    });
+    modal.present();
+    const response &#x3D; await modal.onDidDismiss();
+    if (response &amp;&amp; response.data) {
+      const currrentTransalation: Translation &#x3D; response.data;
+      const { code } &#x3D; currrentTransalation;
+      this.updateTranslationLanguage(code);
+    }
+  }
+
+  updateTranslationLanguage(currentLanguage: string) {
+    this.currentUser &#x3D; { ...this.currentUser, currentLanguage };
+    this.translationService.setCurrentUserLanguage(currentLanguage);
+  }
+
+  onFormFieldChange(data: any) {
+    const { status } &#x3D; data;
+    const { currentUser } &#x3D; data;
+    this.isLoginFormValid &#x3D; status;
+    if (status) {
+      this.currentUser &#x3D; _.assign({}, this.currentUser, currentUser);
+    } else {
+      this.isLoginProcessActive &#x3D; false;
+    }
+  }
+
+  async onStartLoginProcess() {
+    const { username, password, serverUrl } &#x3D; this.currentUser;
+    this.currentUser &#x3D; {
+      ...this.currentUser,
+      username: username.trim(),
+      password: password.trim(),
+      serverUrl: serverUrl.trim(),
+      isPasswordEncode: false
+    };
+    this.overAllLoginMessage &#x3D; this.currentUser.serverUrl;
+    this.isLoginProcessActive &#x3D; true;
+    this.backgroundMode.enable();
+    this.resetLoginSpinnerValues();
+  }
+
+  async onUpdateCurrentUser(currentUser: CurrentUser) {
+    const { colorSettings } &#x3D; currentUser;
+    if (colorSettings) {
+      this.store.dispatch(new SetCurrentUserColorSettings({ colorSettings }));
+    }
+    this.currentUser &#x3D; _.assign({}, this.currentUser, currentUser);
+    await this.userService.setCurrentUser(this.currentUser);
+  }
+
+  async onCancelLoginProcess() {
+    this.isLoginProcessActive &#x3D; false;
+    await this.backgroundMode.disable();
+  }
+
+  onFailLogin(errorResponseObject: any) {
+    const {
+      failedProcesses,
+      error,
+      failedProcessesErrors
+    } &#x3D; errorResponseObject;
+    if (error) {
+      this.toasterMessageService.showToasterMessage(error, 10000);
+    } else if (failedProcesses &amp;&amp; failedProcesses.length &gt; 0) {
+      let errorMessage &#x3D; &#x27;&#x27;;
+      failedProcesses.map(process &#x3D;&gt; {
+        const errorResponse: any &#x3D;
+          failedProcessesErrors[failedProcesses.indexOf(process)];
+        errorMessage +&#x3D;
+          (process.charAt(0).toUpperCase() + process.slice(1))
+            .replace(/([A-Z])/g, &#x27; $1&#x27;)
+            .trim() +
+          &#x27; : &#x27; +
+          this.toasterMessageService.getSanitizedErrorMessage(errorResponse) +
+          &#x27;; &#x27;;
+      });
+      this.toasterMessageService.showToasterMessage(errorMessage, 10000);
+    }
+    this.onCancelLoginProcess();
+  }
+
+  async onSuccessLogin(data) {
+    const { currentUser } &#x3D; data;
+    const loggedInInInstance &#x3D;
+      currentUser.serverUrl.split(&#x27;://&#x27;).length &gt; 1
+        ? this.currentUser.serverUrl.split(&#x27;://&#x27;)[1]
+        : this.currentUser.serverUrl;
+    const hashedKeyForOfflineAuthentication &#x3D; this.encryptionService.getHashedKeyForOfflineAuthentication(
+      currentUser
+    );
+    const password &#x3D; this.encryptionService.encode(currentUser.password);
+    this.currentUser &#x3D; _.assign({}, this.currentUser, {
+      ...currentUser,
+      hashedKeyForOfflineAuthentication,
+      password,
+      isPasswordEncode: true,
+      isLogin: true
+    });
+    try {
+      await this.reCheckingAppSetting(currentUser);
+      await this.localInstanceServices.setLocalInstanceInstances(
+        this.localInstances,
+        loggedInInInstance,
+        this.currentUser
+      );
+      const { colorSettings } &#x3D; this.currentUser;
+      if (colorSettings) {
+        this.store.dispatch(new SetCurrentUserColorSettings({ colorSettings }));
+      }
+      this.store.dispatch(
+        new AddCurrentUser({ currentUser: this.currentUser })
+      );
+      await this.userService.setCurrentUser(this.currentUser);
+      this.navCtrl.navigateRoot(&#x27;/tabs&#x27;);
+    } catch (error) {
+      await this.toasterMessageService.showToasterMessage(
+        error,
+        6000,
+        &#x27;Error&#x27;,
+        &#x27;top&#x27;
+      );
+    } finally {
+      await this.backgroundMode.disable();
+    }
+  }
+
+  async reCheckingAppSetting(currentUser: CurrentUser) {
+    const defaultSetting: AppSetting &#x3D; DEFAULT_SETTINGS;
+    const appSettings: AppSetting &#x3D; await this.settingService.getSettingsForTheApp(
+      currentUser
+    );
+    if (!appSettings) {
+      const time &#x3D; defaultSetting.synchronization.time;
+      const timeType &#x3D; defaultSetting.synchronization.timeType;
+      defaultSetting.synchronization.time &#x3D; this.settingService.getDisplaySynchronizationTime(
+        time,
+        timeType
+      );
+      await this.settingService.setSettingsForTheApp(currentUser, appSettings);
+    }
+  }
+
+  async onSystemSettingLoaded(
+    systemSettings: SystemSettings,
+    skipSaving?: boolean
+  ) {
+    const {
+      keyFlag,
+      keyApplicationIntro,
+      keyApplicationFooter,
+      applicationTitle,
+      keyApplicationNotification
+    } &#x3D; systemSettings;
+    this.keyFlag &#x3D; keyFlag ? keyFlag : null;
+    this.keyApplicationFooter &#x3D; keyApplicationFooter
+      ? keyApplicationFooter
+      : null;
+    this.applicationTitle &#x3D; applicationTitle ? applicationTitle : null;
+    this.keyApplicationNotification &#x3D; keyApplicationNotification
+      ? keyApplicationNotification
+      : null;
+    this.keyApplicationIntro &#x3D; keyApplicationIntro ? keyApplicationIntro : null;
+    if (!skipSaving) {
+      await this.systemSettingService.saveSystemSettings(
+        systemSettings,
+        this.currentUser
+      );
+    }
+  }
+
+  resetLoginSpinnerValues() {
+    this.keyFlag &#x3D; null;
+    this.keyApplicationFooter &#x3D; null;
+    this.applicationTitle &#x3D; null;
+    this.keyApplicationNotification &#x3D; null;
+    this.keyApplicationIntro &#x3D; null;
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;!--
+*
+* Copyright 2019 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2019
+* @author Joseph Chingalo profschingalo@gmail.com&gt;
+*
+*
+--&gt;
+&lt;ion-content padding [color]&#x3D;&quot;(colorSettings$ | async).colorAttributes.main&quot;&gt;
+    &lt;div *ngIf&#x3D;&quot;isLoginProcessActive&quot;&gt;
+        &lt;div class&#x3D;&quot;login-spinner-container&quot;&gt;
+            &lt;app-login-spinner&gt;&lt;/app-login-spinner&gt;
+        &lt;/div&gt;
+        &lt;div margin padding-top&gt;
+            &lt;app-login-metadata-sync (systemSettingLoaded)&#x3D;&quot;onSystemSettingLoaded($event)&quot; (updateCurrentUser)&#x3D;&quot;onUpdateCurrentUser($event)&quot; (failOnLogin)&#x3D;&quot;onFailLogin($event)&quot; (successOnLoginAndSyncMetadata)&#x3D;&quot;onSuccessLogin($event)&quot; [currentUser]&#x3D;&quot;currentUser&quot; (cancelProgress)&#x3D;&quot;onCancelLoginProcess()&quot;
+                [overAllMessage]&#x3D;&quot;overAllLoginMessage&quot; [color]&#x3D;&quot;(colorSettings$ | async).colorAttributes.secondary&quot; [showOverallProgressBar]&#x3D;&quot;showOverallProgressBar&quot; [isOnLogin]&#x3D;&quot;isOnLogin&quot; [processes]&#x3D;&quot;processes&quot;&gt;
+            &lt;/app-login-metadata-sync&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;ion-grid&gt;
+        &lt;div *ngIf&#x3D;&quot;!isLoginProcessActive&quot;&gt;
+            &lt;ion-row&gt;
+                &lt;ion-col&gt;
+                    &lt;app-slogan [icon]&#x3D;&quot;appIcon&quot; [slogan]&#x3D;&quot;topSlogan&quot;&gt;&lt;/app-slogan&gt;
+                &lt;/ion-col&gt;
+            &lt;/ion-row&gt;
+            &lt;ion-row&gt;
+                &lt;ion-col&gt;&lt;/ion-col&gt;
+                &lt;ion-col size&#x3D;&quot;auto&quot;&gt;
+                    &lt;div *ngIf&#x3D;&quot;currentUser&quot;&gt;
+                        &lt;app-login-form [currentUser]&#x3D;&quot;currentUser&quot; [buttonColor]&#x3D;&quot;(colorSettings$ | async).colorAttributes.secondary&quot; (loginFormReady)&#x3D;&quot;onFormFieldChange($event)&quot; (startLoginProcess)&#x3D;&quot;onStartLoginProcess($event)&quot;&gt;
+                        &lt;/app-login-form&gt;
+                    &lt;/div&gt;
+                &lt;/ion-col&gt;
+                &lt;ion-col&gt;&lt;/ion-col&gt;
+            &lt;/ion-row&gt;
+        &lt;/div&gt;
+        &lt;ion-row&gt;
+            &lt;ion-col&gt;
+                &lt;div *ngIf&#x3D;&quot;localInstances &amp;&amp; localInstances.length &gt; 1&quot;&gt;
+                    &lt;div class&#x3D;&quot;strike&quot;&gt;
+                        &lt;span [translate]&#x3D;&quot;&#x27;or&#x27;&quot;&gt;&lt;/span&gt;
+                    &lt;/div&gt;
+                    &lt;ion-button [color]&#x3D;&quot;&#x27;light&#x27;&quot; size&#x3D;&quot;small&quot; (click)&#x3D;&quot;openLocalInstancesSelection()&quot; fill&#x3D;&quot;clear&quot; expand&#x3D;&quot;block&quot;&gt;
+                        &lt;img class&#x3D;&quot;offline-instances-icon&quot; [src]&#x3D;&quot;offlineIcon&quot; /&gt;&amp;nbsp;&amp;nbsp;
+                        &lt;span [translate]&#x3D;&quot;&#x27;Available instances&#x27;&quot;&gt;&lt;/span&gt;
+                    &lt;/ion-button&gt;
+                &lt;/div&gt;
+            &lt;/ion-col&gt;
+        &lt;/ion-row&gt;
+        &lt;ion-row&gt;
+            &lt;ion-col&gt;
+                &lt;div class&#x3D;&quot;translation-container&quot;&gt;
+                    &lt;span class&#x3D;&quot;translation-codes&quot; *ngIf&#x3D;&quot;currentUser&quot;&gt;
+            &lt;span
+              *ngFor&#x3D;&quot;
+                let code of topThreeTranslationCodes;
+                let currentIndex &#x3D; index
+              &quot;
+            &gt;
+              &lt;span
+                (click)&#x3D;&quot;updateTranslationLanguage(code)&quot;
+                [ngClass]&#x3D;&quot;
+                  currentUser.currentLanguage &#x3D;&#x3D;&#x3D; code ? &#x27;currentLang&#x27; : &#x27;&#x27;
+                &quot;
+                &gt;{{ code }}&lt;/span
+              &gt;
+              &lt;span *ngIf&#x3D;&quot;currentIndex &lt; 2&quot;&gt;&amp;nbsp;|&amp;nbsp;&lt;/span&gt;
+                    &lt;/span&gt;
+                    &lt;span *ngIf&#x3D;&quot;
+                topThreeTranslationCodes.indexOf(
+                  currentUser.currentLanguage
+                ) &#x3D;&#x3D;&#x3D; -1
+              &quot;&gt;
+              &amp;nbsp;|&amp;nbsp;
+              &lt;span
+                (click)&#x3D;&quot;updateTranslationLanguage(currentUser.currentLanguage)&quot;
+                [ngClass]&#x3D;&quot;&#x27;currentLang&#x27;&quot;
+                &gt;{{ currentUser.currentLanguage }}&lt;/span
+              &gt;
+            &lt;/span&gt;
+                    &lt;span (click)&#x3D;&quot;openTranslationCodeSelection()&quot;&gt;
+              &amp;nbsp;
+              &lt;ion-icon name&#x3D;&quot;ios-more&quot;&gt;&lt;/ion-icon&gt;
+            &lt;/span&gt;
+                    &lt;/span&gt;
+                &lt;/div&gt;
+                &lt;p&gt;&lt;/p&gt;
+            &lt;/ion-col&gt;
+        &lt;/ion-row&gt;
+    &lt;/ion-grid&gt;
+    &lt;app-slogan [position]&#x3D;&quot;&#x27;bottom&#x27;&quot; [slogan]&#x3D;&quot;buttonSlogan&quot;&gt;&lt;/app-slogan&gt;
+&lt;/ion-content&gt;</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./login.page.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">.login-spinner-container {
+    padding-top: 5%;
+    max-width: 95px;
+    margin: auto;
+    margin-bottom: 100px;
+    text-align: center
+}
+
+.strike {
+    display: block;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    color: white;
+}
+
+.strike&gt;span {
+    position: relative;
+    display: inline-block;
+}
+
+.strike&gt;span:before,
+.strike&gt;span:after {
+    content: &quot;&quot;;
+    position: absolute;
+    top: 50%;
+    width: 9999px;
+    height: 1px;
+}
+
+.strike&gt;span:before {
+    right: 100%;
+    margin-right: 15px;
+}
+
+.strike&gt;span:after {
+    left: 100%;
+    margin-left: 15px;
+}
+
+.offline-instances-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.currentLang {
+    color: #ffa500;
+}
+
+.translation-container {
+    text-align: center
+}
+
+.translation-codes {
+    text-transform: lowercase;
+}
+
+.translation-codes span {
+    padding: 2px;
+}</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><!--** Copyright 2019 HISP Tanzania** This program is free software; you can redistribute it and/or modify* it under the terms of the GNU General Public License as published by* the Free Software Foundation; either version 2 of the License, or* (at your option) any later version.** This program is distributed in the hope that it will be useful,* but WITHOUT ANY WARRANTY; without even the implied warranty of* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the* GNU General Public License for more details.** You should have received a copy of the GNU General Public License* along with this program; if not, write to the Free Software* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,* MA 02110-1301, USA.** @since 2019* @author Joseph Chingalo profschingalo@gmail.com>**--><ion-content padding [color]="(colorSettings$ | async).colorAttributes.main">    <div *ngIf="isLoginProcessActive">        <div class="login-spinner-container">            <app-login-spinner></app-login-spinner>        </div>        <div margin padding-top>            <app-login-metadata-sync (systemSettingLoaded)="onSystemSettingLoaded($event)" (updateCurrentUser)="onUpdateCurrentUser($event)" (failOnLogin)="onFailLogin($event)" (successOnLoginAndSyncMetadata)="onSuccessLogin($event)" [currentUser]="currentUser" (cancelProgress)="onCancelLoginProcess()"                [overAllMessage]="overAllLoginMessage" [color]="(colorSettings$ | async).colorAttributes.secondary" [showOverallProgressBar]="showOverallProgressBar" [isOnLogin]="isOnLogin" [processes]="processes">            </app-login-metadata-sync>        </div>    </div>    <ion-grid>        <div *ngIf="!isLoginProcessActive">            <ion-row>                <ion-col>                    <app-slogan [icon]="appIcon" [slogan]="topSlogan"></app-slogan>                </ion-col>            </ion-row>            <ion-row>                <ion-col></ion-col>                <ion-col size="auto">                    <div *ngIf="currentUser">                        <app-login-form [currentUser]="currentUser" [buttonColor]="(colorSettings$ | async).colorAttributes.secondary" (loginFormReady)="onFormFieldChange($event)" (startLoginProcess)="onStartLoginProcess($event)">                        </app-login-form>                    </div>                </ion-col>                <ion-col></ion-col>            </ion-row>        </div>        <ion-row>            <ion-col>                <div *ngIf="localInstances && localInstances.length > 1">                    <div class="strike">                        <span [translate]="\'or\'"></span>                    </div>                    <ion-button [color]="\'light\'" size="small" (click)="openLocalInstancesSelection()" fill="clear" expand="block">                        <img class="offline-instances-icon" [src]="offlineIcon" />&nbsp;&nbsp;                        <span [translate]="\'Available instances\'"></span>                    </ion-button>                </div>            </ion-col>        </ion-row>        <ion-row>            <ion-col>                <div class="translation-container">                    <span class="translation-codes" *ngIf="currentUser">            <span              *ngFor="                let code of topThreeTranslationCodes;                let currentIndex = index              "            >              <span                (click)="updateTranslationLanguage(code)"                [ngClass]="                  currentUser.currentLanguage === code ? \'currentLang\' : \'\'                "                >{{ code }}</span              >              <span *ngIf="currentIndex < 2">&nbsp;|&nbsp;</span>                    </span>                    <span *ngIf="                topThreeTranslationCodes.indexOf(                  currentUser.currentLanguage                ) === -1              ">              &nbsp;|&nbsp;              <span                (click)="updateTranslationLanguage(currentUser.currentLanguage)"                [ngClass]="\'currentLang\'"                >{{ currentUser.currentLanguage }}</span              >            </span>                    <span (click)="openTranslationCodeSelection()">              &nbsp;              <ion-icon name="ios-more"></ion-icon>            </span>                    </span>                </div>                <p></p>            </ion-col>        </ion-row>    </ion-grid>    <app-slogan [position]="\'bottom\'" [slogan]="buttonSlogan"></app-slogan></ion-content></div>'
+    var COMPONENTS = [{'name': 'AccountsPage', 'selector': 'app-accounts'},{'name': 'AgeInputComponent', 'selector': 'app-age-input'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AppItemComponent', 'selector': 'app-app-item'},{'name': 'AppsItemContainerComponent', 'selector': 'app-apps-item-container'},{'name': 'AppsPage', 'selector': 'app-apps'},{'name': 'BarcodeInputComponent', 'selector': 'app-barcode-input'},{'name': 'BooleanInputComponent', 'selector': 'app-boolean-input'},{'name': 'CoordinateComponent', 'selector': 'app-coordinate'},{'name': 'CoordinateInputComponent', 'selector': 'app-coordinate-input'},{'name': 'CoordinateSelectionPage', 'selector': 'app-coordinate-selection'},{'name': 'DateInputComponent', 'selector': 'app-date-input'},{'name': 'DateTimeComponent', 'selector': 'app-date-time'},{'name': 'EmailInputComponent', 'selector': 'app-email-input'},{'name': 'LaunchPage', 'selector': 'app-launch'},{'name': 'LocalInstanceSelectionPage', 'selector': 'app-local-instance-selection'},{'name': 'LoginFormComponent', 'selector': 'app-login-form'},{'name': 'LoginMetadataSyncComponent', 'selector': 'app-login-metadata-sync'},{'name': 'LoginPage', 'selector': 'app-login'},{'name': 'LoginSpinnerComponent', 'selector': 'app-login-spinner'},{'name': 'NumericalInputComponent', 'selector': 'app-numerical-input'},{'name': 'OptionSetInputComponent', 'selector': 'app-option-set-input'},{'name': 'OptionSetSelectionPage', 'selector': 'app-option-set-selection'},{'name': 'OrganisationUnitInputComponent', 'selector': 'app-organisation-unit-input'},{'name': 'OrganisationUnitSearchPage', 'selector': 'app-organisation-unit-search'},{'name': 'OrganisationUnitSelectionPage', 'selector': 'app-organisation-unit-selection'},{'name': 'OrganisationUnitTreeComponent', 'selector': 'app-organisation-unit-tree'},{'name': 'PasswordInputComponent', 'selector': 'app-password-input'},{'name': 'PercentageInputComponent', 'selector': 'app-percentage-input'},{'name': 'PhoneNumberInputComponent', 'selector': 'app-phone-number-input'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'RadioButtonComponent', 'selector': 'app-radio-button'},{'name': 'SloganComponent', 'selector': 'app-slogan'},{'name': 'TabsPage', 'selector': 'app-tabs'},{'name': 'TextInputComponent', 'selector': 'app-text-input'},{'name': 'TranslationSelectionPage', 'selector': 'app-translation-selection'},{'name': 'TrueOnlyInputComponent', 'selector': 'app-true-only-input'},{'name': 'UnitIntervalInputComponent', 'selector': 'app-unit-interval-input'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'LoginPage'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'LoginPage.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

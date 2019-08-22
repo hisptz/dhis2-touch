@@ -1,0 +1,58 @@
+<!--
+*
+* Copyright 2019 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2019
+* @author Joseph Chingalo profschingalo@gmail.com>
+*
+*
+-->
+<app-date-time [lockingFieldStatus]="lockingFieldStatus" [mode]="'date'" [(inputValue)]="inputFieldValue" (dateTimeChange)="updateValue($event)"></app-date-time>
+<ion-row class="item-card-age-input-container">
+    <ion-col>
+        <div>
+            <span [translate]="'Years'"></span>
+            <div class="item-card-age-input">
+                <ion-item no-lines>
+                    <ion-input [readonly]="lockingFieldStatus" type="number" min="0" (ionBlur)="setCurrentDate()" [(ngModel)]="currentAge.years"></ion-input>
+                </ion-item>
+            </div>
+        </div>
+    </ion-col>
+    <ion-col>
+        <div>
+            <span [translate]="'Months'"></span>
+            <div class="item-card-age-input">
+                <ion-item no-lines>
+                    <ion-input [readonly]="lockingFieldStatus" type="number" min="0" (ionBlur)="setCurrentDate()" [(ngModel)]="currentAge.months"></ion-input>
+                </ion-item>
+            </div>
+        </div>
+    </ion-col>
+    <ion-col>
+        <div>
+            <span [translate]="'Days'"></span>
+            <div class="item-card-age-input">
+                <ion-item no-lines>
+                    <ion-input [readonly]="lockingFieldStatus" type="number" min="0" (ionBlur)="setCurrentDate()" [(ngModel)]="currentAge.days"></ion-input>
+                </ion-item>
+            </div>
+
+        </div>
+    </ion-col>
+</ion-row>

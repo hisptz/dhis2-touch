@@ -1,0 +1,806 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>DHIS 2 Touch</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/material.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">DHIS 2 Touch</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Injectables</li>
+  <li>UserAuthorizationService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/services/user-authorization.service.ts</code>
+        </p>
+
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#getServerUrlBasedOnResponseHeader">getServerUrlBasedOnResponseHeader</a>
+                            </li>
+                            <li>
+                                <a href="#getUserAuthorities">getUserAuthorities</a>
+                            </li>
+                            <li>
+                                <a href="#getUserDataOnAuthenticatedServer">getUserDataOnAuthenticatedServer</a>
+                            </li>
+                            <li>
+                                <a href="#offlineUserAuthentication">offlineUserAuthentication</a>
+                            </li>
+                            <li>
+                                <a href="#onlineUserAuthentication">onlineUserAuthentication</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(httpCLientService: <a href="../injectables/HttpClientService.html">HttpClientService</a>, encryptionService: <a href="../injectables/EncryptionService.html">EncryptionService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/services/user-authorization.service.ts:34</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>httpCLientService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/HttpClientService.html" target="_self" >HttpClientService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>encryptionService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/EncryptionService.html" target="_self" >EncryptionService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getServerUrlBasedOnResponseHeader"></a>
+                    <span class="name">
+                        <b>
+                            getServerUrlBasedOnResponseHeader
+                        </b>
+                        <a href="#getServerUrlBasedOnResponseHeader"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getServerUrlBasedOnResponseHeader(response: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, serverUrl: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="164"
+                            class="link-to-prism">src/app/services/user-authorization.service.ts:164</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>response</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>serverUrl</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUserAuthorities"></a>
+                    <span class="name">
+                        <b>
+                            getUserAuthorities
+                        </b>
+                        <a href="#getUserAuthorities"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getUserAuthorities(user: <a href="../interfaces/CurrentUser.html">CurrentUser</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="40"
+                            class="link-to-prism">src/app/services/user-authorization.service.ts:40</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>user</td>
+                                    <td>
+                                                <code><a href="../interfaces/CurrentUser.html" target="_self" >CurrentUser</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUserDataOnAuthenticatedServer"></a>
+                    <span class="name">
+                        <b>
+                            getUserDataOnAuthenticatedServer
+                        </b>
+                        <a href="#getUserDataOnAuthenticatedServer"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getUserDataOnAuthenticatedServer(user: <a href="../interfaces/CurrentUser.html">CurrentUser</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="210"
+                            class="link-to-prism">src/app/services/user-authorization.service.ts:210</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>user</td>
+                                    <td>
+                                                <code><a href="../interfaces/CurrentUser.html" target="_self" >CurrentUser</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="offlineUserAuthentication"></a>
+                    <span class="name">
+                        <b>
+                            offlineUserAuthentication
+                        </b>
+                        <a href="#offlineUserAuthentication"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>offlineUserAuthentication(user: <a href="../interfaces/CurrentUser.html">CurrentUser</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="70"
+                            class="link-to-prism">src/app/services/user-authorization.service.ts:70</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>user</td>
+                                    <td>
+                                                <code><a href="../interfaces/CurrentUser.html" target="_self" >CurrentUser</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/CurrentUser.html" target="_self" >Promise&lt;CurrentUser&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onlineUserAuthentication"></a>
+                    <span class="name">
+                        <b>
+                            onlineUserAuthentication
+                        </b>
+                        <a href="#onlineUserAuthentication"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onlineUserAuthentication(user: <a href="../interfaces/CurrentUser.html">CurrentUser</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="93"
+                            class="link-to-prism">src/app/services/user-authorization.service.ts:93</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>user</td>
+                                    <td>
+                                                <code><a href="../interfaces/CurrentUser.html" target="_self" >CurrentUser</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@angular/core&#x27;;
+import * as _ from &#x27;lodash&#x27;;
+import { CurrentUser } from &#x27;src/models&#x27;;
+import { HttpClientService } from &#x27;./http-client.service&#x27;;
+import { EncryptionService } from &#x27;./encryption.service&#x27;;
+import { Observable } from &#x27;rxjs&#x27;;
+
+@Injectable({
+  providedIn: &#x27;root&#x27;
+})
+export class UserAuthorizationService {
+  constructor(
+    private httpCLientService: HttpClientService,
+    private encryptionService: EncryptionService
+  ) {}
+
+  getUserAuthorities(user: CurrentUser): Observable&lt;any&gt; {
+    return new Observable(observer &#x3D;&gt; {
+      const fields &#x3D;
+        &#x27;fields&#x3D;authorities,id,name,settings,dataViewOrganisationUnits&#x27;;
+      this.httpCLientService
+        .get(&#x60;/api/me.json?${fields}&#x60;, true, user)
+        .then((response: any) &#x3D;&gt; {
+          const { authorities } &#x3D; response;
+          if (authorities) {
+            observer.next(response);
+            observer.complete();
+          } else {
+            this.httpCLientService
+              .get(&#x60;/api/me/authorization&#x60;, true, user)
+              .then((authoritiesResponse: string[]) &#x3D;&gt; {
+                response &#x3D; { ...response, authorities: authoritiesResponse };
+                observer.next(response);
+                observer.complete();
+              })
+              .catch((error: any) &#x3D;&gt; {
+                observer.error(error);
+              });
+          }
+        })
+        .catch((error: any) &#x3D;&gt; {
+          observer.error(error);
+        });
+    });
+  }
+
+  offlineUserAuthentication(user: CurrentUser): Promise&lt;CurrentUser&gt; {
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      const { hashedKeyForOfflineAuthentication } &#x3D; user;
+      if (hashedKeyForOfflineAuthentication) {
+        const newHasedKeyForOfflineAuthentication &#x3D; this.encryptionService.getHashedKeyForOfflineAuthentication(
+          user
+        );
+        if (
+          newHasedKeyForOfflineAuthentication &#x3D;&#x3D;&#x3D;
+          hashedKeyForOfflineAuthentication
+        ) {
+          resolve(user);
+        } else {
+          const error &#x3D; &#x60;You have enter wrong username or password or server address&#x60;;
+          reject(error);
+        }
+      } else {
+        const error &#x3D; &#x60;You can not login offline, please make sure you have network and try in again&#x60;;
+        reject(error);
+      }
+    });
+  }
+
+  onlineUserAuthentication(user: CurrentUser): Observable&lt;any&gt; {
+    return new Observable(observer &#x3D;&gt; {
+      const apiUrl &#x3D; &#x60;/api/me.json&#x60;;
+      const { serverUrl } &#x3D; user;
+      this.httpCLientService
+        .get(apiUrl, false, user)
+        .then((response: any) &#x3D;&gt; {
+          const { status, data } &#x3D; response;
+          if (status &#x3D;&#x3D;&#x3D; 200) {
+            const newServerUrl &#x3D; this.getServerUrlBasedOnResponseHeader(
+              response,
+              serverUrl
+            );
+            user &#x3D; {
+              ...user,
+              serverUrl: newServerUrl.replace(&#x27;/api/me.json&#x27;, &#x27;&#x27;)
+            };
+            if (data &amp;&amp; data.indexOf(&#x27;login.action&#x27;) &#x3D;&#x3D;&#x3D; -1) {
+              observer.next(user);
+              observer.complete();
+            } else {
+              const error &#x3D; &#x60;HTTP Status 401 – Unauthorized&#x60;;
+              observer.error({ error });
+            }
+          } else if (
+            (status &#x3D;&#x3D;&#x3D; 301 || status &#x3D;&#x3D;&#x3D; 302) &amp;&amp;
+            serverUrl.indexOf(&#x27;http://&#x27;) &gt; -1
+          ) {
+            user &#x3D; {
+              ...user,
+              serverUrl: serverUrl.replace(&#x27;http://&#x27;, &#x27;https://&#x27;)
+            };
+            this.onlineUserAuthentication(user).subscribe(
+              (userResponse: any) &#x3D;&gt; {
+                observer.next(userResponse);
+                observer.complete();
+              },
+              error &#x3D;&gt; {
+                observer.error(error);
+              }
+            );
+          } else {
+            observer.error(response);
+          }
+        })
+        .catch((error: any) &#x3D;&gt; {
+          const { status } &#x3D; error;
+          if (
+            (status &#x3D;&#x3D;&#x3D; 301 || status &#x3D;&#x3D;&#x3D; 302) &amp;&amp;
+            serverUrl.indexOf(&#x27;http://&#x27;) &gt; -1
+          ) {
+            user &#x3D; {
+              ...user,
+              serverUrl: serverUrl.replace(&#x27;http://&#x27;, &#x27;https://&#x27;)
+            };
+            this.onlineUserAuthentication(user).subscribe(
+              (userResponse: any) &#x3D;&gt; {
+                observer.next(userResponse);
+                observer.complete();
+              },
+              errorResponse &#x3D;&gt; {
+                observer.error(errorResponse);
+              }
+            );
+          } else {
+            observer.error(error);
+          }
+        });
+    });
+  }
+
+  getServerUrlBasedOnResponseHeader(response: any, serverUrl: string) {
+    let newServerUrl &#x3D; &#x27;&#x27;;
+    const { url } &#x3D; response;
+    const { headers } &#x3D; response;
+    if (url) {
+      newServerUrl &#x3D; url.split(&#x27;/dhis-web-&#x27;)[0];
+    } else if (headers) {
+      if (headers[&#x27;set-cookie&#x27;]) {
+        headers[&#x27;set-cookie&#x27;]
+          .replace(/\s/g, &#x27;&#x27;)
+          .split(&#x27;;&#x27;)
+          .map(cookieValue &#x3D;&gt; {
+            if (cookieValue.indexOf(&#x27;Path&#x3D;/&#x27;) &gt; -1) {
+              const path &#x3D; cookieValue.split(&#x27;Path&#x3D;/&#x27;).pop();
+              const lastUrlPart &#x3D; serverUrl.split(&#x27;/&#x27;).pop();
+              if (lastUrlPart !&#x3D;&#x3D; path) {
+                if (lastUrlPart &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
+                  newServerUrl &#x3D; serverUrl + path;
+                } else {
+                  newServerUrl &#x3D; serverUrl + &#x27;/&#x27; + path;
+                }
+              }
+            }
+          });
+      } else if (headers[&#x27;Set-cookie&#x27;]) {
+        headers[&#x27;set-cookie&#x27;]
+          .replace(/\s/g, &#x27;&#x27;)
+          .split(&#x27;;&#x27;)
+          .map(cookieValue &#x3D;&gt; {
+            if (cookieValue.indexOf(&#x27;Path&#x3D;/&#x27;) &gt; -1) {
+              const path &#x3D; cookieValue.split(&#x27;Path&#x3D;/&#x27;).pop();
+              const lastUrlPart &#x3D; serverUrl.split(&#x27;/&#x27;).pop();
+              if (lastUrlPart !&#x3D;&#x3D; path) {
+                if (lastUrlPart &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
+                  newServerUrl &#x3D; serverUrl + path;
+                } else {
+                  newServerUrl &#x3D; serverUrl + &#x27;/&#x27; + path;
+                }
+              }
+            }
+          });
+      }
+    }
+    return newServerUrl;
+  }
+
+  getUserDataOnAuthenticatedServer(user: CurrentUser): Observable&lt;any&gt; {
+    return new Observable(observer &#x3D;&gt; {
+      const fields &#x3D;
+        &#x27;fields&#x3D;[:all],organisationUnits[id,name],dataViewOrganisationUnits[id,name],userCredentials[userRoles[name,dataSets[id],programs[id]],programs,dataSets&#x27;;
+      const apiurl &#x3D; &#x60;/api/me.json?fields&#x3D;${fields}&#x60;;
+      this.httpCLientService
+        .get(apiurl, true, user)
+        .then(response &#x3D;&gt; {
+          observer.next(response);
+          observer.complete();
+        })
+        .catch((error: any) &#x3D;&gt; {
+          observer.error(error);
+        });
+    });
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'UserAuthorizationService.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

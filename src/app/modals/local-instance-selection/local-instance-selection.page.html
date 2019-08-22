@@ -1,0 +1,53 @@
+<!--
+*
+* Copyright 2019 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2019
+* @author Joseph Chingalo profschingalo@gmail.com>
+*
+*
+-->
+<ion-header>
+  <ion-toolbar [color]="(colorSettings$ |async).colorAttributes.main" mode="md">
+    <ion-searchbar animated="true" placeholder="{{ 'Search'|translate }}" (ionInput)="getFilteredList($event)">
+    </ion-searchbar>
+    <ion-buttons slot="end" (click)="closeModal()">
+      <ion-button>
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <ion-item detail *ngFor="let item of filterItems;trackBy: trackByFn" (click)="setCurrentLocalInstance(item)">
+      <ion-label text-wrap>
+        <span ion-text>{{item.currentUser.username}}&nbsp;{{ item.name }}</span>
+      </ion-label>
+    </ion-item>
+    <ion-item *ngIf="filterItems && filterItems.length === 0" lines="none">
+      <ion-label text-wrap>
+        <span [translate]="'There is no local instance to select'"></span>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+
+</ion-content>

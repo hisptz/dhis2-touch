@@ -23,7 +23,7 @@
  */
 
 const _ = require('lodash');
-import { DEFAULT_APP_METADATA } from '../constants';
+import { DEFAULT_APP_METADATA } from 'src/constants';
 
 export function getAppMetadata() {
   const programMetadata = DEFAULT_APP_METADATA.programs;

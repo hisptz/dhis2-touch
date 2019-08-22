@@ -1,0 +1,630 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>DHIS 2 Touch</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/material.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">DHIS 2 Touch</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Injectables</li>
+  <li>EncryptionService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/services/encryption.service.ts</code>
+        </p>
+
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#decode">decode</a>
+                            </li>
+                            <li>
+                                <a href="#encode">encode</a>
+                            </li>
+                            <li>
+                                <a href="#getHashedKeyForOfflineAuthentication">getHashedKeyForOfflineAuthentication</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/services/encryption.service.ts:31</a></div>
+                            </td>
+                        </tr>
+
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="decode"></a>
+                    <span class="name">
+                        <b>
+                            decode
+                        </b>
+                        <a href="#decode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>decode(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="148"
+                            class="link-to-prism">src/app/services/encryption.service.ts:148</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>value</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="encode"></a>
+                    <span class="name">
+                        <b>
+                            encode
+                        </b>
+                        <a href="#encode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>encode(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="45"
+                            class="link-to-prism">src/app/services/encryption.service.ts:45</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>value</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getHashedKeyForOfflineAuthentication"></a>
+                    <span class="name">
+                        <b>
+                            getHashedKeyForOfflineAuthentication
+                        </b>
+                        <a href="#getHashedKeyForOfflineAuthentication"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getHashedKeyForOfflineAuthentication(currentUser: <a href="../interfaces/CurrentUser.html">CurrentUser</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="34"
+                            class="link-to-prism">src/app/services/encryption.service.ts:34</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>currentUser</td>
+                                    <td>
+                                                <code><a href="../interfaces/CurrentUser.html" target="_self" >CurrentUser</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@angular/core&#x27;;
+import * as sha1 from &#x27;js-sha1&#x27;;
+import { CurrentUser } from &#x27;src/models&#x27;;
+
+@Injectable({
+  providedIn: &#x27;root&#x27;
+})
+export class EncryptionService {
+  constructor() {}
+
+  getHashedKeyForOfflineAuthentication(currentUser: CurrentUser) {
+    const { username, password, serverUrl } &#x3D; currentUser;
+    const serverUrlArray &#x3D; serverUrl.split(&#x27;://&#x27;);
+    const urlWithoutHttp &#x3D;
+      serverUrlArray.length &gt; 1 ? serverUrlArray[1] : serverUrlArray[0];
+    const hashedPassword &#x3D; sha1(
+      urlWithoutHttp + &#x27;:&#x27; + username + &#x27;:&#x27; + password
+    );
+    return hashedPassword;
+  }
+
+  encode(value: string) {
+    const Base64 &#x3D; {
+      _keyStr:
+        &#x27;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&#x3D;&#x27;,
+      encode: function(e) {
+        let t &#x3D; &#x27;&#x27;;
+        let n, r, i, s, o, u, a;
+        let f &#x3D; 0;
+        e &#x3D; Base64._utf8_encode(e);
+        while (f &lt; e.length) {
+          n &#x3D; e.charCodeAt(f++);
+          r &#x3D; e.charCodeAt(f++);
+          i &#x3D; e.charCodeAt(f++);
+          s &#x3D; n &gt;&gt; 2;
+          o &#x3D; ((n &amp; 3) &lt;&lt; 4) | (r &gt;&gt; 4);
+          u &#x3D; ((r &amp; 15) &lt;&lt; 2) | (i &gt;&gt; 6);
+          a &#x3D; i &amp; 63;
+          if (isNaN(r)) {
+            u &#x3D; a &#x3D; 64;
+          } else if (isNaN(i)) {
+            a &#x3D; 64;
+          }
+          t &#x3D;
+            t +
+            this._keyStr.charAt(s) +
+            this._keyStr.charAt(o) +
+            this._keyStr.charAt(u) +
+            this._keyStr.charAt(a);
+        }
+        return t;
+      },
+      decode: function(e) {
+        let t &#x3D; &#x27;&#x27;;
+        let n, r, i;
+        let s, o, u, a;
+        let f &#x3D; 0;
+        e &#x3D; e.replace(/[^A-Za-z0-9\+\/\&#x3D;]/g, &#x27;&#x27;);
+        while (f &lt; e.length) {
+          s &#x3D; this._keyStr.indexOf(e.charAt(f++));
+          o &#x3D; this._keyStr.indexOf(e.charAt(f++));
+          u &#x3D; this._keyStr.indexOf(e.charAt(f++));
+          a &#x3D; this._keyStr.indexOf(e.charAt(f++));
+          n &#x3D; (s &lt;&lt; 2) | (o &gt;&gt; 4);
+          r &#x3D; ((o &amp; 15) &lt;&lt; 4) | (u &gt;&gt; 2);
+          i &#x3D; ((u &amp; 3) &lt;&lt; 6) | a;
+          t &#x3D; t + String.fromCharCode(n);
+          if (u !&#x3D;&#x3D; 64) {
+            t &#x3D; t + String.fromCharCode(r);
+          }
+          if (a !&#x3D;&#x3D; 64) {
+            t &#x3D; t + String.fromCharCode(i);
+          }
+        }
+        t &#x3D; Base64._utf8_decode(t);
+        return t;
+      },
+      _utf8_encode: function(e) {
+        e &#x3D; e.replace(/\r\n/g, &#x27;\n&#x27;);
+        let t &#x3D; &#x27;&#x27;;
+        for (let n &#x3D; 0; n &lt; e.length; n++) {
+          const r &#x3D; e.charCodeAt(n);
+          if (r &lt; 128) {
+            t +&#x3D; String.fromCharCode(r);
+          } else if (r &gt; 127 &amp;&amp; r &lt; 2048) {
+            t +&#x3D; String.fromCharCode((r &gt;&gt; 6) | 192);
+            t +&#x3D; String.fromCharCode((r &amp; 63) | 128);
+          } else {
+            t +&#x3D; String.fromCharCode((r &gt;&gt; 12) | 224);
+            t +&#x3D; String.fromCharCode(((r &gt;&gt; 6) &amp; 63) | 128);
+            t +&#x3D; String.fromCharCode((r &amp; 63) | 128);
+          }
+        }
+        return t;
+      },
+      _utf8_decode: function(e) {
+        let t &#x3D; &#x27;&#x27;;
+        let n &#x3D; 0;
+        let r &#x3D; 0,
+          c2 &#x3D; 0;
+        while (n &lt; e.length) {
+          r &#x3D; e.charCodeAt(n);
+          if (r &lt; 128) {
+            t +&#x3D; String.fromCharCode(r);
+            n++;
+          } else if (r &gt; 191 &amp;&amp; r &lt; 224) {
+            c2 &#x3D; e.charCodeAt(n + 1);
+            t +&#x3D; String.fromCharCode(((r &amp; 31) &lt;&lt; 6) | (c2 &amp; 63));
+            n +&#x3D; 2;
+          } else {
+            c2 &#x3D; e.charCodeAt(n + 1);
+            const c3 &#x3D; e.charCodeAt(n + 2);
+            t +&#x3D; String.fromCharCode(
+              ((r &amp; 15) &lt;&lt; 12) | ((c2 &amp; 63) &lt;&lt; 6) | (c3 &amp; 63)
+            );
+            n +&#x3D; 3;
+          }
+        }
+        return t;
+      }
+    };
+    return Base64.encode(value);
+  }
+
+  decode(value: string) {
+    const Base64 &#x3D; {
+      _keyStr:
+        &#x27;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&#x3D;&#x27;,
+      encode: function(e) {
+        let t &#x3D; &#x27;&#x27;;
+        let n, r, i, s, o, u, a;
+        let f &#x3D; 0;
+        e &#x3D; Base64._utf8_encode(e);
+        while (f &lt; e.length) {
+          n &#x3D; e.charCodeAt(f++);
+          r &#x3D; e.charCodeAt(f++);
+          i &#x3D; e.charCodeAt(f++);
+          s &#x3D; n &gt;&gt; 2;
+          o &#x3D; ((n &amp; 3) &lt;&lt; 4) | (r &gt;&gt; 4);
+          u &#x3D; ((r &amp; 15) &lt;&lt; 2) | (i &gt;&gt; 6);
+          a &#x3D; i &amp; 63;
+          if (isNaN(r)) {
+            u &#x3D; a &#x3D; 64;
+          } else if (isNaN(i)) {
+            a &#x3D; 64;
+          }
+          t &#x3D;
+            t +
+            this._keyStr.charAt(s) +
+            this._keyStr.charAt(o) +
+            this._keyStr.charAt(u) +
+            this._keyStr.charAt(a);
+        }
+        return t;
+      },
+      decode: function(e) {
+        let t &#x3D; &#x27;&#x27;;
+        let n, r, i;
+        let s, o, u, a;
+        let f &#x3D; 0;
+        e &#x3D; e.replace(/[^A-Za-z0-9\+\/\&#x3D;]/g, &#x27;&#x27;);
+        while (f &lt; e.length) {
+          s &#x3D; this._keyStr.indexOf(e.charAt(f++));
+          o &#x3D; this._keyStr.indexOf(e.charAt(f++));
+          u &#x3D; this._keyStr.indexOf(e.charAt(f++));
+          a &#x3D; this._keyStr.indexOf(e.charAt(f++));
+          n &#x3D; (s &lt;&lt; 2) | (o &gt;&gt; 4);
+          r &#x3D; ((o &amp; 15) &lt;&lt; 4) | (u &gt;&gt; 2);
+          i &#x3D; ((u &amp; 3) &lt;&lt; 6) | a;
+          t &#x3D; t + String.fromCharCode(n);
+          if (u !&#x3D;&#x3D; 64) {
+            t &#x3D; t + String.fromCharCode(r);
+          }
+          if (a !&#x3D;&#x3D; 64) {
+            t &#x3D; t + String.fromCharCode(i);
+          }
+        }
+        t &#x3D; Base64._utf8_decode(t);
+        return t;
+      },
+      _utf8_encode: function(e) {
+        e &#x3D; e.replace(/\r\n/g, &#x27;\n&#x27;);
+        let t &#x3D; &#x27;&#x27;;
+        for (let n &#x3D; 0; n &lt; e.length; n++) {
+          const r &#x3D; e.charCodeAt(n);
+          if (r &lt; 128) {
+            t +&#x3D; String.fromCharCode(r);
+          } else if (r &gt; 127 &amp;&amp; r &lt; 2048) {
+            t +&#x3D; String.fromCharCode((r &gt;&gt; 6) | 192);
+            t +&#x3D; String.fromCharCode((r &amp; 63) | 128);
+          } else {
+            t +&#x3D; String.fromCharCode((r &gt;&gt; 12) | 224);
+            t +&#x3D; String.fromCharCode(((r &gt;&gt; 6) &amp; 63) | 128);
+            t +&#x3D; String.fromCharCode((r &amp; 63) | 128);
+          }
+        }
+        return t;
+      },
+      _utf8_decode: function(e) {
+        let t &#x3D; &#x27;&#x27;;
+        let n &#x3D; 0;
+        let r &#x3D; 0,
+          c2 &#x3D; 0;
+        while (n &lt; e.length) {
+          r &#x3D; e.charCodeAt(n);
+          if (r &lt; 128) {
+            t +&#x3D; String.fromCharCode(r);
+            n++;
+          } else if (r &gt; 191 &amp;&amp; r &lt; 224) {
+            c2 &#x3D; e.charCodeAt(n + 1);
+            t +&#x3D; String.fromCharCode(((r &amp; 31) &lt;&lt; 6) | (c2 &amp; 63));
+            n +&#x3D; 2;
+          } else {
+            c2 &#x3D; e.charCodeAt(n + 1);
+            const c3 &#x3D; e.charCodeAt(n + 2);
+            t +&#x3D; String.fromCharCode(
+              ((r &amp; 15) &lt;&lt; 12) | ((c2 &amp; 63) &lt;&lt; 6) | (c3 &amp; 63)
+            );
+            n +&#x3D; 3;
+          }
+        }
+        return t;
+      }
+    };
+    return Base64.decode(value);
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'EncryptionService.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
