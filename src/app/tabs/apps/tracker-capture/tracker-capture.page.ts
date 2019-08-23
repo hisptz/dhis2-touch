@@ -21,44 +21,24 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { AppItem } from 'src/models';
+
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { State, getCurrentUserColorSettings } from '../../../store';
+import { AppColorObject } from 'src/models';
 
 @Component({
-  selector: 'app-apps-item-container',
-  templateUrl: './apps-item-container.component.html',
-  styleUrls: ['./apps-item-container.component.scss']
+  selector: 'app-tracker-capture',
+  templateUrl: './tracker-capture.page.html',
+  styleUrls: ['./tracker-capture.page.scss']
 })
-export class AppsItemContainerComponent implements OnInit {
-  @Input()
-  authorizedApps: AppItem[];
+export class TrackerCapturePage implements OnInit {
+  colorSettings$: Observable<AppColorObject>;
 
-  @Output()
-  selectedApp = new EventEmitter();
-
-  animationEffect: any;
-
-  constructor() {
-    this.animationEffect = {};
+  constructor(private store: Store<State>) {
+    this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
   }
 
   ngOnInit() {}
-
-  selectView(app: AppItem) {
-    this.applyAnimation(app.id);
-    setTimeout(() => {
-      this.selectedApp.emit(app);
-    }, 20);
-  }
-
-  applyAnimation(key: any) {
-    this.animationEffect[key] = 'animated bounceIn';
-    setTimeout(() => {
-      this.animationEffect[key] = '';
-    }, 50);
-  }
-
-  trackByFn(index: any, item: AppItem) {
-    return item && item.id ? item.id : index;
-  }
 }

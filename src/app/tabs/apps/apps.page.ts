@@ -23,6 +23,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import {
@@ -42,7 +43,7 @@ export class AppsPage implements OnInit {
   colorSettings$: Observable<AppColorObject>;
   currentUserApps$: Observable<AppItem[]>;
 
-  constructor(private store: Store<State>) {
+  constructor(private store: Store<State>, private router: Router) {
     this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
     this.currentUserApps$ = this.store.select(getAthorizedApps(APPS_LIST));
   }
@@ -50,6 +51,6 @@ export class AppsPage implements OnInit {
 
   onSelectApp(appItem: AppItem) {
     const { url } = appItem;
-    console.log(url);
+    this.router.navigateByUrl(`/tabs/apps/${url}`);
   }
 }
