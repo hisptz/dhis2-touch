@@ -45,7 +45,7 @@ export class LocalInstanceService {
       localInstances,
       defaultLocalInstances
     );
-    return sanitizedLocalInstances;
+    return _.sortBy(sanitizedLocalInstances, 'name');
   }
 
   async setLocalInstanceInstances(
@@ -129,7 +129,7 @@ export class LocalInstanceService {
           _.map(
             [
               ...localInstances,
-              _.filter(
+              ..._.filter(
                 _.map(defaultInstances, (defaultInstance: LocalInstance) => {
                   return {
                     ...defaultInstance,
