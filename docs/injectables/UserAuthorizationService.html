@@ -191,8 +191,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="164"
-                            class="link-to-prism">src/app/services/user-authorization.service.ts:164</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="180"
+                            class="link-to-prism">src/app/services/user-authorization.service.ts:180</a></div>
                 </td>
             </tr>
 
@@ -343,8 +343,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="210"
-                            class="link-to-prism">src/app/services/user-authorization.service.ts:210</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="226"
+                            class="link-to-prism">src/app/services/user-authorization.service.ts:226</a></div>
                 </td>
             </tr>
 
@@ -627,8 +627,24 @@ export class UserAuthorizationService {
               observer.next(user);
               observer.complete();
             } else {
-              const error &#x3D; &#x60;HTTP Status 401 – Unauthorized&#x60;;
-              observer.error({ error });
+              if (serverUrl.includes(&#x27;http://&#x27;)) {
+                user &#x3D; {
+                  ...user,
+                  serverUrl: serverUrl.replace(&#x27;http://&#x27;, &#x27;https://&#x27;)
+                };
+                this.onlineUserAuthentication(user).subscribe(
+                  (userResponse: any) &#x3D;&gt; {
+                    observer.next(userResponse);
+                    observer.complete();
+                  },
+                  error &#x3D;&gt; {
+                    observer.error(error);
+                  }
+                );
+              } else {
+                const error &#x3D; &#x60;HTTP Status 401 – Unauthorized&#x60;;
+                observer.error({ error });
+              }
             }
           } else if (
             (status &#x3D;&#x3D;&#x3D; 301 || status &#x3D;&#x3D;&#x3D; 302) &amp;&amp;

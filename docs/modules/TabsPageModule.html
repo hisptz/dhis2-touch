@@ -184,7 +184,39 @@ const routes: Routes &#x3D; [
       {
         path: &#x27;apps&#x27;,
         children: [
-          { path: &#x27;&#x27;, loadChildren: &#x27;./apps/apps.module#AppsPageModule&#x27; }
+          { path: &#x27;&#x27;, loadChildren: &#x27;./apps/apps.module#AppsPageModule&#x27; },
+          {
+            path: &#x27;data-entry&#x27;,
+            loadChildren:
+              &#x27;./apps/data-entry/data-entry.module#DataEntryPageModule&#x27;
+          },
+          {
+            path: &#x27;event-capture&#x27;,
+            loadChildren:
+              &#x27;./apps/event-capture/event-capture.module#EventCapturePageModule&#x27;
+          },
+          {
+            path: &#x27;tracker-capture&#x27;,
+            loadChildren:
+              &#x27;./apps/tracker-capture/tracker-capture.module#TrackerCapturePageModule&#x27;
+          },
+          {
+            path: &#x27;dashboard&#x27;,
+            loadChildren:
+              &#x27;./apps/dashboard/dashboard.module#DashboardPageModule&#x27;
+          },
+          {
+            path: &#x27;reports&#x27;,
+            loadChildren: &#x27;./apps/reports/reports.module#ReportsPageModule&#x27;
+          },
+          {
+            path: &#x27;sync&#x27;,
+            loadChildren: &#x27;./apps/sync/sync.module#SyncPageModule&#x27;
+          },
+          {
+            path: &#x27;settings&#x27;,
+            loadChildren: &#x27;./apps/settings/settings.module#SettingsPageModule&#x27;
+          }
         ]
       },
       {
@@ -193,6 +225,18 @@ const routes: Routes &#x3D; [
           {
             path: &#x27;&#x27;,
             loadChildren: &#x27;./accounts/accounts.module#AccountsPageModule&#x27;
+          },
+          {
+            path: &#x27;profile&#x27;,
+            loadChildren: &#x27;./accounts/profile/profile.module#ProfilePageModule&#x27;
+          },
+          {
+            path: &#x27;about&#x27;,
+            loadChildren: &#x27;./accounts/about/about.module#AboutPageModule&#x27;
+          },
+          {
+            path: &#x27;help&#x27;,
+            loadChildren: &#x27;./accounts/help/help.module#HelpPageModule&#x27;
           }
         ]
       },
