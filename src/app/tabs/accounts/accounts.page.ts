@@ -23,6 +23,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import {
@@ -49,6 +50,7 @@ export class AccountsPage implements OnInit {
     private store: Store<State>,
     private userService: UserService,
     private organisationUnitService: OrganisationUnitService,
+    private router: Router,
     private navCtrl: NavController
   ) {
     this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
@@ -64,7 +66,7 @@ export class AccountsPage implements OnInit {
     if (id === 'logout') {
       await this.logOut();
     } else {
-      console.log(url);
+      this.router.navigateByUrl(`/tabs/accounts/${url}`);
     }
   }
 
