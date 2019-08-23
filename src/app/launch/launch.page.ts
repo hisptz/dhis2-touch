@@ -67,39 +67,40 @@ export class LaunchPage implements OnInit {
   }
 
   async discoveringCurrentUser() {
-    try {
-      const currentUser: CurrentUser = await this.userService.getCurrentUser();
-      if (currentUser) {
-        const {
-          currentLanguage,
-          colorSettings,
-          isLogin,
-          currentDatabase
-        } = currentUser;
-        const langCode: string = currentLanguage ? currentLanguage : `en`;
-        this.appTranslationService.setCurrentUserLanguage(langCode);
-        if (colorSettings) {
-          this.store.dispatch(
-            new SetCurrentUserColorSettings({ colorSettings })
-          );
-        }
-        if (currentDatabase) {
-          await this.appConfigService.initateDataBaseConnection(
-            currentDatabase
-          );
-        }
-        if (isLogin) {
-          this.store.dispatch(new AddCurrentUser({ currentUser }));
-          this.setLandingPage();
-        } else {
-          this.setLoginPage();
-        }
-      } else {
-        this.setLoginPage();
-      }
-    } catch (error) {
-      this.setLoginPage();
-    }
+    // try {
+    //   const currentUser: CurrentUser = await this.userService.getCurrentUser();
+    //   if (currentUser) {
+    //     const {
+    //       currentLanguage,
+    //       colorSettings,
+    //       isLogin,
+    //       currentDatabase
+    //     } = currentUser;
+    //     const langCode: string = currentLanguage ? currentLanguage : `en`;
+    //     this.appTranslationService.setCurrentUserLanguage(langCode);
+    //     if (colorSettings) {
+    //       this.store.dispatch(
+    //         new SetCurrentUserColorSettings({ colorSettings })
+    //       );
+    //     }
+    //     if (currentDatabase) {
+    //       await this.appConfigService.initateDataBaseConnection(
+    //         currentDatabase
+    //       );
+    //     }
+    //     if (isLogin) {
+    //       this.store.dispatch(new AddCurrentUser({ currentUser }));
+    //       this.setLandingPage();
+    //     } else {
+    //       this.setLoginPage();
+    //     }
+    //   } else {
+    //     this.setLoginPage();
+    //   }
+    // } catch (error) {
+    //   this.setLoginPage();
+    // }
+    this.setLandingPage();
   }
 
   setLandingPage() {

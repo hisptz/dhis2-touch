@@ -39,7 +39,39 @@ const routes: Routes = [
       {
         path: 'apps',
         children: [
-          { path: '', loadChildren: './apps/apps.module#AppsPageModule' }
+          { path: '', loadChildren: './apps/apps.module#AppsPageModule' },
+          {
+            path: 'data-entry',
+            loadChildren:
+              './apps/data-entry/data-entry.module#DataEntryPageModule'
+          },
+          {
+            path: 'event-capture',
+            loadChildren:
+              './apps/event-capture/event-capture.module#EventCapturePageModule'
+          },
+          {
+            path: 'tracker-capture',
+            loadChildren:
+              './apps/tracker-capture/tracker-capture.module#TrackerCapturePageModule'
+          },
+          {
+            path: 'dashboard',
+            loadChildren:
+              './apps/dashboard/dashboard.module#DashboardPageModule'
+          },
+          {
+            path: 'reports',
+            loadChildren: './apps/reports/reports.module#ReportsPageModule'
+          },
+          {
+            path: 'sync',
+            loadChildren: './apps/sync/sync.module#SyncPageModule'
+          },
+          {
+            path: 'settings',
+            loadChildren: './apps/settings/settings.module#SettingsPageModule'
+          }
         ]
       },
       {
@@ -48,6 +80,18 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: './accounts/accounts.module#AccountsPageModule'
+          },
+          {
+            path: 'profile',
+            loadChildren: './accounts/profile/profile.module#ProfilePageModule'
+          },
+          {
+            path: 'about',
+            loadChildren: './accounts/about/about.module#AboutPageModule'
+          },
+          {
+            path: 'help',
+            loadChildren: './accounts/help/help.module#HelpPageModule'
           }
         ]
       },

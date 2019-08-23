@@ -48,10 +48,10 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes),
+    SharedComponentsModule,
     TranslateModule.forChild(),
     LoginComponentsModule,
-    LaunchComponentsModule,
-    SharedComponentsModule
+    LaunchComponentsModule
   ],
   declarations: [LoginPage]
 })

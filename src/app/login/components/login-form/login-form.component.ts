@@ -93,11 +93,11 @@ export class LoginFormComponent implements OnInit {
     this.loginFormReady.emit(data);
   }
 
-  onStartLoginProcess() {
+  async onStartLoginProcess() {
     this.startLoginProcess.emit({ status: true });
   }
 
-  trackByFn(index, item) {
+  trackByFn(index: any, item: LoginFormField) {
     return item && item.id ? item.id : index;
   }
 }
