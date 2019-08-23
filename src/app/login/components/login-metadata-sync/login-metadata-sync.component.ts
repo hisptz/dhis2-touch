@@ -169,9 +169,10 @@ export class LoginMetadataSyncComponent implements OnInit, OnDestroy {
 
   async offlineAuthenication(currentUser: CurrentUser) {
     try {
-      const user = await this.userAuthorizationService.offlineUserAuthentication(
+      await this.userAuthorizationService.offlineUserAuthentication(
         currentUser
       );
+      const user = await this.userService.getCurrentUser();
       this.successOnLoginAndSyncMetadata.emit({ currentUser: user });
     } catch (error) {
       this.onFailToLogin(error);

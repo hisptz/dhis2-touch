@@ -111,8 +111,24 @@ export class UserAuthorizationService {
               observer.next(user);
               observer.complete();
             } else {
-              const error = `HTTP Status 401 – Unauthorized`;
-              observer.error({ error });
+              if (serverUrl.includes('http://')) {
+                user = {
+                  ...user,
+                  serverUrl: serverUrl.replace('http://', 'https://')
+                };
+                this.onlineUserAuthentication(user).subscribe(
+                  (userResponse: any) => {
+                    observer.next(userResponse);
+                    observer.complete();
+                  },
+                  error => {
+                    observer.error(error);
+                  }
+                );
+              } else {
+                const error = `HTTP Status 401 – Unauthorized`;
+                observer.error({ error });
+              }
             }
           } else if (
             (status === 301 || status === 302) &&
