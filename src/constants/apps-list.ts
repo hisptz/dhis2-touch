@@ -21,13 +21,16 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
+
 import { AppItem } from 'src/models';
+
+/*
 export const APPS_LIST: AppItem[] = [
   {
     id: 'data_entry',
     name: 'Data entry',
     authorites: ['M_dhis-web-dataentry'],
-    url: 'DataEntryPage',
+    url: 'data-entry',
     isVisible: true,
     src: 'assets/icon/data-entry.png'
   },
@@ -35,7 +38,7 @@ export const APPS_LIST: AppItem[] = [
     id: 'event_capture',
     name: 'Event capture',
     authorites: ['M_dhis-web-event-capture'],
-    url: 'EventCapturePage',
+    url: 'event-capture',
     isVisible: true,
     src: 'assets/icon/event-capture.png'
   },
@@ -43,7 +46,7 @@ export const APPS_LIST: AppItem[] = [
     id: 'tracker_capture',
     name: 'Tracker capture',
     authorites: ['M_dhis-web-tracker-capture'],
-    url: 'TrackerCapturePage',
+    url: 'tracker-capture',
     isVisible: true,
     src: 'assets/icon/tracker-capture.png'
   },
@@ -51,7 +54,7 @@ export const APPS_LIST: AppItem[] = [
     id: 'dashboard',
     name: 'Dashboard',
     authorites: ['M_dhis-web-dashboard-integration', 'M_dhis-web-dashboard'],
-    url: 'DashboardPage',
+    url: 'dashboard',
     isVisible: true,
     src: 'assets/icon/dashboard.png'
   },
@@ -59,7 +62,7 @@ export const APPS_LIST: AppItem[] = [
     id: 'reports',
     name: 'Reports',
     authorites: ['M_dhis-web-reporting'],
-    url: 'ReportsPage',
+    url: 'reports',
     isVisible: true,
     src: 'assets/icon/reports.png'
   },
@@ -67,7 +70,7 @@ export const APPS_LIST: AppItem[] = [
     id: 'sync',
     name: 'Sync',
     authorites: [],
-    url: 'SyncPage',
+    url: 'sync',
     isVisible: true,
     src: 'assets/icon/sync.png'
   },
@@ -75,7 +78,67 @@ export const APPS_LIST: AppItem[] = [
     id: 'settings',
     name: 'Settings',
     authorites: [],
-    url: 'SettingsPage',
+    url: 'settings',
+    isVisible: true,
+    src: 'assets/icon/settings.png'
+  }
+];
+*/
+
+export const APPS_LIST: AppItem[] = [
+  {
+    id: 'data_entry',
+    name: 'Data entry',
+    authorites: [],
+    url: 'data-entry',
+    isVisible: true,
+    src: 'assets/icon/data-entry.png'
+  },
+  {
+    id: 'event_capture',
+    name: 'Event capture',
+    authorites: [],
+    url: 'event-capture',
+    isVisible: true,
+    src: 'assets/icon/event-capture.png'
+  },
+  {
+    id: 'tracker_capture',
+    name: 'Tracker capture',
+    authorites: [],
+    url: 'tracker-capture',
+    isVisible: true,
+    src: 'assets/icon/tracker-capture.png'
+  },
+  {
+    id: 'dashboard',
+    name: 'Dashboard',
+    authorites: [],
+    url: 'dashboard',
+    isVisible: true,
+    src: 'assets/icon/dashboard.png'
+  },
+  {
+    id: 'reports',
+    name: 'Reports',
+    authorites: [],
+    url: 'reports',
+    isVisible: true,
+    src: 'assets/icon/reports.png'
+  },
+  {
+    id: 'sync',
+    name: 'Sync',
+    authorites: [],
+    url: 'sync',
+    isVisible: true,
+    src: 'assets/icon/sync.png'
+  },
+  {
+    id: 'settings',
+    name: 'Settings',
+    authorites: [],
+    url: 'settings',
     isVisible: true,
     src: 'assets/icon/settings.png'
   }

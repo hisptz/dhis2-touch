@@ -27,7 +27,7 @@ export const UTILITIES_APP_LIST: AppItem[] = [
     id: 'profile',
     name: 'Profile',
     authorites: [],
-    url: 'ProfilePage',
+    url: 'profile',
     isVisible: true,
     src: 'assets/icon/profile.png'
   },
@@ -35,7 +35,7 @@ export const UTILITIES_APP_LIST: AppItem[] = [
     id: 'about',
     name: 'About',
     authorites: [],
-    url: 'AboutPage',
+    url: 'about',
     isVisible: true,
     src: 'assets/icon/about.png'
   },
@@ -43,7 +43,7 @@ export const UTILITIES_APP_LIST: AppItem[] = [
     id: 'help',
     name: 'Help',
     authorites: [],
-    url: 'HelpPage',
+    url: 'help',
     isVisible: true,
     src: 'assets/icon/help.png'
   },
