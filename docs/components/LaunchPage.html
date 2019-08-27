@@ -387,8 +387,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="106"
-                            class="link-to-prism">src/app/launch/launch.page.ts:106</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="105"
+                            class="link-to-prism">src/app/launch/launch.page.ts:105</a></div>
                 </td>
             </tr>
 
@@ -426,8 +426,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="112"
-                            class="link-to-prism">src/app/launch/launch.page.ts:112</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="111"
+                            class="link-to-prism">src/app/launch/launch.page.ts:111</a></div>
                 </td>
             </tr>
 
@@ -608,40 +608,39 @@ export class LaunchPage implements OnInit {
   }
 
   async discoveringCurrentUser() {
-    // try {
-    //   const currentUser: CurrentUser &#x3D; await this.userService.getCurrentUser();
-    //   if (currentUser) {
-    //     const {
-    //       currentLanguage,
-    //       colorSettings,
-    //       isLogin,
-    //       currentDatabase
-    //     } &#x3D; currentUser;
-    //     const langCode: string &#x3D; currentLanguage ? currentLanguage : &#x60;en&#x60;;
-    //     this.appTranslationService.setCurrentUserLanguage(langCode);
-    //     if (colorSettings) {
-    //       this.store.dispatch(
-    //         new SetCurrentUserColorSettings({ colorSettings })
-    //       );
-    //     }
-    //     if (currentDatabase) {
-    //       await this.appConfigService.initateDataBaseConnection(
-    //         currentDatabase
-    //       );
-    //     }
-    //     if (isLogin) {
-    //       this.store.dispatch(new AddCurrentUser({ currentUser }));
-    //       this.setLandingPage();
-    //     } else {
-    //       this.setLoginPage();
-    //     }
-    //   } else {
-    //     this.setLoginPage();
-    //   }
-    // } catch (error) {
-    //   this.setLoginPage();
-    // }
-    this.setLandingPage();
+    try {
+      const currentUser: CurrentUser &#x3D; await this.userService.getCurrentUser();
+      if (currentUser) {
+        const {
+          currentLanguage,
+          colorSettings,
+          isLogin,
+          currentDatabase
+        } &#x3D; currentUser;
+        const langCode: string &#x3D; currentLanguage ? currentLanguage : &#x60;en&#x60;;
+        this.appTranslationService.setCurrentUserLanguage(langCode);
+        if (colorSettings) {
+          this.store.dispatch(
+            new SetCurrentUserColorSettings({ colorSettings })
+          );
+        }
+        if (currentDatabase) {
+          await this.appConfigService.initateDataBaseConnection(
+            currentDatabase
+          );
+        }
+        if (isLogin) {
+          this.store.dispatch(new AddCurrentUser({ currentUser }));
+          this.setLandingPage();
+        } else {
+          this.setLoginPage();
+        }
+      } else {
+        this.setLoginPage();
+      }
+    } catch (error) {
+      this.setLoginPage();
+    }
   }
 
   setLandingPage() {

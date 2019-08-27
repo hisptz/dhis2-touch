@@ -472,13 +472,13 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="modules/LoginPageModule.html" data-type="entity-link">LoginPageModule</a>
                                     <li class="chapter inner">
                                         <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ?
-                                            'data-target="#components-links-module-LoginPageModule-2183d18e8b811f08e8d1ec6b1e2e66f1"' : 'data-target="#xs-components-links-module-LoginPageModule-2183d18e8b811f08e8d1ec6b1e2e66f1"' }>
+                                            'data-target="#components-links-module-LoginPageModule-2b3de2dab0d4e9f7d0973e1c6d2c1e3b"' : 'data-target="#xs-components-links-module-LoginPageModule-2b3de2dab0d4e9f7d0973e1c6d2c1e3b"' }>
                                             <span class="icon ion-md-cog"></span>
                                             <span>Components</span>
                                             <span class="icon ion-ios-arrow-down"></span>
                                         </div>
-                                        <ul class="links collapse" ${ isNormalMode ? 'id="components-links-module-LoginPageModule-2183d18e8b811f08e8d1ec6b1e2e66f1"' :
-                                            'id="xs-components-links-module-LoginPageModule-2183d18e8b811f08e8d1ec6b1e2e66f1"' }>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="components-links-module-LoginPageModule-2b3de2dab0d4e9f7d0973e1c6d2c1e3b"' :
+                                            'id="xs-components-links-module-LoginPageModule-2b3de2dab0d4e9f7d0973e1c6d2c1e3b"' }>
                                             <li class="link">
                                                 <a href="components/LoginPage.html"
                                                     data-type="entity-link" data-context="sub-entity" data-context-id="modules">LoginPage</a>

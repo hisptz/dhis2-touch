@@ -167,6 +167,7 @@
                                 <a href="#ngOnInit">ngOnInit</a>
                             </li>
                             <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#onStartLoginProcess">onStartLoginProcess</a>
                             </li>
                             <li>
@@ -422,6 +423,7 @@
                     <a name="onStartLoginProcess"></a>
                     <span class="name">
                         <b>
+                            <span class="modifier">Async</span>
                             onStartLoginProcess
                         </b>
                         <a href="#onStartLoginProcess"><span class="icon ion-ios-link"></span></a>
@@ -430,7 +432,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>onStartLoginProcess()</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onStartLoginProcess()</code>
                 </td>
             </tr>
 
@@ -447,7 +450,7 @@
                 <td class="col-md-4">
 
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                     </div>
                 </td>
@@ -469,7 +472,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>trackByFn(index, item)</code>
+<code>trackByFn(index: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, item: <a href="../interfaces/LoginFormField.html">LoginFormField</a>)</code>
                 </td>
             </tr>
 
@@ -491,12 +494,16 @@
                             <thead>
                                 <tr>
                                     <td>Name</td>
+                                    <td>Type</td>
                                     <td>Optional</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>index</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
 
                                     <td>
                                         No
@@ -506,6 +513,9 @@
                                 </tr>
                                 <tr>
                                     <td>item</td>
+                                    <td>
+                                                <code><a href="../interfaces/LoginFormField.html" target="_self" >LoginFormField</a></code>
+                                    </td>
 
                                     <td>
                                         No
@@ -841,11 +851,11 @@ export class LoginFormComponent implements OnInit {
     this.loginFormReady.emit(data);
   }
 
-  onStartLoginProcess() {
+  async onStartLoginProcess() {
     this.startLoginProcess.emit({ status: true });
   }
 
-  trackByFn(index, item) {
+  trackByFn(index: any, item: LoginFormField) {
     return item &amp;&amp; item.id ? item.id : index;
   }
 }
