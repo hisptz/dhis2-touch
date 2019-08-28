@@ -340,7 +340,11 @@ export class EventCapturePage implements OnInit {
       });
       const eventsToBeApplied = _.flatMapDeep([...currentEvents, events]);
       this.eventCompletenessProvider
-        .savingEventsCompletenessData(eventsToBeApplied, this.currentUser)
+        .savingEventsCompletenessData(
+          eventsToBeApplied,
+          'synced',
+          this.currentUser
+        )
         .subscribe(
           () => {},
           error => {

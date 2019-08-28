@@ -33,11 +33,11 @@ export class EventCompletenessProvider {
 
   savingEventsCompletenessData(
     events: any[],
+    status: string = 'not-sync',
     currentUser: CurrentUser
   ): Observable<any> {
     const isDeleted = false;
     const type = 'event';
-    const status = 'not-sync';
     const data = _.map(
       _.filter(events, event => {
         const status = 'COMPLETED';
@@ -56,7 +56,6 @@ export class EventCompletenessProvider {
         };
       }
     );
-    console.log({ data });
     return new Observable(observer => {
       this.offlineCompleteness
         .savingOfflineCompleteness(data, currentUser)
