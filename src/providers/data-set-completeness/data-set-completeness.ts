@@ -24,6 +24,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
+import { CurrentUser } from '../../models';
 
 /*
   Generated class for the DataSetCompletenessProvider provider.
@@ -33,23 +34,26 @@ import { Observable } from 'rxjs/Observable';
 */
 @Injectable()
 export class DataSetCompletenessProvider {
+  /**
+   * @param  {HttpClientProvider} privatehttpClient
+   */
   constructor(private httpClient: HttpClientProvider) {}
 
   /**
-   *
-   * @param {string} dataSetId
-   * @param {string} period
-   * @param {string} orgUnitId
-   * @param dataDimension
-   * @param currentUser
-   * @returns {Observable<any>}
+   * @param  {string} dataSetId
+   * @param  {string} period
+   * @param  {string} orgUnitId
+   * @param  {any} dataDimension
+   * @param  {CurrentUser} currentUser
+   * @returns Observable
    */
+
   completeOnDataSetRegistrations(
     dataSetId: string,
     period: string,
     orgUnitId: string,
-    dataDimension,
-    currentUser
+    dataDimension: any,
+    currentUser: CurrentUser
   ): Observable<any> {
     let parameter = this.getDataSetCompletenessParameter(
       dataSetId,
@@ -91,20 +95,19 @@ export class DataSetCompletenessProvider {
   }
 
   /**
-   *
-   * @param {string} dataSetId
-   * @param {string} period
-   * @param {string} orgUnitId
-   * @param dataDimension
-   * @param currentUser
-   * @returns {Observable<any>}
+   * @param  {string} dataSetId
+   * @param  {string} period
+   * @param  {string} orgUnitId
+   * @param  {any} dataDimension
+   * @param  {CurrentUser} currentUser
+   * @returns Observable
    */
   unDoCompleteOnDataSetRegistrations(
     dataSetId: string,
     period: string,
     orgUnitId: string,
-    dataDimension,
-    currentUser
+    dataDimension: any,
+    currentUser: CurrentUser
   ): Observable<any> {
     let parameter = this.getDataSetCompletenessParameter(
       dataSetId,
@@ -128,20 +131,19 @@ export class DataSetCompletenessProvider {
   }
 
   /**
-   *
-   * @param {string} dataSetId
-   * @param {string} period
-   * @param {string} orgUnitId
-   * @param dataDimension
-   * @param currentUser
-   * @returns {Observable<any>}
+   * @param  {string} dataSetId
+   * @param  {string} period
+   * @param  {string} orgUnitId
+   * @param  {any} dataDimension
+   * @param  {CurrentUser} currentUser
+   * @returns Observable
    */
   getDataSetCompletenessInfo(
     dataSetId: string,
     period: string,
     orgUnitId: string,
-    dataDimension,
-    currentUser
+    dataDimension: any,
+    currentUser: CurrentUser
   ): Observable<any> {
     let parameter =
       'dataSetId=' +
@@ -171,12 +173,14 @@ export class DataSetCompletenessProvider {
   }
 
   /**
-   *
-   * @param username
-   * @param currentUser
-   * @returns {Promise<any>}
+   * @param  {string} username
+   * @param  {CurrentUser} currentUser
+   * @returns Observable
    */
-  getUserCompletenessInformation(username, currentUser): Observable<any> {
+  getUserCompletenessInformation(
+    username: string,
+    currentUser: CurrentUser
+  ): Observable<any> {
     return new Observable(observer => {
       this.httpClient
         .get(
@@ -197,19 +201,18 @@ export class DataSetCompletenessProvider {
   }
 
   /**
-   *
-   * @param {string} dataSetId
-   * @param {string} period
-   * @param {string} orgUnitId
-   * @param dataDimension
-   * @returns {string}
+   * @param  {string} dataSetId
+   * @param  {string} period
+   * @param  {string} orgUnitId
+   * @param  {any} dataDimension
+   * @returns string
    */
   getDataSetCompletenessParameter(
     dataSetId: string,
     period: string,
     orgUnitId: string,
-    dataDimension
-  ) {
+    dataDimension: any
+  ): string {
     let parameter = 'ds=' + dataSetId + '&pe=' + period + '&ou=' + orgUnitId;
     if (dataDimension.cp != '') {
       parameter += '&cc=' + dataDimension.cc + '&cp=' + dataDimension.cp;
