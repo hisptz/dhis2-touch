@@ -175,8 +175,17 @@ export class LoginMetadataSyncComponent implements OnDestroy, OnInit {
       const subscription = this.userProvider
         .offlineUserAuthentication(currentUser)
         .subscribe(
-          user => {
-            this.successOnLoginAndSyncMetadata.emit({ currentUser: user });
+          () => {
+            this.userProvider.getCurrentUser().subscribe(
+              (currentUserResponse: CurrentUser) => {
+                this.successOnLoginAndSyncMetadata.emit({
+                  currentUser: currentUserResponse
+                });
+              },
+              error => {
+                this.onFailToLogin(error);
+              }
+            );
           },
           error => {
             this.onFailToLogin(error);
