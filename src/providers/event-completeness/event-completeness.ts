@@ -36,5 +36,7 @@ export class EventCompletenessProvider {
   /**
    * @param  {HttpClientProvider} privatehttpClient
    */
-  constructor(private httpClient: HttpClientProvider) {}
+  constructor(private httpClient: HttpClientProvider) {
+    //  offlineCompleteness
+  }
 }
