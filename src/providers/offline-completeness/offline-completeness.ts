@@ -91,11 +91,6 @@ export class OfflineCompletenessProvider {
         );
     });
   }
-  /**
-   * @param  {any} data
-   * @param  {CurrentUser} currentUser
-   * @returns Observable
-   */
 
   savingOfflineCompleteness(
     data: any,
@@ -121,7 +116,71 @@ export class OfflineCompletenessProvider {
     eventId: string,
     currentUser: CurrentUser
   ): Observable<any> {
-    return new Observable(observer => {});
+    const id = eventId;
+    const status = 'not-sync';
+    const isDeleted = false;
+    const type = 'event';
+    const completedBy = currentUser.username;
+    const completedDate = new Date().toISOString().split('T')[0];
+    return new Observable(observer => {
+      this.savingOfflineCompleteness(
+        [{ id, eventId, status, isDeleted, type, completedBy, completedDate }],
+        currentUser
+      ).subscribe(
+        () => {
+          observer.next({ completedBy, completedDate });
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
+    });
+  }
+
+  offlineEventUncompleteness(
+    eventId: string,
+    currentUser: CurrentUser
+  ): Observable<any> {
+    return new Observable(observer => {
+      this.getOfflineCompletenessesById(eventId, currentUser).subscribe(
+        (data: any) => {
+          if (data && data.length > 0) {
+            const comletenessData = data[0];
+            const isDeleted = true;
+            const status = 'not-sync';
+            const completedBy = '';
+            const completedDate = '';
+            this.savingOfflineCompleteness(
+              [
+                {
+                  ...comletenessData,
+                  isDeleted,
+                  status,
+                  completedBy,
+                  completedDate
+                }
+              ],
+              currentUser
+            ).subscribe(
+              () => {
+                observer.next();
+                observer.complete();
+              },
+              error => {
+                observer.error(error);
+              }
+            );
+          } else {
+            const message = `Completeness info for event with id ${eventId} has not found`;
+            observer.error(message);
+          }
+        },
+        error => {
+          observer.error(error);
+        }
+      );
+    });
   }
 
   offlneEntryFormCompleteness(
@@ -131,17 +190,49 @@ export class OfflineCompletenessProvider {
     return new Observable(observer => {});
   }
 
-  offlineEventUncompleteness(
-    eventId: string,
-    currentUser: CurrentUser
-  ): Observable<any> {
-    return new Observable(observer => {});
-  }
-
   offlneEntryFormUncompleteness(
     entryFormSelection: any,
     currentUser: CurrentUser
   ): Observable<any> {
-    return new Observable(observer => {});
+    const id = ``;
+    return new Observable(observer => {
+      this.getOfflineCompletenessesById(id, currentUser).subscribe(
+        (data: any) => {
+          if (data && data.length > 0) {
+            const comletenessData = data[0];
+            const isDeleted = true;
+            const status = 'not-sync';
+            const completedBy = '';
+            const completedDate = '';
+            this.savingOfflineCompleteness(
+              [
+                {
+                  ...comletenessData,
+                  isDeleted,
+                  status,
+                  completedBy,
+                  completedDate
+                }
+              ],
+              currentUser
+            ).subscribe(
+              () => {
+                observer.next();
+                observer.complete();
+              },
+              error => {
+                observer.error(error);
+              }
+            );
+          } else {
+            const message = `Completeness info has not found`;
+            observer.error(message);
+          }
+        },
+        error => {
+          observer.error(error);
+        }
+      );
+    });
   }
 }

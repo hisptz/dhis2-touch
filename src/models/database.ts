@@ -366,8 +366,8 @@ export const DATABASE_STRUCTURE = {
       { value: 'periodId', type: 'TEXT' },
       { value: 'organisationUnitId', type: 'TEXT' },
       { value: 'dataDimension', type: 'LONGTEXT' },
-      { value: 'completeddBy', type: 'TEXT' },
-      { value: 'completeddDate', type: 'TEXT' },
+      { value: 'completedBy', type: 'TEXT' },
+      { value: 'completedDate', type: 'TEXT' },
       { value: 'status', type: 'TEXT' },
       { value: 'isDeleted', type: 'TEXT' }
     ],
