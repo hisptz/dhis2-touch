@@ -348,6 +348,7 @@ export class DataEntryFormPage implements OnInit {
       );
   }
 
+  // @TODO completeness handling
   onDataSetCompletenessInformattionLoaded(dataSetCompletenessInfo) {
     this.dataSetsCompletenessInfo = dataSetCompletenessInfo;
     if (dataSetCompletenessInfo && dataSetCompletenessInfo.complete) {

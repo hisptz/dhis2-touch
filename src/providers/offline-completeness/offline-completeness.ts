@@ -23,6 +23,7 @@
  */
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import * as _ from 'lodash';
 import { CurrentUser } from '../../models';
 import { SqlLiteProvider } from '../sql-lite/sql-lite';
 
@@ -52,15 +53,19 @@ export class OfflineCompletenessProvider {
     });
   }
 
-  getOfflineCompletenessesById(
-    id: string,
+  getOfflineCompletenessesByIds(
+    ids: string[],
     currentUser: CurrentUser
   ): Observable<any> {
     const tableName = 'offlineCompleteness';
     return new Observable(observer => {
-      const query = `SELECT * FROM ${tableName} WHERE id = '${id}'`;
       this.sqlLite
-        .getByUsingQuery(query, tableName, currentUser.currentDatabase)
+        .getDataFromTableByAttributes(
+          tableName,
+          'id',
+          ids,
+          currentUser.currentDatabase
+        )
         .subscribe(
           data => {
             observer.next(data);
@@ -120,7 +125,7 @@ export class OfflineCompletenessProvider {
   }
 
   offlineEventUncompleteness(
-    eventId: string,
+    eventIds: string[],
     currentUser: CurrentUser
   ): Observable<any> {
     const isDeleted = true;
@@ -128,20 +133,20 @@ export class OfflineCompletenessProvider {
     const completedBy = '';
     const completedDate = '';
     return new Observable(observer => {
-      this.getOfflineCompletenessesById(eventId, currentUser).subscribe(
+      this.getOfflineCompletenessesByIds(eventIds, currentUser).subscribe(
         (data: any) => {
           if (data && data.length > 0) {
-            const comletenessData = data[0];
+            const comletenessData = _.map(data, dataObj => {
+              return {
+                ...dataObj,
+                isDeleted,
+                status,
+                completedBy,
+                completedDate
+              };
+            });
             this.savingOfflineCompleteness(
-              [
-                {
-                  ...comletenessData,
-                  isDeleted,
-                  status,
-                  completedBy,
-                  completedDate
-                }
-              ],
+              comletenessData,
               currentUser
             ).subscribe(
               () => {
@@ -153,7 +158,7 @@ export class OfflineCompletenessProvider {
               }
             );
           } else {
-            const message = `Completeness info for event with id ${eventId} has not found`;
+            const message = `Completeness info  has not found`;
             observer.error(message);
           }
         },
@@ -237,7 +242,7 @@ export class OfflineCompletenessProvider {
     }
     const id = idArray.join('-');
     return new Observable(observer => {
-      this.getOfflineCompletenessesById(id, currentUser).subscribe(
+      this.getOfflineCompletenessesByIds([id], currentUser).subscribe(
         (data: any) => {
           if (data && data.length > 0) {
             const comletenessData = data[0];

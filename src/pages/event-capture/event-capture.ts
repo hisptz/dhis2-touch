@@ -139,7 +139,8 @@ export class EventCapturePage implements OnInit {
       dhis2['eventCaptureSelection'] = {
         selectedOrgUnit: { id: selectedOrgUnit.id, name: selectedOrgUnit.name },
         selectedProgram: { id: selectedProgram.id, name: selectedProgram.name },
-        dataDimension
+        dataDimension,
+        selectedDataDimension
       };
       this.loadProgramStages(selectedProgram.id, true);
     }

@@ -36,9 +36,32 @@ export class EventCompletenessProvider {
     status: string = 'not-sync',
     currentUser: CurrentUser
   ): Observable<any> {
+    const data = this.getCompletenesEventData(events, status);
+    const unCompletedEventIds = this.getUncompletedEventIds(events);
+    return new Observable(observer => {
+      this.offlineCompleteness
+        .savingOfflineCompleteness(data, currentUser)
+        .subscribe(
+          () => {
+            if (unCompletedEventIds.length > 0) {
+              this.offlineCompleteness
+                .offlineEventUncompleteness(unCompletedEventIds, currentUser)
+                .subscribe(() => {});
+            }
+            observer.next();
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+    });
+  }
+
+  getCompletenesEventData(events: any[], status: string): any[] {
     const isDeleted = false;
     const type = 'event';
-    const data = _.map(
+    return _.map(
       _.filter(events, event => {
         const status = 'COMPLETED';
         return event && event.status && event.status === status;
@@ -56,18 +79,15 @@ export class EventCompletenessProvider {
         };
       }
     );
-    return new Observable(observer => {
-      this.offlineCompleteness
-        .savingOfflineCompleteness(data, currentUser)
-        .subscribe(
-          () => {
-            observer.next();
-            observer.complete();
-          },
-          error => {
-            observer.error(error);
-          }
-        );
-    });
+  }
+
+  getUncompletedEventIds(events: any[]): string[] {
+    return _.map(
+      _.filter(events, event => {
+        const status = 'COMPLETED';
+        return event && event.status && event.status !== status;
+      }),
+      event => event.event
+    );
   }
 }
