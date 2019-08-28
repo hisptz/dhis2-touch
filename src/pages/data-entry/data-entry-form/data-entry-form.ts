@@ -43,12 +43,7 @@ import { SynchronizationProvider } from '../../../providers/synchronization/sync
 import { ValidationRule, CurrentUser } from '../../../models';
 import { ValidationRulesProvider } from '../../../providers/validation-rules/validation-rules';
 
-/**
- * Generated class for the DataEntryFormPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
+declare var dhis2;
 
 @IonicPage()
 @Component({
@@ -348,15 +343,22 @@ export class DataEntryFormPage implements OnInit {
       );
   }
 
-  // @TODO completeness handling
-  onDataSetCompletenessInformattionLoaded(dataSetCompletenessInfo) {
+  onDataSetCompletenessInformattionLoaded(dataSetCompletenessInfo: any) {
     this.dataSetsCompletenessInfo = dataSetCompletenessInfo;
     if (dataSetCompletenessInfo && dataSetCompletenessInfo.complete) {
       this.isDataSetCompleted = true;
     }
+    const entryFormSelection = dhis2.dataEntrySelection;
+    this.dataSetCompletenessProvider
+      .savingEventsCompletenessData(
+        entryFormSelection,
+        dataSetCompletenessInfo,
+        this.currentUser
+      )
+      .subscribe(() => {});
   }
 
-  onMergingWithOnlineData(data) {
+  onMergingWithOnlineData(data: any) {
     const { dataValues, action } = data;
     if (action === 'decline') {
       Object.keys(this.dataValuesObject).map(id => {
@@ -396,7 +398,7 @@ export class DataEntryFormPage implements OnInit {
     }
   }
 
-  savingDataValuesAfterResolvingConflicts(dataValues) {
+  savingDataValuesAfterResolvingConflicts(dataValues: any[]) {
     this.isLoading = true;
     this.loadingMessage = '';
     let newDataValue = [];

@@ -29,8 +29,17 @@ import { OfflineCompletenessProvider } from '../offline-completeness/offline-com
 
 @Injectable()
 export class EventCompletenessProvider {
+  /**
+   * @param  {OfflineCompletenessProvider} privateofflineCompleteness
+   */
   constructor(private offlineCompleteness: OfflineCompletenessProvider) {}
 
+  /**
+   * @param  {any[]} events
+   * @param  {string='not-sync'} status
+   * @param  {CurrentUser} currentUser
+   * @returns Observable
+   */
   savingEventsCompletenessData(
     events: any[],
     status: string = 'not-sync',
@@ -58,6 +67,11 @@ export class EventCompletenessProvider {
     });
   }
 
+  /**
+   * @param  {any[]} events
+   * @param  {string} status
+   * @returns any
+   */
   getCompletenesEventData(events: any[], status: string): any[] {
     const isDeleted = false;
     const type = 'event';
@@ -81,6 +95,10 @@ export class EventCompletenessProvider {
     );
   }
 
+  /**
+   * @param  {any[]} events
+   * @returns string
+   */
   getUncompletedEventIds(events: any[]): string[] {
     return _.map(
       _.filter(events, event => {

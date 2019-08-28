@@ -171,7 +171,8 @@ export class OfflineCompletenessProvider {
 
   offlneEntryFormCompleteness(
     entryFormSelection: any,
-    currentUser: CurrentUser
+    currentUser: CurrentUser,
+    dataSetCompletenessInfo: any
   ): Observable<any> {
     const {
       selectedOrgUnit,
@@ -186,8 +187,14 @@ export class OfflineCompletenessProvider {
     const isDeleted = false;
     const type = 'aggregate';
     const status = 'not-sync';
-    const completedBy = currentUser.username;
-    const completedDate = new Date().toISOString().split('T')[0];
+    const completedBy =
+      dataSetCompletenessInfo && dataSetCompletenessInfo.storedBy
+        ? dataSetCompletenessInfo.storedBy
+        : currentUser.username;
+    const completedDate =
+      dataSetCompletenessInfo && dataSetCompletenessInfo.date
+        ? dataSetCompletenessInfo.date
+        : new Date().toISOString().split('T')[0];
     let idArray = [dataSetId, periodId, organisationUnitId];
     if (cp !== '') {
       idArray = [...idArray, cc, cp];

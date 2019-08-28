@@ -25,19 +25,53 @@ import { Injectable } from '@angular/core';
 import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
 import { CurrentUser } from '../../models';
+import { OfflineCompletenessProvider } from '../offline-completeness/offline-completeness';
 
-/*
-  Generated class for the DataSetCompletenessProvider provider.
-
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular DI.
-*/
 @Injectable()
 export class DataSetCompletenessProvider {
-  /**
-   * @param  {HttpClientProvider} privatehttpClient
-   */
-  constructor(private httpClient: HttpClientProvider) {}
+  constructor(
+    private httpClient: HttpClientProvider,
+    private offlineCompletenessProvider: OfflineCompletenessProvider
+  ) {}
+
+  savingEventsCompletenessData(
+    entryFormSelection: any,
+    dataSetCompletenessInfo: any,
+    currentUser: CurrentUser
+  ): Observable<any> {
+    return new Observable(observer => {
+      const { complete } = dataSetCompletenessInfo;
+      if (complete) {
+        this.offlineCompletenessProvider
+          .offlneEntryFormCompleteness(
+            entryFormSelection,
+            currentUser,
+            dataSetCompletenessInfo
+          )
+          .subscribe(
+            dataSetsCompletenessInfo => {
+              observer.next(dataSetsCompletenessInfo);
+              observer.complete();
+            },
+            error => {
+              observer.error(error);
+            }
+          );
+      } else {
+        this.offlineCompletenessProvider
+          .offlneEntryFormUncompleteness(entryFormSelection, currentUser)
+          .subscribe(
+            () => {
+              observer.next();
+              observer.complete();
+            },
+            error => {
+              observer.error(error);
+            }
+          );
+      }
+    });
+  }
 
   /**
    * @param  {string} dataSetId
