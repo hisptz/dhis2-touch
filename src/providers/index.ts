@@ -77,7 +77,7 @@ import { DataStoreManagerProvider } from './data-store-manager/data-store-manage
 import { TrackerCaptureSyncProvider } from './tracker-capture-sync/tracker-capture-sync';
 import { AppColorProvider } from './app-color/app-color';
 import { ValidationRulesProvider } from './validation-rules/validation-rules';
-import { EventCompletenessProvider } from './event-completeness/event-completeness';
+import { OfflineCompletenessProvider } from './offline-completeness/offline-completeness';
 
 export const appProviders = [
   AppTranslationProvider,
@@ -123,7 +123,7 @@ export const appProviders = [
   TrackerCaptureSyncProvider,
   AppColorProvider,
   ValidationRulesProvider,
-  EventCompletenessProvider
+  OfflineCompletenessProvider
 ];
 
 export const nativePlugins = [
