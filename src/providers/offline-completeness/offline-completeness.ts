@@ -142,15 +142,15 @@ export class OfflineCompletenessProvider {
     eventId: string,
     currentUser: CurrentUser
   ): Observable<any> {
+    const isDeleted = true;
+    const status = 'not-sync';
+    const completedBy = '';
+    const completedDate = '';
     return new Observable(observer => {
       this.getOfflineCompletenessesById(eventId, currentUser).subscribe(
         (data: any) => {
           if (data && data.length > 0) {
             const comletenessData = data[0];
-            const isDeleted = true;
-            const status = 'not-sync';
-            const completedBy = '';
-            const completedDate = '';
             this.savingOfflineCompleteness(
               [
                 {
@@ -187,14 +187,74 @@ export class OfflineCompletenessProvider {
     entryFormSelection: any,
     currentUser: CurrentUser
   ): Observable<any> {
-    return new Observable(observer => {});
+    const {
+      selectedOrgUnit,
+      selectedDataSet,
+      selectedPeriod,
+      dataDimension
+    } = entryFormSelection;
+    const { cc, cp } = dataDimension;
+    const dataSetId = selectedDataSet.id;
+    const periodId = selectedPeriod.iso;
+    const organisationUnitId = selectedOrgUnit.id;
+    const status = 'not-sync';
+    const isDeleted = false;
+    const type = 'aggregate';
+    const completedBy = currentUser.username;
+    const completedDate = new Date().toISOString().split('T')[0];
+    let idArray = [dataSetId, periodId, organisationUnitId];
+    if (cp !== '') {
+      idArray = [...idArray, cc, cp];
+    }
+    const id = idArray.join('-');
+    return new Observable(observer => {
+      this.savingOfflineCompleteness(
+        [
+          {
+            id,
+            dataDimension,
+            periodId,
+            dataSetId,
+            organisationUnitId,
+            status,
+            isDeleted,
+            type,
+            completedBy,
+            completedDate
+          }
+        ],
+        currentUser
+      ).subscribe(
+        () => {
+          observer.next({ storedBy: completedBy, date: completedDate });
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
+    });
   }
 
   offlneEntryFormUncompleteness(
     entryFormSelection: any,
     currentUser: CurrentUser
   ): Observable<any> {
-    const id = ``;
+    const {
+      selectedOrgUnit,
+      selectedDataSet,
+      selectedPeriod,
+      dataDimension
+    } = entryFormSelection;
+    const { cc, cp } = dataDimension;
+    const dataSetId = selectedDataSet.id;
+    const periodId = selectedPeriod.iso;
+    const organisationUnitId = selectedOrgUnit.id;
+    let idArray = [dataSetId, periodId, organisationUnitId];
+    if (cp !== '') {
+      idArray = [...idArray, cc, cp];
+    }
+    const id = idArray.join('-');
     return new Observable(observer => {
       this.getOfflineCompletenessesById(id, currentUser).subscribe(
         (data: any) => {
