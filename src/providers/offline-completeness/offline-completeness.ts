@@ -22,28 +22,14 @@
  *
  */
 import { Injectable } from '@angular/core';
-import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
 import { CurrentUser } from '../../models';
 import { SqlLiteProvider } from '../sql-lite/sql-lite';
 
 @Injectable()
 export class OfflineCompletenessProvider {
-  /**
-   * @param  {HttpClientProvider} privatehttpClient
-   * @param  {SqlLiteProvider} privatesqlLite
-   */
-  constructor(
-    private httpClient: HttpClientProvider,
-    private sqlLite: SqlLiteProvider
-  ) {}
+  constructor(private sqlLite: SqlLiteProvider) {}
 
-  /**
-   * @param  {string} id
-   * @param  {string} status
-   * @param  {CurrentUser} currentUser
-   * @returns Observable
-   */
   getOfflineCompletenessesByIdAndStatus(
     id: string,
     status: string,
@@ -66,11 +52,6 @@ export class OfflineCompletenessProvider {
     });
   }
 
-  /**
-   * @param  {string} id
-   * @param  {CurrentUser} currentUser
-   * @returns Observable
-   */
   getOfflineCompletenessesById(
     id: string,
     currentUser: CurrentUser
@@ -117,9 +98,9 @@ export class OfflineCompletenessProvider {
     currentUser: CurrentUser
   ): Observable<any> {
     const id = eventId;
-    const status = 'not-sync';
     const isDeleted = false;
     const type = 'event';
+    const status = 'not-sync';
     const completedBy = currentUser.username;
     const completedDate = new Date().toISOString().split('T')[0];
     return new Observable(observer => {
@@ -197,9 +178,9 @@ export class OfflineCompletenessProvider {
     const dataSetId = selectedDataSet.id;
     const periodId = selectedPeriod.iso;
     const organisationUnitId = selectedOrgUnit.id;
-    const status = 'not-sync';
     const isDeleted = false;
     const type = 'aggregate';
+    const status = 'not-sync';
     const completedBy = currentUser.username;
     const completedDate = new Date().toISOString().split('T')[0];
     let idArray = [dataSetId, periodId, organisationUnitId];

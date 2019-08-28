@@ -32,6 +32,7 @@ import { Store } from '@ngrx/store';
 import { State, getCurrentUserColorSettings } from '../../store';
 import { Observable } from 'rxjs';
 import { SynchronizationProvider } from '../../providers/synchronization/synchronization';
+import { EventCompletenessProvider } from '../../providers/event-completeness/event-completeness';
 declare var dhis2;
 @IonicPage()
 @Component({
@@ -71,7 +72,8 @@ export class EventCapturePage implements OnInit {
     private settingsProvider: SettingsProvider,
     private appProvider: AppProvider,
     private eventCaptureFormProvider: EventCaptureFormProvider,
-    private synchronizationProvider: SynchronizationProvider
+    private synchronizationProvider: SynchronizationProvider,
+    private eventCompletenessProvider: EventCompletenessProvider
   ) {
     this.programType = 'WITHOUT_REGISTRATION';
     this.selectedDataDimension = [];
@@ -337,6 +339,14 @@ export class EventCapturePage implements OnInit {
         return _.indexOf(eventIds, event.id) === -1;
       });
       const eventsToBeApplied = _.flatMapDeep([...currentEvents, events]);
+      this.eventCompletenessProvider
+        .savingEventsCompletenessData(eventsToBeApplied, this.currentUser)
+        .subscribe(
+          () => {},
+          error => {
+            console.log(JSON.stringify(error));
+          }
+        );
       this.eventCaptureFormProvider
         .saveEvents(eventsToBeApplied, this.currentUser)
         .subscribe(

@@ -37,9 +37,7 @@ export class DataSetCompletenessProvider {
   /**
    * @param  {HttpClientProvider} privatehttpClient
    */
-  constructor(private httpClient: HttpClientProvider) {
-    //  offlineCompleteness
-  }
+  constructor(private httpClient: HttpClientProvider) {}
 
   /**
    * @param  {string} dataSetId
