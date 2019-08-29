@@ -104,7 +104,6 @@ export class DataSetCompletenessProvider {
         }
       }
     }
-    await this.uploadingDataSetCompleteness(currentUser);
     return dataSetCompletenessInfo;
   }
 

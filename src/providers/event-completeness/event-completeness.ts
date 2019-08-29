@@ -30,9 +30,11 @@ import { OfflineCompletenessProvider } from '../offline-completeness/offline-com
 @Injectable()
 export class EventCompletenessProvider {
   /**
-   * @param  {OfflineCompletenessProvider} privateofflineCompleteness
+   * @param  {OfflineCompletenessProvider} offlineCompletenessProvider
    */
-  constructor(private offlineCompleteness: OfflineCompletenessProvider) {}
+  constructor(
+    private offlineCompletenessProvider: OfflineCompletenessProvider
+  ) {}
 
   /**
    * @param  {any[]} events
@@ -45,28 +47,46 @@ export class EventCompletenessProvider {
     status: string = 'not-sync',
     currentUser: CurrentUser
   ): Observable<any> {
-    // @TODO handling preference on data btn device and online server
-    // @TODO take handlig preference from setting dfaut is device
-    const data = this.getCompletenesEventData(events, status);
-    const unCompletedEventIds = this.getUncompletedEventIds(events);
     return new Observable(observer => {
-      this.offlineCompleteness
-        .savingOfflineCompleteness(data, currentUser)
-        .subscribe(
-          () => {
-            if (unCompletedEventIds.length > 0) {
-              this.offlineCompleteness
-                .offlineEventUncompleteness(unCompletedEventIds, currentUser)
-                .subscribe(() => {});
-            }
-            observer.next();
-            observer.complete();
-          },
-          error => {
-            observer.error(error);
-          }
-        );
+      this.discoverAndUpdateEventsCompletenessInfo(events, status, currentUser)
+        .then(() => {
+          observer.next();
+          observer.complete();
+        })
+        .catch(error => {
+          observer.error(error);
+        });
     });
+  }
+
+  async discoverAndUpdateEventsCompletenessInfo(
+    events: any[],
+    status: string = 'not-sync',
+    currentUser: CurrentUser
+  ) {
+    // @TODO handling preference on data btn device and online server
+    const unCompletedEventIds = this.getUncompletedEventIds(events);
+    const type = 'event';
+    const completedEvents = this.getCompletedEvents(events);
+    let offlineData = [];
+    try {
+      offlineData = await this.offlineCompletenessProvider
+        .getOfflineCompletenessesByType(type, currentUser)
+        .toPromise();
+    } catch (error) {}
+    const ids = _.map(offlineData, (data: any) => data.id);
+    const completesssData = _.filter(
+      this.getEventCompletenesstData(completedEvents, status),
+      (dataObj: any) => _.indexOf(ids, dataObj.id) === -1
+    );
+    await this.offlineCompletenessProvider.savingOfflineCompleteness(
+      completesssData,
+      currentUser
+    );
+    console.log({
+      unCompletedEventIds
+    });
+    // await this.offlineCompletenessProvider.offlineEventUncompleteness(unCompletedEventIds, currentUser)
   }
 
   /**
@@ -74,27 +94,28 @@ export class EventCompletenessProvider {
    * @param  {string} status
    * @returns any
    */
-  getCompletenesEventData(events: any[], status: string): any[] {
+  getEventCompletenesstData(events: any[], status: string): any[] {
     const isDeleted = false;
     const type = 'event';
-    return _.map(
-      _.filter(events, event => {
-        const status = 'COMPLETED';
-        return event && event.status && event.status === status;
-      }),
-      event => {
-        const { completedDate, completedBy } = event;
-        return {
-          id: event.event,
-          eventId: event.id,
-          status,
-          type,
-          completedBy,
-          isDeleted,
-          completedDate: completedDate.split('T')[0]
-        };
-      }
-    );
+    return _.map(events, event => {
+      const { completedDate, completedBy } = event;
+      return {
+        id: event.event,
+        eventId: event.id,
+        status,
+        type,
+        completedBy,
+        isDeleted,
+        completedDate: completedDate.split('T')[0]
+      };
+    });
+  }
+
+  getCompletedEvents(events: any[]) {
+    const status = 'COMPLETED';
+    return _.filter(events, event => {
+      return event && event.status && event.status === status;
+    });
   }
 
   /**
