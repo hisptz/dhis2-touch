@@ -24,6 +24,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
+import * as _ from 'lodash';
 import { CurrentUser } from '../../models';
 import { OfflineCompletenessProvider } from '../offline-completeness/offline-completeness';
 
@@ -82,20 +83,89 @@ export class DataSetCompletenessProvider {
     } else {
       const { complete } = dataSetCompletenessInfo;
       if (complete) {
-        dataSetCompletenessInfo = await this.offlineCompletenessProvider
-          .offlneEntryFormCompleteness(
-            entryFormSelection,
-            currentUser,
-            dataSetCompletenessInfo
-          )
-          .toPromise();
+        try {
+          dataSetCompletenessInfo = await this.offlineCompletenessProvider
+            .offlneEntryFormCompleteness(
+              entryFormSelection,
+              currentUser,
+              dataSetCompletenessInfo
+            )
+            .toPromise();
+        } catch (error) {
+          console.log({ error });
+        }
       } else {
-        await this.offlineCompletenessProvider
-          .offlneEntryFormUncompleteness(entryFormSelection, currentUser)
-          .toPromise();
+        try {
+          await this.offlineCompletenessProvider
+            .offlneEntryFormUncompleteness(entryFormSelection, currentUser)
+            .toPromise();
+        } catch (error) {
+          console.log({ error });
+        }
       }
     }
+    await this.uploadingDataSetCompleteness(currentUser);
     return dataSetCompletenessInfo;
+  }
+
+  async uploadingDataSetCompleteness(currentUser: CurrentUser) {
+    const type = 'aggregate';
+    const status = 'not-sync';
+    const offlineData = await this.offlineCompletenessProvider
+      .getOfflineCompletenessesByType(type, currentUser)
+      .toPromise();
+    const data = _.map(offlineData, dataObj => {
+      const { isDeleted } = dataObj;
+      return { ...dataObj, isDeleted: JSON.parse(isDeleted) };
+    });
+    const unCompletedData = _.filter(data, dataObject => dataObject.isDeleted);
+    const completedData = _.filter(
+      data,
+      dataObject => !dataObject.isDeleted && dataObject.status === status
+    );
+    await this.completeEntryFormsOnline(completedData, currentUser);
+    await this.unCompleteEntryFormsOnline(unCompletedData, currentUser);
+  }
+
+  async completeEntryFormsOnline(completedData: any, currentUser: CurrentUser) {
+    for (const data of completedData) {
+      const { dataSetId, organisationUnitId, periodId, dataDimension } = data;
+      await this.unDoCompleteOnDataSetRegistrations(
+        dataSetId,
+        periodId,
+        organisationUnitId,
+        dataDimension,
+        currentUser
+      ).toPromise();
+      await this.offlineCompletenessProvider
+        .savingOfflineCompleteness([{ ...data, status: 'synced' }], currentUser)
+        .toPromise();
+    }
+  }
+
+  async unCompleteEntryFormsOnline(
+    unCompletedData: any,
+    currentUser: CurrentUser
+  ) {
+    for (const data of unCompletedData) {
+      const {
+        dataSetId,
+        organisationUnitId,
+        periodId,
+        dataDimension,
+        id
+      } = data;
+      await this.unDoCompleteOnDataSetRegistrations(
+        dataSetId,
+        periodId,
+        organisationUnitId,
+        dataDimension,
+        currentUser
+      ).toPromise();
+      await this.offlineCompletenessProvider
+        .deleteOfflineCompletenessesByIds([id], currentUser)
+        .toPromise();
+    }
   }
 
   completeOnDataSetRegistrations(

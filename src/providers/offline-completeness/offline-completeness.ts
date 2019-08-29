@@ -53,6 +53,27 @@ export class OfflineCompletenessProvider {
     });
   }
 
+  getOfflineCompletenessesByType(
+    type: string,
+    currentUser: CurrentUser
+  ): Observable<any> {
+    const tableName = 'offlineCompleteness';
+    return new Observable(observer => {
+      const query = `SELECT * FROM ${tableName} WHERE type  = '${type}'`;
+      this.sqlLite
+        .getByUsingQuery(query, tableName, currentUser.currentDatabase)
+        .subscribe(
+          data => {
+            observer.next(data);
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+    });
+  }
+
   getOfflineCompletenessesByIds(
     ids: string[],
     currentUser: CurrentUser
@@ -69,6 +90,31 @@ export class OfflineCompletenessProvider {
         .subscribe(
           data => {
             observer.next(data);
+            observer.complete();
+          },
+          error => {
+            observer.error(error);
+          }
+        );
+    });
+  }
+
+  deleteOfflineCompletenessesByIds(
+    ids: string[],
+    currentUser: CurrentUser
+  ): Observable<any> {
+    const tableName = 'offlineCompleteness';
+    return new Observable(observer => {
+      this.sqlLite
+        .deleteFromTableByAttribute(
+          tableName,
+          'id',
+          ids,
+          currentUser.currentDatabase
+        )
+        .subscribe(
+          () => {
+            observer.next();
             observer.complete();
           },
           error => {
@@ -214,7 +260,6 @@ export class OfflineCompletenessProvider {
         currentUser
       ).subscribe(
         () => {
-          console.log({ status: 'done' });
           observer.next({
             storedBy: completedBy,
             date: completedDate,
