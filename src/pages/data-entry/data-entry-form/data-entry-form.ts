@@ -42,6 +42,7 @@ import { Observable } from 'rxjs';
 import { SynchronizationProvider } from '../../../providers/synchronization/synchronization';
 import { ValidationRule, CurrentUser } from '../../../models';
 import { ValidationRulesProvider } from '../../../providers/validation-rules/validation-rules';
+import { OfflineCompletenessProvider } from '../../../providers/offline-completeness/offline-completeness';
 
 declare var dhis2;
 
@@ -94,7 +95,8 @@ export class DataEntryFormPage implements OnInit {
     private dataValuesProvider: DataValuesProvider,
     private navParams: NavParams,
     private synchronizationProvider: SynchronizationProvider,
-    private validationRulesProvider: ValidationRulesProvider
+    private validationRulesProvider: ValidationRulesProvider,
+    private offlineCompletenessProvider: OfflineCompletenessProvider
   ) {
     this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
     this.dataEntryFormDesign = '';
@@ -344,18 +346,19 @@ export class DataEntryFormPage implements OnInit {
   }
 
   onDataSetCompletenessInformattionLoaded(dataSetCompletenessInfo: any) {
-    this.dataSetsCompletenessInfo = dataSetCompletenessInfo;
-    if (dataSetCompletenessInfo && dataSetCompletenessInfo.complete) {
-      this.isDataSetCompleted = true;
-    }
     const entryFormSelection = dhis2.dataEntrySelection;
     this.dataSetCompletenessProvider
-      .savingEventsCompletenessData(
+      .savingEntryFormCompletenessData(
         entryFormSelection,
         dataSetCompletenessInfo,
         this.currentUser
       )
-      .subscribe(() => {});
+      .subscribe(dataSetCompleteness => {
+        this.dataSetsCompletenessInfo = dataSetCompleteness;
+        if (dataSetCompleteness && dataSetCompleteness.complete) {
+          this.isDataSetCompleted = true;
+        }
+      });
   }
 
   onMergingWithOnlineData(data: any) {
@@ -576,23 +579,16 @@ export class DataEntryFormPage implements OnInit {
     return sections;
   }
 
-  //@todo support offline completeness and un completeness of form
   updateDataSetCompleteness() {
     this.content.scrollToBottom(1000);
     this.isDataSetCompletenessProcessRunning = true;
-    let dataSetId = this.dataSet.id;
-    let period = this.entryFormParameter.period.iso;
-    let orgUnitId = this.entryFormParameter.orgUnit.id;
-    let dataDimension = this.entryFormParameter.dataDimension;
+    const entryFormSelection = dhis2.dataEntrySelection;
+    const period = this.entryFormParameter.period.iso;
+    const orgUnitId = this.entryFormParameter.orgUnit.id;
+    const dataDimension = this.entryFormParameter.dataDimension;
     if (this.isDataSetCompleted) {
-      this.dataSetCompletenessProvider
-        .unDoCompleteOnDataSetRegistrations(
-          dataSetId,
-          period,
-          orgUnitId,
-          dataDimension,
-          this.currentUser
-        )
+      this.offlineCompletenessProvider
+        .offlneEntryFormUncompleteness(entryFormSelection, this.currentUser)
         .subscribe(
           () => {
             this.dataSetsCompletenessInfo = {};
@@ -635,49 +631,17 @@ export class DataEntryFormPage implements OnInit {
         }, plaese enter data before complete this form`;
         this.appProvider.setTopNotification(message);
       } else {
-        this.dataSetCompletenessProvider
-          .completeOnDataSetRegistrations(
-            dataSetId,
-            period,
-            orgUnitId,
-            dataDimension,
-            this.currentUser
-          )
+        this.offlineCompletenessProvider
+          .offlneEntryFormCompleteness(entryFormSelection, this.currentUser)
           .subscribe(
-            () => {
-              this.dataSetCompletenessProvider
-                .getDataSetCompletenessInfo(
-                  dataSetId,
-                  period,
-                  orgUnitId,
-                  dataDimension,
-                  this.currentUser
-                )
-                .subscribe(
-                  (dataSetCompletenessInfo: any) => {
-                    this.dataSetsCompletenessInfo = dataSetCompletenessInfo;
-                    if (
-                      dataSetCompletenessInfo &&
-                      dataSetCompletenessInfo.complete
-                    ) {
-                      this.isDataSetCompleted = true;
-                      this.content.scrollToBottom(1000);
-                    }
-                    this.isDataSetCompletenessProcessRunning = false;
-                    this.uploadDataValuesOnComplete(
-                      period,
-                      orgUnitId,
-                      dataDimension
-                    );
-                  },
-                  error => {
-                    console.log(JSON.stringify(error));
-                    this.isDataSetCompletenessProcessRunning = false;
-                    this.appProvider.setNormalNotification(
-                      'Failed to discover entry form completeness information'
-                    );
-                  }
-                );
+            (dataSetCompletenessInfo: any) => {
+              this.dataSetsCompletenessInfo = dataSetCompletenessInfo;
+              if (dataSetCompletenessInfo && dataSetCompletenessInfo.complete) {
+                this.isDataSetCompleted = true;
+                this.content.scrollToBottom(1000);
+              }
+              this.isDataSetCompletenessProcessRunning = false;
+              this.uploadDataValuesOnComplete(period, orgUnitId, dataDimension);
             },
             error => {
               this.isDataSetCompletenessProcessRunning = false;
@@ -691,11 +655,15 @@ export class DataEntryFormPage implements OnInit {
     }
   }
 
-  uploadDataValuesOnComplete(period, orgUnitId, dataDimension) {
+  uploadDataValuesOnComplete(
+    period: string,
+    orgUnitId: string,
+    dataDimension: any
+  ) {
     let dataValues = [];
     if (this.dataValuesObject) {
       Object.keys(this.dataValuesObject).map((fieldId: any) => {
-        let fieldIdArray = fieldId.split('-');
+        const fieldIdArray = fieldId.split('-');
         if (this.dataValuesObject[fieldId]) {
           let dataValue = this.dataValuesObject[fieldId];
           dataValues.push({

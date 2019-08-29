@@ -172,7 +172,7 @@ export class OfflineCompletenessProvider {
   offlneEntryFormCompleteness(
     entryFormSelection: any,
     currentUser: CurrentUser,
-    dataSetCompletenessInfo: any
+    dataSetCompletenessInfo?: any
   ): Observable<any> {
     const {
       selectedOrgUnit,
@@ -180,7 +180,6 @@ export class OfflineCompletenessProvider {
       selectedPeriod,
       dataDimension
     } = entryFormSelection;
-    const { cc, cp } = dataDimension;
     const dataSetId = selectedDataSet.id;
     const periodId = selectedPeriod.iso;
     const organisationUnitId = selectedOrgUnit.id;
@@ -195,11 +194,7 @@ export class OfflineCompletenessProvider {
       dataSetCompletenessInfo && dataSetCompletenessInfo.date
         ? dataSetCompletenessInfo.date
         : new Date().toISOString().split('T')[0];
-    let idArray = [dataSetId, periodId, organisationUnitId];
-    if (cp !== '') {
-      idArray = [...idArray, cc, cp];
-    }
-    const id = idArray.join('-');
+    const id = this.getEntryFormConpletenessDataId(entryFormSelection);
     return new Observable(observer => {
       this.savingOfflineCompleteness(
         [
@@ -219,7 +214,12 @@ export class OfflineCompletenessProvider {
         currentUser
       ).subscribe(
         () => {
-          observer.next({ storedBy: completedBy, date: completedDate });
+          console.log({ status: 'done' });
+          observer.next({
+            storedBy: completedBy,
+            date: completedDate,
+            complete: true
+          });
           observer.complete();
         },
         error => {
@@ -233,22 +233,8 @@ export class OfflineCompletenessProvider {
     entryFormSelection: any,
     currentUser: CurrentUser
   ): Observable<any> {
-    const {
-      selectedOrgUnit,
-      selectedDataSet,
-      selectedPeriod,
-      dataDimension
-    } = entryFormSelection;
-    const { cc, cp } = dataDimension;
-    const dataSetId = selectedDataSet.id;
-    const periodId = selectedPeriod.iso;
-    const organisationUnitId = selectedOrgUnit.id;
-    let idArray = [dataSetId, periodId, organisationUnitId];
-    if (cp !== '') {
-      idArray = [...idArray, cc, cp];
-    }
-    const id = idArray.join('-');
     return new Observable(observer => {
+      const id = this.getEntryFormConpletenessDataId(entryFormSelection);
       this.getOfflineCompletenessesByIds([id], currentUser).subscribe(
         (data: any) => {
           if (data && data.length > 0) {
@@ -287,5 +273,23 @@ export class OfflineCompletenessProvider {
         }
       );
     });
+  }
+
+  getEntryFormConpletenessDataId(entryFormSelection: any): string {
+    const {
+      selectedOrgUnit,
+      selectedDataSet,
+      selectedPeriod,
+      dataDimension
+    } = entryFormSelection;
+    const { cc, cp } = dataDimension;
+    const dataSetId = selectedDataSet.id;
+    const periodId = selectedPeriod.iso;
+    const organisationUnitId = selectedOrgUnit.id;
+    let idArray = [dataSetId, periodId, organisationUnitId];
+    if (cp !== '') {
+      idArray = [...idArray, cc, cp];
+    }
+    return idArray.join('-');
   }
 }

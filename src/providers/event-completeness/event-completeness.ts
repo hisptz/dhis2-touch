@@ -45,6 +45,8 @@ export class EventCompletenessProvider {
     status: string = 'not-sync',
     currentUser: CurrentUser
   ): Observable<any> {
+    // @TODO handling preference on data btn device and online server
+    // @TODO take handlig preference from setting dfaut is device
     const data = this.getCompletenesEventData(events, status);
     const unCompletedEventIds = this.getUncompletedEventIds(events);
     return new Observable(observer => {
