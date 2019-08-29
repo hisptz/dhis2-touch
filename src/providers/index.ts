@@ -32,7 +32,6 @@ import { DatePicker } from '@ionic-native/date-picker';
 import { Geolocation } from '@ionic-native/geolocation';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-// import { SMS } from '@ionic-native/sms';
 import { BackgroundMode } from '@ionic-native/background-mode';
 
 import { AppTranslationProvider } from '../providers/app-translation/app-translation';
@@ -78,6 +77,8 @@ import { DataStoreManagerProvider } from './data-store-manager/data-store-manage
 import { TrackerCaptureSyncProvider } from './tracker-capture-sync/tracker-capture-sync';
 import { AppColorProvider } from './app-color/app-color';
 import { ValidationRulesProvider } from './validation-rules/validation-rules';
+import { OfflineCompletenessProvider } from './offline-completeness/offline-completeness';
+import { EventCompletenessProvider } from './event-completeness/event-completeness';
 
 export const appProviders = [
   AppTranslationProvider,
@@ -122,7 +123,9 @@ export const appProviders = [
   DataStoreManagerProvider,
   TrackerCaptureSyncProvider,
   AppColorProvider,
-  ValidationRulesProvider
+  ValidationRulesProvider,
+  OfflineCompletenessProvider,
+  EventCompletenessProvider
 ];
 
 export const nativePlugins = [
@@ -133,7 +136,6 @@ export const nativePlugins = [
   SQLite,
   Diagnostic,
   BarcodeScanner,
-  //SMS,
   DatePicker,
   Geolocation,
   SplashScreen,
