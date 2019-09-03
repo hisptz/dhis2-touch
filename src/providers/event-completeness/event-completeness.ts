@@ -36,6 +36,29 @@ export class EventCompletenessProvider {
     private offlineCompletenessProvider: OfflineCompletenessProvider
   ) {}
 
+  async getEventCompletenessById(eventId: string, currentUser: CurrentUser) {
+    const response = await this.offlineCompletenessProvider
+      .getOfflineCompletenessesByIds([eventId], currentUser)
+      .toPromise();
+    return response;
+  }
+
+  async completeEvent(event: any, currentUser: CurrentUser) {
+    const { id } = event;
+    const response = this.offlineCompletenessProvider
+      .offlineEventCompleteness(id, currentUser)
+      .toPromise();
+    return response;
+  }
+
+  async unCompleteEvent(event: any, currentUser: CurrentUser) {
+    const { id } = event;
+    const response = await this.offlineCompletenessProvider
+      .offlineEventUncompleteness([id], currentUser)
+      .toPromise();
+    return response;
+  }
+
   /**
    * @param  {any[]} events
    * @param  {string='not-sync'} status
@@ -83,10 +106,6 @@ export class EventCompletenessProvider {
       completesssData,
       currentUser
     );
-    console.log({
-      unCompletedEventIds
-    });
-    // await this.offlineCompletenessProvider.offlineEventUncompleteness(unCompletedEventIds, currentUser)
   }
 
   /**
