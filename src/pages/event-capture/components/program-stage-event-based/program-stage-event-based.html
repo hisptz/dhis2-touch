@@ -57,11 +57,9 @@
                     </div>
 
                     <!-- completeness info-->
-                    <ion-row no-padding>
-                        <ion-col>
-                            <event-completeness (changeEventCompleteness)="onUpdatingEventCompleteness($event)" [complementenesInfo]="complementenesInfo" [isEventCompleted]="isEventCompleted" [isEventLocked]="isEventLocked" [isEventCompletenessProcessRunning]="isEventCompletenessProcessRunning"></event-completeness>
-                        </ion-col>
-                    </ion-row>
+                    <div>
+                        <event-completeness (changeEventCompleteness)="onUpdatingEventCompleteness($event)" [complementenesInfo]="complementenesInfo" [isEventCompleted]="isEventCompleted" [isEventLocked]="isEventLocked" [isEventCompletenessProcessRunning]="isEventCompletenessProcessRunning"></event-completeness>
+                    </div>
 
                     <ion-row no-padding>
                         <ion-col>

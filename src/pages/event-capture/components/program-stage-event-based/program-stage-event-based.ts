@@ -152,8 +152,9 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
         currentUser
       );
       this.complementenesInfo =
-        response && response.length > 0 ? response[0] : complementenesInfo;
-      this.isEventCompleted = response && response.length > 0;
+        response && response !== null ? response : complementenesInfo;
+      this.isEventCompleted =
+        response && response.completedDate && isNaN(response.completedDate);
     } catch (error) {
       console.log({ error });
     }
@@ -174,14 +175,15 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
           this.currentUser
         );
       }
+      this.isEventCompleted = !previousStatus;
     } catch (error) {
       console.log({ error });
     } finally {
-      this.complementenesInfo =
-        response && response.length > 0 ? response[0] : this.complementenesInfo;
+      this.complementenesInfo = response;
       setTimeout(() => {
         this.isEventCompletenessProcessRunning = false;
-        this.isEventCompleted = !previousStatus;
+        this.currentEvent.syncStatus = 'not-synced';
+        this.updateData({}, false);
       }, 50);
     }
   }
@@ -201,7 +203,6 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
           this.currentEvent.dataValues.length > 0
         ) {
           const eventId = this.currentEvent.id;
-          console.log({ d: this.currentEvent });
           this.discoveringEventCompleteness(eventId, this.currentUser);
           this.updateDataObjectModel(
             this.currentEvent.dataValues,
@@ -257,7 +258,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     return this.currentEvent && this.currentEvent.eventDate;
   }
 
-  deleteEvent(currentEventId, title?) {
+  deleteEvent(currentEventId: string, title?: string) {
     const actionSheet = this.actionSheetCtrl.create({
       title:
         title && title !== ''
@@ -297,7 +298,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     actionSheet.present();
   }
 
-  updateDataObjectModel(dataValues, programStageDataElements) {
+  updateDataObjectModel(dataValues: any[], programStageDataElements: any[]) {
     let dataValuesMapper = {};
     dataValues.map((dataValue: any) => {
       dataValuesMapper[dataValue.dataElement] = dataValue;
@@ -316,7 +317,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     });
   }
 
-  updateEventDate(date) {
+  updateEventDate(date: string) {
     this.hasEntryFormReSet = false;
     if (date && date !== '') {
       this.eventDate = date;
@@ -429,7 +430,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
       );
   }
 
-  updateData(updatedData, shouldSkipProgramRules) {
+  updateData(updatedData: any, shouldSkipProgramRules: boolean) {
     const oldEventDate = this.currentEvent['eventDate'];
     this.currentEvent['eventDate'] = this.eventDate;
     this.currentEvent['dueDate'] = this.eventDate;

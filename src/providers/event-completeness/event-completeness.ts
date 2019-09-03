@@ -40,7 +40,7 @@ export class EventCompletenessProvider {
     const response = await this.offlineCompletenessProvider
       .getOfflineCompletenessesByIds([eventId], currentUser)
       .toPromise();
-    return response;
+    return response && response.length > 0 ? response[0] : null;
   }
 
   async completeEvent(event: any, currentUser: CurrentUser) {
@@ -116,10 +116,10 @@ export class EventCompletenessProvider {
     const isDeleted = false;
     const type = 'event';
     return _.map(events, event => {
-      const { completedDate, completedBy } = event;
+      const { completedDate, completedBy, id } = event;
       return {
-        id: event.event ? event.event : event.id,
-        eventId: event.id,
+        id,
+        eventId: id,
         status,
         type,
         completedBy,
