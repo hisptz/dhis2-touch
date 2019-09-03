@@ -35,9 +35,9 @@ import { UserProvider } from '../../../../providers/user/user';
 import { AppProvider } from '../../../../providers/app/app';
 import { EventCaptureFormProvider } from '../../../../providers/event-capture-form/event-capture-form';
 import { ActionSheetController } from 'ionic-angular';
-import { AppTranslationProvider } from '../../../../providers/app-translation/app-translation';
 import { ProgramRulesProvider } from '../../../../providers/program-rules/program-rules';
 import { CurrentUser } from '../../../../models';
+import { EventCompletenessProvider } from '../../../../providers/event-completeness/event-completeness';
 
 /**
  * Generated class for the ProgramStageEventBasedComponent component.
@@ -50,12 +50,12 @@ import { CurrentUser } from '../../../../models';
   templateUrl: 'program-stage-event-based.html'
 })
 export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
-  @Input() programStage;
-  @Input() dataDimension;
-  @Input() currentEvent;
-  @Input() emptyEvent;
+  @Input() programStage: any;
+  @Input() dataDimension: any;
+  @Input() currentEvent: any;
+  @Input() emptyEvent: any;
   @Input() formLayout: string;
-  @Input() programSkipLogicMetadata;
+  @Input() programSkipLogicMetadata: any;
 
   @Output() onDeleteEvent = new EventEmitter();
   @Output() onCancelEvent = new EventEmitter();
@@ -68,7 +68,6 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   dataObject: any;
   eventDate: any;
   dataValuesSavingStatusClass: any;
-  translationMapper: any;
   entryFormType: string;
   hasEntryFormReSet: boolean;
   dataUpdateStatus: { [elementId: string]: string };
@@ -79,6 +78,11 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   assignedFields: any;
   programIndicators: any;
   customFormProgramRules: any;
+  // completeness variables
+  isEventCompleted: boolean;
+  isEventLocked: boolean;
+  isEventCompletenessProcessRunning: boolean;
+  complementenesInfo: any;
 
   constructor(
     private programsProvider: ProgramsProvider,
@@ -88,12 +92,11 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     private userProvider: UserProvider,
     private appProvider: AppProvider,
     private organisationUnitProvider: OrganisationUnitsProvider,
-    private appTranslation: AppTranslationProvider
+    private eventCompletenessProvider: EventCompletenessProvider
   ) {
     this.entryFormType = 'event';
     this.hasEntryFormReSet = false;
     this.dataObject = {};
-    this.translationMapper = {};
     this.dataValuesSavingStatusClass = {};
     this.currentOrgUnit = this.organisationUnitProvider.lastSelectedOrgUnit;
     this.currentProgram = this.programsProvider.lastSelectedProgram;
@@ -105,17 +108,18 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     this.assignedFields = {};
     this.customFormProgramRules = {};
     this.programIndicators = [];
+    // completeness control
+    this.isEventCompleted = false;
+    this.isEventLocked = false;
+    this.isEventCompletenessProcessRunning = false;
+    this.complementenesInfo = {
+      completedBy: '',
+      completedDate: ''
+    };
   }
+
   ngOnInit() {
-    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
-      (data: any) => {
-        this.translationMapper = data;
-        this.loadingCurrentUserInformation();
-      },
-      error => {
-        this.loadingCurrentUserInformation();
-      }
-    );
+    this.loadingCurrentUserInformation();
     this.eventDate = '';
     if (this.currentEvent && this.currentEvent.eventDate) {
       this.eventDate = this.currentEvent.eventDate;
@@ -134,15 +138,59 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     return notificationTitle;
   }
 
-  hasEventDatesLabel(value) {
+  async discoveringEventCompleteness(
+    eventId: string,
+    currentUser: CurrentUser
+  ) {
+    this.complementenesInfo = {
+      completedBy: '',
+      completedDate: ''
+    };
+    try {
+      const response = await this.eventCompletenessProvider.getEventCompletenessById(
+        eventId,
+        currentUser
+      );
+      this.complementenesInfo =
+        response && response.length > 0 ? response[0] : this.complementenesInfo;
+    } catch (error) {
+      console.log({ error });
+    }
+  }
+
+  async onUpdatingEventCompleteness(previousStatus: boolean) {
+    this.isEventCompletenessProcessRunning = true;
+    let response: any;
+    try {
+      if (previousStatus) {
+        response = await this.eventCompletenessProvider.unCompleteEvent(
+          this.currentEvent,
+          this.currentUser
+        );
+      } else {
+        response = await this.eventCompletenessProvider.completeEvent(
+          this.currentEvent,
+          this.currentUser
+        );
+      }
+    } catch (error) {
+      console.log({ error });
+    } finally {
+      this.complementenesInfo =
+        response && response.length > 0 ? response[0] : this.complementenesInfo;
+      setTimeout(() => {
+        this.isEventCompletenessProcessRunning = false;
+        this.isEventCompleted = !previousStatus;
+      }, 50);
+    }
+  }
+
+  hasEventDatesLabel(value: any) {
     return value && isNaN(value) && value.trim() !== '';
   }
 
   loadingCurrentUserInformation() {
-    let key = 'Discovering current user information';
-    this.loadingMessage = this.translationMapper[key]
-      ? this.translationMapper[key]
-      : key;
+    this.loadingMessage = 'Discovering current user information';
     this.userProvider.getCurrentUser().subscribe(
       (user: CurrentUser) => {
         this.currentUser = user;
@@ -151,6 +199,8 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
           this.currentEvent.dataValues &&
           this.currentEvent.dataValues.length > 0
         ) {
+          const eventId = this.currentEvent.id;
+          this.discoveringEventCompleteness(eventId, this.currentUser);
           this.updateDataObjectModel(
             this.currentEvent.dataValues,
             this.programStage.programStageDataElements
@@ -209,19 +259,14 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     const actionSheet = this.actionSheetCtrl.create({
       title:
         title && title !== ''
-          ? this.translationMapper[title]
-          : this.translationMapper[
-              'You are about to delete this event, are you sure?'
-            ],
+          ? title
+          : 'You are about to delete this event, are you sure?',
       buttons: [
         {
-          text: this.translationMapper['Yes'],
+          text: 'Yes',
           handler: () => {
             this.isLoading = true;
-            let key = 'Deleting event';
-            this.loadingMessage = this.translationMapper[key]
-              ? this.translationMapper[key]
-              : key;
+            this.loadingMessage = 'Deleting event';
             this.eventCaptureFormProvider
               .deleteEventByAttribute('id', currentEventId, this.currentUser)
               .subscribe(
@@ -242,7 +287,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
           }
         },
         {
-          text: this.translationMapper['No'],
+          text: 'No',
           handler: () => {}
         }
       ]
@@ -445,26 +490,5 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
 
   trackByFn(index, item) {
     return item && item.id ? item.id : index;
-  }
-
-  getValuesToTranslate() {
-    return [
-      'Report date',
-      'Coordinate',
-      'Touch to pick date',
-      'Delete',
-      'There are no data elements, please contact you help desk',
-      'Discovering current user information',
-      'Clearing this value results to deletion of this event, are you sure?',
-      'You are about to delete this event, are you sure?',
-      'Yes',
-      'No',
-      'Add New',
-      'Back',
-      'Deleting event',
-      'Event has been deleted successfully',
-      'Failed to discover current user information',
-      'Failed to delete event'
-    ];
   }
 }

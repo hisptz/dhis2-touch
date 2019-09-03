@@ -33,7 +33,7 @@ export class EventCompletenessComponent implements OnInit {
   @Input() isEventCompletenessProcessRunning: boolean;
   @Input() complementenesInfo: any;
 
-  changeEventCompleteness = new EventEmitter();
+  @Output() changeEventCompleteness = new EventEmitter();
 
   constructor() {}
 

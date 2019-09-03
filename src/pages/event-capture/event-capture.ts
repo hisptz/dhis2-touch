@@ -340,18 +340,7 @@ export class EventCapturePage implements OnInit {
         return _.indexOf(eventIds, event.id) === -1;
       });
       const eventsToBeApplied = _.flatMapDeep([...currentEvents, events]);
-      this.eventCompletenessProvider
-        .savingEventsCompletenessData(
-          eventsToBeApplied,
-          'synced',
-          this.currentUser
-        )
-        .subscribe(
-          () => {},
-          error => {
-            console.log(JSON.stringify(error));
-          }
-        );
+
       this.eventCaptureFormProvider
         .saveEvents(eventsToBeApplied, this.currentUser)
         .subscribe(
@@ -361,6 +350,18 @@ export class EventCapturePage implements OnInit {
               ...this.eventConflictHandler,
               events: this.currentEvents
             };
+            this.eventCompletenessProvider
+              .savingEventsCompletenessData(
+                eventsToBeApplied,
+                'synced',
+                this.currentUser
+              )
+              .subscribe(
+                () => {},
+                error => {
+                  console.log(JSON.stringify(error));
+                }
+              );
             this.renderDataAsTable();
           },
           error => {
