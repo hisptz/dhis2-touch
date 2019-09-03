@@ -102,10 +102,9 @@ export class EventCompletenessProvider {
       this.getEventCompletenesstData(completedEvents, status),
       (dataObj: any) => _.indexOf(ids, dataObj.id) === -1
     );
-    await this.offlineCompletenessProvider.savingOfflineCompleteness(
-      completesssData,
-      currentUser
-    );
+    await this.offlineCompletenessProvider
+      .savingOfflineCompleteness(completesssData, currentUser)
+      .toPromise();
   }
 
   /**
@@ -119,7 +118,7 @@ export class EventCompletenessProvider {
     return _.map(events, event => {
       const { completedDate, completedBy } = event;
       return {
-        id: event.event,
+        id: event.event ? event.event : event.id,
         eventId: event.id,
         status,
         type,

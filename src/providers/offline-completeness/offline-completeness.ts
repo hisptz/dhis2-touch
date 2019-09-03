@@ -134,7 +134,6 @@ export class OfflineCompletenessProvider {
         .insertBulkDataOnTable(tableName, data, currentUser.currentDatabase)
         .subscribe(
           () => {
-            console.log({ data });
             observer.next();
             observer.complete();
           },

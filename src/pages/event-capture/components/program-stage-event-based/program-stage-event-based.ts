@@ -200,6 +200,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
           this.currentEvent.dataValues.length > 0
         ) {
           const eventId = this.currentEvent.id;
+          console.log({ d: this.currentEvent });
           this.discoveringEventCompleteness(eventId, this.currentUser);
           this.updateDataObjectModel(
             this.currentEvent.dataValues,

@@ -118,7 +118,6 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
         )
         .subscribe(
           discoveredEvents => {
-            console.log({ discoveredEvents });
             this.successDiscoveringEvents.emit({ status: true });
             const { events } = this.eventConflictHandler;
             const localEventIds = _.map(events, event => event.id);
