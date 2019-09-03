@@ -47,12 +47,12 @@
             <div *ngIf="(programStage && programStage.id && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
                 <div *ngIf="!hiddenProgramStages[programStage.id]">
                     <div *ngIf="formLayout === 'customLayout' && programStage && programStage.dataEntryForm && programStage.dataEntryForm !== '' ">
-                        <custom-data-entry-form [customFormProgramRules]="customFormProgramRules" [entryFormType]="entryFormType" [dataEntryFormDesign]="programStage.dataEntryForm" [data]="dataObject" [programIndicators]="programIndicators" [dataUpdateStatus]="dataUpdateStatus"
-                            [programStageDataElements]="programStage.programStageDataElements" [programStageId]="programStage.id" (onCustomFormInputChange)="updateData($event)"></custom-data-entry-form>
+                        <custom-data-entry-form [isEventCompleted]="isEventCompleted" [customFormProgramRules]="customFormProgramRules" [entryFormType]="entryFormType" [dataEntryFormDesign]="programStage.dataEntryForm" [data]="dataObject" [programIndicators]="programIndicators"
+                            [dataUpdateStatus]="dataUpdateStatus" [programStageDataElements]="programStage.programStageDataElements" [programStageId]="programStage.id" (onCustomFormInputChange)="updateData($event)"></custom-data-entry-form>
                     </div>
                     <div *ngIf="!(formLayout === 'customLayout' && programStage && programStage.dataEntryForm && programStage.dataEntryForm !== '' )">
-                        <default-event-entry-form [(errorOrWarningMessage)]="errorOrWarningMessage" [(hiddenSections)]="hiddenSections" [(hiddenFields)]="hiddenFields" [programStage]="programStage" [currentUser]="currentUser" [(dataObject)]="dataObject" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
-                            (onChange)="updateData($event)">
+                        <default-event-entry-form [isEventCompleted]="isEventCompleted" [(errorOrWarningMessage)]="errorOrWarningMessage" [(hiddenSections)]="hiddenSections" [(hiddenFields)]="hiddenFields" [programStage]="programStage" [currentUser]="currentUser" [(dataObject)]="dataObject"
+                            [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" (onChange)="updateData($event)">
                         </default-event-entry-form>
                     </div>
 
