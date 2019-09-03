@@ -37,8 +37,15 @@
                     [translate]="isEventCompletenessProcessRunning && isEventCompleted? 'Undo completing' : 'Undo complete'"></span>
             </button>
         </div>
-        <div class="flex-item flex-item-start">
-            complementenesInfo:{{ complementenesInfo |json }}<br>isEventCompleted: {{ isEventCompleted |json }} <br>isEventCompletenessProcessRunning : {{ isEventCompletenessProcessRunning |json }}<br> isEventLocked : {{ isEventLocked |json }} <br>
+        <div class="flex-item flex-item-start complementenes-info" *ngIf="isEventCompleted && complementenesInfo && complementenesInfo.completedBy && complementenesInfo.completedDate">
+            <span [translate]="'Completed by'"></span>
+            <span>
+                <b>{{ complementenesInfo.completedBy }}</b>
+            </span>
+            <span [translate]="'on'"></span>
+            <span>
+                <b>{{ complementenesInfo.completedDate }}</b>
+            </span>
         </div>
     </div>
 </div>

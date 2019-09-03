@@ -142,7 +142,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     eventId: string,
     currentUser: CurrentUser
   ) {
-    this.complementenesInfo = {
+    const complementenesInfo = {
       completedBy: '',
       completedDate: ''
     };
@@ -152,7 +152,8 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
         currentUser
       );
       this.complementenesInfo =
-        response && response.length > 0 ? response[0] : this.complementenesInfo;
+        response && response.length > 0 ? response[0] : complementenesInfo;
+      this.isEventCompleted = response && response.length > 0;
     } catch (error) {
       console.log({ error });
     }

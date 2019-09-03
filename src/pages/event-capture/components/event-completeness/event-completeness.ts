@@ -40,11 +40,6 @@ export class EventCompletenessComponent implements OnInit {
   ngOnInit() {}
 
   updateEventCompleteness() {
-    console.log({
-      isEventCompleted: this.isEventCompleted,
-      isEventLocked: this.isEventLocked,
-      complementenesInfo: this.complementenesInfo
-    });
     this.changeEventCompleteness.emit(this.isEventCompleted);
   }
 }
