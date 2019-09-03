@@ -34,6 +34,7 @@ import { EventCoordinateSelectorComponent } from './event-coordinate-selector/ev
 import { ProgramRuleActionMessageComponent } from './program-rule-action-message/program-rule-action-message';
 import { EventConflictHandlerComponent } from './event-conflict-handler/event-conflict-handler';
 import { ProgramParameterSelectionComponent } from './program-parameter-selection/program-parameter-selection';
+import { EventCompletenessComponent } from './event-completeness/event-completeness';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { ProgramParameterSelectionComponent } from './program-parameter-selectio
     EventCoordinateSelectorComponent,
     ProgramRuleActionMessageComponent,
     EventConflictHandlerComponent,
-    ProgramParameterSelectionComponent
+    ProgramParameterSelectionComponent,
+    EventCompletenessComponent
   ],
   imports: [
     IonicModule,
@@ -60,7 +62,8 @@ import { ProgramParameterSelectionComponent } from './program-parameter-selectio
     EventCoordinateSelectorComponent,
     ProgramRuleActionMessageComponent,
     ProgramParameterSelectionComponent,
-    EventConflictHandlerComponent
+    EventConflictHandlerComponent,
+    EventCompletenessComponent
   ]
 })
 export class EventCaptureComponentsModule {}

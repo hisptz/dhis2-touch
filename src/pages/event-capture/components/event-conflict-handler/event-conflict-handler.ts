@@ -234,6 +234,7 @@ export class EventConflictHandlerComponent implements OnInit, OnDestroy {
           {
             text: 'Yes',
             handler: () => {
+              console.log({ eventsWithConflicts: this.eventsWithConflicts });
               this.applyingChnagesToEvents(this.eventsWithConflicts, action);
             }
           },

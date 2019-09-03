@@ -36,6 +36,39 @@ export class EventCompletenessProvider {
     private offlineCompletenessProvider: OfflineCompletenessProvider
   ) {}
 
+  async getEventCompletenessByIds(
+    eventIds: string[],
+    currentUser: CurrentUser
+  ) {
+    const response = await this.offlineCompletenessProvider
+      .getOfflineCompletenessesByIds(eventIds, currentUser)
+      .toPromise();
+    return response;
+  }
+
+  async getEventCompletenessById(eventId: string, currentUser: CurrentUser) {
+    const response = await this.offlineCompletenessProvider
+      .getOfflineCompletenessesByIds([eventId], currentUser)
+      .toPromise();
+    return response && response.length > 0 ? response[0] : null;
+  }
+
+  async completeEvent(event: any, currentUser: CurrentUser) {
+    const { id } = event;
+    const response = this.offlineCompletenessProvider
+      .offlineEventCompleteness(id, currentUser)
+      .toPromise();
+    return response;
+  }
+
+  async unCompleteEvent(event: any, currentUser: CurrentUser) {
+    const { id } = event;
+    const response = await this.offlineCompletenessProvider
+      .offlineEventUncompleteness([id], currentUser)
+      .toPromise();
+    return response;
+  }
+
   /**
    * @param  {any[]} events
    * @param  {string='not-sync'} status
@@ -79,14 +112,9 @@ export class EventCompletenessProvider {
       this.getEventCompletenesstData(completedEvents, status),
       (dataObj: any) => _.indexOf(ids, dataObj.id) === -1
     );
-    await this.offlineCompletenessProvider.savingOfflineCompleteness(
-      completesssData,
-      currentUser
-    );
-    console.log({
-      unCompletedEventIds
-    });
-    // await this.offlineCompletenessProvider.offlineEventUncompleteness(unCompletedEventIds, currentUser)
+    await this.offlineCompletenessProvider
+      .savingOfflineCompleteness(completesssData, currentUser)
+      .toPromise();
   }
 
   /**
@@ -98,10 +126,10 @@ export class EventCompletenessProvider {
     const isDeleted = false;
     const type = 'event';
     return _.map(events, event => {
-      const { completedDate, completedBy } = event;
+      const { completedDate, completedBy, id } = event;
       return {
-        id: event.event,
-        eventId: event.id,
+        id,
+        eventId: id,
         status,
         type,
         completedBy,
