@@ -37,7 +37,7 @@
                     [translate]="isEventCompletenessProcessRunning && isEventCompleted? 'Undo completing' : 'Undo complete'"></span>
             </button>
         </div>
-        <div class="flex-item flex-item-start complementenes-info" *ngIf="isEventCompleted && complementenesInfo && complementenesInfo.completedBy && complementenesInfo.completedDate">
+        <div class="flex-item flex-item-start complementenes-info animated fadeIn" *ngIf="isEventCompleted && complementenesInfo && complementenesInfo.completedBy && complementenesInfo.completedDate">
             <span [translate]="'Completed by'"></span>
             <span>
                 <b>{{ complementenesInfo.completedBy }}</b>

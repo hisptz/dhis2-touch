@@ -36,6 +36,16 @@ export class EventCompletenessProvider {
     private offlineCompletenessProvider: OfflineCompletenessProvider
   ) {}
 
+  async getEventCompletenessByIds(
+    eventIds: string[],
+    currentUser: CurrentUser
+  ) {
+    const response = await this.offlineCompletenessProvider
+      .getOfflineCompletenessesByIds(eventIds, currentUser)
+      .toPromise();
+    return response;
+  }
+
   async getEventCompletenessById(eventId: string, currentUser: CurrentUser) {
     const response = await this.offlineCompletenessProvider
       .getOfflineCompletenessesByIds([eventId], currentUser)

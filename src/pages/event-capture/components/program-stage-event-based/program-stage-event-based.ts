@@ -183,6 +183,9 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         this.isEventCompletenessProcessRunning = false;
         this.currentEvent.syncStatus = 'not-synced';
+        this.currentEvent.status = this.isEventCompleted
+          ? 'COMPLETED'
+          : 'ACTIVE';
         this.updateData({}, false);
       }, 50);
     }
