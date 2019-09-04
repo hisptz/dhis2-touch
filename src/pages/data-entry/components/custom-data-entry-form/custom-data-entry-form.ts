@@ -89,6 +89,7 @@ export class CustomDataEntryFormComponent
   dataSetsCompletenessInfo;
   @Input()
   isDataSetCompleted: boolean;
+  @Input() isEventCompleted: boolean;
   @Input()
   isDataSetCompletenessProcessRunning: boolean;
   @Input() isValidationProcessRunning: boolean;
@@ -141,8 +142,9 @@ export class CustomDataEntryFormComponent
       });
     }
     if (
-      changes['isDataSetCompleted'] &&
-      !changes['isDataSetCompleted'].firstChange
+      (changes['isDataSetCompleted'] &&
+        !changes['isDataSetCompleted'].firstChange) ||
+      (changes['isEventCompleted'] && !changes['isEventCompleted'].firstChange)
     ) {
       this.setFieldLockingStatus();
     }
@@ -160,7 +162,7 @@ export class CustomDataEntryFormComponent
         dhis2 && dhis2.previousDisabledFields
           ? dhis2.previousDisabledFields
           : [];
-      const shouldLockFields = this.isDataSetCompleted || this.isPeriodLocked;
+      const shouldLockFields = this.getLockingFieldStatus();
       const {
         assignedFields,
         hiddenFields,
@@ -184,11 +186,17 @@ export class CustomDataEntryFormComponent
 
   setFieldLockingStatus() {
     try {
-      const shouldLockFields = this.isDataSetCompleted || this.isPeriodLocked;
+      const shouldLockFields = this.getLockingFieldStatus();
       lockingEntryFormFields(shouldLockFields);
     } catch (error) {
       console.log(JSON.stringify({ setFieldLockingStatus: error }));
     }
+  }
+
+  getLockingFieldStatus() {
+    return (
+      this.isDataSetCompleted || this.isPeriodLocked || this.isEventCompleted
+    );
   }
 
   ngOnInit() {

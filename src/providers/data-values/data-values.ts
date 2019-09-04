@@ -27,13 +27,8 @@ import { SqlLiteProvider } from '../sql-lite/sql-lite';
 import { NetworkAvailabilityProvider } from '../network-availability/network-availability';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
+import { CurrentUser } from '../../models';
 
-/*
-  Generated class for the DataValuesProvider provider.
-
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular DI.
-*/
 @Injectable()
 export class DataValuesProvider {
   resourceName: string;
@@ -46,21 +41,12 @@ export class DataValuesProvider {
     this.resourceName = 'dataValues';
   }
 
-  /**
-   *
-   * @param dataSetId
-   * @param period
-   * @param orgUnitId
-   * @param attributeOptionCombo
-   * @param currentUser
-   * @returns {Observable<any>}
-   */
   getDataValueSetFromServer(
-    dataSetId,
-    period,
-    orgUnitId,
-    attributeOptionCombo,
-    currentUser
+    dataSetId: string,
+    period: string,
+    orgUnitId: string,
+    attributeOptionCombo: string,
+    currentUser: CurrentUser
   ): Observable<any> {
     let parameter =
       'dataSet=' + dataSetId + '&period=' + period + '&orgUnit=' + orgUnitId;
@@ -71,12 +57,11 @@ export class DataValuesProvider {
           .get('/api/dataValueSets.json?' + parameter, true, currentUser)
           .subscribe(
             (response: any) => {
-              observer.next(
-                this.getFilteredDataValuesByDataSetAttributeOptionCombo(
-                  response,
-                  attributeOptionCombo
-                )
+              const dataValues = this.getFilteredDataValuesByDataSetAttributeOptionCombo(
+                response,
+                attributeOptionCombo
               );
+              observer.next(dataValues);
               observer.complete();
             },
             error => {
@@ -90,13 +75,10 @@ export class DataValuesProvider {
     });
   }
 
-  /**
-   *
-   * @param status
-   * @param currentUser
-   * @returns {Observable<any>}
-   */
-  getDataValuesByStatus(status, currentUser): Observable<any> {
+  getDataValuesByStatus(
+    status: string,
+    currentUser: CurrentUser
+  ): Observable<any> {
     let attributeArray = [];
     attributeArray.push(status);
     return new Observable(observer => {
@@ -119,42 +101,30 @@ export class DataValuesProvider {
     });
   }
 
-  /**
-   * convert data values to parameter for uploading
-   * @param dataValues
-   * @returns {Array}
-   */
-  getFormattedDataValueForUpload(dataValues) {
-    let formattedDataValues = [];
-    dataValues.map((dataValue: any) => {
-      const { de, pe, ou, co, cp, cc } = dataValue;
-      let value = dataValue.value;
-      let formParameter = `de=${de}&pe=${pe}&ou=${ou}&co=${co}`;
-      if (isNaN(cp) && cp != '') {
-        formParameter += `&cc=${cc}&cp=${cp}`;
-      }
-      if (!isNaN(value)) {
-        if (new Number(value).toString() === '0') {
-          value = '';
+  getFormattedDataValueForUpload(dataValues: any[]) {
+    return _.flatMapDeep(
+      _.map(dataValues, dataValue => {
+        const { de, pe, ou, co, cp, cc } = dataValue;
+        let value = dataValue.value;
+        let formParameter = `de=${de}&pe=${pe}&ou=${ou}&co=${co}`;
+        if (isNaN(cp) && cp != '') {
+          formParameter += `&cc=${cc}&cp=${cp}`;
         }
-      }
-      formParameter += `&value=${value}`;
-      formattedDataValues.push(formParameter);
-    });
-    return formattedDataValues;
+        if (!isNaN(value)) {
+          if (new Number(value).toString() === '0') {
+            value = '';
+          }
+        }
+        formParameter += `&value=${value}`;
+        return formParameter;
+      })
+    );
   }
 
-  /**
-   *
-   * @param formattedDataValues
-   * @param dataValues
-   * @param currentUser
-   * @returns {Observable<any>}
-   */
   uploadDataValues(
-    formattedDataValues,
-    dataValues,
-    currentUser
+    formattedDataValues: string[],
+    dataValues: any[],
+    currentUser: CurrentUser
   ): Observable<any> {
     let syncedDataValues = [];
     let importSummaries = {
@@ -233,45 +203,28 @@ export class DataValuesProvider {
     });
   }
 
-  /**
-   *
-   * @param dataSetId
-   * @param period
-   * @param orgUnitId
-   * @param entryFormSections
-   * @param dataDimension
-   * @param currentUser
-   * @returns {Observable<any>}
-   */
   getAllEntryFormDataValuesFromStorage(
-    dataSetId,
-    period,
-    orgUnitId,
-    entryFormSections,
-    dataDimension,
-    currentUser
+    dataSetId: string,
+    period: string,
+    orgUnitId: string,
+    entryFormSections: any[],
+    dataDimension: any,
+    currentUser: CurrentUser
   ): Observable<any> {
-    let ids = [];
     let entryFormDataValuesFromStorage = [];
-    entryFormSections.map((section: any) => {
-      section.dataElements.map((dataElement: any) => {
-        dataElement.categoryCombo.categoryOptionCombos.map(
-          (categoryOptionCombo: any) => {
-            ids.push(
-              dataSetId +
-                '-' +
-                dataElement.id +
-                '-' +
-                categoryOptionCombo.id +
-                '-' +
-                period +
-                '-' +
-                orgUnitId
-            );
-          }
-        );
-      });
-    });
+    const ids = _.flatMapDeep(
+      _.map(entryFormSections, (section: any) => {
+        const { dataElements } = section;
+        return _.map(dataElements, dataElement => {
+          const { categoryCombo } = dataElement;
+          const { categoryOptionCombos } = categoryCombo;
+          return _.map(categoryOptionCombos, categoryOptionCombo => {
+            const id = `${dataSetId}-${dataElement.id}-${categoryOptionCombo.id}-${period}-${orgUnitId}`;
+            return id;
+          });
+        });
+      })
+    );
     return new Observable(observer => {
       this.sqlLite
         .getDataFromTableByAttributes(
@@ -284,10 +237,10 @@ export class DataValuesProvider {
           (dataValues: any) => {
             dataValues.map((dataValue: any) => {
               if (
-                (dataDimension.cp == dataValue.cp ||
-                  dataValue.cp == '' ||
+                (dataDimension.cp === dataValue.cp ||
+                  dataValue.cp === '' ||
                   !isNaN(dataValue.cp)) &&
-                dataDimension.cc == dataValue.cc
+                dataDimension.cc === dataValue.cc
               ) {
                 entryFormDataValuesFromStorage.push({
                   id: dataValue.de + '-' + dataValue.co,
@@ -306,13 +259,10 @@ export class DataValuesProvider {
     });
   }
 
-  /**
-   *
-   * @param dataDimension
-   * @param categoryOptionCombos
-   * @returns {string}
-   */
-  getDataValuesSetAttributeOptionCombo(dataDimension, categoryOptionCombos) {
+  getDataValuesSetAttributeOptionCombo(
+    dataDimension: any,
+    categoryOptionCombos: any
+  ) {
     let attributeOptionCombo = '';
     if (dataDimension && dataDimension.cp && dataDimension.cp != '') {
       let categoriesOptionsArray = dataDimension.cp.split(';');
@@ -320,7 +270,7 @@ export class DataValuesProvider {
         let hasAttributeOptionCombo = true;
         let categoryOptionCombo = categoryOptionCombos[i];
         categoryOptionCombo.categoryOptions.map((categoryOption: any) => {
-          if (categoriesOptionsArray.indexOf(categoryOption.id) == -1) {
+          if (categoriesOptionsArray.indexOf(categoryOption.id) === -1) {
             hasAttributeOptionCombo = false;
           }
         });
@@ -335,64 +285,44 @@ export class DataValuesProvider {
     return attributeOptionCombo;
   }
 
-  /**
-   * @param dataValuesResponse
-   * @param attributeOptionCombo
-   * @returns {Array}
-   */
   getFilteredDataValuesByDataSetAttributeOptionCombo(
-    dataValuesResponse,
-    attributeOptionCombo
+    dataValuesResponse: any,
+    attributeOptionCombo: string
   ) {
-    let FilteredDataValues = [];
-    if (dataValuesResponse.dataValues) {
-      dataValuesResponse.dataValues.map((dataValue: any) => {
-        if (dataValue.attributeOptionCombo == attributeOptionCombo) {
-          FilteredDataValues.push({
-            categoryOptionCombo: dataValue.categoryOptionCombo,
-            dataElement: dataValue.dataElement,
-            value: dataValue.value
-          });
+    const dataValues =
+      dataValuesResponse && dataValuesResponse.dataValues
+        ? dataValuesResponse.dataValues
+        : [];
+    return _.flatMap(
+      _.map(
+        _.filter(dataValues, (dataValue: any) => {
+          return (
+            dataValue && dataValue.attributeOptionCombo === attributeOptionCombo
+          );
+        }),
+        (dataValue: any) => {
+          const { categoryOptionCombo, dataElement, value } = dataValue;
+          return { categoryOptionCombo, dataElement, value };
         }
-      });
-    }
-    return FilteredDataValues;
+      )
+    );
   }
 
-  /**
-   *
-   * @param dataValues
-   * @param dataSetId
-   * @param period
-   * @param orgUnitId
-   * @param dataDimension
-   * @param syncStatus
-   * @param currentUser
-   * @returns {Observable<any>}
-   */
   saveDataValues(
-    dataValues,
-    dataSetId,
-    period,
-    orgUnitId,
-    dataDimension,
-    syncStatus,
-    currentUser
+    dataValues: any[],
+    dataSetId: string,
+    period: string,
+    orgUnitId: string,
+    dataDimension: any,
+    syncStatus: string,
+    currentUser: CurrentUser
   ): Observable<any> {
     return new Observable(observer => {
       if (dataValues.length > 0) {
         const bulkData = _.map(dataValues, dataValue => {
+          const id = `${dataSetId}-${dataValue.dataElement}-${dataValue.categoryOptionCombo}-${period}-${orgUnitId}`;
           return {
-            id:
-              dataSetId +
-              '-' +
-              dataValue.dataElement +
-              '-' +
-              dataValue.categoryOptionCombo +
-              '-' +
-              period +
-              '-' +
-              orgUnitId,
+            id,
             de: dataValue.dataElement,
             co: dataValue.categoryOptionCombo,
             pe: period,
@@ -428,13 +358,10 @@ export class DataValuesProvider {
     });
   }
 
-  /**
-   * deleteDataValuesByIds
-   * @param dataValueIds
-   * @param currentUser
-   * @returns {Promise<T>}
-   */
-  deleteDataValueByIds(dataValueIds, currentUser): Observable<any> {
+  deleteDataValueByIds(
+    dataValueIds: string[],
+    currentUser: CurrentUser
+  ): Observable<any> {
     let successCount = 0;
     let failCount = 0;
     return new Observable(observer => {
@@ -466,12 +393,7 @@ export class DataValuesProvider {
     });
   }
 
-  /**
-   *
-   * @param currentUser
-   * @returns {Observable<any>}
-   */
-  getAllDataValues(currentUser): Observable<any> {
+  getAllDataValues(currentUser: CurrentUser): Observable<any> {
     return new Observable(observer => {
       this.sqlLite
         .getAllDataFromTable(this.resourceName, currentUser.currentDatabase)
@@ -487,11 +409,6 @@ export class DataValuesProvider {
     });
   }
 
-  /**
-   *
-   * @param currentUser
-   * @returns {Observable<any>}
-   */
   deleteAllDataValues(currentUser): Observable<any> {
     return new Observable(observer => {
       this.sqlLite

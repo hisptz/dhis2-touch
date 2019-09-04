@@ -27,6 +27,8 @@ import {
   Output,
   EventEmitter,
   OnInit,
+  OnChanges,
+  SimpleChanges,
   OnDestroy
 } from '@angular/core';
 import { EventCaptureFormProvider } from '../../../../providers/event-capture-form/event-capture-form';
@@ -39,13 +41,14 @@ import { ProgramRulesProvider } from '../../../../providers/program-rules/progra
 })
 export class TrackerEventContainerComponent implements OnInit, OnDestroy {
   @Input() formLayout: string;
-  @Input() dataObject;
-  @Input() programSkipLogicMetadata;
-  @Input() dataValuesSavingStatusClass;
-  @Input() programStage;
-  @Input() currentOpenEvent;
+  @Input() dataObject: any;
+  @Input() programSkipLogicMetadata: any;
+  @Input() dataValuesSavingStatusClass: any;
+  @Input() programStage: any;
+  @Input() currentOpenEvent: any;
   @Input() currentUser: CurrentUser;
   @Input() isDeletable: boolean;
+  @Input() isEventCompleted: boolean;
 
   @Output() deleteEvent = new EventEmitter();
   @Output() updateDeleteStatus = new EventEmitter();
@@ -103,6 +106,24 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
           this.evaluatingProgramRules();
         }, 50);
       }
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (
+      changes['isEventCompleted'] &&
+      !changes['isEventCompleted'].firstChange
+    ) {
+      const status = this.isEventCompleted ? 'COMPLETED' : 'ACTIVE';
+      const syncStatus = 'not-synced';
+      this.currentOpenEvent = {
+        ...this.currentOpenEvent,
+        status,
+        syncStatus
+      };
+      this.eventCaptureFormProvider
+        .saveEvents([this.currentOpenEvent], this.currentUser)
+        .subscribe(() => {}, error => {});
     }
   }
 
@@ -198,9 +219,7 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
     } else {
       if (this.isDeletable) {
         const data = {
-          title: `Clearing of ${
-            this.executionDateLabel
-          } lead to deletion of this event, Are you sure?`
+          title: `Clearing of ${this.executionDateLabel} lead to deletion of this event, Are you sure?`
         };
         if (eventDateType === 'eventDate') {
           this.deleteEvent.emit(data);
