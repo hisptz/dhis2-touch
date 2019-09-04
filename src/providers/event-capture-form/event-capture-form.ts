@@ -534,12 +534,12 @@ export class EventCaptureFormProvider {
    * @returns {{id; program; programName; programStage: any; orgUnit; orgUnitName; status: string; deleted: boolean; attributeCategoryOptions: any; attributeCc: any; eventType: any; syncStatus: string; coordinate: {latitude: number; longitude: number}; dataValues: Array}}
    */
   getEmptyEvent(
-    currentProgram,
-    currentOrgUnit,
-    programStageId,
-    attributeCategoryOptions,
-    attributeCc,
-    eventType
+    currentProgram: any,
+    currentOrgUnit: any,
+    programStageId: string,
+    attributeCategoryOptions: any,
+    attributeCc: string,
+    eventType: string
   ) {
     const uid = dhis2.util.uid();
     const event = {
@@ -631,10 +631,10 @@ export class EventCaptureFormProvider {
    * @returns {Observable<any>}
    */
   getEventsForProgramStage(
-    currentUser,
-    programStageId,
-    trackedEntityInstance,
-    dataDimension?
+    currentUser: CurrentUser,
+    programStageId: string,
+    trackedEntityInstance: string,
+    dataDimension?: any
   ): Observable<any> {
     let attribute = 'programStage';
     let attributeValues = [programStageId];
