@@ -33,6 +33,7 @@ import * as moment from 'moment';
 import { EnrollmentsProvider } from '../enrollments/enrollments';
 import { CurrentUser } from '../../models/current-user';
 import { ProgramRulesProvider } from '../program-rules/program-rules';
+import { EventCompletenessProvider } from '../event-completeness/event-completeness';
 
 declare var dhis2: any;
 
@@ -51,7 +52,8 @@ export class EventCaptureFormProvider {
     private programStageSectionsProvider: ProgramStageSectionsProvider,
     private dataElementProvider: DataElementsProvider,
     private enrollmentsProvider: EnrollmentsProvider,
-    private programRulesProvider: ProgramRulesProvider
+    private programRulesProvider: ProgramRulesProvider,
+    private eventCompletenessProvider: EventCompletenessProvider
   ) {}
 
   getEventDueDate(
@@ -532,12 +534,12 @@ export class EventCaptureFormProvider {
    * @returns {{id; program; programName; programStage: any; orgUnit; orgUnitName; status: string; deleted: boolean; attributeCategoryOptions: any; attributeCc: any; eventType: any; syncStatus: string; coordinate: {latitude: number; longitude: number}; dataValues: Array}}
    */
   getEmptyEvent(
-    currentProgram,
-    currentOrgUnit,
-    programStageId,
-    attributeCategoryOptions,
-    attributeCc,
-    eventType
+    currentProgram: any,
+    currentOrgUnit: any,
+    programStageId: string,
+    attributeCategoryOptions: any,
+    attributeCc: string,
+    eventType: string
   ) {
     const uid = dhis2.util.uid();
     const event = {
@@ -629,10 +631,10 @@ export class EventCaptureFormProvider {
    * @returns {Observable<any>}
    */
   getEventsForProgramStage(
-    currentUser,
-    programStageId,
-    trackedEntityInstance,
-    dataDimension?
+    currentUser: CurrentUser,
+    programStageId: string,
+    trackedEntityInstance: string,
+    dataDimension?: any
   ): Observable<any> {
     let attribute = 'programStage';
     let attributeValues = [programStageId];
@@ -786,9 +788,12 @@ export class EventCaptureFormProvider {
    * @param currentUser
    * @returns {Observable<any>}
    */
-  uploadEventsToSever(events, currentUser): Observable<any> {
+  uploadEventsToSever(
+    events: any[],
+    currentUser: CurrentUser
+  ): Observable<any> {
     return new Observable(observer => {
-      let url = '/api/events';
+      const url = `/api/events`;
       let success = 0,
         fail = 0;
       let updatedEventIds = [];
@@ -802,36 +807,27 @@ export class EventCaptureFormProvider {
         });
         observer.complete();
       } else {
-        events.map((event: any) => {
-          this.httpClientProvider.post(url, event, currentUser).subscribe(
-            () => {
-              updatedEventIds.push(event.event);
-              success++;
-              if (success + fail == events.length) {
-                this.updateEventStatus(
-                  updatedEventIds,
-                  'synced',
-                  currentUser
-                ).subscribe(
-                  () => {
-                    observer.next({
-                      success: success,
-                      fail: fail,
-                      errorMessages: errorMessages
-                    });
-                    observer.complete();
-                  },
-                  error => {
-                    observer.error(error);
-                  }
-                );
+        const eventIds = _.map(events, event => event.event);
+        this.eventCompletenessProvider
+          .getEventCompletenessByIds(eventIds, currentUser)
+          .then((response: any) => {
+            const dataObj = _.keyBy(response, 'id');
+            events.map((event: any) => {
+              // updating
+              if (dataObj && event && event.event && dataObj[event.event]) {
+                const completenessData = dataObj[event.event];
+                const {
+                  completedBy,
+                  completedDate,
+                  isDeleted
+                } = completenessData;
+                const status = JSON.parse(isDeleted) ? 'ACTIVE' : 'COMPLETED';
+                event = { ...event, status };
+                if (!completenessData.isDeleted) {
+                  event = { ...event, completedBy, completedDate };
+                }
               }
-            },
-            (error: any) => {
-              //try to update event
-              console.log('error posting : ' + JSON.stringify(error));
-              url = url + '/' + event.event;
-              this.httpClientProvider.put(url, event, currentUser).subscribe(
+              this.httpClientProvider.post(url, event, currentUser).subscribe(
                 () => {
                   updatedEventIds.push(event.event);
                   success++;
@@ -856,73 +852,107 @@ export class EventCaptureFormProvider {
                   }
                 },
                 (error: any) => {
-                  fail++;
-                  if (
-                    error &&
-                    error.response &&
-                    error.response.importSummaries &&
-                    error.response.importSummaries.length > 0 &&
-                    error.response.importSummaries[0].description
-                  ) {
-                    let message = error.response.importSummaries[0].description;
-                    if (errorMessages.indexOf(message) == -1) {
-                      errorMessages.push(message);
-                    }
-                  } else if (
-                    error &&
-                    error.response &&
-                    error.response.conflicts
-                  ) {
-                    error.response.conflicts.map((conflict: any) => {
-                      let message = JSON.stringify(conflict);
-                      if (errorMessages.indexOf(message) == -1) {
-                        errorMessages.push(message);
-                      }
-                    });
-                  } else if (error && error.httpStatusCode == 500) {
-                    let message = error.message;
-                    if (errorMessages.indexOf(message) == -1) {
-                      errorMessages.push(message);
-                    }
-                  } else if (
-                    error &&
-                    error.response &&
-                    error.response.description
-                  ) {
-                    let message = error.response.description;
-                    if (errorMessages.indexOf(message) == -1) {
-                      errorMessages.push(message);
-                    }
-                  } else {
-                    let message = JSON.stringify(error);
-                    if (errorMessages.indexOf(message) == -1) {
-                      errorMessages.push(message);
-                    }
-                  }
-                  if (success + fail == events.length) {
-                    this.updateEventStatus(
-                      updatedEventIds,
-                      'synced',
-                      currentUser
-                    ).subscribe(
+                  //try to update event
+                  console.log('error posting : ' + JSON.stringify(error));
+                  this.httpClientProvider
+                    .put(`${url}/${event.event}`, event, currentUser)
+                    .subscribe(
                       () => {
-                        observer.next({
-                          success: success,
-                          fail: fail,
-                          errorMessages: errorMessages
-                        });
-                        observer.complete();
+                        updatedEventIds.push(event.event);
+                        success++;
+                        if (success + fail == events.length) {
+                          this.updateEventStatus(
+                            updatedEventIds,
+                            'synced',
+                            currentUser
+                          ).subscribe(
+                            () => {
+                              observer.next({
+                                success: success,
+                                fail: fail,
+                                errorMessages: errorMessages
+                              });
+                              observer.complete();
+                            },
+                            error => {
+                              observer.error(error);
+                            }
+                          );
+                        }
                       },
-                      error => {
-                        observer.error(error);
+                      (error: any) => {
+                        fail++;
+                        if (
+                          error &&
+                          error.response &&
+                          error.response.importSummaries &&
+                          error.response.importSummaries.length > 0 &&
+                          error.response.importSummaries[0].description
+                        ) {
+                          let message =
+                            error.response.importSummaries[0].description;
+                          if (errorMessages.indexOf(message) == -1) {
+                            errorMessages.push(message);
+                          }
+                        } else if (
+                          error &&
+                          error.response &&
+                          error.response.conflicts
+                        ) {
+                          error.response.conflicts.map((conflict: any) => {
+                            let message = JSON.stringify(conflict);
+                            if (errorMessages.indexOf(message) == -1) {
+                              errorMessages.push(message);
+                            }
+                          });
+                        } else if (error && error.httpStatusCode == 500) {
+                          let message = error.message;
+                          if (errorMessages.indexOf(message) == -1) {
+                            errorMessages.push(message);
+                          }
+                        } else if (
+                          error &&
+                          error.response &&
+                          error.response.description
+                        ) {
+                          let message = error.response.description;
+                          if (errorMessages.indexOf(message) == -1) {
+                            errorMessages.push(message);
+                          }
+                        } else {
+                          let message = JSON.stringify(error);
+                          if (errorMessages.indexOf(message) == -1) {
+                            errorMessages.push(message);
+                          }
+                        }
+                        if (success + fail == events.length) {
+                          this.updateEventStatus(
+                            updatedEventIds,
+                            'synced',
+                            currentUser
+                          ).subscribe(
+                            () => {
+                              observer.next({
+                                success: success,
+                                fail: fail,
+                                errorMessages: errorMessages
+                              });
+                              observer.complete();
+                            },
+                            error => {
+                              observer.error(error);
+                            }
+                          );
+                        }
                       }
                     );
-                  }
                 }
               );
-            }
-          );
-        });
+            });
+          })
+          .catch(error => {
+            observer.error(error);
+          });
       }
     });
   }
