@@ -28,18 +28,19 @@ import { SettingsProvider } from '../../../../providers/settings/settings';
 import { ActionSheetController } from 'ionic-angular';
 import * as _ from 'lodash';
 import { CurrentUser } from '../../../../models';
+import { EventCompletenessProvider } from '../../../../providers/event-completeness/event-completeness';
 
 @Component({
   selector: 'program-stage-tracker-based',
   templateUrl: 'program-stage-tracker-based.html'
 })
 export class ProgramStageTrackerBasedComponent implements OnInit {
-  @Input() programStage;
+  @Input() programStage: any;
   @Input() formLayout: string;
-  @Input() trackedEntityInstance;
-  @Input() programSkipLogicMetadata;
-  @Input() currentOrganisationUnit;
-  @Input() currentProgram;
+  @Input() trackedEntityInstance: string;
+  @Input() programSkipLogicMetadata: any;
+  @Input() currentOrganisationUnit: any;
+  @Input() currentProgram: any;
   @Input() currentUser: CurrentUser;
 
   isAddButtonDisabled: boolean;
@@ -55,12 +56,18 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
   dataObject: any;
   isDeletable: boolean;
   isTableRowActivated: boolean;
+  // completeness variables
+  isEventCompleted: boolean;
+  isEventLocked: boolean;
+  isEventCompletenessProcessRunning: boolean;
+  complementenesInfo: any;
 
   constructor(
     private settingsProvider: SettingsProvider,
     private actionSheetCtrl: ActionSheetController,
     private appProvider: AppProvider,
-    private eventCaptureFormProvider: EventCaptureFormProvider
+    private eventCaptureFormProvider: EventCaptureFormProvider,
+    private eventCompletenessProvider: EventCompletenessProvider
   ) {
     this.isAddButtonDisabled = true;
     this.isTableRowActivated = false;
@@ -73,6 +80,7 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.resetCompletenessInfo();
     this.loadingMessage = 'Discovering data entry settings';
     this.settingsProvider.getSettingsForTheApp(this.currentUser).subscribe(
       (appSettings: any) => {
@@ -91,6 +99,69 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
         console.log(JSON.stringify({ error }));
       }
     );
+  }
+
+  resetCompletenessInfo() {
+    // completeness control
+    this.isEventCompleted = false;
+    this.isEventLocked = false;
+    this.isEventCompletenessProcessRunning = false;
+    this.complementenesInfo = {
+      completedBy: '',
+      completedDate: ''
+    };
+  }
+
+  async discoveringEventCompleteness(
+    eventId: string,
+    currentUser: CurrentUser
+  ) {
+    const complementenesInfo = {
+      completedBy: '',
+      completedDate: ''
+    };
+    try {
+      const response = await this.eventCompletenessProvider.getEventCompletenessById(
+        eventId,
+        currentUser
+      );
+      this.complementenesInfo =
+        response && response !== null ? response : complementenesInfo;
+      this.isEventCompleted =
+        response && response.completedDate && isNaN(response.completedDate);
+    } catch (error) {
+      console.log({ error });
+    }
+  }
+
+  async onUpdatingEventCompleteness(previousStatus: boolean) {
+    this.isEventCompletenessProcessRunning = true;
+    let response: any;
+    try {
+      if (previousStatus) {
+        response = await this.eventCompletenessProvider.unCompleteEvent(
+          this.currentOpenEvent,
+          this.currentUser
+        );
+      } else {
+        response = await this.eventCompletenessProvider.completeEvent(
+          this.currentOpenEvent,
+          this.currentUser
+        );
+      }
+      this.isEventCompleted = !previousStatus;
+    } catch (error) {
+      console.log({ error });
+    } finally {
+      this.complementenesInfo = response;
+      setTimeout(() => {
+        this.isEventCompletenessProcessRunning = false;
+        this.currentOpenEvent.syncStatus = 'not-synced';
+        this.currentOpenEvent.status = this.isEventCompleted
+          ? 'COMPLETED'
+          : 'ACTIVE';
+      }, 50);
+    }
   }
 
   discoverAndSetColumnsToDisplay(programStageDataElements, label) {
@@ -264,6 +335,11 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
   }
 
   renderDataAsTable() {
+    this.resetCompletenessInfo();
+    if (this.currentOpenEvent && this.currentOpenEvent.id) {
+      const { id } = this.currentOpenEvent;
+      this.discoveringEventCompleteness(id, this.currentUser);
+    }
     this.currentEvents = _.sortBy(this.currentEvents, ['eventDate']);
     this.eventCaptureFormProvider
       .getTableFormatResult(
