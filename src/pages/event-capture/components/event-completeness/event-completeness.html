@@ -1,0 +1,51 @@
+<!--
+*
+* Copyright 2015 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2015
+* @author Joseph Chingalo profschingalo@gmail.com>
+*
+*
+-->
+
+<div class="item-card">
+    <div class="flex-container-start">
+        <div class="flex-item flex-item-start" *ngIf="!isEventCompleted">
+            <button color="favorite" padding-left padding-right ion-button class="pagination-button" [disabled]="isEventCompleted || isEventCompletenessProcessRunning || isEventLocked" (tap)="updateEventCompleteness()">
+                <span
+                    [translate]="isEventCompletenessProcessRunning && !isEventCompleted? 'Completing' : 'Complete'"></span>
+            </button>
+        </div>
+        <div class="flex-item flex-item-start" *ngIf="isEventCompleted">
+            <button color="danger" padding-left padding-right ion-button class="pagination-button" [disabled]="!isEventCompleted || isEventCompletenessProcessRunning || isEventLocked" (tap)="updateEventCompleteness()">
+                <span
+                    [translate]="isEventCompletenessProcessRunning && isEventCompleted? 'Undo completing' : 'Undo complete'"></span>
+            </button>
+        </div>
+        <div class="flex-item flex-item-start complementenes-info animated fadeIn" *ngIf="isEventCompleted && complementenesInfo && complementenesInfo.completedBy && complementenesInfo.completedDate">
+            <span [translate]="'Completed by'"></span>
+            <span>
+                <b>{{ complementenesInfo.completedBy }}</b>
+            </span>
+            <span [translate]="'on'"></span>
+            <span>
+                <b>{{ complementenesInfo.completedDate }}</b>
+            </span>
+        </div>
+    </div>
+</div>

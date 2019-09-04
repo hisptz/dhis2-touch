@@ -25,17 +25,9 @@ import { Component, OnInit } from '@angular/core';
 import { IonicPage, ViewController, NavParams } from 'ionic-angular';
 import { DataSetCompletenessProvider } from '../../../providers/data-set-completeness/data-set-completeness';
 import { AppProvider } from '../../../providers/app/app';
-import { AppTranslationProvider } from '../../../providers/app-translation/app-translation';
 import { Store } from '@ngrx/store';
 import { State, getCurrentUserColorSettings } from '../../../store';
 import { Observable } from 'rxjs';
-
-/**
- * Generated class for the EntryFormCompletenessPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -46,7 +38,6 @@ export class EntryFormCompletenessPage implements OnInit {
   isLoading: boolean;
   loadingMessage: string;
   userInformation: Array<any>;
-  translationMapper: any;
   colorSettings$: Observable<any>;
 
   constructor(
@@ -54,8 +45,7 @@ export class EntryFormCompletenessPage implements OnInit {
     public viewCtrl: ViewController,
     public navParams: NavParams,
     private appProvider: AppProvider,
-    private dataSetCompletenessProvider: DataSetCompletenessProvider,
-    private appTranslation: AppTranslationProvider
+    private dataSetCompletenessProvider: DataSetCompletenessProvider
   ) {
     this.isLoading = true;
     this.userInformation = [];
@@ -63,22 +53,11 @@ export class EntryFormCompletenessPage implements OnInit {
   }
 
   ngOnInit() {
-    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
-      (data: any) => {
-        this.translationMapper = data;
-        this.loadingCompletenessInformation();
-      },
-      error => {
-        this.loadingCompletenessInformation();
-      }
-    );
+    this.loadingCompletenessInformation();
   }
 
   loadingCompletenessInformation() {
-    let key = 'Discovering completeness information';
-    this.loadingMessage = this.translationMapper[key]
-      ? this.translationMapper[key]
-      : key;
+    this.loadingMessage = 'Discovering completeness information';
     let currentUser = this.navParams.get('currentUser');
     let username = this.navParams.get('username');
     this.dataSetCompletenessProvider
@@ -90,7 +69,7 @@ export class EntryFormCompletenessPage implements OnInit {
         error => {
           console.log(JSON.stringify(error));
           this.userInformation.push({
-            key: this.translationMapper['Username'],
+            key: 'Username',
             value: username
           });
           this.isLoading = false;
@@ -105,25 +84,25 @@ export class EntryFormCompletenessPage implements OnInit {
     this.viewCtrl.dismiss({});
   }
 
-  prepareUserInformation(user, username) {
+  prepareUserInformation(user: any, username: string) {
     //@todo checking keys on future
     this.userInformation.push({
-      key: this.translationMapper['Full name'],
+      key: 'Full name',
       value: user.firstName + ' ' + user.surname
     });
     this.userInformation.push({
-      key: this.translationMapper['Username'],
+      key: 'Username',
       value: username
     });
     if (user && user.email) {
       this.userInformation.push({
-        key: this.translationMapper['E-mail'],
+        key: 'E-mail',
         value: user.email
       });
     }
     if (user && user.phoneNumber) {
       this.userInformation.push({
-        key: this.translationMapper['Phone number'],
+        key: 'Phone number',
         value: user.phoneNumber
       });
     }
@@ -133,7 +112,7 @@ export class EntryFormCompletenessPage implements OnInit {
         organisationUnits.push(organisationUnit.name);
       });
       this.userInformation.push({
-        key: this.translationMapper['Assigned organisation units'],
+        key: 'Assigned organisation units',
         value: organisationUnits.join(', ')
       });
     }
@@ -143,25 +122,14 @@ export class EntryFormCompletenessPage implements OnInit {
         roles.push(role.name);
       });
       this.userInformation.push({
-        key: this.translationMapper['Assigned roles'],
+        key: 'Assigned roles',
         value: roles.join(', ')
       });
     }
     this.isLoading = false;
   }
 
-  trackByFn(index, item) {
+  trackByFn(index: any, item: any) {
     return item && item.id ? item.id : index;
-  }
-
-  getValuesToTranslate() {
-    return [
-      'Discovering completeness information',
-      'Username',
-      'E-mail',
-      'Phone number',
-      'Assigned organisation units',
-      'Assigned roles'
-    ];
   }
 }
