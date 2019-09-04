@@ -1,3 +1,3 @@
 export const appConfig = {
-  baseUrl: 'hisptz.info/eds30'
+  baseUrl: 'mohzn.go.tz'
 };
