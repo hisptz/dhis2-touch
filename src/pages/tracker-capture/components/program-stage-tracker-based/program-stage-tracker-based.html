@@ -23,61 +23,56 @@
 *
 -->
 <div *ngIf="isLoading">
-  <loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></loading>
+    <loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></loading>
 </div>
 <div *ngIf="!isLoading" class="over-flow-container">
-  <div *ngIf="tableLayout && tableLayout.headers && tableLayout.headers.length > 0">
-    <table class="table table-bordered" width="100%">
-      <thead *ngIf="tableLayout && tableLayout.headers">
-        <tr>
-          <th *ngFor="let header of tableLayout.headers;trackBy: trackByFn">{{ header}}</th>
-        </tr>
-      </thead>
-      <tbody *ngFor="let row of tableLayout.rows;let currentIndex = index;trackBy: trackByFn">
-        <tr [ngStyle]="{'background-color': isTableRowActive(currentIndex) ? '#B9FFB9' :'#F4F4F4' }"
-          (click)="activateRowProgramStageDataEntry(currentIndex)">
-          <td *ngFor="let data of row;trackBy: trackByFn">
-            {{ data }}
-          </td>
-        </tr>
-        <tr *ngIf="isTableRowActive(currentIndex)">
-          <td colspan="100%">
-            <div text-left>
-              <tracker-event-container (dataValueChange)="onDataValueChange($event)"
-                (updateDeleteStatus)="onUpdateDeleteStatus($event)" (deleteEvent)="onDeleteEvent($event)"
-                [(isDeletable)]="isDeletable" [formLayout]="formLayout" [(dataObject)]="dataObject"
-                [programSkipLogicMetadata]="programSkipLogicMetadata"
-                [dataValuesSavingStatusClass]="dataValuesSavingStatusClass" [programStage]="programStage"
-                [(currentOpenEvent)]="currentOpenEvent" [currentUser]="currentUser">
-              </tracker-event-container>
-              <tracker-event-action (deleteEvent)="onDeleteEvent($event)"
-                (addRepeatableEvent)="onAddRepeatableEvent($event)" [isAddButtonDisabled]="isAddButtonDisabled"
-                [isRepeatableStage]="programStage.repeatable" [isDeletable]="isDeletable">
-              </tracker-event-action>
-            </div>
-        </tr>
-      </tbody>
-      <tbody>
-        <tr *ngIf="!isTableRowActivated && !isNewEventFormOpened">
-          <td colspan="100%">
-            <div text-left>
-              <tracker-event-action (dataValueChange)="onDataValueChange($event)" (deleteEvent)="onDeleteEvent($event)"
-                (addRepeatableEvent)="onAddRepeatableEvent($event)" [isAddButtonDisabled]="isAddButtonDisabled"
-                [isRepeatableStage]="programStage.repeatable" [isDeletable]="isDeletable">
-              </tracker-event-action>
-            </div>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div *ngIf="isNewEventFormOpened || currentEvents.length === 0">
-    <tracker-event-container (updateDeleteStatus)="onUpdateDeleteStatus($event)" (deleteEvent)="onDeleteEvent($event)"
-      [(isDeletable)]="isDeletable" [formLayout]="formLayout" [(dataObject)]="dataObject"
-      [programSkipLogicMetadata]="programSkipLogicMetadata" [dataValuesSavingStatusClass]="dataValuesSavingStatusClass"
-      [programStage]="programStage" [(currentOpenEvent)]="currentOpenEvent" [currentUser]="currentUser">
-    </tracker-event-container>
-    <tracker-event-action (deleteEvent)="onDeleteEvent($event)" (addRepeatableEvent)="onAddRepeatableEvent($event)"
-      [isAddButtonDisabled]="isAddButtonDisabled" [isRepeatableStage]="programStage.repeatable"
-      [isDeletable]="isDeletable"></tracker-event-action>
-  </div>
+    <div *ngIf="tableLayout && tableLayout.headers && tableLayout.headers.length > 0">
+        <table class="table table-bordered" width="100%">
+            <thead *ngIf="tableLayout && tableLayout.headers">
+                <tr>
+                    <th *ngFor="let header of tableLayout.headers;trackBy: trackByFn">{{ header}}</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let row of tableLayout.rows;let currentIndex = index;trackBy: trackByFn">
+                <tr [ngStyle]="{'background-color': isTableRowActive(currentIndex) ? '#B9FFB9' :'#F4F4F4' }" (click)="activateRowProgramStageDataEntry(currentIndex)">
+                    <td *ngFor="let data of row;trackBy: trackByFn">
+                        {{ data }}
+                    </td>
+                </tr>
+                <tr *ngIf="isTableRowActive(currentIndex)">
+                    <td colspan="100%">
+                        <div text-left>
+                            <tracker-event-container [isEventCompleted]="isEventCompleted" (dataValueChange)="onDataValueChange($event)" (updateDeleteStatus)="onUpdateDeleteStatus($event)" (deleteEvent)="onDeleteEvent($event)" [(isDeletable)]="isDeletable" [formLayout]="formLayout"
+                                [(dataObject)]="dataObject" [programSkipLogicMetadata]="programSkipLogicMetadata" [dataValuesSavingStatusClass]="dataValuesSavingStatusClass" [programStage]="programStage" [(currentOpenEvent)]="currentOpenEvent" [currentUser]="currentUser">
+                            </tracker-event-container>
+                            <!-- completeness info-->
+                            <div *ngIf="currentOpenEvent['eventDate'] && currentOpenEvent['eventDate'] !=''">
+                                <event-completeness (changeEventCompleteness)="onUpdatingEventCompleteness($event)" [complementenesInfo]="complementenesInfo" [isEventCompleted]="isEventCompleted" [isEventLocked]="isEventLocked" [isEventCompletenessProcessRunning]="isEventCompletenessProcessRunning"></event-completeness>
+                            </div>
+                            <tracker-event-action (deleteEvent)="onDeleteEvent($event)" (addRepeatableEvent)="onAddRepeatableEvent($event)" [isAddButtonDisabled]="isAddButtonDisabled" [isRepeatableStage]="programStage.repeatable" [isDeletable]="isDeletable">
+                            </tracker-event-action>
+                        </div>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr *ngIf="!isTableRowActivated && !isNewEventFormOpened">
+                    <td colspan="100%">
+                        <div text-left>
+                            <tracker-event-action (dataValueChange)="onDataValueChange($event)" (deleteEvent)="onDeleteEvent($event)" (addRepeatableEvent)="onAddRepeatableEvent($event)" [isAddButtonDisabled]="isAddButtonDisabled" [isRepeatableStage]="programStage.repeatable" [isDeletable]="isDeletable">
+                            </tracker-event-action>
+                        </div>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="isNewEventFormOpened || currentEvents.length === 0">
+        <tracker-event-container [isEventCompleted]="isEventCompleted" (updateDeleteStatus)="onUpdateDeleteStatus($event)" (deleteEvent)="onDeleteEvent($event)" [(isDeletable)]="isDeletable" [formLayout]="formLayout" [(dataObject)]="dataObject" [programSkipLogicMetadata]="programSkipLogicMetadata"
+            [dataValuesSavingStatusClass]="dataValuesSavingStatusClass" [programStage]="programStage" [(currentOpenEvent)]="currentOpenEvent" [currentUser]="currentUser">
+        </tracker-event-container>
+        <!-- completeness info-->
+        <div *ngIf="currentOpenEvent['eventDate'] && currentOpenEvent['eventDate'] !=''">
+            <event-completeness (changeEventCompleteness)="onUpdatingEventCompleteness($event)" [complementenesInfo]="complementenesInfo" [isEventCompleted]="isEventCompleted" [isEventLocked]="isEventLocked" [isEventCompletenessProcessRunning]="isEventCompletenessProcessRunning"></event-completeness>
+        </div>
+        <tracker-event-action (deleteEvent)="onDeleteEvent($event)" (addRepeatableEvent)="onAddRepeatableEvent($event)" [isAddButtonDisabled]="isAddButtonDisabled" [isRepeatableStage]="programStage.repeatable" [isDeletable]="isDeletable"></tracker-event-action>
+    </div>
 </div>

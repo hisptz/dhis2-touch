@@ -357,22 +357,25 @@ export const DATABASE_STRUCTURE = {
     displayName: 'Data Values',
     dependentTable: []
   },
-  dataSetCompleteness: {
+  offlineCompleteness: {
     columns: [
       { value: 'id', type: 'TEXT' },
+      { value: 'type', type: 'TEXT' },
+      { value: 'eventId', type: 'TEXT' },
       { value: 'dataSetId', type: 'TEXT' },
-      { value: 'period', type: 'TEXT' },
-      { value: 'orgUnitId', type: 'TEXT' },
-      { value: 'storedBy', type: 'TEXT' },
-      { value: 'date', type: 'TEXT' },
-      { value: 'isDeleted', type: 'TEXT' },
-      { value: 'dataDimension', type: 'LONGTEXT' }
+      { value: 'periodId', type: 'TEXT' },
+      { value: 'organisationUnitId', type: 'TEXT' },
+      { value: 'dataDimension', type: 'LONGTEXT' },
+      { value: 'completedBy', type: 'TEXT' },
+      { value: 'completedDate', type: 'TEXT' },
+      { value: 'status', type: 'TEXT' },
+      { value: 'isDeleted', type: 'TEXT' }
     ],
     isMetadata: false,
     shouldIncludeOnLogin: false,
     resourceType: '',
     batchSize: 500,
-    displayName: 'Entry form completeness',
+    displayName: 'Offline completeness',
     dependentTable: []
   },
   events: {
