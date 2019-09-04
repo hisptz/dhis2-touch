@@ -111,19 +111,19 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     if (
-      changes['currentOpenEvent'] &&
-      !changes['currentOpenEvent'].firstChange
+      changes['isEventCompleted'] &&
+      !changes['isEventCompleted'].firstChange
     ) {
-      const previousValue = changes['currentOpenEvent'].previousValue;
-      const currentValue = changes['currentOpenEvent'].currentValue;
-      if (
-        previousValue &&
-        currentValue &&
-        previousValue.status !== currentValue.status
-      ) {
-        this.updateData({}, false);
-        console.log({ currentValue, previousValue });
-      }
+      const status = this.isEventCompleted ? 'COMPLETED' : 'ACTIVE';
+      const syncStatus = 'not-synced';
+      this.currentOpenEvent = {
+        ...this.currentOpenEvent,
+        status,
+        syncStatus
+      };
+      this.eventCaptureFormProvider
+        .saveEvents([this.currentOpenEvent], this.currentUser)
+        .subscribe(() => {}, error => {});
     }
   }
 
