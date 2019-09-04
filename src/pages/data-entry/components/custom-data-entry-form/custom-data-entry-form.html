@@ -23,48 +23,41 @@
 *
 -->
 <div class="custom-entry-form" id="_custom_entry_form_{{entryFormType}}">
-  <div [innerHTML]="_htmlMarkup"></div>
+    <div [innerHTML]="_htmlMarkup"></div>
 </div>
 <div *ngIf="!dataSetReportAggregateValues">
-  <div *ngIf="entryFormType && entryFormType === 'aggregate'">
-    <ion-row>
-      <ion-col>
-        <div class="flex-container-start">
-          <div class="flex-item flex-item-start" *ngIf="!isDataSetCompleted">
-            <button color="favorite" padding-left padding-right ion-button class="pagination-button"
-              [disabled]="isDataSetCompleted || isDataSetCompletenessProcessRunning || isPeriodLocked || isValidationProcessRunning"
-              (tap)="updateDataSetCompleteness()">
+    <div *ngIf="entryFormType && entryFormType === 'aggregate'">
+        <ion-row>
+            <ion-col>
+                <div class="flex-container-start">
+                    <div class="flex-item flex-item-start" *ngIf="!isDataSetCompleted">
+                        <button color="favorite" padding-left padding-right ion-button class="pagination-button" [disabled]="isDataSetCompleted || isDataSetCompletenessProcessRunning || isPeriodLocked || isValidationProcessRunning" (tap)="updateDataSetCompleteness()">
               <span
                 [translate]="isDataSetCompletenessProcessRunning && !isDataSetCompleted? 'Completing' : 'Complete'"></span>
             </button>
-          </div>
-          <div class="flex-item flex-item-start" *ngIf="isDataSetCompleted">
-            <button color="danger" ion-button padding-left padding-right class="pagination-button"
-              [disabled]="!isDataSetCompleted || isDataSetCompletenessProcessRunning || isPeriodLocked || isValidationProcessRunning"
-              (tap)="updateDataSetCompleteness()">
+                    </div>
+                    <div class="flex-item flex-item-start" *ngIf="isDataSetCompleted">
+                        <button color="danger" ion-button padding-left padding-right class="pagination-button" [disabled]="!isDataSetCompleted || isDataSetCompletenessProcessRunning || isPeriodLocked || isValidationProcessRunning" (tap)="updateDataSetCompleteness()">
               <span
                 [translate]="isDataSetCompletenessProcessRunning && isDataSetCompleted? 'Undo completing' : 'Undo complete'"></span>
             </button>
-          </div>
-          <div class="flex-item flex-item-start">
-            <button color="light" ion-button padding-left padding-right class="pagination-button"
-              [disabled]="isDataSetCompletenessProcessRunning || isPeriodLocked || isValidationProcessRunning"
-              (tap)="onValidatingDateEntry()">
+                    </div>
+                    <div class="flex-item flex-item-start">
+                        <button color="light" ion-button padding-left padding-right class="pagination-button" [disabled]="isDataSetCompletenessProcessRunning || isPeriodLocked || isValidationProcessRunning" (tap)="onValidatingDateEntry()">
               <span [translate]="isValidationProcessRunning ? 'Validating' : 'Validate'"></span>
             </button>
-          </div>
+                    </div>
+                </div>
+            </ion-col>
+        </ion-row>
+        <div *ngIf="!isDataSetCompletenessProcessRunning">
+            <div *ngIf="dataSetsCompletenessInfo && dataSetsCompletenessInfo.complete">
+                <div class="item-card animated fadeIn" padding-bottom padding-top (click)="viewUserCompletenessInformation(dataSetsCompletenessInfo)">
+                    <span [translate]="'Completed by'"></span>
+                    <b>{{ dataSetsCompletenessInfo.storedBy }}</b> {{ 'on' | translate }}
+                    <b>{{ dataSetsCompletenessInfo.date }}</b>
+                </div>
+            </div>
         </div>
-      </ion-col>
-    </ion-row>
-    <div *ngIf="!isDataSetCompletenessProcessRunning">
-      <div *ngIf="dataSetsCompletenessInfo && dataSetsCompletenessInfo.complete">
-        <div class="item-card animated fadeIn" padding-bottom padding-top
-          (click)="viewUserCompletenessInformation(dataSetsCompletenessInfo)">
-          <span [translate]="'Completed by'"></span>
-          <b>{{ dataSetsCompletenessInfo.storedBy }}</b> {{ 'on' | translate }}
-          <b>{{ dataSetsCompletenessInfo.date }}</b>
-        </div>
-      </div>
     </div>
-  </div>
 </div>
