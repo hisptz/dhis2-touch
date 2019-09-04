@@ -24,32 +24,155 @@
 import { Injectable } from '@angular/core';
 import { HttpClientProvider } from '../http-client/http-client';
 import { Observable } from 'rxjs/Observable';
+import * as _ from 'lodash';
+import { CurrentUser } from '../../models';
+import { OfflineCompletenessProvider } from '../offline-completeness/offline-completeness';
 
-/*
-  Generated class for the DataSetCompletenessProvider provider.
-
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular DI.
-*/
 @Injectable()
 export class DataSetCompletenessProvider {
-  constructor(private httpClient: HttpClientProvider) {}
+  constructor(
+    private httpClient: HttpClientProvider,
+    private offlineCompletenessProvider: OfflineCompletenessProvider
+  ) {}
 
-  /**
-   *
-   * @param {string} dataSetId
-   * @param {string} period
-   * @param {string} orgUnitId
-   * @param dataDimension
-   * @param currentUser
-   * @returns {Observable<any>}
-   */
+  savingEntryFormCompletenessData(
+    entryFormSelection: any,
+    dataSetCompletenessInfo: any,
+    currentUser: CurrentUser
+  ): Observable<any> {
+    return new Observable(observer => {
+      this.discoverAndUpdateEntryFormCompletenessInfo(
+        entryFormSelection,
+        dataSetCompletenessInfo,
+        currentUser
+      )
+        .then(response => {
+          observer.next(response);
+          observer.complete();
+        })
+        .catch(error => {
+          observer.error(error);
+        });
+    });
+  }
+
+  async discoverAndUpdateEntryFormCompletenessInfo(
+    entryFormSelection: any,
+    dataSetCompletenessInfo: any,
+    currentUser: CurrentUser
+  ) {
+    const id = this.offlineCompletenessProvider.getEntryFormConpletenessDataId(
+      entryFormSelection
+    );
+    const offlineData = await this.offlineCompletenessProvider
+      .getOfflineCompletenessesByIds([id], currentUser)
+      .toPromise();
+    // @TODO take handlig preference from setting default is device
+    if (offlineData && offlineData.length > 0) {
+      const data = {
+        ...offlineData[0],
+        isDeleted: JSON.parse(offlineData[0].isDeleted)
+      };
+      const { completedDate, completedBy, isDeleted } = data;
+      dataSetCompletenessInfo = {
+        ...dataSetCompletenessInfo,
+        complete: !isDeleted,
+        storedBy: completedBy,
+        date: completedDate
+      };
+    } else {
+      const { complete } = dataSetCompletenessInfo;
+      if (complete) {
+        try {
+          dataSetCompletenessInfo = await this.offlineCompletenessProvider
+            .offlneEntryFormCompleteness(
+              entryFormSelection,
+              currentUser,
+              dataSetCompletenessInfo
+            )
+            .toPromise();
+        } catch (error) {
+          console.log({ error });
+        }
+      } else {
+        try {
+          await this.offlineCompletenessProvider
+            .offlneEntryFormUncompleteness(entryFormSelection, currentUser)
+            .toPromise();
+        } catch (error) {
+          console.log({ error });
+        }
+      }
+    }
+    return dataSetCompletenessInfo;
+  }
+
+  async uploadingDataSetCompleteness(currentUser: CurrentUser) {
+    const type = 'aggregate';
+    const status = 'not-sync';
+    const offlineData = await this.offlineCompletenessProvider
+      .getOfflineCompletenessesByType(type, currentUser)
+      .toPromise();
+    const data = _.map(offlineData, dataObj => {
+      const { isDeleted } = dataObj;
+      return { ...dataObj, isDeleted: JSON.parse(isDeleted) };
+    });
+    const unCompletedData = _.filter(data, dataObject => dataObject.isDeleted);
+    const completedData = _.filter(
+      data,
+      dataObject => !dataObject.isDeleted && dataObject.status === status
+    );
+    await this.completeEntryFormsOnline(completedData, currentUser);
+    await this.unCompleteEntryFormsOnline(unCompletedData, currentUser);
+  }
+
+  async completeEntryFormsOnline(completedData: any, currentUser: CurrentUser) {
+    for (const data of completedData) {
+      const { dataSetId, organisationUnitId, periodId, dataDimension } = data;
+      await this.unDoCompleteOnDataSetRegistrations(
+        dataSetId,
+        periodId,
+        organisationUnitId,
+        dataDimension,
+        currentUser
+      ).toPromise();
+      await this.offlineCompletenessProvider
+        .savingOfflineCompleteness([{ ...data, status: 'synced' }], currentUser)
+        .toPromise();
+    }
+  }
+
+  async unCompleteEntryFormsOnline(
+    unCompletedData: any,
+    currentUser: CurrentUser
+  ) {
+    for (const data of unCompletedData) {
+      const {
+        dataSetId,
+        organisationUnitId,
+        periodId,
+        dataDimension,
+        id
+      } = data;
+      await this.unDoCompleteOnDataSetRegistrations(
+        dataSetId,
+        periodId,
+        organisationUnitId,
+        dataDimension,
+        currentUser
+      ).toPromise();
+      await this.offlineCompletenessProvider
+        .deleteOfflineCompletenessesByIds([id], currentUser)
+        .toPromise();
+    }
+  }
+
   completeOnDataSetRegistrations(
     dataSetId: string,
     period: string,
     orgUnitId: string,
-    dataDimension,
-    currentUser
+    dataDimension: any,
+    currentUser: CurrentUser
   ): Observable<any> {
     let parameter = this.getDataSetCompletenessParameter(
       dataSetId,
@@ -63,16 +186,17 @@ export class DataSetCompletenessProvider {
         period: period,
         organisationUnit: orgUnitId
       };
-      if (dataDimension.cp != '') {
+      if (dataDimension.cp !== '') {
         data = {
           ...data,
           cc: dataDimension.cc,
           cp: dataDimension.cp
         };
       }
+      const url = `/api/completeDataSetRegistrations?${parameter}`;
       this.httpClient
         .post(
-          '/api/completeDataSetRegistrations?' + parameter,
+          url,
           {
             completeDataSetRegistrations: [data]
           },
@@ -90,21 +214,12 @@ export class DataSetCompletenessProvider {
     });
   }
 
-  /**
-   *
-   * @param {string} dataSetId
-   * @param {string} period
-   * @param {string} orgUnitId
-   * @param dataDimension
-   * @param currentUser
-   * @returns {Observable<any>}
-   */
   unDoCompleteOnDataSetRegistrations(
     dataSetId: string,
     period: string,
     orgUnitId: string,
-    dataDimension,
-    currentUser
+    dataDimension: any,
+    currentUser: CurrentUser
   ): Observable<any> {
     let parameter = this.getDataSetCompletenessParameter(
       dataSetId,
@@ -113,45 +228,29 @@ export class DataSetCompletenessProvider {
       dataDimension
     );
     return new Observable(observer => {
-      this.httpClient
-        .delete('/api/completeDataSetRegistrations?' + parameter, currentUser)
-        .subscribe(
-          () => {
-            observer.next();
-            observer.complete();
-          },
-          error => {
-            observer.error(error);
-          }
-        );
+      const url = `/api/completeDataSetRegistrations?${parameter}`;
+      this.httpClient.delete(url, currentUser).subscribe(
+        () => {
+          observer.next();
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
 
-  /**
-   *
-   * @param {string} dataSetId
-   * @param {string} period
-   * @param {string} orgUnitId
-   * @param dataDimension
-   * @param currentUser
-   * @returns {Observable<any>}
-   */
   getDataSetCompletenessInfo(
     dataSetId: string,
     period: string,
     orgUnitId: string,
-    dataDimension,
-    currentUser
+    dataDimension: any,
+    currentUser: CurrentUser
   ): Observable<any> {
-    let parameter =
-      'dataSetId=' +
-      dataSetId +
-      '&periodId=' +
-      period +
-      '&organisationUnitId=' +
-      orgUnitId;
+    let parameter = `dataSetId=${dataSetId}&periodId=${period}&organisationUnitId=${orgUnitId}`;
     if (dataDimension.cp != '') {
-      parameter += '&cc=' + dataDimension.cc + '&cp=' + dataDimension.cp;
+      parameter += `&cc=${dataDimension.cc}&cp=${dataDimension.cp}`;
     }
     const url = '/dhis-web-dataentry/getDataValues.action?' + parameter;
     return new Observable(observer => {
@@ -170,46 +269,30 @@ export class DataSetCompletenessProvider {
     });
   }
 
-  /**
-   *
-   * @param username
-   * @param currentUser
-   * @returns {Promise<any>}
-   */
-  getUserCompletenessInformation(username, currentUser): Observable<any> {
+  getUserCompletenessInformation(
+    username: string,
+    currentUser: CurrentUser
+  ): Observable<any> {
     return new Observable(observer => {
-      this.httpClient
-        .get(
-          '/dhis-web-commons-ajax-json/getUser.action?username=' + username,
-          true,
-          currentUser
-        )
-        .subscribe(
-          (response: any) => {
-            observer.next(response);
-            observer.complete();
-          },
-          error => {
-            observer.error(error);
-          }
-        );
+      const url = `/dhis-web-commons-ajax-json/getUser.action?username=${username}`;
+      this.httpClient.get(url, true, currentUser).subscribe(
+        (response: any) => {
+          observer.next(response);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
 
-  /**
-   *
-   * @param {string} dataSetId
-   * @param {string} period
-   * @param {string} orgUnitId
-   * @param dataDimension
-   * @returns {string}
-   */
   getDataSetCompletenessParameter(
     dataSetId: string,
     period: string,
     orgUnitId: string,
-    dataDimension
-  ) {
+    dataDimension: any
+  ): string {
     let parameter = 'ds=' + dataSetId + '&pe=' + period + '&ou=' + orgUnitId;
     if (dataDimension.cp != '') {
       parameter += '&cc=' + dataDimension.cc + '&cp=' + dataDimension.cp;

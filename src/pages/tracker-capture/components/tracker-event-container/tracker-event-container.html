@@ -23,57 +23,46 @@
 *
 -->
 <div padding-top>
-  <div style="display: inline-block;width: 49.3%">
-    <span [translate]="executionDateLabel"></span>
-    <span class="required">*</span>
-    <div class="input-field-container">
-      <data-time-input [(inputValue)]="currentOpenEvent['eventDate']"
-        (dateTimeUpdateAction)="updateEventDate($event,'eventDate')" [mode]="'date'"></data-time-input>
+    <div style="display: inline-block;width: 49.3%">
+        <span [translate]="executionDateLabel"></span>
+        <span class="required">*</span>
+        <div class="input-field-container">
+            <data-time-input [(inputValue)]="currentOpenEvent['eventDate']" (dateTimeUpdateAction)="updateEventDate($event,'eventDate')" [mode]="'date'"></data-time-input>
+        </div>
     </div>
-  </div>
-  <div style="display: inline-block;width: 49.3%" *ngIf="!hideDueDate">
-    <span [translate]="dueDateLabel"></span>
-    <div class="input-field-container">
-      <data-time-input [withoutHorizontalPadding]="true" [(inputValue)]="currentOpenEvent['dueDate']"
-        (dateTimeUpdateAction)="updateEventDate($event,'dueDate')" [mode]="'date'"></data-time-input>
+    <div style="display: inline-block;width: 49.3%" *ngIf="!hideDueDate">
+        <span [translate]="dueDateLabel"></span>
+        <div class="input-field-container">
+            <data-time-input [withoutHorizontalPadding]="true" [(inputValue)]="currentOpenEvent['dueDate']" (dateTimeUpdateAction)="updateEventDate($event,'dueDate')" [mode]="'date'"></data-time-input>
+        </div>
     </div>
-  </div>
 
-  <div *ngIf="!(currentOpenEvent['eventDate'] && currentOpenEvent['eventDate'] !='')">
-    <event-date-notification [notification]="getEventDateNotification()"></event-date-notification>
-  </div>
+    <div *ngIf="!(currentOpenEvent['eventDate'] && currentOpenEvent['eventDate'] !='')">
+        <event-date-notification [notification]="getEventDateNotification()"></event-date-notification>
+    </div>
 
 </div>
 <div *ngIf="currentOpenEvent['eventDate'] && currentOpenEvent['eventDate'] !=''">
-  <div
-    *ngIf="(programStage && programStage.id && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
-    <div *ngIf="!hiddenProgramStages[programStage.id]">
-      <div *ngIf="programStage.captureCoordinates" class="item-card">
-        <span [translate]="'Coordinate'"></span>
-        <event-coordinate-selector (onChangeEventCoordonate)="updateEventCoordonate($event)"
-          [(coordinate)]="currentOpenEvent.coordinate"></event-coordinate-selector>
-      </div>
-      <div
-        *ngIf="formLayout === 'customLayout' && programStage && programStage.dataEntryForm && programStage.dataEntryForm !== '' ">
-        <custom-data-entry-form [entryFormType]="entryFormType" [dataEntryFormDesign]="programStage.dataEntryForm"
-          [data]="dataObject" [dataUpdateStatus]="dataUpdateStatus"
-          [programStageDataElements]="programStage.programStageDataElements" [programStageId]="programStage.id"
-          (onCustomFormInputChange)="updateData($event)"></custom-data-entry-form>
-      </div>
-      <div
-        *ngIf="!(formLayout === 'customLayout' && programStage && programStage.dataEntryForm && programStage.dataEntryForm !== '' )">
-        <default-event-entry-form [(errorOrWarningMessage)]="errorOrWarningMessage" [(hiddenSections)]="hiddenSections"
-          [(hiddenFields)]="hiddenFields" [programStage]="programStage" [currentUser]="currentUser"
-          [(dataObject)]="dataObject" [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass"
-          (onChange)="updateData($event)"></default-event-entry-form>
-      </div>
+    <div *ngIf="(programStage && programStage.id && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
+        <div *ngIf="!hiddenProgramStages[programStage.id]">
+            <div *ngIf="programStage.captureCoordinates" class="item-card">
+                <span [translate]="'Coordinate'"></span>
+                <event-coordinate-selector (onChangeEventCoordonate)="updateEventCoordonate($event)" [(coordinate)]="currentOpenEvent.coordinate"></event-coordinate-selector>
+            </div>
+            <div *ngIf="formLayout === 'customLayout' && programStage && programStage.dataEntryForm && programStage.dataEntryForm !== '' ">
+                <custom-data-entry-form [isEventCompleted]="isEventCompleted" [entryFormType]="entryFormType" [dataEntryFormDesign]="programStage.dataEntryForm" [data]="dataObject" [dataUpdateStatus]="dataUpdateStatus" [programStageDataElements]="programStage.programStageDataElements"
+                    [programStageId]="programStage.id" (onCustomFormInputChange)="updateData($event)"></custom-data-entry-form>
+            </div>
+            <div *ngIf="!(formLayout === 'customLayout' && programStage && programStage.dataEntryForm && programStage.dataEntryForm !== '' )">
+                <default-event-entry-form [isEventCompleted]="isEventCompleted" [(errorOrWarningMessage)]="errorOrWarningMessage" [(hiddenSections)]="hiddenSections" [(hiddenFields)]="hiddenFields" [programStage]="programStage" [currentUser]="currentUser" [(dataObject)]="dataObject"
+                    [(dataValuesSavingStatusClass)]="dataValuesSavingStatusClass" (onChange)="updateData($event)"></default-event-entry-form>
+            </div>
+        </div>
     </div>
-  </div>
-  <div
-    *ngIf="!(programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
-    <div *ngIf="currentOpenEvent['eventDate'] && currentOpenEvent['eventDate'] !=''">
-      <notification [message]="'Contact your help desk to add data elements on this stage'">
-      </notification>
+    <div *ngIf="!(programStage && programStage.programStageDataElements && programStage.programStageDataElements.length > 0)">
+        <div *ngIf="currentOpenEvent['eventDate'] && currentOpenEvent['eventDate'] !=''">
+            <notification [message]="'Contact your help desk to add data elements on this stage'">
+            </notification>
+        </div>
     </div>
-  </div>
 </div>

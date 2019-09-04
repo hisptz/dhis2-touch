@@ -33,17 +33,13 @@ import { Observable } from 'rxjs/Observable';
 import { ProfileProvider } from '../../pages/profile/providers/profile/profile';
 import { CurrentUser } from '../../models';
 import { DataStoreManagerProvider } from '../data-store-manager/data-store-manager';
+import { DataSetCompletenessProvider } from '../data-set-completeness/data-set-completeness';
 
-/*
-  Generated class for the SynchronizationProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class SynchronizationProvider {
   subscription: any;
   profileSubscription: any;
+  dataSetCOmpletenessSubscription: any;
 
   constructor(
     private dataValuesProvider: DataValuesProvider,
@@ -53,7 +49,8 @@ export class SynchronizationProvider {
     private dataStoreManger: DataStoreManagerProvider,
     private appProvider: AppProvider,
     private settingsProvider: SettingsProvider,
-    private profileProvider: ProfileProvider
+    private profileProvider: ProfileProvider,
+    private dataSetCompletenessProvider: DataSetCompletenessProvider
   ) {}
 
   stopSynchronization() {
@@ -63,9 +60,12 @@ export class SynchronizationProvider {
     if (this.profileSubscription) {
       clearInterval(this.profileSubscription);
     }
+    if (this.dataSetCOmpletenessSubscription) {
+      clearInterval(this.dataSetCOmpletenessSubscription);
+    }
   }
 
-  startSynchronization(currentUser) {
+  startSynchronization(currentUser: CurrentUser) {
     const defaultSettings = this.settingsProvider.getDefaultSettings();
     this.settingsProvider.getSettingsForTheApp(currentUser).subscribe(
       (appSettings: any) => {
@@ -76,6 +76,13 @@ export class SynchronizationProvider {
         this.stopSynchronization();
         this.profileSubscription = setInterval(() => {
           this.profileProvider.uploadingProfileInformation();
+        }, synchronizationSettings.time);
+        this.dataSetCOmpletenessSubscription = setInterval(() => {
+          Observable.fromPromise(
+            this.dataSetCompletenessProvider.uploadingDataSetCompleteness(
+              currentUser
+            )
+          );
         }, synchronizationSettings.time);
         if (synchronizationSettings.isAutoSync) {
           this.subscription = setInterval(() => {
@@ -119,7 +126,10 @@ export class SynchronizationProvider {
     );
   }
 
-  uploadingDataToTheServer(dataObject, currentUser): Observable<any> {
+  uploadingDataToTheServer(
+    dataObject: any,
+    currentUser: CurrentUser
+  ): Observable<any> {
     return new Observable(observer => {
       let completedProcess = 0;
       const dataItems = _.filter(Object.keys(dataObject), key => {

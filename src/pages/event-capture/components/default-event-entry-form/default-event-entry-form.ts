@@ -22,6 +22,7 @@
  *
  */
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { CurrentUser } from '../../../../models';
 
 /**
  * Generated class for the DefaultEventEntryFormComponent component.
@@ -34,22 +35,21 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
   templateUrl: 'default-event-entry-form.html'
 })
 export class DefaultEventEntryFormComponent implements OnInit {
-  @Input() programStage;
-  @Input() currentUser;
-  @Input() dataObject;
-  @Input() dataValuesSavingStatusClass;
-  @Input() hiddenFields;
-  @Input() hiddenSections;
-  @Input() errorOrWarningMessage;
+  @Input() programStage: any;
+  @Input() currentUser: CurrentUser;
+  @Input() dataObject: any;
+  @Input() dataValuesSavingStatusClass: any;
+  @Input() hiddenFields: any;
+  @Input() hiddenSections: any;
+  @Input() errorOrWarningMessage: any;
+  @Input() isEventCompleted: boolean;
 
   @Output() onChange = new EventEmitter();
 
   isSectionOpen: any;
-  isEventCompleted: boolean;
 
   constructor() {
     this.isSectionOpen = {};
-    this.isEventCompleted = false;
   }
 
   ngOnInit() {

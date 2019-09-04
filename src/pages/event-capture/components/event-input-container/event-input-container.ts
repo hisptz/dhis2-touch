@@ -31,6 +31,7 @@ import {
 } from '@angular/core';
 import { SettingsProvider } from '../../../../providers/settings/settings';
 import { ActionSheetController } from 'ionic-angular';
+import { CurrentUser } from '../../../../models';
 
 /**
  * Generated class for the EventInputContainerComponent component.
@@ -43,11 +44,12 @@ import { ActionSheetController } from 'ionic-angular';
   templateUrl: 'event-input-container.html'
 })
 export class EventInputContainerComponent implements OnInit, OnDestroy {
-  @Input() dataElement;
-  @Input() currentUser;
-  @Input() mandatory;
-  @Input() data;
-  @Input() dataValuesSavingStatusClass;
+  @Input() dataElement: any;
+  @Input() currentUser: CurrentUser;
+  @Input() mandatory: boolean;
+  @Input() data: any;
+  @Input() dataValuesSavingStatusClass: any;
+  @Input() lockingFieldStatus: boolean;
   @Output() onChange = new EventEmitter();
 
   fieldLabelKey: any;

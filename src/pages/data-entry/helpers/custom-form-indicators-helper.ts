@@ -84,23 +84,27 @@ export function evaluateDataElementTotals() {
   } catch (error) {}
 }
 
-function generateExpresion(expression) {
+function generateExpresion(expression: string) {
   const formulaPattern = /#\{.+?\}/g;
   const separator = '.';
-  const matcher = expression.match(formulaPattern);
-  matcher.map(match => {
-    const operand = match.replace(/[#\{\}]/g, '');
-    const isTotal = operand.indexOf(separator) == -1;
-    let value = 0;
-    if (isTotal) {
-      value = getDataElementTotalValue(operand);
-    } else {
-      const elementId = `${operand.split('.').join('-')}-val`;
-      const element: any = document.getElementById(elementId);
-      value = element && element.value ? element.value : 0;
+  if (expression) {
+    const matcher = expression.match(formulaPattern);
+    if (matcher) {
+      matcher.map(match => {
+        const operand = match.replace(/[#\{\}]/g, '');
+        const isTotal = operand.indexOf(separator) == -1;
+        let value = 0;
+        if (isTotal) {
+          value = getDataElementTotalValue(operand);
+        } else {
+          const elementId = `${operand.split('.').join('-')}-val`;
+          const element: any = document.getElementById(elementId);
+          value = element && element.value ? element.value : 0;
+        }
+        expression = expression.replace(match, `${value}`);
+      });
     }
-    expression = expression.replace(match, value);
-  });
+  }
   return expression;
 }
 
@@ -137,7 +141,7 @@ function getProgramIndicatorValueFromExpression(expression: string) {
   return indicatorValue;
 }
 
-function getUidsFromExpression(expression) {
+function getUidsFromExpression(expression: string) {
   let uids = [];
   const matchRegrex = /(\{.*?\})/gi;
   expression.match(matchRegrex).forEach(function(value) {
@@ -152,20 +156,24 @@ function getUidsFromExpression(expression) {
   return uids;
 }
 function getEvaluatedIndicatorValueFromExpression(
-  expression,
-  indicatorIdToValueObject
+  expression: string,
+  indicatorIdToValueObject: any
 ) {
   let evaluatedValue = 0;
   const formulaPattern = /#\{.+?\}/g;
-  const matcher = expression.match(formulaPattern);
-  matcher.map(function(match) {
-    var operand = match.replace(/[#\{\}]/g, '');
-    const value =
-      indicatorIdToValueObject && indicatorIdToValueObject[operand]
-        ? indicatorIdToValueObject[operand]
-        : 0;
-    expression = expression.replace(match, value);
-  });
+  if (expression) {
+    const matcher = expression.match(formulaPattern);
+    if (matcher) {
+      matcher.map(function(match) {
+        var operand = match.replace(/[#\{\}]/g, '');
+        const value =
+          indicatorIdToValueObject && indicatorIdToValueObject[operand]
+            ? indicatorIdToValueObject[operand]
+            : 0;
+        expression = expression.replace(match, value);
+      });
+    }
+  }
   try {
     if (!isNaN(eval(expression))) {
       evaluatedValue = eval(expression);

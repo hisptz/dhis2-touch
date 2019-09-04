@@ -126,9 +126,7 @@ export class AggregateDataDownloaderComponent implements OnInit {
               )
               .subscribe(
                 dataValues => {
-                  this.downloadStatus = `${
-                    dataValues.length
-                  } aggregate data has been discovered`;
+                  this.downloadStatus = `${dataValues.length} aggregate data has been discovered`;
                   this.appProvider.setTopNotification(this.downloadStatus);
                   if (dataValues.length > 0) {
                     this.progressTrackerPacentage = 50;
