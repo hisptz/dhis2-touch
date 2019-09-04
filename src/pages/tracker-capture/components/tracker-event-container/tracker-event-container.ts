@@ -114,8 +114,16 @@ export class TrackerEventContainerComponent implements OnInit, OnDestroy {
       changes['currentOpenEvent'] &&
       !changes['currentOpenEvent'].firstChange
     ) {
-      const { previousValue, currentValue } = changes.currentOpenEvent;
-      console.log({ previousValue, currentValue, changes });
+      const previousValue = changes['currentOpenEvent'].previousValue;
+      const currentValue = changes['currentOpenEvent'].currentValue;
+      if (
+        previousValue &&
+        currentValue &&
+        previousValue.status !== currentValue.status
+      ) {
+        this.updateData({}, false);
+        console.log({ currentValue, previousValue });
+      }
     }
   }
 

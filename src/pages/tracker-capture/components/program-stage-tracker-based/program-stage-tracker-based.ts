@@ -304,6 +304,11 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
           this.isNewEventFormOpened = true;
           this.isAddButtonDisabled = true;
           this.isLoading = false;
+          this.resetCompletenessInfo();
+          this.discoveringEventCompleteness(
+            this.currentOpenEvent.id,
+            this.currentUser
+          );
         },
         error => {
           console.log(
@@ -374,6 +379,8 @@ export class ProgramStageTrackerBasedComponent implements OnInit {
     const currentOpenEvent = this.currentEvents[rowIndex];
     const eventId = currentOpenEvent.id;
     this.isNewEventFormOpened = false;
+    this.resetCompletenessInfo();
+    this.discoveringEventCompleteness(eventId, this.currentUser);
     if (
       this.currentOpenEvent &&
       this.currentOpenEvent.id &&
