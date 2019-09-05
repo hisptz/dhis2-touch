@@ -75,8 +75,8 @@ export class SystemInformationService {
     });
   }
 
-  getCurrentUserSystemInformation(): Promise<any> {
+  async getCurrentUserSystemInformation(): Promise<any> {
     const key = 'systemInformation';
-    return this.localStorageService.getDataFromLocalStorage(key);
+    return await this.localStorageService.getDataFromLocalStorage(key);
   }
 }

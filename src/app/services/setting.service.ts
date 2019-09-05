@@ -32,18 +32,18 @@ import { LocalStorageService } from './local-storage.service';
 export class SettingService {
   constructor(private localStorageService: LocalStorageService) {}
 
-  setSettingsForTheApp(
+  async setCurrentSettingsForTheApp(
     user: CurrentUser,
     appSettings: AppSetting
   ): Promise<any> {
     const { currentDatabase } = user;
     const key = `appSettings-${currentDatabase}`;
-    return this.localStorageService.setDataOnLocalStorage(appSettings, key);
+    await this.localStorageService.setDataOnLocalStorage(appSettings, key);
   }
-  getSettingsForTheApp(user: CurrentUser): Promise<any> {
+  async getCurrentSettingsForTheApp(user: CurrentUser): Promise<any> {
     const { currentDatabase } = user;
     const key = `appSettings-${currentDatabase}`;
-    return this.localStorageService.getDataFromLocalStorage(key);
+    return await this.localStorageService.getDataFromLocalStorage(key);
   }
 
   getSanitizedSettings(appSettings: AppSetting) {

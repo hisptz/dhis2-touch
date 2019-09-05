@@ -284,7 +284,7 @@ export class LoginPage implements OnInit {
 
   async reCheckingAppSetting(currentUser: CurrentUser) {
     const defaultSetting: AppSetting = DEFAULT_SETTINGS;
-    const appSettings: AppSetting = await this.settingService.getSettingsForTheApp(
+    const appSettings: AppSetting = await this.settingService.getCurrentSettingsForTheApp(
       currentUser
     );
     if (!appSettings) {
@@ -294,7 +294,10 @@ export class LoginPage implements OnInit {
         time,
         timeType
       );
-      await this.settingService.setSettingsForTheApp(currentUser, appSettings);
+      await this.settingService.setCurrentSettingsForTheApp(
+        currentUser,
+        defaultSetting
+      );
     }
   }
 

@@ -29,8 +29,8 @@ import { Storage } from '@ionic/storage';
 export class LocalStorageService {
   constructor(private storage: Storage) {}
 
-  setDataOnLocalStorage(data: any, key: string) {
-    return this.storage.set(key, data);
+  async setDataOnLocalStorage(data: any, key: string) {
+    return await this.storage.set(key, data);
   }
 
   async getDataFromLocalStorage(key: string) {
