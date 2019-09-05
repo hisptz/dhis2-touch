@@ -35,5 +35,19 @@
 </ion-header>
 
 <ion-content>
-
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <div *ngIf="isLoading">
+                    <app-progress-bar [color]="(colorSettings$ | async).colorAttributes.secondary" [isIndeterminateProcess]="true" [processMessage]="''">
+                    </app-progress-bar>
+                </div>
+                <div *ngIf="!isLoading">
+                    <app-setting-container (changesOnAppSettings)="onChangesOnAppSettings($event)" (changeCurrentLanguage)="onChangeCurrentLanguage($event)" [supportedTranslations]="supportedTranslations" [currentLanguage]="currentLanguage" [settingContents]="settingContents"
+                        [currentAppSetting]="currentAppSetting">
+                    </app-setting-container>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>

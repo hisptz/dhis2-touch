@@ -25,8 +25,20 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
+import * as _ from 'lodash';
 import { State, getCurrentUserColorSettings } from '../../../store';
-import { AppColorObject } from 'src/models';
+import {
+  AppColorObject,
+  CurrentUser,
+  AppSettingContent,
+  AppSetting,
+  Translation
+} from 'src/models';
+import { UserService } from 'src/app/services/user.service';
+import { SettingService } from 'src/app/services/setting.service';
+import { DEFAULT_SETTINGS_CONTENTS } from 'src/constants';
+import { AppTransalationsService } from 'src/app/services/app-transalations.service';
+import { ToasterMessagesService } from 'src/app/services/toaster-messages.service';
 
 @Component({
   selector: 'app-settings',
@@ -35,10 +47,86 @@ import { AppColorObject } from 'src/models';
 })
 export class SettingsPage implements OnInit {
   colorSettings$: Observable<AppColorObject>;
+  currentUser: CurrentUser;
+  settingContents: AppSettingContent[];
+  currentAppSetting: AppSetting;
+  supportedTranslations: Translation[];
+  currentLanguage: string;
+  isLoading: boolean;
 
-  constructor(private store: Store<State>) {
+  constructor(
+    private store: Store<State>,
+    private userService: UserService,
+    private settingService: SettingService,
+    private appTransalationsService: AppTransalationsService,
+    private toasterMessagesService: ToasterMessagesService
+  ) {
     this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
+    this.isLoading = true;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.discoveringCurrentUser();
+  }
+
+  async discoveringCurrentUser() {
+    const currentUser = await this.userService.getCurrentUser();
+    await this.discoveringCurrentAppSettings(currentUser);
+  }
+
+  async discoveringCurrentAppSettings(currentUser: CurrentUser) {
+    const currentAppSetting = await this.settingService.getCurrentSettingsForTheApp(
+      currentUser
+    );
+    this.supportedTranslations = _.sortBy(
+      this.appTransalationsService.getSupportedTranslations(),
+      'name'
+    );
+
+    this.currentAppSetting = currentAppSetting;
+    this.currentUser = currentUser;
+    const { currentLanguage } = currentUser;
+    this.currentLanguage = currentLanguage;
+    this.settingContents = this.getVisiableSettingContents();
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 200);
+  }
+
+  async onChangeCurrentLanguage(currentLanguage: string) {
+    const currentUser = { ...this.currentUser, currentLanguage };
+    this.currentLanguage = currentLanguage;
+    this.appTransalationsService.setCurrentUserLanguage(currentLanguage);
+    await this.userService.setCurrentUser(currentUser);
+    await this.toastSuccessMessage();
+  }
+
+  async onChangesOnAppSettings(response: any) {
+    const { id, data } = response;
+    this.currentAppSetting[id] = data;
+    await this.settingService.setCurrentSettingsForTheApp(
+      this.currentUser,
+      this.currentAppSetting
+    );
+    await this.toastSuccessMessage();
+  }
+
+  async toastSuccessMessage() {
+    const message = `Changes have been applied successfully`;
+    await this.toasterMessagesService.showToasterMessage(
+      message,
+      2000,
+      '',
+      'top'
+    );
+  }
+
+  getVisiableSettingContents() {
+    return _.filter(
+      DEFAULT_SETTINGS_CONTENTS,
+      (settingContent: AppSettingContent) => {
+        return settingContent.isVisible;
+      }
+    );
+  }
 }

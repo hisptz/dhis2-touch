@@ -30,6 +30,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IonicModule } from '@ionic/angular';
 
 import { SettingsPage } from './settings.page';
+import { SharedComponentsModule } from 'src/app/components/sharedComponents.module';
+import { SettingsComponentsModule } from './components/settingsComponents.module';
 
 const routes: Routes = [
   {
@@ -44,7 +46,9 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     TranslateModule.forChild(),
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    SharedComponentsModule,
+    SettingsComponentsModule
   ],
   declarations: [SettingsPage]
 })
