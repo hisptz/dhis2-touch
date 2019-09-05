@@ -41,6 +41,7 @@ export class OptionSetInputComponent implements OnInit {
   @Input() data: any;
   @Input() options: Option[];
   @Input() lockingFieldStatus: boolean;
+  @Input() isTrashButtonDisabled: boolean;
 
   @Output() optionSetChange = new EventEmitter();
 
