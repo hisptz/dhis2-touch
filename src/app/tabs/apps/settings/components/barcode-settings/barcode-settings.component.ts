@@ -21,22 +21,15 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-import { NgModule } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
-import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
-import { SharedComponentsModule } from 'src/app/components/sharedComponents.module';
-import { AppItemComponent } from './app-item/app-item.component';
-import { AppsItemContainerComponent } from './apps-item-container/apps-item-container.component';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-@NgModule({
-  declarations: [AppItemComponent, AppsItemContainerComponent],
-  imports: [
-    IonicModule,
-    CommonModule,
-    TranslateModule.forChild(),
-    SharedComponentsModule
-  ],
-  exports: [AppItemComponent, AppsItemContainerComponent]
+@Component({
+  selector: 'app-barcode-settings',
+  templateUrl: './barcode-settings.component.html',
+  styleUrls: ['./barcode-settings.component.scss']
 })
-export class AppsComponentsModule {}
+export class BarcodeSettingsComponent implements OnInit {
+  constructor() {}
+
+  ngOnInit() {}
+}

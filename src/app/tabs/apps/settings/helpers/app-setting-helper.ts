@@ -21,22 +21,31 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-import { NgModule } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
-import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
-import { SharedComponentsModule } from 'src/app/components/sharedComponents.module';
-import { AppItemComponent } from './app-item/app-item.component';
-import { AppsItemContainerComponent } from './apps-item-container/apps-item-container.component';
+const _ = require('lodash');
 
-@NgModule({
-  declarations: [AppItemComponent, AppsItemContainerComponent],
-  imports: [
-    IonicModule,
-    CommonModule,
-    TranslateModule.forChild(),
-    SharedComponentsModule
-  ],
-  exports: [AppItemComponent, AppsItemContainerComponent]
-})
-export class AppsComponentsModule {}
+export function getUpdatedDataObject(settingObject: any) {
+  const keys = Object.keys(settingObject);
+  return _.keyBy(
+    _.map(keys, (key: string) => {
+      const id = `${key}-co`;
+      const value = settingObject[key];
+      return {
+        id,
+        value: typeof value === 'boolean' ? (value ? value : '') : value
+      };
+    }),
+    'id'
+  );
+}
+export function getUpdatedSettingObject(data: any, settingObject: any) {
+  const { id, value } = data;
+  const fieldId = id.split('-')[0];
+  const previousValue = settingObject[fieldId];
+  settingObject[fieldId] =
+    typeof previousValue !== 'boolean'
+      ? value
+      : `${value}`.trim() === ''
+      ? false
+      : value;
+  return settingObject;
+}

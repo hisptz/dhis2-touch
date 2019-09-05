@@ -21,22 +21,4 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-import { NgModule } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
-import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
-import { SharedComponentsModule } from 'src/app/components/sharedComponents.module';
-import { AppItemComponent } from './app-item/app-item.component';
-import { AppsItemContainerComponent } from './apps-item-container/apps-item-container.component';
-
-@NgModule({
-  declarations: [AppItemComponent, AppsItemContainerComponent],
-  imports: [
-    IonicModule,
-    CommonModule,
-    TranslateModule.forChild(),
-    SharedComponentsModule
-  ],
-  exports: [AppItemComponent, AppsItemContainerComponent]
-})
-export class AppsComponentsModule {}
+export * from './app-setting-helper';
