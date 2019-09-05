@@ -22,7 +22,7 @@
  *
  */
 
-import { AppSetting } from 'src/models';
+import { AppSetting, AppSettingContent, Option } from 'src/models';
 
 export const DEFAULT_SETTINGS: AppSetting = {
   entryForm: {
@@ -31,6 +31,7 @@ export const DEFAULT_SETTINGS: AppSetting = {
     maximumNumberOfOptionAsRadio: 5,
     formLayout: 'customLayout',
     showAlertOnFormAssignement: true,
+    dataConflictPreferredOnline: false,
     shouldDisplayAsRadio: true
   },
   synchronization: {
@@ -46,3 +47,45 @@ export const DEFAULT_SETTINGS: AppSetting = {
     multilineSeparator: ';'
   }
 };
+
+export const DEFAULT_SETTINGS_CONTENTS: AppSettingContent[] = [
+  {
+    id: 'appSettings',
+    name: 'App settings',
+    icon: 'assets/icon/app-setting.png',
+    isVisible: true,
+    isOpened: false
+  },
+  {
+    id: 'entryForm',
+    name: 'Entry form',
+    icon: 'assets/icon/form.png',
+    isVisible: true,
+    isOpened: false
+  },
+  {
+    id: 'synchronization',
+    name: 'Synchronization',
+    icon: 'assets/icon/synchronization.png',
+    isVisible: true,
+    isOpened: false
+  },
+  {
+    id: 'barcode',
+    name: 'Barcode behaviour',
+    icon: 'assets/icon/barcode-reader.png',
+    isVisible: true,
+    isOpened: false
+  }
+];
+
+export const DEFAULT_FORM_LABEL_SETTINGS: Option[] = [
+  { id: 'displayName', name: 'Display name', code: 'displayName' },
+  { id: 'formName', name: 'Form name', code: 'formName' }
+];
+
+export const DEFAULT_FORM_LAYOUT_SETTINGS: Option[] = [
+  { id: 'tableLayout', name: 'Table Layout', code: 'tableLayout' },
+  { id: 'listLayout', name: 'List Layout', code: 'listLayout' },
+  { id: 'customLayout', name: 'Custom Layout', code: 'customLayout' }
+];
