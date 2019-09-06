@@ -22,4 +22,39 @@
 *
 *
 -->
-barcode settings
+<div *ngIf="isLoading">
+    <app-progress-bar [color]="(colorSettings$ | async).colorAttributes.secondary" [isIndeterminateProcess]="true" [processMessage]="''">
+    </app-progress-bar>
+</div>
+<div *ngIf="!isLoading" class="animated fadeIn">
+    <div class="barcode-settings">
+        <span [translate]="'Show barcode reader on numerical fields'"></span>
+        <div class="input-field-container">
+            <app-true-only-input (valueChange)="onBarcodeSetingChnage($event)" [data]="data" [dataElementId]="'allowBarcodeReaderOnNumerical'" [categoryOptionComboId]="'co'"></app-true-only-input>
+        </div>
+    </div>
+    <div class="barcode-settings">
+        <span [translate]="'Show barcode reader on text fields'"></span>
+        <div class="input-field-container">
+            <app-true-only-input (valueChange)="onBarcodeSetingChnage($event)" [data]="data" [dataElementId]="'allowBarcodeReaderOnText'" [categoryOptionComboId]="'co'"></app-true-only-input>
+        </div>
+    </div>
+    <div class="barcode-settings">
+        <span [translate]="'Activate multiline barcode scan behaviour'"></span>
+        <div class="input-field-container">
+            <app-true-only-input (valueChange)="onBarcodeSetingChnage($event)" [data]="data" [dataElementId]="'activateMultiline'" [categoryOptionComboId]="'co'"></app-true-only-input>
+        </div>
+    </div>
+    <div class="barcode-settings">
+        <span [translate]="'Key value pair separator'"></span>
+        <div class="input-field-container">
+            <app-text-input (change)="onBarcodeSetingChnage($event)" [data]="data" [valueType]="'TEXT'" [dataElementId]="'keyPairSeparator'" [categoryOptionComboId]="'co'" [lockingFieldStatus]="!barcodeSetting.activateMultiline"></app-text-input>
+        </div>
+    </div>
+    <div class="barcode-settings">
+        <span [translate]="'Multiline separator'"></span>
+        <div class="input-field-container">
+            <app-text-input (change)="onBarcodeSetingChnage($event)" [data]="data" [valueType]="'TEXT'" [dataElementId]="'multilineSeparator'" [categoryOptionComboId]="'co'" [lockingFieldStatus]="!barcodeSetting.activateMultiline"></app-text-input>
+        </div>
+    </div>
+</div>

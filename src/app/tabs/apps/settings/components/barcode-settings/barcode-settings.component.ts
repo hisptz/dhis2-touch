@@ -22,6 +22,13 @@
  *
  */
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import * as _ from 'lodash';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { State, getCurrentUserColorSettings } from '../../../../../store';
+import { BarcodeSetting, AppColorObject } from 'src/models';
+import { DEFAULT_SETTINGS } from 'src/constants';
+import { getUpdatedSettingObject, getUpdatedDataObject } from '../../helpers';
 
 @Component({
   selector: 'app-barcode-settings',
@@ -29,7 +36,37 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./barcode-settings.component.scss']
 })
 export class BarcodeSettingsComponent implements OnInit {
-  constructor() {}
+  @Input() barcodeSetting: BarcodeSetting;
 
-  ngOnInit() {}
+  @Output() barcodeSettingChange = new EventEmitter();
+
+  colorSettings$: Observable<AppColorObject>;
+  data: any;
+  isLoading: boolean;
+
+  constructor(private store: Store<State>) {
+    this.isLoading = true;
+    this.data = {};
+    this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
+  }
+
+  ngOnInit() {
+    this.barcodeSetting = this.barcodeSetting || DEFAULT_SETTINGS.barcode;
+    this.setUpDataModel(this.barcodeSetting);
+  }
+
+  setUpDataModel(barcodeSetting: BarcodeSetting) {
+    this.data = getUpdatedDataObject(barcodeSetting);
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 200);
+  }
+
+  onBarcodeSetingChnage(data: any) {
+    this.barcodeSetting = getUpdatedSettingObject(data, this.barcodeSetting);
+    this.barcodeSettingChange.emit({
+      id: 'barcode',
+      data: this.barcodeSetting
+    });
+  }
 }

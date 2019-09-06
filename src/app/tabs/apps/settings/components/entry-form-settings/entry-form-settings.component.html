@@ -51,7 +51,7 @@
     <div class="entry-form-settings">
         <label>
       <span [translate]="'Render option as radio '"></span
-      ><span> {{ entryFormSetting.maximumNumberOfOptionAsRadio }}</span>
+      ><span> < {{ entryFormSetting.maximumNumberOfOptionAsRadio }}</span>
     </label>
         <div class="item-card">
             <app-true-only-input (valueChange)="onEntryFormSetingChnage($event)" [data]="data" [dataElementId]="'shouldDisplayAsRadio'" [categoryOptionComboId]="'co'"></app-true-only-input>
