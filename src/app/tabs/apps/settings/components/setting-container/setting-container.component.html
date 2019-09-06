@@ -41,7 +41,7 @@
             <app-synchronization-settings></app-synchronization-settings>
         </div>
         <div *ngIf="settingContent.id === 'barcode'">
-            <app-barcode-settings></app-barcode-settings>
+            <app-barcode-settings (barcodeSettingChange)="onChangesOnAppSettings($event)" [barcodeSetting]="currentAppSetting.barcode"> </app-barcode-settings>
         </div>
     </div>
 </div>
