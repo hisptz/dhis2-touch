@@ -38,7 +38,7 @@
             <app-entry-form-settings (entryFormSettingChange)="onChangesOnAppSettings($event)" [entryFormSetting]="currentAppSetting.entryForm"></app-entry-form-settings>
         </div>
         <div *ngIf="settingContent.id === 'synchronization'">
-            <app-synchronization-settings></app-synchronization-settings>
+            <app-synchronization-settings (synchronizationSettingChange)="onChangesOnAppSettings($event)" [synchronizationSetting]="currentAppSetting.synchronization"></app-synchronization-settings>
         </div>
         <div *ngIf="settingContent.id === 'barcode'">
             <app-barcode-settings (barcodeSettingChange)="onChangesOnAppSettings($event)" [barcodeSetting]="currentAppSetting.barcode"> </app-barcode-settings>

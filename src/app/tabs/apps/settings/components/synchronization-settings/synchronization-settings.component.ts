@@ -22,6 +22,16 @@
  *
  */
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import * as _ from 'lodash';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { State, getCurrentUserColorSettings } from '../../../../../store';
+import { SynchronizationSetting, AppColorObject, Option } from 'src/models';
+import {
+  DEFAULT_SETTINGS,
+  DEFAULT_UNIT_TIME_SYNCHRONIZATION
+} from 'src/constants';
+import { getUpdatedSettingObject, getUpdatedDataObject } from '../../helpers';
 
 @Component({
   selector: 'app-synchronization-settings',
@@ -29,7 +39,50 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./synchronization-settings.component.scss']
 })
 export class SynchronizationSettingsComponent implements OnInit {
-  constructor() {}
+  @Input() synchronizationSetting: SynchronizationSetting;
 
-  ngOnInit() {}
+  @Output() synchronizationSettingChange = new EventEmitter();
+
+  colorSettings$: Observable<AppColorObject>;
+  data: any;
+  unitTimeSynchronizationOptions: Option[];
+  isLoading: boolean;
+  isTrashButtonDisabled: boolean;
+
+  constructor(private store: Store<State>) {
+    this.isLoading = true;
+    this.isTrashButtonDisabled = true;
+    this.data = {};
+    this.unitTimeSynchronizationOptions = DEFAULT_UNIT_TIME_SYNCHRONIZATION;
+    this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
+  }
+  ngOnInit() {
+    this.synchronizationSetting =
+      this.synchronizationSetting || DEFAULT_SETTINGS.synchronization;
+    this.setUpDataModel(this.synchronizationSetting);
+  }
+
+  setUpDataModel(synchronizationSettings: SynchronizationSetting) {
+    this.data = getUpdatedDataObject(synchronizationSettings);
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 200);
+  }
+
+  getNumberOfUnitOfTimeLabel() {
+    return `Number of ${this.synchronizationSetting.timeType}`;
+  }
+
+  onSynchronizationSetingChnage(data: any) {
+    this.synchronizationSetting = getUpdatedSettingObject(
+      data,
+      this.synchronizationSetting
+    );
+    const isTypeOnSyncSettingChange = true;
+    this.synchronizationSettingChange.emit({
+      id: 'synchronization',
+      isTypeOnSyncSettingChange,
+      data: this.synchronizationSetting
+    });
+  }
 }

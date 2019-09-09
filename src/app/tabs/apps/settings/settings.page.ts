@@ -102,13 +102,17 @@ export class SettingsPage implements OnInit {
   }
 
   async onChangesOnAppSettings(response: any) {
-    const { id, data } = response;
+    const { id, data, isTypeOnSyncSettingChange } = response;
     this.currentAppSetting[id] = data;
     await this.settingService.setCurrentSettingsForTheApp(
       this.currentUser,
-      this.currentAppSetting
+      this.currentAppSetting,
+      isTypeOnSyncSettingChange
     );
     await this.toastSuccessMessage();
+    // @TODO update synchronization process
+    if (isTypeOnSyncSettingChange) {
+    }
   }
 
   async toastSuccessMessage() {

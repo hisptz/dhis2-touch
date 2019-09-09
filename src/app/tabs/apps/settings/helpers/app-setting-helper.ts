@@ -47,5 +47,9 @@ export function getUpdatedSettingObject(data: any, settingObject: any) {
       : `${value}`.trim() === ''
       ? false
       : value;
-  return settingObject;
+
+  return {
+    ...{},
+    ...settingObject
+  };
 }

@@ -22,4 +22,27 @@
 *
 *
 -->
-synchtonization settings
+<div *ngIf="isLoading">
+    <app-progress-bar [color]="(colorSettings$ | async).colorAttributes.secondary" [isIndeterminateProcess]="true" [processMessage]="''">
+    </app-progress-bar>
+</div>
+<div *ngIf="!isLoading" class="animated fadeIn">
+    <div class="synchronization-settings">
+        <span [translate]="'Unit of time'"></span>
+        <div class="input-field-container">
+            <app-option-set-input (optionSetChange)="onSynchronizationSetingChnage($event)" [data]="data" [isTrashButtonDisabled]="isTrashButtonDisabled" [categoryOptionComboId]="'co'" [dataElementId]="'timeType'" [options]="unitTimeSynchronizationOptions"></app-option-set-input>
+        </div>
+    </div>
+    <div class="synchronization-settings">
+        <span [translate]="getNumberOfUnitOfTimeLabel()"> </span>
+        <div class="input-field-container">
+            <app-numerical-input [dataElementId]="'time'" [valueType]="'INTEGER_POSITIVE'" [categoryOptionComboId]="'co'" [data]="data" (numericalValueChange)="onSynchronizationSetingChnage($event)"></app-numerical-input>
+        </div>
+    </div>
+    <div class="synchronization-settings">
+        <span [translate]="'Is auto synchronization on'"></span>
+        <div class="input-field-container">
+            <app-true-only-input (valueChange)="onSynchronizationSetingChnage($event)" [data]="data" [dataElementId]="'isAutoSync'" [categoryOptionComboId]="'co'"></app-true-only-input>
+        </div>
+    </div>
+</div>
