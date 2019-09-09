@@ -35,7 +35,7 @@ export const DEFAULT_SETTINGS: AppSetting = {
     shouldDisplayAsRadio: true
   },
   synchronization: {
-    time: 2 * 60 * 1000,
+    time: 2,
     timeType: 'minutes',
     isAutoSync: true
   },
@@ -82,6 +82,11 @@ export const DEFAULT_SETTINGS_CONTENTS: AppSettingContent[] = [
 export const DEFAULT_FORM_LABEL_SETTINGS: Option[] = [
   { id: 'displayName', name: 'Display name', code: 'displayName' },
   { id: 'formName', name: 'Form name', code: 'formName' }
+];
+
+export const DEFAULT_UNIT_TIME_SYNCHRONIZATION: Option[] = [
+  { id: 'minutes', name: 'Minutes', code: 'minutes' },
+  { id: 'hours', name: 'Hours', code: 'hours' }
 ];
 
 export const DEFAULT_FORM_LAYOUT_SETTINGS: Option[] = [

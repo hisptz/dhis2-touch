@@ -34,19 +34,31 @@ export class SettingService {
 
   async setCurrentSettingsForTheApp(
     user: CurrentUser,
-    appSettings: AppSetting
+    appSettings: AppSetting,
+    isTypeOnSyncSettingChange: boolean = false
   ): Promise<any> {
     const { currentDatabase } = user;
     const key = `appSettings-${currentDatabase}`;
-    await this.localStorageService.setDataOnLocalStorage(appSettings, key);
+    const data = this.getSanitizedSettingForSaving(
+      appSettings,
+      isTypeOnSyncSettingChange
+    );
+    await this.localStorageService.setDataOnLocalStorage(data, key);
   }
   async getCurrentSettingsForTheApp(user: CurrentUser): Promise<any> {
     const { currentDatabase } = user;
     const key = `appSettings-${currentDatabase}`;
-    return await this.localStorageService.getDataFromLocalStorage(key);
+    const appSettings: AppSetting = await this.localStorageService.getDataFromLocalStorage(
+      key
+    );
+    const data = this.getSanitizedSettingForDisplay(appSettings);
+    return data;
   }
 
-  getSanitizedSettings(appSettings: AppSetting) {
+  getSanitizedSettingForSaving(
+    appSettings: AppSetting,
+    isTypeOnSyncSettingChange: boolean
+  ) {
     if (appSettings.entryForm) {
       if (
         isNaN(appSettings.entryForm.maxDataElementOnDefaultForm) ||
@@ -62,15 +74,32 @@ export class SettingService {
       ) {
         appSettings.synchronization.time = 1;
       }
-      appSettings.synchronization.time = this.getSynchronizationTimeToSave(
-        appSettings.synchronization.time,
-        appSettings.synchronization.timeType
-      );
+      const { timeType, time } = appSettings.synchronization;
+      if (timeType && time && isTypeOnSyncSettingChange) {
+        appSettings.synchronization.time = this.getSynchronizationTimeForSaving(
+          appSettings.synchronization.time,
+          appSettings.synchronization.timeType
+        );
+      }
     }
-    return appSettings;
+    return { ...{}, ...appSettings };
   }
 
-  getSynchronizationTimeToSave(time: number, timeType: string) {
+  getSanitizedSettingForDisplay(appSettings: AppSetting) {
+    if (appSettings && appSettings.synchronization) {
+      const { timeType, time } = appSettings.synchronization;
+      console.log({ type: 'fetch', timeType, time });
+      if (timeType && time) {
+        appSettings.synchronization.time = this.getSynchronizationTimeForDisplaying(
+          time,
+          timeType
+        );
+      }
+    }
+    return { ...{}, ...appSettings };
+  }
+
+  getSynchronizationTimeForSaving(time: number, timeType: string) {
     return timeType === 'minutes'
       ? time * 60 * 1000
       : timeType === 'hours'
@@ -78,11 +107,11 @@ export class SettingService {
       : time;
   }
 
-  getDisplaySynchronizationTime(time, timeType) {
+  getSynchronizationTimeForDisplaying(time: number, timeType: string) {
     return timeType === 'minutes'
       ? time / (60 * 1000)
       : timeType === 'hours'
-      ? time(60 * 60 * 1000)
+      ? time / (60 * 60 * 1000)
       : time;
   }
 }
