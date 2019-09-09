@@ -77,19 +77,24 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#getDisplaySynchronizationTime">getDisplaySynchronizationTime</a>
+                                    <span class="modifier">Async</span>
+                                <a href="#getCurrentSettingsForTheApp">getCurrentSettingsForTheApp</a>
                             </li>
                             <li>
-                                <a href="#getSanitizedSettings">getSanitizedSettings</a>
+                                <a href="#getSanitizedSettingForDisplay">getSanitizedSettingForDisplay</a>
                             </li>
                             <li>
-                                <a href="#getSettingsForTheApp">getSettingsForTheApp</a>
+                                <a href="#getSanitizedSettingForSaving">getSanitizedSettingForSaving</a>
                             </li>
                             <li>
-                                <a href="#getSynchronizationTimeToSave">getSynchronizationTimeToSave</a>
+                                <a href="#getSynchronizationTimeForDisplaying">getSynchronizationTimeForDisplaying</a>
                             </li>
                             <li>
-                                <a href="#setSettingsForTheApp">setSettingsForTheApp</a>
+                                <a href="#getSynchronizationTimeForSaving">getSynchronizationTimeForSaving</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setCurrentSettingsForTheApp">setCurrentSettingsForTheApp</a>
                             </li>
                         </ul>
                     </td>
@@ -161,171 +166,28 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getDisplaySynchronizationTime"></a>
+                    <a name="getCurrentSettingsForTheApp"></a>
                     <span class="name">
                         <b>
-                            getDisplaySynchronizationTime
+                            <span class="modifier">Async</span>
+                            getCurrentSettingsForTheApp
                         </b>
-                        <a href="#getDisplaySynchronizationTime"><span class="icon ion-ios-link"></span></a>
+                        <a href="#getCurrentSettingsForTheApp"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getDisplaySynchronizationTime(time, timeType)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getCurrentSettingsForTheApp(user: <a href="../interfaces/CurrentUser.html">CurrentUser</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="81"
-                            class="link-to-prism">src/app/services/setting.service.ts:81</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>time</td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>timeType</td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getSanitizedSettings"></a>
-                    <span class="name">
-                        <b>
-                            getSanitizedSettings
-                        </b>
-                        <a href="#getSanitizedSettings"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>getSanitizedSettings(appSettings: <a href="../interfaces/AppSetting.html">AppSetting</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="49"
-                            class="link-to-prism">src/app/services/setting.service.ts:49</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>appSettings</td>
-                                    <td>
-                                                <code><a href="../interfaces/AppSetting.html" target="_self" >AppSetting</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getSettingsForTheApp"></a>
-                    <span class="name">
-                        <b>
-                            getSettingsForTheApp
-                        </b>
-                        <a href="#getSettingsForTheApp"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>getSettingsForTheApp(user: <a href="../interfaces/CurrentUser.html">CurrentUser</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="43"
-                            class="link-to-prism">src/app/services/setting.service.ts:43</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="48"
+                            class="link-to-prism">src/app/services/setting.service.ts:48</a></div>
                 </td>
             </tr>
 
@@ -376,26 +238,178 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getSynchronizationTimeToSave"></a>
+                    <a name="getSanitizedSettingForDisplay"></a>
                     <span class="name">
                         <b>
-                            getSynchronizationTimeToSave
+                            getSanitizedSettingForDisplay
                         </b>
-                        <a href="#getSynchronizationTimeToSave"><span class="icon ion-ios-link"></span></a>
+                        <a href="#getSanitizedSettingForDisplay"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getSynchronizationTimeToSave(time: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, timeType: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+<code>getSanitizedSettingForDisplay(appSettings: <a href="../interfaces/AppSetting.html">AppSetting</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="73"
-                            class="link-to-prism">src/app/services/setting.service.ts:73</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="88"
+                            class="link-to-prism">src/app/services/setting.service.ts:88</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>appSettings</td>
+                                    <td>
+                                                <code><a href="../interfaces/AppSetting.html" target="_self" >AppSetting</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getSanitizedSettingForSaving"></a>
+                    <span class="name">
+                        <b>
+                            getSanitizedSettingForSaving
+                        </b>
+                        <a href="#getSanitizedSettingForSaving"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getSanitizedSettingForSaving(appSettings: <a href="../interfaces/AppSetting.html">AppSetting</a>, isTypeOnSyncSettingChange: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="58"
+                            class="link-to-prism">src/app/services/setting.service.ts:58</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>appSettings</td>
+                                    <td>
+                                                <code><a href="../interfaces/AppSetting.html" target="_self" >AppSetting</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>isTypeOnSyncSettingChange</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getSynchronizationTimeForDisplaying"></a>
+                    <span class="name">
+                        <b>
+                            getSynchronizationTimeForDisplaying
+                        </b>
+                        <a href="#getSynchronizationTimeForDisplaying"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getSynchronizationTimeForDisplaying(time: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, timeType: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="110"
+                            class="link-to-prism">src/app/services/setting.service.ts:110</a></div>
                 </td>
             </tr>
 
@@ -458,18 +472,102 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="setSettingsForTheApp"></a>
+                    <a name="getSynchronizationTimeForSaving"></a>
                     <span class="name">
                         <b>
-                            setSettingsForTheApp
+                            getSynchronizationTimeForSaving
                         </b>
-                        <a href="#setSettingsForTheApp"><span class="icon ion-ios-link"></span></a>
+                        <a href="#getSynchronizationTimeForSaving"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>setSettingsForTheApp(user: <a href="../interfaces/CurrentUser.html">CurrentUser</a>, appSettings: <a href="../interfaces/AppSetting.html">AppSetting</a>)</code>
+<code>getSynchronizationTimeForSaving(time: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, timeType: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="102"
+                            class="link-to-prism">src/app/services/setting.service.ts:102</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>time</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>timeType</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setCurrentSettingsForTheApp"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            setCurrentSettingsForTheApp
+                        </b>
+                        <a href="#setCurrentSettingsForTheApp"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setCurrentSettingsForTheApp(user: <a href="../interfaces/CurrentUser.html">CurrentUser</a>, appSettings: <a href="../interfaces/AppSetting.html">AppSetting</a>, isTypeOnSyncSettingChange: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
 
@@ -493,6 +591,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Default value</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -506,6 +605,8 @@
                                         No
                                     </td>
 
+                                    <td>
+                                    </td>
 
                                 </tr>
                                 <tr>
@@ -518,6 +619,23 @@
                                         No
                                     </td>
 
+                                    <td>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>isTypeOnSyncSettingChange</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                        <code>false</code>
+                                    </td>
 
                                 </tr>
                             </tbody>
@@ -552,21 +670,33 @@ import { LocalStorageService } from &#x27;./local-storage.service&#x27;;
 export class SettingService {
   constructor(private localStorageService: LocalStorageService) {}
 
-  setSettingsForTheApp(
+  async setCurrentSettingsForTheApp(
     user: CurrentUser,
-    appSettings: AppSetting
+    appSettings: AppSetting,
+    isTypeOnSyncSettingChange: boolean &#x3D; false
   ): Promise&lt;any&gt; {
     const { currentDatabase } &#x3D; user;
     const key &#x3D; &#x60;appSettings-${currentDatabase}&#x60;;
-    return this.localStorageService.setDataOnLocalStorage(appSettings, key);
+    const data &#x3D; this.getSanitizedSettingForSaving(
+      appSettings,
+      isTypeOnSyncSettingChange
+    );
+    await this.localStorageService.setDataOnLocalStorage(data, key);
   }
-  getSettingsForTheApp(user: CurrentUser): Promise&lt;any&gt; {
+  async getCurrentSettingsForTheApp(user: CurrentUser): Promise&lt;any&gt; {
     const { currentDatabase } &#x3D; user;
     const key &#x3D; &#x60;appSettings-${currentDatabase}&#x60;;
-    return this.localStorageService.getDataFromLocalStorage(key);
+    const appSettings: AppSetting &#x3D; await this.localStorageService.getDataFromLocalStorage(
+      key
+    );
+    const data &#x3D; this.getSanitizedSettingForDisplay(appSettings);
+    return data;
   }
 
-  getSanitizedSettings(appSettings: AppSetting) {
+  getSanitizedSettingForSaving(
+    appSettings: AppSetting,
+    isTypeOnSyncSettingChange: boolean
+  ) {
     if (appSettings.entryForm) {
       if (
         isNaN(appSettings.entryForm.maxDataElementOnDefaultForm) ||
@@ -582,15 +712,32 @@ export class SettingService {
       ) {
         appSettings.synchronization.time &#x3D; 1;
       }
-      appSettings.synchronization.time &#x3D; this.getSynchronizationTimeToSave(
-        appSettings.synchronization.time,
-        appSettings.synchronization.timeType
-      );
+      const { timeType, time } &#x3D; appSettings.synchronization;
+      if (timeType &amp;&amp; time &amp;&amp; isTypeOnSyncSettingChange) {
+        appSettings.synchronization.time &#x3D; this.getSynchronizationTimeForSaving(
+          appSettings.synchronization.time,
+          appSettings.synchronization.timeType
+        );
+      }
     }
-    return appSettings;
+    return { ...{}, ...appSettings };
   }
 
-  getSynchronizationTimeToSave(time: number, timeType: string) {
+  getSanitizedSettingForDisplay(appSettings: AppSetting) {
+    if (appSettings &amp;&amp; appSettings.synchronization) {
+      const { timeType, time } &#x3D; appSettings.synchronization;
+      console.log({ type: &#x27;fetch&#x27;, timeType, time });
+      if (timeType &amp;&amp; time) {
+        appSettings.synchronization.time &#x3D; this.getSynchronizationTimeForDisplaying(
+          time,
+          timeType
+        );
+      }
+    }
+    return { ...{}, ...appSettings };
+  }
+
+  getSynchronizationTimeForSaving(time: number, timeType: string) {
     return timeType &#x3D;&#x3D;&#x3D; &#x27;minutes&#x27;
       ? time * 60 * 1000
       : timeType &#x3D;&#x3D;&#x3D; &#x27;hours&#x27;
@@ -598,11 +745,11 @@ export class SettingService {
       : time;
   }
 
-  getDisplaySynchronizationTime(time, timeType) {
+  getSynchronizationTimeForDisplaying(time: number, timeType: string) {
     return timeType &#x3D;&#x3D;&#x3D; &#x27;minutes&#x27;
       ? time / (60 * 1000)
       : timeType &#x3D;&#x3D;&#x3D; &#x27;hours&#x27;
-      ? time(60 * 60 * 1000)
+      ? time / (60 * 60 * 1000)
       : time;
   }
 }

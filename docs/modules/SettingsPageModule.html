@@ -175,6 +175,8 @@ import { TranslateModule } from &#x27;@ngx-translate/core&#x27;;
 import { IonicModule } from &#x27;@ionic/angular&#x27;;
 
 import { SettingsPage } from &#x27;./settings.page&#x27;;
+import { SharedComponentsModule } from &#x27;src/app/components/sharedComponents.module&#x27;;
+import { SettingsComponentsModule } from &#x27;./components/settingsComponents.module&#x27;;
 
 const routes: Routes &#x3D; [
   {
@@ -189,7 +191,9 @@ const routes: Routes &#x3D; [
     FormsModule,
     IonicModule,
     TranslateModule.forChild(),
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    SharedComponentsModule,
+    SettingsComponentsModule
   ],
   declarations: [SettingsPage]
 })

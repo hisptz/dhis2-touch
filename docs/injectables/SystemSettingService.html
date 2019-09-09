@@ -77,12 +77,14 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#getSavedSystemSettings">getSavedSystemSettings</a>
                             </li>
                             <li>
                                 <a href="#getSystemSettingsFromServer">getSystemSettingsFromServer</a>
                             </li>
                             <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#saveSystemSettings">saveSystemSettings</a>
                             </li>
                         </ul>
@@ -170,6 +172,7 @@
                     <a name="getSavedSystemSettings"></a>
                     <span class="name">
                         <b>
+                            <span class="modifier">Async</span>
                             getSavedSystemSettings
                         </b>
                         <a href="#getSavedSystemSettings"><span class="icon ion-ios-link"></span></a>
@@ -178,7 +181,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getSavedSystemSettings(user: <a href="../interfaces/CurrentUser.html">CurrentUser</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getSavedSystemSettings(user: <a href="../interfaces/CurrentUser.html">CurrentUser</a>)</code>
                 </td>
             </tr>
 
@@ -310,6 +314,7 @@
                     <a name="saveSystemSettings"></a>
                     <span class="name">
                         <b>
+                            <span class="modifier">Async</span>
                             saveSystemSettings
                         </b>
                         <a href="#saveSystemSettings"><span class="icon ion-ios-link"></span></a>
@@ -318,7 +323,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>saveSystemSettings(systemSettings: <a href="../interfaces/SystemSettings.html">SystemSettings</a>, user: <a href="../interfaces/CurrentUser.html">CurrentUser</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>saveSystemSettings(systemSettings: <a href="../interfaces/SystemSettings.html">SystemSettings</a>, user: <a href="../interfaces/CurrentUser.html">CurrentUser</a>)</code>
                 </td>
             </tr>
 
@@ -436,7 +442,7 @@ export class SystemSettingService {
     });
   }
 
-  saveSystemSettings(
+  async saveSystemSettings(
     systemSettings: SystemSettings,
     user: CurrentUser
   ): Promise&lt;any&gt; {
@@ -445,10 +451,10 @@ export class SystemSettingService {
     return this.localStorageService.setDataOnLocalStorage(systemSettings, key);
   }
 
-  getSavedSystemSettings(user: CurrentUser): Promise&lt;SystemSettings&gt; {
+  async getSavedSystemSettings(user: CurrentUser): Promise&lt;SystemSettings&gt; {
     const { serverUrl } &#x3D; user;
     const key &#x3D; &#x60;systemSettings-${serverUrl}&#x60;;
-    return this.localStorageService.getDataFromLocalStorage(key);
+    return await this.localStorageService.getDataFromLocalStorage(key);
   }
 }
 </code></pre>

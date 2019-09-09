@@ -87,6 +87,7 @@
                                 <a href="#getCurrentUser">getCurrentUser</a>
                             </li>
                             <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#getProfileInformation">getProfileInformation</a>
                             </li>
                             <li>
@@ -203,8 +204,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="137"
-                            class="link-to-prism">src/app/services/user.service.ts:137</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="140"
+                            class="link-to-prism">src/app/services/user.service.ts:140</a></div>
                 </td>
             </tr>
 
@@ -269,8 +270,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="159"
-                            class="link-to-prism">src/app/services/user.service.ts:159</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="162"
+                            class="link-to-prism">src/app/services/user.service.ts:162</a></div>
                 </td>
             </tr>
 
@@ -361,6 +362,7 @@
                     <a name="getProfileInformation"></a>
                     <span class="name">
                         <b>
+                            <span class="modifier">Async</span>
                             getProfileInformation
                         </b>
                         <a href="#getProfileInformation"><span class="icon ion-ios-link"></span></a>
@@ -369,15 +371,16 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getProfileInformation()</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getProfileInformation()</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="132"
-                            class="link-to-prism">src/app/services/user.service.ts:132</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="135"
+                            class="link-to-prism">src/app/services/user.service.ts:135</a></div>
                 </td>
             </tr>
 
@@ -417,8 +420,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="50"
-                            class="link-to-prism">src/app/services/user.service.ts:50</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="53"
+                            class="link-to-prism">src/app/services/user.service.ts:53</a></div>
                 </td>
             </tr>
 
@@ -559,8 +562,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="65"
-                            class="link-to-prism">src/app/services/user.service.ts:65</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="68"
+                            class="link-to-prism">src/app/services/user.service.ts:68</a></div>
                 </td>
             </tr>
 
@@ -625,8 +628,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="100"
-                            class="link-to-prism">src/app/services/user.service.ts:100</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="103"
+                            class="link-to-prism">src/app/services/user.service.ts:103</a></div>
                 </td>
             </tr>
 
@@ -708,12 +711,15 @@ export class UserService {
 
   async getCurrentUser() {
     const key &#x3D; &#x27;currentUser&#x27;;
-    return this.localStoregeService.getDataFromLocalStorage(key);
+    return await this.localStoregeService.getDataFromLocalStorage(key);
   }
 
   async setCurrentUser(currentUser: CurrentUser) {
     const key &#x3D; &#x27;currentUser&#x27;;
-    return this.localStoregeService.setDataOnLocalStorage(currentUser, key);
+    return await this.localStoregeService.setDataOnLocalStorage(
+      currentUser,
+      key
+    );
   }
 
   async getSanizitizedUser(user: CurrentUser) {
@@ -798,9 +804,9 @@ export class UserService {
     return this.localStoregeService.setDataOnLocalStorage(profileInfo, key);
   }
 
-  getProfileInformation(): Promise&lt;any&gt; {
+  async getProfileInformation(): Promise&lt;any&gt; {
     const key &#x3D; &#x27;profileInfo&#x27;;
-    return this.localStoregeService.getDataFromLocalStorage(key);
+    return await this.localStoregeService.getDataFromLocalStorage(key);
   }
 
   getAssignedDataSetIds(userData) {

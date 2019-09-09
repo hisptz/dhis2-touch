@@ -77,6 +77,7 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#getCurrentUserSystemInformation">getCurrentUserSystemInformation</a>
                             </li>
                             <li>
@@ -170,6 +171,7 @@
                     <a name="getCurrentUserSystemInformation"></a>
                     <span class="name">
                         <b>
+                            <span class="modifier">Async</span>
                             getCurrentUserSystemInformation
                         </b>
                         <a href="#getCurrentUserSystemInformation"><span class="icon ion-ios-link"></span></a>
@@ -178,7 +180,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getCurrentUserSystemInformation()</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getCurrentUserSystemInformation()</code>
                 </td>
             </tr>
 
@@ -402,9 +405,9 @@ export class SystemInformationService {
     });
   }
 
-  getCurrentUserSystemInformation(): Promise&lt;any&gt; {
+  async getCurrentUserSystemInformation(): Promise&lt;any&gt; {
     const key &#x3D; &#x27;systemInformation&#x27;;
-    return this.localStorageService.getDataFromLocalStorage(key);
+    return await this.localStorageService.getDataFromLocalStorage(key);
   }
 }
 </code></pre>

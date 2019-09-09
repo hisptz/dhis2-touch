@@ -81,6 +81,7 @@
                                 <a href="#getDataFromLocalStorage">getDataFromLocalStorage</a>
                             </li>
                             <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#setDataOnLocalStorage">setDataOnLocalStorage</a>
                             </li>
                         </ul>
@@ -228,6 +229,7 @@
                     <a name="setDataOnLocalStorage"></a>
                     <span class="name">
                         <b>
+                            <span class="modifier">Async</span>
                             setDataOnLocalStorage
                         </b>
                         <a href="#setDataOnLocalStorage"><span class="icon ion-ios-link"></span></a>
@@ -236,7 +238,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>setDataOnLocalStorage(data: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setDataOnLocalStorage(data: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
@@ -293,7 +296,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                        <b>Returns : </b>    <code>{}</code>
 
                     </div>
                     <div class="io-description">
@@ -318,8 +321,8 @@ import { Storage } from &#x27;@ionic/storage&#x27;;
 export class LocalStorageService {
   constructor(private storage: Storage) {}
 
-  setDataOnLocalStorage(data: any, key: string) {
-    return this.storage.set(key, data);
+  async setDataOnLocalStorage(data: any, key: string) {
+    return await this.storage.set(key, data);
   }
 
   async getDataFromLocalStorage(key: string) {

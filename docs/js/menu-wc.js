@@ -244,13 +244,13 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="modules/AppsComponentsModule.html" data-type="entity-link">AppsComponentsModule</a>
                                     <li class="chapter inner">
                                         <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ?
-                                            'data-target="#components-links-module-AppsComponentsModule-66cc314f1a7a11c562624f93a9497f7b"' : 'data-target="#xs-components-links-module-AppsComponentsModule-66cc314f1a7a11c562624f93a9497f7b"' }>
+                                            'data-target="#components-links-module-AppsComponentsModule-1b385fa869804a18075de4403ab60804"' : 'data-target="#xs-components-links-module-AppsComponentsModule-1b385fa869804a18075de4403ab60804"' }>
                                             <span class="icon ion-md-cog"></span>
                                             <span>Components</span>
                                             <span class="icon ion-ios-arrow-down"></span>
                                         </div>
-                                        <ul class="links collapse" ${ isNormalMode ? 'id="components-links-module-AppsComponentsModule-66cc314f1a7a11c562624f93a9497f7b"' :
-                                            'id="xs-components-links-module-AppsComponentsModule-66cc314f1a7a11c562624f93a9497f7b"' }>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="components-links-module-AppsComponentsModule-1b385fa869804a18075de4403ab60804"' :
+                                            'id="xs-components-links-module-AppsComponentsModule-1b385fa869804a18075de4403ab60804"' }>
                                             <li class="link">
                                                 <a href="components/AppItemComponent.html"
                                                     data-type="entity-link" data-context="sub-entity" data-context-id="modules">AppItemComponent</a>
@@ -577,16 +577,50 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                     </li>
                             </li>
                             <li class="link">
-                                <a href="modules/SettingsPageModule.html" data-type="entity-link">SettingsPageModule</a>
+                                <a href="modules/SettingsComponentsModule.html" data-type="entity-link">SettingsComponentsModule</a>
                                     <li class="chapter inner">
                                         <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ?
-                                            'data-target="#components-links-module-SettingsPageModule-8678a8634faa82d2427696933a123267"' : 'data-target="#xs-components-links-module-SettingsPageModule-8678a8634faa82d2427696933a123267"' }>
+                                            'data-target="#components-links-module-SettingsComponentsModule-1d01c45f61cac1f74026da99eac74e11"' : 'data-target="#xs-components-links-module-SettingsComponentsModule-1d01c45f61cac1f74026da99eac74e11"' }>
                                             <span class="icon ion-md-cog"></span>
                                             <span>Components</span>
                                             <span class="icon ion-ios-arrow-down"></span>
                                         </div>
-                                        <ul class="links collapse" ${ isNormalMode ? 'id="components-links-module-SettingsPageModule-8678a8634faa82d2427696933a123267"' :
-                                            'id="xs-components-links-module-SettingsPageModule-8678a8634faa82d2427696933a123267"' }>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="components-links-module-SettingsComponentsModule-1d01c45f61cac1f74026da99eac74e11"' :
+                                            'id="xs-components-links-module-SettingsComponentsModule-1d01c45f61cac1f74026da99eac74e11"' }>
+                                            <li class="link">
+                                                <a href="components/AppSettingsComponent.html"
+                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">AppSettingsComponent</a>
+                                            </li>
+                                            <li class="link">
+                                                <a href="components/BarcodeSettingsComponent.html"
+                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">BarcodeSettingsComponent</a>
+                                            </li>
+                                            <li class="link">
+                                                <a href="components/EntryFormSettingsComponent.html"
+                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">EntryFormSettingsComponent</a>
+                                            </li>
+                                            <li class="link">
+                                                <a href="components/SettingContainerComponent.html"
+                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">SettingContainerComponent</a>
+                                            </li>
+                                            <li class="link">
+                                                <a href="components/SynchronizationSettingsComponent.html"
+                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">SynchronizationSettingsComponent</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                            </li>
+                            <li class="link">
+                                <a href="modules/SettingsPageModule.html" data-type="entity-link">SettingsPageModule</a>
+                                    <li class="chapter inner">
+                                        <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ?
+                                            'data-target="#components-links-module-SettingsPageModule-266696255d1f9864be45a465db068b47"' : 'data-target="#xs-components-links-module-SettingsPageModule-266696255d1f9864be45a465db068b47"' }>
+                                            <span class="icon ion-md-cog"></span>
+                                            <span>Components</span>
+                                            <span class="icon ion-ios-arrow-down"></span>
+                                        </div>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="components-links-module-SettingsPageModule-266696255d1f9864be45a465db068b47"' :
+                                            'id="xs-components-links-module-SettingsPageModule-266696255d1f9864be45a465db068b47"' }>
                                             <li class="link">
                                                 <a href="components/SettingsPage.html"
                                                     data-type="entity-link" data-context="sub-entity" data-context-id="modules">SettingsPage</a>
@@ -1019,6 +1053,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                             </li>
                             <li class="link">
                                 <a href="interfaces/AppSetting.html" data-type="entity-link">AppSetting</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/AppSettingContent.html" data-type="entity-link">AppSettingContent</a>
                             </li>
                             <li class="link">
                                 <a href="interfaces/BarcodeSetting.html" data-type="entity-link">BarcodeSetting</a>
