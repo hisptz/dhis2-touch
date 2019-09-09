@@ -28,7 +28,7 @@
         <div>
             <span [translate]="'Years'"></span>
             <div class="item-card-age-input">
-                <ion-item no-lines>
+                <ion-item lines="none">
                     <ion-input [readonly]="lockingFieldStatus" type="number" min="0" (ionBlur)="setCurrentDate()" [(ngModel)]="currentAge.years"></ion-input>
                 </ion-item>
             </div>
@@ -38,7 +38,7 @@
         <div>
             <span [translate]="'Months'"></span>
             <div class="item-card-age-input">
-                <ion-item no-lines>
+                <ion-item lines="none">
                     <ion-input [readonly]="lockingFieldStatus" type="number" min="0" (ionBlur)="setCurrentDate()" [(ngModel)]="currentAge.months"></ion-input>
                 </ion-item>
             </div>
@@ -48,11 +48,10 @@
         <div>
             <span [translate]="'Days'"></span>
             <div class="item-card-age-input">
-                <ion-item no-lines>
+                <ion-item lines="none">
                     <ion-input [readonly]="lockingFieldStatus" type="number" min="0" (ionBlur)="setCurrentDate()" [(ngModel)]="currentAge.days"></ion-input>
                 </ion-item>
             </div>
-
         </div>
     </ion-col>
 </ion-row>

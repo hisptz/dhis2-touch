@@ -34,6 +34,8 @@ export class RadioButtonComponent implements OnInit {
   @Input() selectedValue: string;
   @Input() lockingFieldStatus: boolean;
   @Input() fieldId: string;
+  @Input() isTrashButtonDisabled: boolean;
+
   @Output() radioButtonChange = new EventEmitter();
   dataModal: any = {};
   constructor() {}

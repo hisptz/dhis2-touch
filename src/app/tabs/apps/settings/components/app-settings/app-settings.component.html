@@ -22,14 +22,12 @@
 *
 *
 -->
-<div *ngIf="shouldRenderAsRadio">
-    <app-radio-button (radioButtonChange)="onUpdateOptionValue($event)" [isTrashButtonDisabled]="isTrashButtonDisabled" [fieldId]="fieldId" [selectedValue]="inputFieldValue" [lockingFieldStatus]="lockingFieldStatus" [options]="options"></app-radio-button>
-</div>
-<div *ngIf="!shouldRenderAsRadio">
-    <div (click)="openOptionSetSelectionModal()">
-        <ion-item lines="none">
-            <span *ngIf="inputValueLabel === ''" [translate]="'Touch to select option'"></span>
-            <span *ngIf="inputValueLabel !== ''" [translate]="inputValueLabel"></span>
-        </ion-item>
+<ion-item lines="none" no-padding (click)="openTranslationCodeSelection()">
+    <ion-label slot="start">
+        <span [translate]="'Current language'"></span>
+    </ion-label>
+    <div slot="end">
+        <span [translate]="currentLanguage" class="translation-code"></span>
+        <ion-icon [mode]="'md'" name="arrow-dropdown"></ion-icon>
     </div>
-</div>
+</ion-item>

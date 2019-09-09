@@ -66,7 +66,7 @@ export class SystemSettingService {
     });
   }
 
-  saveSystemSettings(
+  async saveSystemSettings(
     systemSettings: SystemSettings,
     user: CurrentUser
   ): Promise<any> {
@@ -75,9 +75,9 @@ export class SystemSettingService {
     return this.localStorageService.setDataOnLocalStorage(systemSettings, key);
   }
 
-  getSavedSystemSettings(user: CurrentUser): Promise<SystemSettings> {
+  async getSavedSystemSettings(user: CurrentUser): Promise<SystemSettings> {
     const { serverUrl } = user;
     const key = `systemSettings-${serverUrl}`;
-    return this.localStorageService.getDataFromLocalStorage(key);
+    return await this.localStorageService.getDataFromLocalStorage(key);
   }
 }

@@ -51,6 +51,7 @@ export class TextInputComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.valueType = this.valueType || 'TEXT';
     this.readonly = this.readonly || false;
     this.lockingFieldStatus = this.lockingFieldStatus || this.readonly;
     if (!this.placeholder) {

@@ -1,0 +1,82 @@
+<!--
+*
+* Copyright 2019 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2019
+* @author Joseph Chingalo profschingalo@gmail.com>
+*
+*
+-->
+
+<div *ngIf="isLoading">
+    <app-progress-bar [color]="(colorSettings$ | async).colorAttributes.secondary" [isIndeterminateProcess]="true" [processMessage]="''">
+    </app-progress-bar>
+</div>
+<div *ngIf="!isLoading" class="animated fadeIn">
+    <div class="entry-form-settings">
+        <span [translate]="'Form label'"></span>
+        <div class="input-field-container">
+            <app-option-set-input (optionSetChange)="onEntryFormSetingChnage($event)" [data]="data" [isTrashButtonDisabled]="isTrashButtonDisabled" [categoryOptionComboId]="'co'" [dataElementId]="'label'" [options]="formLabelOptions"></app-option-set-input>
+        </div>
+    </div>
+    <div class="entry-form-settings">
+        <label><span [translate]="'Form layout'"></span></label>
+        <div class="item-card">
+            <app-option-set-input (optionSetChange)="onEntryFormSetingChnage($event)" [data]="data" [isTrashButtonDisabled]="isTrashButtonDisabled" [categoryOptionComboId]="'co'" [dataElementId]="'formLayout'" [options]="formLayoutOptions"></app-option-set-input>
+        </div>
+    </div>
+    <div class="entry-form-settings">
+        <label><span [translate]="'Data element per pagge on list layout'"></span
+    ></label>
+        <div class="item-card">
+            <app-numerical-input (numericalValueChange)="onEntryFormSetingChnage($event)" [data]="data" [categoryOptionComboId]="'co'" [dataElementId]="'maxDataElementOnDefaultForm'" [valueType]="'INTEGER_POSITIVE'">
+            </app-numerical-input>
+        </div>
+    </div>
+    <div class="entry-form-settings">
+        <label>
+      <span [translate]="'Render option as radio '"></span
+      ><span> < {{ entryFormSetting.maximumNumberOfOptionAsRadio }}</span>
+    </label>
+        <div class="item-card">
+            <app-true-only-input (valueChange)="onEntryFormSetingChnage($event)" [data]="data" [dataElementId]="'shouldDisplayAsRadio'" [categoryOptionComboId]="'co'"></app-true-only-input>
+        </div>
+    </div>
+    <div class="entry-form-settings">
+        <label><span [translate]="'Maximum number of option to display as radio'"></span
+    ></label>
+        <div class="item-card">
+            <app-numerical-input (numericalValueChange)="onEntryFormSetingChnage($event)" [data]="data" [categoryOptionComboId]="'co'" [dataElementId]="'maximumNumberOfOptionAsRadio'" [valueType]="'INTEGER_POSITIVE'">
+            </app-numerical-input>
+        </div>
+    </div>
+    <div class="entry-form-settings">
+        <label><span [translate]="'Preferred online data on sync conflict'"></span
+    ></label>
+        <div class="item-card">
+            <app-true-only-input (valueChange)="onEntryFormSetingChnage($event)" [data]="data" [dataElementId]="'dataConflictPreferredOnline'" [categoryOptionComboId]="'co'"></app-true-only-input>
+        </div>
+    </div>
+    <div class="entry-form-settings">
+        <label><span [translate]="'Show alert on assignement issues'"></span
+    ></label>
+        <div class="item-card">
+            <app-true-only-input [data]="data" (valueChange)="onEntryFormSetingChnage($event)" [dataElementId]="'showAlertOnFormAssignement'" [categoryOptionComboId]="'co'"></app-true-only-input>
+        </div>
+    </div>
+</div>

@@ -284,17 +284,15 @@ export class LoginPage implements OnInit {
 
   async reCheckingAppSetting(currentUser: CurrentUser) {
     const defaultSetting: AppSetting = DEFAULT_SETTINGS;
-    const appSettings: AppSetting = await this.settingService.getSettingsForTheApp(
+    const appSettings: AppSetting = await this.settingService.getCurrentSettingsForTheApp(
       currentUser
     );
-    if (!appSettings) {
-      const time = defaultSetting.synchronization.time;
-      const timeType = defaultSetting.synchronization.timeType;
-      defaultSetting.synchronization.time = this.settingService.getDisplaySynchronizationTime(
-        time,
-        timeType
+    if (!appSettings || Object.keys(appSettings).length === 0) {
+      await this.settingService.setCurrentSettingsForTheApp(
+        currentUser,
+        defaultSetting,
+        true
       );
-      await this.settingService.setSettingsForTheApp(currentUser, appSettings);
     }
   }
 

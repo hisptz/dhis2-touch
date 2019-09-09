@@ -19,21 +19,37 @@
  *
  * @since 2019
  * @author Joseph Chingalo <profschingalo@gmail.com>
+ *
  */
-import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage';
+const _ = require('lodash');
 
-@Injectable({
-  providedIn: 'root'
-})
-export class LocalStorageService {
-  constructor(private storage: Storage) {}
+export function getUpdatedDataObject(settingObject: any) {
+  const keys = Object.keys(settingObject);
+  return _.keyBy(
+    _.map(keys, (key: string) => {
+      const id = `${key}-co`;
+      const value = settingObject[key];
+      return {
+        id,
+        value: typeof value === 'boolean' ? (value ? value : '') : value
+      };
+    }),
+    'id'
+  );
+}
+export function getUpdatedSettingObject(data: any, settingObject: any) {
+  const { id, value } = data;
+  const fieldId = id.split('-')[0];
+  const previousValue = settingObject[fieldId];
+  settingObject[fieldId] =
+    typeof previousValue !== 'boolean'
+      ? value
+      : `${value}`.trim() === ''
+      ? false
+      : value;
 
-  async setDataOnLocalStorage(data: any, key: string) {
-    return await this.storage.set(key, data);
-  }
-
-  async getDataFromLocalStorage(key: string) {
-    return await this.storage.get(key);
-  }
+  return {
+    ...{},
+    ...settingObject
+  };
 }

@@ -49,7 +49,7 @@ export class NumericalInputComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.valueType = this.valueType || 'INTEGER';
+    this.valueType = this.valueType || 'NUMBER';
     this.data = this.data || {};
     if (this.barcodeSettings) {
       const { allowBarcodeReaderOnNumerical } = this.barcodeSettings;

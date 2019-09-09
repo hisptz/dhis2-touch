@@ -39,12 +39,15 @@ export class UserService {
 
   async getCurrentUser() {
     const key = 'currentUser';
-    return this.localStoregeService.getDataFromLocalStorage(key);
+    return await this.localStoregeService.getDataFromLocalStorage(key);
   }
 
   async setCurrentUser(currentUser: CurrentUser) {
     const key = 'currentUser';
-    return this.localStoregeService.setDataOnLocalStorage(currentUser, key);
+    return await this.localStoregeService.setDataOnLocalStorage(
+      currentUser,
+      key
+    );
   }
 
   async getSanizitizedUser(user: CurrentUser) {
@@ -129,9 +132,9 @@ export class UserService {
     return this.localStoregeService.setDataOnLocalStorage(profileInfo, key);
   }
 
-  getProfileInformation(): Promise<any> {
+  async getProfileInformation(): Promise<any> {
     const key = 'profileInfo';
-    return this.localStoregeService.getDataFromLocalStorage(key);
+    return await this.localStoregeService.getDataFromLocalStorage(key);
   }
 
   getAssignedDataSetIds(userData) {

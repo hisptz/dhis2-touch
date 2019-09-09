@@ -26,17 +26,32 @@ import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedComponentsModule } from 'src/app/components/sharedComponents.module';
-import { AppItemComponent } from './app-item/app-item.component';
-import { AppsItemContainerComponent } from './apps-item-container/apps-item-container.component';
+import { SettingContainerComponent } from './setting-container/setting-container.component';
+import { AppSettingsComponent } from './app-settings/app-settings.component';
+import { BarcodeSettingsComponent } from './barcode-settings/barcode-settings.component';
+import { EntryFormSettingsComponent } from './entry-form-settings/entry-form-settings.component';
+import { SynchronizationSettingsComponent } from './synchronization-settings/synchronization-settings.component';
 
 @NgModule({
-  declarations: [AppItemComponent, AppsItemContainerComponent],
+  declarations: [
+    SettingContainerComponent,
+    AppSettingsComponent,
+    BarcodeSettingsComponent,
+    EntryFormSettingsComponent,
+    SynchronizationSettingsComponent
+  ],
   imports: [
     IonicModule,
     CommonModule,
     TranslateModule.forChild(),
     SharedComponentsModule
   ],
-  exports: [AppItemComponent, AppsItemContainerComponent]
+  exports: [
+    SettingContainerComponent,
+    AppSettingsComponent,
+    BarcodeSettingsComponent,
+    EntryFormSettingsComponent,
+    SynchronizationSettingsComponent
+  ]
 })
-export class AppsComponentsModule {}
+export class SettingsComponentsModule {}

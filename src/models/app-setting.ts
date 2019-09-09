@@ -34,6 +34,7 @@ export interface EntryFormSetting {
   formLayout: string;
   showAlertOnFormAssignement: boolean;
   shouldDisplayAsRadio: boolean;
+  dataConflictPreferredOnline: boolean;
   maximumNumberOfOptionAsRadio: number;
 }
 export interface SynchronizationSetting {
@@ -47,4 +48,12 @@ export interface BarcodeSetting {
   activateMultiline: boolean;
   keyPairSeparator: string;
   multilineSeparator: string;
+}
+
+export interface AppSettingContent {
+  id: string;
+  name: string;
+  icon: string;
+  isVisible: boolean;
+  isOpened: boolean;
 }

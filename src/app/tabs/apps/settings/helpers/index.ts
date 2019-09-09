@@ -19,21 +19,6 @@
  *
  * @since 2019
  * @author Joseph Chingalo <profschingalo@gmail.com>
+ *
  */
-import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage';
-
-@Injectable({
-  providedIn: 'root'
-})
-export class LocalStorageService {
-  constructor(private storage: Storage) {}
-
-  async setDataOnLocalStorage(data: any, key: string) {
-    return await this.storage.set(key, data);
-  }
-
-  async getDataFromLocalStorage(key: string) {
-    return await this.storage.get(key);
-  }
-}
+export * from './app-setting-helper';

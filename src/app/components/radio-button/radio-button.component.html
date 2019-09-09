@@ -34,13 +34,13 @@
           (change)="saveValue()"
           [(ngModel)]="dataModal[fieldId]"
         />
-        <span> {{ option.name }} </span>
+        <span [translate]="option.name"></span>
       </label>
         </div>
     </ion-col>
     <ion-col size="auto" no-padding>
         <div float-right>
-            <ion-button class="clear-button" no-padding fill="clear" [disabled]="dataModal[fieldId] == ''" (click)="clearInput()">
+            <ion-button class="clear-button" no-padding fill="clear" [disabled]="dataModal[fieldId] == '' || isTrashButtonDisabled" (click)="clearInput()">
                 <ion-icon slot="icon-only" name="trash" color="danger"></ion-icon>
             </ion-button>
         </div>
