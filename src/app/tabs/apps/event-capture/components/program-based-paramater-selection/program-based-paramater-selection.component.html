@@ -22,24 +22,11 @@
 *
 *
 -->
-
-<ion-header>
-    <ion-toolbar [color]="(colorSettings$ | async).colorAttributes.main">
-        <ion-buttons slot="start">
-            <ion-back-button [text]="''" mode="ios"></ion-back-button>
-        </ion-buttons>
-        <ion-title>
-            <span [translate]="'Event Capture'"></span>
-        </ion-title>
-    </ion-toolbar>
-</ion-header>
-
-<ion-content>
-    <ion-grid>
-        <ion-row>
-            <ion-col>
-                <app-program-based-paramater-selection></app-program-based-paramater-selection>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
-</ion-content>
+<div class="item-card ion-text-center" (click)="openOrganisationUnitModal()">
+    <img class="side-menu-icon" [src]="organisationUnitIcon" />&nbsp;&nbsp;
+    <span [translate]="organisationUnitLabel"></span>
+</div>
+<div class="item-card ion-text-center" (click)="OpenProgramListSelectionModal()">
+    <img class="side-menu-icon" [src]="programIcon" />&nbsp;&nbsp;
+    <span [translate]="programLabel"></span>
+</div>

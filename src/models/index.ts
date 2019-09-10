@@ -47,3 +47,4 @@ export * from './data-set-completeness';
 export * from './events';
 export * from './program';
 export * from './program-rule';
+export * from './currrent-entry-selection';

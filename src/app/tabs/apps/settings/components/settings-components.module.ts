@@ -22,34 +22,36 @@
  *
  */
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
-
 import { IonicModule } from '@ionic/angular';
-
-import { SettingsPage } from './settings.page';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 import { SharedComponentsModule } from 'src/app/components/shared-components.module';
-import { SettingsComponentsModule } from './components/settings-components.module';
-
-const routes: Routes = [
-  {
-    path: '',
-    component: SettingsPage
-  }
-];
+import { SettingContainerComponent } from './setting-container/setting-container.component';
+import { AppSettingsComponent } from './app-settings/app-settings.component';
+import { BarcodeSettingsComponent } from './barcode-settings/barcode-settings.component';
+import { EntryFormSettingsComponent } from './entry-form-settings/entry-form-settings.component';
+import { SynchronizationSettingsComponent } from './synchronization-settings/synchronization-settings.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    TranslateModule.forChild(),
-    RouterModule.forChild(routes),
-    SharedComponentsModule,
-    SettingsComponentsModule
+  declarations: [
+    SettingContainerComponent,
+    AppSettingsComponent,
+    BarcodeSettingsComponent,
+    EntryFormSettingsComponent,
+    SynchronizationSettingsComponent
   ],
-  declarations: [SettingsPage]
+  imports: [
+    IonicModule,
+    CommonModule,
+    TranslateModule.forChild(),
+    SharedComponentsModule
+  ],
+  exports: [
+    SettingContainerComponent,
+    AppSettingsComponent,
+    BarcodeSettingsComponent,
+    EntryFormSettingsComponent,
+    SynchronizationSettingsComponent
+  ]
 })
-export class SettingsPageModule {}
+export class SettingsComponentsModule {}

@@ -22,34 +22,20 @@
  *
  */
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
-
 import { IonicModule } from '@ionic/angular';
-
-import { SettingsPage } from './settings.page';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 import { SharedComponentsModule } from 'src/app/components/shared-components.module';
-import { SettingsComponentsModule } from './components/settings-components.module';
-
-const routes: Routes = [
-  {
-    path: '',
-    component: SettingsPage
-  }
-];
+import { ProgramBasedParamaterSelectionComponent } from './program-based-paramater-selection/program-based-paramater-selection.component';
 
 @NgModule({
+  declarations: [ProgramBasedParamaterSelectionComponent],
   imports: [
-    CommonModule,
-    FormsModule,
     IonicModule,
+    CommonModule,
     TranslateModule.forChild(),
-    RouterModule.forChild(routes),
-    SharedComponentsModule,
-    SettingsComponentsModule
+    SharedComponentsModule
   ],
-  declarations: [SettingsPage]
+  exports: [ProgramBasedParamaterSelectionComponent]
 })
-export class SettingsPageModule {}
+export class EventCaptureComponentsModule {}

@@ -22,9 +22,9 @@
  *
  */
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { Translation } from 'src/models';
 import { TranslationSelectionPage } from 'src/app/modals/translation-selection/translation-selection.page';
-import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-app-settings',
