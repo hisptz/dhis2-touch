@@ -21,12 +21,13 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-export * from './login-form-fields';
-export * from './default-user';
-export * from './local-instance';
-export * from './default-settings';
-export * from './default-color-setting';
-export * from './deafult-app-metadata';
-export * from './utilities-app-list';
-export * from './apps-list';
-export * from './default-current-entry-selection';
+import { CurrentEntrySelection } from 'src/models';
+export const DEFAULT_CURRENT_ENTRY_SELECTION: CurrentEntrySelection = {
+  selectedOrganisationUnit: { id: '', name: '' },
+  selectedDataSet: { id: '', name: '' },
+  selectedProgram: { id: '', name: '' },
+  selectedReport: { id: '', name: '' },
+  selectedPeriod: { id: '', name: '' },
+  selectedDataDimension: null,
+  dataDimension: { attributeCc: '', attributeCos: '' }
+};

@@ -25,7 +25,7 @@ import { CurrentUser } from 'src/models';
 import { DEFAULT_COLOR_SETTING } from './default-color-setting';
 
 export const DEFAULT_USER: CurrentUser = {
-  serverUrl: 'scorecard-dev.dhis2.org/demo',
+  serverUrl: 'play.dhis2.org/demo',
   username: 'admin ',
   password: 'district',
   currentLanguage: 'en',
