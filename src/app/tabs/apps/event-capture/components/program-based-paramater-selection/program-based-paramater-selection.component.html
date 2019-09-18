@@ -26,7 +26,22 @@
     <img class="side-menu-icon" [src]="organisationUnitIcon" />&nbsp;&nbsp;
     <span [translate]="organisationUnitLabel"></span>
 </div>
-<div class="item-card ion-text-center" (click)="OpenProgramListSelectionModal()">
+<div class="item-card ion-text-center" (click)="openProgramListSelectionModal()">
     <img class="side-menu-icon" [src]="programIcon" />&nbsp;&nbsp;
     <span [translate]="programLabel"></span>
+</div>
+<div *ngIf="programCategoryCombo && programCategoryCombo.id ">
+    <div *ngIf="isProgramDimensionApplicable">
+        <div *ngFor="let category of programCategoryCombo.categories;let categoryIndex = index;">
+            <div class="item-card" (click)="openDataDimensionSelection(category)">
+                <span [translate]="category.name"></span>
+                <div class="item-card">
+                    <span [translate]=" selectedDataDimension[categoryIndex] && selectedDataDimension[categoryIndex].name  ? selectedDataDimension[categoryIndex].name : 'Touch to select option'"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="item-card ion-text-center" padding-top padding-bottom *ngIf="!isProgramDimensionApplicable">
+        <span [translate]="'All of selected category disaggregation are restricted from entry in selcted organisation unit, choose a different form or contact your support desk'"></span>
+    </div>
 </div>

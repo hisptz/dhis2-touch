@@ -38,7 +38,14 @@
     <ion-grid>
         <ion-row>
             <ion-col>
-                <app-program-based-paramater-selection></app-program-based-paramater-selection>
+                <div *ngIf="isLoading">
+                    <app-progress-bar [color]="(colorSettings$ | async).colorAttributes.secondary" [isIndeterminateProcess]="true" [processMessage]="''">
+                    </app-progress-bar>
+                </div>
+                <div *ngIf="!isLoading">
+                    <app-program-based-paramater-selection (currentSelectionChange)="onCurrentSelectionChange($event)" [authorities]="authorities" [currentEntrySelection]="currentEntrySelection" [programIdsByUserRoles]="programIdsByUserRoles" [programType]="programType"
+                        [allowMultipleOuSelection]="allowMultipleOuSelection"></app-program-based-paramater-selection>
+                </div>
             </ion-col>
         </ion-row>
     </ion-grid>
