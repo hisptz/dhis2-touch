@@ -121,6 +121,7 @@ export class ProgramService {
     await this.savingProgramProgramTrackedEntityAttributes(programs);
     await this.savingTrackerRegistrationForm(programs);
     await this.savingProgramStageEntryForm(programs);
+    console.log({ type: 'saving', programs });
   }
 
   async savingProgramBasicInfo(programs: any[]) {

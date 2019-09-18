@@ -63,6 +63,8 @@ import { StandardResportService } from './standard-resport.service';
 import { DataStoreManagerService } from './data-store-manager.service';
 import { ValidationRuleService } from './validation-rule.service';
 import { GeolocationService } from './geolocation.service';
+import { ProgramSelectionService } from './program-selection.service';
+import { CurrentEntrySelectionStorageService } from './current-entry-selection-storage.service';
 
 export const appProviders = [
   AppConfigService,
@@ -93,7 +95,9 @@ export const appProviders = [
   StandardResportService,
   DataStoreManagerService,
   ValidationRuleService,
-  GeolocationService
+  GeolocationService,
+  ProgramSelectionService,
+  CurrentEntrySelectionStorageService
 ];
 
 export const nativePlugins = [

@@ -70,24 +70,36 @@ export class ProgramStageSectionService {
     >;
     const chunk = 50;
     const programStageSectionData = _.flattenDeep(
-      _.map(programStageSections, (programStageSection: any) => {
-        const {
-          programStage,
-          programStageDataElements,
-          dataElements
-        } = programStageSection;
-        const dataElementsData = programStageDataElements
-          ? _.map(programStageDataElements, (programStageDataElement: any) => {
-              return { id: programStageDataElement.dataElement.id };
-            })
-          : dataElements;
-        const programStageId = programStage.id;
-        return {
-          ...programStageSection,
-          dataElements: dataElementsData,
-          programStageId
-        };
-      })
+      _.map(
+        _.filter(programStageSections, (programStageSection: any) => {
+          return (
+            programStageSection &&
+            programStageSection.programStage &&
+            programStageSection.programStage
+          );
+        }),
+        (programStageSection: any) => {
+          const {
+            programStage,
+            programStageDataElements,
+            dataElements
+          } = programStageSection;
+          const dataElementsData = programStageDataElements
+            ? _.map(
+                programStageDataElements,
+                (programStageDataElement: any) => {
+                  return { id: programStageDataElement.dataElement.id };
+                }
+              )
+            : dataElements;
+          const programStageId = programStage.id;
+          return {
+            ...programStageSection,
+            dataElements: dataElementsData,
+            programStageId
+          };
+        }
+      )
     );
     return new Observable(observer => {
       repository
