@@ -29,3 +29,4 @@ export * from './default-color-setting';
 export * from './deafult-app-metadata';
 export * from './utilities-app-list';
 export * from './apps-list';
+export * from './default-current-entry-selection';

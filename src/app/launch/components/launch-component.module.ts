@@ -23,33 +23,12 @@
  */
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
-
 import { IonicModule } from '@ionic/angular';
-
-import { SettingsPage } from './settings.page';
-import { SharedComponentsModule } from 'src/app/components/shared-components.module';
-import { SettingsComponentsModule } from './components/settings-components.module';
-
-const routes: Routes = [
-  {
-    path: '',
-    component: SettingsPage
-  }
-];
-
+import { TranslateModule } from '@ngx-translate/core';
+import { SloganComponent } from './slogan/slogan.component';
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    TranslateModule.forChild(),
-    RouterModule.forChild(routes),
-    SharedComponentsModule,
-    SettingsComponentsModule
-  ],
-  declarations: [SettingsPage]
+  declarations: [SloganComponent],
+  imports: [IonicModule, CommonModule, TranslateModule.forChild()],
+  exports: [SloganComponent]
 })
-export class SettingsPageModule {}
+export class LaunchComponentsModule {}

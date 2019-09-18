@@ -41,7 +41,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { nativePlugins, appProviders } from './services';
-import { SharedComponentsModule } from './components/sharedComponents.module';
+import { SharedComponentsModule } from './components/shared-components.module';
 import { TranslationSelectionPageModule } from './modals/translation-selection/translation-selection.module';
 import { LocalInstanceSelectionPageModule } from './modals/local-instance-selection/local-instance-selection.module';
 import { CoordinateSelectionPageModule } from './modals/coordinate-selection/coordinate-selection.module';

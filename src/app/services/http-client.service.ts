@@ -112,7 +112,7 @@ export class HttpClientService {
           async.mapLimit(
             paginatedUrls,
             paginatedUrls.length,
-            async function(paginatedUrl) {
+            async function(paginatedUrl: string) {
               try {
                 let response = await that.http.get(paginatedUrl, {}, headers);
                 response = JSON.parse(response.data);

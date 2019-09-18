@@ -30,7 +30,7 @@ import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { OrganisationUnitSelectionPage } from './organisation-unit-selection.page';
-import { SharedComponentsModule } from 'src/app/components/sharedComponents.module';
+import { SharedComponentsModule } from 'src/app/components/shared-components.module';
 
 const routes: Routes = [
   {

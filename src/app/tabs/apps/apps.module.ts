@@ -30,7 +30,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IonicModule } from '@ionic/angular';
 
 import { AppsPage } from './apps.page';
-import { AppsComponentsModule } from './components/appsComponents.module';
+import { AppsComponentsModule } from './components/apps-components.module';
 
 const routes: Routes = [
   {

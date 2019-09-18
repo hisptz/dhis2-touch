@@ -30,6 +30,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IonicModule } from '@ionic/angular';
 
 import { EventCapturePage } from './event-capture.page';
+import { SharedComponentsModule } from 'src/app/components/shared-components.module';
+import { EventCaptureComponentsModule } from './components/event-capture-components.module';
 
 const routes: Routes = [
   {
@@ -44,7 +46,9 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     TranslateModule.forChild(),
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    SharedComponentsModule,
+    EventCaptureComponentsModule
   ],
   declarations: [EventCapturePage]
 })

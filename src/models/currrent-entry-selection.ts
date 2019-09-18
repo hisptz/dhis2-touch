@@ -21,34 +21,12 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
-
-import { IonicModule } from '@ionic/angular';
-
-import { AccountsPage } from './accounts.page';
-import { AppsComponentsModule } from '../apps/components/apps-components.module';
-
-const routes: Routes = [
-  {
-    path: '',
-    component: AccountsPage
-  }
-];
-
-@NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    AppsComponentsModule,
-    TranslateModule.forChild(),
-    RouterModule.forChild(routes)
-  ],
-  declarations: [AccountsPage]
-})
-export class AccountsPageModule {}
+export interface CurrentEntrySelection {
+  selectedOrganisationUnit: { id: string; name: string };
+  selectedDataSet?: { id: string; name: string };
+  selectedProgram?: { id: string; name: string };
+  selectedReport?: { id: string; name: string };
+  selectedPeriod?: { id: string; name: string };
+  selectedDataDimension: any[];
+  dataDimension: { attributeCc: string; attributeCos: string };
+}

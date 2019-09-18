@@ -23,33 +23,29 @@
  */
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
+import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { IonicModule } from '@ionic/angular';
-
-import { SettingsPage } from './settings.page';
+import { LoginSpinnerComponent } from './login-spinner/login-spinner.component';
+import { LoginFormComponent } from './login-form/login-form.component';
+import { LoginMetadataSyncComponent } from './login-metadata-sync/login-metadata-sync.component';
 import { SharedComponentsModule } from 'src/app/components/shared-components.module';
-import { SettingsComponentsModule } from './components/settings-components.module';
-
-const routes: Routes = [
-  {
-    path: '',
-    component: SettingsPage
-  }
-];
-
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    TranslateModule.forChild(),
-    RouterModule.forChild(routes),
-    SharedComponentsModule,
-    SettingsComponentsModule
+  declarations: [
+    LoginSpinnerComponent,
+    LoginFormComponent,
+    LoginMetadataSyncComponent
   ],
-  declarations: [SettingsPage]
+  imports: [
+    IonicModule,
+    CommonModule,
+    SharedComponentsModule,
+    TranslateModule.forChild()
+  ],
+  exports: [
+    LoginSpinnerComponent,
+    LoginFormComponent,
+    LoginMetadataSyncComponent
+  ]
 })
-export class SettingsPageModule {}
+export class LoginComponentsModule {}

@@ -31,9 +31,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IonicModule } from '@ionic/angular';
 
 import { LoginPage } from './login.page';
-import { LoginComponentsModule } from './components/loginComponent.module';
-import { LaunchComponentsModule } from '../launch/components/launchComponent.dodule';
-import { SharedComponentsModule } from '../components/sharedComponents.module';
+import { LoginComponentsModule } from './components/login-component.module';
+import { LaunchComponentsModule } from '../launch/components/launch-component.module';
+import { SharedComponentsModule } from '../components/shared-components.module';
 
 const routes: Routes = [
   {
