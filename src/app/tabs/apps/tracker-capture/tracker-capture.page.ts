@@ -26,7 +26,11 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { State, getCurrentUserColorSettings } from '../../../store';
-import { AppColorObject } from 'src/models';
+import { AppColorObject, CurrentEntrySelection, CurrentUser } from 'src/models';
+import { DEFAULT_CURRENT_ENTRY_SELECTION } from 'src/constants';
+import { UserService } from 'src/app/services/user.service';
+import { CurrentEntrySelectionStorageService } from 'src/app/services/current-entry-selection-storage.service';
+import { ToasterMessagesService } from 'src/app/services/toaster-messages.service';
 
 @Component({
   selector: 'app-tracker-capture',
@@ -35,10 +39,66 @@ import { AppColorObject } from 'src/models';
 })
 export class TrackerCapturePage implements OnInit {
   colorSettings$: Observable<AppColorObject>;
+  currentEntrySelection: CurrentEntrySelection;
+  allowMultipleOuSelection: boolean;
+  authorities: string[];
+  programIdsByUserRoles: string[];
+  programType: string;
+  currentUser: CurrentUser;
+  isLoading: boolean;
 
-  constructor(private store: Store<State>) {
+  constructor(
+    private store: Store<State>,
+    private userService: UserService,
+    private toasterMessagesService: ToasterMessagesService,
+    private currentEntrySelectionStorageService: CurrentEntrySelectionStorageService
+  ) {
     this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
+    this.authorities = [];
+    this.programIdsByUserRoles = [];
+    this.allowMultipleOuSelection = false;
+    this.isLoading = true;
+    this.programType = 'WITH_REGISTRATION';
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.discoveringCurrentUser();
+  }
+
+  async discoveringCurrentUser() {
+    try {
+      this.currentUser = await this.userService.getCurrentUser();
+      const { authorities, programs } = this.currentUser;
+      this.authorities = authorities;
+      this.programIdsByUserRoles = programs;
+      await this.getCurrentEntrySelection(this.currentUser);
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 100);
+    } catch (error) {
+      const message = `Error : ${JSON.stringify(error)}`;
+      this.toasterMessagesService.showToasterMessage(message);
+    }
+  }
+
+  async getCurrentEntrySelection(currentUser: CurrentUser) {
+    const selections = await this.currentEntrySelectionStorageService.getCurrentEntrySelection(
+      currentUser
+    );
+    this.currentEntrySelection = selections
+      ? selections
+      : DEFAULT_CURRENT_ENTRY_SELECTION;
+  }
+
+  async onCurrentSelectionChange(response: any) {
+    const { isFormReady, currentEntrySelection } = response;
+    if (currentEntrySelection) {
+      this.currentEntrySelection = currentEntrySelection;
+      this.currentEntrySelectionStorageService.setCurrentEntrySelection(
+        currentEntrySelection,
+        this.currentUser
+      );
+    }
+    console.log({ isFormReady });
+  }
 }

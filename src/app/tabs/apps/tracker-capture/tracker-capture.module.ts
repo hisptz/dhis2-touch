@@ -30,6 +30,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IonicModule } from '@ionic/angular';
 
 import { TrackerCapturePage } from './tracker-capture.page';
+import { SharedComponentsModule } from 'src/app/components/shared-components.module';
+import { EventCaptureComponentsModule } from '../event-capture/components/event-capture-components.module';
 
 const routes: Routes = [
   {
@@ -43,6 +45,8 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    SharedComponentsModule,
+    EventCaptureComponentsModule,
     TranslateModule.forChild(),
     RouterModule.forChild(routes)
   ],
