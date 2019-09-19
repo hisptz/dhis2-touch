@@ -88,7 +88,6 @@ export class SettingService {
   getSanitizedSettingForDisplay(appSettings: AppSetting) {
     if (appSettings && appSettings.synchronization) {
       const { timeType, time } = appSettings.synchronization;
-      console.log({ type: 'fetch', timeType, time });
       if (timeType && time) {
         appSettings.synchronization.time = this.getSynchronizationTimeForDisplaying(
           time,

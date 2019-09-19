@@ -24,7 +24,8 @@
 export interface CurrentEntrySelection {
   selectedOrganisationUnit: { id: string; name: string };
   selectedDataSet?: { id: string; name: string };
-  selectedProgram?: { id: string; name: string };
+  selectedProgramWithRegistration?: { id: string; name: string };
+  selectedProgramWithOutRegistration?: { id: string; name: string };
   selectedReport?: { id: string; name: string };
   selectedPeriod?: { id: string; name: string };
   selectedDataDimension: any[];

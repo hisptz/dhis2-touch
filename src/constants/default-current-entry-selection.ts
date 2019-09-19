@@ -25,7 +25,8 @@ import { CurrentEntrySelection } from 'src/models';
 export const DEFAULT_CURRENT_ENTRY_SELECTION: CurrentEntrySelection = {
   selectedOrganisationUnit: { id: '', name: '' },
   selectedDataSet: { id: '', name: '' },
-  selectedProgram: { id: '', name: '' },
+  selectedProgramWithRegistration: { id: '', name: '' },
+  selectedProgramWithOutRegistration: { id: '', name: '' },
   selectedReport: { id: '', name: '' },
   selectedPeriod: { id: '', name: '' },
   selectedDataDimension: null,
