@@ -40,6 +40,7 @@ export class OptionSetSelectionPage implements OnInit {
   optionListTitle: string;
   currentIndex: number;
   cancelIcon: string;
+  isDisabled: boolean;
   colorSettings$: Observable<AppColorObject>;
 
   constructor(
@@ -57,6 +58,8 @@ export class OptionSetSelectionPage implements OnInit {
     this.optionListTitle = this.navParms.get('optionListTitle');
     this.selectedValue = this.navParms.get('selectedValue');
     const options: Option[] = this.navParms.get('options');
+    const isDisabled: boolean = this.navParms.get('isDisabled');
+    this.isDisabled = isDisabled || false;
     this.setOptionSetSelections(options);
   }
 
