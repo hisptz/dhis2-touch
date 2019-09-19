@@ -73,7 +73,8 @@ export class ProgramBasedParamaterSelectionComponent implements OnInit {
     this.allowMultipleOuSelection = this.allowMultipleOuSelection || false;
     this.currentEntrySelection =
       this.currentEntrySelection || DEFAULT_CURRENT_ENTRY_SELECTION;
-    this.selectedDataDimension = this.currentEntrySelection.selectedDataDimension;
+    this.selectedDataDimension =
+      this.currentEntrySelection.selectedDataDimension || [];
     this.setProgramParameterSelections();
   }
 
@@ -115,14 +116,28 @@ export class ProgramBasedParamaterSelectionComponent implements OnInit {
   }
 
   async setProgramLabel() {
-    if (
-      this.currentEntrySelection &&
-      this.currentEntrySelection.selectedProgram.name &&
-      this.currentEntrySelection.selectedProgram.name !== ''
-    ) {
-      this.programLabel = this.currentEntrySelection.selectedProgram.name;
-    } else {
-      this.programLabel = 'Touch to select program';
+    if (this.programType === 'WITHOUT_REGISTRATION') {
+      if (
+        this.currentEntrySelection &&
+        this.currentEntrySelection.selectedProgramWithOutRegistration.name &&
+        this.currentEntrySelection.selectedProgramWithOutRegistration.name !==
+          ''
+      ) {
+        this.programLabel = this.currentEntrySelection.selectedProgramWithOutRegistration.name;
+      } else {
+        this.programLabel = 'Touch to select program';
+      }
+    }
+    if (this.programType === 'WITH_REGISTRATION') {
+      if (
+        this.currentEntrySelection &&
+        this.currentEntrySelection.selectedProgramWithRegistration.name &&
+        this.currentEntrySelection.selectedProgramWithRegistration.name !== ''
+      ) {
+        this.programLabel = this.currentEntrySelection.selectedProgramWithRegistration.name;
+      } else {
+        this.programLabel = 'Touch to select program';
+      }
     }
   }
 
@@ -197,18 +212,21 @@ export class ProgramBasedParamaterSelectionComponent implements OnInit {
     if (response && response.data) {
       const { id, name } = response.data;
       this.setCurrentOrganisationUnit(id, name);
-      this.updateProgramParameterSelections();
       await this.discoveringProgramList();
     }
   }
 
   async openProgramListSelectionModal() {
-    const programId = this.currentEntrySelection.selectedProgram.id;
+    const programId =
+      this.programType === 'WITHOUT_REGISTRATION'
+        ? this.currentEntrySelection.selectedProgramWithOutRegistration.id
+        : this.currentEntrySelection.selectedProgramWithRegistration.id;
     const modal = await this.modalController.create({
       component: OptionSetSelectionPage,
       componentProps: {
         selectedValue: programId,
-        options: this.programOptions
+        options: this.programOptions,
+        isDisabled: true
       }
     });
     modal.present();
@@ -216,7 +234,6 @@ export class ProgramBasedParamaterSelectionComponent implements OnInit {
     if (response && response.data) {
       const { id, name } = response.data;
       this.setCurrentProgram(id, name);
-      this.updateProgramParameterSelections();
       await this.discoveringProgramList();
     }
   }
@@ -269,18 +286,30 @@ export class ProgramBasedParamaterSelectionComponent implements OnInit {
   }
 
   setCurrentProgram(id: string, name: string) {
-    this.currentEntrySelection.selectedProgram = {
-      ...this.currentEntrySelection.selectedProgram,
-      id,
-      name
-    };
+    if (this.programType === 'WITHOUT_REGISTRATION') {
+      this.currentEntrySelection.selectedProgramWithOutRegistration = {
+        ...this.currentEntrySelection.selectedProgramWithOutRegistration,
+        id,
+        name
+      };
+    }
+    if (this.programType === 'WITH_REGISTRATION') {
+      this.currentEntrySelection.selectedProgramWithRegistration = {
+        ...this.currentEntrySelection.selectedProgramWithRegistration,
+        id,
+        name
+      };
+    }
   }
 
   async discoveringProgramList() {
     try {
       const organisationUnitId = this.currentEntrySelection
         .selectedOrganisationUnit.id;
-      const programId = this.currentEntrySelection.selectedProgram.id;
+      const programId =
+        this.programType === 'WITHOUT_REGISTRATION'
+          ? this.currentEntrySelection.selectedProgramWithOutRegistration.id
+          : this.currentEntrySelection.selectedProgramWithRegistration.id;
       const programs: any[] = await this.programSelectionService.getProgramListBySelectedOrganisationUnitAndRoles(
         organisationUnitId,
         this.programType,
@@ -288,9 +317,9 @@ export class ProgramBasedParamaterSelectionComponent implements OnInit {
         this.authorities
       );
       this.resetCurrentProgramAndProgramList(programs, programId);
-      if (this.currentEntrySelection.selectedProgram.id !== '') {
+      if (programId !== '') {
         this.selectedProgram = _.find(programs, (program: Program) => {
-          return program.id === this.currentEntrySelection.selectedProgram.id;
+          return program.id === programId;
         });
         if (this.selectedProgram && this.selectedProgram.categoryCombo) {
           await this.setProgramCategoryCombos(
@@ -303,13 +332,12 @@ export class ProgramBasedParamaterSelectionComponent implements OnInit {
         const { id, code, name } = program;
         return { id, name, code };
       });
-    } catch (error) {
-      const message = `Error : ${JSON.stringify(error)}`;
-      this.toasterMessagesService.showToasterMessage(message);
-    } finally {
       setTimeout(() => {
         this.updateProgramParameterSelections();
       }, 100);
+    } catch (error) {
+      const message = `Error : ${JSON.stringify(error)}`;
+      this.toasterMessagesService.showToasterMessage(message);
     }
   }
 
