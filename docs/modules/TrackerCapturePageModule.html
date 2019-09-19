@@ -175,6 +175,8 @@ import { TranslateModule } from &#x27;@ngx-translate/core&#x27;;
 import { IonicModule } from &#x27;@ionic/angular&#x27;;
 
 import { TrackerCapturePage } from &#x27;./tracker-capture.page&#x27;;
+import { SharedComponentsModule } from &#x27;src/app/components/shared-components.module&#x27;;
+import { EventCaptureComponentsModule } from &#x27;../event-capture/components/event-capture-components.module&#x27;;
 
 const routes: Routes &#x3D; [
   {
@@ -188,6 +190,8 @@ const routes: Routes &#x3D; [
     CommonModule,
     FormsModule,
     IonicModule,
+    SharedComponentsModule,
+    EventCaptureComponentsModule,
     TranslateModule.forChild(),
     RouterModule.forChild(routes)
   ],

@@ -1,0 +1,2329 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>DHIS 2 Touch</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/material.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">DHIS 2 Touch</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>ProgramBasedParamaterSelectionComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-program-based-paramater-selection</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./program-based-paramater-selection.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./program-based-paramater-selection.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#isFormReady">isFormReady</a>
+                            </li>
+                            <li>
+                                <a href="#isProgramDimensionApplicable">isProgramDimensionApplicable</a>
+                            </li>
+                            <li>
+                                <a href="#organisationUnitIcon">organisationUnitIcon</a>
+                            </li>
+                            <li>
+                                <a href="#organisationUnitLabel">organisationUnitLabel</a>
+                            </li>
+                            <li>
+                                <a href="#programCategoryCombo">programCategoryCombo</a>
+                            </li>
+                            <li>
+                                <a href="#programIcon">programIcon</a>
+                            </li>
+                            <li>
+                                <a href="#programLabel">programLabel</a>
+                            </li>
+                            <li>
+                                <a href="#programOptions">programOptions</a>
+                            </li>
+                            <li>
+                                <a href="#selectedDataDimension">selectedDataDimension</a>
+                            </li>
+                            <li>
+                                <a href="#selectedProgram">selectedProgram</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#discoveringProgramList">discoveringProgramList</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getDataDimension">getDataDimension</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#isAllParameterSelected">isAllParameterSelected</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit">ngOnInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#openDataDimensionSelection">openDataDimensionSelection</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#openOrganisationUnitModal">openOrganisationUnitModal</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#openProgramListSelectionModal">openProgramListSelectionModal</a>
+                            </li>
+                            <li>
+                                <a href="#resetCurrentProgramAndProgramList">resetCurrentProgramAndProgramList</a>
+                            </li>
+                            <li>
+                                <a href="#setCurrentOrganisationUnit">setCurrentOrganisationUnit</a>
+                            </li>
+                            <li>
+                                <a href="#setCurrentProgram">setCurrentProgram</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setOrganisationUnitLabel">setOrganisationUnitLabel</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setProgramCategoryCombos">setProgramCategoryCombos</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setProgramCategoryLabel">setProgramCategoryLabel</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setProgramLabel">setProgramLabel</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setProgramParameterSelections">setProgramParameterSelections</a>
+                            </li>
+                            <li>
+                                <a href="#setSelectedCategoryOption">setSelectedCategoryOption</a>
+                            </li>
+                            <li>
+                                <a href="#trackByFn">trackByFn</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateProgramParameterSelections">updateProgramParameterSelections</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#allowMultipleOuSelection">allowMultipleOuSelection</a>
+                            </li>
+                            <li>
+                                <a href="#authorities">authorities</a>
+                            </li>
+                            <li>
+                                <a href="#currentEntrySelection">currentEntrySelection</a>
+                            </li>
+                            <li>
+                                <a href="#programIdsByUserRoles">programIdsByUserRoles</a>
+                            </li>
+                            <li>
+                                <a href="#programType">programType</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#currentSelectionChange">currentSelectionChange</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(modalController: ModalController, programSelectionService: <a href="../injectables/ProgramSelectionService.html">ProgramSelectionService</a>, toasterMessagesService: <a href="../injectables/ToasterMessagesService.html">ToasterMessagesService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:57</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>modalController</td>
+                                                  
+                                                        <td>
+                                                                    <code>ModalController</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>programSelectionService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ProgramSelectionService.html" target="_self" >ProgramSelectionService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>toasterMessagesService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ToasterMessagesService.html" target="_self" >ToasterMessagesService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section>
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="allowMultipleOuSelection"></a>
+                        <b>allowMultipleOuSelection</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:41</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="authorities"></a>
+                        <b>authorities</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string[]</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:42</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="currentEntrySelection"></a>
+                        <b>currentEntrySelection</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/CurrentEntrySelection.html" target="_self" >CurrentEntrySelection</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:40</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="programIdsByUserRoles"></a>
+                        <b>programIdsByUserRoles</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string[]</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:43</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="programType"></a>
+                        <b>programType</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:44</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+    <section>
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="currentSelectionChange"></a>
+                        <b>currentSelectionChange</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:46</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="discoveringProgramList"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            discoveringProgramList
+                        </b>
+                        <a href="#discoveringProgramList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>discoveringProgramList()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="305"
+                            class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:305</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDataDimension"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getDataDimension
+                        </b>
+                        <a href="#getDataDimension"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getDataDimension()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="179"
+                            class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:179</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isAllParameterSelected"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            isAllParameterSelected
+                        </b>
+                        <a href="#isAllParameterSelected"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isAllParameterSelected()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="153"
+                            class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:153</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <b>
+                            ngOnInit
+                        </b>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="72"
+                            class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:72</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openDataDimensionSelection"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            openDataDimensionSelection
+                        </b>
+                        <a href="#openDataDimensionSelection"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>openDataDimensionSelection(category: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="241"
+                            class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:241</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>category</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openOrganisationUnitModal"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            openOrganisationUnitModal
+                        </b>
+                        <a href="#openOrganisationUnitModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>openOrganisationUnitModal()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="200"
+                            class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:200</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openProgramListSelectionModal"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            openProgramListSelectionModal
+                        </b>
+                        <a href="#openProgramListSelectionModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>openProgramListSelectionModal()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="219"
+                            class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:219</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetCurrentProgramAndProgramList"></a>
+                    <span class="name">
+                        <b>
+                            resetCurrentProgramAndProgramList
+                        </b>
+                        <a href="#resetCurrentProgramAndProgramList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>resetCurrentProgramAndProgramList(programs: any[], programId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="344"
+                            class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:344</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>programs</td>
+                                    <td>
+                                            <code>any[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>programId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setCurrentOrganisationUnit"></a>
+                    <span class="name">
+                        <b>
+                            setCurrentOrganisationUnit
+                        </b>
+                        <a href="#setCurrentOrganisationUnit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>setCurrentOrganisationUnit(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="271"
+                            class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:271</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>name</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setCurrentProgram"></a>
+                    <span class="name">
+                        <b>
+                            setCurrentProgram
+                        </b>
+                        <a href="#setCurrentProgram"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>setCurrentProgram(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="288"
+                            class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:288</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>name</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setOrganisationUnitLabel"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            setOrganisationUnitLabel
+                        </b>
+                        <a href="#setOrganisationUnitLabel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setOrganisationUnitLabel()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="106"
+                            class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:106</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setProgramCategoryCombos"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            setProgramCategoryCombos
+                        </b>
+                        <a href="#setProgramCategoryCombos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setProgramCategoryCombos(selectedProgram: <a href="../interfaces/Program.html">Program</a>, organisationUnitId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="360"
+                            class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:360</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>selectedProgram</td>
+                                    <td>
+                                                <code><a href="../interfaces/Program.html" target="_self" >Program</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>organisationUnitId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setProgramCategoryLabel"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            setProgramCategoryLabel
+                        </b>
+                        <a href="#setProgramCategoryLabel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setProgramCategoryLabel()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="144"
+                            class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:144</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setProgramLabel"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            setProgramLabel
+                        </b>
+                        <a href="#setProgramLabel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setProgramLabel()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="118"
+                            class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:118</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setProgramParameterSelections"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            setProgramParameterSelections
+                        </b>
+                        <a href="#setProgramParameterSelections"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setProgramParameterSelections()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="81"
+                            class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:81</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setSelectedCategoryOption"></a>
+                    <span class="name">
+                        <b>
+                            setSelectedCategoryOption
+                        </b>
+                        <a href="#setSelectedCategoryOption"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>setSelectedCategoryOption(selectedDataDimension: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, category: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="279"
+                            class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:279</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>selectedDataDimension</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>category</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="trackByFn"></a>
+                    <span class="name">
+                        <b>
+                            trackByFn
+                        </b>
+                        <a href="#trackByFn"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>trackByFn(index: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, item: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="394"
+                            class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:394</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>index</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>item</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateProgramParameterSelections"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            updateProgramParameterSelections
+                        </b>
+                        <a href="#updateProgramParameterSelections"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateProgramParameterSelections()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="93"
+                            class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:93</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isFormReady"></a>
+                        <span class="name">
+                            <b>
+                            isFormReady</b>
+                            <a href="#isFormReady"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:52</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isProgramDimensionApplicable"></a>
+                        <span class="name">
+                            <b>
+                            isProgramDimensionApplicable</b>
+                            <a href="#isProgramDimensionApplicable"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:53</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="organisationUnitIcon"></a>
+                        <span class="name">
+                            <b>
+                            organisationUnitIcon</b>
+                            <a href="#organisationUnitIcon"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:48</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="organisationUnitLabel"></a>
+                        <span class="name">
+                            <b>
+                            organisationUnitLabel</b>
+                            <a href="#organisationUnitLabel"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:50</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="programCategoryCombo"></a>
+                        <span class="name">
+                            <b>
+                            programCategoryCombo</b>
+                            <a href="#programCategoryCombo"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:55</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="programIcon"></a>
+                        <span class="name">
+                            <b>
+                            programIcon</b>
+                            <a href="#programIcon"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:49</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="programLabel"></a>
+                        <span class="name">
+                            <b>
+                            programLabel</b>
+                            <a href="#programLabel"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:51</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="programOptions"></a>
+                        <span class="name">
+                            <b>
+                            programOptions</b>
+                            <a href="#programOptions"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../interfaces/Option.html" target="_self" >Option[]</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:54</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectedDataDimension"></a>
+                        <span class="name">
+                            <b>
+                            selectedDataDimension</b>
+                            <a href="#selectedDataDimension"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>any[]</code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:56</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectedProgram"></a>
+                        <span class="name">
+                            <b>
+                            selectedProgram</b>
+                            <a href="#selectedProgram"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/tabs/apps/event-capture/components/program-based-paramater-selection/program-based-paramater-selection.component.ts:57</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, Input, Output, EventEmitter } from &#x27;@angular/core&#x27;;
+import { ModalController } from &#x27;@ionic/angular&#x27;;
+import * as _ from &#x27;lodash&#x27;;
+import { Option, CurrentEntrySelection, Program } from &#x27;src/models&#x27;;
+import { DEFAULT_CURRENT_ENTRY_SELECTION } from &#x27;src/constants&#x27;;
+import { OrganisationUnitSelectionPage } from &#x27;src/app/modals/organisation-unit-selection/organisation-unit-selection.page&#x27;;
+import { OptionSetSelectionPage } from &#x27;src/app/modals/option-set-selection/option-set-selection.page&#x27;;
+import { ProgramSelectionService } from &#x27;src/app/services/program-selection.service&#x27;;
+import { ToasterMessagesService } from &#x27;src/app/services/toaster-messages.service&#x27;;
+
+@Component({
+  selector: &#x27;app-program-based-paramater-selection&#x27;,
+  templateUrl: &#x27;./program-based-paramater-selection.component.html&#x27;,
+  styleUrls: [&#x27;./program-based-paramater-selection.component.scss&#x27;]
+})
+export class ProgramBasedParamaterSelectionComponent implements OnInit {
+  @Input() currentEntrySelection: CurrentEntrySelection;
+  @Input() allowMultipleOuSelection: boolean;
+  @Input() authorities: string[];
+  @Input() programIdsByUserRoles: string[];
+  @Input() programType: string;
+
+  @Output() currentSelectionChange &#x3D; new EventEmitter();
+
+  organisationUnitIcon: string;
+  programIcon: string;
+  organisationUnitLabel: string;
+  programLabel: string;
+  isFormReady: boolean;
+  isProgramDimensionApplicable: boolean;
+  programOptions: Option[];
+  programCategoryCombo: any;
+  selectedDataDimension: any[];
+  selectedProgram: any;
+
+  constructor(
+    private modalController: ModalController,
+    private programSelectionService: ProgramSelectionService,
+    private toasterMessagesService: ToasterMessagesService
+  ) {
+    this.organisationUnitIcon &#x3D; &#x60;assets/icon/orgUnit.png&#x60;;
+    this.programIcon &#x3D; &#x27;assets/icon/program.png&#x27;;
+    this.isFormReady &#x3D; false;
+    this.isProgramDimensionApplicable &#x3D; false;
+    this.programCategoryCombo &#x3D; {};
+    this.selectedProgram &#x3D; null;
+  }
+
+  ngOnInit() {
+    this.allowMultipleOuSelection &#x3D; this.allowMultipleOuSelection || false;
+    this.currentEntrySelection &#x3D;
+      this.currentEntrySelection || DEFAULT_CURRENT_ENTRY_SELECTION;
+    this.selectedDataDimension &#x3D;
+      this.currentEntrySelection.selectedDataDimension || [];
+    this.setProgramParameterSelections();
+  }
+
+  async setProgramParameterSelections() {
+    if (
+      this.currentEntrySelection &amp;&amp;
+      this.currentEntrySelection.selectedOrganisationUnit.name &amp;&amp;
+      this.currentEntrySelection.selectedOrganisationUnit.name !&#x3D;&#x3D; &#x27;&#x27;
+    ) {
+      await this.discoveringProgramList();
+    } else {
+      await this.updateProgramParameterSelections();
+    }
+  }
+
+  async updateProgramParameterSelections() {
+    await this.setOrganisationUnitLabel();
+    await this.setProgramLabel();
+    await this.setProgramCategoryLabel();
+    const isFormReady &#x3D; await this.isAllParameterSelected();
+    setTimeout(() &#x3D;&gt; {
+      this.currentSelectionChange.emit({
+        isFormReady,
+        currentEntrySelection: isFormReady ? this.currentEntrySelection : null
+      });
+    }, 100);
+  }
+
+  async setOrganisationUnitLabel() {
+    if (
+      this.currentEntrySelection &amp;&amp;
+      this.currentEntrySelection.selectedOrganisationUnit.name &amp;&amp;
+      this.currentEntrySelection.selectedOrganisationUnit.name !&#x3D;&#x3D; &#x27;&#x27;
+    ) {
+      this.organisationUnitLabel &#x3D; this.currentEntrySelection.selectedOrganisationUnit.name;
+    } else {
+      this.organisationUnitLabel &#x3D; &#x27;Touch to select organisation unit&#x27;;
+    }
+  }
+
+  async setProgramLabel() {
+    if (this.programType &#x3D;&#x3D;&#x3D; &#x27;WITHOUT_REGISTRATION&#x27;) {
+      if (
+        this.currentEntrySelection &amp;&amp;
+        this.currentEntrySelection.selectedProgramWithOutRegistration.name &amp;&amp;
+        this.currentEntrySelection.selectedProgramWithOutRegistration.name !&#x3D;&#x3D;
+          &#x27;&#x27;
+      ) {
+        this.programLabel &#x3D; this.currentEntrySelection.selectedProgramWithOutRegistration.name;
+      } else {
+        this.programLabel &#x3D; &#x27;Touch to select program&#x27;;
+      }
+    }
+    if (this.programType &#x3D;&#x3D;&#x3D; &#x27;WITH_REGISTRATION&#x27;) {
+      if (
+        this.currentEntrySelection &amp;&amp;
+        this.currentEntrySelection.selectedProgramWithRegistration.name &amp;&amp;
+        this.currentEntrySelection.selectedProgramWithRegistration.name !&#x3D;&#x3D; &#x27;&#x27;
+      ) {
+        this.programLabel &#x3D; this.currentEntrySelection.selectedProgramWithRegistration.name;
+      } else {
+        this.programLabel &#x3D; &#x27;Touch to select program&#x27;;
+      }
+    }
+  }
+
+  async setProgramCategoryLabel() {
+    const dataDimension &#x3D; await this.getDataDimension();
+    this.currentEntrySelection &#x3D; {
+      ...this.currentEntrySelection,
+      selectedDataDimension: this.selectedDataDimension,
+      dataDimension
+    };
+  }
+
+  async isAllParameterSelected() {
+    let isAllParameterSelected &#x3D; false;
+    const isEmptySelectedDimension &#x3D; _.filter(
+      this.selectedDataDimension,
+      (item: any) &#x3D;&gt; {
+        return _.isEmpty(item);
+      }
+    );
+    if (
+      this.selectedProgram &amp;&amp;
+      this.selectedProgram.categoryCombo &amp;&amp;
+      this.selectedProgram.categoryCombo.name
+    ) {
+      const { categoryCombo } &#x3D; this.selectedProgram;
+      const { name } &#x3D; categoryCombo;
+      isAllParameterSelected &#x3D;
+        name &#x3D;&#x3D;&#x3D; &#x27;default&#x27;
+          ? true
+          : isEmptySelectedDimension.length &#x3D;&#x3D;&#x3D; 0 &amp;&amp;
+            this.selectedDataDimension.length &gt; 0
+          ? true
+          : isAllParameterSelected;
+    }
+    return isAllParameterSelected;
+  }
+
+  async getDataDimension() {
+    let attributeCos &#x3D; &#x27;&#x27;;
+    let attributeCc &#x3D; &#x27;&#x27;;
+    if (this.selectedProgram &amp;&amp; this.selectedProgram.categoryCombo) {
+      const { categoryCombo } &#x3D; this.selectedProgram;
+      attributeCc &#x3D; categoryCombo &amp;&amp; categoryCombo.id ? categoryCombo.id : &#x27;&#x27;;
+      if (this.selectedDataDimension.length &gt; 0) {
+        attributeCos &#x3D; _.join(
+          _.map(
+            _.filter(this.selectedDataDimension, (item: any) &#x3D;&gt; {
+              return !_.isEmpty(item);
+            }),
+            (item: any) &#x3D;&gt; item.id
+          ),
+          &#x27;;&#x27;
+        );
+      }
+    }
+    return { attributeCos, attributeCc };
+  }
+
+  async openOrganisationUnitModal() {
+    const organisationUnitId &#x3D; this.currentEntrySelection
+      .selectedOrganisationUnit.id;
+    const modal &#x3D; await this.modalController.create({
+      component: OrganisationUnitSelectionPage,
+      componentProps: {
+        allowMultipleSelection: this.allowMultipleOuSelection,
+        selectedOrganisayionUnitIds: [organisationUnitId]
+      }
+    });
+    modal.present();
+    const response &#x3D; await modal.onDidDismiss();
+    if (response &amp;&amp; response.data) {
+      const { id, name } &#x3D; response.data;
+      this.setCurrentOrganisationUnit(id, name);
+      await this.discoveringProgramList();
+    }
+  }
+
+  async openProgramListSelectionModal() {
+    const programId &#x3D;
+      this.programType &#x3D;&#x3D;&#x3D; &#x27;WITHOUT_REGISTRATION&#x27;
+        ? this.currentEntrySelection.selectedProgramWithOutRegistration.id
+        : this.currentEntrySelection.selectedProgramWithRegistration.id;
+    const modal &#x3D; await this.modalController.create({
+      component: OptionSetSelectionPage,
+      componentProps: {
+        selectedValue: programId,
+        options: this.programOptions,
+        isDisabled: true
+      }
+    });
+    modal.present();
+    const response &#x3D; await modal.onDidDismiss();
+    if (response &amp;&amp; response.data) {
+      const { id, name } &#x3D; response.data;
+      this.setCurrentProgram(id, name);
+      await this.discoveringProgramList();
+    }
+  }
+
+  async openDataDimensionSelection(category: any) {
+    const currentIndex &#x3D; _.indexOf(
+      this.programCategoryCombo.categories,
+      category
+    );
+    const selectedValue &#x3D;
+      currentIndex &gt; -1 &amp;&amp;
+      this.selectedDataDimension &amp;&amp;
+      this.selectedDataDimension[currentIndex]
+        ? this.selectedDataDimension[currentIndex].id
+        : &#x27;&#x27;;
+    const modal &#x3D; await this.modalController.create({
+      component: OptionSetSelectionPage,
+      componentProps: {
+        selectedValue,
+        options: _.map(category.categoryOptions, (categoryOption: any) &#x3D;&gt; {
+          const { id } &#x3D; categoryOption;
+          return { ...categoryOption, code: id };
+        })
+      }
+    });
+    modal.present();
+    const response &#x3D; await modal.onDidDismiss();
+    if (response &amp;&amp; response.data) {
+      const { id, name } &#x3D; response.data;
+      const selectedDataDimension &#x3D; { id, name };
+      this.setSelectedCategoryOption(selectedDataDimension, category);
+    }
+  }
+
+  setCurrentOrganisationUnit(id: string, name: string) {
+    this.currentEntrySelection.selectedOrganisationUnit &#x3D; {
+      ...this.currentEntrySelection.selectedOrganisationUnit,
+      id,
+      name
+    };
+  }
+
+  setSelectedCategoryOption(selectedDataDimension: any, category: any) {
+    const currentIndex &#x3D; _.indexOf(
+      this.programCategoryCombo.categories,
+      category
+    );
+    this.selectedDataDimension[currentIndex] &#x3D; selectedDataDimension;
+    this.updateProgramParameterSelections();
+  }
+
+  setCurrentProgram(id: string, name: string) {
+    if (this.programType &#x3D;&#x3D;&#x3D; &#x27;WITHOUT_REGISTRATION&#x27;) {
+      this.currentEntrySelection.selectedProgramWithOutRegistration &#x3D; {
+        ...this.currentEntrySelection.selectedProgramWithOutRegistration,
+        id,
+        name
+      };
+    }
+    if (this.programType &#x3D;&#x3D;&#x3D; &#x27;WITH_REGISTRATION&#x27;) {
+      this.currentEntrySelection.selectedProgramWithRegistration &#x3D; {
+        ...this.currentEntrySelection.selectedProgramWithRegistration,
+        id,
+        name
+      };
+    }
+  }
+
+  async discoveringProgramList() {
+    try {
+      const organisationUnitId &#x3D; this.currentEntrySelection
+        .selectedOrganisationUnit.id;
+      const programId &#x3D;
+        this.programType &#x3D;&#x3D;&#x3D; &#x27;WITHOUT_REGISTRATION&#x27;
+          ? this.currentEntrySelection.selectedProgramWithOutRegistration.id
+          : this.currentEntrySelection.selectedProgramWithRegistration.id;
+      const programs: any[] &#x3D; await this.programSelectionService.getProgramListBySelectedOrganisationUnitAndRoles(
+        organisationUnitId,
+        this.programType,
+        this.programIdsByUserRoles,
+        this.authorities
+      );
+      this.resetCurrentProgramAndProgramList(programs, programId);
+      if (programId !&#x3D;&#x3D; &#x27;&#x27;) {
+        this.selectedProgram &#x3D; _.find(programs, (program: Program) &#x3D;&gt; {
+          return program.id &#x3D;&#x3D;&#x3D; programId;
+        });
+        if (this.selectedProgram &amp;&amp; this.selectedProgram.categoryCombo) {
+          await this.setProgramCategoryCombos(
+            this.selectedProgram,
+            organisationUnitId
+          );
+        }
+      }
+      this.programOptions &#x3D; _.map(programs, (program: any) &#x3D;&gt; {
+        const { id, code, name } &#x3D; program;
+        return { id, name, code };
+      });
+      setTimeout(() &#x3D;&gt; {
+        this.updateProgramParameterSelections();
+      }, 100);
+    } catch (error) {
+      const message &#x3D; &#x60;Error : ${JSON.stringify(error)}&#x60;;
+      this.toasterMessagesService.showToasterMessage(message);
+    }
+  }
+
+  resetCurrentProgramAndProgramList(programs: any[], programId: string) {
+    const programObj: any &#x3D; _.find(programs, (program: Program) &#x3D;&gt; {
+      return program.id &#x3D;&#x3D;&#x3D; programId;
+    });
+    if (programObj &amp;&amp; programObj.id) {
+      const { id, name } &#x3D; programObj;
+      this.setCurrentProgram(id, name);
+    } else if (programs &amp;&amp; programs.length &gt; 0) {
+      const program &#x3D; programs[0];
+      const { id, name } &#x3D; program;
+      this.setCurrentProgram(id, name);
+    } else {
+      this.setCurrentProgram(&#x27;&#x27;, &#x27;&#x27;);
+    }
+  }
+
+  async setProgramCategoryCombos(
+    selectedProgram: Program,
+    organisationUnitId: string
+  ) {
+    this.isProgramDimensionApplicable &#x3D; false;
+    const { categoryCombo } &#x3D; selectedProgram;
+    const { id, name, categories } &#x3D; categoryCombo;
+    this.programCategoryCombo &#x3D; {};
+    if (name !&#x3D;&#x3D; &#x27;default&#x27;) {
+      this.programCategoryCombo[&#x27;id&#x27;] &#x3D; id;
+      this.programCategoryCombo[&#x27;name&#x27;] &#x3D; name;
+      const categoriesResponse &#x3D; await this.programSelectionService.getProgramCategoryComboCategories(
+        organisationUnitId,
+        categories
+      );
+      this.programCategoryCombo[&#x27;categories&#x27;] &#x3D; categoriesResponse;
+      this.isProgramDimensionApplicable &#x3D; true;
+      for (const category of categoriesResponse) {
+        if (
+          category &amp;&amp;
+          category.categoryOptions &amp;&amp;
+          category.categoryOptions.length &#x3D;&#x3D;&#x3D; 0
+        ) {
+          this.isProgramDimensionApplicable &#x3D; false;
+        }
+      }
+    }
+    this.selectedDataDimension &#x3D;
+      this.currentEntrySelection.dataDimension.attributeCc &#x3D;&#x3D;&#x3D; id
+        ? []
+        : this.currentEntrySelection.selectedDataDimension;
+    this.updateProgramParameterSelections();
+  }
+
+  trackByFn(index: any, item: any) {
+    return item &amp;&amp; item.id ? item.id : index;
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;!--
+*
+* Copyright 2019 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2019
+* @author Joseph Chingalo profschingalo@gmail.com&gt;
+*
+*
+--&gt;
+&lt;div class&#x3D;&quot;item-card ion-text-center&quot; (click)&#x3D;&quot;openOrganisationUnitModal()&quot;&gt;
+    &lt;img class&#x3D;&quot;side-menu-icon&quot; [src]&#x3D;&quot;organisationUnitIcon&quot; /&gt;&amp;nbsp;&amp;nbsp;
+    &lt;span [translate]&#x3D;&quot;organisationUnitLabel&quot;&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class&#x3D;&quot;item-card ion-text-center&quot; (click)&#x3D;&quot;openProgramListSelectionModal()&quot;&gt;
+    &lt;img class&#x3D;&quot;side-menu-icon&quot; [src]&#x3D;&quot;programIcon&quot; /&gt;&amp;nbsp;&amp;nbsp;
+    &lt;span [translate]&#x3D;&quot;programLabel&quot;&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;div *ngIf&#x3D;&quot;programCategoryCombo &amp;&amp; programCategoryCombo.id &quot;&gt;
+    &lt;div *ngIf&#x3D;&quot;isProgramDimensionApplicable&quot;&gt;
+        &lt;div *ngFor&#x3D;&quot;let category of programCategoryCombo.categories;let categoryIndex &#x3D; index;&quot;&gt;
+            &lt;div class&#x3D;&quot;item-card&quot; (click)&#x3D;&quot;openDataDimensionSelection(category)&quot;&gt;
+                &lt;span [translate]&#x3D;&quot;category.name&quot;&gt;&lt;/span&gt;
+                &lt;div class&#x3D;&quot;item-card&quot;&gt;
+                    &lt;span [translate]&#x3D;&quot; selectedDataDimension[categoryIndex] &amp;&amp; selectedDataDimension[categoryIndex].name  ? selectedDataDimension[categoryIndex].name : &#x27;Touch to select option&#x27;&quot;&gt;&lt;/span&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;item-card ion-text-center&quot; padding-top padding-bottom *ngIf&#x3D;&quot;!isProgramDimensionApplicable&quot;&gt;
+        &lt;span [translate]&#x3D;&quot;&#x27;All of selected category disaggregation are restricted from entry in selcted organisation unit, choose a different form or contact your support desk&#x27;&quot;&gt;&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./program-based-paramater-selection.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss"></code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><!--** Copyright 2019 HISP Tanzania** This program is free software; you can redistribute it and/or modify* it under the terms of the GNU General Public License as published by* the Free Software Foundation; either version 2 of the License, or* (at your option) any later version.** This program is distributed in the hope that it will be useful,* but WITHOUT ANY WARRANTY; without even the implied warranty of* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the* GNU General Public License for more details.** You should have received a copy of the GNU General Public License* along with this program; if not, write to the Free Software* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,* MA 02110-1301, USA.** @since 2019* @author Joseph Chingalo profschingalo@gmail.com>**--><div class="item-card ion-text-center" (click)="openOrganisationUnitModal()">    <img class="side-menu-icon" [src]="organisationUnitIcon" />&nbsp;&nbsp;    <span [translate]="organisationUnitLabel"></span></div><div class="item-card ion-text-center" (click)="openProgramListSelectionModal()">    <img class="side-menu-icon" [src]="programIcon" />&nbsp;&nbsp;    <span [translate]="programLabel"></span></div><div *ngIf="programCategoryCombo && programCategoryCombo.id ">    <div *ngIf="isProgramDimensionApplicable">        <div *ngFor="let category of programCategoryCombo.categories;let categoryIndex = index;">            <div class="item-card" (click)="openDataDimensionSelection(category)">                <span [translate]="category.name"></span>                <div class="item-card">                    <span [translate]=" selectedDataDimension[categoryIndex] && selectedDataDimension[categoryIndex].name  ? selectedDataDimension[categoryIndex].name : \'Touch to select option\'"></span>                </div>            </div>        </div>    </div>    <div class="item-card ion-text-center" padding-top padding-bottom *ngIf="!isProgramDimensionApplicable">        <span [translate]="\'All of selected category disaggregation are restricted from entry in selcted organisation unit, choose a different form or contact your support desk\'"></span>    </div></div></div>'
+    var COMPONENTS = [{'name': 'AboutPage', 'selector': 'app-about'},{'name': 'AccountsPage', 'selector': 'app-accounts'},{'name': 'AgeInputComponent', 'selector': 'app-age-input'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AppItemComponent', 'selector': 'app-app-item'},{'name': 'AppSettingsComponent', 'selector': 'app-app-settings'},{'name': 'AppsItemContainerComponent', 'selector': 'app-apps-item-container'},{'name': 'AppsPage', 'selector': 'app-apps'},{'name': 'BarcodeInputComponent', 'selector': 'app-barcode-input'},{'name': 'BarcodeSettingsComponent', 'selector': 'app-barcode-settings'},{'name': 'BooleanInputComponent', 'selector': 'app-boolean-input'},{'name': 'CoordinateComponent', 'selector': 'app-coordinate'},{'name': 'CoordinateInputComponent', 'selector': 'app-coordinate-input'},{'name': 'CoordinateSelectionPage', 'selector': 'app-coordinate-selection'},{'name': 'DashboardPage', 'selector': 'app-dashboard'},{'name': 'DataEntryPage', 'selector': 'app-data-entry'},{'name': 'DateInputComponent', 'selector': 'app-date-input'},{'name': 'DateTimeComponent', 'selector': 'app-date-time'},{'name': 'EmailInputComponent', 'selector': 'app-email-input'},{'name': 'EntryFormSettingsComponent', 'selector': 'app-entry-form-settings'},{'name': 'EventCapturePage', 'selector': 'app-event-capture'},{'name': 'HelpPage', 'selector': 'app-help'},{'name': 'LaunchPage', 'selector': 'app-launch'},{'name': 'LocalInstanceSelectionPage', 'selector': 'app-local-instance-selection'},{'name': 'LoginFormComponent', 'selector': 'app-login-form'},{'name': 'LoginMetadataSyncComponent', 'selector': 'app-login-metadata-sync'},{'name': 'LoginPage', 'selector': 'app-login'},{'name': 'LoginSpinnerComponent', 'selector': 'app-login-spinner'},{'name': 'NumericalInputComponent', 'selector': 'app-numerical-input'},{'name': 'OptionSetInputComponent', 'selector': 'app-option-set-input'},{'name': 'OptionSetSelectionPage', 'selector': 'app-option-set-selection'},{'name': 'OrganisationUnitInputComponent', 'selector': 'app-organisation-unit-input'},{'name': 'OrganisationUnitSearchPage', 'selector': 'app-organisation-unit-search'},{'name': 'OrganisationUnitSelectionPage', 'selector': 'app-organisation-unit-selection'},{'name': 'OrganisationUnitTreeComponent', 'selector': 'app-organisation-unit-tree'},{'name': 'PasswordInputComponent', 'selector': 'app-password-input'},{'name': 'PercentageInputComponent', 'selector': 'app-percentage-input'},{'name': 'PhoneNumberInputComponent', 'selector': 'app-phone-number-input'},{'name': 'ProfilePage', 'selector': 'app-profile'},{'name': 'ProgramBasedParamaterSelectionComponent', 'selector': 'app-program-based-paramater-selection'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'RadioButtonComponent', 'selector': 'app-radio-button'},{'name': 'ReportsPage', 'selector': 'app-reports'},{'name': 'SettingContainerComponent', 'selector': 'app-setting-container'},{'name': 'SettingsPage', 'selector': 'app-settings'},{'name': 'SloganComponent', 'selector': 'app-slogan'},{'name': 'SynchronizationSettingsComponent', 'selector': 'app-synchronization-settings'},{'name': 'SyncPage', 'selector': 'app-sync'},{'name': 'TabsPage', 'selector': 'app-tabs'},{'name': 'TextInputComponent', 'selector': 'app-text-input'},{'name': 'TrackerCapturePage', 'selector': 'app-tracker-capture'},{'name': 'TranslationSelectionPage', 'selector': 'app-translation-selection'},{'name': 'TrueOnlyInputComponent', 'selector': 'app-true-only-input'},{'name': 'UnitIntervalInputComponent', 'selector': 'app-unit-interval-input'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'ProgramBasedParamaterSelectionComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'ProgramBasedParamaterSelectionComponent.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

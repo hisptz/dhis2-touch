@@ -344,24 +344,36 @@ export class ProgramStageSectionService {
     &gt;;
     const chunk &#x3D; 50;
     const programStageSectionData &#x3D; _.flattenDeep(
-      _.map(programStageSections, (programStageSection: any) &#x3D;&gt; {
-        const {
-          programStage,
-          programStageDataElements,
-          dataElements
-        } &#x3D; programStageSection;
-        const dataElementsData &#x3D; programStageDataElements
-          ? _.map(programStageDataElements, (programStageDataElement: any) &#x3D;&gt; {
-              return { id: programStageDataElement.dataElement.id };
-            })
-          : dataElements;
-        const programStageId &#x3D; programStage.id;
-        return {
-          ...programStageSection,
-          dataElements: dataElementsData,
-          programStageId
-        };
-      })
+      _.map(
+        _.filter(programStageSections, (programStageSection: any) &#x3D;&gt; {
+          return (
+            programStageSection &amp;&amp;
+            programStageSection.programStage &amp;&amp;
+            programStageSection.programStage
+          );
+        }),
+        (programStageSection: any) &#x3D;&gt; {
+          const {
+            programStage,
+            programStageDataElements,
+            dataElements
+          } &#x3D; programStageSection;
+          const dataElementsData &#x3D; programStageDataElements
+            ? _.map(
+                programStageDataElements,
+                (programStageDataElement: any) &#x3D;&gt; {
+                  return { id: programStageDataElement.dataElement.id };
+                }
+              )
+            : dataElements;
+          const programStageId &#x3D; programStage.id;
+          return {
+            ...programStageSection,
+            dataElements: dataElementsData,
+            programStageId
+          };
+        }
+      )
     );
     return new Observable(observer &#x3D;&gt; {
       repository

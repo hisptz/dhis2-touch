@@ -131,7 +131,28 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                <a href="#allowMultipleOuSelection">allowMultipleOuSelection</a>
+                            </li>
+                            <li>
+                                <a href="#authorities">authorities</a>
+                            </li>
+                            <li>
                                 <a href="#colorSettings$">colorSettings$</a>
+                            </li>
+                            <li>
+                                <a href="#currentEntrySelection">currentEntrySelection</a>
+                            </li>
+                            <li>
+                                <a href="#currentUser">currentUser</a>
+                            </li>
+                            <li>
+                                <a href="#isLoading">isLoading</a>
+                            </li>
+                            <li>
+                                <a href="#programIdsByUserRoles">programIdsByUserRoles</a>
+                            </li>
+                            <li>
+                                <a href="#programType">programType</a>
                             </li>
                         </ul>
                     </td>
@@ -146,7 +167,19 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#discoveringCurrentUser">discoveringCurrentUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getCurrentEntrySelection">getCurrentEntrySelection</a>
+                            </li>
+                            <li>
                                 <a href="#ngOnInit">ngOnInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#onCurrentSelectionChange">onCurrentSelectionChange</a>
                             </li>
                         </ul>
                     </td>
@@ -166,12 +199,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(store: <a href="../interfaces/State.html">Store<State></a>)</code>
+<code>constructor(store: <a href="../interfaces/State.html">Store<State></a>, userService: <a href="../injectables/UserService.html">UserService</a>, toasterMessagesService: <a href="../injectables/ToasterMessagesService.html">ToasterMessagesService</a>, currentEntrySelectionStorageService: <a href="../injectables/CurrentEntrySelectionStorageService.html">CurrentEntrySelectionStorageService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/tabs/apps/event-capture/event-capture.page.ts:37</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/app/tabs/apps/event-capture/event-capture.page.ts:48</a></div>
                             </td>
                         </tr>
 
@@ -193,6 +226,42 @@
                                                   
                                                         <td>
                                                                         <code><a href="../interfaces/State.html" target="_self" >Store&lt;State&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>userService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/UserService.html" target="_self" >UserService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>toasterMessagesService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ToasterMessagesService.html" target="_self" >ToasterMessagesService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>currentEntrySelectionStorageService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/CurrentEntrySelectionStorageService.html" target="_self" >CurrentEntrySelectionStorageService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -222,6 +291,119 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="discoveringCurrentUser"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            discoveringCurrentUser
+                        </b>
+                        <a href="#discoveringCurrentUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>discoveringCurrentUser()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="68"
+                            class="link-to-prism">src/app/tabs/apps/event-capture/event-capture.page.ts:68</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getCurrentEntrySelection"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getCurrentEntrySelection
+                        </b>
+                        <a href="#getCurrentEntrySelection"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getCurrentEntrySelection(currentUser: <a href="../interfaces/CurrentUser.html">CurrentUser</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="85"
+                            class="link-to-prism">src/app/tabs/apps/event-capture/event-capture.page.ts:85</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>currentUser</td>
+                                    <td>
+                                                <code><a href="../interfaces/CurrentUser.html" target="_self" >CurrentUser</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="ngOnInit"></a>
                     <span class="name">
                         <b>
@@ -240,8 +422,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="43"
-                            class="link-to-prism">src/app/tabs/apps/event-capture/event-capture.page.ts:43</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="64"
+                            class="link-to-prism">src/app/tabs/apps/event-capture/event-capture.page.ts:64</a></div>
                 </td>
             </tr>
 
@@ -257,12 +439,138 @@
             </tr>
         </tbody>
     </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onCurrentSelectionChange"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            onCurrentSelectionChange
+                        </b>
+                        <a href="#onCurrentSelectionChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onCurrentSelectionChange(response: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="94"
+                            class="link-to-prism">src/app/tabs/apps/event-capture/event-capture.page.ts:94</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>response</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </section>
     <section>
     
         <h3 id="inputs">
             Properties
         </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="allowMultipleOuSelection"></a>
+                        <span class="name">
+                            <b>
+                            allowMultipleOuSelection</b>
+                            <a href="#allowMultipleOuSelection"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/tabs/apps/event-capture/event-capture.page.ts:43</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="authorities"></a>
+                        <span class="name">
+                            <b>
+                            authorities</b>
+                            <a href="#authorities"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>string[]</code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/app/tabs/apps/event-capture/event-capture.page.ts:44</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
@@ -283,7 +591,142 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/tabs/apps/event-capture/event-capture.page.ts:37</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/tabs/apps/event-capture/event-capture.page.ts:41</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="currentEntrySelection"></a>
+                        <span class="name">
+                            <b>
+                            currentEntrySelection</b>
+                            <a href="#currentEntrySelection"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../interfaces/CurrentEntrySelection.html" target="_self" >CurrentEntrySelection</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/tabs/apps/event-capture/event-capture.page.ts:42</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="currentUser"></a>
+                        <span class="name">
+                            <b>
+                            currentUser</b>
+                            <a href="#currentUser"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../interfaces/CurrentUser.html" target="_self" >CurrentUser</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/tabs/apps/event-capture/event-capture.page.ts:47</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isLoading"></a>
+                        <span class="name">
+                            <b>
+                            isLoading</b>
+                            <a href="#isLoading"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/app/tabs/apps/event-capture/event-capture.page.ts:48</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="programIdsByUserRoles"></a>
+                        <span class="name">
+                            <b>
+                            programIdsByUserRoles</b>
+                            <a href="#programIdsByUserRoles"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>string[]</code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/tabs/apps/event-capture/event-capture.page.ts:45</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="programType"></a>
+                        <span class="name">
+                            <b>
+                            programType</b>
+                            <a href="#programType"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/tabs/apps/event-capture/event-capture.page.ts:46</a></div>
                             </td>
                         </tr>
 
@@ -300,7 +743,11 @@
 import { Observable } from &#x27;rxjs&#x27;;
 import { Store } from &#x27;@ngrx/store&#x27;;
 import { State, getCurrentUserColorSettings } from &#x27;../../../store&#x27;;
-import { AppColorObject } from &#x27;src/models&#x27;;
+import { AppColorObject, CurrentEntrySelection, CurrentUser } from &#x27;src/models&#x27;;
+import { DEFAULT_CURRENT_ENTRY_SELECTION } from &#x27;src/constants&#x27;;
+import { UserService } from &#x27;src/app/services/user.service&#x27;;
+import { CurrentEntrySelectionStorageService } from &#x27;src/app/services/current-entry-selection-storage.service&#x27;;
+import { ToasterMessagesService } from &#x27;src/app/services/toaster-messages.service&#x27;;
 
 @Component({
   selector: &#x27;app-event-capture&#x27;,
@@ -309,12 +756,69 @@ import { AppColorObject } from &#x27;src/models&#x27;;
 })
 export class EventCapturePage implements OnInit {
   colorSettings$: Observable&lt;AppColorObject&gt;;
+  currentEntrySelection: CurrentEntrySelection;
+  allowMultipleOuSelection: boolean;
+  authorities: string[];
+  programIdsByUserRoles: string[];
+  programType: string;
+  currentUser: CurrentUser;
+  isLoading: boolean;
 
-  constructor(private store: Store&lt;State&gt;) {
+  constructor(
+    private store: Store&lt;State&gt;,
+    private userService: UserService,
+    private toasterMessagesService: ToasterMessagesService,
+    private currentEntrySelectionStorageService: CurrentEntrySelectionStorageService
+  ) {
     this.colorSettings$ &#x3D; this.store.select(getCurrentUserColorSettings);
+    this.authorities &#x3D; [];
+    this.programIdsByUserRoles &#x3D; [];
+    this.allowMultipleOuSelection &#x3D; false;
+    this.isLoading &#x3D; true;
+    this.programType &#x3D; &#x27;WITHOUT_REGISTRATION&#x27;;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.discoveringCurrentUser();
+  }
+
+  async discoveringCurrentUser() {
+    try {
+      this.currentUser &#x3D; await this.userService.getCurrentUser();
+      const { authorities, programs } &#x3D; this.currentUser;
+      this.authorities &#x3D; authorities;
+      this.programIdsByUserRoles &#x3D; programs;
+      await this.getCurrentEntrySelection(this.currentUser);
+    } catch (error) {
+      const message &#x3D; &#x60;Error : ${JSON.stringify(error)}&#x60;;
+      this.toasterMessagesService.showToasterMessage(message);
+    } finally {
+      setTimeout(() &#x3D;&gt; {
+        this.isLoading &#x3D; false;
+      }, 100);
+    }
+  }
+
+  async getCurrentEntrySelection(currentUser: CurrentUser) {
+    const selections &#x3D; await this.currentEntrySelectionStorageService.getCurrentEntrySelection(
+      currentUser
+    );
+    this.currentEntrySelection &#x3D; selections
+      ? selections
+      : DEFAULT_CURRENT_ENTRY_SELECTION;
+  }
+
+  async onCurrentSelectionChange(response: any) {
+    const { isFormReady, currentEntrySelection } &#x3D; response;
+    if (currentEntrySelection) {
+      this.currentEntrySelection &#x3D; currentEntrySelection;
+      this.currentEntrySelectionStorageService.setCurrentEntrySelection(
+        currentEntrySelection,
+        this.currentUser
+      );
+    }
+    console.log({ isFormReady });
+  }
 }
 </code></pre>
     </div>
@@ -357,7 +861,20 @@ export class EventCapturePage implements OnInit {
 &lt;/ion-header&gt;
 
 &lt;ion-content&gt;
-
+    &lt;ion-grid&gt;
+        &lt;ion-row&gt;
+            &lt;ion-col&gt;
+                &lt;div *ngIf&#x3D;&quot;isLoading&quot;&gt;
+                    &lt;app-progress-bar [color]&#x3D;&quot;(colorSettings$ | async).colorAttributes.secondary&quot; [isIndeterminateProcess]&#x3D;&quot;true&quot; [processMessage]&#x3D;&quot;&#x27;&#x27;&quot;&gt;
+                    &lt;/app-progress-bar&gt;
+                &lt;/div&gt;
+                &lt;div *ngIf&#x3D;&quot;!isLoading&quot;&gt;
+                    &lt;app-program-based-paramater-selection (currentSelectionChange)&#x3D;&quot;onCurrentSelectionChange($event)&quot; [authorities]&#x3D;&quot;authorities&quot; [currentEntrySelection]&#x3D;&quot;currentEntrySelection&quot; [programIdsByUserRoles]&#x3D;&quot;programIdsByUserRoles&quot; [programType]&#x3D;&quot;programType&quot;
+                        [allowMultipleOuSelection]&#x3D;&quot;allowMultipleOuSelection&quot;&gt;&lt;/app-program-based-paramater-selection&gt;
+                &lt;/div&gt;
+            &lt;/ion-col&gt;
+        &lt;/ion-row&gt;
+    &lt;/ion-grid&gt;
 &lt;/ion-content&gt;</code></pre>
     </div>
 
@@ -393,8 +910,8 @@ export class EventCapturePage implements OnInit {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><!--** Copyright 2019 HISP Tanzania** This program is free software; you can redistribute it and/or modify* it under the terms of the GNU General Public License as published by* the Free Software Foundation; either version 2 of the License, or* (at your option) any later version.** This program is distributed in the hope that it will be useful,* but WITHOUT ANY WARRANTY; without even the implied warranty of* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the* GNU General Public License for more details.** You should have received a copy of the GNU General Public License* along with this program; if not, write to the Free Software* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,* MA 02110-1301, USA.** @since 2019* @author Joseph Chingalo profschingalo@gmail.com>**--><ion-header>    <ion-toolbar [color]="(colorSettings$ | async).colorAttributes.main">        <ion-buttons slot="start">            <ion-back-button [text]="\'\'" mode="ios"></ion-back-button>        </ion-buttons>        <ion-title>            <span [translate]="\'Event Capture\'"></span>        </ion-title>    </ion-toolbar></ion-header><ion-content></ion-content></div>'
-    var COMPONENTS = [{'name': 'AboutPage', 'selector': 'app-about'},{'name': 'AccountsPage', 'selector': 'app-accounts'},{'name': 'AgeInputComponent', 'selector': 'app-age-input'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AppItemComponent', 'selector': 'app-app-item'},{'name': 'AppSettingsComponent', 'selector': 'app-app-settings'},{'name': 'AppsItemContainerComponent', 'selector': 'app-apps-item-container'},{'name': 'AppsPage', 'selector': 'app-apps'},{'name': 'BarcodeInputComponent', 'selector': 'app-barcode-input'},{'name': 'BarcodeSettingsComponent', 'selector': 'app-barcode-settings'},{'name': 'BooleanInputComponent', 'selector': 'app-boolean-input'},{'name': 'CoordinateComponent', 'selector': 'app-coordinate'},{'name': 'CoordinateInputComponent', 'selector': 'app-coordinate-input'},{'name': 'CoordinateSelectionPage', 'selector': 'app-coordinate-selection'},{'name': 'DashboardPage', 'selector': 'app-dashboard'},{'name': 'DataEntryPage', 'selector': 'app-data-entry'},{'name': 'DateInputComponent', 'selector': 'app-date-input'},{'name': 'DateTimeComponent', 'selector': 'app-date-time'},{'name': 'EmailInputComponent', 'selector': 'app-email-input'},{'name': 'EntryFormSettingsComponent', 'selector': 'app-entry-form-settings'},{'name': 'EventCapturePage', 'selector': 'app-event-capture'},{'name': 'HelpPage', 'selector': 'app-help'},{'name': 'LaunchPage', 'selector': 'app-launch'},{'name': 'LocalInstanceSelectionPage', 'selector': 'app-local-instance-selection'},{'name': 'LoginFormComponent', 'selector': 'app-login-form'},{'name': 'LoginMetadataSyncComponent', 'selector': 'app-login-metadata-sync'},{'name': 'LoginPage', 'selector': 'app-login'},{'name': 'LoginSpinnerComponent', 'selector': 'app-login-spinner'},{'name': 'NumericalInputComponent', 'selector': 'app-numerical-input'},{'name': 'OptionSetInputComponent', 'selector': 'app-option-set-input'},{'name': 'OptionSetSelectionPage', 'selector': 'app-option-set-selection'},{'name': 'OrganisationUnitInputComponent', 'selector': 'app-organisation-unit-input'},{'name': 'OrganisationUnitSearchPage', 'selector': 'app-organisation-unit-search'},{'name': 'OrganisationUnitSelectionPage', 'selector': 'app-organisation-unit-selection'},{'name': 'OrganisationUnitTreeComponent', 'selector': 'app-organisation-unit-tree'},{'name': 'PasswordInputComponent', 'selector': 'app-password-input'},{'name': 'PercentageInputComponent', 'selector': 'app-percentage-input'},{'name': 'PhoneNumberInputComponent', 'selector': 'app-phone-number-input'},{'name': 'ProfilePage', 'selector': 'app-profile'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'RadioButtonComponent', 'selector': 'app-radio-button'},{'name': 'ReportsPage', 'selector': 'app-reports'},{'name': 'SettingContainerComponent', 'selector': 'app-setting-container'},{'name': 'SettingsPage', 'selector': 'app-settings'},{'name': 'SloganComponent', 'selector': 'app-slogan'},{'name': 'SynchronizationSettingsComponent', 'selector': 'app-synchronization-settings'},{'name': 'SyncPage', 'selector': 'app-sync'},{'name': 'TabsPage', 'selector': 'app-tabs'},{'name': 'TextInputComponent', 'selector': 'app-text-input'},{'name': 'TrackerCapturePage', 'selector': 'app-tracker-capture'},{'name': 'TranslationSelectionPage', 'selector': 'app-translation-selection'},{'name': 'TrueOnlyInputComponent', 'selector': 'app-true-only-input'},{'name': 'UnitIntervalInputComponent', 'selector': 'app-unit-interval-input'}];
+        var COMPONENT_TEMPLATE = '<div><!--** Copyright 2019 HISP Tanzania** This program is free software; you can redistribute it and/or modify* it under the terms of the GNU General Public License as published by* the Free Software Foundation; either version 2 of the License, or* (at your option) any later version.** This program is distributed in the hope that it will be useful,* but WITHOUT ANY WARRANTY; without even the implied warranty of* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the* GNU General Public License for more details.** You should have received a copy of the GNU General Public License* along with this program; if not, write to the Free Software* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,* MA 02110-1301, USA.** @since 2019* @author Joseph Chingalo profschingalo@gmail.com>**--><ion-header>    <ion-toolbar [color]="(colorSettings$ | async).colorAttributes.main">        <ion-buttons slot="start">            <ion-back-button [text]="\'\'" mode="ios"></ion-back-button>        </ion-buttons>        <ion-title>            <span [translate]="\'Event Capture\'"></span>        </ion-title>    </ion-toolbar></ion-header><ion-content>    <ion-grid>        <ion-row>            <ion-col>                <div *ngIf="isLoading">                    <app-progress-bar [color]="(colorSettings$ | async).colorAttributes.secondary" [isIndeterminateProcess]="true" [processMessage]="\'\'">                    </app-progress-bar>                </div>                <div *ngIf="!isLoading">                    <app-program-based-paramater-selection (currentSelectionChange)="onCurrentSelectionChange($event)" [authorities]="authorities" [currentEntrySelection]="currentEntrySelection" [programIdsByUserRoles]="programIdsByUserRoles" [programType]="programType"                        [allowMultipleOuSelection]="allowMultipleOuSelection"></app-program-based-paramater-selection>                </div>            </ion-col>        </ion-row>    </ion-grid></ion-content></div>'
+    var COMPONENTS = [{'name': 'AboutPage', 'selector': 'app-about'},{'name': 'AccountsPage', 'selector': 'app-accounts'},{'name': 'AgeInputComponent', 'selector': 'app-age-input'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AppItemComponent', 'selector': 'app-app-item'},{'name': 'AppSettingsComponent', 'selector': 'app-app-settings'},{'name': 'AppsItemContainerComponent', 'selector': 'app-apps-item-container'},{'name': 'AppsPage', 'selector': 'app-apps'},{'name': 'BarcodeInputComponent', 'selector': 'app-barcode-input'},{'name': 'BarcodeSettingsComponent', 'selector': 'app-barcode-settings'},{'name': 'BooleanInputComponent', 'selector': 'app-boolean-input'},{'name': 'CoordinateComponent', 'selector': 'app-coordinate'},{'name': 'CoordinateInputComponent', 'selector': 'app-coordinate-input'},{'name': 'CoordinateSelectionPage', 'selector': 'app-coordinate-selection'},{'name': 'DashboardPage', 'selector': 'app-dashboard'},{'name': 'DataEntryPage', 'selector': 'app-data-entry'},{'name': 'DateInputComponent', 'selector': 'app-date-input'},{'name': 'DateTimeComponent', 'selector': 'app-date-time'},{'name': 'EmailInputComponent', 'selector': 'app-email-input'},{'name': 'EntryFormSettingsComponent', 'selector': 'app-entry-form-settings'},{'name': 'EventCapturePage', 'selector': 'app-event-capture'},{'name': 'HelpPage', 'selector': 'app-help'},{'name': 'LaunchPage', 'selector': 'app-launch'},{'name': 'LocalInstanceSelectionPage', 'selector': 'app-local-instance-selection'},{'name': 'LoginFormComponent', 'selector': 'app-login-form'},{'name': 'LoginMetadataSyncComponent', 'selector': 'app-login-metadata-sync'},{'name': 'LoginPage', 'selector': 'app-login'},{'name': 'LoginSpinnerComponent', 'selector': 'app-login-spinner'},{'name': 'NumericalInputComponent', 'selector': 'app-numerical-input'},{'name': 'OptionSetInputComponent', 'selector': 'app-option-set-input'},{'name': 'OptionSetSelectionPage', 'selector': 'app-option-set-selection'},{'name': 'OrganisationUnitInputComponent', 'selector': 'app-organisation-unit-input'},{'name': 'OrganisationUnitSearchPage', 'selector': 'app-organisation-unit-search'},{'name': 'OrganisationUnitSelectionPage', 'selector': 'app-organisation-unit-selection'},{'name': 'OrganisationUnitTreeComponent', 'selector': 'app-organisation-unit-tree'},{'name': 'PasswordInputComponent', 'selector': 'app-password-input'},{'name': 'PercentageInputComponent', 'selector': 'app-percentage-input'},{'name': 'PhoneNumberInputComponent', 'selector': 'app-phone-number-input'},{'name': 'ProfilePage', 'selector': 'app-profile'},{'name': 'ProgramBasedParamaterSelectionComponent', 'selector': 'app-program-based-paramater-selection'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'RadioButtonComponent', 'selector': 'app-radio-button'},{'name': 'ReportsPage', 'selector': 'app-reports'},{'name': 'SettingContainerComponent', 'selector': 'app-setting-container'},{'name': 'SettingsPage', 'selector': 'app-settings'},{'name': 'SloganComponent', 'selector': 'app-slogan'},{'name': 'SynchronizationSettingsComponent', 'selector': 'app-synchronization-settings'},{'name': 'SyncPage', 'selector': 'app-sync'},{'name': 'TabsPage', 'selector': 'app-tabs'},{'name': 'TextInputComponent', 'selector': 'app-text-input'},{'name': 'TrackerCapturePage', 'selector': 'app-tracker-capture'},{'name': 'TranslationSelectionPage', 'selector': 'app-translation-selection'},{'name': 'TrueOnlyInputComponent', 'selector': 'app-true-only-input'},{'name': 'UnitIntervalInputComponent', 'selector': 'app-unit-interval-input'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'EventCapturePage'};
 </script>

@@ -408,8 +408,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="110"
-                            class="link-to-prism">src/app/services/setting.service.ts:110</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="109"
+                            class="link-to-prism">src/app/services/setting.service.ts:109</a></div>
                 </td>
             </tr>
 
@@ -490,8 +490,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="102"
-                            class="link-to-prism">src/app/services/setting.service.ts:102</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="101"
+                            class="link-to-prism">src/app/services/setting.service.ts:101</a></div>
                 </td>
             </tr>
 
@@ -726,7 +726,6 @@ export class SettingService {
   getSanitizedSettingForDisplay(appSettings: AppSetting) {
     if (appSettings &amp;&amp; appSettings.synchronization) {
       const { timeType, time } &#x3D; appSettings.synchronization;
-      console.log({ type: &#x27;fetch&#x27;, timeType, time });
       if (timeType &amp;&amp; time) {
         appSettings.synchronization.time &#x3D; this.getSynchronizationTimeForDisplaying(
           time,
