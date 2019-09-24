@@ -48,6 +48,7 @@ import { CoordinateSelectionPageModule } from './modals/coordinate-selection/coo
 import { OptionSetSelectionPageModule } from './modals/option-set-selection/option-set-selection.module';
 import { OrganisationUnitSearchPageModule } from './modals/organisation-unit-search/organisation-unit-search.module';
 import { OrganisationUnitSelectionPageModule } from './modals/organisation-unit-selection/organisation-unit-selection.module';
+import { PeriodSelectionPageModule } from './modals/period-selection/period-selection.module';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -77,6 +78,7 @@ export function createTranslateLoader(http: HttpClient) {
     OptionSetSelectionPageModule,
     OrganisationUnitSearchPageModule,
     OrganisationUnitSelectionPageModule,
+    PeriodSelectionPageModule,
     SharedComponentsModule
   ],
   providers: [
