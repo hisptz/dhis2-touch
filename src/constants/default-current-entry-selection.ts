@@ -28,7 +28,14 @@ export const DEFAULT_CURRENT_ENTRY_SELECTION: CurrentEntrySelection = {
   selectedProgramWithRegistration: { id: '', name: '' },
   selectedProgramWithOutRegistration: { id: '', name: '' },
   selectedReport: { id: '', name: '' },
-  selectedPeriod: { id: '', name: '' },
+  selectedPeriod: {
+    id: '',
+    name: '',
+    iso: '',
+    startDate: '',
+    endDate: '',
+    currentPeriodOffset: 0
+  },
   selectedDataDimension: null,
   dataDimension: { attributeCc: '', attributeCos: '' }
 };
