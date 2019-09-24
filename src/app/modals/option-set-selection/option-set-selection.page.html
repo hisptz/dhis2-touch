@@ -34,14 +34,18 @@
     </ion-toolbar>
 </ion-header>
 <ion-content>
-    <div *ngIf="options && options[currentIndex]"></div>
-    <ion-item detail *ngFor="let option of options[currentIndex]; trackBy: trackByFn" (click)="setSelectedOption(option)">
-        <ion-label>
-            <ion-text [color]="selectedValue === option.code ? 'current-selection' : ''">
-                {{ option.name }}
-            </ion-text>
-        </ion-label>
-    </ion-item>
+    <div *ngIf="options && options[currentIndex]">
+        <ion-item detail *ngFor="let option of options[currentIndex]; trackBy: trackByFn" (click)="setSelectedOption(option)">
+            <ion-label>
+                <ion-text [color]="selectedValue === option.code ? 'current-selection' : ''">
+                    {{ option.name }}
+                </ion-text>
+            </ion-label>
+        </ion-item>
+        <div *ngIf="options[currentIndex].length === 0">
+            <span [translate]="'No option to select'"></span>
+        </div>
+    </div>
 </ion-content>
 <ion-footer no-margin>
     <ion-toolbar no-margin>
