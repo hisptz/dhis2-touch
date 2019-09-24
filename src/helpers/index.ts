@@ -22,3 +22,4 @@
  *
  */
 export * from './app-metadata';
+export * from './entry-form-selection';

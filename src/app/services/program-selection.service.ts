@@ -72,7 +72,7 @@ export class ProgramSelectionService {
     );
   }
 
-  async getProgramCategoryComboCategories(
+  async getCategoryComboCategories(
     selectedOrgUnitId: string,
     categories: any[]
   ) {
