@@ -67,6 +67,9 @@
                             <a href="#getAppMetadata" title="src/helpers/app-metadata.ts"><b>getAppMetadata</b>&nbsp;&nbsp;&nbsp;(src/.../app-metadata.ts)</a>
                         </li>
                         <li>
+                            <a href="#getCategoryComboCategories" title="src/helpers/entry-form-selection.ts"><b>getCategoryComboCategories</b>&nbsp;&nbsp;&nbsp;(src/.../entry-form-selection.ts)</a>
+                        </li>
+                        <li>
                             <a href="#getCompletedTrackedProcess" title="src/app/login/helpers/login-helper.ts"><b>getCompletedTrackedProcess</b>&nbsp;&nbsp;&nbsp;(src/.../login-helper.ts)</a>
                         </li>
                         <li>
@@ -92,6 +95,12 @@
                         </li>
                         <li>
                             <a href="#getUrlWithLowercaseDomain" title="src/app/login/helpers/login-helper.ts"><b>getUrlWithLowercaseDomain</b>&nbsp;&nbsp;&nbsp;(src/.../login-helper.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#isOrganisationUnitAllowed" title="src/helpers/entry-form-selection.ts"><b>isOrganisationUnitAllowed</b>&nbsp;&nbsp;&nbsp;(src/.../entry-form-selection.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#isSelectedPeriodLockedForDataEntry" title="src/helpers/entry-form-selection.ts"><b>isSelectedPeriodLockedForDataEntry</b>&nbsp;&nbsp;&nbsp;(src/.../entry-form-selection.ts)</a>
                         </li>
                     </ul>
                 </td>
@@ -250,6 +259,206 @@
 
 
 
+        </tbody>
+    </table>
+</section>    <h3>src/helpers/entry-form-selection.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getCategoryComboCategories"></a>
+                    <span class="name">
+                        <b>
+                            getCategoryComboCategories
+                        </b>
+                        <a href="#getCategoryComboCategories"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getCategoryComboCategories(selectedOrgUnitId, categories)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>selectedOrgUnitId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>categories</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isOrganisationUnitAllowed"></a>
+                    <span class="name">
+                        <b>
+                            isOrganisationUnitAllowed
+                        </b>
+                        <a href="#isOrganisationUnitAllowed"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isOrganisationUnitAllowed(selectedOrgUnitId, categoryOption: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>selectedOrgUnitId</td>
+                                    <td>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>categoryOption</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isSelectedPeriodLockedForDataEntry"></a>
+                    <span class="name">
+                        <b>
+                            isSelectedPeriodLockedForDataEntry
+                        </b>
+                        <a href="#isSelectedPeriodLockedForDataEntry"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isSelectedPeriodLockedForDataEntry(expiryDays: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, endDate)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>expiryDays</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>endDate</td>
+                                    <td>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                </td>
+            </tr>
         </tbody>
     </table>
 </section>    <h3>src/app/login/helpers/login-helper.ts</h3>

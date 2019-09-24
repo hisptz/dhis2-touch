@@ -177,12 +177,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(store: <a href="../interfaces/State.html">Store<State></a>, userService: <a href="../injectables/UserService.html">UserService</a>, organisationUnitService: <a href="../injectables/OrganisationUnitService.html">OrganisationUnitService</a>, router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>, navCtrl: NavController)</code>
+<code>constructor(store: <a href="../interfaces/State.html">Store<State></a>, userService: <a href="../injectables/UserService.html">UserService</a>, router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>, navCtrl: NavController, currentEntrySelectionStorageService: <a href="../injectables/CurrentEntrySelectionStorageService.html">CurrentEntrySelectionStorageService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/tabs/accounts/accounts.page.ts:47</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/app/tabs/accounts/accounts.page.ts:50</a></div>
                             </td>
                         </tr>
 
@@ -224,18 +224,6 @@
                                                     
                                                 </tr>
                                                 <tr>
-                                                        <td>organisationUnitService</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../injectables/OrganisationUnitService.html" target="_self" >OrganisationUnitService</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                                <tr>
                                                         <td>router</td>
                                                   
                                                         <td>
@@ -252,6 +240,18 @@
                                                   
                                                         <td>
                                                                     <code>NavController</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>currentEntrySelectionStorageService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/CurrentEntrySelectionStorageService.html" target="_self" >CurrentEntrySelectionStorageService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -301,8 +301,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="73"
-                            class="link-to-prism">src/app/tabs/accounts/accounts.page.ts:73</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="76"
+                            class="link-to-prism">src/app/tabs/accounts/accounts.page.ts:76</a></div>
                 </td>
             </tr>
 
@@ -340,8 +340,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="62"
-                            class="link-to-prism">src/app/tabs/accounts/accounts.page.ts:62</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="65"
+                            class="link-to-prism">src/app/tabs/accounts/accounts.page.ts:65</a></div>
                 </td>
             </tr>
 
@@ -381,8 +381,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="64"
-                            class="link-to-prism">src/app/tabs/accounts/accounts.page.ts:64</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="67"
+                            class="link-to-prism">src/app/tabs/accounts/accounts.page.ts:67</a></div>
                 </td>
             </tr>
 
@@ -455,7 +455,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/tabs/accounts/accounts.page.ts:46</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/tabs/accounts/accounts.page.ts:49</a></div>
                             </td>
                         </tr>
 
@@ -482,7 +482,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/tabs/accounts/accounts.page.ts:47</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/app/tabs/accounts/accounts.page.ts:50</a></div>
                             </td>
                         </tr>
 
@@ -497,6 +497,7 @@
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
 import { Router } from &#x27;@angular/router&#x27;;
+import { NavController } from &#x27;@ionic/angular&#x27;;
 import { Observable } from &#x27;rxjs&#x27;;
 import { Store } from &#x27;@ngrx/store&#x27;;
 import {
@@ -505,10 +506,12 @@ import {
   getAthorizedApps
 } from &#x27;../../store&#x27;;
 import { AppColorObject, AppItem } from &#x27;src/models&#x27;;
-import { UTILITIES_APP_LIST } from &#x27;src/constants&#x27;;
+import {
+  UTILITIES_APP_LIST,
+  DEFAULT_CURRENT_ENTRY_SELECTION
+} from &#x27;src/constants&#x27;;
 import { UserService } from &#x27;src/app/services/user.service&#x27;;
-import { OrganisationUnitService } from &#x27;src/app/services/organisation-unit.service&#x27;;
-import { NavController } from &#x27;@ionic/angular&#x27;;
+import { CurrentEntrySelectionStorageService } from &#x27;src/app/services/current-entry-selection-storage.service&#x27;;
 
 @Component({
   selector: &#x27;app-accounts&#x27;,
@@ -522,9 +525,9 @@ export class AccountsPage implements OnInit {
   constructor(
     private store: Store&lt;State&gt;,
     private userService: UserService,
-    private organisationUnitService: OrganisationUnitService,
     private router: Router,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private currentEntrySelectionStorageService: CurrentEntrySelectionStorageService
   ) {
     this.colorSettings$ &#x3D; this.store.select(getCurrentUserColorSettings);
     this.currentUserAccountApps$ &#x3D; this.store.select(
@@ -552,7 +555,11 @@ export class AccountsPage implements OnInit {
           password: &#x27;&#x27;,
           isLogin: false
         });
-        this.organisationUnitService.resetOrganisationUnit();
+        const currentEntrySelection &#x3D; DEFAULT_CURRENT_ENTRY_SELECTION;
+        await this.currentEntrySelectionStorageService.setCurrentEntrySelection(
+          currentEntrySelection,
+          currentUser
+        );
       }
     } catch (error) {
     } finally {
@@ -635,7 +642,7 @@ export class AccountsPage implements OnInit {
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><!--** Copyright 2019 HISP Tanzania** This program is free software; you can redistribute it and/or modify* it under the terms of the GNU General Public License as published by* the Free Software Foundation; either version 2 of the License, or* (at your option) any later version.** This program is distributed in the hope that it will be useful,* but WITHOUT ANY WARRANTY; without even the implied warranty of* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the* GNU General Public License for more details.** You should have received a copy of the GNU General Public License* along with this program; if not, write to the Free Software* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,* MA 02110-1301, USA.** @since 2019* @author Joseph Chingalo profschingalo@gmail.com>**--><ion-header>  <ion-toolbar [color]="(colorSettings$ |async).colorAttributes.main">    <ion-title>Account</ion-title>  </ion-toolbar></ion-header><ion-content>  <div class="animated fadeIn" *ngIf="currentUserAccountApps$ |async as authorizedApps">    <app-apps-item-container (selectedApp)="onSelectApp($event)" [authorizedApps]="authorizedApps">    </app-apps-item-container>  </div></ion-content></div>'
-    var COMPONENTS = [{'name': 'AboutPage', 'selector': 'app-about'},{'name': 'AccountsPage', 'selector': 'app-accounts'},{'name': 'AgeInputComponent', 'selector': 'app-age-input'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AppItemComponent', 'selector': 'app-app-item'},{'name': 'AppSettingsComponent', 'selector': 'app-app-settings'},{'name': 'AppsItemContainerComponent', 'selector': 'app-apps-item-container'},{'name': 'AppsPage', 'selector': 'app-apps'},{'name': 'BarcodeInputComponent', 'selector': 'app-barcode-input'},{'name': 'BarcodeSettingsComponent', 'selector': 'app-barcode-settings'},{'name': 'BooleanInputComponent', 'selector': 'app-boolean-input'},{'name': 'CoordinateComponent', 'selector': 'app-coordinate'},{'name': 'CoordinateInputComponent', 'selector': 'app-coordinate-input'},{'name': 'CoordinateSelectionPage', 'selector': 'app-coordinate-selection'},{'name': 'DashboardPage', 'selector': 'app-dashboard'},{'name': 'DataEntryPage', 'selector': 'app-data-entry'},{'name': 'DateInputComponent', 'selector': 'app-date-input'},{'name': 'DateTimeComponent', 'selector': 'app-date-time'},{'name': 'EmailInputComponent', 'selector': 'app-email-input'},{'name': 'EntryFormSettingsComponent', 'selector': 'app-entry-form-settings'},{'name': 'EventCapturePage', 'selector': 'app-event-capture'},{'name': 'HelpPage', 'selector': 'app-help'},{'name': 'LaunchPage', 'selector': 'app-launch'},{'name': 'LocalInstanceSelectionPage', 'selector': 'app-local-instance-selection'},{'name': 'LoginFormComponent', 'selector': 'app-login-form'},{'name': 'LoginMetadataSyncComponent', 'selector': 'app-login-metadata-sync'},{'name': 'LoginPage', 'selector': 'app-login'},{'name': 'LoginSpinnerComponent', 'selector': 'app-login-spinner'},{'name': 'NumericalInputComponent', 'selector': 'app-numerical-input'},{'name': 'OptionSetInputComponent', 'selector': 'app-option-set-input'},{'name': 'OptionSetSelectionPage', 'selector': 'app-option-set-selection'},{'name': 'OrganisationUnitInputComponent', 'selector': 'app-organisation-unit-input'},{'name': 'OrganisationUnitSearchPage', 'selector': 'app-organisation-unit-search'},{'name': 'OrganisationUnitSelectionPage', 'selector': 'app-organisation-unit-selection'},{'name': 'OrganisationUnitTreeComponent', 'selector': 'app-organisation-unit-tree'},{'name': 'PasswordInputComponent', 'selector': 'app-password-input'},{'name': 'PercentageInputComponent', 'selector': 'app-percentage-input'},{'name': 'PhoneNumberInputComponent', 'selector': 'app-phone-number-input'},{'name': 'ProfilePage', 'selector': 'app-profile'},{'name': 'ProgramBasedParamaterSelectionComponent', 'selector': 'app-program-based-paramater-selection'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'RadioButtonComponent', 'selector': 'app-radio-button'},{'name': 'ReportsPage', 'selector': 'app-reports'},{'name': 'SettingContainerComponent', 'selector': 'app-setting-container'},{'name': 'SettingsPage', 'selector': 'app-settings'},{'name': 'SloganComponent', 'selector': 'app-slogan'},{'name': 'SynchronizationSettingsComponent', 'selector': 'app-synchronization-settings'},{'name': 'SyncPage', 'selector': 'app-sync'},{'name': 'TabsPage', 'selector': 'app-tabs'},{'name': 'TextInputComponent', 'selector': 'app-text-input'},{'name': 'TrackerCapturePage', 'selector': 'app-tracker-capture'},{'name': 'TranslationSelectionPage', 'selector': 'app-translation-selection'},{'name': 'TrueOnlyInputComponent', 'selector': 'app-true-only-input'},{'name': 'UnitIntervalInputComponent', 'selector': 'app-unit-interval-input'}];
+    var COMPONENTS = [{'name': 'AboutPage', 'selector': 'app-about'},{'name': 'AccountsPage', 'selector': 'app-accounts'},{'name': 'AgeInputComponent', 'selector': 'app-age-input'},{'name': 'AggegateParameterSelectionComponent', 'selector': 'app-aggegate-parameter-selection'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AppItemComponent', 'selector': 'app-app-item'},{'name': 'AppSettingsComponent', 'selector': 'app-app-settings'},{'name': 'AppsItemContainerComponent', 'selector': 'app-apps-item-container'},{'name': 'AppsPage', 'selector': 'app-apps'},{'name': 'BarcodeInputComponent', 'selector': 'app-barcode-input'},{'name': 'BarcodeSettingsComponent', 'selector': 'app-barcode-settings'},{'name': 'BooleanInputComponent', 'selector': 'app-boolean-input'},{'name': 'CoordinateComponent', 'selector': 'app-coordinate'},{'name': 'CoordinateInputComponent', 'selector': 'app-coordinate-input'},{'name': 'CoordinateSelectionPage', 'selector': 'app-coordinate-selection'},{'name': 'DashboardPage', 'selector': 'app-dashboard'},{'name': 'DataEntryPage', 'selector': 'app-data-entry'},{'name': 'DateInputComponent', 'selector': 'app-date-input'},{'name': 'DateTimeComponent', 'selector': 'app-date-time'},{'name': 'EmailInputComponent', 'selector': 'app-email-input'},{'name': 'EntryFormSettingsComponent', 'selector': 'app-entry-form-settings'},{'name': 'EventCapturePage', 'selector': 'app-event-capture'},{'name': 'HelpPage', 'selector': 'app-help'},{'name': 'LaunchPage', 'selector': 'app-launch'},{'name': 'LocalInstanceSelectionPage', 'selector': 'app-local-instance-selection'},{'name': 'LoginFormComponent', 'selector': 'app-login-form'},{'name': 'LoginMetadataSyncComponent', 'selector': 'app-login-metadata-sync'},{'name': 'LoginPage', 'selector': 'app-login'},{'name': 'LoginSpinnerComponent', 'selector': 'app-login-spinner'},{'name': 'NumericalInputComponent', 'selector': 'app-numerical-input'},{'name': 'OptionSetInputComponent', 'selector': 'app-option-set-input'},{'name': 'OptionSetSelectionPage', 'selector': 'app-option-set-selection'},{'name': 'OrganisationUnitInputComponent', 'selector': 'app-organisation-unit-input'},{'name': 'OrganisationUnitSearchPage', 'selector': 'app-organisation-unit-search'},{'name': 'OrganisationUnitSelectionPage', 'selector': 'app-organisation-unit-selection'},{'name': 'OrganisationUnitTreeComponent', 'selector': 'app-organisation-unit-tree'},{'name': 'PasswordInputComponent', 'selector': 'app-password-input'},{'name': 'PercentageInputComponent', 'selector': 'app-percentage-input'},{'name': 'PeriodSelectionPage', 'selector': 'app-period-selection'},{'name': 'PhoneNumberInputComponent', 'selector': 'app-phone-number-input'},{'name': 'ProfilePage', 'selector': 'app-profile'},{'name': 'ProgramBasedParamaterSelectionComponent', 'selector': 'app-program-based-paramater-selection'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'RadioButtonComponent', 'selector': 'app-radio-button'},{'name': 'ReportsPage', 'selector': 'app-reports'},{'name': 'SettingContainerComponent', 'selector': 'app-setting-container'},{'name': 'SettingsPage', 'selector': 'app-settings'},{'name': 'SloganComponent', 'selector': 'app-slogan'},{'name': 'SynchronizationSettingsComponent', 'selector': 'app-synchronization-settings'},{'name': 'SyncPage', 'selector': 'app-sync'},{'name': 'TabsPage', 'selector': 'app-tabs'},{'name': 'TextInputComponent', 'selector': 'app-text-input'},{'name': 'TrackerCapturePage', 'selector': 'app-tracker-capture'},{'name': 'TranslationSelectionPage', 'selector': 'app-translation-selection'},{'name': 'TrueOnlyInputComponent', 'selector': 'app-true-only-input'},{'name': 'UnitIntervalInputComponent', 'selector': 'app-unit-interval-input'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'AccountsPage'};
 </script>
