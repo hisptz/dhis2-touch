@@ -100,6 +100,4 @@ export class OrganisationUnitService {
     >;
     return await ouRepository.find();
   }
-
-  resetOrganisationUnit() {}
 }

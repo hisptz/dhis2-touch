@@ -1,0 +1,1259 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>DHIS 2 Touch</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/material.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">DHIS 2 Touch</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>PeriodSelectionPage</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/modals/period-selection/period-selection.page.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-period-selection</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./period-selection.page.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./period-selection.page.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#cancelIcon">cancelIcon</a>
+                            </li>
+                            <li>
+                                <a href="#colorSettings$">colorSettings$</a>
+                            </li>
+                            <li>
+                                <a href="#currentPeriodOffset">currentPeriodOffset</a>
+                            </li>
+                            <li>
+                                <a href="#openFuturePeriods">openFuturePeriods</a>
+                            </li>
+                            <li>
+                                <a href="#periods">periods</a>
+                            </li>
+                            <li>
+                                <a href="#periodType">periodType</a>
+                            </li>
+                            <li>
+                                <a href="#selectedValue">selectedValue</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#changePeriodSelection">changePeriodSelection</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#closeModal">closeModal</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#discoveringPeriodList">discoveringPeriodList</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit">ngOnInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setInitalValue">setInitalValue</a>
+                            </li>
+                            <li>
+                                <a href="#setSelectedPeriod">setSelectedPeriod</a>
+                            </li>
+                            <li>
+                                <a href="#trackByFn">trackByFn</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(modalController: ModalController, navParms: NavParams, store: <a href="../interfaces/State.html">Store<State></a>, periodSelectionService: <a href="../injectables/PeriodSelectionService.html">PeriodSelectionService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/modals/period-selection/period-selection.page.ts:45</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>modalController</td>
+                                                  
+                                                        <td>
+                                                                    <code>ModalController</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>navParms</td>
+                                                  
+                                                        <td>
+                                                                    <code>NavParams</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>store</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/State.html" target="_self" >Store&lt;State&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>periodSelectionService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/PeriodSelectionService.html" target="_self" >PeriodSelectionService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="changePeriodSelection"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            changePeriodSelection
+                        </b>
+                        <a href="#changePeriodSelection"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>changePeriodSelection(currentPeriodOffset: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="87"
+                            class="link-to-prism">src/app/modals/period-selection/period-selection.page.ts:87</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>currentPeriodOffset</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="closeModal"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            closeModal
+                        </b>
+                        <a href="#closeModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>closeModal(selectedPeriod?: <a href="../interfaces/AgggregatePeriod.html">AgggregatePeriod</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="104"
+                            class="link-to-prism">src/app/modals/period-selection/period-selection.page.ts:104</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>selectedPeriod</td>
+                                    <td>
+                                                <code><a href="../interfaces/AgggregatePeriod.html" target="_self" >AgggregatePeriod</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="discoveringPeriodList"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            discoveringPeriodList
+                        </b>
+                        <a href="#discoveringPeriodList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>discoveringPeriodList()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="92"
+                            class="link-to-prism">src/app/modals/period-selection/period-selection.page.ts:92</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <b>
+                            ngOnInit
+                        </b>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="57"
+                            class="link-to-prism">src/app/modals/period-selection/period-selection.page.ts:57</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setInitalValue"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            setInitalValue
+                        </b>
+                        <a href="#setInitalValue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setInitalValue(selectedValue: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, calendarId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, currentPeriodOffset: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, periodType: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, openFuturePeriods: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="72"
+                            class="link-to-prism">src/app/modals/period-selection/period-selection.page.ts:72</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>selectedValue</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>calendarId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>currentPeriodOffset</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>periodType</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>openFuturePeriods</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setSelectedPeriod"></a>
+                    <span class="name">
+                        <b>
+                            setSelectedPeriod
+                        </b>
+                        <a href="#setSelectedPeriod"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>setSelectedPeriod(selectedPeriod: <a href="../interfaces/AgggregatePeriod.html">AgggregatePeriod</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="100"
+                            class="link-to-prism">src/app/modals/period-selection/period-selection.page.ts:100</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>selectedPeriod</td>
+                                    <td>
+                                                <code><a href="../interfaces/AgggregatePeriod.html" target="_self" >AgggregatePeriod</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="trackByFn"></a>
+                    <span class="name">
+                        <b>
+                            trackByFn
+                        </b>
+                        <a href="#trackByFn"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>trackByFn(index: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, option: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="111"
+                            class="link-to-prism">src/app/modals/period-selection/period-selection.page.ts:111</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>index</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>option</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="cancelIcon"></a>
+                        <span class="name">
+                            <b>
+                            cancelIcon</b>
+                            <a href="#cancelIcon"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/app/modals/period-selection/period-selection.page.ts:44</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="colorSettings$"></a>
+                        <span class="name">
+                            <b>
+                            colorSettings$</b>
+                            <a href="#colorSettings$"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>Observable&lt;AppColorObject&gt;</code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/modals/period-selection/period-selection.page.ts:39</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="currentPeriodOffset"></a>
+                        <span class="name">
+                            <b>
+                            currentPeriodOffset</b>
+                            <a href="#currentPeriodOffset"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/modals/period-selection/period-selection.page.ts:41</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="openFuturePeriods"></a>
+                        <span class="name">
+                            <b>
+                            openFuturePeriods</b>
+                            <a href="#openFuturePeriods"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/modals/period-selection/period-selection.page.ts:42</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="periods"></a>
+                        <span class="name">
+                            <b>
+                            periods</b>
+                            <a href="#periods"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../interfaces/AgggregatePeriod.html" target="_self" >AgggregatePeriod[]</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/modals/period-selection/period-selection.page.ts:45</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="periodType"></a>
+                        <span class="name">
+                            <b>
+                            periodType</b>
+                            <a href="#periodType"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/modals/period-selection/period-selection.page.ts:43</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectedValue"></a>
+                        <span class="name">
+                            <b>
+                            selectedValue</b>
+                            <a href="#selectedValue"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/modals/period-selection/period-selection.page.ts:40</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+import { ModalController, NavParams } from &#x27;@ionic/angular&#x27;;
+import * as _ from &#x27;lodash&#x27;;
+import { Observable } from &#x27;rxjs&#x27;;
+import { Store } from &#x27;@ngrx/store&#x27;;
+import { State, getCurrentUserColorSettings } from &#x27;../../store&#x27;;
+import { AppColorObject, AgggregatePeriod } from &#x27;src/models&#x27;;
+import { PeriodSelectionService } from &#x27;src/app/services/period-selection.service&#x27;;
+
+@Component({
+  selector: &#x27;app-period-selection&#x27;,
+  templateUrl: &#x27;./period-selection.page.html&#x27;,
+  styleUrls: [&#x27;./period-selection.page.scss&#x27;]
+})
+export class PeriodSelectionPage implements OnInit {
+  colorSettings$: Observable&lt;AppColorObject&gt;;
+  selectedValue: string;
+  currentPeriodOffset: number;
+  openFuturePeriods: number;
+  periodType: string;
+  cancelIcon: string;
+  periods: AgggregatePeriod[];
+
+  constructor(
+    private modalController: ModalController,
+    private navParms: NavParams,
+    private store: Store&lt;State&gt;,
+    private periodSelectionService: PeriodSelectionService
+  ) {
+    this.colorSettings$ &#x3D; this.store.select(getCurrentUserColorSettings);
+    this.cancelIcon &#x3D; &#x27;assets/icon/cancel.png&#x27;;
+  }
+
+  ngOnInit() {
+    const selectedValue &#x3D; this.navParms.get(&#x27;selectedValue&#x27;);
+    const calendarId &#x3D; this.navParms.get(&#x27;calendarId&#x27;);
+    const currentPeriodOffset &#x3D; this.navParms.get(&#x27;currentPeriodOffset&#x27;);
+    const periodType &#x3D; this.navParms.get(&#x27;periodType&#x27;);
+    const openFuturePeriods &#x3D; this.navParms.get(&#x27;openFuturePeriods&#x27;);
+    this.setInitalValue(
+      selectedValue,
+      calendarId,
+      currentPeriodOffset,
+      periodType,
+      openFuturePeriods
+    );
+  }
+
+  async setInitalValue(
+    selectedValue: string,
+    calendarId: string,
+    currentPeriodOffset: number,
+    periodType: string,
+    openFuturePeriods: number
+  ) {
+    this.selectedValue &#x3D; selectedValue;
+    this.currentPeriodOffset &#x3D; currentPeriodOffset;
+    this.periodType &#x3D; periodType;
+    this.openFuturePeriods &#x3D; openFuturePeriods;
+    await this.periodSelectionService.intiateCalendarInstance(calendarId);
+    await this.discoveringPeriodList();
+  }
+
+  async changePeriodSelection(currentPeriodOffset: number) {
+    this.currentPeriodOffset &#x3D; currentPeriodOffset;
+    await this.discoveringPeriodList();
+  }
+
+  async discoveringPeriodList() {
+    this.periods &#x3D; await this.periodSelectionService.getPeriodsList(
+      this.periodType,
+      this.openFuturePeriods,
+      this.currentPeriodOffset
+    );
+  }
+
+  setSelectedPeriod(selectedPeriod: AgggregatePeriod) {
+    this.closeModal(selectedPeriod);
+  }
+
+  async closeModal(selectedPeriod?: AgggregatePeriod) {
+    await this.modalController.dismiss({
+      currentPeriodOffset: this.currentPeriodOffset,
+      selectedPeriod
+    });
+  }
+
+  trackByFn(index: any, option: any) {
+    return option &amp;&amp; option.id ? option.id : index;
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;!--
+*
+* Copyright 2019 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2019
+* @author Joseph Chingalo profschingalo@gmail.com&gt;
+*
+*
+--&gt;
+&lt;ion-header&gt;
+    &lt;ion-toolbar [color]&#x3D;&quot;(colorSettings$ | async).colorAttributes.main&quot; mode&#x3D;&quot;md&quot;&gt;
+        &lt;div class&#x3D;&quot;period-selection-title animated fadeIn&quot;&gt;
+            &lt;span [translate]&#x3D;&quot;&#x27;Period selection&#x27;&quot;&gt;&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;ion-buttons slot&#x3D;&quot;end&quot; (click)&#x3D;&quot;closeModal()&quot;&gt;
+            &lt;ion-button&gt;
+                &lt;ion-icon name&#x3D;&quot;close&quot;&gt;&lt;/ion-icon&gt;
+            &lt;/ion-button&gt;
+        &lt;/ion-buttons&gt;
+    &lt;/ion-toolbar&gt;
+&lt;/ion-header&gt;
+&lt;ion-content&gt;
+    &lt;ion-row&gt;
+        &lt;ion-col&gt;
+            &lt;ion-button expand&#x3D;&quot;block&quot; color&#x3D;&quot;medium&quot; (click)&#x3D;&quot;changePeriodSelection(currentPeriodOffset - 1)&quot; fill&#x3D;&quot;outline&quot;&gt;
+                &lt;span [translate]&#x3D;&quot;&#x27;Previous&#x27;&quot;&gt;&lt;/span&gt;
+            &lt;/ion-button&gt;
+        &lt;/ion-col&gt;
+        &lt;ion-col&gt;
+            &lt;ion-button expand&#x3D;&quot;block&quot; color&#x3D;&quot;medium&quot; [disabled]&#x3D;&quot;periods &amp;&amp; periods.length &#x3D;&#x3D;&#x3D; 0&quot; (click)&#x3D;&quot;changePeriodSelection(currentPeriodOffset + 1)&quot; fill&#x3D;&quot;outline&quot;&gt;
+                &lt;span [translate]&#x3D;&quot;&#x27;Next&#x27;&quot;&gt;&lt;/span&gt;
+            &lt;/ion-button&gt;
+        &lt;/ion-col&gt;
+    &lt;/ion-row&gt;
+    &lt;div *ngIf&#x3D;&quot;periods&quot;&gt;
+        &lt;ion-row&gt;
+            &lt;ion-col&gt;
+                &lt;ion-item detail *ngFor&#x3D;&quot;let period of periods; trackBy: trackByFn&quot; (click)&#x3D;&quot;setSelectedPeriod(period)&quot;&gt;
+                    &lt;ion-label&gt;
+                        &lt;ion-text [color]&#x3D;&quot;selectedValue &#x3D;&#x3D;&#x3D; period.iso ? &#x27;current-selection&#x27; : &#x27;&#x27;&quot;&gt;
+                            {{ period.name }}
+                        &lt;/ion-text&gt;
+                    &lt;/ion-label&gt;
+                &lt;/ion-item&gt;
+                &lt;div *ngIf&#x3D;&quot;periods.length &#x3D;&#x3D;&#x3D; 0&quot; class&#x3D;&quot;item-card&quot;&gt;
+                    &lt;span [translate]&#x3D;&quot;&#x27;No period to select&#x27;&quot;&gt;&lt;/span&gt;
+                &lt;/div&gt;
+            &lt;/ion-col&gt;
+        &lt;/ion-row&gt;
+    &lt;/div&gt;
+&lt;/ion-content&gt;</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./period-selection.page.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">.period-selection-title {
+    padding-left: 10px;
+}</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><!--** Copyright 2019 HISP Tanzania** This program is free software; you can redistribute it and/or modify* it under the terms of the GNU General Public License as published by* the Free Software Foundation; either version 2 of the License, or* (at your option) any later version.** This program is distributed in the hope that it will be useful,* but WITHOUT ANY WARRANTY; without even the implied warranty of* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the* GNU General Public License for more details.** You should have received a copy of the GNU General Public License* along with this program; if not, write to the Free Software* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,* MA 02110-1301, USA.** @since 2019* @author Joseph Chingalo profschingalo@gmail.com>**--><ion-header>    <ion-toolbar [color]="(colorSettings$ | async).colorAttributes.main" mode="md">        <div class="period-selection-title animated fadeIn">            <span [translate]="\'Period selection\'"></span>        </div>        <ion-buttons slot="end" (click)="closeModal()">            <ion-button>                <ion-icon name="close"></ion-icon>            </ion-button>        </ion-buttons>    </ion-toolbar></ion-header><ion-content>    <ion-row>        <ion-col>            <ion-button expand="block" color="medium" (click)="changePeriodSelection(currentPeriodOffset - 1)" fill="outline">                <span [translate]="\'Previous\'"></span>            </ion-button>        </ion-col>        <ion-col>            <ion-button expand="block" color="medium" [disabled]="periods && periods.length === 0" (click)="changePeriodSelection(currentPeriodOffset + 1)" fill="outline">                <span [translate]="\'Next\'"></span>            </ion-button>        </ion-col>    </ion-row>    <div *ngIf="periods">        <ion-row>            <ion-col>                <ion-item detail *ngFor="let period of periods; trackBy: trackByFn" (click)="setSelectedPeriod(period)">                    <ion-label>                        <ion-text [color]="selectedValue === period.iso ? \'current-selection\' : \'\'">                            {{ period.name }}                        </ion-text>                    </ion-label>                </ion-item>                <div *ngIf="periods.length === 0" class="item-card">                    <span [translate]="\'No period to select\'"></span>                </div>            </ion-col>        </ion-row>    </div></ion-content></div>'
+    var COMPONENTS = [{'name': 'AboutPage', 'selector': 'app-about'},{'name': 'AccountsPage', 'selector': 'app-accounts'},{'name': 'AgeInputComponent', 'selector': 'app-age-input'},{'name': 'AggegateParameterSelectionComponent', 'selector': 'app-aggegate-parameter-selection'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AppItemComponent', 'selector': 'app-app-item'},{'name': 'AppSettingsComponent', 'selector': 'app-app-settings'},{'name': 'AppsItemContainerComponent', 'selector': 'app-apps-item-container'},{'name': 'AppsPage', 'selector': 'app-apps'},{'name': 'BarcodeInputComponent', 'selector': 'app-barcode-input'},{'name': 'BarcodeSettingsComponent', 'selector': 'app-barcode-settings'},{'name': 'BooleanInputComponent', 'selector': 'app-boolean-input'},{'name': 'CoordinateComponent', 'selector': 'app-coordinate'},{'name': 'CoordinateInputComponent', 'selector': 'app-coordinate-input'},{'name': 'CoordinateSelectionPage', 'selector': 'app-coordinate-selection'},{'name': 'DashboardPage', 'selector': 'app-dashboard'},{'name': 'DataEntryPage', 'selector': 'app-data-entry'},{'name': 'DateInputComponent', 'selector': 'app-date-input'},{'name': 'DateTimeComponent', 'selector': 'app-date-time'},{'name': 'EmailInputComponent', 'selector': 'app-email-input'},{'name': 'EntryFormSettingsComponent', 'selector': 'app-entry-form-settings'},{'name': 'EventCapturePage', 'selector': 'app-event-capture'},{'name': 'HelpPage', 'selector': 'app-help'},{'name': 'LaunchPage', 'selector': 'app-launch'},{'name': 'LocalInstanceSelectionPage', 'selector': 'app-local-instance-selection'},{'name': 'LoginFormComponent', 'selector': 'app-login-form'},{'name': 'LoginMetadataSyncComponent', 'selector': 'app-login-metadata-sync'},{'name': 'LoginPage', 'selector': 'app-login'},{'name': 'LoginSpinnerComponent', 'selector': 'app-login-spinner'},{'name': 'NumericalInputComponent', 'selector': 'app-numerical-input'},{'name': 'OptionSetInputComponent', 'selector': 'app-option-set-input'},{'name': 'OptionSetSelectionPage', 'selector': 'app-option-set-selection'},{'name': 'OrganisationUnitInputComponent', 'selector': 'app-organisation-unit-input'},{'name': 'OrganisationUnitSearchPage', 'selector': 'app-organisation-unit-search'},{'name': 'OrganisationUnitSelectionPage', 'selector': 'app-organisation-unit-selection'},{'name': 'OrganisationUnitTreeComponent', 'selector': 'app-organisation-unit-tree'},{'name': 'PasswordInputComponent', 'selector': 'app-password-input'},{'name': 'PercentageInputComponent', 'selector': 'app-percentage-input'},{'name': 'PeriodSelectionPage', 'selector': 'app-period-selection'},{'name': 'PhoneNumberInputComponent', 'selector': 'app-phone-number-input'},{'name': 'ProfilePage', 'selector': 'app-profile'},{'name': 'ProgramBasedParamaterSelectionComponent', 'selector': 'app-program-based-paramater-selection'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'RadioButtonComponent', 'selector': 'app-radio-button'},{'name': 'ReportsPage', 'selector': 'app-reports'},{'name': 'SettingContainerComponent', 'selector': 'app-setting-container'},{'name': 'SettingsPage', 'selector': 'app-settings'},{'name': 'SloganComponent', 'selector': 'app-slogan'},{'name': 'SynchronizationSettingsComponent', 'selector': 'app-synchronization-settings'},{'name': 'SyncPage', 'selector': 'app-sync'},{'name': 'TabsPage', 'selector': 'app-tabs'},{'name': 'TextInputComponent', 'selector': 'app-text-input'},{'name': 'TrackerCapturePage', 'selector': 'app-tracker-capture'},{'name': 'TranslationSelectionPage', 'selector': 'app-translation-selection'},{'name': 'TrueOnlyInputComponent', 'selector': 'app-true-only-input'},{'name': 'UnitIntervalInputComponent', 'selector': 'app-unit-interval-input'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'PeriodSelectionPage'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'PeriodSelectionPage.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

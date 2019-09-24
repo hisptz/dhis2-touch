@@ -24,6 +24,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import {
@@ -32,10 +33,12 @@ import {
   getAthorizedApps
 } from '../../store';
 import { AppColorObject, AppItem } from 'src/models';
-import { UTILITIES_APP_LIST } from 'src/constants';
+import {
+  UTILITIES_APP_LIST,
+  DEFAULT_CURRENT_ENTRY_SELECTION
+} from 'src/constants';
 import { UserService } from 'src/app/services/user.service';
-import { OrganisationUnitService } from 'src/app/services/organisation-unit.service';
-import { NavController } from '@ionic/angular';
+import { CurrentEntrySelectionStorageService } from 'src/app/services/current-entry-selection-storage.service';
 
 @Component({
   selector: 'app-accounts',
@@ -49,9 +52,9 @@ export class AccountsPage implements OnInit {
   constructor(
     private store: Store<State>,
     private userService: UserService,
-    private organisationUnitService: OrganisationUnitService,
     private router: Router,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private currentEntrySelectionStorageService: CurrentEntrySelectionStorageService
   ) {
     this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
     this.currentUserAccountApps$ = this.store.select(
@@ -79,7 +82,11 @@ export class AccountsPage implements OnInit {
           password: '',
           isLogin: false
         });
-        this.organisationUnitService.resetOrganisationUnit();
+        const currentEntrySelection = DEFAULT_CURRENT_ENTRY_SELECTION;
+        await this.currentEntrySelectionStorageService.setCurrentEntrySelection(
+          currentEntrySelection,
+          currentUser
+        );
       }
     } catch (error) {
     } finally {

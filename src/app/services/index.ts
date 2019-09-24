@@ -65,6 +65,8 @@ import { ValidationRuleService } from './validation-rule.service';
 import { GeolocationService } from './geolocation.service';
 import { ProgramSelectionService } from './program-selection.service';
 import { CurrentEntrySelectionStorageService } from './current-entry-selection-storage.service';
+import { DataSetSelectionService } from './data-set-selection.service';
+import { PeriodSelectionService } from './period-selection.service';
 
 export const appProviders = [
   AppConfigService,
@@ -97,7 +99,9 @@ export const appProviders = [
   ValidationRuleService,
   GeolocationService,
   ProgramSelectionService,
-  CurrentEntrySelectionStorageService
+  CurrentEntrySelectionStorageService,
+  DataSetSelectionService,
+  PeriodSelectionService
 ];
 
 export const nativePlugins = [

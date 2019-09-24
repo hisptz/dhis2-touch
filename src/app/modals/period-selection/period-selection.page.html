@@ -1,0 +1,66 @@
+<!--
+*
+* Copyright 2019 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2019
+* @author Joseph Chingalo profschingalo@gmail.com>
+*
+*
+-->
+<ion-header>
+    <ion-toolbar [color]="(colorSettings$ | async).colorAttributes.main" mode="md">
+        <div class="period-selection-title animated fadeIn">
+            <span [translate]="'Period selection'"></span>
+        </div>
+        <ion-buttons slot="end" (click)="closeModal()">
+            <ion-button>
+                <ion-icon name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-row>
+        <ion-col>
+            <ion-button expand="block" color="medium" (click)="changePeriodSelection(currentPeriodOffset - 1)" fill="outline">
+                <span [translate]="'Previous'"></span>
+            </ion-button>
+        </ion-col>
+        <ion-col>
+            <ion-button expand="block" color="medium" [disabled]="periods && periods.length === 0" (click)="changePeriodSelection(currentPeriodOffset + 1)" fill="outline">
+                <span [translate]="'Next'"></span>
+            </ion-button>
+        </ion-col>
+    </ion-row>
+    <div *ngIf="periods">
+        <ion-row>
+            <ion-col>
+                <ion-item detail *ngFor="let period of periods; trackBy: trackByFn" (click)="setSelectedPeriod(period)">
+                    <ion-label>
+                        <ion-text [color]="selectedValue === period.iso ? 'current-selection' : ''">
+                            {{ period.name }}
+                        </ion-text>
+                    </ion-label>
+                </ion-item>
+                <div *ngIf="periods.length === 0" class="item-card">
+                    <span [translate]="'No period to select'"></span>
+                </div>
+            </ion-col>
+        </ion-row>
+    </div>
+</ion-content>

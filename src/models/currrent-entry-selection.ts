@@ -27,7 +27,16 @@ export interface CurrentEntrySelection {
   selectedProgramWithRegistration?: { id: string; name: string };
   selectedProgramWithOutRegistration?: { id: string; name: string };
   selectedReport?: { id: string; name: string };
-  selectedPeriod?: { id: string; name: string };
+  selectedPeriod?: AgggregatePeriod;
   selectedDataDimension: any[];
   dataDimension: { attributeCc: string; attributeCos: string };
+}
+
+export interface AgggregatePeriod {
+  id: string;
+  name: string;
+  iso: string;
+  startDate: string;
+  endDate: string;
+  currentPeriodOffset: number;
 }

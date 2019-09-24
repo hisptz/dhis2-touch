@@ -208,7 +208,7 @@ export class LoginPage implements OnInit {
 
   async onCancelLoginProcess() {
     this.isLoginProcessActive = false;
-    await this.backgroundMode.disable();
+    this.backgroundMode.disable();
   }
 
   onFailLogin(errorResponseObject: any) {

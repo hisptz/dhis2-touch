@@ -30,6 +30,7 @@ import { OrganisationUnitSelectionPage } from 'src/app/modals/organisation-unit-
 import { OptionSetSelectionPage } from 'src/app/modals/option-set-selection/option-set-selection.page';
 import { ProgramSelectionService } from 'src/app/services/program-selection.service';
 import { ToasterMessagesService } from 'src/app/services/toaster-messages.service';
+import { getCategoryComboCategories } from 'src/helpers';
 
 @Component({
   selector: 'app-program-based-paramater-selection',
@@ -104,40 +105,31 @@ export class ProgramBasedParamaterSelectionComponent implements OnInit {
   }
 
   async setOrganisationUnitLabel() {
-    if (
+    this.organisationUnitLabel =
       this.currentEntrySelection &&
       this.currentEntrySelection.selectedOrganisationUnit.name &&
       this.currentEntrySelection.selectedOrganisationUnit.name !== ''
-    ) {
-      this.organisationUnitLabel = this.currentEntrySelection.selectedOrganisationUnit.name;
-    } else {
-      this.organisationUnitLabel = 'Touch to select organisation unit';
-    }
+        ? this.currentEntrySelection.selectedOrganisationUnit.name
+        : 'Touch to select organisation unit';
   }
 
   async setProgramLabel() {
     if (this.programType === 'WITHOUT_REGISTRATION') {
-      if (
+      this.programLabel =
         this.currentEntrySelection &&
         this.currentEntrySelection.selectedProgramWithOutRegistration.name &&
         this.currentEntrySelection.selectedProgramWithOutRegistration.name !==
           ''
-      ) {
-        this.programLabel = this.currentEntrySelection.selectedProgramWithOutRegistration.name;
-      } else {
-        this.programLabel = 'Touch to select program';
-      }
+          ? this.currentEntrySelection.selectedProgramWithOutRegistration.name
+          : 'Touch to select program';
     }
     if (this.programType === 'WITH_REGISTRATION') {
-      if (
+      this.programLabel =
         this.currentEntrySelection &&
         this.currentEntrySelection.selectedProgramWithRegistration.name &&
         this.currentEntrySelection.selectedProgramWithRegistration.name !== ''
-      ) {
-        this.programLabel = this.currentEntrySelection.selectedProgramWithRegistration.name;
-      } else {
-        this.programLabel = 'Touch to select program';
-      }
+          ? this.currentEntrySelection.selectedProgramWithRegistration.name
+          : 'Touch to select program';
     }
   }
 
@@ -217,10 +209,7 @@ export class ProgramBasedParamaterSelectionComponent implements OnInit {
   }
 
   async openProgramListSelectionModal() {
-    const programId =
-      this.programType === 'WITHOUT_REGISTRATION'
-        ? this.currentEntrySelection.selectedProgramWithOutRegistration.id
-        : this.currentEntrySelection.selectedProgramWithRegistration.id;
+    const programId = await this.getCurrentProgramId();
     const modal = await this.modalController.create({
       component: OptionSetSelectionPage,
       componentProps: {
@@ -268,7 +257,7 @@ export class ProgramBasedParamaterSelectionComponent implements OnInit {
     }
   }
 
-  setCurrentOrganisationUnit(id: string, name: string) {
+  async setCurrentOrganisationUnit(id: string, name: string) {
     this.currentEntrySelection.selectedOrganisationUnit = {
       ...this.currentEntrySelection.selectedOrganisationUnit,
       id,
@@ -276,7 +265,7 @@ export class ProgramBasedParamaterSelectionComponent implements OnInit {
     };
   }
 
-  setSelectedCategoryOption(selectedDataDimension: any, category: any) {
+  async setSelectedCategoryOption(selectedDataDimension: any, category: any) {
     const currentIndex = _.indexOf(
       this.programCategoryCombo.categories,
       category
@@ -285,7 +274,7 @@ export class ProgramBasedParamaterSelectionComponent implements OnInit {
     this.updateProgramParameterSelections();
   }
 
-  setCurrentProgram(id: string, name: string) {
+  async setCurrentProgram(id: string, name: string) {
     if (this.programType === 'WITHOUT_REGISTRATION') {
       this.currentEntrySelection.selectedProgramWithOutRegistration = {
         ...this.currentEntrySelection.selectedProgramWithOutRegistration,
@@ -306,10 +295,7 @@ export class ProgramBasedParamaterSelectionComponent implements OnInit {
     try {
       const organisationUnitId = this.currentEntrySelection
         .selectedOrganisationUnit.id;
-      const programId =
-        this.programType === 'WITHOUT_REGISTRATION'
-          ? this.currentEntrySelection.selectedProgramWithOutRegistration.id
-          : this.currentEntrySelection.selectedProgramWithRegistration.id;
+      let programId = await this.getCurrentProgramId();
       const programs: any[] = await this.programSelectionService.getProgramListBySelectedOrganisationUnitAndRoles(
         organisationUnitId,
         this.programType,
@@ -317,6 +303,7 @@ export class ProgramBasedParamaterSelectionComponent implements OnInit {
         this.authorities
       );
       this.resetCurrentProgramAndProgramList(programs, programId);
+      programId = await this.getCurrentProgramId();
       if (programId !== '') {
         this.selectedProgram = _.find(programs, (program: Program) => {
           return program.id === programId;
@@ -341,19 +328,25 @@ export class ProgramBasedParamaterSelectionComponent implements OnInit {
     }
   }
 
-  resetCurrentProgramAndProgramList(programs: any[], programId: string) {
+  async getCurrentProgramId() {
+    return this.programType === 'WITHOUT_REGISTRATION'
+      ? this.currentEntrySelection.selectedProgramWithOutRegistration.id
+      : this.currentEntrySelection.selectedProgramWithRegistration.id;
+  }
+
+  async resetCurrentProgramAndProgramList(programs: any[], programId: string) {
     const programObj: any = _.find(programs, (program: Program) => {
       return program.id === programId;
     });
     if (programObj && programObj.id) {
       const { id, name } = programObj;
-      this.setCurrentProgram(id, name);
+      await this.setCurrentProgram(id, name);
     } else if (programs && programs.length > 0) {
       const program = programs[0];
       const { id, name } = program;
-      this.setCurrentProgram(id, name);
+      await this.setCurrentProgram(id, name);
     } else {
-      this.setCurrentProgram('', '');
+      await this.setCurrentProgram('', '');
     }
   }
 
@@ -368,7 +361,7 @@ export class ProgramBasedParamaterSelectionComponent implements OnInit {
     if (name !== 'default') {
       this.programCategoryCombo['id'] = id;
       this.programCategoryCombo['name'] = name;
-      const categoriesResponse = await this.programSelectionService.getProgramCategoryComboCategories(
+      const categoriesResponse = await getCategoryComboCategories(
         organisationUnitId,
         categories
       );
@@ -388,7 +381,7 @@ export class ProgramBasedParamaterSelectionComponent implements OnInit {
       this.currentEntrySelection.dataDimension.attributeCc === id
         ? []
         : this.currentEntrySelection.selectedDataDimension;
-    this.updateProgramParameterSelections();
+    await this.updateProgramParameterSelections();
   }
 
   trackByFn(index: any, item: any) {

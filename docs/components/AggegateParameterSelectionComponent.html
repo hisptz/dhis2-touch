@@ -1,0 +1,2676 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>DHIS 2 Touch</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/material.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">DHIS 2 Touch</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>AggegateParameterSelectionComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-aggegate-parameter-selection</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./aggegate-parameter-selection.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./aggegate-parameter-selection.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#currentPeriodOffset">currentPeriodOffset</a>
+                            </li>
+                            <li>
+                                <a href="#dataSetCategoryCombo">dataSetCategoryCombo</a>
+                            </li>
+                            <li>
+                                <a href="#dataSetIcon">dataSetIcon</a>
+                            </li>
+                            <li>
+                                <a href="#dataSetLabel">dataSetLabel</a>
+                            </li>
+                            <li>
+                                <a href="#dataSetOptions">dataSetOptions</a>
+                            </li>
+                            <li>
+                                <a href="#isDataSetDimensionApplicable">isDataSetDimensionApplicable</a>
+                            </li>
+                            <li>
+                                <a href="#organisationUnitIcon">organisationUnitIcon</a>
+                            </li>
+                            <li>
+                                <a href="#organisationUnitLabel">organisationUnitLabel</a>
+                            </li>
+                            <li>
+                                <a href="#periodIcon">periodIcon</a>
+                            </li>
+                            <li>
+                                <a href="#periodLabel">periodLabel</a>
+                            </li>
+                            <li>
+                                <a href="#previousDataSetId">previousDataSetId</a>
+                            </li>
+                            <li>
+                                <a href="#selectedDataDimension">selectedDataDimension</a>
+                            </li>
+                            <li>
+                                <a href="#selectedDataSet">selectedDataSet</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#discoveringDataSetList">discoveringDataSetList</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getDataDimension">getDataDimension</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#isAllParameterSelected">isAllParameterSelected</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit">ngOnInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#openDataDimensionSelection">openDataDimensionSelection</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#openDataSetModal">openDataSetModal</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#openOrganisationUnitModal">openOrganisationUnitModal</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#openPeriodModal">openPeriodModal</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#resetCurrentDataSetAndDataSetList">resetCurrentDataSetAndDataSetList</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#resetCurrentPeriodOffset">resetCurrentPeriodOffset</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setCurrentDataSet">setCurrentDataSet</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setCurrentOrganisationUnit">setCurrentOrganisationUnit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setCurrentPeriod">setCurrentPeriod</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setDataSetCategory">setDataSetCategory</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setDataSetCategoryCombos">setDataSetCategoryCombos</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setDataSetLabel">setDataSetLabel</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setDataSetParameterSelections">setDataSetParameterSelections</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setOrganisationUnitLabel">setOrganisationUnitLabel</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setPeriodLabel">setPeriodLabel</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setSelectedCategoryOption">setSelectedCategoryOption</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateDataSetParameterSelections">updateDataSetParameterSelections</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#allowMultipleOuSelection">allowMultipleOuSelection</a>
+                            </li>
+                            <li>
+                                <a href="#authorities">authorities</a>
+                            </li>
+                            <li>
+                                <a href="#calendarId">calendarId</a>
+                            </li>
+                            <li>
+                                <a href="#currentEntrySelection">currentEntrySelection</a>
+                            </li>
+                            <li>
+                                <a href="#dataSetIdsByUserRoles">dataSetIdsByUserRoles</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#currentSelectionChange">currentSelectionChange</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(modalController: ModalController, toasterMessagesService: <a href="../injectables/ToasterMessagesService.html">ToasterMessagesService</a>, dataSetSelectionService: <a href="../injectables/DataSetSelectionService.html">DataSetSelectionService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:67</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>modalController</td>
+                                                  
+                                                        <td>
+                                                                    <code>ModalController</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>toasterMessagesService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ToasterMessagesService.html" target="_self" >ToasterMessagesService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>dataSetSelectionService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/DataSetSelectionService.html" target="_self" >DataSetSelectionService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section>
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="allowMultipleOuSelection"></a>
+                        <b>allowMultipleOuSelection</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:48</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="authorities"></a>
+                        <b>authorities</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string[]</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:49</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="calendarId"></a>
+                        <b>calendarId</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:51</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="currentEntrySelection"></a>
+                        <b>currentEntrySelection</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/CurrentEntrySelection.html" target="_self" >CurrentEntrySelection</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:47</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="dataSetIdsByUserRoles"></a>
+                        <b>dataSetIdsByUserRoles</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string[]</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:50</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+    <section>
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="currentSelectionChange"></a>
+                        <b>currentSelectionChange</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:53</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="discoveringDataSetList"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            discoveringDataSetList
+                        </b>
+                        <a href="#discoveringDataSetList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>discoveringDataSetList()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="214"
+                            class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:214</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDataDimension"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getDataDimension
+                        </b>
+                        <a href="#getDataDimension"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getDataDimension()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="159"
+                            class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:159</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isAllParameterSelected"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            isAllParameterSelected
+                        </b>
+                        <a href="#isAllParameterSelected"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isAllParameterSelected()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="183"
+                            class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:183</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <b>
+                            ngOnInit
+                        </b>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="82"
+                            class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:82</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openDataDimensionSelection"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            openDataDimensionSelection
+                        </b>
+                        <a href="#openDataDimensionSelection"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>openDataDimensionSelection(category: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="389"
+                            class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:389</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>category</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openDataSetModal"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            openDataSetModal
+                        </b>
+                        <a href="#openDataSetModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>openDataSetModal()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="347"
+                            class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:347</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openOrganisationUnitModal"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            openOrganisationUnitModal
+                        </b>
+                        <a href="#openOrganisationUnitModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>openOrganisationUnitModal()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="327"
+                            class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:327</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openPeriodModal"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            openPeriodModal
+                        </b>
+                        <a href="#openPeriodModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>openPeriodModal()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="367"
+                            class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:367</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetCurrentDataSetAndDataSetList"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            resetCurrentDataSetAndDataSetList
+                        </b>
+                        <a href="#resetCurrentDataSetAndDataSetList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>resetCurrentDataSetAndDataSetList(dataSets: any[], dataSetId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="311"
+                            class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:311</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>dataSets</td>
+                                    <td>
+                                            <code>any[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>dataSetId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetCurrentPeriodOffset"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            resetCurrentPeriodOffset
+                        </b>
+                        <a href="#resetCurrentPeriodOffset"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>resetCurrentPeriodOffset(dataSets: any[], dataSetId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="284"
+                            class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:284</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>dataSets</td>
+                                    <td>
+                                            <code>any[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>dataSetId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setCurrentDataSet"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            setCurrentDataSet
+                        </b>
+                        <a href="#setCurrentDataSet"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setCurrentDataSet(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="427"
+                            class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:427</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>name</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setCurrentOrganisationUnit"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            setCurrentOrganisationUnit
+                        </b>
+                        <a href="#setCurrentOrganisationUnit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setCurrentOrganisationUnit(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="419"
+                            class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:419</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>name</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setCurrentPeriod"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            setCurrentPeriod
+                        </b>
+                        <a href="#setCurrentPeriod"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setCurrentPeriod(selectedPeriod: <a href="../interfaces/AgggregatePeriod.html">AgggregatePeriod</a>, currentPeriodOffset: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="435"
+                            class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:435</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>selectedPeriod</td>
+                                    <td>
+                                                <code><a href="../interfaces/AgggregatePeriod.html" target="_self" >AgggregatePeriod</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>currentPeriodOffset</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setDataSetCategory"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            setDataSetCategory
+                        </b>
+                        <a href="#setDataSetCategory"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setDataSetCategory()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="148"
+                            class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:148</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setDataSetCategoryCombos"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            setDataSetCategoryCombos
+                        </b>
+                        <a href="#setDataSetCategoryCombos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setDataSetCategoryCombos(selectedDataSet: <a href="../interfaces/DataSet.html">DataSet</a>, organisationUnitId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="250"
+                            class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:250</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>selectedDataSet</td>
+                                    <td>
+                                                <code><a href="../interfaces/DataSet.html" target="_self" >DataSet</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>organisationUnitId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setDataSetLabel"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            setDataSetLabel
+                        </b>
+                        <a href="#setDataSetLabel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setDataSetLabel()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="130"
+                            class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:130</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setDataSetParameterSelections"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            setDataSetParameterSelections
+                        </b>
+                        <a href="#setDataSetParameterSelections"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setDataSetParameterSelections()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="95"
+                            class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:95</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setOrganisationUnitLabel"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            setOrganisationUnitLabel
+                        </b>
+                        <a href="#setOrganisationUnitLabel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setOrganisationUnitLabel()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="121"
+                            class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:121</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setPeriodLabel"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            setPeriodLabel
+                        </b>
+                        <a href="#setPeriodLabel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setPeriodLabel()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="139"
+                            class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:139</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setSelectedCategoryOption"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            setSelectedCategoryOption
+                        </b>
+                        <a href="#setSelectedCategoryOption"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setSelectedCategoryOption(selectedDataDimension: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, category: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="449"
+                            class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:449</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>selectedDataDimension</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>category</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateDataSetParameterSelections"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            updateDataSetParameterSelections
+                        </b>
+                        <a href="#updateDataSetParameterSelections"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateDataSetParameterSelections()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="107"
+                            class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:107</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="currentPeriodOffset"></a>
+                        <span class="name">
+                            <b>
+                            currentPeriodOffset</b>
+                            <a href="#currentPeriodOffset"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:66</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="dataSetCategoryCombo"></a>
+                        <span class="name">
+                            <b>
+                            dataSetCategoryCombo</b>
+                            <a href="#dataSetCategoryCombo"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:63</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="dataSetIcon"></a>
+                        <span class="name">
+                            <b>
+                            dataSetIcon</b>
+                            <a href="#dataSetIcon"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:55</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="dataSetLabel"></a>
+                        <span class="name">
+                            <b>
+                            dataSetLabel</b>
+                            <a href="#dataSetLabel"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:59</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="dataSetOptions"></a>
+                        <span class="name">
+                            <b>
+                            dataSetOptions</b>
+                            <a href="#dataSetOptions"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../interfaces/Option.html" target="_self" >Option[]</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:64</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isDataSetDimensionApplicable"></a>
+                        <span class="name">
+                            <b>
+                            isDataSetDimensionApplicable</b>
+                            <a href="#isDataSetDimensionApplicable"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:65</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="organisationUnitIcon"></a>
+                        <span class="name">
+                            <b>
+                            organisationUnitIcon</b>
+                            <a href="#organisationUnitIcon"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:56</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="organisationUnitLabel"></a>
+                        <span class="name">
+                            <b>
+                            organisationUnitLabel</b>
+                            <a href="#organisationUnitLabel"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:58</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="periodIcon"></a>
+                        <span class="name">
+                            <b>
+                            periodIcon</b>
+                            <a href="#periodIcon"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:57</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="periodLabel"></a>
+                        <span class="name">
+                            <b>
+                            periodLabel</b>
+                            <a href="#periodLabel"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:60</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="previousDataSetId"></a>
+                        <span class="name">
+                            <b>
+                            previousDataSetId</b>
+                            <a href="#previousDataSetId"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:67</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectedDataDimension"></a>
+                        <span class="name">
+                            <b>
+                            selectedDataDimension</b>
+                            <a href="#selectedDataDimension"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:61</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectedDataSet"></a>
+                        <span class="name">
+                            <b>
+                            selectedDataSet</b>
+                            <a href="#selectedDataSet"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/app/tabs/apps/data-entry/components/aggegate-parameter-selection/aggegate-parameter-selection.component.ts:62</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, Input, Output, EventEmitter } from &#x27;@angular/core&#x27;;
+import { ModalController } from &#x27;@ionic/angular&#x27;;
+import * as _ from &#x27;lodash&#x27;;
+import {
+  Option,
+  CurrentEntrySelection,
+  DataSet,
+  AgggregatePeriod
+} from &#x27;src/models&#x27;;
+import { DEFAULT_CURRENT_ENTRY_SELECTION } from &#x27;src/constants&#x27;;
+import { OrganisationUnitSelectionPage } from &#x27;src/app/modals/organisation-unit-selection/organisation-unit-selection.page&#x27;;
+import { OptionSetSelectionPage } from &#x27;src/app/modals/option-set-selection/option-set-selection.page&#x27;;
+import { PeriodSelectionPage } from &#x27;src/app/modals/period-selection/period-selection.page&#x27;;
+import { ToasterMessagesService } from &#x27;src/app/services/toaster-messages.service&#x27;;
+import { DataSetSelectionService } from &#x27;src/app/services/data-set-selection.service&#x27;;
+import { getCategoryComboCategories } from &#x27;src/helpers&#x27;;
+
+@Component({
+  selector: &#x27;app-aggegate-parameter-selection&#x27;,
+  templateUrl: &#x27;./aggegate-parameter-selection.component.html&#x27;,
+  styleUrls: [&#x27;./aggegate-parameter-selection.component.scss&#x27;]
+})
+export class AggegateParameterSelectionComponent implements OnInit {
+  @Input() currentEntrySelection: CurrentEntrySelection;
+  @Input() allowMultipleOuSelection: boolean;
+  @Input() authorities: string[];
+  @Input() dataSetIdsByUserRoles: string[];
+  @Input() calendarId: string;
+
+  @Output() currentSelectionChange &#x3D; new EventEmitter();
+
+  dataSetIcon: string;
+  organisationUnitIcon: string;
+  periodIcon: string;
+  organisationUnitLabel: string;
+  dataSetLabel: string;
+  periodLabel: string;
+  selectedDataDimension: any;
+  selectedDataSet: any;
+  dataSetCategoryCombo: any;
+  dataSetOptions: Option[];
+  isDataSetDimensionApplicable: boolean;
+  currentPeriodOffset: number;
+  previousDataSetId: string;
+
+  constructor(
+    private modalController: ModalController,
+    private toasterMessagesService: ToasterMessagesService,
+    private dataSetSelectionService: DataSetSelectionService
+  ) {
+    this.organisationUnitIcon &#x3D; &#x27;assets/icon/orgUnit.png&#x27;;
+    this.dataSetIcon &#x3D; &#x27;assets/icon/form.png&#x27;;
+    this.periodIcon &#x3D; &#x27;assets/icon/period.png&#x27;;
+    this.dataSetCategoryCombo &#x3D; {};
+    this.dataSetOptions &#x3D; [];
+    this.isDataSetDimensionApplicable &#x3D; false;
+  }
+
+  ngOnInit() {
+    this.allowMultipleOuSelection &#x3D; this.allowMultipleOuSelection || false;
+    this.currentEntrySelection &#x3D;
+      this.currentEntrySelection || DEFAULT_CURRENT_ENTRY_SELECTION;
+    this.selectedDataDimension &#x3D;
+      this.currentEntrySelection.selectedDataDimension || [];
+    this.previousDataSetId &#x3D;
+      this.currentEntrySelection.selectedDataSet.id || &#x27;&#x27;;
+    this.currentPeriodOffset &#x3D;
+      this.currentEntrySelection.selectedPeriod.currentPeriodOffset || 0;
+    this.setDataSetParameterSelections();
+  }
+
+  async setDataSetParameterSelections() {
+    if (
+      this.currentEntrySelection &amp;&amp;
+      this.currentEntrySelection.selectedOrganisationUnit.name &amp;&amp;
+      this.currentEntrySelection.selectedOrganisationUnit.name !&#x3D;&#x3D; &#x27;&#x27;
+    ) {
+      await this.discoveringDataSetList();
+    } else {
+      await this.updateDataSetParameterSelections();
+    }
+  }
+
+  async updateDataSetParameterSelections() {
+    await this.setOrganisationUnitLabel();
+    await this.setDataSetLabel();
+    await this.setPeriodLabel();
+    await this.setDataSetCategory();
+    const isFormReady &#x3D; await this.isAllParameterSelected();
+    setTimeout(() &#x3D;&gt; {
+      this.currentSelectionChange.emit({
+        isFormReady,
+        currentEntrySelection: isFormReady ? this.currentEntrySelection : null
+      });
+    }, 100);
+  }
+
+  async setOrganisationUnitLabel() {
+    this.organisationUnitLabel &#x3D;
+      this.currentEntrySelection &amp;&amp;
+      this.currentEntrySelection.selectedOrganisationUnit.name &amp;&amp;
+      this.currentEntrySelection.selectedOrganisationUnit.name !&#x3D;&#x3D; &#x27;&#x27;
+        ? this.currentEntrySelection.selectedOrganisationUnit.name
+        : &#x27;Touch to select organisation unit&#x27;;
+  }
+
+  async setDataSetLabel() {
+    this.dataSetLabel &#x3D;
+      this.currentEntrySelection &amp;&amp;
+      this.currentEntrySelection.selectedDataSet.name &amp;&amp;
+      this.currentEntrySelection.selectedDataSet.name !&#x3D;&#x3D; &#x27;&#x27;
+        ? this.currentEntrySelection.selectedDataSet.name
+        : &#x27;Touch to select program&#x27;;
+  }
+
+  async setPeriodLabel() {
+    this.periodLabel &#x3D;
+      this.currentEntrySelection &amp;&amp;
+      this.currentEntrySelection.selectedPeriod.name &amp;&amp;
+      this.currentEntrySelection.selectedPeriod.name !&#x3D;&#x3D; &#x27;&#x27;
+        ? this.currentEntrySelection.selectedPeriod.name
+        : &#x27;Touch to select period&#x27;;
+  }
+
+  async setDataSetCategory() {
+    const dataDimension &#x3D; await this.getDataDimension();
+    this.currentEntrySelection &#x3D; {
+      ...this.currentEntrySelection,
+      selectedDataDimension: this.isDataSetDimensionApplicable
+        ? this.selectedDataDimension
+        : [],
+      dataDimension
+    };
+  }
+
+  async getDataDimension() {
+    let attributeCos &#x3D; &#x27;&#x27;;
+    let attributeCc &#x3D; &#x27;&#x27;;
+    if (this.selectedDataSet &amp;&amp; this.selectedDataSet.categoryCombo) {
+      const { categoryCombo } &#x3D; this.selectedDataSet;
+      attributeCc &#x3D; categoryCombo &amp;&amp; categoryCombo.id ? categoryCombo.id : &#x27;&#x27;;
+      if (
+        this.selectedDataDimension.length &gt; 0 &amp;&amp;
+        this.isDataSetDimensionApplicable
+      ) {
+        attributeCos &#x3D; _.join(
+          _.map(
+            _.filter(this.selectedDataDimension, (item: any) &#x3D;&gt; {
+              return !_.isEmpty(item);
+            }),
+            (item: any) &#x3D;&gt; item.id
+          ),
+          &#x27;;&#x27;
+        );
+      }
+    }
+    return { attributeCos, attributeCc };
+  }
+
+  async isAllParameterSelected() {
+    let isAllParameterSelected &#x3D; false;
+    const isEmptySelectedDimension &#x3D; _.filter(
+      this.selectedDataDimension,
+      (item: any) &#x3D;&gt; {
+        return _.isEmpty(item);
+      }
+    );
+    if (
+      this.selectedDataSet &amp;&amp;
+      this.selectedDataSet.categoryCombo &amp;&amp;
+      this.selectedDataSet.categoryCombo.name
+    ) {
+      const { categoryCombo } &#x3D; this.selectedDataSet;
+      const { name } &#x3D; categoryCombo;
+      isAllParameterSelected &#x3D;
+        name &#x3D;&#x3D;&#x3D; &#x27;default&#x27;
+          ? true
+          : isEmptySelectedDimension.length &#x3D;&#x3D;&#x3D; 0 &amp;&amp;
+            this.selectedDataDimension.length &gt; 0
+          ? true
+          : isAllParameterSelected;
+    }
+    return (
+      isAllParameterSelected &amp;&amp;
+      this.currentEntrySelection &amp;&amp;
+      this.currentEntrySelection.selectedPeriod &amp;&amp;
+      this.currentEntrySelection.selectedPeriod.id !&#x3D;&#x3D; &#x27;&#x27;
+    );
+  }
+
+  async discoveringDataSetList() {
+    try {
+      const organisationUnitId &#x3D; this.currentEntrySelection
+        .selectedOrganisationUnit.id;
+      const dataSetId &#x3D; this.currentEntrySelection.selectedDataSet.id;
+      const dataSets: any[] &#x3D; await this.dataSetSelectionService.getDataSetListBySelectedOrganisationUnitAndRoles(
+        organisationUnitId,
+        this.dataSetIdsByUserRoles,
+        this.authorities
+      );
+      await this.resetCurrentPeriodOffset(dataSets, dataSetId);
+      await this.resetCurrentDataSetAndDataSetList(dataSets, dataSetId);
+      if (this.currentEntrySelection.selectedDataSet.id !&#x3D;&#x3D; &#x27;&#x27;) {
+        this.selectedDataSet &#x3D; _.find(dataSets, (dataSet: DataSet) &#x3D;&gt; {
+          return dataSet.id &#x3D;&#x3D;&#x3D; this.currentEntrySelection.selectedDataSet.id;
+        });
+        if (this.selectedDataSet &amp;&amp; this.selectedDataSet.categoryCombo) {
+          await this.setDataSetCategoryCombos(
+            this.selectedDataSet,
+            organisationUnitId
+          );
+        }
+      }
+      this.dataSetOptions &#x3D; _.map(dataSets, (dataSet: DataSet) &#x3D;&gt; {
+        const { id, name } &#x3D; dataSet;
+        return { id, name, code: id };
+      });
+      setTimeout(() &#x3D;&gt; {
+        this.updateDataSetParameterSelections();
+      }, 100);
+    } catch (error) {
+      const message &#x3D; &#x60;Error : ${JSON.stringify(error)}&#x60;;
+      this.toasterMessagesService.showToasterMessage(message);
+    }
+  }
+
+  async setDataSetCategoryCombos(
+    selectedDataSet: DataSet,
+    organisationUnitId: string
+  ) {
+    this.isDataSetDimensionApplicable &#x3D; false;
+    const { categoryCombo } &#x3D; selectedDataSet;
+    const { id, name, categories } &#x3D; categoryCombo;
+    this.dataSetCategoryCombo &#x3D; {};
+    if (name !&#x3D;&#x3D; &#x27;default&#x27;) {
+      this.dataSetCategoryCombo[&#x27;id&#x27;] &#x3D; id;
+      this.dataSetCategoryCombo[&#x27;name&#x27;] &#x3D; name;
+      const categoriesResponse &#x3D; await getCategoryComboCategories(
+        organisationUnitId,
+        categories
+      );
+      this.dataSetCategoryCombo[&#x27;categories&#x27;] &#x3D; categoriesResponse;
+      this.isDataSetDimensionApplicable &#x3D; true;
+      for (const category of categoriesResponse) {
+        if (
+          category &amp;&amp;
+          category.categoryOptions &amp;&amp;
+          category.categoryOptions.length &#x3D;&#x3D;&#x3D; 0
+        ) {
+          this.isDataSetDimensionApplicable &#x3D; false;
+        }
+      }
+    }
+    this.selectedDataDimension &#x3D;
+      this.currentEntrySelection.dataDimension.attributeCc &#x3D;&#x3D;&#x3D; id
+        ? []
+        : this.currentEntrySelection.selectedDataDimension;
+    await this.updateDataSetParameterSelections();
+  }
+
+  async resetCurrentPeriodOffset(dataSets: any[], dataSetId: string) {
+    const previousDataSetObj: any &#x3D; _.find(dataSets, (dataSet: DataSet) &#x3D;&gt; {
+      return dataSet.id &#x3D;&#x3D;&#x3D; this.previousDataSetId;
+    });
+    const currentDataSetObj: any &#x3D; _.find(dataSets, (dataSet: DataSet) &#x3D;&gt; {
+      return dataSet.id &#x3D;&#x3D;&#x3D; dataSetId;
+    });
+    let currentPeriodOffset &#x3D; 0;
+    if (currentDataSetObj &amp;&amp; previousDataSetObj) {
+      if (
+        previousDataSetObj.hasOwnProperty(&#x27;periodType&#x27;) &amp;&amp;
+        previousDataSetObj.hasOwnProperty(&#x27;openFuturePeriods&#x27;) &amp;&amp;
+        currentDataSetObj.hasOwnProperty(&#x27;periodType&#x27;) &amp;&amp;
+        currentDataSetObj.hasOwnProperty(&#x27;openFuturePeriods&#x27;) &amp;&amp;
+        previousDataSetObj.periodType &#x3D;&#x3D;&#x3D; currentDataSetObj.periodType &amp;&amp;
+        previousDataSetObj.openFuturePeriods &#x3D;&#x3D;&#x3D;
+          currentDataSetObj.openFuturePeriods
+      ) {
+        currentPeriodOffset &#x3D; this.currentPeriodOffset;
+      } else if (this.previousDataSetId !&#x3D;&#x3D; dataSetId) {
+        this.currentEntrySelection.selectedPeriod &#x3D;
+          DEFAULT_CURRENT_ENTRY_SELECTION.selectedPeriod;
+      }
+    }
+    this.currentPeriodOffset &#x3D; currentPeriodOffset;
+  }
+
+  async resetCurrentDataSetAndDataSetList(dataSets: any[], dataSetId: string) {
+    const dataSetObj: any &#x3D; _.find(dataSets, (dataSet: DataSet) &#x3D;&gt; {
+      return dataSet.id &#x3D;&#x3D;&#x3D; dataSetId;
+    });
+    if (dataSetObj &amp;&amp; dataSetObj.id) {
+      const { id, name } &#x3D; dataSetObj;
+      this.setCurrentDataSet(id, name);
+    } else if (dataSets &amp;&amp; dataSets.length &gt; 0) {
+      const dataSet &#x3D; dataSets[0];
+      const { id, name } &#x3D; dataSet;
+      this.setCurrentDataSet(id, name);
+    } else {
+      this.setCurrentDataSet(&#x27;&#x27;, &#x27;&#x27;);
+    }
+  }
+
+  async openOrganisationUnitModal() {
+    const organisationUnitId &#x3D; this.currentEntrySelection
+      .selectedOrganisationUnit.id;
+    const modal &#x3D; await this.modalController.create({
+      component: OrganisationUnitSelectionPage,
+      componentProps: {
+        allowMultipleSelection: this.allowMultipleOuSelection,
+        selectedOrganisayionUnitIds: [organisationUnitId]
+      }
+    });
+    modal.present();
+    const response &#x3D; await modal.onDidDismiss();
+    if (response &amp;&amp; response.data) {
+      const { id, name } &#x3D; response.data;
+      this.setCurrentOrganisationUnit(id, name);
+      await this.setOrganisationUnitLabel();
+      await this.discoveringDataSetList();
+    }
+  }
+
+  async openDataSetModal() {
+    const dataSetId &#x3D; this.currentEntrySelection.selectedDataSet.id;
+    this.previousDataSetId &#x3D; dataSetId;
+    const modal &#x3D; await this.modalController.create({
+      component: OptionSetSelectionPage,
+      componentProps: {
+        selectedValue: dataSetId,
+        options: this.dataSetOptions,
+        isDisabled: true
+      }
+    });
+    modal.present();
+    const response &#x3D; await modal.onDidDismiss();
+    if (response &amp;&amp; response.data) {
+      const { id, name } &#x3D; response.data;
+      this.setCurrentDataSet(id, name);
+      await this.discoveringDataSetList();
+    }
+  }
+
+  async openPeriodModal() {
+    const { openFuturePeriods, periodType } &#x3D; this.selectedDataSet;
+    const periodIso &#x3D; this.currentEntrySelection.selectedPeriod.iso;
+    const modal &#x3D; await this.modalController.create({
+      component: PeriodSelectionPage,
+      componentProps: {
+        selectedValue: periodIso,
+        calendarId: this.calendarId,
+        currentPeriodOffset: this.currentPeriodOffset,
+        openFuturePeriods,
+        periodType
+      }
+    });
+    modal.present();
+    const response &#x3D; await modal.onDidDismiss();
+    if (response &amp;&amp; response.data) {
+      const { selectedPeriod, currentPeriodOffset } &#x3D; response.data;
+      await this.setCurrentPeriod(selectedPeriod, currentPeriodOffset);
+      await this.updateDataSetParameterSelections();
+    }
+  }
+
+  async openDataDimensionSelection(category: any) {
+    const currentIndex &#x3D; _.indexOf(
+      this.dataSetCategoryCombo.categories,
+      category
+    );
+    const selectedValue &#x3D;
+      currentIndex &gt; -1 &amp;&amp;
+      this.selectedDataDimension &amp;&amp;
+      this.selectedDataDimension[currentIndex]
+        ? this.selectedDataDimension[currentIndex].id
+        : &#x27;&#x27;;
+    const modal &#x3D; await this.modalController.create({
+      component: OptionSetSelectionPage,
+      componentProps: {
+        selectedValue,
+        options: _.map(category.categoryOptions, (categoryOption: any) &#x3D;&gt; {
+          const { id } &#x3D; categoryOption;
+          return { ...categoryOption, code: id };
+        })
+      }
+    });
+    modal.present();
+    const response &#x3D; await modal.onDidDismiss();
+    if (response &amp;&amp; response.data) {
+      const { id, name } &#x3D; response.data;
+      const selectedDataDimension &#x3D; { id, name };
+      this.setSelectedCategoryOption(selectedDataDimension, category);
+    }
+  }
+
+  async setCurrentOrganisationUnit(id: string, name: string) {
+    this.currentEntrySelection.selectedOrganisationUnit &#x3D; {
+      ...this.currentEntrySelection.selectedOrganisationUnit,
+      id,
+      name
+    };
+  }
+
+  async setCurrentDataSet(id: string, name: string) {
+    this.currentEntrySelection.selectedDataSet &#x3D; {
+      ...this.currentEntrySelection.selectedDataSet,
+      id,
+      name
+    };
+  }
+
+  async setCurrentPeriod(
+    selectedPeriod: AgggregatePeriod,
+    currentPeriodOffset: number
+  ) {
+    this.currentPeriodOffset &#x3D; currentPeriodOffset || this.currentPeriodOffset;
+    selectedPeriod &#x3D;
+      selectedPeriod || this.currentEntrySelection.selectedPeriod;
+    selectedPeriod &#x3D; { ...selectedPeriod, currentPeriodOffset };
+    this.currentEntrySelection &#x3D; {
+      ...this.currentEntrySelection,
+      selectedPeriod
+    };
+  }
+
+  async setSelectedCategoryOption(selectedDataDimension: any, category: any) {
+    const currentIndex &#x3D; _.indexOf(
+      this.dataSetCategoryCombo.categories,
+      category
+    );
+    this.selectedDataDimension[currentIndex] &#x3D; selectedDataDimension;
+    this.updateDataSetParameterSelections();
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;!--
+*
+* Copyright 2019 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2019
+* @author Joseph Chingalo profschingalo@gmail.com&gt;
+*
+*
+--&gt;
+&lt;div class&#x3D;&quot;item-card ion-text-center&quot; (click)&#x3D;&quot;openOrganisationUnitModal()&quot;&gt;
+    &lt;img class&#x3D;&quot;side-menu-icon&quot; [src]&#x3D;&quot;organisationUnitIcon&quot; /&gt;&amp;nbsp;&amp;nbsp;
+    &lt;span [translate]&#x3D;&quot;organisationUnitLabel&quot;&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class&#x3D;&quot;item-card ion-text-center&quot; (click)&#x3D;&quot;openDataSetModal()&quot;&gt;
+    &lt;img class&#x3D;&quot;side-menu-icon&quot; [src]&#x3D;&quot;dataSetIcon&quot; /&gt;&amp;nbsp;&amp;nbsp;
+    &lt;span [translate]&#x3D;&quot;dataSetLabel&quot;&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class&#x3D;&quot;item-card ion-text-center&quot; (click)&#x3D;&quot;openPeriodModal()&quot;&gt;
+    &lt;img class&#x3D;&quot;side-menu-icon&quot; [src]&#x3D;&quot;periodIcon&quot; /&gt;&amp;nbsp;&amp;nbsp;
+    &lt;span [translate]&#x3D;&quot;periodLabel&quot;&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;div *ngIf&#x3D;&quot;dataSetCategoryCombo &amp;&amp; dataSetCategoryCombo.id &quot;&gt;
+    &lt;div *ngIf&#x3D;&quot;isDataSetDimensionApplicable&quot;&gt;
+        &lt;div *ngFor&#x3D;&quot;let category of dataSetCategoryCombo.categories;let categoryIndex &#x3D; index;&quot;&gt;
+            &lt;div class&#x3D;&quot;item-card&quot; (click)&#x3D;&quot;openDataDimensionSelection(category)&quot;&gt;
+                &lt;span [translate]&#x3D;&quot;category.name&quot;&gt;&lt;/span&gt;
+                &lt;div class&#x3D;&quot;item-card&quot;&gt;
+                    &lt;span [translate]&#x3D;&quot;selectedDataDimension[categoryIndex] &amp;&amp; selectedDataDimension[categoryIndex].name  ? selectedDataDimension[categoryIndex].name : &#x27;Touch to select option&#x27;&quot;&gt;&lt;/span&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;item-card ion-text-center&quot; padding-top padding-bottom *ngIf&#x3D;&quot;!isDataSetDimensionApplicable&quot;&gt;
+        &lt;span [translate]&#x3D;&quot;&#x27;All of selected category disaggregation are restricted from entry in selected organisation unit, choose a different form or contact your support desk&#x27;&quot;&gt;&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./aggegate-parameter-selection.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss"></code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><!--** Copyright 2019 HISP Tanzania** This program is free software; you can redistribute it and/or modify* it under the terms of the GNU General Public License as published by* the Free Software Foundation; either version 2 of the License, or* (at your option) any later version.** This program is distributed in the hope that it will be useful,* but WITHOUT ANY WARRANTY; without even the implied warranty of* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the* GNU General Public License for more details.** You should have received a copy of the GNU General Public License* along with this program; if not, write to the Free Software* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,* MA 02110-1301, USA.** @since 2019* @author Joseph Chingalo profschingalo@gmail.com>**--><div class="item-card ion-text-center" (click)="openOrganisationUnitModal()">    <img class="side-menu-icon" [src]="organisationUnitIcon" />&nbsp;&nbsp;    <span [translate]="organisationUnitLabel"></span></div><div class="item-card ion-text-center" (click)="openDataSetModal()">    <img class="side-menu-icon" [src]="dataSetIcon" />&nbsp;&nbsp;    <span [translate]="dataSetLabel"></span></div><div class="item-card ion-text-center" (click)="openPeriodModal()">    <img class="side-menu-icon" [src]="periodIcon" />&nbsp;&nbsp;    <span [translate]="periodLabel"></span></div><div *ngIf="dataSetCategoryCombo && dataSetCategoryCombo.id ">    <div *ngIf="isDataSetDimensionApplicable">        <div *ngFor="let category of dataSetCategoryCombo.categories;let categoryIndex = index;">            <div class="item-card" (click)="openDataDimensionSelection(category)">                <span [translate]="category.name"></span>                <div class="item-card">                    <span [translate]="selectedDataDimension[categoryIndex] && selectedDataDimension[categoryIndex].name  ? selectedDataDimension[categoryIndex].name : \'Touch to select option\'"></span>                </div>            </div>        </div>    </div>    <div class="item-card ion-text-center" padding-top padding-bottom *ngIf="!isDataSetDimensionApplicable">        <span [translate]="\'All of selected category disaggregation are restricted from entry in selected organisation unit, choose a different form or contact your support desk\'"></span>    </div></div></div>'
+    var COMPONENTS = [{'name': 'AboutPage', 'selector': 'app-about'},{'name': 'AccountsPage', 'selector': 'app-accounts'},{'name': 'AgeInputComponent', 'selector': 'app-age-input'},{'name': 'AggegateParameterSelectionComponent', 'selector': 'app-aggegate-parameter-selection'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AppItemComponent', 'selector': 'app-app-item'},{'name': 'AppSettingsComponent', 'selector': 'app-app-settings'},{'name': 'AppsItemContainerComponent', 'selector': 'app-apps-item-container'},{'name': 'AppsPage', 'selector': 'app-apps'},{'name': 'BarcodeInputComponent', 'selector': 'app-barcode-input'},{'name': 'BarcodeSettingsComponent', 'selector': 'app-barcode-settings'},{'name': 'BooleanInputComponent', 'selector': 'app-boolean-input'},{'name': 'CoordinateComponent', 'selector': 'app-coordinate'},{'name': 'CoordinateInputComponent', 'selector': 'app-coordinate-input'},{'name': 'CoordinateSelectionPage', 'selector': 'app-coordinate-selection'},{'name': 'DashboardPage', 'selector': 'app-dashboard'},{'name': 'DataEntryPage', 'selector': 'app-data-entry'},{'name': 'DateInputComponent', 'selector': 'app-date-input'},{'name': 'DateTimeComponent', 'selector': 'app-date-time'},{'name': 'EmailInputComponent', 'selector': 'app-email-input'},{'name': 'EntryFormSettingsComponent', 'selector': 'app-entry-form-settings'},{'name': 'EventCapturePage', 'selector': 'app-event-capture'},{'name': 'HelpPage', 'selector': 'app-help'},{'name': 'LaunchPage', 'selector': 'app-launch'},{'name': 'LocalInstanceSelectionPage', 'selector': 'app-local-instance-selection'},{'name': 'LoginFormComponent', 'selector': 'app-login-form'},{'name': 'LoginMetadataSyncComponent', 'selector': 'app-login-metadata-sync'},{'name': 'LoginPage', 'selector': 'app-login'},{'name': 'LoginSpinnerComponent', 'selector': 'app-login-spinner'},{'name': 'NumericalInputComponent', 'selector': 'app-numerical-input'},{'name': 'OptionSetInputComponent', 'selector': 'app-option-set-input'},{'name': 'OptionSetSelectionPage', 'selector': 'app-option-set-selection'},{'name': 'OrganisationUnitInputComponent', 'selector': 'app-organisation-unit-input'},{'name': 'OrganisationUnitSearchPage', 'selector': 'app-organisation-unit-search'},{'name': 'OrganisationUnitSelectionPage', 'selector': 'app-organisation-unit-selection'},{'name': 'OrganisationUnitTreeComponent', 'selector': 'app-organisation-unit-tree'},{'name': 'PasswordInputComponent', 'selector': 'app-password-input'},{'name': 'PercentageInputComponent', 'selector': 'app-percentage-input'},{'name': 'PeriodSelectionPage', 'selector': 'app-period-selection'},{'name': 'PhoneNumberInputComponent', 'selector': 'app-phone-number-input'},{'name': 'ProfilePage', 'selector': 'app-profile'},{'name': 'ProgramBasedParamaterSelectionComponent', 'selector': 'app-program-based-paramater-selection'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'RadioButtonComponent', 'selector': 'app-radio-button'},{'name': 'ReportsPage', 'selector': 'app-reports'},{'name': 'SettingContainerComponent', 'selector': 'app-setting-container'},{'name': 'SettingsPage', 'selector': 'app-settings'},{'name': 'SloganComponent', 'selector': 'app-slogan'},{'name': 'SynchronizationSettingsComponent', 'selector': 'app-synchronization-settings'},{'name': 'SyncPage', 'selector': 'app-sync'},{'name': 'TabsPage', 'selector': 'app-tabs'},{'name': 'TextInputComponent', 'selector': 'app-text-input'},{'name': 'TrackerCapturePage', 'selector': 'app-tracker-capture'},{'name': 'TranslationSelectionPage', 'selector': 'app-translation-selection'},{'name': 'TrueOnlyInputComponent', 'selector': 'app-true-only-input'},{'name': 'UnitIntervalInputComponent', 'selector': 'app-unit-interval-input'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'AggegateParameterSelectionComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'AggegateParameterSelectionComponent.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
