@@ -30,6 +30,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IonicModule } from '@ionic/angular';
 
 import { DataEntryPage } from './data-entry.page';
+import { SharedComponentsModule } from 'src/app/components/shared-components.module';
+import { DataEntryComponentsModule } from './components/data-entry-components.module';
 
 const routes: Routes = [
   {
@@ -43,6 +45,8 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    SharedComponentsModule,
+    DataEntryComponentsModule,
     TranslateModule.forChild(),
     RouterModule.forChild(routes)
   ],
