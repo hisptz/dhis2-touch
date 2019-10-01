@@ -3,7 +3,7 @@
     <name>DHIS 2 touch</name>
     <description>An awesome Ionic/Cordova app .</description>
     <author email="profschingalo@gamil.com" href="">Joseph Chingalo</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://localhost:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -99,4 +99,5 @@
         <variable name="ANDROID_SUPPORT_VERSION" value="27.+" />
     </plugin>
     <engine name="android" spec="7.1.4" />
+    <allow-navigation href="http://localhost:8100" sessionid="72b4993f" />
 </widget>
