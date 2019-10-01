@@ -24,16 +24,16 @@
 -->
 
 <ion-header>
-    <ion-toolbar [color]="(colorSettings$ | async).colorAttributes.main">
-        <ion-buttons slot="start">
-            <ion-back-button [text]="''" mode="ios"></ion-back-button>
-        </ion-buttons>
-        <ion-title>
-            <span [translate]="'About'"></span>
-        </ion-title>
-    </ion-toolbar>
+  <ion-toolbar [color]="(colorSettings$ | async).colorAttributes.main">
+    <ion-buttons slot="start">
+      <ion-back-button [text]="''" mode="ios"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <span [translate]="'About'"></span>
+    </ion-title>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <app-about-container></app-about-container>
 </ion-content>

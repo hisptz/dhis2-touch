@@ -29,6 +29,7 @@ import { TranslateModule } from "@ngx-translate/core";
 import { IonicModule } from "@ionic/angular";
 
 import { AboutPage } from "./about.page";
+import { AboutContainerModule } from "./components/about-container.module";
 
 const routes: Routes = [
   {
@@ -42,6 +43,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    AboutContainerModule,
     TranslateModule.forChild(),
     RouterModule.forChild(routes)
   ],
