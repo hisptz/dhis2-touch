@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AssignedRolesComponent } from './assigned-roles.component';
+import { AppSystemInfoComponent } from './app-system-info.component';
 
-describe('AssignedRolesComponent', () => {
-  let component: AssignedRolesComponent;
-  let fixture: ComponentFixture<AssignedRolesComponent>;
+describe('AppSystemInfoComponent', () => {
+  let component: AppSystemInfoComponent;
+  let fixture: ComponentFixture<AppSystemInfoComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AssignedRolesComponent ],
+      declarations: [ AppSystemInfoComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssignedRolesComponent);
+    fixture = TestBed.createComponent(AppSystemInfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

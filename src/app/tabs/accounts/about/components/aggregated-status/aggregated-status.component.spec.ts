@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AssignedOrganizationUnitsComponent } from './assigned-organization-units.component';
+import { AggregatedStatusComponent } from './aggregated-status.component';
 
-describe('AssignedOrganizationUnitsComponent', () => {
-  let component: AssignedOrganizationUnitsComponent;
-  let fixture: ComponentFixture<AssignedOrganizationUnitsComponent>;
+describe('AggregatedStatusComponent', () => {
+  let component: AggregatedStatusComponent;
+  let fixture: ComponentFixture<AggregatedStatusComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AssignedOrganizationUnitsComponent ],
+      declarations: [ AggregatedStatusComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssignedOrganizationUnitsComponent);
+    fixture = TestBed.createComponent(AggregatedStatusComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
