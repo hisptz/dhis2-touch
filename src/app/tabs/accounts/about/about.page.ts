@@ -26,10 +26,11 @@ import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
 import { Store } from "@ngrx/store";
 import { State, getCurrentUserColorSettings } from "../../../store";
-import { AppColorObject } from "src/models";
+import { AppColorObject, AppAboutContent } from "src/models";
 import { SystemInformationService } from "src/app/services/system-information.service";
 import { AppVersion } from "@ionic-native/app-version/ngx";
 import * as _ from "lodash";
+import { DEFAULT_ABOUT_CONTENT, DEFAULT_APP_LOGO } from "src/constants";
 
 @Component({
   selector: "app-about",
@@ -42,6 +43,8 @@ export class AboutPage implements OnInit {
   systemInfoContent: {} = {};
   appName: string;
   appCurrentVersion: string;
+  aboutContents: AppAboutContent[];
+  appLogo: string;
 
   constructor(
     private store: Store<State>,
@@ -58,6 +61,7 @@ export class AboutPage implements OnInit {
   }
 
   ngOnInit() {
+    this.appLogo = DEFAULT_APP_LOGO.logo;
     this.systemInformationService
       .getCurrentUserSystemInformation()
       .then(systemInfo => {
@@ -68,5 +72,12 @@ export class AboutPage implements OnInit {
           this.systemInfoContent[newKey] = this.systemInfo[key];
         });
       });
+    this.aboutContents = this.getVisiableAboutContents();
+  }
+
+  getVisiableAboutContents() {
+    return _.filter(DEFAULT_ABOUT_CONTENT, (aboutContents: AppAboutContent) => {
+      return aboutContents.isVisible;
+    });
   }
 }
