@@ -99,5 +99,5 @@
         <variable name="ANDROID_SUPPORT_VERSION" value="27.+" />
     </plugin>
     <engine name="android" spec="7.1.4" />
-    <allow-navigation href="http://localhost:8100" sessionid="72b4993f" />
+    <allow-navigation href="http://localhost:8100" sessionid="35ab797d" />
 </widget>

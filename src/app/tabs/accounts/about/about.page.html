@@ -35,5 +35,24 @@
 </ion-header>
 
 <ion-content>
-  <app-about-container></app-about-container>
+  <div class="ion-text-center">
+    <div class="logo">
+      <!-- <img [src]="appLogo"> -->
+    </div>
+    <ion-text>
+      <span [textContent]="appName"></span><br />
+      <span [textContent]="appCurrentVersion"></span>
+    </ion-text>
+  </div>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div>
+          <app-about-container [systemInfoContent]="systemInfoContent">
+          </app-about-container>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

@@ -22,23 +22,51 @@
  *
  */
 
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { State, getCurrentUserColorSettings } from '../../../store';
-import { AppColorObject } from 'src/models';
+import { Component, OnInit } from "@angular/core";
+import { Observable } from "rxjs";
+import { Store } from "@ngrx/store";
+import { State, getCurrentUserColorSettings } from "../../../store";
+import { AppColorObject } from "src/models";
+import { SystemInformationService } from "src/app/services/system-information.service";
+import { AppVersion } from "@ionic-native/app-version/ngx";
+import * as _ from "lodash";
 
 @Component({
-  selector: 'app-about',
-  templateUrl: './about.page.html',
-  styleUrls: ['./about.page.scss']
+  selector: "app-about",
+  templateUrl: "./about.page.html",
+  styleUrls: ["./about.page.scss"]
 })
 export class AboutPage implements OnInit {
   colorSettings$: Observable<AppColorObject>;
+  systemInfo: {};
+  systemInfoContent: {} = {};
+  appName: string;
+  appCurrentVersion: string;
 
-  constructor(private store: Store<State>) {
+  constructor(
+    private store: Store<State>,
+    private systemInformationService: SystemInformationService,
+    private appVersion: AppVersion
+  ) {
     this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
+    this.appVersion.getAppName().then(name => {
+      this.appName = name;
+    });
+    this.appVersion.getVersionNumber().then(version => {
+      this.appCurrentVersion = version;
+    });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.systemInformationService
+      .getCurrentUserSystemInformation()
+      .then(systemInfo => {
+        this.systemInfo = systemInfo;
+        let keys = Object.keys(this.systemInfo);
+        keys.forEach(key => {
+          let newKey = _.startCase(key);
+          this.systemInfoContent[newKey] = this.systemInfo[key];
+        });
+      });
+  }
 }

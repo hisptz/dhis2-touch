@@ -22,6 +22,7 @@
     "@angular/platform-browser": "^7.2.2",
     "@angular/platform-browser-dynamic": "^7.2.2",
     "@angular/router": "^7.2.2",
+    "@ionic-native/app-version": "^5.14.0",
     "@ionic-native/background-mode": "^5.5.1",
     "@ionic-native/barcode-scanner": "^5.5.1",
     "@ionic-native/core": "^5.0.0",
@@ -47,6 +48,7 @@
     "commitizen": "^2.10.1",
     "cordova-android": "7.1.4",
     "cordova-plugin-advanced-http": "^2.1.1",
+    "cordova-plugin-app-version": "^0.1.9",
     "cordova-plugin-background-mode": "^0.7.3",
     "cordova-plugin-datepicker": "^0.9.3",
     "cordova-plugin-device": "^2.0.3",
@@ -130,7 +132,8 @@
       },
       "cordova-plugin-network-information": {},
       "cordova-plugin-datepicker": {},
-      "cordova-plugin-geolocation": {}
+      "cordova-plugin-geolocation": {},
+      "cordova-plugin-app-version": {}
     },
     "platforms": [
       "android"
