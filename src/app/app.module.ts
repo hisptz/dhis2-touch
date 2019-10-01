@@ -22,36 +22,36 @@
  *
  */
 
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { RouteReuseStrategy } from '@angular/router';
+import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { RouteReuseStrategy } from "@angular/router";
 
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { HttpClientModule, HttpClient } from "@angular/common/http";
 
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { IonicStorageModule } from '@ionic/storage';
+import { IonicModule, IonicRouteStrategy } from "@ionic/angular";
+import { IonicStorageModule } from "@ionic/storage";
 
 // store
-import { reducers, metaReducers, effects } from './store';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
+import { reducers, metaReducers, effects } from "./store";
+import { StoreModule } from "@ngrx/store";
+import { EffectsModule } from "@ngrx/effects";
 
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
-import { nativePlugins, appProviders } from './services';
-import { SharedComponentsModule } from './components/shared-components.module';
-import { TranslationSelectionPageModule } from './modals/translation-selection/translation-selection.module';
-import { LocalInstanceSelectionPageModule } from './modals/local-instance-selection/local-instance-selection.module';
-import { CoordinateSelectionPageModule } from './modals/coordinate-selection/coordinate-selection.module';
-import { OptionSetSelectionPageModule } from './modals/option-set-selection/option-set-selection.module';
-import { OrganisationUnitSearchPageModule } from './modals/organisation-unit-search/organisation-unit-search.module';
-import { OrganisationUnitSelectionPageModule } from './modals/organisation-unit-selection/organisation-unit-selection.module';
-import { PeriodSelectionPageModule } from './modals/period-selection/period-selection.module';
+import { AppComponent } from "./app.component";
+import { AppRoutingModule } from "./app-routing.module";
+import { nativePlugins, appProviders } from "./services";
+import { TranslationSelectionPageModule } from "./modals/translation-selection/translation-selection.module";
+import { LocalInstanceSelectionPageModule } from "./modals/local-instance-selection/local-instance-selection.module";
+import { CoordinateSelectionPageModule } from "./modals/coordinate-selection/coordinate-selection.module";
+import { OptionSetSelectionPageModule } from "./modals/option-set-selection/option-set-selection.module";
+import { OrganisationUnitSearchPageModule } from "./modals/organisation-unit-search/organisation-unit-search.module";
+import { OrganisationUnitSelectionPageModule } from "./modals/organisation-unit-selection/organisation-unit-selection.module";
+import { PeriodSelectionPageModule } from "./modals/period-selection/period-selection.module";
+import { SharedComponentsModule } from "./components/shared-components.module";
 
 export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+  return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
 }
 
 @NgModule({

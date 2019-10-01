@@ -30,6 +30,7 @@ import { IonicModule } from "@ionic/angular";
 
 import { AboutPage } from "./about.page";
 import { AboutContainerModule } from "./components/about-container.module";
+import { SharedComponentsModule } from "src/app/components/shared-components.module";
 
 const routes: Routes = [
   {
@@ -44,6 +45,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     AboutContainerModule,
+    SharedComponentsModule,
     TranslateModule.forChild(),
     RouterModule.forChild(routes)
   ],

@@ -21,31 +21,32 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
-import { TranslateModule } from '@ngx-translate/core';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { IonicModule } from "@ionic/angular";
+import { TranslateModule } from "@ngx-translate/core";
 
-import { ProgressBarComponent } from './progress-bar/progress-bar.component';
-import { BarcodeInputComponent } from './barcode-input/barcode-input.component';
-import { PasswordInputComponent } from './password-input/password-input.component';
-import { TextInputComponent } from './text-input/text-input.component';
-import { DateTimeComponent } from './date-time/date-time.component';
-import { DateInputComponent } from './date-input/date-input.component';
-import { AgeInputComponent } from './age-input/age-input.component';
-import { EmailInputComponent } from './email-input/email-input.component';
-import { PhoneNumberInputComponent } from './phone-number-input/phone-number-input.component';
-import { NumericalInputComponent } from './numerical-input/numerical-input.component';
-import { UnitIntervalInputComponent } from './unit-interval-input/unit-interval-input.component';
-import { PercentageInputComponent } from './percentage-input/percentage-input.component';
-import { RadioButtonComponent } from './radio-button/radio-button.component';
-import { TrueOnlyInputComponent } from './true-only-input/true-only-input.component';
-import { BooleanInputComponent } from './boolean-input/boolean-input.component';
-import { CoordinateInputComponent } from './coordinate-input/coordinate-input.component';
-import { OptionSetInputComponent } from './option-set-input/option-set-input.component';
-import { OrganisationUnitInputComponent } from './organisation-unit-input/organisation-unit-input.component';
-import { OrganisationUnitTreeComponent } from './organisation-unit-tree/organisation-unit-tree.component';
+import { ProgressBarComponent } from "./progress-bar/progress-bar.component";
+import { BarcodeInputComponent } from "./barcode-input/barcode-input.component";
+import { PasswordInputComponent } from "./password-input/password-input.component";
+import { TextInputComponent } from "./text-input/text-input.component";
+import { DateTimeComponent } from "./date-time/date-time.component";
+import { DateInputComponent } from "./date-input/date-input.component";
+import { AgeInputComponent } from "./age-input/age-input.component";
+import { EmailInputComponent } from "./email-input/email-input.component";
+import { PhoneNumberInputComponent } from "./phone-number-input/phone-number-input.component";
+import { NumericalInputComponent } from "./numerical-input/numerical-input.component";
+import { UnitIntervalInputComponent } from "./unit-interval-input/unit-interval-input.component";
+import { PercentageInputComponent } from "./percentage-input/percentage-input.component";
+import { RadioButtonComponent } from "./radio-button/radio-button.component";
+import { TrueOnlyInputComponent } from "./true-only-input/true-only-input.component";
+import { BooleanInputComponent } from "./boolean-input/boolean-input.component";
+import { CoordinateInputComponent } from "./coordinate-input/coordinate-input.component";
+import { OptionSetInputComponent } from "./option-set-input/option-set-input.component";
+import { OrganisationUnitInputComponent } from "./organisation-unit-input/organisation-unit-input.component";
+import { OrganisationUnitTreeComponent } from "./organisation-unit-tree/organisation-unit-tree.component";
+import { SynchronizationStatusComponent } from "./synchronization-status/synchronization-status.component";
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { OrganisationUnitTreeComponent } from './organisation-unit-tree/organisa
     RadioButtonComponent,
     TrueOnlyInputComponent,
     BooleanInputComponent,
+    SynchronizationStatusComponent,
     CoordinateInputComponent,
     OptionSetInputComponent,
     OrganisationUnitInputComponent,
@@ -83,6 +85,7 @@ import { OrganisationUnitTreeComponent } from './organisation-unit-tree/organisa
     NumericalInputComponent,
     UnitIntervalInputComponent,
     PercentageInputComponent,
+    SynchronizationStatusComponent,
     RadioButtonComponent,
     TrueOnlyInputComponent,
     BooleanInputComponent,

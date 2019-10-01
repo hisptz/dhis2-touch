@@ -33,7 +33,7 @@ import { AppSystemInfoComponent } from "./app-system-info/app-system-info.compon
 import { AboutContainerComponent } from "./about-container/about-container.component";
 import { IonicModule } from "@ionic/angular";
 import { TranslateModule } from "@ngx-translate/core";
-import { SharedComponentsModule } from "src/app/components/sharedComponents.module";
+import { SharedComponentsModule } from "src/app/components/shared-components.module";
 
 @NgModule({
   declarations: [
@@ -47,8 +47,8 @@ import { SharedComponentsModule } from "src/app/components/sharedComponents.modu
   imports: [
     CommonModule,
     IonicModule,
-    // SharedComponentsModule,
-    TranslateModule.forRoot()
+    TranslateModule.forRoot(),
+    SharedComponentsModule
   ],
   exports: [
     AboutContainerComponent,
