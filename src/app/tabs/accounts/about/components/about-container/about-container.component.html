@@ -1,9 +1,57 @@
-<div>
-  <app-aggregated-status></app-aggregated-status>
-  <app-enrollments></app-enrollments>
-  <app-event-status></app-event-status>
-  <app-event-tracker-status></app-event-tracker-status>
-  <app-app-system-info
-    [systemInfoContent]="systemInfoContent"
-  ></app-app-system-info>
+<!--
+*
+* Copyright 2019 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2019
+* @author Joseph Chingalo profschingalo@gmail.com>
+*
+*
+-->
+
+<div class="item-card" *ngFor="let aboutContent of aboutContents">
+  <ion-item (click)="toggleContent(aboutContent)" lines="none" no-padding>
+    <img class="side-menu-icon" [src]="aboutContent.icon" />
+    <ion-text>
+      <span [translate]="aboutContent.name" class="about-title"></span>
+    </ion-text>
+    <ion-icon
+      [mode]="'ios'"
+      [name]="aboutContent.isOpened ? 'arrow-up' : 'arrow-down'"
+      slot="end"
+    ></ion-icon>
+  </ion-item>
+  <div *ngIf="aboutContent.isOpened" class="about-content">
+    <div *ngIf="aboutContent.id === 'aggregatedStatus'">
+      <app-aggregated-status></app-aggregated-status>
+    </div>
+    <div *ngIf="aboutContent.id === 'eventStatus'">
+      <app-event-status></app-event-status>
+    </div>
+    <div *ngIf="aboutContent.id === 'eventTrackerStatus'">
+      <app-event-tracker-status></app-event-tracker-status>
+    </div>
+    <div *ngIf="aboutContent.id === 'enrollments'">
+      <app-enrollments></app-enrollments>
+    </div>
+    <div *ngIf="aboutContent.id === 'systemInfo'">
+      <app-app-system-info
+        [systemInfoContent]="systemInfoContent"
+      ></app-app-system-info>
+    </div>
+  </div>
 </div>
