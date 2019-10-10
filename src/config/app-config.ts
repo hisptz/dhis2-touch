@@ -1,3 +1,3 @@
 export const appConfig = {
-  baseUrl: 'https://dhis.hisptz.org/edsmobile'
+  baseUrl: "https://dhis.hisptz.org/msdqi"
 };
