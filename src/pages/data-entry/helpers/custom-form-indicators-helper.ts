@@ -30,21 +30,7 @@ export function evaluateCustomFomProgramIndicators(programIndicators: any[]) {
       // console.log(JSON.stringify({ filter }));
     }
     let indicatorValue = 0;
-    // if (expression.indexOf("condition") > -1) {
-    //   try {
-    //     indicatorValue = Number(
-    //       getProgramIndicatorValueFromExpressionD2Function(expression)
-    //     );
-    //   } catch (error) {
-    //     console.log({ error, type: "evaluation of D2 program indicators" });
-    //   }
-    // } else {
-    //   indicatorValue = Number(
-    //     getProgramIndicatorValueFromExpression(expression)
-    //   );
-    // }
     indicatorValue = Number(getProgramIndicatorValueFromExpression(expression));
-    // alert(id + " -> " + indicatorValue);
     const element: any = document.getElementById(`indicator${id}`);
     if (element) {
       element.value = `${indicatorValue}`;
