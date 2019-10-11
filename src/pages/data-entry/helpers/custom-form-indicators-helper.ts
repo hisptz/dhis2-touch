@@ -21,7 +21,7 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-import * as _ from 'lodash';
+import * as _ from "lodash";
 declare const dhis2;
 export function evaluateCustomFomProgramIndicators(programIndicators: any[]) {
   for (let programIndicator of programIndicators) {
@@ -29,10 +29,25 @@ export function evaluateCustomFomProgramIndicators(programIndicators: any[]) {
     if (filter) {
       // console.log(JSON.stringify({ filter }));
     }
-    const indicatorValue = getProgramIndicatorValueFromExpression(expression);
+    let indicatorValue = 0;
+    // if (expression.indexOf("condition") > -1) {
+    //   try {
+    //     indicatorValue = Number(
+    //       getProgramIndicatorValueFromExpressionD2Function(expression)
+    //     );
+    //   } catch (error) {
+    //     console.log({ error, type: "evaluation of D2 program indicators" });
+    //   }
+    // } else {
+    //   indicatorValue = Number(
+    //     getProgramIndicatorValueFromExpression(expression)
+    //   );
+    // }
+    indicatorValue = Number(getProgramIndicatorValueFromExpression(expression));
+    // alert(id + " -> " + indicatorValue);
     const element: any = document.getElementById(`indicator${id}`);
     if (element) {
-      element.value = `${indicatorValue} `;
+      element.value = `${indicatorValue}`;
     }
   }
   if (
@@ -55,18 +70,18 @@ export function evaluateCustomFomAggregateIndicators(indicators: any[]) {
     try {
       value = eval(generatedExpresion);
       if (isNaN(value)) {
-        value = '-';
+        value = "-";
       } else {
         value = value.toFixed(1);
       }
       const element: any = document.getElementById(`indicator${id}`);
       if (element) {
-        element.setAttribute('readonly', 'readonly');
-        element.setAttribute('disabled', 'disabled');
+        element.setAttribute("readonly", "readonly");
+        element.setAttribute("disabled", "disabled");
         element.value = value;
       }
     } catch (e) {
-      console.log('Fail to evaluate : ' + generatedExpresion);
+      console.log("Fail to evaluate : " + generatedExpresion);
     }
   });
 }
@@ -76,7 +91,7 @@ export function evaluateDataElementTotals() {
     _.each(
       document.querySelectorAll('[name="total"]'),
       (dataElementTotal: any) => {
-        const dataElementid = dataElementTotal.getAttribute('dataelementid');
+        const dataElementid = dataElementTotal.getAttribute("dataelementid");
         const value = getDataElementTotalValue(dataElementid);
         dataElementTotal.value = value;
       }
@@ -86,18 +101,18 @@ export function evaluateDataElementTotals() {
 
 function generateExpresion(expression: string) {
   const formulaPattern = /#\{.+?\}/g;
-  const separator = '.';
+  const separator = ".";
   if (expression) {
     const matcher = expression.match(formulaPattern);
     if (matcher) {
       matcher.map(match => {
-        const operand = match.replace(/[#\{\}]/g, '');
+        const operand = match.replace(/[#\{\}]/g, "");
         const isTotal = operand.indexOf(separator) == -1;
         let value = 0;
         if (isTotal) {
           value = getDataElementTotalValue(operand);
         } else {
-          const elementId = `${operand.split('.').join('-')}-val`;
+          const elementId = `${operand.split(".").join("-")}-val`;
           const element: any = document.getElementById(elementId);
           value = element && element.value ? element.value : 0;
         }
@@ -113,22 +128,95 @@ function getDataElementTotalValue(dataElementId) {
   let value = 0;
   _.each(document.querySelectorAll(selector), (element: any) => {
     const elementValue = element.value;
-    if (elementValue && elementValue !== '' && !isNaN(elementValue)) {
+    if (elementValue && elementValue !== "" && !isNaN(elementValue)) {
       value += parseFloat(elementValue);
     }
   });
   return value;
 }
 
+function executeIfStatement(elem, elementValues) {
+  const trueValue = elem.split(",")[1];
+  let falseValue = elem.split(",")[2];
+  if (falseValue) {
+    falseValue = elem.split(",")[2].replace(")", "");
+  } else {
+    return 0;
+  }
+  const leftSideValue = getLeftSideValue(elem, elementValues);
+  const rightSideValue = getRightSideValue(elem);
+  if (leftSideValue == rightSideValue) {
+    return Number(trueValue);
+  } else {
+    return Number(getFalseValue(falseValue, elementValues));
+  }
+}
+
+function getFalseValue(falseValue, elementValues) {
+  if (falseValue.length < 11) {
+    return falseValue;
+  } else {
+    if (elementValues[falseValue.split("{")[1].split("}")[0]]) {
+      return elementValues[falseValue.split("{")[1].split("}")[0]];
+    } else {
+      return 0;
+    }
+  }
+}
+
+function getRightSideValue(elem) {
+  // remove spaces
+  const newElem = elem
+    .replace(/\t/g, "")
+    .replace(/\n/g, "")
+    .replace(/ /g, "")
+    .replace(/  /g, "");
+
+  if (newElem.indexOf("==") > -1 && newElem.indexOf("'") > -1) {
+    return Number(newElem.split("==")[1].split("'")[0]);
+  } else {
+    return 0;
+  }
+}
+
+function getLeftSideValue(elem, elementValues) {
+  if (elem.indexOf("condition") > -1) {
+    const newElem = elem
+      .split("d2:condition('#{")
+      .join("")
+      .replace(/\t/g, "")
+      .replace(/\n/g, "")
+      .replace(/ /g, "")
+      .replace(/  /g, "")
+      .split("}==")[0];
+
+    if (elementValues[newElem]) {
+      return elementValues[newElem];
+    } else {
+      return 0;
+    }
+  } else {
+    return 0;
+  }
+}
+
+function splitExp(expression) {
+  return expression
+    .replace(/\+/g, "SPC-")
+    .replace(/\//g, "SPC-")
+    .replace(/\*/g, "SPC-");
+}
+
 function getProgramIndicatorValueFromExpression(expression: string) {
-  let indicatorValue = '0';
+  // alert("expression: " + expression);
+  let indicatorValue = "0";
   try {
     const indictorUidValue = {};
     const uids = getUidsFromExpression(expression);
     for (const uid of uids) {
-      const elementId = uid.split('.').join('-');
+      const elementId = uid.split(".").join("-");
       const element: any = document.getElementById(`${elementId}-val`);
-      const value = element && element.value ? element.value : '0';
+      const value = element && element.value ? element.value : "0";
       indictorUidValue[uid] = value;
     }
     indicatorValue = getEvaluatedIndicatorValueFromExpression(
@@ -136,7 +224,7 @@ function getProgramIndicatorValueFromExpression(expression: string) {
       indictorUidValue
     );
   } catch (error) {
-    console.log({ error, type: 'evaluation of program indicators' });
+    console.log({ error, type: "evaluation of program indicators" });
   }
   return indicatorValue;
 }
@@ -147,9 +235,9 @@ function getUidsFromExpression(expression: string) {
   expression.match(matchRegrex).forEach(function(value) {
     uids = uids.concat(
       value
-        .replace('{', ':separator:')
-        .replace('}', ':separator:')
-        .split(':separator:')
+        .replace("{", ":separator:")
+        .replace("}", ":separator:")
+        .split(":separator:")
         .filter(content => content.length > 0)
     );
   });
@@ -161,11 +249,11 @@ function getEvaluatedIndicatorValueFromExpression(
 ) {
   let evaluatedValue = 0;
   const formulaPattern = /#\{.+?\}/g;
-  if (expression) {
+  if (expression && expression.indexOf("d2:") == -1) {
     const matcher = expression.match(formulaPattern);
     if (matcher) {
       matcher.map(function(match) {
-        var operand = match.replace(/[#\{\}]/g, '');
+        var operand = match.replace(/[#\{\}]/g, "");
         const value =
           indicatorIdToValueObject && indicatorIdToValueObject[operand]
             ? indicatorIdToValueObject[operand]
@@ -173,6 +261,25 @@ function getEvaluatedIndicatorValueFromExpression(
         expression = expression.replace(match, value);
       });
     }
+  } else {
+    // d2 function support level 1
+    // TODO: Add support for all D2 function in DHIS and improve the regex string operations
+    expression = expression.replace(/[ \t\r\n]/g, "");
+    _.map(splitExp(expression).split("SPC-"), elem => {
+      // create if statement
+      let logicExecutedValue = 0;
+      if (elem.match(/1[0-9][0-9]/g)) {
+      } else {
+        if (elem.indexOf("d2:") > 0) {
+          elem = elem.substring(elem.indexOf("d2:"), elem.length);
+        }
+        if (elem.indexOf("))") > 0) {
+          elem = elem.substring(0, elem.indexOf("))") + 1);
+        }
+        logicExecutedValue = executeIfStatement(elem, indicatorIdToValueObject);
+        expression = expression.replace(elem, logicExecutedValue.toString());
+      }
+    });
   }
   try {
     if (!isNaN(eval(expression))) {
