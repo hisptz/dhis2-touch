@@ -121,7 +121,7 @@ function getDataElementTotalValue(dataElementId) {
   return value;
 }
 
-function executeIfStatement(elem, elementValues) {
+function createAndExecuteIfStatement(elem, elementValues) {
   const trueValue = elem.split(",")[1];
   let falseValue = elem.split(",")[2];
   if (falseValue) {
@@ -129,13 +129,32 @@ function executeIfStatement(elem, elementValues) {
   } else {
     return 0;
   }
-  const leftSideValue = getLeftSideValue(elem, elementValues);
+  const logicalOperator = getLogicalOperator(elem);
+  const leftSideValue = getLeftSideValue(elem, elementValues, logicalOperator);
   const rightSideValue = getRightSideValue(elem);
-  if (leftSideValue == rightSideValue) {
-    return Number(trueValue);
-  } else {
-    return Number(getFalseValue(falseValue, elementValues));
+  if (logicalOperator == "==" || logicalOperator == "===") {
+    if (leftSideValue == rightSideValue) {
+      return Number(trueValue);
+    } else {
+      return Number(getFalseValue(falseValue, elementValues));
+    }
+  } else if (logicalOperator == ">=" || logicalOperator == ">==") {
+    if (leftSideValue >= rightSideValue) {
+      return Number(trueValue);
+    } else {
+      return Number(getFalseValue(falseValue, elementValues));
+    }
+  } else if (logicalOperator == "<=" || logicalOperator == "<==") {
+    if (leftSideValue <= rightSideValue) {
+      return Number(trueValue);
+    } else {
+      return Number(getFalseValue(falseValue, elementValues));
+    }
   }
+}
+
+function getLogicalOperator(elem) {
+  return elem.match(/\s*==|\s*>=|\s*<=|\s*<|\s*>|\s*!=|\s*!==/g);
 }
 
 function getFalseValue(falseValue, elementValues) {
@@ -165,7 +184,7 @@ function getRightSideValue(elem) {
   }
 }
 
-function getLeftSideValue(elem, elementValues) {
+function getLeftSideValue(elem, elementValues, logicalOperator) {
   if (elem.indexOf("condition") > -1) {
     const newElem = elem
       .split("d2:condition('#{")
@@ -174,7 +193,7 @@ function getLeftSideValue(elem, elementValues) {
       .replace(/\n/g, "")
       .replace(/ /g, "")
       .replace(/  /g, "")
-      .split("}==")[0];
+      .split("}" + logicalOperator)[0];
 
     if (elementValues[newElem]) {
       return elementValues[newElem];
@@ -262,7 +281,10 @@ function getEvaluatedIndicatorValueFromExpression(
         if (elem.indexOf("))") > 0) {
           elem = elem.substring(0, elem.indexOf("))") + 1);
         }
-        logicExecutedValue = executeIfStatement(elem, indicatorIdToValueObject);
+        logicExecutedValue = createAndExecuteIfStatement(
+          elem,
+          indicatorIdToValueObject
+        );
         expression = expression.replace(elem, logicExecutedValue.toString());
       }
     });
