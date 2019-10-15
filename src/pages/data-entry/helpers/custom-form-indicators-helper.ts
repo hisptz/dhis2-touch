@@ -131,7 +131,7 @@ function createAndExecuteIfStatement(elem, elementValues) {
   }
   const logicalOperator = getLogicalOperator(elem);
   const leftSideValue = getLeftSideValue(elem, elementValues, logicalOperator);
-  const rightSideValue = getRightSideValue(elem);
+  const rightSideValue = getRightSideValue(elem, logicalOperator);
   if (logicalOperator == "==" || logicalOperator == "===") {
     if (leftSideValue == rightSideValue) {
       return Number(trueValue);
@@ -169,7 +169,7 @@ function getFalseValue(falseValue, elementValues) {
   }
 }
 
-function getRightSideValue(elem) {
+function getRightSideValue(elem, logicalOperator) {
   // remove spaces
   const newElem = elem
     .replace(/\t/g, "")
@@ -177,8 +177,8 @@ function getRightSideValue(elem) {
     .replace(/ /g, "")
     .replace(/  /g, "");
 
-  if (newElem.indexOf("==") > -1 && newElem.indexOf("'") > -1) {
-    return Number(newElem.split("==")[1].split("'")[0]);
+  if (newElem.indexOf(logicalOperator) > -1 && newElem.indexOf("'") > -1) {
+    return Number(newElem.split(logicalOperator)[1].split("'")[0]);
   } else {
     return 0;
   }
