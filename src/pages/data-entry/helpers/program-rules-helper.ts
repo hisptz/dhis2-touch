@@ -63,6 +63,15 @@ export function disableHiddenFiledsBasedOnProgramRules(
 ) {
   const ommittedKeys = Object.keys(errorOrWarningMessage);
   if (!shouldLockFields) {
+    // show all program rule related items
+    const itemsWIthProgramRules = document.getElementsByClassName(
+      "program-rules"
+    );
+    _.map(itemsWIthProgramRules, htmlItem => {
+      try {
+        htmlItem.setAttribute("style", "display: ''");
+      } catch (error) {}
+    });
     _.each(
       document.getElementsByClassName("entryfield"),
       (inputElement: any) => {
