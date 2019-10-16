@@ -123,12 +123,7 @@ function getDataElementTotalValue(dataElementId) {
 
 function createAndExecuteIfStatement(elem, elementValues) {
   const trueValue = elem.split(",")[1];
-  let falseValue = elem.split(",")[2];
-  if (falseValue) {
-    falseValue = elem.split(",")[2].replace(")", "");
-  } else {
-    return 0;
-  }
+  let falseValue = elem.split(",")[2].split(")")[0];
   const logicalOperator = getLogicalOperator(elem);
   const leftSideValue = getLeftSideValue(elem, elementValues, logicalOperator);
   const rightSideValue = getRightSideValue(elem, logicalOperator);
@@ -252,6 +247,7 @@ function getEvaluatedIndicatorValueFromExpression(
   expression: string,
   indicatorIdToValueObject: any
 ) {
+  let ogExpression = expression;
   let evaluatedValue = 0;
   const formulaPattern = /#\{.+?\}/g;
   if (expression && expression.indexOf("d2:") == -1) {
@@ -273,19 +269,24 @@ function getEvaluatedIndicatorValueFromExpression(
     _.map(splitExp(expression).split("SPC-"), elem => {
       // create if statement
       let logicExecutedValue = 0;
-      if (elem.match(/1[0-9][0-9]/g)) {
-      } else {
-        if (elem.indexOf("d2:") > 0) {
-          elem = elem.substring(elem.indexOf("d2:"), elem.length);
-        }
-        if (elem.indexOf("))") > 0) {
-          elem = elem.substring(0, elem.indexOf("))") + 1);
-        }
+      if (elem.length < 10) {
+      } else if (elem.indexOf("d2:condition") > -1) {
         logicExecutedValue = createAndExecuteIfStatement(
           elem,
           indicatorIdToValueObject
         );
-        expression = expression.replace(elem, logicExecutedValue.toString());
+        if (isNaN(logicExecutedValue)) {
+          logicExecutedValue = 0;
+        }
+        const newElem = elem.match(/d2:condition\(('[^)]+)\)/g);
+        expression = expression.replace(newElem, logicExecutedValue.toString());
+      } else {
+        const operand = elem.replace(/[(#\{\})]/g, "");
+        if (indicatorIdToValueObject[operand]) {
+          logicExecutedValue = indicatorIdToValueObject[operand];
+        }
+        const newElem = elem.match(/#\{.+?\}/g);
+        expression = expression.replace(newElem, logicExecutedValue.toString());
       }
     });
   }
