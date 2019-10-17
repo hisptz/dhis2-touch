@@ -30,7 +30,49 @@ export function evaluateCustomFomProgramIndicators(programIndicators: any[]) {
       // console.log(JSON.stringify({ filter }));
     }
     let indicatorValue = 0;
-    indicatorValue = Number(getProgramIndicatorValueFromExpression(expression));
+    indicatorValue = Number(
+      getProgramIndicatorValueFromExpression(expression)["value"]
+    );
+    const checkIfAtLeastValueIsFilled = getProgramIndicatorValueFromExpression(
+      expression
+    )["checkIfAtLeastValueIsFilled"];
+    let backGroundColor = "#FFF";
+    const nameSpace = "msdqi-checklists";
+    const key = "indicatorConfigurations";
+    const dataStoreReferenceId = `${nameSpace}_${key}`;
+    const tableName = "dataStore";
+    dhis2.sqlLiteProvider
+      .getFromTableByAttributes(tableName, "id", [dataStoreReferenceId])
+      .then(data => {
+        const element: any = document.getElementById(`indicator${id}`);
+        if (data && data.length > 0 && checkIfAtLeastValueIsFilled.length > 0) {
+          if (indicatorValue < 50) {
+            backGroundColor = data[0]["data"]["colorMapping"]["lower"];
+          } else if (indicatorValue >= 50 && indicatorValue < 75) {
+            backGroundColor = data[0]["data"]["colorMapping"]["middle"];
+          } else {
+            backGroundColor = data[0]["data"]["colorMapping"]["upper"];
+          }
+          if (element) {
+            element.setAttribute(
+              "style",
+              "background-color:" + backGroundColor
+            );
+          }
+        } else {
+          if (element) {
+            element.removeAttribute("style");
+            element.setAttribute(
+              "style",
+              "background-color:" + backGroundColor
+            );
+          }
+        }
+      })
+      .catch(error => {
+        // error
+        console.log("error::" + JSON.stringify(error));
+      });
     const element: any = document.getElementById(`indicator${id}`);
     if (element) {
       element.value = `${indicatorValue}`;
@@ -209,6 +251,7 @@ function splitExp(expression) {
 
 function getProgramIndicatorValueFromExpression(expression: string) {
   // alert("expression: " + expression);
+  let checkIfAtLeastValueIsFilled = [];
   let indicatorValue = "0";
   try {
     const indictorUidValue = {};
@@ -217,6 +260,9 @@ function getProgramIndicatorValueFromExpression(expression: string) {
       const elementId = uid.split(".").join("-");
       const element: any = document.getElementById(`${elementId}-val`);
       const value = element && element.value ? element.value : "0";
+      if (element && element.value) {
+        checkIfAtLeastValueIsFilled.push(element.value);
+      }
       indictorUidValue[uid] = value;
     }
     indicatorValue = getEvaluatedIndicatorValueFromExpression(
@@ -226,7 +272,10 @@ function getProgramIndicatorValueFromExpression(expression: string) {
   } catch (error) {
     console.log({ error, type: "evaluation of program indicators" });
   }
-  return indicatorValue;
+  return {
+    value: indicatorValue,
+    checkIfAtLeastValueIsFilled: checkIfAtLeastValueIsFilled
+  };
 }
 
 function getUidsFromExpression(expression: string) {
