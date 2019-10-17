@@ -30,7 +30,49 @@ export function evaluateCustomFomProgramIndicators(programIndicators: any[]) {
       // console.log(JSON.stringify({ filter }));
     }
     let indicatorValue = 0;
-    indicatorValue = Number(getProgramIndicatorValueFromExpression(expression));
+    indicatorValue = Number(
+      getProgramIndicatorValueFromExpression(expression)["value"]
+    );
+    const checkIfAtLeastValueIsFilled = getProgramIndicatorValueFromExpression(
+      expression
+    )["checkIfAtLeastValueIsFilled"];
+    let backGroundColor = "#FFF";
+    const nameSpace = "msdqi-checklists";
+    const key = "indicatorConfigurations";
+    const dataStoreReferenceId = `${nameSpace}_${key}`;
+    const tableName = "dataStore";
+    dhis2.sqlLiteProvider
+      .getFromTableByAttributes(tableName, "id", [dataStoreReferenceId])
+      .then(data => {
+        const element: any = document.getElementById(`indicator${id}`);
+        if (data && data.length > 0 && checkIfAtLeastValueIsFilled.length > 0) {
+          if (indicatorValue < 50) {
+            backGroundColor = data[0]["data"]["colorMapping"]["lower"];
+          } else if (indicatorValue >= 50 && indicatorValue < 75) {
+            backGroundColor = data[0]["data"]["colorMapping"]["middle"];
+          } else {
+            backGroundColor = data[0]["data"]["colorMapping"]["upper"];
+          }
+          if (element) {
+            element.setAttribute(
+              "style",
+              "background-color:" + backGroundColor
+            );
+          }
+        } else {
+          if (element) {
+            element.removeAttribute("style");
+            element.setAttribute(
+              "style",
+              "background-color:" + backGroundColor
+            );
+          }
+        }
+      })
+      .catch(error => {
+        // error
+        console.log("error::" + JSON.stringify(error));
+      });
     const element: any = document.getElementById(`indicator${id}`);
     if (element) {
       element.value = `${indicatorValue}`;
@@ -123,15 +165,10 @@ function getDataElementTotalValue(dataElementId) {
 
 function createAndExecuteIfStatement(elem, elementValues) {
   const trueValue = elem.split(",")[1];
-  let falseValue = elem.split(",")[2];
-  if (falseValue) {
-    falseValue = elem.split(",")[2].replace(")", "");
-  } else {
-    return 0;
-  }
+  let falseValue = elem.split(",")[2].split(")")[0];
   const logicalOperator = getLogicalOperator(elem);
   const leftSideValue = getLeftSideValue(elem, elementValues, logicalOperator);
-  const rightSideValue = getRightSideValue(elem);
+  const rightSideValue = getRightSideValue(elem, logicalOperator);
   if (logicalOperator == "==" || logicalOperator == "===") {
     if (leftSideValue == rightSideValue) {
       return Number(trueValue);
@@ -169,7 +206,7 @@ function getFalseValue(falseValue, elementValues) {
   }
 }
 
-function getRightSideValue(elem) {
+function getRightSideValue(elem, logicalOperator) {
   // remove spaces
   const newElem = elem
     .replace(/\t/g, "")
@@ -177,8 +214,8 @@ function getRightSideValue(elem) {
     .replace(/ /g, "")
     .replace(/  /g, "");
 
-  if (newElem.indexOf("==") > -1 && newElem.indexOf("'") > -1) {
-    return Number(newElem.split("==")[1].split("'")[0]);
+  if (newElem.indexOf(logicalOperator) > -1 && newElem.indexOf("'") > -1) {
+    return Number(newElem.split(logicalOperator)[1].split("'")[0]);
   } else {
     return 0;
   }
@@ -214,6 +251,7 @@ function splitExp(expression) {
 
 function getProgramIndicatorValueFromExpression(expression: string) {
   // alert("expression: " + expression);
+  let checkIfAtLeastValueIsFilled = [];
   let indicatorValue = "0";
   try {
     const indictorUidValue = {};
@@ -222,6 +260,9 @@ function getProgramIndicatorValueFromExpression(expression: string) {
       const elementId = uid.split(".").join("-");
       const element: any = document.getElementById(`${elementId}-val`);
       const value = element && element.value ? element.value : "0";
+      if (element && element.value) {
+        checkIfAtLeastValueIsFilled.push(element.value);
+      }
       indictorUidValue[uid] = value;
     }
     indicatorValue = getEvaluatedIndicatorValueFromExpression(
@@ -231,7 +272,10 @@ function getProgramIndicatorValueFromExpression(expression: string) {
   } catch (error) {
     console.log({ error, type: "evaluation of program indicators" });
   }
-  return indicatorValue;
+  return {
+    value: indicatorValue,
+    checkIfAtLeastValueIsFilled: checkIfAtLeastValueIsFilled
+  };
 }
 
 function getUidsFromExpression(expression: string) {
@@ -252,6 +296,7 @@ function getEvaluatedIndicatorValueFromExpression(
   expression: string,
   indicatorIdToValueObject: any
 ) {
+  let ogExpression = expression;
   let evaluatedValue = 0;
   const formulaPattern = /#\{.+?\}/g;
   if (expression && expression.indexOf("d2:") == -1) {
@@ -273,19 +318,24 @@ function getEvaluatedIndicatorValueFromExpression(
     _.map(splitExp(expression).split("SPC-"), elem => {
       // create if statement
       let logicExecutedValue = 0;
-      if (elem.match(/1[0-9][0-9]/g)) {
-      } else {
-        if (elem.indexOf("d2:") > 0) {
-          elem = elem.substring(elem.indexOf("d2:"), elem.length);
-        }
-        if (elem.indexOf("))") > 0) {
-          elem = elem.substring(0, elem.indexOf("))") + 1);
-        }
+      if (elem.length < 10) {
+      } else if (elem.indexOf("d2:condition") > -1) {
         logicExecutedValue = createAndExecuteIfStatement(
           elem,
           indicatorIdToValueObject
         );
-        expression = expression.replace(elem, logicExecutedValue.toString());
+        if (isNaN(logicExecutedValue)) {
+          logicExecutedValue = 0;
+        }
+        const newElem = elem.match(/d2:condition\(('[^)]+)\)/g);
+        expression = expression.replace(newElem, logicExecutedValue.toString());
+      } else {
+        const operand = elem.replace(/[(#\{\})]/g, "");
+        if (indicatorIdToValueObject[operand]) {
+          logicExecutedValue = indicatorIdToValueObject[operand];
+        }
+        const newElem = elem.match(/#\{.+?\}/g);
+        expression = expression.replace(newElem, logicExecutedValue.toString());
       }
     });
   }

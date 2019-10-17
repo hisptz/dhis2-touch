@@ -63,6 +63,15 @@ export function disableHiddenFiledsBasedOnProgramRules(
 ) {
   const ommittedKeys = Object.keys(errorOrWarningMessage);
   if (!shouldLockFields) {
+    // show all program rule related items
+    const itemsWIthProgramRules = document.getElementsByClassName(
+      "program-rules"
+    );
+    _.map(itemsWIthProgramRules, htmlItem => {
+      try {
+        htmlItem.setAttribute("style", "display: ''");
+      } catch (error) {}
+    });
     _.each(
       document.getElementsByClassName("entryfield"),
       (inputElement: any) => {
@@ -99,6 +108,25 @@ export function disableHiddenFiledsBasedOnProgramRules(
       }
     );
   }
+
+  _.map(Object.keys(keyValuePairObject), key => {
+    if (!keyValuePairObject[key]) {
+      try {
+        const elementId =
+          programStageId && programStageId !== ""
+            ? `${programStageId}-${key}-val`
+            : `${key}-val`;
+        const inputElement: any = document.getElementById(`${elementId}`);
+        inputElement.value = "";
+        document.getElementById(
+          elementId
+            .split("-")
+            .join(".")
+            .replace(".val", ".tr")
+        ).style.display = "";
+      } catch (error) {}
+    }
+  });
   _.map(Object.keys(keyValuePairObject), key => {
     if (keyValuePairObject[key]) {
       try {
@@ -108,6 +136,12 @@ export function disableHiddenFiledsBasedOnProgramRules(
             : `${key}-val`;
         const inputElement: any = document.getElementById(`${elementId}`);
         inputElement.value = "";
+        document.getElementById(
+          elementId
+            .split("-")
+            .join(".")
+            .replace(".val", ".tr")
+        ).style.display = "none";
         try {
           inputElement.checked = "";
         } catch (error) {
