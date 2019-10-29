@@ -20,25 +20,25 @@
  * @since 2015
  * @author Joseph Chingalo <profschingalo@gmail.com>
  */
-import { Injectable } from '@angular/core';
-import { SqlLiteProvider } from '../sql-lite/sql-lite';
-import { HttpClientProvider } from '../http-client/http-client';
-import { Observable } from 'rxjs/Observable';
-import * as _ from 'lodash';
-import { CurrentUser } from '../../models/current-user';
-import { DEFAULT_APP_METADATA } from '../../constants';
+import { Injectable } from "@angular/core";
+import { SqlLiteProvider } from "../sql-lite/sql-lite";
+import { HttpClientProvider } from "../http-client/http-client";
+import { Observable } from "rxjs/Observable";
+import * as _ from "lodash";
+import { CurrentUser } from "../../models/current-user";
+import { DEFAULT_APP_METADATA } from "../../constants";
 
-const ASSIGN = 'ASSIGN';
-const HIDE_FIELD = 'HIDEFIELD';
-const HIDE_PROGRAMSTAGE = 'HIDEPROGRAMSTAGE';
-const HIDE_SECTION = 'HIDESECTION';
-const SHOW_ERROR = 'SHOWERROR';
-const SHOW_WARNING = 'SHOWWARNING';
-const ERROR_ON_COMPLETE = 'ERRORONCOMPLETE';
-const WARNING_ON_COMPLETE = 'WARNINGONCOMPLETE';
-const SET_MANDATORY_FIELD = 'SETMANDATORYFIELD';
-const DISPLAY_KEY_VALUE_PAIR = 'DISPLAYKEYVALUEPAIR';
-const DISPLAY_TEXT = 'DISPLAYTEXT';
+const ASSIGN = "ASSIGN";
+const HIDE_FIELD = "HIDEFIELD";
+const HIDE_PROGRAMSTAGE = "HIDEPROGRAMSTAGE";
+const HIDE_SECTION = "HIDESECTION";
+const SHOW_ERROR = "SHOWERROR";
+const SHOW_WARNING = "SHOWWARNING";
+const ERROR_ON_COMPLETE = "ERRORONCOMPLETE";
+const WARNING_ON_COMPLETE = "WARNINGONCOMPLETE";
+const SET_MANDATORY_FIELD = "SETMANDATORYFIELD";
+const DISPLAY_KEY_VALUE_PAIR = "DISPLAYKEYVALUEPAIR";
+const DISPLAY_TEXT = "DISPLAYTEXT";
 
 /*
   Generated class for the ProgramRulesProvider provider.
@@ -93,8 +93,8 @@ export class ProgramRulesProvider {
                   data
                 } = action;
                 let evalCondition = condition;
-                let evalDataCondition = data ? data : '';
-                let evalData = '';
+                let evalDataCondition = data ? data : "";
+                let evalData = "";
                 if (programRulesVariables) {
                   programRulesVariables.map(programRulesVariable => {
                     const ruleVariableDataElementAttributeId =
@@ -106,7 +106,7 @@ export class ProgramRulesProvider {
                           programRulesVariable.trackedEntityAttribute &&
                           programRulesVariable.trackedEntityAttribute.id
                         ? programRulesVariable.trackedEntityAttribute.id
-                        : '';
+                        : "";
                     let value = "''";
                     if (
                       dataValuesObject &&
@@ -125,7 +125,7 @@ export class ProgramRulesProvider {
                           "'";
                       } else if (
                         dataValuesObject[ruleVariableDataElementAttributeId] !==
-                        ''
+                        ""
                       ) {
                         value =
                           dataValuesObject[ruleVariableDataElementAttributeId];
@@ -134,12 +134,12 @@ export class ProgramRulesProvider {
 
                     if (evalCondition.includes(programRulesVariable.name)) {
                       evalCondition = evalCondition
-                        .split('#{' + programRulesVariable.name + '}')
+                        .split("#{" + programRulesVariable.name + "}")
                         .join(`${value}`);
                     }
                     if (data && data.includes(programRulesVariable.name)) {
                       evalDataCondition = evalDataCondition
-                        .split('#{' + programRulesVariable.name + '}')
+                        .split("#{" + programRulesVariable.name + "}")
                         .join(`${value}`);
                     }
                   });
@@ -170,7 +170,7 @@ export class ProgramRulesProvider {
                           const sectionId =
                             programStageSection && programStageSection.id
                               ? programStageSection.id
-                              : '';
+                              : "";
                           programRulesEvaluations.hiddenSections[
                             sectionId
                           ] = true;
@@ -180,7 +180,7 @@ export class ProgramRulesProvider {
                           const programStageId =
                             programStage && programStage.id
                               ? programStage.id
-                              : '';
+                              : "";
                           programRulesEvaluations.hiddenProgramStages[
                             programStageId
                           ] = true;
@@ -190,12 +190,12 @@ export class ProgramRulesProvider {
                           programRuleActionType === WARNING_ON_COMPLETE ||
                           programRuleActionType === ERROR_ON_COMPLETE
                         ) {
-                          let message = '';
+                          let message = "";
                           const messageType =
                             programRuleActionType === SHOW_ERROR ||
                             programRuleActionType === ERROR_ON_COMPLETE
-                              ? 'error'
-                              : 'warning';
+                              ? "error"
+                              : "warning";
                           const isOnComplete =
                             programRuleActionType === WARNING_ON_COMPLETE ||
                             programRuleActionType === ERROR_ON_COMPLETE
@@ -205,7 +205,7 @@ export class ProgramRulesProvider {
                             message += content;
                           }
                           if (data) {
-                            message += ' ' + evalData;
+                            message += " " + evalData;
                           }
 
                           if (dataElement && dataElement.id) {
@@ -231,6 +231,10 @@ export class ProgramRulesProvider {
                           }
                         } else if (programRuleActionType === ASSIGN) {
                           if (dataElement && dataElement.id) {
+                            console.log(
+                              "evalDataCondition:=" +
+                                JSON.stringify(programRulesEvaluations)
+                            );
                             programRulesEvaluations.assignedFields[
                               dataElement.id
                             ] = `${evalData}`;
@@ -246,15 +250,15 @@ export class ProgramRulesProvider {
                         } else if (
                           programRuleActionType === SET_MANDATORY_FIELD
                         ) {
-                          console.log('Handling for : ' + SET_MANDATORY_FIELD);
+                          console.log("Handling for : " + SET_MANDATORY_FIELD);
                         } else if (
                           programRuleActionType === DISPLAY_KEY_VALUE_PAIR
                         ) {
                           console.log(
-                            'Handling for : ' + DISPLAY_KEY_VALUE_PAIR
+                            "Handling for : " + DISPLAY_KEY_VALUE_PAIR
                           );
                         } else if (programRuleActionType === DISPLAY_TEXT) {
-                          console.log('Handling for : ' + DISPLAY_TEXT);
+                          console.log("Handling for : " + DISPLAY_TEXT);
                         }
                       }
                     } catch (error) {
@@ -280,7 +284,7 @@ export class ProgramRulesProvider {
     let dataValuesObject = {};
     if (dataObject) {
       Object.keys(dataObject).map(key => {
-        const id = key.split('-')[0];
+        const id = key.split("-")[0];
         const dataValue = dataObject[key];
         dataValuesObject[id] = dataValue.value;
       });
@@ -291,12 +295,12 @@ export class ProgramRulesProvider {
   downloadingProgramRules(currentUser: CurrentUser): Observable<any> {
     const programMetadata = DEFAULT_APP_METADATA.programs;
     const { defaultIds } = programMetadata;
-    const resource = 'programRules';
+    const resource = "programRules";
     const fields =
-      'id,name,displayName,description,condition,program[id],programRuleActions[id]';
+      "id,name,displayName,description,condition,program[id],programRuleActions[id]";
     const filter =
       defaultIds && defaultIds.length > 0
-        ? `filter=program.id:in:[${defaultIds.join(',')}]`
+        ? `filter=program.id:in:[${defaultIds.join(",")}]`
         : ``;
     const url = `/api/${resource}.json?paging=false&fields=${fields}&${filter}`;
     return new Observable(observer => {
@@ -315,12 +319,12 @@ export class ProgramRulesProvider {
   downloadingProgramRuleActions(currentUser: CurrentUser): Observable<any> {
     const programMetadata = DEFAULT_APP_METADATA.programs;
     const { defaultIds } = programMetadata;
-    const resource = 'programRuleActions';
+    const resource = "programRuleActions";
     const fields =
-      'id,data,content,programRuleActionType,location,programRule[id],dataElement[id],trackedEntityAttribute[id],programStageSection[id],programStage[id]';
+      "id,data,content,programRuleActionType,location,programRule[id],dataElement[id],trackedEntityAttribute[id],programStageSection[id],programStage[id]";
     const filter =
       defaultIds && defaultIds.length > 0
-        ? `filter=programRule.program.id:in:[${defaultIds.join(',')}]`
+        ? `filter=programRule.program.id:in:[${defaultIds.join(",")}]`
         : ``;
     const url = `/api/${resource}.json?paging=false&fields=${fields}&${filter}`;
     return new Observable(observer => {
@@ -339,12 +343,12 @@ export class ProgramRulesProvider {
   downloadingProgramRuleVariables(currentUser: CurrentUser): Observable<any> {
     const programMetadata = DEFAULT_APP_METADATA.programs;
     const { defaultIds } = programMetadata;
-    const resource = 'programRuleVariables';
+    const resource = "programRuleVariables";
     const fields =
-      'id,name,displayName,programRuleVariableSourceType,program[id],dataElement[id],trackedEntityAttribute[id],programStageSection[id],programStage[id]';
+      "id,name,displayName,programRuleVariableSourceType,program[id],dataElement[id],trackedEntityAttribute[id],programStageSection[id],programStage[id]";
     const filter =
       defaultIds && defaultIds.length > 0
-        ? `filter=program.id:in:[${defaultIds.join(',')}]`
+        ? `filter=program.id:in:[${defaultIds.join(",")}]`
         : ``;
     const url = `/api/${resource}.json?paging=false&fields=${fields}&${filter}`;
     return new Observable(observer => {
@@ -361,7 +365,7 @@ export class ProgramRulesProvider {
   }
 
   savingProgramRules(programRules, currentUser: CurrentUser): Observable<any> {
-    const resource = 'programRules';
+    const resource = "programRules";
     return new Observable(observer => {
       this.sqlLite
         .insertBulkDataOnTable(
@@ -385,7 +389,7 @@ export class ProgramRulesProvider {
     programRuleActions,
     currentUser: CurrentUser
   ): Observable<any> {
-    const resource = 'programRuleActions';
+    const resource = "programRuleActions";
     return new Observable(observer => {
       this.sqlLite
         .insertBulkDataOnTable(
@@ -410,7 +414,7 @@ export class ProgramRulesProvider {
     programRuleVariables,
     currentUser: CurrentUser
   ): Observable<any> {
-    const resource = 'programRuleVariables';
+    const resource = "programRuleVariables";
     return new Observable(observer => {
       this.sqlLite
         .insertBulkDataOnTable(
@@ -434,7 +438,7 @@ export class ProgramRulesProvider {
     programId: string,
     currentUser: CurrentUser
   ): Observable<any> {
-    const resource = 'programRules';
+    const resource = "programRules";
     const { currentDatabase } = currentUser;
     return new Observable(observer => {
       this.sqlLite.getAllDataFromTable(resource, currentDatabase).subscribe(
@@ -463,7 +467,7 @@ export class ProgramRulesProvider {
     ProgramRuleActionsIds: Array<String>,
     currentUser: CurrentUser
   ): Observable<any> {
-    const resource = 'programRuleActions';
+    const resource = "programRuleActions";
     return new Observable(observer => {
       if (ProgramRuleActionsIds.length == 0) {
         observer.next([]);
@@ -472,7 +476,7 @@ export class ProgramRulesProvider {
         this.sqlLite
           .getDataFromTableByAttributes(
             resource,
-            'id',
+            "id",
             ProgramRuleActionsIds,
             currentUser.currentDatabase
           )
@@ -493,7 +497,7 @@ export class ProgramRulesProvider {
     programId: string,
     currentUser: CurrentUser
   ): Observable<any> {
-    const resource = 'programRuleVariables';
+    const resource = "programRuleVariables";
     const { currentDatabase } = currentUser;
     return new Observable(observer => {
       this.sqlLite.getAllDataFromTable(resource, currentDatabase).subscribe(

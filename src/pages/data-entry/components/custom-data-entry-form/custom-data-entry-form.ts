@@ -104,6 +104,7 @@ export class CustomDataEntryFormComponent
   scriptsContents: string[];
   entryFormSectionsCount: number;
   elementIds: any;
+  dataStoreProgramIndicatorColorMapping: any;
 
   constructor(private sanitizer: DomSanitizer, private elementRef: ElementRef) {
     this.hasScriptSet = false;

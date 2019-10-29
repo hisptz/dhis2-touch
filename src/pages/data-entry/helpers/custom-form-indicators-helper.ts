@@ -24,67 +24,70 @@
 import * as _ from "lodash";
 declare const dhis2;
 
-const nameSpace = "msdqi-checklists";
-const key = "indicatorConfigurations";
-const dataStoreReferenceId = `${nameSpace}_${key}`;
-const tableName = "dataStore";
-let dataStoreData: any;
-dhis2.sqlLiteProvider
-  .getFromTableByAttributes(tableName, "id", [dataStoreReferenceId])
-  .then(data => {
-    dataStoreData = data;
-  })
-  .catch(error => {
-    // error
-    console.log("error::" + JSON.stringify(error));
-  });
 export function evaluateCustomFomProgramIndicators(programIndicators: any[]) {
-  for (let programIndicator of programIndicators) {
-    const { id, expression, filter } = programIndicator;
-    if (filter) {
-      // console.log(JSON.stringify({ filter }));
-    }
-    let indicatorValue = 0;
-    indicatorValue = Number(
-      getProgramIndicatorValueFromExpression(expression)["value"]
-    );
-    const checkIfAtLeastValueIsFilled = getProgramIndicatorValueFromExpression(
-      expression
-    )["checkIfAtLeastValueIsFilled"];
-    let backGroundColor = "#FFF";
-    const element: any = document.getElementById(`indicator${id}`);
-    if (
-      dataStoreData &&
-      dataStoreData.length > 0 &&
-      checkIfAtLeastValueIsFilled.length > 0
-    ) {
-      if (indicatorValue < 50) {
-        backGroundColor = dataStoreData[0]["data"]["colorMapping"]["lower"];
-      } else if (indicatorValue >= 50 && indicatorValue < 75) {
-        backGroundColor = dataStoreData[0]["data"]["colorMapping"]["middle"];
-      } else {
-        backGroundColor = dataStoreData[0]["data"]["colorMapping"]["upper"];
+  let filledElementsCount;
+  let dataStoreColorMapping: any = {};
+  const nameSpace = "msdqi-checklists";
+  const key = "indicatorConfigurations";
+  const dataStoreReferenceId = `${nameSpace}_${key}`;
+  const tableName = "dataStore";
+  dhis2.sqlLiteProvider
+    .getFromTableByAttributes(tableName, "id", [dataStoreReferenceId])
+    .then(data => {
+      if (data) {
+        dataStoreColorMapping = data[0]["data"];
       }
-      if (element) {
-        element.setAttribute("style", "background-color:" + backGroundColor);
+      for (let programIndicator of programIndicators) {
+        const { id, expression, filter } = programIndicator;
+        if (filter) {
+          // console.log(JSON.stringify({ filter }));
+        }
+        let indicatorValue = 0;
+        indicatorValue = Number(
+          getProgramIndicatorValueFromExpression(expression)["value"]
+        );
+        // filledElements
+        filledElementsCount = getProgramIndicatorValueFromExpression(
+          expression
+        )["filledElements"].length;
+        const element: any = document.getElementById(`indicator${id}`);
+        // console.log("mapping=" + JSON.stringify(dataStoreColorMapping));
+        if (element) {
+          if (dataStoreColorMapping && dataStoreColorMapping["colorMapping"]) {
+            if (filledElementsCount > 0) {
+              element.setAttribute(
+                "style",
+                "background-color:" + getColor(indicatorValue)
+              );
+            } else {
+              element.setAttribute("style", "background-color:#E7E7E7");
+            }
+          }
+          element.value = `${indicatorValue}`;
+        }
       }
-    } else {
-      if (element) {
-        element.removeAttribute("style");
-        element.setAttribute("style", "background-color:" + backGroundColor);
+      if (
+        dhis2 &&
+        dhis2.customFomProgramIndicators &&
+        dhis2.customFomProgramIndicators.updateColorLableForApp
+      ) {
+        dhis2.customFomProgramIndicators.updateColorLableForApp();
       }
-    }
-    if (element) {
-      element.value = `${indicatorValue}`;
-    }
-  }
-  if (
-    dhis2 &&
-    dhis2.customFomProgramIndicators &&
-    dhis2.customFomProgramIndicators.updateColorLableForApp
-  ) {
-    dhis2.customFomProgramIndicators.updateColorLableForApp();
-  }
+    })
+    .catch(error => {
+      // error
+      console.log("error::" + JSON.stringify(error));
+    });
+}
+
+function getColor(value) {
+  return value < 50
+    ? "#FF0000"
+    : value < 75
+    ? "#FFFF00"
+    : value < 100.1
+    ? "#088000"
+    : "#E7E7E7";
 }
 
 export function evaluateCustomFomAggregateIndicators(indicators: any[]) {
@@ -167,25 +170,39 @@ function createAndExecuteIfStatement(elem, elementValues) {
   const trueValue = elem.split(",")[1];
   let falseValue = elem.split(",")[2].split(")")[0];
   const logicalOperator = getLogicalOperator(elem);
-  const leftSideValue = getLeftSideValue(elem, elementValues, logicalOperator);
-  const rightSideValue = getRightSideValue(elem, logicalOperator);
-  if (logicalOperator == "==" || logicalOperator == "===") {
-    if (leftSideValue == rightSideValue) {
-      return Number(trueValue);
+  let leftSideValue = getLeftSideValue(elem, elementValues, logicalOperator);
+  let rightSideValue = getRightSideValue(elem, logicalOperator);
+  if (!logicalOperator) {
+    if (leftSideValue == null) {
+      return getFalseValue(falseValue, elementValues);
     } else {
-      return Number(getFalseValue(falseValue, elementValues));
+      return trueValue;
     }
-  } else if (logicalOperator == ">=" || logicalOperator == ">==") {
-    if (leftSideValue >= rightSideValue) {
-      return Number(trueValue);
-    } else {
-      return Number(getFalseValue(falseValue, elementValues));
-    }
-  } else if (logicalOperator == "<=" || logicalOperator == "<==") {
-    if (leftSideValue <= rightSideValue) {
-      return Number(trueValue);
-    } else {
-      return Number(getFalseValue(falseValue, elementValues));
+  } else {
+    if (logicalOperator == "==" || logicalOperator == "===") {
+      if (leftSideValue == rightSideValue) {
+        return Number(trueValue);
+      } else {
+        return Number(getFalseValue(falseValue, elementValues));
+      }
+    } else if (logicalOperator == ">=" || logicalOperator == ">==") {
+      if (leftSideValue >= rightSideValue && leftSideValue != null) {
+        return Number(trueValue);
+      } else {
+        return Number(getFalseValue(falseValue, elementValues));
+      }
+    } else if (logicalOperator == "<=" || logicalOperator == "<==") {
+      if (leftSideValue <= rightSideValue) {
+        return Number(trueValue);
+      } else {
+        return Number(getFalseValue(falseValue, elementValues));
+      }
+    } else if (logicalOperator == "!=" || logicalOperator == "!==") {
+      if (leftSideValue != rightSideValue) {
+        return Number(trueValue);
+      } else {
+        return Number(getFalseValue(falseValue, elementValues));
+      }
     }
   }
 }
@@ -215,27 +232,30 @@ function getRightSideValue(elem, logicalOperator) {
     .replace(/  /g, "");
 
   if (newElem.indexOf(logicalOperator) > -1 && newElem.indexOf("'") > -1) {
-    return Number(newElem.split(logicalOperator)[1].split("'")[0]);
+    return newElem.split(logicalOperator)[1].split("'")[0];
   } else {
-    return 0;
+    return null;
   }
 }
 
 function getLeftSideValue(elem, elementValues, logicalOperator) {
   if (elem.indexOf("condition") > -1) {
-    const newElem = elem
-      .split("d2:condition('#{")
-      .join("")
-      .replace(/\t/g, "")
-      .replace(/\n/g, "")
-      .replace(/ /g, "")
-      .replace(/  /g, "")
-      .split("}" + logicalOperator)[0];
-
+    if (logicalOperator) {
+      elem =
+        elem.split(logicalOperator)[0] +
+        "'"
+          .replace(/\t/g, "")
+          .replace(/\n/g, "")
+          .replace(/ /g, "")
+          .replace(/  /g, "");
+    }
+    let newElem = elem.match(/\#{([^{]+[^)]+)}'/g)[0];
+    newElem = newElem.replace(/[#\{\}']/g, "");
+    // console.log("newElem::" + newElem);
     if (elementValues[newElem]) {
       return elementValues[newElem];
     } else {
-      return 0;
+      return null;
     }
   } else {
     return 0;
@@ -251,19 +271,19 @@ function splitExp(expression) {
 
 function getProgramIndicatorValueFromExpression(expression: string) {
   // alert("expression: " + expression);
-  let checkIfAtLeastValueIsFilled = [];
+  let filledElements = [];
   let indicatorValue = "0";
+  const indictorUidValue = {};
   try {
-    const indictorUidValue = {};
     const uids = getUidsFromExpression(expression);
     for (const uid of uids) {
       const elementId = uid.split(".").join("-");
       const element: any = document.getElementById(`${elementId}-val`);
-      const value = element && element.value ? element.value : "0";
+      const value = element && element.value ? element.value : 0;
       if (element && element.value && element.value != "") {
-        checkIfAtLeastValueIsFilled.push(element.value);
+        filledElements.push(element.value);
+        indictorUidValue[uid] = value;
       }
-      indictorUidValue[uid] = value;
     }
     indicatorValue = getEvaluatedIndicatorValueFromExpression(
       expression,
@@ -274,7 +294,7 @@ function getProgramIndicatorValueFromExpression(expression: string) {
   }
   return {
     value: indicatorValue,
-    checkIfAtLeastValueIsFilled: checkIfAtLeastValueIsFilled
+    filledElements: filledElements
   };
 }
 
@@ -296,15 +316,14 @@ function getEvaluatedIndicatorValueFromExpression(
   expression: string,
   indicatorIdToValueObject: any
 ) {
-  let ogExpression = expression;
   let evaluatedValue = 0;
   const formulaPattern = /#\{.+?\}/g;
-  if (expression && expression.indexOf("d2:") == -1) {
+  if (expression && expression.indexOf("d2:condition") == -1) {
     const matcher = expression.match(formulaPattern);
     if (matcher) {
       matcher.map(function(match) {
-        var operand = match.replace(/[#\{\}]/g, "");
-        const value =
+        let operand = match.replace(/[#\{\}]/g, "");
+        let value =
           indicatorIdToValueObject && indicatorIdToValueObject[operand]
             ? indicatorIdToValueObject[operand]
             : 0;
