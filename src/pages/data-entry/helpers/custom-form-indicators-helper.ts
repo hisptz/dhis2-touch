@@ -25,69 +25,33 @@ import * as _ from "lodash";
 declare const dhis2;
 
 export function evaluateCustomFomProgramIndicators(programIndicators: any[]) {
-  let filledElementsCount;
-  let dataStoreColorMapping: any = {};
-  const nameSpace = "msdqi-checklists";
-  const key = "indicatorConfigurations";
-  const dataStoreReferenceId = `${nameSpace}_${key}`;
-  const tableName = "dataStore";
-  dhis2.sqlLiteProvider
-    .getFromTableByAttributes(tableName, "id", [dataStoreReferenceId])
-    .then(data => {
-      if (data) {
-        dataStoreColorMapping = data[0]["data"];
-      }
-      for (let programIndicator of programIndicators) {
-        const { id, expression, filter } = programIndicator;
-        if (filter) {
-          // console.log(JSON.stringify({ filter }));
-        }
-        let indicatorValue = 0;
-        indicatorValue = Number(
-          getProgramIndicatorValueFromExpression(expression)["value"]
-        );
-        // filledElements
-        filledElementsCount = getProgramIndicatorValueFromExpression(
-          expression
-        )["filledElements"].length;
-        const element: any = document.getElementById(`indicator${id}`);
-        // console.log("mapping=" + JSON.stringify(dataStoreColorMapping));
-        if (element) {
-          if (dataStoreColorMapping && dataStoreColorMapping["colorMapping"]) {
-            if (filledElementsCount > 0) {
-              element.setAttribute(
-                "style",
-                "background-color:" + getColor(indicatorValue)
-              );
-            } else {
-              element.setAttribute("style", "background-color:#E7E7E7");
-            }
-          }
-          element.value = `${indicatorValue}`;
-        }
-      }
-      if (
-        dhis2 &&
-        dhis2.customFomProgramIndicators &&
-        dhis2.customFomProgramIndicators.updateColorLableForApp
-      ) {
-        dhis2.customFomProgramIndicators.updateColorLableForApp();
-      }
-    })
-    .catch(error => {
-      // error
-      console.log("error::" + JSON.stringify(error));
-    });
-}
-
-function getColor(value) {
-  return value < 50
-    ? "#FF0000"
-    : value < 75
-    ? "#FFFF00"
-    : value < 100.1
-    ? "#088000"
-    : "#E7E7E7";
+  for (let programIndicator of programIndicators) {
+    let filledElementsCount = 0;
+    const { id, expression, filter } = programIndicator;
+    if (filter) {
+      // console.log(JSON.stringify({ filter }));
+    }
+    let indicatorValue = 0;
+    indicatorValue = Number(
+      getProgramIndicatorValueFromExpression(expression)["value"]
+    );
+    // filledElements
+    filledElementsCount = getProgramIndicatorValueFromExpression(expression)[
+      "filledElements"
+    ].length;
+    dhis2["indicator" + id] = filledElementsCount;
+    const element: any = document.getElementById(`indicator${id}`);
+    if (element) {
+      element.value = `${indicatorValue}`;
+    }
+  }
+  if (
+    dhis2 &&
+    dhis2.customFomProgramIndicators &&
+    dhis2.customFomProgramIndicators.updateColorLableForApp
+  ) {
+    dhis2.customFomProgramIndicators.updateColorLableForApp();
+  }
 }
 
 export function evaluateCustomFomAggregateIndicators(indicators: any[]) {
