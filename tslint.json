@@ -62,7 +62,7 @@
     "no-inferrable-types": [
       true,
       "ignore-params"
-    ],
+    ],    
     "no-misused-new": true,
     "no-non-null-assertion": true,
     "no-redundant-jsdoc": true,
@@ -118,12 +118,8 @@
       "check-type"
     ],
     "no-output-on-prefix": true,
-    "use-input-property-decorator": true,
-    "use-output-property-decorator": true,
-    "use-host-property-decorator": true,
     "no-input-rename": true,
     "no-output-rename": true,
-    "use-life-cycle-interface": true,
     "use-pipe-transform-interface": true,
     "directive-class-suffix": true
   }

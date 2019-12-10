@@ -2,12 +2,11 @@ sudo: false
 branches:
   only:
     - master
-    - develop-v3
-    - stable-mobile-dev
+    - develop
 language: node_js
 
 node_js:
-  - '8'
+  - '10'
 
 addons:
   apt:

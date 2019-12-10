@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "types": ["node"],
+    "paths": {
+      "typeorm": ["./node_modules/typeorm/typeorm-model-shim.js"]
+    }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/test.ts", "src/**/*.spec.ts"]
+}
