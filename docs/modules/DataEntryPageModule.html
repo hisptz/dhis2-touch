@@ -177,6 +177,7 @@ import { IonicModule } from &#x27;@ionic/angular&#x27;;
 import { DataEntryPage } from &#x27;./data-entry.page&#x27;;
 import { SharedComponentsModule } from &#x27;src/app/components/shared-components.module&#x27;;
 import { DataEntryComponentsModule } from &#x27;./components/data-entry-components.module&#x27;;
+import { dataEntryProviders } from &#x27;./services&#x27;;
 
 const routes: Routes &#x3D; [
   {
@@ -195,7 +196,8 @@ const routes: Routes &#x3D; [
     TranslateModule.forChild(),
     RouterModule.forChild(routes)
   ],
-  declarations: [DataEntryPage]
+  declarations: [DataEntryPage],
+  providers: [...dataEntryProviders]
 })
 export class DataEntryPageModule {}
 </code></pre>
@@ -211,6 +213,7 @@ export class DataEntryPageModule {}
 
 
 
+                   
 
 
 
@@ -233,6 +236,7 @@ export class DataEntryPageModule {}
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'module';
             var COMPODOC_CURRENT_PAGE_URL = 'DataEntryPageModule.html';
+            var MAX_SEARCH_RESULTS = 15;
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

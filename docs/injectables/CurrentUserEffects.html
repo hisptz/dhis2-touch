@@ -76,7 +76,7 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#loadAllArticles$">loadAllArticles$</a>
+                                <a href="#setCurrentUser$">setCurrentUser$</a>
                             </li>
                         </ul>
                     </td>
@@ -102,7 +102,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/store/effects/current-user.effects.ts:32</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/store/effects/current-user.effects.ts:31</a></div>
                             </td>
                         </tr>
 
@@ -150,45 +150,31 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="loadAllArticles$"></a>
+                        <a name="setCurrentUser$"></a>
                         <span class="name">
                             <b>
-                            loadAllArticles$</b>
-                            <a href="#loadAllArticles$"><span class="icon ion-ios-link"></span></a>
+                            setCurrentUser$</b>
+                            <a href="#setCurrentUser$"><span class="icon ion-ios-link"></span></a>
                         </span>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                            <i>Type : </i>    <code>Observable&lt;Action&gt;</code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>this.actions$.pipe(
-    ofType(CurrentUserActionTypes.AddCurrentUser),
-    map((action: any) &#x3D;&gt; {
-      const { payload } &#x3D; action;
-      const { currentUser } &#x3D; payload;
-      const { id } &#x3D; currentUser;
-      return new SetCurrentUser({ id });
-    })
+                            <i>Default value : </i><code>createEffect(() &#x3D;&gt;
+    this.actions$.pipe(
+      ofType(currentUserAction.AddCurrentUser),
+      switchMap(actions &#x3D;&gt; {
+        const { currentUser } &#x3D; actions;
+        const { id } &#x3D; currentUser;
+        return of(currentUserAction.SetCurrentUser({ id }));
+      })
+    )
   )</code>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <b>Decorators : </b>
-                            <br />
-                            <code>
-                                @Effect()<br />
-                            </code>
                         </td>
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/store/effects/current-user.effects.ts:36</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/store/effects/current-user.effects.ts:34</a></div>
                             </td>
                         </tr>
 
@@ -202,25 +188,24 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@angular/core&#x27;;
-import { Observable } from &#x27;rxjs&#x27;;
-import { Action } from &#x27;@ngrx/store&#x27;;
-import { Actions, Effect, ofType } from &#x27;@ngrx/effects&#x27;;
-import { CurrentUserActionTypes, SetCurrentUser } from &#x27;../actions&#x27;;
-import { map } from &#x27;rxjs/operators&#x27;;
+import * as currentUserAction from &#x27;../actions/current-user.actions&#x27;;
+import { Actions, createEffect, ofType } from &#x27;@ngrx/effects&#x27;;
+import { of } from &#x27;rxjs&#x27;;
+import { switchMap } from &#x27;rxjs/operators&#x27;;
 
 @Injectable()
 export class CurrentUserEffects {
   constructor(private actions$: Actions) {}
 
-  @Effect()
-  loadAllArticles$: Observable&lt;Action&gt; &#x3D; this.actions$.pipe(
-    ofType(CurrentUserActionTypes.AddCurrentUser),
-    map((action: any) &#x3D;&gt; {
-      const { payload } &#x3D; action;
-      const { currentUser } &#x3D; payload;
-      const { id } &#x3D; currentUser;
-      return new SetCurrentUser({ id });
-    })
+  setCurrentUser$ &#x3D; createEffect(() &#x3D;&gt;
+    this.actions$.pipe(
+      ofType(currentUserAction.AddCurrentUser),
+      switchMap(actions &#x3D;&gt; {
+        const { currentUser } &#x3D; actions;
+        const { id } &#x3D; currentUser;
+        return of(currentUserAction.SetCurrentUser({ id }));
+      })
+    )
   );
 }
 </code></pre>
@@ -234,6 +219,7 @@ export class CurrentUserEffects {
 
 
 
+                   
 
 
 
@@ -256,6 +242,7 @@ export class CurrentUserEffects {
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
             var COMPODOC_CURRENT_PAGE_URL = 'CurrentUserEffects.html';
+            var MAX_SEARCH_RESULTS = 15;
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

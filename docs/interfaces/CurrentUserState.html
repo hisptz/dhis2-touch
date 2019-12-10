@@ -166,7 +166,8 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { EntityState, EntityAdapter, createEntityAdapter } from &#x27;@ngrx/entity&#x27;;
-import { CurrentUserActions, CurrentUserActionTypes } from &#x27;../actions&#x27;;
+import { Action, createReducer, on } from &#x27;@ngrx/store&#x27;;
+import * as curentUserAction from &#x27;../actions/current-user.actions&#x27;;
 import { CurrentUser, AppColorObject } from &#x27;src/models&#x27;;
 import { DEFAULT_COLOR_SETTING } from &#x27;src/constants&#x27;;
 
@@ -175,48 +176,49 @@ export interface CurrentUserState extends EntityState&lt;CurrentUser&gt; {
   colorSettings: AppColorObject;
 }
 
-export const currentUserAdapter: EntityAdapter&lt;
+export const currentUserAdapter: EntityAdapter&lt;CurrentUser&gt; &#x3D; createEntityAdapter&lt;
   CurrentUser
-&gt; &#x3D; createEntityAdapter&lt;CurrentUser&gt;();
+&gt;();
 
-const initialState: CurrentUserState &#x3D; currentUserAdapter.getInitialState({
+const initialUserState: CurrentUserState &#x3D; currentUserAdapter.getInitialState({
   currentUserId: null,
   colorSettings: DEFAULT_COLOR_SETTING
 });
 
+export const reducer &#x3D; createReducer(
+  initialUserState,
+  on(curentUserAction.AddCurrentUser, (state, { currentUser }) &#x3D;&gt; {
+    return currentUserAdapter.addOne(currentUser, state);
+  }),
+  on(curentUserAction.UpdateCurrentUser, (state, { currentUser, id }) &#x3D;&gt; {
+    return currentUserAdapter.updateOne({ id, changes: currentUser }, state);
+  }),
+  on(curentUserAction.SetCurrentUser, (state, { id }) &#x3D;&gt; {
+    return { ...state, currentUserId: id };
+  }),
+  on(
+    curentUserAction.SetCurrentUserColorSettings,
+    (state, { colorSettings }) &#x3D;&gt; {
+      return { ...state, colorSettings };
+    }
+  ),
+  on(curentUserAction.ClearCurrentUser, state &#x3D;&gt; {
+    return { ...state, currentUserId: null };
+  })
+);
+
 export function currentUserReducer(
-  state &#x3D; initialState,
-  action: CurrentUserActions
+  state: CurrentUserState | undefined,
+  action: Action
 ): CurrentUserState {
-  switch (action.type) {
-    case CurrentUserActionTypes.AddCurrentUser: {
-      return currentUserAdapter.addOne(action.payload.currentUser, state);
-    }
-    case CurrentUserActionTypes.UpdateCurrentUser: {
-      return currentUserAdapter.updateOne(
-        { id: action.payload.id, changes: action.payload.currentUser },
-        state
-      );
-    }
-    case CurrentUserActionTypes.SetCurrentUser: {
-      return { ...state, currentUserId: action.payload.id };
-    }
-    case CurrentUserActionTypes.SetCurrentUserColorSettings: {
-      return { ...state, colorSettings: action.payload.colorSettings };
-    }
-    case CurrentUserActionTypes.ClearCurrentUser: {
-      return { ...state, currentUserId: null };
-    }
-    default: {
-      return state;
-    }
-  }
+  return reducer(state, action);
 }
 </code></pre>
     </div>
 </div>
 
 
+                   
 
 
 
@@ -239,6 +241,7 @@ export function currentUserReducer(
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
             var COMPODOC_CURRENT_PAGE_URL = 'CurrentUserState.html';
+            var MAX_SEARCH_RESULTS = 15;
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
