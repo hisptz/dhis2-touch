@@ -23,7 +23,7 @@
 *
 -->
 <div class="animated fadeIn item-card" *ngFor="let settingContent of settingContents; trackBy: trackByFn">
-    <ion-item (click)="toggleContent(settingContent)" lines="none" no-padding>
+    <ion-item (click)="toggleContent(settingContent)" lines="none" class="ion-no-padding">
         <img class="side-menu-icon" [src]="settingContent.icon" />
         <ion-text [color]="settingContent.isOpened ? 'current-selection' : ''">
             <span [translate]="settingContent.name" class="setting-title"></span>

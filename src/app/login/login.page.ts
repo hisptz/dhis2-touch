@@ -200,7 +200,7 @@ export class LoginPage implements OnInit {
   async onUpdateCurrentUser(currentUser: CurrentUser) {
     const { colorSettings } = currentUser;
     if (colorSettings) {
-      this.store.dispatch(new SetCurrentUserColorSettings({ colorSettings }));
+      this.store.dispatch(SetCurrentUserColorSettings({ colorSettings }));
     }
     this.currentUser = _.assign({}, this.currentUser, currentUser);
     await this.userService.setCurrentUser(this.currentUser);
@@ -263,10 +263,10 @@ export class LoginPage implements OnInit {
       );
       const { colorSettings } = this.currentUser;
       if (colorSettings) {
-        this.store.dispatch(new SetCurrentUserColorSettings({ colorSettings }));
+        this.store.dispatch(SetCurrentUserColorSettings({ colorSettings }));
       }
       this.store.dispatch(
-        new AddCurrentUser({ currentUser: this.currentUser })
+        AddCurrentUser({ currentUser: this.currentUser })
       );
       await this.userService.setCurrentUser(this.currentUser);
       this.navCtrl.navigateRoot('/tabs');

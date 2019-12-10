@@ -22,29 +22,45 @@
 <text text-anchor="start" x="429.7258" y="-15.4" font-family="sans-serif" font-size="14.00" fill="#000000"> &#160;Exports</text>
 <g id="clust1" class="cluster">
 <title>cluster_TabsPageModule</title>
-<polygon fill="none" stroke="#000000" stroke-dasharray="1,5" points="183,-70 183,-195 313,-195 313,-70 183,-70"/>
+<polygon fill="none" stroke="#000000" stroke-dasharray="1,5" points="105,-70 105,-195 391,-195 391,-70 105,-70"/>
 </g>
 <g id="clust2" class="cluster">
 <title>cluster_TabsPageModule_declarations</title>
-<polygon fill="none" stroke="#000000" points="205,-78 205,-130 291,-130 291,-78 205,-78"/>
+<polygon fill="none" stroke="#000000" points="297,-78 297,-130 383,-130 383,-78 297,-78"/>
+</g>
+<g id="clust4" class="cluster">
+<title>cluster_TabsPageModule_imports</title>
+<polygon fill="none" stroke="#000000" points="113,-78 113,-130 289,-130 289,-78 113,-78"/>
 </g>
 <!-- TabsPage -->
 <g id="node1" class="node">
 <title>TabsPage</title>
-<polygon fill="#ffffb3" stroke="#000000" points="283.4249,-122 212.5751,-122 212.5751,-86 283.4249,-86 283.4249,-122"/>
-<text text-anchor="middle" x="248" y="-99.8" font-family="Times,serif" font-size="14.00" fill="#000000">TabsPage</text>
+<polygon fill="#ffffb3" stroke="#000000" points="375.4249,-122 304.5751,-122 304.5751,-86 375.4249,-86 375.4249,-122"/>
+<text text-anchor="middle" x="340" y="-99.8" font-family="Times,serif" font-size="14.00" fill="#000000">TabsPage</text>
 </g>
 <!-- TabsPageModule -->
 <g id="node2" class="node">
 <title>TabsPageModule</title>
-<polygon fill="#8dd3c7" stroke="#000000" points="304.9734,-187 301.9734,-191 280.9734,-191 277.9734,-187 191.0266,-187 191.0266,-151 304.9734,-151 304.9734,-187"/>
-<text text-anchor="middle" x="248" y="-164.8" font-family="Times,serif" font-size="14.00" fill="#000000">TabsPageModule</text>
+<polygon fill="#8dd3c7" stroke="#000000" points="319.9734,-187 316.9734,-191 295.9734,-191 292.9734,-187 206.0266,-187 206.0266,-151 319.9734,-151 319.9734,-187"/>
+<text text-anchor="middle" x="263" y="-164.8" font-family="Times,serif" font-size="14.00" fill="#000000">TabsPageModule</text>
 </g>
 <!-- TabsPage&#45;&gt;TabsPageModule -->
 <g id="edge1" class="edge">
 <title>TabsPage&#45;&gt;TabsPageModule</title>
-<path fill="none" stroke="#000000" d="M248,-122.1061C248,-122.1061 248,-140.991 248,-140.991"/>
-<polygon fill="#000000" stroke="#000000" points="244.5001,-140.9909 248,-150.991 251.5001,-140.991 244.5001,-140.9909"/>
+<path fill="none" stroke="#000000" d="M312.3875,-122.1061C312.3875,-122.1061 312.3875,-140.991 312.3875,-140.991"/>
+<polygon fill="#000000" stroke="#000000" points="308.8875,-140.9909 312.3875,-150.991 315.8875,-140.991 308.8875,-140.9909"/>
+</g>
+<!-- TabsPageRoutingModule -->
+<g id="node3" class="node">
+<title>TabsPageRoutingModule</title>
+<polygon fill="#8dd3c7" stroke="#000000" points="280.5912,-122 277.5912,-126 256.5912,-126 253.5912,-122 121.4088,-122 121.4088,-86 280.5912,-86 280.5912,-122"/>
+<text text-anchor="middle" x="201" y="-99.8" font-family="Times,serif" font-size="14.00" fill="#000000">TabsPageRoutingModule</text>
+</g>
+<!-- TabsPageRoutingModule&#45;&gt;TabsPageModule -->
+<g id="edge2" class="edge">
+<title>TabsPageRoutingModule&#45;&gt;TabsPageModule</title>
+<path fill="none" stroke="#000000" d="M243.2795,-122.1061C243.2795,-122.1061 243.2795,-140.991 243.2795,-140.991"/>
+<polygon fill="#000000" stroke="#000000" points="239.7795,-140.9909 243.2795,-150.991 246.7795,-140.991 239.7795,-140.9909"/>
 </g>
 </g>
 </svg>

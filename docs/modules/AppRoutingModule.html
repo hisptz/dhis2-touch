@@ -96,17 +96,29 @@
  */
 
 import { NgModule } from &#x27;@angular/core&#x27;;
-import { Routes, RouterModule } from &#x27;@angular/router&#x27;;
+import { PreloadAllModules, RouterModule, Routes } from &#x27;@angular/router&#x27;;
 
 const routes: Routes &#x3D; [
   { path: &#x27;&#x27;, redirectTo: &#x27;launch&#x27;, pathMatch: &#x27;full&#x27; },
-  { path: &#x27;launch&#x27;, loadChildren: &#x27;./launch/launch.module#LaunchPageModule&#x27; },
-  { path: &#x27;login&#x27;, loadChildren: &#x27;./login/login.module#LoginPageModule&#x27; },
-  { path: &#x27;tabs&#x27;, loadChildren: &#x27;./tabs/tabs.module#TabsPageModule&#x27; }
+  {
+    path: &#x27;launch&#x27;,
+    loadChildren: () &#x3D;&gt;
+      &quot;import(&#x27;./launch/launch.module&#x27;).then(m &#x3D;&gt; m.LaunchPageModule)&quot;
+  },
+  {
+    path: &#x27;login&#x27;,
+    loadChildren: () &#x3D;&gt;
+      &quot;import(&#x27;./login/login.module&#x27;).then(m &#x3D;&gt; m.LoginPageModule)&quot;
+  },
+  {
+    path: &#x27;tabs&#x27;,
+    loadChildren: () &#x3D;&gt; &quot;import(&#x27;./tabs/tabs.module&#x27;).then(m &#x3D;&gt; m.TabsPageModule)&quot;
+  }
 ];
-
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}
@@ -123,6 +135,7 @@ export class AppRoutingModule {}
 
 
 
+                   
 
 
 
@@ -145,6 +158,7 @@ export class AppRoutingModule {}
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'module';
             var COMPODOC_CURRENT_PAGE_URL = 'AppRoutingModule.html';
+            var MAX_SEARCH_RESULTS = 15;
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

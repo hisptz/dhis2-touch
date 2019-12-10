@@ -32,6 +32,7 @@ import { IonicModule } from '@ionic/angular';
 import { DataEntryPage } from './data-entry.page';
 import { SharedComponentsModule } from 'src/app/components/shared-components.module';
 import { DataEntryComponentsModule } from './components/data-entry-components.module';
+import { dataEntryProviders } from './services';
 
 const routes: Routes = [
   {
@@ -50,6 +51,7 @@ const routes: Routes = [
     TranslateModule.forChild(),
     RouterModule.forChild(routes)
   ],
-  declarations: [DataEntryPage]
+  declarations: [DataEntryPage],
+  providers: [...dataEntryProviders]
 })
 export class DataEntryPageModule {}

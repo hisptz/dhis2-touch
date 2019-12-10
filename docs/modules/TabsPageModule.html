@@ -64,29 +64,45 @@
 <text text-anchor="start" x="429.7258" y="-15.4" font-family="sans-serif" font-size="14.00" fill="#000000"> &#160;Exports</text>
 <g id="clust1" class="cluster">
 <title>cluster_TabsPageModule</title>
-<polygon fill="none" stroke="#000000" stroke-dasharray="1,5" points="183,-70 183,-195 313,-195 313,-70 183,-70"/>
+<polygon fill="none" stroke="#000000" stroke-dasharray="1,5" points="105,-70 105,-195 391,-195 391,-70 105,-70"/>
 </g>
 <g id="clust2" class="cluster">
 <title>cluster_TabsPageModule_declarations</title>
-<polygon fill="none" stroke="#000000" points="205,-78 205,-130 291,-130 291,-78 205,-78"/>
+<polygon fill="none" stroke="#000000" points="297,-78 297,-130 383,-130 383,-78 297,-78"/>
+</g>
+<g id="clust4" class="cluster">
+<title>cluster_TabsPageModule_imports</title>
+<polygon fill="none" stroke="#000000" points="113,-78 113,-130 289,-130 289,-78 113,-78"/>
 </g>
 <!-- TabsPage -->
 <g id="node1" class="node">
 <title>TabsPage</title>
-<polygon fill="#ffffb3" stroke="#000000" points="283.4249,-122 212.5751,-122 212.5751,-86 283.4249,-86 283.4249,-122"/>
-<text text-anchor="middle" x="248" y="-99.8" font-family="Times,serif" font-size="14.00" fill="#000000">TabsPage</text>
+<polygon fill="#ffffb3" stroke="#000000" points="375.4249,-122 304.5751,-122 304.5751,-86 375.4249,-86 375.4249,-122"/>
+<text text-anchor="middle" x="340" y="-99.8" font-family="Times,serif" font-size="14.00" fill="#000000">TabsPage</text>
 </g>
 <!-- TabsPageModule -->
 <g id="node2" class="node">
 <title>TabsPageModule</title>
-<polygon fill="#8dd3c7" stroke="#000000" points="304.9734,-187 301.9734,-191 280.9734,-191 277.9734,-187 191.0266,-187 191.0266,-151 304.9734,-151 304.9734,-187"/>
-<text text-anchor="middle" x="248" y="-164.8" font-family="Times,serif" font-size="14.00" fill="#000000">TabsPageModule</text>
+<polygon fill="#8dd3c7" stroke="#000000" points="319.9734,-187 316.9734,-191 295.9734,-191 292.9734,-187 206.0266,-187 206.0266,-151 319.9734,-151 319.9734,-187"/>
+<text text-anchor="middle" x="263" y="-164.8" font-family="Times,serif" font-size="14.00" fill="#000000">TabsPageModule</text>
 </g>
 <!-- TabsPage&#45;&gt;TabsPageModule -->
 <g id="edge1" class="edge">
 <title>TabsPage&#45;&gt;TabsPageModule</title>
-<path fill="none" stroke="#000000" d="M248,-122.1061C248,-122.1061 248,-140.991 248,-140.991"/>
-<polygon fill="#000000" stroke="#000000" points="244.5001,-140.9909 248,-150.991 251.5001,-140.991 244.5001,-140.9909"/>
+<path fill="none" stroke="#000000" d="M312.3875,-122.1061C312.3875,-122.1061 312.3875,-140.991 312.3875,-140.991"/>
+<polygon fill="#000000" stroke="#000000" points="308.8875,-140.9909 312.3875,-150.991 315.8875,-140.991 308.8875,-140.9909"/>
+</g>
+<!-- TabsPageRoutingModule -->
+<g id="node3" class="node">
+<title>TabsPageRoutingModule</title>
+<polygon fill="#8dd3c7" stroke="#000000" points="280.5912,-122 277.5912,-126 256.5912,-126 253.5912,-122 121.4088,-122 121.4088,-86 280.5912,-86 280.5912,-122"/>
+<text text-anchor="middle" x="201" y="-99.8" font-family="Times,serif" font-size="14.00" fill="#000000">TabsPageRoutingModule</text>
+</g>
+<!-- TabsPageRoutingModule&#45;&gt;TabsPageModule -->
+<g id="edge2" class="edge">
+<title>TabsPageRoutingModule&#45;&gt;TabsPageModule</title>
+<path fill="none" stroke="#000000" d="M243.2795,-122.1061C243.2795,-122.1061 243.2795,-140.991 243.2795,-140.991"/>
+<polygon fill="#000000" stroke="#000000" points="239.7795,-140.9909 243.2795,-150.991 246.7795,-140.991 239.7795,-140.9909"/>
 </g>
 </g>
 </svg>
@@ -135,6 +151,15 @@
                         </li>
                     </ul>
                 </div>
+                <div class="col-sm-3">
+                    <h3>Imports<a href="https://angular.io/api/core/NgModule#imports" target="_blank" title="Official documentation about module imports"><span
+                                class="icon ion-ios-information-circle-outline"></a></h3>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <a href="../modules/TabsPageRoutingModule.html">TabsPageRoutingModule</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
 
@@ -170,89 +195,11 @@
 import { NgModule } from &#x27;@angular/core&#x27;;
 import { CommonModule } from &#x27;@angular/common&#x27;;
 import { FormsModule } from &#x27;@angular/forms&#x27;;
-import { Routes, RouterModule } from &#x27;@angular/router&#x27;;
 import { TranslateModule } from &#x27;@ngx-translate/core&#x27;;
 import { IonicModule } from &#x27;@ionic/angular&#x27;;
 
 import { TabsPage } from &#x27;./tabs.page&#x27;;
-
-const routes: Routes &#x3D; [
-  {
-    path: &#x27;&#x27;,
-    component: TabsPage,
-    children: [
-      {
-        path: &#x27;apps&#x27;,
-        children: [
-          { path: &#x27;&#x27;, loadChildren: &#x27;./apps/apps.module#AppsPageModule&#x27; },
-          {
-            path: &#x27;data-entry&#x27;,
-            loadChildren:
-              &#x27;./apps/data-entry/data-entry.module#DataEntryPageModule&#x27;
-          },
-          {
-            path: &#x27;event-capture&#x27;,
-            loadChildren:
-              &#x27;./apps/event-capture/event-capture.module#EventCapturePageModule&#x27;
-          },
-          {
-            path: &#x27;tracker-capture&#x27;,
-            loadChildren:
-              &#x27;./apps/tracker-capture/tracker-capture.module#TrackerCapturePageModule&#x27;
-          },
-          {
-            path: &#x27;dashboard&#x27;,
-            loadChildren:
-              &#x27;./apps/dashboard/dashboard.module#DashboardPageModule&#x27;
-          },
-          {
-            path: &#x27;reports&#x27;,
-            loadChildren: &#x27;./apps/reports/reports.module#ReportsPageModule&#x27;
-          },
-          {
-            path: &#x27;sync&#x27;,
-            loadChildren: &#x27;./apps/sync/sync.module#SyncPageModule&#x27;
-          },
-          {
-            path: &#x27;settings&#x27;,
-            loadChildren: &#x27;./apps/settings/settings.module#SettingsPageModule&#x27;
-          }
-        ]
-      },
-      {
-        path: &#x27;accounts&#x27;,
-        children: [
-          {
-            path: &#x27;&#x27;,
-            loadChildren: &#x27;./accounts/accounts.module#AccountsPageModule&#x27;
-          },
-          {
-            path: &#x27;profile&#x27;,
-            loadChildren: &#x27;./accounts/profile/profile.module#ProfilePageModule&#x27;
-          },
-          {
-            path: &#x27;about&#x27;,
-            loadChildren: &#x27;./accounts/about/about.module#AboutPageModule&#x27;
-          },
-          {
-            path: &#x27;help&#x27;,
-            loadChildren: &#x27;./accounts/help/help.module#HelpPageModule&#x27;
-          }
-        ]
-      },
-      {
-        path: &#x27;&#x27;,
-        redirectTo: &#x27;apps&#x27;,
-        pathMatch: &#x27;full&#x27;
-      }
-    ]
-  },
-  {
-    path: &#x27;&#x27;,
-    redirectTo: &#x27;apps&#x27;,
-    pathMatch: &#x27;full&#x27;
-  }
-];
+import { TabsPageRoutingModule } from &#x27;./tabs-routing.module&#x27;;
 
 @NgModule({
   imports: [
@@ -260,7 +207,7 @@ const routes: Routes &#x3D; [
     FormsModule,
     IonicModule,
     TranslateModule.forChild(),
-    RouterModule.forChild(routes)
+    TabsPageRoutingModule
   ],
   declarations: [TabsPage]
 })
@@ -278,6 +225,7 @@ export class TabsPageModule {}
 
 
 
+                   
 
 
 
@@ -300,6 +248,7 @@ export class TabsPageModule {}
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'module';
             var COMPODOC_CURRENT_PAGE_URL = 'TabsPageModule.html';
+            var MAX_SEARCH_RESULTS = 15;
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

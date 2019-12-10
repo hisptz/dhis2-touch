@@ -21,7 +21,6 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
@@ -33,13 +32,12 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage';
 
-// store
 import { reducers, metaReducers, effects } from './store';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
-import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 import { nativePlugins, appProviders } from './services';
 import { SharedComponentsModule } from './components/shared-components.module';
 import { TranslationSelectionPageModule } from './modals/translation-selection/translation-selection.module';
@@ -49,6 +47,7 @@ import { OptionSetSelectionPageModule } from './modals/option-set-selection/opti
 import { OrganisationUnitSearchPageModule } from './modals/organisation-unit-search/organisation-unit-search.module';
 import { OrganisationUnitSelectionPageModule } from './modals/organisation-unit-selection/organisation-unit-selection.module';
 import { PeriodSelectionPageModule } from './modals/period-selection/period-selection.module';
+import { SettingsPageModule } from './tabs/apps/settings/settings.module';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -79,6 +78,7 @@ export function createTranslateLoader(http: HttpClient) {
     OrganisationUnitSearchPageModule,
     OrganisationUnitSelectionPageModule,
     PeriodSelectionPageModule,
+    SettingsPageModule,
     SharedComponentsModule
   ],
   providers: [

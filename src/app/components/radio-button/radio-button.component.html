@@ -23,7 +23,7 @@
 *
 -->
 <ion-row>
-    <ion-col padding-top padding-bottom>
+    <ion-col class="ion-padding-top ion-padding-bottom">
         <div>
             <label class="radio inline" *ngFor="let option of options">
         <input
@@ -38,9 +38,9 @@
       </label>
         </div>
     </ion-col>
-    <ion-col size="auto" no-padding>
-        <div float-right>
-            <ion-button class="clear-button" no-padding fill="clear" [disabled]="dataModal[fieldId] == '' || isTrashButtonDisabled" (click)="clearInput()">
+    <ion-col size="auto" class="ion-no-padding">
+        <div class="ion-float-right">
+            <ion-button class="clear-button ion-no-padding"  fill="clear" [disabled]="dataModal[fieldId] == '' || isTrashButtonDisabled" (click)="clearInput()">
                 <ion-icon slot="icon-only" name="trash" color="danger"></ion-icon>
             </ion-button>
         </div>

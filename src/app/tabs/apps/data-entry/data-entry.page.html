@@ -43,7 +43,16 @@
                     </app-progress-bar>
                 </div>
                 <div *ngIf="!isLoading">
-                    <app-aggegate-parameter-selection (currentSelectionChange)="onCurrentSelectionChange($event)" [calendarId]="calendarId" [authorities]="authorities" [currentEntrySelection]="currentEntrySelection" [dataSetIdsByUserRoles]="dataSetIdsByUserRoles" [allowMultipleOuSelection]="allowMultipleOuSelection"></app-aggegate-parameter-selection>
+                    <app-aggregate-parameter-selection (currentSelectionChange)="onCurrentSelectionChange($event)" [calendarId]="calendarId" [authorities]="authorities" [currentEntrySelection]="currentEntrySelection" [dataSetIdsByUserRoles]="dataSetIdsByUserRoles" [allowMultipleOuSelection]="allowMultipleOuSelection"></app-aggregate-parameter-selection>
+                    <div class="animate fadeIn" *ngIf="isFormReady">
+                        <div class="item-card" (click)="openDataEntry()">
+                            <app-data-entry-form-summary [currentEntrySelection]="currentEntrySelection"></app-data-entry-form-summary>
+                            <div class="item-card ion-text-center">
+                                <img class="side-menu-icon" [src]="dataEntryIcon" />&nbsp;&nbsp;
+                                <span [translate]="'Enter data'"></span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </ion-col>
         </ion-row>

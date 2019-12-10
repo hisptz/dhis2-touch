@@ -223,7 +223,7 @@ export class ProgramProgramTrackedEntityAttributeEntity {
   @Column() sortOrder: number;
   @Column() mandatory: boolean;
   @Column({ nullable: true }) renderOptionsAsRadio: boolean;
-  @Column() allowFutureDate: boolean;
+  @Column({ nullable: true }) allowFutureDate: boolean;
   @Column({ nullable: true }) searchable: boolean;
   @Column() displayInList: string;
 }
@@ -271,7 +271,7 @@ export class ProgramProgramStageEntity {
 export class ProgramStageSectionEntity {
   @PrimaryColumn() id: string;
   @Column() displayName: string;
-  @Column() sortOrder: number;
+  @Column({ nullable: true }) sortOrder: number;
   @Column() programStageId: string;
   @Column(&#x27;simple-json&#x27;) attributeValues: string;
   @Column(&#x27;simple-json&#x27;) dataElements: string;
@@ -348,6 +348,7 @@ export class EnrollmentEntity {
 
 
 
+                   
 
 
 
@@ -370,6 +371,7 @@ export class EnrollmentEntity {
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
             var COMPODOC_CURRENT_PAGE_URL = 'ProgramStageEntryFormEntity.html';
+            var MAX_SEARCH_RESULTS = 15;
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

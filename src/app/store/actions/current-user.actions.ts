@@ -21,44 +21,29 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-import { Action } from '@ngrx/store';
-import { CurrentUser } from 'src/models';
+import { createAction, props } from '@ngrx/store';
+import { CurrentUser, AppColorObject } from 'src/models';
 
-export enum CurrentUserActionTypes {
-  AddCurrentUser = '[Current user] Adding current user',
-  ClearCurrentUser = '[Current user] Clear current users',
-  SetCurrentUser = '[Current user] Set current user',
-  SetCurrentUserColorSettings = '[Current user] Set current user color Settings',
-  UpdateCurrentUser = '[Current user] updating current user'
-}
+export const ClearCurrentUser = createAction(
+  '[Current user] Clear current users'
+);
 
-export class ClearCurrentUser implements Action {
-  readonly type = CurrentUserActionTypes.ClearCurrentUser;
-}
+export const SetCurrentUser = createAction(
+  '[Current user] Set current user',
+  props<{ id: string }>()
+);
 
-export class SetCurrentUser implements Action {
-  readonly type = CurrentUserActionTypes.SetCurrentUser;
-  constructor(public payload: { id: string }) {}
-}
+export const SetCurrentUserColorSettings = createAction(
+  '[Current user] Set current user color Settings',
+  props<{ colorSettings: AppColorObject }>()
+);
 
-export class SetCurrentUserColorSettings implements Action {
-  readonly type = CurrentUserActionTypes.SetCurrentUserColorSettings;
-  constructor(public payload: { colorSettings: any }) {}
-}
+export const AddCurrentUser = createAction(
+  '[Current user] Adding current user',
+  props<{ currentUser: CurrentUser }>()
+);
 
-export class AddCurrentUser implements Action {
-  readonly type = CurrentUserActionTypes.AddCurrentUser;
-  constructor(public payload: { currentUser: CurrentUser }) {}
-}
-
-export class UpdateCurrentUser implements Action {
-  readonly type = CurrentUserActionTypes.UpdateCurrentUser;
-  constructor(public payload: { id: string; currentUser: CurrentUser }) {}
-}
-
-export type CurrentUserActions =
-  | AddCurrentUser
-  | ClearCurrentUser
-  | UpdateCurrentUser
-  | SetCurrentUser
-  | SetCurrentUserColorSettings;
+export const UpdateCurrentUser = createAction(
+  '[Current user] updating current user',
+  props<{ id: string; currentUser: CurrentUser }>()
+);

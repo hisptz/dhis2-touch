@@ -1,8 +1,7 @@
 {
-  "name": "ionic-todo",
+  "name": "dhis-2-touch",
   "integrations": {
     "cordova": {}
   },
-  "type": "angular",
-  "id": "f16fbd88"
+  "type": "angular"
 }

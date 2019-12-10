@@ -73,7 +73,6 @@ export class SectionService {
       } else {
         this.savingSectionInformation(sections)
           .then(() => {
-            console.log('Done on sections');
             observer.next();
             observer.complete();
           })

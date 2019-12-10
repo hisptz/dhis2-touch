@@ -194,7 +194,7 @@ export class LoginMetadataSyncComponent implements OnInit, OnDestroy {
             user = { ...user, currentDatabase, authorizationKey };
             const { progressTracker } = this.currentUser;
             this.currentUser = _.assign({}, user);
-            this.currentUser['progressTracker'] = progressTracker
+            this.currentUser.progressTracker = progressTracker
               ? progressTracker
               : {};
             this.overAllMessage = serverUrl;
@@ -508,7 +508,7 @@ export class LoginMetadataSyncComponent implements OnInit, OnDestroy {
       trackedResourceTypes,
       progressTracker
     );
-    this.progressTrackerPacentage['overall'] = getPercetage(
+    this.progressTrackerPacentage.overall = getPercetage(
       totalProcesses,
       totalExpectedProcesses
     );

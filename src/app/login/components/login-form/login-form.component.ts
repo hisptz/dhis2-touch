@@ -61,7 +61,7 @@ export class LoginFormComponent implements OnInit {
       const fieldId = id + '-login';
       const value =
         this.currentUser && this.currentUser[id] ? this.currentUser[id] : '';
-      this.data[fieldId] = { id: fieldId, value: value };
+      this.data[fieldId] = { id: fieldId, value };
       if (value.trim() !== '') {
         this.loginFormData[id] = value;
       }

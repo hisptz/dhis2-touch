@@ -1,0 +1,51 @@
+<!--
+*
+* Copyright 2019 HISP Tanzania
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*
+* @since 2019
+* @author Joseph Chingalo profschingalo@gmail.com>
+*
+*
+-->
+<div class="item-card ion-text-center" (click)="openOrganisationUnitModal()">
+    <img class="side-menu-icon" [src]="organisationUnitIcon" />&nbsp;&nbsp;
+    <span [translate]="organisationUnitLabel"></span>
+</div>
+<div class="item-card ion-text-center" (click)="openDataSetModal()">
+    <img class="side-menu-icon" [src]="dataSetIcon" />&nbsp;&nbsp;
+    <span [translate]="dataSetLabel"></span>
+</div>
+<div class="item-card ion-text-center" (click)="openPeriodModal()">
+    <img class="side-menu-icon" [src]="periodIcon" />&nbsp;&nbsp;
+    <span [translate]="periodLabel"></span>
+</div>
+<div *ngIf="dataSetCategoryCombo && dataSetCategoryCombo.id ">
+    <div *ngIf="isDataSetDimensionApplicable">
+        <div *ngFor="let category of dataSetCategoryCombo.categories;let categoryIndex = index;">
+            <div class="item-card" (click)="openDataDimensionSelection(category)">
+                <span [translate]="category.name"></span>
+                <div class="item-card">
+                    <span [translate]="selectedDataDimension[categoryIndex] && selectedDataDimension[categoryIndex].name  ? selectedDataDimension[categoryIndex].name : 'Touch to select option'"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="item-card ion-text-center ion-padding-top ion-padding-bottom"  *ngIf="!isDataSetDimensionApplicable">
+        <span [translate]="'All of selected category disaggregation are restricted from entry in selected organisation unit, choose a different form or contact your support desk'"></span>
+    </div>
+</div>

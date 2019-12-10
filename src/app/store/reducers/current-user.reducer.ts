@@ -22,7 +22,8 @@
  *
  */
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import { CurrentUserActions, CurrentUserActionTypes } from '../actions';
+import { Action, createReducer, on } from '@ngrx/store';
+import * as curentUserAction from '../actions/current-user.actions';
 import { CurrentUser, AppColorObject } from 'src/models';
 import { DEFAULT_COLOR_SETTING } from 'src/constants';
 
@@ -31,40 +32,40 @@ export interface CurrentUserState extends EntityState<CurrentUser> {
   colorSettings: AppColorObject;
 }
 
-export const currentUserAdapter: EntityAdapter<
+export const currentUserAdapter: EntityAdapter<CurrentUser> = createEntityAdapter<
   CurrentUser
-> = createEntityAdapter<CurrentUser>();
+>();
 
-const initialState: CurrentUserState = currentUserAdapter.getInitialState({
+const initialUserState: CurrentUserState = currentUserAdapter.getInitialState({
   currentUserId: null,
   colorSettings: DEFAULT_COLOR_SETTING
 });
 
+export const reducer = createReducer(
+  initialUserState,
+  on(curentUserAction.AddCurrentUser, (state, { currentUser }) => {
+    return currentUserAdapter.addOne(currentUser, state);
+  }),
+  on(curentUserAction.UpdateCurrentUser, (state, { currentUser, id }) => {
+    return currentUserAdapter.updateOne({ id, changes: currentUser }, state);
+  }),
+  on(curentUserAction.SetCurrentUser, (state, { id }) => {
+    return { ...state, currentUserId: id };
+  }),
+  on(
+    curentUserAction.SetCurrentUserColorSettings,
+    (state, { colorSettings }) => {
+      return { ...state, colorSettings };
+    }
+  ),
+  on(curentUserAction.ClearCurrentUser, state => {
+    return { ...state, currentUserId: null };
+  })
+);
+
 export function currentUserReducer(
-  state = initialState,
-  action: CurrentUserActions
+  state: CurrentUserState | undefined,
+  action: Action
 ): CurrentUserState {
-  switch (action.type) {
-    case CurrentUserActionTypes.AddCurrentUser: {
-      return currentUserAdapter.addOne(action.payload.currentUser, state);
-    }
-    case CurrentUserActionTypes.UpdateCurrentUser: {
-      return currentUserAdapter.updateOne(
-        { id: action.payload.id, changes: action.payload.currentUser },
-        state
-      );
-    }
-    case CurrentUserActionTypes.SetCurrentUser: {
-      return { ...state, currentUserId: action.payload.id };
-    }
-    case CurrentUserActionTypes.SetCurrentUserColorSettings: {
-      return { ...state, colorSettings: action.payload.colorSettings };
-    }
-    case CurrentUserActionTypes.ClearCurrentUser: {
-      return { ...state, currentUserId: null };
-    }
-    default: {
-      return state;
-    }
-  }
+  return reducer(state, action);
 }

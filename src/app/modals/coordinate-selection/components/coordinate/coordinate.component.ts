@@ -62,8 +62,9 @@ export class CoordinateComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (
-      changes['positionBasedOnPhone'] &&
-      !changes['positionBasedOnPhone'].isFirstChange()
+      changes &&
+      changes.positionBasedOnPhone &&
+      !changes.positionBasedOnPhone.isFirstChange()
     ) {
       this.updateCurrentMarkLocation(this.position);
     }
@@ -75,7 +76,7 @@ export class CoordinateComponent implements OnInit, OnDestroy, OnChanges {
     const center = [this.position.lat, this.position.lng];
     try {
       this.map = L.map('coordinate-selection', {
-        center: center,
+        center,
         zoom: 5,
         zoomControl: false
       });

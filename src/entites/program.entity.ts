@@ -55,7 +55,7 @@ export class ProgramProgramTrackedEntityAttributeEntity {
   @Column() sortOrder: number;
   @Column() mandatory: boolean;
   @Column({ nullable: true }) renderOptionsAsRadio: boolean;
-  @Column() allowFutureDate: boolean;
+  @Column({ nullable: true }) allowFutureDate: boolean;
   @Column({ nullable: true }) searchable: boolean;
   @Column() displayInList: string;
 }
@@ -103,7 +103,7 @@ export class ProgramProgramStageEntity {
 export class ProgramStageSectionEntity {
   @PrimaryColumn() id: string;
   @Column() displayName: string;
-  @Column() sortOrder: number;
+  @Column({ nullable: true }) sortOrder: number;
   @Column() programStageId: string;
   @Column('simple-json') attributeValues: string;
   @Column('simple-json') dataElements: string;

@@ -28,7 +28,7 @@
 </div>
 <div *ngIf="!isLoading && organisationUnit && organisationUnit.children">
     <ion-item lines="none" [ngClass]="organisationUnit && organisationUnit.children && organisationUnit.children.length === 0?'organisation-unit-without-children' : ''">
-        <ion-button *ngIf="organisationUnit && organisationUnit.children.length > 0" no-margin slot="start" color="dark" (click)="onToogledOrganisationUnit()" fill="clear">
+        <ion-button *ngIf="organisationUnit && organisationUnit.children.length > 0" class="ion-no-margin" slot="start" color="dark" (click)="onToogledOrganisationUnit()" fill="clear">
             <ion-icon slot="icon-only" [name]="isOrganisationUnitToggled && isOrganisationUnitToggled[organisationUnit.id]?'remove-circle-outline':'add-circle-outline'"></ion-icon>
         </ion-button>
         <ion-label (click)="onSelectOrganisationUnit(organisationUnit)">

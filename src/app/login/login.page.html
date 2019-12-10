@@ -22,12 +22,12 @@
 *
 *
 -->
-<ion-content padding [color]="(colorSettings$ | async).colorAttributes.main">
+<ion-content class="ion-padding" [color]="(colorSettings$ | async).colorAttributes.main">
     <div *ngIf="isLoginProcessActive">
         <div class="login-spinner-container">
             <app-login-spinner></app-login-spinner>
         </div>
-        <div margin padding-top>
+        <div class="ion-margin ion-padding-top">
             <app-login-metadata-sync (systemSettingLoaded)="onSystemSettingLoaded($event)" (updateCurrentUser)="onUpdateCurrentUser($event)" (failOnLogin)="onFailLogin($event)" (successOnLoginAndSyncMetadata)="onSuccessLogin($event)" [currentUser]="currentUser" (cancelProgress)="onCancelLoginProcess()"
                 [overAllMessage]="overAllLoginMessage" [color]="(colorSettings$ | async).colorAttributes.secondary" [showOverallProgressBar]="showOverallProgressBar" [isOnLogin]="isOnLogin" [processes]="processes">
             </app-login-metadata-sync>

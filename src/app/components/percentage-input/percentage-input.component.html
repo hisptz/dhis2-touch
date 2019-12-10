@@ -22,13 +22,13 @@
 *
 *
 -->
-<ion-row no-padding>
-    <ion-col no-padding>
+<ion-row class="ion-no-padding">
+    <ion-col class="ion-no-padding">
         <ion-range [(ngModel)]="rangeValue" min="0" max="{{ maxCount }} " [color]="(colorSettings$ | async).colorAttributes.secondary" [disabled]="lockingFieldStatus" (ionChange)="updateValue()"></ion-range>
     </ion-col>
-    <ion-col size="auto" no-padding>
-        <div float-right>
-            <ion-button class="clear-button" [disabled]="rangeValue === '' || lockingFieldStatus" no-padding fill="clear" (click)="clearInput()">
+    <ion-col size="auto" class="ion-no-padding">
+        <div class="ion-float-right">
+            <ion-button class="clear-button ion-no-padding" [disabled]="rangeValue === '' || lockingFieldStatus"  fill="clear" (click)="clearInput()">
                 {{ displayValue }}<span *ngIf="displayValue !== ''">%</span>
                 <ion-icon slot="end" name="trash" color="danger"></ion-icon>
             </ion-button>

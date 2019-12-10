@@ -383,7 +383,7 @@
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export interface CurrentEntrySelection {
   selectedOrganisationUnit: { id: string; name: string };
-  selectedDataSet?: { id: string; name: string };
+  selectedDataSet?: { id: string; name: string; expiryDays: number };
   selectedProgramWithRegistration?: { id: string; name: string };
   selectedProgramWithOutRegistration?: { id: string; name: string };
   selectedReport?: { id: string; name: string };
@@ -400,11 +400,17 @@ export interface AgggregatePeriod {
   endDate: string;
   currentPeriodOffset: number;
 }
+
+export interface EntryFormStatus {
+  synced: number;
+  notSynced: number;
+}
 </code></pre>
     </div>
 </div>
 
 
+                   
 
 
 
@@ -427,6 +433,7 @@ export interface AgggregatePeriod {
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
             var COMPODOC_CURRENT_PAGE_URL = 'CurrentEntrySelection.html';
+            var MAX_SEARCH_RESULTS = 15;
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
