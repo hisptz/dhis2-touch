@@ -80,7 +80,7 @@ export class LaunchPage implements OnInit {
         this.appTranslationService.setCurrentUserLanguage(langCode);
         if (colorSettings) {
           this.store.dispatch(
-            new SetCurrentUserColorSettings({ colorSettings })
+            SetCurrentUserColorSettings({ colorSettings })
           );
         }
         if (currentDatabase) {
@@ -89,7 +89,7 @@ export class LaunchPage implements OnInit {
           );
         }
         if (isLogin) {
-          this.store.dispatch(new AddCurrentUser({ currentUser }));
+          this.store.dispatch(AddCurrentUser({ currentUser }));
           this.setLandingPage();
         } else {
           this.setLoginPage();

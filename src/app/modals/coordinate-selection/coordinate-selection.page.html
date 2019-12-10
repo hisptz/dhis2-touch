@@ -38,18 +38,18 @@
 <ion-content>
     <app-coordinate [position]="position" [positionBasedOnPhone]="positionBasedOnPhone" [accuracy]="accuracy" [altitude]="altitude" [isLoadingMyLocation]="isLoadingMyLocation" [isLocationBasedOnPhone]="isLocationBasedOnPhone" (coordonateChange)="onChangeCoordinate($event)"></app-coordinate>
 </ion-content>
-<ion-footer no-margin>
-    <ion-toolbar no-margin>
+<ion-footer class="ion-no-margin">
+    <ion-toolbar class="ion-no-margin">
         <ion-buttons slot="start">
-            <ion-button no-margin (click)="closeModal()">
+            <ion-button class="ion-no-margin" (click)="closeModal()">
                 <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
             </ion-button>
         </ion-buttons>
         <ion-buttons slot="end">
-            <ion-button no-margin (click)="getMyCurrentLocation()">
+            <ion-button class="ion-no-margin" (click)="getMyCurrentLocation()">
                 <ion-icon slot="icon-only" name="locate"></ion-icon>
             </ion-button>
-            <ion-button no-margin (click)="saveCoordinate()">
+            <ion-button class="ion-no-margin" (click)="saveCoordinate()">
                 <ion-icon slot="icon-only" name="save"></ion-icon>
             </ion-button>
         </ion-buttons>

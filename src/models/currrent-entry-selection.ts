@@ -23,7 +23,7 @@
  */
 export interface CurrentEntrySelection {
   selectedOrganisationUnit: { id: string; name: string };
-  selectedDataSet?: { id: string; name: string };
+  selectedDataSet?: { id: string; name: string; expiryDays: number };
   selectedProgramWithRegistration?: { id: string; name: string };
   selectedProgramWithOutRegistration?: { id: string; name: string };
   selectedReport?: { id: string; name: string };
@@ -39,4 +39,9 @@ export interface AgggregatePeriod {
   startDate: string;
   endDate: string;
   currentPeriodOffset: number;
+}
+
+export interface EntryFormStatus {
+  synced: number;
+  notSynced: number;
 }

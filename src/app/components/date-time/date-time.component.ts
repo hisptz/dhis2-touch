@@ -55,10 +55,10 @@ export class DateTimeComponent implements OnInit {
 
   showDateTimePicker() {
     if (!this.lockingFieldStatus) {
-      const date = this.getDatePickerValue(this.inputValue, this.mode);
+      const dateValue = this.getDatePickerValue(this.inputValue, this.mode);
       this.datePicker
         .show({
-          date: date,
+          date: dateValue,
           mode: this.mode,
           okText: 'Done',
           cancelText: 'Back',

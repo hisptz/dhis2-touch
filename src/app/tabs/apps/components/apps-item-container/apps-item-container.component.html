@@ -22,7 +22,7 @@
 *
 *
 -->
-<div padding>
+<div class="ion-padding">
     <div class="flex-container">
         <div class="flex-item" *ngFor="let appItem of authorizedApps;trackBy: trackByFn">
             <div [ngClass]="animationEffect[appItem.id]" (click)="selectView(appItem)">

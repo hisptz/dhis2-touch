@@ -29,7 +29,7 @@
           ? 'item-card-input'
           : 'item-card-without-horizontal-padding'
       ">
-            <span *ngIf="inputValue && inputValue != ''" padding-left>
+            <span *ngIf="inputValue && inputValue != ''" class="ion-padding-left">
         {{ inputValue }}
       </span>
             <span *ngIf="!(inputValue && inputValue != '')">
@@ -37,9 +37,9 @@
       </span>
         </div>
     </ion-col>
-    <ion-col size="auto" no-padding>
-        <div float-right>
-            <ion-button class="clear-button" no-padding fill="clear" (click)="clearInput()">
+    <ion-col size="auto" class="ion-no-padding">
+        <div class="ion-float-right">
+            <ion-button class="clear-button ion-no-padding" fill="clear" (click)="clearInput()">
                 <ion-icon slot="icon-only" name="trash" color="danger"></ion-icon>
             </ion-button>
         </div>

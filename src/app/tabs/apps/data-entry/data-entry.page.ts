@@ -22,6 +22,7 @@
  *
  */
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { State, getCurrentUserColorSettings } from '../../../store';
@@ -45,9 +46,12 @@ export class DataEntryPage implements OnInit {
   dataSetIdsByUserRoles: string[];
   currentUser: CurrentUser;
   isLoading: boolean;
+  dataEntryIcon: string;
+  isFormReady: boolean;
 
   constructor(
     private store: Store<State>,
+    private router: Router,
     private userService: UserService,
     private toasterMessagesService: ToasterMessagesService,
     private currentEntrySelectionStorageService: CurrentEntrySelectionStorageService,
@@ -57,7 +61,9 @@ export class DataEntryPage implements OnInit {
     this.authorities = [];
     this.dataSetIdsByUserRoles = [];
     this.allowMultipleOuSelection = false;
+    this.isFormReady = false;
     this.isLoading = true;
+    this.dataEntryIcon = `assets/icon/enterDataPen.png`;
   }
 
   ngOnInit() {
@@ -102,6 +108,11 @@ export class DataEntryPage implements OnInit {
         this.currentUser
       );
     }
-    console.log({ isFormReady });
+    this.isFormReady = isFormReady;
+  }
+
+  openDataEntry() {
+    const url = `data-entry-form`;
+    this.router.navigateByUrl(`/tabs/apps/${url}`);
   }
 }

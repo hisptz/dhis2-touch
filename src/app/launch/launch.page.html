@@ -22,7 +22,7 @@
 *
 *
 -->
-<ion-content padding [color]="(colorSettings$ |async).colorAttributes.main">
+<ion-content class="ion-padding" [color]="(colorSettings$ |async).colorAttributes.main">
     <app-slogan [icon]="appIcon" [slogan]="topSlogan"></app-slogan>
     <app-progress-bar [color]="(colorSettings$ |async).colorAttributes.secondary" [isIndeterminateProcess]="true"
         [processMessage]="''">

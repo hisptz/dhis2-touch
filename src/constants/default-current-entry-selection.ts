@@ -24,7 +24,7 @@
 import { CurrentEntrySelection } from 'src/models';
 export const DEFAULT_CURRENT_ENTRY_SELECTION: CurrentEntrySelection = {
   selectedOrganisationUnit: { id: '', name: '' },
-  selectedDataSet: { id: '', name: '' },
+  selectedDataSet: { id: '', name: '', expiryDays: 0 },
   selectedProgramWithRegistration: { id: '', name: '' },
   selectedProgramWithOutRegistration: { id: '', name: '' },
   selectedReport: { id: '', name: '' },

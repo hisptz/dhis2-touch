@@ -26,16 +26,26 @@ import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedComponentsModule } from 'src/app/components/shared-components.module';
-import { AggegateParameterSelectionComponent } from './aggegate-parameter-selection/aggegate-parameter-selection.component';
+import { DataEntryFormSummaryComponent } from './data-entry-form-summary/data-entry-form-summary.component';
+import { AggregateParameterSelectionComponent } from './aggregate-parameter-selection/aggregate-parameter-selection.component';
+import { AggregateFormContainerComponent } from './aggregate-form-container/aggregate-form-container.component';
 
 @NgModule({
-  declarations: [AggegateParameterSelectionComponent],
+  declarations: [
+    AggregateParameterSelectionComponent,
+    DataEntryFormSummaryComponent,
+    AggregateFormContainerComponent
+  ],
   imports: [
     IonicModule,
     CommonModule,
     TranslateModule.forChild(),
     SharedComponentsModule
   ],
-  exports: [AggegateParameterSelectionComponent]
+  exports: [
+    AggregateParameterSelectionComponent,
+    DataEntryFormSummaryComponent,
+    AggregateFormContainerComponent
+  ]
 })
 export class DataEntryComponentsModule {}

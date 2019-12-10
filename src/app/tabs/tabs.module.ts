@@ -25,89 +25,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { IonicModule } from '@ionic/angular';
 
 import { TabsPage } from './tabs.page';
-
-const routes: Routes = [
-  {
-    path: '',
-    component: TabsPage,
-    children: [
-      {
-        path: 'apps',
-        children: [
-          { path: '', loadChildren: './apps/apps.module#AppsPageModule' },
-          {
-            path: 'data-entry',
-            loadChildren:
-              './apps/data-entry/data-entry.module#DataEntryPageModule'
-          },
-          {
-            path: 'event-capture',
-            loadChildren:
-              './apps/event-capture/event-capture.module#EventCapturePageModule'
-          },
-          {
-            path: 'tracker-capture',
-            loadChildren:
-              './apps/tracker-capture/tracker-capture.module#TrackerCapturePageModule'
-          },
-          {
-            path: 'dashboard',
-            loadChildren:
-              './apps/dashboard/dashboard.module#DashboardPageModule'
-          },
-          {
-            path: 'reports',
-            loadChildren: './apps/reports/reports.module#ReportsPageModule'
-          },
-          {
-            path: 'sync',
-            loadChildren: './apps/sync/sync.module#SyncPageModule'
-          },
-          {
-            path: 'settings',
-            loadChildren: './apps/settings/settings.module#SettingsPageModule'
-          }
-        ]
-      },
-      {
-        path: 'accounts',
-        children: [
-          {
-            path: '',
-            loadChildren: './accounts/accounts.module#AccountsPageModule'
-          },
-          {
-            path: 'profile',
-            loadChildren: './accounts/profile/profile.module#ProfilePageModule'
-          },
-          {
-            path: 'about',
-            loadChildren: './accounts/about/about.module#AboutPageModule'
-          },
-          {
-            path: 'help',
-            loadChildren: './accounts/help/help.module#HelpPageModule'
-          }
-        ]
-      },
-      {
-        path: '',
-        redirectTo: 'apps',
-        pathMatch: 'full'
-      }
-    ]
-  },
-  {
-    path: '',
-    redirectTo: 'apps',
-    pathMatch: 'full'
-  }
-];
+import { TabsPageRoutingModule } from './tabs-routing.module';
 
 @NgModule({
   imports: [
@@ -115,7 +37,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     TranslateModule.forChild(),
-    RouterModule.forChild(routes)
+    TabsPageRoutingModule
   ],
   declarations: [TabsPage]
 })

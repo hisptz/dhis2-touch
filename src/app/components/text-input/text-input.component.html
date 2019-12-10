@@ -52,7 +52,7 @@
         </div>
     </ion-col>
     <ion-col size="auto" *ngIf="showBarcodeScanner">
-        <div float-right>
+        <div class="ion-float-right">
             <app-barcode-input [lockingFieldStatus]="lockingFieldStatus" [barcodeSettings]="barcodeSettings" (barcodeReaderChange)="onChangeBarcodeReader($event)">
             </app-barcode-input>
         </div>

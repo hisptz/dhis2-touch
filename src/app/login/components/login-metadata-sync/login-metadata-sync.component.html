@@ -23,8 +23,7 @@
 *
 -->
 <div class="animated fadeIn">
-    <div *ngIf="showOverallProgressBar" class="item-card progress-bar-container" (click)="onCancelProgess()"
-        padding-top>
+    <div *ngIf="showOverallProgressBar" class="item-card progress-bar-container ion-padding-top" (click)="onCancelProgess()">
         <app-progress-bar [color]="color" [progressPercentage]="progressTrackerPacentage['overall']"
             [showPercentage]="showPercentage" (cancelProgress)="onCancelProgess()" [showCancelButton]="showCancelButton"
             [processMessage]="overAllMessage"></app-progress-bar>

@@ -22,24 +22,23 @@
  *
  */
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Action } from '@ngrx/store';
-import { Actions, Effect, ofType } from '@ngrx/effects';
-import { CurrentUserActionTypes, SetCurrentUser } from '../actions';
-import { map } from 'rxjs/operators';
+import * as currentUserAction from '../actions/current-user.actions';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class CurrentUserEffects {
   constructor(private actions$: Actions) {}
 
-  @Effect()
-  loadAllArticles$: Observable<Action> = this.actions$.pipe(
-    ofType(CurrentUserActionTypes.AddCurrentUser),
-    map((action: any) => {
-      const { payload } = action;
-      const { currentUser } = payload;
-      const { id } = currentUser;
-      return new SetCurrentUser({ id });
-    })
+  setCurrentUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(currentUserAction.AddCurrentUser),
+      switchMap(actions => {
+        const { currentUser } = actions;
+        const { id } = currentUser;
+        return of(currentUserAction.SetCurrentUser({ id }));
+      })
+    )
   );
 }
