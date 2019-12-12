@@ -25,15 +25,19 @@ import { Observable } from 'rxjs';
 import * as _ from 'lodash';
 import { getRepository, Repository } from 'typeorm';
 import { HttpClientService } from './http-client.service';
-import { CurrentUser } from 'src/models';
+import { CurrentUser, DataElement } from 'src/models';
 import { DEFAULT_APP_METADATA } from 'src/constants';
 import { DataElementEntity } from 'src/entites';
+import { CategoryComboService } from './category-combo.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataElementService {
-  constructor(private httpCLientService: HttpClientService) {}
+  constructor(
+    private httpCLientService: HttpClientService,
+    private categoryComboService: CategoryComboService
+  ) {}
 
   downloaddataElementsFromServer(currentUser: CurrentUser): Observable<any> {
     return new Observable(observer => {
@@ -191,9 +195,7 @@ export class DataElementService {
   }
 
   savingdataElementsToLocalStorage(dataElements: any[]): Observable<any> {
-    const repository = getRepository('DataElementEntity') as Repository<
-      DataElementEntity
-    >;
+    const repository = getRepository(DataElementEntity);
     const chunk = 500;
     return new Observable(observer => {
       repository
@@ -206,5 +208,42 @@ export class DataElementService {
           observer.error(error);
         });
     });
+  }
+
+  async getSavedDataElementsByIds(dataElementIds: string[]) {
+    const repository = getRepository(DataElementEntity);
+    const dataElements = await repository.findByIds(dataElementIds);
+    const categoryComboIds = _.uniq(
+      _.flattenDeep(
+        _.map(dataElements, (dataElement: DataElement) => {
+          const categoryCombo = dataElement.categoryCombo;
+          return categoryCombo.id || '';
+        })
+      )
+    );
+    const categoryCombos = await this.categoryComboService.getCategoryCombosByIds(
+      categoryComboIds
+    );
+    return _.flattenDeep(
+      _.filter(
+        _.map(_.uniq(dataElementIds), (dataElementId: string) => {
+          const dataElement = _.find(dataElements, { id: dataElementId });
+          const categoryComboId =
+            dataElement &&
+            dataElement.categoryCombo &&
+            dataElement.categoryCombo.id
+              ? dataElement.categoryCombo.id
+              : '';
+          const categoryCombo = _.find(categoryCombos, { id: categoryComboId });
+          return dataElement
+            ? {
+                ...dataElement,
+                categoryCombo: categoryCombo || dataElement.categoryCombo
+              }
+            : null;
+        }),
+        (dataElement: DataElement) => dataElement && dataElement.id
+      )
+    );
   }
 }

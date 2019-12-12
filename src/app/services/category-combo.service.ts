@@ -23,7 +23,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as _ from 'lodash';
-import { getRepository, Repository } from 'typeorm';
+import { getRepository } from 'typeorm';
 import { HttpClientService } from './http-client.service';
 import { CurrentUser } from 'src/models';
 import { CategoryComboEntity } from 'src/entites';
@@ -55,9 +55,7 @@ export class CategoryComboService {
   }
 
   savingCategoryCombosToLocalStorage(categoryCombos: any[]): Observable<any> {
-    const repository = getRepository('CategoryComboEntity') as Repository<
-      CategoryComboEntity
-    >;
+    const repository = getRepository(CategoryComboEntity);
     const chunk = 500;
     return new Observable(observer => {
       repository
@@ -70,5 +68,10 @@ export class CategoryComboService {
           observer.error(error);
         });
     });
+  }
+
+  async getCategoryCombosByIds(ids: string[]) {
+    const repository = getRepository(CategoryComboEntity);
+    return await repository.findByIds(ids);
   }
 }

@@ -23,9 +23,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as _ from 'lodash';
-import { getRepository, Repository } from 'typeorm';
+import { getRepository } from 'typeorm';
 import { HttpClientService } from './http-client.service';
-import { CurrentUser } from 'src/models';
+import { CurrentUser, Section } from 'src/models';
 import { DEFAULT_APP_METADATA } from 'src/constants';
 import {
   SectionEntity,
@@ -90,16 +90,12 @@ export class SectionService {
   }
 
   async savingSectionBasicInfo(sections: any) {
-    const repository = getRepository('SectionEntity') as Repository<
-      SectionEntity
-    >;
+    const repository = getRepository(SectionEntity);
     const chunk = 50;
     await repository.save(sections, { chunk });
   }
   async savingSectionDataElements(sections: any) {
-    const repository = getRepository('SectionDataElementEntity') as Repository<
-      SectionDataElementEntity
-    >;
+    const repository = getRepository(SectionDataElementEntity);
     const chunk = 50;
     const sectionDataElements = _.map(
       _.filter(sections, (section: any) => {
@@ -119,9 +115,7 @@ export class SectionService {
     await repository.save(sectionDataElements, { chunk });
   }
   async savingSectionIndicators(sections: any) {
-    const repository = getRepository('SectionIndicatorEntity') as Repository<
-      SectionIndicatorEntity
-    >;
+    const repository = getRepository(SectionIndicatorEntity);
     const chunk = 50;
     const sectionIndicators = _.map(
       _.filter(sections, (section: any) => {
@@ -137,5 +131,44 @@ export class SectionService {
       }
     );
     await repository.save(sectionIndicators, { chunk });
+  }
+
+  async getSavedSections(sectionIds: string[]): Promise<Section[]> {
+    const sectionRepository = getRepository(SectionEntity);
+    const sectionDataElementRepository = getRepository(
+      SectionDataElementEntity
+    );
+    const sectionIndicatorRepository = getRepository(SectionIndicatorEntity);
+    const sectionsResponse = await sectionRepository.findByIds(sectionIds);
+    const sectionDataElements = await sectionDataElementRepository.findByIds(
+      sectionIds
+    );
+    const sectionIndicators = await sectionIndicatorRepository.findByIds(
+      sectionIds
+    );
+    return _.map(sectionsResponse, (section: Section) => {
+      const { id } = section;
+      const sectionDataElementObject = _.find(
+        sectionDataElements,
+        (sectionDataElement: any) =>
+          sectionDataElement && sectionDataElement.id === id
+      );
+      const sectionIndicatorObject = _.find(
+        sectionIndicators,
+        (sectionIndicator: any) =>
+          sectionIndicator && sectionIndicator.id === id
+      );
+      return {
+        ...section,
+        dataElementIds:
+          sectionDataElementObject && sectionDataElementObject.dataElementIds
+            ? sectionDataElementObject.dataElementIds
+            : [],
+        indicatorIds:
+          sectionIndicatorObject && sectionIndicatorObject.indicatorIds
+            ? sectionIndicatorObject.indicatorIds
+            : []
+      };
+    });
   }
 }

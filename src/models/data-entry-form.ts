@@ -21,6 +21,11 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-export * from './app-metadata';
-export * from './entry-form-selection';
-export * from './data-entry-form';
+import { DataElement } from './data-element';
+
+export interface DataEntryFormSection {
+  id: string;
+  name: string;
+  description?: string;
+  dataElements: DataElement[];
+}

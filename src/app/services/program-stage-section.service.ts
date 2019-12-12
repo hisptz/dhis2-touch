@@ -65,9 +65,7 @@ export class ProgramStageSectionService {
   savingProgramStageSectionsToLocalStorage(
     programStageSections: any[]
   ): Observable<any> {
-    const repository = getRepository('ProgramStageSectionEntity') as Repository<
-      ProgramStageSectionEntity
-    >;
+    const repository = getRepository(ProgramStageSectionEntity);
     const chunk = 50;
     const programStageSectionData = _.flattenDeep(
       _.map(

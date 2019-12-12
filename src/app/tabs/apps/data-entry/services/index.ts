@@ -21,5 +21,6 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
+import { DataEntryFormService } from './data-entry-form.service';
 
-export const dataEntryProviders = [];
+export const dataEntryProviders = [DataEntryFormService];

@@ -45,13 +45,13 @@ export class SettingService {
     );
     await this.localStorageService.setDataOnLocalStorage(data, key);
   }
-  async getCurrentSettingsForTheApp(user: CurrentUser): Promise<any> {
+  async getCurrentSettingsForTheApp(user: CurrentUser): Promise<AppSetting> {
     const { currentDatabase } = user;
     const key = `appSettings-${currentDatabase}`;
     const appSettings: AppSetting = await this.localStorageService.getDataFromLocalStorage(
       key
     );
-    const data = this.getSanitizedSettingForDisplay(appSettings);
+    const data: AppSetting = this.getSanitizedSettingForDisplay(appSettings);
     return data;
   }
 

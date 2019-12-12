@@ -27,5 +27,8 @@
     </app-progress-bar>
 </div>
 <div *ngIf="!isLoading">
-    currentEntrySelection : {{ currentEntrySelection |json }}<br><br> isPeriodLocked : {{isPeriodLocked}}
+    <div>validationRules : {{ validationRules |json }}</div><br><br><br>
+    <div>compulsoryDataElementOperands : {{ compulsoryDataElementOperands |json }}</div><br><br><br>
+    <div>dataEntryFormDesign : {{ dataEntryFormDesign |json }}</div><br><br><br>
+    <div>dataEntryFormSection : {{ dataEntryFormSection |json }}</div><br><br><br>
 </div>

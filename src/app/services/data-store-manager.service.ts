@@ -25,7 +25,7 @@ import { Observable } from 'rxjs';
 import * as _ from 'lodash';
 import { getRepository, Repository } from 'typeorm';
 import { HttpClientService } from './http-client.service';
-import { CurrentUser, DataStore } from 'src/models';
+import { CurrentUser } from 'src/models';
 import { DataStoreEntity } from 'src/entites';
 import * as async from 'async';
 
@@ -146,9 +146,7 @@ export class DataStoreManagerService {
 
   savingDataStoreDataToLocalStorage(dataStoreData: any[]): Observable<any> {
     return new Observable(observer => {
-      const repository = getRepository('DataStoreEntity') as Repository<
-        DataStoreEntity
-      >;
+      const repository = getRepository(DataStoreEntity);
       const chunk = 10;
       repository
         .save(dataStoreData, { chunk })

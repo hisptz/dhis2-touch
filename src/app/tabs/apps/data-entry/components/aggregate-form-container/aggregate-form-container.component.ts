@@ -22,9 +22,21 @@
  *
  */
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { CurrentEntrySelection, AppColorObject } from 'src/models';
+import {
+  CurrentEntrySelection,
+  AppColorObject,
+  DataSet,
+  Indicator,
+  DataEntryFormSection,
+  AppSetting,
+  DataSetOperand,
+  ValidationRule
+} from 'src/models';
 import { DataEntryFormService } from '../../services/data-entry-form.service';
 import { ToasterMessagesService } from 'src/app/services/toaster-messages.service';
+import { IndicatorService } from 'src/app/services/indicator.service';
+import { SettingService } from 'src/app/services/setting.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-aggregate-form-container',
@@ -39,16 +51,36 @@ export class AggregateFormContainerComponent implements OnInit {
   @Output() entryFormStatusChange = new EventEmitter();
 
   isLoading: boolean;
+  dataSet: DataSet;
+  indicators: Indicator[];
+  dataEntryFormSection: DataEntryFormSection[];
+  dataEntryFormDesign: string;
+  appSettings: AppSetting;
+  compulsoryDataElementOperands: DataSetOperand[];
+  validationRules: ValidationRule[];
 
   constructor(
     private dataEntryFormService: DataEntryFormService,
-    private toasterMessagesService: ToasterMessagesService
+    private toasterMessagesService: ToasterMessagesService,
+    private indicatorService: IndicatorService,
+    private settingService: SettingService,
+    private userService: UserService
   ) {
     this.isLoading = true;
+    this.indicators = [];
   }
 
   ngOnInit() {
     const dataSetId = this.currentEntrySelection.selectedDataSet.id;
+
+    this.discoveringAndSetAppSetting(dataSetId);
+  }
+
+  async discoveringAndSetAppSetting(dataSetId: string) {
+    const currentUser = await this.userService.getCurrentUser();
+    this.appSettings = await this.settingService.getCurrentSettingsForTheApp(
+      currentUser
+    );
     this.discoveringDataSetInformation(dataSetId);
   }
 
@@ -59,20 +91,53 @@ export class AggregateFormContainerComponent implements OnInit {
     const { data, error } = dataSetInformation;
     if (!error) {
       const { dataSet, sectionIds, indicatorIds } = data;
-      console.log({ dataSet, sectionIds, indicatorIds });
+      this.dataSet = dataSet;
+      this.discoveringAndSetIndicators(indicatorIds);
+      this.discoveringAndSetEntryFormMetadata(
+        dataSet,
+        sectionIds,
+        this.appSettings
+      );
     } else {
       const message = `Error : ${error}`;
       this.toasterMessagesService.showToasterMessage(message);
     }
   }
 
-  async discoveringIndicators(indicatorIds: string[]) {}
+  async discoveringAndSetIndicators(indicatorIds: string[]) {
+    const indicators = await this.indicatorService.getAggregateIndicators(
+      indicatorIds
+    );
+    this.indicators = indicators;
+  }
 
-  async discoveringEntryFormMetadata() {}
+  async discoveringAndSetEntryFormMetadata(
+    dataSet: DataSet,
+    sectionIds: string[],
+    appSettings: AppSetting
+  ) {
+    const entryFormResponse = await this.dataEntryFormService.getEntryFormMetadata(
+      dataSet,
+      sectionIds,
+      appSettings
+    );
+    const {
+      validationRules,
+      dataEntryFormSection,
+      dataEntryFormDesign
+    } = entryFormResponse;
+    this.dataEntryFormSection = dataEntryFormSection;
+    this.dataEntryFormDesign = dataEntryFormDesign;
+    this.validationRules = validationRules;
+    this.discoveringAndSetComponsaryEntryFields(dataSet.id || '');
+  }
 
-  async discoveringComponsaryEntryFields() {}
+  async discoveringAndSetComponsaryEntryFields(dataSetId: string) {
+    this.compulsoryDataElementOperands = await this.dataEntryFormService.getDataSetOperandsByDataSetId(
+      dataSetId
+    );
+    this.isLoading = false;
+  }
 
-  async discoverigValidationRules() {}
-
-  async discoverigOfflineDataValues() {}
+  async discoverigAndSetOfflineDataValues() {}
 }
