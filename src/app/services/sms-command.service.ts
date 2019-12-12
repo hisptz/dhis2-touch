@@ -23,7 +23,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as _ from 'lodash';
-import { getRepository, Repository } from 'typeorm';
+import { getRepository } from 'typeorm';
 import { HttpClientService } from './http-client.service';
 import { CurrentUser } from 'src/models';
 import { SmsCommandEntity } from 'src/entites';
@@ -51,9 +51,7 @@ export class SmsCommandService {
   }
 
   savingSmsCommandsToLocalStorage(smsCommands: any[]): Observable<any> {
-    const repository = getRepository('SmsCommandEntity') as Repository<
-      SmsCommandEntity
-    >;
+    const repository = getRepository(SmsCommandEntity);
     const chunk = 50;
     return new Observable(observer => {
       repository

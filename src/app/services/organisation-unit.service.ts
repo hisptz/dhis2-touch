@@ -23,7 +23,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as _ from 'lodash';
-import { getRepository, Repository } from 'typeorm';
+import { getRepository } from 'typeorm';
 import { HttpClientService } from './http-client.service';
 import { CurrentUser, OrganisationUnit } from 'src/models';
 import { OrganisationUnitEntity } from 'src/entites';
@@ -70,9 +70,7 @@ export class OrganisationUnitService {
     organisationUnits: any[]
   ): Observable<any> {
     return new Observable(observer => {
-      const ouRepository = getRepository(
-        'OrganisationUnitEntity'
-      ) as Repository<OrganisationUnitEntity>;
+      const ouRepository = getRepository(OrganisationUnitEntity);
       const chunk = 500;
       ouRepository
         .save(organisationUnits, { chunk })
@@ -88,16 +86,12 @@ export class OrganisationUnitService {
   }
 
   async getOrganiisationUnitByIds(organisationUnitIds: string[]) {
-    const ouRepository = getRepository('OrganisationUnitEntity') as Repository<
-      OrganisationUnitEntity
-    >;
+    const ouRepository = getRepository(OrganisationUnitEntity);
     return await ouRepository.findByIds(organisationUnitIds);
   }
 
   async getAllOrganisationUnits() {
-    const ouRepository = getRepository('OrganisationUnitEntity') as Repository<
-      OrganisationUnitEntity
-    >;
+    const ouRepository = getRepository(OrganisationUnitEntity);
     return await ouRepository.find();
   }
 }

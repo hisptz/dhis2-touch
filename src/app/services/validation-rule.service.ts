@@ -23,10 +23,11 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as _ from 'lodash';
-import { getRepository, Repository } from 'typeorm';
+import { getRepository } from 'typeorm';
 import { HttpClientService } from './http-client.service';
 import { CurrentUser, ValidationRule } from 'src/models';
 import { ValidationRuleEntity } from 'src/entites';
+import { getUidsFromExpression } from 'src/helpers';
 
 @Injectable({
   providedIn: 'root'
@@ -85,9 +86,7 @@ export class ValidationRuleService {
 
   savingValidationRulesToLocalStorage(validationRules: any[]): Observable<any> {
     return new Observable(observer => {
-      const repository = getRepository('ValidationRuleEntity') as Repository<
-        ValidationRuleEntity
-      >;
+      const repository = getRepository(ValidationRuleEntity);
       const chunk = 50;
       repository
         .save(validationRules, { chunk })
@@ -99,5 +98,46 @@ export class ValidationRuleService {
           observer.error(error);
         });
     });
+  }
+
+  async getValidationRulesByDateElementIds(dataElementIds: string[]) {
+    const repository = getRepository(ValidationRuleEntity);
+    const validationRules = await repository.find();
+    return this.getSanitizedValidationRules(validationRules, dataElementIds);
+  }
+
+  getSanitizedValidationRules(
+    validationRules: ValidationRule[],
+    dataElementIds: string[]
+  ) {
+    return _.filter(validationRules, (validationRule: ValidationRule) => {
+      const { leftSide, rightSide } = validationRule;
+      const isLeftSideExpressionValid = this.isDataElementIdsPresentOnExpression(
+        leftSide.expression,
+        dataElementIds
+      );
+      const isRightSideExpressionValid = this.isDataElementIdsPresentOnExpression(
+        rightSide.expression,
+        dataElementIds
+      );
+      return isLeftSideExpressionValid && isRightSideExpressionValid;
+    });
+  }
+
+  isDataElementIdsPresentOnExpression(
+    expression: string,
+    dataElementIds: string[]
+  ): boolean {
+    let isAllDataElementPresent = true;
+    const expressionIds = getUidsFromExpression(expression);
+    _.map(
+      _.uniq(_.map(expressionIds, expressionId => expressionId.split('.')[0])),
+      id => {
+        if (_.indexOf(dataElementIds, id) === -1) {
+          isAllDataElementPresent = false;
+        }
+      }
+    );
+    return isAllDataElementPresent;
   }
 }

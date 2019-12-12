@@ -21,6 +21,20 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-export * from './app-metadata';
-export * from './entry-form-selection';
-export * from './data-entry-form';
+
+export function getUidsFromExpression(expression: string) {
+  let uids = [];
+  const matchRegrex = /(\{.*?\})/gi;
+  if (expression.match(matchRegrex)) {
+    expression.match(matchRegrex).forEach(function(value) {
+      uids = uids.concat(
+        value
+          .replace('{', ':separator:')
+          .replace('}', ':separator:')
+          .split(':separator:')
+          .filter(content => content.length > 0)
+      );
+    });
+  }
+  return uids;
+}

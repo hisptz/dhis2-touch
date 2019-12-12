@@ -23,7 +23,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as _ from 'lodash';
-import { getRepository, Repository } from 'typeorm';
+import { getRepository } from 'typeorm';
 import { HttpClientService } from './http-client.service';
 import { CurrentUser } from 'src/models';
 import { DEFAULT_APP_METADATA } from 'src/constants';
@@ -121,21 +121,16 @@ export class ProgramService {
     await this.savingProgramProgramTrackedEntityAttributes(programs);
     await this.savingTrackerRegistrationForm(programs);
     await this.savingProgramStageEntryForm(programs);
-    console.log({ type: 'saving', programs });
   }
 
   async savingProgramBasicInfo(programs: any[]) {
-    const repository = getRepository('ProgramEntity') as Repository<
-      ProgramEntity
-    >;
+    const repository = getRepository(ProgramEntity);
     const chunk = 50;
     await repository.save(programs, { chunk });
   }
 
   async savingProgramDataSource(programs: any[]) {
-    const repository = getRepository(
-      'ProgramOrganisationUnitEntity'
-    ) as Repository<ProgramOrganisationUnitEntity>;
+    const repository = getRepository(ProgramOrganisationUnitEntity);
     const chunk = 50;
     const programOrganisationUnits = _.flattenDeep(
       _.map(
@@ -160,9 +155,7 @@ export class ProgramService {
   }
 
   async savingProgramProgramIndicators(programs: any[]) {
-    const repository = getRepository('ProgramIndicatorEntity') as Repository<
-      ProgramIndicatorEntity
-    >;
+    const repository = getRepository(ProgramIndicatorEntity);
     const chunk = 50;
     const programIndicatorsData = _.flattenDeep(
       _.map(
@@ -185,9 +178,7 @@ export class ProgramService {
   }
 
   async savingProgramProgramStage(programs: any) {
-    const repository = getRepository('ProgramProgramStageEntity') as Repository<
-      ProgramProgramStageEntity
-    >;
+    const repository = getRepository(ProgramProgramStageEntity);
     const chunk = 50;
     const programProgramStages = _.flattenDeep(
       _.map(
@@ -209,8 +200,8 @@ export class ProgramService {
 
   async savingProgramProgramTrackedEntityAttributes(programs: any[]) {
     const repository = getRepository(
-      'ProgramProgramTrackedEntityAttributeEntity'
-    ) as Repository<ProgramProgramTrackedEntityAttributeEntity>;
+      ProgramProgramTrackedEntityAttributeEntity
+    );
     const chunk = 50;
     const programTrackedEntityAttributesData = _.flattenDeep(
       _.map(
@@ -239,9 +230,7 @@ export class ProgramService {
   }
 
   async savingTrackedEntityAttributes(programTrackedEntityAttributes: any[]) {
-    const repository = getRepository(
-      'TrackedEntityAttributeEntity'
-    ) as Repository<TrackedEntityAttributeEntity>;
+    const repository = getRepository(TrackedEntityAttributeEntity);
     const chunk = 50;
     const trackedEntityAttributes = _.flattenDeep(
       _.map(
@@ -269,9 +258,7 @@ export class ProgramService {
   }
 
   async savingTrackerRegistrationForm(programs: any[]) {
-    const repository = getRepository(
-      'TrackerRegistrationFormEntity'
-    ) as Repository<TrackerRegistrationFormEntity>;
+    const repository = getRepository(TrackerRegistrationFormEntity);
     const chunk = 50;
     const trackerRegistrationForms = _.flattenDeep(
       _.map(
@@ -282,8 +269,7 @@ export class ProgramService {
         }),
         (program: any) => {
           const { id, dataEntryForm } = program;
-          const { htmlCode } = dataEntryForm;
-          return { id, dataEntryForm: htmlCode };
+          return { id, dataEntryForm };
         }
       )
     );
@@ -291,9 +277,7 @@ export class ProgramService {
   }
 
   async savingProgramStageEntryForm(programs: any) {
-    const repository = getRepository(
-      'ProgramStageEntryFormEntity'
-    ) as Repository<ProgramStageEntryFormEntity>;
+    const repository = getRepository(ProgramStageEntryFormEntity);
     const chunk = 50;
     const programStageEntryForm = _.flattenDeep(
       _.map(
@@ -318,8 +302,7 @@ export class ProgramService {
         ),
         (programStage: any) => {
           const { id, dataEntryForm } = programStage;
-          const { htmlCode } = dataEntryForm;
-          return { id, dataEntryForm: htmlCode };
+          return { id, dataEntryForm };
         }
       )
     );

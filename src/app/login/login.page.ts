@@ -265,9 +265,7 @@ export class LoginPage implements OnInit {
       if (colorSettings) {
         this.store.dispatch(SetCurrentUserColorSettings({ colorSettings }));
       }
-      this.store.dispatch(
-        AddCurrentUser({ currentUser: this.currentUser })
-      );
+      this.store.dispatch(AddCurrentUser({ currentUser: this.currentUser }));
       await this.userService.setCurrentUser(this.currentUser);
       this.navCtrl.navigateRoot('/tabs');
     } catch (error) {
@@ -290,8 +288,7 @@ export class LoginPage implements OnInit {
     if (!appSettings || Object.keys(appSettings).length === 0) {
       await this.settingService.setCurrentSettingsForTheApp(
         currentUser,
-        defaultSetting,
-        true
+        defaultSetting
       );
     }
   }

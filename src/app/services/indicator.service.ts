@@ -23,7 +23,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as _ from 'lodash';
-import { getRepository, Repository } from 'typeorm';
+import { getRepository } from 'typeorm';
 import { HttpClientService } from './http-client.service';
 import { CurrentUser } from 'src/models';
 import { IndicatorEntity } from 'src/entites';
@@ -53,11 +53,14 @@ export class IndicatorService {
     });
   }
 
+  async getAggregateIndicators(indicatorIds: string[]) {
+    const repository = getRepository(IndicatorEntity);
+    return await repository.findByIds(indicatorIds);
+  }
+
   savingIndicatorsToLocalStorage(indicators: any[]): Observable<any> {
     return new Observable(observer => {
-      const repository = getRepository('IndicatorEntity') as Repository<
-        IndicatorEntity
-      >;
+      const repository = getRepository(IndicatorEntity);
       const chunk = 100;
       repository
         .save(indicators, { chunk })

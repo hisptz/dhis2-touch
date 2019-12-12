@@ -23,7 +23,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as _ from 'lodash';
-import { getRepository, Repository } from 'typeorm';
+import { getRepository } from 'typeorm';
 import { HttpClientService } from './http-client.service';
 import { CurrentUser } from 'src/models';
 import { DEFAULT_APP_METADATA } from 'src/constants';
@@ -120,9 +120,7 @@ export class ProgramRuleEngineService {
 
   savingProgramRulesToLocalStorage(programRules: any[]): Observable<any> {
     return new Observable(observer => {
-      const repository = getRepository('ProgramRuleEntity') as Repository<
-        ProgramRuleEntity
-      >;
+      const repository = getRepository(ProgramRuleEntity);
       const chunk = 50;
       repository
         .save(programRules, { chunk })
@@ -140,9 +138,7 @@ export class ProgramRuleEngineService {
     programRuleActions: any[]
   ): Observable<any> {
     return new Observable(observer => {
-      const repository = getRepository('ProgramRuleActionEntity') as Repository<
-        ProgramRuleActionEntity
-      >;
+      const repository = getRepository(ProgramRuleActionEntity);
       const chunk = 50;
       repository
         .save(programRuleActions, { chunk })
@@ -160,9 +156,7 @@ export class ProgramRuleEngineService {
     programRuleVariables: any[]
   ): Observable<any> {
     return new Observable(observer => {
-      const repository = getRepository(
-        'ProgramRuleVariableEntity'
-      ) as Repository<ProgramRuleVariableEntity>;
+      const repository = getRepository(ProgramRuleVariableEntity);
       const chunk = 50;
       repository
         .save(programRuleVariables, { chunk })

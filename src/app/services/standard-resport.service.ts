@@ -23,7 +23,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as _ from 'lodash';
-import { getRepository, Repository } from 'typeorm';
+import { getRepository } from 'typeorm';
 import { HttpClientService } from './http-client.service';
 import { CurrentUser } from 'src/models';
 import { ConstantEntity, ReportEntity, ReportDesignEntity } from 'src/entites';
@@ -74,12 +74,8 @@ export class StandardResportService {
   }
 
   savingReportsToLocalStorage(reports: any[]): Observable<any> {
-    const reportRepository = getRepository('ReportEntity') as Repository<
-      ReportEntity
-    >;
-    const reportDesignRepository = getRepository(
-      'ReportDesignEntity'
-    ) as Repository<ReportDesignEntity>;
+    const reportRepository = getRepository(ReportEntity);
+    const reportDesignRepository = getRepository(ReportDesignEntity);
     const chunk = 50;
     return new Observable(observer => {
       reportRepository
@@ -102,9 +98,7 @@ export class StandardResportService {
   }
 
   savingConstantsToLocalStorage(constants: any[]): Observable<any> {
-    const repository = getRepository('ConstantEntity') as Repository<
-      ConstantEntity
-    >;
+    const repository = getRepository(ConstantEntity);
     const chunk = 50;
     return new Observable(observer => {
       repository

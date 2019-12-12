@@ -23,9 +23,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as _ from 'lodash';
-import { getRepository, Repository } from 'typeorm';
+import { getRepository } from 'typeorm';
 import { HttpClientService } from './http-client.service';
-import { CurrentUser } from 'src/models';
+import { CurrentUser, DataSetOperand } from 'src/models';
 import {
   DataSetEntity,
   DataSetDesignEntity,
@@ -128,16 +128,13 @@ export class DataSetService {
   }
 
   async savingDataSetBasicInfo(dataSets: any[]) {
-    const repository = getRepository('DataSetEntity') as Repository<
-      DataSetEntity
-    >;
+    const repository = getRepository(DataSetEntity);
     const chunk = 50;
     await repository.save(dataSets, { chunk });
   }
+
   async savingDataSetEntryForm(dataSets: any[]) {
-    const repository = getRepository('DataSetDesignEntity') as Repository<
-      DataSetDesignEntity
-    >;
+    const repository = getRepository(DataSetDesignEntity);
     const entryForms = _.map(
       _.filter(dataSets, (dataSet: any) => {
         return (
@@ -146,16 +143,24 @@ export class DataSetService {
       }),
       (dataSet: any) => {
         const { id, dataEntryForm } = dataSet;
-        const { htmlCode } = dataEntryForm;
-        return { id, dataSetDesign: htmlCode };
+        return { id, dataSetDesign: dataEntryForm };
       }
     );
     await repository.save(entryForms, { chunk: 50 });
   }
+
+  async getDataSetEntryForm(dataSetId: string): Promise<any> {
+    const repository = getRepository(DataSetDesignEntity);
+    const dataSetDesignObj = await repository.findOne(dataSetId);
+    const dataSetDesign =
+      dataSetDesignObj && dataSetDesignObj.dataSetDesign
+        ? dataSetDesignObj.dataSetDesign
+        : null;
+    return dataSetDesign;
+  }
+
   async savingDataSetIndicators(dataSets: any[]) {
-    const repository = getRepository('DataSetIndicatorEntity') as Repository<
-      DataSetIndicatorEntity
-    >;
+    const repository = getRepository(DataSetIndicatorEntity);
     const dataSetIndicators = _.map(
       _.filter(dataSets, (dataSet: any) => {
         return dataSet && dataSet.indicators;
@@ -174,10 +179,9 @@ export class DataSetService {
     );
     await repository.save(dataSetIndicators, { chunk: 100 });
   }
+
   async savingDataSetDataSource(dataSets: any[]) {
-    const repository = getRepository('DataSetSourceEntity') as Repository<
-      DataSetSourceEntity
-    >;
+    const repository = getRepository(DataSetSourceEntity);
     const dataSetSources = _.map(
       _.filter(dataSets, (dataSet: any) => {
         return (
@@ -197,26 +201,24 @@ export class DataSetService {
     );
     await repository.save(dataSetSources, { chunk: 100 });
   }
+
   async savingDataSetSections(dataSets: any[]) {
-    const repository = getRepository('DataSetSectionEntity') as Repository<
-      DataSetSectionEntity
-    >;
+    const repository = getRepository(DataSetSectionEntity);
     const dataSetSections = _.map(
       _.filter(dataSets, (dataSet: any) => {
         return dataSet && dataSet.sections && dataSet.sections.length > 0;
       }),
       (dataSet: any) => {
         const { id, sections } = dataSet;
-        const sectionIds = _.map(sections, (section: any) => id);
+        const sectionIds = _.map(sections, (section: any) => section.id || '');
         return { id, sectionIds };
       }
     );
     await repository.save(dataSetSections, { chunk: 100 });
   }
+
   async savingDataSetOperands(dataSets: any[]) {
-    const repository = getRepository('DataSetOperandEntity') as Repository<
-      DataSetOperandEntity
-    >;
+    const repository = getRepository(DataSetOperandEntity);
     const dataSetOperands = _.flattenDeep(
       _.map(
         _.filter(dataSets, (dataSet: any) => {
@@ -239,10 +241,31 @@ export class DataSetService {
     );
     await repository.save(dataSetOperands, { chunk: 100 });
   }
+
+  async getDataSetOperandsByDataSetId(dataSetId: string) {
+    const repository = getRepository(DataSetOperandEntity);
+    const compulsoryDataElementOperands = await repository.find({
+      dataSetId
+    });
+    return _.uniqBy(
+      _.flattenDeep(
+        _.map(
+          compulsoryDataElementOperands,
+          (compulsoryDataElementOperand: DataSetOperand) => {
+            compulsoryDataElementOperand = _.omit(
+              compulsoryDataElementOperand,
+              ['dataSetId']
+            );
+            return compulsoryDataElementOperand;
+          }
+        )
+      ),
+      'id'
+    );
+  }
+
   async savingDataSetDataElements(dataSets: any[]) {
-    const repository = getRepository('DataSetElementEntity') as Repository<
-      DataSetElementEntity
-    >;
+    const repository = getRepository(DataSetElementEntity);
     const data = _.map(
       _.filter(dataSets, (dataSet: any) => {
         return dataSet && (dataSet.dataElements || dataSet.dataSetElements);
@@ -259,5 +282,16 @@ export class DataSetService {
       }
     );
     repository.save(data, { chunk: 100 });
+  }
+
+  async getDatsSetDataElements(dataSetId: string): Promise<string[]> {
+    const repository = getRepository(DataSetElementEntity);
+    const dataSetElementObj = await repository.findOne(dataSetId);
+    let dataElementIds = [];
+    dataElementIds = _.concat(
+      dataElementIds,
+      dataSetElementObj.dataElementIds || []
+    );
+    return dataElementIds;
   }
 }
