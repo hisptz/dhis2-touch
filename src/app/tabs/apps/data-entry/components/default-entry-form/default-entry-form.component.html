@@ -22,25 +22,7 @@
 *
 *
 -->
-<div *ngIf="isLoading">
-    <app-progress-bar [color]="colorSettings?.colorAttributes.secondary" [isIndeterminateProcess]="true" [processMessage]="''">
-    </app-progress-bar>
-</div>
-<div *ngIf="!isLoading">
-    <div *ngIf="entryFormType === 'CUSTOM'">
-        <app-custom-entry-form 
-            [isPeriodLocked]="isPeriodLocked"
-            [dataEntryFormDesign]="dataEntryFormDesign"
-            [indicators]="indicators" 
-            [entryFormType]="'aggregate'"
-            [entryFormSections]="dataEntryFormSection"
-            [data]="dataValuesObject"
-        ></app-custom-entry-form>
-    </div>
-    <div *ngIf="entryFormType === 'SECTION'">
-        <app-default-entry-form></app-default-entry-form>
-    </div>
-    <div>
-        <app-completeness-container></app-completeness-container>
-    </div>
-</div>
+
+<p>
+  default-entry-form works!
+</p>

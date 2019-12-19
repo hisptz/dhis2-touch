@@ -21,31 +21,17 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-
-import { Component } from '@angular/core';
-
-import { Platform } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss']
+  selector: 'app-input-field-container',
+  templateUrl: './input-field-container.component.html',
+  styleUrls: ['./input-field-container.component.scss'],
 })
-export class AppComponent {
-  constructor(
-    private platform: Platform,
-    private splashScreen: SplashScreen,
-    private statusBar: StatusBar
-  ) {
-    this.initializeApp();
-  }
+export class InputFieldContainerComponent implements OnInit {
 
-  initializeApp() {
-    this.platform.ready().then(() => {
-      this.statusBar.styleLightContent();
-      this.splashScreen.hide();
-    });
-  }
+  constructor() { }
+
+  ngOnInit() {}
+
 }

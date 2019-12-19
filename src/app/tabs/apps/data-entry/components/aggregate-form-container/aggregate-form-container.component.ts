@@ -58,6 +58,8 @@ export class AggregateFormContainerComponent implements OnInit {
   appSettings: AppSetting;
   compulsoryDataElementOperands: DataSetOperand[];
   validationRules: ValidationRule[];
+  entryFormType: string;
+  dataValuesObject: any;
 
   constructor(
     private dataEntryFormService: DataEntryFormService,
@@ -67,7 +69,9 @@ export class AggregateFormContainerComponent implements OnInit {
     private userService: UserService
   ) {
     this.isLoading = true;
+    this.entryFormType = 'SECTION';
     this.indicators = [];
+    this.dataValuesObject = {};
   }
 
   ngOnInit() {
@@ -129,6 +133,11 @@ export class AggregateFormContainerComponent implements OnInit {
     this.dataEntryFormSection = dataEntryFormSection;
     this.dataEntryFormDesign = dataEntryFormDesign;
     this.validationRules = validationRules;
+    await this.setEntryFormType(
+      dataEntryFormDesign,
+      this.dataSet.formType,
+      appSettings
+    );
     this.discoveringAndSetComponsaryEntryFields(dataSet.id || '');
   }
 
@@ -137,6 +146,22 @@ export class AggregateFormContainerComponent implements OnInit {
       dataSetId
     );
     this.isLoading = false;
+  }
+
+  async setEntryFormType(
+    dataEntryFormDesign: string,
+    formType: string,
+    appSettings: AppSetting
+  ) {
+    this.entryFormType =
+      dataEntryFormDesign &&
+      formType === 'CUSTOM' &&
+      appSettings &&
+      appSettings.entryForm &&
+      appSettings.entryForm.formLayout &&
+      appSettings.entryForm.formLayout === 'customLayout'
+        ? 'CUSTOM'
+        : 'SECTION';
   }
 
   async discoverigAndSetOfflineDataValues() {}
