@@ -29,12 +29,18 @@ import { SharedComponentsModule } from 'src/app/components/shared-components.mod
 import { DataEntryFormSummaryComponent } from './data-entry-form-summary/data-entry-form-summary.component';
 import { AggregateParameterSelectionComponent } from './aggregate-parameter-selection/aggregate-parameter-selection.component';
 import { AggregateFormContainerComponent } from './aggregate-form-container/aggregate-form-container.component';
+import { CompletenessContainerComponent } from './completeness-container/completeness-container.component';
+import { CustomEntryFormComponent } from './custom-entry-form/custom-entry-form.component';
+import { DefaultEntryFormComponent } from './default-entry-form/default-entry-form.component';
 
 @NgModule({
   declarations: [
     AggregateParameterSelectionComponent,
     DataEntryFormSummaryComponent,
-    AggregateFormContainerComponent
+    AggregateFormContainerComponent,
+    CompletenessContainerComponent,
+    CustomEntryFormComponent,
+    DefaultEntryFormComponent
   ],
   imports: [
     IonicModule,
@@ -45,7 +51,10 @@ import { AggregateFormContainerComponent } from './aggregate-form-container/aggr
   exports: [
     AggregateParameterSelectionComponent,
     DataEntryFormSummaryComponent,
-    AggregateFormContainerComponent
+    AggregateFormContainerComponent,
+    CompletenessContainerComponent,
+    CustomEntryFormComponent,
+    DefaultEntryFormComponent
   ]
 })
 export class DataEntryComponentsModule {}

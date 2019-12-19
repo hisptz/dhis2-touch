@@ -22,24 +22,6 @@
 *
 *
 -->
-<div *ngIf="isLoading">
-    <app-progress-bar [color]="colorSettings?.colorAttributes.secondary" [isIndeterminateProcess]="true" [processMessage]="''">
-    </app-progress-bar>
-</div>
-<div *ngIf="!isLoading">
-    <!--        
-    <div>validationRules : {{ validationRules |json }}</div><br><br><br>
-    <div>compulsoryDataElementOperands : {{ compulsoryDataElementOperands |json }}</div><br><br><br>
-    <div>dataEntryFormDesign : {{ dataEntryFormDesign |json }}</div><br><br><br>
-    <div>dataEntryFormSection : {{ dataEntryFormSection |json }}</div><br><br><br>
-    -->
-    <div>
-        <app-custom-entry-form></app-custom-entry-form>
-    </div>
-    <div>
-        <app-default-entry-form></app-default-entry-form>
-    </div>
-    <div>
-        <app-completeness-container></app-completeness-container>
-    </div>
+<div class="custom-entry-form" id="_custom_entry_form_{{entryFormType}}">
+    <div [innerHTML]="_htmlMarkup"></div>
 </div>
