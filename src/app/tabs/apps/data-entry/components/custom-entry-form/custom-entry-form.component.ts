@@ -69,31 +69,31 @@ export class CustomEntryFormComponent
   @Input()
   type: string;
   @Input()
-  data;
+  data: any;
   @Input()
   entryFormType: string; // aggregate event tracker
   @Input()
-  programTrackedEntityAttributes; // metadata for attribute
+  programTrackedEntityAttributes: any; // metadata for attribute
   @Input()
-  entryFormSections;
+  entryFormSections: any;
   @Input()
   programStageId: string;
   @Input()
-  programStageDataElements; // metadata for events rendering
+  programStageDataElements: any; // metadata for events rendering
   @Input() programIndicators: any; // program indicators for events
   @Input() indicators: any; // indicators for aggregates data entry
   @Input()
   dataUpdateStatus: { elementId: string; status: string };
-  @Output()
-  customFormInputChange = new EventEmitter();
   @Input()
-  dataSetsCompletenessInfo;
+  dataSetsCompletenessInfo: any;
   @Input()
   isDataSetCompleted: boolean;
   @Input() isEventCompleted: boolean;
   @Input()
   isDataSetCompletenessProcessRunning: boolean;
   @Input() isValidationProcessRunning: boolean;
+  @Output()
+  customFormInputChange = new EventEmitter();
   @Output()
   viewUserCompletenessInformation = new EventEmitter();
   @Output()
@@ -252,7 +252,7 @@ export class CustomEntryFormComponent
     return _.filter(scripts, (scriptContent: string) => scriptContent !== '');
   }
 
-  setScriptsOnHtmlContent(scriptsContentsArray) {
+  setScriptsOnHtmlContent(scriptsContentsArray: any) {
     const dataElements = this.entryFormSections
       ? _.flattenDeep(
           _.map(

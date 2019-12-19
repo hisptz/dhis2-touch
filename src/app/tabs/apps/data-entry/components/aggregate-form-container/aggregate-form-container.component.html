@@ -27,16 +27,17 @@
     </app-progress-bar>
 </div>
 <div *ngIf="!isLoading">
-    <!--        
-    <div>validationRules : {{ validationRules |json }}</div><br><br><br>
-    <div>compulsoryDataElementOperands : {{ compulsoryDataElementOperands |json }}</div><br><br><br>
-    <div>dataEntryFormDesign : {{ dataEntryFormDesign |json }}</div><br><br><br>
-    <div>dataEntryFormSection : {{ dataEntryFormSection |json }}</div><br><br><br>
-    -->
-    <div>
-        <app-custom-entry-form></app-custom-entry-form>
+    <div *ngIf="entryFormType === 'CUSTOM'">
+        <app-custom-entry-form 
+            [isPeriodLocked]="isPeriodLocked"
+            [dataEntryFormDesign]="dataEntryFormDesign"
+            [indicators]="indicators" 
+            [entryFormType]="'aggregate'"
+            [entryFormSections]="dataEntryFormSection"
+            [data]="dataValuesObject"
+        ></app-custom-entry-form>
     </div>
-    <div>
+    <div *ngIf="entryFormType === 'SECTION'">
         <app-default-entry-form></app-default-entry-form>
     </div>
     <div>
