@@ -25,7 +25,7 @@ import * as _ from 'lodash';
 declare const dhis2;
 
 export function evaluateCustomFomProgramIndicators(programIndicators: any[]) {
-  let filledElementsCount;
+  let filledElementsCount: any;
   let dataStoreColorMapping: any = {};
   const nameSpace = 'msdqi-checklists';
   const key = 'indicatorConfigurations';

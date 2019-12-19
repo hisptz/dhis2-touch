@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2015 HISP Tanzania
+ * Copyright 2019 HISP Tanzania
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,36 +17,36 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  *
- * @since 2015
+ * @since 2019
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-import * as _ from "lodash";
+import * as _ from 'lodash';
 
-export function applyErrorOrWarningActions(keyValuePairObject) {
-  _.map(Object.keys(keyValuePairObject), key => {
+export function applyErrorOrWarningActions(keyValuePairObject: any) {
+  _.map(Object.keys(keyValuePairObject), (key: string) => {
     const { message } = keyValuePairObject[key];
-    if (message && message.trim() !== "") {
+    if (message && message.trim() !== '') {
       alert(message);
     }
   });
 }
 
 export function assignedValuesBasedOnProgramRules(
-  programStageId,
-  keyValuePairObject
+  programStageId: string,
+  keyValuePairObject: any
 ) {
-  _.map(Object.keys(keyValuePairObject), key => {
+  _.map(Object.keys(keyValuePairObject), (key: string) => {
     try {
       const elementId =
-        programStageId && programStageId !== ""
+        programStageId && programStageId !== ''
           ? `${programStageId}-${key}-val`
           : `${key}-val`;
       const value = keyValuePairObject[key];
       const inputElement: any = document.getElementById(`${elementId}`);
       inputElement.value = value;
-      inputElement.setAttribute("readonly", "readonly");
-      inputElement.setAttribute("disabled", "disabled");
+      inputElement.setAttribute('readonly', 'readonly');
+      inputElement.setAttribute('disabled', 'disabled');
     } catch (error) {
       error = JSON.stringify(error);
       console.log(`Error on assign values ${key} : ${error}`);
@@ -65,46 +65,46 @@ export function disableHiddenFiledsBasedOnProgramRules(
   if (!shouldLockFields) {
     // show all program rule related items
     const itemsWIthProgramRules = document.getElementsByClassName(
-      "program-rules"
+      'program-rules'
     );
-    _.map(itemsWIthProgramRules, htmlItem => {
+    _.map(itemsWIthProgramRules, (htmlItem: any) => {
       try {
-        htmlItem.setAttribute("style", "display: ''");
+        htmlItem.setAttribute('style', `display: ''`);
       } catch (error) {}
     });
     _.each(
-      document.getElementsByClassName("entryfield"),
+      document.getElementsByClassName('entryfield'),
       (inputElement: any) => {
-        inputElement.removeAttribute("disabled");
-        inputElement.removeAttribute("readonly");
+        inputElement.removeAttribute('disabled');
+        inputElement.removeAttribute('readonly');
       }
     );
     _.each(
-      document.getElementsByClassName("entryselect"),
+      document.getElementsByClassName('entryselect'),
       (inputElement: any) => {
-        inputElement.removeAttribute("disabled");
-        inputElement.removeAttribute("readonly");
+        inputElement.removeAttribute('disabled');
+        inputElement.removeAttribute('readonly');
       }
     );
     _.each(
-      document.getElementsByClassName("entrytrueonly"),
+      document.getElementsByClassName('entrytrueonly'),
       (inputElement: any) => {
-        inputElement.removeAttribute("disabled");
-        inputElement.removeAttribute("readonly");
+        inputElement.removeAttribute('disabled');
+        inputElement.removeAttribute('readonly');
       }
     );
     _.each(
-      document.getElementsByClassName("entryfileresource"),
+      document.getElementsByClassName('entryfileresource'),
       (inputElement: any) => {
-        inputElement.removeAttribute("disabled");
-        inputElement.removeAttribute("readonly");
+        inputElement.removeAttribute('disabled');
+        inputElement.removeAttribute('readonly');
       }
     );
     _.each(
-      document.getElementsByClassName("entryfield-radio"),
+      document.getElementsByClassName('entryfield-radio'),
       (inputElement: any) => {
-        inputElement.removeAttribute("disabled");
-        inputElement.removeAttribute("readonly");
+        inputElement.removeAttribute('disabled');
+        inputElement.removeAttribute('readonly');
       }
     );
   }
@@ -113,17 +113,17 @@ export function disableHiddenFiledsBasedOnProgramRules(
     if (!keyValuePairObject[key]) {
       try {
         const elementId =
-          programStageId && programStageId !== ""
+          programStageId && programStageId !== ''
             ? `${programStageId}-${key}-val`
             : `${key}-val`;
         const inputElement: any = document.getElementById(`${elementId}`);
-        inputElement.value = "";
+        inputElement.value = '';
         document.getElementById(
           elementId
-            .split("-")
-            .join(".")
-            .replace(".val", ".tr")
-        ).style.display = "";
+            .split('-')
+            .join('.')
+            .replace('.val', '.tr')
+        ).style.display = '';
       } catch (error) {}
     }
   });
@@ -131,25 +131,25 @@ export function disableHiddenFiledsBasedOnProgramRules(
     if (keyValuePairObject[key]) {
       try {
         const elementId =
-          programStageId && programStageId !== ""
+          programStageId && programStageId !== ''
             ? `${programStageId}-${key}-val`
             : `${key}-val`;
         const inputElement: any = document.getElementById(`${elementId}`);
-        inputElement.value = "";
+        inputElement.value = '';
         document.getElementById(
           elementId
-            .split("-")
-            .join(".")
-            .replace(".val", ".tr")
-        ).style.display = "none";
+            .split('-')
+            .join('.')
+            .replace('.val', '.tr')
+        ).style.display = 'none';
         try {
-          inputElement.checked = "";
+          inputElement.checked = '';
         } catch (error) {
-          console.log({ error, type: "try to clear value on checkbox" });
+          console.log({ error, type: 'try to clear value on checkbox' });
         }
         if (_.indexOf(ommittedKeys, key) === -1) {
-          inputElement.setAttribute("readonly", "readonly");
-          inputElement.setAttribute("disabled", "disabled");
+          inputElement.setAttribute('readonly', 'readonly');
+          inputElement.setAttribute('disabled', 'disabled');
         }
       } catch (error) {
         error = JSON.stringify(error);
@@ -162,8 +162,8 @@ export function disableHiddenFiledsBasedOnProgramRules(
   _.map(previousDisabledFields, elementId => {
     try {
       const inputElement: any = document.getElementById(`${elementId}`);
-      inputElement.setAttribute("readonly", "readonly");
-      inputElement.setAttribute("disabled", "disabled");
+      inputElement.setAttribute('readonly', 'readonly');
+      inputElement.setAttribute('disabled', 'disabled');
     } catch (error) {}
   });
 }
