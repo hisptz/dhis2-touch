@@ -23,9 +23,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as _ from 'lodash';
-import { getRepository, Repository } from 'typeorm';
+import { getRepository } from 'typeorm';
 import { HttpClientService } from './http-client.service';
-import { CurrentUser, DataElement } from 'src/models';
+import { CurrentUser, DataElement, CategoryCombo } from 'src/models';
 import { DEFAULT_APP_METADATA } from 'src/constants';
 import { DataElementEntity } from 'src/entites';
 import { CategoryComboService } from './category-combo.service';
@@ -224,6 +224,7 @@ export class DataElementService {
     const categoryCombos = await this.categoryComboService.getCategoryCombosByIds(
       categoryComboIds
     );
+
     return _.flattenDeep(
       _.filter(
         _.map(_.uniq(dataElementIds), (dataElementId: string) => {
@@ -234,7 +235,18 @@ export class DataElementService {
             dataElement.categoryCombo.id
               ? dataElement.categoryCombo.id
               : '';
-          const categoryCombo = _.find(categoryCombos, { id: categoryComboId });
+          const categoryCombo = _.find(
+            _.map(categoryCombos, (categoryComboObj: CategoryCombo) => {
+              const categoryOptionCombos = _.sortBy(
+                categoryComboObj.categoryOptionCombos || [],
+                'name'
+              );
+              return { ...categoryComboObj, categoryOptionCombos };
+            }),
+            {
+              id: categoryComboId
+            }
+          );
           return dataElement
             ? {
                 ...dataElement,
