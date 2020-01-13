@@ -41,6 +41,7 @@ export class OptionSetSelectionPage implements OnInit {
   currentIndex: number;
   cancelIcon: string;
   isDisabled: boolean;
+  isDeleteButtonHidden: boolean;
   colorSettings$: Observable<AppColorObject>;
 
   constructor(
@@ -59,6 +60,10 @@ export class OptionSetSelectionPage implements OnInit {
     this.selectedValue = this.navParms.get('selectedValue');
     const options: Option[] = this.navParms.get('options');
     const isDisabled: boolean = this.navParms.get('isDisabled');
+    const isDeleteButtonHidden: boolean = this.navParms.get(
+      'isDeleteButtonHidden'
+    );
+    this.isDeleteButtonHidden = isDeleteButtonHidden || false;
     this.isDisabled = isDisabled || false;
     this.setOptionSetSelections(options);
   }

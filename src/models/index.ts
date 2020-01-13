@@ -49,3 +49,4 @@ export * from './program';
 export * from './program-rule';
 export * from './currrent-entry-selection';
 export * from './data-entry-form';
+export * from './item-pager';

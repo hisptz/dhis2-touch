@@ -21,15 +21,69 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  Output,
+  EventEmitter
+} from '@angular/core';
+import * as _ from 'lodash';
+import { DataEntryFormSection, ItemPager } from 'src/models';
 
 @Component({
   selector: 'app-default-entry-form',
   templateUrl: './default-entry-form.component.html',
   styleUrls: ['./default-entry-form.component.scss']
 })
-export class DefaultEntryFormComponent implements OnInit {
-  constructor() {}
+export class DefaultEntryFormComponent implements OnInit, OnChanges {
+  @Input() isPeriodLocked: boolean;
+  @Input() isDataSetCompleted: boolean;
+  @Input() entryFormSections: DataEntryFormSection[];
+  @Input() data: any;
+  @Input() pager: ItemPager;
 
-  ngOnInit() {}
+  @Output() openSectionListAction = new EventEmitter();
+
+  icon: string;
+  lockingFieldStatus: boolean;
+
+  constructor() {
+    this.icon = 'assets/icon/menu.png';
+  }
+
+  ngOnInit() {
+    this.pager = this.pager || {
+      page: 1,
+      total: this.entryFormSections.length
+    };
+    this.lockingFieldStatus = this.isDataSetCompleted || this.isPeriodLocked;
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (
+      changes['isDataSetCompleted'] &&
+      !changes['isDataSetCompleted'].firstChange
+    ) {
+      this.lockingFieldStatus = this.isDataSetCompleted || this.isPeriodLocked;
+    }
+  }
+
+  trackByFn(index: any, item: any) {
+    return item && item.id ? item.id : index;
+  }
+
+  onOpenSectionListAction() {
+    const sections = _.map(
+      this.entryFormSections,
+      (section: DataEntryFormSection) => {
+        const { id, name } = section;
+        return { id, name };
+      }
+    );
+    const data = { pager: this.pager, sections };
+    this.openSectionListAction.emit(data);
+  }
 }

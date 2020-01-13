@@ -38,7 +38,21 @@
         ></app-custom-entry-form>
     </div>
     <div *ngIf="entryFormType === 'SECTION'">
-        <app-default-entry-form></app-default-entry-form>
+        <app-default-entry-form
+            (openSectionListAction) = "onOpenSectionListAction($event)"
+            [isPeriodLocked]="isPeriodLocked"
+            [pager]="pager"
+            [entryFormSections]="dataEntryFormSections"
+            [data]="dataValuesObject"
+        ></app-default-entry-form>
+    </div>
+    <div>
+        <app-aggregate-completeness-paginator 
+            [pager]="pager"
+            [isPeriodLocked]="isPeriodLocked"
+            [entryFormType]="entryFormType" 
+            [entryFormSections]="dataEntryFormSections"
+        ></app-aggregate-completeness-paginator>
     </div>
     <div>
         <app-completeness-container></app-completeness-container>

@@ -63,7 +63,7 @@
             </ion-button>
         </ion-buttons>
         <ion-buttons slot="end">
-            <ion-button (click)="clearValue()" [disabled]="isDisabled">
+            <ion-button *ngIf="!isDeleteButtonHidden" (click)="clearValue()" [disabled]="isDisabled">
                 <ion-icon slot="icon-only" name="Trash" color="danger"></ion-icon>
             </ion-button>
         </ion-buttons>

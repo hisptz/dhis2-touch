@@ -55,7 +55,14 @@
                         </div>
                     </div>
                     <div>
-                        <app-aggregate-form-container (entryFormStatusChange)="onEntryFormStatusChange($event)" [colorSettings]="colorSettings$ | async" [currentEntrySelection]="currentEntrySelection" [isPeriodLocked]="isPeriodLocked"></app-aggregate-form-container>
+                        <app-aggregate-form-container
+                            (openSectionListAction) = "onOpenSectionListAction($event)"
+                            (entryFormStatusChange)="onEntryFormStatusChange($event)" 
+                            [colorSettings]="colorSettings$ | async"
+                            [currentEntrySelection]="currentEntrySelection" 
+                            [isPeriodLocked]="isPeriodLocked"
+                            [pager]="pager"
+                         ></app-aggregate-form-container>
                     </div>
                 </div>
             </ion-col>

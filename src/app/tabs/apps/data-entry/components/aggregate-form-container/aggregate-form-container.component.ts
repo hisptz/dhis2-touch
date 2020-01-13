@@ -30,7 +30,8 @@ import {
   DataEntryFormSection,
   AppSetting,
   DataSetOperand,
-  ValidationRule
+  ValidationRule,
+  ItemPager
 } from 'src/models';
 import { DataEntryFormService } from '../../services/data-entry-form.service';
 import { ToasterMessagesService } from 'src/app/services/toaster-messages.service';
@@ -47,13 +48,15 @@ export class AggregateFormContainerComponent implements OnInit {
   @Input() currentEntrySelection: CurrentEntrySelection;
   @Input() isPeriodLocked: boolean;
   @Input() colorSettings: AppColorObject;
+  @Input() pager: ItemPager;
 
   @Output() entryFormStatusChange = new EventEmitter();
+  @Output() openSectionListAction = new EventEmitter();
 
   isLoading: boolean;
   dataSet: DataSet;
   indicators: Indicator[];
-  dataEntryFormSection: DataEntryFormSection[];
+  dataEntryFormSections: DataEntryFormSection[];
   dataEntryFormDesign: string;
   appSettings: AppSetting;
   compulsoryDataElementOperands: DataSetOperand[];
@@ -76,7 +79,10 @@ export class AggregateFormContainerComponent implements OnInit {
 
   ngOnInit() {
     const dataSetId = this.currentEntrySelection.selectedDataSet.id;
-
+    this.pager = this.pager || {
+      page: 1,
+      total: 1
+    };
     this.discoveringAndSetAppSetting(dataSetId);
   }
 
@@ -127,12 +133,13 @@ export class AggregateFormContainerComponent implements OnInit {
     );
     const {
       validationRules,
-      dataEntryFormSection,
+      dataEntryFormSections,
       dataEntryFormDesign
     } = entryFormResponse;
-    this.dataEntryFormSection = dataEntryFormSection;
+    this.dataEntryFormSections = dataEntryFormSections;
     this.dataEntryFormDesign = dataEntryFormDesign;
     this.validationRules = validationRules;
+    this.pager.total = dataEntryFormSections.length;
     await this.setEntryFormType(
       dataEntryFormDesign,
       this.dataSet.formType,
@@ -165,4 +172,8 @@ export class AggregateFormContainerComponent implements OnInit {
   }
 
   async discoverigAndSetOfflineDataValues() {}
+
+  onOpenSectionListAction(data: any) {
+    this.openSectionListAction.emit(data);
+  }
 }

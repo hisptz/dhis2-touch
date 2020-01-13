@@ -88,14 +88,14 @@ export class DataEntryFormService {
     const validationRules = await this.getValidationRulesByDateElementIds(
       dataElementIds
     );
-    const dataEntryFormSection = await this.getDataEntryFormSection(
+    const dataEntryFormSections = await this.getDataEntryFormSection(
       appSettings,
       sectionIds,
       sections,
       dataElements
     );
     return {
-      dataEntryFormSection,
+      dataEntryFormSections,
       dataEntryFormDesign:
         appSettings &&
         appSettings.entryForm &&

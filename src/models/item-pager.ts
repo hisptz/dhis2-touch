@@ -21,11 +21,7 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-import { DataElement } from './data-element';
-
-export interface DataEntryFormSection {
-  id: string;
-  name: string;
-  description?: string;
-  dataElements?: DataElement[];
+export interface ItemPager {
+  page: number;
+  total: number;
 }

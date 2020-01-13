@@ -23,6 +23,26 @@
 *
 -->
 
-<p>
-  default-entry-form works!
-</p>
+<div *ngFor="let section of entryFormSections;let currentSectionIndex = index;trackBy: trackByFn">
+  <div *ngIf="(currentSectionIndex + 1) == pager.page" class="item-card no-padding" (click)="onOpenSectionListAction()">
+    <ion-item lines="none">
+      <ion-label>
+        {{ section.name }}
+      </ion-label>
+      <ion-icon name="menu" slot="end"></ion-icon>
+    </ion-item>  
+  </div>
+</div>
+<div *ngFor="let section of entryFormSections;let currentSectionIndex = index;trackBy: trackByFn">
+  <div *ngIf="(currentSectionIndex + 1) == pager.page">
+    <div class="item-card-entry-form">
+      <div class="entry-form-container">
+        <form>
+          <div *ngFor="let dataElement of section.dataElements;trackBy: trackByFn">
+            {{ dataElement|json}}<br><br>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -32,6 +32,7 @@ import { AggregateFormContainerComponent } from './aggregate-form-container/aggr
 import { CompletenessContainerComponent } from './completeness-container/completeness-container.component';
 import { CustomEntryFormComponent } from './custom-entry-form/custom-entry-form.component';
 import { DefaultEntryFormComponent } from './default-entry-form/default-entry-form.component';
+import { AggregateCompletenessPaginatorComponent } from './aggregate-completeness-paginator/aggregate-completeness-paginator.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { DefaultEntryFormComponent } from './default-entry-form/default-entry-fo
     AggregateFormContainerComponent,
     CompletenessContainerComponent,
     CustomEntryFormComponent,
-    DefaultEntryFormComponent
+    DefaultEntryFormComponent,
+    AggregateCompletenessPaginatorComponent
   ],
   imports: [
     IonicModule,
@@ -54,7 +56,8 @@ import { DefaultEntryFormComponent } from './default-entry-form/default-entry-fo
     AggregateFormContainerComponent,
     CompletenessContainerComponent,
     CustomEntryFormComponent,
-    DefaultEntryFormComponent
+    DefaultEntryFormComponent,
+    AggregateCompletenessPaginatorComponent
   ]
 })
 export class DataEntryComponentsModule {}
