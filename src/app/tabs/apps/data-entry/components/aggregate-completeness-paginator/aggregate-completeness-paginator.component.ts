@@ -21,7 +21,8 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import * as _ from 'lodash';
 import { DataEntryFormSection, ItemPager } from 'src/models';
 
 @Component({
@@ -38,6 +39,10 @@ export class AggregateCompletenessPaginatorComponent implements OnInit {
   @Input() isDataSetCompletenessProcessRunning: boolean;
   @Input() isPeriodLocked: boolean;
 
+  @Output() openSectionListAction = new EventEmitter();
+  @Output() dataSetCompletenessAction = new EventEmitter();
+  @Output() validationRuleAction = new EventEmitter();
+
   isPaginationVisiable: boolean;
 
   constructor() {}
@@ -48,5 +53,25 @@ export class AggregateCompletenessPaginatorComponent implements OnInit {
       this.pager &&
       this.entryFormSections &&
       this.entryFormSections.length > 1;
+  }
+
+  onDataSetCompletenessAction() {
+    this.dataSetCompletenessAction.emit();
+  }
+
+  onValidationRuleAction() {
+    this.validationRuleAction.emit();
+  }
+
+  onOpenSectionListAction() {
+    const sections = _.map(
+      this.entryFormSections,
+      (section: DataEntryFormSection) => {
+        const { id, name } = section;
+        return { id, name };
+      }
+    );
+    const data = { pager: this.pager, sections };
+    this.openSectionListAction.emit(data);
   }
 }

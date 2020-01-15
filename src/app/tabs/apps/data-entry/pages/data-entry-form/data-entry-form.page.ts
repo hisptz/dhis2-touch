@@ -151,6 +151,14 @@ export class DataEntryFormPage implements OnInit {
     }
   }
 
+  async onDataSetCompletenessAction(data: any) {
+    console.log('on data set completeness');
+  }
+
+  onValidationRuleAction(data: any) {
+    console.log('On validation rul');
+  }
+
   async updateSectionListPagination(
     pager: ItemPager,
     sections: DataEntryFormSection[],
