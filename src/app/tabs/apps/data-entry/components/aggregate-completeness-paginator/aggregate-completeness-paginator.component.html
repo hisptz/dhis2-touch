@@ -23,22 +23,22 @@
 *
 -->
  <div class="flex-container-start">
-    <div class="flex-item flex-item-start" *ngIf="isPaginationVisiable">
+    <div class="flex-item flex-item-start" (click)="onOpenSectionListAction()" *ngIf="isPaginationVisiable">
         <ion-button expand="full" fill="clear" color="medium" size = "small" >
             {{ pager.page + ' / ' + pager.total }}
         </ion-button>
     </div>
-    <div class="flex-item flex-item-start" *ngIf="!isDataSetCompleted">
+    <div class="flex-item flex-item-start" (click)="onDataSetCompletenessAction()" *ngIf="!isDataSetCompleted">
         <ion-button expand="full" size = "small" color="favorite">
             complete
         </ion-button>
     </div>
-    <div class="flex-item flex-item-start" *ngIf="isDataSetCompleted">
+    <div class="flex-item flex-item-start" (click)="onDataSetCompletenessAction()" *ngIf="isDataSetCompleted">
         <ion-button expand="block" size = "small" color="danger">
             undo complete
         </ion-button>
     </div>
-    <div class="flex-item flex-item-start">         
+    <div class="flex-item  flex-item-start" (click)="onValidationRuleAction()">         
         <ion-button expand="full" size = "small" color="light">
             validate
         </ion-button>   
