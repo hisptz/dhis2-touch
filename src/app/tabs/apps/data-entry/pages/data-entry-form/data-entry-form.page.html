@@ -57,6 +57,8 @@
                     <div>
                         <app-aggregate-form-container
                             (openSectionListAction) = "onOpenSectionListAction($event)"
+                            (dataSetCompletenessAction) = "onDataSetCompletenessAction($event)"
+                            (validationRuleAction) = "onValidationRuleAction($event)"
                             (entryFormStatusChange)="onEntryFormStatusChange($event)" 
                             [colorSettings]="colorSettings$ | async"
                             [currentEntrySelection]="currentEntrySelection" 

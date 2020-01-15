@@ -52,6 +52,8 @@ export class AggregateFormContainerComponent implements OnInit {
 
   @Output() entryFormStatusChange = new EventEmitter();
   @Output() openSectionListAction = new EventEmitter();
+  @Output() dataSetCompletenessAction = new EventEmitter();
+  @Output() validationRuleAction = new EventEmitter();
 
   isLoading: boolean;
   dataSet: DataSet;
@@ -175,5 +177,13 @@ export class AggregateFormContainerComponent implements OnInit {
 
   onOpenSectionListAction(data: any) {
     this.openSectionListAction.emit(data);
+  }
+
+  onDataSetCompletenessAction(data: any) {
+    this.dataSetCompletenessAction.emit(data);
+  }
+
+  onValidationRuleAction(data: any) {
+    this.validationRuleAction.emit(data);
   }
 }

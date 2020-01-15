@@ -48,6 +48,9 @@
     </div>
     <div>
         <app-aggregate-completeness-paginator 
+            (openSectionListAction) = "onOpenSectionListAction($event)"
+            (dataSetCompletenessAction) = "onDataSetCompletenessAction($event)"
+            (validationRuleAction) = "onValidationRuleAction($event)"
             [pager]="pager"
             [isPeriodLocked]="isPeriodLocked"
             [entryFormType]="entryFormType" 
