@@ -453,7 +453,12 @@ export function onDataValueChange(
         : splitedId[1];
 
     // find element value
-    const elementValue = element.value;
+    let elementValue: any;
+    if (element && element.type && element.type === "checkbox") {
+      elementValue = element.checked ? true : "";
+    } else {
+      elementValue = element.value;
+    }
 
     // Update item color
     updateFormFieldColor(elementId, entryFormColors["WAIT"]);
