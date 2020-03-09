@@ -21,36 +21,36 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import {
   IonicPage,
   NavController,
   ModalOptions,
   ModalController
-} from 'ionic-angular';
-import { TabsPage } from '../tabs/tabs';
-import { UserProvider } from '../../providers/user/user';
-import { CurrentUser } from '../../models/current-user';
+} from "ionic-angular";
+import { TabsPage } from "../tabs/tabs";
+import { UserProvider } from "../../providers/user/user";
+import { CurrentUser } from "../../models/current-user";
 
-import { Store } from '@ngrx/store';
+import { Store } from "@ngrx/store";
 import {
   State,
   AddCurrentUser,
   SetCurrentUserColorSettings,
   getCurrentUserColorSettings
-} from '../../store';
+} from "../../store";
 
-import * as _ from 'lodash';
-import { AppTranslationProvider } from '../../providers/app-translation/app-translation';
-import { AppProvider } from '../../providers/app/app';
-import { SystemSettingProvider } from '../../providers/system-setting/system-setting';
-import { SettingsProvider } from '../../providers/settings/settings';
-import { SmsCommandProvider } from '../../providers/sms-command/sms-command';
-import { LocalInstanceProvider } from '../../providers/local-instance/local-instance';
-import { EncryptionProvider } from '../../providers/encryption/encryption';
-import { BackgroundMode } from '@ionic-native/background-mode';
-import { Observable } from 'rxjs';
-import { getAppMetadata } from '../../helpers';
+import * as _ from "lodash";
+import { AppTranslationProvider } from "../../providers/app-translation/app-translation";
+import { AppProvider } from "../../providers/app/app";
+import { SystemSettingProvider } from "../../providers/system-setting/system-setting";
+import { SettingsProvider } from "../../providers/settings/settings";
+import { SmsCommandProvider } from "../../providers/sms-command/sms-command";
+import { LocalInstanceProvider } from "../../providers/local-instance/local-instance";
+import { EncryptionProvider } from "../../providers/encryption/encryption";
+import { BackgroundMode } from "@ionic-native/background-mode";
+import { Observable } from "rxjs";
+import { getAppMetadata } from "../../helpers";
 
 /**
  * Generated class for the LoginPage page.
@@ -61,8 +61,8 @@ import { getAppMetadata } from '../../helpers';
 
 @IonicPage()
 @Component({
-  selector: 'page-login',
-  templateUrl: 'login.html'
+  selector: "page-login",
+  templateUrl: "login.html"
 })
 export class LoginPage implements OnInit, OnDestroy {
   logoUrl: string;
@@ -98,8 +98,8 @@ export class LoginPage implements OnInit, OnDestroy {
     private store: Store<State>
   ) {
     this.colorSettings$ = this.store.select(getCurrentUserColorSettings);
-    this.logoUrl = 'assets/img/logo.png';
-    this.offlineIcon = 'assets/icon/offline.png';
+    this.logoUrl = "assets/img/logo.png";
+    this.offlineIcon = "assets/icon/offline.png";
     this.isLoginFormValid = false;
     this.isLoginProcessActive = false;
     this.isOnLogin = true;
@@ -110,10 +110,10 @@ export class LoginPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     const defaultCurrentUser: CurrentUser = {
-      serverUrl: 'https://dhis.hisptz.org/edsmobile',
-      username: 'admin',
-      password: 'district',
-      currentLanguage: 'en',
+      serverUrl: "https://dhis.moh.go.tz",
+      username: "",
+      password: "",
+      currentLanguage: "en",
       progressTracker: {}
     };
     this.localInstanceProvider.getLocalInstances().subscribe(localInstances => {
@@ -122,7 +122,7 @@ export class LoginPage implements OnInit, OnDestroy {
     this.userProvider.getCurrentUser().subscribe(
       (currentUser: CurrentUser) => {
         if (currentUser && currentUser.username) {
-          currentUser.password = '';
+          currentUser.password = "";
           this.currentUser = currentUser;
         } else {
           this.currentUser = defaultCurrentUser;
@@ -136,19 +136,19 @@ export class LoginPage implements OnInit, OnDestroy {
 
   openLocalInstancesSelection() {
     const options: ModalOptions = {
-      cssClass: 'inset-modal',
+      cssClass: "inset-modal",
       enableBackdropDismiss: true
     };
     const data = { localInstances: this.localInstances };
     const modal = this.modalCtrl.create(
-      'LocalInstancesSelectionPage',
+      "LocalInstancesSelectionPage",
       { data: data },
       options
     );
     modal.onDidDismiss((currentUser: CurrentUser) => {
       if (currentUser) {
         this.currentUser = null;
-        currentUser.password = '';
+        currentUser.password = "";
         setTimeout(() => {
           this.currentUser = _.assign({}, this.currentUser, currentUser);
         }, 20);
@@ -159,12 +159,12 @@ export class LoginPage implements OnInit, OnDestroy {
 
   openTranslationCodeSelection() {
     const options: ModalOptions = {
-      cssClass: 'inset-modal',
+      cssClass: "inset-modal",
       enableBackdropDismiss: true
     };
     const data = { currentLanguage: this.currentUser.currentLanguage };
     const modal = this.modalCtrl.create(
-      'TransalationSelectionPage',
+      "TransalationSelectionPage",
       { data: data },
       options
     );
@@ -212,16 +212,16 @@ export class LoginPage implements OnInit, OnDestroy {
     if (error) {
       this.appProvider.setNormalNotification(error, 10000);
     } else if (failedProcesses && failedProcesses.length > 0) {
-      let errorMessage = '';
+      let errorMessage = "";
       failedProcesses.map(process => {
         const error = failedProcessesErrors[failedProcesses.indexOf(process)];
         errorMessage +=
           (process.charAt(0).toUpperCase() + process.slice(1))
-            .replace(/([A-Z])/g, ' $1')
+            .replace(/([A-Z])/g, " $1")
             .trim() +
-          ' : ' +
+          " : " +
           this.appProvider.getSanitizedMessage(error) +
-          '; ';
+          "; ";
       });
       this.appProvider.setNormalNotification(errorMessage, 10000);
     }
@@ -232,8 +232,8 @@ export class LoginPage implements OnInit, OnDestroy {
     const { currentUser } = data;
     currentUser.isLogin = true;
     let loggedInInInstance = this.currentUser.serverUrl;
-    if (currentUser.serverUrl.split('://').length > 1) {
-      loggedInInInstance = this.currentUser.serverUrl.split('://')[1];
+    if (currentUser.serverUrl.split("://").length > 1) {
+      loggedInInInstance = this.currentUser.serverUrl.split("://")[1];
     }
     this.reCheckingAppSetting(currentUser);
     currentUser.hashedKeyForOfflineAuthentication = this.encryptionProvider.getHashedKeyForOfflineAuthentication(
@@ -247,7 +247,7 @@ export class LoginPage implements OnInit, OnDestroy {
       this.currentUser.serverUrl &&
       this.currentUser.username
     ) {
-      this.currentUser['currentDatabase'] = this.appProvider.getDataBaseName(
+      this.currentUser["currentDatabase"] = this.appProvider.getDataBaseName(
         this.currentUser.serverUrl,
         this.currentUser.username
       );
@@ -272,7 +272,10 @@ export class LoginPage implements OnInit, OnDestroy {
               .catch(e => {});
             this.smsCommandProvider
               .checkAndGenerateSmsCommands(this.currentUser)
-              .subscribe(() => {}, error => {});
+              .subscribe(
+                () => {},
+                error => {}
+              );
             this.navCtrl.setRoot(TabsPage);
           });
         });
@@ -293,7 +296,10 @@ export class LoginPage implements OnInit, OnDestroy {
           );
           this.settingsProvider
             .setSettingsForTheApp(currentUser, defaultSetting)
-            .subscribe(() => {}, error => {});
+            .subscribe(
+              () => {},
+              error => {}
+            );
         }
       });
   }
