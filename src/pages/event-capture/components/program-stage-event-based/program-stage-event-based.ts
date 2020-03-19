@@ -40,6 +40,12 @@ import { CurrentUser } from '../../../../models';
 import { EventCompletenessProvider } from '../../../../providers/event-completeness/event-completeness';
 declare var dhis2;
 
+/**
+ * Generated class for the ProgramStageEventBasedComponent component.
+ *
+ * See https://angular.io/docs/ts/latest/api/core/index/ComponentMetadata-class.html
+ * for more info on Angular Components.
+ */
 @Component({
   selector: 'program-stage-event-based',
   templateUrl: 'program-stage-event-based.html'
@@ -114,6 +120,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    dhis2['eventComplementenesInfo'] = this.complementenesInfo;
     this.loadingCurrentUserInformation();
     this.eventDate = '';
     if (this.currentEvent && this.currentEvent.eventDate) {
@@ -150,6 +157,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
         response && response !== null ? response : complementenesInfo;
       this.isEventCompleted =
         response && response.completedDate && isNaN(response.completedDate);
+      dhis2['eventComplementenesInfo'] = this.complementenesInfo;
     } catch (error) {
       console.log({ error });
     }
@@ -176,6 +184,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     } finally {
       this.complementenesInfo = response;
       setTimeout(() => {
+        dhis2['eventComplementenesInfo'] = this.complementenesInfo;
         this.isEventCompletenessProcessRunning = false;
         this.currentEvent.syncStatus = 'not-synced';
         this.currentEvent.status = this.isEventCompleted
@@ -251,7 +260,10 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
       this.currentEvent['dataValues'] = [];
       this.eventCaptureFormProvider
         .saveEvents([this.currentEvent], currentUser)
-        .subscribe(() => {}, () => {});
+        .subscribe(
+          () => {},
+          () => {}
+        );
     }
   }
 
@@ -265,6 +277,14 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.dataObject = {};
       this.dataValuesSavingStatusClass = {};
+      this.isEventCompleted = false;
+      this.isEventLocked = false;
+      this.isEventCompletenessProcessRunning = false;
+      this.complementenesInfo = {
+        completedBy: '',
+        completedDate: ''
+      };
+      dhis2['eventComplementenesInfo'] = this.complementenesInfo;
     }, 100);
   }
 
@@ -471,10 +491,12 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     }
     Object.keys(this.dataObject).forEach((key: any) => {
       let dataElementId = key.split('-')[0];
-      dataValues.push({
-        dataElement: dataElementId,
-        value: this.dataObject[key].value
-      });
+      if (dataElementId) {
+        dataValues.push({
+          dataElement: dataElementId,
+          value: this.dataObject[key].value
+        });
+      }
     });
     if (dataValues && dataValues.length > 0) {
       this.currentEvent.dataValues = dataValues;
