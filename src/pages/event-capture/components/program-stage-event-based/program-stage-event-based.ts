@@ -45,6 +45,7 @@ import { EventCompletenessProvider } from '../../../../providers/event-completen
  * See https://angular.io/docs/ts/latest/api/core/index/ComponentMetadata-class.html
  * for more info on Angular Components.
  */
+declare var dhis2;
 @Component({
   selector: 'program-stage-event-based',
   templateUrl: 'program-stage-event-based.html'
@@ -119,6 +120,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    dhis2['eventComplementenesInfo'] = this.complementenesInfo;
     this.loadingCurrentUserInformation();
     this.eventDate = '';
     if (this.currentEvent && this.currentEvent.eventDate) {
@@ -155,6 +157,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
         response && response !== null ? response : complementenesInfo;
       this.isEventCompleted =
         response && response.completedDate && isNaN(response.completedDate);
+      dhis2['eventComplementenesInfo'] = this.complementenesInfo;
     } catch (error) {
       console.log({ error });
     }
@@ -181,6 +184,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     } finally {
       this.complementenesInfo = response;
       setTimeout(() => {
+        dhis2['eventComplementenesInfo'] = this.complementenesInfo;
         this.isEventCompletenessProcessRunning = false;
         this.currentEvent.syncStatus = 'not-synced';
         this.currentEvent.status = this.isEventCompleted
@@ -257,6 +261,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
         completedBy: '',
         completedDate: ''
       };
+      dhis2['eventComplementenesInfo'] = this.complementenesInfo;
     }, 100);
   }
 
