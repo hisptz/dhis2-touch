@@ -203,7 +203,23 @@ export class UserProvider {
           }
         })
         .catch(error => {
-          observer.error(error);
+          if (serverUrl.includes('http://')) {
+            this.onlineUserAuthentication(
+              currentUser,
+              serverUrl.replace('http://', 'https://')
+            ).subscribe(
+              response => {
+                observer.next(response);
+                observer.complete();
+              },
+              error => {
+                observer.error(error);
+                // try dhis , dev and demo redirect
+              }
+            );
+          } else {
+            observer.error(error);
+          }
         });
     });
   }
