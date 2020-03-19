@@ -250,6 +250,13 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.dataObject = {};
       this.dataValuesSavingStatusClass = {};
+      this.isEventCompleted = false;
+      this.isEventLocked = false;
+      this.isEventCompletenessProcessRunning = false;
+      this.complementenesInfo = {
+        completedBy: '',
+        completedDate: ''
+      };
     }, 100);
   }
 
