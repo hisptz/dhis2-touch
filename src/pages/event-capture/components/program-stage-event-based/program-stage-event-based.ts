@@ -456,10 +456,12 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     }
     Object.keys(this.dataObject).forEach((key: any) => {
       let dataElementId = key.split('-')[0];
-      dataValues.push({
-        dataElement: dataElementId,
-        value: this.dataObject[key].value
-      });
+      if (dataElementId) {
+        dataValues.push({
+          dataElement: dataElementId,
+          value: this.dataObject[key].value
+        });
+      }
     });
     if (dataValues && dataValues.length > 0) {
       this.currentEvent.dataValues = dataValues;

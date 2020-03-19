@@ -612,7 +612,19 @@ export class EventCaptureFormProvider {
         )
         .subscribe(
           (events: any) => {
-            observer.next(events);
+            observer.next(
+              _.flattenDeep(
+                _.map(events, eventObj => {
+                  return {
+                    ...eventObj,
+                    dataValues: _.filter(
+                      eventObj.dataValues,
+                      dataValue => dataValue && dataValue.dataElement
+                    )
+                  };
+                })
+              )
+            );
             observer.complete();
           },
           error => {
