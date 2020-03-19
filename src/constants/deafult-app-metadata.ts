@@ -67,7 +67,7 @@ export const DEFAULT_APP_METADATA = {
   smsCommand: {
     resourceType: 'entryForm',
     displayName: 'SMS Command',
-    isOnLogin: true,
+    isOnLogin: false,
     defaultIds: []
   },
   indicators: {
@@ -79,13 +79,13 @@ export const DEFAULT_APP_METADATA = {
   reports: {
     resourceType: 'report',
     displayName: 'Reports',
-    isOnLogin: true,
+    isOnLogin: false,
     defaultIds: []
   },
   constants: {
     resourceType: 'report',
     displayName: 'Constants',
-    isOnLogin: true,
+    isOnLogin: false,
     defaultIds: []
   },
   programs: {

@@ -38,7 +38,6 @@ import { ActionSheetController } from 'ionic-angular';
 import { ProgramRulesProvider } from '../../../../providers/program-rules/program-rules';
 import { CurrentUser } from '../../../../models';
 import { EventCompletenessProvider } from '../../../../providers/event-completeness/event-completeness';
-
 /**
  * Generated class for the ProgramStageEventBasedComponent component.
  *
@@ -203,6 +202,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     this.loadingMessage = 'Discovering current user information';
     this.userProvider.getCurrentUser().subscribe(
       (user: CurrentUser) => {
+        this.updateCurrentEventDateForRegistration(user);
         this.currentUser = user;
         if (
           this.currentEvent &&
@@ -246,11 +246,30 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     );
   }
 
+  updateCurrentEventDateForRegistration(currentUser) {
+    dhis2['currentEventId'] = this.currentEvent.id;
+    const eventDate = new Date().toISOString().split('T')[0];
+    if (this.currentEvent && this.currentEvent.eventDate) {
+      this.eventDate = this.currentEvent.eventDate;
+    } else {
+      this.eventDate = eventDate;
+      this.currentEvent.syncStatus = 'not-synced';
+      this.currentEvent['eventDate'] = eventDate;
+      this.currentEvent['dueDate'] = eventDate;
+      this.currentEvent['dataValues'] = [];
+      this.eventCaptureFormProvider
+        .saveEvents([this.currentEvent], currentUser)
+        .subscribe(() => {}, () => {});
+    }
+  }
+
   AddNewEvent() {
     this.eventDate = '';
     this.hasEntryFormReSet = true;
     this.currentEvent = Object.assign({}, this.emptyEvent);
-    this.currentEvent.id = this.eventCaptureFormProvider.getEventUid();
+    const currentEventId = this.eventCaptureFormProvider.getEventUid();
+    dhis2['currentEventId'] = currentEventId;
+    this.currentEvent.id = currentEventId;
     setTimeout(() => {
       this.dataObject = {};
       this.dataValuesSavingStatusClass = {};
