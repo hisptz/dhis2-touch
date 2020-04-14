@@ -612,7 +612,22 @@ export class EventCaptureFormProvider {
         )
         .subscribe(
           (events: any) => {
-            observer.next(events);
+            const sanitizedEvents = _.flattenDeep(
+              _.map(events, eventObj => {
+                return {
+                  ...eventObj,
+                  dataValues: _.filter(
+                    eventObj.dataValues,
+                    dataValue =>
+                      dataValue &&
+                      dataValue.hasOwnProperty('dataElement') &&
+                      dataValue.hasOwnProperty('value') &&
+                      dataValue.dataElement
+                  )
+                };
+              })
+            );
+            observer.next(sanitizedEvents);
             observer.complete();
           },
           error => {
@@ -716,12 +731,19 @@ export class EventCaptureFormProvider {
   saveEvents(events, currentUser): Observable<any> {
     let tableName = "events";
     return new Observable(observer => {
-      const sanitizedEvents = _.flatMapDeep(
-        _.map(events, event => {
-          const dataValues = _.filter(event.dataValues, dataValue => {
-            return dataValue.dataElement !== undefined;
-          });
-          return { ...event, dataValues };
+      const sanitizedEvents = _.flattenDeep(
+        _.map(events, eventObj => {
+          return {
+            ...eventObj,
+            dataValues: _.filter(
+              eventObj.dataValues,
+              dataValue =>
+                dataValue &&
+                dataValue.hasOwnProperty('dataElement') &&
+                dataValue.hasOwnProperty('value') &&
+                dataValue.dataElement
+            )
+          };
         })
       );
       this.sqlLiteProvider
