@@ -28,17 +28,17 @@ import {
   OnDestroy,
   OnInit,
   Output
-} from "@angular/core";
-import { ProgramsProvider } from "../../../../providers/programs/programs";
-import { OrganisationUnitsProvider } from "../../../../providers/organisation-units/organisation-units";
-import { UserProvider } from "../../../../providers/user/user";
-import { AppProvider } from "../../../../providers/app/app";
-import { EventCaptureFormProvider } from "../../../../providers/event-capture-form/event-capture-form";
-import { ActionSheetController } from "ionic-angular";
-import { ProgramRulesProvider } from "../../../../providers/program-rules/program-rules";
-import { CurrentUser } from "../../../../models";
+} from '@angular/core';
+import { ProgramsProvider } from '../../../../providers/programs/programs';
+import { OrganisationUnitsProvider } from '../../../../providers/organisation-units/organisation-units';
+import { UserProvider } from '../../../../providers/user/user';
+import { AppProvider } from '../../../../providers/app/app';
+import { EventCaptureFormProvider } from '../../../../providers/event-capture-form/event-capture-form';
+import { ActionSheetController } from 'ionic-angular';
+import { ProgramRulesProvider } from '../../../../providers/program-rules/program-rules';
+import { CurrentUser } from '../../../../models';
 declare var dhis2;
-import { EventCompletenessProvider } from "../../../../providers/event-completeness/event-completeness";
+import { EventCompletenessProvider } from '../../../../providers/event-completeness/event-completeness';
 
 /**
  * Generated class for the ProgramStageEventBasedComponent component.
@@ -48,8 +48,8 @@ import { EventCompletenessProvider } from "../../../../providers/event-completen
  */
 declare var dhis2;
 @Component({
-  selector: "program-stage-event-based",
-  templateUrl: "program-stage-event-based.html"
+  selector: 'program-stage-event-based',
+  templateUrl: 'program-stage-event-based.html'
 })
 export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   @Input() programStage: any;
@@ -96,7 +96,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     private organisationUnitProvider: OrganisationUnitsProvider,
     private eventCompletenessProvider: EventCompletenessProvider
   ) {
-    this.entryFormType = "event";
+    this.entryFormType = 'event';
     this.hasEntryFormReSet = false;
     this.dataObject = {};
     this.dataValuesSavingStatusClass = {};
@@ -115,29 +115,29 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     this.isEventLocked = false;
     this.isEventCompletenessProcessRunning = false;
     this.complementenesInfo = {
-      completedBy: "",
-      completedDate: ""
+      completedBy: '',
+      completedDate: ''
     };
   }
 
   ngOnInit() {
     dhis2['eventComplementenesInfo'] = this.complementenesInfo;
     this.loadingCurrentUserInformation();
-    this.eventDate = "";
+    this.eventDate = '';
     if (this.currentEvent && this.currentEvent.eventDate) {
       this.eventDate = this.currentEvent.eventDate;
     }
   }
 
   getEventDateNotification() {
-    const key = "executionDateLabel";
-    let notificationTitle = "Select ";
+    const key = 'executionDateLabel';
+    let notificationTitle = 'Select ';
     if (isNaN(this.programStage[key])) {
       notificationTitle += this.programStage[key];
     } else {
-      notificationTitle += "Report date";
+      notificationTitle += 'Report date';
     }
-    notificationTitle += " above to start entry";
+    notificationTitle += ' above to start entry';
     return notificationTitle;
   }
 
@@ -146,8 +146,8 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
     currentUser: CurrentUser
   ) {
     const complementenesInfo = {
-      completedBy: "",
-      completedDate: ""
+      completedBy: '',
+      completedDate: ''
     };
     try {
       const response = await this.eventCompletenessProvider.getEventCompletenessById(
@@ -187,21 +187,21 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         dhis2['eventComplementenesInfo'] = this.complementenesInfo;
         this.isEventCompletenessProcessRunning = false;
-        this.currentEvent.syncStatus = "not-synced";
+        this.currentEvent.syncStatus = 'not-synced';
         this.currentEvent.status = this.isEventCompleted
-          ? "COMPLETED"
-          : "ACTIVE";
+          ? 'COMPLETED'
+          : 'ACTIVE';
         this.updateData({}, false);
       }, 50);
     }
   }
 
   hasEventDatesLabel(value: any) {
-    return value && isNaN(value) && value.trim() !== "";
+    return value && isNaN(value) && value.trim() !== '';
   }
 
   loadingCurrentUserInformation() {
-    this.loadingMessage = "Discovering current user information";
+    this.loadingMessage = 'Discovering current user information';
     this.userProvider.getCurrentUser().subscribe(
       (user: CurrentUser) => {
         this.updateCurrentEventDateForRegistration(user);
@@ -233,7 +233,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
               this.isLoading = false;
               console.log(JSON.stringify(error));
               this.appProvider.setNormalNotification(
-                "Failed to dicover program indicators"
+                'Failed to dicover program indicators'
               );
             }
           );
@@ -242,23 +242,23 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
         this.isLoading = false;
         console.log(JSON.stringify(error));
         this.appProvider.setNormalNotification(
-          "Failed to discover current user information"
+          'Failed to discover current user information'
         );
       }
     );
   }
 
   updateCurrentEventDateForRegistration(currentUser: CurrentUser) {
-    dhis2["currentEventId"] = this.currentEvent.id;
-    const eventDate = new Date().toISOString().split("T")[0];
+    dhis2['currentEventId'] = this.currentEvent.id;
+    const eventDate = new Date().toISOString().split('T')[0];
     if (this.currentEvent && this.currentEvent.eventDate) {
       this.eventDate = this.currentEvent.eventDate;
     } else {
       this.eventDate = eventDate;
-      this.currentEvent.syncStatus = "not-synced";
-      this.currentEvent["eventDate"] = eventDate;
-      this.currentEvent["dueDate"] = eventDate;
-      this.currentEvent["dataValues"] = [];
+      this.currentEvent.syncStatus = 'not-synced';
+      this.currentEvent['eventDate'] = eventDate;
+      this.currentEvent['dueDate'] = eventDate;
+      this.currentEvent['dataValues'] = [];
       this.eventCaptureFormProvider
         .saveEvents([this.currentEvent], currentUser)
         .subscribe(
@@ -269,7 +269,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   }
 
   AddNewEvent() {
-    this.eventDate = "";
+    this.eventDate = '';
     this.hasEntryFormReSet = true;
     this.currentEvent = Object.assign({}, this.emptyEvent);
     this.currentEvent.id = this.eventCaptureFormProvider.getEventUid();
@@ -298,21 +298,21 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   deleteEvent(currentEventId: string, title?: string) {
     const actionSheet = this.actionSheetCtrl.create({
       title:
-        title && title !== ""
+        title && title !== ''
           ? title
-          : "You are about to delete this event, are you sure?",
+          : 'You are about to delete this event, are you sure?',
       buttons: [
         {
-          text: "Yes",
+          text: 'Yes',
           handler: () => {
             this.isLoading = true;
-            this.loadingMessage = "Deleting event";
+            this.loadingMessage = 'Deleting event';
             this.eventCaptureFormProvider
-              .deleteEventByAttribute("id", currentEventId, this.currentUser)
+              .deleteEventByAttribute('id', currentEventId, this.currentUser)
               .subscribe(
                 () => {
                   this.appProvider.setNormalNotification(
-                    "Event has been deleted successfully"
+                    'Event has been deleted successfully'
                   );
                   this.onDeleteEvent.emit();
                 },
@@ -320,14 +320,14 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
                   console.log(JSON.stringify(error));
                   this.isLoading = false;
                   this.appProvider.setNormalNotification(
-                    "Failed to delete event"
+                    'Failed to delete event'
                   );
                 }
               );
           }
         },
         {
-          text: "No",
+          text: 'No',
           handler: () => {}
         }
       ]
@@ -346,7 +346,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
         programStageDataElement.dataElement.id
       ) {
         let dataElementId = programStageDataElement.dataElement.id;
-        let fieldId = programStageDataElement.dataElement.id + "-dataElement";
+        let fieldId = programStageDataElement.dataElement.id + '-dataElement';
         if (dataValuesMapper[dataElementId]) {
           this.dataObject[fieldId] = dataValuesMapper[dataElementId];
         }
@@ -356,16 +356,16 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
 
   updateEventDate(date: string) {
     this.hasEntryFormReSet = false;
-    if (date && date !== "") {
+    if (date && date !== '') {
       this.eventDate = date;
-      this.currentEvent.syncStatus = "not-synced";
+      this.currentEvent.syncStatus = 'not-synced';
       if (this.canEventBeDeleted()) {
         this.updateData({}, false);
       }
     } else {
       if (this.canEventBeDeleted()) {
         const title =
-          "Clearing this value results to deletion of this event, are you sure?";
+          'Clearing this value results to deletion of this event, are you sure?';
         this.deleteEvent(this.currentEvent.id, title);
       } else {
         this.eventDate = date;
@@ -374,7 +374,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
   }
 
   updateEventCoordonate(coordinate) {
-    this.currentEvent["coordinate"] = coordinate;
+    this.currentEvent['coordinate'] = coordinate;
     this.updateData({}, false);
   }
 
@@ -397,7 +397,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
             } = data;
             const assignedFieldIds = Object.keys(this.assignedFields);
             assignedFieldIds.map(key => {
-              this.assignedFields[key] = "";
+              this.assignedFields[key] = '';
             });
             Object.keys(assignedFields).map(key => {
               this.assignedFields[key] = assignedFieldIds[key];
@@ -405,9 +405,9 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
             if (hiddenFields) {
               this.hiddenFields = hiddenFields;
               Object.keys(hiddenFields).map(key => {
-                const id = key + "-dataElement";
-                this.dataValuesSavingStatusClass[id] = "input-field-container";
-                this.updateData({ id: id, value: "" }, true);
+                const id = key + '-dataElement';
+                this.dataValuesSavingStatusClass[id] = 'input-field-container';
+                this.updateData({ id: id, value: '' }, true);
               });
             }
             if (hiddenSections) {
@@ -419,14 +419,14 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
             if (errorOrWarningMessage) {
               this.errorOrWarningMessage = errorOrWarningMessage;
               Object.keys(errorOrWarningMessage).map(key => {
-                const id = key + "-dataElement";
+                const id = key + '-dataElement';
                 const message = errorOrWarningMessage[key];
                 const { messageType } = message;
-                if (messageType === "error") {
+                if (messageType === 'error') {
                   this.hiddenFields[key] = true;
                   this.dataValuesSavingStatusClass[id] =
-                    "input-field-container";
-                  this.updateData({ id: id, value: "" }, true);
+                    'input-field-container';
+                  this.updateData({ id: id, value: '' }, true);
                   setTimeout(() => {
                     delete this.hiddenFields[key];
                   }, 10);
@@ -435,11 +435,11 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
             }
             if (assignedFields) {
               Object.keys(assignedFields).map(key => {
-                const id = key + "-dataElement";
+                const id = key + '-dataElement';
                 const value = assignedFields[key];
                 this.assignedFields[key] = value;
                 this.hiddenFields[key] = true;
-                this.dataValuesSavingStatusClass[id] = "input-field-container";
+                this.dataValuesSavingStatusClass[id] = 'input-field-container';
                 this.updateData({ id: id, value }, true);
                 setTimeout(() => {
                   delete this.hiddenFields[key];
@@ -449,7 +449,7 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
             const programStageId =
               this.programStage && this.programStage.id
                 ? this.programStage.id
-                : "";
+                : '';
             this.customFormProgramRules = {
               ...{},
               assignedFields: this.assignedFields,
@@ -461,18 +461,18 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
         },
         error => {
           console.log(
-            "Error evaluate program rules : " + JSON.stringify(error)
+            'Error evaluate program rules : ' + JSON.stringify(error)
           );
         }
       );
   }
 
   updateData(updatedData: any, shouldSkipProgramRules: boolean) {
-    const oldEventDate = this.currentEvent["eventDate"];
-    this.currentEvent["eventDate"] = this.eventDate;
-    this.currentEvent["dueDate"] = this.eventDate;
+    const oldEventDate = this.currentEvent['eventDate'];
+    this.currentEvent['eventDate'] = this.eventDate;
+    this.currentEvent['dueDate'] = this.eventDate;
     if (oldEventDate !== this.eventDate) {
-      this.currentEvent.syncStatus = "not-synced";
+      this.currentEvent.syncStatus = 'not-synced';
     }
     const dataValues = [];
     const { id } = updatedData;
@@ -484,18 +484,11 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
           : true;
       const oldValue = !hasNoOldValue ? this.dataObject[id].value : newValue;
       if (oldValue !== newValue || hasNoOldValue) {
-        this.currentEvent.syncStatus = "not-synced";
+        this.currentEvent.syncStatus = 'not-synced';
         this.dataObject[updatedData.id] = updatedData;
       }
     }
     Object.keys(this.dataObject).forEach((key: any) => {
-<<<<<<< HEAD
-      let dataElementId = key.split("-")[0];
-      dataValues.push({
-        dataElement: dataElementId,
-        value: this.dataObject[key].value
-      });
-=======
       let dataElementId = key.split('-')[0];
       if (dataElementId) {
         dataValues.push({
@@ -503,7 +496,6 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
           value: this.dataObject[key].value
         });
       }
->>>>>>> 52021fae1306bcc4049df94387685fbc692dd295
     });
     if (dataValues && dataValues.length > 0) {
       this.currentEvent.dataValues = dataValues;
@@ -513,10 +505,10 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
           () => {
             if (!this.hasEntryFormReSet) {
               this.dataObject[updatedData.id] = updatedData;
-              this.dataUpdateStatus = { [updatedData.domElementId]: "OK" };
+              this.dataUpdateStatus = { [updatedData.domElementId]: 'OK' };
               if (!shouldSkipProgramRules) {
                 this.dataValuesSavingStatusClass[updatedData.id] =
-                  "input-field-container-success";
+                  'input-field-container-success';
                 this.evaluatingProgramRules();
               }
             }
@@ -524,9 +516,9 @@ export class ProgramStageEventBasedComponent implements OnInit, OnDestroy {
           error => {
             if (!this.hasEntryFormReSet) {
               this.dataValuesSavingStatusClass[updatedData.id] =
-                "input-field-container-failed";
+                'input-field-container-failed';
               console.log(JSON.stringify(error));
-              this.dataUpdateStatus = { [updatedData.domElementId]: "ERROR" };
+              this.dataUpdateStatus = { [updatedData.domElementId]: 'ERROR' };
             }
           }
         );
