@@ -21,19 +21,19 @@
  * @author Joseph Chingalo <profschingalo@gmail.com>
  *
  */
-import { Injectable } from '@angular/core';
-import { ProgramsProvider } from '../programs/programs';
-import { DataElementsProvider } from '../data-elements/data-elements';
-import { SqlLiteProvider } from '../sql-lite/sql-lite';
-import { HttpClientProvider } from '../http-client/http-client';
-import { ProgramStageSectionsProvider } from '../program-stage-sections/program-stage-sections';
-import { Observable } from 'rxjs/Observable';
-import * as _ from 'lodash';
-import * as moment from 'moment';
-import { EnrollmentsProvider } from '../enrollments/enrollments';
-import { CurrentUser } from '../../models/current-user';
-import { ProgramRulesProvider } from '../program-rules/program-rules';
-import { EventCompletenessProvider } from '../event-completeness/event-completeness';
+import { Injectable } from "@angular/core";
+import { ProgramsProvider } from "../programs/programs";
+import { DataElementsProvider } from "../data-elements/data-elements";
+import { SqlLiteProvider } from "../sql-lite/sql-lite";
+import { HttpClientProvider } from "../http-client/http-client";
+import { ProgramStageSectionsProvider } from "../program-stage-sections/program-stage-sections";
+import { Observable } from "rxjs/Observable";
+import * as _ from "lodash";
+import * as moment from "moment";
+import { EnrollmentsProvider } from "../enrollments/enrollments";
+import { CurrentUser } from "../../models/current-user";
+import { ProgramRulesProvider } from "../program-rules/program-rules";
+import { EventCompletenessProvider } from "../event-completeness/event-completeness";
 
 declare var dhis2: any;
 
@@ -67,7 +67,7 @@ export class EventCaptureFormProvider {
     return new Observable(observer => {
       this.enrollmentsProvider
         .getSavedEnrollmentsByAttribute(
-          'trackedEntityInstance',
+          "trackedEntityInstance",
           [trackedEntityInstance],
           currentUser
         )
@@ -77,7 +77,7 @@ export class EventCaptureFormProvider {
               orgUnit: organisationUnitId,
               program: programId
             });
-            let dueDate = moment(new Date()).format('YYYY-MM-DD');
+            let dueDate = moment(new Date()).format("YYYY-MM-DD");
             if (matchedEnrollment) {
               let referenceDate = this.isValidDate(
                 matchedEnrollment.incidentDate
@@ -92,7 +92,7 @@ export class EventCaptureFormProvider {
               if (programStage.repeatable) {
                 if (currentEvents.length > 0) {
                   currentEvents = _.reverse(
-                    _.sortBy(currentEvents, ['eventDate'])
+                    _.sortBy(currentEvents, ["eventDate"])
                   );
                   referenceDate = currentEvents[0].eventDate;
                   if (programStage.standardInterval) {
@@ -101,8 +101,8 @@ export class EventCaptureFormProvider {
                 }
               }
               dueDate = moment(referenceDate)
-                .add(offset, 'days')
-                .format('YYYY-MM-DD');
+                .add(offset, "days")
+                .format("YYYY-MM-DD");
             }
             observer.next(dueDate);
             observer.complete();
@@ -119,15 +119,15 @@ export class EventCaptureFormProvider {
    * @returns boolean
    */
   isValidDate(str: string): boolean {
-    var d = moment(str, 'YYYY-MM-DD');
+    var d = moment(str, "YYYY-MM-DD");
     if (d == null || !d.isValid()) return false;
 
     return (
-      str.indexOf(d.format('YYYY-MM-DD')) >= 0 ||
-      str.indexOf(d.format('D/M/YYYY')) >= 0 ||
-      str.indexOf(d.format('DD/MM/YYYY')) >= 0 ||
-      str.indexOf(d.format('D/M/YY')) >= 0 ||
-      str.indexOf(d.format('DD/MM/YY')) >= 0
+      str.indexOf(d.format("YYYY-MM-DD")) >= 0 ||
+      str.indexOf(d.format("D/M/YYYY")) >= 0 ||
+      str.indexOf(d.format("DD/MM/YYYY")) >= 0 ||
+      str.indexOf(d.format("D/M/YY")) >= 0 ||
+      str.indexOf(d.format("DD/MM/YY")) >= 0
     );
   }
   /**
@@ -249,7 +249,7 @@ export class EventCaptureFormProvider {
                       );
                       programsStage.captureCoordinates = programsStage.captureCoordinates
                         ? JSON.parse(programsStage.captureCoordinates)
-                        : false;
+                        : true; // letter on, when the API works as per program settings in capturing coordinates, set this to false
                     } catch (e) {}
                     programsStage.programStageDataElements.forEach(
                       programStageDataElement => {
@@ -269,7 +269,7 @@ export class EventCaptureFormProvider {
                           ) {
                             delete programStageDataElement.dataElement;
                             programStageDataElement[
-                              'dataElement'
+                              "dataElement"
                             ] = matchedDataElement;
                           }
                         }
@@ -317,12 +317,12 @@ export class EventCaptureFormProvider {
                               10
                             );
                             programStageSection[
-                              'dataElements'
+                              "dataElements"
                             ] = newDataElements;
                           }
                         );
                       }
-                      programsStages = _.sortBy(programsStages, ['sortOrder']);
+                      programsStages = _.sortBy(programsStages, ["sortOrder"]);
                       //merge back program sections
                       programsStages.forEach((programsStage: any) => {
                         if (
@@ -347,11 +347,11 @@ export class EventCaptureFormProvider {
                           );
                           programStageSections = _.sortBy(
                             programStageSections,
-                            ['sortOrder']
+                            ["sortOrder"]
                           );
                           delete programsStage.programStageSections;
                           programsStage[
-                            'programStageSections'
+                            "programStageSections"
                           ] = programStageSections;
                         }
                       });
@@ -372,11 +372,11 @@ export class EventCaptureFormProvider {
                                 programStageEntryForms,
                                 { id: programStage.id }
                               );
-                              programStage['dataEntryForm'] =
+                              programStage["dataEntryForm"] =
                                 programStageEntryForm &&
                                 programStageEntryForm.dataEntryForm
                                   ? programStageEntryForm.dataEntryForm
-                                  : '';
+                                  : "";
                             });
                             observer.next(programsStages);
                             observer.complete();
@@ -412,7 +412,7 @@ export class EventCaptureFormProvider {
     attributeValue,
     currentUser
   ): Observable<any> {
-    let resource = 'events';
+    let resource = "events";
     return new Observable(observer => {
       this.sqlLiteProvider
         .deleteFromTableByAttribute(
@@ -439,7 +439,7 @@ export class EventCaptureFormProvider {
   deleteALLEvents(currentUser: CurrentUser): Observable<any> {
     return new Observable(observer => {
       this.sqlLiteProvider
-        .dropTable('events', currentUser.currentDatabase)
+        .dropTable("events", currentUser.currentDatabase)
         .subscribe(
           () => {
             observer.next();
@@ -476,7 +476,7 @@ export class EventCaptureFormProvider {
           if (!this.isEmpty(eventDataValues[key])) {
             row.push(eventDataValues[key]);
           } else {
-            row.push('  ');
+            row.push("  ");
           }
         });
         table.rows.push(row);
@@ -549,15 +549,15 @@ export class EventCaptureFormProvider {
       programStage: programStageId,
       orgUnit: currentOrgUnit.id,
       orgUnitName: currentOrgUnit.name,
-      status: 'ACTIVE',
+      status: "ACTIVE",
       deleted: false,
       attributeCategoryOptions: attributeCategoryOptions,
       attributeCc: attributeCc,
       eventType: eventType,
-      syncStatus: 'not-synced',
+      syncStatus: "not-synced",
       coordinate: {
-        latitude: '0',
-        longitude: '0'
+        latitude: "0",
+        longitude: "0"
       },
       dataValues: []
     };
@@ -576,7 +576,7 @@ export class EventCaptureFormProvider {
   getAllEvents(currentUser): Observable<any> {
     return new Observable(observer => {
       this.sqlLiteProvider
-        .getAllDataFromTable('events', currentUser.currentDatabase)
+        .getAllDataFromTable("events", currentUser.currentDatabase)
         .subscribe(
           (events: any) => {
             observer.next(events);
@@ -601,7 +601,7 @@ export class EventCaptureFormProvider {
     attributeValues: Array<string>,
     currentUser
   ): Observable<any[]> {
-    let tableName = 'events';
+    let tableName = "events";
     return new Observable(observer => {
       this.sqlLiteProvider
         .getDataFromTableByAttributes(
@@ -636,7 +636,7 @@ export class EventCaptureFormProvider {
     trackedEntityInstance: string,
     dataDimension?: any
   ): Observable<any> {
-    let attribute = 'programStage';
+    let attribute = "programStage";
     let attributeValues = [programStageId];
     let events = [];
     //@todo based on data dimension
@@ -652,7 +652,7 @@ export class EventCaptureFormProvider {
               events.push(event);
             }
           });
-          events = _.sortBy(events, ['eventDate']);
+          events = _.sortBy(events, ["eventDate"]);
           observer.next(events);
           observer.complete();
         },
@@ -677,7 +677,7 @@ export class EventCaptureFormProvider {
     programId,
     orgUnitId
   ): Observable<any> {
-    let attribute = 'program';
+    let attribute = "program";
     let attributeValues = [programId];
     let events = [];
     return new Observable(observer => {
@@ -692,7 +692,7 @@ export class EventCaptureFormProvider {
               event.orgUnit == orgUnitId &&
               event.attributeCc == dataDimension.attributeCc &&
               (event.attributeCategoryOptions == dataDimension.attributeCos ||
-                dataDimension.attributeCos == '')
+                dataDimension.attributeCos == "")
             ) {
               events.push(event);
             }
@@ -714,7 +714,7 @@ export class EventCaptureFormProvider {
    * @returns {Observable<any>}
    */
   saveEvents(events, currentUser): Observable<any> {
-    let tableName = 'events';
+    let tableName = "events";
     return new Observable(observer => {
       const sanitizedEvents = _.flatMapDeep(
         _.map(events, event => {
@@ -753,14 +753,14 @@ export class EventCaptureFormProvider {
     // @todo page size to be contolled
     const { attributeCc, attributeCos } = dataDimension;
     let url = `/api/events.json?program=${programId}&orgUnit=${organisationUnitId}&pageSize=50&order=lastUpdated:desc`;
-    if (attributeCc && attributeCos && attributeCos !== '') {
+    if (attributeCc && attributeCos && attributeCos !== "") {
       url += `&attributeCc=${attributeCc}&attributeCos=${attributeCos}`;
     }
     return new Observable(observer => {
       this.httpClientProvider.get(url, true, currentUser).subscribe(
         response => {
           const events = _.map(response.events, event => {
-            const eventDate = event.eventDate.split('T')[0];
+            const eventDate = event.eventDate.split("T")[0];
             return {
               ...event,
               eventDate,
@@ -769,7 +769,7 @@ export class EventCaptureFormProvider {
               programName,
               attributeCategoryOptions: attributeCos,
               id: event.event,
-              syncStatus: 'synced'
+              syncStatus: "synced"
             };
           });
           observer.next(events);
@@ -811,7 +811,7 @@ export class EventCaptureFormProvider {
         this.eventCompletenessProvider
           .getEventCompletenessByIds(eventIds, currentUser)
           .then((response: any) => {
-            const dataObj = _.keyBy(response, 'id');
+            const dataObj = _.keyBy(response, "id");
             events.map((event: any) => {
               // updating
               if (dataObj && event && event.event && dataObj[event.event]) {
@@ -821,7 +821,7 @@ export class EventCaptureFormProvider {
                   completedDate,
                   isDeleted
                 } = completenessData;
-                const status = JSON.parse(isDeleted) ? 'ACTIVE' : 'COMPLETED';
+                const status = JSON.parse(isDeleted) ? "ACTIVE" : "COMPLETED";
                 event = { ...event, status };
                 if (!completenessData.isDeleted) {
                   event = { ...event, completedBy, completedDate };
@@ -834,7 +834,7 @@ export class EventCaptureFormProvider {
                   if (success + fail == events.length) {
                     this.updateEventStatus(
                       updatedEventIds,
-                      'synced',
+                      "synced",
                       currentUser
                     ).subscribe(
                       () => {
@@ -853,7 +853,7 @@ export class EventCaptureFormProvider {
                 },
                 (error: any) => {
                   //try to update event
-                  console.log('error posting : ' + JSON.stringify(error));
+                  console.log("error posting : " + JSON.stringify(error));
                   this.httpClientProvider
                     .put(`${url}/${event.event}`, event, currentUser)
                     .subscribe(
@@ -863,7 +863,7 @@ export class EventCaptureFormProvider {
                         if (success + fail == events.length) {
                           this.updateEventStatus(
                             updatedEventIds,
-                            'synced',
+                            "synced",
                             currentUser
                           ).subscribe(
                             () => {
@@ -928,7 +928,7 @@ export class EventCaptureFormProvider {
                         if (success + fail == events.length) {
                           this.updateEventStatus(
                             updatedEventIds,
-                            'synced',
+                            "synced",
                             currentUser
                           ).subscribe(
                             () => {
@@ -966,7 +966,7 @@ export class EventCaptureFormProvider {
    */
   updateEventStatus(eventIds, status, currentUser): Observable<any> {
     return new Observable(observer => {
-      this.getEventsByAttribute('id', eventIds, currentUser).subscribe(
+      this.getEventsByAttribute("id", eventIds, currentUser).subscribe(
         (events: any) => {
           if (events && events.length > 0) {
             events.map((event: any) => {
@@ -1044,7 +1044,7 @@ export class EventCaptureFormProvider {
    * @returns {Observable<any>}
    */
   getEventsByStatusAndType(status, eventType, currentUser): Observable<any> {
-    let attribute = 'syncStatus';
+    let attribute = "syncStatus";
     let attributeArray = [status];
     let eventResults = [];
     return new Observable(observer => {
