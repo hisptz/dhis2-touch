@@ -1007,6 +1007,19 @@ export class EventCaptureFormProvider {
       })
     );
     sanitizedEvents.forEach((event: any) => {
+      // event["coordinate"] = {};
+      if (event.coordinate) {
+        event["geometry"] = {
+          type: "Point",
+          coordinates: []
+        };
+        event.coordinate.longitude
+          ? event.geometry.coordinates.push(event["coordinate"]["longitude"])
+          : "";
+        event.coordinate.latitude
+          ? event.geometry.coordinates.push(event["coordinate"]["latitude"])
+          : "";
+      }
       const dataValues = _.filter(event.dataValues, dataValue => {
         return dataValue && dataValue.dataElement !== undefined;
       });
@@ -1032,6 +1045,7 @@ export class EventCaptureFormProvider {
         delete event.attributeCategoryOptions;
       }
       event = { ...event, dataValues };
+      // console.log("checccccccc" + JSON.stringify(event));
     });
     return sanitizedEvents;
   }
