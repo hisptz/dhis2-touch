@@ -98,7 +98,8 @@ export const DEFAULT_APP_METADATA = {
       'Z4szHfJebFL',
       'jYsHdmTJNVh',
       'go4MncVomkQ',
-      'R8APevjOH0o'
+      'R8APevjOH0o',
+      'hcFmHC9yXgy'
     ]
   },
   programStageSections: {
