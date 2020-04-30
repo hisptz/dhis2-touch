@@ -28,6 +28,7 @@ import * as _ from 'lodash';
 import { DataSet } from '../../models/data-set';
 import { CurrentUser } from '../../models/current-user';
 import { DEFAULT_APP_METADATA } from '../../constants';
+import { from } from 'rxjs/observable/from';
 
 /*
   Generated class for the DataSetsProvider provider.
@@ -465,48 +466,54 @@ export class DataSetsProvider {
   downloadDataSetsFromServer(currentUser: CurrentUser): Observable<any> {
     let dataSetSResponse = [];
     const { userOrgUnitIds } = currentUser;
-    const dataSetMetadata = DEFAULT_APP_METADATA.dataSets;
+    const dataSetMetadata = DEFAULT_APP_METADATA['dataSets']
+      ? DEFAULT_APP_METADATA['dataSets']
+      : undefined;
     const { defaultIds } = dataSetMetadata;
-    return new Observable(observer => {
-      if (userOrgUnitIds && userOrgUnitIds.length == 0) {
-        observer.next(dataSetSResponse);
-        observer.complete();
-      } else {
-        const fields = `fields=id,name,timelyDays,formType,dataEntryForm[htmlCode],compulsoryDataElementOperands[id,name,dimensionItemType,dimensionItem],version,periodType,openFuturePeriods,expiryDays,dataSetElements[dataElement[id]],dataElements[id],organisationUnits[id],sections[id],indicators[id],categoryCombo[id,name,categoryOptionCombos[id,name,categoryOptions[id]],categories[id,name,categoryOptions[id,name,organisationUnits[id]]]]`;
-        const filter =
-          defaultIds && defaultIds.length > 0
-            ? `filter=id:in:[${defaultIds.join(',')}]`
-            : `filter=organisationUnits.path:ilike:${userOrgUnitIds.join(
-                '&filter=organisationUnits.path:ilike:'
-              )}&rootJunction=OR`;
-        const url = `/api/${this.resource}.json?${fields}&${filter}`;
-        const pageSize = defaultIds && defaultIds.length > 0 ? 10 : 15;
-        this.HttpClient.get(
-          url,
-          false,
-          currentUser,
-          this.resource,
-          pageSize
-        ).subscribe(
-          (response: any) => {
-            try {
-              const { dataSets } = response;
-              dataSetSResponse = this.getFitlteredListOfDataSets(
-                dataSets,
-                currentUser
-              );
-              observer.next(_.uniqBy(dataSetSResponse, 'id'));
-              observer.complete();
-            } catch (e) {
-              observer.error(e);
+    if (dataSetMetadata) {
+      return new Observable(observer => {
+        if (userOrgUnitIds && userOrgUnitIds.length == 0) {
+          observer.next(dataSetSResponse);
+          observer.complete();
+        } else {
+          const fields = `fields=id,name,timelyDays,formType,dataEntryForm[htmlCode],compulsoryDataElementOperands[id,name,dimensionItemType,dimensionItem],version,periodType,openFuturePeriods,expiryDays,dataSetElements[dataElement[id]],dataElements[id],organisationUnits[id],sections[id],indicators[id],categoryCombo[id,name,categoryOptionCombos[id,name,categoryOptions[id]],categories[id,name,categoryOptions[id,name,organisationUnits[id]]]]`;
+          const filter =
+            defaultIds && defaultIds.length > 0
+              ? `filter=id:in:[${defaultIds.join(',')}]`
+              : `filter=organisationUnits.path:ilike:${userOrgUnitIds.join(
+                  '&filter=organisationUnits.path:ilike:'
+                )}&rootJunction=OR`;
+          const url = `/api/${this.resource}.json?${fields}&${filter}`;
+          const pageSize = defaultIds && defaultIds.length > 0 ? 10 : 15;
+          this.HttpClient.get(
+            url,
+            false,
+            currentUser,
+            this.resource,
+            pageSize
+          ).subscribe(
+            (response: any) => {
+              try {
+                const { dataSets } = response;
+                dataSetSResponse = this.getFitlteredListOfDataSets(
+                  dataSets,
+                  currentUser
+                );
+                observer.next(_.uniqBy(dataSetSResponse, 'id'));
+                observer.complete();
+              } catch (e) {
+                observer.error(e);
+              }
+            },
+            error => {
+              observer.error(error);
             }
-          },
-          error => {
-            observer.error(error);
-          }
-        );
-      }
-    });
+          );
+        }
+      });
+    } else {
+      return from(null);
+    }
   }
 
   getFitlteredListOfDataSets(

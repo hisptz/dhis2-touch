@@ -111,7 +111,9 @@ export class DataElementsProvider {
   }
 
   async getDataElementIds(currentUser: CurrentUser) {
-    const dataSetMetadata = DEFAULT_APP_METADATA.dataSets;
+    const dataSetMetadata = DEFAULT_APP_METADATA['dataSets']
+      ? DEFAULT_APP_METADATA['dataSets']
+      : undefined;
     const programMetadata = DEFAULT_APP_METADATA.programs;
     const dataElementsIds = [];
     if (

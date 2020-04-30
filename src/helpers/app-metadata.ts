@@ -27,7 +27,9 @@ import { DEFAULT_APP_METADATA } from '../constants';
 
 export function getAppMetadata() {
   const programMetadata = DEFAULT_APP_METADATA.programs;
-  const dataSetMetadata = DEFAULT_APP_METADATA.dataSets;
+  const dataSetMetadata = DEFAULT_APP_METADATA['dataSets']
+    ? DEFAULT_APP_METADATA['dataSets']
+    : undefined;
   const omittedKey = [];
   if (
     (programMetadata && programMetadata.defaultIds.length > 0) ||

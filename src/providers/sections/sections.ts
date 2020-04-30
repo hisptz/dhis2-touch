@@ -53,7 +53,9 @@ export class SectionsProvider {
   downloadSectionsFromServer(currentUser): Observable<any> {
     const fields =
       'fields=id,name,code,description,sortOrder,indicators[id],dataElements[id]';
-    const dataSetMetadata = DEFAULT_APP_METADATA.dataSets;
+    const dataSetMetadata = DEFAULT_APP_METADATA['dataSets']
+      ? DEFAULT_APP_METADATA['dataSets']
+      : undefined;
     const { defaultIds } = dataSetMetadata;
     const filter =
       defaultIds && defaultIds.length > 0

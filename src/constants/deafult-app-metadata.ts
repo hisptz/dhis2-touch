@@ -28,24 +28,24 @@ export const DEFAULT_APP_METADATA = {
     isOnLogin: true,
     defaultIds: []
   },
-  validationRules: {
-    resourceType: 'entryForm',
-    displayName: 'Validation Rules',
-    isOnLogin: false,
-    defaultIds: []
-  },
-  dataStore: {
-    resourceType: 'report',
-    displayName: 'Data Store',
-    isOnLogin: false,
-    defaultIds: []
-  },
-  sections: {
-    resourceType: 'entryForm',
-    displayName: 'Sections',
-    isOnLogin: false,
-    defaultIds: []
-  },
+  // validationRules: {
+  //   resourceType: 'entryForm',
+  //   displayName: 'Validation Rules',
+  //   isOnLogin: false,
+  //   defaultIds: []
+  // },
+  // dataStore: {
+  //   resourceType: 'report',
+  //   displayName: 'Data Store',
+  //   isOnLogin: false,
+  //   defaultIds: []
+  // },
+  // sections: {
+  //   resourceType: 'entryForm',
+  //   displayName: 'Sections',
+  //   isOnLogin: false,
+  //   defaultIds: []
+  // },
   dataElements: {
     resourceType: 'entryForm',
     displayName: 'Data Elements',
@@ -64,24 +64,24 @@ export const DEFAULT_APP_METADATA = {
     isOnLogin: true,
     defaultIds: []
   },
-  smsCommand: {
-    resourceType: 'entryForm',
-    displayName: 'SMS Command',
-    isOnLogin: false,
-    defaultIds: []
-  },
-  indicators: {
-    displayName: 'Indicators',
-    resourceType: 'report',
-    isOnLogin: false,
-    defaultIds: []
-  },
-  reports: {
-    resourceType: 'report',
-    displayName: 'Reports',
-    isOnLogin: false,
-    defaultIds: []
-  },
+  // smsCommand: {
+  //   resourceType: 'entryForm',
+  //   displayName: 'SMS Command',
+  //   isOnLogin: false,
+  //   defaultIds: []
+  // },
+  // indicators: {
+  //   displayName: 'Indicators',
+  //   resourceType: 'report',
+  //   isOnLogin: false,
+  //   defaultIds: []
+  // },
+  // reports: {
+  //   resourceType: 'report',
+  //   displayName: 'Reports',
+  //   isOnLogin: false,
+  //   defaultIds: []
+  // },
   constants: {
     resourceType: 'report',
     displayName: 'Constants',

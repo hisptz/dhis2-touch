@@ -86,7 +86,10 @@ export class DownloadMetaDataComponent implements OnInit {
     const resources = [];
     const dataBaseStructure = DATABASE_STRUCTURE;
     Object.keys(dataBaseStructure).forEach((resource: any) => {
-      if (dataBaseStructure[resource].isMetadata) {
+      if (
+        dataBaseStructure[resource].isMetadata &&
+        !dataBaseStructure[resource].hideOnMetadataUpdate
+      ) {
         resources.push({
           name: resource,
           displayName: dataBaseStructure[resource].displayName
