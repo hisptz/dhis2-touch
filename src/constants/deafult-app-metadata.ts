@@ -92,15 +92,7 @@ export const DEFAULT_APP_METADATA = {
     resourceType: 'event',
     displayName: 'Programs',
     isOnLogin: true,
-    defaultIds: [
-      'RwVrL1Y8RTH',
-      'CT0TNl30rld',
-      'Z4szHfJebFL',
-      'jYsHdmTJNVh',
-      'go4MncVomkQ',
-      'R8APevjOH0o',
-      'hcFmHC9yXgy'
-    ]
+    defaultIds: ['GCrckkJYJni']
   },
   programStageSections: {
     resourceType: 'event',
