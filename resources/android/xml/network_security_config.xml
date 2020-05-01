@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">dhis.moh.go.tz</domain>
-        <domain includeSubdomains="true">dhis.hisptz.org</domain>
-        <domain includeSubdomains="true">dhis.hisptz.org/msdqi</domain>
+        <domain includeSubdomains="true">mvc.hisptz.org/mvcdcms</domain>
     </domain-config>
 </network-security-config>

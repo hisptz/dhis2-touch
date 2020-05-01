@@ -120,41 +120,8 @@ export class LocalInstanceProvider {
         currentLanguage: 'en',
         currentUser: {
           username: '',
-          serverUrl: 'dhis.moh.go.tz',
+          serverUrl: 'mvc.hisptz.org/mvcdcms',
           password: '',
-          currentLanguage: 'en',
-          progressTracker: {}
-        }
-      },
-      {
-        id: 'default2',
-        currentLanguage: 'en',
-        currentUser: {
-          username: '',
-          serverUrl: 'dhis.hisptz.org/dhis',
-          password: '',
-          currentLanguage: 'en',
-          progressTracker: {}
-        }
-      },
-      {
-        id: 'default3',
-        currentLanguage: 'en',
-        currentUser: {
-          username: 'admin',
-          serverUrl: 'play.dhis2.org/demo',
-          password: 'district',
-          currentLanguage: 'en',
-          progressTracker: {}
-        }
-      },
-      {
-        id: 'default4',
-        currentLanguage: 'en',
-        currentUser: {
-          username: 'admin',
-          serverUrl: 'play.dhis2.org/2.28',
-          password: 'district',
           currentLanguage: 'en',
           progressTracker: {}
         }
@@ -179,7 +146,7 @@ export class LocalInstanceProvider {
         return _.indexOf(localInstance.id, 'default') > -1;
       });
       let newInstances = [];
-      if (!loggedInInInstance && (currentUser && currentUser.serverUrl)) {
+      if (!loggedInInInstance && currentUser && currentUser.serverUrl) {
         loggedInInInstance = currentUser.serverUrl;
         if (currentUser.serverUrl.split('://').length > 1) {
           loggedInInInstance = currentUser.serverUrl.split('://')[1];
