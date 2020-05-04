@@ -195,7 +195,7 @@ export class EventCaptureFormProvider {
   getProgramStages(programId, currentUser): Observable<any> {
     let dataElementIds = [];
     let programStageSectionIds = [];
-    return new Observable(observer => {
+    return new Observable(observer => {      
       this.programsProvider.getProgramsStages(programId, currentUser).subscribe(
         (programsStages: any) => {
           if (programsStages.length == 0) {

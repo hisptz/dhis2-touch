@@ -232,7 +232,19 @@ export class TrackerEntryDashboardPage implements OnInit {
       .getProgramStages(programId, currentUser)
       .subscribe(
         (programStages: any) => {
-          this.programStages = programStages;
+          this.programStages = _.map(programStages, programStage => {
+            const { id, programStageSections } = programStage;
+            return {
+              ...programStage, programStageSections: _.filter(
+                programStageSections,
+                (programStageSection) =>
+                  programStageSection &&
+                  programStageSection.programStageId &&
+                  id &&
+                  id == programStageSection.programStageId
+              )
+            }
+          })
           this.dashboardWidgets = this.getDashboardWidgets(programStages);
           if (this.dashboardWidgets.length > 0) {
             this.changeDashboardWidget(this.dashboardWidgets[0]);
