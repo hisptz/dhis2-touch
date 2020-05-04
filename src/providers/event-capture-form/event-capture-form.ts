@@ -195,7 +195,7 @@ export class EventCaptureFormProvider {
   getProgramStages(programId, currentUser): Observable<any> {
     let dataElementIds = [];
     let programStageSectionIds = [];
-    return new Observable(observer => {
+    return new Observable(observer => {      
       this.programsProvider.getProgramsStages(programId, currentUser).subscribe(
         (programsStages: any) => {
           if (programsStages.length == 0) {
@@ -733,17 +733,36 @@ export class EventCaptureFormProvider {
     return new Observable(observer => {
       const sanitizedEvents = _.flattenDeep(
         _.map(events, eventObj => {
-          return {
-            ...eventObj,
-            dataValues: _.filter(
-              eventObj.dataValues,
-              dataValue =>
-                dataValue &&
-                dataValue.hasOwnProperty('dataElement') &&
-                dataValue.hasOwnProperty('value') &&
-                dataValue.dataElement
-            )
-          };
+          //@TODO handling all types of coordinates
+          const geometry = eventObj.geometry || {};
+          const coordinates = geometry && geometry.type && geometry.type === "" && geometry.coordinates? geometry.coordinates :[]
+          return coordinates.length > 1
+            ? {
+                ...eventObj,
+                coordinate: {
+                  latitude: coordinates[1] || '0',
+                  longitude: coordinates[0] || '0',
+                },
+                dataValues: _.filter(
+                  eventObj.dataValues,
+                  (dataValue) =>
+                    dataValue &&
+                    dataValue.hasOwnProperty('dataElement') &&
+                    dataValue.hasOwnProperty('value') &&
+                    dataValue.dataElement
+                ),
+              }
+            : {
+                ...eventObj,
+                dataValues: _.filter(
+                  eventObj.dataValues,
+                  (dataValue) =>
+                    dataValue &&
+                    dataValue.hasOwnProperty('dataElement') &&
+                    dataValue.hasOwnProperty('value') &&
+                    dataValue.dataElement
+                ),
+              };
         })
       );
       this.sqlLiteProvider
@@ -1053,7 +1072,11 @@ export class EventCaptureFormProvider {
       ) {
         delete event.attributeCategoryOptions;
       }
-      event = { ...event, dataValues };
+      //@TODO handling all types of coordinates
+      const coordinate = event.coordinate;
+      const { latitude,longitude} =coordinate;
+      const geometry = { type: 'point', coordinates: [longitude,latitude] };      
+      event = { ...event, dataValues, geometry };
     });
     return sanitizedEvents;
   }
