@@ -23,13 +23,11 @@
 *
 -->
 <ion-header>
-
   <ion-navbar [color]="(colorSettings$ |async).colorAttributes.main">
     <ion-title>
       <span [translate]="'Event capture'"></span>
     </ion-title>
   </ion-navbar>
-
 </ion-header>
 
 <ion-content>
@@ -37,37 +35,98 @@
     <ion-row>
       <ion-col>
         <div *ngIf="isMetadataLoaded">
-          <program-parameter-selection (programParameterSelection)="onProgramParameterSelection($event)" [currentUser]="currentUser"
-            [programIdsByUserRoles]="programIdsByUserRoles" [selectedDataDimension]="selectedDataDimension"
-            [programType]="programType"></program-parameter-selection>
+          <program-parameter-selection
+            (programParameterSelection)="onProgramParameterSelection($event)"
+            [currentUser]="currentUser"
+            [programIdsByUserRoles]="programIdsByUserRoles"
+            [selectedDataDimension]="selectedDataDimension"
+            [programType]="programType"
+          ></program-parameter-selection>
           <div *ngIf="isFormReady">
             <div class="event-storage-status">
               <span>
                 <b>
                   <span [translate]="'Synced'"></span>
-                </b> : {{ storageStatus.online }}
+                </b>
+                : {{ storageStatus.online }}
                 <b>
                   <span [translate]="'Not synced'"></span>
-                </b> : {{storageStatus.offline }}
-
+                </b>
+                : {{storageStatus.offline }}
               </span>
-              <br>
-              <span *ngIf="showEventConflictHandler" margin-left>&nbsp;&nbsp;
-                <event-conflict-handler (successEventConflictHandle)="onSuccessEventConflictHandle($event)"
-                  (successDiscovering)="onSuccessDiscoveringEvents($event)" [eventConflictHandler]="eventConflictHandler"></event-conflict-handler>
+              <br />
+              <span *ngIf="showEventConflictHandler" margin-left
+                >&nbsp;&nbsp;
+                <event-conflict-handler
+                  (successEventConflictHandle)="onSuccessEventConflictHandle($event)"
+                  (successDiscovering)="onSuccessDiscoveringEvents($event)"
+                  [eventConflictHandler]="eventConflictHandler"
+                ></event-conflict-handler>
               </span>
-
             </div>
 
-            <div class="item-card" (click)="hideAndShowColumns()" color="font-color" padding-top padding-bottom
-              ion-button clear text-center text-capitalize icon-start>
+            <div
+              class="item-card"
+              (click)="hideAndShowColumns()"
+              color="font-color"
+              padding-top
+              padding-bottom
+              ion-button
+              clear
+              text-center
+              text-capitalize
+              icon-start
+            >
               <ion-icon name="ios-eye" color="icon-color"></ion-icon>
               <span [translate]="'Columns'"></span>
             </div>
-            <div class="item-card" (click)="goToEventRegister()" color="font-color" padding-top padding-bottom
-              ion-button clear text-center text-capitalize icon-start>
+            <div
+              class="item-card"
+              (click)="alertForAddingNewData()"
+              color="font-color"
+              padding-top
+              padding-bottom
+              ion-button
+              clear
+              text-center
+              text-capitalize
+              icon-start
+            >
               <ion-icon name="add" color="icon-color"></ion-icon>
-              <span [translate]="'Add'"></span>
+              <span [translate]="'New data'"></span>
+            </div>
+            <div class="adding-event-status-control" *ngIf="showConfirmMessage">
+              <div style="width: 60%; float: left;">
+                <p>Are you sure you want to open new form, for data entry?</p>
+              </div>
+              <div
+                style="float: left;"
+                class="item-card"
+                (click)="goToEventRegister()"
+                padding-top
+                padding-bottom
+                ion-button
+                clear
+                text-center
+                text-capitalize
+                icon-start
+              >
+                <span [translate]="'Yes'"></span>
+              </div>
+              <div
+                style="float: right;"
+                class="item-card cancel-btn"
+                (click)="cancelAddingNew()"
+                padding-top
+                padding-bottom
+                ion-button
+                clear
+                text-center
+                text-capitalize
+                icon-start
+              >
+                <span [translate]="'Cancel'"></span>
+              </div>
             </div>
           </div>
         </div>
@@ -75,7 +134,10 @@
     </ion-row>
     <div *ngIf="isFormReady">
       <div *ngIf="isLoading">
-        <loading [loadingSize]="'large'" [loadingMessage]="loadingMessage"></loading>
+        <loading
+          [loadingSize]="'large'"
+          [loadingMessage]="loadingMessage"
+        ></loading>
       </div>
       <div *ngIf="!isLoading" class="over-flow-container">
         <ion-row>
@@ -84,12 +146,17 @@
               <table class="table table-bordered" width="100%">
                 <thead *ngIf="tableLayout && tableLayout.headers">
                   <tr>
-                    <th *ngFor="let header of tableLayout.headers">{{ header}}</th>
+                    <th *ngFor="let header of tableLayout.headers">
+                      {{ header}}
+                    </th>
                   </tr>
                 </thead>
                 <tbody *ngIf="tableLayout.rows">
-                  <tr [ngStyle]="{'background-color': '#F4F4F4' }" *ngFor="let row of tableLayout.rows;let currentIndex = index"
-                    (click)="goToEventView(currentIndex)">
+                  <tr
+                    [ngStyle]="{'background-color': '#F4F4F4' }"
+                    *ngFor="let row of tableLayout.rows;let currentIndex = index"
+                    (click)="goToEventView(currentIndex)"
+                  >
                     <td *ngFor="let data of row">
                       {{ data }}
                     </td>

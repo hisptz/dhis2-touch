@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.hipstz.dhis2.pss.e.reporting" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>PSS E REPORTING</name>
-    <description>An awesome dhis 2 mobile experience</description>
+<widget id="com.hipstz.dhis2.pss.ereporting" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>PSS eReporting</name>
+    <description>An awesome mobile experience</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
     <access origin="*" />
     <allow-intent href="http://*/*" />

@@ -63,6 +63,7 @@ export class EventCapturePage implements OnInit {
   eventConflictHandler: any;
   hasOnlineEventLoaded: boolean;
   colorSettings$: Observable<any>;
+  showConfirmMessage: boolean;
 
   constructor(
     private store: Store<State>,
@@ -91,6 +92,7 @@ export class EventCapturePage implements OnInit {
     this.showEventConflictHandler = false;
     this.eventConflictHandler = {};
     this.hasOnlineEventLoaded = false;
+    this.showConfirmMessage = false;
   }
 
   ngOnInit() {
@@ -457,10 +459,20 @@ export class EventCapturePage implements OnInit {
       dataDimension: this.dataDimension,
       eventId: this.eventIds[currentIndex]
     };
+    this.showConfirmMessage = false;
     this.navCtrl.push('EventCaptureRegisterPage', params);
   }
 
+  alertForAddingNewData() {
+    this.showConfirmMessage = true;
+  }
+
+  cancelAddingNew() {
+    this.showConfirmMessage = false;
+  }
+
   goToEventRegister() {
+    this.showConfirmMessage = false;
     let params = { dataDimension: this.dataDimension };
     this.navCtrl.push('EventCaptureRegisterPage', params);
   }

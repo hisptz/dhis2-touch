@@ -120,6 +120,17 @@ export class LocalInstanceProvider {
         currentLanguage: 'en',
         currentUser: {
           username: '',
+          serverUrl: 'hmisportal.moh.go.tz/mvc',
+          password: '',
+          currentLanguage: 'en',
+          progressTracker: {}
+        }
+      },
+      {
+        id: 'default2',
+        currentLanguage: 'en',
+        currentUser: {
+          username: '',
           serverUrl: 'mvc.hisptz.org/mvcdcms',
           password: '',
           currentLanguage: 'en',

@@ -110,7 +110,7 @@ export class LoginPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     const defaultCurrentUser: CurrentUser = {
-      serverUrl: 'https://mvc.hisptz.org/mvcdcms',
+      serverUrl: 'https://hmisportal.moh.go.tz/mvc',
       username: '',
       password: '',
       currentLanguage: 'en',

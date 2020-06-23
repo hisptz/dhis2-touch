@@ -1,3 +1,3 @@
 export const appConfig = {
-  baseUrl: 'https://mvc.hisptz.org/mvcdcms'
+  baseUrl: 'https://hmisportal.moh.go.tz/mvc'
 };

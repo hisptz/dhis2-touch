@@ -88,7 +88,7 @@ export class AggregateConflictHandlerComponent implements OnInit {
         this.translationMapper = data;
       });
     if (this.orgUnitId && this.dataSetId && this.period && this.dataDimension) {
-      let key = 'Discovering data from the server';
+      let key = 'Discovering data from the server/DCMS';
       this.loadingMessage = this.translationMapper[key]
         ? this.translationMapper[key]
         : key;
@@ -189,13 +189,13 @@ export class AggregateConflictHandlerComponent implements OnInit {
     });
     if (this.summaryObject.conflicts.length > 0) {
       this.appProvider.setTopNotification(
-        'There are conflicts between offline and online data have been found, that needs your attention'
+        'There are conflicts between offline and online(DCMS) data, that needs your attention'
       );
       this.conflictFoundAction.emit();
     }
     if (this.summaryObject.updates.length > 0) {
       this.appProvider.setTopNotification(
-        'New updates has been found form server and have been applied success on offline storage'
+        'New updates has been found form server(DCMS) and have been applied success on offline/local storage'
       );
       const key = 'updates';
       this.applyingDataToOffline(key);
@@ -207,7 +207,7 @@ export class AggregateConflictHandlerComponent implements OnInit {
     if (action === 'accept') {
       const actionSheet = this.actionSheetCtrl.create({
         title: this.translationMapper[
-          'You are about to replace offline data with data from the server, are you sure?'
+          'You are about to replace offline data with data from the server(DCMS), are you sure?'
         ],
         buttons: [
           {
@@ -227,7 +227,7 @@ export class AggregateConflictHandlerComponent implements OnInit {
     if (action === 'decline') {
       const actionSheet = this.actionSheetCtrl.create({
         title: this.translationMapper[
-          'You are about to discard data from server, are you sure?'
+          'You are about to replace online(DCMS) data with local data, are you sure?'
         ],
         buttons: [
           {
@@ -261,10 +261,10 @@ export class AggregateConflictHandlerComponent implements OnInit {
 
   getValuesToTranslate() {
     return [
-      'Discovering data from the server',
-      'You are about to apply new updates to the from the server, are you sure?',
-      'You are about to replace offline data with data from the server, are you sure?',
-      'You are about to discard data from server, are you sure?',
+      'Discovering data from the server/DCMS',
+      'You are about to apply new updates on device from the server/DCMS, are you sure?',
+      'You are about to replace offline/local data with data from online(DCMS), are you sure?',
+      'You are about to replace online(DCMS) data with local data, are you sure?',
       'Discovering entry form completeness information',
       'Yes',
       'No'
