@@ -27,7 +27,7 @@ import { Store, select } from '@ngrx/store';
 import {
   State,
   getAthorizedApps,
-  getCurrentUserColorSettings
+  getCurrentUserColorSettings,
 } from '../../store';
 import { AppItem } from '../../models';
 import { Observable } from 'rxjs';
@@ -41,7 +41,7 @@ import { Observable } from 'rxjs';
 @IonicPage()
 @Component({
   selector: 'page-apps',
-  templateUrl: 'apps.html'
+  templateUrl: 'apps.html',
 })
 export class AppsPage {
   currentUserApps$: Observable<any>;
@@ -64,53 +64,53 @@ export class AppsPage {
         name: 'Data entry',
         authorites: ['M_dhis-web-dataentry'],
         pageName: 'DataEntryPage',
-        src: 'assets/icon/data-entry.png'
+        src: 'assets/icon/data-entry.png',
       },
       {
         id: 'event_capture',
         name: 'Event capture',
-        authorites: ['M_dhis-web-event-capture'],
+        authorites: ['M_dhis-web-event-capture', 'M_dhis-web-capture'],
         pageName: 'EventCapturePage',
-        src: 'assets/icon/event-capture.png'
+        src: 'assets/icon/event-capture.png',
       },
       {
         id: 'tracker_capture',
         name: 'Tracker capture',
         authorites: ['M_dhis-web-tracker-capture'],
         pageName: 'TrackerCapturePage',
-        src: 'assets/icon/tracker-capture.png'
+        src: 'assets/icon/tracker-capture.png',
       },
       {
         id: 'dashboard',
         name: 'Dashboard',
         authorites: [
           'M_dhis-web-dashboard-integration',
-          'M_dhis-web-dashboard'
+          'M_dhis-web-dashboard',
         ],
         pageName: 'DashboardPage',
-        src: 'assets/icon/dashboard.png'
+        src: 'assets/icon/dashboard.png',
       },
       {
         id: 'reports',
         name: 'Reports',
-        authorites: ['M_dhis-web-reporting'],
+        authorites: ['M_dhis-web-reporting', 'M_dhis-web-reports'],
         pageName: 'ReportsPage',
-        src: 'assets/icon/reports.png'
+        src: 'assets/icon/reports.png',
       },
       {
         id: 'sync',
         name: 'Sync',
         authorites: [],
         pageName: 'SyncPage',
-        src: 'assets/icon/sync.png'
+        src: 'assets/icon/sync.png',
       },
       {
         id: 'settings',
         name: 'Settings',
         authorites: [],
         pageName: 'SettingsPage',
-        src: 'assets/icon/settings.png'
-      }
+        src: 'assets/icon/settings.png',
+      },
     ];
   }
 }
