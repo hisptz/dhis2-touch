@@ -27,7 +27,7 @@ import { Store, select } from '@ngrx/store';
 import {
   State,
   getAthorizedApps,
-  getCurrentUserColorSettings
+  getCurrentUserColorSettings,
 } from '../../store';
 import { AppItem } from '../../models';
 import { Observable } from 'rxjs';
@@ -41,7 +41,7 @@ import { Observable } from 'rxjs';
 @IonicPage()
 @Component({
   selector: 'page-apps',
-  templateUrl: 'apps.html'
+  templateUrl: 'apps.html',
 })
 export class AppsPage {
   currentUserApps$: Observable<any>;
@@ -64,14 +64,14 @@ export class AppsPage {
         name: 'Data entry',
         authorites: ['M_dhis-web-dataentry'],
         pageName: 'DataEntryPage',
-        src: 'assets/icon/data-entry.png'
+        src: 'assets/icon/data-entry.png',
       },
       {
         id: 'event_capture',
         name: 'Event capture',
-        authorites: ['M_dhis-web-event-capture'],
+        authorites: ['M_dhis-web-event-capture', 'M_dhis-web-capture'],
         pageName: 'EventCapturePage',
-        src: 'assets/icon/event-capture.png'
+        src: 'assets/icon/event-capture.png',
       },
       // {
       //   id: 'tracker_capture',
@@ -85,10 +85,10 @@ export class AppsPage {
         name: 'Dashboard',
         authorites: [
           'M_dhis-web-dashboard-integration',
-          'M_dhis-web-dashboard'
+          'M_dhis-web-dashboard',
         ],
         pageName: 'DashboardPage',
-        src: 'assets/icon/dashboard.png'
+        src: 'assets/icon/dashboard.png',
       },
       // {
       //   id: 'reports',
@@ -102,15 +102,15 @@ export class AppsPage {
         name: 'Sync',
         authorites: [],
         pageName: 'SyncPage',
-        src: 'assets/icon/sync.png'
+        src: 'assets/icon/sync.png',
       },
       {
         id: 'settings',
         name: 'Settings',
         authorites: [],
         pageName: 'SettingsPage',
-        src: 'assets/icon/settings.png'
-      }
+        src: 'assets/icon/settings.png',
+      },
     ];
   }
 }
