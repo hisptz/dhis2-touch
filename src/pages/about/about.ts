@@ -60,7 +60,6 @@ export class AboutPage implements OnInit {
   eventsStorage: any = { online: 0, offline: 0 };
   eventsForTrackerStorage: any = { online: 0, offline: 0 };
   enrollmentStorage: any = { online: 0, offline: 0 };
-  translationMapper: any;
   colorSettings$: Observable<any>;
 
   constructor(
@@ -80,24 +79,8 @@ export class AboutPage implements OnInit {
   }
 
   ngOnInit() {
-    this.translationMapper = {};
     this.aboutContents = this.aboutProvider.getAboutContentDetails();
-    this.appTranslation.getTransalations(this.getValuesToTranslate()).subscribe(
-      (data: any) => {
-        this.translationMapper = data;
-        this.loadingUserInformation();
-      },
-      error => {
-        this.loadingUserInformation();
-      }
-    );
-  }
-
-  loadingUserInformation() {
-    let key = 'Discovering app information';
-    this.loadingMessage = this.translationMapper[key]
-      ? this.translationMapper[key]
-      : key;
+    this.loadingMessage = 'Discovering app information';
     this.userProvider.getCurrentUser().subscribe(
       (currentUser: any) => {
         this.currentUser = currentUser;
@@ -112,15 +95,14 @@ export class AboutPage implements OnInit {
     );
   }
 
+  loadingUserInformation() {}
+
   loadAllData() {
     this.hasAllDataBeenLoaded = false;
     this.aboutProvider.getAppInformation().subscribe(
       appInformation => {
         this.appInformation = appInformation;
-        let key = 'Discovering system information';
-        this.loadingMessage = this.translationMapper[key]
-          ? this.translationMapper[key]
-          : key;
+        this.loadingMessage = 'Discovering system information';
         this.aboutProvider.getSystemInformation().subscribe(
           systemInfo => {
             this.systemInfo = systemInfo;
@@ -173,10 +155,7 @@ export class AboutPage implements OnInit {
   }
 
   loadingDataValueStatus() {
-    let key = 'Discovering data values storage status';
-    this.loadingMessage = this.translationMapper[key]
-      ? this.translationMapper[key]
-      : key;
+    this.loadingMessage = 'Discovering data values storage status';
     this.isLoading = true;
     this.dataValuesProvider
       .getDataValuesByStatus('synced', this.currentUser)
@@ -210,10 +189,7 @@ export class AboutPage implements OnInit {
   }
 
   loadingEventStatus() {
-    let key = 'Discovering events storage status';
-    this.loadingMessage = this.translationMapper[key]
-      ? this.translationMapper[key]
-      : key;
+    this.loadingMessage = 'Discovering events storage status';
     this.eventCaptureFormProvider
       .getEventsByStatusAndType('synced', 'event-capture', this.currentUser)
       .subscribe(
@@ -287,10 +263,7 @@ export class AboutPage implements OnInit {
   }
 
   loadingEnrollmentStatus() {
-    let key = 'Discovering enrollments storage status';
-    this.loadingMessage = this.translationMapper[key]
-      ? this.translationMapper[key]
-      : key;
+    this.loadingMessage = 'Discovering enrollments storage status';
     this.trackerCaptureProvider
       .getTrackedEntityInstanceByStatus('synced', this.currentUser)
       .subscribe((trackedEntityInstances: any) => {
@@ -311,15 +284,5 @@ export class AboutPage implements OnInit {
             }
           );
       });
-  }
-
-  getValuesToTranslate() {
-    return [
-      'Discovering app information',
-      'Discovering system information',
-      'Discovering data values storage status',
-      'Discovering events storage status',
-      'Discovering enrollments storage status'
-    ];
   }
 }
