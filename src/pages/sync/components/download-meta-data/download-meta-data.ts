@@ -85,27 +85,8 @@ export class DownloadMetaDataComponent implements OnInit {
   getListOfResources() {
     const resources = [];
     const dataBaseStructure = DATABASE_STRUCTURE;
-    const processes = [
-      'organisationUnits',
-      'sections',
-      //'smsCommand',
-      'programs',
-      'programStageSections',
-      'programRules',
-      'dataElements',
-      'indicators',
-      'programRuleActions',
-      'programRuleVariables',
-      'dataSets'
-      //'reports',
-      //'constants'
-    ];
     Object.keys(dataBaseStructure).forEach((resource: any) => {
-      if (
-        processes &&
-        processes.indexOf(resource) > -1 &&
-        dataBaseStructure[resource].isMetadata
-      ) {
+      if (dataBaseStructure[resource].isMetadata) {
         resources.push({
           name: resource,
           displayName: dataBaseStructure[resource].displayName
